@@ -185,7 +185,6 @@ class SalesPanel extends Page
                 $this->items[$existingKey]['price'] = $price;
                 $this->items[$existingKey]['total'] = $this->items[$existingKey]['quantity'] * $price;
             }
-
         } else {
             $this->items[] = [
                 'name' => $this->name,
@@ -265,16 +264,16 @@ class SalesPanel extends Page
                 if ($this->saleType === 'wholesale') {
                     $totalSale = $item['quantity'] * $warehouse->big_whole_price;
                     $totalCost = $item['quantity'] * $warehouse->price;
-                } else { 
+                } else {
                     $totalSale = $item['quantity'] * $warehouse->retail_price;
                     $totalCost = $item['quantity'] * $warehouse->price;
                 }
-                
+
                 $totalProfit = $totalSale - $totalCost;
-                
+
                 $profit = $totalProfit > 0 ? $totalProfit : 0;
                 $loss = $totalProfit < 0 ? abs($totalProfit) : 0;
-                
+
 
                 $warehouse->save();
 
@@ -350,7 +349,7 @@ class SalesPanel extends Page
         $mpdf = new Mpdf([
             'mode' => 'utf-8',
             'format' => 'A4',
-            'margin_top' => 10,  
+            'margin_top' => 10,
             'margin_bottom' => 2,
             'margin_left' => 10,
             'margin_right' => 10,
@@ -360,21 +359,33 @@ class SalesPanel extends Page
             ],
             'default_font' => 'vazir',
         ]);
-        
+
 
         $mpdf->SetDirectionality('rtl');
-        $mpdf->autoScriptToLang = true;
-        $mpdf->autoLangToFont = true;
+        $mpdf->autoScriptToLang = false;
+        $mpdf->autoLangToFont = false;
 
         $css = file_get_contents(resource_path('views/pdf/invoice.css'));
         $mpdf->WriteHTML($css, \Mpdf\HTMLParserMode::HEADER_CSS);
-        $css = str_replace('{{LOGO_PATH}}', public_path('assets/logo.png'), $css);
+        // $css = str_replace('{{LOGO_PATH}}', public_path('assets/logo.png'), $css);
 
         $html = view('pdf.invoice', compact('sale'))->render();
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
         $fileName = 'invoice-' . now()->timestamp . '.pdf';
         $mpdf->Output(storage_path('app/public/' . $fileName), \Mpdf\Output\Destination::FILE);
+
+
+        \App\Models\Import\Document::create([
+            'sale_id'        => $sale->id,
+            'invoice_number' => $sale->invoice_number,
+            'buyer_name'     => $this->saleType === 'wholesale' ? $sale->buyer_name : null,
+            'total_amount'   => $sale->total_price,
+            'paid_amount'    => $this->saleType === 'wholesale' ? $sale->received_amount : null,
+            'sale_type'      => $this->saleType,
+            'file_path'      => 'storage/' . $fileName,
+        ]);
+
 
         $this->items = [];
         $this->lastSale = null;

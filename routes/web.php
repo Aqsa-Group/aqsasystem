@@ -66,7 +66,6 @@ Route::get('/outside/print/{id}', [OutsideController::class, 'generate'])->name(
 
 // Import system route 
 
-
 Route::get('/warehouse/print', [WarehousePrintController::class, 'generate'])
     ->name('warehouse.print');
     Route::get('/inventory/print', [InventoryPrintController::class, 'generate'])

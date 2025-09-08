@@ -19,11 +19,11 @@ return new class extends Migration
             ->onDelete('cascade');
             $table->string('barcode')->unique()->nullable();
             $table->string('name');
-            $table->integer('quantity');
+            $table->integer('quantity')->nullable();
             $table->integer('total_price');
             $table->integer('price');
-            $table->integer('big_quantity');
-            $table->integer('big_unit_price');
+            $table->integer('big_quantity')->nullable();
+            $table->integer('big_unit_price')->nullable();
             $table->integer('all_exist_number');
             $table->string('unit');
             $table->string('brand');

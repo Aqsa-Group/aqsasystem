@@ -278,7 +278,7 @@ class WarehouseResource extends Resource
             Tables\Columns\TextColumn::make('all_exist_number')->label('موجودی به دانه')->searchable(),
             Tables\Columns\TextColumn::make('total_price')->label('قیمت مجموعه')->numeric()->sortable(),
             Tables\Columns\TextColumn::make('retail_price')->label('قیمت پرچون')->numeric()->sortable(),
-            Tables\Columns\TextColumn::make('big_whole_price')->label('قیمت پرچون')->numeric()->sortable(),
+            Tables\Columns\TextColumn::make('big_whole_price')->label('قیمت عمده')->numeric()->sortable(),
             Tables\Columns\TextColumn::make('brand')->label('ساخت کشور')->searchable(),
             Tables\Columns\ImageColumn::make('product_image')->label('عکس محصول'),
             Tables\Columns\TextColumn::make('created_at')->label('تاریخ ثبت')
