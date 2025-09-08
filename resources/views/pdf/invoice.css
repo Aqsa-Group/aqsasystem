@@ -1,0 +1,67 @@
+html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 297mm;  
+    margin: 0;
+    padding: 0 10px; 
+    font-family: Tahoma, sans-serif;
+    direction: rtl;
+}
+
+.invoice {
+    border: 1px dashed black;
+    padding: 10px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+table {
+    width: 100%; 
+    border-collapse: collapse;
+    margin-top: 15px;
+    background-size: 200px;
+    table-layout: fixed; /* برای ثابت بودن عرض ستون‌ها */
+}
+
+th, td {
+    border: 1px solid #000;
+    padding: 10px 15px;
+    text-align: center;
+    vertical-align: middle; /* تراز عمودی وسط */
+    font-size: 16px; /* سایز فونت بزرگ‌تر */
+    word-wrap: break-word; /* شکستن کلمات طولانی */
+    min-height: 50px; /* حداقل ارتفاع هر سلول */
+}
+
+tbody tr:nth-child(odd) {
+    background-color: rgba(240, 240, 240, 0.7);
+}
+
+tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+thead th {
+    background-color: #ccc;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 10px 12px;
+}
+
+.footer {
+    margin-top: 10px;
+    border: 1px solid #000;
+    padding: 8px 10px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.total {
+    font-weight: bold;
+    font-size: 18px;
+}

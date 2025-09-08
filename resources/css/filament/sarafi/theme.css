@@ -1,0 +1,32 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+@config 'tailwind.config.js';
+
+/* ظرف اصلی فرم */
+.fi-simple-main-ctn {
+    @apply relative flex min-h-screen items-center justify-center bg-gray-100 overflow-hidden;
+}
+
+/* نیمه‌ی چپ: عکس ثابت */
+.fi-simple-main-ctn::before {
+    content: '';
+    @apply absolute top-0 left-0  p-10 h-full bg-cover bg-center;
+    width: 50%;
+
+    background-image: url('https://images.unsplash.com/photo-1591033594798-33227a05780d?q=80&w=1059&auto=format&fit=crop');
+}
+
+/* جعبه‌ی فرم (نیمه‌ی راست) */
+.fi-simple-main {
+    @apply bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl p-10 w-full max-w-md relative z-10;
+    margin-left: 50%;   /* فرم بیاد سمت راست */
+}
+
+/* موبایل: فقط فرم، بدون ستون چپ */
+@media (max-width: 768px) {
+    .fi-simple-main-ctn::before {
+        display: none;
+    }
+    .fi-simple-main {
+        margin-left: 0;
+    }
+}

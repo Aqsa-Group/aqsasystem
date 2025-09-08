@@ -1,0 +1,61 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+/* @import url('https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap'); */
+
+
+
+  
+
+@config 'tailwind.config.js'; 
+
+/* DashBorad Custom */
+
+.custom-card {
+  @apply bg-gray-400;
+}
+.fi-wi-stats-overview-stat-icon{
+  @apply text-white dark:text-white;
+}
+.fi-wi-stats-overview-stat-label{
+  @apply  dark:text-white;
+}
+.fi-wi-stats-overview-stat-label{
+  @apply text-white;
+}
+
+
+/* Login Custom */
+.fi-simple-main-ctn {
+  @apply justify-center items-center bg-center bg-cover bg-no-repeat;
+  background-image: url('https://images.unsplash.com/photo-1497215842964-222b430dc094?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDB8fGJ1c2luZXNzfGVufDB8fDB8fHww');
+  background-color: rgba(0, 0, 0, 0.5);
+  background-blend-mode: overlay;
+
+}
+
+.fi-simple-main{
+  @apply bg-white/20 backdrop-blur-lg rounded-2xl shadow-2xl p-10 w-full max-w-md transition-all duration-500 ease-in-out; 
+}
+
+.fi-simple-page{
+  @apply w-full;
+}
+
+@layer components {
+  .dark body {
+    background-color: #31323E !important;
+    color: #e0e0e0;
+  }
+
+  .dark .fi-sidebar {
+    background-color: #31323E !important;
+  }
+  
+  .dark .fi-topbar >nav {
+    background-color: #31323E !important;
+  }
+
+  .dark .fi-sidebar-header  {
+    background-color: #31323E !important;
+  }
+
+}

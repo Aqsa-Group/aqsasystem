@@ -1,0 +1,287 @@
+<?php
+
+namespace App\Filament\Market\Resources;
+
+use App\Filament\Market\Resources\AccountingResource\Pages;
+use App\Models\Market\Accounting;
+use App\Models\Market\Booth;
+use App\Models\Market\Market;
+use App\Models\Market\Shop;
+use Carbon\Carbon;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
+use Morilog\Jalali\Jalalian;
+
+class AccountingResource extends Resource
+{
+    protected static ?string $model = Accounting::class;
+    protected static ?string $navigationIcon = 'simpleline-calculator';
+    protected static ?string $navigationGroup = 'بخش مالی';
+    protected static ?string $navigationLabel = 'حسابداری';
+    protected static ?string $pluralModelLabel = 'حسابداری';
+    protected static ?string $modelLabel = 'هزینه';
+
+
+    public static function canViewAny(): bool
+    {
+        return Auth::check() && in_array(Auth::user()?->role, ['admin', 'Cashier' , 'superadmin']);
+    }
+
+
+    public static function form(Form $form): Form
+    {
+        $user = Auth::user();
+
+      
+        $updateCalculatedPrice = function (callable $get, callable $set) {
+            $current = $get('current_degree');
+            $past = $get('past_degree');
+            $unitPrice = $get('degree_price');
+
+            if (is_numeric($current) && is_numeric($past) && is_numeric($unitPrice)) {
+                $difference = max(0, $current - $past);
+                $set('price', $difference * $unitPrice);
+            }
+        };
+
+        return $form->schema([
+            Forms\Components\Select::make('type')
+                ->label('نوع')
+                ->options([
+                    'دوکان' => 'دوکان',
+                    'غرفه' => 'غرفه',
+                ])
+                ->reactive()
+                ->required(),
+
+            Forms\Components\Select::make('market_id')
+                ->label('مارکت مربوطه')
+                ->options(function () use ($user) {
+                    return Market::when($user->role === 'admin', fn($q) => $q->where('admin_id', $user->id))
+                        ->when($user->role !== 'superadmin' && $user->role !== 'admin', fn($q) => $q->where('admin_id', $user->admin_id))
+                        ->pluck('name', 'id');
+                })
+                ->reactive()
+                ->visible(fn($get) => in_array($get('type'), ['دوکان', 'غرفه']))
+                ->afterStateUpdated(fn($set) => [
+                    $set('shop_id', null),
+                    $set('booth_id', null),
+                    $set('shopkeeper_name', '---'),
+                    $set('shopkeeper_id', null),
+                ]),
+                Forms\Components\Select::make('shop_id')
+                ->label('نمبر دوکان')
+                ->options(function ($get) use ($user) {
+                    if (! $get('market_id')) return [];
+            
+                    $query = Shop::where('market_id', $get('market_id'));
+            
+                    $query->when($user->role === 'admin', fn($q) => $q->where('admin_id', $user->id))
+                          ->when($user->role !== 'superadmin' && $user->role !== 'admin', fn($q) => $q->where('admin_id', $user->admin_id));
+            
+                    if (($get('expanses_type') ?? '') === 'کرایه') {
+                        $query->where(function($q) {
+                            $q->whereNull('customer_id') 
+                              ->orWhere('collect', '!=', 'person'); 
+                        });
+                    }
+            
+                    return $query->pluck('number', 'id');
+                })
+                ->visible(fn($get) => $get('type') === 'دوکان')
+                ->reactive()
+                ->afterStateUpdated(function ($state, callable $set) {
+                    $shop = Shop::find($state);
+                    $set('shopkeeper_id', $shop?->shopkeeper_id);
+                    if ($shop) {
+                        $set('price', $shop->price);
+                        $set('meter_serial', $shop->metar_serial);
+                        $last = \App\Models\Market\Deposit::where('shop_id', $shop->id)
+                            ->where('expanses_type', 'پول برق')
+                            ->latest()
+                            ->first();
+                        $set('past_degree', $last?->current_degree ?? 0);
+                    }
+                }),
+            
+            Forms\Components\Select::make('booth_id')
+                ->label('نمبر غرفه')
+                ->options(function ($get) use ($user) {
+                    if (! $get('market_id')) return [];
+                    return Booth::where('market_id', $get('market_id'))
+                        ->when($user->role === 'admin', fn($q) => $q->where('admin_id', $user->id))
+                        ->when($user->role !== 'superadmin' && $user->role !== 'admin', fn($q) => $q->where('admin_id', $user->admin_id))
+                        ->pluck('number', 'id');
+                })
+                ->visible(fn($get) => $get('type') === 'غرفه')
+                ->reactive()
+                ->afterStateUpdated(function ($state, callable $set) {
+                    $booth = Booth::find($state);
+                    $set('shopkeeper_id', $booth?->shopkeeper_id);
+                    if ($booth) {
+                        $set('price', $booth->price);
+                        $set('meter_serial', $booth->metar_serial);
+                        $last = \App\Models\Market\Deposit::where('booth_id', $booth->id)->where('expanses_type', 'پول برق')->latest()->first();
+                        $set('past_degree', $last?->current_degree ?? 0);
+                    }
+                }),
+
+            Forms\Components\Hidden::make('shopkeeper_id'),
+
+            Forms\Components\Select::make('expanses_type')
+                ->label('نوع مصرف')
+                ->options([
+                    'کرایه' => 'کرایه',
+                    'مالیه' => 'مالیه',
+                    'پول برق' => 'پول برق',
+                    'پول آب' => 'پول آب',
+                    'صفایی' => 'صفایی',
+                ])
+                ->reactive()
+                ->required()
+                ->afterStateUpdated(function ($get, $set) {
+                    if ($get('type') === 'دوکان') {
+                        $shop = Shop::find($get('shop_id'));
+                        if ($shop && $get('expanses_type') === 'کرایه') $set('price', $shop->price);
+                        if ($shop && $get('expanses_type') === 'پول برق') {
+                            $last = \App\Models\Market\Deposit::where('shop_id', $shop->id)->where('expanses_type', 'پول برق')->latest()->first();
+                            $set('past_degree', $last?->current_degree ?? 0);
+                            $set('meter_serial', $shop->metar_serial);
+                        }
+                    } elseif ($get('type') === 'غرفه') {
+                        $booth = Booth::find($get('booth_id'));
+                        if ($booth && $get('expanses_type') === 'کرایه') $set('price', $booth->price);
+                        if ($booth && $get('expanses_type') === 'پول برق') {
+                            $last = \App\Models\Market\Deposit::where('booth_id', $booth->id)->where('expanses_type', 'پول برق')->latest()->first();
+                            $set('past_degree', $last?->current_degree ?? 0);
+                            $set('meter_serial', $booth->metar_serial);
+                        }
+                    }
+                }),
+
+            Forms\Components\TextInput::make('meter_serial')
+                ->label('سریال میتر')
+                ->visible(fn($get) => $get('expanses_type') === 'پول برق'),
+
+            Forms\Components\TextInput::make('past_degree')
+                ->label('درجه قبلی')
+                ->numeric()
+                ->reactive()
+                ->visible(fn($get) => $get('expanses_type') === 'پول برق')
+                ->afterStateUpdated(fn($state, callable $set, callable $get) => $updateCalculatedPrice($get, $set)),
+
+            Forms\Components\TextInput::make('current_degree')
+                ->label('درجه فعلی')
+                ->numeric()
+                ->reactive()
+                ->visible(fn($get) => $get('expanses_type') === 'پول برق')
+                ->afterStateUpdated(fn($state, callable $set, callable $get) => $updateCalculatedPrice($get, $set)),
+
+            Forms\Components\TextInput::make('degree_price')
+                ->label('قیمت هر کیلوات')
+                ->numeric()
+                ->dehydrated(true)
+                ->reactive()
+                ->visible(fn($get) => $get('expanses_type') === 'پول برق')
+                ->afterStateUpdated(fn($state, callable $set, callable $get) => $updateCalculatedPrice($get, $set)),
+
+            Forms\Components\TextInput::make('price')
+                ->label('مبلغ')
+                ->numeric()
+                ->required()
+                ->debounce(500)
+                ->visible(fn($get) => $get('expanses_type') !== null),
+
+            Forms\Components\Select::make('currency')
+                ->label('واحد پول')
+                ->options([
+                    'AFN' => 'افغانی',
+                    'USD' => 'دالر',
+                    'TOMAN' => 'تومان',
+                    'EUR' => 'یورو',
+                ])
+                ->default('AFN')
+                ->required(),
+
+            Forms\Components\DatePicker::make('paid_date')
+                ->label(' از تاریخ ')
+                ->jalali()
+                ->required(),
+
+                Forms\Components\DatePicker::make('expiration_date')
+                ->label(' تا تاریخ')
+                ->jalali()
+                ->required(),
+        ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('type')->label('نوع'),
+                Tables\Columns\TextColumn::make('market.name')->label('مارکت'),
+                Tables\Columns\TextColumn::make('shop.number')->label('نمبر دوکان')->toggleable(true),
+                Tables\Columns\TextColumn::make('booth.number')->label('نمبر غرفه')->toggleable(true),
+                Tables\Columns\TextColumn::make('shopkeeper.fullname')->label('نام دوکاندار'),
+                Tables\Columns\TextColumn::make('expanses_type')->label('نوع مصرف'),
+                Tables\Columns\TextColumn::make('price')->label('مبلغ')->suffix('افغانی'),
+                Tables\Columns\TextColumn::make('currency')->label('واحد پول'),
+                Tables\Columns\TextColumn::make('paid')->label('پرداخت شده'),
+                Tables\Columns\TextColumn::make('remained')->label('باقی مانده'),
+                Tables\Columns\IconColumn::make('cleared')->boolean()->label('پرداخت کامل؟'),
+                Tables\Columns\TextColumn::make('paid_date')
+                ->label('تا تاریخ')
+                ->formatStateUsing(fn($state) => Jalalian::fromDateTime($state)->format('Y/m/d')),
+                Tables\Columns\TextColumn::make('created_at')
+                ->label('زمان ثبت ')
+                ->formatStateUsing(function ($state) {
+                    $dt = Carbon::parse($state)->setTimezone('Asia/Kabul'); 
+                    return $dt->format('g:i A');  
+                }),
+                
+            ])
+            ->actions([
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('print')
+                    ->label('چاپ')
+                    ->icon('heroicon-o-printer')
+                    ->url(fn ($record) => route('accounting.print', $record))
+                    ->openUrlInNewTab(),
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make(),
+            ]);
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListAccountings::route('/'),
+            'create' => Pages\CreateAccounting::route('/create'),
+            'view' => Pages\ViewAccounting::route('/{record}'),
+            'edit' => Pages\EditAccounting::route('/{record}/edit'),
+        ];
+    }
+    public static function getEloquentQuery(): Builder
+    {
+        $user = Auth::user();
+    
+        $query = parent::getEloquentQuery();
+    
+        if ($user->role !== 'superadmin') {
+            $query = $query->whereHas('market', function ($query) use ($user) {
+                $query->where('admin_id', $user->role === 'admin' ? $user->id : $user->admin_id);
+            });
+        }
+    
+        return $query->orderBy('created_at', 'desc');
+    }
+    
+}

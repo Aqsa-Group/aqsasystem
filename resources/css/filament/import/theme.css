@@ -1,0 +1,64 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@config 'tailwind.config.js';
+
+
+
+/* Login Custom */
+
+.fi-simple-main-ctn {
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;   
+    background-image: url('https://images.pexels.com/photos/8985610/pexels-photo-8985610.jpeg');
+    background-color: rgba(43, 42, 42, 0.21);
+    background-blend-mode: overlay;
+  }
+  
+  .fi-simple-main {
+    width: 100%;
+    max-width: 28rem;
+    border-radius: 1rem;
+    background-color: rgba(181, 170, 170, 0.566);
+    padding: 2.5rem;
+    --tw-shadow: 0 25px 50px -12px rgba(105, 98, 98, 0.498);
+    --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #faf8f8bf), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    --tw-backdrop-blur: blur(16px);
+    -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+            backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+    transition-property: all;
+    transition-duration: 500ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .fi-simple-page {
+    width: 100%;
+  }
+
+
+
+  .fi-topbar>nav{
+    background-color: #c9d4eb8c;
+
+  }
+  
+  .fi-sidebar-header{
+    background-color: #c9d4eb8c;
+
+  
+  }
+
+    .fi-body{
+      background-color: #c9d4eb8c;
+    }
+
+
+    .flex-header-container {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem; /* فاصله بین دکمه‌ها */
+  }
+  
