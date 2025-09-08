@@ -25,7 +25,7 @@ class CreateShop extends CreateRecord
         if ($record->sarqofli === 'بلی' && $record->sarqofli_time === 'now') {
             DB::connection('market')->table('accountings')->insert([
                 'expanses_type' => 'پول سرقفلی',
-                'currency' => 'AFN',
+                'currency' => $record->currency,
                 'paid' => 1 * $record->sarqofli_price,
                 'type' => 'sarqoflimoney',
                 'admin_id' => $user->role === 'superadmin' || $user->role === 'admin' ? $user->id : $user->admin_id,
@@ -37,7 +37,7 @@ class CreateShop extends CreateRecord
         if ($record->rent === 'بلی' && $record->rent_time === 'now') {
             DB::connection('market')->table('accountings')->insert([
                 'expanses_type' => 'پول گروی',
-                'currency' => 'AFN',
+                'currency' => $record->currency,
                 'paid' => 1 * $record->rent_price,
                 'type' => 'mortagagemoney',
                 'admin_id' => $user->role === 'superadmin' || $user->role === 'admin' ? $user->id : $user->admin_id,

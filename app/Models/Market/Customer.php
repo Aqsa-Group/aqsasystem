@@ -61,6 +61,11 @@ class Customer extends Model
         return $this->hasMany(Shop::class, 'customer_id');
     }
 
+      public function booths()
+    {
+        return $this->hasMany(Booth::class, 'customer_id');
+    }
+
 
     public function admin()
     {

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>سند کرایه عادلیار</title>
+    <title>سند بیع وفا عادلیار - غرفه</title>
 </head>
 
 <body
@@ -38,33 +38,30 @@
             </table>
         </div>
 
-
         <div
             style="width: 100%; direction: rtl; font-family: 'DejaVu Sans'; font-size: 9pt; margin-bottom: 10pt; margin-top: 14pt">
             <table style="width: 100%; border-collapse: collapse;">
                 <tr>
                     <!-- مربع سمت راست -->
-
                     <td
                         style="width: 28mm; height: 28mm; border: 1px solid #1e3a8a; text-align: center; vertical-align: middle;">
-                        <img src="<?php echo e(public_path('storage/' . $shop->customer->profile_image)); ?>" alt="امضاء"
+                        <img src="<?php echo e(public_path('storage/' . $customer->market->market_owner)); ?>" alt="امضاء"
                             style="width: 28mm; height: 28mm;" />
                     </td>
 
-
                     <!-- جدول وسط -->
                     <td style="width: 105mm; text-align: center; padding: 0 5px;">
-                        <div style="margin-bottom: 3pt; font-size: 9pt;">سند کرایه خط دوکان های فردوس پلازا!</div>
+                        <div style="margin-bottom: 3pt; font-size: 9pt;">سند بیع وفا غرفه های فردوس پلازا!</div>
                         <table style="width: 100%; border-collapse: collapse; margin: 0 auto;">
                             <tr>
                                 <td style="border: 1px solid #1e3a8a; padding: 3px;">اصل قیمت</td>
                                 <td style="border: 1px solid #1e3a8a; padding: 3px;">
-                                    <?php echo e(number_format($shop->price ?? 0)); ?>؋</td>
+                                    <?php echo e(number_format($booth->rent_price ?? 0)); ?>؋</td>
                             </tr>
                             <tr>
                                 <td style="border: 1px solid #1e3a8a; padding: 3px;">مناصفه</td>
                                 <td style="border: 1px solid #1e3a8a; padding: 3px;">
-                                    <?php echo e(number_format(($shop->price ?? 0) / 2)); ?>؋</td>
+                                    <?php echo e(number_format(($booth->rent_price ?? 0) / 2)); ?>؋</td>
                             </tr>
                         </table>
                         <div style="font-size: 7.5pt; margin-top: 3pt; direction: rtl;">
@@ -77,58 +74,38 @@
         </td>
 
         <!-- مربع سمت چپ -->
-
         <td style="width: 28mm; height: 28mm; border: 1px solid #1e3a8a; text-align: center; vertical-align: middle;">
-            <img src="<?php echo e(public_path('storage/' . $shopkeeper->shopkeeper_image)); ?>" alt="امضاء"
+            <img src="<?php echo e(public_path('storage/' . $customer->profile_image)); ?>" alt="امضاء"
                 style="width: 28mm; height: 28mm;" />
         </td>
-
-
         </tr>
         </table>
     </div>
 
-
-
-
-
     <div style="direction: rtl; text-align: left; font-size: 9pt; margin-bottom: 6pt; color:black;">
-        تماس مشتری: ( 0<?php echo e($shopkeeper->phone); ?> )
+        تماس مشتری: ( 0<?php echo e($customer->phone); ?> )
     </div>
 
     <hr style="border: none; border-top: 1px solid #1e3a8a; margin: 6pt 0;">
 
-
     <table style="width: 100%; font-size: 9pt; direction: rtl; margin-bottom: 8pt;">
         <tr>
-
             <td style="text-align: right; vertical-align: top;">
                 تاریخ:
-                <?php echo e(\Morilog\Jalali\Jalalian::fromDateTime($shopkeeper->contract_start)->format('Y/m/d') ?? '__/__/14__'); ?>
+                <?php echo e(\Morilog\Jalali\Jalalian::fromDateTime($customer->contract_start)->format('Y/m/d') ?? '__/__/14__'); ?>
 
             </td>
-
-
             <td style="text-align: left; vertical-align: top;">
                 نمبر ثبت:
-                <span style="color: red; font-weight: bold;">
-                    <?php echo e($shopkeeper->contract_number ?? ''); ?>
-
-                </span>
                 <div style="border-bottom: 1px dotted #000; width: 60mm; margin-top: 2px;"></div>
             </td>
         </tr>
     </table>
 
-
-
-
     <?php
         use Morilog\Jalali\Jalalian;
-
-        $startDate = $shopkeeper->contract_start ? Jalalian::fromDateTime($shopkeeper->contract_start) : null;
-        $endDate = $shopkeeper->contract_end ? Jalalian::fromDateTime($shopkeeper->contract_end) : null;
-
+        $startDate = $booth->contract_start ? Jalalian::fromDateTime($booth->contract_start) : null;
+        $endDate = $booth->contract_end ? Jalalian::fromDateTime($booth->contract_end) : null;
         $durationText = '---';
         if ($startDate && $endDate) {
             $diffDays = $startDate->toCarbon()->diffInDays($endDate->toCarbon());
@@ -137,39 +114,30 @@
     ?>
 
     <div style="font-size: 10.7pt; line-height: 1.8; text-align: justify; margin-bottom: 12pt; color:black;">
-        اینجانب <?php echo e($shop->customer?->fullname); ?> ولد <?php echo e($shop->customer->father_name); ?> ولدیت
-        <?php echo e($shop->customer->grand_father); ?>
-
-        دارنده نمبر تذکره (<?php echo e($shop->customer->id_number); ?>)، در حالی که دارای اهلیت کامل شرعی و قانونی خویش می‌باشم،
-        دوکان واقع در طبقه (<?php echo e($shop->floor ?? '---'); ?>) نمبر (<?php echo e($shop->number ?? '---'); ?>) را
-        برای محترم (<?php echo e($shopkeeper->fullname); ?>) ولد (<?php echo e($shopkeeper->father_name); ?>) ولدیت
-        (<?php echo e($shopkeeper->grand_father); ?>)
-        دارنده تذکره (<?php echo e($shopkeeper->national_id); ?>),
+        اینجانب حاجی محمد داود عادلیار ولد حاجی جمعه خان ولدیت حیدرخان دارنده نمبر تذکره (۳۲۷۹۳۸۲) ج. ۲۲ ص ۱۸۷،
+        در حالی که دارای اهلیت کامل شرعی و قانونی خویش می‌باشم، غرفه واقع در طبقه (<?php echo e($booth->floor ?? '---'); ?>)
+        نمبر (<?php echo e($booth->number ?? '---'); ?>) را
+        برای محترم (<?php echo e($customer->fullname ?? '---'); ?>) ولد (<?php echo e($customer->father_name ?? '---'); ?>) ولدیت
+        (<?php echo e($customer->grand_father ?? '---'); ?>) دارنده تذکره (<?php echo e($customer->id_number ?? '---'); ?>)،
         از تاریخ (<?php echo e($startDate ? $startDate->format('Y/m/d') : '__ / __ / ۱۴__'); ?>) الی
         (<?php echo e($endDate ? $endDate->format('Y/m/d') : '__ / __ / ۱۴__'); ?>) به مدت
-        (<?php echo e($shopkeeper->contract_duration); ?>) به مبلغ (<?php echo e(number_format($shop->price ?? 0)); ?>؋)
-        معادل فارسی (<?php echo e($shop->fa_price ?? '---'); ?>) که مناصفه آن (<?php echo e(number_format(($shop->price ?? 0) / 2)); ?>؋)
-        می‌باشد، به کرایه داده‌ام.
+        (<?php echo e($booth->contract_duration); ?>) به مبلغ (<?php echo e(number_format($booth->rent_price ?? 0)); ?>؋)
+        معادل فارسی (<?php echo e($booth->rent_fa_price ?? '---'); ?>) که مناصفه آن (<?php echo e(number_format(($booth->rent_price ?? 0) / 2)); ?>؋)
+        می‌باشد، به بیع وفا داده‌ام. و به اقرار خود صادق میباشم و من مشتری نیز اقرار مینمایم که طبق مندرجات فوق عمل
+        نموده و هیچگونه عذر دیگری نمی آورم.
     </div>
 
-
-
-    <div style="font-size: 10pt; margin-bottom: 18pt;  color:black;">
-        <strong>تکالیف کرایه‌نشین:</strong>
+    <div style="font-size: 10pt; margin-bottom: 18pt; color:black;">
+        <strong>تکالیف بیع وفا نشین:</strong>
         <div style="margin-top: 6pt; padding-right: 16pt; line-height: 1.6;">
-            <p style="margin-bottom: 2pt;">۱- پرداخت به موقع کرایه پول آب و برق.</p>
-            <p style="margin-bottom: 2pt;">۲- ملکیت مالک را به شخصی دیگری به کرایه داده نمی‌تواند.</p>
-            <p style="margin-bottom: 2pt;">۳- حفاظت از ملکیت و تسلیمی آن به همان حالت اصلی.</p>
-            <p style="margin-bottom: 2pt;">۴- تسلیمی دوکان و یا اتاق به مالک در ختم قرارداد.</p>
-            <p style="margin-bottom: 2pt;">۵- تمدید قرارداد به توافق طرفین در ختم میعاد.</p>
-            <p style="margin-bottom: 2pt;">۶- برخورد مناسب با مشتری و عابرین و یاری در نظم مارکت.</p>
-            <p style="margin-bottom: 2pt;">۷- طرفین به اقرار خویش صادق می‌باشیم، طوری که من کرایه‌نشین اقرار
-                می‌نمایم که طبق مندرجات</p>
-            <p style="margin-bottom: 2pt;">فوق عمل نموده و هیچ‌گونه عذر دیگری نمی‌آورم.</p>
+            <p style="margin-bottom: 2pt;">۱- پول برق و آب بدوش گروی کننده می‌باشد.</p>
+            <p style="margin-bottom: 2pt;">۲- بدون استحضاری مالک به شخص دیگری به کرایه و گروی داده نمی‌تواند.</p>
+            <p style="margin-bottom: 2pt;">۳- در ختم میعاد به موافقه جانبین قرارداد تمدید و یا فسخ می‌گردد.</p>
+            <p style="margin-bottom: 2pt;">۴- شخص گروی‌کننده مکلف است غرفه مذکور را همانطور که تحویل می‌گیرد تحویل بدهد.</p>
+            <p style="margin-bottom: 2pt;">۵- هم بایع و هم مشتری به اقرار خویش صادق می‌باشیم.</p>
         </div>
         <div style="margin-top: 6pt; font-weight: bold;">نوت: بدون مهر و امضاء مالک مارکت، سند اعتبار ندارد.</div>
     </div>
-
 
     <div
         style="font-weight: bold; font-size: 16pt; text-align: center; page-break-inside: avoid; margin: 12pt 0; color:black;">
@@ -193,12 +161,8 @@
         </tr>
     </table>
 
-
     </div>
-
-    </div>
-
 </body>
 
 </html>
-<?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/contracts/rent_sell.blade.php ENDPATH**/ ?>
+<?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/contracts/booth_mortagage.blade.php ENDPATH**/ ?>

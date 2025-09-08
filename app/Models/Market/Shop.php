@@ -24,7 +24,7 @@ class Shop extends Model
         'market_id',
         'shopkeeper_id',
         'admin_id',
-        'customer_id',      // اضافه شده برای بررسی فروش / سرقفلی
+        'customer_id',      
         'number',
         'floor',
         'size',
@@ -54,6 +54,7 @@ class Shop extends Model
         'contract_end',
         'contract_duration',
         'collect',
+        'currency'
     ];
     
 

@@ -11,6 +11,7 @@ use App\Http\Controllers\AccountingPrintController;
 use App\Http\Controllers\AmountController;
 use App\Http\Controllers\InventoryPrintController;
 use App\Http\Controllers\OutsideController;
+use App\Http\Controllers\PrintBoothContract;
 use App\Http\Controllers\SalaryPrintController;
 use App\Http\Controllers\WarehousePrintController;
 use App\Http\Controllers\Sarafi\Auth\CustomController;
@@ -36,6 +37,7 @@ Route::get('/test', function () {
 
 Route::get('/contract/{id}/print', [ContractPrintController::class, 'generate'])->name('contract.print');
 Route::get('/contract/{id}/p', [PrintContract::class , 'generate'])->name('contract.print2');
+Route::get('/contract/{id}/booth', [PrintBoothContract::class , 'generate'])->name('contract.printbooth');
 
 
 Route::get('/recipt/{id}/print', [WithdrawPrint::class, 'generate'])->name('recipt.print');

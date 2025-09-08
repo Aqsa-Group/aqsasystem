@@ -34,7 +34,7 @@ class ContractPrintController extends Controller
                 $type === 'کرایه'                 => 'contracts.rent',
                 $type === 'سرقفلی'               => 'contracts.sarqofli',
                 $type === 'گروی'                 => 'contracts.grawi',
-                default                          => abort(404, 'نوع قرارداد نامعتبر است.'),
+                default                          => abort(404, 'نوع قرارداد دوکان نامعتبر است.'),
             };
 
             $html = view($view, compact('shopkeeper', 'shop'))->render();
@@ -47,12 +47,15 @@ class ContractPrintController extends Controller
         // ---------------- Booth Contract ----------------
         if (!$shop && $booth) {
             $type = $booth->type;
+            $hasCustomer = !is_null($booth->customer_id);
 
-            $view = match ($type) {
-                'کرایه'   => 'contracts.booth_rent',
-                'گروی'    => 'contracts.booth_grawi',
-                'سرقفلی'  => 'contracts.booth_sarqofli',
-                default   => abort(404, 'نوع قرارداد غرفه نامعتبر است.'),
+            $view = match (true) {
+                $type === 'کرایه' && $hasCustomer => 'contracts.booth_rent_sell',
+                $type === 'گروی' && $hasCustomer => 'contracts.booth_grawi_sell',
+                $type === 'کرایه'                 => 'contracts.booth_rent',
+                $type === 'سرقفلی'               => 'contracts.booth_sarqofli',
+                $type === 'گروی'                 => 'contracts.booth_grawi',
+                default                          => abort(404, 'نوع قرارداد غرفه نامعتبر است.'),
             };
 
             $html = view($view, compact('shopkeeper', 'booth'))->render();

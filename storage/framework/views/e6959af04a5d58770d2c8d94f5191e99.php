@@ -44,14 +44,19 @@
 
 
 
+<?php
+    $logoPath = public_path('assets/logo.png'); // دقت: assets
+?>
 
-    <table style="
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    background: url(<?php echo e(public_path('asset/logo.png')); ?>) center center no-repeat;
-    background-size: 200px;
-    border: 1px solid #000;
+<table style="
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+    border:1px solid #000;
+    background-image: url('file://<?php echo e($logoPath); ?>');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 200px 200px;
 ">
         <thead>
             <tr>

@@ -19,6 +19,7 @@ class Booth extends Model
         'market_id',
         'shopkeeper_id',
         'metar_serial',
+        'customer_id',  
         'number',
         'floor',
         'size',
@@ -26,7 +27,30 @@ class Booth extends Model
         'type',
         'price',
         'admin_id',
-        'fa_price'
+        'fa_price',
+
+        'currency',
+        'north',
+        'east',
+        'south',
+        'west',
+        'side',
+
+        'sarqofli',
+        'sarqofli_time',
+        'sarqofli_price',
+        'sarqofli_fa_price',
+        'sarqofli_half_price',
+    
+        'rent',
+        'rent_time',
+        'rent_price',
+        'rent_fa_price',
+        'rent_half_price',
+        'contract_start',
+        'contract_end',
+        'contract_duration',
+        'collect',
         
     ];
 
@@ -87,6 +111,11 @@ class Booth extends Model
         }
     });
 }
+
+  public function customer() {
+        return $this->belongsTo(Customer::class, 'customer_id');
+    }
+    
 
 }
 

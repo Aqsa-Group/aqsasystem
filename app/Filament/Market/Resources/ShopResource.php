@@ -176,6 +176,13 @@ class ShopResource extends Resource
                 })
                 ->extraInputAttributes(['onblur' => 'this.dispatchEvent(new Event("input"))']),
 
+                Forms\Components\Select::make('currency')->label('ارز')
+         ->options([
+    "AFN" => "افغانی",
+    "USD" => "دالر",
+         ])
+    ->visible(fn(callable $get) => $get('sarqofli') == 'بلی' || $get('rent') == 'بلی'),
+
 
             Forms\Components\TextInput::make('sarqofli_fa_price')->label('قیمت سرقفلی به حروف حروف')
                 ->dehydrated()
