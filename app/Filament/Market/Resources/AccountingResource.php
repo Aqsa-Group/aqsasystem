@@ -152,7 +152,7 @@ class AccountingResource extends Resource
 
                 Forms\Components\Select::make('expanses_type')
                 ->label('نوع مصرف')
-                ->options(['کرایه' => 'کرایه', 'مالیه' => 'مالیه', 'پول برق' => 'پول برق', 'پول آب' => 'پول آب', 'صفایی' => 'صفایی'])
+                ->options(['کرایه' => 'کرایه', 'تحت الملکی' => 'تحت الملکی', 'پول برق' => 'پول برق', 'پول آب' => 'پول آب', 'صفایی' => 'صفایی'])
                 ->reactive()
                 ->required()
                 ->afterStateUpdated(function ($get, $set) use ($calculateDates, $updateCalculatedPrice) {
