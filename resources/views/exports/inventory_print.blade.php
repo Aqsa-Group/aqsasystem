@@ -16,9 +16,9 @@
         <thead>
             <tr>
                 <th>نام جنس</th>
-                <th>تعداد</th> 
+                {{-- <th>تعداد</th> 
                 <th>واحد</th>
-                <th>موجودی به دانه</th>
+                <th>موجودی به دانه</th> --}}
                 <th>قیمت پرچون</th>
                 <th>قیمت عمده</th> 
                 <th>ساخت کشور</th>
@@ -30,9 +30,9 @@
                 <tr>
                    
                     <td>{{ $item->name }}</td>
-                    <td>{{ $item->quantity }}</td>
+                    {{-- <td>{{ $item->quantity }}</td>
                     <td>{{ $item->unit }}</td>
-                    <td>{{ $item->all_exist_number }}</td>
+                    <td>{{ $item->all_exist_number }}</td> --}}
                     <td>{{ $item->retail_price }}</td> 
                     <td>{{ $item->big_whole_price }}</td>
                     <td>{{ $item->brand }}</td>

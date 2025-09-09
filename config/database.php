@@ -101,7 +101,6 @@ return [
 
         'import' => [
             'driver' => 'mysql',
-            'url' => env('DB_URL'),
             'host' => env('DB_IMPORT_HOST', '127.0.0.1'),
             'port' => env('DB_IMPORT_PORT', '3306'),
             'database' => env('DB_IMPORT_DATABASE', 'aqsasystem_importpanel'),

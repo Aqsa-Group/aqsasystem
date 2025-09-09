@@ -81,6 +81,7 @@ class InventoryResource extends Resource
                 ->label('نام جنس')
                 ->required()
                 ->live()
+                ->lazy()
                 ->afterStateUpdated(function ($state, callable $set) {
                     if (!$state) return;
 
@@ -160,7 +161,7 @@ class InventoryResource extends Resource
                 ->required()
                 ->numeric()
                 ->visible(fn($get) => $get('unit') == 'دانه')
-                ->debounce(2000)
+                ->lazy()
                 ->afterStateUpdated(function (callable $set, $state, callable $get) {
                     $unit = $get('unit');
                     $bigQuantity = $get('big_quantity') ?? 1;
@@ -213,20 +214,11 @@ class InventoryResource extends Resource
                 ->required()
                 ->dehydrated(true),
 
-            Forms\Components\TextInput::make('price')
-                ->label('قیمت خرید فی دانه')
-                ->required()
-                ->numeric()
-                ->debounce(2000)
-                ->afterStateUpdated(function (callable $set, $state, callable $get) {
-                    $unit = $get('unit');
-                    $quantity = $get('quantity') ?? 0;
-
-                    if (!in_array($unit, ['بسته', 'کارتن'])) {
-                        $set('total_price', $state * $quantity);
-                        $set('all_exist_number', $quantity);
-                    }
-                }),
+          Forms\Components\TextInput::make('price')
+          ->label('قیمت خرید فی دانه') ->required() 
+          ->numeric()  
+          ->lazy()
+          ->afterStateUpdated(function (callable $set, $state, callable $get) { $unit = $get('unit'); $quantity = $get('quantity') ?? 0; if (!in_array($unit, ['بسته', 'کارتن'])) { $set('total_price', $state * $quantity); $set('all_exist_number', $quantity); } }),
 
             Forms\Components\TextInput::make('total_price')
                 ->label('قیمت مجموعه کل بسته یا کارتن ها')

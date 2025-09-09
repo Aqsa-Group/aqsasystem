@@ -21,9 +21,8 @@ class User extends Authenticatable implements FilamentUser
      *
      * @var list<string>
      */
-
-     protected $connection='import';
-     protected $table='users';
+protected $connection = 'import';
+    protected $table = 'users';
 
     protected $fillable = [
         'name',
