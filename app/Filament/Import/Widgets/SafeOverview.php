@@ -22,9 +22,9 @@ class SafeOverview extends BaseWidget
         $totalInventortBalance  = Inventory::where('user_id', $userId)->sum('total_price');
         $totalWarehouseBalance  =Warehouse::where('user_id', $userId)->sum('total_price');
         $totalBoot  =$totalInventortBalance + $totalWarehouseBalance + $totalBalance;
-        $totalloan = Customer::where('user_id', $userId)->sum('total_loan');
-
-
+        $loan = Customer::where('user_id', $userId)->sum('total_loan');
+        $totalrecipt = Customer::where('user_id', $userId)->sum('total_receipt');
+        $totalloan= $loan - $totalrecipt;
         $todayProfit = SaleItem::where('user_id', $userId)
             ->whereDate('created_at', today())
             ->sum('profit');
