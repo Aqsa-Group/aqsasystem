@@ -22,7 +22,7 @@
                 <th>قیمت پرچون</th>
                 <th>قیمت عمده</th> 
                 <th>ساخت کشور</th>
-                <th>عکس محصول</th>
+                {{-- <th>عکس محصول</th> --}}
             </tr>
         </thead>
         <tbody>
@@ -36,11 +36,11 @@
                     <td>{{ $item->retail_price }}</td> 
                     <td>{{ $item->big_whole_price }}</td>
                     <td>{{ $item->brand }}</td>
-                    <td>
+                    {{-- <td>
                         @if($item->product_image)
                             <img src="{{ public_path('storage/' . $item->product_image) }}" alt="عکس">
                         @endif
-                    </td>
+                    </td> --}}
                 </tr>
             @endforeach
         </tbody>
