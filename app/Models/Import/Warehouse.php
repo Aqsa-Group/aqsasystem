@@ -46,8 +46,21 @@ class Warehouse extends Model
         return $this->belongsTo(Inventory::class);
     }
 
+
+    
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+
+
+      protected static function booted()
+    {
+        static::saving(function ($warehouse) {
+            $warehouse->total_price = $warehouse->all_exist_number * $warehouse->price;
+        });
+    }
+
+
 }

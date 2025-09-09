@@ -215,7 +215,7 @@ class InventoryResource extends Resource
                 $quantity = $get('quantity') ?? 0;
 
                 if (!in_array($unit, ['بسته', 'کارتن'])) {
-                    $existNumber = $get('all_exist_number') ?? 0; // 👈 استفاده از مقدار واقعی
+                    $existNumber = $get('all_exist_number') ?? 0; 
                     $set('total_price', $state * $existNumber);
                 } else {
                     $set('total_price', $state * $quantity);

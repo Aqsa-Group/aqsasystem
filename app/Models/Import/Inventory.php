@@ -35,6 +35,12 @@ class Inventory extends Model
     ];
 
 
+     protected static function booted()
+    {
+        static::saving(function ($inventory) {
+            $inventory->total_price = $inventory->all_exist_number * $inventory->price;
+        });
+    }
 
 
 
