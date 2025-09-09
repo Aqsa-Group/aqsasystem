@@ -214,20 +214,19 @@ class InventoryResource extends Resource
                 ->required()
                 ->dehydrated(true),
 
-            Forms\Components\TextInput::make('price')
-                ->label('قیمت خرید فی دانه')
-                ->required()
-                ->numeric()
-                ->lazy()
-                ->afterStateUpdated(function (callable $set, $state, callable $get) {
-                    $unit = $get('unit');
-                    $quantity = $get('quantity') ?? 0;
+         Forms\Components\TextInput::make('price')
+    ->label('قیمت خرید فی دانه')
+    ->required()
+    ->numeric()
+    ->lazy()
+    ->afterStateUpdated(function (callable $set, $state, callable $get) {
+        $unit = $get('unit');
+        $quantity = $get('quantity') ?? 0;
 
-                    if (!in_array($unit, ['بسته', 'کارتن'])) {
-                        $set('total_price', $state * $quantity);
-                        $set('all_exist_number', $quantity);
-                    }
-                }),
+        if (!in_array($unit, ['بسته', 'کارتن'])) {
+            $set('total_price', $state * $quantity);
+        }
+    }),
 
             Forms\Components\TextInput::make('total_price')
                 ->label('قیمت مجموعه کل بسته یا کارتن ها')
