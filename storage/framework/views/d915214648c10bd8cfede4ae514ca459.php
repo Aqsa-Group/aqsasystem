@@ -68,9 +68,9 @@
                     <select wire:model.defer="customer_id"
                         class="w-full border rounded-lg px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 dark:text-gray-100 focus:ring-2 focus:ring-green-400">
                         <option value="">انتخاب خریدار...</option>
-                        <?php $__currentLoopData = \App\Models\Import\Customer::where('user_id', auth()->id())->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = \App\Models\Import\Customer::where('user_id', auth()->id())->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <option value="<?php echo e($customer->id); ?>"><?php echo e($customer->name); ?></option>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                     </select>
                 </div>
             </template>
@@ -104,17 +104,17 @@
                                 autocomplete="off"
                                 class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-100" />
                             
-                            <?php if(!empty($suggestions)): ?>
+                            <!--[if BLOCK]><![endif]--><?php if(!empty($suggestions)): ?>
                                 <div class="absolute w-full bg-white dark:bg-gray-800 border rounded-lg shadow mt-1 max-h-40 overflow-y-auto z-50">
-                                    <?php $__currentLoopData = $suggestions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $suggestions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <div class="px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-gray-800 dark:text-gray-200"
                                              wire:click="selectProduct(<?php echo e($product['id']); ?>)">
                                             <?php echo e($product['name']); ?>
 
                                         </div>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </div>
-                            <?php endif; ?>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         
@@ -170,7 +170,7 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-                            <?php $__empty_1 = true; $__currentLoopData = $items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                            <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
                                     <td class="p-2 text-gray-800 dark:text-gray-200"><?php echo e($item['name']); ?></td>
                                     <td class="p-2 flex items-center justify-center gap-2">
@@ -191,36 +191,60 @@
                                 <tr>
                                     <td colspan="5" class="text-center py-6 text-gray-400">هیچ کالایی ثبت نشده است.</td>
                                 </tr>
-                            <?php endif; ?>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </tbody>
                     </table>
                 </div>
 
                 
-                <?php if(count($items) > 0 && $saleType === 'wholesale'): ?>
-                    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="text-lg font-bold text-gray-800 dark:text-gray-200">مجموع کل فاکتور:</span>
-                            <span class="text-xl font-extrabold text-blue-600 dark:text-blue-400">
-                                <?php echo e(number_format(collect($items)->sum('total'))); ?> افغانی
-                            </span>
-                        </div>
 
-                        <div class="flex items-center justify-between">
-                            <span class="text-lg font-bold text-gray-800 dark:text-gray-200">مبلغ رسید:</span>
-                            <input wire:model.lazy="receivedAmount" type="number" min="0"
-                                class="w-40 border rounded-lg px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-100"
-                                placeholder="0" />
-                        </div>
+<!--[if BLOCK]><![endif]--><?php if(count($items) > 0): ?>
+    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 space-y-4">
 
-                        <div class="flex items-center justify-between">
-                            <span class="text-lg font-bold text-gray-800 dark:text-gray-200">باقیمانده:</span>
-                            <span class="text-xl font-extrabold text-red-600 dark:text-red-400">
-                                <?php echo e(number_format(max(collect($items)->sum('total') - $receivedAmount, 0))); ?> افغانی
-                            </span>
-                        </div>
-                    </div>
-                <?php endif; ?>
+        
+        <div class="flex items-center justify-between">
+            <span class="text-lg font-bold text-gray-800 dark:text-gray-200">💰 مجموع کل فاکتور:</span>
+            <span class="text-xl font-extrabold text-blue-600 dark:text-blue-400">
+                <?php echo e(number_format(collect($items)->sum('total'))); ?> افغانی
+            </span>
+        </div>
+
+        
+        <div class="flex items-center justify-between">
+            <span class="text-lg font-bold text-gray-800 dark:text-gray-200">🎁 تخفیف:</span>
+            <input wire:model.lazy="discount" type="number" min="0"
+                class="w-40 border rounded-lg px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-100"
+                placeholder="0" />
+        </div>
+
+        
+        <div class="flex items-center justify-between">
+            <span class="text-lg font-bold text-gray-800 dark:text-gray-200">✅ مبلغ نهایی:</span>
+            <span class="text-xl font-extrabold text-green-600 dark:text-green-400">
+                <?php echo e(number_format(max(collect($items)->sum('total') - $discount, 0))); ?> افغانی
+            </span>
+        </div>
+
+        
+        <!--[if BLOCK]><![endif]--><?php if($saleType === 'wholesale'): ?>
+            <div class="flex items-center justify-between">
+                <span class="text-lg font-bold text-gray-800 dark:text-gray-200">💵 مبلغ رسید:</span>
+                <input wire:model.lazy="receivedAmount" type="number" min="0"
+                    class="w-40 border rounded-lg px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-100"
+                    placeholder="0" />
+            </div>
+
+            
+            <div class="flex items-center justify-between">
+                <span class="text-lg font-bold text-gray-800 dark:text-gray-200">🧾 باقیمانده:</span>
+                <span class="text-xl font-extrabold text-red-600 dark:text-red-400">
+                    <?php echo e(number_format(max((collect($items)->sum('total') - $discount) - $receivedAmount, 0))); ?> افغانی
+                </span>
+            </div>
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
+    </div>
+<?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                 
                 <div class="flex gap-3">

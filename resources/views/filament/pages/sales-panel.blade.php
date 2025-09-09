@@ -143,30 +143,54 @@
                 </div>
 
                 {{-- خلاصه فاکتور در فروش عمده --}}
-                @if (count($items) > 0 && $saleType === 'wholesale')
-                    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="text-lg font-bold text-gray-800 dark:text-gray-200">مجموع کل فاکتور:</span>
-                            <span class="text-xl font-extrabold text-blue-600 dark:text-blue-400">
-                                {{ number_format(collect($items)->sum('total')) }} افغانی
-                            </span>
-                        </div>
+{{-- خلاصه فاکتور برای عمده و پرچون --}}
+@if (count($items) > 0)
+    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 space-y-4">
 
-                        <div class="flex items-center justify-between">
-                            <span class="text-lg font-bold text-gray-800 dark:text-gray-200">مبلغ رسید:</span>
-                            <input wire:model.lazy="receivedAmount" type="number" min="0"
-                                class="w-40 border rounded-lg px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-100"
-                                placeholder="0" />
-                        </div>
+        {{-- مجموع کل قبل از تخفیف --}}
+        <div class="flex items-center justify-between">
+            <span class="text-lg font-bold text-gray-800 dark:text-gray-200">💰 مجموع کل فاکتور:</span>
+            <span class="text-xl font-extrabold text-blue-600 dark:text-blue-400">
+                {{ number_format(collect($items)->sum('total')) }} افغانی
+            </span>
+        </div>
 
-                        <div class="flex items-center justify-between">
-                            <span class="text-lg font-bold text-gray-800 dark:text-gray-200">باقیمانده:</span>
-                            <span class="text-xl font-extrabold text-red-600 dark:text-red-400">
-                                {{ number_format(max(collect($items)->sum('total') - $receivedAmount, 0)) }} افغانی
-                            </span>
-                        </div>
-                    </div>
-                @endif
+        {{-- تخفیف (برای عمده و پرچون) --}}
+        <div class="flex items-center justify-between">
+            <span class="text-lg font-bold text-gray-800 dark:text-gray-200">🎁 تخفیف:</span>
+            <input wire:model.lazy="discount" type="number" min="0"
+                class="w-40 border rounded-lg px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-100"
+                placeholder="0" />
+        </div>
+
+        {{-- مجموع بعد از تخفیف --}}
+        <div class="flex items-center justify-between">
+            <span class="text-lg font-bold text-gray-800 dark:text-gray-200">✅ مبلغ نهایی:</span>
+            <span class="text-xl font-extrabold text-green-600 dark:text-green-400">
+                {{ number_format(max(collect($items)->sum('total') - $discount, 0)) }} افغانی
+            </span>
+        </div>
+
+        {{-- مبلغ رسید (فقط عمده) --}}
+        @if ($saleType === 'wholesale')
+            <div class="flex items-center justify-between">
+                <span class="text-lg font-bold text-gray-800 dark:text-gray-200">💵 مبلغ رسید:</span>
+                <input wire:model.lazy="receivedAmount" type="number" min="0"
+                    class="w-40 border rounded-lg px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-100"
+                    placeholder="0" />
+            </div>
+
+            {{-- باقیمانده (فقط عمده) --}}
+            <div class="flex items-center justify-between">
+                <span class="text-lg font-bold text-gray-800 dark:text-gray-200">🧾 باقیمانده:</span>
+                <span class="text-xl font-extrabold text-red-600 dark:text-red-400">
+                    {{ number_format(max((collect($items)->sum('total') - $discount) - $receivedAmount, 0)) }} افغانی
+                </span>
+            </div>
+        @endif
+
+    </div>
+@endif
 
                 {{-- دکمه‌های پایانی --}}
                 <div class="flex gap-3">

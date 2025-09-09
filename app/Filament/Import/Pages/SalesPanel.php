@@ -51,6 +51,8 @@ class SalesPanel extends Page
 
     public string $buyerName = '';
     public float $receivedAmount = 0;
+    public float $discount = 0;
+
 
     public bool $productError = false;
 
@@ -212,18 +214,21 @@ class SalesPanel extends Page
             return;
         }
 
-        DB::transaction(function () {
+            DB::transaction(function () {
             $totalPrice = collect($this->items)->sum('total');
+            $finalPrice = max(0, $totalPrice - $this->discount); 
 
             $sale = new Sale();
             $sale->sale_type = $this->saleType;
-            $sale->total_price = $totalPrice;
+            $sale->total_price = $finalPrice; 
+            $sale->discount = $this->discount; 
             $sale->customer_id = $this->customer_id;
             $sale->buyer_name = $this->customer_id ? optional(Customer::find($this->customer_id))->name : $this->buyerName;
             $sale->received_amount = $this->receivedAmount;
-            $sale->remaining_amount = max(0, $totalPrice - $this->receivedAmount);
+            $sale->remaining_amount = max(0, $finalPrice - $this->receivedAmount);
             $sale->user_id = Auth::id();
             $sale->save();
+
 
             $sale->invoice_number = $sale->id;
             $sale->save();
@@ -269,11 +274,13 @@ class SalesPanel extends Page
                     $totalCost = $item['quantity'] * $warehouse->price;
                 }
 
-                $totalProfit = $totalSale - $totalCost;
+              $totalProfit = $totalSale - $totalCost;
+
+
+                $totalProfit -= ($sale->discount ?? 0);
 
                 $profit = $totalProfit > 0 ? $totalProfit : 0;
-                $loss = $totalProfit < 0 ? abs($totalProfit) : 0;
-
+                $loss   = $totalProfit < 0 ? abs($totalProfit) : 0;
 
                 $warehouse->save();
 
@@ -313,13 +320,14 @@ class SalesPanel extends Page
                 $safe->last_update = now()->toDateString();
             }
 
-            if ($this->saleType === 'retail') {
-                $safe->today += $totalPrice;
-                $safe->total += $totalPrice;
-            } else {
-                $safe->today += $totalPrice;
-                $safe->total += $this->receivedAmount;
-            }
+       if ($this->saleType === 'retail') {
+            $safe->today += $finalPrice;
+            $safe->total += $finalPrice;
+        } else {
+            $safe->today += $finalPrice;
+            $safe->total += $this->receivedAmount;
+        }
+
 
             $safe->save();
         });
@@ -327,78 +335,85 @@ class SalesPanel extends Page
         Notification::make()->title('فاکتور با موفقیت ثبت شد!')->success()->send();
     }
 
-    public function printInvoice(): void
-    {
-        if ($this->saleType === 'wholesale' && empty($this->customer_id)) {
-            Notification::make()->title('لطفاً خریدار را انتخاب کنید!')->warning()->send();
-            return;
-        }
-
-        if (!$this->lastSale) {
-            Notification::make()->title(' ابتدا فاکتور را ثبت کنید!')->warning()->send();
-            return;
-        }
-
-        $sale = $this->lastSale->load('items.warehouse');
-
-        $defaultConfig = (new ConfigVariables())->getDefaults();
-        $fontDirs = $defaultConfig['fontDir'];
-        $defaultFontConfig = (new FontVariables())->getDefaults();
-        $fontData = $defaultFontConfig['fontdata'];
-
-        $mpdf = new Mpdf([
-            'mode' => 'utf-8',
-            'format' => 'A4',
-            'margin_top' => 10,
-            'margin_bottom' => 2,
-            'margin_left' => 10,
-            'margin_right' => 10,
-            'fontDir' => array_merge($fontDirs, [public_path('fonts')]),
-            'fontdata' => $fontData + [
-                'vazir' => ['R' => 'Scheherazade-Regular.ttf'],
-            ],
-            'default_font' => 'vazir',
-        ]);
-
-
-        $mpdf->SetDirectionality('rtl');
-        $mpdf->autoScriptToLang = false;
-        $mpdf->autoLangToFont = false;
-
-        $css = file_get_contents(resource_path('views/pdf/invoice.css'));
-        $mpdf->WriteHTML($css, \Mpdf\HTMLParserMode::HEADER_CSS);
-        // $css = str_replace('{{LOGO_PATH}}', public_path('assets/logo.png'), $css);
-
-        $html = view('pdf.invoice', compact('sale'))->render();
-        $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
-
-        $fileName = 'invoice-' . now()->timestamp . '.pdf';
-        $mpdf->Output(storage_path('app/public/' . $fileName), \Mpdf\Output\Destination::FILE);
-
-
-        \App\Models\Import\Document::create([
-            'sale_id'        => $sale->id,
-            'invoice_number' => $sale->invoice_number,
-            'buyer_name'     => $this->saleType === 'wholesale' ? $sale->buyer_name : null,
-            'total_amount'   => $sale->total_price,
-            'paid_amount'    => $this->saleType === 'wholesale' ? $sale->received_amount : null,
-            'sale_type'      => $this->saleType,
-            'file_path'      => 'storage/' . $fileName,
-        ]);
-
-
-        $this->items = [];
-        $this->lastSale = null;
-        $this->buyerName = '';
-        $this->receivedAmount = 0;
-        $this->customer_id = null;
-        $this->saleType = 'retail';
-        $this->showOverlayForm = true;
-        $this->resetForm();
-
-        Notification::make()->title('🖨️ فاکتور آماده چاپ شد!')->success()->send();
-        $this->dispatch('download-invoice', url: asset('storage/' . $fileName));
+   public function printInvoice(): void
+{
+    if ($this->saleType === 'wholesale' && empty($this->customer_id)) {
+        Notification::make()->title('لطفاً خریدار را انتخاب کنید!')->warning()->send();
+        return;
     }
+
+    if (!$this->lastSale) {
+        Notification::make()->title(' ابتدا فاکتور را ثبت کنید!')->warning()->send();
+        return;
+    }
+
+    $sale = $this->lastSale->load('items.warehouse');
+
+    $defaultConfig = (new ConfigVariables())->getDefaults();
+    $fontDirs = $defaultConfig['fontDir'];
+    $defaultFontConfig = (new FontVariables())->getDefaults();
+    $fontData = $defaultFontConfig['fontdata'];
+
+    $mpdf = new Mpdf([
+        'mode' => 'utf-8',
+        'format' => 'A4',
+        'margin_top' => 10,
+        'margin_bottom' => 2,
+        'margin_left' => 10,
+        'margin_right' => 10,
+        'fontDir' => array_merge($fontDirs, [public_path('fonts')]),
+        'fontdata' => $fontData + [
+            'vazir' => ['R' => 'ScheherazadeNew-Regular.ttf'],
+        ],
+        'default_font' => 'vazir',
+    ]);
+
+    $mpdf->SetDirectionality('rtl');
+    $mpdf->autoScriptToLang = false;
+    $mpdf->autoLangToFont = false;
+
+    $css = file_get_contents(resource_path('views/pdf/invoice.css'));
+    $mpdf->WriteHTML($css, \Mpdf\HTMLParserMode::HEADER_CSS);
+
+    $discount = $sale->discount ?? 0;
+    $finalPrice = max(0, $sale->total_price);
+
+    $html = view('pdf.invoice', [
+        'sale'       => $sale,
+        'discount'   => $discount,
+        'finalPrice' => $finalPrice,
+    ])->render();
+
+    $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+
+    $fileName = 'invoice-' . now()->timestamp . '.pdf';
+    $mpdf->Output(storage_path('app/public/' . $fileName), \Mpdf\Output\Destination::FILE);
+
+    \App\Models\Import\Document::create([
+        'sale_id'        => $sale->id,
+        'invoice_number' => $sale->invoice_number,
+        'buyer_name'     => $this->saleType === 'wholesale' ? $sale->buyer_name : null,
+        'total_amount'   => $finalPrice,
+        'discount'       => $discount,
+        'paid_amount'    => $this->saleType === 'wholesale' ? $sale->received_amount : null,
+        'sale_type'      => $this->saleType,
+        'file_path'      => 'storage/' . $fileName,
+    ]);
+
+    $this->items = [];
+    $this->lastSale = null;
+    $this->buyerName = '';
+    $this->receivedAmount = 0;
+    $this->customer_id = null;
+    $this->saleType = 'retail';
+    $this->discount = 0;
+    $this->showOverlayForm = true;
+    $this->resetForm();
+
+    Notification::make()->title('🖨️ فاکتور آماده چاپ شد!')->success()->send();
+    $this->dispatch('download-invoice', url: asset('storage/' . $fileName));
+}
+
 
 
     private function resetForm(): void

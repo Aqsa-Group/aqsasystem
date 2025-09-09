@@ -19,7 +19,6 @@
         </table>
     </div>
    
-
     <table>
         <tr>
             <td>
@@ -28,36 +27,25 @@
 
                 <?php endif; ?>
             </td>
-
-            <td>
-                &nbsp;&nbsp; شماره فاکتور: <?php echo e($sale->invoice_number); ?>
-
-
-            </td>
-            <td>
-                تاریخ: <?php echo e(jdate($sale->created_at)->format('Y/m/d')); ?>
-
-
-            </td>
+            <td>&nbsp;&nbsp; شماره فاکتور: <?php echo e($sale->invoice_number); ?></td>
+            <td>تاریخ: <?php echo e(jdate($sale->created_at)->format('Y/m/d')); ?></td>
         </tr>
     </table>
 
+    <?php
+        $logoPath = public_path('assets/logo2.png'); 
+    ?>
 
-
-<?php
-    $logoPath = public_path('assets/logo.png'); // دقت: assets
-?>
-
-<table style="
-    width:100%;
-    border-collapse:collapse;
-    margin-top:15px;
-    border:1px solid #000;
-    background-image: url('file://<?php echo e($logoPath); ?>');
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: 200px 200px;
-">
+    <table style="
+        width:100%;
+        border-collapse:collapse;
+        margin-top:15px;
+        border:1px solid #000;
+        background-image: url('file://<?php echo e($logoPath); ?>');
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 120px 120px;
+    ">
         <thead>
             <tr>
                 <th>شماره</th>
@@ -76,7 +64,7 @@
                     <td><?php echo e(number_format($item->price_per_unit)); ?></td>
                     <td><?php echo e($item->quantity); ?></td>
                     <?php if($sale->sale_type === 'wholesale'): ?>
-                    <td><?php echo e($item->warehouse->unit ?? '-'); ?></td>
+                        <td><?php echo e($item->warehouse->unit ?? '-'); ?></td>
                     <?php else: ?>
                         <td>عدد</td>
                     <?php endif; ?>
@@ -95,34 +83,44 @@
                 </tr>
             <?php endfor; ?>
         </tbody>
-
-
     </table>
 
-    <table>
-        <tr>
-            <td>
-               مجموعه کل فاکتور : <?php echo e(number_format($sale->total_price)); ?>
-
-                &nbsp;&nbsp;
-            </td>
-        
-
-        </tr>
-        <?php if($sale->sale_type === 'wholesale'): ?>
-            <td class="label">مبلغ دریافت شده:</td>
-            <td class="value"><?php echo e(number_format($sale->received_amount)); ?></td>
-
-
-            <td class="label">باقیمانده:</td>
-            <td class="value"><?php echo e(number_format($sale->remaining_amount)); ?></td>
-        <?php endif; ?>
+    <table style="width:100%; margin-top:15px; border-collapse:collapse; border:1px solid #000;">
+        <tbody>
+            <tr>
+                <td style="padding:6px; font-weight:bold; width:50%;">مجموعه کل فاکتور (قبل از تخفیف)</td>
+                <td style="padding:6px; text-align:center;">
+                    <strong><?php echo e(number_format($sale->items->sum('total_price'))); ?>&nbsp;افغانی</strong>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:6px; font-weight:bold;">مبلغ تخفیف</td>
+                <td style="padding:6px; text-align:center;">
+                    <strong><?php echo e(number_format($sale->discount ?? 0)); ?>&nbsp;افغانی</strong>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:6px; font-weight:bold;">مبلغ نهایی (بعد از تخفیف)</td>
+                <td style="padding:6px; text-align:center; font-size:14px; color:#000;">
+                    <strong><?php echo e(number_format($sale->total_price)); ?>&nbsp;افغانی</strong>
+                </td>
+            </tr>
+            <?php if($sale->sale_type === 'wholesale'): ?>
+                <tr>
+                    <td style="padding:6px; font-weight:bold;">مبلغ دریافت شده</td>
+                    <td style="padding:6px; text-align:center;">
+                        <strong><?php echo e(number_format($sale->received_amount)); ?>&nbsp;افغانی</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding:6px; font-weight:bold;">باقیمانده</td>
+                    <td style="padding:6px; text-align:center;">
+                        <strong><?php echo e(number_format($sale->remaining_amount)); ?>&nbsp;افغانی</strong>
+                    </td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
     </table>
-
-
-
-
-
 
     <div class="footer">
         آدرس: هرات - سی متره - باغ آزادی
@@ -133,6 +131,5 @@
     <div style="height: calc(297mm - [مجموع ارتفاع محتوای شما]);"></div>
 
 </body>
-
 </html>
 <?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/pdf/invoice.blade.php ENDPATH**/ ?>

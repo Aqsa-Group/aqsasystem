@@ -18,6 +18,7 @@ class Document extends Model
         'paid_amount',
         'sale_type',
         'file_path',
+        'discount'
     ];
 
     /**
