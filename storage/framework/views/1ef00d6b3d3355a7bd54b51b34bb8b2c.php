@@ -16,13 +16,11 @@
         <thead>
             <tr>
                 <th>نام جنس</th>
-                <th>تعداد</th> 
-                <th>واحد</th>
-                <th>موجودی به دانه</th>
+                
                 <th>قیمت پرچون</th>
                 <th>قیمت عمده</th> 
                 <th>ساخت کشور</th>
-                <th>عکس محصول</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -30,17 +28,11 @@
                 <tr>
                    
                     <td><?php echo e($item->name); ?></td>
-                    <td><?php echo e($item->quantity); ?></td>
-                    <td><?php echo e($item->unit); ?></td>
-                    <td><?php echo e($item->all_exist_number); ?></td>
+                    
                     <td><?php echo e($item->retail_price); ?></td> 
                     <td><?php echo e($item->big_whole_price); ?></td>
                     <td><?php echo e($item->brand); ?></td>
-                    <td>
-                        <?php if($item->product_image): ?>
-                            <img src="<?php echo e(public_path('storage/' . $item->product_image)); ?>" alt="عکس">
-                        <?php endif; ?>
-                    </td>
+                    
                 </tr>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </tbody>
