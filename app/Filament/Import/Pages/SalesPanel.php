@@ -234,11 +234,10 @@ class SalesPanel extends Page
             $sale->save();
             $this->lastSale = $sale;
 
-            foreach ($this->items as $item) {
+                    foreach ($this->items as $item) {
                 $warehouse = Warehouse::where('barcode', $item['barcode'])->first();
                 if (!$warehouse) continue;
 
-                // 📦 مدیریت کاهش موجودی
                 if ($warehouse->unit === 'دانه') {
                     $warehouse->all_exist_number -= $item['quantity'];
                     if ($warehouse->all_exist_number < 0) $warehouse->all_exist_number = 0;
@@ -266,18 +265,21 @@ class SalesPanel extends Page
                     }
                 }
 
-                if ($this->saleType === 'wholesale') {
-                    $totalSale = $item['quantity'] * $warehouse->big_whole_price;
-                    $totalCost = $item['quantity'] * $warehouse->price;
-                } else {
-                    $totalSale = $item['quantity'] * $warehouse->retail_price;
-                    $totalCost = $item['quantity'] * $warehouse->price;
+                // 🔹 محاسبه فروش و قیمت خرید
+                $totalSale = $item['quantity'] * ($this->saleType === 'wholesale' 
+                                ? $warehouse->big_whole_price 
+                                : $warehouse->retail_price);
+
+                $totalCost = $item['quantity'] * $warehouse->price;
+
+                // 🔹 سهم این آیتم از تخفیف (تناسبی)
+                $discountShare = 0;
+                if ($sale->discount > 0 && $totalPrice > 0) {
+                    $discountShare = ($totalSale / $totalPrice) * $sale->discount;
                 }
 
-              $totalProfit = $totalSale - $totalCost;
-
-
-                $totalProfit -= ($sale->discount ?? 0);
+                // 🔹 سود بعد از تخفیف
+                $totalProfit = ($totalSale - $discountShare) - $totalCost;
 
                 $profit = $totalProfit > 0 ? $totalProfit : 0;
                 $loss   = $totalProfit < 0 ? abs($totalProfit) : 0;
@@ -285,16 +287,17 @@ class SalesPanel extends Page
                 $warehouse->save();
 
                 SaleItem::create([
-                    'sale_id' => $sale->id,
-                    'warehouse_id' => $warehouse->id,
-                    'quantity' => $item['quantity'],
+                    'sale_id'        => $sale->id,
+                    'warehouse_id'   => $warehouse->id,
+                    'quantity'       => $item['quantity'],
                     'price_per_unit' => $item['price'],
-                    'total_price' => $item['total'],
-                    'profit' => $profit,
-                    'user_id' => Auth::id(),
-                    'loss' => $loss,
+                    'total_price'    => $item['total'],
+                    'profit'         => $profit,
+                    'loss'           => $loss,
+                    'user_id'        => Auth::id(),
                 ]);
             }
+
 
             if ($this->saleType === 'wholesale' && $sale->remaining_amount > 0) {
                 Loan::create([
