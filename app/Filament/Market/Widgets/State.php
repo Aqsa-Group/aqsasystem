@@ -85,7 +85,7 @@ class State extends BaseWidget
             Card::make('دوکان‌های کرایه شده', number_format(
                 Shop::query()
                     ->where('type', 'کرایه')
-                    // ->whereNull('shopkeeper_id')
+                    ->where('shopkeeper_id')
                     ->when($user->role !== 'superadmin', fn($q) => $q->where('admin_id', $user->role === 'admin' ? $user->id : $user->admin_id))
                     ->count()
             ))
