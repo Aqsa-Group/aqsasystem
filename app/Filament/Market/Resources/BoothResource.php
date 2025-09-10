@@ -281,7 +281,7 @@ class BoothResource extends Resource
                 ->sortable(),
 
                   TextColumn::make('shopkeeper_id')
-                ->label('آیدی غرفه دار')
+                ->label('آیدی غرفه')
                 ->formatStateUsing(fn($state) => $state ?? '—')
                 ->url(fn(Booth $record) => $record->shopkeeper_id
                     ? route('filament.market.resources.shopkeepers.edit', ['record' => $record->shopkeeper_id]) : null)

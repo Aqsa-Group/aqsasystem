@@ -185,24 +185,30 @@ public function submitReturn(): void
         }
 
         $safe = Safe::firstOrCreate([], [
-            'total'       => 0,
-            'today'       => 0,
-            'user_id'     => Auth::id(),
-            'last_update' => now()->toDateString(),
-        ]);
+                'total'       => 0,
+                'today'       => 0,
+                'user_id'     => Auth::id(),
+                'last_update' => now()->toDateString(),
+            ]);
 
-        if ($safe->last_update !== now()->toDateString()) {
-            $safe->today = 0;
-            $safe->last_update = now()->toDateString();
-        }
+            if ($safe->last_update !== now()->toDateString()) {
+                $safe->today = 0;
+                $safe->last_update = now()->toDateString();
+            }
 
-        $safe->today -= $returnTotal;
+            $safe->today -= $returnTotal;
 
-        if ($cashRefund > 0) {
-            $safe->total -= $cashRefund;
-        }
+            if ($this->sale->sale_type === 'retail') {
+                $safe->total -= $returnTotal;
+            } else {
+                if ($cashRefund > 0) {
+                    $safe->total -= $cashRefund;
+                }
+            }
 
-        $safe->save();
+            $safe->save();
+
+
     });
 
     Notification::make()->title('برگشتی ثبت شد')->success()->send();

@@ -116,7 +116,7 @@
             </div>
         </div>
 
-        <!--[if BLOCK]><![endif]--><?php if($sale): ?>
+        <?php if($sale): ?>
             <div class="bg-white dark:bg-gray-900 rounded-xl shadow-md p-4 border border-gray-200 dark:border-gray-700 space-y-4">
                 <div class="flex items-center justify-between">
                     <div class="text-sm dark:text-gray-300">
@@ -142,7 +142,7 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-                            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $rows; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php $__currentLoopData = $rows; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
                                     <td class="p-2"><?php echo e($row['name']); ?></td>
                                     <td class="p-2"><?php echo e($row['unit']); ?></td>
@@ -158,7 +158,7 @@
 
                                     </td>
                                 </tr>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>
                     </table>
                 </div>
@@ -172,7 +172,7 @@
 
               
             </div>
-        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+        <?php endif; ?>
     </div>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
