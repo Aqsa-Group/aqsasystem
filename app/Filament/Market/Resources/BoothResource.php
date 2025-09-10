@@ -280,6 +280,18 @@ class BoothResource extends Resource
                 ->icon('heroicon-o-building-storefront')
                 ->sortable(),
 
+                  TextColumn::make('shopkeeper_id')
+                ->label('آیدی غرفه دار')
+                ->formatStateUsing(fn($state) => $state ?? '—')
+                ->url(fn(Booth $record) => $record->shopkeeper_id
+                    ? route('filament.market.resources.shopkeepers.edit', ['record' => $record->shopkeeper_id]) : null)
+                ->openUrlInNewTab()
+                ->badge()
+                ->color('danger')
+                ->icon('heroicon-o-user')
+                ->numeric()
+                ->sortable(),
+
             TextColumn::make('number')->label("نمبر غرفه")->numeric()->sortable()->searchable(),
             TextColumn::make('floor')->label('طبق')->sortable(),
 
