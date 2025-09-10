@@ -7,6 +7,8 @@ use App\Models\Import\SaleItem;
 use App\Models\Import\Warehouse;
 use App\Models\Import\Safe;
 use App\Models\Import\SaleReturn;
+use App\Models\Customer;
+use App\Models\Loan;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
@@ -35,7 +37,10 @@ class ReturnPanel extends Page
 
     public function loadSale(): void
     {
-        $this->sale = Sale::with(['items.warehouse'])->where('id', $this->invoiceNumber)->first();
+        $this->sale = Sale::with(['items.warehouse', 'customer'])
+            ->where('id', $this->invoiceNumber)
+            ->first();
+
         if (!$this->sale) {
             $this->resetState();
             Notification::make()->title('فاکتور یافت نشد')->danger()->send();
@@ -44,7 +49,6 @@ class ReturnPanel extends Page
 
         $this->rows = [];
         foreach ($this->sale->items as $item) {
-            // محاسبه تعداد باقی‌مانده بعد از برگشتی‌های قبلی
             $alreadyReturned = SaleReturn::where('sale_id', $this->sale->id)
                 ->where('warehouse_id', $item->warehouse_id)
                 ->where('price_per_unit', $item->price_per_unit)
@@ -88,7 +92,7 @@ class ReturnPanel extends Page
         $this->refundNow = $this->totalReturn;
     }
 
-  public function submitReturn(): void
+public function submitReturn(): void
 {
     if (!$this->sale) {
         Notification::make()->title('ابتدا فاکتور را بارگذاری کنید')->warning()->send();
@@ -139,19 +143,46 @@ class ReturnPanel extends Page
         $returnTotal = (float) $returnTotal;
         if ($returnTotal <= 0) return;
 
+        $remainingBefore = (float)$this->sale->remaining_amount;
+
         $this->sale->total_price = max(0, (float)$this->sale->total_price - $returnTotal);
 
-        $cashRefund = max(0, (float)$this->refundNow);
-        $cashRefund = min($cashRefund, $returnTotal);
-        $cashRefund = min($cashRefund, (float)$this->sale->received_amount);
+        $cashRefund = min((float)$this->sale->received_amount, $returnTotal);
+        $loanRefund = $returnTotal - $cashRefund;
 
         $this->sale->received_amount = max(0, (float)$this->sale->received_amount - $cashRefund);
+
         if ($this->sale->sale_type === 'wholesale') {
             $this->sale->remaining_amount = max(0, (float)$this->sale->total_price - (float)$this->sale->received_amount);
         } else {
             $this->sale->remaining_amount = 0;
         }
+
         $this->sale->save();
+
+        if ($this->sale->customer && $loanRefund > 0) {
+            $cust = $this->sale->customer;
+
+            $cust->total_loan     = max(0, (float)$cust->total_loan - $loanRefund);
+            $cust->remaining_loan = max(0, (float)$cust->remaining_loan - $loanRefund);
+            $cust->save();
+
+            $loans = DB::connection('import')->table('loans')
+                ->where('customer_id', $cust->id)
+                ->where('amount', '>', 0)
+                ->orderBy('id', 'asc')
+                ->get();
+
+            $remainingRefund = $loanRefund;
+            foreach ($loans as $loan) {
+                if ($remainingRefund <= 0) break;
+                $deduct = min($loan->amount, $remainingRefund);
+                DB::connection('import')->table('loans')
+                    ->where('id', $loan->id)
+                    ->decrement('amount', $deduct);
+                $remainingRefund -= $deduct;
+            }
+        }
 
         $safe = Safe::firstOrCreate([], [
             'total'       => 0,
@@ -166,7 +197,10 @@ class ReturnPanel extends Page
         }
 
         $safe->today -= $returnTotal;
-        $safe->total -= $returnTotal;
+
+        if ($cashRefund > 0) {
+            $safe->total -= $cashRefund;
+        }
 
         $safe->save();
     });
@@ -174,6 +208,7 @@ class ReturnPanel extends Page
     Notification::make()->title('برگشتی ثبت شد')->success()->send();
     $this->resetState();
 }
+
 
 
     private function increaseWarehouseOnReturn(Warehouse $w, int $qty, string $saleType): void
