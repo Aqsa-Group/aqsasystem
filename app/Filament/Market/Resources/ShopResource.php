@@ -360,10 +360,12 @@ class ShopResource extends Resource
         
                 return 'success';
             }),
+            
         
 
             TextColumn::make('type')->label('نوع قرارداد')->searchable(),
             TextColumn::make('price')->label('قیمت')->suffix('؋')->sortable(),
+            
         ])
             ->filters([])
             ->actions([
@@ -372,9 +374,29 @@ class ShopResource extends Resource
                     ->icon('heroicon-o-printer')
                     ->url(fn($record) => route('contract.print2', $record->id))
                     ->openUrlInNewTab()
-                    ->visible(fn($record) => !is_null($record->customer_id)), // فقط وقتی customer_id پر است
+                    ->visible(fn($record) => !is_null($record->customer_id)), 
+                    
+                    
             
                 Tables\Actions\EditAction::make(),
+                 Tables\Actions\Action::make('releaseShop')
+                        ->label('پس گرفتن دکان از دوکاندار')
+                        ->requiresConfirmation()
+                        ->modalHeading('آیا مطمئن هستید؟')
+                        ->modalSubheading('با پس گرفتن دکان، ارتباط دوکاندار با این دکان قطع خواهد شد.')
+                        ->modalButton('بله')
+                        ->color('danger')
+                        ->icon('heroicon-o-arrow-uturn-left') 
+                        ->button() 
+                        ->outlined() 
+                        ->extraAttributes([
+                            'class' => 'hover:bg-red-600 hover:text-white transition-all duration-200 font-bold rounded-lg',
+                            'title' => 'گرفتن دوکان از دوکاندار',
+                        ])
+                        ->action(fn (Shop $record) => $record->update(['shopkeeper_id' => null]))
+                        ->visible(fn (Shop $record): bool => ! is_null($record->shopkeeper_id))
+
+
             ])
             
             ->bulkActions([

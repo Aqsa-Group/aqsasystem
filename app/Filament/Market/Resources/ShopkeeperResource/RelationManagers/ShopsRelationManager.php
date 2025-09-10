@@ -51,28 +51,65 @@ class ShopsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('number')
             ->columns([
-                Tables\Columns\TextColumn::make('number')->label('شماره'),
-                Tables\Columns\TextColumn::make('floor')->label('منزل'),
-                Tables\Columns\TextColumn::make('size')->label('اندازه'),
-                Tables\Columns\TextColumn::make('metar_serial')->label('شماره میتر'),
-                Tables\Columns\TextColumn::make('type')->label('نوعیت'),
-                Tables\Columns\TextColumn::make('price')->label('قیمت')->money('AFN'),
                 Tables\Columns\TextColumn::make('market.name')->label('مارکت'),
-                Tables\Columns\TextColumn::make('created_at')->label('ایجاد شده')->dateTime()->since(),
+                Tables\Columns\TextColumn::make('number')->label('نمبردوکان'),
+                Tables\Columns\TextColumn::make('floor')->label('منزل'),
+                Tables\Columns\TextColumn::make('metar_serial')->label('شماره میتر'),
+                Tables\Columns\TextColumn::make('price')->label('قیمت'),
             ])
             ->filters([
-                // Add filters here if needed
+                
             ])
-            ->headerActions([
-                Tables\Actions\CreateAction::make()->label('افزودن دوکان'),
-            ])
+        ->headerActions([
+            Tables\Actions\Action::make('assignShop')
+                ->label('افزودن دوکان')
+                ->form([
+                    Forms\Components\Grid::make([
+                        'default' => 1, 
+                        'md' => 2,      
+                    ])->schema([
+                        Forms\Components\Select::make('market_id')
+                            ->label('مارکت')
+                            ->options(\App\Models\Market\Market::pluck('name', 'id'))
+                            ->required()
+                            ->reactive()
+                            ->columnSpan(1),
+
+                        Forms\Components\Select::make('shop_id')
+                            ->label('شماره دوکان')
+                            ->options(function (callable $get) {
+                                $marketId = $get('market_id');
+                                if (!$marketId) return [];
+                                return \App\Models\Market\Shop::where('market_id', $marketId)
+                                    ->whereNull('shopkeeper_id')
+                                    ->pluck('number', 'id');
+                            })
+                            ->required()
+                            ->columnSpan(1),
+                    ]),
+                ])
+                ->action(function (array $data) {
+                    $shop = \App\Models\Market\Shop::find($data['shop_id']);
+
+                    if ($shop) {
+                        $shop->update([
+                            'shopkeeper_id' => $this->getOwnerRecord()->id,
+                            'admin_id'      => Auth::id(),
+                        ]);
+                    }
+                })
+                ->color('success')
+                ->icon('heroicon-o-plus'),
+        ])
+
+
             ->actions([
-                Tables\Actions\EditAction::make()->label('ویرایش'),
-                Tables\Actions\DeleteAction::make()->label('حذف'),
+                // Tables\Actions\EditAction::make()->label('ویرایش'),
+                // Tables\Actions\DeleteAction::make()->label('حذف'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()->label('حذف گروهی'),
+                    // Tables\Actions\DeleteBulkAction::make()->label('حذف گروهی'),
                 ]),
             ]);
     }
