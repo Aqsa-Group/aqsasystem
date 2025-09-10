@@ -70,13 +70,16 @@ class DocumentResource extends Resource
                     ->color('primary'),
     
                 TextColumn::make('shop.number')
-                    ->label('نمبر دوکان')
-                    ->url(fn(Document $record) => route('filament.market.resources.shops.view', ['record' => $record->shop_id]))
-                    ->openUrlInNewTab()
-                    ->badge()
-                    ->color('info')
-                    ->icon('heroicon-o-building-storefront')
-                    ->tooltip('نمایش جزئیات دوکان'),
+                ->label('نمبر دوکان')
+                ->url(fn(Document $record) => $record->shop 
+                    ? route('filament.market.resources.shops.view', ['record' => $record->shop]) 
+                    : null)
+                ->openUrlInNewTab()
+                ->badge()
+                ->color('info')
+                ->icon('heroicon-o-building-storefront')
+                ->tooltip('نمایش جزئیات دوکان'),
+
     
                     TextColumn::make('shopkeeper.fullname')
                     ->label('نام دوکاندار')
