@@ -73,7 +73,7 @@ class State extends BaseWidget
 
             Card::make('تعداد دوکان‌های سرقفلی', number_format(
                 Shop::query()
-                    ->where('sarqofli'==='بلی')
+                    ->where('sarqofli','بلی')
                     ->when($user->role !== 'superadmin', fn($q) => $q->where('admin_id', $user->role === 'admin' ? $user->id : $user->admin_id))
                     ->count()
             ))
@@ -96,7 +96,7 @@ class State extends BaseWidget
 
             Card::make('دوکان‌های گروی شده', number_format(
                 Shop::query()
-                    ->where('rent'==='بلی')
+                    ->where('rent','بلی')
                     ->whereNull('shopkeeper_id')
                     ->when($user->role !== 'superadmin', fn($q) => $q->where('admin_id', $user->role === 'admin' ? $user->id : $user->admin_id))
                     ->count()
