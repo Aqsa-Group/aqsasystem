@@ -32,6 +32,7 @@ class PrintContract extends Controller
 
         $html = view($view, compact('customer', 'shop'))->render();
 
+     
         $mpdf = new Mpdf([
             'mode' => 'utf-8',
             'format' => 'A4',
