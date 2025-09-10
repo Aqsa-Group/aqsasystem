@@ -143,72 +143,68 @@ public function submitReturn(): void
         $returnTotal = (float) $returnTotal;
         if ($returnTotal <= 0) return;
 
-        $remainingBefore = (float)$this->sale->remaining_amount;
-
-        $this->sale->total_price = max(0, (float)$this->sale->total_price - $returnTotal);
-
-        $cashRefund = min((float)$this->sale->received_amount, $returnTotal);
-        $loanRefund = $returnTotal - $cashRefund;
-
-        $this->sale->received_amount = max(0, (float)$this->sale->received_amount - $cashRefund);
+        $loanRefund = 0;
+        $cashRefund = 0;
 
         if ($this->sale->sale_type === 'wholesale') {
-            $this->sale->remaining_amount = max(0, (float)$this->sale->total_price - (float)$this->sale->received_amount);
+            if ($this->sale->customer) {
+                $cust = $this->sale->customer;
+
+                $loanBefore = (float) $cust->remaining_loan;
+                $loanRefund = min($returnTotal, $loanBefore);
+
+                $cust->total_loan     = max(0, $cust->total_loan - $loanRefund);
+                $cust->remaining_loan = max(0, $cust->remaining_loan - $loanRefund);
+                $cust->save();
+
+                $remainingRefund = $loanRefund;
+                $loans = DB::connection('import')->table('loans')
+                    ->where('customer_id', $cust->id)
+                    ->where('amount', '>', 0)
+                    ->orderBy('id', 'asc')
+                    ->get();
+
+                foreach ($loans as $loan) {
+                    if ($remainingRefund <= 0) break;
+                    $deduct = min($loan->amount, $remainingRefund);
+                    DB::connection('import')->table('loans')
+                        ->where('id', $loan->id)
+                        ->decrement('amount', $deduct);
+                    $remainingRefund -= $deduct;
+                }
+
+                $cashRefund = $returnTotal - $loanRefund;
+            } else {
+                $cashRefund = $returnTotal;
+            }
+
+            $this->sale->remaining_amount = max(0, (float)$this->sale->total_price - $loanRefund - $cashRefund);
         } else {
+            $cashRefund = $returnTotal;
             $this->sale->remaining_amount = 0;
         }
 
+        $this->sale->total_price = max(0, (float)$this->sale->total_price - $returnTotal);
         $this->sale->save();
 
-        if ($this->sale->customer && $loanRefund > 0) {
-            $cust = $this->sale->customer;
+        $safe = Safe::firstOrCreate([], [
+            'total'       => 0,
+            'today'       => 0,
+            'user_id'     => Auth::id(),
+            'last_update' => now()->toDateString(),
+        ]);
 
-            $cust->total_loan     = max(0, (float)$cust->total_loan - $loanRefund);
-            $cust->remaining_loan = max(0, (float)$cust->remaining_loan - $loanRefund);
-            $cust->save();
-
-            $loans = DB::connection('import')->table('loans')
-                ->where('customer_id', $cust->id)
-                ->where('amount', '>', 0)
-                ->orderBy('id', 'asc')
-                ->get();
-
-            $remainingRefund = $loanRefund;
-            foreach ($loans as $loan) {
-                if ($remainingRefund <= 0) break;
-                $deduct = min($loan->amount, $remainingRefund);
-                DB::connection('import')->table('loans')
-                    ->where('id', $loan->id)
-                    ->decrement('amount', $deduct);
-                $remainingRefund -= $deduct;
-            }
+        if ($safe->last_update !== now()->toDateString()) {
+            $safe->today = 0;
+            $safe->last_update = now()->toDateString();
         }
 
-        $safe = Safe::firstOrCreate([], [
-                'total'       => 0,
-                'today'       => 0,
-                'user_id'     => Auth::id(),
-                'last_update' => now()->toDateString(),
-            ]);
+        $safe->today -= $cashRefund; 
+        if ($cashRefund > 0) {
+            $safe->total -= $cashRefund;
+        }
 
-            if ($safe->last_update !== now()->toDateString()) {
-                $safe->today = 0;
-                $safe->last_update = now()->toDateString();
-            }
-
-            $safe->today -= $returnTotal;
-
-            if ($this->sale->sale_type === 'retail') {
-                $safe->total -= $returnTotal;
-            } else {
-                if ($cashRefund > 0) {
-                    $safe->total -= $cashRefund;
-                }
-            }
-
-            $safe->save();
-
-
+        $safe->save();
     });
 
     Notification::make()->title('برگشتی ثبت شد')->success()->send();
