@@ -38,7 +38,7 @@ class ShopResource extends Resource
 
     public static function getNavigationBadgeColor(): ?string
     {
-        return 'secondary'; 
+        return 'warning'; 
     }
 
     public static function form(Form $form): Form
