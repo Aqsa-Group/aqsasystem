@@ -30,6 +30,17 @@ class StaffResource extends Resource
     ']);
     }
 
+
+     public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'primary'; 
+    }
+
     public static function form(Form $form): Form
     {
         return $form->schema([

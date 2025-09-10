@@ -33,6 +33,16 @@ class ShopkeeperResource extends Resource
         return Auth::check() && in_array(Auth::user()?->role, ['admin', 'superadmin', 'Customer Service']);
     }
 
+     public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'success'; 
+    }
+
     public static function form(Form $form): Form
     {
         $user = Auth::user();
