@@ -131,6 +131,8 @@ class CustomerResource extends Resource
                             'reminded'    => $reminded,
                             'type'        => 'رسید',
                             'date'        => now(),
+                            'user_id'     => Auth::id(),
+
                         ]);
             
                         if ($reminded === 0) {
