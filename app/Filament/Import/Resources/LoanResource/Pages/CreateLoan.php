@@ -17,47 +17,52 @@ class CreateLoan extends CreateRecord
         return $this->getResource()::getUrl('index');
     }
 
-    protected function mutateFormDataBeforeCreate(array $data): array
-    {
-        $customer = Customer::findOrFail($data['customer_id']);
-        $type = $data['type'] ?? null;
-        $amount = $data['amount'] ?? 0;
-        $receipt = $data['loan_recipt'] ?? 0;
+   protected function mutateFormDataBeforeCreate(array $data): array
+{
+    $customer = Customer::findOrFail($data['customer_id']);
+    $type = $data['type'] ?? null;
+    $amount = $data['amount'] ?? 0;
+    $receipt = $data['loan_recipt'] ?? 0;
 
-     
-        $safe = Safe::firstOrCreate([], [
-            'total' => 0,
-            'today' => 0,
-            'last_update' => now()->toDateString(),
-        ]);
+    $safe = Safe::firstOrCreate([], [
+        'total' => 0,
+        'today' => 0,
+        'last_update' => now()->toDateString(),
+    ]);
 
-        if ($type === 'رسید') {
-       
-            $customer->total_receipt += $receipt;
-            $customer->remaining_loan -= $receipt;
-            $customer->save();
+    if ($type === 'رسید') {
+        $customer->total_loan -= $receipt;
 
-         
-            $data['amount'] = 0;
-            $data['loan_recipt'] = $receipt;
-            $data['reminded'] = $customer->remaining_loan; 
-        }
+        $customer->remaining_loan -= $receipt;
 
-        if ($type === 'بردگی') {
-           
-            $customer->total_loan += $amount;
-            $customer->remaining_loan += $amount;
-            $customer->save();
+        $customer->total_receipt += $receipt;
 
-         
-            $data['amount'] = $amount;
-            $data['loan_recipt'] = 0;
-            $data['reminded'] = $amount; 
+        $customer->save();
 
-            $safe->total -= $amount;
-            $safe->save();
-        }
+        $safe->total += $receipt;
+        $safe->today += $receipt;
+        $safe->save();
 
-        return $data;
+        $data['amount'] = 0;
+        $data['loan_recipt'] = $receipt;
+        $data['reminded'] = $customer->remaining_loan;
     }
+
+    if ($type === 'بردگی') {
+        $customer->total_loan += $amount;
+        $customer->remaining_loan += $amount;
+        $customer->save();
+
+        $data['amount'] = $amount;
+        $data['loan_recipt'] = 0;
+        $data['reminded'] = $amount;
+
+        $safe->total -= $amount;
+        $safe->today -= $amount;
+        $safe->save();
+    }
+
+    return $data;
+}
+
 }
