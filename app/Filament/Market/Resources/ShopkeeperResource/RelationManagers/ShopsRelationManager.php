@@ -60,47 +60,47 @@ class ShopsRelationManager extends RelationManager
             ->filters([
                 
             ])
-        ->headerActions([
-            Tables\Actions\Action::make('assignShop')
-                ->label('افزودن دوکان')
-                ->form([
-                    Forms\Components\Grid::make([
-                        'default' => 1, 
-                        'md' => 2,      
-                    ])->schema([
-                        Forms\Components\Select::make('market_id')
-                            ->label('مارکت')
-                            ->options(\App\Models\Market\Market::pluck('name', 'id'))
-                            ->required()
-                            ->reactive()
-                            ->columnSpan(1),
+            ->headerActions([
+                Tables\Actions\Action::make('assignShop')
+                    ->label('افزودن دوکان')
+                    ->form([
+                        Forms\Components\Grid::make([
+                            'default' => 1, 
+                            'md' => 2,      
+                        ])->schema([
+                            Forms\Components\Select::make('market_id')
+                                ->label('مارکت')
+                                ->options(\App\Models\Market\Market::pluck('name', 'id'))
+                                ->required()
+                                ->reactive()
+                                ->columnSpan(1),
 
-                        Forms\Components\Select::make('shop_id')
-                            ->label('شماره دوکان')
-                            ->options(function (callable $get) {
-                                $marketId = $get('market_id');
-                                if (!$marketId) return [];
-                                return \App\Models\Market\Shop::where('market_id', $marketId)
-                                    ->whereNull('shopkeeper_id')
-                                    ->pluck('number', 'id');
-                            })
-                            ->required()
-                            ->columnSpan(1),
-                    ]),
-                ])
-                ->action(function (array $data) {
-                    $shop = \App\Models\Market\Shop::find($data['shop_id']);
+                            Forms\Components\Select::make('shop_id')
+                                ->label('شماره دوکان')
+                                ->options(function (callable $get) {
+                                    $marketId = $get('market_id');
+                                    if (!$marketId) return [];
+                                    return \App\Models\Market\Shop::where('market_id', $marketId)
+                                        ->whereNull('shopkeeper_id')
+                                        ->pluck('number', 'id');
+                                })
+                                ->required()
+                                ->columnSpan(1),
+                        ]),
+                    ])
+                    ->action(function (array $data) {
+                        $shop = \App\Models\Market\Shop::find($data['shop_id']);
 
-                    if ($shop) {
-                        $shop->update([
-                            'shopkeeper_id' => $this->getOwnerRecord()->id,
-                            'admin_id'      => Auth::id(),
-                        ]);
-                    }
-                })
-                ->color('success')
-                ->icon('heroicon-o-plus'),
-        ])
+                        if ($shop) {
+                            $shop->update([
+                                'shopkeeper_id' => $this->getOwnerRecord()->id,
+                                'admin_id'      => Auth::id(),
+                            ]);
+                        }
+                    })
+                    ->color('success')
+                    ->icon('heroicon-o-plus'),
+            ])
 
 
             ->actions([

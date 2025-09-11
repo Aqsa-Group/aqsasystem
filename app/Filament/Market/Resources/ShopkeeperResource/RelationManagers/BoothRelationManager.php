@@ -9,6 +9,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
+
 
 class BoothRelationManager extends RelationManager
 {
@@ -63,9 +65,49 @@ class BoothRelationManager extends RelationManager
             ->filters([
                 //
             ])
-            ->headerActions([
-                Tables\Actions\CreateAction::make(),
-            ])
+     ->headerActions([
+    Tables\Actions\Action::make('assignBooth')
+        ->label('افزودن غرفه')
+        ->form([
+            Forms\Components\Grid::make([
+                'default' => 1,
+                'md' => 2,
+            ])->schema([
+                Forms\Components\Select::make('market_id')
+                    ->label('مارکت')
+                    ->options(\App\Models\Market\Market::pluck('name', 'id'))
+                    ->required()
+                    ->reactive()
+                    ->columnSpan(1),
+
+                Forms\Components\Select::make('booth_id')
+                    ->label('شماره غرفه')
+                    ->options(function (callable $get) {
+                        $marketId = $get('market_id');
+                        if (!$marketId) return [];
+
+                        return \App\Models\Market\Booth::where('market_id', $marketId)
+                            ->whereNull('shopkeeper_id') 
+                            ->pluck('number', 'id');
+                    })
+                    ->required()
+                    ->columnSpan(1),
+            ]),
+        ])
+        ->action(function (array $data) {
+            $booth = \App\Models\Market\Booth::find($data['booth_id']);
+
+            if ($booth) {
+                $booth->update([
+                    'shopkeeper_id' => $this->getOwnerRecord()->id,
+                    'admin_id'       => Auth::id(),
+                ]);
+            }
+        })
+        ->color('success')
+        ->icon('heroicon-o-plus'),
+])
+
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
