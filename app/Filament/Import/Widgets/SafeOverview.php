@@ -4,6 +4,7 @@ namespace App\Filament\Import\Widgets;
 
 use App\Models\Import\Customer;
 use App\Models\Import\Inventory;
+use App\Models\Import\Loan;
 use App\Models\Import\Safe;
 use App\Models\Import\SaleItem;
 use App\Models\Import\Warehouse;
@@ -22,8 +23,8 @@ class SafeOverview extends BaseWidget
         $totalInventortBalance  = Inventory::where('user_id', $userId)->sum('total_price');
         $totalWarehouseBalance  =Warehouse::where('user_id', $userId)->sum('total_price');
         $totalBoot  =$totalInventortBalance + $totalWarehouseBalance + $totalBalance;
-        $loan = Customer::where('user_id', $userId)->sum('total_loan');
-        $totalrecipt = Customer::where('user_id', $userId)->sum('total_receipt');
+        $loan = Loan::where('user_id', $userId)->sum('total_loan');
+        $totalrecipt = Loan::where('user_id', $userId)->sum('total_receipt');
         $totalloan= $loan - $totalrecipt;
         $todayProfit = SaleItem::where('user_id', $userId)
             ->whereDate('created_at', today())
