@@ -23,7 +23,6 @@ class State extends BaseWidget
         $today = Carbon::today();
         $user = Auth::user();
 
-        // کوئری روی جدول accountings با کانکشن market
         $query = DB::connection('market')->table('accountings')
             ->select('currency', DB::raw('SUM(paid) as total'))
             ->where('type', 'withdraw')
@@ -43,7 +42,6 @@ class State extends BaseWidget
         $totalWithdrawToday = $afn + $usd + $eur + $irr;
 
         return [
-           
             Card::make('مصارف امروز', '')
                 ->description(new HtmlString(
                     "<div class='grid grid-cols-2 md:grid-cols-2 space-x-3 gap-x-2'>

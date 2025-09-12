@@ -33,11 +33,19 @@ class BoothResource extends Resource
     }
 
 
-     public static function getNavigationBadge(): ?string
-    {
-        return (string) static::getModel()::count();
-    }
+    public static function getNavigationBadge(): ?string
+        {
+            $user = Auth::user();
 
+            $query = static::getModel()::query();
+
+            if ($user->role !== 'superadmin') {
+                $adminId = $user->role === 'admin' ? $user->id : $user->admin_id;
+                $query->where('admin_id', $adminId);
+            }
+
+            return (string) $query->count();
+        }
     public static function getNavigationBadgeColor(): ?string
     {
         return 'danger'; 
@@ -340,19 +348,19 @@ class BoothResource extends Resource
             
             Tables\Actions\EditAction::make(),
             Tables\Actions\Action::make('releaseBooth')
-    ->label('پس گرفتن غرفه از غرفه‌دار')
-    ->requiresConfirmation()
-    ->modalHeading('آیا مطمئن هستید؟')
-    ->modalSubheading('با پس گرفتن غرفه، ارتباط غرفه‌دار با این غرفه قطع خواهد شد.')
-    ->modalButton('بله')
-    ->color('danger')
-    ->icon('heroicon-o-arrow-uturn-left')
-    ->button()
-    ->outlined()
-    ->extraAttributes([
-        'class' => 'hover:bg-red-600 hover:text-white transition-all duration-200 font-bold rounded-lg',
-        'title' => 'گرفتن غرفه از غرفه‌دار',
-    ])
+            ->label('پس گرفتن غرفه از غرفه‌دار')
+            ->requiresConfirmation()
+            ->modalHeading('آیا مطمئن هستید؟')
+            ->modalSubheading('با پس گرفتن غرفه، ارتباط غرفه‌دار با این غرفه قطع خواهد شد.')
+            ->modalButton('بله')
+            ->color('danger')
+            ->icon('heroicon-o-arrow-uturn-left')
+            ->button()
+            ->outlined()
+            ->extraAttributes([
+                'class' => 'hover:bg-red-600 hover:text-white transition-all duration-200 font-bold rounded-lg',
+                'title' => 'گرفتن غرفه از غرفه‌دار',
+            ])
     ->action(fn (Booth $record) => $record->update(['shopkeeper_id' => null]))
     ->visible(fn (Booth $record): bool => !is_null($record->shopkeeper_id))
 

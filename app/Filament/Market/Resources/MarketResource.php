@@ -34,10 +34,19 @@ class MarketResource extends Resource
     }
 
 
-     public static function getNavigationBadge(): ?string
-    {
-        return (string) static::getModel()::count();
+  public static function getNavigationBadge(): ?string
+{
+    $user = Auth::user();
+
+    $query = static::getModel()::query();
+
+    if ($user->role !== 'superadmin') {
+        $adminId = $user->role === 'admin' ? $user->id : $user->admin_id;
+        $query->where('admin_id', $adminId);
     }
+
+    return (string) $query->count();
+}
 
     public static function getNavigationBadgeColor(): ?string
     {

@@ -37,7 +37,8 @@ class Accounting extends Model
         'remained',
         'paid_date',
         'expiration_date',
-        'degree_price'
+        'degree_price',
+        'outside_id'
     ];
 
     /*

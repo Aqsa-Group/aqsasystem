@@ -8,6 +8,7 @@ use App\Models\Market\Market;
 use App\Models\Market\Shopkeeper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Outside extends Model
 {
@@ -55,15 +56,41 @@ class Outside extends Model
 
 
 
-    protected static function booted()
+   protected static function booted()
     {
-        static::creating(function ($document) {
+        static::creating(function ($outside) {
             if (Auth::check()) {
                 $user = Auth::user();
-                $document->admin_id = $user->role === 'admin' ? $user->id : $user->admin_id;
+                $outside->admin_id = ($user->role === 'superadmin' || $user->role === 'admin')
+                    ? $user->id
+                    : $user->admin_id;
+            }
+        });
+
+        static::deleting(function ($outside) {
+            DB::connection('market')->table('accountings')
+                ->where('outside_id', $outside->id)
+                ->delete();
+
+            $customer = Customer::find($outside->customer_id);
+            if ($customer) {
+                switch ($outside->currency) {
+                    case 'AFN':
+                        $customer->balance_afn -= $outside->paid;
+                        break;
+                    case 'USD':
+                        $customer->balance_usd -= $outside->paid;
+                        break;
+                    case 'EUR':
+                        $customer->balance_eur -= $outside->paid;
+                        break;
+                    case 'IRR':
+                        $customer->balance_irr -= $outside->paid;
+                        break;
+                }
+                $customer->save();
             }
         });
     }
-
     
 }

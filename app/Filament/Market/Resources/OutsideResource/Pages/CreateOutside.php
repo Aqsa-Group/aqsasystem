@@ -38,6 +38,7 @@ class CreateOutside extends CreateRecord
     
         if ($outside->type === 'بیرونی' && $outside->paid > 0) {
             DB::connection('market')->table('accountings')->insert([
+                 'outside_id' => $outside->id,
                 'expanses_type' => 'عواید بیرونی',
                 'currency' => $outside->currency,
                 'paid' => 1 * $outside->paid,
