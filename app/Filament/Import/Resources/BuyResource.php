@@ -21,12 +21,18 @@ class BuyResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
     protected static ?string $navigationGroup = 'بخش خرید و فروش';
-    protected static ?string $navigationLabel = 'خرید جنس';
+    protected static ?string $navigationLabel = 'خرید جنس قدیمی'; 
+
 
     protected static ?string $modelLabel = 'خرید';
     protected static ?string $pluralModelLabel = 'خرید';
 
     protected static ?int $navigationSort =3;
+
+     public static function canViewAny(): bool
+    {
+        return Auth::check() && in_array(Auth::user()?->role, ['superadmin']);
+    }
 
 
     public static function form(Form $form): Form
