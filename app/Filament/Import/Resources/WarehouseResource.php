@@ -328,14 +328,16 @@ class WarehouseResource extends Resource
         return str_replace($farsiDigits, $englishDigits, $input);
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        $query = parent::getEloquentQuery();
+   public static function getEloquentQuery(): Builder
+{
+    $query = parent::getEloquentQuery();
 
-        if (Auth::user()?->role === 'superadmin') {
-            return $query;
-        }
-
-        return $query->where('user_id', Auth::id());
+    if (Auth::user()?->role !== 'superadmin') {
+        $query->where('user_id', Auth::id());
     }
+
+    return $query->orderByRaw('CASE WHEN all_exist_number = 0 THEN 1 ELSE 0 END')
+                 ->orderByDesc('all_exist_number'); 
+}
+
 }
