@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\DB;
 class Withdraw extends Page
 {
     protected static string $view = 'filament.pages.withdraw';
-    protected static ?string $navigationIcon = 'heroicon-o-banknotes';
+    protected static ?string $navigationIcon = 'iconoir-safe-arrow-right';
     protected static ?string $navigationGroup = 'حسابداری';
     protected static ?string $navigationLabel = 'برداشت از صندوق';
     protected static ?int $navigationSort = 5;

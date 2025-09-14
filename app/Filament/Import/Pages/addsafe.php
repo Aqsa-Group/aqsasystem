@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class addsafe extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-banknotes';
+    protected static ?string $navigationIcon = 'mdi-safe';
     protected static ?string $navigationLabel = 'افزودن به صندوق';
     protected static ?string $navigationGroup = 'حسابداری';
     protected static ?string $title = '';

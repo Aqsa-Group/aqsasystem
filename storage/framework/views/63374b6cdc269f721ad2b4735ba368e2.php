@@ -16,27 +16,27 @@
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
 <?php $component->withAttributes(['class' => 'fi-wi-stats-overview grid gap-y-4']); ?>
-    <?php if($hasHeading || $hasDescription): ?>
+    <!--[if BLOCK]><![endif]--><?php if($hasHeading || $hasDescription): ?>
         <div class="fi-wi-stats-overview-header grid gap-y-1">
-            <?php if($hasHeading): ?>
+            <!--[if BLOCK]><![endif]--><?php if($hasHeading): ?>
                 <h3
                     class="fi-wi-stats-overview-header-heading col-span-full text-base font-semibold leading-6 text-gray-950 dark:text-white"
                 >
                     <?php echo e($heading); ?>
 
                 </h3>
-            <?php endif; ?>
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-            <?php if($hasDescription): ?>
+            <!--[if BLOCK]><![endif]--><?php if($hasDescription): ?>
                 <p
                     class="fi-wi-stats-overview-header-description overflow-hidden break-words text-sm text-gray-500 dark:text-gray-400"
                 >
                     <?php echo e($description); ?>
 
                 </p>
-            <?php endif; ?>
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </div>
-    <?php endif; ?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
     <div
         <?php if($pollingInterval = $this->getPollingInterval()): ?>
@@ -51,10 +51,10 @@
             'md:grid-cols-2 xl:grid-cols-4' => $columns === 4,
         ]); ?>"
     >
-        <?php $__currentLoopData = $this->getCachedStats(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $stat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $this->getCachedStats(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $stat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <?php echo e($stat); ?>
 
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
     </div>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
