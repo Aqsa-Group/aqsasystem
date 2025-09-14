@@ -12,18 +12,17 @@
                         <label for="type" class="mb-2 font-semibold text-gray-700 dark:text-gray-300">
                             نوع مصرف
                         </label>
-                        <select id="type" wire:model.live="withdrawType" {{-- این تغییر مهم است --}}
-                            class="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 
-                                   focus:outline-none focus:ring-2 focus:ring-blue-500 
+                        <select id="type" wire:model.live="withdrawType"
+                            class="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2
+                                   focus:outline-none focus:ring-2 focus:ring-blue-500
                                    dark:bg-gray-800 dark:text-gray-100">
                             <option value="">انتخاب کنید</option>
                             <option value="electricity">برق</option>
                             <option value="rent">کرایه</option>
-                            <option value="water">مالیه </option>
+                            <option value="water">مالیه</option>
                             <option value="food">غذا</option>
                             <option value="salary">معاش کارمند</option>
                             <option value="other">متفرقه</option>
-
                         </select>
                     </div>
 
@@ -33,9 +32,10 @@
                             <label for="staff_id" class="mb-2 font-semibold text-gray-700 dark:text-gray-300">
                                 انتخاب کارمند
                             </label>
-                            <select id="staff_id" wire:model.defer="staffId"
-                                class="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 
-                                       focus:outline-none focus:ring-2 focus:ring-blue-500 
+                            {{-- توجه: از live استفاده شده تا تغییرات بلافاصله ارسال شوند --}}
+                            <select id="staff_id" wire:model.live="staffId"
+                                class="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2
+                                       focus:outline-none focus:ring-2 focus:ring-blue-500
                                        dark:bg-gray-800 dark:text-gray-100">
                                 <option value="">انتخاب کارمند</option>
                                 @foreach ($staffList as $staff)
@@ -50,10 +50,12 @@
                         <label for="amount" class="mb-2 font-semibold text-gray-700 dark:text-gray-300">
                             مقدار برداشت
                         </label>
-                        <input type="number" id="amount" wire:model.defer="withdrawAmount"
-                            class="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 
-                                   focus:outline-none focus:ring-2 focus:ring-blue-500 
-                                   dark:bg-gray-800 dark:text-gray-100">
+                        <input type="number" id="amount" wire:model="withdrawAmount"
+                            class="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2
+                                   focus:outline-none focus:ring-2 focus:ring-blue-500
+                                   dark:bg-gray-800 dark:text-gray-100"
+                            {{-- اگر نوع برداشت معاش است فیلد فقط‌خواندنی می‌شود --}}
+                            @if($withdrawType === 'salary') @endif>
                     </div>
 
                     {{-- توضیحات برداشت --}}
@@ -62,8 +64,8 @@
                             توضیحات برداشت
                         </label>
                         <textarea id="description" rows="4" wire:model.defer="withdrawDescription"
-                            class="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 
-                                   focus:outline-none focus:ring-2 focus:ring-blue-500 
+                            class="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2
+                                   focus:outline-none focus:ring-2 focus:ring-blue-500
                                    dark:bg-gray-800 dark:text-gray-100"></textarea>
                     </div>
 
@@ -73,14 +75,14 @@
                             <span wire:loading.remove>ثبت برداشت</span>
                             <span wire:loading>در حال ثبت...</span>
                         </x-filament::button>
-
                     </div>
 
                 </form>
             </div>
 
             <div class="w-full md:w-1/2">
-                <img src="{{ asset('assets/safe.jpg') }}" alt="تصویر صندوق" class="h-64 md:h-full w-full object-cover">
+                <img src="{{ asset('assets/safe.jpg') }}" alt="تصویر صندوق"
+                     class="h-64 md:h-full w-full object-cover">
             </div>
         </div>
     </div>
