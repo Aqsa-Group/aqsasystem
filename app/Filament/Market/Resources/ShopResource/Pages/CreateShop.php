@@ -33,7 +33,8 @@ class CreateShop extends CreateRecord
                 'updated_at' => now(),
             ]);
         }
-
+        
+        
         if ($record->rent === 'بلی' && $record->rent_time === 'now') {
             DB::connection('market')->table('accountings')->insert([
                 'expanses_type' => 'پول گروی',

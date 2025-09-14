@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Auth;
 
 class Withdraw extends Page
 {
+
+
+    
     protected static string $view = 'filament.pages.withdraw';
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
     protected static ?string $navigationGroup = 'حسابداری';

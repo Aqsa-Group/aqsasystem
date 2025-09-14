@@ -16,6 +16,8 @@ use App\Models\Import\Sarafi;
 use App\Models\Import\Customer;
 use App\Models\Import\Staff;
 use Morilog\Jalali\Jalalian;
+use Illuminate\Support\Facades\Auth;
+
 
 
 
@@ -31,6 +33,10 @@ class TransactionResource extends Resource
     protected static ?string $pluralModelLabel= 'ترانزکشن ها';
 
 
+ public static function canViewAny(): bool
+    {
+        return Auth::check() && in_array(Auth::user()?->role, ['superadmin']);
+    }
 
 
     public static function form(Form $form): Form
