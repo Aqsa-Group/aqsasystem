@@ -93,7 +93,6 @@ class StaffResource extends Resource
 
                 Tables\Columns\TextColumn::make('phone')
                     ->label('شماره تماس')
-                    ->numeric()
                     ->sortable(),
                Tables\Columns\TextColumn::make('salary')
                     ->label('معاش')
