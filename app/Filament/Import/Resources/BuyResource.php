@@ -21,7 +21,7 @@ class BuyResource extends Resource
 {
     protected static ?string $model = Buy::class;
 
-    protected static ?string $navigationIcon = 'simpleline-basket';
+    protected static ?string $navigationIcon = 'tabler-basket-dollar';
    protected static ?string $navigationLabel = 'خرید جنس';
     protected static ?string $pluralModelLabel = 'خرید';
     protected static ?string $navigationGroup = 'بخش خرید و فروش';
