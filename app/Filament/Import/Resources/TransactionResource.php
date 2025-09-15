@@ -26,7 +26,7 @@ class TransactionResource extends Resource
 {
     protected static ?string $model = Transaction::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'grommet-transaction';
     protected static ?string $navigationLabel= 'ترانزکشن ها';
     protected static ?string $navigationGroup = 'بخش صرافی';
     protected static ?string $modelLabel= 'ترانزکشن';

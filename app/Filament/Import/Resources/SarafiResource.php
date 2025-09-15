@@ -19,7 +19,7 @@ class SarafiResource extends Resource
 {
     protected static ?string $model = Sarafi::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'emoji-bank';
     protected static ?string $navigationLabel= 'صرافی';
     protected static ?string $navigationGroup= 'بخش صرافی';
     protected static ?string $modelLabel= 'صرافی';

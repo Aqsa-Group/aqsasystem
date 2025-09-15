@@ -66,7 +66,7 @@ unset($__defined_vars, $__key, $__value); ?>
     }
 ?>
 
-<?php if($hasActions): ?>
+<!--[if BLOCK]><![endif]--><?php if($hasActions): ?>
     <div
         <?php echo e($attributes->class([
                 'fi-ac gap-3',
@@ -82,18 +82,18 @@ unset($__defined_vars, $__key, $__value); ?>
             ])); ?>
 
     >
-        <?php if($hasSlot): ?>
+        <!--[if BLOCK]><![endif]--><?php if($hasSlot): ?>
             <?php echo e($slot); ?>
 
         <?php elseif($actionsAreHtmlable): ?>
             <?php echo e($actions); ?>
 
         <?php else: ?>
-            <?php $__currentLoopData = $actions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $action): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $actions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $action): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php echo e($action); ?>
 
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        <?php endif; ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
     </div>
-<?php endif; ?>
+<?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 <?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/vendor/filament/components/actions.blade.php ENDPATH**/ ?>
