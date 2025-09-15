@@ -33,6 +33,8 @@ class ImportPanelProvider extends PanelProvider
             ])
             ->login(ImportLogin::class)
             ->authGuard('import')
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('60s')
             ->brandName("حبیب یونس لمتید")
             ->discoverResources(in: app_path('Filament/Import/Resources'), for: 'App\\Filament\\Import\\Resources')
             ->discoverPages(in: app_path('Filament/Import/Pages'), for: 'App\\Filament\\Import\\Pages')
@@ -41,7 +43,7 @@ class ImportPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Import/Widgets'), for: 'App\\Filament\\Import\\Widgets')
             ->widgets([
-              
+
             ])
             ->middleware([
                 EncryptCookies::class,

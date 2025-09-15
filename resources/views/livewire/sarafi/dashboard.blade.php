@@ -1,205 +1,142 @@
-<div>
-    <h1 class="mb-5" style="font-family: 'header'; font-size: 20px ">صفحه اصلی گزارشات و آمار</h1>
-    <div class="grid grid-cols-1 md:grid-cols-6 gap-2 items-center justify-center ">
+<div class="p-6 bg-gray-50 min-h-screen" style="font-family: 'header';">
 
-        {{-- payment card --}}
-        <div
-            class="border bg-white border-gray-300 rounded-md p-3 shadow-sm hover:bg-cyan-400 transition-colors duration-300  ease-linear ">
-            <div class="flex items-center justify-center gap-2">
-                <i class="fas fa-credit-card text-sm"></i>
-                <a href="" class="text-[15px]">{{ __('messages.recipt/withdraw') }}</a>
+    <!-- عنوان صفحه -->
+    <h1 class="mb-8 text-2xl font-bold text-gray-700">📊 صفحه اصلی گزارشات و آمار</h1>
+
+    <!-- کارت‌های منو -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        
+        <!-- کارت -->
+        <div class="border bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition hover:bg-cyan-50">
+            <div class="flex items-center justify-center gap-2 text-gray-700">
+                <i class="fas fa-credit-card text-indigo-600"></i>
+                <a href="" class="font-medium text-sm">{{ __('messages.recipt/withdraw') }}</a>
             </div>
         </div>
 
-        {{-- transfer card --}}
-        <div
-            class="border bg-white border-gray-300 rounded-md p-3 shadow-sm hover:bg-cyan-400 transition-colors duration-300  ease-linear ">
-            <div class="flex items-center justify-center gap-2">
-                <i class="fa-solid fa-money-bill-transfer"></i>
-                <a href="" class="text-[15px]">{{ __('messages.transfer') }}</a>
+        <div class="border bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition hover:bg-cyan-50">
+            <div class="flex items-center justify-center gap-2 text-gray-700">
+                <i class="fa-solid fa-money-bill-transfer text-green-600"></i>
+                <a href="" class="font-medium text-sm">{{ __('messages.transfer') }}</a>
             </div>
         </div>
 
-        {{-- jornal accounts --}}
-
-        <div
-            class="border bg-white border-gray-300 rounded-md p-3 shadow-sm hover:bg-cyan-400 transition-colors duration-300  ease-linear ">
-            <div class="flex items-center justify-center gap-2">
-                <i class="fa-solid fa-newspaper"></i>
-                <a href="" class="text-[15px]">{{ __('messages.newspaper_accounts') }}</a>
+        <div class="border bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition hover:bg-cyan-50">
+            <div class="flex items-center justify-center gap-2 text-gray-700">
+                <i class="fa-solid fa-newspaper text-orange-500"></i>
+                <a href="" class="font-medium text-sm">{{ __('messages.newspaper_accounts') }}</a>
             </div>
         </div>
 
-
-        <div
-            class="border bg-white border-gray-300 rounded-md p-3 shadow-sm hover:bg-cyan-400 transition-colors duration-300  ease-linear ">
-            <div class="flex items-center justify-center gap-2">
-                <img src="{{ asset('assets/sarafi/exchange_money.png') }}" class="h-7 w-7" alt="">
-                <a href="" class="text-[15px]">{{ __('messages.coversion_account') }}</a>
+        <div class="border bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition hover:bg-cyan-50">
+            <div class="flex items-center justify-center gap-2 text-gray-700">
+                <img src="{{ asset('assets/sarafi/exchange_money.png') }}" class="h-6 w-6" alt="">
+                <a href="" class="font-medium text-sm">{{ __('messages.coversion_account') }}</a>
             </div>
         </div>
 
-
-
-
-
-
-
-        <div
-            class="border bg-white border-gray-300 rounded-md p-3 shadow-sm hover:bg-cyan-400 transition-colors duration-300  ease-linear ">
-            <div class="flex items-center justify-center gap-2">
-                <i class="fa-solid fa-money-bill-transfer"></i>
-                <a href="" class="text-[15px]">{{ __('messages.coversion_transfer') }}</a>
+        <div class="border bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition hover:bg-cyan-50">
+            <div class="flex items-center justify-center gap-2 text-gray-700">
+                <i class="fa-solid fa-money-bill-transfer text-purple-600"></i>
+                <a href="" class="font-medium text-sm">{{ __('messages.coversion_transfer') }}</a>
             </div>
         </div>
 
-        <div
-            class="border bg-white border-gray-200 rounded-md p-3 shadow-sm hover:bg-cyan-400 transition-colors duration-300  ease-linear ">
-            <div class="flex items-center justify-center gap-2">
+        <div class="border bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition hover:bg-cyan-50">
+            <div class="flex items-center justify-center gap-2 text-gray-700">
                 <img src="{{ asset('assets/sarafi/general.png') }}" class="h-6 w-6" alt="">
-                <a href="" class="text-[15px]">{{ __('messages.general_jornal') }}</a>
+                <a href="" class="font-medium text-sm">{{ __('messages.general_jornal') }}</a>
             </div>
         </div>
     </div>
 
-    <div x-data="{ activeTab: @entangle('activeTab') }" class="mt-14 border-gray-200" style="font-family: 'header';">
-        <div class="flex gap-20 mb-2 border-b border-gray-400">
-            <!-- پنل عمومی -->
+    <!-- تب‌ها -->
+    <div x-data="{ activeTab: @entangle('activeTab') }" class="mt-12">
+        <div class="flex justify-start gap-6 border-b border-gray-300">
+            
             <a href="#"
                @click.prevent="activeTab = 'general'"
-               class="px-4 py-2"
+               class="px-5 py-2 font-bold transition rounded-t-lg"
                :class="activeTab === 'general' 
-                   ? 'border-t-2 border-l-2 border-r-2 border-gray-300 border-b-0    bg-white' 
-                   : 'border-b-2 border-transparent hover:border-gray-400'">
+                   ? 'bg-white border-x border-t border-gray-300 text-indigo-600 shadow-sm' 
+                   : 'text-gray-600 hover:text-indigo-500 hover:border-b-2 hover:border-indigo-400'">
                 پنل عمومی
             </a>
-    
-            <!-- پنل گزارشات -->
+
             <a href="#"
                @click.prevent="activeTab = 'reports'"
-               class="px-4 py-2"
+               class="px-5 py-2 font-bold transition rounded-t-lg"
                :class="activeTab === 'reports' 
-                   ? 'border-t-2 border-l-2 border-r-2 border-gray-200 border-b-0 bg-white shadow-md' 
-                   : 'border-b-2 border-transparent hover:border-gray-400'">
+                   ? 'bg-white border-x border-t border-gray-300 text-indigo-600 shadow-sm' 
+                   : 'text-gray-600 hover:text-indigo-500 hover:border-b-2 hover:border-indigo-400'">
                 پنل گزارشات و بیلانس
             </a>
         </div>
-    
-        <div class="p-4">
+
+        <!-- محتوای تب‌ها -->
+        <div class="p-6 bg-white rounded-b-xl shadow-sm mt-2">
+
+            <!-- تب عمومی -->
             <template x-if="activeTab === 'general'">
-                <div class="flex gap-4 ">
-                  
-                  <div class="md:w-1/2 grid grid-cols-1 md:grid-cols-2 gap-2">
-                
-                        <div class="border bg-white border-gray-300 rounded-md p-3 shadow-sm hover:bg-cyan-400 transition-colors duration-300  ease-linear ">
-                              <div class="flex items-center flex-col space-y-2">
-                                    <div class="flex items-center gap-3">
-                                        <i class="fas fa-users "></i> 
-                                         <p>کاربران فعال</p>
-                                    </div>
-                                    <p>2</p>
-                              </div> 
-                        </div>
-    
-                        <div class="border bg-white border-gray-300 rounded-md p-3 shadow-sm hover:bg-cyan-400 transition-colors duration-300  ease-linear ">
-                            <div class="flex items-center flex-col space-y-2">
-                                  <div class="flex items-center gap-3">
-                                      <i class="fas fa-users "></i> 
-                                       <p>مشتریان</p>
-                                  </div>
-                                  <p>2</p>
-                            </div> 
-                      </div>
-    
-    
-                      <div class="border bg-white border-gray-300 rounded-md p-3 shadow-sm hover:bg-cyan-400 transition-colors duration-300  ease-linear ">
-                        <div class="flex items-center flex-col space-y-2">
-                              <div class="flex items-center gap-3">
-                                  <i class="fas fa-users "></i> 
-                                   <p>ترانزکشن های امروز</p>
-                              </div>
-                              <p>2</p>
-                        </div> 
-                     </div>
-
-                     <div class="border bg-white border-gray-300 rounded-md p-3 shadow-sm hover:bg-cyan-400 transition-colors duration-300  ease-linear ">
-                        <div class="flex items-center flex-col space-y-2">
-                              <div class="flex items-center gap-3">
-                                  <i class="fas fa-users "></i> 
-                                   <p>ترانزکشن های در انتظار</p>
-                              </div>
-                              <p>2</p>
-                        </div> 
-                     </div>
-    
-                    </div>
-
-
-
-                    <div class="md:w-1/2 grid grid-cols-1 md:grid-cols-1 space-y-2">
-                
-                        {{-- payment card --}}
-                        <div class="border bg-white border-gray-300 rounded-md p-3 shadow-sm hover:bg-cyan-400 transition-colors duration-300  ease-linear ">
-                              <div class="flex items-center flex-col space-y-2">
-                                    <div class="flex items-center gap-3">
-                                         <p>موجودی افغانی در صندوق</p>
-                                    </div>
-                                    <p>200000 افغانی</p>
-                              </div> 
-                        </div>
-    
-                        <div class="border bg-white border-gray-300 rounded-md p-3 shadow-sm hover:bg-cyan-400 transition-colors duration-300  ease-linear ">
-                            <div class="flex items-center flex-col space-y-2">
-                                  <div class="flex items-center gap-3">
-                                       <p>موجودی دالر در صندوق</p>
-                                  </div>
-                                  <p>200000 افغانی</p>
-                            </div> 
-                      </div>
-  
-    
-                      <div class="border bg-white border-gray-300 rounded-md  shadow-sm hover:bg-cyan-400 transition-colors duration-300 ease-linear">
-                        <div class="flex h-16">
-                            
-                            <div class="w-1/2 flex items-center justify-center">
-                                <p class="text-lg font-semibold">3000</p>
-                            </div>
-
-                            <div class="w-1/2 flex items-center justify-center bg-green-500 text-white rounded-l-md">
-                                <i class="fa-solid fa-euro-sign text-2xl"></i>
-                            </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     
+                    <!-- کارت آماری -->
+                    <div class="border bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition transform hover:scale-105">
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center justify-center bg-gradient-to-r from-indigo-500 to-blue-500 text-white rounded-full h-16 w-16 shadow-lg">
+                                <img src="{{ asset('assets/sarafi/user.png') }}" alt="Users" class="h-10 w-10">
+                            </div>
+                            <div>
+                                <h1 class="text-sm font-semibold text-gray-600">تعداد کاربران</h1>
+                                <p class="text-2xl font-extrabold text-indigo-600">10</p>
+                            </div>
                         </div>
                     </div>
-                    
 
-
-                  <div class="border bg-white border-gray-300 rounded-md p-3 shadow-sm hover:bg-cyan-400 transition-colors duration-300  ease-linear ">
-                    <div class="flex items-center flex-col space-y-2">
-                          <div class="flex items-center gap-3">
-                               <p>موجودی تومان در صندوق</p>
-                          </div>
-                          <p>200000 افغانی</p>
-                    </div> 
-              </div>
-
-
-    
+                    <div class="border bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition transform hover:scale-105">
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center justify-center bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-full h-16 w-16 shadow-lg">
+                                <img src="{{ asset('assets/sarafi/customer.png') }}" alt="Customers" class="h-10 w-10">
+                            </div>
+                            <div>
+                                <h1 class="text-sm font-semibold text-gray-600">تعداد مشتریان</h1>
+                                <p class="text-2xl font-extrabold text-green-600">10</p>
+                            </div>
+                        </div>
                     </div>
-                   
+
+                    <div class="border bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition transform hover:scale-105">
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full h-16 w-16 shadow-lg">
+                                <img src="{{ asset('assets/sarafi/transaction_s.png') }}" alt="Transactions" class="h-10 w-10">
+                            </div>
+                            <div>
+                                <h1 class="text-sm font-semibold text-gray-600">ترانزکشن‌های امروز</h1>
+                                <p class="text-2xl font-extrabold text-purple-600">10</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition transform hover:scale-105">
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center justify-center bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-full h-16 w-16 shadow-lg">
+                                <img src="{{ asset('assets/sarafi/transaction_w.png') }}" alt="Pending" class="h-10 w-10">
+                            </div>
+                            <div>
+                                <h1 class="text-sm font-semibold text-gray-600">ترانزکشن‌های در انتظار</h1>
+                                <p class="text-2xl font-extrabold text-yellow-600">10</p>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
-              
-              
-      
-
-                       
             </template>
-    
+
+            <!-- تب گزارشات -->
             <template x-if="activeTab === 'reports'">
-                <h2 class="text-lg font-bold">📊 محتوای پنل گزارشات و بیلانس</h2>
+                <h2 class="text-lg font-bold text-gray-700">📑 محتوای پنل گزارشات و بیلانس</h2>
             </template>
         </div>
     </div>
-    
+
 </div>

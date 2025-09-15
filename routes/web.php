@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cookie;
 use App\Http\Controllers\PrintContract;
 use App\Http\Controllers\printLoan;
+use Illuminate\Support\Facades\Session;
+
 
 
 
@@ -88,25 +90,15 @@ Route::post('/sarafi/login', [CustomController::class, 'login'])->name('sarafi.l
 Route::post('/sarafi/logout', [CustomController::class, 'logout'])->name('sarafi.logout');
 
 
+Route::get('/set-locale/{locale}', function ($locale) {
+    $availableLocales = ['fa', 'ps', 'en'];
 
-use Illuminate\Cookie\Middleware\EncryptCookies;
-use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
-use Illuminate\Session\Middleware\StartSession;
-use App\Http\Middleware\SetLocale;
-use Illuminate\Support\Facades\Session;
+    if (in_array($locale, $availableLocales)) {
+        Session::put('locale', $locale);
+        Cookie::queue('locale', $locale, 60 * 24 * 30); // 30 روز
+    }
 
-// Route::get('/set-locale/{locale}', function ($locale) {
-//     $availableLocales = ['fa', 'ps', 'en'];
+    return redirect()->back();
+})->name('set-locale');
 
-//     if (in_array($locale, $availableLocales)) {
-//         Session::put('locale', $locale);
-//         Cookie::queue('locale', $locale, 60 * 24 * 30); // 30 روز
-//     }
 
-//     return redirect()->back();
-// })->name('set-locale');
-
-// Route::prefix('sarafi')->group(function () {
-//     Route::get('/', fn () => 'صفحه اصلی صرافی');
-//     Route::get('/home', fn () => 'خانه صرافی');
-// });
