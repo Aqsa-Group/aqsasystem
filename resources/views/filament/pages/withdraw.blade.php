@@ -22,6 +22,7 @@
                             <option value="water">مالیه</option>
                             <option value="food">غذا</option>
                             <option value="salary">معاش کارمند</option>
+                            <option value="transportation">بارچلانی چین</option>
                             <option value="other">متفرقه</option>
                         </select>
                     </div>
