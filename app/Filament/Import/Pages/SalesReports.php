@@ -1,75 +1,65 @@
 <?php
+
 namespace App\Filament\Import\Pages;
 
-use App\Models\Import\Loan;
-use App\Models\Import\Safe;
 use App\Models\Import\Sale;
-use App\Models\Import\Withdraw;
 use Filament\Pages\Page;
-use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\Support\Htmlable;
 
 
 class SalesReports extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    protected static ?string $navigationLabel = 'گزارشات';
+    protected static ?string $navigationLabel = 'گزارشات فروش';
     protected static ?string $navigationGroup = 'گزارشات و تنظیمات';
-    protected static ?string $title = '';
-    protected static ?string $route = '/sales-reports';
+    protected static ?string $title = '📊 گزارش فروش';
+    protected static bool $shouldRegisterNavigation = false;
     protected static ?int $navigationSort = 9;
 
-    protected function getRedirectUrl(): string
-    {
-        return $this->getResource()::getUrl('index');
-    }
-
-    protected static string $view = 'filament.pages.sales-reports';
-
-    public $sales = [];
-    public $loans = [];
-    public $safeSummary = [];
-    public $withdrawals = [];
-
+    protected static string $view = 'filament.import.pages.sales-reports';
 
     public function getTitle(): string|Htmlable
     {
         return '';
     }
 
+    public $buyer_name = '';
+    public $sale_type = '';
+    public $created_at = ''; // فقط یک تاریخ
+
+    public $sales = [];
+
+    public function updated()
+    {
+        $this->loadSales();
+    }
+
     public function mount()
+    {
+        $this->loadSales();
+    }
+
+    public function loadSales()
     {
         $userId = Auth::id();
         $userRole = Auth::user()?->role;
-    
-        $this->sales = Sale::with('customer')
-            ->when($userRole !== 'superadmin', fn($query) => $query->where('user_id', $userId))
-            ->orderBy('created_at', 'desc')
-            ->get()
-            ->toArray();
-    
-        $this->loans = Loan::with('customer')
-            ->when($userRole !== 'superadmin', fn($query) => $query->where('user_id', $userId))
-            ->orderBy('date', 'desc')
-            ->get()
-            ->toArray();
-    
-        $safe = Safe::orderBy('created_at', 'desc')->first();
-        $this->safeSummary = $safe ? [
-            'total' => $safe->total,
-            'today' => $safe->today,
-            'last_update' => $safe->last_update,
-        ] : [
-            'total' => 0,
-            'today' => 0,
-            'last_update' => null,
-        ];
-    
-      
-        $this->withdrawals = Withdraw::with('staff')
-            ->when($userRole !== 'superadmin', fn($query) => $query->where('user_id', $userId))
-            ->latest()
-            ->get();
+
+        $query = Sale::with('customer')
+            ->when($userRole !== 'superadmin', fn($q) => $q->where('user_id', $userId));
+
+        if ($this->buyer_name) {
+            $query->where('buyer_name', 'like', "%{$this->buyer_name}%");
+        }
+
+        if ($this->sale_type) {
+            $query->where('sale_type', $this->sale_type);
+        }
+
+        if ($this->created_at) {
+            $query->whereDate('created_at', $this->created_at);
+        }
+
+        $this->sales = $query->latest()->get()->toArray();
     }
-    
 }

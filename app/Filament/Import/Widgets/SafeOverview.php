@@ -43,7 +43,7 @@ class SafeOverview extends BaseWidget
                     Card::make('📆 فروشات امروز', number_format($todayIncome) . ' افغانی')
                         ->description('مجموع مبالغ ثبت شده در امروز')
                         ->descriptionIcon('heroicon-o-banknotes')
-                        ->url(route('filament.import.pages.sales-reports'))
+                        // ->url(route('filament.import.pages.sales-reports'))
                         ->color($todayIncome > 0 ? 'info' : 'danger'),
 
                     Card::make('📈 فایده امروز', number_format($todayProfit) . ' افغانی')
@@ -53,7 +53,7 @@ class SafeOverview extends BaseWidget
 
                     Card::make('📉 مصارف امروز', number_format($totalWithdraw) . ' افغانی')
                         ->description('مجموع مصارف ثبت شده امروز')
-                        ->url(route('filament.import.pages.sales-reports'))
+                        // ->url(route('filament.import.pages.sales-reports'))
                         ->descriptionIcon('heroicon-o-arrow-trending-down')
                         ->color('danger'),
 
