@@ -17,7 +17,12 @@ class Staff extends Model
         'user_id',
         'phone',
         'address',
-        'salary'
+        'salary',
+         'USD',
+        'AFN',
+        'CNY',
+
+
     ];
 
     public function user()

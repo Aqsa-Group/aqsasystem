@@ -14,8 +14,9 @@ class Safe extends Model
         'sale_item_id',
         'total',
         'user_id',
-
         'today',
+        'USD',
+        'AFN',
         'last_update'
     ];
 

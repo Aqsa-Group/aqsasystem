@@ -97,7 +97,7 @@ class TransactionResource extends Resource
                     ->default(null),
                 Forms\Components\Select::make('currency')->label('ارز')
                     ->options([
-                        'AFٔN'=>'افغانی',
+                        'AFN'=>'افغانی',
                         'USD'=>'دالر',
                         'CNY'=>'ین چین',
                         'EUR'=>'یورو',

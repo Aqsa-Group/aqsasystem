@@ -76,21 +76,20 @@ class CustomerResource extends Resource
                 Tables\Columns\TextColumn::make('name')->label('نام')->searchable(),
                 Tables\Columns\TextColumn::make('father_name')->label('نام پدر')->searchable(),
                 Tables\Columns\TextColumn::make('grand-father')->label('نام پدرکلان')->searchable(),
-                Tables\Columns\TextColumn::make('address')->label('آدرس')->searchable(),
+                // Tables\Columns\TextColumn::make('address')->label('آدرس')->searchable(),
                 Tables\Columns\TextColumn::make('phone')->label('شماره تلفن')->sortable(),
 
-                Tables\Columns\TextColumn::make('total_loan')
-                    ->label('مجموع قرضه')->sortable()
-                    ->formatStateUsing(fn ($state) => number_format($state)),
-                Tables\Columns\TextColumn::make('total_receipt')
-                    ->label('مجموع رسید')->sortable()
-                    ->formatStateUsing(fn ($state) => number_format($state)),
-                Tables\Columns\TextColumn::make('remaining_loan')
-                    ->label('باقی‌مانده')->sortable()
-                    ->formatStateUsing(fn ($state) => number_format($state)),
-
-
-
+                // Tables\Columns\TextColumn::make('total_loan')
+                //     ->label('مجموع قرضه')->sortable()
+                //     ->formatStateUsing(fn ($state) => number_format($state)),
+                // Tables\Columns\TextColumn::make('total_receipt')
+                //     ->label('مجموع رسید')->sortable()
+                //     ->formatStateUsing(fn ($state) => number_format($state)),
+                // Tables\Columns\TextColumn::make('remaining_loan')
+                //     ->label('باقی‌مانده')->sortable()
+                //     ->formatStateUsing(fn ($state) => number_format($state)),
+                Tables\Columns\TextColumn::make('USD')->label('موجودی دالر')->sortable()->default('0'),
+                Tables\Columns\TextColumn::make('AFN')->label('موجودی افغانی')->sortable()->default('0'),
                 Tables\Columns\TextColumn::make('created_at')->label('تاریخ ایجاد')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])

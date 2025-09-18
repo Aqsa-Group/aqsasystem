@@ -3,19 +3,23 @@
 namespace App\Filament\Import\Widgets;
 
 use App\Models\Import\SaleItem;
+use App\Models\Import\Safe;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\Jalalian;
 
 class MonthlyLossChart extends ChartWidget
 {
-    protected static ?string $heading = '📉 ضرر ماهانه (افغانی)';
+    protected static ?string $heading = '📉 ضرر ماهانه';
 
     protected function getData(): array
     {
         $userId = Auth::id();
-        $saleItems = SaleItem::where('user_id', $userId)->get();
 
+        $safe = Safe::where('user_id', $userId)->latest()->first();
+        $currencyLabel = ($safe && $safe->currency) ? 'USD' : 'AFN';
+
+        $saleItems = SaleItem::where('user_id', $userId)->get();
         $lossesByMonth = [];
 
         foreach ($saleItems as $item) {
@@ -42,18 +46,16 @@ class MonthlyLossChart extends ChartWidget
             $data[] = $lossesByMonth[$month] ?? 0;
         }
 
-        // معکوس کردن لیبل‌ها و داده‌ها برای صفحه RTL
         $labels = array_reverse($labels);
         $data = array_reverse($data);
 
-        // تعیین بیشترین مقدار محور Y
         $maxValue = max($data) ?: 1000;
         $maxValue = ceil($maxValue * 1.1);
 
         return [
             'datasets' => [
                 [
-                    'label' => 'ضرر (AF)',
+                    'label' => "ضرر ($currencyLabel)",
                     'data' => $data,
                     'borderColor' => '#dc2626',
                     'backgroundColor' => 'rgba(220, 38, 38, 0.2)',
@@ -86,7 +88,7 @@ class MonthlyLossChart extends ChartWidget
                         'ticks' => [
                             'color' => '#991b1b',
                             'font' => ['family' => "'Vazirmatn', Tahoma, sans-serif", 'size' => 14],
-                            'callback' => "function(value) { return value.toLocaleString() + ' AF'; }",
+                            'callback' => "function(value) { return value.toLocaleString() + ' $currencyLabel'; }",
                         ],
                     ],
                 ],
@@ -103,7 +105,7 @@ class MonthlyLossChart extends ChartWidget
                         'titleFont' => ['family' => "'Vazirmatn', Tahoma, sans-serif", 'weight' => 'bold', 'size' => 16],
                         'bodyFont' => ['family' => "'Vazirmatn', Tahoma, sans-serif", 'size' => 14],
                         'callbacks' => [
-                            'label' => "function(context) { return context.dataset.label + ': ' + context.parsed.y.toLocaleString() + ' AF'; }",
+                            'label' => "function(context) { return context.dataset.label + ': ' + context.parsed.y.toLocaleString() + ' $currencyLabel'; }",
                         ],
                     ],
                 ],

@@ -3,19 +3,24 @@
 namespace App\Filament\Import\Widgets;
 
 use App\Models\Import\SaleItem;
+use App\Models\Import\Safe;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\Jalalian;
 
 class MonthlyProfitChart extends ChartWidget
 {
-    protected static ?string $heading = '📈 فایده ماهانه (افغانی)';
+    protected static ?string $heading = '📈 فایده ماهانه';
 
     protected function getData(): array
     {
         $userId = Auth::id();
-        $saleItems = SaleItem::where('user_id', $userId)->get();
 
+        // دریافت ارز جاری از safe
+        $safe = Safe::where('user_id', $userId)->latest()->first();
+        $currencyLabel = ($safe && $safe->currency) ? 'USD' : 'AFN';
+
+        $saleItems = SaleItem::where('user_id', $userId)->get();
         $profitsByMonth = [];
 
         foreach ($saleItems as $item) {
@@ -60,7 +65,7 @@ class MonthlyProfitChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'فایده (AF)',
+                    'label' => "فایده ($currencyLabel)",
                     'data' => $data,
                     'backgroundColor' => function ($context) {
                         $colors = [
@@ -98,7 +103,7 @@ class MonthlyProfitChart extends ChartWidget
                         'ticks' => [
                             'color' => '#065f46',
                             'font' => ['family' => "'Vazirmatn', Tahoma, sans-serif", 'size' => 14],
-                            'callback' => "function(value) { return value.toLocaleString() + ' AF'; }",
+                            'callback' => "function(value) { return value.toLocaleString() + ' $currencyLabel'; }",
                         ],
                     ],
                 ],
@@ -115,7 +120,7 @@ class MonthlyProfitChart extends ChartWidget
                         'titleFont' => ['family' => "'Vazirmatn', Tahoma, sans-serif", 'weight' => 'bold', 'size' => 16],
                         'bodyFont' => ['family' => "'Vazirmatn', Tahoma, sans-serif", 'size' => 14],
                         'callbacks' => [
-                            'label' => "function(context) { return context.dataset.label + ': ' + context.parsed.y.toLocaleString() + ' AF'; }",
+                            'label' => "function(context) { return context.dataset.label + ': ' + context.parsed.y.toLocaleString() + ' $currencyLabel'; }",
                         ],
                     ],
                 ],

@@ -25,7 +25,7 @@ class CreateLoan extends CreateRecord
     $receipt = $data['loan_recipt'] ?? 0;
 
     $safe = Safe::firstOrCreate([], [
-        'total' => 0,
+        'USD' => 0,
         'today' => 0,
         'last_update' => now()->toDateString(),
     ]);
@@ -39,7 +39,7 @@ class CreateLoan extends CreateRecord
 
         $customer->save();
 
-        $safe->total += $receipt;
+        $safe->USD += $receipt;
         $safe->today += $receipt;
         $safe->save();
 
@@ -57,7 +57,7 @@ class CreateLoan extends CreateRecord
         $data['loan_recipt'] = 0;
         $data['reminded'] = $amount;
 
-        $safe->total -= $amount;
+        $safe->USD -= $amount;
         $safe->today -= $amount;
         $safe->save();
     }

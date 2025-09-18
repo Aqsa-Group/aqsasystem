@@ -26,6 +26,8 @@ class Withdraw extends Page
     public string $withdrawDescription = '';
     public string $withdrawType = '';
     public ?int $staffId = null;
+    public string $withdrawCurrency = '';
+
 
     public $staffList = [];
 
@@ -34,7 +36,6 @@ class Withdraw extends Page
         $this->staffList = Staff::all();
     }
 
-    // وقتی کارمند تغییر کند
     public function updatedStaffId($value)
     {
         if ($this->withdrawType === 'salary' && $value) {
@@ -57,9 +58,9 @@ class Withdraw extends Page
 
 public function withdrawFromSafe()
 {
-    if ($this->withdrawAmount <= 0 || empty($this->withdrawType)) {
+    if ($this->withdrawAmount <= 0 || empty($this->withdrawType) || empty($this->withdrawCurrency)) {
         Notification::make()
-            ->title('لطفاً مقدار و نوع برداشت معتبر وارد کنید!')
+            ->title('لطفاً مقدار، نوع برداشت و ارز معتبر وارد کنید!')
             ->danger()
             ->send();
         return;
@@ -73,18 +74,25 @@ public function withdrawFromSafe()
         return;
     }
 
-    // فقط برای حالت معاش: بررسی سقف ماهانه
     if ($this->withdrawType === 'salary') {
-        // سقف ماهانه (به افغانی) — شما گفته بودید "ده هراز"
-        $monthlyLimit = 10000;
+        $staff = Staff::find($this->staffId);
+        if (!$staff) {
+            Notification::make()
+                ->title('کارمند انتخاب شده یافت نشد!')
+                ->danger()
+                ->send();
+            return;
+        }
+
+        $monthlyLimit = $staff->salary;
 
         $now = Carbon::now();
         $month = $now->month;
         $year  = $now->year;
 
-        // مجموع پرداخت‌های قبلی به این کارمند در ماه جاری
         $paidThisMonth = WithdrawModel::where('staff_id', $this->staffId)
             ->where('type', 'salary')
+            ->where('currency', $this->withdrawCurrency)
             ->whereYear('created_at', $year)
             ->whereMonth('created_at', $month)
             ->sum('amount');
@@ -94,7 +102,7 @@ public function withdrawFromSafe()
         if ($remaining <= 0) {
             Notification::make()
                 ->title('سقف ماهانه پرداخت به این کارمند قبلاً تکمیل شده است.')
-                ->body("تا این ماه دیگر اجازهٔ پرداخت وجود ندارد. (سقف: {$monthlyLimit})")
+                ->body("تا این ماه دیگر اجازهٔ پرداخت وجود ندارد. (سقف: {$monthlyLimit} {$this->withdrawCurrency})")
                 ->danger()
                 ->send();
             return;
@@ -103,63 +111,76 @@ public function withdrawFromSafe()
         if ($this->withdrawAmount > $remaining) {
             Notification::make()
                 ->title('مقدار درخواستی بیشتر از سقف ماهانه است.')
-                ->body("تا کنون {$paidThisMonth} افغانی پرداخت شده. باقی‌مانده برای این ماه: {$remaining} افغانی. لطفاً مقدار را کم کنید یا ابتدا باقی‌مانده را پرداخت کنید.")
+                ->body("تا کنون {$paidThisMonth} {$this->withdrawCurrency} پرداخت شده. باقی‌مانده برای این ماه: {$remaining} {$this->withdrawCurrency}. لطفاً مقدار را کم کنید یا ابتدا باقی‌مانده را پرداخت کنید.")
                 ->danger()
                 ->send();
-
-            // --- اگر می‌خواهید رفتار خودکار (برش زدن به باقی‌مانده) فعال باشد --- 
-            // Uncomment کنید تا به‌صورت خودکار مقدار را به باقی‌مانده تغییر دهد و پرداخت انجام شود.
-            //
-            // $this->withdrawAmount = $remaining;
-            // // ادامه پردازش را بدون return انجام بده (یعنی اجازه بده پرداخت با مقدار جدید انجام شود)
-            //
             return;
         }
     }
 
-    // ادامهٔ قبلی: موجودی صندوق کاربر جاری
     $safe = Safe::where('user_id', Auth::id())->first();
 
     if (!$safe) {
         Notification::make()
-            ->title('موجودی صندوق شما صفر است یا یافت نشد!')
+            ->title('موجودی صندوق شما یافت نشد!')
             ->danger()
             ->send();
         return;
     }
 
-    if ($safe->total < $this->withdrawAmount) {
+    if ($this->withdrawCurrency === 'AFN') {
+        if ($safe->AFN < $this->withdrawAmount) {
+            Notification::make()
+                ->title('موجودی افغانی صندوق کافی نیست!')
+                ->danger()
+                ->send();
+            return;
+        }
+    } elseif ($this->withdrawCurrency === 'USD') {
+        if ($safe->USD < $this->withdrawAmount) {
+            Notification::make()
+                ->title('موجودی دالر صندوق کافی نیست!')
+                ->danger()
+                ->send();
+            return;
+        }
+    } else {
         Notification::make()
-            ->title('موجودی صندوق شما کافی نیست!')
+            ->title('نوع ارز انتخاب شده نامعتبر است!')
             ->danger()
             ->send();
         return;
     }
 
-    // بهتر است عملیات DB در تراکنش انجام شود
     DB::transaction(function () use ($safe) {
-        $safe->decrement('total', $this->withdrawAmount);
+        if ($this->withdrawCurrency === 'AFN') {
+            $safe->decrement('AFN', $this->withdrawAmount);
+        } elseif ($this->withdrawCurrency === 'USD') {
+            $safe->decrement('USD', $this->withdrawAmount);
+        }
 
         WithdrawModel::create([
             'amount'      => $this->withdrawAmount,
             'description' => $this->withdrawDescription,
             'type'        => $this->withdrawType,
+            'currency'    => $this->withdrawCurrency,
             'user_id'     => Auth::id(),
             'staff_id'    => $this->withdrawType === 'salary' ? $this->staffId : null,
         ]);
     });
 
     Notification::make()
-        ->title("مبلغ {$this->withdrawAmount} افغانی از صندوق شما برداشت شد.")
+        ->title("مبلغ {$this->withdrawAmount} {$this->withdrawCurrency} از صندوق شما برداشت شد.")
         ->body($this->withdrawDescription ?: 'برداشت بدون توضیح')
         ->success()
         ->send();
 
-    // ریست کردن فرم
     $this->withdrawAmount = 0;
     $this->withdrawDescription = '';
     $this->withdrawType = '';
     $this->staffId = null;
+    $this->withdrawCurrency = '';
 }
+
 
 }

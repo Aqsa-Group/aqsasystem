@@ -25,6 +25,7 @@
         "davidhsianturi/blade-bootstrap-icons": "^2.1",
         "doctrine/dbal": "^4.3",
         "eduard9969/blade-polaris-icons": "^2.8",
+        "faisal50x/blade-ionicons": "^1.1",
         "filament/filament": "3.3",
         "filament/notifications": "^3.3",
         "joshembling/image-optimizer": "^1.6",

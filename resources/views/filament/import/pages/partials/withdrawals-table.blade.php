@@ -6,6 +6,7 @@
                 <th class="p-2 border">تاریخ</th>
                 <th class="p-2 border">کارمند</th>
                 <th class="p-2 border">مبلغ</th>
+                <th class="p-2 border">ارز</th>
                 <th class="p-2 border">توضیحات</th>
             </tr>
         </thead>
@@ -18,6 +19,15 @@
             </td>
             <td class="p-2 border">{{ $withdrawal->staff->name ?? '---' }}</td>
             <td class="p-2 border text-red-600 font-bold">{{ number_format($withdrawal->amount ?? 0) }}</td>
+            <td class="p-2 border">
+                @if($withdrawal->currency === 'AFN')
+                    افغانی
+                @elseif($withdrawal->currency === 'USD')
+                    دالر
+                @else
+                    {{ $withdrawal->currency ?? '---' }}
+                @endif
+            </td>
             <td class="p-2 border">{{ $withdrawal->description ?? '---' }}</td>
         </tr>
     @empty

@@ -11,7 +11,7 @@ class Withdraw extends Model
     protected $connection='import';
     protected $table='withdraws';
 
-    protected $fillable = ['amount', 'description', 
+    protected $fillable = ['amount', 'description', 'currency',
     'type',
     'user_id',    
     'staff_id'];

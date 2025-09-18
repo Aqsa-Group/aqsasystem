@@ -5,6 +5,8 @@ namespace App\Filament\Import\Resources;
 use App\Filament\Import\Resources\BuyResource\Pages;
 use App\Filament\Import\Resources\BuyResource\RelationManagers;
 use App\Models\Import\Buy;
+use App\Models\Import\Company;
+
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -22,14 +24,13 @@ class BuyResource extends Resource
     protected static ?string $model = Buy::class;
 
     protected static ?string $navigationIcon = 'tabler-basket-dollar';
-   protected static ?string $navigationLabel = 'خرید جنس';
+    protected static ?string $navigationLabel = 'خرید جنس';
     protected static ?string $pluralModelLabel = 'خرید';
+    protected static ?string $modelLabel = 'خرید';
+
     protected static ?string $navigationGroup = 'بخش خرید و فروش';
     protected static ?int $navigationSort = 9;
 
-
-
-   
        public static function form(Form $form): Form
     {
         return $form
@@ -55,31 +56,33 @@ class BuyResource extends Resource
                     ->first();
         
 
-                    if ($product) {
-                        $set('name', $product->name);
-                        $set('unit', $product->unit);
-                        $set('brand', $product->brand);
-                        $set('price', $product->price);
-                        $set('big_unit_price', $product->big_unit_price);
-                        $set('big_quantity', $product->big_quantity);
-                        $set('retail_price', $product->retail_price);
-                        $set('big_whole_price', $product->big_whole_price);
-                        $set('import_date', $product->import_date);
+                  if ($product) {
+                    $set('name', $product->name);
+                    $set('unit', $product->unit);
+                    $set('brand', $product->brand);
 
-                        $set('product_image', $product->product_image ? [$product->product_image] : null);
-                    } else {
-                        $set('name', '');
-                        $set('unit', '');
-                        $set('brand', '');
-                        $set('price', null);
-                        $set('big_unit_price', null);
-                        $set('big_quantity', null);
-                        $set('retail_price', null);
-                        $set('big_whole_price', null);
-                        $set('import_date', null);
+                    $set('price', number_format((float)$product->price, 2, '.', ''));
+                    $set('big_unit_price', number_format((float)$product->big_unit_price, 2, '.', ''));
+                    $set('retail_price', number_format((float)$product->retail_price, 2, '.', ''));
+                    $set('big_whole_price', number_format((float)$product->big_whole_price, 2, '.', ''));
 
-                        $set('product_image', null);
-                    }
+                    $set('big_quantity', $product->big_quantity);
+                    $set('import_date', $product->import_date);
+
+                    $set('product_image', $product->product_image ? [$product->product_image] : null);
+                } else {
+                    $set('name', '');
+                    $set('unit', '');
+                    $set('brand', '');
+                    $set('price', null);
+                    $set('big_unit_price', null);
+                    $set('big_quantity', null);
+                    $set('retail_price', null);
+                    $set('big_whole_price', null);
+                    $set('import_date', null);
+                    $set('product_image', null);
+}
+
                 }),
 
             Forms\Components\Hidden::make('user_id')
@@ -102,17 +105,20 @@ class BuyResource extends Resource
                     ->first();
 
                     if ($product) {
-                        $set('barcode', $product->barcode);
-                        $set('unit', $product->unit);
-                        $set('brand', $product->brand);
-                        $set('price', $product->price);
-                        $set('big_unit_price', $product->big_unit_price);
-                        $set('big_quantity', $product->big_quantity);
-                        $set('retail_price', $product->retail_price);
-                        $set('big_whole_price', $product->big_whole_price);
-                        $set('import_date', $product->import_date);
+                         $set('name', $product->name);
+                    $set('unit', $product->unit);
+                    $set('brand', $product->brand);
 
-                        $set('product_image', $product->product_image ? [$product->product_image] : null);
+                    $set('price', number_format((float)$product->price, 2, '.', ''));
+                    $set('big_unit_price', number_format((float)$product->big_unit_price, 2, '.', ''));
+                    $set('retail_price', number_format((float)$product->retail_price, 2, '.', ''));
+                    $set('big_whole_price', number_format((float)$product->big_whole_price, 2, '.', ''));
+
+                    $set('big_quantity', $product->big_quantity);
+                    $set('import_date', $product->import_date);
+                     $set('product_image', $product->product_image ? [$product->product_image] : null);
+
+
                     }
                 }),
 
@@ -165,7 +171,7 @@ class BuyResource extends Resource
                     }
                 }),
 
-             Forms\Components\TextInput::make('price')
+            Forms\Components\TextInput::make('price')
             ->label('قیمت خرید فی دانه')
             ->required()
             ->numeric()
@@ -176,23 +182,31 @@ class BuyResource extends Resource
 
                 if (!in_array($unit, ['بسته', 'کارتن'])) {
                     $existNumber = $get('all_exist_number') ?? 0; 
-                    $set('total_price', $state * $existNumber);
+                    $set('total_price', round($state * $existNumber, 2));
                 } else {
-                    $set('total_price', $state * $quantity);
+                    $set('total_price', round($state * $quantity, 2));
                 }
-            }),
+            })
+            ->formatStateUsing(fn ($state) => number_format((float)$state, 2, '.', '')),
 
 
 
 
-                Forms\Components\TextInput::make('total_price')
+               Forms\Components\TextInput::make('total_price')
                 ->label('قیمت مجموعه')
                 ->required()
                 ->numeric()
                 ->disabled()
-                ->dehydrated(),
-
-        
+                ->reactive()
+                ->dehydrated(true)
+                ->afterStateUpdated(function (callable $set, $state, callable $get) {
+                    if ($get('currency') === 'USD') {
+                        $set('amount', $state);
+                    }
+                    $paid = $get('paid') ?? 0;
+                    $set('remaining', max(($get('amount') ?? 0) - $paid, 0));
+                }),
+                    
 
         Forms\Components\TextInput::make('retail_price')
                 ->label('قیمت فروش پرچون ')
@@ -219,26 +233,118 @@ class BuyResource extends Resource
                 ->visibility('public')
                 ->optimize('webp')
                 ->resize(50),
-            ]);
+
+               Forms\Components\Select::make('company_id')
+                    ->label('خرید از شرکت')
+                    ->options(Company::pluck('name', 'id')->toArray())
+                    ->required(),
+            
+      Forms\Components\Select::make('currency')
+    ->label('خرید به ارز')
+    ->options([
+        'AFN' => 'افغانی',
+        'USD' => 'دالر',
+    ])
+    ->reactive()
+    ->afterStateHydrated(function ($state, callable $set, callable $get) {
+        if ($state === 'USD') {
+            $set('amount', $get('total_price') ?? 0);
+        }
+    })
+    ->afterStateUpdated(function (callable $set, $state, callable $get) {
+        $totalPrice = $get('total_price') ?? 0;
+
+        if ($state === 'USD') {
+            $set('amount', $totalPrice);
+        } elseif ($state === 'AFN') {
+            $exchangeRate = $get('exchange_rate') ?? 0;
+            $set('amount', $totalPrice * $exchangeRate);
+        }
+
+        $paid = $get('paid') ?? 0;
+        $amount = $get('amount') ?? 0;
+        $set('remaining', max($amount - $paid, 0));
+    }),
+
+        Forms\Components\TextInput::make('exchange_rate')
+            ->label('نرخ هر دالر به افغانی')
+            ->numeric()
+            ->lazy()
+            ->visible(fn ($get) => $get('currency') === 'AFN')
+            ->afterStateUpdated(function (callable $set, $state, callable $get) {
+                $totalPrice = $get('total_price') ?? 0;
+                $set('amount', $totalPrice * ($state ?? 0));
+
+                $paid = $get('paid') ?? 0;
+                $amount = $get('amount') ?? 0;
+                $set('remaining', max($amount - $paid, 0));
+            }),
+
+            Forms\Components\TextInput::make('amount')
+                ->label('مبلغ خرید')
+                ->numeric()
+                ->dehydrated(true)
+                ->lazy()
+                ->reactive()
+                ->afterStateHydrated(function ($state, callable $set, callable $get) {
+                    if ($get('currency') === 'USD' && !$state) {
+                        $set('amount', $get('total_price') ?? 0);
+                    }
+                })
+                ->afterStateUpdated(function (callable $set, $state, callable $get) {
+                    $paid = $get('paid') ?? 0;
+                    $set('remaining', max(($state ?? 0) - $paid, 0));
+                }),
+
+            Forms\Components\TextInput::make('paid')
+                ->label('مبلغ رسید')
+                ->numeric()
+                ->dehydrated(true)
+                ->reactive()
+                ->afterStateUpdated(function (callable $set, $state, callable $get) {
+                    $amount = $get('amount') ?? 0;
+                    $set('remaining', max($amount - ($state ?? 0), 0));
+                }),
+
+            Forms\Components\TextInput::make('remaining')
+                ->label('باقی‌مانده')
+                ->numeric()
+                ->disabled()
+                ->dehydrated(true)
+                ->reactive(),
+                ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-               Tables\Columns\TextColumn::make('barcode')->label('بارکد')->numeric()->sortable(),
+            Tables\Columns\TextColumn::make('barcode')->label('بارکد')->numeric()->sortable(),
             Tables\Columns\TextColumn::make('name')->label('نام جنس')->searchable(),
             Tables\Columns\TextColumn::make('unit')->label('نوع بسته بندی')->searchable(),
             Tables\Columns\TextColumn::make('price')->label('قیمت فی دانه')->numeric()->sortable(),
-            Tables\Columns\TextColumn::make('all_exist_number')->label('موجودی به دانه')->searchable(),
-            Tables\Columns\TextColumn::make('total_price')->label('قیمت مجموعه')->numeric()->sortable(),
-            Tables\Columns\TextColumn::make('retail_price')->label('قیمت پرچون')->numeric()->sortable(),
+            Tables\Columns\TextColumn::make('all_exist_number')->label('تعداد خریده شده')->searchable(),
             Tables\Columns\TextColumn::make('big_whole_price')->label('قیمت عمده')->numeric()->sortable(),
-            Tables\Columns\TextColumn::make('brand')->label('ساخت کشور')->searchable(),
-            Tables\Columns\ImageColumn::make('product_image')->label('عکس محصول'),
-            Tables\Columns\TextColumn::make('created_at')->label('تاریخ ثبت')
-                ->sortable()
-                ->formatStateUsing(fn($state) => Jalalian::fromDateTime($state)->format('%A %d %m %Y')),
+             Tables\Columns\TextColumn::make('currency')
+            ->label('نوع ارز')
+            ->formatStateUsing(fn ($state) => match($state) {
+                'USD' => 'دالر',
+                'AFN' => 'افغانی',
+                default => $state,
+                 }),
+
+                Tables\Columns\TextColumn::make('amount')
+                    ->label('مبلغ خرید')
+                 ->formatStateUsing(fn ($state) => number_format($state, 2)),
+
+                Tables\Columns\TextColumn::make('paid')
+                    ->label('مبلغ رسید')
+                    ->formatStateUsing(fn ($state) => number_format($state, 2)),
+
+             Tables\Columns\TextColumn::make('remaining')
+            ->label('مبلغ باقیمانده')
+            ->formatStateUsing(fn ($state) => number_format($state, 2)),
+
             Tables\Columns\TextColumn::make('updated_at')->label('تاریخ بروزرسانی')->sortable()->toggleable(true),
             ])
             ->filters([
@@ -252,7 +358,7 @@ class BuyResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ]); 
     }
     public static function getRelations(): array
     {

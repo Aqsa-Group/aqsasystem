@@ -20,10 +20,15 @@ class Customer extends Model
      'address',
      'customer_image',
      'customer_id_card',
-       'total_loan', 'total_receipt', 'remaining_loan'
+     'total_loan', 'total_receipt', 'remaining_loan',
+     'USD',
+     'AFN'
 
 
     ];
+
+
+    
 
     public function loans()
     {

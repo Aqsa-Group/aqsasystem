@@ -1,11 +1,8 @@
 <x-filament-panels::page>
-
     <div x-data="{ saleType: @entangle('saleType') }" class="space-y-6 p-4">
 
         {{-- ردیف دکمه‌ها و انتخاب مشتری --}}
         <div class="flex items-center justify-between mb-3 gap-6">
-
-            {{-- دکمه‌ها --}}
             <div class="flex gap-3 flex-1 max-w-xs">
                 <x-filament::button
                     @click="saleType = 'retail'; $wire.switchToRetail();"
@@ -39,8 +36,6 @@
                     </select>
                 </div>
             </template>
-            
-
         </div>
 
         {{-- Layout دو ستونه --}}
@@ -49,26 +44,19 @@
             {{-- ستون فرم افزودن محصول --}}
             <div class="col-span-1 space-y-4">
                 <div class="bg-white dark:bg-gray-900 rounded-xl shadow-md p-4 border border-gray-200 dark:border-gray-700 space-y-3">
-                    <h2 class="text-lg font-bold text-gray-800 dark:text-gray-100 flex items-center gap-1">
-                        🏷️ افزودن محصول
-                    </h2>
+                    <h2 class="text-lg font-bold text-gray-800 dark:text-gray-100 flex items-center gap-1">🏷️ افزودن محصول</h2>
 
                     <form wire:submit.prevent="submitForm" class="space-y-3 relative">
-
-                        {{-- بارکد --}}
                         <div>
                             <label class="block text-gray-700 dark:text-gray-200 text-sm mb-1">اسکن بارکد</label>
                             <input wire:model="barcode" placeholder="اسکن بارکد..."
                                 class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-100" />
                         </div>
 
-                        {{-- جستجوی نام محصول --}}
                         <div class="relative">
                             <label class="block text-gray-700 dark:text-gray-200 text-sm mb-1">جستجو با نام محصول</label>
-                            <input wire:model.debounce.200ms="searchName" placeholder="نام محصول..."
-                                autocomplete="off"
+                            <input wire:model.debounce.200ms="searchName" placeholder="نام محصول..." autocomplete="off"
                                 class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-100" />
-                            
                             @if (!empty($suggestions))
                                 <div class="absolute w-full bg-white dark:bg-gray-800 border rounded-lg shadow mt-1 max-h-40 overflow-y-auto z-50">
                                     @foreach ($suggestions as $product)
@@ -81,14 +69,12 @@
                             @endif
                         </div>
 
-                        {{-- تعداد --}}
                         <div>
                             <label class="block text-gray-700 dark:text-gray-200 text-sm mb-1">تعداد</label>
                             <input type="number" wire:model="quantity" min="1"
                                 class="w-full border rounded-lg px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 dark:text-gray-100" />
                         </div>
 
-                        {{-- دکمه افزودن --}}
                         <x-filament::button type="submit" color="success" class="w-full py-2 text-sm rounded-lg">
                             افزودن به فاکتور
                         </x-filament::button>
@@ -98,8 +84,6 @@
 
             {{-- ستون جدول کالاها و خلاصه فاکتور --}}
             <div class="col-span-2 space-y-4">
-
-                {{-- جدول کالاها --}}
                 <div class="bg-white dark:bg-gray-900 rounded-xl shadow-md p-4 border border-gray-200 dark:border-gray-700 overflow-x-auto">
                     <div class="flex items-center justify-between mb-3">
                         <span class="text-lg font-bold text-gray-800 dark:text-gray-200">🛒 لیست کالاهای فاکتور</span>
@@ -110,8 +94,8 @@
                             <tr>
                                 <th class="p-2">نام محصول</th>
                                 <th class="p-2">تعداد</th>
-                                <th class="p-2">قیمت واحد (افغانی)</th>
-                                <th class="p-2">مجموع (افغانی)</th>
+                                <th class="p-2">قیمت واحد (دالر)</th>
+                                <th class="p-2">مجموع (دالر)</th>
                                 <th class="p-2">عملیات</th>
                             </tr>
                         </thead>
@@ -120,17 +104,14 @@
                                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
                                     <td class="p-2 text-gray-800 dark:text-gray-200">{{ $item['name'] }}</td>
                                     <td class="p-2 flex items-center justify-center gap-2">
-                                        <button wire:click="decreaseQuantity({{ $index }})"
-                                            class="px-2 bg-red-500 text-white rounded">−</button>
+                                        <button wire:click="decreaseQuantity({{ $index }})" class="px-2 bg-red-500 text-white rounded">−</button>
                                         <span>{{ $item['quantity'] }}</span>
-                                        <button wire:click="increaseQuantity({{ $index }})"
-                                            class="px-2 bg-green-500 text-white rounded">+</button>
+                                        <button wire:click="increaseQuantity({{ $index }})" class="px-2 bg-green-500 text-white rounded">+</button>
                                     </td>
-                                    <td class="p-2 text-gray-600 dark:text-gray-300">{{ number_format($item['price']) }}</td>
-                                    <td class="p-2 font-semibold text-blue-600 dark:text-blue-400">{{ number_format($item['total']) }}</td>
+                                    <td class="p-2 text-gray-600 dark:text-gray-300">{{ number_format($item['price'],3) }}</td>
+                                    <td class="p-2 font-semibold text-blue-600 dark:text-blue-400">{{ number_format($item['total'],3) }}</td>
                                     <td class="p-2 text-center">
-                                        <button wire:click="removeItem({{ $index }})"
-                                            class="px-3 py-1 bg-gray-600 text-white rounded">حذف</button>
+                                        <button wire:click="removeItem({{ $index }})" class="px-3 py-1 bg-gray-600 text-white rounded">حذف</button>
                                     </td>
                                 </tr>
                             @empty
@@ -142,72 +123,94 @@
                     </table>
                 </div>
 
-                {{-- خلاصه فاکتور در فروش عمده --}}
-{{-- خلاصه فاکتور برای عمده و پرچون --}}
-@if (count($items) > 0)
-    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 space-y-4">
+                @if(count($items) > 0)
+                <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 space-y-4">
 
-        {{-- مجموع کل قبل از تخفیف --}}
-        <div class="flex items-center justify-between">
-            <span class="text-lg font-bold text-gray-800 dark:text-gray-200">💰 مجموع کل فاکتور:</span>
-            <span class="text-xl font-extrabold text-blue-600 dark:text-blue-400">
-                {{ number_format(collect($items)->sum('total')) }} افغانی
-            </span>
-        </div>
+                    {{-- مجموع کل --}}
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-gray-800 dark:text-gray-200">💰 مجموع کل فاکتور:</span>
+                        <span class="text-xl font-extrabold text-blue-600 dark:text-blue-400">{{ number_format(collect($items)->sum('total'),3) }} دالر</span>
+                    </div>
 
-        {{-- تخفیف (برای عمده و پرچون) --}}
-        <div class="flex items-center justify-between">
-            <span class="text-lg font-bold text-gray-800 dark:text-gray-200">🎁 تخفیف:</span>
-            <input wire:model.lazy="discount" type="number" min="0"
-                class="w-40 border rounded-lg px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-100"
-                placeholder="0" />
-        </div>
+                    {{-- تخفیف --}}
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-gray-800 dark:text-gray-200">🎁 تخفیف:</span>
+                        <input wire:model.lazy="discount" type="number" min="0" step="0.001"
+                            class="w-40 border rounded-lg px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-100"
+                            placeholder="0" />
+                    </div>
 
-        {{-- مجموع بعد از تخفیف --}}
-        <div class="flex items-center justify-between">
-            <span class="text-lg font-bold text-gray-800 dark:text-gray-200">✅ مبلغ نهایی:</span>
-            <span class="text-xl font-extrabold text-green-600 dark:text-green-400">
-                {{ number_format(max(collect($items)->sum('total') - $discount, 0)) }} افغانی
-            </span>
-        </div>
+                    {{-- مبلغ نهایی --}}
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-gray-800 dark:text-gray-200">✅ مبلغ نهایی:</span>
+                        <span class="text-xl font-extrabold text-green-600 dark:text-green-400">{{ number_format(max(collect($items)->sum('total') - $discount,0),3) }} دالر</span>
+                    </div>
 
-        {{-- مبلغ رسید (فقط عمده) --}}
-        @if ($saleType === 'wholesale')
-            <div class="flex items-center justify-between">
-                <span class="text-lg font-bold text-gray-800 dark:text-gray-200">💵 مبلغ رسید:</span>
-                <input wire:model.lazy="receivedAmount" type="number" min="0"
-                    class="w-40 border rounded-lg px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-100"
+                  <div x-data="{ currency: @entangle('receivedCurrency') }">
+
+    <div class="flex items-center justify-between">
+        <span class="text-lg font-bold text-gray-800 dark:text-gray-200">🪙 ارز دریافتی:</span>
+        <select x-model="currency" wire:model="receivedCurrency"
+            class="w-40 border rounded-lg px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-100">
+            <option value="USD" selected>دالر</option>
+            <option value="AFN">افغانی</option>
+        </select>
+    </div>
+
+    <template x-if="currency === 'AFN'">
+        <div class="space-y-3">
+
+            <div class="flex items-center justify-between mt-2">
+                <span class="text-lg font-bold text-gray-800 dark:text-gray-200">💵 نرخ دالر به افغانی:</span>
+                <input wire:model.lazy="usdToAfnRate" type="number" min="0" step="0.001"
+                    class="w-40 border rounded-lg px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-100"
                     placeholder="0" />
             </div>
 
-            {{-- باقیمانده (فقط عمده) --}}
-            <div class="flex items-center justify-between">
-                <span class="text-lg font-bold text-gray-800 dark:text-gray-200">🧾 باقیمانده:</span>
-                <span class="text-xl font-extrabold text-red-600 dark:text-red-400">
-                    {{ number_format(max((collect($items)->sum('total') - $discount) - $receivedAmount, 0)) }} افغانی
+            <div class="flex items-center justify-between" x-show="usdToAfnRate > 0">
+                <span class="text-lg font-bold text-gray-800 dark:text-gray-200">💰 مجموع کل به افغانی:</span>
+                <span class="text-xl font-extrabold text-green-600 dark:text-green-400">
+                    {{ number_format(max((collect($items)->sum('total') - $discount) * $usdToAfnRate,0),3) }} افغانی
                 </span>
             </div>
-        @endif
 
-    </div>
-@endif
+        </div>
+    </template>
+</div>
 
-                {{-- دکمه‌های پایانی --}}
-                <div class="flex gap-3">
-                    <x-filament::button wire:click="finalizeInvoice" color="success" class="px-4 py-2 rounded-lg text-sm">
-                        ثبت فاکتور
-                    </x-filament::button>
 
-                    <x-filament::button wire:click="printInvoice" color="info" class="px-4 py-2 rounded-lg text-sm">
-                        چاپ فاکتور
-                    </x-filament::button>
+
+                 
+
+                    {{-- مبلغ رسید --}}
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-gray-800 dark:text-gray-200">💵 مبلغ رسید:</span>
+                        <input wire:model.lazy="receivedAmount" type="number" min="0" step="0.001"
+                            class="w-40 border rounded-lg px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-100"
+                            placeholder="0" />
+                    </div>
+
+                    {{-- باقی‌مانده --}}
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-gray-800 dark:text-gray-200">🧾 باقیمانده:</span>
+                        <span class="text-xl font-extrabold text-red-600 dark:text-red-400">
+                            {{ number_format(max((collect($items)->sum('total') - $discount) - $this->convertedReceivedAmount,0),3) }} دالر
+                        </span>
+                    </div>
+
+                    {{-- دکمه‌ها --}}
+                    <div class="flex gap-3">
+                        <x-filament::button wire:click="finalizeInvoice" color="success" class="px-4 py-2 rounded-lg text-sm">ثبت فاکتور</x-filament::button>
+                        <x-filament::button wire:click="printInvoice" color="info" class="px-4 py-2 rounded-lg text-sm">چاپ فاکتور</x-filament::button>
+                    </div>
+
                 </div>
+                @endif
 
             </div>
         </div>
     </div>
 
-    {{-- اسکریپت Livewire برای چاپ --}}
     @push('scripts')
         <script>
             document.addEventListener('livewire:init', () => {
@@ -217,5 +220,4 @@
             });
         </script>
     @endpush
-
 </x-filament-panels::page>

@@ -83,21 +83,15 @@ class StaffResource extends Resource
                     ->label('نام پدر')
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('grand-father')
-                    ->label('نام پدرکلان')
-                    ->searchable(),
-
-                Tables\Columns\TextColumn::make('address')
-                    ->label('آدرس')
-                    ->searchable(),
-
                 Tables\Columns\TextColumn::make('phone')
                     ->label('شماره تماس')
                     ->sortable(),
                Tables\Columns\TextColumn::make('salary')
                     ->label('معاش')
                     ->sortable(),
-
+                Tables\Columns\TextColumn::make('USD')->label('موجودی دالر')->sortable()->default('0'),
+                Tables\Columns\TextColumn::make('AFN')->label('موجودی افغانی')->sortable()->default('0'),
+                Tables\Columns\TextColumn::make('CNY')->label('موجودی ین چین')->sortable()->default('0'),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('تاریخ ایجاد')

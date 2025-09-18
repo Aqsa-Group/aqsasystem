@@ -49,31 +49,33 @@ class WarehouseResource extends Resource
                     ->first();
         
 
-                    if ($product) {
-                        $set('name', $product->name);
-                        $set('unit', $product->unit);
-                        $set('brand', $product->brand);
-                        $set('price', $product->price);
-                        $set('big_unit_price', $product->big_unit_price);
-                        $set('big_quantity', $product->big_quantity);
-                        $set('retail_price', $product->retail_price);
-                        $set('big_whole_price', $product->big_whole_price);
-                        $set('import_date', $product->import_date);
+                  if ($product) {
+                    $set('name', $product->name);
+                    $set('unit', $product->unit);
+                    $set('brand', $product->brand);
 
-                        $set('product_image', $product->product_image ? [$product->product_image] : null);
-                    } else {
-                        $set('name', '');
-                        $set('unit', '');
-                        $set('brand', '');
-                        $set('price', null);
-                        $set('big_unit_price', null);
-                        $set('big_quantity', null);
-                        $set('retail_price', null);
-                        $set('big_whole_price', null);
-                        $set('import_date', null);
+                    $set('price', number_format((float)$product->price, 2, '.', ''));
+                    $set('big_unit_price', number_format((float)$product->big_unit_price, 2, '.', ''));
+                    $set('retail_price', number_format((float)$product->retail_price, 2, '.', ''));
+                    $set('big_whole_price', number_format((float)$product->big_whole_price, 2, '.', ''));
 
-                        $set('product_image', null);
-                    }
+                    $set('big_quantity', $product->big_quantity);
+                    $set('import_date', $product->import_date);
+
+                    $set('product_image', $product->product_image ? [$product->product_image] : null);
+                } else {
+                    $set('name', '');
+                    $set('unit', '');
+                    $set('brand', '');
+                    $set('price', null);
+                    $set('big_unit_price', null);
+                    $set('big_quantity', null);
+                    $set('retail_price', null);
+                    $set('big_whole_price', null);
+                    $set('import_date', null);
+                    $set('product_image', null);
+                 }
+
                 }),
 
             Forms\Components\Hidden::make('user_id')
@@ -96,18 +98,21 @@ class WarehouseResource extends Resource
                     ->first();
 
                     if ($product) {
-                        $set('barcode', $product->barcode);
-                        $set('unit', $product->unit);
-                        $set('brand', $product->brand);
-                        $set('price', $product->price);
-                        $set('big_unit_price', $product->big_unit_price);
-                        $set('big_quantity', $product->big_quantity);
-                        $set('retail_price', $product->retail_price);
-                        $set('big_whole_price', $product->big_whole_price);
-                        $set('import_date', $product->import_date);
+                         $set('name', $product->name);
+                    $set('unit', $product->unit);
+                    $set('brand', $product->brand);
 
-                        $set('product_image', $product->product_image ? [$product->product_image] : null);
+                    $set('price', number_format((float)$product->price, 2, '.', ''));
+                    $set('big_unit_price', number_format((float)$product->big_unit_price, 2, '.', ''));
+                    $set('retail_price', number_format((float)$product->retail_price, 2, '.', ''));
+                    $set('big_whole_price', number_format((float)$product->big_whole_price, 2, '.', ''));
+
+                    $set('big_quantity', $product->big_quantity);
+                    $set('import_date', $product->import_date);
+
+                    $set('product_image', $product->product_image ? [$product->product_image] : null);
                     }
+                    
                 }),
 
             Forms\Components\Select::make('unit')

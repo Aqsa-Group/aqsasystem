@@ -45,23 +45,17 @@ class SarafiResource extends Resource
                     ->tel()
                     ->numeric()
                     ->default(null),
-                Forms\Components\TextInput::make('AFN')->label(' افغانی')
-                    ->numeric()
+                Forms\Components\Hidden::make('AFN')->label(' افغانی')
                     ->default(null),
-                Forms\Components\TextInput::make('USD')->label('دالر')
-                    ->numeric()
+                Forms\Components\Hidden::make('USD')->label('دالر')
                     ->default(null),
-                Forms\Components\TextInput::make('CNY')->label('ین چین')
-                    ->numeric()
+                Forms\Components\Hidden::make('CNY')->label('ین چین')
                     ->default(null),
-                Forms\Components\TextInput::make('EUR')->label('یورو')
-                    ->numeric()
+                Forms\Components\Hidden::make('EUR')->label('یورو')
                     ->default(null),
-                Forms\Components\TextInput::make('IRR')->label('تومان')
-                    ->numeric()
+                Forms\Components\Hidden::make('IRR')->label('تومان')
                     ->default(null),
-                Forms\Components\TextInput::make('PKR')->label('کلدار')
-                    ->numeric()
+                Forms\Components\Hidden::make('PKR')->label('کلدار')
                     ->default(null),
             ]);
     }
@@ -77,18 +71,25 @@ class SarafiResource extends Resource
                 Tables\Columns\TextColumn::make('phone')->label('شماره تماس صرافی')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('AFN')->label(' افغانی')
+                    ->default('0')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('USD')->label('دالر')
+                    ->default('0')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('CNY')->label('ین چین')
+                    ->default('0')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('EUR')->label('یورو')
+                    ->default('0')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('IRR')->label('تومان')
+                    ->default('0')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('PKR')->label('کلدار')
+                    ->default('0')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->default('0')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

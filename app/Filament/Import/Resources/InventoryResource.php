@@ -47,31 +47,33 @@ class InventoryResource extends Resource
                     })
                     ->first();
         
+                  if ($product) {
+                    $set('name', $product->name);
+                    $set('unit', $product->unit);
+                    $set('brand', $product->brand);
 
-                    if ($product) {
-                        $set('name', $product->name);
-                        $set('unit', $product->unit);
-                        $set('brand', $product->brand);
-                        $set('price', $product->price);
-                        $set('big_unit_price', $product->big_unit_price);
-                        $set('big_quantity', $product->big_quantity);
-                        $set('retail_price', $product->retail_price);
-                        $set('big_whole_price', $product->big_whole_price);
-                        $set('import_date', $product->import_date);
+                    $set('price', number_format((float)$product->price, 2, '.', ''));
+                    $set('big_unit_price', number_format((float)$product->big_unit_price, 2, '.', ''));
+                    $set('retail_price', number_format((float)$product->retail_price, 2, '.', ''));
+                    $set('big_whole_price', number_format((float)$product->big_whole_price, 2, '.', ''));
 
-                        $set('product_image', $product->product_image ? [$product->product_image] : null);
-                    } else {
-                        $set('name', '');
-                        $set('unit', '');
-                        $set('brand', '');
-                        $set('price', null);
-                        $set('big_unit_price', null);
-                        $set('big_quantity', null);
-                        $set('retail_price', null);
-                        $set('big_whole_price', null);
-                        $set('import_date', null);
-                        $set('product_image', null);
-                    }
+                    $set('big_quantity', $product->big_quantity);
+                    $set('import_date', $product->import_date);
+
+                    $set('product_image', $product->product_image ? [$product->product_image] : null);
+                } else {
+                    $set('name', '');
+                    $set('unit', '');
+                    $set('brand', '');
+                    $set('price', null);
+                    $set('big_unit_price', null);
+                    $set('big_quantity', null);
+                    $set('retail_price', null);
+                    $set('big_whole_price', null);
+                    $set('import_date', null);
+                    $set('product_image', null);
+                 }
+
                 }),
 
             Forms\Components\Hidden::make('user_id')
@@ -94,17 +96,19 @@ class InventoryResource extends Resource
                     ->first();
 
                     if ($product) {
-                        $set('barcode', $product->barcode);
-                        $set('unit', $product->unit);
-                        $set('brand', $product->brand);
-                        $set('price', $product->price);
-                        $set('big_unit_price', $product->big_unit_price);
-                        $set('big_quantity', $product->big_quantity);
-                        $set('retail_price', $product->retail_price);
-                        $set('big_whole_price', $product->big_whole_price);
-                        $set('import_date', $product->import_date);
+                      $set('name', $product->name);
+                    $set('unit', $product->unit);
+                    $set('brand', $product->brand);
 
-                        $set('product_image', $product->product_image ? [$product->product_image] : null);
+                    $set('price', number_format((float)$product->price, 2, '.', ''));
+                    $set('big_unit_price', number_format((float)$product->big_unit_price, 2, '.', ''));
+                    $set('retail_price', number_format((float)$product->retail_price, 2, '.', ''));
+                    $set('big_whole_price', number_format((float)$product->big_whole_price, 2, '.', ''));
+
+                    $set('big_quantity', $product->big_quantity);
+                    $set('import_date', $product->import_date);
+
+                    $set('product_image', $product->product_image ? [$product->product_image] : null);
                     }
                 }),
 
@@ -156,27 +160,32 @@ class InventoryResource extends Resource
                     }
                 }),
 
-                Forms\Components\TextInput::make('all_exist_number')
-                ->label('تعداد خریده شده')
-                ->required()
-                ->numeric()
-                ->visible(fn($get) => $get('unit') == 'دانه')
-                ->lazy()
-                ->afterStateUpdated(function (callable $set, $state, callable $get) {
-                    $unit = $get('unit');
-                    $bigQuantity = $get('big_quantity') ?? 1;
-                    $bigUnitPrice = $get('big_unit_price') ?? 0;
-                    $price = $get('price') ?? 0;
+           Forms\Components\TextInput::make('all_exist_number')
+    ->label('تعداد خریده شده')
+    ->required()
+    ->numeric()
+    ->visible(fn($get) => $get('unit') == 'دانه')
+    ->lazy()
+    ->afterStateUpdated(function (callable $set, $state, callable $get) {
+        $unit = $get('unit');
+        $bigQuantity = $get('big_quantity') ?? 1;
+        $bigUnitPrice = $get('big_unit_price') ?? 0;
+        $price = $get('price') ?? 0;
 
-                    if (in_array($unit, ['بسته', 'کارتن'])) {
-                        $set('all_exist_number', $state * $bigQuantity);
-                        $set('total_price', $bigUnitPrice * $state);
-                    } else {
-                        $set('all_exist_number', $state);
-                        $set('total_price', $price * $state);
-                    }
-                }),
-        
+        if (in_array($unit, ['بسته', 'کارتن'])) {
+            $allExist = round($state * $bigQuantity, 2);
+            $totalPrice = round($bigUnitPrice * $state, 2);
+            $set('all_exist_number', $allExist);
+            $set('total_price', $totalPrice);
+        } else {
+            $allExist = round($state, 2);
+            $totalPrice = round($price * $state, 2);
+            $set('all_exist_number', $allExist);
+            $set('total_price', $totalPrice);
+        }
+    })
+    ->formatStateUsing(fn($state) => number_format((float)$state, 2, '.', '')),
+
             Forms\Components\TextInput::make('big_quantity')
                 ->label('تعداد هر بسته یا کارتن (به عدد)')
                 ->required()
@@ -191,14 +200,18 @@ class InventoryResource extends Resource
                         $set('price', round($bigUnitPrice / $state, 2));
                     }
                 }),
-
-           Forms\Components\TextInput::make('total_price')
+        Forms\Components\TextInput::make('total_price')
             ->label('قیمت مجموعه کل بسته یا کارتن ها')
             ->required()
             ->numeric()
             ->visible(fn($get) => $get('unit') == 'بسته' || $get('unit') == 'کارتن')
             ->disabled()
-            ->dehydrated(),
+            ->dehydrated()
+            ->afterStateUpdated(function (callable $set, $state) {
+                $set('total_price', number_format((float)$state, 2, '.', ''));
+            })
+            ->dehydrateStateUsing(fn($state) => number_format((float)$state, 2, '.', '')),
+
 
             Forms\Components\Hidden::make('all_exist_number')
                 ->label('موجودی به عدد')

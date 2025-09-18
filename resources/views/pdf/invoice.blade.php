@@ -60,14 +60,14 @@
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $item->warehouse->name ?? '-' }}</td>
-                    <td>{{ number_format($item->price_per_unit) }}</td>
+                    <td>{{ number_format($item->price_per_unit , 2) }}</td>
                     <td>{{ $item->quantity }}</td>
                     @if ($sale->sale_type === 'wholesale')
                         <td>{{ $item->warehouse->unit ?? '-' }}</td>
                     @else
                         <td>عدد</td>
                     @endif
-                    <td>{{ number_format($item->total_price) }}</td>
+                    <td>{{ number_format($item->total_price , 2)}}</td>
                 </tr>
             @endforeach
 
@@ -89,32 +89,32 @@
             <tr>
                 <td style="padding:6px; font-weight:bold; width:50%;">مجموعه کل فاکتور (قبل از تخفیف)</td>
                 <td style="padding:6px; text-align:center;">
-                    <strong>{{ number_format($sale->items->sum('total_price')) }}&nbsp;افغانی</strong>
+                    <strong>{{ number_format($sale->items->sum('total_price'),2) }}&nbsp;دالر</strong>
                 </td>
             </tr>
             <tr>
                 <td style="padding:6px; font-weight:bold;">مبلغ تخفیف</td>
                 <td style="padding:6px; text-align:center;">
-                    <strong>{{ number_format($sale->discount ?? 0) }}&nbsp;افغانی</strong>
+                    <strong>{{ number_format($sale->discount ?? 2) }}&nbsp;دالر</strong>
                 </td>
             </tr>
             <tr>
                 <td style="padding:6px; font-weight:bold;">مبلغ نهایی (بعد از تخفیف)</td>
                 <td style="padding:6px; text-align:center; font-size:14px; color:#000;">
-                    <strong>{{ number_format($sale->total_price) }}&nbsp;افغانی</strong>
+                    <strong>{{ number_format($sale->total_price , 2)}}&nbsp;دالر</strong>
                 </td>
             </tr>
             @if ($sale->sale_type === 'wholesale')
                 <tr>
                     <td style="padding:6px; font-weight:bold;">مبلغ دریافت شده</td>
                     <td style="padding:6px; text-align:center;">
-                        <strong>{{ number_format($sale->received_amount) }}&nbsp;افغانی</strong>
+                        <strong>{{ number_format($sale->received_amount , 2) }}&nbsp;دالر</strong>
                     </td>
                 </tr>
                 <tr>
                     <td style="padding:6px; font-weight:bold;">باقیمانده</td>
                     <td style="padding:6px; text-align:center;">
-                        <strong>{{ number_format($sale->remaining_amount) }}&nbsp;افغانی</strong>
+                        <strong>{{ number_format($sale->remaining_amount , 2) }}&nbsp;دالر</strong>
                     </td>
                 </tr>
             @endif
