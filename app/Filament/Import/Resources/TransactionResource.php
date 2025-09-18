@@ -33,11 +33,6 @@ class TransactionResource extends Resource
     protected static ?string $pluralModelLabel= 'ترانزکشن ها';
 
 
- public static function canViewAny(): bool
-    {
-        return Auth::check() && in_array(Auth::user()?->role, ['superadmin']);
-    }
-
 
     public static function form(Form $form): Form
     {
