@@ -22,6 +22,10 @@ use App\Http\Controllers\printLoan;
 use Illuminate\Support\Facades\Session;
 
 
+// Sarafi
+
+
+
 
 
 
@@ -102,3 +106,8 @@ Route::get('/set-locale/{locale}', function ($locale) {
 })->name('set-locale');
 
 
+
+
+Route::get('/sarafi/user', function () {
+    return view('Sarafi.components.user-management');
+})->name('sarafi.users');

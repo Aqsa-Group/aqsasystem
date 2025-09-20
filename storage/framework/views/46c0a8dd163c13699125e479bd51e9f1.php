@@ -33,7 +33,7 @@
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $buys; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $buy): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <?php $__empty_1 = true; $__currentLoopData = $buys; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $buy): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                     <tr class="hover:bg-gray-50 transition">
                         <td class="border px-4 py-2 text-center">
                             <?php echo e(\Morilog\Jalali\Jalalian::fromDateTime($buy->created_at)->format('%Y/%m/%d H:i:s')); ?>
@@ -55,7 +55,7 @@
                             هیچ خریدی یافت نشد
                         </td>
                     </tr>
-                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                <?php endif; ?>
             </tbody>
         </table>
     </div>

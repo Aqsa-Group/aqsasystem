@@ -103,12 +103,12 @@
 
             <!-- لینک‌های منو -->
             <nav class="p-4 space-y-2">
-                <a href="#"
+                <a href="<?php echo e(route('sarafi.home')); ?>"
                     class="flex items-center p-2 rounded-lg sidebar-link <?php echo e(request()->is('/') ? 'active-link' : ''); ?>">
                     <span class="material-icons">dashboard</span>
                     <span class="ml-2 sidebar-text"><?php echo e(__('messages.dashboard')); ?></span>
                 </a>
-                <a href="#"
+                <a href="<?php echo e(route('sarafi.users')); ?>"
                     class="flex items-center p-2 rounded-lg sidebar-link <?php echo e(request()->is('users*') ? 'active-link' : ''); ?>">
                     <span class="material-icons">people</span>
                     <span class="ml-2 sidebar-text"><?php echo e(__('messages.users')); ?></span>
@@ -175,6 +175,10 @@
                                 </a>
                             </div>
                         </div>
+
+
+
+                        
         
            
             

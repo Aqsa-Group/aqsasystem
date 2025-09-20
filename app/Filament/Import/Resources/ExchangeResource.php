@@ -119,7 +119,7 @@ class ExchangeResource extends Resource
                 Forms\Components\TextInput::make('amount')
                     ->label('مبلغ')
                     ->numeric()
-                    ->reactive()
+                    ->lazy()
                     ->afterStateUpdated(function ($state, callable $set, $get) {
                         $set('total', self::calculateTotal($state, $get('today_price')??0, $get('from'), $get('to')));
                     }),
@@ -127,7 +127,7 @@ class ExchangeResource extends Resource
                 Forms\Components\TextInput::make('today_price')
                     ->label('قیمت روز')
                     ->numeric()
-                    ->reactive()
+                    ->lazy()
                     ->afterStateUpdated(function ($state, callable $set, $get) {
                         $set('total', self::calculateTotal($get('amount')??0, $state, $get('from'), $get('to')));
                     }),
