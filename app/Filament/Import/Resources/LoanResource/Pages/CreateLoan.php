@@ -17,29 +17,34 @@ class CreateLoan extends CreateRecord
         return $this->getResource()::getUrl('index');
     }
 
-   protected function mutateFormDataBeforeCreate(array $data): array
+protected function mutateFormDataBeforeCreate(array $data): array
 {
     $customer = Customer::findOrFail($data['customer_id']);
     $type = $data['type'] ?? null;
     $amount = $data['amount'] ?? 0;
     $receipt = $data['loan_recipt'] ?? 0;
+    $currency = $data['currency'] ?? 'USD'; // پیش‌فرض USD
 
     $safe = Safe::firstOrCreate([], [
         'USD' => 0,
+        'AFN' => 0,
         'today' => 0,
         'last_update' => now()->toDateString(),
     ]);
 
     if ($type === 'رسید') {
+        // کاهش بدهی مشتری
         $customer->total_loan -= $receipt;
-
         $customer->remaining_loan -= $receipt;
-
         $customer->total_receipt += $receipt;
-
         $customer->save();
 
-        $safe->USD += $receipt;
+        // اضافه کردن پول به صندوق بر اساس ارز
+        if ($currency === 'USD') {
+            $safe->USD += $receipt;
+        } elseif ($currency === 'AFN') {
+            $safe->AFN += $receipt;
+        }
         $safe->today += $receipt;
         $safe->save();
 
@@ -49,6 +54,7 @@ class CreateLoan extends CreateRecord
     }
 
     if ($type === 'بردگی') {
+        // افزایش بدهی مشتری
         $customer->total_loan += $amount;
         $customer->remaining_loan += $amount;
         $customer->save();
@@ -57,12 +63,18 @@ class CreateLoan extends CreateRecord
         $data['loan_recipt'] = 0;
         $data['reminded'] = $amount;
 
-        $safe->USD -= $amount;
+        // کم کردن از صندوق بر اساس ارز
+        if ($currency === 'USD') {
+            $safe->USD -= $amount;
+        } elseif ($currency === 'AFN') {
+            $safe->AFN -= $amount;
+        }
         $safe->today -= $amount;
         $safe->save();
     }
 
     return $data;
 }
+
 
 }

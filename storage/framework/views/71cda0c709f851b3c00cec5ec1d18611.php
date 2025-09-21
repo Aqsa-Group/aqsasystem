@@ -5,6 +5,7 @@
                 <th class="p-2 border">#</th>
                 <th class="p-2 border">تاریخ</th>
                 <th class="p-2 border">نوع</th>
+                <th class="p-2 border">ارز</th>
                 <th class="p-2 border">نام مشتری</th>
                 <th class="p-2 border">مبلغ قرضه</th>
                 <th class="p-2 border">رسید</th>
@@ -13,7 +14,7 @@
             </tr>
         </thead>
         <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-            <?php $__empty_1 = true; $__currentLoopData = $loans; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $loan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+            <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $loans; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $loan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
                     <td class="p-2 border"><?php echo e($index + 1); ?></td>
                     <td class="p-2 border">
@@ -21,6 +22,7 @@
 
                     </td>
                     <td class="p-2 border"><?php echo e($loan['type'] ?? '---'); ?></td>
+                    <td class="p-2 border"><?php echo e($loan['currency'] ?? '---'); ?></td>
                     <td class="p-2 border"><?php echo e($loan['customer']['name'] ?? '---'); ?></td>
                     <td class="p-2 border text-blue-600 font-bold"><?php echo e(number_format($loan['amount'] ?? 0)); ?></td>
                     <td class="p-2 border text-green-600 font-bold"><?php echo e(number_format($loan['loan_recipt'] ?? 0)); ?></td>
@@ -34,7 +36,7 @@
                 <tr>
                     <td colspan="8" class="text-center py-6 text-gray-400">هیچ قرضه‌ای ثبت نشده است.</td>
                 </tr>
-            <?php endif; ?>
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </tbody>
     </table>
 </div>

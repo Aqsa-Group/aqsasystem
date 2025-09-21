@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Cookie;
 use App\Http\Controllers\PrintContract;
 use App\Http\Controllers\printLoan;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 
 // Sarafi
@@ -83,16 +84,11 @@ Route::get('/warehouse/print', [WarehousePrintController::class, 'generate'])
 
 // Sarafi Route
 
-Route::get('/sarafi/home', function () {
-    return view('Sarafi.components.dashboard');
-})->name('sarafi.home');
-
 Route::get('/sarafi', [CustomController::class, 'showLoginForm'])->name('sarafi.login.form');
 
 Route::post('/sarafi/login', [CustomController::class, 'login'])->name('sarafi.login');
 
 Route::post('/sarafi/logout', [CustomController::class, 'logout'])->name('sarafi.logout');
-
 
 Route::get('/set-locale/{locale}', function ($locale) {
     $availableLocales = ['fa', 'ps', 'en'];
@@ -108,6 +104,29 @@ Route::get('/set-locale/{locale}', function ($locale) {
 
 
 
+// Pages    
+
+
+Route::get('/sarafi/home', function () {
+    // بررسی لاگین guard sarafi
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.dashboard');
+})->name('sarafi.home');
+
+
 Route::get('/sarafi/user', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
     return view('Sarafi.components.user-management');
 })->name('sarafi.users');
+
+
+
+
+
+
+
+

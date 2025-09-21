@@ -23,6 +23,7 @@ class Loan extends Model
         'date',
         'reminded',
         'brand',
+        'currency'
     ];
 
 

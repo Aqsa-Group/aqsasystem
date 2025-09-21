@@ -15,13 +15,14 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        Login::class => [
-            UpdateUserStatus::class,
-        ],
-        Logout::class => [
-            UpdateUserStatus::class,
-        ],
-    ];
+    \Illuminate\Auth\Events\Login::class => [
+        \App\Listeners\SetUserStatusActive::class,
+    ],
+    \Illuminate\Auth\Events\Logout::class => [
+        \App\Listeners\SetUserStatusInactive::class,
+    ],
+];
+
 
     /**
      * Register any events for your application.

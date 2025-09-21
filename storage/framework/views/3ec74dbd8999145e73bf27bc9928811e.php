@@ -116,7 +116,7 @@ unset($__defined_vars, $__key, $__value); ?>
         ])); ?>
 
 >
-    <?php if($hasHeader): ?>
+    <!--[if BLOCK]><![endif]--><?php if($hasHeader): ?>
         <header
             <?php if($collapsible): ?>
                 x-on:click="isCollapsed = ! isCollapsed"
@@ -131,7 +131,7 @@ unset($__defined_vars, $__key, $__value); ?>
             ]); ?>"
         >
             <div class="flex items-center gap-3">
-                <?php if($hasIcon): ?>
+                <!--[if BLOCK]><![endif]--><?php if($hasIcon): ?>
                     <?php if (isset($component)) { $__componentOriginalbfc641e0710ce04e5fe02876ffc6f950 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalbfc641e0710ce04e5fe02876ffc6f950 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.icon','data' => ['icon' => $icon,'class' => \Illuminate\Support\Arr::toCssClasses([
@@ -190,11 +190,11 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php $component = $__componentOriginalbfc641e0710ce04e5fe02876ffc6f950; ?>
 <?php unset($__componentOriginalbfc641e0710ce04e5fe02876ffc6f950); ?>
 <?php endif; ?>
-                <?php endif; ?>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                <?php if($hasHeading || $hasDescription): ?>
+                <!--[if BLOCK]><![endif]--><?php if($hasHeading || $hasDescription): ?>
                     <div class="grid flex-1 gap-y-1">
-                        <?php if($hasHeading): ?>
+                        <!--[if BLOCK]><![endif]--><?php if($hasHeading): ?>
                             <?php if (isset($component)) { $__componentOriginalf35f9d5c1b29d7f1be16c01d4cf43815 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalf35f9d5c1b29d7f1be16c01d4cf43815 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.section.heading','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -217,9 +217,9 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php $component = $__componentOriginalf35f9d5c1b29d7f1be16c01d4cf43815; ?>
 <?php unset($__componentOriginalf35f9d5c1b29d7f1be16c01d4cf43815); ?>
 <?php endif; ?>
-                        <?php endif; ?>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                        <?php if($hasDescription): ?>
+                        <!--[if BLOCK]><![endif]--><?php if($hasDescription): ?>
                             <?php if (isset($component)) { $__componentOriginal0998190339a840b029249e9ecb6b0282 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal0998190339a840b029249e9ecb6b0282 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.section.description','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -242,11 +242,11 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php $component = $__componentOriginal0998190339a840b029249e9ecb6b0282; ?>
 <?php unset($__componentOriginal0998190339a840b029249e9ecb6b0282); ?>
 <?php endif; ?>
-                        <?php endif; ?>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
-                <?php endif; ?>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                <?php if($hasHeaderActions): ?>
+                <!--[if BLOCK]><![endif]--><?php if($hasHeaderActions): ?>
                     <div class="hidden sm:block">
                         <?php if (isset($component)) { $__componentOriginal59d80b1aec4ae4c914a3e52dede19504 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal59d80b1aec4ae4c914a3e52dede19504 = $attributes; } ?>
@@ -269,12 +269,12 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php unset($__componentOriginal59d80b1aec4ae4c914a3e52dede19504); ?>
 <?php endif; ?>
                     </div>
-                <?php endif; ?>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                 <?php echo e($headerEnd); ?>
 
 
-                <?php if($collapsible): ?>
+                <!--[if BLOCK]><![endif]--><?php if($collapsible): ?>
                     <?php if (isset($component)) { $__componentOriginalf0029cce6d19fd6d472097ff06a800a1 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalf0029cce6d19fd6d472097ff06a800a1 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.icon-button','data' => ['color' => 'gray','icon' => 'heroicon-m-chevron-down','iconAlias' => 'section.collapse-button','xOn:click.stop' => 'isCollapsed = ! isCollapsed','xBind:class' => '{ \'rotate-180\': ! isCollapsed }']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -295,10 +295,10 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php $component = $__componentOriginalf0029cce6d19fd6d472097ff06a800a1; ?>
 <?php unset($__componentOriginalf0029cce6d19fd6d472097ff06a800a1); ?>
 <?php endif; ?>
-                <?php endif; ?>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </div>
 
-            <?php if($hasHeaderActions): ?>
+            <!--[if BLOCK]><![endif]--><?php if($hasHeaderActions): ?>
                 <div class="sm:hidden">
                     <?php if (isset($component)) { $__componentOriginal59d80b1aec4ae4c914a3e52dede19504 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal59d80b1aec4ae4c914a3e52dede19504 = $attributes; } ?>
@@ -321,9 +321,9 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php unset($__componentOriginal59d80b1aec4ae4c914a3e52dede19504); ?>
 <?php endif; ?>
                 </div>
-            <?php endif; ?>
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </header>
-    <?php endif; ?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
     <div
         <?php if($collapsible): ?>
@@ -355,7 +355,7 @@ unset($__defined_vars, $__key, $__value); ?>
 
         </div>
 
-        <?php if($hasFooterActions): ?>
+        <!--[if BLOCK]><![endif]--><?php if($hasFooterActions): ?>
             <footer
                 class="<?php echo \Illuminate\Support\Arr::toCssClasses([
                     'fi-section-footer border-t border-gray-200 dark:border-white/10',
@@ -384,7 +384,7 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php unset($__componentOriginal59d80b1aec4ae4c914a3e52dede19504); ?>
 <?php endif; ?>
             </footer>
-        <?php endif; ?>
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
     </div>
 </section>
 <?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/vendor/filament/components/section/index.blade.php ENDPATH**/ ?>

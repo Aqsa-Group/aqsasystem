@@ -35,29 +35,29 @@ return [
     |
     */
 
-    'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
+        'guards' => [
+            'web' => [
+                'driver' => 'session',
+                'provider' => 'users',
+            ],
+
+            'market' => [
+                'driver' => 'session',
+                'provider' => 'markets',
+            ],
+
+            'import' => [
+                'driver' => 'session',
+                'provider' => 'imports',
+            ],
+
+            'sarafi' => [
+                'driver' => 'session',
+                'provider' => 'sarafies',
+            ],
         ],
 
-        'market' => [
-            'driver' => 'session',
-            'provider' => 'markets',
-        ],
-
-        'import' => [
-            'driver' => 'session',
-            'provider' => 'imports',
-        ],
-
-        'sarafi' => [
-            'driver' => 'session',
-            'provider' => 'sarafies',
-        ],
-    ],
-
-    /*
+        /*
     |--------------------------------------------------------------------------
     | User Providers
     |--------------------------------------------------------------------------

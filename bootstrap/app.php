@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\PreventBack;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -18,6 +19,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append(AddQueuedCookiesToResponse::class);
         // $middleware->append(StartSession::class);
         $middleware->append(SetLocale::class);
+        $middleware->alias([
+            'prevent-back' =>PreventBack::class
+        ]);
 
     })
     ->withExceptions(function ($exceptions): void {

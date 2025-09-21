@@ -52,6 +52,14 @@ class LoanResource extends Resource
                 ->numeric()
                 ->visible(fn ($get) => $get('type') === 'بردگی'),
 
+            Forms\Components\Select::make('currency')->label('ارز')
+                    ->options([
+                        'AFN'=>'افغانی',
+                        'USD'=>'دالر',
+                      
+                    ])
+                    ->required(),
+
             Forms\Components\TextInput::make('loan_recipt')
                 ->label('مبلغ رسید')
                 ->numeric()
@@ -69,31 +77,66 @@ class LoanResource extends Resource
 public static function table(Table $table): Table
 {
     return $table
-    ->modifyQueryUsing(function ($query) {
-        return $query
-            ->selectRaw('
-                MIN(id) as id,
-                customer_id,
-                SUM(CASE WHEN type = "بردگی" THEN amount ELSE 0 END) AS total_loan,
-                SUM(CASE WHEN type = "رسید" THEN loan_recipt ELSE 0 END) AS total_receipt,
-                (SUM(CASE WHEN type = "بردگی" THEN amount ELSE 0 END) -
-                 SUM(CASE WHEN type = "رسید" THEN loan_recipt ELSE 0 END)) AS remaining
-            ')
-            ->groupBy('customer_id');
-    })
+->modifyQueryUsing(function ($query) {
+    return $query
+        ->selectRaw('
+            MIN(id) as id,
+            customer_id,
+            currency,
+            SUM(CASE WHEN type = "بردگی" THEN amount ELSE 0 END) AS total_loan,
+            SUM(CASE WHEN type = "رسید" THEN loan_recipt ELSE 0 END) AS total_receipt,
+            (SUM(CASE WHEN type = "بردگی" THEN amount ELSE 0 END) -
+             SUM(CASE WHEN type = "رسید" THEN loan_recipt ELSE 0 END)) AS remaining
+        ')
+        ->groupBy('customer_id', 'currency');
+})
+
     
         ->columns([
-            Tables\Columns\TextColumn::make('customer.name')->label('نام مشتری'),
-            Tables\Columns\TextColumn::make('total_loan')
+            
+            Tables\Columns\TextColumn::make('customer.name')->label('نام مشتری')->searchable(),
+            Tables\Columns\TextColumn::make('currency')->label('ارز')
+                 ->badge()
+                    ->color(fn($state) => match ($state) {
+                        'AFN' => 'primary',
+                        'USD' => 'success',
+                        'CNY' => 'warning',
+                        'EUR' => 'info',
+                        'IRR' => 'danger',
+                        'PRK' => 'gray',
+                        default => $state,
+
+                        
+                    })
+                    ->formatStateUsing(fn($state) => match ($state) {
+                        'AFٔN'=>'افغانی',
+                        'USD'=>'دالر',
+                        'CNY'=>'ین چین',
+                        'EUR'=>'یورو',
+                        'IRR'=>'تومان',
+                        'PRK'=>'کلدار',
+                        default => $state,
+                    })
+                    ->searchable(),            Tables\Columns\TextColumn::make('total_loan')
                 ->label('مجموع بردگی')
                 ->formatStateUsing(fn ($state) => number_format($state)),
             Tables\Columns\TextColumn::make('total_receipt')
                 ->label('مجموع رسید')
                 ->formatStateUsing(fn ($state) => number_format($state)),
+
             Tables\Columns\TextColumn::make('remaining')
                 ->label('باقی‌مانده')
                 ->formatStateUsing(fn ($state) => number_format($state)),
         ])
+        ->filters([
+            Tables\Filters\SelectFilter::make('currency')
+                ->label('فیلتر ارز')
+                ->options([
+                    'USD' => 'دالر',
+                    'AFN' => 'افغانی',
+                ]),
+        ])
+
         ->actions([])
         ->bulkActions([]);
 }

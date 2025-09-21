@@ -69,25 +69,25 @@ class SafeOverview extends BaseWidget
     ->color(($totalBalance + $totalBalanceUSD) > 0 ? 'success' : 'danger'),
 
     
-//  Card::make('💰 موجودی صندوق صرافی', '')
-//     ->description(new HtmlString(
-//         "
-//         <div class='grid grid-cols-2 gap-x-4 text-2xl'>
-//             <div class='text-black dark:text-white font-bold'>افغانی</div>
-//             <div class='text-right text-black dark:text-white font-bold'>" . number_format($AFN, 0) . "</div>
+ Card::make('💰 موجودی صندوق صرافی', '')
+    ->description(new HtmlString(
+        "
+        <div class='grid grid-cols-2 gap-x-4 text-2xl'>
+            <div class='text-black dark:text-white font-bold'>افغانی</div>
+            <div class='text-right text-black dark:text-white font-bold'>" . number_format($AFN, 0) . "</div>
 
-//             <div class='text-black dark:text-white font-bold'>دالر</div>
-//             <div class='text-right text-black dark:text-white font-bold'>" . number_format($USD, 2) . "</div>
+            <div class='text-black dark:text-white font-bold'>دالر</div>
+            <div class='text-right text-black dark:text-white font-bold'>" . number_format($USD, 2) . "</div>
 
-//             <div class='text-black dark:text-white font-bold'>ین چین</div>
-//             <div class='text-right text-black dark:text-white font-bold'>" . number_format($CNY, 2) . "</div>
+            <div class='text-black dark:text-white font-bold'>ین چین</div>
+            <div class='text-right text-black dark:text-white font-bold'>" . number_format($CNY, 2) . "</div>
 
-//             <div class='text-black dark:text-white font-bold'>یورو</div>
-//             <div class='text-right text-black dark:text-white font-bold'>" . number_format($EUR, 2) . "</div>
-//         </div>
-//         "
-//     ))
-//     ->color(($AFN + $USD + $CNY + $EUR) > 0 ? 'success' : 'danger'),
+            <div class='text-black dark:text-white font-bold'>یورو</div>
+            <div class='text-right text-black dark:text-white font-bold'>" . number_format($EUR, 2) . "</div>
+        </div>
+        "
+    ))
+    ->color(($AFN + $USD + $CNY + $EUR) > 0 ? 'success' : 'danger'),
 
 
             Card::make('📆 فروشات امروز', number_format($todayIncome, $decimals) . " $currencyLabel")

@@ -5,6 +5,7 @@
                 <th class="p-2 border">#</th>
                 <th class="p-2 border">تاریخ</th>
                 <th class="p-2 border">نوع</th>
+                <th class="p-2 border">ارز</th>
                 <th class="p-2 border">نام مشتری</th>
                 <th class="p-2 border">مبلغ قرضه</th>
                 <th class="p-2 border">رسید</th>
@@ -20,6 +21,7 @@
                         {{ \Morilog\Jalali\Jalalian::fromDateTime($loan['date'])->format('Y/m/d') }}
                     </td>
                     <td class="p-2 border">{{ $loan['type'] ?? '---' }}</td>
+                    <td class="p-2 border">{{ $loan['currency'] ?? '---' }}</td>
                     <td class="p-2 border">{{ $loan['customer']['name'] ?? '---' }}</td>
                     <td class="p-2 border text-blue-600 font-bold">{{ number_format($loan['amount'] ?? 0) }}</td>
                     <td class="p-2 border text-green-600 font-bold">{{ number_format($loan['loan_recipt'] ?? 0) }}</td>

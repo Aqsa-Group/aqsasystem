@@ -4,6 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
     <title><?php echo $__env->yieldContent('title', 'پنل مدیریت'); ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -16,8 +20,6 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
-        
-
         .rotate-180 {
             transform: rotate(180deg);
             transition: transform 0.3s;
@@ -27,7 +29,6 @@
             font-family: 'Vazir';
             src: url('<?php echo e(asset('fonts/amiri-regular.ttf')); ?>') format('truetype');
         }
-
 
         @font-face {
             font-family: 'header';
@@ -62,26 +63,26 @@
     <?php echo $__env->yieldPushContent('styles'); ?>
 </head>
 
-<body class="bg-gray-100 <?php echo e(session('locale') == 'en' ? 'ltr text-left' : 'rtl text-right'); ?>">
+<body class="bg-gray-100 <?php echo e(session('locale') == 'en' ? 'ltr text-left' : 'rtl text-right'); ?> overflow-x-hidden ">
 
-    <!-- From Uiverse.io by escannord --> 
-<div class="loader">
-  <span style="--i:1" class="element"></span>
-  <span style="--i:2" class="element"></span>
-  <span style="--i:3" class="element"></span>
-  <span style="--i:4" class="element"></span>
-  <span style="--i:5" class="element"></span>
-  <span style="--i:6" class="element"></span>
-  <span style="--i:7" class="element"></span>
-  <span style="--i:8" class="element"></span>
-  <span style="--i:9" class="element"></span>
-  <span style="--i:10" class="element"></span>
-  <span style="--i:11" class="element"></span>
-  <span style="--i:12" class="element"></span>
-  <span style="--i:13" class="element"></span>
-  <span style="--i:14" class="element"></span>
-  <span style="--i:15" class="element"></span>
-</div>
+    <!-- Loader -->
+    <div class="loader hidden" id="loader">
+        <span style="--i:1" class="element"></span>
+        <span style="--i:2" class="element"></span>
+        <span style="--i:3" class="element"></span>
+        <span style="--i:4" class="element"></span>
+        <span style="--i:5" class="element"></span>
+        <span style="--i:6" class="element"></span>
+        <span style="--i:7" class="element"></span>
+        <span style="--i:8" class="element"></span>
+        <span style="--i:9" class="element"></span>
+        <span style="--i:10" class="element"></span>
+        <span style="--i:11" class="element"></span>
+        <span style="--i:12" class="element"></span>
+        <span style="--i:13" class="element"></span>
+        <span style="--i:14" class="element"></span>
+        <span style="--i:15" class="element"></span>
+    </div>
 
     <!-- Sidebar + Main -->
     <div class="flex h-screen">
@@ -128,7 +129,7 @@
                         <a href="#" class="block p-2 rounded-lg submenu-link"><?php echo e(__('messages.clothes')); ?></a>
                     </div>
                 </div>
-                
+
             </nav>
         </aside>
 
@@ -142,62 +143,84 @@
                 <!-- دکمه بازکردن منو در موبایل -->
                 <button id="open-menu" class="lg:hidden p-2 border rounded-lg">☰</button>
 
-                            <?php
-                            $locale = session('locale', config('app.locale'));
-                        ?>
-                      
+                <?php
+                    $locale = session('locale', config('app.locale'));
+                ?>
 
-        
-                        <div class="relative inline-block text-left">
-                            <button id="lang-btn" class="flex items-center gap-2 border rounded-lg px-2 justify-center py-1 text-sm sm:mr-20">
-                                <img src="<?php echo e($locale === 'en' ? asset('assets/icon/us.png') : asset('assets/icon/af.png')); ?>"
-                                     class="w-5 h-5" alt="Lang">
-                                <span class="hidden sm:inline">
-                                    <?php if($locale === 'fa'): ?>
-                                        فارسی
-                                    <?php elseif($locale === 'ps'): ?>
-                                        پشتو
-                                    <?php else: ?>
-                                        English
-                                    <?php endif; ?>
-                                </span>
-                            </button>
-        
-                            <div id="lang-menu" class="hidden absolute mt-1 w-32 bg-white border rounded-lg shadow-lg z-50">
-                                <a href="<?php echo e(route('set-locale', 'fa')); ?>" class="flex items-center gap-2 px-3 py-1 hover:bg-gray-100">
-                                    <img src="<?php echo e(asset('assets/icon/af.png')); ?>" class="w-5 h-5"> فارسی
-                                </a>
-                                <a href="<?php echo e(route('set-locale', 'ps')); ?>" class="flex items-center gap-2 px-3 py-1 hover:bg-gray-100">
-                                    <img src="<?php echo e(asset('assets/icon/af.png')); ?>" class="w-5 h-5"> پشتو
-                                </a>
-                                <a href="<?php echo e(route('set-locale', 'en')); ?>" class="flex items-center gap-2 px-3 py-1 hover:bg-gray-100">
-                                    <img src="<?php echo e(asset('assets/icon/us.png')); ?>" class="w-5 h-5"> English
-                                </a>
-                            </div>
-                        </div>
+                <!-- انتخاب زبان -->
+                <div class="relative inline-block text-left">
+                    <button id="lang-btn"
+                        class="flex items-center gap-2 border rounded-lg px-2 justify-center py-1 text-sm sm:mr-20">
+                        <img src="<?php echo e($locale === 'en' ? asset('assets/icon/us.png') : asset('assets/icon/af.png')); ?>"
+                            class="w-5 h-5" alt="Lang">
+                        <span class="hidden sm:inline">
+                            <?php if($locale === 'fa'): ?>
+                                فارسی
+                            <?php elseif($locale === 'ps'): ?>
+                                پشتو
+                            <?php else: ?>
+                                English
+                            <?php endif; ?>
+                        </span>
+                    </button>
 
+                    <div id="lang-menu" class="hidden absolute mt-1 w-32 bg-white border rounded-lg shadow-lg z-50">
+                        <a href="<?php echo e(route('set-locale', 'fa')); ?>"
+                            class="flex items-center gap-2 px-3 py-1 hover:bg-gray-100">
+                            <img src="<?php echo e(asset('assets/icon/af.png')); ?>" class="w-5 h-5"> فارسی
+                        </a>
+                        <a href="<?php echo e(route('set-locale', 'ps')); ?>"
+                            class="flex items-center gap-2 px-3 py-1 hover:bg-gray-100">
+                            <img src="<?php echo e(asset('assets/icon/af.png')); ?>" class="w-5 h-5"> پشتو
+                        </a>
+                        <a href="<?php echo e(route('set-locale', 'en')); ?>"
+                            class="flex items-center gap-2 px-3 py-1 hover:bg-gray-100">
+                            <img src="<?php echo e(asset('assets/icon/us.png')); ?>" class="w-5 h-5"> English
+                        </a>
+                    </div>
+                </div>
 
-
-                        
-        
-           
-            
                 <!-- ساعت و تاریخ -->
-
                 <div id="jalali-clock" class=" text-lg w-64"></div>
 
-
                 <!-- سرچ + پروفایل -->
-                <div class="flex items-center gap-3 flex-1 sm:flex-initial sm:justify-end">
+                <div class="flex items-center gap-3 flex-1 sm:flex-initial sm:justify-end ml-10">
                     <div class="relative flex-1 sm:flex-initial">
                         <input type="text"
                             class="w-full sm:w-48 border rounded-2xl py-1 pl-8 pr-2 outline-none border-gray-300 text-sm"
                             placeholder="<?php echo e(__('messages.search_placeholder') != 'messages.search_placeholder' ? __('messages.search_placeholder') : 'Search...'); ?>">
-
                         <img src="<?php echo e(asset('assets/icon/search.svg')); ?>" class="absolute top-1.5 left-2 w-4 h-4">
                     </div>
                     <img src="<?php echo e(asset('assets/icon/notification-bing.svg')); ?>" class="w-5 h-5">
-                    <img src="<?php echo e(asset('assets/icon/user.png')); ?>" class="w-6 h-6 rounded-full border cursor-pointer">
+
+                    <!-- پروفایل -->
+                    <div class="relative">
+                        <img id="profile-btn" src="<?php echo e(asset('assets/icon/user.png')); ?>"
+                            class="w-6 h-6 rounded-full border cursor-pointer">
+                        <div id="profile-menu"
+                            class="hidden absolute  -right-32 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 z-50 overflow-hidden">
+
+                            <!-- بخش کاربر -->
+                            <div class="px-4 py-3 bg-gray-50 flex items-center gap-2">
+                                <i class="fas fa-user text-gray-500"></i>
+                                <span class="text-sm font-medium text-gray-700">
+                                    <?php echo e(Auth::guard('sarafi')->user()->name ?? 'کاربر'); ?>
+
+                                </span>
+                            </div>
+
+                            <!-- دکمه خروج -->
+                            <form method="POST" action="<?php echo e(route('sarafi.logout')); ?>">
+                                <?php echo csrf_field(); ?>
+                                <button type="submit"
+                                    class="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors">
+                                    <i class="fas fa-sign-out-alt text-red-500"></i>
+                                    خروج از حساب
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
                 </div>
             </header>
 
@@ -240,9 +263,8 @@
             });
         });
 
-
         // sub-items 
-           document.addEventListener("DOMContentLoaded", () => {
+        document.addEventListener("DOMContentLoaded", () => {
             if (!collapsed) {
                 productsArrow.style.display = "inline-flex";
                 if (!productsSubmenu.classList.contains("hidden")) {
@@ -276,17 +298,14 @@
         // Toggle products submenu
         productsBtn.addEventListener("click", () => {
             if (collapsed) return;
-
             productsSubmenu.classList.toggle("hidden");
             productsArrow.classList.toggle("rotate-180");
-
             productsArrow.style.display = "inline-flex";
         });
 
         openMenu.addEventListener("click", () => {
             sidebar.classList.remove("-translate-x-full");
             overlay.classList.remove("hidden");
-
             sidebar.classList.add("w-64");
             sidebar.classList.remove("w-20");
             document.querySelectorAll(".sidebar-text").forEach(t => t.classList.remove("hidden"));
@@ -329,6 +348,12 @@
             document.getElementById('lang-menu').classList.toggle('hidden');
         });
 
+        // Profile dropdown
+        document.getElementById('profile-btn').addEventListener('click', () => {
+            document.getElementById('profile-menu').classList.toggle('hidden');
+        });
+
+        // ساعت و تاریخ
         function updateClock() {
             const locale = "<?php echo e(session('locale', 'fa')); ?>";
             const now = new Date();
@@ -344,7 +369,7 @@
             }
 
             hours = hours % 12;
-            hours = hours ? hours : 12; 
+            hours = hours ? hours : 12;
 
             const timeStr = hours.toString().padStart(2, '0') + ':' +
                 minutes.toString().padStart(2, '0') + ':' +
@@ -353,7 +378,6 @@
             const dateStr = j.jy + '/' + j.jm.toString().padStart(2, '0') + '/' + j.jd.toString().padStart(2, '0');
 
             const clockDiv = document.getElementById('jalali-clock');
-
             clockDiv.innerHTML = `<div class="flex gap-4">${dateStr}<span>${timeStr}</span></div>`;
         }
         setInterval(updateClock, 1000);
