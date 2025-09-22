@@ -26,10 +26,16 @@ class ImportPanelProvider extends PanelProvider
         return $panel
             ->id('import')
             ->path('import')
+            ->sidebarCollapsibleOnDesktop()
             ->font('Scheherazade New')
             ->theme(asset('css/filament/import/theme.css'))
-            ->colors([
-                'primary' => Color::Green,
+                  ->colors([
+                'primary' => Color::Blue,  // Blue for primary actions
+                'success' => Color::Green, // Green for success states
+                'warning' => Color::Amber, // Amber/Yellow for warnings
+                'danger' => Color::Red,    // Red for errors/danger
+                'info' => Color::Sky,      // Light blue for info
+                'gray' => Color::Gray, 
             ])
             ->login(ImportLogin::class)
             ->authGuard('import')
