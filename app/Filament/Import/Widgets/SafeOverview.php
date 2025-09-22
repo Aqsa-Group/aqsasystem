@@ -96,7 +96,7 @@ class SafeOverview extends BaseWidget
                         <div class='text-black dark:text-white font-bold'>دالر</div>
                         <div class='text-right text-black dark:text-white font-bold'>". number_format($USD, 2) ."</div>
 
-                        <div class='text-black dark:text-white font-bold'>ین چین</div>
+                        <div class='text-black dark:text-white font-bold'>یوان چین</div>
                         <div class='text-right text-black dark:text-white font-bold'>". number_format($CNY, 2) ."</div>
 
                         <div class='text-black dark:text-white font-bold'>یورو</div>
