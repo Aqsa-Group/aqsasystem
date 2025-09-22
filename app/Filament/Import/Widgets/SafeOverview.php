@@ -44,8 +44,15 @@ class SafeOverview extends BaseWidget
             ->sum('profit');
 
         // --- جمع برداشت امروز (فقط امروز) ---
-        $totalWithdraw = Withdraw::where('user_id', $userId)
+        
+        $totalWithdrawAFN = Withdraw::where('user_id', $userId)
             ->whereBetween('created_at', [$today, $tomorrow])
+            ->where('currency', 'AFN')
+            ->sum('amount');
+
+        $totalWithdrawUSD = Withdraw::where('user_id', $userId)
+            ->whereBetween('created_at', [$today, $tomorrow])
+            ->where('currency', 'USD')
             ->sum('amount');
 
         // --- موجودی‌ها ---
@@ -115,10 +122,17 @@ class SafeOverview extends BaseWidget
                 ->descriptionIcon('heroicon-o-chart-bar')
                 ->color($todayProfit > 0 ? 'success' : 'warning'),
 
-            Card::make('📉 مصارف امروز', number_format($totalWithdraw, $decimals) . " $currencyLabel")
-                ->description('جمع برداشت امروز')
-                ->descriptionIcon('heroicon-o-arrow-trending-down')
-                ->color('danger'),
+            Card::make('📉 مصارف امروز', '')
+                ->description(new HtmlString("
+                    <div class='grid grid-cols-2 gap-x-4 text-2xl'>
+                        <div class='text-black dark:text-white font-bold'>افغانی</div>
+                        <div class='text-right text-black dark:text-white font-bold'>". number_format($totalWithdrawAFN, 0) ."</div>
+
+                        <div class='text-black dark:text-white font-bold'>دالر</div>
+                        <div class='text-right text-black dark:text-white font-bold'>". number_format($totalWithdrawUSD, 2) ."</div>
+                    </div>
+                "))
+                ->color(($totalWithdrawAFN + $totalWithdrawUSD) > 0 ? 'danger' : 'success'),
 
 
             Card::make('🏪 موجودی سرمایه گدام', number_format($totalInventoryBalance, $decimals) . " $currencyLabel")
