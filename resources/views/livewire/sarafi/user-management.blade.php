@@ -1,4 +1,4 @@
-<div class="p-8 min-h-screen font-sans bg-gray-50">
+<div class="p-8 min-h-screen font-sans bg-white/15">
 
     {{-- عنوان --}}
     <h1 class="text-4xl font-bold text-gray-800 mb-8 pb-4 flex items-center gap-3">
@@ -152,7 +152,7 @@
 
         {{-- Filter Fields --}}
         @if($filterOpen)
-            <div class="absolute mt-2 left-0 bg-white border rounded-xl shadow-lg p-3 w-64 z-50 flex flex-col gap-2">
+            <div class="absolute mt-2 left-32 bg-white border rounded-xl shadow-lg p-3 w-64 z-50 flex flex-col gap-2">
 
                 {{-- Role Filter --}}
            {{-- Role Filter --}}

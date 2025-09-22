@@ -5,6 +5,7 @@ namespace App\Filament\Import\Widgets;
 use App\Models\Import\Customer;
 use App\Models\Import\Inventory;
 use App\Models\Import\Safe;
+use App\Models\Import\Sale;
 use App\Models\Import\SaleItem;
 use App\Models\Import\Sarafi;
 use App\Models\Import\Warehouse;
@@ -26,14 +27,16 @@ class SafeOverview extends BaseWidget
         $today = Carbon::now($timezone)->startOfDay();        // ساعت ۰۰:۰۰
         $tomorrow = Carbon::now($timezone)->addDay()->startOfDay(); // فردا ساعت ۰۰:۰۰
 
-        // --- موجودی فروش امروز از ستون today ---
-        // همیشه یک ردیف برای هر کاربر وجود دارد
-        $safeRow = Safe::firstOrCreate(
-            ['user_id' => $userId], 
-            ['today' => 0, 'total' => 0, 'AFN' => 0, 'USD' => 0, 'currency' => 0]
-        );
+        // // --- موجودی فروش امروز از ستون today ---
+        // // همیشه یک ردیف برای هر کاربر وجود دارد
+        // $safeRow = Safe::firstOrCreate(
+        //     ['user_id' => $userId], 
+        //     ['today' => 0, 'total' => 0, 'AFN' => 0, 'USD' => 0, 'currency' => 0]
+        // );
 
-        $todayIncome = $safeRow->today;
+        $todayIncome = Sale::where('user_id', $userId)
+            ->whereBetween('created_at', [$today, $tomorrow])
+            ->sum('total_price');
 
         // --- جمع فایده امروز (فقط امروز) ---
         $todayProfit = SaleItem::where('user_id', $userId)
