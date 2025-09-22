@@ -27,12 +27,12 @@ class SafeOverview extends BaseWidget
         $today = Carbon::now($timezone)->startOfDay();        // ساعت ۰۰:۰۰
         $tomorrow = Carbon::now($timezone)->addDay()->startOfDay(); // فردا ساعت ۰۰:۰۰
 
-        // // --- موجودی فروش امروز از ستون today ---
-        // // همیشه یک ردیف برای هر کاربر وجود دارد
-        // $safeRow = Safe::firstOrCreate(
-        //     ['user_id' => $userId], 
-        //     ['today' => 0, 'total' => 0, 'AFN' => 0, 'USD' => 0, 'currency' => 0]
-        // );
+        // --- موجودی فروش امروز از ستون today ---
+        // همیشه یک ردیف برای هر کاربر وجود دارد
+        $safeRow = Safe::firstOrCreate(
+            ['user_id' => $userId], 
+            ['today' => 0, 'total' => 0, 'AFN' => 0, 'USD' => 0, 'currency' => 0]
+        );
 
         $todayIncome = Sale::where('user_id', $userId)
             ->whereBetween('created_at', [$today, $tomorrow])
