@@ -162,7 +162,17 @@
                                         <span><?php echo e($item['quantity']); ?></span>
                                         <button wire:click="increaseQuantity(<?php echo e($index); ?>)" class="px-2 bg-green-500 text-white rounded">+</button>
                                     </td>
-                                    <td class="p-2 text-gray-600 dark:text-gray-300"><?php echo e(number_format($item['price'],3)); ?></td>
+                                        <td class="p-2 text-gray-600 dark:text-gray-300">
+                                        <input 
+                                            type="number" 
+                                            min="0" 
+                                            step="0.001"
+                                            wire:model.lazy="items.<?php echo e($index); ?>.price"
+                                            wire:change="updateItemPrice(<?php echo e($index); ?>)"
+                                            class="w-20 border rounded px-2 py-1 text-sm bg-gray-50 dark:bg-gray-800 dark:text-gray-100" 
+                                        />
+                                    </td>
+
                                     <td class="p-2 font-semibold text-blue-600 dark:text-blue-400"><?php echo e(number_format($item['total'],3)); ?></td>
                                     <td class="p-2 text-center">
                                         <button wire:click="removeItem(<?php echo e($index); ?>)" class="px-3 py-1 bg-gray-600 text-white rounded">حذف</button>
@@ -237,20 +247,24 @@
                  
 
                     
-                    <div class="flex items-center justify-between">
-                        <span class="text-lg font-bold text-gray-800 dark:text-gray-200">💵 مبلغ رسید:</span>
-                        <input wire:model.lazy="receivedAmount" type="number" min="0" step="0.001"
-                            class="w-40 border rounded-lg px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-100"
-                            placeholder="0" />
-                    </div>
+                  <!-- مبلغ رسید و باقی‌مانده فقط برای فروش عمده -->
+<template x-if="saleType === 'wholesale'">
+    <div class="space-y-3">
+        <div class="flex items-center justify-between">
+            <span class="text-lg font-bold text-gray-800 dark:text-gray-200">💵 مبلغ رسید:</span>
+            <input wire:model.lazy="receivedAmount" type="number" min="0" step="0.001"
+                class="w-40 border rounded-lg px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-100"
+                placeholder="0" />
+        </div>
 
-                    
-                    <div class="flex items-center justify-between">
-                        <span class="text-lg font-bold text-gray-800 dark:text-gray-200">🧾 باقیمانده:</span>
-                        <span class="text-xl font-extrabold text-red-600 dark:text-red-400">
-                            <?php echo e(number_format(max((collect($items)->sum('total') - $discount) - $this->convertedReceivedAmount,0),3)); ?> دالر
-                        </span>
-                    </div>
+        <div class="flex items-center justify-between">
+            <span class="text-lg font-bold text-gray-800 dark:text-gray-200">🧾 باقیمانده:</span>
+            <span class="text-xl font-extrabold text-red-600 dark:text-red-400">
+                <?php echo e(number_format(max((collect($items)->sum('total') - $discount) - $this->convertedReceivedAmount,0),3)); ?> دالر
+            </span>
+        </div>
+    </div>
+</template>
 
                     
                     <div class="flex gap-3">

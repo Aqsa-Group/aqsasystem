@@ -64,10 +64,11 @@ class SafeOverview extends BaseWidget
         $totalBoot  = $totalInventoryBalance + $totalWarehouseBalance + $totalBalance;
 
         // --- صرافی ---
-        $AFN = Sarafi::sum('AFN');
-        $USD = Sarafi::sum('USD');
-        $CNY = Sarafi::sum('CNY');
-        $EUR = Sarafi::sum('EUR');
+            $AFN = Sarafi::where('name', 'زرین')->sum('AFN');
+            $USD = Sarafi::where('name', 'زرین')->sum('USD');
+            $CNY = Sarafi::where('name', 'زرین')->sum('CNY');
+            $EUR = Sarafi::where('name', 'زرین')->sum('EUR');
+
 
         // --- قرضه‌ها ---
         $loan = Customer::where('user_id', $userId)->sum('total_loan');

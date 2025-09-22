@@ -91,8 +91,7 @@ class BuyResource extends Resource
             Forms\Components\TextInput::make('name')
                 ->label('نام جنس')
                 ->required()
-                ->live()
-                ->debounce(500)
+                ->lazy()
                 ->afterStateUpdated(function ($state, callable $set) {
                     if (!$state) return;
 
@@ -300,7 +299,7 @@ class BuyResource extends Resource
                 ->label('مبلغ رسید')
                 ->numeric()
                 ->dehydrated(true)
-                ->reactive()
+                ->lazy()
                 ->afterStateUpdated(function (callable $set, $state, callable $get) {
                     $amount = $get('amount') ?? 0;
                     $set('remaining', max($amount - ($state ?? 0), 0));
