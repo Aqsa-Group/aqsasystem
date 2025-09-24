@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "62821d93a2a3fa33613f5a3292dca5ff",
+    "content-hash": "d0ff98037aee766145fb4a8f8ea61254",
     "packages": [
         {
             "name": "afatmustafa/blade-hugeicons",
@@ -7020,16 +7020,16 @@
         },
         {
             "name": "secondnetwork/blade-tabler-icons",
-            "version": "v3.34.1",
+            "version": "v3.35.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/secondnetwork/blade-tabler-icons.git",
-                "reference": "7d0ccb01eb878cf5a5df306967b59242d3615811"
+                "reference": "637a4ae739daa13a27522fe91dd36f0716321616"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/secondnetwork/blade-tabler-icons/zipball/7d0ccb01eb878cf5a5df306967b59242d3615811",
-                "reference": "7d0ccb01eb878cf5a5df306967b59242d3615811",
+                "url": "https://api.github.com/repos/secondnetwork/blade-tabler-icons/zipball/637a4ae739daa13a27522fe91dd36f0716321616",
+                "reference": "637a4ae739daa13a27522fe91dd36f0716321616",
                 "shasum": ""
             },
             "require": {
@@ -7072,9 +7072,9 @@
             ],
             "support": {
                 "issues": "https://github.com/secondnetwork/blade-tabler-icons/issues",
-                "source": "https://github.com/secondnetwork/blade-tabler-icons/tree/v3.34.1"
+                "source": "https://github.com/secondnetwork/blade-tabler-icons/tree/v3.35.0"
             },
-            "time": "2025-07-22T15:28:08+00:00"
+            "time": "2025-09-18T12:39:56+00:00"
         },
         {
             "name": "setasign/fpdi",

@@ -124,6 +124,23 @@ Route::get('/sarafi/user', function () {
 })->name('sarafi.users');
 
 
+Route::get('/sarafi/customer-create', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.customer-create');
+})->name('sarafi.customer-create');
+
+
+Route::get('/sarafi/customer-table', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.customer_table');
+})->name('sarafi.customer-table');
+
+
+
 
 
 

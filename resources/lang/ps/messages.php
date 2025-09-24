@@ -71,6 +71,73 @@ return [
 
 
 
+    // user
+
+
+    'edit_user' => 'د کارونکي ترمیم',
+    'add_user' => 'د کارونکي اضافه کول',
+    'name' => 'نوم',
+    'lastname' => 'تخلص',
+    'sarafi_name' => 'د صرافۍ نوم',
+    'address' => 'پته',
+    'phone' => 'د تلیفون شمېره',
+    'username' => 'د کارونکي نوم',
+    'password' => 'پټ نوم',
+    'user_limit' => 'اجازه شویو کارونکو شمېره',
+    'role' => 'نقش',
+    'select_role' => 'نقش انتخاب کړئ',
+    'admin' => 'مدیر',
+    'warehouse_manager' => 'ګودام مدیر',
+    'internal_officer' => 'د داخلي چارو مسئول',
+    'external_officer' => 'د خارجي چارو مسئول',
+    'cancel' => 'لغوه',
+    'save' => 'خوندي کول',
+    'filter' => 'فلټر',
+    'all_roles' => 'ټول نقشونه',
+    'all_sarafis' => 'ټول صرافۍ',
+    'apply_filter' => 'فلټر تطبیق کړئ',
+    'search_placeholder' => 'لټون...',
+    'active' => 'فعال',
+    'inactive' => 'غیرفعال',
+    'actions' => 'عملیات',
+    'ok' => 'تایید',
+    'confirm_delete_title' => 'ایا ډاډمن یاست؟',
+    'confirm_delete_message' => 'دا عمل بیرته نه اخیستل کیږي!',
+    'yes' => 'هو',
+    'no' => 'نه',
+    'status' => 'حالت',
+        'user_created' => 'کارن په بریالیتوب سره جوړ شو.',
+    'user_updated' => 'د کارن معلومات په بریالیتوب سره نوي شول.',
+    'user_deleted' => 'کارن په بریالیتوب سره حذف شو.',
+    'max_users_reached' => 'د کارونکو اعظمي شمېر ته ورسېد.',
+    'admin_cannot_create_superadmin' => 'اداره نشي کولی سوپر اډمین جوړ کړي.',
+    'error' => 'تېروتنه',
+    'success' => 'بریالی',
+    'required' => 'د :attribute ډګر ډکول اړین دي.',
+    'string' => 'د :attribute ډګر باید متن وي.',
+    'max' => 'د :attribute ډګر باید له :max حروفو زیات نه وي.',
+    'min' => 'د :attribute ډګر باید لږ تر لږه :min حروف ولري.',
+    'integer' => 'د :attribute ډګر باید عدد وي.',
+    'unique' => 'دا :attribute مخکې کارول شوی دی.',
+
+        'roles' => [
+        'superadmin' => 'سوپر اډمین',
+         'admin' => 'مدیر',
+        'warehouse_manager' => 'ګودام مدیر',
+        'internal_officer' => 'د داخلي چارو مسئول',
+        'external_officer' => 'د خارجي چارو مسئول',
+    ],
+
+    // Alerts
+    'success' => 'بریالی',
+    'error' => 'تېروتنه',
+    'user_created' => 'کاروونکی جوړ شو.',
+    'user_updated' => 'کاروونکی تازه شو.',
+    'user_deleted' => 'کاروونکی حذف شو.',
+    'max_users_reached' => 'د کاروونکو اعظمي حد ته رسیدلی.',
+    'admin_cannot_create_superadmin' => 'مدیر نشي کولی سوپر اډمین جوړ کړي.',
+
+
 
 
 

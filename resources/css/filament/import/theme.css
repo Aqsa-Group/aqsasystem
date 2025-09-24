@@ -40,61 +40,61 @@
 
 
 /* 🔹 Topbar */
-.fi-topbar > nav {
-    @apply bg-white text-gray-900 shadow-md border-b border-indigo-200 transition-colors duration-300;
-}
+  .fi-topbar > nav {
+      @apply bg-white text-gray-900 shadow-md border-b border-indigo-200 transition-colors duration-300;
+  }
 
-/* 🔹 Sidebar */
-.fi-sidebar {
-    @apply bg-white border-l border-gray-200 shadow-2xl rounded-r-4xl transition-colors duration-300;
-}
+  /* 🔹 Sidebar */
+  .fi-sidebar {
+      @apply bg-white border-l border-gray-200 shadow-2xl rounded-r-4xl transition-colors duration-300;
+  }
 
-.fi-sidebar-header {
-    @apply bg-white border-b border-gray-200 transition-colors duration-300;
-}
+  .fi-sidebar-header {
+      @apply bg-white border-b border-gray-200 transition-colors duration-300;
+  }
 
-.fi-sidebar .fi-sidebar-item {
-    @apply text-gray-700 hover:text-gray-600 hover:bg-red-200 rounded-lg transition-all duration-200 dark:hover:bg-white;
-}
+  .fi-sidebar .fi-sidebar-item {
+      @apply text-gray-700 hover:text-gray-600 hover:bg-red-200 rounded-lg transition-all duration-200 dark:hover:bg-white;
+  }
 
-.fi-sidebar .fi-sidebar-item-active {
-    @apply bg-black text-indigo-700 font-semibold;
-}
+  .fi-sidebar .fi-sidebar-item-active {
+      @apply bg-black text-indigo-700 font-semibold;
+  }
 
-/* 🔹 Body */
-.fi-body {
-    background-color: #ebeceff0;
-    transition: background-color 0.3s;
-}
+  /* 🔹 Body */
+  .fi-body {
+      background-color: #ebeceff0;
+      transition: background-color 0.3s;
+  }
 
-/* 🔹 Header Buttons Container */
-.flex-header-container {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem; /* فاصله بین دکمه‌ها */
-}
+  /* 🔹 Header Buttons Container */
+  .flex-header-container {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem; /* فاصله بین دکمه‌ها */
+  }
 
-/* 🔹 حالت تاریک */
-.dark .fi-topbar > nav {
-    @apply bg-gray-800 text-gray-100 border-gray-700;
-}
+  /* 🔹 حالت تاریک */
+  .dark .fi-topbar > nav {
+      @apply bg-gray-800 text-gray-100 border-gray-700;
+  }
 
-.dark .fi-sidebar {
-    @apply bg-gray-900 border-gray-700;
-}
+  .dark .fi-sidebar {
+      @apply bg-gray-900 border-gray-700;
+  }
 
-.dark .fi-sidebar-header {
-    @apply bg-gray-900 border-gray-700;
-}
+  .dark .fi-sidebar-header {
+      @apply bg-gray-900 border-gray-700;
+  }
 
-.dark .fi-sidebar .fi-sidebar-item {
-    @apply text-gray-300 hover:text-indigo-400 hover:bg-gray-800;
-}
+  .dark .fi-sidebar .fi-sidebar-item {
+      @apply text-gray-300 hover:text-indigo-400 hover:bg-gray-800;
+  }
 
-.dark .fi-sidebar .fi-sidebar-item-active {
-    @apply bg-indigo-900 text-indigo-300 font-semibold;
-}
+  .dark .fi-sidebar .fi-sidebar-item-active {
+      @apply bg-indigo-900 text-indigo-300 font-semibold;
+  }
 
-.dark .fi-body {
-    background-color: #1e1e2f; /* رنگ پس‌زمینه دارک */
-}
+  .dark .fi-body {
+      background-color: #1e1e2f; /* رنگ پس‌زمینه دارک */
+  }

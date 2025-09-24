@@ -47,6 +47,116 @@ class ImportPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
+
+   ->renderHook(
+    'panels::head.end',
+    fn () => <<<HTML
+        <style>
+            /* 🔹 Topbar */
+            .fi-topbar > nav {
+                background-color: #ffffff;
+                color: #1f2937; /* text-gray-900 */
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                border-bottom: 1px solid #c7d2fe; /* border-indigo-200 */
+                transition: all 0.3s;
+            }
+
+            /* 🔹 Sidebar */
+            .fi-sidebar {
+                background-color: #ffffff;
+                border-left: 1px solid #e5e7eb; /* border-gray-200 */
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                border-top-right-radius: 1rem; /* rounded-r-4xl */
+                transition: all 0.3s;
+            }
+
+            .fi-sidebar-header {
+                background-color: #ffffff;
+                border-bottom: 1px solid #e5e7eb;
+                transition: all 0.3s;
+            }
+
+            .fi-sidebar .fi-sidebar-item {
+                color: #374151; /* text-gray-700 */
+                border-radius: 0.5rem; /* rounded-lg */
+                transition: all 0.2s;
+            }
+
+            .fi-sidebar .fi-sidebar-item:hover {
+                color: #4b5563; /* text-gray-600 */
+                background-color: #fecaca; /* red-200 */
+            }
+
+            .fi-sidebar .fi-sidebar-item-active {
+                background-color: #000000; /* bg-black */
+                color: #4338ca; /* text-indigo-700 */
+                font-weight: 600;
+            }
+
+            /* 🔹 Body */
+            .fi-body {
+                background-color: #ebeceff0;
+                transition: background-color 0.3s;
+            }
+
+            /* 🔹 Header Buttons Container */
+            .flex-header-container {
+                display: flex;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+
+            /* 🔹 Dark Mode */
+            .dark .fi-topbar > nav {
+                background-color: #1f2937; /* gray-800 */
+                color: #f9fafb; /* gray-100 */
+                border-color: #374151; /* border-gray-700 */
+            }
+
+            .dark .fi-sidebar {
+                background-color: #111827; /* gray-900 */
+                border-color: #374151;
+            }
+
+            .dark .fi-sidebar-header {
+                background-color: #111827;
+                border-color: #374151;
+            }
+
+            .dark .fi-sidebar .fi-sidebar-item {
+                color: #d1d5db; /* gray-300 */
+            }
+
+            .dark .fi-sidebar .fi-sidebar-item:hover {
+                color: #818cf8; /* indigo-400 */
+                background-color: #1f2937; /* gray-800 */
+            }
+
+            .dark .fi-sidebar .fi-sidebar-item-active {
+                background-color: #1e3a8a; /* indigo-900 */
+                color: #c7d2fe; /* indigo-300 */
+                font-weight: 600;
+            }
+
+            .dark .fi-body {
+                background-color: #1e1e2f;
+            }
+
+            /* Light mode background */
+            body {
+                background: url("/images/bg-light.png") no-repeat center center fixed;
+                background-size: cover;
+            }
+
+            /* Dark mode background */
+            .dark body {
+                background: url("/images/bg-dark2.png") no-repeat center center fixed;
+                background-size: cover;
+            }
+        </style>
+    HTML
+)
+
             ->discoverWidgets(in: app_path('Filament/Import/Widgets'), for: 'App\\Filament\\Import\\Widgets')
             ->widgets([
 

@@ -73,6 +73,75 @@ return [
 
 
 
+    // users
+
+
+    'edit_user' => 'ویرایش کاربر',
+    'add_user' => 'افزودن کاربر',
+    'name' => 'نام',
+    'lastname' => 'نام خانوادگی',
+    'sarafi_name' => 'نام صرافی',
+    'address' => 'آدرس',
+    'phone' => 'شماره تلفن',
+    'username' => 'نام کاربری',
+    'password' => 'رمز عبور',
+    'user_limit' => 'تعداد مجاز کاربران',
+    'role' => 'نقش',
+    'select_role' => 'انتخاب نقش',
+    'admin' => 'مدیر',
+    'warehouse_manager' => 'خزانه‌دار',
+    'internal_officer' => 'مسوول احواله داخلی',
+    'external_officer' => 'مسوول احواله خارجی',
+    'cancel' => 'لغو',
+    'save' => 'ذخیره',
+    'filter' => 'فیلتر',
+    'all_roles' => 'همه نقش‌ها',
+    'all_sarafis' => 'همه صرافی‌ها',
+    'apply_filter' => 'اعمال فیلتر',
+    'search_placeholder' => 'جستجو...',
+    'active' => 'فعال',
+    'inactive' => 'غیرفعال',
+    'actions' => 'عملیات',
+    'ok' => 'تایید',
+    'confirm_delete_title' => 'آیا مطمئن هستید؟',
+    'confirm_delete_message' => 'این عمل قابل بازگشت نیست!',
+    'yes' => 'بلی',
+    'no' => 'خیر',
+    'status' => 'وضعیت',
+    'user_created' => 'کاربر با موفقیت ایجاد شد.',
+    'user_updated' => 'اطلاعات کاربر با موفقیت به‌روزرسانی شد.',
+    'user_deleted' => 'کاربر با موفقیت حذف شد.',
+    'max_users_reached' => 'تعداد کاربران به حداکثر رسید.',
+    'admin_cannot_create_superadmin' => 'مدیر نمی‌تواند سوپر ادمین ایجاد کند.',
+    'error' => 'خطا',
+    'success' => 'موفقیت',
+     'required' => 'فیلد :attribute الزامی است.',
+    'string' => 'فیلد :attribute باید متنی باشد.',
+    'max' => 'فیلد :attribute نباید بیشتر از :max کاراکتر باشد.',
+    'min' => 'فیلد :attribute نباید کمتر از :min کاراکتر باشد.',
+    'integer' => 'فیلد :attribute باید عدد صحیح باشد.',
+    'unique' => 'این :attribute قبلاً استفاده شده است.',
+
+
+
+
+    'roles' => [
+        'superadmin' => 'سوپر ادمین',
+        'admin' => 'مدیر',
+        'warehouse_manager' => 'خزانه دار',
+        'internal_officer' => 'مسوول احواله جات داخلی',
+        'external_officer' => 'مسوول احواله جات خارجی',
+    ],
+
+    // Alerts
+    'success' => 'موفق',
+    'error' => 'خطا',
+    'user_created' => 'کاربر ایجاد شد.',
+    'user_updated' => 'کاربر ویرایش شد.',
+    'user_deleted' => 'کاربر حذف شد.',
+    'max_users_reached' => 'حداکثر کاربران رسیده است.',
+    'admin_cannot_create_superadmin' => 'مدیر نمی‌تواند سوپر ادمین ایجاد کند.',
+
 
 
 

@@ -109,12 +109,28 @@
                     <span class="ml-2 sidebar-text">{{ __('messages.dashboard') }}</span>
                 </a>
                 <a href="{{ route('sarafi.users') }}"
-                    class="flex items-center p-2 rounded-lg sidebar-link {{ request()->is('users*') ? 'active-link' : '' }}">
+                    class="flex items-center p-2 rounded-lg sidebar-link {{ request()->is('sarafi/user*') ? 'active-link' : '' }}">
                     <span class="material-icons">people</span>
                     <span class="ml-2 sidebar-text">{{ __('messages.users') }}</span>
                 </a>
 
                 <div>
+                    <button id="products-btn"
+                        class="flex items-center justify-between w-full p-2 rounded-lg sidebar-link">
+                        <div class="flex items-center">
+                            <span class="material-icons ">shopping_cart</span>
+                            <span class="ml-2 sidebar-text">{{ __('messages.products') }}</span>
+                        </div>
+                        <span id="products-arrow" class="material-icons transition-transform hidden">expand_more</span>
+                    </button>
+                    <div id="products-submenu" class="ml-8 mt-1 space-y-1 hidden">
+                        <a href="#" class="block p-2 rounded-lg submenu-link">{{ __('messages.pastry') }}</a>
+                        <a href="#" class="block p-2 rounded-lg submenu-link">{{ __('messages.clothes') }}</a>
+                    </div>
+                </div>
+
+
+                     <div>
                     <button id="products-btn"
                         class="flex items-center justify-between w-full p-2 rounded-lg sidebar-link">
                         <div class="flex items-center">
