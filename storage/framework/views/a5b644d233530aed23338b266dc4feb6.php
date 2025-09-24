@@ -11,27 +11,27 @@
             <div class="flex flex-col items-center pb-3 relative">
                 <label class="mb-2 text-gray-700 dark:text-gray-300 font-medium">عکس مشتری</label>
                 <div class="relative w-32 h-32">
-                    <!--[if BLOCK]><![endif]--><?php if($profile): ?>
+                    <?php if($profile): ?>
                         <img src="<?php echo e($profile instanceof \Livewire\TemporaryUploadedFile ? $profile->temporaryUrl() : asset('storage/' . $profile)); ?>" 
                              alt="Profile" class="w-32 h-32 rounded-full object-cover border border-gray-300 dark:border-gray-600">
                     <?php else: ?>
                         <img src="https://i.pravatar.cc/150?img=12" alt="Profile"
                              class="w-32 h-32 rounded-full object-cover border border-gray-300 dark:border-gray-600">
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?>
                     <input type="file" wire:model="profile" accept="image/*"
                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
                     <div class="absolute bottom-0 right-0 bg-blue-600 p-2 rounded-full text-white shadow-md cursor-pointer">
                         <i class="fa-solid fa-camera"></i>
                     </div>
                 </div>
-                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['profile'];
+                <?php $__errorArgs = ['profile'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-sm"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
             </div>
 
             <div class="grid grid-cols-2 gap-4">
@@ -41,14 +41,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     <label class="block mb-1 text-gray-700 dark:text-gray-300 font-medium">نام کامل</label>
                     <input type="text" wire:model="name" placeholder="نام مشتری"
                            class="w-full pr-10 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400">
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['name'];
+                    <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-sm"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                         <img src="<?php echo e(asset('assets/sarafi/people.png')); ?>" alt="" class="h-5 w-5 mt-6">
                     </div>
@@ -59,14 +59,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     <label class="block mb-1 text-gray-700 dark:text-gray-300 font-medium">شماره حساب</label>
                     <input  type="text" wire:model.lazy="account" placeholder="شماره حساب مشتری"
                            class="w-full pr-10 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400">
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['account'];
+                    <?php $__errorArgs = ['account'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-sm"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                         <img src="<?php echo e(asset('assets/sarafi/number-blocks.png')); ?>" alt="" class="h-5 w-5 mt-6">
                     </div>
@@ -81,14 +81,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         <option>مشتری طلایی</option>
                         <option>ویژه</option>
                     </select>
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['category'];
+                    <?php $__errorArgs = ['category'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-sm"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                         <img src="<?php echo e(asset('assets/sarafi/select.png')); ?>" alt="" class="h-5 w-5 mt-6">
                     </div>
@@ -99,14 +99,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     <label class="block mb-1 text-gray-700 dark:text-gray-300 font-medium">شهر</label>
                     <input type="text" wire:model="city" placeholder="نام شهر مشتری"
                            class="w-full pr-10 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400">
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['city'];
+                    <?php $__errorArgs = ['city'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-sm"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                         <img src="<?php echo e(asset('assets/sarafi/stroke.png')); ?>" alt="" class="h-5 w-5 mt-6">
                     </div>
@@ -117,14 +117,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     <label class="block mb-1 text-gray-700 dark:text-gray-300 font-medium">شماره تلفن</label>
                     <input type="text" wire:model.lazy="phone" placeholder="شماره تلفن مشتری"
                            class="w-full pr-10 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400">
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['phone'];
+                    <?php $__errorArgs = ['phone'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-sm"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                         <img src="<?php echo e(asset('assets/sarafi/call.png')); ?>" alt="" class="h-5 w-5 mt-6">
                     </div>
@@ -135,14 +135,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     <label class="block mb-1 text-gray-700 dark:text-gray-300 font-medium">شماره تذکره</label>
                     <input type="text" wire:model.lazy="tazkira" placeholder="شماره تذکره مشتری"
                            class="w-full pr-10 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400">
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['tazkira'];
+                    <?php $__errorArgs = ['tazkira'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-sm"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                         <img src="<?php echo e(asset('assets/sarafi/id-card.png')); ?>" alt="" class="h-5 w-5 mt-6">
                     </div>
@@ -153,14 +153,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     <label class="block mb-1 text-gray-700 dark:text-gray-300 font-medium">شماره واتساپ</label>
                     <input type="text" wire:model.lazy="whatsapp" placeholder="شماره واتساپ مشتری"
                            class="w-full pr-10 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400">
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['whatsapp'];
+                    <?php $__errorArgs = ['whatsapp'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-sm"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                         <img src="<?php echo e(asset('assets/sarafi/whatsapp.png')); ?>" alt="" class="h-5 w-5 mt-6">
                     </div>
@@ -180,12 +180,12 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             </div>
 
             <!-- Success message -->
-            <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
+            <?php if(session()->has('message')): ?>
                 <div class="mt-4 text-green-600 text-center font-semibold">
                     <?php echo e(session('message')); ?>
 
                 </div>
-            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            <?php endif; ?>
 
         </form>
 
@@ -203,7 +203,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
     </div>
 
 <!-- Success Modal -->
-<!--[if BLOCK]><![endif]--><?php if($showSuccessModal): ?>
+<?php if($showSuccessModal): ?>
 <div 
     class="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
     wire:click.self="$set('showSuccessModal', false)"
@@ -225,7 +225,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
         </div>
     </div>
 </div>
-<?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+<?php endif; ?>
 
 
 </div>

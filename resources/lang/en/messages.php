@@ -2,7 +2,11 @@
 return [
     'dashboard' => 'Dashboard',
     'users' => 'Users',
-    'products' => 'Products',
+    'customer' => 'Customers',
+    'create_customer' => 'Create Customer',
+    'list_customer' => 'Customer List',
+
+
     'pastry' => 'Pastry',
     'clothes' => 'Clothes',
     'recipt/withdraw'=>'Recipt/Withdraw safe',

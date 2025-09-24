@@ -119,33 +119,16 @@
                     <button id="products-btn"
                         class="flex items-center justify-between w-full p-2 rounded-lg sidebar-link">
                         <div class="flex items-center">
-                            <span class="material-icons ">shopping_cart</span>
-                            <span class="ml-2 sidebar-text"><?php echo e(__('messages.products')); ?></span>
+                            <span class="material-icons "></span>
+                            <span class="ml-2 sidebar-text"><?php echo e(__('messages.customer')); ?></span>
                         </div>
                         <span id="products-arrow" class="material-icons transition-transform hidden">expand_more</span>
                     </button>
                     <div id="products-submenu" class="ml-8 mt-1 space-y-1 hidden">
-                        <a href="#" class="block p-2 rounded-lg submenu-link"><?php echo e(__('messages.pastry')); ?></a>
-                        <a href="#" class="block p-2 rounded-lg submenu-link"><?php echo e(__('messages.clothes')); ?></a>
+                        <a href="<?php echo e(route('sarafi.customer-create')); ?>" class="block p-2  hover:bg-gray-200 w-full rounded-lg submenu-link"><?php echo e(__('messages.create_customer')); ?></a>
+                        <a href="<?php echo e(route('sarafi.customer-table')); ?>" class="block p-2  hover:bg-gray-200 w-full  rounded-lg submenu-link"><?php echo e(__('messages.list_customer')); ?></a>
                     </div>
                 </div>
-
-
-                     <div>
-                    <button id="products-btn"
-                        class="flex items-center justify-between w-full p-2 rounded-lg sidebar-link">
-                        <div class="flex items-center">
-                            <span class="material-icons ">shopping_cart</span>
-                            <span class="ml-2 sidebar-text"><?php echo e(__('messages.products')); ?></span>
-                        </div>
-                        <span id="products-arrow" class="material-icons transition-transform hidden">expand_more</span>
-                    </button>
-                    <div id="products-submenu" class="ml-8 mt-1 space-y-1 hidden">
-                        <a href="#" class="block p-2 rounded-lg submenu-link"><?php echo e(__('messages.pastry')); ?></a>
-                        <a href="#" class="block p-2 rounded-lg submenu-link"><?php echo e(__('messages.clothes')); ?></a>
-                    </div>
-                </div>
-
             </nav>
         </aside>
 

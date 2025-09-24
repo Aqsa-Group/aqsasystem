@@ -1,11 +1,14 @@
 <?php
 return [
     'dashboard' => 'ډشبورډ',
-    'products' => 'محصولات',
+    'customer' => 'پیرودونکی',
     'users' => 'کاروونکي',
     'search_placeholder' => 'لټون وکړئ...',
     'notifications' => 'خبرتیاوې',
     'exchange_name' => 'زرین صرافی',
+    'create_customer' => 'یو پیرودونکي جوړ کړئ',
+    'list_customer' => 'د پیرودونکو لیست',
+
 
      // dashboard
     'recipt/withdraw'=>'رسید/پور فنډ',

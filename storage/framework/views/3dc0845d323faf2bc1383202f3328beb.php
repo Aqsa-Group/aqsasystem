@@ -127,11 +127,11 @@ unset($__defined_vars, $__key, $__value); ?>
     <?php echo e($form); ?>
 
 
-    <!--[if BLOCK]><![endif]--><?php if($applyAction->isVisible()): ?>
+    <?php if($applyAction->isVisible()): ?>
         <div>
             <?php echo e($applyAction); ?>
 
         </div>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?>
 </div>
 <?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/vendor/filament/tables/resources/views/components/filters/index.blade.php ENDPATH**/ ?>

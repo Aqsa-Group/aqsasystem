@@ -3,11 +3,15 @@ return [
 
     // asside 
     'dashboard' => 'داشبورد',
-    'products' => 'محصولات',
+    'customer' => 'مشتریان',
     'users' => 'کاربران',
     'search_placeholder' => 'جستجو کنید...',
     'notifications' => 'اعلان‌ها',
     'exchange_name' =>'صرافی زرین',
+    'create_customer' => 'ایجاد مشتری',
+    'list_customer' => 'لیست مشتریان',
+
+
 
     // dashboard
     'recipt/withdraw'=>'رسید/بردگی صندوق',

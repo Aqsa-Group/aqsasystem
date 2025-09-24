@@ -36,7 +36,7 @@
                 </tr>
             </thead>
             <tbody>
-                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <?php $__empty_1 = true; $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr class="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td class="w-4 p-4">
                         <input type="checkbox" class="w-4 h-4 text-blue-600 rounded-sm">
@@ -72,7 +72,7 @@
                         هیچ مشتری یافت نشد.
                     </td>
                 </tr>
-                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                <?php endif; ?>
             </tbody>
         </table>
 
@@ -94,15 +94,15 @@
     </div>
 
     <!-- ✅ Success message -->
-    <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
+    <?php if(session()->has('message')): ?>
         <div class="mt-4 text-green-600 text-center font-semibold">
             <?php echo e(session('message')); ?>
 
         </div>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?>
 
     <!-- ❗ Delete Confirmation Modal -->
-    <!--[if BLOCK]><![endif]--><?php if($confirmingDelete): ?>
+    <?php if($confirmingDelete): ?>
     <div class="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-96">
             <h2 class="text-xl font-bold text-red-600 mb-4">⚠️ حذف مشتری</h2>
@@ -120,6 +120,6 @@
             </div>
         </div>
     </div>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?>
 </div>
 <?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/customers-table.blade.php ENDPATH**/ ?>
