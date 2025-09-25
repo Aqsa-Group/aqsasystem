@@ -5,51 +5,63 @@ namespace App\Livewire\Sarafi;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Sarafi\Customer;
+use Illuminate\Support\Facades\Auth;
 
 class CustomersTable extends Component
 {
     use WithPagination;
 
     public $search = '';
-    public $confirmingDelete = false;
-    public $deleteId = null;
+    public $confirmingDelete = null;
 
-    protected $listeners = ['customerSaved' => '$refresh'];
+    public function mount()
+    {
+        // بررسی احراز هویت
+        if (!Auth::guard('sarafi')->check()) {
+            return redirect()->route('sarafi.login.form');
+        }
+    }
 
     public function updatingSearch()
     {
         $this->resetPage();
     }
 
-    // 📌 نمایش مودال حذف
     public function confirmDelete($id)
     {
-        $this->deleteId = $id;
-        $this->confirmingDelete = true;
+        $this->confirmingDelete = $id;
     }
 
-    // 📌 حذف مشتری
     public function deleteCustomer()
     {
-        Customer::findOrFail($this->deleteId)->delete();
-        $this->confirmingDelete = false;
-        $this->deleteId = null;
+        if ($this->confirmingDelete) {
+            Customer::find($this->confirmingDelete)->delete();
+            $this->confirmingDelete = null;
+            session()->flash('message', 'مشتری با موفقیت حذف شد.');
+        }
+    }
+
+    // انتقال به صفحه ویرایش با پارامتر ID
+    public function editCustomer($id)
+    {
+        return redirect()->route('sarafi.customer-create', ['customerId' => $id]);
+    }
+
+    // انتقال به صفحه ایجاد مشتری جدید
+    public function createCustomer()
+    {
+        return redirect()->route('sarafi.customer-create');
     }
 
     public function render()
     {
-        $customers = Customer::query()
-            ->when($this->search, function ($query) {
-                $query->where('fullname', 'like', "%{$this->search}%")
-                    ->orWhere('account_number', 'like', "%{$this->search}%")
-                    ->orWhere('phone', 'like', "%{$this->search}%")
-                    ->orWhere('city', 'like', "%{$this->search}%");
-            })
-            ->latest()
-            ->paginate(10);
+        $customers = Customer::when($this->search, function ($query) {
+            $query->where('fullname', 'like', '%' . $this->search . '%')
+                  ->orWhere('phone', 'like', '%' . $this->search . '%')
+                  ->orWhere('account_number', 'like', '%' . $this->search . '%')
+                  ->orWhere('city', 'like', '%' . $this->search . '%');
+        })->orderBy('created_at', 'desc')->paginate(10);
 
-        return view('livewire.sarafi.customers-table', [
-            'customers' => $customers,
-        ]);
+        return view('livewire.sarafi.customers-table', compact('customers'));
     }
 }

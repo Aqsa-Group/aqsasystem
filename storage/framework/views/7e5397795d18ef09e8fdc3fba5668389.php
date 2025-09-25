@@ -358,7 +358,6 @@
         }
     });
 
-    // 💰 گراف تراکنش‌ها به تفکیک ارز
     const ctx2 = document.getElementById('transactionsByCurrencyChart').getContext('2d');
     new Chart(ctx2, {
         type: 'doughnut',

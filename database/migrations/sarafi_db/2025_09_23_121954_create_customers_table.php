@@ -21,6 +21,9 @@ return new class extends Migration
             $table->string('account_number')->nullable()->unique();
             $table->string('whatsapp_number')->nullable();
             $table->string('type')->nullable();
+            $table->string('id_card_image')->nullable();
+            $table->string('password')->nullable();
+            $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
         });
     }
@@ -32,5 +35,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('customers');
     }
-
 };

@@ -1,5 +1,7 @@
 @extends('Sarafi.layouts.sidebar')
 
+
+
 @section('content')
-    @livewire('sarafi.customers-table')
+@livewire('sarafi.customer-management')
 @endsection

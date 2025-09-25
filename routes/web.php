@@ -108,7 +108,6 @@ Route::get('/set-locale/{locale}', function ($locale) {
 
 
 Route::get('/sarafi/home', function () {
-    // بررسی لاگین guard sarafi
     if (!Auth::guard('sarafi')->check()) {
         return redirect()->route('sarafi.login.form');
     }
@@ -124,14 +123,7 @@ Route::get('/sarafi/user', function () {
 })->name('sarafi.users');
 
 
-Route::get('/sarafi/customer-create', function () {
-    if (!Auth::guard('sarafi')->check()) {
-        return redirect()->route('sarafi.login.form');
-    }
-    return view('Sarafi.components.customer-create');
-})->name('sarafi.customer-create');
-
-
+// روت‌های معمولی Laravel (بدون Livewire)
 Route::get('/sarafi/customer-table', function () {
     if (!Auth::guard('sarafi')->check()) {
         return redirect()->route('sarafi.login.form');
@@ -140,10 +132,16 @@ Route::get('/sarafi/customer-table', function () {
 })->name('sarafi.customer-table');
 
 
-
-
-
-
-
-
+Route::get('/sarafi/customer-create', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    
+    // دریافت customerId از query parameter
+    $customerId = request('customerId');
+    
+    return view('Sarafi.components.customer-create', [
+        'customerId' => $customerId
+    ]);
+})->name('sarafi.customer-create');
 
