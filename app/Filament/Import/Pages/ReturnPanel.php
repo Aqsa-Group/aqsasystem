@@ -67,7 +67,7 @@ class ReturnPanel extends Page
                 'cost_price'   => optional($item->warehouse)->price ?? 0,
                 'sold_qty'     => max(0, $maxQty),
                 'qty'          => 0,
-                'total'        => 0,
+                'USD'        => 0,
             ];
         }
         $this->calcTotals();
@@ -188,7 +188,7 @@ public function submitReturn(): void
         $this->sale->save();
 
         $safe = Safe::firstOrCreate([], [
-            'total'       => 0,
+            'USD'       => 0,
             'today'       => 0,
             'user_id'     => Auth::id(),
             'last_update' => now()->toDateString(),
@@ -201,7 +201,7 @@ public function submitReturn(): void
 
         $safe->today -= $cashRefund; 
         if ($cashRefund > 0) {
-            $safe->total -= $cashRefund;
+            $safe->USD -= $cashRefund;
         }
 
         $safe->save();

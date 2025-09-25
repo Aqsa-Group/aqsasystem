@@ -16,6 +16,9 @@ class Customers extends Component
     public $profile;
     public $successMessage = null;
     public $showSuccessModal = false;
+    protected $listeners = ['edit-customer' => 'editCustomer'];
+
+
 
     protected $rules = [
             'name' => 'required|string|max:255',
@@ -84,13 +87,12 @@ public function saveCustomer()
         $data['image'] = $this->profile->storeAs('customers', $filename, 'public');
     }
 
-    // 📌 ذخیره در دیتابیس
     Customer::updateOrCreate(
         ['id' => $this->customerId],
         $data
     );
 
-    // 📌 پیام موفقیت + باز شدن مودال
+
     $this->successMessage = $this->customerId
         ? 'مشتری با موفقیت بروزرسانی شد.'
         : 'مشتری با موفقیت اضافه شد.';
@@ -100,7 +102,10 @@ public function saveCustomer()
     // 📌 ریست فرم
     $this->resetExcept(['successMessage', 'showSuccessModal']);
     $this->customerId = null;
+    
 }
+
+
 private function convertToEnglishNumbers($value)
 {
     $persian = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];

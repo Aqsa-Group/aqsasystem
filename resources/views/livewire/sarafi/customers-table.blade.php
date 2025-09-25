@@ -58,8 +58,14 @@
                     <td class="px-6 py-4 flex space-x-2 rtl:space-x-reverse">
                         <!-- ✏️ Edit -->
                         <!-- ✏️ Edit -->
-<button wire:click="$emitTo('sarafi.customers', 'editCustomer', {{ $customer->id }})"
-        class="text-blue-500 hover:text-blue-700">✏️</button>
+        <button 
+            onclick="Livewire.emitTo('sarafi.customers', 'edit-customer', {{ $customer->id }})"
+            class="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">
+            ✏️
+        </button>
+
+
+
 
                         <!-- 🗑️ Delete -->
                         <button wire:click="confirmDelete({{ $customer->id }})"

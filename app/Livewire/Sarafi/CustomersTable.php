@@ -13,32 +13,27 @@ class CustomersTable extends Component
     public $search = '';
     public $confirmingDelete = false;
     public $deleteId = null;
-   protected $listeners = [
-    'editCustomer',
-    'customerSaved' => '$refresh',
-];
 
+    protected $listeners = ['customerSaved' => '$refresh'];
 
     public function updatingSearch()
     {
         $this->resetPage();
     }
 
-    // باز کردن مودال حذف
+    // 📌 نمایش مودال حذف
     public function confirmDelete($id)
     {
         $this->deleteId = $id;
         $this->confirmingDelete = true;
     }
 
-    // حذف مشتری
+    // 📌 حذف مشتری
     public function deleteCustomer()
     {
-        Customer::find($this->deleteId)?->delete();
+        Customer::findOrFail($this->deleteId)->delete();
         $this->confirmingDelete = false;
         $this->deleteId = null;
-
-        session()->flash('message', '✅ مشتری با موفقیت حذف شد.');
     }
 
     public function render()
@@ -53,13 +48,8 @@ class CustomersTable extends Component
             ->latest()
             ->paginate(10);
 
-        return view('livewire.sarafi.customers-table', compact('customers'));
+        return view('livewire.sarafi.customers-table', [
+            'customers' => $customers,
+        ]);
     }
-
-
-public function editCustomer($id)
-{
-    $this->mount($id); // همون mount قبلی برای پر کردن فرم
-}
-
 }
