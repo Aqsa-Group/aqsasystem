@@ -23,7 +23,7 @@ protected function mutateFormDataBeforeCreate(array $data): array
     $type = $data['type'] ?? null;
     $amount = $data['amount'] ?? 0;
     $receipt = $data['loan_recipt'] ?? 0;
-    $currency = $data['currency'] ?? 'USD'; // پیش‌فرض USD
+    $currency = $data['currency'] ?? 'USD';
 
     $safe = Safe::firstOrCreate([], [
         'USD' => 0,
@@ -33,13 +33,19 @@ protected function mutateFormDataBeforeCreate(array $data): array
     ]);
 
     if ($type === 'رسید') {
-        // کاهش بدهی مشتری
-        $customer->total_loan -= $receipt;
-        $customer->remaining_loan -= $receipt;
+        // محاسبه باقی‌مانده جدید
+        $newRemaining = max(0, $customer->remaining_loan - $receipt);
+        
+        $data['amount'] = 0;
+        $data['loan_recipt'] = $receipt;
+        $data['reminded'] = $newRemaining; // ذخیره مقدار صحیح
+
+        // به روز رسانی مشتری
         $customer->total_receipt += $receipt;
+        $customer->remaining_loan = $newRemaining;
         $customer->save();
 
-        // اضافه کردن پول به صندوق بر اساس ارز
+        // به روز رسانی صندوق
         if ($currency === 'USD') {
             $safe->USD += $receipt;
         } elseif ($currency === 'AFN') {
@@ -47,23 +53,19 @@ protected function mutateFormDataBeforeCreate(array $data): array
         }
         $safe->today += $receipt;
         $safe->save();
-
-        $data['amount'] = 0;
-        $data['loan_recipt'] = $receipt;
-        $data['reminded'] = $customer->remaining_loan;
     }
 
     if ($type === 'بردگی') {
-        // افزایش بدهی مشتری
+        $data['amount'] = $amount;
+        $data['loan_recipt'] = 0;
+        $data['reminded'] = $customer->remaining_loan + $amount; // ذخیره مقدار صحیح
+
+        // به روز رسانی مشتری
         $customer->total_loan += $amount;
         $customer->remaining_loan += $amount;
         $customer->save();
 
-        $data['amount'] = $amount;
-        $data['loan_recipt'] = 0;
-        $data['reminded'] = $amount;
-
-        // کم کردن از صندوق بر اساس ارز
+        // به روز رسانی صندوق
         if ($currency === 'USD') {
             $safe->USD -= $amount;
         } elseif ($currency === 'AFN') {

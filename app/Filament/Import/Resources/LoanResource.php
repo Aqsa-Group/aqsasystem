@@ -54,8 +54,8 @@ class LoanResource extends Resource
 
             Forms\Components\Select::make('currency')->label('ارز')
                     ->options([
-                        'AFN'=>'افغانی',
-                        'USD'=>'دالر',
+                        'افغانی'=>'افغانی',
+                        'دالر'=>'دالر',
                       
                     ])
                     ->required(),

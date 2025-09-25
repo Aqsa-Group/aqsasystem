@@ -32,7 +32,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="8" class="text-center py-6 text-gray-400">هیچ قرضه‌ای ثبت نشده است.</td>
+                    <td colspan="9" class="text-center py-6 text-gray-400">هیچ قرضه‌ای ثبت نشده است.</td>
                 </tr>
             @endforelse
         </tbody>

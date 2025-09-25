@@ -389,6 +389,7 @@ public function finalizeInvoice(): void
                 'type' => 'بردگی',
                 'user_id' => Auth::id(),
                 'date' => now(),
+                'currency'=>'دالر'
             ]);
         }
     });
