@@ -46,9 +46,9 @@ protected function mutateFormDataBeforeCreate(array $data): array
         $customer->save();
 
         // به روز رسانی صندوق
-        if ($currency === 'USD') {
+        if ($currency === 'دالر') {
             $safe->USD += $receipt;
-        } elseif ($currency === 'AFN') {
+        } elseif ($currency === 'افغانی') {
             $safe->AFN += $receipt;
         }
         $safe->today += $receipt;
@@ -66,9 +66,9 @@ protected function mutateFormDataBeforeCreate(array $data): array
         $customer->save();
 
         // به روز رسانی صندوق
-        if ($currency === 'USD') {
+        if ($currency === 'دالر') {
             $safe->USD -= $amount;
-        } elseif ($currency === 'AFN') {
+        } elseif ($currency === 'افغانی') {
             $safe->AFN -= $amount;
         }
         $safe->today -= $amount;
