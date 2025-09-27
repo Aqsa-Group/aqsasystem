@@ -7,7 +7,7 @@
 
     @font-face {
     font-family: "vazir";
-    src: url("/fonts/Vazir.ttf") format("truetype");
+    src: url("/fonts/Shabnam-Light.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }
@@ -52,6 +52,10 @@ input:-ms-input-placeholder { /* IE 10+ */
 }
 input::-ms-input-placeholder { /* Edge */
     font-family: "Vazir", sans-serif;
+}
+
+body{
+      font-family: "Vazir", sans-serif;
 }
 
 

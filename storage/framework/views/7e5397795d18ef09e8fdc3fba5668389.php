@@ -1,4 +1,4 @@
-<div class="p-6 bg-gray-50 min-h-screen" style="font-family: 'header';">
+<div class="p-6 border-[#8C8C8C] min-h-screen" style="font-family: 'header';">
 
     <h1 class="mb-8 text-2xl font-bold text-gray-700">📊 <?php echo e(__('messages.page_title')); ?></h1>
 

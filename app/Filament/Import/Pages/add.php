@@ -8,7 +8,7 @@ use Filament\Pages\Page;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\DB;
 
-class Add extends Page
+class add extends Page
 {
     protected static ?string $navigationIcon = 'mdi-safe';
     protected static ?string $navigationLabel = 'افزودن به صندوق';

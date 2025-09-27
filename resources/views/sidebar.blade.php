@@ -4,366 +4,284 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
-
-    <title>@yield('title', 'پنل مدیریت')</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Links -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/jalaali-js@1.1.0/dist/jalaali.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/min/moment.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/moment-jalaali/build/moment-jalaali.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <title>Dashboard RTL</title>
+    @include('Sarafi.layouts.links')
+    
     <style>
-        .rotate-180 {
-            transform: rotate(180deg);
-            transition: transform 0.3s;
+        /* لودر صفحه */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease;
         }
 
-        @font-face {
-            font-family: 'Vazir';
-            src: url('{{ asset('fonts/amiri-regular.ttf') }}') format('truetype');
+        .loader-content {
+            text-align: center;
         }
 
-        @font-face {
-            font-family: 'header';
-            src: url('{{ asset('fonts/Mj_Afrigha.ttf') }}') format('truetype');
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #122EE1;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
         }
 
-        @font-face {
-            font-family: 'header';
-            src: url('{{ asset('fonts/B Titr Bold_0.ttf') }}') format('truetype');
+        .loader-text {
+            font-family: Vazir, sans-serif;
+            color: #122EE1;
+            font-size: 16px;
         }
 
-        body {
-            font-family: 'Vazir';
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .sidebar-link {
-            color: #637381;
-            transition: all 0.2s;
+        .fade-out {
+            opacity: 0;
+            pointer-events: none;
         }
 
-        .sidebar-link:hover {
-            background-color: #212b36;
-            color: #fff;
-        }
-
-        .active-link {
-            background-color: #e5e7eb;
-            color: #2563eb;
-            font-weight: bold;
+        /* جلوگیری از کلیک هنگام لودینگ */
+        body.loading {
+            overflow: hidden;
         }
     </style>
-    @stack('styles')
 </head>
 
-<body class="bg-gray-100 {{ session('locale') == 'en' ? 'ltr text-left' : 'rtl text-right' }} overflow-x-hidden ">
+<body class="bg-white font-vazir">
 
+    <!-- لودر صفحه -->
+    <div id="pageLoader" class="page-loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">در حال بارگذاری...</div>
+        </div>
+    </div>
 
-    <!-- Sidebar + Main -->
-    <div class="flex h-screen">
-        <!-- Sidebar -->
-        <aside id="sidebar"
-            class="fixed lg:static top-0 left-0 h-full w-40 bg-white  transition-all duration-300 transform -translate-x-full lg:translate-x-0 z-50">
-            <div class="p-4 text-center border-b flex justify-between items-center">
-                <h1 id="sidebar-title" class="text-xl font-bold text-blue-600">
-                    {{ __('messages.exchange_name') }}
-                </h1>
-             
-                <button id="menu-btn" class="lg:hidden p-2 border rounded-lg">✖</button>
+    <header class="bg-white w-full h-[80px] flex items-center justify-between px-6 shadow-[0_4px_4px_rgba(17,41,199,0.4)]">
+
+        <!-- سمت راست: برند + زبان -->
+        <div class="flex items-center space-x-4 rtl:space-x-reverse gap-6 justify-center ">
+            <div class="text-[40px] text-[#122EE1] font-bold yekan">صرافی زرین</div>
+
+            <!-- انتخاب زبان -->
+            @php
+                $locale = session('locale', config('app.locale'));
+            @endphp
+
+            <div class="relative inline-block w-[145px] h-[56px] p-2 vazir">
+                <button id="dropdownButton"
+                    class="border border-[#1129C766] bg-white rounded-lg px-3 py-2 w-full flex items-center justify-between font-vazir text-sm text-[#1129C7]">
+                    <img src="{{ $locale === 'en' ? asset('assets/sarafi/all_icon/united.png') : asset('assets/sarafi/all_icon/Flags.png') }}"
+                        class="w-5 h-5 ml-2" alt="Lang">
+                    <span>
+                        @if ($locale === 'fa')
+                            فارسی
+                        @elseif($locale === 'ps')
+                            پشتو
+                        @else
+                            English
+                        @endif
+                    </span>
+                </button>
+
+                <ul id="dropdownMenu"
+                    class="absolute left-0 mt-1 w-full bg-white border border-gray-200 rounded-lg hidden z-10">
+                    <li>
+                        <a href="{{ route('set-locale', 'fa') }}" class="locale-link flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
+                            <img src="{{ asset('assets/sarafi/all_icon/Flags.png') }}" class="w-5 h-5 ml-2" alt="fa">
+                            فارسی
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('set-locale', 'ps') }}" class="locale-link flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
+                            <img src="{{ asset('assets/sarafi/all_icon/Flags.png') }}" class="w-5 h-5 ml-2" alt="ps">
+                            پشتو
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('set-locale', 'en') }}" class="locale-link flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
+                            <img src="{{ asset('assets/sarafi/all_icon/united.png') }}" class="w-5 h-5 ml-2" alt="en">
+                            English
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- سمت چپ: سرچ، هشدار، پروفایل -->
+        <div class="flex items-center space-x-4 gap-1 pl-10 rtl:space-x-reverse">
+            <!-- سرچ -->
+            <div class="relative">
+                <input type="text" placeholder="جستجو..."
+                    class="border border-[#8C8C8C] placeholder:text-black vazir rounded-full px-3 py-2 pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
+                    class="h-5 w-5 absolute left-2 bottom-3 transform">
             </div>
 
-            <!-- لینک‌های منو -->
-            <nav class="p-4 space-y-2">
-                <a href="{{ route('sarafi.home') }}"
-                    class="flex items-center p-2 rounded-lg sidebar-link {{ request()->is('/') ? 'active-link' : '' }}">
-                    <span class="material-icons">dashboard</span>
-                    <span class="ml-2 sidebar-text">{{ __('messages.dashboard') }}</span>
-                </a>
-                <a href="{{ route('sarafi.users') }}"
-                    class="flex items-center p-2 rounded-lg sidebar-link {{ request()->is('sarafi/user*') ? 'active-link' : '' }}">
-                    <span class="material-icons">people</span>
-                    <span class="ml-2 sidebar-text">{{ __('messages.users') }}</span>
+            <!-- دکمه اعلان -->
+            <button
+                class="relative flex items-center justify-center w-10 h-10 rounded-full bg-[#E5E5E5] hover:bg-gray-300 transition">
+                <img src="{{ asset('assets/sarafi/all_icon/notification.png') }}" alt="اعلان" class="w-5 h-5">
+                <span
+                    class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
+                    3
+                </span>
+            </button>
+
+            <!-- پروفایل -->
+            <div
+                class="w-10 h-10 rounded-full overflow-hidden bg-[#E5E5E5] flex items-center justify-center hover:bg-gray-300 transition">
+                <img src="{{ asset('assets/sarafi/all_icon/profile.svg') }}" alt="پروفایل" class="w-7 h-7 object-cover">
+            </div>
+        </div>
+    </header>
+
+    <!-- بخش اصلی: سایدبار + محتوا -->
+    <div class="flex flex-1 min-h-screen">
+        <!-- سایدبار -->
+        <aside class="w-64 hidden md:block p-5">
+            <nav class="mt-4 space-y-1" x-data="{ openSettings: false, active: 'dashboard' }">
+                <!-- داشبورد -->
+                <a href="{{ route('sarafi.home') }}" class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir"
+                    @click="active = 'dashboard'" 
+                    :class="active === 'dashboard' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'">
+                    <span class="flex items-center gap-2">
+                        <img src="{{ asset('assets/sarafi/all_icon/element-3.svg') }}" class="w-5 h-5"
+                            :class="active === 'dashboard' ? 'filter invert brightness-0' : 'text-gray-500'">
+                        داشبورد
+                    </span>
                 </a>
 
+                <!-- کاربران -->
+                <a href="#" class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir"
+                    @click="active = 'users'"
+                    :class="active === 'users' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'">
+                    <span class="flex items-center gap-2">
+                        <img src="{{ asset('assets/sarafi/all_icon/profile-2user.svg') }}" class="w-5 h-5"
+                            :class="active === 'users' ? 'filter invert brightness-0' : 'text-gray-500'">
+                        کاربران
+                    </span>
+                </a>
+
+                <!-- مشتریان (با زیرمنو) -->
                 <div>
-                    <button id="products-btn"
-                        class="flex items-center justify-between w-full p-2 rounded-lg sidebar-link">
-                        <div class="flex items-center">
-                            <span class="material-icons "></span>
-                            <span class="ml-2 sidebar-text">{{ __('messages.customer') }}</span>
-                        </div>
-                        <span id="products-arrow" class="material-icons transition-transform hidden">expand_more</span>
+                    <button @click="openSettings = !openSettings; active = 'settings'"
+                        :class="active === 'settings' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                        class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                        <span class="flex items-center gap-2">
+                            <img src="{{ asset('assets/sarafi/all_icon/people.svg') }}" class="w-5 h-5"
+                                :class="active === 'settings' ? 'filter invert brightness-0' : 'text-gray-500'">
+                            مشتریان
+                        </span>
+                        <svg :class="[openSettings ? 'rotate-180' : '', active === 'settings' ? 'text-white' : 'text-gray-500']"
+                            class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
                     </button>
-                    <div id="products-submenu" class="ml-8 mt-1 space-y-1 hidden">
-                        <a href="{{ route('sarafi.customer-create') }}" class="block p-2  hover:bg-gray-200 w-full rounded-lg submenu-link">{{ __('messages.create_customer') }}</a>
-                        <a href="{{ route('sarafi.customer-table') }}" class="block p-2  hover:bg-gray-200 w-full  rounded-lg submenu-link">{{ __('messages.list_customer') }}</a>
+
+                    <!-- زیرمنو -->
+                    <div x-show="openSettings" x-transition class="ml-6 mt-1 space-y-1">
+                        <a href="{{ route('sarafi.customer-create') }}" class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                            @click="active = 'settings-profile'"
+                            :class="active === 'settings-profile' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+                            <img src="{{ asset('assets/sarafi/all_icon/edit-2.svg') }}" class="w-4 h-4"
+                                :class="active === 'settings-profile' ? 'filter invert brightness-0' : 'text-gray-500'">
+                            ثبت مشتری
+                        </a>
                     </div>
                 </div>
             </nav>
         </aside>
-
-        <!-- Overlay موبایل -->
-        <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden lg:hidden z-40"></div>
-
-        <!-- Main -->
-        <div class="flex-1 flex flex-col">
-            <!-- Header -->
-            <header class="flex flex-wrap items-center h-[1,728px] justify-between gap-3 bg-white shadow px-4 py-3">
-                <!-- دکمه بازکردن منو در موبایل -->
-                <button id="open-menu" class="lg:hidden p-2 border rounded-lg">☰</button>
-
-                @php
-                    $locale = session('locale', config('app.locale'));
-                @endphp
-
-                <!-- انتخاب زبان -->
-                <div class="relative inline-block text-left">
-                    <button id="lang-btn"
-                        class="flex items-center gap-2 border rounded-lg px-2 justify-center py-1 text-sm sm:mr-20">
-                        <img src="{{ $locale === 'en' ? asset('assets/icon/us.png') : asset('assets/icon/af.png') }}"
-                            class="w-5 h-5" alt="Lang">
-                        <span class="hidden sm:inline">
-                            @if ($locale === 'fa')
-                                فارسی
-                            @elseif($locale === 'ps')
-                                پشتو
-                            @else
-                                English
-                            @endif
-                        </span>
-                    </button>
-
-                    <div id="lang-menu" class="hidden absolute mt-1 w-32 bg-white border rounded-lg shadow-lg z-50">
-                        <a href="{{ route('set-locale', 'fa') }}"
-                            class="flex items-center gap-2 px-3 py-1 hover:bg-gray-100">
-                            <img src="{{ asset('assets/icon/af.png') }}" class="w-5 h-5"> فارسی
-                        </a>
-                        <a href="{{ route('set-locale', 'ps') }}"
-                            class="flex items-center gap-2 px-3 py-1 hover:bg-gray-100">
-                            <img src="{{ asset('assets/icon/af.png') }}" class="w-5 h-5"> پشتو
-                        </a>
-                        <a href="{{ route('set-locale', 'en') }}"
-                            class="flex items-center gap-2 px-3 py-1 hover:bg-gray-100">
-                            <img src="{{ asset('assets/icon/us.png') }}" class="w-5 h-5"> English
-                        </a>
-                    </div>
-                </div>
-
-                <!-- ساعت و تاریخ -->
-                <div id="jalali-clock" class=" text-lg w-64"></div>
-
-                <!-- سرچ + پروفایل -->
-                <div class="flex items-center gap-3 flex-1 sm:flex-initial sm:justify-end ml-10">
-                    <div class="relative flex-1 sm:flex-initial">
-                        <input type="text"
-                            class="w-full sm:w-48 border rounded-2xl py-1 pl-8 pr-2 outline-none border-gray-300 text-sm"
-                            placeholder="{{ __('messages.search_placeholder') != 'messages.search_placeholder' ? __('messages.search_placeholder') : 'Search...' }}">
-                        <img src="{{ asset('assets/icon/search.svg') }}" class="absolute top-1.5 left-2 w-4 h-4">
-                    </div>
-                    <img src="{{ asset('assets/icon/notification-bing.svg') }}" class="w-5 h-5">
-
-                    <!-- پروفایل -->
-                    <div class="relative">
-                        <img id="profile-btn" src="{{ asset('assets/icon/user.png') }}"
-                            class="w-6 h-6 rounded-full border cursor-pointer">
-                        <div id="profile-menu"
-                            class="hidden absolute  -right-32 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 z-50 overflow-hidden">
-
-                            <!-- بخش کاربر -->
-                            <div class="px-4 py-3 bg-gray-50 flex items-center gap-2">
-                                <i class="fas fa-user text-gray-500"></i>
-                                <span class="text-sm font-medium text-gray-700">
-                                    {{ Auth::guard('sarafi')->user()->name ?? 'کاربر' }}
-                                </span>
-                            </div>
-
-                            <!-- دکمه خروج -->
-                            <form method="POST" action="{{ route('sarafi.logout') }}">
-                                @csrf
-                                <button type="submit"
-                                    class="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors">
-                                    <i class="fas fa-sign-out-alt text-red-500"></i>
-                                    خروج از حساب
-                                </button>
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-            </header>
-
-            <!-- Page content -->
-            <main class="p-4 overflow-y-auto">
-                @yield('content')
-            </main>
-        </div>
+        
+        <main class="flex-1 p-6">
+            @yield('content')
+        </main>
     </div>
 
     <script>
-        const sidebar = document.getElementById("sidebar");
-        const overlay = document.getElementById("overlay");
-        const openMenu = document.getElementById("open-menu");
-        const menuBtn = document.getElementById("menu-btn");
-        const toggleBtn = document.getElementById("toggle-btn");
-        const productsBtn = document.getElementById("products-btn");
-        const productsSubmenu = document.getElementById("products-submenu");
-        const productsArrow = document.getElementById("products-arrow");
-        const sidebarLinks = document.querySelectorAll(".sidebar-link");
+        // لودر صفحه
+        const pageLoader = document.getElementById('pageLoader');
+        
+        // مخفی کردن لودر بعد از لود کامل صفحه
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                pageLoader.classList.add('fade-out');
+                document.body.classList.remove('loading');
+                
+                // حذف کامل لودر از DOM بعد از انیمیشن
+                setTimeout(() => {
+                    pageLoader.style.display = 'none';
+                }, 300);
+            }, 500);
+        });
 
-        // active link
-        function setActiveLink(activeLink) {
-            sidebarLinks.forEach(link => {
-                link.style.backgroundColor = "";
-                link.style.color = "";
+        // نمایش لودر هنگام کلیک روی لینک‌ها
+        document.addEventListener('DOMContentLoaded', function() {
+            // لینک‌های نویگیشن
+            const navLinks = document.querySelectorAll('.nav-link');
+            const localeLinks = document.querySelectorAll('.locale-link');
+            
+            const allLinks = [...navLinks, ...localeLinks];
+            
+            allLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // فقط برای لینک‌های داخلی
+                    if (this.getAttribute('href') && !this.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+                        const href = this.getAttribute('href');
+                        
+                        // نمایش لودر
+                        pageLoader.style.display = 'flex';
+                        pageLoader.classList.remove('fade-out');
+                        document.body.classList.add('loading');
+                        
+                        // رفتن به صفحه بعد از نمایش لودر
+                        setTimeout(() => {
+                            window.location.href = href;
+                        }, 300);
+                    }
+                });
             });
-            activeLink.style.backgroundColor = "#212b36";
-            activeLink.style.color = "#ffffff";
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const dashboardLink = sidebarLinks[0];
-            setActiveLink(dashboardLink);
-        });
-
-        sidebarLinks.forEach(link => {
-            link.addEventListener("click", () => {
-                setActiveLink(link);
-            });
-        });
-
-        // sub-items 
-        document.addEventListener("DOMContentLoaded", () => {
-            if (!collapsed) {
-                productsArrow.style.display = "inline-flex";
-                if (!productsSubmenu.classList.contains("hidden")) {
-                    productsArrow.classList.add("rotate-180");
-                }
-            } else {
-                productsArrow.style.display = "none";
+            
+            // مدیریت dropdown زبان
+            const btn = document.getElementById('dropdownButton');
+            const menu = document.getElementById('dropdownMenu');
+            
+            if (btn && menu) {
+                btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+                
+                menu.querySelectorAll('li').forEach(li => {
+                    li.addEventListener('click', () => {
+                        btn.innerHTML = li.innerHTML;
+                        menu.classList.add('hidden');
+                    });
+                });
             }
         });
 
-        // Toggle sidebar
-        menuBtn.addEventListener("click", () => {
-            collapsed = !collapsed;
-
-            if (collapsed) {
-                sidebar.classList.remove("w-56");
-                sidebar.classList.add("w-4");
-                sidebarTexts.forEach(t => t.classList.add("hidden"));
-                sidebarTitle.classList.add("hidden");
-                productsSubmenu.classList.add("hidden");
-                productsArrow.style.display = "none";
-            } else {
-                sidebar.classList.remove("w-20");
-                sidebar.classList.add("w-40");
-                sidebarTexts.forEach(t => t.classList.remove("hidden"));
-                sidebarTitle.classList.remove("hidden");
-                productsArrow.style.display = "inline-flex";
+        // نمایش لودر هنگام submit فرم‌ها (اگر فرمی دارید)
+        document.addEventListener('submit', function(e) {
+            if (e.target.tagName === 'FORM') {
+                pageLoader.style.display = 'flex';
+                pageLoader.classList.remove('fade-out');
+                document.body.classList.add('loading');
             }
-        });
-
-        // Toggle products submenu
-        productsBtn.addEventListener("click", () => {
-            if (collapsed) return;
-            productsSubmenu.classList.toggle("hidden");
-            productsArrow.classList.toggle("rotate-180");
-            productsArrow.style.display = "inline-flex";
-        });
-
-        openMenu.addEventListener("click", () => {
-            sidebar.classList.remove("-translate-x-full");
-            overlay.classList.remove("hidden");
-            sidebar.classList.add("w-64");
-            sidebar.classList.remove("w-20");
-            document.querySelectorAll(".sidebar-text").forEach(t => t.classList.remove("hidden"));
-            document.getElementById("sidebar-title").classList.remove("hidden");
-        });
-        menuBtn.addEventListener("click", closeSidebar);
-        overlay.addEventListener("click", closeSidebar);
-
-        function closeSidebar() {
-            sidebar.classList.add("-translate-x-full");
-            overlay.classList.add("hidden");
-        }
-
-        let collapsed = false;
-        toggleBtn.addEventListener("click", () => {
-            collapsed = !collapsed;
-            if (collapsed) {
-                sidebar.classList.add("w-20");
-                sidebar.classList.remove("w-42");
-                document.querySelectorAll(".sidebar-text").forEach(t => t.classList.add("hidden"));
-                document.getElementById("sidebar-title").classList.add("hidden");
-            } else {
-                sidebar.classList.add("w-42");
-                sidebar.classList.remove("w-20");
-                document.querySelectorAll(".sidebar-text").forEach(t => t.classList.remove("hidden"));
-                document.getElementById("sidebar-title").classList.remove("hidden");
-            }
-
-            if (!collapsed) {
-                productsArrow.style.display = "inline-flex";
-                if (!productsSubmenu.classList.contains("hidden")) {
-                    productsArrow.classList.add("rotate-180");
-                }
-            } else {
-                productsArrow.style.display = "none";
-            }
-        });
-
-        document.getElementById('lang-btn').addEventListener('click', () => {
-            document.getElementById('lang-menu').classList.toggle('hidden');
-        });
-
-        // Profile dropdown
-        document.getElementById('profile-btn').addEventListener('click', () => {
-            document.getElementById('profile-menu').classList.toggle('hidden');
-        });
-
-        // ساعت و تاریخ
-        function updateClock() {
-            const locale = "{{ session('locale', 'fa') }}";
-            const now = new Date();
-            const j = jalaali.toJalaali(now.getFullYear(), now.getMonth() + 1, now.getDate());
-
-            let hours = now.getHours();
-            const minutes = now.getMinutes();
-            const seconds = now.getSeconds();
-
-            let ampm = hours >= 12 ? 'بعد از ظهر' : 'قبل از ظهر';
-            if (locale === 'en') {
-                ampm = hours >= 12 ? 'PM' : 'AM';
-            }
-
-            hours = hours % 12;
-            hours = hours ? hours : 12;
-
-            const timeStr = hours.toString().padStart(2, '0') + ':' +
-                minutes.toString().padStart(2, '0') + ':' +
-                seconds.toString().padStart(2, '0') + ' ' + ampm;
-
-            const dateStr = j.jy + '/' + j.jm.toString().padStart(2, '0') + '/' + j.jd.toString().padStart(2, '0');
-
-            const clockDiv = document.getElementById('jalali-clock');
-            clockDiv.innerHTML = `<div class="flex gap-4">${dateStr}<span>${timeStr}</span></div>`;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        window.addEventListener("beforeunload", () => {
-            document.getElementById("loader").classList.remove("hidden");
         });
     </script>
 
-    @stack('scripts')
 </body>
 
 </html>
