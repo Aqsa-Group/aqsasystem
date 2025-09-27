@@ -40,7 +40,7 @@ class CustomController extends Controller
             return redirect()->route('sarafi.home'); // هدایت به داشبورد
         }
 
-        return back()->with('error', 'نام کاربری یا پسورد اشتباه است.');
+        return back()->with('error', 'نام کاربری یا رمز  اشتباه است.');
     }
 
     public function logout(Request $request)

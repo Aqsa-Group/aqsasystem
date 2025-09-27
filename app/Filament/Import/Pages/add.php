@@ -3,13 +3,12 @@
 namespace App\Filament\Import\Pages;
 
 use App\Models\Import\Safe;
-use App\Models\Import\AddSafe; // اضافه شده
-
+use App\Models\Import\AddSafe;
 use Filament\Pages\Page;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\DB;
 
-class add extends Page
+class Add extends Page
 {
     protected static ?string $navigationIcon = 'mdi-safe';
     protected static ?string $navigationLabel = 'افزودن به صندوق';
@@ -36,15 +35,18 @@ class add extends Page
         $this->validate();
 
         DB::transaction(function () {
-            // استفاده از مدل AddSafe
+
+            // ثبت در جدول AddSafe
             AddSafe::create([
                 'amount'      => $this->addAmount,
                 'currency'    => $this->currency,
                 'description' => $this->note,
             ]);
 
+            // پیدا کردن اولین رکورد Safe
             $safe = Safe::first();
 
+            // اگر موجود نیست، ایجاد رکورد اولیه
             if (! $safe) {
                 $safe = Safe::create([
                     'USD' => 0,
@@ -52,6 +54,7 @@ class add extends Page
                 ]);
             }
 
+            // بروزرسانی موجودی
             if ($this->currency === 'AFN') {
                 $safe->increment('AFN', $this->addAmount);
             } elseif ($this->currency === 'USD') {
@@ -59,13 +62,20 @@ class add extends Page
             }
         });
 
-        $this->addAmount = null;
-        $this->currency = null;
-        $this->note = null;
+        // پاک کردن فرم بعد از ثبت
+        $this->reset(['addAmount', 'currency', 'note']);
 
+        // نمایش پیام موفقیت
         Notification::make()
             ->title('مبلغ به صندوق اضافه شد')
             ->success()
             ->send();
     }
+
+
+    public function mount()
+{
+    $this->currency = 'AFN'; // مقدار پیش‌فرض افغانی
+}
+
 }

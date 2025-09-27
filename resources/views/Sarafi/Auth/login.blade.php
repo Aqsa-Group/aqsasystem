@@ -76,7 +76,7 @@
                 @endif
 
                 @if (session('error'))
-                    <div class="error-message">
+                    <div class="error-message text-center text-red-500 vazir">
                         {{ session('error') }}
                     </div>
                 @endif
