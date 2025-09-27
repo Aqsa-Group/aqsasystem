@@ -62,6 +62,12 @@
                   bg-green-600 text-white hover:bg-green-700 transition duration-300">
             <i class="fa-solid fa-cart-shopping"></i> ورود به پنل فروشات
         </a>
+
+         <a href="/sarafi"
+       class="flex items-center justify-center gap-3 px-10 py-6 rounded-xl text-lg font-semibold
+              bg-purple-600 text-white hover:bg-purple-700 transition duration-300">
+        <i class="fa-solid fa-money-bill-transfer"></i> ورود به پنل صرافی
+    </a>
     </div>
 
 </body>

@@ -4,198 +4,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>پنل صرافی | ورود / ثبت‌نام</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="<?php echo e(asset('assets/css/login.css')); ?>">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ورود به پنل صرافی</title>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Vazir', sans-serif;
-        }
+    <?php echo $__env->make('Sarafi.layouts.links', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
-        @font-face {
-            font-family: 'Vazir';
-            src: url('<?php echo e(asset('fonts/amiri-regular.ttf')); ?>') format('truetype');
-            font-weight: 300;
-            font-style: normal;
-        }
+    <!-- تعریف فونت -->
 
-        body {
-            background: linear-gradient(to right, #e2e2e2, #c9d6ff);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            height: 100vh;
-        }
-
-        .text-center {
-            margin-bottom: 30px;
-        }
-
-        .container {
-            background-color: #fff;
-            border-radius: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
-            position: relative;
-            overflow: hidden;
-            width: 850px;
-            /* عرض بیشتر */
-            max-width: 70%;
-            min-height: 400px;
-            /* ارتفاع کمتر */
-            display: flex;
-        }
-
-        /* فرم سمت راست */
-        .form-container.sign-in {
-            flex: 1;
-            background-color: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 0 40px;
-        }
-
-        .form-container input {
-            background-color: #eee;
-            border: none;
-            margin: 15px 0;
-            padding: 10px 15px;
-            font-size: 13px;
-            border-radius: 8px;
-            width: 100%;
-            outline: none;
-        }
-
-        .form-container button {
-            background-color: #512da8;
-            color: #fff;
-            font-size: 14px;
-            padding: 10px 45px;
-            border: 1px solid transparent;
-            border-radius: 8px;
-            font-weight: 600;
-            width: 100%;
-            text-transform: uppercase;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-
-        /* سمت چپ: عکس */
-        .toggle-panel.toggle-right {
-            flex: 1;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .image-wrapper {
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
-
-        .image-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            /* عکس کامل پر می‌کنه */
-        }
-
-        .image-wrapper .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            /* نیمه شفاف */
-        }
-
-        .image-wrapper .text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #fff;
-            text-align: center;
-        }
-
-        .image-wrapper .text h1 {
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .image-wrapper .text p {
-            font-size: 16px;
-        }
-
-        /* استایل خطاهای validation */
-        .error-message {
-            color: #ef4444;
-            /* قرمز (مثل Tailwind text-red-500) */
-            font-size: 0.875rem;
-            /* معادل text-sm */
-            text-align: center;
-            margin-top: 0.5rem;
-            /* معادل mt-2 */
-        }
-
-        /* اگر بخوای استایل جذاب‌تر باشه */
-        .error-message {
-            background: #fee2e2;
-            /* قرمز خیلی روشن */
-            border: 1px solid #fca5a5;
-            padding: 8px 12px;
-            border-radius: 6px;
-            color: #b91c1c;
-            /* قرمز تیره */
-            font-size: 14px;
-            text-align: center;
-            margin: 8px auto;
-            width: fit-content;
-            max-width: 80%;
-        }
-
-        /* برای پیام موفقیت */
-        .success-message {
-            background: #dcfce7;
-            border: 1px solid #86efac;
-            padding: 8px 12px;
-            border-radius: 6px;
-            color: #166534;
-            font-size: 14px;
-            text-align: center;
-            margin: 8px auto;
-            width: fit-content;
-            max-width: 80%;
-        }
-
-        .text-h1{
-            font-size: 90px
-        }
-    </style>
 </head>
 
-<body>
-    <div class="container" id="container">
+<body class="bg-gray-100">
 
-        <!-- فرم ورود -->
-        <div class="form-container sign-in">
-            <form action="<?php echo e(route('sarafi.login')); ?>" method="POST">
-                <?php echo csrf_field(); ?>
-                <h1 class="text-center mb-4">ورود به پنل صرافی</h1>
-                <input type="text" name="username" placeholder="نام کاربری" value="<?php echo e(old('username')); ?>" required>
-                <input type="password" name="password" placeholder="رمز عبور" required>
-                <button type="submit">ورود به حساب</button>
+    <div class="flex justify-center items-center h-screen ">
+        <div class="flex flex-col w-[1200px] h-[600px] md:flex-row-reverse items-center gap-10 bg-white shadow-lg">
 
-                <?php if($errors->any()): ?>
+
+            <div class="md:w-1/2 w-[200px] flex justify-center relative">
+                <img src="<?php echo e(asset('assets/sarafi/all_icon/photo_2025-09-27_10-18-45.jpg')); ?>" alt="ورود به پنل صرافی"
+                    class="shadow-md w-full h-[600px] object-cover rounded-xl">
+
+                <!-- لایه نیمه شفاف -->
+                <div class="absolute inset-0 bg-[#051580]/70 rounded-xl"></div>
+
+                <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                    <h1 class="text-[50px] font-bold yekan text-white">
+                        اقصی سیستم
+                    </h1>
+                    <h1 class="text-[50px] times text-white">
+                        Aqsa System
+                    </h1>
+                </div>
+            </div>
+
+
+            <div class="md:w-1/2 w-full pr-6">
+                <form action="<?php echo e(route('sarafi.login')); ?>" method="POST" class="space-y-5 border border-[#8C8C8C] p-6 rounded-lg bg-white relative">
+  <?php echo csrf_field(); ?>
+                    <h1 class="text-4xl font-bold text-center mb-2 yekan">
+                        ورود به پنل صرافی
+                    </h1>
+
+                    <!-- نام کاربری -->
+                    <div class="flex flex-col relative">
+                        <label for="username" class="mb-2 font-semibold vazir text-[#000000]">نام کاربری</label>
+                        <input id="username" name="username" value="<?php echo e(old('username')); ?>" type="text" placeholder="نام کاربری خود را وارید کنید!"
+                            class="border border-[#8C8C8C] rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <img src="<?php echo e(asset('assets/sarafi/all_icon/profile.svg')); ?>" alt="آیکون پروفایل"
+                            class="h-5 w-5 absolute right-3 bottom-3">
+                    </div>
+
+                    <!-- رمز عبور -->
+                    <div class="flex flex-col relative">
+                        <label for="password" class="mb-2 font-semibold vazir">رمز عبور</label>
+                        <input id="password" name="password" type="password" placeholder=" رمز عبور خود را وارید کنید!"
+                            class="border border-[#8C8C8C] rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <img src="<?php echo e(asset('assets/sarafi/all_icon/lock.png')); ?>" alt="آیکون قفل"
+                            class="h-5 w-5 absolute right-3 bottom-3">
+                    </div>
+
+                    <!-- دکمه ورود -->
+                    <button type="submit"
+                        class="w-full bg-blue-600 text-white py-3 vazir rounded-lg hover:bg-blue-700 transition duration-300">
+                        ورود به حساب
+                    </button>
+
+
+                      <?php if($errors->any()): ?>
                     <div class="error-message">
                         <?php echo e($errors->first()); ?>
 
@@ -216,27 +90,11 @@
 
                     </div>
                 <?php endif; ?>
-
-            </form>
-        </div>
-
-        <!-- عکس و متن -->
-        <div class="toggle-panel toggle-right">
-            <div class="image-wrapper">
-                <img src="<?php echo e(asset('assets/login.jpg')); ?>" alt="">
-                <div class="overlay"></div>
-                <div class="text">
-                    <h1>اقصی سیستم</h1>
-                    <h2>صرافی امن و سریع</h2>
-                    <p>تمام تراکنش‌های شما در یک سیستم امن و حرفه‌ای</p>
-                </div>
+                </form>
             </div>
         </div>
-
     </div>
 
-    <script src="<?php echo e(asset('assets/js/login.js')); ?>"></script>
 </body>
 
-</html>
-<?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/Sarafi/Auth/login.blade.php ENDPATH**/ ?>
+</html><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/Sarafi/Auth/login.blade.php ENDPATH**/ ?>

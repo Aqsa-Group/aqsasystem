@@ -17,4 +17,4 @@
 
 <!-- Local JS and CSS files -->
 <script src="{{ asset('assets/js/app.js') }}"></script>
-<link rel="stylesheet" href="{{ asset('assets/css/style.css')}}">
+<link rel="stylesheet" href="{{ asset('assets/css/sarafi.css')}}">
