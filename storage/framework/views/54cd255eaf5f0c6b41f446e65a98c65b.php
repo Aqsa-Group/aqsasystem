@@ -14,45 +14,29 @@
         <div class="bg-white rounded-xl shadow p-4 fade-in">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
 
-                <!-- جستجو -->
-                <div class="w-full md:w-1/3 relative">
-                    <i class="fas fa-search absolute right-3 top-3 text-gray-400"></i>
-                    <?php if (isset($component)) { $__componentOriginal9ad6b66c56a2379ee0ba04e1e358c61e = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal9ad6b66c56a2379ee0ba04e1e358c61e = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.input.index','data' => ['wire:model.live.debounce.500ms' => 'product_name','placeholder' => 'جستجو بر اساس نام محصول...','class' => 'w-full pr-10']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('filament::input'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['wire:model.live.debounce.500ms' => 'product_name','placeholder' => 'جستجو بر اساس نام محصول...','class' => 'w-full pr-10']); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal9ad6b66c56a2379ee0ba04e1e358c61e)): ?>
-<?php $attributes = $__attributesOriginal9ad6b66c56a2379ee0ba04e1e358c61e; ?>
-<?php unset($__attributesOriginal9ad6b66c56a2379ee0ba04e1e358c61e); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal9ad6b66c56a2379ee0ba04e1e358c61e)): ?>
-<?php $component = $__componentOriginal9ad6b66c56a2379ee0ba04e1e358c61e; ?>
-<?php unset($__componentOriginal9ad6b66c56a2379ee0ba04e1e358c61e); ?>
-<?php endif; ?>
-                </div>
+                <!-- فرم جستجو -->
+                <form wire:submit.prevent="generateReport" class="w-full md:w-1/3 relative">
+                    <input type="text" wire:model.defer="product_name" placeholder="جستجو بر اساس نام محصول..."
+                        class="w-full border rounded-lg px-4 py-2 pr-10 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+                    <button type="submit" class="absolute right-2 top-2 text-gray-500">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
 
                 <!-- دکمه‌ها -->
-              <div class="flex gap-2 mt-2 md:mt-0">
-    <?php if (isset($component)) { $__componentOriginal6330f08526bbb3ce2a0da37da512a11f = $component; } ?>
+                <div class="flex gap-2 mt-2 md:mt-0">
+                    <?php if (isset($component)) { $__componentOriginal6330f08526bbb3ce2a0da37da512a11f = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal6330f08526bbb3ce2a0da37da512a11f = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.button.index','data' => ['wire:click' => 'filterTopProduct','color' => 'primary','icon' => 'heroicon-o-trophy','class' => 'flex items-center gap-2']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.button.index','data' => ['wire:click' => 'showAllProducts','color' => 'gray']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('filament::button'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['wire:click' => 'filterTopProduct','color' => 'primary','icon' => 'heroicon-o-trophy','class' => 'flex items-center gap-2']); ?>
-        پرفروش‌ترین
-     <?php echo $__env->renderComponent(); ?>
+<?php $component->withAttributes(['wire:click' => 'showAllProducts','color' => 'gray']); ?>
+                        نمایش همه
+                     <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal6330f08526bbb3ce2a0da37da512a11f)): ?>
 <?php $attributes = $__attributesOriginal6330f08526bbb3ce2a0da37da512a11f; ?>
@@ -62,53 +46,7 @@
 <?php $component = $__componentOriginal6330f08526bbb3ce2a0da37da512a11f; ?>
 <?php unset($__componentOriginal6330f08526bbb3ce2a0da37da512a11f); ?>
 <?php endif; ?>
-
-    <?php if (isset($component)) { $__componentOriginal6330f08526bbb3ce2a0da37da512a11f = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal6330f08526bbb3ce2a0da37da512a11f = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.button.index','data' => ['wire:click' => 'filterLeastProduct','color' => 'warning','icon' => 'heroicon-o-chart-bar','class' => 'flex items-center gap-2']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('filament::button'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['wire:click' => 'filterLeastProduct','color' => 'warning','icon' => 'heroicon-o-chart-bar','class' => 'flex items-center gap-2']); ?>
-        کم‌فروش‌ترین
-     <?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal6330f08526bbb3ce2a0da37da512a11f)): ?>
-<?php $attributes = $__attributesOriginal6330f08526bbb3ce2a0da37da512a11f; ?>
-<?php unset($__attributesOriginal6330f08526bbb3ce2a0da37da512a11f); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal6330f08526bbb3ce2a0da37da512a11f)): ?>
-<?php $component = $__componentOriginal6330f08526bbb3ce2a0da37da512a11f; ?>
-<?php unset($__componentOriginal6330f08526bbb3ce2a0da37da512a11f); ?>
-<?php endif; ?>
-
-    <?php if (isset($component)) { $__componentOriginal6330f08526bbb3ce2a0da37da512a11f = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal6330f08526bbb3ce2a0da37da512a11f = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.button.index','data' => ['wire:click' => 'showAllProducts','color' => 'secondary','icon' => 'heroicon-o-eye','class' => 'flex items-center gap-2']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('filament::button'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['wire:click' => 'showAllProducts','color' => 'secondary','icon' => 'heroicon-o-eye','class' => 'flex items-center gap-2']); ?>
-        نمایش همه
-     <?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal6330f08526bbb3ce2a0da37da512a11f)): ?>
-<?php $attributes = $__attributesOriginal6330f08526bbb3ce2a0da37da512a11f; ?>
-<?php unset($__attributesOriginal6330f08526bbb3ce2a0da37da512a11f); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal6330f08526bbb3ce2a0da37da512a11f)): ?>
-<?php $component = $__componentOriginal6330f08526bbb3ce2a0da37da512a11f; ?>
-<?php unset($__componentOriginal6330f08526bbb3ce2a0da37da512a11f); ?>
-<?php endif; ?>
-</div>
-
-
+                </div>
             </div>
         </div>
 
@@ -168,8 +106,8 @@
 <?php endif; ?>
                                     <p class="text-lg font-medium">هیچ محصولی یافت نشد</p>
                                     <!--[if BLOCK]><![endif]--><?php if($product_name): ?>
-                                    <p class="text-sm text-gray-400 mt-1">برای محصول "<?php echo e($product_name); ?>" نتیجه‌ای پیدا
-                                        نشد</p>
+                                    <p class="text-sm text-gray-400 mt-1">برای "<?php echo e($product_name); ?>" نتیجه‌ای پیدا نشد
+                                    </p>
                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </div>
                             </td>
@@ -180,7 +118,7 @@
             </div>
         </div>
 
-        <!-- کارت‌ها: پرفروش، کم‌فروش، مشتری عمده -->
+        <!-- کارت‌ها -->
         <!--[if BLOCK]><![endif]--><?php if(count($report) > 0): ?>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 fade-in">
             <?php if (isset($component)) { $__componentOriginal9b945b32438afb742355861768089b04 = $component; } ?>
@@ -223,11 +161,6 @@
 
                             (<?php echo e(number_format($topProduct['total_quantity_sold'] ?? 0)); ?> فروش)
                         </p>
-                        <div class="bg-gray-50 p-3 rounded-lg flex justify-between items-center">
-                            <span class="text-gray-600">سود حاصل:</span>
-                            <span class="font-bold text-green-600 text-lg"><?php echo e(number_format($topProduct['total_profit']
-                                ?? 0)); ?></span>
-                        </div>
                     </div>
                 </div>
              <?php echo $__env->renderComponent(); ?>
@@ -281,11 +214,6 @@
 
                             (<?php echo e(number_format($leastProduct['total_quantity_sold'] ?? 0)); ?> فروش)
                         </p>
-                        <div class="bg-gray-50 p-3 rounded-lg flex justify-between items-center">
-                            <span class="text-gray-600">زیان حاصل:</span>
-                            <span class="font-bold text-red-600 text-lg"><?php echo e(number_format($leastProduct['total_loss'] ??
-                                0)); ?></span>
-                        </div>
                     </div>
                 </div>
              <?php echo $__env->renderComponent(); ?>
@@ -337,10 +265,22 @@
                 </div>
                 <div class="flex-1">
                     <h3 class="font-bold text-gray-800 text-lg mb-2">پرفروش‌ترین مشتری عمده</h3>
-                    <p class="text-gray-600 mb-4">نام مشتری: <span class="font-semibold text-gray-800"><?php echo e($topWholesaleCustomer->buyer_name); ?></span></p>
+                    <p class="text-gray-600 mb-4">نام مشتری:
+                        <span class="font-semibold text-gray-800"><?php echo e($topWholesaleCustomer->buyer_name); ?></span>
+                    </p>
                     <div class="bg-gray-50 p-4 rounded-lg flex justify-between items-center">
                         <span class="text-gray-600">مجموع خرید:</span>
-                        <span class="font-bold text-blue-600 text-lg"><?php echo e(number_format($topWholesaleCustomer->total_spent)); ?></span>
+                        <span class="font-bold text-blue-600 text-lg">
+                            <?php echo e(number_format($topWholesaleCustomer->total_spent)); ?>
+
+                        </span>
+                    </div>
+                    <div class="bg-gray-50 p-4 mt-2 rounded-lg flex justify-between items-center">
+                        <span class="text-gray-600">تعداد کل خرید:</span>
+                        <span class="font-bold text-purple-600 text-lg">
+                            <?php echo e(number_format($topWholesaleCustomer->total_quantity)); ?>
+
+                        </span>
                     </div>
                 </div>
             </div>
@@ -356,52 +296,8 @@
 <?php endif; ?>
         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
+
     </div>
-
-    <style>
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        tbody tr {
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-    </style>
-
-    <?php $__env->startPush('scripts'); ?>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const rows = document.querySelectorAll('tbody tr');
-            rows.forEach((row, index) => { row.style.animationDelay = `${index*0.05}s`; });
-            const cards = document.querySelectorAll('.fade-in');
-            cards.forEach((card,index)=>{ card.style.animationDelay = `${index*0.1}s`; });
-        });
-    </script>
-    <?php $__env->stopPush(); ?>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal166a02a7c5ef5a9331faf66fa665c256)): ?>

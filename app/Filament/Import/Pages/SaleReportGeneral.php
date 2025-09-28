@@ -6,7 +6,6 @@ use Filament\Pages\Page;
 use App\Models\Import\SaleItem;
 use App\Models\Import\Inventory;
 use App\Models\Import\Sale;
-use Illuminate\Support\Collection;
 
 class SaleReportGeneral extends Page
 {
@@ -21,45 +20,16 @@ class SaleReportGeneral extends Page
     public array $report = [];
     public array $topProduct = [];
     public array $leastProduct = [];
-    public $topWholesaleCustomer;
+    public $topWholesaleCustomer; 
 
     public function mount(): void
     {
         $this->generateReport();
     }
 
-    public function updatedProductName(): void
+    public function generateReport(): void
     {
-        $this->generateReport();
-    }
-
-    public function filterTopProduct(): void
-    {
-        $this->report = collect($this->report)
-            ->sortByDesc('total_quantity_sold')
-            ->values()
-            ->toArray();
-        $this->setTopAndLeast();
-    }
-
-    public function filterLeastProduct(): void
-    {
-        $this->report = collect($this->report)
-            ->sortBy('total_quantity_sold')
-            ->values()
-            ->toArray();
-        $this->setTopAndLeast();
-    }
-
-    public function showAllProducts(): void
-    {
-        $this->product_name = null;
-        $this->generateReport();
-    }
-
-    protected function generateReport(): void
-    {
-        $query = SaleItem::query()->with(['sale', 'warehouse']);
+        $query = SaleItem::with(['sale', 'warehouse']);
 
         if ($this->product_name) {
             $query->whereHas('warehouse', function($q) {
@@ -72,14 +42,14 @@ class SaleReportGeneral extends Page
         $this->report = $saleItems->groupBy('warehouse_id')->map(function($items) {
             $warehouse = $items->first()->warehouse;
             if (!$warehouse) return null;
-            
+
             $inventory = Inventory::where('name', $warehouse->name)->first();
 
-            $retailQuantity = $items->where('sale.sale_type', 'retail')->sum('quantity');
-            $wholesaleQuantity = $items->where('sale.sale_type', 'wholesale')->sum('quantity');
+            $retailQuantity = $items->filter(fn($i) => $i->sale && $i->sale->sale_type === 'retail')->sum('quantity');
+            $wholesaleQuantity = $items->filter(fn($i) => $i->sale && $i->sale->sale_type === 'wholesale')->sum('quantity');
 
             return [
-                'name' => $warehouse->name ?? 'نامشخص',
+                'name' => $warehouse->name ?? '---',
                 'all_exist_number' => $warehouse->all_exist_number ?? 0,
                 'all_exist_number_inventory' => $inventory->all_exist_number ?? 0,
                 'retail_quantity' => $retailQuantity,
@@ -91,26 +61,34 @@ class SaleReportGeneral extends Page
             ];
         })->filter()->values()->toArray();
 
-        $this->topWholesaleCustomer = Sale::where('sale_type', 'wholesale')
-            ->selectRaw('buyer_name, SUM(total_price) as total_spent')
-            ->groupBy('buyer_name')
-            ->orderByDesc('total_spent')
-            ->first();
-
+        
         $this->setTopAndLeast();
+    }
+
+    public function filterTopProduct(): void
+    {
+        $this->report = collect($this->report)->sortByDesc('total_quantity_sold')->values()->toArray();
+        $this->setTopAndLeast();
+    }
+
+    public function filterLeastProduct(): void
+    {
+        $this->report = collect($this->report)->sortBy('total_quantity_sold')->values()->toArray();
+        $this->setTopAndLeast();
+    }
+
+    public function showAllProducts(): void
+    {
+        $this->product_name = null;
+        $this->generateReport();
     }
 
     protected function setTopAndLeast(): void
     {
         $collection = collect($this->report);
 
-        if ($collection->isNotEmpty()) {
-            $this->topProduct = $collection->sortByDesc('total_quantity_sold')->first() ?? [];
-            $this->leastProduct = $collection->sortBy('total_quantity_sold')->first() ?? [];
-        } else {
-            $this->topProduct = [];
-            $this->leastProduct = [];
-        }
+        $this->topProduct = $collection->sortByDesc('total_quantity_sold')->first() ?? [];
+        $this->leastProduct = $collection->sortBy('total_quantity_sold')->first() ?? [];
     }
 
     public function getTitle(): string

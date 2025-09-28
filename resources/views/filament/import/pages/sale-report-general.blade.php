@@ -5,41 +5,21 @@
         <div class="bg-white rounded-xl shadow p-4 fade-in">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
 
-                <!-- جستجو -->
-                <div class="w-full md:w-1/3 relative">
-                    <i class="fas fa-search absolute right-3 top-3 text-gray-400"></i>
-                    <x-filament::input wire:model.live.debounce.500ms="product_name"
-                        placeholder="جستجو بر اساس نام محصول..." class="w-full pr-10" />
-                </div>
+                <!-- فرم جستجو -->
+                <form wire:submit.prevent="generateReport" class="w-full md:w-1/3 relative">
+                    <input type="text" wire:model.defer="product_name" placeholder="جستجو بر اساس نام محصول..."
+                        class="w-full border rounded-lg px-4 py-2 pr-10 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+                    <button type="submit" class="absolute right-2 top-2 text-gray-500">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
 
                 <!-- دکمه‌ها -->
-              <div class="flex gap-2 mt-2 md:mt-0">
-    <x-filament::button 
-        wire:click="filterTopProduct" 
-        color="primary" 
-        icon="heroicon-o-trophy" 
-        class="flex items-center gap-2">
-        پرفروش‌ترین
-    </x-filament::button>
-
-    <x-filament::button 
-        wire:click="filterLeastProduct" 
-        color="warning" 
-        icon="heroicon-o-chart-bar" 
-        class="flex items-center gap-2">
-        کم‌فروش‌ترین
-    </x-filament::button>
-
-    <x-filament::button 
-        wire:click="showAllProducts" 
-        color="secondary" 
-        icon="heroicon-o-eye" 
-        class="flex items-center gap-2">
-        نمایش همه
-    </x-filament::button>
-</div>
-
-
+                <div class="flex gap-2 mt-2 md:mt-0">
+                    <x-filament::button wire:click="showAllProducts" color="gray">
+                        نمایش همه
+                    </x-filament::button>
+                </div>
             </div>
         </div>
 
@@ -88,8 +68,8 @@
                                     <x-heroicon-o-inbox class="w-12 h-12 text-gray-400 mb-3" />
                                     <p class="text-lg font-medium">هیچ محصولی یافت نشد</p>
                                     @if($product_name)
-                                    <p class="text-sm text-gray-400 mt-1">برای محصول "{{ $product_name }}" نتیجه‌ای پیدا
-                                        نشد</p>
+                                    <p class="text-sm text-gray-400 mt-1">برای "{{ $product_name }}" نتیجه‌ای پیدا نشد
+                                    </p>
                                     @endif
                                 </div>
                             </td>
@@ -100,7 +80,7 @@
             </div>
         </div>
 
-        <!-- کارت‌ها: پرفروش، کم‌فروش، مشتری عمده -->
+        <!-- کارت‌ها -->
         @if(count($report) > 0)
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 fade-in">
             <x-filament::card wire:click="filterTopProduct" class="cursor-pointer border-l-4 border-l-blue-500">
@@ -114,11 +94,6 @@
                             {{ $topProduct['name'] ?? '---' }}
                             ({{ number_format($topProduct['total_quantity_sold'] ?? 0) }} فروش)
                         </p>
-                        <div class="bg-gray-50 p-3 rounded-lg flex justify-between items-center">
-                            <span class="text-gray-600">سود حاصل:</span>
-                            <span class="font-bold text-green-600 text-lg">{{ number_format($topProduct['total_profit']
-                                ?? 0) }}</span>
-                        </div>
                     </div>
                 </div>
             </x-filament::card>
@@ -134,11 +109,6 @@
                             {{ $leastProduct['name'] ?? '---' }}
                             ({{ number_format($leastProduct['total_quantity_sold'] ?? 0) }} فروش)
                         </p>
-                        <div class="bg-gray-50 p-3 rounded-lg flex justify-between items-center">
-                            <span class="text-gray-600">زیان حاصل:</span>
-                            <span class="font-bold text-red-600 text-lg">{{ number_format($leastProduct['total_loss'] ??
-                                0) }}</span>
-                        </div>
                     </div>
                 </div>
             </x-filament::card>
@@ -153,62 +123,26 @@
                 </div>
                 <div class="flex-1">
                     <h3 class="font-bold text-gray-800 text-lg mb-2">پرفروش‌ترین مشتری عمده</h3>
-                    <p class="text-gray-600 mb-4">نام مشتری: <span class="font-semibold text-gray-800">{{
-                            $topWholesaleCustomer->buyer_name }}</span></p>
+                    <p class="text-gray-600 mb-4">نام مشتری:
+                        <span class="font-semibold text-gray-800">{{ $topWholesaleCustomer->buyer_name }}</span>
+                    </p>
                     <div class="bg-gray-50 p-4 rounded-lg flex justify-between items-center">
                         <span class="text-gray-600">مجموع خرید:</span>
-                        <span class="font-bold text-blue-600 text-lg">{{
-                            number_format($topWholesaleCustomer->total_spent) }}</span>
+                        <span class="font-bold text-blue-600 text-lg">
+                            {{ number_format($topWholesaleCustomer->total_spent) }}
+                        </span>
+                    </div>
+                    <div class="bg-gray-50 p-4 mt-2 rounded-lg flex justify-between items-center">
+                        <span class="text-gray-600">تعداد کل خرید:</span>
+                        <span class="font-bold text-purple-600 text-lg">
+                            {{ number_format($topWholesaleCustomer->total_quantity) }}
+                        </span>
                     </div>
                 </div>
             </div>
         </x-filament::card>
         @endif
 
+
     </div>
-
-    <style>
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        tbody tr {
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-    </style>
-
-    @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const rows = document.querySelectorAll('tbody tr');
-            rows.forEach((row, index) => { row.style.animationDelay = `${index*0.05}s`; });
-            const cards = document.querySelectorAll('.fade-in');
-            cards.forEach((card,index)=>{ card.style.animationDelay = `${index*0.1}s`; });
-        });
-    </script>
-    @endpush
 </x-filament-panels::page>
