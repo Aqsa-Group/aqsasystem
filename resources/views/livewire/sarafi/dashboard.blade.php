@@ -5,7 +5,7 @@
     <div class="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-3">
 
         <!-- رسید/بردگی -->
-        <div class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center gap-3 text-white text-sm">
+        <div class="border bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-sm">
             <i class="fa-solid fa-wallet text-white text-xl"></i>
             <a href="" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 {{ __('messages.recipt/withdraw') }}
@@ -13,7 +13,7 @@
         </div>
 
         <!-- انتقال -->
-        <div class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center gap-3 text-white text-sm">
+        <div class="border bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-sm">
             <i class="fa-solid fa-arrow-right-arrow-left text-white text-xl"></i>
             <a href="" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 {{ __('messages.transfer') }}
@@ -21,7 +21,7 @@
         </div>
 
         <!-- حساب‌های روزنامه -->
-        <div class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center gap-3 text-white text-sm">
+        <div class="border bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-sm">
             <i class="fa-solid fa-book-open text-white text-xl"></i>
             <a href="" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 {{ __('messages.newspaper_accounts') }}
@@ -29,7 +29,7 @@
         </div>
 
         <!-- خرید و فروش ارز و صندوق -->
-        <div class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center gap-3 text-white text-sm">
+        <div class="border bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] rounded-xl px-3 py-4 flex items-center  gap-3 text-white text-sm">
             <i class="fa-solid fa-coins text-white text-xl"></i>
             <a href="" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 {{ __('messages.selling') }}
@@ -37,7 +37,7 @@
         </div>
 
         <!-- حساب تبدیل -->
-        <div class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center gap-3 text-white text-sm">
+        <div class="border bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-sm">
             <i class="fa-solid fa-exchange-alt text-white text-xl"></i>
             <a href="" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 {{ __('messages.coversion_account') }}
@@ -45,7 +45,7 @@
         </div>
 
         <!-- انتقال تبدیل -->
-        <div class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center gap-3 text-white text-sm">
+        <div class="border bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-sm">
             <i class="fa-solid fa-hand-holding-dollar text-white text-xl"></i>
             <a href="" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 {{ __('messages.coversion_transfer') }}
@@ -53,7 +53,7 @@
         </div>
 
         <!-- ژورنال عمومی -->
-        <div class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center gap-3 text-white text-sm">
+        <div class="border bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-sm">
             <i class="fa-solid fa-file-invoice-dollar text-white text-xl"></i>
             <a href="" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 {{ __('messages.general_jornal') }}
@@ -64,22 +64,22 @@
 
 
     <div x-data="{ activeTab: @entangle('activeTab') }" class="mt-12">
-        <div class="flex justify-start gap-6 border-b border-gray-300">
+        <div class="flex justify-start gap-6 border-b border-[#2563EBB0]">
             <a href="#" @click.prevent="activeTab = 'general'" class="px-5 py-2 font-bold transition rounded-t-lg"
                 :class="activeTab === 'general' 
-                   ? 'bg-white border-x border-t border-gray-300 text-indigo-600 shadow-sm' 
-                   : 'text-gray-600 hover:text-indigo-500 hover:border-b-2 hover:border-indigo-400'">
+                   ? 'bg-white border-x border-t border-[#2563EBB0] text-[#1E3A8A] shadow-sm' 
+                   : 'text-gray-600 hover:text-[#1E3A8A] hover:border-b-2 hover:border-indigo-400'">
                 {{ __('messages.tab_general') }}
             </a>
             <a href="#" @click.prevent="activeTab = 'reports'" class="px-5 py-2 font-bold transition rounded-t-lg"
                 :class="activeTab === 'reports' 
-                   ? 'bg-white border-x border-t border-gray-300 text-indigo-600 shadow-sm' 
-                   : 'text-gray-600 hover:text-indigo-500 hover:border-b-2 hover:border-indigo-400'">
+                   ? 'bg-white border-x border-t border-[#2563EBB0] text-[#1E3A8A] shadow-sm' 
+                   : 'text-gray-600 hover:text-[#1E3A8A] hover:border-b-2 hover:border-indigo-400'">
                 {{ __('messages.tab_reports') }}
             </a>
             <a href="#" @click.prevent="activeTab = 'safes'" class="px-5 py-2 font-bold transition rounded-t-lg" :class="activeTab === 'safes' 
-                   ? 'bg-white border-x border-t border-gray-300 text-indigo-600 shadow-sm' 
-                   : 'text-gray-600 hover:text-indigo-500 hover:border-b-2 hover:border-indigo-400'">
+                   ? 'bg-white border-x border-t border-[#2563EBB0] text-[#1E3A8A] shadow-sm' 
+                   : 'text-gray-600 hover:text-[#1E3A8A] hover:border-b-2 hover:border-indigo-400'">
                 {{ __('messages.tab_safes') }}
             </a>
         </div>
@@ -89,124 +89,118 @@
             <template x-if="activeTab === 'general'">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-                    <!-- تعداد کاربران -->
-                    <div
-                        class="border rounded-2xl p-6 shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#30A4A8] to-[#153885] text-white">
-                        <div class="flex items-center gap-4">
-                            <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
-                                <i class="fa-solid fa-users text-3xl"></i>
-                            </div>
-                            <div>
-                                <h1 class="text-lg font-semibold drop-shadow-md">{{ __('messages.general_users') }}</h1>
-                                <p class="text-3xl font-extrabold drop-shadow-md">10</p>
-                            </div>
-                        </div>
-                    </div>
+<!-- تعداد کاربران -->
+<div
+    class="border rounded-2xl p-6 justify-center shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] text-white">
+    <div class="flex items-center gap-4">
+        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
+            <i class="fa-solid fa-users text-3xl"></i>
+        </div>
+        <div>
+            <h1 class="text-lg font-semibold drop-shadow-md">{{ __('messages.general_users') }}</h1>
+            <p class="text-3xl font-extrabold drop-shadow-md">10</p>
+        </div>
+    </div>
+</div>
 
-                    <!-- تعداد مشتریان -->
-                    <div
-                        class="border rounded-2xl p-6 shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#30A4A8] to-[#153885] text-white">
-                        <div class="flex items-center gap-4">
-                            <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
-                                <i class="fa-solid fa-handshake text-3xl"></i>
-                            </div>
-                            <div>
-                                <h1 class="text-lg font-semibold drop-shadow-md">{{ __('messages.general_customers') }}
-                                </h1>
-                                <p class="text-3xl font-extrabold drop-shadow-md">10</p>
-                            </div>
-                        </div>
-                    </div>
+<!-- تعداد مشتریان -->
+<div
+    class="border rounded-2xl p-6 justify-center shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] text-white">
+    <div class="flex items-center gap-4">
+        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
+            <i class="fa-solid fa-handshake text-3xl"></i>
+        </div>
+        <div>
+            <h1 class="text-lg font-semibold drop-shadow-md">{{ __('messages.general_customers') }}</h1>
+            <p class="text-3xl font-extrabold drop-shadow-md">10</p>
+        </div>
+    </div>
+</div>
 
-                    <!-- تراکنش‌های امروز -->
-                    <div
-                        class="border rounded-2xl p-6 shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#2563EB] to-[#6371D0] text-white">
-                        <div class="flex items-center gap-4">
-                            <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
-                                <i class="fa-solid fa-clock-rotate-left text-3xl"></i>
-                            </div>
-                            <div>
-                                <h1 class="text-lg font-semibold drop-shadow-md">{{
-                                    __('messages.general_today_transactions') }}</h1>
-                                <p class="text-3xl font-extrabold drop-shadow-md">10</p>
-                            </div>
-                        </div>
-                    </div>
+<!-- تراکنش‌های امروز -->
+<div
+    class="border rounded-2xl p-6 justify-center shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] text-white">
+    <div class="flex items-center gap-4">
+        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
+            <i class="fa-solid fa-clock-rotate-left text-3xl"></i>
+        </div>
+        <div>
+            <h1 class="text-lg font-semibold drop-shadow-md">{{ __('messages.general_today_transactions') }}</h1>
+            <p class="text-3xl font-extrabold drop-shadow-md">10</p>
+        </div>
+    </div>
+</div>
 
-                    <!-- تراکنش‌های در انتظار -->
-                    <div
-                        class="border rounded-2xl p-6 shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#2563EB] to-[#6371D0] text-white">
-                        <div class="flex items-center gap-4">
-                            <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
-                                <i class="fa-solid fa-hourglass-half text-3xl"></i>
-                            </div>
-                            <div>
-                                <h1 class="text-lg font-semibold drop-shadow-md">{{
-                                    __('messages.general_pending_transactions') }}</h1>
-                                <p class="text-3xl font-extrabold drop-shadow-md">10</p>
-                            </div>
-                        </div>
-                    </div>
+<!-- تراکنش‌های در انتظار -->
+<div
+    class="border rounded-2xl p-6 justify-center shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] text-white">
+    <div class="flex items-center gap-4">
+        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
+            <i class="fa-solid fa-hourglass-half text-3xl"></i>
+        </div>
+        <div>
+            <h1 class="text-lg font-semibold drop-shadow-md">{{ __('messages.general_pending_transactions') }}</h1>
+            <p class="text-3xl font-extrabold drop-shadow-md">10</p>
+        </div>
+    </div>
+</div>
 
-                    <!-- امروز سود -->
-                    <div
-                        class="rounded-2xl p-6 shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#239ABB] to-[#0088FF] text-white">
-                        <div class="flex items-center gap-4">
-                            <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
-                                <i class="fa-solid fa-chart-line text-3xl"></i>
-                            </div>
-                            <div>
-                                <h1 class="text-lg font-semibold drop-shadow-md"> {{ __('messages.general_today_profit')
-                                    }} </h1>
-                                <p class="text-3xl font-extrabold drop-shadow-md">1,200</p>
-                            </div>
-                        </div>
-                    </div>
+<!-- امروز سود -->
+<div
+    class="rounded-2xl p-6 justify-center shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] text-white">
+    <div class="flex items-center gap-4">
+        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
+            <i class="fa-solid fa-chart-line text-3xl"></i>
+        </div>
+        <div>
+            <h1 class="text-lg font-semibold drop-shadow-md">{{ __('messages.general_today_profit') }}</h1>
+            <p class="text-3xl font-extrabold drop-shadow-md">1,200</p>
+        </div>
+    </div>
+</div>
 
-                    <!-- مجموع تراکنش‌ها -->
-                    <div
-                        class="rounded-2xl p-6 shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#239ABB] to-[#0088FF] text-white">
-                        <div class="flex items-center gap-4">
-                            <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
-                                <i class="fa-solid fa-receipt text-3xl"></i>
-                            </div>
-                            <div>
-                                <h1 class="text-lg font-semibold drop-shadow-md">{{
-                                    __('messages.general_total_transactions') }}</h1>
-                                <p class="text-3xl font-extrabold drop-shadow-md">4,500</p>
-                            </div>
-                        </div>
-                    </div>
+<!-- مجموع تراکنش‌ها -->
+<div
+    class="rounded-2xl p-6 justify-center shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] text-white">
+    <div class="flex items-center gap-4">
+        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
+            <i class="fa-solid fa-receipt text-3xl"></i>
+        </div>
+        <div>
+            <h1 class="text-lg font-semibold drop-shadow-md">{{ __('messages.general_total_transactions') }}</h1>
+            <p class="text-3xl font-extrabold drop-shadow-md">4,500</p>
+        </div>
+    </div>
+</div>
 
-                    <!-- حواله‌ها -->
-                    <div
-                        class="rounded-2xl p-6 shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#239ABB] to-[#0088FF] text-white">
-                        <div class="flex items-center gap-4">
-                            <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
-                                <i class="fa-solid fa-paper-plane text-3xl"></i>
-                            </div>
-                            <div>
-                                <h1 class="text-lg font-semibold drop-shadow-md">{{ __('messages.general_remittances')
-                                    }}</h1>
-                                <p class="text-3xl font-extrabold drop-shadow-md">8</p>
-                            </div>
-                        </div>
-                    </div>
+<!-- حواله‌ها -->
+<div
+    class="rounded-2xl p-6 justify-center shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] text-white">
+    <div class="flex items-center gap-4">
+        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
+            <i class="fa-solid fa-paper-plane text-3xl"></i>
+        </div>
+        <div>
+            <h1 class="text-lg font-semibold drop-shadow-md">{{ __('messages.general_remittances') }}</h1>
+            <p class="text-3xl font-extrabold drop-shadow-md">8</p>
+        </div>
+    </div>
+</div>
 
-                    <!-- مجموع موجودی حساب‌ها -->
-                    <div
-                        class="rounded-2xl p-6 shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#239ABB] to-[#0088FF] text-white">
-                        <div class="flex items-center gap-4">
-                            <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
-                                <i class="fa-solid fa-wallet text-3xl"></i>
-                            </div>
-                            <div>
-                                <h1 class="text-lg font-semibold drop-shadow-md">{{ __('messages.general_total_balance')
-                                    }}</h1>
-                                <p class="text-3xl font-extrabold drop-shadow-md">120,000</p>
-                            </div>
-                        </div>
-                    </div>
+<!-- مجموع موجودی حساب‌ها -->
+<div
+    class="rounded-2xl p-6 justify-center shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] text-white">
+    <div class="flex items-center gap-4">
+        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
+            <i class="fa-solid fa-wallet text-3xl"></i>
+        </div>
+        <div>
+            <h1 class="text-lg font-semibold drop-shadow-md">{{ __('messages.general_total_balance') }}</h1>
+            <p class="text-3xl font-extrabold drop-shadow-md">120,000</p>
+        </div>
+    </div>
+</div>
+
 
 
                 </div>
