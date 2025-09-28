@@ -69,6 +69,13 @@
                 <h3 class="text-lg font-semibold">💳 گزارش رسید شرکت‌ها</h3>
                 <p class="text-sm text-gray-500 mt-2">مشاهده و فیلتر رسیدهای پرداخت شده هر شرکت</p>
             </a>    
+
+              <a href="<?php echo e(route('filament.import.pages.sale-report-general')); ?>"
+            class="block bg-white dark:bg-gray-900 rounded-2xl shadow p-6 border hover:shadow-lg transition">
+                <h3 class="text-lg font-semibold"> 🛒 گزارش کلی فروشات</h3>
+                <p class="text-sm text-gray-500 mt-2">مشاهده و فیلتر رسیدهای پرداخت شده هر شرکت</p>
+            </a>    
+
         </div>
     </div>
  <?php echo $__env->renderComponent(); ?>

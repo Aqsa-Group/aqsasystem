@@ -21,6 +21,8 @@ use App\Http\Controllers\PrintContract;
 use App\Http\Controllers\printLoan;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use App\Filament\Import\Pages\SaleReportGeneral;
+ 
 
 
 // Sarafi
@@ -80,6 +82,9 @@ Route::get('/warehouse/print', [WarehousePrintController::class, 'generate'])
     Route::get('/inventory/print', [InventoryPrintController::class, 'generate'])
     ->name('inventory.print');
 
+    Route::get('/test-sale-report', function () {
+    return app(SaleReportGeneral::class)->mount();
+});
 
 
 // Sarafi Route
