@@ -11,7 +11,7 @@
     <div class="p-6">
         <h1 class="text-2xl font-bold mb-6">📊  گزارشات</h1>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
             <a href="<?php echo e(route('filament.import.pages.sales-reports')); ?>"
                class="block bg-white dark:bg-gray-900 rounded-2xl shadow p-6 border hover:shadow-lg transition">
                 <h3 class="text-lg font-semibold">🛒 گزارش فروش</h3>
@@ -70,11 +70,13 @@
                 <p class="text-sm text-gray-500 mt-2">مشاهده و فیلتر رسیدهای پرداخت شده هر شرکت</p>
             </a>    
 
-              <a href="<?php echo e(route('filament.import.pages.sale-report-general')); ?>"
-            class="block bg-white dark:bg-gray-900 rounded-2xl shadow p-6 border hover:shadow-lg transition">
-                <h3 class="text-lg font-semibold"> 🛒 گزارش کلی فروشات</h3>
-                <p class="text-sm text-gray-500 mt-2">مشاهده و فیلتر رسیدهای پرداخت شده هر شرکت</p>
-            </a>    
+           <a href="<?php echo e(route('filament.import.pages.sale-report-general')); ?>"
+   class="block bg-white dark:bg-gray-900 rounded-2xl shadow p-6 border hover:shadow-lg transition">
+    <h3 class="text-lg font-semibold">🛒 گزارش کلی فروشات</h3>
+    <p class="text-sm text-gray-500 mt-1 leading-relaxed">
+مشاهده وضعیت فروش‌ها، تعداد فروش عمده و پرچون و وضعیت سود و ضرر و موجودی اجناس
+    </p>
+</a>
 
         </div>
     </div>
