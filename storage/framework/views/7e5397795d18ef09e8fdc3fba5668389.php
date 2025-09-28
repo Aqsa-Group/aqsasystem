@@ -103,15 +103,15 @@
            <template x-if="activeTab === 'general'">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         
-       <!-- تعداد کاربران -->
+<!-- تعداد کاربران -->
 <div class="border rounded-2xl p-6 shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#30A4A8] to-[#153885] text-white">
     <div class="flex items-center gap-4">
-        <div class="flex items-center justify-center bg-white/20 rounded-full h-16 w-16 shadow-lg">
-            <i class="fa-solid fa-users text-2xl"></i>
+        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
+            <i class="fa-solid fa-users text-3xl"></i>
         </div>
         <div>
-            <h1 class="text-sm font-semibold drop-shadow-md"><?php echo e(__('messages.general_users')); ?></h1>
-            <p class="text-2xl font-extrabold drop-shadow-md">10</p>
+            <h1 class="text-lg font-semibold drop-shadow-md"><?php echo e(__('messages.general_users')); ?></h1>
+            <p class="text-3xl font-extrabold drop-shadow-md">10</p>
         </div>
     </div>
 </div>
@@ -119,12 +119,12 @@
 <!-- تعداد مشتریان -->
 <div class="border rounded-2xl p-6 shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#30A4A8] to-[#153885] text-white">
     <div class="flex items-center gap-4">
-        <div class="flex items-center justify-center bg-white/20 rounded-full h-16 w-16 shadow-lg">
-            <i class="fa-solid fa-handshake text-2xl"></i>
+        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
+            <i class="fa-solid fa-handshake text-3xl"></i>
         </div>
         <div>
-            <h1 class="text-sm font-semibold drop-shadow-md"><?php echo e(__('messages.general_customers')); ?></h1>
-            <p class="text-2xl font-extrabold drop-shadow-md">10</p>
+            <h1 class="text-lg font-semibold drop-shadow-md"><?php echo e(__('messages.general_customers')); ?></h1>
+            <p class="text-3xl font-extrabold drop-shadow-md">10</p>
         </div>
     </div>
 </div>
@@ -132,12 +132,12 @@
 <!-- تراکنش‌های امروز -->
 <div class="border rounded-2xl p-6 shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#2563EB] to-[#6371D0] text-white">
     <div class="flex items-center gap-4">
-        <div class="flex items-center justify-center bg-white/20 rounded-full h-16 w-16 shadow-lg">
-            <i class="fa-solid fa-clock-rotate-left text-2xl"></i>
+        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
+            <i class="fa-solid fa-clock-rotate-left text-3xl"></i>
         </div>
         <div>
-            <h1 class="text-sm font-semibold drop-shadow-md"><?php echo e(__('messages.general_today_transactions')); ?></h1>
-            <p class="text-2xl font-extrabold drop-shadow-md">10</p>
+            <h1 class="text-lg font-semibold drop-shadow-md"><?php echo e(__('messages.general_today_transactions')); ?></h1>
+            <p class="text-3xl font-extrabold drop-shadow-md">10</p>
         </div>
     </div>
 </div>
@@ -145,26 +145,25 @@
 <!-- تراکنش‌های در انتظار -->
 <div class="border rounded-2xl p-6 shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#2563EB] to-[#6371D0] text-white">
     <div class="flex items-center gap-4">
-        <div class="flex items-center justify-center bg-white/20 rounded-full h-16 w-16 shadow-lg">
-            <i class="fa-solid fa-hourglass-half text-2xl"></i>
+        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
+            <i class="fa-solid fa-hourglass-half text-3xl"></i>
         </div>
         <div>
-            <h1 class="text-sm font-semibold drop-shadow-md"><?php echo e(__('messages.general_pending_transactions')); ?></h1>
-            <p class="text-2xl font-extrabold drop-shadow-md">10</p>
+            <h1 class="text-lg font-semibold drop-shadow-md"><?php echo e(__('messages.general_pending_transactions')); ?></h1>
+            <p class="text-3xl font-extrabold drop-shadow-md">10</p>
         </div>
     </div>
 </div>
 
-
-      <!-- امروز سود -->
+<!-- امروز سود -->
 <div class="rounded-2xl p-6 shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#239ABB] to-[#0088FF] text-white">
     <div class="flex items-center gap-4">
-        <div class="flex items-center justify-center bg-white/20 rounded-full h-16 w-16 shadow-lg">
-            <i class="fa-solid fa-chart-line text-2xl"></i>
+        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
+            <i class="fa-solid fa-chart-line text-3xl"></i>
         </div>
         <div>
-            <h1 class="text-sm font-semibold"> <?php echo e(__('messages.general_today_profit')); ?> </h1>
-            <p class="text-2xl font-extrabold">1,200</p>
+            <h1 class="text-lg font-semibold drop-shadow-md"> <?php echo e(__('messages.general_today_profit')); ?> </h1>
+            <p class="text-3xl font-extrabold drop-shadow-md">1,200</p>
         </div>
     </div>
 </div>
@@ -172,12 +171,12 @@
 <!-- مجموع تراکنش‌ها -->
 <div class="rounded-2xl p-6 shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#239ABB] to-[#0088FF] text-white">
     <div class="flex items-center gap-4">
-        <div class="flex items-center justify-center bg-white/20 rounded-full h-16 w-16 shadow-lg">
-            <i class="fa-solid fa-receipt text-2xl"></i>
+        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
+            <i class="fa-solid fa-receipt text-3xl"></i>
         </div>
         <div>
-            <h1 class="text-sm font-semibold"><?php echo e(__('messages.general_total_transactions')); ?></h1>
-            <p class="text-2xl font-extrabold">4,500</p>
+            <h1 class="text-lg font-semibold drop-shadow-md"><?php echo e(__('messages.general_total_transactions')); ?></h1>
+            <p class="text-3xl font-extrabold drop-shadow-md">4,500</p>
         </div>
     </div>
 </div>
@@ -185,12 +184,12 @@
 <!-- حواله‌ها -->
 <div class="rounded-2xl p-6 shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#239ABB] to-[#0088FF] text-white">
     <div class="flex items-center gap-4">
-        <div class="flex items-center justify-center bg-white/20 rounded-full h-16 w-16 shadow-lg">
-            <i class="fa-solid fa-paper-plane text-2xl"></i>
+        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
+            <i class="fa-solid fa-paper-plane text-3xl"></i>
         </div>
         <div>
-            <h1 class="text-sm font-semibold"><?php echo e(__('messages.general_remittances')); ?></h1>
-            <p class="text-2xl font-extrabold">8</p>
+            <h1 class="text-lg font-semibold drop-shadow-md"><?php echo e(__('messages.general_remittances')); ?></h1>
+            <p class="text-3xl font-extrabold drop-shadow-md">8</p>
         </div>
     </div>
 </div>
@@ -198,12 +197,12 @@
 <!-- مجموع موجودی حساب‌ها -->
 <div class="rounded-2xl p-6 shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#239ABB] to-[#0088FF] text-white">
     <div class="flex items-center gap-4">
-        <div class="flex items-center justify-center bg-white/20 rounded-full h-16 w-16 shadow-lg">
-            <i class="fa-solid fa-wallet text-2xl"></i>
+        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
+            <i class="fa-solid fa-wallet text-3xl"></i>
         </div>
         <div>
-            <h1 class="text-sm font-semibold"><?php echo e(__('messages.general_total_balance')); ?></h1>
-            <p class="text-2xl font-extrabold">120,000</p>
+            <h1 class="text-lg font-semibold drop-shadow-md"><?php echo e(__('messages.general_total_balance')); ?></h1>
+            <p class="text-3xl font-extrabold drop-shadow-md">120,000</p>
         </div>
     </div>
 </div>
