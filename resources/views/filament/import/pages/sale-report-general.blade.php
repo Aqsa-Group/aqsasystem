@@ -50,10 +50,10 @@
                                 }}</td>
                             <td class="py-3 px-4 text-center text-gray-700">{{
                                 number_format($item['wholesale_quantity']) }}</td>
-                            <td class="py-3 px-4 text-center text-gray-700">{{ number_format($item['all_exist_number'])
+                            <td class="py-3 px-4 text-center text-gray-700">{{ number_format($item['all_exist_number_inventory'])
                                 }}</td>
                             <td class="py-3 px-4 text-center text-gray-700">{{
-                                number_format($item['all_exist_number_inventory']) }}</td>
+                                number_format($item['all_exist_number']) }}</td>
                             <td class="py-3 px-4 text-center text-green-600 font-semibold">{{
                                 number_format($item['total_profit']) }}</td>
                             <td class="py-3 px-4 text-center text-red-600 font-semibold">{{
