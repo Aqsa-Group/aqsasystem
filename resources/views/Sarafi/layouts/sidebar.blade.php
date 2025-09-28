@@ -348,8 +348,8 @@
         </header>
 
        <div class="flex flex-1 min-h-screen">
-    <aside class="w-64 hidden md:block p-5">
-        <nav class="mt-4 space-y-1" x-data="{
+    <aside class="w-72 hidden md:block p-5">
+        <nav class="mt-0 space-y-0" x-data="{
             openItems: {
                 customers: false,
                 accounts: false,
@@ -414,6 +414,16 @@
                             :class="active === 'customer-create' ? 'filter invert brightness-0' : 'text-gray-500'">
                         ثبت مشتری
                     </a>
+
+
+                        <a href="{{ route('sarafi.customer-table') }}"
+                        class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                        @click="active = 'customer-table'"
+                        :class="active === 'customer-table' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+                        <img src="{{ asset('assets/sarafi/all_icon/edit-2.svg') }}" class="w-4 h-4"
+                            :class="active === 'customer-table' ? 'filter invert brightness-0' : 'text-gray-500'">
+                        لیست مشتریان
+                    </a>
                 </div>
             </div>
 
@@ -422,7 +432,7 @@
                 <button @click="openItems.accounts = !openItems.accounts; active = 'accounts'"
                     :class="active === 'accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
                     class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
-                    <span class="flex items-center gap-2">
+                    <span class="flex items-center gap-2 ">
                         <img src="{{ asset('assets/sarafi/all_icon/edit-2.svg') }}" class="w-5 h-5"
                             :class="active === 'accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
                         ثبت حسابات و نرخ ارز

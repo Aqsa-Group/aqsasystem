@@ -45,7 +45,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $__empty_1 = true; $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                     <tr class="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <td class="w-4 p-4">
                             <input type="checkbox" class="w-4 h-4 text-blue-600 rounded-sm">
@@ -55,7 +55,7 @@
                                 src="<?php echo e($customer->image ? asset('storage/'.$customer->image) : 'https://ui-avatars.com/api/?name='.urlencode($customer->fullname)); ?>"
                                 alt="<?php echo e($customer->fullname); ?>">
                             <div class="ps-3">
-                                <div class="text-base font-semibold"><?php echo e($customer->fullname); ?></div>
+                                <div class="text-base "><?php echo e($customer->fullname); ?></div>
                             </div>
                         </th>
                         <td class="px-6 py-4"><?php echo e($customer->account_number ?? '-'); ?></td>
@@ -84,7 +84,7 @@
                             هیچ مشتری یافت نشد.
                         </td>
                     </tr>
-                    <?php endif; ?>
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                 </tbody>
             </table>
 
@@ -106,15 +106,15 @@
         </div>
 
         <!-- ✅ Success message -->
-        <?php if(session()->has('message')): ?>
+        <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
             <div class="mt-4 p-4 text-green-600 bg-green-100 rounded-lg text-center font-semibold">
                 <?php echo e(session('message')); ?>
 
             </div>
-        <?php endif; ?>
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
         <!-- ❗ Delete Confirmation Modal -->
-        <?php if($confirmingDelete): ?>
+        <!--[if BLOCK]><![endif]--><?php if($confirmingDelete): ?>
         <div class="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-96">
                 <h2 class="text-xl font-bold text-red-600 mb-4">⚠️ حذف مشتری</h2>
@@ -132,5 +132,5 @@
                 </div>
             </div>
         </div>
-        <?php endif; ?>
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
     </div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/customers-table.blade.php ENDPATH**/ ?>
