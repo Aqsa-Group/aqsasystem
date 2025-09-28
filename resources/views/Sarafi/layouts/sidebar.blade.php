@@ -254,7 +254,7 @@
     </style>
 </head>
 
-<body class="bg-white font-vazir">
+<body class="vazir">
 
     <!-- لودر فوق العاده زیبا -->
     <div id="loader">
@@ -347,7 +347,7 @@
             </div>
         </header>
 
-       <div class="flex flex-1 min-h-screen">
+       <div class="flex flex-1 mt-10 min-h-screen">
     <aside class="w-72 hidden md:block p-5">
         <nav class="mt-0 space-y-0" x-data="{
             openItems: {
