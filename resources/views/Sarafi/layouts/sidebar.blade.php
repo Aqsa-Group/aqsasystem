@@ -333,15 +333,15 @@
                 </div>
 
                 <button
-                    class="relative flex items-center justify-center w-10 h-10 rounded-full bg-[#E5E5E5] hover:bg-gray-300 transition">
-                    <img src="{{ asset('assets/sarafi/all_icon/notification.png') }}" alt="اعلان" class="w-5 h-5">
+                    class="relative flex items-center justify-center w-[50px] h-[50px] rounded-[25px] bg-[#E5E5E5] hover:bg-gray-300 transition">
+                    <img src="{{ asset('assets/sarafi/all_icon/bill-header.svg') }}" alt="اعلان" class="w-7 h-7">
                     <span
                         class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
                 </button>
 
                 <div
-                    class="w-10 h-10 rounded-full overflow-hidden bg-[#E5E5E5] flex items-center justify-center hover:bg-gray-300 transition">
-                    <img src="{{ asset('assets/sarafi/all_icon/profile.svg') }}" alt="پروفایل"
+                    class="w-[50px] h-[50px] rounded-[25px] overflow-hidden bg-[#E5E5E5] flex items-center justify-center hover:bg-gray-300 transition">
+                    <img src="{{ asset('assets/sarafi/all_icon/user-header.svg') }}" alt="پروفایل"
                         class="w-7 h-7 object-cover">
                 </div>
             </div>
@@ -727,7 +727,7 @@
         </nav>
     </aside>
 
-    <main class="flex-1 p-6">
+    <main class="flex-1 ">
         @yield('content')
     </main>
 </div>

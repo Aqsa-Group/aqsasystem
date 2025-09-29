@@ -206,7 +206,7 @@
             </nav>
         </aside>
         
-        <main class="flex-1 p-6">
+        <main class="">
             @yield('content')
         </main>
     </div>
