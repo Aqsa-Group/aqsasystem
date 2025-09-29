@@ -5,7 +5,8 @@
     <div class="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-3">
 
         <!-- رسید/بردگی -->
-        <div class="border bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-sm">
+        <div
+            class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
             <i class="fa-solid fa-wallet text-white text-xl"></i>
             <a href="" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 {{ __('messages.recipt/withdraw') }}
@@ -13,7 +14,8 @@
         </div>
 
         <!-- انتقال -->
-        <div class="border bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-sm">
+        <div
+            class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
             <i class="fa-solid fa-arrow-right-arrow-left text-white text-xl"></i>
             <a href="" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 {{ __('messages.transfer') }}
@@ -21,7 +23,8 @@
         </div>
 
         <!-- حساب‌های روزنامه -->
-        <div class="border bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-sm">
+        <div
+            class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
             <i class="fa-solid fa-book-open text-white text-xl"></i>
             <a href="" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 {{ __('messages.newspaper_accounts') }}
@@ -29,15 +32,16 @@
         </div>
 
         <!-- خرید و فروش ارز و صندوق -->
-        <div class="border bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] rounded-xl px-3 py-4 flex items-center  gap-3 text-white text-sm">
-            <i class="fa-solid fa-coins text-white text-xl"></i>
-            <a href="" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+        <div class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center  gap-3 text-white text-[16px] font-bold">
+              <img src="{{ asset('assets/sarafi/all_icon/bitcoin-(btc).svg') }}" alt="">
+             <a href="" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 {{ __('messages.selling') }}
             </a>
         </div>
 
         <!-- حساب تبدیل -->
-        <div class="border bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-sm">
+        <div
+            class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
             <i class="fa-solid fa-exchange-alt text-white text-xl"></i>
             <a href="" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 {{ __('messages.coversion_account') }}
@@ -45,7 +49,8 @@
         </div>
 
         <!-- انتقال تبدیل -->
-        <div class="border bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-sm">
+        <div
+            class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
             <i class="fa-solid fa-hand-holding-dollar text-white text-xl"></i>
             <a href="" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 {{ __('messages.coversion_transfer') }}
@@ -53,7 +58,8 @@
         </div>
 
         <!-- ژورنال عمومی -->
-        <div class="border bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-sm">
+        <div
+            class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
             <i class="fa-solid fa-file-invoice-dollar text-white text-xl"></i>
             <a href="" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 {{ __('messages.general_jornal') }}
@@ -89,118 +95,123 @@
             <template x-if="activeTab === 'general'">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-<!-- تعداد کاربران -->
-<div
-    class="border rounded-2xl p-6 justify-center shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] text-white">
-    <div class="flex items-center gap-4">
-        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
-            <i class="fa-solid fa-users text-3xl"></i>
-        </div>
-        <div>
-            <h1 class="text-lg font-semibold drop-shadow-md">{{ __('messages.general_users') }}</h1>
-            <p class="text-3xl font-extrabold drop-shadow-md">10</p>
-        </div>
-    </div>
-</div>
+                    <!-- تعداد کاربران -->
+                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#FF9AA2] to-[#E52C1C]
+   text-white">
 
-<!-- تعداد مشتریان -->
-<div
-    class="border rounded-2xl p-6 justify-center shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] text-white">
-    <div class="flex items-center gap-4">
-        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
-            <i class="fa-solid fa-handshake text-3xl"></i>
-        </div>
-        <div>
-            <h1 class="text-lg font-semibold drop-shadow-md">{{ __('messages.general_customers') }}</h1>
-            <p class="text-3xl font-extrabold drop-shadow-md">10</p>
-        </div>
-    </div>
-</div>
+                        <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
+                            <img src="{{ asset('assets/sarafi/all_icon/  users.svg') }}" alt="">
+                        </div>
 
-<!-- تراکنش‌های امروز -->
-<div
-    class="border rounded-2xl p-6 justify-center shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] text-white">
-    <div class="flex items-center gap-4">
-        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
-            <i class="fa-solid fa-clock-rotate-left text-3xl"></i>
-        </div>
-        <div>
-            <h1 class="text-lg font-semibold drop-shadow-md">{{ __('messages.general_today_transactions') }}</h1>
-            <p class="text-3xl font-extrabold drop-shadow-md">10</p>
-        </div>
-    </div>
-</div>
+                        <h1 class="text-lg font-semibold drop-shadow-md text-center">{{ __('messages.general_users') }}
+                        </h1>
 
-<!-- تراکنش‌های در انتظار -->
-<div
-    class="border rounded-2xl p-6 justify-center shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] text-white">
-    <div class="flex items-center gap-4">
-        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
-            <i class="fa-solid fa-hourglass-half text-3xl"></i>
-        </div>
-        <div>
-            <h1 class="text-lg font-semibold drop-shadow-md">{{ __('messages.general_pending_transactions') }}</h1>
-            <p class="text-3xl font-extrabold drop-shadow-md">10</p>
-        </div>
-    </div>
-</div>
+                        <p class="text-3xl font-extrabold drop-shadow-md">10</p>
+                    </div>
 
-<!-- امروز سود -->
-<div
-    class="rounded-2xl p-6 justify-center shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] text-white">
-    <div class="flex items-center gap-4">
-        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
-            <i class="fa-solid fa-chart-line text-3xl"></i>
-        </div>
-        <div>
-            <h1 class="text-lg font-semibold drop-shadow-md">{{ __('messages.general_today_profit') }}</h1>
-            <p class="text-3xl font-extrabold drop-shadow-md">1,200</p>
-        </div>
-    </div>
-</div>
+                    <!-- تعداد مشتریان -->
+                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#FF9AA2] to-[#526FF5]
+ text-white">
 
-<!-- مجموع تراکنش‌ها -->
-<div
-    class="rounded-2xl p-6 justify-center shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] text-white">
-    <div class="flex items-center gap-4">
-        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
-            <i class="fa-solid fa-receipt text-3xl"></i>
-        </div>
-        <div>
-            <h1 class="text-lg font-semibold drop-shadow-md">{{ __('messages.general_total_transactions') }}</h1>
-            <p class="text-3xl font-extrabold drop-shadow-md">4,500</p>
-        </div>
-    </div>
-</div>
+                        <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
+                            <img src="{{ asset('assets/sarafi/all_icon/customers.svg') }}" alt="">
+                        </div>
 
-<!-- حواله‌ها -->
-<div
-    class="rounded-2xl p-6 justify-center shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] text-white">
-    <div class="flex items-center gap-4">
-        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
-            <i class="fa-solid fa-paper-plane text-3xl"></i>
-        </div>
-        <div>
-            <h1 class="text-lg font-semibold drop-shadow-md">{{ __('messages.general_remittances') }}</h1>
-            <p class="text-3xl font-extrabold drop-shadow-md">8</p>
-        </div>
-    </div>
-</div>
 
-<!-- مجموع موجودی حساب‌ها -->
-<div
-    class="rounded-2xl p-6 justify-center shadow-md hover:shadow-xl transition transform hover:scale-105 h-40 flex items-center bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] text-white">
-    <div class="flex items-center gap-4">
-        <div class="flex items-center justify-center bg-white/20 rounded-full h-20 w-20 shadow-lg">
-            <i class="fa-solid fa-wallet text-3xl"></i>
-        </div>
-        <div>
-            <h1 class="text-lg font-semibold drop-shadow-md">{{ __('messages.general_total_balance') }}</h1>
-            <p class="text-3xl font-extrabold drop-shadow-md">120,000</p>
-        </div>
-    </div>
-</div>
+                        <h1 class="text-lg font-semibold drop-shadow-md text-center">{{ __('messages.general_customers')
+                            }}</h1>
 
+                        <p class="text-3xl font-extrabold drop-shadow-md">10</p>
+                    </div>
+
+                    <!-- تراکنش‌های امروز -->
+                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#3293CC]
+ text-white">
+
+                        <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
+                            <img src="{{ asset('assets/sarafi/all_icon/exchange.svg') }}" alt="">
+                        </div>
+
+
+                        <h1 class="text-lg font-semibold drop-shadow-md text-center">{{
+                            __('messages.general_today_transactions') }}</h1>
+
+                        <p class="text-3xl font-extrabold drop-shadow-md">10</p>
+                    </div>
+
+                    <!-- تراکنش‌های در انتظار -->
+                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#239ABB] to-[#61B138]
+ text-white">
+
+                        <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
+                            <img src="{{ asset('assets/sarafi/all_icon/timer.svg') }}" alt="">
+                        </div>
+
+
+                        <h1 class="text-lg font-semibold drop-shadow-md text-center">{{
+                            __('messages.general_pending_transactions') }}</h1>
+
+                        <p class="text-3xl font-extrabold drop-shadow-md">10</p>
+                    </div>
+
+                    <!-- امروز سود -->
+                    <div class="rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#F6F884] to-[#B2620C]
+ text-white">
+
+                        <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
+                            <img src="{{ asset('assets/sarafi/all_icon/dollar-circle.svg') }}" alt="">
+                        </div>
+
+                        <h1 class="text-lg font-semibold drop-shadow-md text-center">{{
+                            __('messages.general_today_profit') }}</h1>
+
+                        <p class="text-3xl font-extrabold drop-shadow-md">1,200</p>
+                    </div>
+
+                    <!-- مجموع تراکنش‌ها -->
+                    <div class="rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#60A5FA] to-[#475569]
+ text-white">
+
+                        <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
+                            <img src="{{ asset('assets/sarafi/all_icon/receipt-2.svg') }}" alt="">
+                        </div>
+
+
+                        <h1 class="text-lg font-semibold drop-shadow-md text-center">{{
+                            __('messages.general_total_transactions') }}</h1>
+
+                        <p class="text-3xl font-extrabold drop-shadow-md">4,500</p>
+                    </div>
+
+                    <!-- حواله‌ها -->
+                    <div class="rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#3B82F6] to-[#1E40AF]
+ text-white">
+
+                        <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
+                            <img src="{{ asset('assets/sarafi/all_icon/send-2.svg') }}" alt="">
+                        </div>
+
+
+                        <h1 class="text-lg font-semibold drop-shadow-md text-center">{{
+                            __('messages.general_remittances') }}</h1>
+
+                        <p class="text-3xl font-extrabold drop-shadow-md">8</p>
+                    </div>
+
+                    <!-- مجموع موجودی حساب‌ها -->
+                    <div class="rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#BC83F6] to-[#5A0FA6]
+ text-white">
+
+                        <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
+                            <img src="{{ asset('assets/sarafi/all_icon/wallet-3.svg') }}" alt="">
+                        </div>
+
+
+                        <h1 class="text-lg font-semibold drop-shadow-md text-center">{{
+                            __('messages.general_total_balance') }}</h1>
+
+                        <p class="text-3xl font-extrabold drop-shadow-md">120,000</p>
+                    </div>
 
 
                 </div>
