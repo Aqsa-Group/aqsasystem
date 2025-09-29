@@ -168,6 +168,52 @@ return [
     'admin_cannot_create_superadmin' => 'Admin cannot create superadmin.',
 
 
+
+    // Customre_create
+
+    'title_add' => 'Add Customer',
+    'title_edit' => 'Edit Customer',
+    'subtitle' => 'Please enter customer information carefully',
+
+    'profile_image' => 'Profile Image',
+    'idcard_image' => 'ID Card Image',
+
+    'fullname' => 'Full Name',
+    'account_number' => 'Account Number',
+    'account_placeholder' => '16-digit account number',
+
+    'category' => 'Category',
+    'city' => 'City',
+    'phone' => 'Phone Number',
+    'tazkira' => 'Tazkira Number',
+    'whatsapp' => 'WhatsApp Number',
+    'password' => 'Password',
+
+    'cancel' => 'Cancel',
+    'save' => 'Save',
+    'update' => 'Update',
+
+    'success_title' => 'Success',
+    'success_message' => 'Operation completed successfully',
+    'close' => 'Close',
+
+
+    // placeholder
+    'placeholder_fullname' => 'Enter customer name',
+    'placeholder_account' => '16-digit account number',
+    'placeholder_city' => 'Enter city name',
+    'placeholder_phone' => '07xx.xxxx.xxxx',
+    'placeholder_tazkira' => 'Enter ID number',
+    'placeholder_whatsapp' => '07xx.xxxx.xxxx',
+    'placeholder_password' => 'Enter password',
+    'placeholder_select_category' => 'Select an option',
+
+    // دسته‌بندی‌ها
+    'category_normal' => 'Normal Customer',
+    'choose' => 'Choose one option',
+    'category_regular' => 'Regular Customer',
+    'category_gold' => 'Gold Customer',
+    'category_special' => 'Special Customer',
     
 
 

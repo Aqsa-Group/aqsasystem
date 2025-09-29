@@ -326,7 +326,7 @@
             <!-- سرچ، اعلان، پروفایل -->
             <div class="flex items-center space-x-4 gap-1 pl-10 rtl:space-x-reverse">
                 <div class="relative">
-                    <input type="text" placeholder="جستجو..."
+                    <input type="text" placeholder="<?php echo e(__('messages.search_placeholder')); ?>"
                         class="border border-[#8C8C8C] placeholder:text-black vazir rounded-full px-3 py-2 pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
                         class="h-5 w-5 absolute left-2 bottom-3">
@@ -375,18 +375,20 @@
                 <span class="flex items-center gap-2">
                     <img src="<?php echo e(asset('assets/sarafi/all_icon/element-3.svg')); ?>" class="w-5 h-5"
                         :class="active === 'dashboard' ? 'filter invert brightness-0' : 'text-gray-500'">
-                    داشبورد
+                    <?php echo e(__('messages.dashboard')); ?>
+
                 </span>
             </a>
 
             <!-- کاربران -->
-            <a href="#" class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir"
+            <a href="<?php echo e(route('sarafi.users')); ?>" class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir"
                 @click="active = 'users'"
                 :class="active === 'users' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'">
                 <span class="flex items-center gap-2">
                     <img src="<?php echo e(asset('assets/sarafi/all_icon/profile-2user.svg')); ?>" class="w-5 h-5"
                         :class="active === 'users' ? 'filter invert brightness-0' : 'text-gray-500'">
-                    کاربران
+                      <?php echo e(__('messages.users')); ?>
+
                 </span>
             </a>
 
@@ -398,7 +400,8 @@
                     <span class="flex items-center gap-2">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/people.svg')); ?>" class="w-5 h-5"
                             :class="active === 'customers' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        مشتریان
+                          <?php echo e(__('messages.customers')); ?>
+
                     </span>
                     <svg :class="[openItems.customers ? 'rotate-180' : '', active === 'customers' ? 'text-white' : 'text-gray-500']"
                         class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -412,7 +415,8 @@
                         :class="active === 'customer-create' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" class="w-4 h-4"
                             :class="active === 'customer-create' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        ثبت مشتری
+                          <?php echo e(__('messages.customer_create')); ?>
+
                     </a>
 
 
@@ -422,7 +426,8 @@
                         :class="active === 'customer-table' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" class="w-4 h-4"
                             :class="active === 'customer-table' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        لیست مشتریان
+                        <?php echo e(__('messages.customer_list')); ?>
+
                     </a>
                 </div>
             </div>
@@ -435,7 +440,8 @@
                     <span class="flex items-center gap-2 ">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" class="w-5 h-5"
                             :class="active === 'accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        ثبت حسابات و نرخ ارز
+                        <?php echo e(__('messages.accounts')); ?>
+
                     </span>
                     <svg :class="[openItems.accounts ? 'rotate-180' : '', active === 'accounts' ? 'text-white' : 'text-gray-500']"
                         class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -449,7 +455,8 @@
                         :class="active === 'register-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/add.svg')); ?>" class="w-4 h-4"
                             :class="active === 'register-accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        ثبت جدید
+                        <?php echo e(__('messages.register_accounts')); ?>
+
                     </a>
                 </div>
             </div>
@@ -462,7 +469,8 @@
                     <span class="flex items-center gap-2">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/receive-square.svg')); ?>" class="w-5 h-5"
                             :class="active === 'bankFiles' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        بارگذاری فایل بانکی
+                        <?php echo e(__('messages.bank_files')); ?>
+
                     </span>
                     <svg :class="[openItems.bankFiles ? 'rotate-180' : '', active === 'bankFiles' ? 'text-white' : 'text-gray-500']"
                         class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -476,7 +484,8 @@
                         :class="active === 'upload-bank' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/upload.svg')); ?>" class="w-4 h-4"
                             :class="active === 'upload-bank' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        آپلود فایل
+                        <?php echo e(__('messages.upload_bank')); ?>
+
                     </a>
                 </div>
             </div>
@@ -489,7 +498,8 @@
                     <span class="flex items-center gap-2">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/edit.svg')); ?>" class="w-5 h-5"
                             :class="active === 'editAccounts' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        ویرایش حسابات و نرخ ارز
+                         <?php echo e(__('messages.edit_accounts')); ?>
+
                     </span>
                     <svg :class="[openItems.editAccounts ? 'rotate-180' : '', active === 'editAccounts' ? 'text-white' : 'text-gray-500']"
                         class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -503,7 +513,8 @@
                         :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/edit.svg')); ?>" class="w-4 h-4"
                             :class="active === 'edit-accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        ویرایش اطلاعات
+                         <?php echo e(__('messages.edit_accounts_info')); ?>
+
                     </a>
                 </div>
             </div>
@@ -516,7 +527,8 @@
                     <span class="flex items-center gap-2">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/graph.svg')); ?>" class="w-5 h-5"
                             :class="active === 'reports' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        گزارش و آمار حسابات
+                          <?php echo e(__('messages.reports')); ?>
+
                     </span>
                     <svg :class="[openItems.reports ? 'rotate-180' : '', active === 'reports' ? 'text-white' : 'text-gray-500']"
                         class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -530,7 +542,8 @@
                         :class="active === 'view-reports' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/chart.svg')); ?>" class="w-4 h-4"
                             :class="active === 'view-reports' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        مشاهده گزارشات
+                         <?php echo e(__('messages.view_reports')); ?>
+
                     </a>
                 </div>
             </div>
@@ -543,7 +556,8 @@
                     <span class="flex items-center gap-2">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/health.svg')); ?>" class="w-5 h-5"
                             :class="active === 'transactions' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        کنترول و بررسی معاملات
+                        <?php echo e(__('messages.transactions')); ?>
+
                     </span>
                     <svg :class="[openItems.transactions ? 'rotate-180' : '', active === 'transactions' ? 'text-white' : 'text-gray-500']"
                         class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -557,7 +571,8 @@
                         :class="active === 'control-transactions' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/eye.svg')); ?>" class="w-4 h-4"
                             :class="active === 'control-transactions' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        بررسی معاملات
+                          <?php echo e(__('messages.control_transactions')); ?>
+
                     </a>
                 </div>
             </div>
@@ -570,7 +585,8 @@
                     <span class="flex items-center gap-2">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/trash.svg')); ?>" class="w-5 h-5"
                             :class="active === 'deletedTransactions' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        بررسی معاملات حذف شده
+                            <?php echo e(__('messages.deleted_transactions')); ?>
+
                     </span>
                     <svg :class="[openItems.deletedTransactions ? 'rotate-180' : '', active === 'deletedTransactions' ? 'text-white' : 'text-gray-500']"
                         class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -584,7 +600,8 @@
                         :class="active === 'deleted-transactions' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/archive.svg')); ?>" class="w-4 h-4"
                             :class="active === 'deleted-transactions' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        معاملات حذف شده
+                        <?php echo e(__('messages.deleted_transactions_list')); ?>
+
                     </a>
                 </div>
             </div>
@@ -597,7 +614,8 @@
                     <span class="flex items-center gap-2">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/Group 1325.svg')); ?>" class="w-5 h-5"
                             :class="active === 'management' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        مدیریت و دسترسی
+                          <?php echo e(__('messages.management')); ?>
+
                     </span>
                     <svg :class="[openItems.management ? 'rotate-180' : '', active === 'management' ? 'text-white' : 'text-gray-500']"
                         class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -611,7 +629,8 @@
                         :class="active === 'user-management' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/user.svg')); ?>" class="w-4 h-4"
                             :class="active === 'user-management' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        مدیریت کاربران
+                            <?php echo e(__('messages.user_management')); ?>
+
                     </a>
                 </div>
             </div>
@@ -624,7 +643,8 @@
                     <span class="flex items-center gap-2">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/sms.svg')); ?>" class="w-5 h-5"
                             :class="active === 'sms' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        مدیریت پیامک ها
+                        <?php echo e(__('messages.sms')); ?>
+
                     </span>
                     <svg :class="[openItems.sms ? 'rotate-180' : '', active === 'sms' ? 'text-white' : 'text-gray-500']"
                         class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -638,7 +658,8 @@
                         :class="active === 'sms-management' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/message.svg')); ?>" class="w-4 h-4"
                             :class="active === 'sms-management' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        ارسال پیامک
+                         <?php echo e(__('messages.sms_management')); ?>
+
                     </a>
                 </div>
             </div>
@@ -651,7 +672,8 @@
                     <span class="flex items-center gap-2">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/wifi.svg')); ?>" class="w-5 h-5"
                             :class="active === 'notifications' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        اطلاعیه های آنلاین
+                             <?php echo e(__('messages.notifications')); ?>
+
                     </span>
                     <svg :class="[openItems.notifications ? 'rotate-180' : '', active === 'notifications' ? 'text-white' : 'text-gray-500']"
                         class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -665,7 +687,8 @@
                         :class="active === 'online-notifications' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/notification.svg')); ?>" class="w-4 h-4"
                             :class="active === 'online-notifications' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        اطلاعیه جدید
+                        <?php echo e(__('messages.online_notifications')); ?>
+
                     </a>
                 </div>
             </div>
@@ -678,7 +701,8 @@
                     <span class="flex items-center gap-2">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/document-copy.svg')); ?>" class="w-5 h-5"
                             :class="active === 'support' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        پشتیبانی سیستم
+                             <?php echo e(__('messages.support')); ?>
+
                     </span>
                     <svg :class="[openItems.support ? 'rotate-180' : '', active === 'support' ? 'text-white' : 'text-gray-500']"
                         class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -692,7 +716,8 @@
                         :class="active === 'system-support' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/support.svg')); ?>" class="w-4 h-4"
                             :class="active === 'system-support' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        تیکت پشتیبانی
+                         <?php echo e(__('messages.system_support')); ?>
+
                     </a>
                 </div>
             </div>
@@ -705,7 +730,8 @@
                     <span class="flex items-center gap-2">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/setting-2.svg')); ?>" class="w-5 h-5"
                             :class="active === 'settings' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        تنظیمات
+                         <?php echo e(__('messages.settings')); ?>
+
                     </span>
                     <svg :class="[openItems.settings ? 'rotate-180' : '', active === 'settings' ? 'text-white' : 'text-gray-500']"
                         class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -719,7 +745,9 @@
                         :class="active === 'system-settings' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/settings.svg')); ?>" class="w-4 h-4"
                             :class="active === 'system-settings' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        تنظیمات سیستم
+                         <?php echo e(__('messages.system_settings')); ?>
+
+
                     </a>
                 </div>
             </div>

@@ -166,6 +166,52 @@ return [
     'admin_cannot_create_superadmin' => 'مدیر نمی‌تواند سوپر ادمین ایجاد کند.',
 
 
+    // Customer_create
+
+      'title_add' => 'افزودن مشتری',
+    'title_edit' => 'ویرایش مشتری',
+    'subtitle' => 'لطفا اطلاعات مشتری را با دقت وارد نمائید',
+
+    'profile_image' => 'عکس پروفایل',
+    'idcard_image' => 'عکس شناسنامه',
+
+    'fullname' => 'نام کامل',
+    'account_number' => 'شماره حساب',
+    'account_placeholder' => 'شماره حساب ۱۶ رقمی',
+
+    'category' => 'دسته بندی',
+    'city' => 'شهر',
+    'phone' => 'شماره تلفن',
+    'tazkira' => 'شماره تذکره',
+    'whatsapp' => 'شماره واتساپ',
+    'password' => 'رمز عبور',
+
+    'cancel' => 'لغو',
+    'save' => 'ذخیره',
+    'update' => 'بروزرسانی',
+
+    'success_title' => 'موفقیت',
+    'success_message' => 'عملیات با موفقیت انجام شد',
+    'close' => 'بستن',
+
+
+      // placeholderها
+    'placeholder_fullname' => 'نام مشتری',
+    'placeholder_account' => 'شماره حساب ۱۶ رقمی',
+    'placeholder_city' => 'نام شهر',
+    'placeholder_phone' => '07xx.xxxx.xxxx',
+    'placeholder_tazkira' => 'شماره تذکره',
+    'placeholder_whatsapp' => '07xx.xxxx.xxxx',
+    'placeholder_password' => 'رمز عبور',
+    'placeholder_select_category' => 'انتخاب کنید',
+
+    // دسته‌بندی‌ها
+    'category_normal' => 'مشتری عادی',
+    'category_regular' => 'مشتریان ثابت',
+    'category_gold' => 'مشتری طلایی',
+    'category_special' => 'ویژه',
+    'choose' => 'یک گزینه انتخاب کنید',
+
 
 
 

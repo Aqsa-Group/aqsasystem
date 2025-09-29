@@ -94,8 +94,7 @@
                 <?php echo e(__('messages.tab_reports')); ?>
 
             </a>
-            <a href="#" @click.prevent="activeTab = 'safes'" class="px-5 py-2 font-bold transition rounded-t-lg"
-                :class="activeTab === 'safes'
+            <a href="#" @click.prevent="activeTab = 'safes'" class="px-5 py-2 font-bold transition rounded-t-lg" :class="activeTab === 'safes'
                     ?
                     'bg-white border-x border-t border-[#2563EBB0] text-[#1E3A8A] shadow-sm' :
                     'text-gray-600 hover:text-[#1E3A8A] hover:border-b-2 hover:border-indigo-400'">
@@ -112,13 +111,11 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
                     <!-- تعداد کاربران -->
-                    <div
-                        class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#FF9AA2] to-[#E52C1C]
+                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#FF9AA2] to-[#E52C1C]
    text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/  users.svg')); ?>" alt=""
-                                class="h-10 w-10">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/  users.svg')); ?>" alt="" class="h-10 w-10">
                         </div>
 
                         <h1 class="text-lg font-semibold drop-shadow-md text-center"><?php echo e(__('messages.general_users')); ?>
@@ -129,13 +126,11 @@
                     </div>
 
                     <!-- تعداد مشتریان -->
-                    <div
-                        class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#FF9AA2] to-[#526FF5]
+                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#FF9AA2] to-[#526FF5]
  text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/customers.svg')); ?>" alt=""
-                                class="h-10 w-10">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/customers.svg')); ?>" alt="" class="h-10 w-10">
                         </div>
 
 
@@ -146,13 +141,11 @@
                     </div>
 
                     <!-- تراکنش‌های امروز -->
-                    <div
-                        class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#3293CC]
+                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#3293CC]
  text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/exchange.svg')); ?>" alt=""
-                                class="h-10 w-10">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/exchange.svg')); ?>" alt="" class="h-10 w-10">
                         </div>
 
 
@@ -163,13 +156,11 @@
                     </div>
 
                     <!-- تراکنش‌های در انتظار -->
-                    <div
-                        class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#239ABB] to-[#61B138]
+                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#239ABB] to-[#61B138]
  text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/timer.svg')); ?>" alt=""
-                                class="h-10 w-10">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/timer.svg')); ?>" alt="" class="h-10 w-10">
                         </div>
 
 
@@ -180,13 +171,11 @@
                     </div>
 
                     <!-- امروز سود -->
-                    <div
-                        class="rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#F6F884] to-[#B2620C]
+                    <div class="rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#F6F884] to-[#B2620C]
  text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/dollar-circle.svg')); ?>" alt=""
-                                class="h-10 w-10">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/dollar-circle.svg')); ?>" alt="" class="h-10 w-10">
                         </div>
 
                         <h1 class="text-lg font-semibold drop-shadow-md text-center">
@@ -196,13 +185,11 @@
                     </div>
 
                     <!-- مجموع تراکنش‌ها -->
-                    <div
-                        class="rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#AAB2BE] to-[#1874F6]
+                    <div class="rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#AAB2BE] to-[#1874F6]
  text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/receipt-2.svg')); ?>" alt=""
-                                class="h-10 w-10">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/receipt-2.svg')); ?>" alt="" class="h-10 w-10">
                         </div>
 
 
@@ -213,13 +200,11 @@
                     </div>
 
                     <!-- حواله‌ها -->
-                    <div
-                        class="rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#659EEF] to-[#2297B7]
+                    <div class="rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#659EEF] to-[#2297B7]
  text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/send-2.svg')); ?>" alt=""
-                                class="h-10 w-10">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/send-2.svg')); ?>" alt="" class="h-10 w-10">
                         </div>
 
 
@@ -230,13 +215,11 @@
                     </div>
 
                     <!-- مجموع موجودی حساب‌ها -->
-                    <div
-                        class="rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#BC83F6] to-[#5A0FA6]
+                    <div class="rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#BC83F6] to-[#5A0FA6]
  text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/wallet-3.svg')); ?>" alt=""
-                                class="h-10 w-10">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/wallet-3.svg')); ?>" alt="" class="h-10 w-10">
                         </div>
 
 
@@ -254,11 +237,10 @@
             <template x-if="activeTab === 'reports'">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pr-6">
 
-                    
+
                     <div class="border bg-[#E5E5E5] rounded-2xl p-6 shadow-md" style="height:532px; width:687px;">
                         <div class="flex items-center gap-3 mb-4">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/bit-gr.svg')); ?>" alt=""
-                                class="h-8 w-8">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/bit-gr.svg')); ?>" alt="" class="h-8 w-8">
                             <h2 class="text-lg font-bold text-gray-700">
                                 <?php echo e(__('messages.reports_monthly_profit_loss')); ?>
 
@@ -267,11 +249,10 @@
                         <canvas id="monthlyProfitLossChart" class="w-full h-[450px]"></canvas>
                     </div>
 
-                    
+
                     <div class="border bg-[#E5E5E5] rounded-2xl p-6 shadow-md" style="height:532px; width:687px;">
                         <div class="flex items-center gap-3 mb-4">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/chart.svg')); ?>" alt=""
-                                class="h-8 w-8">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/chart.svg')); ?>" alt="" class="h-8 w-8">
                             <h2 class="text-lg font-bold text-gray-700">
                                 <?php echo e(__('messages.reports_transactions_by_currency')); ?>
 
@@ -284,155 +265,155 @@
             </template>
 
 
-           <template x-if="activeTab === 'safes'">
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 vazir">
+            <template x-if="activeTab === 'safes'">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 vazir">
 
-    <!-- افغانی -->
-<div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
-     style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-      <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
-        <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
-      </div>
-      <div class="space-y-2">
-        <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e(__('messages.safes_afn')); ?></h1>
-        <p class="text-[25px] font-extrabold text-[#2563EB]">3,500,000</p>
-      </div>
-    </div>
+                    <!-- افغانی -->
+                    <div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
+                        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                        <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
+                        </div>
+                        <div class="space-y-2">
+                            <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e(__('messages.safes_afn')); ?></h1>
+                            <p class="text-[25px] font-extrabold text-[#2563EB]">3,500,000</p>
+                        </div>
+                    </div>
 
-    <!-- دلار -->
-<div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
-     style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-      <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
-        <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
-      </div>
-      <div class="space-y-2">
-        <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e(__('messages.safes_usd')); ?></h1>
-        <p class="text-[25px] font-extrabold text-[#2563EB]">45,000</p>
-      </div>
-    </div>
+                    <!-- دلار -->
+                    <div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
+                        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                        <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
+                        </div>
+                        <div class="space-y-2">
+                            <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e(__('messages.safes_usd')); ?></h1>
+                            <p class="text-[25px] font-extrabold text-[#2563EB]">45,000</p>
+                        </div>
+                    </div>
 
-    <!-- یورو -->
-<div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
-     style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-        <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
-        <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
-      </div>
-      <div class="space-y-2">
-        <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e(__('messages.safes_eur')); ?></h1>
-        <p class="text-[25px] font-extrabold text-[#2563EB]">12,000</p>
-      </div>
-    </div>
+                    <!-- یورو -->
+                    <div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
+                        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                        <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
+                        </div>
+                        <div class="space-y-2">
+                            <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e(__('messages.safes_eur')); ?></h1>
+                            <p class="text-[25px] font-extrabold text-[#2563EB]">12,000</p>
+                        </div>
+                    </div>
 
-    <!-- ریال ایران -->
-<div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
-     style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-       <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
-        <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
-      </div>
-      <div class="space-y-2">
-        <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e(__('messages.safes_irr')); ?></h1>
-        <p class="text-[25px] font-extrabold text-[#2563EB]">1,200,000</p>
-      </div>
-    </div>
+                    <!-- ریال ایران -->
+                    <div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
+                        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                        <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
+                        </div>
+                        <div class="space-y-2">
+                            <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e(__('messages.safes_irr')); ?></h1>
+                            <p class="text-[25px] font-extrabold text-[#2563EB]">1,200,000</p>
+                        </div>
+                    </div>
 
-    <!-- درهم امارات -->
-<div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
-     style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-        <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
-        <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
-      </div>
-      <div class="space-y-2">
-        <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e(__('messages.safes_aed')); ?></h1>
-        <p class="text-[25px] font-extrabold text-[#2563EB]">10,000</p>
-      </div>
-    </div>
+                    <!-- درهم امارات -->
+                    <div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
+                        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                        <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
+                        </div>
+                        <div class="space-y-2">
+                            <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e(__('messages.safes_aed')); ?></h1>
+                            <p class="text-[25px] font-extrabold text-[#2563EB]">10,000</p>
+                        </div>
+                    </div>
 
-    <!-- لیره ترکیه -->
-<div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
-     style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-        <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
-        <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
-      </div>
-      <div class="space-y-2">
-        <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e(__('messages.safes_try')); ?></h1>
-        <p class="text-[25px] font-extrabold text-[#2563EB]">8,000</p>
-      </div>
-    </div>
+                    <!-- لیره ترکیه -->
+                    <div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
+                        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                        <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
+                        </div>
+                        <div class="space-y-2">
+                            <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e(__('messages.safes_try')); ?></h1>
+                            <p class="text-[25px] font-extrabold text-[#2563EB]">8,000</p>
+                        </div>
+                    </div>
 
-    <!-- یوان چین -->
-<div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
-     style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-        <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
-        <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
-      </div>
-      <div class="space-y-2">
-        <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e(__('messages.safes_cny')); ?></h1>
-        <p class="text-[25px] font-extrabold text-[#2563EB]">80,000</p>
-      </div>
-    </div>
+                    <!-- یوان چین -->
+                    <div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
+                        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                        <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
+                        </div>
+                        <div class="space-y-2">
+                            <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e(__('messages.safes_cny')); ?></h1>
+                            <p class="text-[25px] font-extrabold text-[#2563EB]">80,000</p>
+                        </div>
+                    </div>
 
-    <!-- روپیه کلدار (پاکستان) -->
-<div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
-     style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-      <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
-        <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
-      </div>
-      <div class="space-y-2">
-        <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e(__('messages.safes_pkr')); ?></h1>
-        <p class="text-[25px] font-extrabold text-[#2563EB]">200,000</p>
-      </div>
-    </div>
+                    <!-- روپیه کلدار (پاکستان) -->
+                    <div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
+                        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                        <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
+                        </div>
+                        <div class="space-y-2">
+                            <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e(__('messages.safes_pkr')); ?></h1>
+                            <p class="text-[25px] font-extrabold text-[#2563EB]">200,000</p>
+                        </div>
+                    </div>
 
-    <!-- پوند انگلیس -->
-<div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
-     style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-      <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
-        <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
-      </div>
-      <div class="space-y-2">
-        <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e(__('messages.safes_gbp')); ?></h1>
-        <p class="text-[25px] font-extrabold text-[#2563EB]">5,000</p>
-      </div>
-    </div>
+                    <!-- پوند انگلیس -->
+                    <div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
+                        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                        <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
+                        </div>
+                        <div class="space-y-2">
+                            <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e(__('messages.safes_gbp')); ?></h1>
+                            <p class="text-[25px] font-extrabold text-[#2563EB]">5,000</p>
+                        </div>
+                    </div>
 
-    <!-- ین ژاپن -->
-<div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
-     style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-       <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
-        <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
-      </div>
-      <div class="space-y-2">
-        <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e(__('messages.safes_jpy')); ?></h1>
-        <p class="text-[25px] font-extrabold text-[#2563EB]">7,500</p>
-      </div>
-    </div>
+                    <!-- ین ژاپن -->
+                    <div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
+                        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                        <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
+                        </div>
+                        <div class="space-y-2">
+                            <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e(__('messages.safes_jpy')); ?></h1>
+                            <p class="text-[25px] font-extrabold text-[#2563EB]">7,500</p>
+                        </div>
+                    </div>
 
-    <!-- ریال سعودی -->
-<div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
-     style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-      <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
-        <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
-      </div>
-      <div class="space-y-2">
-        <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e(__('messages.safes_sar')); ?></h1>
-        <p class="text-[25px] font-extrabold text-[#2563EB]">15,000</p>
-      </div>
-    </div>
+                    <!-- ریال سعودی -->
+                    <div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
+                        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                        <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
+                        </div>
+                        <div class="space-y-2">
+                            <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e(__('messages.safes_sar')); ?></h1>
+                            <p class="text-[25px] font-extrabold text-[#2563EB]">15,000</p>
+                        </div>
+                    </div>
 
-    <!-- روپیه هند -->
-<div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
-     style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-      <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
-        <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
-      </div>
-      <div class="space-y-2">
-        <h1 class="text-[16px] font-semibold text-black"><?php echo e(__('messages.safes_inr')); ?></h1>
-        <p class="text-[25px] font-extrabold text-[#2563EB]">15,000</p>
-      </div>
-    </div>
+                    <!-- روپیه هند -->
+                    <div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
+                        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                        <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
+                        </div>
+                        <div class="space-y-2">
+                            <h1 class="text-[16px] font-semibold text-black"><?php echo e(__('messages.safes_inr')); ?></h1>
+                            <p class="text-[25px] font-extrabold text-[#2563EB]">15,000</p>
+                        </div>
+                    </div>
 
-  </div>
-</template>
+                </div>
+            </template>
 
 
 
@@ -499,5 +480,4 @@
             }
         }
     });
-</script>
-<?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/dashboard.blade.php ENDPATH**/ ?>
+</script><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/dashboard.blade.php ENDPATH**/ ?>

@@ -160,6 +160,53 @@ return [
 
 
 
+    // Customer_Create
+
+        'title_add' => 'مشتری اضافه کړئ',
+    'title_edit' => 'د مشتری ترمیم',
+    'subtitle' => 'مهرباني وکړئ د مشتری معلومات په دقت سره دننه کړئ',
+
+    'profile_image' => 'د پروفایل انځور',
+    'idcard_image' => 'د تذکرې انځور',
+
+    'fullname' => 'بشپړ نوم',
+    'account_number' => 'حساب شمېره',
+    'account_placeholder' => '۱۶ رقمي حساب شمېره',
+
+    'category' => 'کټګوري',
+    'city' => 'ښار',
+    'phone' => 'د تلیفون شمېره',
+    'tazkira' => 'د تذکرې شمېره',
+    'whatsapp' => 'د واتساپ شمېره',
+    'password' => 'پټنوم',
+
+    'cancel' => 'لغوه کړئ',
+    'save' => 'ثبت کړئ',
+    'update' => 'تازه کول',
+
+    'success_title' => 'بریا',
+    'success_message' => 'عملیات په بریالیتوب ترسره شو',
+    'close' => 'بندول',
+
+
+     'placeholder_fullname' => 'د مشتری نوم',
+    'placeholder_account' => '۱۶ عدده حساب شمېره',
+    'placeholder_city' => 'د ښار نوم',
+    'placeholder_phone' => '07xx.xxxx.xxxx',
+    'placeholder_tazkira' => 'د تذکرې شمېره',
+    'placeholder_whatsapp' => '07xx.xxxx.xxxx',
+    'placeholder_password' => 'پټ نوم',
+    'placeholder_select_category' => 'انتخاب وکړئ',
+
+    // دسته‌بندی‌ها
+    'category_normal' => 'عادي مشتری',
+    'category_regular' => 'دایمي مشتری',
+    'category_gold' => 'طلایي مشتری',
+    'category_special' => 'ځانګړی مشتری',
+    'choose' => 'یوه گزینه انتخاب کړئ',
+
+
+
 
 
 
