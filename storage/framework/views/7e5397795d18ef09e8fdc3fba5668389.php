@@ -106,7 +106,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
                     <!-- تعداد کاربران -->
-                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#FF9AA2] to-[#E52C1C]
+                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#3B82F6] to-[#1E40AF]
    text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
@@ -121,7 +121,7 @@
                     </div>
 
                     <!-- تعداد مشتریان -->
-                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#FF9AA2] to-[#526FF5]
+                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#3B82F6] to-[#1E40AF]
  text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
@@ -135,7 +135,7 @@
                     </div>
 
                     <!-- تراکنش‌های امروز -->
-                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#3293CC]
+                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#3B82F6] to-[#1E40AF]
  text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
@@ -149,7 +149,7 @@
                     </div>
 
                     <!-- تراکنش‌های در انتظار -->
-                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#239ABB] to-[#61B138]
+                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#3B82F6] to-[#1E40AF]
  text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
@@ -163,7 +163,7 @@
                     </div>
 
                     <!-- امروز سود -->
-                    <div class="rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#F6F884] to-[#B2620C]
+                    <div class="rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#3B82F6] to-[#1E40AF]
  text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
@@ -176,7 +176,7 @@
                     </div>
 
                     <!-- مجموع تراکنش‌ها -->
-                    <div class="rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#60A5FA] to-[#475569]
+                    <div class="rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#3B82F6] to-[#1E40AF]
  text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
@@ -204,7 +204,7 @@
                     </div>
 
                     <!-- مجموع موجودی حساب‌ها -->
-                    <div class="rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#BC83F6] to-[#5A0FA6]
+                    <div class="rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#3B82F6] to-[#1E40AF]
  text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
