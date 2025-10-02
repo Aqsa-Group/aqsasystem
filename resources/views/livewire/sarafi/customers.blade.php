@@ -1,5 +1,5 @@
-<div class="min-h-screen  dark:bg-gray-900 py-4 w-full p-6">
-    <div class="w-full p-4 bg-[#E5E5E5] dark:bg-gray-800 rounded-2xl ">
+<div class="min-h-screen  dark:bg-gray-900 py-4 w-full p-6" >
+    <div class="w-full p-4 bg-[#F5F5F5] dark:bg-gray-800 rounded-2xl " style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
         <!-- هدر -->
         <div class="text-center mb-6">
             <h2 class="text-2xl font-bold text-gray-900 vazir dark:text-white tracking-widest">
@@ -73,7 +73,7 @@
                         <div class="relative w-full">
                             <input type="text" wire:model="fullname"
                                 placeholder="{{ __('messages.placeholder_fullname') }} "
-                                class="w-full p-3 rounded-xl border py-4 focus:ring-2 focus:border-none focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                class="w-full p-3 rounded-xl border py-4 focus:ring-2 bg-transparent border-[#8C8C8C]  focus:border-none focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                             <div class="absolute left-3 top-4 text-gray-400">
                                 <img src="{{ asset('assets/sarafi/all_icon/profile.svg') }}" alt="">
                             </div>
@@ -89,7 +89,7 @@
                             <div class="relative flex-1">
                                 <input type="text" wire:model.lazy="account"
                                     placeholder="{{ __('messages.placeholder_account') }} "
-                                    class="w-full p-3 rounded-xl py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                    class="w-full p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                     maxlength="16" @if(!$customerId) readonly @endif>
                                 <div class="absolute left-3 top-4 text-gray-400">
                                     <img src="{{ asset('assets/sarafi/all_icon/card.svg') }}" alt="">
@@ -98,7 +98,7 @@
                             </div>
                             @if(!$customerId)
                             <button type="button" wire:click="generateNewAccountNumber"
-                                class="px-4 py-3 bg-white  border text-white rounded-lg transition">
+                                class="px-4 py-3  border bg-transparent border-[#8C8C8C]    text-white rounded-lg transition">
                                 <img src="{{ asset('assets/sarafi/all_icon/refresh-2.svg') }}" alt="">
 
                             </button>
@@ -116,7 +116,7 @@
                         </label>
                         <div class="relative w-full">
                             <select wire:model="category"
-                                class="w-full p-3 rounded-xl py-4  bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white appearance-none">
+                                class="w-full p-3 rounded-xl py-4 border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white appearance-none">
                                 <option value="">{{ __('messages.choose') }}</option>
                                 <option value="{{ __('messages.category_normal') }}">{{ __('messages.category_normal') }}</option>
                                 <option value="{{ __('messages.category_regular') }}">{{ __('messages.category_regular') }}</option>
@@ -138,7 +138,7 @@
                         </label>
                         <div class="relative w-full">
                             <input type="text" wire:model="city" placeholder="{{ __('messages.placeholder_city') }} "
-                                class="w-full p-3 rounded-xl py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                class="w-full p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                             <div class="absolute left-3 top-4 text-gray-400">
                                 <img src="{{ asset('assets/sarafi/all_icon/Group.svg') }}" alt="">
                             </div>
@@ -156,7 +156,7 @@
                         <div class="relative w-full">
                             <input type="text" wire:model.lazy="phone"
                                 placeholder="{{ __('messages.placeholder_phone') }} "
-                                class="w-full p-3 rounded-xl py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                class="w-full p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                             <div class="absolute left-3 top-4 text-gray-400">
                                 <img src="{{ asset('assets/sarafi/all_icon/call.svg') }}" alt="">
 
@@ -173,7 +173,7 @@
                         <div class="relative w-full">
                             <input type="text" wire:model.lazy="tazkira"
                                 placeholder="{{ __('messages.placeholder_tazkira') }} "
-                                class="w-full p-3 rounded-xl py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                class="w-full p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                             <div class="absolute left-3 top-4 text-gray-400">
                                 <img src="{{ asset('assets/sarafi/all_icon/qlementine-icons_id-card-16.svg') }}" alt="">
                             </div>
@@ -191,7 +191,7 @@
                         <div class="relative w-full">
                             <input type="text" wire:model.lazy="whatsapp"
                                 placeholder="{{ __('messages.placeholder_whatsapp') }} "
-                                class="w-full p-3 rounded-xl py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                class="w-full p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                             <div class="absolute left-3 top-4 text-green-500">
                                 <img src="{{ asset('assets/sarafi/all_icon/Vector.svg') }}" alt="">
                             </div>
@@ -206,7 +206,7 @@
                         <div class="relative w-full">
                             <input type="password" wire:model="password"
                                 placeholder="{{ __('messages.placeholder_password') }} "
-                                class="w-full p-3 rounded-xl py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                class="w-full p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                             <div class="absolute left-3 top-4 text-gray-400">
                                 <img src="{{ asset('assets/sarafi/all_icon/lock.svg') }}" alt="">
                             </div>
@@ -217,7 +217,7 @@
             </div>
 
             <!-- دکمه‌های اقدام -->
-            <div class="flex justify-center gap-4 mt-8 pt-6 pb-5 border-t border-[#8C8C8C] dark:border-gray-700 w-full">
+            <div class="flex justify-center gap-4 mt-8 pt-6 pb-5  dark:border-gray-700 w-full">
                 <!-- لغو -->
                 <button type="button" wire:click="resetForm"
                     class="flex items-center justify-center gap-2 w-1/2 py-4 text-sm bg-[#B10909] text-white rounded-xl dark:bg-gray-700 dark:text-gray-200 transition">

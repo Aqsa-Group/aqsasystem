@@ -13,6 +13,20 @@ class CustomersTable extends Component
 
     public $search = '';
     public $confirmingDelete = null;
+    public $selectedCustomers = []; 
+
+
+
+    public $selectAll = false;
+
+public function updatedSelectAll($value)
+{
+    if ($value) {
+        $this->selectedCustomers = $this->customers->pluck('id')->toArray();
+    } else {
+        $this->selectedCustomers = [];
+    }
+}
 
     public function mount()
     {

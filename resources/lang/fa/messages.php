@@ -108,7 +108,7 @@ return [
     'phone' => 'شماره تلفن',
     'username' => 'نام کاربری',
     'password' => 'رمز عبور',
-    'user_limit' => 'تعداد مجاز کاربران',
+    'user_limit' => 'تعداد مجاز کاربر',
     'role' => 'نقش',
     'select_role' => 'انتخاب نقش',
     'admin' => 'مدیر',
@@ -168,7 +168,7 @@ return [
 
     // Customer_create
 
-      'title_add' => 'افزودن مشتری',
+    'title_add' => 'افزودن مشتری',
     'title_edit' => 'ویرایش مشتری',
     'subtitle' => 'لطفا اطلاعات مشتری را با دقت وارد نمائید',
 
@@ -194,7 +194,7 @@ return [
     'success_message' => 'عملیات با موفقیت انجام شد',
     'close' => 'بستن',
 
-     'customer_created' => 'مشتری جدید با موفقیت ایجاد شد',
+    'customer_created' => 'مشتری جدید با موفقیت ایجاد شد',
     'customer_updated' => 'مشتری با موفقیت ویرایش شد',
     'profile_removed'  => 'عکس پروفایل با موفقیت حذف شد',
     'idcard_removed'   => 'عکس شناسنامه با موفقیت حذف شد',
@@ -241,7 +241,101 @@ return [
     'delete' => 'حذف',
     'customer_deleted' => 'مشتری با موفقیت حذف شد.',
 
+    
+    // users
 
+    'title_add_user' => 'افزودن کاربر',
+    'subtitle_user' => 'لطفا اطلاعات مشتری را با دقت وارد نمائید',
+
+    'profile_image' => 'عکس پروفایل',
+    'idcard_image' => 'عکس شناسنامه',
+
+    'fullname_user' => 'نام و نام خانواده گی',
+    'account_number' => 'شماره حساب',
+    'account_placeholder' => 'شماره حساب ۱۶ رقمی',
+
+    'category_user' => 'نقش',
+    'city_user' => 'آدرس',
+    'sarafi_name'=>" نام صرافـــی",
+    'phone_user' => 'شماره تماس',
+    'tazkira' => 'شماره تذکره',
+    'whatsapp' => 'شماره واتساپ',
+    'password' => 'رمز عبور',
+    'username' => 'نام کاربری',
+    'Success' => 'موفقعیت',
+    'user_deleted' => 'کاربر موفقانه حذف شد!',
+    'user_created' => 'کاربر موفقانه ایجاد شد شد!',
+    'user_updated' => 'کاربر موفقانه ویرایش شد !',
+      
+
+
+    
+
+    'cancel' => 'لغو',
+    'save' => 'ذخیره',
+    'update' => 'بروزرسانی',
+
+    'success_title' => 'موفقیت',
+    'success_message' => 'عملیات با موفقیت انجام شد',
+    'close' => 'بستن',
+   
+    'customer_created' => 'مشتری جدید با موفقیت ایجاد شد',
+    'customer_updated' => 'مشتری با موفقیت ویرایش شد',
+    'profile_removed'  => 'عکس پروفایل با موفقیت حذف شد',
+    'idcard_removed'   => 'عکس شناسنامه با موفقیت حذف شد',
+
+
+      // placeholderها
+    'placeholder_fullname_user' => 'نام و نام خانوادگی ...',
+    'placeholder_city_user' => 'آدرس...',
+    'placeholder_sarafi_name' => 'نام صرافی...',
+    'placeholder_username' => 'نام کاربری...',
+    'placeholder_userpassword' => 'رمز عبور...',
+    'placeholder_user_limit' => ' تعداد مجاز کاربر...',
+    'placeholder_lastname' => ' نام خانوادگی...',
+    'placeholder_name' => ' نام ...',
+    'placeholder_address' => ' آدرس ...',
+
+
+
+      
+
+    'placeholder_phone_user' => 'شماره تماس...',
+    'placeholder_tazkira' => 'شماره تذکره',
+    'placeholder_whatsapp' => '07xx.xxxx.xxxx',
+    'placeholder_password' => 'رمز عبور',
+    'placeholder_select_user' => 'انتخاب نقش',
+
+    // دسته‌بندی‌ها
+    'category_normal' => 'مشتری عادی',
+    'category_regular' => 'مشتریان ثابت',
+    'category_gold' => 'مشتری طلایی',
+    'category_special' => 'ویژه',
+    'choose_user' => 'انتخاب نقش',
+
+      // خطاهای ولیدیشن
+    'validation_fullname_required' => 'نام مشتری الزامی است.',
+    'validation_account_required' => 'شماره حساب الزامی است.',
+    'validation_account_unique' => 'این شماره حساب قبلا استفاده شده است.',
+    'validation_city_required' => 'نام شهر الزامی است.',
+    'validation_phone_required' => 'شماره تماس الزامی است.',
+    'validation_phone_unique' => 'این شماره تماس قبلا استفاده شده است.',
+    'validation_tazkira_unique' => 'این شماره تذکره قبلا استفاده شده است.',
+    'validation_password_min' => 'رمز عبور باید حداقل ۶ کاراکتر باشد.',
+    'actions' => 'عملیات',
+     'edit' => 'ویرایش',
+    'view' => 'نمایش',
+    'delete' => 'حذف',
+    
+
+    // cutomer_table
+    'add_customer' => 'افزودن مشتری جدید',
+    'search_customer' => 'جستجو نام مشتری…',
+    'delete_customer_title' => ' حذف مشتری',
+    'delete_customer_message' => 'آیا مطمئن هستید که می‌خواهید این مشتری را حذف کنید؟',
+    'cancel' => 'لغو',
+    'delete' => 'حذف',
+    'customer_deleted' => 'مشتری با موفقیت حذف شد.',
 
 
 

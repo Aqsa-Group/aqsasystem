@@ -151,4 +151,19 @@ Route::get('/sarafi/customer-create', function () {
 })->name('sarafi.customer-create');
 
 
+Route::get('/sarafi/users', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    
+    // دریافت customerId از query parameter
+    $customerId = request('customerId');
+    
+    return view('Sarafi.components.users', [
+        'customerId' => $customerId
+    ]);
+})->name('sarafi.users');
+
+
+
 

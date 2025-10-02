@@ -7,9 +7,11 @@ use Livewire\WithPagination;
 use App\Models\Sarafi\User;
 use Illuminate\Support\Facades\Auth;
 
-class UserManagement extends Component
+class Users extends Component
 {
-    use WithPagination;
+
+
+     use WithPagination;
 
     // Search, modal and edit state
     public $search = '';
@@ -179,10 +181,10 @@ class UserManagement extends Component
         // Save or update
         if ($this->editId) {
             User::find($this->editId)->update($data);
-            $this->alert = ['title' => 'Success', 'message' => __('messages.user_updated')];
+            $this->alert = ['title' => __('messages.Success'), 'message' => __('messages.user_updated')];
         } else {
             User::create($data);
-            $this->alert = ['title' => 'Success', 'message' => __('messages.user_created')];
+            $this->alert = ['title' => __('messages.Success'), 'message' => __('messages.user_created')];
         }
 
         $this->modalOpen = false;
@@ -204,7 +206,7 @@ class UserManagement extends Component
     {
         if ($this->confirmDeleteId) {
             User::findOrFail($this->confirmDeleteId)->delete();
-            $this->alert = ['title' => 'Success', 'message' => 'User deleted.'];
+            $this->alert = ['title' => __('messages.Success'), 'message' => __('messages.user_deleted')];
             $this->confirmDeleteId = null;
         }
     }
@@ -263,14 +265,11 @@ class UserManagement extends Component
         return User::select('sarafi_name')->whereNotNull('sarafi_name')->distinct()->pluck('sarafi_name')->toArray();
     }
 
-    // -------------------------
-    // Render view
-    // -------------------------
+    
     public function render()
     {
-        $currentUser = Auth::guard('sarafi')->user();
+         $currentUser = Auth::guard('sarafi')->user();
         $users = $this->users;
-
-        return view('livewire.sarafi.user-management', compact('users', 'currentUser'));
+        return view('livewire.sarafi.users' , compact('users', 'currentUser'));
     }
 }

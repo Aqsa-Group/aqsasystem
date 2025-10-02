@@ -158,7 +158,7 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
-                                                     @foreach ($users as $index => $user)
+                                 @foreach ($users as $index => $user)
                                 <tr class="hover:bg-gray-50 transition">
                                     <td class="px-3 py-2">{{ $users->firstItem() + $index }}</td>
                                     <td class="px-3 py-2">{{ $user->name }}</td>
@@ -181,6 +181,7 @@
                                         </button>
                                     </td>
                                 </tr>
+                             
                             @endforeach
                         </tbody>
                     </table>

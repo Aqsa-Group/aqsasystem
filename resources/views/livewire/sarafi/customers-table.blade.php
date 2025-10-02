@@ -4,16 +4,16 @@
         <button wire:click="createCustomer"
             class="flex items-center justify-center rounded-xl w-[218px] h-[54px] bg-blue-600 text-white  hover:bg-blue-700">
             <img src="{{ asset('assets/sarafi/all_icon/user-add.svg') }}" alt="Add" class="w-[30px] h-[30px] me-2">
-             {{ __('messages.add_customer') }}
+            {{ __('messages.add_customer') }}
         </button>
 
         <!-- 🔍 Search -->
-          <div class="relative">
-                    <input type="text" placeholder="{{ __('messages.search_customer') }}"
-                        class="border border-[#8C8C8C] placeholder:text-[#8C8C8C] vazir rounded-xl w-[329px] h-[54px] pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
-                        class="h-6 w-6 absolute left-2 bottom-4">
-                </div>
+        <div class="relative">
+            <input type="text" placeholder="{{ __('messages.search_customer') }}"
+                class="border border-[#8C8C8C] placeholder:text-[#8C8C8C] vazir rounded-xl w-[329px] h-[54px] pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
+                class="h-6 w-6 absolute left-2 bottom-4">
+        </div>
 
     </div>
 
@@ -24,24 +24,32 @@
 
 
         <!-- 📊 Table -->
-        <table class="w-[1468px] text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mx-auto">
-            <thead class="text-[18px] vazir h-20  text-white  bg-[#2563EB] dark:bg-gray-700 dark:text-gray-400">
-                <tr class="pt-5">
-                    <th class="p-4"><input type="checkbox" class="w-4 h-4 text-blue-600 rounded-sm"></th>
-                    <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.fullname') }}</th>
-                    <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.account_number') }}</th>
-                    <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.category') }}</th>
-                    <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.city') }}</th>
-                    <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.phone') }}</th>
-                    <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.tazkira') }}</th>
-                    <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.whatsapp') }}</th>
-                    <th class="px-6 py-3 text-[18px] font-bold text-center">{{ __('messages.actions') }}</th>
+        <table class="w-[1468px] text-sm  text-left rtl:text-right text-gray-500 dark:text-gray-400 mx-auto">
+            <thead class="bg-[#2563EB] dark:bg-gray-700 text-white text-[18px] vazir mt-4">
+                <tr class="mt-3">
+                    <th colspan="9" class="rounded-2xl p-3">
+                        <table class="w-full">
+                            <tr>
+                              
+                                <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.fullname') }}</th>
+                                <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.account_number') }}</th>
+                                <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.category') }}</th>
+                                <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.city') }}</th>
+                                <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.phone') }}</th>
+                                <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.tazkira') }}</th>
+                                <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.whatsapp') }}</th>
+                                <th class="px-6 py-3 text-[18px] font-bold text-center">{{ __('messages.actions') }}
+                                </th>
+                            </tr>
+                        </table>
+                    </th>
                 </tr>
             </thead>
+
+
             <tbody>
                 @forelse($customers as $customer)
                 <tr class="border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td class="w-4 p-4"><input type="checkbox" class="w-4 h-4 text-blue-600 rounded-sm"></td>
                     <th scope="row" class="flex items-center px-6 py-4 text-gray-900 dark:text-white">
                         <img class="w-10 h-10 rounded-full"
                             src="{{ $customer->image ? asset('storage/'.$customer->image) : 'https://ui-avatars.com/api/?name='.urlencode($customer->fullname) }}"
@@ -102,44 +110,44 @@
     </div>
 
     <!-- ✅ Success message -->
-  @if (session()->has('message'))
-<div class="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-    <div class="bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-100 rounded-lg shadow-xl p-6 w-80 text-center">
-        <p class="font-semibold">
-            {{ session('message') }}
-        </p>
-        <button onclick="this.parentElement.parentElement.remove()"
-            class="mt-4 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-            ✖ بستن
-        </button>
-    </div>
-</div>
-@endif
-
-
-    <!-- ❗ Delete Confirmation Modal -->
-   @if($confirmingDelete)
-<div class="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-96">
-        <h2 class="text-xl font-bold text-red-600 mb-4">
-            {{ __('messages.delete_customer_title') }}
-        </h2>
-        <p class="text-gray-700 dark:text-gray-200">
-            {{ __('messages.delete_customer_message') }}
-        </p>
-
-        <div class="mt-6 flex justify-end gap-3">
-            <button wire:click="$set('confirmingDelete', null)"
-                class="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500">
-                {{ __('messages.cancel') }}
-            </button>
-            <button wire:click="deleteCustomer"
-                class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
-                {{ __('messages.delete') }}
+    @if (session()->has('message'))
+    <div class="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+        <div
+            class="bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-100 rounded-lg shadow-xl p-6 w-80 text-center">
+            <p class="font-semibold">
+                {{ session('message') }}
+            </p>
+            <button onclick="this.parentElement.parentElement.remove()"
+                class="mt-4 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                ✖ بستن
             </button>
         </div>
     </div>
-</div>
-@endif
+    @endif
+
+
+    <!-- ❗ Delete Confirmation Modal -->
+    @if($confirmingDelete)
+    <div class="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-96">
+            <h2 class="text-xl font-bold text-red-600 mb-4">
+                {{ __('messages.delete_customer_title') }}
+            </h2>
+            <p class="text-gray-700 dark:text-gray-200">
+                {{ __('messages.delete_customer_message') }}
+            </p>
+
+            <div class="mt-6 flex justify-end gap-3">
+                <button wire:click="$set('confirmingDelete', null)"
+                    class="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500">
+                    {{ __('messages.cancel') }}
+                </button>
+                <button wire:click="deleteCustomer" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                    {{ __('messages.delete') }}
+                </button>
+            </div>
+        </div>
+    </div>
+    @endif
 
 </div>

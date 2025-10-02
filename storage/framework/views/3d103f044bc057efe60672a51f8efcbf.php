@@ -31,7 +31,7 @@
                             ];
                         ?>
 
-                        <?php $__currentLoopData = $inputs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $input): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $inputs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $input): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="flex flex-col">
                                 <label class="text-sm font-medium text-gray-700 mb-1"><?php echo e($input['label']); ?></label>
                                 <div class="relative">
@@ -47,7 +47,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>">
                                 </div>
-                                <?php $__errorArgs = [$input['model']];
+                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = [$input['model']];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -56,12 +56,12 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
 
                         
-                        <?php if($currentUser && $currentUser->role === 'superadmin'): ?>
+                        <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role === 'superadmin'): ?>
                             <div class="flex flex-col">
                                 <label class="text-sm font-medium text-gray-700 mb-1"><?php echo e(__('messages.user_limit')); ?></label>
                                 <input wire:model.defer="user_limition" type="number"
@@ -73,7 +73,7 @@ $message = $__bag->first($__errorArgs[0]); ?> border-red-400 ring-red-200 <?php 
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>">
-                                <?php $__errorArgs = ['user_limition'];
+                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['user_limition'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -82,7 +82,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
 
                             <div class="flex flex-col">
@@ -99,7 +99,7 @@ unset($__errorArgs, $__bag); ?>">
                                     <option value=""><?php echo e(__('messages.select_role')); ?></option>
                                     <option value="admin"><?php echo e(__('messages.admin')); ?></option>
                                 </select>
-                                <?php $__errorArgs = ['role'];
+                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['role'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -108,7 +108,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
                         <?php elseif($currentUser && $currentUser->role === 'admin'): ?>
                             <div class="flex flex-col">
@@ -127,7 +127,7 @@ unset($__errorArgs, $__bag); ?>">
                                     <option value="internal_officer"><?php echo e(__('messages.internal_officer')); ?></option>
                                     <option value="external_officer"><?php echo e(__('messages.external_officer')); ?></option>
                                 </select>
-                                <?php $__errorArgs = ['role'];
+                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['role'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -136,9 +136,9 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
-                        <?php endif; ?>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                     </div>
 
@@ -170,21 +170,21 @@ unset($__errorArgs, $__bag); ?>
                             <?php echo e(__('messages.filter')); ?>
 
                         </button>
-                        <?php if($filterOpen): ?>
+                        <!--[if BLOCK]><![endif]--><?php if($filterOpen): ?>
                             <div
                                 class="absolute mt-12 bg-white border rounded-xl shadow-lg p-4 w-72 z-50 flex flex-col gap-3">
                                 <select wire:model="filterRole" class="border rounded px-3 py-2 bg-white w-full">
                                     <option value=""><?php echo e(__('messages.all_roles')); ?></option>
-                                    <?php $__currentLoopData = $roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($key); ?>"><?php echo e($label); ?></option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </select>
 
                                 <select wire:model="filterSarafi" class="border rounded px-3 py-2 bg-white w-full">
                                     <option value=""><?php echo e(__('messages.all_sarafis')); ?></option>
-                                    <?php $__currentLoopData = $this->sarafis; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sarafi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $this->sarafis; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sarafi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($sarafi); ?>"><?php echo e($sarafi); ?></option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </select>
 
                                 <button wire:click="applyFilter"
@@ -193,7 +193,7 @@ unset($__errorArgs, $__bag); ?>
 
                                 </button>
                             </div>
-                        <?php endif; ?>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
                     <div class="relative w-1/3 min-w-[220px]">
@@ -219,7 +219,7 @@ unset($__errorArgs, $__bag); ?>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
-                                                     <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                     <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr class="hover:bg-gray-50 transition">
                                     <td class="px-3 py-2"><?php echo e($users->firstItem() + $index); ?></td>
                                     <td class="px-3 py-2"><?php echo e($user->name); ?></td>
@@ -227,11 +227,11 @@ unset($__errorArgs, $__bag); ?>
                                     <td class="px-3 py-2"><?php echo e($user->username); ?></td>
                                     <td class="px-3 py-2"><?php echo e($roles[$user->role] ?? $user->role); ?></td>
                                     <td class="px-3 py-2">
-                                        <?php if($user->status): ?>
+                                        <!--[if BLOCK]><![endif]--><?php if($user->status): ?>
                                             <span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs"><?php echo e(__('messages.active')); ?></span>
                                         <?php else: ?>
                                             <span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs"><?php echo e(__('messages.inactive')); ?></span>
-                                        <?php endif; ?>
+                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                     </td>
                                     <td class="px-3 py-2 flex gap-2">
                                         <button wire:click="edit(<?php echo e($user->id); ?>)" class="p-2 rounded hover:bg-blue-100 text-blue-600">
@@ -242,7 +242,7 @@ unset($__errorArgs, $__bag); ?>
                                         </button>
                                     </td>
                                 </tr>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                         </tbody>
                     </table>
                 </div>
@@ -256,7 +256,7 @@ unset($__errorArgs, $__bag); ?>
         </div>
 
         
-        <?php if($alert): ?>
+        <!--[if BLOCK]><![endif]--><?php if($alert): ?>
             <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                 <div class="bg-white p-6 rounded-3xl shadow-2xl w-96 text-center animate-fadeIn z-50">
                     <h3 class="text-xl font-bold mb-3 text-gray-800"><?php echo e($alert['title']); ?></h3>
@@ -267,10 +267,10 @@ unset($__errorArgs, $__bag); ?>
                     </button>
                 </div>
             </div>
-        <?php endif; ?>
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
         
-        <?php if($confirmDeleteId): ?>
+        <!--[if BLOCK]><![endif]--><?php if($confirmDeleteId): ?>
             <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                 <div class="bg-white p-6 rounded-3xl shadow-2xl w-96 text-center animate-fadeIn z-50">
                     <h3 class="text-xl font-bold mb-4 text-red-600"><?php echo e(__('messages.confirm_delete_title')); ?></h3>
@@ -284,7 +284,7 @@ unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
             </div>
-        <?php endif; ?>
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
     </div>
 
