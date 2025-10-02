@@ -37,7 +37,8 @@ class CustomersTable extends Component
         if ($this->confirmingDelete) {
             Customer::find($this->confirmingDelete)->delete();
             $this->confirmingDelete = null;
-            session()->flash('message', 'مشتری با موفقیت حذف شد.');
+           session()->flash('message', __('messages.customer_deleted'));
+
         }
     }
 

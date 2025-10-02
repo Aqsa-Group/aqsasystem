@@ -139,10 +139,10 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <select wire:model="category"
                                 class="w-full p-3 rounded-xl py-4  bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white appearance-none">
                                 <option value=""><?php echo e(__('messages.choose')); ?></option>
-                                <option value="normal"><?php echo e(__('messages.category_normal')); ?></option>
-                                <option value="regular"><?php echo e(__('messages.category_regular')); ?></option>
+                                <option value="<?php echo e(__('messages.category_normal')); ?>"><?php echo e(__('messages.category_normal')); ?></option>
+                                <option value="<?php echo e(__('messages.category_regular')); ?>"><?php echo e(__('messages.category_regular')); ?></option>
                                 <option value="gold"><?php echo e(__('messages.category_gold')); ?></option>
-                                <option value="special"><?php echo e(__('messages.category_special')); ?></option>
+                                <option value="<?php echo e(__('messages.category_special')); ?>"><?php echo e(__('messages.category_special')); ?></option>
                             </select>
                             <div class="absolute left-3 top-4 text-gray-400">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/clipboard.svg')); ?>" alt="">

@@ -28,13 +28,13 @@ return [
     'settings' => 'تنظيمات',
     'system_settings' => 'د سيستم تنظيمات',
 
-     // dashboard
-    'recipt/withdraw'=>'رسید/پور فنډ',
-    'transfer'=>'حساب ته حساب لیږدول',
-    'newspaper_accounts'=>'د حسابونو ژورنال',
-    'coversion_account'=>' په حساب کې د اسعارو تبادله',
-    'coversion_transfer'=>'داسعارو تبادله او لیږد',
-    'general_jornal'=>'عمومي ژورنال',
+    // dashboard
+    'recipt/withdraw' => 'رسید/پور فنډ',
+    'transfer' => 'حساب ته حساب لیږدول',
+    'newspaper_accounts' => 'د حسابونو ژورنال',
+    'coversion_account' => ' په حساب کې د اسعارو تبادله',
+    'coversion_transfer' => 'داسعارو تبادله او لیږد',
+    'general_jornal' => 'عمومي ژورنال',
     'selling' => 'د اسعارو او صندوق پیرود او پلور',
     'page_title' => 'د راپورونو او احصایې اصلي پاڼه',
     'tab_general' => 'عمومي پینل',
@@ -62,7 +62,7 @@ return [
     'safes_jpy' => 'د جاپان ین موجودی',
     'safes_sar' => 'د سعودي ریال موجودی',
     'safes_inr' => 'د هندوستان روپۍ موجودی',
-      'month_hamal' => 'حمل',
+    'month_hamal' => 'حمل',
     'month_sawr' => 'ثور',
     'month_jawza' => 'جوزا',
     'month_saratan' => 'سرطان',
@@ -127,7 +127,7 @@ return [
     'yes' => 'هو',
     'no' => 'نه',
     'status' => 'حالت',
-        'user_created' => 'کارن په بریالیتوب سره جوړ شو.',
+    'user_created' => 'کارن په بریالیتوب سره جوړ شو.',
     'user_updated' => 'د کارن معلومات په بریالیتوب سره نوي شول.',
     'user_deleted' => 'کارن په بریالیتوب سره حذف شو.',
     'max_users_reached' => 'د کارونکو اعظمي شمېر ته ورسېد.',
@@ -141,9 +141,9 @@ return [
     'integer' => 'د :attribute ډګر باید عدد وي.',
     'unique' => 'دا :attribute مخکې کارول شوی دی.',
 
-        'roles' => [
+    'roles' => [
         'superadmin' => 'سوپر اډمین',
-         'admin' => 'مدیر',
+        'admin' => 'مدیر',
         'warehouse_manager' => 'ګودام مدیر',
         'internal_officer' => 'د داخلي چارو مسئول',
         'external_officer' => 'د خارجي چارو مسئول',
@@ -162,7 +162,7 @@ return [
 
     // Customer_Create
 
-        'title_add' => 'مشتری اضافه کړئ',
+    'title_add' => 'مشتری اضافه کړئ',
     'title_edit' => 'د مشتری ترمیم',
     'subtitle' => 'مهرباني وکړئ د مشتری معلومات په دقت سره دننه کړئ',
 
@@ -188,8 +188,13 @@ return [
     'success_message' => 'عملیات په بریالیتوب ترسره شو',
     'close' => 'بندول',
 
+    'customer_created' => 'نو مشتری په بریالیتوب سره جوړ شو',
+    'customer_updated' => 'د مشتری معلومات په بریالیتوب سره اصلاح شول',
+    'profile_removed'  => 'د پروفایل انځور په بریالیتوب سره ړنګ شو',
+    'idcard_removed'   => 'د تذکرې انځور په بریالیتوب سره ړنګ شو',
 
-     'placeholder_fullname' => 'د مشتری نوم',
+
+    'placeholder_fullname' => 'د مشتری نوم',
     'placeholder_account' => '۱۶ عدده حساب شمېره',
     'placeholder_city' => 'د ښار نوم',
     'placeholder_phone' => '07xx.xxxx.xxxx',
@@ -204,6 +209,31 @@ return [
     'category_gold' => 'طلایي مشتری',
     'category_special' => 'ځانګړی مشتری',
     'choose' => 'یوه گزینه انتخاب کړئ',
+
+    'validation_fullname_required' => 'د مشتری نوم اړین دی.',
+    'validation_account_required' => 'د حساب شمېره اړینه ده.',
+    'validation_account_unique' => 'دغه د حساب شمېره مخکې استعمال شوې ده.',
+    'validation_city_required' => 'د ښار نوم اړین دی.',
+    'validation_phone_required' => 'د تماس شمېره اړینه ده.',
+    'validation_phone_unique' => 'دغه د تماس شمېره مخکې استعمال شوې ده.',
+    'validation_tazkira_unique' => 'دغه د تذکرې شمېره مخکې استعمال شوې ده.',
+    'validation_password_min' => 'پټ نوم باید لږ تر لږه ۶ توري ولري.',
+    'actions' => 'عملیات',
+    'edit' => 'سمون',
+    'view' => 'کتنه',
+    'delete' => 'لرې کول',
+
+
+    // customer_table 
+
+    'add_customer' => 'نوی مشتری اضافه کړئ',
+    'search_customer' => 'د مشتری نوم لټول…',
+    'delete_customer_title' => ' د مشتری حذف',
+    'delete_customer_message' => 'ایا تاسو ډاډه یاست چې غواړئ دا مشتری حذف کړئ؟',
+    'cancel' => 'لغوه کول',
+    'delete' => 'حذف',
+    'customer_deleted' => 'مشتری په بریالیتوب سره حذف شو.',
+
 
 
 

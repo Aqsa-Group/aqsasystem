@@ -21,7 +21,7 @@
 
 
 {{-- all links --}}
-
+ {{-- @vite(['resources/css/app.css']) --}}
 
  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/jalaali-js@1.1.0/dist/jalaali.min.js"></script>

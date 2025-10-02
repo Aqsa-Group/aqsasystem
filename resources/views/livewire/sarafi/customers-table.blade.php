@@ -1,77 +1,81 @@
 <div>
-    <!-- دکمه افزودن مشتری جدید -->
-    <div class="mb-4">
-        <button wire:click="createCustomer" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-            ➕ افزودن مشتری جدید
+    <div class="flex flex-col md:flex-row items-center  gap-4 mb-6 mr-14">
+        <!-- دکمه افزودن مشتری جدید -->
+        <button wire:click="createCustomer"
+            class="flex items-center justify-center rounded-xl w-[218px] h-[54px] bg-blue-600 text-white  hover:bg-blue-700">
+            <img src="{{ asset('assets/sarafi/all_icon/user-add.svg') }}" alt="Add" class="w-[30px] h-[30px] me-2">
+             {{ __('messages.add_customer') }}
         </button>
+
+        <!-- 🔍 Search -->
+          <div class="relative">
+                    <input type="text" placeholder="{{ __('messages.search_customer') }}"
+                        class="border border-[#8C8C8C] placeholder:text-[#8C8C8C] vazir rounded-xl w-[329px] h-[54px] pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
+                        class="h-6 w-6 absolute left-2 bottom-4">
+                </div>
+
     </div>
 
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <!-- 🔍 Search -->
-        <div class="flex flex-col md:flex-row items-center justify-between p-4 bg-white dark:bg-gray-900 gap-4">
-            <div class="relative w-full md:w-1/3">
-                <input type="text" wire:model.live="search" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg 
-                            bg-gray-50 focus:ring-blue-500 focus:border-blue-500 
-                            dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
-                            dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="جستجو در مشتریان">
-                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z" />
-                    </svg>
-                </div>
-            </div>
-        </div>
+
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-[1500px] mr-10 bg-[#F5F5F5] dark:bg-gray-900"
+        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+
+
 
         <!-- 📊 Table -->
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
+        <table class="w-[1468px] text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mx-auto">
+            <thead class="text-[18px] vazir h-20  text-white  bg-[#2563EB] dark:bg-gray-700 dark:text-gray-400">
+                <tr class="pt-5">
                     <th class="p-4"><input type="checkbox" class="w-4 h-4 text-blue-600 rounded-sm"></th>
-                    <th class="px-6 py-3">نام</th>
-                    <th class="px-6 py-3">شماره حساب</th>
-                    <th class="px-6 py-3">دسته</th>
-                    <th class="px-6 py-3">شهر</th>
-                    <th class="px-6 py-3">شماره تلفن</th>
-                    <th class="px-6 py-3">نمبر تذکره</th>
-                    <th class="px-6 py-3">واتساپ</th>
-                    <th class="px-6 py-3 text-center">عملیات</th>
+                    <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.fullname') }}</th>
+                    <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.account_number') }}</th>
+                    <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.category') }}</th>
+                    <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.city') }}</th>
+                    <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.phone') }}</th>
+                    <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.tazkira') }}</th>
+                    <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.whatsapp') }}</th>
+                    <th class="px-6 py-3 text-[18px] font-bold text-center">{{ __('messages.actions') }}</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($customers as $customer)
-                <tr class="bg-white border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td class="w-4 p-4">
-                        <input type="checkbox" class="w-4 h-4 text-blue-600 rounded-sm">
-                    </td>
+                <tr class="border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <td class="w-4 p-4"><input type="checkbox" class="w-4 h-4 text-blue-600 rounded-sm"></td>
                     <th scope="row" class="flex items-center px-6 py-4 text-gray-900 dark:text-white">
                         <img class="w-10 h-10 rounded-full"
                             src="{{ $customer->image ? asset('storage/'.$customer->image) : 'https://ui-avatars.com/api/?name='.urlencode($customer->fullname) }}"
                             alt="{{ $customer->fullname }}">
-                        <div class="ps-3">
-                            <div class="text-base ">{{ $customer->fullname }}</div>
+                        <div class="p-3">
+                            <div class="text-xl">{{ $customer->fullname }}</div>
                         </div>
                     </th>
-                    <td class="px-6 py-4">{{ $customer->account_number ?? '-' }}</td>
-                    <td class="px-6 py-4">{{ $customer->type ?? '-' }}</td>
-                    <td class="px-6 py-4">{{ $customer->city }}</td>
-                    <td class="px-6 py-4">{{ $customer->phone }}</td>
-                    <td class="px-6 py-4">{{ $customer->idcard_number ?? '-' }}</td>
-                    <td class="px-6 py-4">{{ $customer->whatsapp_number ?? '-' }}</td>
-                    <td class="px-6 py-4 flex space-x-2 rtl:space-x-reverse">
-                        <button wire:click="editCustomer({{ $customer->id }})"
-                            class="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">
-                            ✏️
+                    <td class="px-6 py-4 text-[16px] text-black vazir">{{ $customer->account_number ?? '-' }}</td>
+                    <td class="px-6 py-4 text-[16px] text-black vazir">{{ $customer->type ?? '-' }}</td>
+                    <td class="px-6 py-4 text-[16px] text-black vazir">{{ $customer->city }}</td>
+                    <td class="px-6 py-4 text-[16px] text-black vazir">{{ $customer->phone }}</td>
+                    <td class="px-6 py-4 text-[16px] text-black vazir">{{ $customer->idcard_number ?? '-' }}</td>
+                    <td class="px-6 py-4 text-[16px] text-black vazir">{{ $customer->whatsapp_number ?? '-' }}</td>
+                    <td class="px-6 py-4 text-[16px] text-black vazir flex space-x-2 rtl:space-x-reverse">
+                        <!-- دکمه ویرایش -->
+                        <button wire:click="editCustomer({{ $customer->id }})" class="px-2 py-1">
+                            <img src="{{ asset('assets/sarafi/all_icon/edit_table.svg') }}" alt="Edit"
+                                class="w-[30px] h-[30px]">
                         </button>
 
-                        <!-- 🗑️ Delete -->
-                        <button wire:click="confirmDelete({{ $customer->id }})"
-                            class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600">
-                            🗑️
+                        <!-- دکمه دیلیت -->
+                        <button wire:click="confirmDelete({{ $customer->id }})" class="px-2 py-1">
+                            <img src="{{ asset('assets/sarafi/all_icon/trash_table.svg') }}" alt="Edit"
+                                class="w-[30px] h-[30px]">
+                        </button>
+
+                        <!-- دکمه چاپ -->
+                        <button class="px-2 py-2">
+                            <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}" alt="Edit"
+                                class="w-[40px] h-[40px]">
                         </button>
                     </td>
+
                 </tr>
                 @empty
                 <tr>
@@ -84,7 +88,7 @@
         </table>
 
         <!-- 📑 Pagination -->
-        <div class="flex justify-between items-center p-4 bg-white dark:bg-gray-900 border-t dark:border-gray-700">
+        <div class="flex justify-between items-center p-4 border-t dark:border-gray-700">
             <span class="text-sm text-gray-700 dark:text-gray-400">
                 نمایش
                 <span class="font-semibold">{{ $customers->firstItem() ?? 0 }}</span>
@@ -93,36 +97,49 @@
                 از
                 <span class="font-semibold">{{ $customers->total() }}</span>
             </span>
-            <div class="flex gap-1">
-                {{ $customers->links() }}
-            </div>
+            <div class="flex gap-1">{{ $customers->links() }}</div>
         </div>
     </div>
 
     <!-- ✅ Success message -->
-    @if (session()->has('message'))
-    <div class="mt-4 p-4 text-green-600 bg-green-100 rounded-lg text-center font-semibold">
-        {{ session('message') }}
+  @if (session()->has('message'))
+<div class="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+    <div class="bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-100 rounded-lg shadow-xl p-6 w-80 text-center">
+        <p class="font-semibold">
+            {{ session('message') }}
+        </p>
+        <button onclick="this.parentElement.parentElement.remove()"
+            class="mt-4 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+            ✖ بستن
+        </button>
     </div>
-    @endif
+</div>
+@endif
+
 
     <!-- ❗ Delete Confirmation Modal -->
-    @if($confirmingDelete)
-    <div class="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-96">
-            <h2 class="text-xl font-bold text-red-600 mb-4">⚠️ حذف مشتری</h2>
-            <p class="text-gray-700 dark:text-gray-200">آیا مطمئن هستید که می‌خواهید این مشتری را حذف کنید؟</p>
+   @if($confirmingDelete)
+<div class="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-96">
+        <h2 class="text-xl font-bold text-red-600 mb-4">
+            {{ __('messages.delete_customer_title') }}
+        </h2>
+        <p class="text-gray-700 dark:text-gray-200">
+            {{ __('messages.delete_customer_message') }}
+        </p>
 
-            <div class="mt-6 flex justify-end gap-3">
-                <button wire:click="$set('confirmingDelete', null)"
-                    class="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500">
-                    لغو
-                </button>
-                <button wire:click="deleteCustomer" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
-                    حذف
-                </button>
-            </div>
+        <div class="mt-6 flex justify-end gap-3">
+            <button wire:click="$set('confirmingDelete', null)"
+                class="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500">
+                {{ __('messages.cancel') }}
+            </button>
+            <button wire:click="deleteCustomer"
+                class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                {{ __('messages.delete') }}
+            </button>
         </div>
     </div>
-    @endif
+</div>
+@endif
+
 </div>

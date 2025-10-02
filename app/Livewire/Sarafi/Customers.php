@@ -81,22 +81,28 @@ class Customers extends Component
     
     public function saveCustomer()
     {
-        // اگر در حال ایجاد مشتری جدید هستیم و شماره حساب خالی است
         if (!$this->customerId && empty($this->account)) {
             $this->generateAccountNumber();
         }
 
-        $validated = $this->validate([
+         $validated = $this->validate([
             'fullname' => 'required|string|max:255',
             'account' => 'nullable|string|max:16|min:16|unique:sarafi.customers,account_number,' . $this->customerId,
             'category' => 'nullable|string|max:255',
             'city' => 'required|string|max:255',
             'phone' => 'required|string|max:255|unique:sarafi.customers,phone,' . $this->customerId,
-            'tazkira' => 'nullable|string|max:255|unique:sarafi.customers,idcard_number,' . $this->customerId,
+            'tazkira' => '|nullable|string|max:255|unique:sarafi.customers,idcard_number,' . $this->customerId,
             'whatsapp' => 'nullable|string|max:255',
             'password' => 'nullable|string|min:6',
             'newProfile' => 'nullable|image|max:2048',
             'newIdCardImage' => 'nullable|image|max:2048',
+        ], [
+            'fullname.required' => __('messages.validation_fullname_required'),
+            'account.required' => __('messages.validation_account_required'),
+            'city.required' => __('messages.validation_city_required'),
+            'phone.required' => __('messages.validation_phone_required'),
+            'tazkira.required' => __('messages.validation_tazkira_required'),
+            'password.required' => __('messages.validation_password_required'),
         ]);
 
         $data = [
@@ -137,12 +143,12 @@ class Customers extends Component
             $customer = Customer::find($this->customerId);
             if ($customer) {
                 $customer->update($data);
-                $this->successMessage = 'مشتری با موفقیت ویرایش شد';
+                $this->successMessage = __('messages.customer_created');
                 Log::info('Customer updated with ID: ' . $this->customerId);
             }
         } else {
             Customer::create($data);
-            $this->successMessage = 'مشتری جدید با موفقیت ایجاد شد';
+            $this->successMessage =  __('messages.customer_create');
             Log::info('New customer created');
         }
         
@@ -165,7 +171,7 @@ class Customers extends Component
             }
         }
         
-        session()->flash('message', 'عکس پروفایل با موفقیت حذف شد');
+        session()->flash('message',  __('messages.customer_update'));
     }
 
     public function removeIdCardImage()
@@ -183,8 +189,8 @@ class Customers extends Component
                 $this->idCardImage = null;
             }
         }
-        
-        session()->flash('message', 'عکس شناسنامه با موفقیت حذف شد');
+           session()->flash('message',  __('messages.idcard_removed'));
+
     }
 
     public function resetForm()

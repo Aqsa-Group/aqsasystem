@@ -4,6 +4,7 @@ namespace App\Filament\Import\Widgets;
 
 use App\Models\Import\Customer;
 use App\Models\Import\Inventory;
+use App\Models\Import\Loan;
 use App\Models\Import\Safe;
 use App\Models\Import\Sale;
 use App\Models\Import\SaleItem;
@@ -30,7 +31,7 @@ class SafeOverview extends BaseWidget
         // --- موجودی فروش امروز از ستون today ---
         // همیشه یک ردیف برای هر کاربر وجود دارد
         $safeRow = Safe::firstOrCreate(
-            ['user_id' => $userId], 
+            ['user_id' => $userId],
             ['today' => 0, 'total' => 0, 'AFN' => 0, 'USD' => 0, 'currency' => 0]
         );
 
@@ -44,7 +45,7 @@ class SafeOverview extends BaseWidget
             ->sum('profit');
 
         // --- جمع برداشت امروز (فقط امروز) ---
-        
+
         $totalWithdrawAFN = Withdraw::where('user_id', $userId)
             ->whereBetween('created_at', [$today, $tomorrow])
             ->where('currency', 'AFN')
@@ -64,16 +65,21 @@ class SafeOverview extends BaseWidget
         $totalBoot  = $totalInventoryBalance + $totalWarehouseBalance + $totalBalance;
 
         // --- صرافی ---
-            $AFN = Sarafi::where('name', 'زرین')->sum('AFN');
-            $USD = Sarafi::where('name', 'زرین')->sum('USD');
-            $CNY = Sarafi::where('name', 'زرین')->sum('CNY');
-            $EUR = Sarafi::where('name', 'زرین')->sum('EUR');
+        $AFN = Sarafi::where('name', 'زرین')->sum('AFN');
+        $USD = Sarafi::where('name', 'زرین')->sum('USD');
+        $CNY = Sarafi::where('name', 'زرین')->sum('CNY');
+        $EUR = Sarafi::where('name', 'زرین')->sum('EUR');
 
 
         // --- قرضه‌ها ---
-        $loan = Customer::where('user_id', $userId)->sum('total_loan');
-        $totalReceipt = Customer::where('user_id', $userId)->sum('total_receipt');
-        $totalLoan = $loan - $totalReceipt;
+        $loanUSD = Loan::where('currency', 'دالر')->sum('amount');
+        $totalReceiptUSD = Loan::where('currency', 'دالر')->sum('loan_recipt');
+        $totalLoanUSD = $loanUSD - $totalReceiptUSD;
+
+
+        $loanAFN = Loan::where('currency', 'افغانی')->sum('amount');
+        $totalReceiptAFN = Loan::where('currency', 'افغانی')->sum('loan_recipt');
+        $totalLoanAFN = $loanAFN - $totalReceiptAFN;
 
         // --- واحد پول ---
         $safeCurrency = $safeRow->currency ?? 0;
@@ -87,10 +93,10 @@ class SafeOverview extends BaseWidget
                 ->description(new HtmlString("
                     <div class='grid grid-cols-2 gap-x-4 text-2xl'>
                         <div class='text-black dark:text-white font-bold'>افغانی</div>
-                        <div class='text-right text-black dark:text-white font-bold'>". number_format($totalBalanceAFN, 0) ."</div>
+                        <div class='text-right text-black dark:text-white font-bold'>" . number_format($totalBalanceAFN, 0) . "</div>
 
                         <div class='text-black dark:text-white font-bold'>دالر</div>
-                        <div class='text-right text-black dark:text-white font-bold'>". number_format($totalBalanceUSD, 2) ."</div>
+                        <div class='text-right text-black dark:text-white font-bold'>" . number_format($totalBalanceUSD, 2) . "</div>
                     </div>
                 "))
                 ->color(($totalBalanceAFN + $totalBalanceUSD) > 0 ? 'success' : 'danger'),
@@ -99,24 +105,24 @@ class SafeOverview extends BaseWidget
                 ->description(new HtmlString("
                     <div class='grid grid-cols-2 gap-x-4 text-2xl'>
                         <div class='text-black dark:text-white font-bold'>افغانی</div>
-                        <div class='text-right text-black dark:text-white font-bold'>". number_format($AFN, 0) ."</div>
+                        <div class='text-right text-black dark:text-white font-bold'>" . number_format($AFN, 0) . "</div>
 
                         <div class='text-black dark:text-white font-bold'>دالر</div>
-                        <div class='text-right text-black dark:text-white font-bold'>". number_format($USD, 2) ."</div>
+                        <div class='text-right text-black dark:text-white font-bold'>" . number_format($USD, 2) . "</div>
 
                         <div class='text-black dark:text-white font-bold'>یوان چین</div>
-                        <div class='text-right text-black dark:text-white font-bold'>". number_format($CNY, 2) ."</div>
+                        <div class='text-right text-black dark:text-white font-bold'>" . number_format($CNY, 2) . "</div>
 
                         <div class='text-black dark:text-white font-bold'>یورو</div>
-                        <div class='text-right text-black dark:text-white font-bold'>". number_format($EUR, 2) ."</div>
+                        <div class='text-right text-black dark:text-white font-bold'>" . number_format($EUR, 2) . "</div>
                     </div>
                 "))
                 ->color(($AFN + $USD + $CNY + $EUR) > 0 ? 'success' : 'danger'),
 
             Card::make('📆 فروشات امروز', number_format($todayIncome, $decimals) . " $currencyLabel")
-                 ->description('مجموع مبالغ ثبت شده در امروز')
+                ->description('مجموع مبالغ ثبت شده در امروز')
                 ->descriptionIcon('heroicon-o-banknotes')
-                ->color($todayIncome > 0 ? 'info' : 'danger'),  
+                ->color($todayIncome > 0 ? 'info' : 'danger'),
 
             Card::make('📈 فایده امروز', number_format($todayProfit, $decimals) . " $currencyLabel")
                 ->description('جمع فایده امروز')
@@ -127,10 +133,10 @@ class SafeOverview extends BaseWidget
                 ->description(new HtmlString("
                     <div class='grid grid-cols-2 gap-x-4 text-2xl'>
                         <div class='text-black dark:text-white font-bold'>افغانی</div>
-                        <div class='text-right text-black dark:text-white font-bold'>". number_format($totalWithdrawAFN, 0) ."</div>
+                        <div class='text-right text-black dark:text-white font-bold'>" . number_format($totalWithdrawAFN, 0) . "</div>
 
                         <div class='text-black dark:text-white font-bold'>دالر</div>
-                        <div class='text-right text-black dark:text-white font-bold'>". number_format($totalWithdrawUSD, 2) ."</div>
+                        <div class='text-right text-black dark:text-white font-bold'>" . number_format($totalWithdrawUSD, 2) . "</div>
                     </div>
                 "))
                 ->color(($totalWithdrawAFN + $totalWithdrawUSD) > 0 ? 'danger' : 'success'),
@@ -153,11 +159,20 @@ class SafeOverview extends BaseWidget
                 ->descriptionIcon('heroicon-o-currency-dollar')
                 ->color('success'),
 
-            Card::make('📜 مجموعه قرضه‌ها', number_format($totalLoan, $decimals) . " $currencyLabel")
-                ->description('مجموعه قرضه‌ها')
-                ->descriptionIcon('heroicon-o-document-text')
+            Card::make('📜 مجموعه قرضه‌ها', '')
+                ->description(new HtmlString("
+                    <div class='grid grid-cols-2 gap-x-4 text-2xl'>
+                        <div class='text-black dark:text-white font-bold'>افغانی</div>
+                        <div class='text-right text-black dark:text-white font-bold'>" . number_format($totalLoanAFN, 0) . "</div>
+
+                        <div class='text-black dark:text-white font-bold'>دالر</div>
+                        <div class='text-right text-black dark:text-white font-bold'>" . number_format($totalLoanUSD, 2) . "</div>
+
+                    </div>
+                "))
+
                 ->url(route('filament.import.resources.loans.index'))
-                ->color($totalLoan > 0 ? 'warning' : 'success'),
+            // ->color($totalLoan > 0 ? 'warning' : 'success'),
         ];
     }
 }

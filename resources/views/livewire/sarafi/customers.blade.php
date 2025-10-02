@@ -118,10 +118,10 @@
                             <select wire:model="category"
                                 class="w-full p-3 rounded-xl py-4  bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white appearance-none">
                                 <option value="">{{ __('messages.choose') }}</option>
-                                <option value="normal">{{ __('messages.category_normal') }}</option>
-                                <option value="regular">{{ __('messages.category_regular') }}</option>
+                                <option value="{{ __('messages.category_normal') }}">{{ __('messages.category_normal') }}</option>
+                                <option value="{{ __('messages.category_regular') }}">{{ __('messages.category_regular') }}</option>
                                 <option value="gold">{{ __('messages.category_gold') }}</option>
-                                <option value="special">{{ __('messages.category_special') }}</option>
+                                <option value="{{ __('messages.category_special') }}">{{ __('messages.category_special') }}</option>
                             </select>
                             <div class="absolute left-3 top-4 text-gray-400">
                                 <img src="{{ asset('assets/sarafi/all_icon/clipboard.svg') }}" alt="">

@@ -194,6 +194,11 @@ return [
     'success_message' => 'عملیات با موفقیت انجام شد',
     'close' => 'بستن',
 
+     'customer_created' => 'مشتری جدید با موفقیت ایجاد شد',
+    'customer_updated' => 'مشتری با موفقیت ویرایش شد',
+    'profile_removed'  => 'عکس پروفایل با موفقیت حذف شد',
+    'idcard_removed'   => 'عکس شناسنامه با موفقیت حذف شد',
+
 
       // placeholderها
     'placeholder_fullname' => 'نام مشتری',
@@ -211,6 +216,32 @@ return [
     'category_gold' => 'مشتری طلایی',
     'category_special' => 'ویژه',
     'choose' => 'یک گزینه انتخاب کنید',
+
+        // خطاهای ولیدیشن
+    'validation_fullname_required' => 'نام مشتری الزامی است.',
+    'validation_account_required' => 'شماره حساب الزامی است.',
+    'validation_account_unique' => 'این شماره حساب قبلا استفاده شده است.',
+    'validation_city_required' => 'نام شهر الزامی است.',
+    'validation_phone_required' => 'شماره تماس الزامی است.',
+    'validation_phone_unique' => 'این شماره تماس قبلا استفاده شده است.',
+    'validation_tazkira_unique' => 'این شماره تذکره قبلا استفاده شده است.',
+    'validation_password_min' => 'رمز عبور باید حداقل ۶ کاراکتر باشد.',
+    'actions' => 'عملیات',
+     'edit' => 'ویرایش',
+    'view' => 'نمایش',
+    'delete' => 'حذف',
+    
+
+    // cutomer_table
+    'add_customer' => 'افزودن مشتری جدید',
+    'search_customer' => 'جستجو نام مشتری…',
+    'delete_customer_title' => ' حذف مشتری',
+    'delete_customer_message' => 'آیا مطمئن هستید که می‌خواهید این مشتری را حذف کنید؟',
+    'cancel' => 'لغو',
+    'delete' => 'حذف',
+    'customer_deleted' => 'مشتری با موفقیت حذف شد.',
+
+
 
 
 

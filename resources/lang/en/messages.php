@@ -1,6 +1,6 @@
 <?php
 return [
-   'dashboard' => 'Dashboard',
+    'dashboard' => 'Dashboard',
     'users' => 'Users',
     'customers' => 'Customers',
     'customer_create' => 'Register Customer',
@@ -32,16 +32,16 @@ return [
 
     'pastry' => 'Pastry',
     'clothes' => 'Clothes',
-    'recipt/withdraw'=>'Recipt/Withdraw safe',
+    'recipt/withdraw' => 'Recipt/Withdraw safe',
     'exchange_name' => ' Zarin exchange',
 
     // dashboard
-    'recipt/withdraw'=>'Recipt and withdraw from safe',
-     'transfer'=>'Transfer account to account',
-    'newspaper_accounts'=>'Accounts Journal',
-    'coversion_account'=>'Currency conversion in the account',
-    'coversion_transfer'=>'Currency conversion and Transfer',
-    'general_jornal'=>'General Jornal',
+    'recipt/withdraw' => 'Recipt and withdraw from safe',
+    'transfer' => 'Transfer account to account',
+    'newspaper_accounts' => 'Accounts Journal',
+    'coversion_account' => 'Currency conversion in the account',
+    'coversion_transfer' => 'Currency conversion and Transfer',
+    'general_jornal' => 'General Jornal',
     'selling' => 'Currency & Safe Buying/Selling',
     'page_title' => 'Dashboard / Main Reports & Statistics',
     'tab_general' => 'General Panel',
@@ -70,7 +70,7 @@ return [
     'safes_sar' => 'SAR Balance',
     'safes_inr' => 'INR Balance',
 
-     // ماه‌ها
+    // ماه‌ها
     'month_hamal' => 'Hamal',
     'month_sawr' => 'Sawr',
     'month_jawza' => 'Jawza',
@@ -197,6 +197,11 @@ return [
     'success_message' => 'Operation completed successfully',
     'close' => 'Close',
 
+    'customer_created' => 'New customer has been created successfully',
+    'customer_updated' => 'Customer has been updated successfully',
+    'profile_removed'  => 'Profile image has been removed successfully',
+    'idcard_removed'   => 'ID card image has been removed successfully',
+
 
     // placeholder
     'placeholder_fullname' => 'Enter customer name',
@@ -214,9 +219,28 @@ return [
     'category_regular' => 'Regular Customer',
     'category_gold' => 'Gold Customer',
     'category_special' => 'Special Customer',
-    
 
+    // validation messages
+    'validation_fullname_required' => 'Full name is required.',
+    'validation_account_required' => 'Account number is required.',
+    'validation_account_unique' => 'This account number has already been used.',
+    'validation_city_required' => 'City is required.',
+    'validation_phone_required' => 'Phone number is required.',
+    'validation_phone_unique' => 'This phone number has already been used.',
+    'validation_tazkira_unique' => 'This ID card number has already been used.',
+    'validation_password_min' => 'Password must be at least 6 characters.',
+    'actions' => 'Actions',
+    'edit' => 'Edit',
+    'view' => 'View',
+    'delete' => 'Delete',
 
-   
+    // customer_table 
+    'add_customer' => 'Add New Customer',
+    'search_customer' => 'Search Customer Name…',
+    'delete_customer_title' => 'Delete Customer',
+    'delete_customer_message' => 'Are you sure you want to delete this customer?',
+    'cancel' => 'Cancel',
+    'delete' => 'Delete',
+    'customer_deleted' => 'Customer deleted successfully.',
+
 ];
-    
