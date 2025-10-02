@@ -9,7 +9,7 @@
                 {{ __('messages.title_add_user') }}
             </h2>
             <p class="text-lg text-gray-600 dark:text-gray-400 vazir">
-                {{ __('messages.subtitle') }}
+                {{ __('messages.subtitle_user') }}
             </p>
             <div class="bg-[#2563EB] rounded-full h-20 w-20 mx-auto flex items-center justify-center">
                 <img src="{{ asset('assets/sarafi/all_icon/light.user.svg') }}" alt="" class="mt-2">

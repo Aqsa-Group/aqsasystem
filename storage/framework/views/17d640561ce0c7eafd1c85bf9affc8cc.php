@@ -10,7 +10,7 @@
 
             </h2>
             <p class="text-lg text-gray-600 dark:text-gray-400 vazir">
-                <?php echo e(__('messages.subtitle')); ?>
+                <?php echo e(__('messages.subtitle_user')); ?>
 
             </p>
             <div class="bg-[#2563EB] rounded-full h-20 w-20 mx-auto flex items-center justify-center">

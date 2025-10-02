@@ -245,7 +245,7 @@ return [
     // users
 
     'title_add_user' => 'افزودن کاربر',
-    'subtitle_user' => 'لطفا اطلاعات مشتری را با دقت وارد نمائید',
+    'subtitle_user' => 'لطفا اطلاعات کاربر را با دقت وارد نمائید',
 
     'profile_image' => 'عکس پروفایل',
     'idcard_image' => 'عکس شناسنامه',
