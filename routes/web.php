@@ -120,12 +120,12 @@ Route::get('/sarafi/home', function () {
 })->name('sarafi.home');
 
 
-Route::get('/sarafi/user', function () {
-    if (!Auth::guard('sarafi')->check()) {
-        return redirect()->route('sarafi.login.form');
-    }
-    return view('Sarafi.components.user-management');
-})->name('sarafi.users');
+// Route::get('/sarafi/user', function () {
+//     if (!Auth::guard('sarafi')->check()) {
+//         return redirect()->route('sarafi.login.form');
+//     }
+//     return view('Sarafi.components.user-management');
+// })->name('sarafi.users');
 
 
 // روت‌های معمولی Laravel (بدون Livewire)
