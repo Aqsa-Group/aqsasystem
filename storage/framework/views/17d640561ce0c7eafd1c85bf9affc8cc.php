@@ -247,7 +247,6 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         <select wire:model="role"
                             class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                            focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white appearance-none">
-                            <option value=""><?php echo e(__('messages.choose_user')); ?></option>
                             <option value=""><?php echo e(__('messages.select_role')); ?></option>
                             <option value="warehouse_manager"><?php echo e(__('messages.warehouse_manager')); ?></option>
                             <option value="internal_officer"><?php echo e(__('messages.internal_officer')); ?></option>
@@ -271,6 +270,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                 <!-- User Limition -->
+                <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role === 'superadmin'): ?>
                 <div>
                     <label class="block text-sm font-medium text-black dark:text-gray-300 mb-1 vazir">
                         <?php echo e(__('messages.user_limit')); ?>
@@ -295,6 +295,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
             </div>
 

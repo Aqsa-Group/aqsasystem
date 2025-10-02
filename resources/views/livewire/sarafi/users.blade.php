@@ -180,7 +180,6 @@
                         <select wire:model="role"
                             class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                            focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white appearance-none">
-                            <option value="">{{ __('messages.choose_user') }}</option>
                             <option value="">{{ __('messages.select_role') }}</option>
                             <option value="warehouse_manager">{{ __('messages.warehouse_manager') }}</option>
                             <option value="internal_officer">{{ __('messages.internal_officer') }}</option>
@@ -197,6 +196,7 @@
                 @endif
 
                 <!-- User Limition -->
+                @if ($currentUser && $currentUser->role === 'superadmin')
                 <div>
                     <label class="block text-sm font-medium text-black dark:text-gray-300 mb-1 vazir">
                         {{ __('messages.user_limit') }}
@@ -213,6 +213,7 @@
                     <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                     @enderror
                 </div>
+                @endif
 
             </div>
 

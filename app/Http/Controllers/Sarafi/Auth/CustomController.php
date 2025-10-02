@@ -43,25 +43,25 @@ class CustomController extends Controller
         return back()->with('error', 'نام کاربری یا رمز  اشتباه است.');
     }
 
-    public function logout(Request $request)
-{
-    $user = Auth::guard('sarafi')->user();
-    if ($user) {
-     /** @var User $user */     
-        $user->status = 0;
-        $user->save();
+        public function logout(Request $request)
+    {
+        $user = Auth::guard('sarafi')->user();
+        if ($user) {
+        /** @var User $user */     
+            $user->status = 0;
+            $user->save();
+        }
+
+        Auth::guard('sarafi')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        if ($request->header('X-Livewire') || $request->ajax()) {
+            return response()->json(['redirect' => route('sarafi.login.form')], 401);
+        }
+
+        return redirect()->route('sarafi.login.form');
     }
-
-    Auth::guard('sarafi')->logout();
-
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
-
-    if ($request->header('X-Livewire') || $request->ajax()) {
-        return response()->json(['redirect' => route('sarafi.login.form')], 401);
-    }
-
-    return redirect()->route('sarafi.login.form');
-}
 
 }

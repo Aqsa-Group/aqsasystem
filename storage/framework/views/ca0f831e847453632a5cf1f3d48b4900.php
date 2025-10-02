@@ -249,8 +249,6 @@
             opacity: 1;
             /* کاملاً قابل دیدن */
         }
-
-        
     </style>
 </head>
 
@@ -339,17 +337,50 @@
                         class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
                 </button>
 
-                <div
-                    class="w-[50px] h-[50px] rounded-[25px] overflow-hidden bg-[#E5E5E5] flex items-center justify-center hover:bg-gray-300 transition">
-                    <img src="<?php echo e(asset('assets/sarafi/all_icon/user-header.svg')); ?>" alt="پروفایل"
-                        class="w-7 h-7 object-cover">
+                <div class="relative">
+                    <div id="profileBtn"
+                        class="w-[70px] h-[70px] rounded-full border  overflow-hidden flex items-center justify-center cursor-pointer transition">
+                        <img src="<?php echo e(asset('assets/sarafi/all_icon/man.png')); ?>" alt="پروفایل"
+                            class="w-[50px] h-[50px] object-cover">
+                    </div>
+
+                    <!-- منو dropdown -->
+                    <div id="profileDropdown"
+                        class="absolute top-full left-0 space-y-3 text-2xl w-72 h-76 bg-white rounded-lg shadow-lg border hidden z-50 p-4">
+
+                        <div class="p-3 border-b space-y-5">
+                            <div class="flex flex-col justify-center items-center ">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/man.png')); ?>" alt="" class="h-20 w-20">
+                                <p class="font-vazir font-semibold text-gray-700 mt-5"><?php echo e(Auth::guard('sarafi')->user()->name); ?></p>
+
+                            </div>
+
+                        </div>
+                        <div class="flex justify-start items-center  ">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/account_profile.svg')); ?>" alt="">
+
+                            <a href="<?php echo e(route('sarafi.users')); ?>" class="block px-4 py-2 text-gray-700 vazir">تنظیمات</a>
+                        </div>
+
+                        <form action="<?php echo e(route('sarafi.logout')); ?>" method="POST">
+                            <?php echo csrf_field(); ?>
+                            <div class="flex justify-start items-center">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/logout.svg')); ?>" alt="">
+                                <button type="submit" class="px-4 py-2 text-gray-700 vazir">
+                                    خروج از حساب
+                                </button>
+                            </div>
+                        </form>
+
+
+                    </div>
                 </div>
             </div>
         </header>
 
-       <div class="flex flex-1 mt-10 min-h-screen">
-    <aside class="w-72 hidden md:block p-5">
-        <nav class="mt-0 space-y-0" x-data="{
+        <div class="flex flex-1 mt-10 min-h-screen">
+            <aside class="w-72 hidden md:block p-5">
+                <nav class="mt-0 space-y-0" x-data="{
             openItems: {
                 customers: false,
                 accounts: false,
@@ -366,408 +397,447 @@
             },
             active: 'dashboard'
         }">
-            
-            <!-- داشبورد -->
-            <a href="<?php echo e(route('sarafi.home')); ?>"
-                class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir"
-                @click="active = 'dashboard'"
-                :class="active === 'dashboard' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'">
-                <span class="flex items-center gap-2">
-                    <img src="<?php echo e(asset('assets/sarafi/all_icon/element-3.svg')); ?>" class="w-5 h-5"
-                        :class="active === 'dashboard' ? 'filter invert brightness-0' : 'text-gray-500'">
-                    <?php echo e(__('messages.dashboard')); ?>
 
-                </span>
-            </a>
+                    <!-- داشبورد -->
+                    <a href="<?php echo e(route('sarafi.home')); ?>"
+                        class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir"
+                        @click="active = 'dashboard'"
+                        :class="active === 'dashboard' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'">
+                        <span class="flex items-center gap-2">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/element-3.svg')); ?>" class="w-5 h-5"
+                                :class="active === 'dashboard' ? 'filter invert brightness-0' : 'text-gray-500'">
+                            <?php echo e(__('messages.dashboard')); ?>
 
-            <!-- کاربران -->
-            <a href="<?php echo e(route('sarafi.users')); ?>" class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir"
-                @click="active = 'users'"
-                :class="active === 'users' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'">
-                <span class="flex items-center gap-2">
-                    <img src="<?php echo e(asset('assets/sarafi/all_icon/profile-2user.svg')); ?>" class="w-5 h-5"
-                        :class="active === 'users' ? 'filter invert brightness-0' : 'text-gray-500'">
-                      <?php echo e(__('messages.users')); ?>
-
-                </span>
-            </a>
-
-            <!-- مشتریان -->
-            <div>
-                <button @click="openItems.customers = !openItems.customers; active = 'customers'"
-                    :class="active === 'customers' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
-                    class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
-                    <span class="flex items-center gap-2">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/people.svg')); ?>" class="w-5 h-5"
-                            :class="active === 'customers' ? 'filter invert brightness-0' : 'text-gray-500'">
-                          <?php echo e(__('messages.customers')); ?>
-
-                    </span>
-                    <svg :class="[openItems.customers ? 'rotate-180' : '', active === 'customers' ? 'text-white' : 'text-gray-500']"
-                        class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
-                <div x-show="openItems.customers" x-transition class="mr-6 mt-1 space-y-1">
-                    <a href="<?php echo e(route('sarafi.customer-create')); ?>"
-                        class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                        @click="active = 'customer-create'"
-                        :class="active === 'customer-create' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" class="w-4 h-4"
-                            :class="active === 'customer-create' ? 'filter invert brightness-0' : 'text-gray-500'">
-                          <?php echo e(__('messages.customer_create')); ?>
-
+                        </span>
                     </a>
 
+                    <!-- کاربران -->
+                    <a href="<?php echo e(route('sarafi.users')); ?>"
+                        class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir"
+                        @click="active = 'users'"
+                        :class="active === 'users' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'">
+                        <span class="flex items-center gap-2">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/profile-2user.svg')); ?>" class="w-5 h-5"
+                                :class="active === 'users' ? 'filter invert brightness-0' : 'text-gray-500'">
+                            <?php echo e(__('messages.users')); ?>
 
-                        <a href="<?php echo e(route('sarafi.customer-table')); ?>"
-                        class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                        @click="active = 'customer-table'"
-                        :class="active === 'customer-table' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" class="w-4 h-4"
-                            :class="active === 'customer-table' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        <?php echo e(__('messages.customer_list')); ?>
-
+                        </span>
                     </a>
-                </div>
-            </div>
 
-            <!-- ثبت حسابات و نرخ ارز -->
-            <div>
-                <button @click="openItems.accounts = !openItems.accounts; active = 'accounts'"
-                    :class="active === 'accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
-                    class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
-                    <span class="flex items-center gap-2 ">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" class="w-5 h-5"
-                            :class="active === 'accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        <?php echo e(__('messages.accounts')); ?>
+                    <!-- مشتریان -->
+                    <div>
+                        <button @click="openItems.customers = !openItems.customers; active = 'customers'"
+                            :class="active === 'customers' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            <span class="flex items-center gap-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/people.svg')); ?>" class="w-5 h-5"
+                                    :class="active === 'customers' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.customers')); ?>
 
-                    </span>
-                    <svg :class="[openItems.accounts ? 'rotate-180' : '', active === 'accounts' ? 'text-white' : 'text-gray-500']"
-                        class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
-                <div x-show="openItems.accounts" x-transition class="mr-6 mt-1 space-y-1">
-                    <a href="#"
-                        class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                        @click="active = 'register-accounts'"
-                        :class="active === 'register-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/add.svg')); ?>" class="w-4 h-4"
-                            :class="active === 'register-accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        <?php echo e(__('messages.register_accounts')); ?>
+                            </span>
+                            <svg :class="[openItems.customers ? 'rotate-180' : '', active === 'customers' ? 'text-white' : 'text-gray-500']"
+                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="openItems.customers" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="<?php echo e(route('sarafi.customer-create')); ?>"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="active = 'customer-create'"
+                                :class="active === 'customer-create' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" class="w-4 h-4"
+                                    :class="active === 'customer-create' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.customer_create')); ?>
 
-                    </a>
-                </div>
-            </div>
-
-            <!-- بارگذاری فایل بانکی -->
-            <div>
-                <button @click="openItems.bankFiles = !openItems.bankFiles; active = 'bankFiles'"
-                    :class="active === 'bankFiles' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
-                    class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
-                    <span class="flex items-center gap-2">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/receive-square.svg')); ?>" class="w-5 h-5"
-                            :class="active === 'bankFiles' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        <?php echo e(__('messages.bank_files')); ?>
-
-                    </span>
-                    <svg :class="[openItems.bankFiles ? 'rotate-180' : '', active === 'bankFiles' ? 'text-white' : 'text-gray-500']"
-                        class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
-                <div x-show="openItems.bankFiles" x-transition class="mr-6 mt-1 space-y-1">
-                    <a href="#"
-                        class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                        @click="active = 'upload-bank'"
-                        :class="active === 'upload-bank' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/upload.svg')); ?>" class="w-4 h-4"
-                            :class="active === 'upload-bank' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        <?php echo e(__('messages.upload_bank')); ?>
-
-                    </a>
-                </div>
-            </div>
-
-            <!-- ویرایش حسابات و نرخ ارز -->
-            <div>
-                <button @click="openItems.editAccounts = !openItems.editAccounts; active = 'editAccounts'"
-                    :class="active === 'editAccounts' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
-                    class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
-                    <span class="flex items-center gap-2">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/edit.svg')); ?>" class="w-5 h-5"
-                            :class="active === 'editAccounts' ? 'filter invert brightness-0' : 'text-gray-500'">
-                         <?php echo e(__('messages.edit_accounts')); ?>
-
-                    </span>
-                    <svg :class="[openItems.editAccounts ? 'rotate-180' : '', active === 'editAccounts' ? 'text-white' : 'text-gray-500']"
-                        class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
-                <div x-show="openItems.editAccounts" x-transition class="mr-6 mt-1 space-y-1">
-                    <a href="#"
-                        class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                        @click="active = 'edit-accounts'"
-                        :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/edit.svg')); ?>" class="w-4 h-4"
-                            :class="active === 'edit-accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
-                         <?php echo e(__('messages.edit_accounts_info')); ?>
-
-                    </a>
-                </div>
-            </div>
-
-            <!-- گزارش و آمار حسابات -->
-            <div>
-                <button @click="openItems.reports = !openItems.reports; active = 'reports'"
-                    :class="active === 'reports' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
-                    class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
-                    <span class="flex items-center gap-2">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/graph.svg')); ?>" class="w-5 h-5"
-                            :class="active === 'reports' ? 'filter invert brightness-0' : 'text-gray-500'">
-                          <?php echo e(__('messages.reports')); ?>
-
-                    </span>
-                    <svg :class="[openItems.reports ? 'rotate-180' : '', active === 'reports' ? 'text-white' : 'text-gray-500']"
-                        class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
-                <div x-show="openItems.reports" x-transition class="mr-6 mt-1 space-y-1">
-                    <a href="#"
-                        class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                        @click="active = 'view-reports'"
-                        :class="active === 'view-reports' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/chart.svg')); ?>" class="w-4 h-4"
-                            :class="active === 'view-reports' ? 'filter invert brightness-0' : 'text-gray-500'">
-                         <?php echo e(__('messages.view_reports')); ?>
-
-                    </a>
-                </div>
-            </div>
-
-            <!-- کنترول و بررسی معاملات -->
-            <div>
-                <button @click="openItems.transactions = !openItems.transactions; active = 'transactions'"
-                    :class="active === 'transactions' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
-                    class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
-                    <span class="flex items-center gap-2">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/health.svg')); ?>" class="w-5 h-5"
-                            :class="active === 'transactions' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        <?php echo e(__('messages.transactions')); ?>
-
-                    </span>
-                    <svg :class="[openItems.transactions ? 'rotate-180' : '', active === 'transactions' ? 'text-white' : 'text-gray-500']"
-                        class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
-                <div x-show="openItems.transactions" x-transition class="mr-6 mt-1 space-y-1">
-                    <a href="#"
-                        class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                        @click="active = 'control-transactions'"
-                        :class="active === 'control-transactions' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/eye.svg')); ?>" class="w-4 h-4"
-                            :class="active === 'control-transactions' ? 'filter invert brightness-0' : 'text-gray-500'">
-                          <?php echo e(__('messages.control_transactions')); ?>
-
-                    </a>
-                </div>
-            </div>
-
-            <!-- بررسی معاملات حذف شده -->
-            <div>
-                <button @click="openItems.deletedTransactions = !openItems.deletedTransactions; active = 'deletedTransactions'"
-                    :class="active === 'deletedTransactions' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
-                    class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
-                    <span class="flex items-center gap-2">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/trash.svg')); ?>" class="w-5 h-5"
-                            :class="active === 'deletedTransactions' ? 'filter invert brightness-0' : 'text-gray-500'">
-                            <?php echo e(__('messages.deleted_transactions')); ?>
-
-                    </span>
-                    <svg :class="[openItems.deletedTransactions ? 'rotate-180' : '', active === 'deletedTransactions' ? 'text-white' : 'text-gray-500']"
-                        class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
-                <div x-show="openItems.deletedTransactions" x-transition class="mr-6 mt-1 space-y-1">
-                    <a href="#"
-                        class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                        @click="active = 'deleted-transactions'"
-                        :class="active === 'deleted-transactions' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/archive.svg')); ?>" class="w-4 h-4"
-                            :class="active === 'deleted-transactions' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        <?php echo e(__('messages.deleted_transactions_list')); ?>
-
-                    </a>
-                </div>
-            </div>
-
-            <!-- مدیریت و دسترسی -->
-            <div>
-                <button @click="openItems.management = !openItems.management; active = 'management'"
-                    :class="active === 'management' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
-                    class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
-                    <span class="flex items-center gap-2">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/Group 1325.svg')); ?>" class="w-5 h-5"
-                            :class="active === 'management' ? 'filter invert brightness-0' : 'text-gray-500'">
-                          <?php echo e(__('messages.management')); ?>
-
-                    </span>
-                    <svg :class="[openItems.management ? 'rotate-180' : '', active === 'management' ? 'text-white' : 'text-gray-500']"
-                        class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
-                <div x-show="openItems.management" x-transition class="mr-6 mt-1 space-y-1">
-                    <a href="#"
-                        class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                        @click="active = 'user-management'"
-                        :class="active === 'user-management' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/user.svg')); ?>" class="w-4 h-4"
-                            :class="active === 'user-management' ? 'filter invert brightness-0' : 'text-gray-500'">
-                            <?php echo e(__('messages.user_management')); ?>
-
-                    </a>
-                </div>
-            </div>
-
-            <!-- مدیریت پیامک ها -->
-            <div>
-                <button @click="openItems.sms = !openItems.sms; active = 'sms'"
-                    :class="active === 'sms' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
-                    class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
-                    <span class="flex items-center gap-2">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/sms.svg')); ?>" class="w-5 h-5"
-                            :class="active === 'sms' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        <?php echo e(__('messages.sms')); ?>
-
-                    </span>
-                    <svg :class="[openItems.sms ? 'rotate-180' : '', active === 'sms' ? 'text-white' : 'text-gray-500']"
-                        class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
-                <div x-show="openItems.sms" x-transition class="mr-6 mt-1 space-y-1">
-                    <a href="#"
-                        class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                        @click="active = 'sms-management'"
-                        :class="active === 'sms-management' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/message.svg')); ?>" class="w-4 h-4"
-                            :class="active === 'sms-management' ? 'filter invert brightness-0' : 'text-gray-500'">
-                         <?php echo e(__('messages.sms_management')); ?>
-
-                    </a>
-                </div>
-            </div>
-
-            <!-- اطلاعیه های آنلاین -->
-            <div>
-                <button @click="openItems.notifications = !openItems.notifications; active = 'notifications'"
-                    :class="active === 'notifications' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
-                    class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
-                    <span class="flex items-center gap-2">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/wifi.svg')); ?>" class="w-5 h-5"
-                            :class="active === 'notifications' ? 'filter invert brightness-0' : 'text-gray-500'">
-                             <?php echo e(__('messages.notifications')); ?>
-
-                    </span>
-                    <svg :class="[openItems.notifications ? 'rotate-180' : '', active === 'notifications' ? 'text-white' : 'text-gray-500']"
-                        class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
-                <div x-show="openItems.notifications" x-transition class="mr-6 mt-1 space-y-1">
-                    <a href="#"
-                        class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                        @click="active = 'online-notifications'"
-                        :class="active === 'online-notifications' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/notification.svg')); ?>" class="w-4 h-4"
-                            :class="active === 'online-notifications' ? 'filter invert brightness-0' : 'text-gray-500'">
-                        <?php echo e(__('messages.online_notifications')); ?>
-
-                    </a>
-                </div>
-            </div>
-
-            <!-- پشتیبانی سیستم -->
-            <div>
-                <button @click="openItems.support = !openItems.support; active = 'support'"
-                    :class="active === 'support' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
-                    class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
-                    <span class="flex items-center gap-2">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/document-copy.svg')); ?>" class="w-5 h-5"
-                            :class="active === 'support' ? 'filter invert brightness-0' : 'text-gray-500'">
-                             <?php echo e(__('messages.support')); ?>
-
-                    </span>
-                    <svg :class="[openItems.support ? 'rotate-180' : '', active === 'support' ? 'text-white' : 'text-gray-500']"
-                        class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
-                <div x-show="openItems.support" x-transition class="mr-6 mt-1 space-y-1">
-                    <a href="#"
-                        class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                        @click="active = 'system-support'"
-                        :class="active === 'system-support' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/support.svg')); ?>" class="w-4 h-4"
-                            :class="active === 'system-support' ? 'filter invert brightness-0' : 'text-gray-500'">
-                         <?php echo e(__('messages.system_support')); ?>
-
-                    </a>
-                </div>
-            </div>
-
-            <!-- تنظیمات -->
-            <div>
-                <button @click="openItems.settings = !openItems.settings; active = 'settings'"
-                    :class="active === 'settings' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
-                    class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
-                    <span class="flex items-center gap-2">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/setting-2.svg')); ?>" class="w-5 h-5"
-                            :class="active === 'settings' ? 'filter invert brightness-0' : 'text-gray-500'">
-                         <?php echo e(__('messages.settings')); ?>
-
-                    </span>
-                    <svg :class="[openItems.settings ? 'rotate-180' : '', active === 'settings' ? 'text-white' : 'text-gray-500']"
-                        class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
-                <div x-show="openItems.settings" x-transition class="mr-6 mt-1 space-y-1">
-                    <a href="#"
-                        class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                        @click="active = 'system-settings'"
-                        :class="active === 'system-settings' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/settings.svg')); ?>" class="w-4 h-4"
-                            :class="active === 'system-settings' ? 'filter invert brightness-0' : 'text-gray-500'">
-                         <?php echo e(__('messages.system_settings')); ?>
+                            </a>
 
 
-                    </a>
-                </div>
-            </div>
+                            <a href="<?php echo e(route('sarafi.customer-table')); ?>"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="active = 'customer-table'"
+                                :class="active === 'customer-table' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" class="w-4 h-4"
+                                    :class="active === 'customer-table' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.customer_list')); ?>
 
-        </nav>
-    </aside>
+                            </a>
+                        </div>
+                    </div>
 
-    <main class="flex-1 ">
-        <?php echo $__env->yieldContent('content'); ?>
-    </main>
-</div>
+                    <!-- ثبت حسابات و نرخ ارز -->
+                    <div>
+                        <button @click="openItems.accounts = !openItems.accounts; active = 'accounts'"
+                            :class="active === 'accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            <span class="flex items-center gap-2 ">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" class="w-5 h-5"
+                                    :class="active === 'accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.accounts')); ?>
+
+                            </span>
+                            <svg :class="[openItems.accounts ? 'rotate-180' : '', active === 'accounts' ? 'text-white' : 'text-gray-500']"
+                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="openItems.accounts" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="#"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="active = 'register-accounts'"
+                                :class="active === 'register-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/add.svg')); ?>" class="w-4 h-4"
+                                    :class="active === 'register-accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.register_accounts')); ?>
+
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- بارگذاری فایل بانکی -->
+                    <div>
+                        <button @click="openItems.bankFiles = !openItems.bankFiles; active = 'bankFiles'"
+                            :class="active === 'bankFiles' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            <span class="flex items-center gap-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/receive-square.svg')); ?>" class="w-5 h-5"
+                                    :class="active === 'bankFiles' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.bank_files')); ?>
+
+                            </span>
+                            <svg :class="[openItems.bankFiles ? 'rotate-180' : '', active === 'bankFiles' ? 'text-white' : 'text-gray-500']"
+                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="openItems.bankFiles" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="#"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="active = 'upload-bank'"
+                                :class="active === 'upload-bank' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/upload.svg')); ?>" class="w-4 h-4"
+                                    :class="active === 'upload-bank' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.upload_bank')); ?>
+
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- ویرایش حسابات و نرخ ارز -->
+                    <div>
+                        <button @click="openItems.editAccounts = !openItems.editAccounts; active = 'editAccounts'"
+                            :class="active === 'editAccounts' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            <span class="flex items-center gap-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/edit.svg')); ?>" class="w-5 h-5"
+                                    :class="active === 'editAccounts' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.edit_accounts')); ?>
+
+                            </span>
+                            <svg :class="[openItems.editAccounts ? 'rotate-180' : '', active === 'editAccounts' ? 'text-white' : 'text-gray-500']"
+                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="openItems.editAccounts" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="#"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="active = 'edit-accounts'"
+                                :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/edit.svg')); ?>" class="w-4 h-4"
+                                    :class="active === 'edit-accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.edit_accounts_info')); ?>
+
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- گزارش و آمار حسابات -->
+                    <div>
+                        <button @click="openItems.reports = !openItems.reports; active = 'reports'"
+                            :class="active === 'reports' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            <span class="flex items-center gap-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/graph.svg')); ?>" class="w-5 h-5"
+                                    :class="active === 'reports' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.reports')); ?>
+
+                            </span>
+                            <svg :class="[openItems.reports ? 'rotate-180' : '', active === 'reports' ? 'text-white' : 'text-gray-500']"
+                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="openItems.reports" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="#"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="active = 'view-reports'"
+                                :class="active === 'view-reports' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/chart.svg')); ?>" class="w-4 h-4"
+                                    :class="active === 'view-reports' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.view_reports')); ?>
+
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- کنترول و بررسی معاملات -->
+                    <div>
+                        <button @click="openItems.transactions = !openItems.transactions; active = 'transactions'"
+                            :class="active === 'transactions' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            <span class="flex items-center gap-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/health.svg')); ?>" class="w-5 h-5"
+                                    :class="active === 'transactions' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.transactions')); ?>
+
+                            </span>
+                            <svg :class="[openItems.transactions ? 'rotate-180' : '', active === 'transactions' ? 'text-white' : 'text-gray-500']"
+                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="openItems.transactions" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="#"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="active = 'control-transactions'"
+                                :class="active === 'control-transactions' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/eye.svg')); ?>" class="w-4 h-4"
+                                    :class="active === 'control-transactions' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.control_transactions')); ?>
+
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- بررسی معاملات حذف شده -->
+                    <div>
+                        <button
+                            @click="openItems.deletedTransactions = !openItems.deletedTransactions; active = 'deletedTransactions'"
+                            :class="active === 'deletedTransactions' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            <span class="flex items-center gap-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/trash.svg')); ?>" class="w-5 h-5"
+                                    :class="active === 'deletedTransactions' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.deleted_transactions')); ?>
+
+                            </span>
+                            <svg :class="[openItems.deletedTransactions ? 'rotate-180' : '', active === 'deletedTransactions' ? 'text-white' : 'text-gray-500']"
+                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="openItems.deletedTransactions" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="#"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="active = 'deleted-transactions'"
+                                :class="active === 'deleted-transactions' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/archive.svg')); ?>" class="w-4 h-4"
+                                    :class="active === 'deleted-transactions' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.deleted_transactions_list')); ?>
+
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- مدیریت و دسترسی -->
+                    <div>
+                        <button @click="openItems.management = !openItems.management; active = 'management'"
+                            :class="active === 'management' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            <span class="flex items-center gap-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/Group 1325.svg')); ?>" class="w-5 h-5"
+                                    :class="active === 'management' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.management')); ?>
+
+                            </span>
+                            <svg :class="[openItems.management ? 'rotate-180' : '', active === 'management' ? 'text-white' : 'text-gray-500']"
+                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="openItems.management" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="#"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="active = 'user-management'"
+                                :class="active === 'user-management' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/user.svg')); ?>" class="w-4 h-4"
+                                    :class="active === 'user-management' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.user_management')); ?>
+
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- مدیریت پیامک ها -->
+                    <div>
+                        <button @click="openItems.sms = !openItems.sms; active = 'sms'"
+                            :class="active === 'sms' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            <span class="flex items-center gap-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/sms.svg')); ?>" class="w-5 h-5"
+                                    :class="active === 'sms' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.sms')); ?>
+
+                            </span>
+                            <svg :class="[openItems.sms ? 'rotate-180' : '', active === 'sms' ? 'text-white' : 'text-gray-500']"
+                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="openItems.sms" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="#"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="active = 'sms-management'"
+                                :class="active === 'sms-management' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/message.svg')); ?>" class="w-4 h-4"
+                                    :class="active === 'sms-management' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.sms_management')); ?>
+
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- اطلاعیه های آنلاین -->
+                    <div>
+                        <button @click="openItems.notifications = !openItems.notifications; active = 'notifications'"
+                            :class="active === 'notifications' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            <span class="flex items-center gap-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/wifi.svg')); ?>" class="w-5 h-5"
+                                    :class="active === 'notifications' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.notifications')); ?>
+
+                            </span>
+                            <svg :class="[openItems.notifications ? 'rotate-180' : '', active === 'notifications' ? 'text-white' : 'text-gray-500']"
+                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="openItems.notifications" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="#"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="active = 'online-notifications'"
+                                :class="active === 'online-notifications' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/notification.svg')); ?>" class="w-4 h-4"
+                                    :class="active === 'online-notifications' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.online_notifications')); ?>
+
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- پشتیبانی سیستم -->
+                    <div>
+                        <button @click="openItems.support = !openItems.support; active = 'support'"
+                            :class="active === 'support' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            <span class="flex items-center gap-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/document-copy.svg')); ?>" class="w-5 h-5"
+                                    :class="active === 'support' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.support')); ?>
+
+                            </span>
+                            <svg :class="[openItems.support ? 'rotate-180' : '', active === 'support' ? 'text-white' : 'text-gray-500']"
+                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="openItems.support" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="#"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="active = 'system-support'"
+                                :class="active === 'system-support' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/support.svg')); ?>" class="w-4 h-4"
+                                    :class="active === 'system-support' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.system_support')); ?>
+
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- تنظیمات -->
+                    <div>
+                        <button @click="openItems.settings = !openItems.settings; active = 'settings'"
+                            :class="active === 'settings' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            <span class="flex items-center gap-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/setting-2.svg')); ?>" class="w-5 h-5"
+                                    :class="active === 'settings' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.settings')); ?>
+
+                            </span>
+                            <svg :class="[openItems.settings ? 'rotate-180' : '', active === 'settings' ? 'text-white' : 'text-gray-500']"
+                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="openItems.settings" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="#"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="active = 'system-settings'"
+                                :class="active === 'system-settings' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/settings.svg')); ?>" class="w-4 h-4"
+                                    :class="active === 'system-settings' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <?php echo e(__('messages.system_settings')); ?>
 
 
-        
+                            </a>
+                        </div>
+                    </div>
+
+                </nav>
+            </aside>
+
+            <main class="flex-1 ">
+                <?php echo $__env->yieldContent('content'); ?>
+            </main>
+        </div>
+
+
+
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
     const loader = document.getElementById('loader');
     const mainContent = document.getElementById('mainContent');
     const progressBar = document.querySelector('.progress');
+
+    const profileBtn = document.getElementById('profileBtn');
+    const profileDropdown = document.getElementById('profileDropdown');
+
+    profileBtn.addEventListener('click', () => {
+        profileDropdown.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
+            profileDropdown.classList.add('hidden');
+        }
+    });
 
     // محتوا را ابتدا مخفی کن
     mainContent.style.display = 'none';
