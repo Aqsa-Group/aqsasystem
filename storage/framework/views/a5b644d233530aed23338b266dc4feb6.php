@@ -25,7 +25,7 @@
 
                     </label>
                     <div class="relative w-20 h-20">
-                        <!--[if BLOCK]><![endif]--><?php if($newProfile): ?>
+                        <?php if($newProfile): ?>
                         <img src="<?php echo e($newProfile->temporaryUrl()); ?>"
                             class="w-20 h-20 rounded-full object-cover border-2 border-blue-400">
                         <?php elseif($profile && $customerId): ?>
@@ -35,7 +35,7 @@
                         <div class="w-20 h-20 rounded-full bg-[#2563EB] flex items-center justify-center">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/profile-circle.svg')); ?>" alt="">
                         </div>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endif; ?>
                         <input type="file" wire:model="newProfile" accept="image/*"
                             class="absolute inset-0 opacity-0 cursor-pointer">
                     </div>
@@ -49,7 +49,7 @@
 
                     </label>
                     <div class="relative w-20 h-20">
-                        <!--[if BLOCK]><![endif]--><?php if($newIdCardImage): ?>
+                        <?php if($newIdCardImage): ?>
                         <img src="<?php echo e($newIdCardImage->temporaryUrl()); ?>"
                             class="w-20 h-20 rounded-lg object-cover border-2 border-green-400">
                         <?php elseif($idCardImage && $customerId): ?>
@@ -59,7 +59,7 @@
                         <div class="w-20 h-20 rounded-full bg-[#2563EB] flex items-center justify-center ">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/id.svg')); ?>" alt="">
                         </div>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endif; ?>
                         <input type="file" wire:model="newIdCardImage" accept="image/*"
                             class="absolute inset-0 opacity-0 cursor-pointer">
                     </div>
@@ -83,14 +83,14 @@
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/profile.svg')); ?>" alt="">
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['fullname'];
+                        <?php $__errorArgs = ['fullname'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="w-full">
@@ -109,22 +109,22 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                                 </div>
                             </div>
-                            <!--[if BLOCK]><![endif]--><?php if(!$customerId): ?>
+                            <?php if(!$customerId): ?>
                             <button type="button" wire:click="generateNewAccountNumber"
                                 class="px-4 py-3 bg-white  border text-white rounded-lg transition">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/refresh-2.svg')); ?>" alt="">
 
                             </button>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                            <?php endif; ?>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['account'];
+                        <?php $__errorArgs = ['account'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
 
@@ -149,14 +149,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
 
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['category'];
+                        <?php $__errorArgs = ['category'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="w-full">
@@ -172,14 +172,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/Group.svg')); ?>" alt="">
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['city'];
+                        <?php $__errorArgs = ['city'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
 
@@ -199,14 +199,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['phone'];
+                        <?php $__errorArgs = ['phone'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="w-full">
@@ -223,14 +223,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/qlementine-icons_id-card-16.svg')); ?>" alt="">
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['tazkira'];
+                        <?php $__errorArgs = ['tazkira'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
 
@@ -249,14 +249,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/Vector.svg')); ?>" alt="">
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['whatsapp'];
+                        <?php $__errorArgs = ['whatsapp'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="w-full">
@@ -272,14 +272,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/lock.svg')); ?>" alt="">
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['password'];
+                        <?php $__errorArgs = ['password'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
             </div>
@@ -306,7 +306,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
     </div>
 
     <!-- مودال موفقیت -->
-    <!--[if BLOCK]><![endif]--><?php if($showSuccessModal): ?>
+    <?php if($showSuccessModal): ?>
     <div class="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
         wire:click.self="$set('showSuccessModal', false)">
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-96">
@@ -329,5 +329,5 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             </div>
         </div>
     </div>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?>
 </div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/customers.blade.php ENDPATH**/ ?>

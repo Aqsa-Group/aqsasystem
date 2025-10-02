@@ -68,7 +68,7 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
-                        <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $report; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                        <?php $__empty_1 = true; $__currentLoopData = $report; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                         <tr class="hover:bg-gray-50 transition-colors duration-200">
                             <td class="py-3 px-4 font-medium text-gray-900"><?php echo e($item['name']); ?></td>
                             <td class="py-3 px-4 text-center text-gray-700"><?php echo e(number_format($item['total_quantity_sold'])); ?></td>
@@ -105,21 +105,21 @@
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
                                     <p class="text-lg font-medium">هیچ محصولی یافت نشد</p>
-                                    <!--[if BLOCK]><![endif]--><?php if($product_name): ?>
+                                    <?php if($product_name): ?>
                                     <p class="text-sm text-gray-400 mt-1">برای "<?php echo e($product_name); ?>" نتیجه‌ای پیدا نشد
                                     </p>
-                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endif; ?>
                                 </div>
                             </td>
                         </tr>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
         </div>
 
         <!-- کارت‌ها -->
-        <!--[if BLOCK]><![endif]--><?php if(count($report) > 0): ?>
+        <?php if(count($report) > 0): ?>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 fade-in">
             <?php if (isset($component)) { $__componentOriginal9b945b32438afb742355861768089b04 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal9b945b32438afb742355861768089b04 = $attributes; } ?>
@@ -227,9 +227,9 @@
 <?php unset($__componentOriginal9b945b32438afb742355861768089b04); ?>
 <?php endif; ?>
         </div>
-        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+        <?php endif; ?>
 
-        <!--[if BLOCK]><![endif]--><?php if($topWholesaleCustomer): ?>
+        <?php if($topWholesaleCustomer): ?>
         <?php if (isset($component)) { $__componentOriginal9b945b32438afb742355861768089b04 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal9b945b32438afb742355861768089b04 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.card','data' => ['class' => 'border-l-4 border-l-green-500']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -294,7 +294,7 @@
 <?php $component = $__componentOriginal9b945b32438afb742355861768089b04; ?>
 <?php unset($__componentOriginal9b945b32438afb742355861768089b04); ?>
 <?php endif; ?>
-        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+        <?php endif; ?>
 
 
     </div>

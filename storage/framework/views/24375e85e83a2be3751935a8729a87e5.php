@@ -206,7 +206,7 @@
             </nav>
         </aside>
         
-        <main class="flex-1 p-6">
+        <main class="">
             <?php echo $__env->yieldContent('content'); ?>
         </main>
     </div>

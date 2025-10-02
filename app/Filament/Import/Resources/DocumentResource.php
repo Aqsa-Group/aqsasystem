@@ -64,12 +64,11 @@ class DocumentResource extends Resource
 
                 Tables\Columns\TextColumn::make('total_amount')
                     ->label('مبلغ کل فروش')
-                    ->money('afn', true)
+                    ->suffix('دالر')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('paid_amount')
                     ->label('مبلغ دریافتی')
-                    ->money('afn', true)
                     ->default('-')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

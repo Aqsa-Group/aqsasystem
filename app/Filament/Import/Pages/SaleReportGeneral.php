@@ -6,15 +6,30 @@ use Filament\Pages\Page;
 use App\Models\Import\SaleItem;
 use App\Models\Import\Inventory;
 use App\Models\Import\Sale;
+use Illuminate\Contracts\Support\Htmlable;
+
 
 class SaleReportGeneral extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static string $view = 'filament.import.pages.sale-report-general';
     
-    protected static ?string $navigationGroup = 'گزارشات';
+    protected static ?string $navigationGroup = 'گزارشات و تنظیمات';
     protected static ?string $navigationLabel = 'گزارش فروش عمومی';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 12;
+    protected static bool $shouldRegisterNavigation = false;
+    protected static ?string $title = 'گزارش فروش عمومی';
+
+    
+   
+   
+ 
+       public function getTitle(): string|Htmlable
+    {
+        return '';
+    }
+
+
 
     public ?string $product_name = null;
     public array $report = [];
@@ -91,10 +106,7 @@ class SaleReportGeneral extends Page
         $this->leastProduct = $collection->sortBy('total_quantity_sold')->first() ?? [];
     }
 
-    public function getTitle(): string
-    {
-        return 'گزارش فروش محصولات';
-    }
+    
 
     public static function shouldRegisterNavigation(): bool
     {
