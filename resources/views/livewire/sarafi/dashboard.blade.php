@@ -8,7 +8,7 @@
         <div
             class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
             <i class="fa-solid fa-wallet text-white text-xl"></i>
-            <a href="" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+            <a href="{{ route('sarafi.transactions') }}" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 {{ __('messages.recipt/withdraw') }}
             </a>
         </div>
@@ -126,7 +126,7 @@
                         <h1 class="text-lg font-semibold drop-shadow-md text-center">
                             {{ __('messages.general_customers') }}</h1>
 
-                        <p class="text-3xl font-extrabold drop-shadow-md">10</p>
+                        <p class="text-3xl font-extrabold drop-shadow-md">{{ $customerCount }}</p>
                     </div>
 
                     <!-- تراکنش‌های امروز -->

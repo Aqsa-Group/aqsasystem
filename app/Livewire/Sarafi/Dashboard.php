@@ -2,22 +2,18 @@
 
 namespace App\Livewire\Sarafi;
 
+use App\Models\Sarafi\Customer;
 use Livewire\Component;
 
 class Dashboard extends Component
 {
     public function render()
     {
-        return view('livewire.sarafi.dashboard');
+         $customerCount = Customer::count();
+        return view('livewire.sarafi.dashboard' , compact('customerCount'));
     }
 
 
-    public $activeTab = 'general'; 
-
-    public function setTab($tab)
-    {
-        $this->activeTab = $tab;
-    }
 
    
 }

@@ -164,6 +164,14 @@ Route::get('/sarafi/users', function () {
     ]);
 })->name('sarafi.users');
 
+Route::get('/sarafi/customer-transactions', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.transaction');
+})->name('sarafi.transactions');
+
+
 
 
 

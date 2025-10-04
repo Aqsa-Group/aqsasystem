@@ -268,11 +268,11 @@
                 <div class="spinner spinner-2"></div>
                 <div class="spinner spinner-3"></div>
                 <div class="logo-loader">
-                    <span>ز</span>
+                    <span>{{ mb_substr(Auth::guard('sarafi')->user()->sarafi_name, 0, 1) }}</span>
                 </div>
             </div>
 
-            <div class="loader-text">صرافی زرین</div>
+            <div class="loader-text">صرافــی {{ Auth::guard('sarafi')->user()->sarafi_name }}</div>
             <div class="loader-subtext">در حال بارگذاری...</div>
 
             <div class="progress-bar">
@@ -345,7 +345,7 @@
                     </div>
 
                     <!-- منو dropdown -->
-                    <div id="profileDropdown"
+                    <div id="profileDropdown"   style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;"
                         class="absolute top-full left-0 space-y-3 text-2xl w-72 h-76 bg-white rounded-lg shadow-lg border hidden z-50 p-4">
 
                         <div class="p-3 border-b space-y-5">
