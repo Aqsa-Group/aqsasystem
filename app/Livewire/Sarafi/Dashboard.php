@@ -7,6 +7,8 @@ use Livewire\Component;
 
 class Dashboard extends Component
 {
+    public $activeTab = 'general';
+
     public function render()
     {
          $customerCount = Customer::count();
