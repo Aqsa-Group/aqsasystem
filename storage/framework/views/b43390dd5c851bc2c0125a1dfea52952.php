@@ -2,9 +2,9 @@
     <div class="container mx-auto px-4">
 
         
-        <div class="scroll-container overflow-x-auto whitespace-nowrap py-3">
-            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <div class="inline-block align-top ml-4 last:ml-0">
+        <div class="scroll-container overflow-x-auto whitespace-nowrap py-3 -mt-5">
+            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currenciesdefault; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
                 <div class="flex flex-col h-[149px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px]
                         <?php if($currency['name'] === 'خلاصه بیلانس به دالر'): ?> 
                             bg-gradient-to-b from-[#11BEC7] to-[#6371D0]
@@ -24,49 +24,56 @@
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
         </div>
 
-        <div class="flex gap-10 ">
+        
+        <div class="flex flex-col lg:flex-row gap-10 mt-4">
+
             
-            <div class="flex flex-col bg-[#F5F5F5] mt-4 w-[574px] h-[858px] p-[12px] rounded-[12px] space-y-2"
+            <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[574px] p-[12px] h-[820px] rounded-[12px] space-y-2"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 
-                <div class="flex flex-row justify-between p-[10px] border border-[#8C8C8C] rounded-[12px]">
+                <div class="flex flex-row justify-between p-[10px] border border-[#8C8C8C] rounded-[12px] flex-wrap">
                     <p class="flex justify-center items-center text-center">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" alt="" class="h-6 w-6"> فورم
                     </p>
-                    <div class="flex gap-4">
+                    <div class="flex gap-4 flex-wrap">
                         <button class="bg-[#DD2424] rounded-[8px] p-[10px] text-white vazir font-semibold">توقف
                             پیامک</button>
-                        <button class="bg-[#2563EB] rounded-[8px] p-[10px] text-white vazir font-semibold">رسید (دریافت
-                            صندوق)</button>
+                        <button wire:click="toggleTransactionType" class="rounded-[8px] p-[10px] text-white vazir font-semibold
+                            transition-colors duration-500 ease-in-out
+                            <?php echo e($transactionType === 'برد' ? 'bg-[#2563EB]' : 'bg-[#DD2424]'); ?>">
+                            <?php echo e($transactionType === 'برد' ? 'رسید (دریافت صندوق)' : 'برد (برداشت صندوق)'); ?>
+
+                        </button>
                     </div>
                 </div>
 
                 
-                <form action="">
+                <form wire:submit.prevent="submitTransaction">
 
                     
-                    <div class="mt-2 flex gap-3">
+                    <div class="mt-2 flex flex-col lg:flex-row gap-3">
                         
-                        <div>
-                            <label class="block text-[16px] font-medium text-black dark:text-gray-300 mb-1 vazir">
-                                نمبر حساب
-                            </label>
-                            <div class="relative w-[353px]">
-                                <select  wire:model="role" class=" w-[353px] h-[60px] p-3 rounded-[12px] border focus:ring-2 
-                                   bg-transparent border-[#8C8C8C] focus:ring-blue-500 
-                                   dark:bg-gray-700 dark:border-gray-600 dark:text-white appearance-none">
-                                   <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customer; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customers): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <option value=""><?php echo e($customers->account_number); ?> - <?php echo e($customers->fullname); ?></option>
-                                       
-                                   <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                        <div class="flex-1">
+                            <label class="block text-[16px] font-medium text-black mb-1 vazir">نمبر حساب</label>
+                            <div class="relative w-full">
+                                <select wire:model="selectedAccount" id="selectedAccount"
+                                    class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white appearance-none">
+                                    <option value="">انتخاب حساب</option>
+                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($customer->id); ?>">
+                                        <?php echo e($customer->account_number); ?> - <?php echo e($customer->fullname); ?>
 
+                                    </option>
+
+
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </select>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                     <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
                                 </div>
                             </div>
-                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['role'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['selectedAccount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -79,50 +86,29 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         
-                        <div class="flex items-end">
-                             <button type="submit"
-                                class="flex items-center justify-center gap-2 w-[191px] h-[60px] rounded-[12px] bg-transparent border-[#8C8C8C] border text-black font-vazir text-[16px] font-medium transition">
+                        <div class="flex items-end lg:w-[191px]">
+                            <button type="button" wire:click="addCustomer"
+                                class="flex items-center justify-center gap-2 w-full h-[60px] rounded-[12px] bg-transparent border-[#8C8C8C] border text-black font-vazir text-[16px] font-medium transition">
                                 افزودن مشتری
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/customer-add.svg')); ?>" alt="افزودن"
                                     class="w-6 h-6">
-                         
-
                             </button>
-                           </a>
-                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['amount'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
 
                     
-                    <div class="mt-2 flex gap-3">
+                    <div class="mt-2 flex flex-col lg:flex-row gap-3">
                         
-                        <div>
-                            <label class="block text-[16px] font-medium text-black dark:text-gray-300 mb-1 vazir">
-                                مقدار
-                            </label>
-                            <div class="relative w-[353px]">
+                        <div class="flex-1">
+                            <label class="block text-[16px] font-medium text-black mb-1 vazir">مقدار</label>
+                            <div class="relative w-full">
                                 <input type="text" wire:model.live="amount" wire:blur="formatAmount" placeholder="0"
-                                    class="w-[353px] h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                    oninput="this.value = this.value
-                                   .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
-                                   .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
-                                   .replace(/[^0-9]/g, '')" />
+                                    class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                    oninput="this.value = this.value.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[^0-9]/g, '')" />
                             </div>
-
-                            
                             <!--[if BLOCK]><![endif]--><?php if($amountInWords): ?>
                             <p class="text-sm text-blue-600 mt-2 vazir"><?php echo e($amountInWords); ?></p>
                             <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-
                             <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['amount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -136,27 +122,21 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         
-                        <div>
-                            <label class="block text-[16px] font-medium text-black dark:text-gray-300 mb-1 vazir">
-                                نوع ارز
-                            </label>
-                            <div class="relative w-[191px]">
+                        <div class="lg:w-[191px]">
+                            <label class="block text-[16px] font-medium text-black mb-1 vazir">نوع ارز</label>
+                            <div class="relative w-full">
                                 <select wire:model="currency"
-                                    class="w-[191px] h-[60px] p-3 rounded-[12px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white appearance-none">
+                                    class="w-full h-[60px] p-3 rounded-[12px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white appearance-none">
                                     <option value="">انتخاب ارز</option>
-                                    <option value="usd">دالر</option>
-                                    <option value="afn">افغانی</option>
-                                    <option value="pkr">کلدار</option>
-                                    <option value="eur">یورو</option>
-                                    <option value="try">لیره</option>
-                                    <option value="irr">تومان</option>
+                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($c['code']); ?>"><?php echo e($c['name_fa']); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </select>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                     <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓"
                                         class="w-4 h-4">
                                 </div>
                             </div>
-
                             <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['currency'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -173,24 +153,12 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     
                     <div class="mt-2 flex gap-3">
                         <div class="w-full">
-                            <label class="block text-[16px] font-medium text-black dark:text-gray-300 mb-1 vazir">
-                                توسط
-                            </label>
+                            <label class="block text-[16px] font-medium text-black mb-1 vazir">توسط</label>
                             <div class="relative w-full">
-                                <select wire:model="role"
-                                    class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 
-                                   bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white appearance-none">
-                                   <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customer; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customers): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                   <option value=""><?php echo e($customers->fullname); ?></option>
-                                       
-                                   <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
-                                </select>
-                                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓"
-                                        class="w-4 h-4">
-                                </div>
+                                <input list="customerList" wire:model="byUser" placeholder="توسط کی...."
+                                    class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" />
                             </div>
-                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['role'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['byUser'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -204,23 +172,47 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
                     
-                    <div class="mt-2 flex gap-3">
+                    <div class="mt-2 flex flex-col lg:flex-row gap-3">
                         
-                        <div class="w-[250px]">
-                            <label class="block text-[16px] font-medium text-black dark:text-gray-300 mb-1 vazir">
-                                درج زون ها
-                            </label>
+                        <div class="lg:w-[250px]">
+                            <label class="block text-[16px] font-medium text-black mb-1 vazir">درج زون ها</label>
                             <div class="relative">
-                                <select wire:model="role"
-                                    class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 
-                                   bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white appearance-none">
-                                    <option value="">هرات (دفتر هرات کابل)</option>
+                                <select wire:model="zone"
+                                    class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white appearance-none"
+                                    style="max-height: 200px; overflow-y: auto;">
+
+                                    <option value="">انتخاب زون</option>
+                                    <!-- غرب -->
+                                    <option value="غرب">غرب (هرات، بادغیس، غور، فراه)</option>
+                                    <!-- مرکز -->
+                                    <option value="مرکز">مرکز (کابل، پروان، کاپیسا، وردک، لوگر)</option>
+
+                                    <!-- شمال -->
+                                    <option value="شمال">شمال (بلخ، جوزجان، سرپل، سمنگان، فاریاب)</option>
+
+                                    <!-- شمال‌شرق -->
+                                    <option value="شمال‌شرق">شمال‌شرق (کندز، تخار، بدخشان، بغلان)</option>
+
+
+
+                                    <!-- جنوب -->
+                                    <option value="جنوب">جنوب (قندهار، ارزگان، زابل، هلمند)</option>
+
+                                    <!-- جنوب‌شرق -->
+                                    <option value="جنوب‌شرق">جنوب‌شرق (خوست، پکتیا، پکتیکا)</option>
+
+                                    <!-- شرق -->
+                                    <option value="شرق">شرق (ننگرهار، لغمان، کنر، نورستان)</option>
+
+                                    <!-- جنوب‌غرب -->
+                                    <option value="جنوب‌غرب">جنوب‌غرب (نیمروز)</option>
+
                                 </select>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                     <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
                                 </div>
                             </div>
-                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['role'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['zone'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -233,21 +225,19 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         
-                        <div class="w-[290px]">
-                            <label class="block text-[16px] font-medium text-black dark:text-gray-300 mb-1 vazir">
-                                تاریخ
-                            </label>
-                            <input type="text" id="datePicker" wire:model="date" wire:ignore
-                                class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" />
+                        <div class="lg:w-[290px]">
+                            <label class="block text-[16px] font-medium text-black mb-1 vazir">تاریخ</label>
+                            <input type="text" id="datePicker" wire:model="date" wire:ignore placeholder="YYYY/MM/DD"
+                                class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
                         </div>
                     </div>
 
                     
                     <div class="mt-3 flex gap-3">
                         <div class="w-full">
-                            <textarea wire:model="byUser" rows="3" placeholder="شرح تراکنش..."
+                            <textarea wire:model="description" rows="3" placeholder="شرح تراکنش..."
                                 class="w-full p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white resize-none"></textarea>
-                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['byUser'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['description'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -264,21 +254,18 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     <div class="mt-2 flex gap-3">
                         <div class="w-full">
                             <div x-data="{ files: [] }"
-                                x-on:drop.prevent="files = $event.dataTransfer.files; $wire.upload('byUser', files[0])"
+                                x-on:drop.prevent="files = $event.dataTransfer.files; $wire.upload('file', files[0])"
                                 x-on:dragover.prevent
-                                class="w-full h-[150px] p-3 rounded-[12px] border border-dashed focus:ring-2 
-                                    bg-white border-[#112080] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white 
-                                    flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+                                class="w-full h-[150px] p-3 rounded-[12px] border border-dashed focus:ring-2 bg-white border-[#112080] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition"
                                 x-on:click="$refs.fileInput.click()">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/upload.svg')); ?>" alt="آپلود"
                                     class="w-12 h-12 mb-2">
-                                <h1 class="font-vazir text-gray-600 dark:text-gray-300 text-[16px]">
-                                    فایل را اینجا وارد کنید یا بکشید
-                                </h1>
+                                <h1 class="font-vazir text-gray-600 dark:text-gray-300 text-[16px]">فایل را اینجا وارد
+                                    کنید یا بکشید</h1>
                                 <input type="file" class="hidden" x-ref="fileInput"
-                                    x-on:change="$wire.upload('byUser', $event.target.files[0])">
+                                    x-on:change="$wire.upload('file', $event.target.files[0])">
                             </div>
-                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['byUser'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['file'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -292,271 +279,98 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
                     
-                    <div class="flex gap-4 p-4 justify-center items-center text-center">
-                        <button
+                    <div class="flex gap-4 p-4 justify-center items-center text-center flex-wrap">
+                        <button type="submit"
                             class="bg-[#61B138] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">ثبت</button>
-                        <button
+                        <button type="button" wire:click="submitAndPrint"
                             class="bg-[#2563EB] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">ثبت
                             و چاپ</button>
-                        <button
+                        <button type="button" wire:click="cancel"
                             class="bg-[#DD2424] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">انصراف</button>
                     </div>
-
                 </form>
             </div>
 
-            <div class="flex flex-col bg-[#F5F5F5] mt-4 w-full h-[858px]  rounded-[12px] space-y-2 p-[12px]"
+            
+            <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px]"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-                <div class="flex justify-between items-center border border-[#8C8C8C] p-[12px] rounded-[12px]">
-                    <h1 class="text-2xl vazir">ترانزکشن های ثبت شده</h1>
-                    <div class="flex relative ">
-                        <input type="text" class="border border-[#8C8C8C] w-[302px] h-[51px] bg-transparent rounded-[12px] p-3"
+
+                
+                <div
+                    class="flex flex-col md:flex-row justify-between  items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
+                    <h1 class="text-lg md:text-xl lg:text-2xl vazir">ترانزکشن های ثبت شده</h1>
+                    <div class="relative w-full md:w-[302px]">
+                        <input type="text"
+                            class="border border-[#8C8C8C] w-full h-12 md:h-[51px] bg-transparent rounded-[12px] p-2 md:p-3 text-sm md:text-base"
                             placeholder="جستجو....">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
-                            class="absolute left-2 top-2">
+                            class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6">
                     </div>
                 </div>
 
-                <div class="overflow-hidden rounded-xl border border-gray-200">
-                    <table class="min-w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mb-5">
-
-                        <!-- هدر جدول -->
-                        <thead class="bg-[#2B65E5] dark:bg-gray-700 text-white text-[18px] vazir h-[67px]"
+                
+                <div class="overflow-x-auto">
+                    <table
+                        class="min-w-full text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400 mb-5">
+                        <thead
+                            class="bg-[#2B65E5] dark:bg-gray-700 text-white text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px]"
                             style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
                             <tr>
-                                <th class="px-6 py-6 font-bold">
-                                    <span class="border border-white h-2 w-5 px-3 rounded-lg">#</span>
-                                </th>
-                                <th class="px-6 py-6 font-bold">معامله</th>
-                                <th class="px-6 py-6 font-bold">مبلغ</th>
-                                <th class="px-6 py-6 font-bold">واحد</th>
-                                <th class="px-6 py-6 font-bold text-center">توضیحات</th>
-                                <th class="px-6 py-6 font-bold">تاریخ</th>
-                                <th class="px-6 py-6 font-bold text-center">عملیات</th>
+                                <th class="px-3 md:px-6 py-3 md:py-6 font-bold">#</th>
+                                <th class="px-3 md:px-6 py-3 md:py-6 font-bold">معامله</th>
+                                <th class="px-3 md:px-6 py-3 md:py-6 font-bold">مبلغ</th>
+                                <th class="px-3 md:px-6 py-3 md:py-6 font-bold">واحد</th>
+                                <th class="px-3 md:px-6 py-3 md:py-6 font-bold text-center">توضیحات</th>
+                                <th class="px-3 md:px-6 py-3 md:py-6 font-bold">تاریخ</th>
+                                <th class="px-3 md:px-6 py-3 md:py-6 font-bold text-center">عملیات</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr class=" text-black border-b border-[#D9D9D9] bg-transparent pt-4 ">
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">1</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">برد</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">5000</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">افغانی</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">
-                                    <p class="text-center text-[16px] vazir">توسط: خودش</p>
-                                    <p class="text-center text-[16px] vazir">زون: هرات</p>
-                                    <p class="text-center text-[16px] vazir">تفصیلات: رسید شد توسط بسم الله جان</p>
-                                </td>
-
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">1404/7/11</td>
-
-                                <td class="px-6 py-4 flex justify-center gap-1">
-                                    <button wire:click="" class="px-2 py-1">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>"
-                                            class="w-10 h-10" alt="Edit">
-                                    </button>
-                                    <button wire:click="" class="px-2 py-1">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>"
-                                            class="w-10 h-10" alt="Delete">
-                                    </button>
-                                    <button class="px-2 py-1">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
-                                            class="w-14 h-14" alt="Print">
-                                    </button>
-                                </td>
-
-
-
-
-
-                            </tr>
-
-                            
-                            <tr class=" text-black border-b border-[#D9D9D9] bg-transparent pt-4 ">
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">2</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">برد</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">5000</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">افغانی</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">
-                                    <p class="text-center text-[16px] vazir">توسط: خودش</p>
-                                    <p class="text-center text-[16px] vazir">زون: هرات</p>
-                                    <p class="text-center text-[16px] vazir">تفصیلات: رسید شد توسط بسم الله جان</p>
-                                </td>
-
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">1404/7/11</td>
-
-                                <td class="px-6 py-4 flex justify-center gap-1">
-                                    <button wire:click="" class="px-2 py-1">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>"
-                                            class="w-10 h-10" alt="Edit">
-                                    </button>
-                                    <button wire:click="" class="px-2 py-1">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>"
-                                            class="w-10 h-10" alt="Delete">
-                                    </button>
-                                    <button class="px-2 py-1">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
-                                            class="w-14 h-14" alt="Print">
-                                    </button>
-                                </td>
-                            </tr>
-
-
-                            
-                            <tr class=" text-black border-b border-[#D9D9D9] bg-transparent pt-4 ">
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">3</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">برد</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">5000</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">افغانی</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">
-                                    <p class="text-center text-[16px] vazir">توسط: خودش</p>
-                                    <p class="text-center text-[16px] vazir">زون: هرات</p>
-                                    <p class="text-center text-[16px] vazir">تفصیلات: رسید شد توسط بسم الله جان</p>
-                                </td>
-
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">1404/7/11</td>
-
-                                <td class="px-6 py-4 flex justify-center gap-1">
-                                    <button wire:click="" class="px-2 py-1">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>"
-                                            class="w-10 h-10" alt="Edit">
-                                    </button>
-                                    <button wire:click="" class="px-2 py-1">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>"
-                                            class="w-10 h-10" alt="Delete">
-                                    </button>
-                                    <button class="px-2 py-1">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
-                                            class="w-14 h-14" alt="Print">
-                                    </button>
-                                </td>
-                            </tr>
-
-
-                            
-                            <tr class=" text-black border-b border-[#D9D9D9] bg-transparent pt-4 ">
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">4</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">برد</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">5000</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">افغانی</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">
-                                    <p class="text-center text-[16px] vazir">توسط: خودش</p>
-                                    <p class="text-center text-[16px] vazir">زون: هرات</p>
-                                    <p class="text-center text-[16px] vazir">تفصیلات: رسید شد توسط بسم الله جان</p>
-                                </td>
-
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">1404/7/11</td>
-
-                                <td class="px-6 py-4 flex justify-center gap-1">
-                                    <button wire:click="" class="px-2 py-1">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>"
-                                            class="w-10 h-10" alt="Edit">
-                                    </button>
-                                    <button wire:click="" class="px-2 py-1">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>"
-                                            class="w-10 h-10" alt="Delete">
-                                    </button>
-                                    <button class="px-2 py-1">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
-                                            class="w-14 h-14" alt="Print">
-                                    </button>
-                                </td>
-                            </tr>
-
-
-
-                            
-                            <tr class=" text-black border-b border-[#D9D9D9] bg-transparent pt-4 ">
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">5</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">برد</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">5000</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">افغانی</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">
-                                    <p class="text-center text-[16px] vazir">توسط: خودش</p>
-                                    <p class="text-center text-[16px] vazir">زون: هرات</p>
-                                    <p class="text-center text-[16px] vazir">تفصیلات: رسید شد توسط بسم الله جان</p>
-                                </td>
-
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">1404/7/11</td>
-
-                                <td class="px-6 py-4 flex justify-center gap-1">
-                                    <button wire:click="" class="px-2 py-1">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>"
-                                            class="w-10 h-10" alt="Edit">
-                                    </button>
-                                    <button wire:click="" class="px-2 py-1">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>"
-                                            class="w-10 h-10" alt="Delete">
-                                    </button>
-                                    <button class="px-2 py-1">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
-                                            class="w-14 h-14" alt="Print">
-                                    </button>
-                                </td>
-                            </tr>
-
-
-                            
-                            <tr class=" text-black border-b border-[#D9D9D9] bg-transparent pt-4 ">
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">6</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">برد</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">5000</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">افغانی</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">
-                                    <p class="text-center text-[16px] vazir">توسط: خودش</p>
-                                    <p class="text-center text-[16px] vazir">زون: هرات</p>
-                                    <p class="text-center text-[16px] vazir">تفصیلات: رسید شد توسط بسم الله جان</p>
-                                </td>
-
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">1404/7/11</td>
-
-                                <td class="px-6 py-4 flex justify-center gap-1">
-                                    <button wire:click="" class="px-2 py-1">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>"
-                                            class="w-10 h-10" alt="Edit">
-                                    </button>
-                                    <button wire:click="" class="px-2 py-1">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>"
-                                            class="w-10 h-10" alt="Delete">
-                                    </button>
-                                    <button class="px-2 py-1">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
-                                            class="w-14 h-14" alt="Print">
-                                    </button>
-                                </td>
-                            </tr>
-
-                            
-                            <tr class=" text-black border-b border-[#D9D9D9] bg-transparent pt-4 ">
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">7</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">برد</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">5000</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">افغانی</td>
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">
-                                    <p class="text-center text-[16px] vazir">توسط: خودش</p>
-                                    <p class="text-center text-[16px] vazir">زون: هرات</p>
-                                    <p class="text-center text-[16px] vazir">تفصیلات: رسید شد توسط بسم الله جان</p>
-                                </td>
-
-                                <td class="px-3 py-2 vazir text-[16px] font-medium ">1404/7/11</td>
-
-                                <td class="px-6 py-4 flex justify-center gap-1">
-                                    <button wire:click="" class="px-2 py-1">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>"
-                                            class="w-10 h-10" alt="Edit">
-                                    </button>
-                                    <button wire:click="" class="px-2 py-1">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>"
-                                            class="w-10 h-10" alt="Delete">
-                                    </button>
-                                    <button class="px-2 py-1">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
-                                            class="w-14 h-14" alt="Print">
-                                    </button>
-                                </td>
-                            </tr>
-
-                        </tbody>
                     </table>
+
+                    <div class="max-h-[560px] overflow-y-auto"> 
+                        <table
+                            class="min-w-full text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <tbody>
+                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $transactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $transaction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <tr class="text-black border-b border-[#D9D9D9] bg-transparent">
+                                    <td class="px-2 md:px-3 py-2 vazir text-[12px] md:text-[16px] font-medium"><?php echo e($key +
+                                        1); ?></td>
+                                    <td class="px-2 md:px-3 py-2 vazir text-[12px] md:text-[16px] font-medium"><?php echo e($transaction->type); ?></td>
+                                    <td class="px-2 md:px-3 py-2 vazir text-[12px] md:text-[16px] font-medium"><?php echo e($transaction->amount); ?></td>
+                                    <td class="px-2 md:px-3 py-2 vazir text-[12px] md:text-[16px] font-medium">
+                                        <?php echo e(collect($currencies)->firstWhere('code', $transaction->currency)['name_fa']
+                                        ?? $transaction->currency); ?>
+
+                                    </td>
+                                    <td
+                                        class="px-2 md:px-3 py-2 vazir text-[12px] md:text-[16px] font-medium text-center">
+                                        <p>توسط: <?php echo e($transaction->by); ?></p>
+                                        <p>زون: <?php echo e($transaction->zone); ?></p>
+                                        <p>تفصیلات: <?php echo e($transaction->description); ?></p>
+                                    </td>
+                                    <td class="px-6 py-2 vazir text-[16px] w-32 whitespace-nowrap">
+                                        <?php echo e($transaction->date); ?> - <?php echo e(\Carbon\Carbon::parse($transaction->created_at)->format('h:i A')); ?>
+
+                                    </td>
+                                    <td class="py-2 flex justify-center gap-1">
+                                        <button wire:click="edit(<?php echo e($transaction->id); ?>)" class="px-1 md:px-2 py-1">
+                                            <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>"
+                                                class="w-8  h-8" alt="Edit">
+                                        </button>
+                                        <button wire:click="delete(<?php echo e($transaction->id); ?>)" class="px-1 md:px-2 py-1">
+                                            <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>"
+                                                class="w-8 h-8" alt="Delete">
+                                        </button>
+                                        <button wire:click="print(<?php echo e($transaction->id); ?>)" class="px-1 md:px-2 py-1">
+                                            <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
+                                                class="w-10 h-10" alt="Print">
+                                        </button>
+                                    </td>
+                                </tr>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
 
@@ -578,9 +392,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
     <style>
         .scroll-container {
             scrollbar-width: thin;
-            /* فایرفاکس */
             scrollbar-color: #e5e7eb #f9fafb;
-            /* رنگ شَست و بَک‌گراند */
         }
 
         .scroll-container::-webkit-scrollbar {

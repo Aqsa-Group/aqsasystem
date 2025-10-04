@@ -237,6 +237,84 @@ return [
 
 
 
+    // users
+    'title_add_user' => 'کاروونکی اضافه کړه',
+    'subtitle_user' => 'مهرباني وکړئ د کاروونکي معلومات په دقت سره ولیکئ',
+
+    'profile_image' => 'د پروفایل انځور',
+    'idcard_image' => 'د تذکرې انځور',
+
+    'fullname_user' => 'بشپړ نوم',
+    'account_number' => 'د حساب شمېره',
+    'account_placeholder' => '۱۶ عددي حساب شمېره',
+
+    'category_user' => 'نقش',
+    'city_user' => 'پته',
+    'sarafi_name' => 'د صرافۍ نوم',
+    'phone_user' => 'د اړیکې شمېره',
+    'tazkira' => 'د تذکرې شمېره',
+    'whatsapp' => 'د واتساپ شمېره',
+    'password' => 'پاسورډ',
+    'username' => 'کارن نوم',
+    'Success' => 'بریا',
+    'user_deleted' => 'کاروونکی په بریالیتوب سره ړنګ شو!',
+    'user_created' => 'کاروونکی په بریالیتوب سره جوړ شو!',
+    'user_updated' => 'کاروونکی په بریالیتوب سره تازه شو!',
+
+    'cancel' => 'لغوه کول',
+    'save' => 'خوندي کول',
+    'update' => 'تازه کول',
+
+    'success_title' => 'بریالیتوب',
+    'success_message' => 'عملیات په بریالیتوب سره ترسره شو',
+    'close' => 'بندول',
+
+    'customer_created' => 'نوی مشتری په بریالیتوب سره جوړ شو',
+    'customer_updated' => 'مشتری په بریالیتوب سره تازه شو',
+    'profile_removed'  => 'د پروفایل انځور په بریالیتوب سره ړنګ شو',
+    'idcard_removed'   => 'د تذکرې انځور په بریالیتوب سره ړنګ شو',
+
+    // placeholders
+    'placeholder_fullname_user' => 'بشپړ نوم...',
+    'placeholder_city_user' => 'پته...',
+    'placeholder_sarafi_name' => 'د صرافۍ نوم...',
+    'placeholder_username' => 'کارن نوم...',
+    'placeholder_userpassword' => 'پاسورډ...',
+    'placeholder_user_limit' => 'د کاروونکو اعظمي شمېر...',
+    'placeholder_lastname' => 'تخلص...',
+    'placeholder_name' => 'نوم...',
+    'placeholder_address' => 'پته...',
+
+    'placeholder_phone_user' => 'د اړیکې شمېره...',
+    'placeholder_tazkira' => 'د تذکرې شمېره',
+    'placeholder_whatsapp' => '07xx.xxxx.xxxx',
+    'placeholder_password' => 'پاسورډ',
+    'placeholder_select_user' => 'نقش وټاکئ',
+
+    // categories
+    'category_normal' => 'عادي مشتری',
+    'category_regular' => 'منظم مشتری',
+    'category_gold' => 'طلایي مشتری',
+    'category_special' => 'ځانګړی',
+    'choose_user' => 'نقش وټاکئ',
+
+    // validation
+    'validation_fullname_required' => 'بشپړ نوم اړین دی.',
+    'validation_account_required' => 'د حساب شمېره اړینه ده.',
+    'validation_account_unique' => 'دغه حساب شمېره مخکې کارول شوې.',
+    'validation_city_required' => 'د ښار نوم اړین دی.',
+    'validation_phone_required' => 'د اړیکې شمېره اړینه ده.',
+    'validation_phone_unique' => 'دغه د اړیکې شمېره مخکې کارول شوې.',
+    'validation_tazkira_unique' => 'دغه د تذکرې شمېره مخکې کارول شوې.',
+    'validation_password_min' => 'پاسورډ باید لږ تر لږه ۶ توري ولري.',
+    'actions' => 'کړنې',
+    'edit' => 'ایډیټ',
+    'view' => 'کتل',
+    'delete' => 'ړنګول',
+
+
+
+
 
 
 

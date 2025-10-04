@@ -243,4 +243,82 @@ return [
     'delete' => 'Delete',
     'customer_deleted' => 'Customer deleted successfully.',
 
+
+
+
+      // users
+    'title_add_user' => 'Add User',
+    'subtitle_user' => 'Please enter the user information carefully',
+
+    'profile_image' => 'Profile Image',
+    'idcard_image' => 'ID Card Image',
+
+    'fullname_user' => 'Full Name',
+    'account_number' => 'Account Number',
+    'account_placeholder' => '16-digit account number',
+
+    'category_user' => 'Role',
+    'city_user' => 'Address',
+    'sarafi_name' => 'Exchange Name',
+    'phone_user' => 'Phone Number',
+    'tazkira' => 'Tazkira Number',
+    'whatsapp' => 'WhatsApp Number',
+    'password' => 'Password',
+    'username' => 'Username',
+    'Success' => 'Success',
+    'user_deleted' => 'User deleted successfully!',
+    'user_created' => 'User created successfully!',
+    'user_updated' => 'User updated successfully!',
+
+    'cancel' => 'Cancel',
+    'save' => 'Save',
+    'update' => 'Update',
+
+    'success_title' => 'Success',
+    'success_message' => 'The operation was successful',
+    'close' => 'Close',
+
+    'customer_created' => 'New customer created successfully',
+    'customer_updated' => 'Customer updated successfully',
+    'profile_removed'  => 'Profile picture removed successfully',
+    'idcard_removed'   => 'ID card image removed successfully',
+
+    // placeholders
+    'placeholder_fullname_user' => 'Full name...',
+    'placeholder_city_user' => 'Address...',
+    'placeholder_sarafi_name' => 'Exchange name...',
+    'placeholder_username' => 'Username...',
+    'placeholder_userpassword' => 'Password...',
+    'placeholder_user_limit' => 'Allowed user count...',
+    'placeholder_lastname' => 'Last name...',
+    'placeholder_name' => 'Name...',
+    'placeholder_address' => 'Address...',
+
+    'placeholder_phone_user' => 'Phone number...',
+    'placeholder_tazkira' => 'Tazkira number',
+    'placeholder_whatsapp' => '07xx.xxxx.xxxx',
+    'placeholder_password' => 'Password',
+    'placeholder_select_user' => 'Select role',
+
+    // categories
+    'category_normal' => 'Normal Customer',
+    'category_regular' => 'Regular Customer',
+    'category_gold' => 'Gold Customer',
+    'category_special' => 'Special',
+    'choose_user' => 'Choose role',
+
+    // validation
+    'validation_fullname_required' => 'Full name is required.',
+    'validation_account_required' => 'Account number is required.',
+    'validation_account_unique' => 'This account number has already been used.',
+    'validation_city_required' => 'City name is required.',
+    'validation_phone_required' => 'Phone number is required.',
+    'validation_phone_unique' => 'This phone number has already been used.',
+    'validation_tazkira_unique' => 'This Tazkira number has already been used.',
+    'validation_password_min' => 'Password must be at least 6 characters.',
+    'actions' => 'Actions',
+    'edit' => 'Edit',
+    'view' => 'View',
+    'delete' => 'Delete',
+
 ];

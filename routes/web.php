@@ -22,6 +22,7 @@ use App\Http\Controllers\printLoan;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use App\Filament\Import\Pages\SaleReportGeneral;
+use App\Http\Livewire\Sarafi\customers;
  
 
 
@@ -170,6 +171,17 @@ Route::get('/sarafi/customer-transactions', function () {
     }
     return view('Sarafi.components.transaction');
 })->name('sarafi.transactions');
+
+
+Route::get('/sarafi/customers', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.transaction');
+})->name('sarafi.customers.create');
+
+
+
 
 
 
