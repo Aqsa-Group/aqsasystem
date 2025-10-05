@@ -21,6 +21,7 @@
                 <th>موجودی به دانه</th> --}}
                 <th>قیمت پرچون</th>
                 <th>قیمت عمده</th> 
+                <th>قیمت به</th> 
                 <th>ساخت کشور</th>
                 {{-- <th>عکس محصول</th> --}}
             </tr>
@@ -33,8 +34,10 @@
                    {{-- <td>{{ $item->quantity }}</td>
                    <td>{{ $item->unit }}</td>
                    <td>{{ $item->all_exist_number }}</td> --}}
-                   <td>{{ $item->retail_price }}</td> 
-                   <td>{{ $item->big_whole_price }}</td>
+                   <td>{{ number_format($item->retail_price ,2) }}</td> 
+                   <td>{{ number_format($item->big_whole_price ,2) }}</td>
+                   <td>دالر</td>
+
                    <td>{{ $item->brand }}</td>
                    {{-- <td>
                        @if($item->product_image)

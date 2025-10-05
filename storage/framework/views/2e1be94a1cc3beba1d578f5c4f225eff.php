@@ -19,6 +19,7 @@
                 
                 <th>قیمت پرچون</th>
                 <th>قیمت عمده</th> 
+                <th>قیمت به</th> 
                 <th>ساخت کشور</th>
                 
             </tr>
@@ -29,8 +30,10 @@
                    
                    <td><?php echo e($item->name); ?></td>
                    
-                   <td><?php echo e($item->retail_price); ?></td> 
-                   <td><?php echo e($item->big_whole_price); ?></td>
+                   <td><?php echo e(number_format($item->retail_price ,2)); ?></td> 
+                   <td><?php echo e(number_format($item->big_whole_price ,2)); ?></td>
+                   <td>دالر</td>
+
                    <td><?php echo e($item->brand); ?></td>
                    
                </tr>
