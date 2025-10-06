@@ -13,24 +13,23 @@ class CustomersTable extends Component
 
     public $search = '';
     public $confirmingDelete = null;
-    public $selectedCustomers = []; 
+    public $selectedCustomers = [];
 
 
 
     public $selectAll = false;
 
-public function updatedSelectAll($value)
-{
-    if ($value) {
-        $this->selectedCustomers = $this->customers->pluck('id')->toArray();
-    } else {
-        $this->selectedCustomers = [];
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            $this->selectedCustomers = $this->customers->pluck('id')->toArray();
+        } else {
+            $this->selectedCustomers = [];
+        }
     }
-}
 
     public function mount()
     {
-        // بررسی احراز هویت
         if (!Auth::guard('sarafi')->check()) {
             return redirect()->route('sarafi.login.form');
         }
@@ -51,31 +50,42 @@ public function updatedSelectAll($value)
         if ($this->confirmingDelete) {
             Customer::find($this->confirmingDelete)->delete();
             $this->confirmingDelete = null;
-           session()->flash('message', __('messages.customer_deleted'));
-
+            session()->flash('message', __('messages.customer_deleted'));
         }
     }
 
-    // انتقال به صفحه ویرایش با پارامتر ID
     public function editCustomer($id)
     {
         return redirect()->route('sarafi.customer-create', ['customerId' => $id]);
     }
 
-    // انتقال به صفحه ایجاد مشتری جدید
     public function createCustomer()
     {
         return redirect()->route('sarafi.customer-create');
     }
-
     public function render()
     {
-        $customers = Customer::when($this->search, function ($query) {
-            $query->where('fullname', 'like', '%' . $this->search . '%')
-                  ->orWhere('phone', 'like', '%' . $this->search . '%')
-                  ->orWhere('account_number', 'like', '%' . $this->search . '%')
-                  ->orWhere('city', 'like', '%' . $this->search . '%');
-        })->orderBy('created_at', 'desc')->paginate(10);
+        $user = Auth::guard('sarafi')->user();
+
+        if (!$user) {
+            return view('livewire.sarafi.customers-table', [
+                'customers' => collect(),
+            ]);
+        }
+
+        $adminId = $user->admin_id ?? $user->id;
+
+        $customers = Customer::where('admin_id', $adminId)
+            ->when($this->search, function ($query) {
+                $query->where(function ($q) {
+                    $q->where('fullname', 'like', '%' . $this->search . '%')
+                        ->orWhere('phone', 'like', '%' . $this->search . '%')
+                        ->orWhere('account_number', 'like', '%' . $this->search . '%')
+                        ->orWhere('city', 'like', '%' . $this->search . '%');
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
 
         return view('livewire.sarafi.customers-table', compact('customers'));
     }

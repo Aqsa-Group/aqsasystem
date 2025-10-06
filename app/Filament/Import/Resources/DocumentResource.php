@@ -41,72 +41,68 @@ class DocumentResource extends Resource
                 //
             ]);
     }
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('invoice_number')
-                    ->label('شماره فاکتور')
-                    ->sortable()
-                    ->searchable(),
+   public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            Tables\Columns\TextColumn::make('invoice_number')
+                ->label('شماره فاکتور')
+                ->sortable()
+                ->searchable(),
 
-                Tables\Columns\TextColumn::make('sale_type')
-                    ->label('نوع فروش')
-                    ->formatStateUsing(fn(string $state) => $state === 'wholesale' ? 'عمده' : 'پرچون')
-                    ->searchable()
-                    ->sortable(),
+            Tables\Columns\TextColumn::make('sale_type')
+                ->label('نوع فروش')
+                ->formatStateUsing(fn(string $state) => $state === 'wholesale' ? 'عمده' : 'پرچون')
+                ->searchable()
+                ->sortable(),
 
-                Tables\Columns\TextColumn::make('buyer_name')
-                    ->label('نام خریدار')
-                    ->default('-')
-                    ->searchable()
-                    ->sortable(),
+            Tables\Columns\TextColumn::make('buyer_name')
+                ->label('نام خریدار')
+                ->default('-')
+                ->searchable()
+                ->sortable(),
 
-                Tables\Columns\TextColumn::make('total_amount')
-                    ->label('مبلغ کل فروش')
-                    ->suffix('دالر')
-                    ->sortable(),
+            Tables\Columns\TextColumn::make('total_amount')
+                ->label('مبلغ کل فروش')
+                ->suffix('دالر')
+                ->sortable(),
 
-                Tables\Columns\TextColumn::make('paid_amount')
-                    ->label('مبلغ دریافتی')
-                    ->default('-')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+            Tables\Columns\TextColumn::make('paid_amount')
+                ->label('مبلغ دریافتی')
+                ->default('-')
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true),
 
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('تاریخ فروش')
-                    ->formatStateUsing(
-                        fn($state) =>
-                        Jalalian::fromDateTime($state)->format('Y/m/d h:i A')
-                    )
-                    ->searchable()
-                    ->sortable(),
+            Tables\Columns\TextColumn::make('created_at')
+                ->label('تاریخ فروش')
+                ->formatStateUsing(fn($state) => Jalalian::fromDateTime($state)->format('Y/m/d h:i A'))
+                ->searchable()
+                ->sortable(),
 
-                Tables\Columns\IconColumn::make('file_path')
-                    ->label('فاکتور')
-                    ->url(fn($record) => asset($record->file_path), true)
-                    ->icon('heroicon-o-printer')
-                    ->tooltip('مشاهده/چاپ فاکتور'),
-            ])
-            ->filters([
-                Tables\Filters\SelectFilter::make('sale_type')
-                    ->label('نوع فروش')
-                    ->options([
-                        'retail'    => 'پرچون',
-                        'wholesale' => 'عمده',
-                    ]),
-            ])
-            ->actions([
-                // Tables\Actions\ViewAction::make(),
-                // Tables\Actions\EditAction::make(),
-                // Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            Tables\Columns\IconColumn::make('file_path')
+                ->label('فاکتور')
+                ->url(fn($record) => asset($record->file_path), true)
+                ->icon('heroicon-o-printer')
+                ->tooltip('مشاهده/چاپ فاکتور'),
+        ])
+        ->defaultSort('created_at', 'desc') // <-- این خط اضافه شد
+        ->filters([
+            Tables\Filters\SelectFilter::make('sale_type')
+                ->label('نوع فروش')
+                ->options([
+                    'retail'    => 'پرچون',
+                    'wholesale' => 'عمده',
                 ]),
-            ]);
-    }
+        ])
+        ->actions([
+            // ...
+        ])
+        ->bulkActions([
+            Tables\Actions\BulkActionGroup::make([
+                Tables\Actions\DeleteBulkAction::make(),
+            ]),
+        ]);
+}
 
 
     public static function getRelations(): array

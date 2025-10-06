@@ -1,39 +1,33 @@
-     @font-face {
+@font-face {
     font-family: "DimaYekan";
     src: url("/fonts/Yekan-Regular.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }
 
-    @font-face {
-    font-family: "vazir";
-    src: url("/fonts/Vazir.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-}
-
-    @font-face {
+@font-face {
     font-family: "times";
     src: url("/fonts/times.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }
 
-
-
 .yekan {
     font-family: "DimaYekan", sans-serif;
 }
-.vazir{
+@font-face {
+    font-family: "vazir";
+    src: url("/fonts/Vazir.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+.vazir {
     font-family: "vazir", sans-serif;
+}
 
-}   
-
-.times{
+.times {
     font-family: "times", sans-serif;
-
-}   
-
+}
 
 /* برای مرورگرهای مدرن */
 input::placeholder {
@@ -43,20 +37,19 @@ input::placeholder {
     line-height: 100%;
     letter-spacing: 0;
     text-align: right;
-    color: #8C8C8C; /* رنگ خاکستری مشابه placeholder */
+    color: #8c8c8c; /* رنگ خاکستری مشابه placeholder */
 }
 
 /* برای مرورگرهای قدیمی */
-input:-ms-input-placeholder { /* IE 10+ */
+input:-ms-input-placeholder {
+    /* IE 10+ */
     font-family: "Vazir", sans-serif;
 }
-input::-ms-input-placeholder { /* Edge */
+input::-ms-input-placeholder {
+    /* Edge */
     font-family: "Vazir", sans-serif;
 }
 
-body{
-      font-family: "Vazir", sans-serif;
+body {
+    font-family: "Vazir", sans-serif;
 }
-
-
-

@@ -22,6 +22,8 @@ class Customer extends Authenticatable
         'whatsapp_number',
         'password', 
         'type',
+        'user_id',
+        'admin_id',
         'created_by',
     ];
 
@@ -34,4 +36,20 @@ class Customer extends Authenticatable
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+      public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function admin()
+    {
+        return $this->belongsTo(User::class, 'admin_id');
+    }
+
 }

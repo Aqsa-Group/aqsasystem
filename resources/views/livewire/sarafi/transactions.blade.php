@@ -239,93 +239,162 @@
                     </div>
                 </form>
             </div>
-
             {{-- جدول تراکنش‌ها --}}
             <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px]"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 {{-- بالای جدول: عنوان و جستجو --}}
                 <div
-                    class="flex flex-col md:flex-row justify-between  items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
+                    class="flex flex-col md:flex-row justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                     <h1 class="text-lg md:text-xl lg:text-2xl vazir">ترانزکشن های ثبت شده</h1>
-                    <div class="relative w-full md:w-[302px]">
-                        <input type="text"
-                            class="border border-[#8C8C8C] w-full h-12 md:h-[51px] bg-transparent rounded-[12px] p-2 md:p-3 text-sm md:text-base"
-                            placeholder="جستجو....">
-                        <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
-                            class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6">
+
+                    <div class="flex items-center gap-3">
+                        {{-- نمایش نام مشتری انتخاب شده --}}
+                        @if($selectedCustomerId)
+                        @php
+                        $selectedCustomer = \App\Models\Sarafi\Customer::find($selectedCustomerId);
+                        @endphp
+                        <div class="bg-blue-100 px-3 py-2 rounded-lg flex items-center gap-2">
+                            <span class="text-blue-700 vazir">فیلتر: {{ $selectedCustomer->fullname ?? '' }}</span>
+                            <button wire:click="clearFilter" class="text-red-500 hover:text-red-700 text-lg">
+                                ✕
+                            </button>
+                        </div>
+                        @endif
+
+                        <div class="relative w-full md:w-[302px]">
+                            <!-- Input جستجوی زنده با wire:model.live -->
+                            <input type="text" wire:model.live="search"
+                                class="border border-[#8C8C8C] w-full h-12 md:h-[51px] bg-transparent rounded-[12px] p-2 md:p-3 text-sm md:text-base pr-10"
+                                placeholder="جستجو بر اساس نام یا نمبر حساب...">
+
+                            <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
+                                class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6">
+
+                            <!-- دکمه پاک کردن جستجو -->
+                            @if($search)
+                            <button wire:click="clearSearchAndFilter"
+                                class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                                ✕
+                            </button>
+                            @endif
+
+                            <!-- لیست پیشنهادات -->
+                            @if($search && count($filteredCustomers) > 0 && !$selectedCustomerId)
+                            <ul
+                                class="absolute z-50 w-full bg-white border border-gray-300 mt-1 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                                @foreach($filteredCustomers as $customer)
+                                <li wire:click="selectCustomer({{ $customer->id }})"
+                                    class="px-3 py-2 hover:bg-blue-100 cursor-pointer flex justify-between items-center">
+                                    <span>{{ $customer->fullname }}</span>
+                                    <span class="text-gray-500 text-sm">{{ $customer->account_number }}</span>
+                                </li>
+                                @endforeach
+                            </ul>
+                            @endif
+                        </div>
                     </div>
                 </div>
 
                 {{-- جدول --}}
-                <div class="overflow-x-auto">
-                    <table
-                        class="min-w-full text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400 mb-5">
-                        <thead
-                            class="bg-[#2B65E5] dark:bg-gray-700 text-white text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px]"
-                            style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-                            <tr>
-                                <th class="px-3 md:px-6 py-3 md:py-6 font-bold">#</th>
-                                <th class="px-3 md:px-6 py-3 md:py-6 font-bold">معامله</th>
-                                <th class="px-3 md:px-6 py-3 md:py-6 font-bold">مبلغ</th>
-                                <th class="px-3 md:px-6 py-3 md:py-6 font-bold">واحد</th>
-                                <th class="px-3 md:px-6 py-3 md:py-6 font-bold text-center">توضیحات</th>
-                                <th class="px-3 md:px-6 py-3 md:py-6 font-bold">تاریخ</th>
-                                <th class="px-3 md:px-6 py-3 md:py-6 font-bold text-center">عملیات</th>
-                            </tr>
-                        </thead>
-                    </table>
-
-                    <div class="max-h-[560px] overflow-y-auto"> {{-- ارتفاع حدود ۱۰ ردیف، بعدش اسکرول --}}
+                <div class="overflow-x-auto w-full">
+                    <div class="max-h-[680px] overflow-y-auto min-w-[890px]">
                         <table
-                            class="min-w-full text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <thead
+                                class="bg-[#2B65E5] dark:bg-gray-700 text-white text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0"
+                                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                                <tr>
+                                    <th class="px-4 py-4 font-bold w-16">#</th>
+                                    <th class="px-4 py-4 font-bold w-48">نام مشتری</th>
+                                    <th class="px-4 py-4 font-bold w-32">معامله</th>
+                                    <th class="px-4 py-4 font-bold w-40">مبلغ</th>
+                                    <th class="px-4 py-4 font-bold w-32">واحد</th>
+                                    <th class="px-4 py-4 font-bold w-80 text-center">توضیحات</th>
+                                    <th class="px-4 py-4 font-bold w-40">تاریخ</th>
+                                    <th class="px-4 py-4 font-bold w-48 text-center">عملیات</th>
+                                </tr>
+                            </thead>
                             <tbody>
-                                @foreach($transactions as $key => $transaction)
+                                @forelse($transactions as $key => $transaction)
                                 <tr class="text-black border-b border-[#D9D9D9] bg-transparent">
-                                    <td class="px-2 md:px-3 py-2 vazir text-[12px] md:text-[16px] font-medium">{{ $key +
-                                        1 }}</td>
-                                    <td class="px-2 md:px-3 py-2 vazir text-[12px] md:text-[16px] font-medium">{{
-                                        $transaction->type }}</td>
-                                    <td class="px-2 md:px-3 py-2 vazir text-[12px] md:text-[16px] font-medium">{{
-                                        $transaction->amount }}</td>
-                                    <td class="px-2 md:px-3 py-2 vazir text-[12px] md:text-[16px] font-medium">
+                                    <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">
+                                        {{ $key + 1 }}
+                                    </td>
+                                    <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium w-48">
+                                        {{ $transaction->customer->fullname ?? '-' }}
+                                    </td>
+                                    <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium w-32">
+                                        <span
+                                            class="px-3 py-1 rounded-full text-[16px] {{ $transaction->type === 'رسید' ? ' text-green-800' : 'text-red-800' }}">
+                                            {{ $transaction->type }}
+                                        </span>
+                                    </td>
+                                    <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium w-40">
+                                        {{ number_format($transaction->amount) }}
+                                    </td>
+                                    <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium w-32">
                                         {{ collect($currencies)->firstWhere('code', $transaction->currency)['name_fa']
                                         ?? $transaction->currency }}
                                     </td>
-                                    <td
-                                        class="px-2 md:px-3 py-2 vazir text-[12px] md:text-[16px] font-medium text-center">
-                                        <p>توسط: {{ $transaction->by }}</p>
-                                        <p>زون: {{ $transaction->zone }}</p>
-                                        <p>تفصیلات: {{ $transaction->description }}</p>
+                                    <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-80">
+                                        <div class="space-y-1 text-right">
+                                            <p class="text-sm">توسط: {{ $transaction->by }}</p>
+                                            <p class="text-sm">زون: {{ $transaction->zone }}</p>
+                                            <p class="text-sm">تفصیلات: {{ $transaction->description }}</p>
+                                        </div>
                                     </td>
-                                    <td class="px-6 py-2 vazir text-[16px] w-32 whitespace-nowrap">
-                                        {{ $transaction->date }} - {{
-                                        \Carbon\Carbon::parse($transaction->created_at)->format('h:i A') }}
+                                    <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-40">
+                                        <div class="whitespace-nowrap">
+                                            <div class="font-medium">{{ $transaction->date }}</div>
+                                            <div class="text-gray-500 text-sm mt-1">
+                                                {{ \Carbon\Carbon::parse($transaction->created_at)->format('h:i A') }}
+                                            </div>
+                                        </div>
                                     </td>
-                                    <td class="py-2 flex justify-center gap-1">
-                                        <button wire:click="edit({{ $transaction->id }})" class="px-1 md:px-2 py-1">
-                                            <img src="{{ asset('assets/sarafi/all_icon/edit_table.svg') }}"
-                                                class="w-8  h-8" alt="Edit">
-                                        </button>
-                                        <button wire:click="delete({{ $transaction->id }})" class="px-1 md:px-2 py-1">
-                                            <img src="{{ asset('assets/sarafi/all_icon/trash_table.svg') }}"
-                                                class="w-8 h-8" alt="Delete">
-                                        </button>
-                                        <button wire:click="print({{ $transaction->id }})" class="px-1 md:px-2 py-1">
-                                            <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"
-                                                class="w-10 h-10" alt="Print">
-                                        </button>
+                                    <td class="py-4 text-center w-[68]">
+                                        <div class="flex justify-center gap-3">
+                                            <!-- دکمه ویرایش -->
+                                            <button wire:click="edit({{ $transaction->id }})" class="w-12 h-12 flex items-center justify-center  
+                   rounded-full transition-colors" title="ویرایش">
+                                                <img src="{{ asset('assets/sarafi/all_icon/edit_table.svg') }}"
+                                                    class="w-7 h-7" alt="Edit">
+                                            </button>
+
+                                            <!-- دکمه حذف -->
+                                            <button wire:click="delete({{ $transaction->id }})" class="w-12 h-12 flex items-center justify-center 
+                   rounded-full transition-colors" title="حذف">
+                                                <img src="{{ asset('assets/sarafi/all_icon/trash_table.svg') }}"
+                                                    class="w-8 h-8" alt="Delete">
+                                            </button>
+
+                                            <!-- دکمه پرینت -->
+                                            <button wire:click="print({{ $transaction->id }})" class="w-12 h-12 flex items-center justify-center  
+                   rounded-full transition-colors" title="پرینت">
+                                                <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"
+                                                    class="w-10 h-10" alt="Print">
+                                            </button>
+                                        </div>
+                                    </td>
+
+
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="8" class="text-center text-gray-500 py-8 text-lg">
+                                        @if($selectedCustomerId)
+                                        هیچ تراکنشی برای این مشتری یافت نشد
+                                        @else
+                                        هیچ تراکنشی یافت نشد
+                                        @endif
                                     </td>
                                 </tr>
-                                @endforeach
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
                 </div>
-
-
             </div>
-
 
         </div>
 

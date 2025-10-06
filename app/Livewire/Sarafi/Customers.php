@@ -104,6 +104,8 @@ class Customers extends Component
             'tazkira.required' => __('messages.validation_tazkira_required'),
             'password.required' => __('messages.validation_password_required'),
         ]);
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
 
         $data = [
             'fullname' => $this->fullname,
@@ -113,15 +115,14 @@ class Customers extends Component
             'phone' => $this->phone,
             'idcard_number' => $this->tazkira,
             'whatsapp_number' => $this->whatsapp,
-            'created_by' => Auth::guard('sarafi')->id(),
+            'user_id'          => $user->id,
+            'admin_id'         => $adminId,
         ];
 
-        // مدیریت رمز عبور
         if ($this->password) {
             $data['password'] = Hash::make($this->password);
         }
 
-        // مدیریت آپلود عکس پروفایل جدید
         if ($this->newProfile) {
             $profilePath = $this->newProfile->store('customers/profiles', 'public');
             $data['image'] = $profilePath;

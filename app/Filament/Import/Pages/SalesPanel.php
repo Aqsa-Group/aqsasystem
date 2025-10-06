@@ -235,6 +235,16 @@ public function updateItemPrice(int $index): void
         $this->searchName = '';
         $this->suggestions = [];
     }
+
+    public function finalizeAndPrintInvoice(): void
+{
+    // اول ثبت
+    $this->finalizeInvoice();
+
+    // بعد چاپ
+    $this->printInvoice();
+}
+
 public function finalizeInvoice(): void
 {
     // بررسی شرایط اولیه
@@ -395,6 +405,8 @@ public function finalizeInvoice(): void
     });
 
     Notification::make()->title('فاکتور با موفقیت ثبت شد!')->success()->send();
+  
+
 }
 
 
