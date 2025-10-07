@@ -115,7 +115,7 @@
             </div>
         </div>
 
-        <?php if($sale): ?>
+        <!--[if BLOCK]><![endif]--><?php if($sale): ?>
         <div
             class="bg-white dark:bg-gray-900 rounded-xl shadow-md p-4 border border-gray-200 dark:border-gray-700 space-y-4">
             <div class="flex items-center justify-between">
@@ -142,11 +142,11 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-                        <?php $__currentLoopData = $rows; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $rows; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
                             <td class="p-2"><?php echo e($row['name']); ?></td>
                             <td class="p-2"><?php echo e($row['unit']); ?></td>
-                            <td class="p-2"><?php echo e(number_format($row['sale_price'])); ?></td>
+                            <td class="p-2"><?php echo e(rtrim(rtrim(number_format($row['sale_price'], 2, '.', ''), '0'), '.')); ?></td>
                             <td class="p-2"><?php echo e($row['sold_qty']); ?></td>
                             <td class="p-2">
                                 <input type="number" min="0" max="<?php echo e($row['sold_qty']); ?>"
@@ -154,11 +154,12 @@
                                     class="w-24 border rounded-lg px-2 py-1 text-sm bg-gray-50 dark:bg-gray-800 dark:text-gray-100" />
                             </td>
                             <td class="p-2 font-semibold text-blue-600 dark:text-blue-400">
-                                <?php echo e(number_format($row['total'])); ?>
+                              <?php echo e(rtrim(rtrim(number_format($row['total'], 2, '.', ','), '0'), '.')); ?>
+
 
                             </td>
                         </tr>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                     </tbody>
                 </table>
             </div>
@@ -166,7 +167,8 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 justify-between">
                 <div class="flex items-center justify-between bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
                     <span class="text-sm dark:text-gray-200">مجموع برگشتی</span>
-                    <span class="text-lg font-bold text-blue-600 dark:text-blue-400"><?php echo e(number_format($totalReturn)); ?>
+                    <span class="text-lg font-bold text-blue-600 dark:text-blue-400"><?php echo e(rtrim(rtrim(number_format($totalReturn, 2, '.', ','), '0'), '.')); ?>
+
 
                         دالر</span>
                 </div>
@@ -174,7 +176,7 @@
 
 
             </div>
-            <?php endif; ?>
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </div>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>

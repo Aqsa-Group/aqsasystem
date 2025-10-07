@@ -127,7 +127,7 @@
                     ]); ?>"
                 >
                     <div class="grid gap-y-3">
-                        <?php if($hasDate()): ?>
+                        <!--[if BLOCK]><![endif]--><?php if($hasDate()): ?>
                             <div class="flex items-center justify-between">
                                 <select
                                     x-model="focusedMonth"
@@ -205,9 +205,9 @@
                                     ></div>
                                 </template>
                             </div>
-                        <?php endif; ?>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                        <?php if($hasTime): ?>
+                        <!--[if BLOCK]><![endif]--><?php if($hasTime): ?>
                             <div
                                 class="flex items-center justify-center rtl:flex-row-reverse"
                             >
@@ -237,7 +237,7 @@
                                     class="me-1 w-10 border-none bg-transparent p-0 text-center text-sm text-gray-950 focus:ring-0 dark:text-white"
                                 />
 
-                                <?php if($hasSeconds()): ?>
+                                <!--[if BLOCK]><![endif]--><?php if($hasSeconds()): ?>
                                     <span
                                         class="text-sm font-medium text-gray-500 dark:text-gray-400"
                                     >
@@ -253,9 +253,9 @@
                                         x-model.debounce="second"
                                         class="me-1 w-10 border-none bg-transparent p-0 text-center text-sm text-gray-950 focus:ring-0 dark:text-white"
                                     />
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
-                        <?php endif; ?>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
                 </div>
             </div>
@@ -270,13 +270,13 @@
 <?php unset($__componentOriginal505efd9768415fdb4543e8c564dad437); ?>
 <?php endif; ?>
 
-    <?php if($datalistOptions): ?>
+    <!--[if BLOCK]><![endif]--><?php if($datalistOptions): ?>
         <datalist id="<?php echo e($id); ?>-list">
-            <?php $__currentLoopData = $datalistOptions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $option): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $datalistOptions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $option): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <option value="<?php echo e($option); ?>" />
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
         </datalist>
-    <?php endif; ?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal511d4862ff04963c3c16115c05a86a9d)): ?>

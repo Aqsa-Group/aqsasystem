@@ -1,16 +1,27 @@
 <div>
     <div class="container mx-auto px-4">
+        @if (session()->has('message'))
+        <div x-data="{ show: true }" x-init="setTimeout(() => show = false,  4000)" x-show="show" x-transition
+            class="p-4 mb-4 h-[103px] w-full absolute flex justify-start items-center top-0 left-0 bg-[#2B65E5] vazir">
+
+            <h2 class="text-white vazir text-[18px]">
+                {{ session('message') }}
+            </h2>
+        </div>
+        @endif
+
+
 
         {{-- کارت‌های ارزها با اسکرول افقی --}}
         <div class="scroll-container overflow-x-auto whitespace-nowrap py-3 -mt-5">
             @foreach ($currenciesdefault as $currency)
             <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
                 <div class="flex flex-col h-[149px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px]
-                        @if ($currency['name'] === 'خلاصه بیلانس به دالر') 
-                            bg-gradient-to-b from-[#11BEC7] to-[#6371D0]
-                        @else
-                            bg-gradient-to-b from-[#2563EB] to-[#5474BB] 
-                        @endif">
+                            @if ($currency['name'] === 'خلاصه بیلانس به دالر') 
+                                bg-gradient-to-b from-[#11BEC7] to-[#6371D0]
+                            @else
+                                bg-gradient-to-b from-[#2563EB] to-[#5474BB] 
+                            @endif">
 
                     <h1 class="text-[24px] text-white">{{ $currency['name'] }}</h1>
                     <h2 class="text-center text-[30px] text-white mt-2">{{ $currency['value'] }}</h2>
@@ -40,8 +51,8 @@
                         <button class="bg-[#DD2424] rounded-[8px] p-[10px] text-white vazir font-semibold">توقف
                             پیامک</button>
                         <button wire:click="toggleTransactionType" class="rounded-[8px] p-[10px] text-white vazir font-semibold
-                            transition-colors duration-500 ease-in-out
-                            {{ $transactionType === 'برد' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
+                                transition-colors duration-500 ease-in-out
+                                {{ $transactionType === 'برد' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
                             {{ $transactionType === 'برد' ? 'رسید (دریافت صندوق)' : 'برد (برداشت صندوق)' }}
                         </button>
                     </div>
@@ -56,17 +67,17 @@
                         <div class="flex-1">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">نمبر حساب</label>
                             <div class="relative w-full">
-                                <select wire:model="selectedAccount" id="selectedAccount"
-                                    class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white appearance-none">
+                                <select wire:model="selectedAccount" id="selectCustomer"
+                                    class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500">
                                     <option value="">انتخاب حساب</option>
                                     @foreach ($customers as $customer)
                                     <option value="{{ $customer->id }}">
                                         {{ $customer->account_number }} - {{ $customer->fullname }}
                                     </option>
-
-
                                     @endforeach
                                 </select>
+                                
+
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                     <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
                                 </div>
@@ -356,21 +367,53 @@
                                         <div class="flex justify-center gap-3">
                                             <!-- دکمه ویرایش -->
                                             <button wire:click="edit({{ $transaction->id }})" class="w-12 h-12 flex items-center justify-center  
-                   rounded-full transition-colors" title="ویرایش">
+                    rounded-full transition-colors" title="ویرایش">
                                                 <img src="{{ asset('assets/sarafi/all_icon/edit_table.svg') }}"
                                                     class="w-7 h-7" alt="Edit">
                                             </button>
 
                                             <!-- دکمه حذف -->
-                                            <button wire:click="delete({{ $transaction->id }})" class="w-12 h-12 flex items-center justify-center 
-                   rounded-full transition-colors" title="حذف">
+                                            <button wire:click="confirmDelete({{ $transaction->id }})"
+                                                class="w-12 h-12 flex items-center justify-center rounded-full transition-colors"
+                                                title="حذف">
                                                 <img src="{{ asset('assets/sarafi/all_icon/trash_table.svg') }}"
                                                     class="w-8 h-8" alt="Delete">
                                             </button>
 
+                                            <!-- مودال تأیید حذف -->
+                                            @if ($confirmDeleteId)
+                                            <div
+                                                class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                                                <div
+                                                    class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px] pb-[21px] rounded-[12px] shadow-xl w-[653px] h-[252.7267608642578px] text-center animate-fadeIn z-50 border-[1px]  border-[#E1DED3]">
+                                                    <button wire:click="$set('confirmDeleteId', null)"
+                                                        class="flex right-0 h-4 w-4"><img
+                                                            src="{{ asset('assets/sarafi/all_icon/close.svg') }}"
+                                                            alt=""></button>
+                                                    <h1 class="text-2xl text-black shabnam font-medium leading-[100%] ">
+                                                        حذف ترانزکشــــــــــن</h1>
+                                                    <hr class="bg-[#E1DED3] mt-8">
+                                                    <p class=" mb-6 text-xl shabnam mt-5">آیا مطمئن هستید می خواهید این
+                                                        ترانزکشن را حذف کنید؟</p>
+                                                    <div class="flex justify-center gap-4">
+                                                        <button wire:click="$set('confirmDeleteId', null)"
+                                                            class="px-20  text-white text-xl shabnam-fd py-4 bg-[#DD2424] rounded-xl transition">
+                                                            {{ __('messages.no') }}
+                                                        </button>
+                                                        <button wire:click="deleteConfirmed"
+                                                            class="px-20 py-4 bg-[#2563EB] text-xl shabnam-fd text-white rounded-xl  transition flex items-center gap-2">
+                                                            {{ __('messages.yes') }}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @endif
+
+
+
                                             <!-- دکمه پرینت -->
                                             <button wire:click="print({{ $transaction->id }})" class="w-12 h-12 flex items-center justify-center  
-                   rounded-full transition-colors" title="پرینت">
+                    rounded-full transition-colors" title="پرینت">
                                                 <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"
                                                     class="w-10 h-10" alt="Print">
                                             </button>
@@ -398,13 +441,15 @@
 
         </div>
 
+
+
     </div>
 
     {{-- Event Alert --}}
     <script>
         window.addEventListener('report-alert', event => {
-            alert(event.detail.message);
-        });
+                alert(event.detail.message);
+            });
     </script>
 
     {{-- Scrollbar Style --}}
@@ -431,5 +476,13 @@
         .scroll-container::-webkit-scrollbar-thumb:hover {
             background: #cbd5e1;
         }
+        #selectCustomer {
+    appearance: none;          /* برای مرورگرهای مدرن */
+    -webkit-appearance: none;  /* برای Chrome, Safari */
+    -moz-appearance: none;     /* برای Firefox */
+    background: transparent;   /* اطمینان از شفاف بودن پس‌زمینه */
+    padding-left: 1rem;        /* اگر لازم باشه فاصله داخلی برای متن */
+}
+
     </style>
 </div>

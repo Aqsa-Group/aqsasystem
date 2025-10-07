@@ -21,6 +21,43 @@
     font-weight: normal;
     font-style: normal;
 }
+
+
+@font-face {
+    font-family: "vazir";
+    src: url("/fonts/Shabnam-Medium.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+.shabnam {
+    font-family: "shabnam", sans-serif;
+}
+
+
+
+@font-face {
+    font-family: "vazir";
+    src: url("/fonts/Shabnam-FD.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+.shabnam-fd {
+    font-family: "shabnam", sans-serif;
+}
+
+
+@font-face {
+    font-family: "amiri";
+    src: url("/fonts/amiri-regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+
+
+
 .vazir {
     font-family: "vazir", sans-serif;
 }
@@ -28,6 +65,9 @@
 .times {
     font-family: "times", sans-serif;
 }
+
+
+
 
 /* برای مرورگرهای مدرن */
 input::placeholder {

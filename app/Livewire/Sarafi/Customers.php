@@ -13,7 +13,7 @@ use Livewire\WithFileUploads;
 class Customers extends Component
 {
     use WithFileUploads;
-    
+
     public $customerId;
     public $fullname, $account, $category, $city, $phone, $tazkira, $whatsapp, $password;
     public $profile;
@@ -23,11 +23,11 @@ class Customers extends Component
     public $showSuccessModal = false;
     public $successMessage = '';
     public $autoGenerateAccount = true;
-    
+
     public function mount($customerId = null)
     {
         $this->customerId = request('customerId') ?? $customerId;
-        
+
         if ($this->customerId) {
             $this->loadCustomerData();
             $this->autoGenerateAccount = false;
@@ -35,7 +35,7 @@ class Customers extends Component
             $this->generateAccountNumber();
         }
     }
-    
+
     private function generateAccountNumber()
     {
         do {
@@ -45,18 +45,18 @@ class Customers extends Component
 
         $this->account = $accountNumber;
     }
-    
+
     public function generateNewAccountNumber()
     {
         $this->generateAccountNumber();
     }
-    
+
     public function loadCustomerData()
     {
         Log::info('Loading customer data for ID: ' . $this->customerId);
-        
+
         $customer = Customer::find($this->customerId);
-        
+
         if ($customer) {
             $this->fullname = $customer->fullname;
             $this->account = $customer->account_number;
@@ -65,10 +65,10 @@ class Customers extends Component
             $this->phone = $customer->phone;
             $this->tazkira = $customer->idcard_number;
             $this->whatsapp = $customer->whatsapp_number;
-            $this->password = ''; 
+            $this->password = '';
             $this->profile = $customer->image;
             $this->idCardImage = $customer->id_card_image;
-            
+
             Log::info('Customer data loaded:', [
                 'fullname' => $this->fullname,
                 'phone' => $this->phone,
@@ -78,14 +78,18 @@ class Customers extends Component
             Log::error('Customer not found with ID: ' . $this->customerId);
         }
     }
-    
+
     public function saveCustomer()
     {
         if (!$this->customerId && empty($this->account)) {
             $this->generateAccountNumber();
         }
+        $this->account = $this->convertToEnglishNumbers($this->account);
+        $this->tazkira = $this->convertToEnglishNumbers($this->tazkira);
+        $this->phone = $this->convertToEnglishNumbers($this->phone);
+        $this->whatsapp = $this->convertToEnglishNumbers($this->whatsapp);
 
-         $validated = $this->validate([
+        $validated = $this->validate([
             'fullname' => 'required|string|max:255',
             'account' => 'nullable|string|max:16|min:16|unique:sarafi.customers,account_number,' . $this->customerId,
             'category' => 'nullable|string|max:255',
@@ -152,10 +156,10 @@ class Customers extends Component
             $this->successMessage =  __('messages.customer_create');
             Log::info('New customer created');
         }
-        
+
         $this->showSuccessModal = true;
     }
-    
+
     public function removeProfileImage()
     {
         if ($this->newProfile) {
@@ -166,12 +170,12 @@ class Customers extends Component
                 if ($customer->image && Storage::exists('public/' . $customer->image)) {
                     Storage::delete('public/' . $customer->image);
                 }
-                
+
                 $customer->update(['image' => null]);
                 $this->profile = null;
             }
         }
-        
+
         session()->flash('message',  __('messages.customer_update'));
     }
 
@@ -185,42 +189,41 @@ class Customers extends Component
                 if ($customer->id_card_image && Storage::exists('public/' . $customer->id_card_image)) {
                     Storage::delete('public/' . $customer->id_card_image);
                 }
-                
+
                 $customer->update(['id_card_image' => null]);
                 $this->idCardImage = null;
             }
         }
-           session()->flash('message',  __('messages.idcard_removed'));
-
+        session()->flash('message',  __('messages.idcard_removed'));
     }
 
     public function resetForm()
     {
         return redirect()->route('sarafi.customer-table');
     }
-    
+
     public function backToTable()
     {
         return redirect()->route('sarafi.customer-table');
     }
-    
+
     public function closeSuccessModal()
     {
         $this->showSuccessModal = false;
         return redirect()->route('sarafi.customer-table');
     }
-    
+
     private function convertToEnglishNumbers($value)
     {
         if (!$value) return $value;
-        
+
         $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
         $arabic = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
         $english = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-        
+
         $value = str_replace($persian, $english, $value);
         $value = str_replace($arabic, $english, $value);
-        
+
         return $value;
     }
 
@@ -248,7 +251,7 @@ class Customers extends Component
     {
         $this->whatsapp = $this->convertToEnglishNumbers($value);
     }
-    
+
     public function render()
     {
         return view('livewire.sarafi.customers');

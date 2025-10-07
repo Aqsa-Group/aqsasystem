@@ -40,7 +40,7 @@
             \Filament\Support\prepare_inherited_attributes($getExtraAttributeBag())
                 ->class(['fi-fo-select'])
         )]); ?>
-        <?php if((! ($isSearchable() || $isMultiple()) && $isNative())): ?>
+        <!--[if BLOCK]><![endif]--><?php if((! ($isSearchable() || $isMultiple()) && $isNative())): ?>
             <?php if (isset($component)) { $__componentOriginal97dc683fe4ff7acce9e296503563dd85 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal97dc683fe4ff7acce9e296503563dd85 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.input.select','data' => ['autofocus' => $isAutofocused(),'disabled' => $isDisabled,'id' => $getId(),'inlinePrefix' => $isPrefixInline && (count($prefixActions) || $prefixIcon || filled($prefixLabel)),'inlineSuffix' => $isSuffixInline && (count($suffixActions) || $suffixIcon || filled($suffixLabel)),'required' => $isRequired() && (! $isConcealed()),'attributes' => 
@@ -65,48 +65,48 @@
                     $isHtmlAllowed = $isHtmlAllowed();
                 ?>
 
-                <?php if($canSelectPlaceholder): ?>
+                <!--[if BLOCK]><![endif]--><?php if($canSelectPlaceholder): ?>
                     <option value="">
-                        <?php if(! $isDisabled): ?>
+                        <!--[if BLOCK]><![endif]--><?php if(! $isDisabled): ?>
                             <?php echo e($getPlaceholder()); ?>
 
-                        <?php endif; ?>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                     </option>
-                <?php endif; ?>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                <?php $__currentLoopData = $getOptions(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <?php if(is_array($label)): ?>
+                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $getOptions(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <!--[if BLOCK]><![endif]--><?php if(is_array($label)): ?>
                         <optgroup label="<?php echo e($value); ?>">
-                            <?php $__currentLoopData = $label; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $groupedValue => $groupedLabel): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $label; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $groupedValue => $groupedLabel): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option
                                     <?php if($isOptionDisabled($groupedValue, $groupedLabel)): echo 'disabled'; endif; ?>
                                     value="<?php echo e($groupedValue); ?>"
                                 >
-                                    <?php if($isHtmlAllowed): ?>
+                                    <!--[if BLOCK]><![endif]--><?php if($isHtmlAllowed): ?>
                                         <?php echo $groupedLabel; ?>
 
                                     <?php else: ?>
                                         <?php echo e($groupedLabel); ?>
 
-                                    <?php endif; ?>
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </option>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                         </optgroup>
                     <?php else: ?>
                         <option
                             <?php if($isOptionDisabled($value, $label)): echo 'disabled'; endif; ?>
                             value="<?php echo e($value); ?>"
                         >
-                            <?php if($isHtmlAllowed): ?>
+                            <!--[if BLOCK]><![endif]--><?php if($isHtmlAllowed): ?>
                                 <?php echo $label; ?>
 
                             <?php else: ?>
                                 <?php echo e($label); ?>
 
-                            <?php endif; ?>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </option>
-                    <?php endif; ?>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
              <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal97dc683fe4ff7acce9e296503563dd85)): ?>
@@ -199,7 +199,7 @@
 
                 ></select>
             </div>
-        <?php endif; ?>
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
      <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal505efd9768415fdb4543e8c564dad437)): ?>

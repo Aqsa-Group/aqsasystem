@@ -123,7 +123,7 @@
 
                         </h1>
 
-                        <p class="text-3xl font-extrabold drop-shadow-md">10</p>
+                        <p class="text-3xl font-extrabold drop-shadow-md"><?php echo e($UserCount); ?></p>
                     </div>
 
                     <!-- تعداد مشتریان -->
@@ -153,7 +153,7 @@
                         <h1 class="text-lg font-semibold drop-shadow-md text-center">
                             <?php echo e(__('messages.general_today_transactions')); ?></h1>
 
-                        <p class="text-3xl font-extrabold drop-shadow-md">10</p>
+                        <p class="text-3xl font-extrabold drop-shadow-md"><?php echo e($TransactionCount); ?></p>
                     </div>
 
                     <!-- تراکنش‌های در انتظار -->
@@ -269,7 +269,7 @@
           <template x-if="activeTab === 'safes'">
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 vazir">
 
-        <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
                 <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
@@ -283,7 +283,7 @@
                     </p>
                 </div>
             </div>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
 
     </div>
 </template>

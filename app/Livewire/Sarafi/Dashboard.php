@@ -2,10 +2,12 @@
 
 namespace App\Livewire\Sarafi;
 
-use App\Models\Sarafi\Customer;
 use App\Models\Sarafi\CurrencySafe;
-use Livewire\Component;
+use App\Models\Sarafi\Customer;
+use App\Models\Sarafi\Transaction;
+use App\Models\Sarafi\User;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class Dashboard extends Component
 {
@@ -40,10 +42,18 @@ class Dashboard extends Component
 
     public function render()
     {
-        $customerCount = Customer::count();
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+            $customerCount = Customer::where('admin_id', $adminId)->count();
+            $UserCount = User::where('admin_id', $adminId)->count();
+            $TransactionCount = Transaction::where('admin_id', $adminId)->count();
+
 
         return view('livewire.sarafi.dashboard', [
+            'UserCount' => $UserCount,
             'customerCount' => $customerCount,
+            'TransactionCount' => $TransactionCount,
             'safe' => $this->safe,
             'currencies' => $this->currencies,
         ]);

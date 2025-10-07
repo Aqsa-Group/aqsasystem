@@ -11,10 +11,15 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Morilog\Jalali\Jalalian;
 use NumberFormatter;
+use Mpdf\Mpdf;
+use Illuminate\Support\Facades\Storage;
+
+
 
 class Transactions extends Component
 {
     use WithFileUploads;
+    public $confirmDeleteId = null;
 
     public $customer_id;
     public $selectedAccount;
@@ -24,6 +29,23 @@ class Transactions extends Component
     public $currencies = [];
     public $amount;
     public $amountInWords;
+
+    public $accountSearch = '';
+
+    public function updatedAccountSearch($value)
+{
+    $user = Auth::guard('sarafi')->user();
+    $adminId = $user->admin_id ?? $user->id;
+
+    $this->filteredCustomers = Customer::where('admin_id', $adminId)
+        ->where(function ($query) use ($value) {
+            $query->where('fullname', 'like', "%{$value}%")
+                  ->orWhere('account_number', 'like', "%{$value}%");
+        })
+        ->limit(15)
+        ->get();
+}
+
 
     public $transactionType = 'برد';
     public $date;
@@ -76,43 +98,48 @@ class Transactions extends Component
         $this->updateCustomerCurrencyBalance();
     }
 
-public function updatedSearch($value)
+    public function updatedSearch($value)
+    {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        if (empty($value)) {
+            $this->selectedCustomerId = null;
+            $this->filteredCustomers = [];
+            $this->updateTransactions();
+            return;
+        }
+
+        $this->filteredCustomers = Customer::where('admin_id', $adminId)
+            ->where(function ($query) use ($value) {
+                $query->where('fullname', 'like', "%{$value}%")
+                    ->orWhere('account_number', 'like', "%{$value}%");
+            })
+            ->get();
+
+        // اگر فقط یک مشتری پیدا شد، به طور خودکار انتخابش کن
+        if ($this->filteredCustomers->count() === 1) {
+            $this->selectCustomer($this->filteredCustomers->first()->id);
+        } else {
+            $this->selectedCustomerId = null;
+            $this->updateTransactions();
+        }
+    }
+
+
+   public function selectCustomer($customerId)
 {
-    $user = Auth::guard('sarafi')->user();
-    $adminId = $user->admin_id ?? $user->id;
+    $this->selectedCustomerId = $customerId;
+    $this->search = '';
+    $this->filteredCustomers = [];
+    $this->updateTransactions();
+    $this->updateCustomerCurrencyBalance();
 
-    if (empty($value)) {
-        $this->selectedCustomerId = null;
-        $this->filteredCustomers = [];
-        $this->updateTransactions();
-        return;
-    }
-
-    $this->filteredCustomers = Customer::where('admin_id', $adminId)
-        ->where(function ($query) use ($value) {
-            $query->where('fullname', 'like', "%{$value}%")
-                  ->orWhere('account_number', 'like', "%{$value}%");
-        })
-        ->get();
-
-    // اگر فقط یک مشتری پیدا شد، به طور خودکار انتخابش کن
-    if ($this->filteredCustomers->count() === 1) {
-        $this->selectCustomer($this->filteredCustomers->first()->id);
-    } else {
-        $this->selectedCustomerId = null;
-        $this->updateTransactions();
-    }
+    // اضافه کردن این خط برای ست کردن شماره حساب
+    $customer = Customer::find($customerId);
+    $this->selectedAccount = $customer->id ?? null;
 }
 
-
-    public function selectCustomer($customerId)
-    {
-        $this->selectedCustomerId = $customerId;
-        $this->search = '';
-        $this->filteredCustomers = [];
-        $this->updateTransactions();
-        $this->updateCustomerCurrencyBalance(); // این خط رو اضافه کنید
-    }
 
     public function updateCustomerCurrencyBalance()
     {
@@ -264,28 +291,28 @@ public function updatedSearch($value)
         $this->transactions = $query->latest()->get();
     }
 
- public function render()
-{
-    $user = Auth::guard('sarafi')->user();
+    public function render()
+    {
+        $user = Auth::guard('sarafi')->user();
 
-    if (!$user) {
+        if (!$user) {
+            return view('livewire.sarafi.transactions', [
+                'customers' => collect(),
+                'transactions' => collect(),
+            ]);
+        }
+
+        $adminId = $user->admin_id ?? $user->id;
+
+        $customers = Customer::select('id', 'account_number', 'fullname')
+            ->where('admin_id', $adminId)
+            ->get();
+
         return view('livewire.sarafi.transactions', [
-            'customers' => collect(),
-            'transactions' => collect(),
+            'customers' => $customers,
+            'transactions' => $this->transactions,
         ]);
     }
-
-    $adminId = $user->admin_id ?? $user->id;
-
-    $customers = Customer::select('id', 'account_number', 'fullname')
-        ->where('admin_id', $adminId)
-        ->get();
-
-    return view('livewire.sarafi.transactions', [
-        'customers' => $customers,
-        'transactions' => $this->transactions,
-    ]);
-}
 
     public function updatedAmount($value)
     {
@@ -328,16 +355,26 @@ public function updatedSearch($value)
         $this->transactionType = $transaction->type;
     }
 
-    public function delete($id)
+
+    public function confirmDelete($id)
     {
-        $transaction = Transaction::findOrFail($id);
+        $this->confirmDeleteId = $id;
+    }
+
+    public function deleteConfirmed()
+    {
+        $transaction = Transaction::findOrFail($this->confirmDeleteId);
 
         $user = Auth::guard('sarafi')->user();
         $this->applyCurrencyChange($user, $transaction->currency, $transaction->amount, $transaction->type, true);
 
         $transaction->delete();
-        session()->flash('message', 'تراکنش با موفقیت حذف شد.');
+
+        session()->flash('message', 'ترانزکشن موفقـــــانــــــه حذف گردید.');
+
         $this->updateTransactions();
+
+        $this->confirmDeleteId = null;
     }
 
     public function submitTransaction()
@@ -397,6 +434,138 @@ public function updatedSearch($value)
         $this->resetForm();
     }
 
+    public function submitAndPrint()
+    {
+        $this->selectedAccount = (int) $this->selectedAccount;
+        $this->amount = str_replace(',', '', $this->amount);
+        $user = Auth::guard('sarafi')->user();
+
+        $this->validate([
+            'selectedAccount'  => 'required|exists:sarafi.customers,id',
+            'byUser'           => 'nullable|string|max:255',
+            'currency'         => 'required|string',
+            'amount'           => 'required|numeric|min:1',
+            'transactionType'  => 'required|string',
+            'date'             => 'required|date',
+            'description'      => 'nullable|string|max:500',
+            'zone'             => 'required|string',
+            'file'             => 'nullable|file|max:10240',
+        ]);
+
+        $filePath = $this->file ? $this->file->store('transactions', 'public') : null;
+        $adminId = $user->admin_id ?? $user->id;
+
+        $data = [
+            'customer_id'      => $this->selectedAccount,
+            'user_id'          => $user->id,
+            'admin_id'         => $adminId,
+            'currency'         => $this->currency,
+            'amount'           => $this->amount,
+            'type'             => $this->transactionType,
+            'date'             => $this->date,
+            'description'      => $this->description,
+            'zone'             => $this->zone,
+            'transaction_file' => $filePath,
+            'by'               => $this->byUser,
+        ];
+
+        if ($this->transactionId) {
+            $old = Transaction::findOrFail($this->transactionId);
+
+            $this->applyCurrencyChange($user, $old->currency, $old->amount, $old->type, true);
+
+            $old->update($data);
+
+            $this->applyCurrencyChange($user, $this->currency, $this->amount, $this->transactionType);
+
+            $transaction = $old;
+
+            session()->flash('message', 'تراکنش با موفقیت بروزرسانی شد.');
+        } else {
+            $transaction = Transaction::create($data);
+
+            $this->applyCurrencyChange($user, $this->currency, $this->amount, $this->transactionType);
+
+            session()->flash('message', 'تراکنش با موفقیت ثبت شد.');
+        }
+
+        $this->updateTransactions();
+        $this->resetForm();
+
+
+
+        $html = view('pdf.Sarafi.transaction', ['transaction' => $transaction])->render();
+
+
+        $mpdf = new Mpdf([
+            'mode' => 'utf-8',
+            'format' => [80, 600],
+            'directionality' => 'rtl',
+            'margin_top' => 2,
+            'margin_bottom' => 2,
+            'margin_left' => 2,
+            'margin_right' => 2,
+            'fontDir' => array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'], [
+                public_path('fonts'),
+            ]),
+            'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+                'Shabnam' => [
+                    'R' => 'Shabnam-FD.ttf',
+                ],
+            ],
+            'default_font' => 'Shabnam',
+        ]);
+
+        $mpdf->SetAutoPageBreak(false);
+
+        $mpdf->WriteHTML($html);
+
+        $fileName = 'ترانزکشن_شماره_' . $transaction->id . '_به_اسم_' . $transaction->customer->fullname . '.pdf';
+
+        return response()->streamDownload(function () use ($mpdf) {
+            echo $mpdf->Output('', 'S');
+        }, $fileName);
+    }
+
+
+    public function print($transactionId)
+    {
+        $transaction = Transaction::with(['customer', 'user'])->findOrFail($transactionId);
+
+        $mpdf = new Mpdf([
+            'mode' => 'utf-8',
+            'format' => [80, 250],
+            'directionality' => 'rtl',
+            'margin_top' => 2,
+            'margin_bottom' => 2,
+            'margin_left' => 2,
+            'margin_right' => 2,
+            'fontDir' => array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'], [
+                public_path('fonts'),
+            ]),
+            'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+                'Shabnam' => [
+                    'R' => 'Shabnam-FD.ttf',
+                ],
+            ],
+            'default_font' => 'Shabnam',
+        ]);
+
+        $mpdf->SetAutoPageBreak(false);
+
+        $html = view('pdf.Sarafi.transaction', compact('transaction'))->render();
+        $mpdf->WriteHTML($html);
+
+        $fileName = 'ترانزکشن_شماره_' . $transaction->id . '_به_اسم_' . $transaction->customer->fullname . '.pdf';
+
+        return response()->streamDownload(function () use ($mpdf) {
+            echo $mpdf->Output('', 'S');
+        }, $fileName);
+    }
+
+
+
+
     private function applyCurrencyChange($user, $currency, $amount, $transactionType, $reverse = false)
     {
         $adminId = $user->admin_id ?? $user->id;
@@ -431,6 +600,10 @@ public function updatedSearch($value)
 
         $safe->save();
     }
+
+
+
+
 
     private function updateCurrencySafe($userId, $currency, $amount)
     {

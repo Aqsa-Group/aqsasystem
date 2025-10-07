@@ -112,7 +112,7 @@
                         <h1 class="text-lg font-semibold drop-shadow-md text-center">{{ __('messages.general_users') }}
                         </h1>
 
-                        <p class="text-3xl font-extrabold drop-shadow-md">10</p>
+                        <p class="text-3xl font-extrabold drop-shadow-md">{{ $UserCount }}</p>
                     </div>
 
                     <!-- تعداد مشتریان -->
@@ -142,7 +142,7 @@
                         <h1 class="text-lg font-semibold drop-shadow-md text-center">
                             {{ __('messages.general_today_transactions') }}</h1>
 
-                        <p class="text-3xl font-extrabold drop-shadow-md">10</p>
+                        <p class="text-3xl font-extrabold drop-shadow-md">{{ $TransactionCount }}</p>
                     </div>
 
                     <!-- تراکنش‌های در انتظار -->

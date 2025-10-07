@@ -287,7 +287,7 @@
             class="bg-white w-full h-[80px] flex items-center justify-between px-6 shadow-[0_4px_4px_rgba(17,41,199,0.4)]">
             <!-- برند + انتخاب زبان -->
             <div class="flex items-center space-x-4 rtl:space-x-reverse gap-6 justify-center ">
-                <div class="text-[40px] text-[#122EE1] font-bold yekan">صرافی زرین</div>
+                <div class="text-[40px] text-[#122EE1] font-bold yekan"><?php echo e(Auth::guard('sarafi')->user()->sarafi_name); ?></div>
 
                 <?php $locale = session('locale', config('app.locale')); ?>
                 <div class="relative inline-block w-[145px] h-[56px] p-2 vazir">

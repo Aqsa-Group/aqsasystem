@@ -341,6 +341,8 @@
             </tbody>
         </table>
     </div>
+
+    
     {{-- هشدار --}}
     @if ($alert)
     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
