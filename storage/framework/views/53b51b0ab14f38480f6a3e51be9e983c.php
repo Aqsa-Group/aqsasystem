@@ -6,7 +6,7 @@
             <h1 class="text-[24px] font-medium">گزارش اختصاصـــــی</h1>
         </div>
 
-        {{-- Form --}}
+        
         <div class="w-full max-w-[1465px] bg-[#F5F5F5] rounded-[12px] p-6 mx-auto"
             style="box-shadow: 0px 4px 4px 0px #00000040;">
             <form action="" class="space-y-8">
@@ -15,7 +15,7 @@
                     <!-- ستون سمت راست -->
                     <div class="flex-1 flex flex-col space-y-6">
 
-                        {{-- نمبر حساب --}}
+                        
                         <div>
                             <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">نمبر حساب</label>
                             <select
@@ -24,7 +24,7 @@
                             </select>
                         </div>
 
-                        {{-- نوع سند --}}
+                        
                         <div>
                             <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">نوع سند</label>
                             <select
@@ -33,7 +33,7 @@
                             </select>
                         </div>
 
-                        {{-- نوع معامله --}}
+                        
                         <div>
                             <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">نوع معامله</label>
                             <select
@@ -42,7 +42,7 @@
                             </select>
                         </div>
 
-                        {{-- توضیحات --}}
+                        
                         <div>
                             <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">توضیحات</label>
                             <input type="text"
@@ -54,7 +54,7 @@
                     <!-- ستون سمت چپ -->
                     <div class="flex-1 flex flex-col space-y-6">
 
-                        {{-- نوع گزارش --}}
+                        
                         <div>
                             <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">نوع گزارش</label>
                             <select
@@ -63,7 +63,7 @@
                             </select>
                         </div>
 
-                        {{-- واحد ارز --}}
+                        
                         <div>
                             <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">انتخاب واحد ارز برای
                                 گزارش</label>
@@ -73,7 +73,7 @@
                             </select>
                         </div>
 
-                        {{-- زون و توسط --}}
+                        
                         <div class="flex flex-col md:flex-row gap-4">
                             <div class="w-full">
                                 <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">زون</label>
@@ -99,7 +99,7 @@
                             </div>
                         </div>
 
-                        {{-- تاریخ‌ها --}}
+                        
                         <div class="flex flex-col md:flex-row gap-4">
                             <div class="w-full">
                                 <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">تاریخ شروع</label>
@@ -134,7 +134,7 @@
         </div>
 
 
-    {{-- Report Table --}}
+    
 <div class="w-full max-w-[1465px] bg-[#F5F5F5] rounded-[12px] mt-10 p-6 mx-auto"
      style="box-shadow: 0px 4px 4px 0px #00000040;">
 
@@ -142,7 +142,7 @@
         <input type="text"
                class="border border-[#8C8C8C] bg-transparent rounded-[12px] h-[51px] w-[302px] pl-10 pr-4"
                placeholder="جستجو کنید...">
-        <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt="search"
+        <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt="search"
              class="absolute left-3 top-3 w-5 h-5">
     </div>
 
@@ -255,14 +255,14 @@
 </div>
 
 
-        {{-- General Table --}}
+        
         <div class="w-full max-w-[1465px] bg-[#F5F5F5] rounded-[12px] mt-10 p-6 mx-auto">
 
             <div class="flex justify-between items-center text-center mx-auto">
                 <h1>مجموعه کل</h1>
                 <button
                     class="w-[31px] h-[29.232500076293945px] rounded-[8px] bg-transparent border border-[#000000] pr-1 ">
-                    <img src="{{ asset('assets/sarafi/all_icon/printer.svg') }}" alt=""
+                    <img src="<?php echo e(asset('assets/sarafi/all_icon/printer.svg')); ?>" alt=""
                         class="w-[21.0575008392334px] h-[19.232500076293945px]">
                 </button>
             </div>
@@ -334,4 +334,4 @@
 
 
     </div>
-</div>
+</div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/transactions-reports.blade.php ENDPATH**/ ?>

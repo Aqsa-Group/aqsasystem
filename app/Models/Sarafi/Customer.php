@@ -52,4 +52,10 @@ class Customer extends Authenticatable
         return $this->belongsTo(User::class, 'admin_id');
     }
 
+    public function transactions()
+{
+    return $this->hasMany(\App\Models\Sarafi\Transaction::class, 'customer_id');
+}
+
+
 }

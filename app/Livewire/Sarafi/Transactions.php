@@ -29,24 +29,7 @@ class Transactions extends Component
     public $currencies = [];
     public $amount;
     public $amountInWords;
-
-    public $accountSearch = '';
-
-    public function updatedAccountSearch($value)
-{
-    $user = Auth::guard('sarafi')->user();
-    $adminId = $user->admin_id ?? $user->id;
-
-    $this->filteredCustomers = Customer::where('admin_id', $adminId)
-        ->where(function ($query) use ($value) {
-            $query->where('fullname', 'like', "%{$value}%")
-                  ->orWhere('account_number', 'like', "%{$value}%");
-        })
-        ->limit(15)
-        ->get();
-}
-
-
+    public $customers;
     public $transactionType = 'برد';
     public $date;
     public $description;
@@ -62,6 +45,39 @@ class Transactions extends Component
     public $transactions = [];
 
     public $filteredCustomers;
+    public $additionalCustomers = [];
+    public $accountSearch = '';
+
+
+
+    public function updatedAccountSearch($value)
+    {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        $relatedUserIds = \App\Models\Sarafi\User::where('admin_id', $adminId)
+            ->pluck('id')
+            ->push($adminId)
+            ->toArray();
+
+        $this->filteredCustomers = Customer::where(function ($query) use ($adminId, $relatedUserIds) {
+            $query->where('admin_id', $adminId)
+                ->orWhereHas('transactions', function ($t) use ($relatedUserIds) {
+                    $t->whereIn('user_id', $relatedUserIds)
+                        ->orWhereIn('admin_id', $relatedUserIds);
+                });
+        })
+            ->where(function ($q) use ($value) {
+                $q->where('fullname', 'like', "%{$value}%")
+                    ->orWhere('account_number', 'like', "%{$value}%");
+            })
+            ->orderBy('fullname')
+            ->limit(15)
+            ->get();
+    }
+
+
+   
     public $currenciesdefault = [
         ['name' => 'افغانی', 'value' => 0],
         ['name' => 'دالر', 'value' => 0],
@@ -95,8 +111,33 @@ class Transactions extends Component
 
         $this->updateTransactions();
         $this->updateCustomerCurrencyBalance();
-        $this->updateCustomerCurrencyBalance();
+
+        $user = Auth::guard('sarafi')->user();
+        if (!$user) {
+            $this->customers = collect();
+            return;
+        }
+
+        $adminId = $user->admin_id ?? $user->id;
+        $relatedUserIds = \App\Models\Sarafi\User::where('admin_id', $adminId)
+            ->pluck('id')
+            ->push($adminId)
+            ->toArray();
+
+        $this->customers = Customer::select('id', 'account_number', 'fullname')
+            ->where(function ($query) use ($adminId, $relatedUserIds) {
+                $query->where('admin_id', $adminId)
+                    ->orWhereHas('transactions', function ($t) use ($relatedUserIds) {
+                        $t->whereIn('user_id', $relatedUserIds)
+                            ->orWhereIn('admin_id', $relatedUserIds);
+                    });
+            })
+            ->orderBy('fullname')
+            ->get();
+
+        $this->customers = collect($this->customers);
     }
+
 
     public function updatedSearch($value)
     {
@@ -110,14 +151,14 @@ class Transactions extends Component
             return;
         }
 
-        $this->filteredCustomers = Customer::where('admin_id', $adminId)
-            ->where(function ($query) use ($value) {
-                $query->where('fullname', 'like', "%{$value}%")
-                    ->orWhere('account_number', 'like', "%{$value}%");
-            })
+        $this->filteredCustomers = Customer::where(function ($query) use ($value) {
+            $query->where('fullname', 'like', "%{$value}%")
+                ->orWhere('account_number', 'like', "%{$value}%");
+        })
+            ->limit(15)
             ->get();
 
-        // اگر فقط یک مشتری پیدا شد، به طور خودکار انتخابش کن
+
         if ($this->filteredCustomers->count() === 1) {
             $this->selectCustomer($this->filteredCustomers->first()->id);
         } else {
@@ -127,24 +168,36 @@ class Transactions extends Component
     }
 
 
-   public function selectCustomer($customerId)
-{
-    $this->selectedCustomerId = $customerId;
-    $this->search = '';
-    $this->filteredCustomers = [];
-    $this->updateTransactions();
-    $this->updateCustomerCurrencyBalance();
+    public function selectCustomer($customerId)
+    {
+        $this->selectedCustomerId = $customerId;
+        $this->selectedAccount = $customerId;
+        $this->filteredCustomers = [];
 
-    // اضافه کردن این خط برای ست کردن شماره حساب
-    $customer = Customer::find($customerId);
-    $this->selectedAccount = $customer->id ?? null;
-}
+        $customer = Customer::find($customerId);
+        if ($customer) {
+            $this->search = $customer->fullname;
+
+            if (!$this->customers->contains('id', $customer->id)) {
+                $this->customers->push($customer);
+            }
+
+            $this->dispatch('account-selected', [
+                'id' => $customer->id,
+                'text' => $customer->account_number . ' - ' . $customer->fullname,
+            ]);
+
+            $this->updateTransactions();
+            $this->updateCustomerCurrencyBalance();
+        }
+    }
+
+
 
 
     public function updateCustomerCurrencyBalance()
     {
         if (!$this->selectedCustomerId) {
-            // اگر مشتری انتخاب نشده، همه مقادیر صفر شود
             $this->currenciesdefault = [
                 ['name' => 'افغانی', 'value' => 0],
                 ['name' => 'دالر', 'value' => 0],
@@ -161,9 +214,12 @@ class Transactions extends Component
             return;
         }
 
-        // محاسبه موجودی هر ارز برای مشتری انتخاب شده
-        $transactions = Transaction::where('customer_id', $this->selectedCustomerId)->get();
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
 
+        $transactions = Transaction::where('customer_id', $this->selectedCustomerId)
+            ->where('admin_id', $adminId)
+            ->get();
         $balances = [
             'افغانی' => 0,
             'دالر' => 0,
@@ -186,7 +242,6 @@ class Transactions extends Component
             }
         }
 
-        // important for feauture billance
         $totalInUsd = 0;
         $exchangeRates = [
             'افغانی' => 0.011,
@@ -207,7 +262,6 @@ class Transactions extends Component
             }
         }
 
-        // بروزرسانی currenciesdefault
         $this->currenciesdefault = [
             ['name' => 'افغانی', 'value' => $balances['افغانی']],
             ['name' => 'دالر', 'value' => $balances['دالر']],
@@ -223,7 +277,6 @@ class Transactions extends Component
         ];
     }
 
-    // متد کمکی برای تبدیل کد ارز به نام فارسی
     private function getCurrencyName($currencyCode)
     {
         $currencyMap = [
@@ -270,7 +323,6 @@ class Transactions extends Component
     public function updateTransactions()
     {
         $user = Auth::guard('sarafi')->user();
-
         if (!$user) {
             $this->transactions = collect();
             return;
@@ -279,10 +331,7 @@ class Transactions extends Component
         $adminId = $user->admin_id ?? $user->id;
 
         $query = Transaction::with('customer')
-            ->where(function ($q) use ($adminId) {
-                $q->where('admin_id', $adminId)
-                    ->orWhere('user_id', $adminId);
-            });
+            ->where('admin_id', $adminId); // فقط داده‌های مخصوص همین گروه
 
         if ($this->selectedCustomerId) {
             $query->where('customer_id', $this->selectedCustomerId);
@@ -290,6 +339,8 @@ class Transactions extends Component
 
         $this->transactions = $query->latest()->get();
     }
+
+
 
     public function render()
     {
@@ -303,16 +354,32 @@ class Transactions extends Component
         }
 
         $adminId = $user->admin_id ?? $user->id;
+        $relatedUserIds = \App\Models\Sarafi\User::where('admin_id', $adminId)
+            ->pluck('id')
+            ->push($adminId)
+            ->toArray();
 
-        $customers = Customer::select('id', 'account_number', 'fullname')
-            ->where('admin_id', $adminId)
-            ->get();
+        if (!$this->customers || $this->customers->isEmpty()) {
+            $this->customers = Customer::select('id', 'account_number', 'fullname')
+                ->where(function ($query) use ($adminId, $relatedUserIds) {
+                    $query->where('admin_id', $adminId)
+                        ->orWhereHas('transactions', function ($t) use ($relatedUserIds) {
+                            $t->whereIn('user_id', $relatedUserIds)
+                                ->orWhereIn('admin_id', $relatedUserIds);
+                        });
+                })
+                ->orderBy('fullname')
+                ->get();
+
+            $this->customers = collect($this->customers);
+        }
 
         return view('livewire.sarafi.transactions', [
-            'customers' => $customers,
+            'customers' => $this->customers,
             'transactions' => $this->transactions,
         ]);
     }
+
 
     public function updatedAmount($value)
     {
@@ -329,12 +396,16 @@ class Transactions extends Component
         }
     }
 
+
+
     public function formatAmount()
     {
         if ($this->amount) {
             $this->amount = number_format((int)$this->amount);
         }
     }
+
+
 
     public function toggleTransactionType()
     {
@@ -377,14 +448,18 @@ class Transactions extends Component
         $this->confirmDeleteId = null;
     }
 
+
+
     public function submitTransaction()
     {
+
+
         $this->selectedAccount = (int) $this->selectedAccount;
         $this->amount = str_replace(',', '', $this->amount);
         $user = Auth::guard('sarafi')->user();
 
         $this->validate([
-            'selectedAccount' => 'required|exists:sarafi.customers,id',
+            'selectedAccount' => 'required|integer|exists:sarafi.customers,id',
             'byUser'         => 'nullable|string|max:255',
             'currency'       => 'required|string',
             'amount'         => 'required|numeric|min:1',
@@ -394,7 +469,6 @@ class Transactions extends Component
             'zone'           => 'required|string',
             'file'           => 'nullable|file|max:10240',
         ]);
-
         $filePath = $this->file ? $this->file->store('transactions', 'public') : null;
 
         $adminId = $user->admin_id ?? $user->id;
@@ -433,6 +507,8 @@ class Transactions extends Component
         $this->updateTransactions();
         $this->resetForm();
     }
+
+
 
     public function submitAndPrint()
     {
@@ -528,6 +604,8 @@ class Transactions extends Component
     }
 
 
+
+
     public function print($transactionId)
     {
         $transaction = Transaction::with(['customer', 'user'])->findOrFail($transactionId);
@@ -562,6 +640,7 @@ class Transactions extends Component
             echo $mpdf->Output('', 'S');
         }, $fileName);
     }
+
 
 
 
@@ -604,6 +683,13 @@ class Transactions extends Component
 
 
 
+    public function showReport()
+    {
+        return redirect()->route('sarafi.transaction-reports');
+    }
+
+
+
 
     private function updateCurrencySafe($userId, $currency, $amount)
     {
@@ -639,6 +725,8 @@ class Transactions extends Component
 
         $safe->save();
     }
+
+    
 
     private function resetForm()
     {

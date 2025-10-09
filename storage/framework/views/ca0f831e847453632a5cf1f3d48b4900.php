@@ -249,6 +249,45 @@
             opacity: 1;
             /* کاملاً قابل دیدن */
         }
+
+        /* استایل‌های دارک مود */
+        /* انیمیشن حرکت توگل */
+        #toggleCircle {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        [dir="rtl"] #toggleCircle.move-dark {
+            transform: translateX(-2rem);
+        }
+
+        [dir="ltr"] #toggleCircle.move-dark {
+            transform: translateX(2rem);
+        }
+
+        /* حالت دارک */
+        .dark {
+            color-scheme: dark;
+        }
+
+        .dark body {
+            background-color: #1a202c;
+            color: #e2e8f0;
+        }
+
+        .dark header {
+            background-color: #2d3748;
+            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        .dark aside {
+            background-color: #2d3748;
+        }
+
+        .dark input {
+            background-color: #4a5568;
+            color: #e2e8f0;
+            border-color: #718096;
+        }
     </style>
 </head>
 
@@ -287,7 +326,9 @@
             class="bg-white w-full h-[80px] flex items-center justify-between px-6 shadow-[0_4px_4px_rgba(17,41,199,0.4)]">
             <!-- برند + انتخاب زبان -->
             <div class="flex items-center space-x-4 rtl:space-x-reverse gap-6 justify-center ">
-                <div class="text-[40px] text-[#122EE1] font-bold yekan"><?php echo e(Auth::guard('sarafi')->user()->sarafi_name); ?></div>
+                <div class="text-[40px] text-[#122EE1] font-bold yekan"><?php echo e(Auth::guard('sarafi')->user()->sarafi_name); ?>
+
+                </div>
 
                 <?php $locale = session('locale', config('app.locale')); ?>
                 <div class="relative inline-block w-[145px] h-[56px] p-2 vazir">
@@ -319,7 +360,34 @@
                                     alt="en"> English</a></li>
                     </ul>
                 </div>
+
+                <!-- سوییچ دارک مود -->
+                <div class="relative inline-block w-16 h-8 mx-4">
+                    <input type="checkbox" id="darkModeToggle" class="sr-only">
+                    <label for="darkModeToggle"
+                        class="flex items-center w-full h-8 bg-gray-300 rounded-full cursor-pointer transition-colors duration-300 ease-in-out dark:bg-gray-700 px-1">
+                        <span id="toggleCircle"
+                            class="flex items-center justify-center w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 ease-in-out">
+                            <!-- آیکون خورشید -->
+                            <svg id="sunIcon" class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            <!-- آیکون ماه -->
+                            <svg id="moonIcon" class="w-4 h-4 text-blue-300 hidden" fill="currentColor"
+                                viewBox="0 0 20 20">
+                                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                            </svg>
+                        </span>
+                    </label>
+                </div>
+
             </div>
+
+
+
+
 
             <!-- سرچ، اعلان، پروفایل -->
             <div class="flex items-center space-x-4 gap-1 pl-10 rtl:space-x-reverse">
@@ -345,7 +413,7 @@
                     </div>
 
                     <!-- منو dropdown -->
-                    <div id="profileDropdown"   style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;"
+                    <div id="profileDropdown" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;"
                         class="absolute top-full left-0 space-y-3 text-2xl w-72 h-76 bg-white rounded-lg shadow-lg border hidden z-50 p-4">
 
                         <div class="p-3 border-b space-y-5">
@@ -359,7 +427,8 @@
                         <div class="flex justify-start items-center  ">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/account_profile.svg')); ?>" alt="">
 
-                            <a href="<?php echo e(route('sarafi.users')); ?>" class="block px-4 py-2 text-gray-700 vazir">تنظیمات</a>
+                            <a href="<?php echo e(route('sarafi.users')); ?>"
+                                class="block px-4 py-2 text-gray-700 vazir">تنظیمات</a>
                         </div>
 
                         <form action="<?php echo e(route('sarafi.logout')); ?>" method="POST">
@@ -405,7 +474,7 @@
                         :class="active === 'dashboard' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'">
                         <span class="flex items-center gap-2">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/element-3.svg')); ?>" class="w-5 h-5"
-                                :class="active === 'dashboard' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                :class="active === 'dashboard' ? 'filter invert brightness-0' : 'text-gray-500' ">
                             <?php echo e(__('messages.dashboard')); ?>
 
                         </span>
@@ -413,14 +482,13 @@
 
                     <!-- کاربران -->
                     <a href="<?php echo e(route('sarafi.users')); ?>"
-                        class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir"
+                        class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir dark:text-white"
                         @click="active = 'users'"
                         :class="active === 'users' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'">
                         <span class="flex items-center gap-2">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/profile-2user.svg')); ?>" class="w-5 h-5"
-                                :class="active === 'users' ? 'filter invert brightness-0' : 'text-gray-500'">
-                            <?php echo e(__('messages.users')); ?>
-
+                                :class="active === 'users' ? 'filter invert brightness-0' : 'text-gray-500' ">
+                            <span class="dark:text-white">  <?php echo e(__('messages.users')); ?></span>
                         </span>
                     </a>
 
@@ -897,6 +965,41 @@
                 menu.classList.add('hidden');
             }
         });
+    }
+});
+
+const darkModeToggle = document.getElementById('darkModeToggle');
+const sunIcon = document.getElementById('sunIcon');
+const moonIcon = document.getElementById('moonIcon');
+const toggleCircle = document.getElementById('toggleCircle');
+const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+const html = document.documentElement;
+
+// بررسی حالت ذخیره‌شده
+const currentTheme = localStorage.getItem('theme');
+if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
+    html.classList.add('dark');
+    darkModeToggle.checked = true;
+    sunIcon.classList.add('hidden');
+    moonIcon.classList.remove('hidden');
+    toggleCircle.classList.add('move-dark');
+} else {
+    toggleCircle.classList.remove('move-dark');
+}
+
+darkModeToggle.addEventListener('change', function() {
+    if (this.checked) {
+        html.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+        sunIcon.classList.add('hidden');
+        moonIcon.classList.remove('hidden');
+        toggleCircle.classList.add('move-dark');
+    } else {
+        html.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+        sunIcon.classList.remove('hidden');
+        moonIcon.classList.add('hidden');
+        toggleCircle.classList.remove('move-dark');
     }
 });
     </script>

@@ -180,6 +180,14 @@ Route::get('/sarafi/customers', function () {
     return view('Sarafi.components.transaction');
 })->name('sarafi.customers.create');
 
+Route::get('/sarafi/transactions-reports', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.transactions-reports');
+})->name('sarafi.transaction-reports');
+
+
 
 
 

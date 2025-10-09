@@ -197,6 +197,7 @@
 
 
         <table class="info-table">
+           
             <tr>
                 @php
                 $currenciesFa = [
@@ -214,8 +215,15 @@
                 'inr' => 'روپیه',
                 ];
                 @endphp
-                <td>حساب:</td>
-                <td>{{ $transaction->customer->account_number }}-{{ $transaction->customer->fullname }}</td>
+                <td>شماره حساب:</td>
+                <td>{{ $transaction->customer->account_number }}</td>
+            </tr>
+
+             <tr>
+                <td>نام کامل</td>
+                <td>
+                {{ $transaction->customer->fullname }}
+                </td>
             </tr>
             <tr>
                 <td>مبلغ:</td>

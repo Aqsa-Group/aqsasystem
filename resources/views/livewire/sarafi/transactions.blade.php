@@ -26,10 +26,11 @@
                     <h1 class="text-[24px] text-white">{{ $currency['name'] }}</h1>
                     <h2 class="text-center text-[30px] text-white mt-2">{{ $currency['value'] }}</h2>
 
-                    <button wire:click="showReport('{{ $currency['name'] }}')"
+                    <button wire:click="showReport"
                         class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition">
                         نمایش گزارش
                     </button>
+
                 </div>
             </div>
             @endforeach
@@ -65,26 +66,47 @@
                     <div class="mt-2 flex flex-col lg:flex-row gap-3">
                         {{-- شماره حساب --}}
                         <div class="flex-1">
-                            <label class="block text-[16px] font-medium text-black mb-1 vazir">نمبر حساب</label>
                             <div class="relative w-full">
-                                <select wire:model="selectedAccount" id="selectCustomer"
-                                    class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500">
-                                    <option value="">انتخاب حساب</option>
-                                    @foreach ($customers as $customer)
-                                    <option value="{{ $customer->id }}">
-                                        {{ $customer->account_number }} - {{ $customer->fullname }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                                
+                                <label class="block text-[16px] font-medium text-black mb-1 vazir">نمبر حساب</label>
 
-                                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
+                                <div x-data="{
+                                        searchValue: '',
+                                        selectedId: @entangle('selectedAccount'),
+                                        customers: @js($customers),
+                                        handleSelect(event) {
+                                            const selected = this.customers.find(c => event.target.value === `${c.account_number} - ${c.fullname}`);
+                                            if (selected) {
+                                                this.selectedId = selected.id;
+                                                this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                                            }
+                                        },
+                                        updateDisplay() {
+                                            const selected = this.customers.find(c => c.id === this.selectedId);
+                                            this.searchValue = selected ? `${selected.account_number} - ${selected.fullname}` : '';
+                                        }
+                                    }" x-init="updateDisplay(); $watch('selectedId', () => updateDisplay())"
+                                    class="relative w-full">
+                                    <input list="customersList" x-model="searchValue" @change="handleSelect"
+                                        placeholder="جستجو یا انتخاب حساب..."
+                                        class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500"
+                                        autocomplete="off">
+
+                                    <datalist id="customersList">
+                                        @foreach ($customers as $customer)
+                                        <option value="{{ $customer['account_number'] }} - {{ $customer['fullname'] }}">
+                                        </option>
+                                        @endforeach
+                                    </datalist>
+
+                                    <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                        <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
+                                    </div>
                                 </div>
+
+                                @error('selectedAccount')
+                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                                @enderror
                             </div>
-                            @error('selectedAccount')
-                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                            @enderror
                         </div>
 
                         {{-- افزودن مشتری --}}
@@ -162,6 +184,16 @@
                                     class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white appearance-none"
                                     style="max-height: 200px; overflow-y: auto;">
 
+                                    <option value="">انتخاب زون</option>
+                                    <!-- غرب -->
+                                    <option value="غرب">غرب (هرات، بادغیس، غور، فراه)</option>
+                                    <!-- مرکز -->
+                                    <option value="مرکز">مرکز (کابل، پروان، کاپیسا، وردک، لوگر)</option>
+
+                                    <!-- شمال -->
+                                    <option value="شمال">شمال (بلخ، جوزجان، سرپل، سمنگان، فاریاب)</option>
+
+                                    <!-- شمال‌شرق -->
                                     <option value="">انتخاب زون</option>
                                     <!-- غرب -->
                                     <option value="غرب">غرب (هرات، بادغیس، غور، فراه)</option>
@@ -367,7 +399,7 @@
                                         <div class="flex justify-center gap-3">
                                             <!-- دکمه ویرایش -->
                                             <button wire:click="edit({{ $transaction->id }})" class="w-12 h-12 flex items-center justify-center  
-                    rounded-full transition-colors" title="ویرایش">
+                                                 rounded-full transition-colors" title="ویرایش">
                                                 <img src="{{ asset('assets/sarafi/all_icon/edit_table.svg') }}"
                                                     class="w-7 h-7" alt="Edit">
                                             </button>
@@ -476,13 +508,28 @@
         .scroll-container::-webkit-scrollbar-thumb:hover {
             background: #cbd5e1;
         }
-        #selectCustomer {
-    appearance: none;          /* برای مرورگرهای مدرن */
-    -webkit-appearance: none;  /* برای Chrome, Safari */
-    -moz-appearance: none;     /* برای Firefox */
-    background: transparent;   /* اطمینان از شفاف بودن پس‌زمینه */
-    padding-left: 1rem;        /* اگر لازم باشه فاصله داخلی برای متن */
-}
 
+        #selectCustomer {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: transparent;
+            padding-left: 1rem;
+        }
+
+        input[list]::-webkit-calendar-picker-indicator {
+            display: none !important;
+            -webkit-appearance: none;
+        }
+
+        /* در Firefox */
+        input[list]::-moz-list-button {
+            display: none !important;
+        }
+
+        /* در Edge جدید */
+        input[list]::-ms-clear,
+        input[list]::-ms-expand {
+            display: none !important;
     </style>
 </div>

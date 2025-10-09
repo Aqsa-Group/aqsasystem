@@ -5,34 +5,32 @@
     <meta charset="UTF-8">
     <title>سند برداشت - صرافی <?php echo e(Auth::guard('sarafi')->user()->sarafi_name); ?></title>
     <style>
-     /* همه عناصر بدون حاشیه و با فونت پیشفرض */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+        /* همه عناصر بدون حاشیه و با فونت پیشفرض */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-/* تعریف فونت Shabnam */
-@font-face {
-    font-family: "Shabnam-FD";
-    src: url("/fonts/Shabnam-FD.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-}
+        /* تعریف فونت Shabnam */
+        @font-face {
+            font-family: "Shabnam-FD";
+            src: url("/fonts/Shabnam-FD.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
 
-/* کلاس کمکی برای استفاده از فونت */
-.shabnam-fd {
-    font-family: "Shabnam-FD", sans-serif;
-}
+        .shabnam-fd {
+            font-family: "Shabnam-FD", sans-serif;
+        }
 
-/* بدنه PDF/صفحه */
-body {
-    font-family: "Shabnam-FD", sans-serif;
-    width: 85mm; /* مناسب رسید حرارتی */
-    margin: 0 auto;
-    padding: 0;
-    background-color: white;
-}
+        body {
+            font-family: "Shabnam-FD", sans-serif;
+            width: 85mm;
+            margin: 0 auto;
+            padding: 0;
+            background-color: white;
+        }
 
         .document {
             width: 85mm;
@@ -41,6 +39,7 @@ body {
             padding: 10px;
             line-height: 1.6;
         }
+
         .header {
             text-align: center;
             margin-bottom: 20px;
@@ -197,6 +196,7 @@ body {
 
 
         <table class="info-table">
+           
             <tr>
                 <?php
                 $currenciesFa = [
@@ -214,8 +214,16 @@ body {
                 'inr' => 'روپیه',
                 ];
                 ?>
-                <td>حساب:</td>
-                <td><?php echo e($transaction->customer->account_number); ?>-<?php echo e($transaction->customer->fullname); ?></td>
+                <td>شماره حساب:</td>
+                <td><?php echo e($transaction->customer->account_number); ?></td>
+            </tr>
+
+             <tr>
+                <td>نام کامل</td>
+                <td>
+                <?php echo e($transaction->customer->fullname); ?>
+
+                </td>
             </tr>
             <tr>
                 <td>مبلغ:</td>
