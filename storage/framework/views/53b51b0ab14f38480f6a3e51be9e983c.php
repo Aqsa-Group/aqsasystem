@@ -392,10 +392,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </span>
                     </button>
 
-                 <!-- در بخش دکمه‌ها -->
 
-
-                    
                 </div>
 
             </form>

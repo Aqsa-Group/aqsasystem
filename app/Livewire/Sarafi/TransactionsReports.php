@@ -450,7 +450,8 @@ class TransactionsReports extends Component
         }
     }
 
-  /**
+
+/**
  * Calculate previous balances (balance before the filter period)
  */
 private function calculatePreviousBalances()
@@ -490,7 +491,7 @@ private function calculatePreviousBalances()
             continue;
         }
 
-        // Query for all transactions before the filter period
+        // Query for all transactions
         $query = Transaction::query()
             ->where('customer_id', $this->selectedCustomer)
             ->where('currency', $code)
@@ -499,16 +500,40 @@ private function calculatePreviousBalances()
                     ->orWhereIn('user_id', $relatedUserIds);
             });
 
-        // اگر تاریخ شروع مشخص است، تراکنش‌های قبل از آن تاریخ را محاسبه کن
+        Log::debug("calculatePreviousBalances: Before date filter", [
+            'customer_id' => $this->selectedCustomer,
+            'currency' => $code,
+            'start_date' => $this->startDate,
+            'query_count' => $query->count()
+        ]);
+
+        // اگر تاریخ شروع مشخص است، تراکنش‌های قبل از تاریخ شروع را محاسبه کن
         if ($this->startDate) {
             $startNormalized = $this->normalizeDate($this->startDate);
+            Log::debug("calculatePreviousBalances: Date normalization", [
+                'start_date_original' => $this->startDate,
+                'start_date_normalized' => $startNormalized
+            ]);
+
             if ($startNormalized) {
                 $query->where('date', '<', $startNormalized);
+                
+                Log::debug("calculatePreviousBalances: After date filter", [
+                    'currency' => $code,
+                    'start_date_normalized' => $startNormalized,
+                    'filtered_count' => $query->count()
+                ]);
             }
         } else {
-            // اگر تاریخ شروع مشخص نیست، از تاریخ امروز به عنوان مرز استفاده کن
+            // اگر تاریخ شروع مشخص نیست، موجودی قبلی = مجموع تمام تراکنش‌های قبل از امروز
             $today = Jalalian::now()->format('Y-m-d');
             $query->where('date', '<', $today);
+            
+            Log::debug("calculatePreviousBalances: No start date - using today as boundary", [
+                'currency' => $code,
+                'today' => $today,
+                'filtered_count' => $query->count()
+            ]);
         }
 
         $transactionsBefore = $query->get();
@@ -521,6 +546,14 @@ private function calculatePreviousBalances()
         Log::debug("calculatePreviousBalances: Final calculation", [
             'currency' => $code,
             'transactions_before_count' => $transactionsBefore->count(),
+            'transactions' => $transactionsBefore->map(function($t) {
+                return [
+                    'id' => $t->id,
+                    'date' => $t->date,
+                    'type' => $t->type,
+                    'amount' => $t->amount
+                ];
+            })->values(),
             'received' => $received,
             'spent' => $spent,
             'previous_balance' => $this->previousBalances[$code]
@@ -531,6 +564,96 @@ private function calculatePreviousBalances()
         'all_previous_balances' => $this->previousBalances
     ]);
 }
+
+/**
+ * Debug method for testing previous balances
+ */
+public function debugPreviousBalance()
+{
+    if (!$this->selectedCustomer) {
+        dd('لطفاً ابتدا یک مشتری انتخاب کنید');
+    }
+
+    $user = Auth::guard('sarafi')->user();
+    $adminId = $user->admin_id ?? $user->id;
+    $relatedUserIds = $this->getRelatedUserIds($adminId);
+
+    $debugInfo = [
+        'selected_customer' => $this->selectedCustomerName,
+        'customer_id' => $this->selectedCustomer,
+        'start_date' => $this->startDate,
+        'start_date_normalized' => $this->normalizeDate($this->startDate),
+        'end_date' => $this->endDate,
+    ];
+
+    // تمام تراکنش‌های مشتری
+    $allTransactions = Transaction::where('customer_id', $this->selectedCustomer)
+        ->where(function ($q) use ($adminId, $relatedUserIds) {
+            $q->where('admin_id', $adminId)
+                ->orWhereIn('user_id', $relatedUserIds);
+        })
+        ->orderBy('date')
+        ->get();
+
+    $debugInfo['all_transactions'] = $allTransactions->map(function($t) {
+        return [
+            'id' => $t->id,
+            'date' => $t->date,
+            'type' => $t->type,
+            'amount' => $t->amount,
+            'currency' => $t->currency,
+            'description' => $t->description
+        ];
+    });
+
+    // محاسبه دستی موجودی قبلی برای افغانی
+    $startNormalized = $this->normalizeDate($this->startDate);
+    $previousQuery = Transaction::where('customer_id', $this->selectedCustomer)
+        ->where('currency', 'afn')
+        ->where(function ($q) use ($adminId, $relatedUserIds) {
+            $q->where('admin_id', $adminId)
+                ->orWhereIn('user_id', $relatedUserIds);
+        });
+
+    if ($startNormalized) {
+        $previousQuery->where('date', '<', $startNormalized);
+    } else {
+        $today = Jalalian::now()->format('Y-m-d');
+        $previousQuery->where('date', '<', $today);
+    }
+
+    $previousTransactions = $previousQuery->get();
+
+    $debugInfo['previous_transactions'] = $previousTransactions->map(function($t) {
+        return [
+            'id' => $t->id,
+            'date' => $t->date,
+            'type' => $t->type,
+            'amount' => $t->amount
+        ];
+    });
+
+    $debugInfo['manual_calculation'] = [
+        'transactions_count' => $previousTransactions->count(),
+        'received' => $previousTransactions->where('type', 'رسید')->sum('amount'),
+        'spent' => $previousTransactions->where('type', 'برد')->sum('amount'),
+        'balance' => $previousTransactions->where('type', 'رسید')->sum('amount') - $previousTransactions->where('type', 'برد')->sum('amount')
+    ];
+
+    $debugInfo['calculated_previous_balance'] = $this->previousBalances['afn'] ?? 'Not calculated';
+
+    dd($debugInfo);
+}
+
+
+
+
+
+
+
+
+
+
 
 /**
  * Calculate total balances for current period

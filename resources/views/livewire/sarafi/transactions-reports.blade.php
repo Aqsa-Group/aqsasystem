@@ -385,16 +385,7 @@
                         </span>
                     </button>
 
-                 <!-- در بخش دکمه‌ها -->
-{{-- <button type="button" wire:click="testPreviousBalance" 
-    class="bg-purple-500 hover:bg-purple-600 text-white text-[16px] font-medium rounded-[12px] w-full py-4 transition">
-    تست موجودی قبلی
-</button> --}}
 
-                    {{-- <button type="button" wire:click="debugDates"
-                        class="bg-yellow-500 hover:bg-yellow-600 text-white text-[16px] font-medium rounded-[12px] w-full py-4 transition">
-                        دیباگ تاریخ‌ها
-                    </button> --}}
                 </div>
 
             </form>

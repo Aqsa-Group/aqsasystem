@@ -34,21 +34,21 @@ class BoothResource extends Resource
 
 
     public static function getNavigationBadge(): ?string
-        {
-            $user = Auth::user();
+    {
+        $user = Auth::user();
 
-            $query = static::getModel()::query();
+        $query = static::getModel()::query();
 
-            if ($user->role !== 'superadmin') {
-                $adminId = $user->role === 'admin' ? $user->id : $user->admin_id;
-                $query->where('admin_id', $adminId);
-            }
-
-            return (string) $query->count();
+        if ($user->role !== 'superadmin') {
+            $adminId = $user->role === 'admin' ? $user->id : $user->admin_id;
+            $query->where('admin_id', $adminId);
         }
+
+        return (string) $query->count();
+    }
     public static function getNavigationBadgeColor(): ?string
     {
-        return 'danger'; 
+        return 'danger';
     }
 
     public static function form(Form $form): Form
@@ -185,12 +185,12 @@ class BoothResource extends Resource
                 })
                 ->extraInputAttributes(['onblur' => 'this.dispatchEvent(new Event("input"))']),
 
-                    Forms\Components\Select::make('currency')->label('ارز')
-         ->options([
-    "AFN" => "افغانی",
-    "USD" => "دالر",
-         ])
-    ->visible(fn(callable $get) => $get('sarqofli') == 'بلی' || $get('rent') == 'بلی'),
+            Forms\Components\Select::make('currency')->label('ارز')
+                ->options([
+                    "AFN" => "افغانی",
+                    "USD" => "دالر",
+                ])
+                ->visible(fn(callable $get) => $get('sarqofli') == 'بلی' || $get('rent') == 'بلی'),
 
             Forms\Components\TextInput::make('sarqofli_fa_price')->label('قیمت سرقفلی به حروف')->dehydrated()->readOnly()->visible(fn(callable $get) => $get('sarqofli') == 'بلی')->maxLength(255),
             Forms\Components\TextInput::make('sarqofli_half_price')->label('مناصفه سرقفلی')->numeric()->visible(fn(callable $get) => $get('sarqofli') == 'بلی')->prefix('؋')->dehydrated()->readOnly(),
@@ -299,7 +299,7 @@ class BoothResource extends Resource
                 ->icon('heroicon-o-building-storefront')
                 ->sortable(),
 
-                  TextColumn::make('shopkeeper_id')
+            TextColumn::make('shopkeeper_id')
                 ->label('آیدی غرفه')
                 ->formatStateUsing(fn($state) => $state ?? '—')
                 ->url(fn(Booth $record) => $record->shopkeeper_id
@@ -338,41 +338,41 @@ class BoothResource extends Resource
             TextColumn::make('type')->label('نوع قرارداد')->searchable(),
             TextColumn::make('price')->label('قیمت')->suffix('؋')->sortable(),
         ])
-        ->actions([
-              Tables\Actions\Action::make('printContract')
+            ->actions([
+                Tables\Actions\Action::make('printContract')
                     ->label('چاپ قرارداد')
                     ->icon('heroicon-o-printer')
                     ->url(fn($record) => route('contract.printbooth', $record->id))
                     ->openUrlInNewTab()
-                    ->visible(fn($record) => !is_null($record->customer_id)), 
-            
-            Tables\Actions\EditAction::make(),
-            Tables\Actions\Action::make('releaseBooth')
-            ->label('پس گرفتن غرفه از غرفه‌دار')
-            ->requiresConfirmation()
-            ->modalHeading('آیا مطمئن هستید؟')
-            ->modalSubheading('با پس گرفتن غرفه، ارتباط غرفه‌دار با این غرفه قطع خواهد شد.')
-            ->modalButton('بله')
-            ->color('danger')
-            ->icon('heroicon-o-arrow-uturn-left')
-            ->button()
-            ->outlined()
-            ->extraAttributes([
-                'class' => 'hover:bg-red-600 hover:text-white transition-all duration-200 font-bold rounded-lg',
-                'title' => 'گرفتن غرفه از غرفه‌دار',
+                    ->visible(fn($record) => !is_null($record->customer_id)),
+
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('releaseBooth')
+                    ->label('پس گرفتن غرفه از غرفه‌دار')
+                    ->requiresConfirmation()
+                    ->modalHeading('آیا مطمئن هستید؟')
+                    ->modalSubheading('با پس گرفتن غرفه، ارتباط غرفه‌دار با این غرفه قطع خواهد شد.')
+                    ->modalButton('بله')
+                    ->color('danger')
+                    ->icon('heroicon-o-arrow-uturn-left')
+                    ->button()
+                    ->outlined()
+                    ->extraAttributes([
+                        'class' => 'hover:bg-red-600 hover:text-white transition-all duration-200 font-bold rounded-lg',
+                        'title' => 'گرفتن غرفه از غرفه‌دار',
+                    ])
+                    ->action(fn(Booth $record) => $record->update(['shopkeeper_id' => null]))
+                    ->visible(fn(Booth $record): bool => !is_null($record->shopkeeper_id))
+
+
+
+
             ])
-    ->action(fn (Booth $record) => $record->update(['shopkeeper_id' => null]))
-    ->visible(fn (Booth $record): bool => !is_null($record->shopkeeper_id))
-
-
-
-            
-        ])
-        ->bulkActions([
-            Tables\Actions\BulkActionGroup::make([
-                Tables\Actions\DeleteBulkAction::make(),
-            ]),
-        ]);
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
     }
 
     public static function getRelations(): array
@@ -406,9 +406,23 @@ class BoothResource extends Resource
         $formatter = new \NumberFormatter('fa', \NumberFormatter::SPELLOUT);
         $word = $formatter->format($num);
         $word = str_replace([
-            'دویست','سیصد','چهارصد','پانصد','ششصد','هفتصد','هشتصد','نهصد',
+            'دویست',
+            'سیصد',
+            'چهارصد',
+            'پانصد',
+            'ششصد',
+            'هفتصد',
+            'هشتصد',
+            'نهصد',
         ], [
-            'دو صد','سه صد','چهار صد','پنج صد','شش صد','هفت صد','هشت صد','نه صد',
+            'دو صد',
+            'سه صد',
+            'چهار صد',
+            'پنج صد',
+            'شش صد',
+            'هفت صد',
+            'هشت صد',
+            'نه صد',
         ], $word);
         return $word;
     }
@@ -417,8 +431,8 @@ class BoothResource extends Resource
     {
         if (!$string) return '';
         return str_replace(
-            ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'],
-            ['0','1','2','3','4','5','6','7','8','9'],
+            ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'],
+            ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
             $string
         );
     }

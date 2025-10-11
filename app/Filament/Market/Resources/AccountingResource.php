@@ -17,6 +17,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\Jalalian;
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\Filter;
 
 class AccountingResource extends Resource
 {
@@ -40,85 +43,76 @@ class AccountingResource extends Resource
             $price = (float) ($get('price') ?? 0);
             $expType = $get('expanses_type');
             $type = $get('type');
-        
+
             if ($expType === 'کرایه') {
                 $from = null;
                 $monthlyRate = 0;
-        
+
                 if ($type === 'دوکان' && $shopId = $get('shop_id')) {
                     $shop = Shop::with('shopkeeper')->find($shopId);
                     $monthlyRate = $shop->price;
-        
+
                     $lastExpiration = Accounting::where('shop_id', $shop->id)
                         ->where('expanses_type', 'کرایه')
                         ->latest('expiration_date')
                         ->value('expiration_date');
-        
-                    
-                    $from = $get('paid_date') ? Carbon::parse($get('paid_date')) :
-                        ($lastExpiration ? Carbon::parse($lastExpiration) :
-                        ($shop->shopkeeper?->contract_start ? Carbon::parse($shop->shopkeeper->contract_start) : now()));
-        
+
+
+                    $from = $get('paid_date') ? Carbon::parse($get('paid_date')) : ($lastExpiration ? Carbon::parse($lastExpiration) : ($shop->shopkeeper?->contract_start ? Carbon::parse($shop->shopkeeper->contract_start) : now()));
                 } elseif ($type === 'غرفه' && $boothId = $get('booth_id')) {
                     $booth = Booth::with('shopkeeper')->find($boothId);
                     $monthlyRate = $booth->price;
-        
+
                     $lastExpiration = Accounting::where('booth_id', $booth->id)
                         ->where('expanses_type', 'کرایه')
                         ->latest('expiration_date')
                         ->value('expiration_date');
-        
-                    $from = $get('paid_date') ? Carbon::parse($get('paid_date')) :
-                        ($lastExpiration ? Carbon::parse($lastExpiration) :
-                        ($booth->shopkeeper?->contract_start ? Carbon::parse($booth->shopkeeper->contract_start) : now()));
+
+                    $from = $get('paid_date') ? Carbon::parse($get('paid_date')) : ($lastExpiration ? Carbon::parse($lastExpiration) : ($booth->shopkeeper?->contract_start ? Carbon::parse($booth->shopkeeper->contract_start) : now()));
                 }
-        
+
                 if ($from && $monthlyRate > 0) {
-                    $monthsWithFraction = $price / $monthlyRate; 
+                    $monthsWithFraction = $price / $monthlyRate;
                     $wholeMonths = floor($monthsWithFraction);
                     $fractionMonth = $monthsWithFraction - $wholeMonths;
                     $extraDays = $fractionMonth * 30;
-        
+
                     $to = $from->copy()->addMonths($wholeMonths)->addDays($extraDays);
-        
-                    $set('paid_date', $from); 
+
+                    $set('paid_date', $from);
                     $set('expiration_date', $to);
                 }
             }
-        
+
             if ($expType === 'پول برق') {
                 $from = null;
-        
+
                 if ($type === 'دوکان' && $shopId = $get('shop_id')) {
                     $shop = Shop::with('shopkeeper')->find($shopId);
                     $lastExpiration = Accounting::where('shop_id', $shop->id)
                         ->where('expanses_type', 'پول برق')
                         ->latest('expiration_date')
                         ->value('expiration_date');
-        
-                    $from = $get('paid_date') ? Carbon::parse($get('paid_date')) :
-                        ($lastExpiration ? Carbon::parse($lastExpiration) :
-                        ($shop->shopkeeper?->contract_start ? Carbon::parse($shop->shopkeeper->contract_start) : now()));
+
+                    $from = $get('paid_date') ? Carbon::parse($get('paid_date')) : ($lastExpiration ? Carbon::parse($lastExpiration) : ($shop->shopkeeper?->contract_start ? Carbon::parse($shop->shopkeeper->contract_start) : now()));
                 } elseif ($type === 'غرفه' && $boothId = $get('booth_id')) {
                     $booth = Booth::with('shopkeeper')->find($boothId);
                     $lastExpiration = Accounting::where('booth_id', $booth->id)
                         ->where('expanses_type', 'پول برق')
                         ->latest('expiration_date')
                         ->value('expiration_date');
-        
-                    $from = $get('paid_date') ? Carbon::parse($get('paid_date')) :
-                        ($lastExpiration ? Carbon::parse($lastExpiration) :
-                        ($booth->shopkeeper?->contract_start ? Carbon::parse($booth->shopkeeper->contract_start) : now()));
+
+                    $from = $get('paid_date') ? Carbon::parse($get('paid_date')) : ($lastExpiration ? Carbon::parse($lastExpiration) : ($booth->shopkeeper?->contract_start ? Carbon::parse($booth->shopkeeper->contract_start) : now()));
                 }
-        
+
                 if ($from) {
-                    $to = $from->copy()->addMonths(2); 
+                    $to = $from->copy()->addMonths(2);
                     $set('paid_date', $from);
                     $set('expiration_date', $to);
                 }
             }
         };
-        
+
 
         $updateCalculatedPrice = function (callable $get, callable $set) {
             $current = $get('current_degree');
@@ -150,9 +144,9 @@ class AccountingResource extends Resource
                     $set('expiration_date', null);
                 }),
 
-                // comment added
+            // comment added
 
-                Forms\Components\Select::make('expanses_type')
+            Forms\Components\Select::make('expanses_type')
                 ->label('نوع مصرف')
                 ->options(['کرایه' => 'کرایه', 'تحت الملکی' => 'تحت الملکی', 'پول برق' => 'پول برق', 'پول آب' => 'پول آب', 'صفایی' => 'صفایی'])
                 ->reactive()
@@ -208,7 +202,7 @@ class AccountingResource extends Resource
                     $calculateDates($get, $set);
                 }),
 
-                Forms\Components\Select::make('booth_id')
+            Forms\Components\Select::make('booth_id')
                 ->label('نمبر غرفه')
                 ->options(fn($get) => $get('market_id') ? Booth::where('market_id', $get('market_id'))->pluck('number', 'id') : [])
                 ->visible(fn($get) => $get('type') === 'غرفه')
@@ -216,21 +210,21 @@ class AccountingResource extends Resource
                 ->afterStateUpdated(function ($state, callable $set, callable $get) use ($calculateDates) {
                     $booth = Booth::find($state);
                     $set('shopkeeper_id', $booth?->shopkeeper_id);
-            
+
                     if ($booth) {
                         $set('price', $get('expanses_type') === 'کرایه' ? $booth->price : $get('price'));
                         $set('meter_serial', $booth->metar_serial);
                         $last = Deposit::where('booth_id', $booth->id)->where('expanses_type', 'پول برق')->latest()->first();
                         $set('past_degree', $last?->current_degree ?? 0);
                     }
-            
+
                     $calculateDates($get, $set);
                 }),
-        
+
 
             Forms\Components\Hidden::make('shopkeeper_id'),
 
-          
+
             Forms\Components\TextInput::make('meter_serial')
                 ->label('سریال میتر')
                 ->disabled()
@@ -293,6 +287,8 @@ class AccountingResource extends Resource
 
     public static function table(Table $table): Table
     {
+
+        $user = Auth::user();
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('type')->label('نوع'),
@@ -303,13 +299,106 @@ class AccountingResource extends Resource
                 Tables\Columns\TextColumn::make('expanses_type')->label('نوع مصرف'),
                 Tables\Columns\TextColumn::make('price')->label('مبلغ')->suffix(' افغانی'),
                 Tables\Columns\TextColumn::make('currency')->label('واحد پول'),
-                Tables\Columns\TextColumn::make('paid')->label('پرداخت شده'),
-                Tables\Columns\TextColumn::make('remained')->label('باقی مانده'),
+                Tables\Columns\TextColumn::make('paid')
+                    ->label('پرداخت شده')
+                    ->badge()
+                    ->color('success')
+                    ->extraAttributes(['class' => 'text-white']),
+
+                Tables\Columns\TextColumn::make('remained')
+                    ->label('باقی مانده')
+                    ->badge()
+                    ->color('danger')
+                    ->extraAttributes(['class' => 'text-white']),
+
                 Tables\Columns\IconColumn::make('cleared')->boolean()->label('پرداخت کامل؟'),
-                Tables\Columns\TextColumn::make('paid_date')->label('از تاریخ')->formatStateUsing(fn($state) => $state ? Jalalian::fromDateTime($state)->format('Y/m/d') : '—'),
-                Tables\Columns\TextColumn::make('expiration_date')->label('تا تاریخ')->formatStateUsing(fn($state) => $state ? Jalalian::fromDateTime($state)->format('Y/m/d') : '—'),
-                Tables\Columns\TextColumn::make('created_at')->label('زمان ثبت')->formatStateUsing(fn($state) => Carbon::parse($state)->setTimezone('Asia/Kabul')->format('g:i A')),
+                Tables\Columns\TextColumn::make('paid_date')
+                    ->label('از تاریخ')
+                    ->formatStateUsing(fn($state) => $state ? Jalalian::fromDateTime($state)->format('Y/m/d') : '—'),
+                Tables\Columns\TextColumn::make('expiration_date')
+                    ->label('تا تاریخ')
+                    ->formatStateUsing(fn($state) => $state ? Jalalian::fromDateTime($state)->format('Y/m/d') : '—'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('زمان ثبت')
+                    ->formatStateUsing(fn($state) => Carbon::parse($state)->setTimezone('Asia/Kabul')->format('g:i A')),
             ])
+
+            ->filters([
+                SelectFilter::make('market_id')
+                    ->label('مارکت')
+                    ->options(function () {
+                        $user = Auth::user();
+                        return Market::when($user->role === 'admin', fn($q) => $q->where('admin_id', $user->id))
+                            ->when($user->role !== 'superadmin' && $user->role !== 'admin', fn($q) => $q->where('admin_id', $user->admin_id))
+                            ->pluck('name', 'id');
+                    }),
+
+                SelectFilter::make('type')
+                    ->label('نوع')
+                    ->options([
+                        'دوکان' => 'دوکان',
+                        'غرفه' => 'غرفه',
+                    ]),
+
+                SelectFilter::make('shop_id')
+                    ->label('نمبر دوکان')
+                    ->options(function () {
+                        $user = Auth::user();
+                        $markets = $user->role === 'superadmin'
+                            ? Market::pluck('id')
+                            : Market::where('admin_id', $user->role === 'admin' ? $user->id : $user->admin_id)->pluck('id');
+                        return Shop::whereIn('market_id', $markets)->pluck('number', 'id');
+                    }),
+
+                SelectFilter::make('booth_id')
+                    ->label('نمبر غرفه')
+                    ->options(function () {
+                        $user = Auth::user();
+                        $markets = $user->role === 'superadmin'
+                            ? Market::pluck('id')
+                            : Market::where('admin_id', $user->role === 'admin' ? $user->id : $user->admin_id)->pluck('id');
+                        return Booth::whereIn('market_id', $markets)->pluck('number', 'id');
+                    }),
+
+                SelectFilter::make('expanses_type')
+                    ->label('نوع مصرف')
+                    ->options([
+                        'کرایه' => 'کرایه',
+                        'تحت الملکی' => 'تحت الملکی',
+                        'پول برق' => 'پول برق',
+                        'پول آب' => 'پول آب',
+                        'صفایی' => 'صفایی',
+                    ]),
+
+                Filter::make('paid_date')
+                    ->label('تاریخ پرداخت')
+                    ->form([
+                        Forms\Components\DatePicker::make('from')->label('از تاریخ')->jalali(),
+                        Forms\Components\DatePicker::make('until')->label('تا تاریخ')->jalali(),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when($data['from'], function ($q, $date) {
+                                try {
+                                    $from = \Morilog\Jalali\Jalalian::fromFormat('Y-m-d H:i:s', $date)->toCarbon();
+                                    $q->whereDate('paid_date', '>=', $from);
+                                } catch (\Exception $e) {
+                                    //
+                                }
+                            })
+                            ->when($data['until'], function ($q, $date) {
+                                try {
+                                    $until = \Morilog\Jalali\Jalalian::fromFormat('Y-m-d H:i:s', $date)->toCarbon();
+                                    $q->whereDate('paid_date', '<=', $until);
+                                } catch (\Exception $e) {
+                                    //
+                                }
+                            });
+                    }),
+
+            ])
+
+
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
@@ -323,7 +412,6 @@ class AccountingResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-
     public static function getPages(): array
     {
         return [
