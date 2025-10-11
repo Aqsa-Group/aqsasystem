@@ -21,32 +21,32 @@
                                 <label class="block text-[16px] font-medium text-black mb-1 vazir">نمبر حساب</label>
 
                                 <div x-data="{
-                searchValue: '',
-                selectedId: @entangle('selectedAccount'),
-                customers: @js($customers),
+                                    searchValue: '',
+                                    selectedId: @entangle('selectedAccount'),
+                                    customers: @js($customers),
 
-                handleSelect(event) {
-                    const selected = this.customers.find(
-                        c => event.target.value === `${c.account_number} - ${c.fullname}`
-                    );
-                    if (selected) {
-                        this.selectedId = selected.id;
-                        this.searchValue = `${selected.account_number} - ${selected.fullname}`;
-                        // ✅ فراخوانی متد Livewire برای انتخاب مشتری
-                        $wire.selectCustomer(selected.id);
-                    } else {
-                        // اگر چیزی اشتباه وارد شد، مقدار پاک شود
-                        this.selectedId = null;
-                        this.searchValue = '';
-                        $wire.set('selectedAccount', null);
-                    }
-                },
+                                    handleSelect(event) {
+                                        const selected = this.customers.find(
+                                            c => event.target.value === `${c.account_number} - ${c.fullname}`
+                                        );
+                                        if (selected) {
+                                            this.selectedId = selected.id;
+                                            this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                                            // ✅ فراخوانی متد Livewire برای انتخاب مشتری
+                                            $wire.selectCustomer(selected.id);
+                                        } else {
+                                            // اگر چیزی اشتباه وارد شد، مقدار پاک شود
+                                            this.selectedId = null;
+                                            this.searchValue = '';
+                                            $wire.set('selectedAccount', null);
+                                        }
+                                    },
 
-                updateDisplay() {
-                    const selected = this.customers.find(c => c.id === this.selectedId);
-                    this.searchValue = selected ? `${selected.account_number} - ${selected.fullname}` : '';
-                }
-            }" x-init="updateDisplay(); $watch('selectedId', () => updateDisplay())" class="relative w-full">
+                                    updateDisplay() {
+                                        const selected = this.customers.find(c => c.id === this.selectedId);
+                                        this.searchValue = selected ? `${selected.account_number} - ${selected.fullname}` : '';
+                                                }
+                                            }" x-init="updateDisplay(); $watch('selectedId', () => updateDisplay())" class="relative w-full">
                                     <input list="customersList" x-model="searchValue" @change="handleSelect"
                                         placeholder="جستجو یا انتخاب حساب..."
                                         class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
@@ -111,11 +111,11 @@
                         {{-- نوع گزارش --}}
                         <div>
                             <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">نوع گزارش</label>
-                            <select
+                            <select wire:model="typeTransaction2"
                                 class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
                                 <option value="">همه ترانزکشن‌ها</option>
-                                <option value="">رسید</option>
-                                <option value="">برد</option>
+                                <option value="رسید">رسید</option>
+                                <option value="برد">برد</option>
                             </select>
                         </div>
 
@@ -192,175 +192,167 @@
                         </div>
 
                         <div class="flex flex-col md:flex-row gap-4" x-data="{
-                                initDatepickers() {
-                                    const afghanMonths = [
-                                        'حمل', 'ثور', 'جوزا', 'سرطان', 
-                                        'اسد', 'سنبله', 'میزان', 'عقرب', 
-                                        'قوس', 'جدی', 'دلو', 'حوت'
-                                    ];
+                                        initDatepickers() {
+                                            const afghanMonths = [
+                                                'حمل', 'ثور', 'جوزا', 'سرطان', 
+                                                'اسد', 'سنبله', 'میزان', 'عقرب', 
+                                                'قوس', 'جدی', 'دلو', 'حوت'
+                                            ];
 
-                                    // تقویم تاریخ شروع
-                                    $('#startDate').persianDatepicker({
-                                        format: 'YYYY/MM/DD',
-                                        autoClose: true,
-                                        initialValue: @js($startDate),
-                                        initialValueType: 'persian',
-                                        position: 'auto',
-                                        calendar: {
-                                            persian: {
-                                                locale: 'fa',
-                                                showHint: true,
-                                                leapYearMode: 'algorithmic',
-                                                epochs: [1348, 1348]
-                                            }
+                                            // تقویم تاریخ شروع
+                                            $('#startDate').persianDatepicker({
+                                                format: 'YYYY/MM/DD',
+                                                autoClose: true,
+                                                initialValue: @js($startDate),
+                                                initialValueType: 'persian',
+                                                position: 'auto',
+                                                calendar: {
+                                                    persian: {
+                                                        locale: 'fa',
+                                                        showHint: true,
+                                                        leapYearMode: 'algorithmic',
+                                                        epochs: [1348, 1348]
+                                                    }
+                                                },
+                                                onSelect: (unixTimestamp) => {
+                                                    console.log('Start date unixTimestamp:', unixTimestamp);
+                                                    
+                                                    // استفاده از تاریخ شمسی مستقیماً از المنت
+                                                    const selectedDate = $('#startDate').val();
+                                                    console.log('Start date selected:', selectedDate);
+                                                    
+                                                    if (selectedDate) {
+                                                        @this.setStartDate(selectedDate);
+                                                    }
+                                                }
+                                            });
+
+                                            // تقویم تاریخ پایان
+                                            $('#endDate').persianDatepicker({
+                                                format: 'YYYY/MM/DD',
+                                                autoClose: true,
+                                                initialValue: @js($endDate),
+                                                initialValueType: 'persian',
+                                                position: 'auto',
+                                                calendar: {
+                                                    persian: {
+                                                        locale: 'fa',
+                                                        showHint: true,
+                                                        leapYearMode: 'algorithmic',
+                                                        epochs: [1348, 1348]
+                                                    }
+                                                },
+                                                onSelect: (unixTimestamp) => {
+                                                    console.log('End date unixTimestamp:', unixTimestamp);
+                                                    
+                                                    // استفاده از تاریخ شمسی مستقیماً از المنت
+                                                    const selectedDate = $('#endDate').val();
+                                                    console.log('End date selected:', selectedDate);
+                                                    
+                                                    if (selectedDate) {
+                                                        @this.setEndDate(selectedDate);
+                                                    }
+                                                }
+                                            });
+
+                                            this.replaceCalendarMonths();
                                         },
-                                        onSelect: (unixTimestamp) => {
-                                            const selectedDate = new PersianDate(unixTimestamp);
-                                            const year = selectedDate.year();
-                                            const month = selectedDate.month();
-                                            const day = selectedDate.date();
-                                            
-                                            const dateString = year + '/' + 
-                                                            (month < 10 ? '0' + month : month) + '/' + 
-                                                            (day < 10 ? '0' + day : day);
-                                            
-                                            @this.setStartDate(dateString);
-                                        }
-                                    });
 
-                                    // تقویم تاریخ پایان
-                                    $('#endDate').persianDatepicker({
-                                        format: 'YYYY/MM/DD',
-                                        autoClose: true,
-                                        initialValue: @js($endDate),
-                                        initialValueType: 'persian',
-                                        position: 'auto',
-                                        calendar: {
-                                            persian: {
-                                                locale: 'fa',
-                                                showHint: true,
-                                                leapYearMode: 'algorithmic',
-                                                epochs: [1348, 1348]
-                                            }
-                                        },
-                                        onSelect: (unixTimestamp) => {
-                                            const selectedDate = new PersianDate(unixTimestamp);
-                                            const year = selectedDate.year();
-                                            const month = selectedDate.month();
-                                            const day = selectedDate.date();
-                                            
-                                            const dateString = year + '/' + 
-                                                            (month < 10 ? '0' + month : month) + '/' + 
-                                                            (day < 10 ? '0' + day : day);
-                                            
-                                            @this.setEndDate(dateString);
-                                        }
-                                    });
+                                        replaceCalendarMonths() {
+                                            // تابع برای جایگزینی ماه‌ها
+                                            const replaceMonths = () => {
+                                                // جایگزینی ماه‌ها در هدر تقویم
+                                                $('.pdp-monthyear').each(function() {
+                                                    let text = $(this).text();
+                                                    text = text
+                                                        .replace(/فروردین/g, 'حمل')
+                                                        .replace(/اردیبهشت/g, 'ثور')
+                                                        .replace(/خرداد/g, 'جوزا')
+                                                        .replace(/تیر/g, 'سرطان')
+                                                        .replace(/مرداد/g, 'اسد')
+                                                        .replace(/شهریور/g, 'سنبله')
+                                                        .replace(/مهر/g, 'میزان')
+                                                        .replace(/آبان/g, 'عقرب')
+                                                        .replace(/آذر/g, 'قوس')
+                                                        .replace(/دی/g, 'جدی')
+                                                        .replace(/بهمن/g, 'دلو')
+                                                        .replace(/اسفند/g, 'حوت');
+                                                    $(this).text(text);
+                                                });
 
-                                    // جایگزینی ماه‌ها در تقویم
-                                    this.replaceCalendarMonths();
-                                },
+                                                // جایگزینی ماه‌ها در منوی انتخاب ماه
+                                                $('.pdp-month-container span, .pdp-month').each(function() {
+                                                    let text = $(this).text();
+                                                    text = text
+                                                        .replace(/فروردین/g, 'حمل')
+                                                        .replace(/اردیبهشت/g, 'ثور')
+                                                        .replace(/خرداد/g, 'جوزا')
+                                                        .replace(/تیر/g, 'سرطان')
+                                                        .replace(/مرداد/g, 'اسد')
+                                                        .replace(/شهریور/g, 'سنبله')
+                                                        .replace(/مهر/g, 'میزان')
+                                                        .replace(/آبان/g, 'عقرب')
+                                                        .replace(/آذر/g, 'قوس')
+                                                        .replace(/دی/g, 'جدی')
+                                                        .replace(/بهمن/g, 'دلو')
+                                                        .replace(/اسفند/g, 'حوت');
+                                                    $(this).text(text);
+                                                });
+                                            };
 
-                                replaceCalendarMonths() {
-                                    // تابع برای جایگزینی ماه‌ها
-                                    const replaceMonths = () => {
-                                        // جایگزینی ماه‌ها در هدر تقویم
-                                        $('.pdp-monthyear').each(function() {
-                                            let text = $(this).text();
-                                            text = text
-                                                .replace(/فروردین/g, 'حمل')
-                                                .replace(/اردیبهشت/g, 'ثور')
-                                                .replace(/خرداد/g, 'جوزا')
-                                                .replace(/تیر/g, 'سرطان')
-                                                .replace(/مرداد/g, 'اسد')
-                                                .replace(/شهریور/g, 'سنبله')
-                                                .replace(/مهر/g, 'میزان')
-                                                .replace(/آبان/g, 'عقرب')
-                                                .replace(/آذر/g, 'قوس')
-                                                .replace(/دی/g, 'جدی')
-                                                .replace(/بهمن/g, 'دلو')
-                                                .replace(/اسفند/g, 'حوت');
-                                            $(this).text(text);
-                                        });
-
-                                        // جایگزینی ماه‌ها در منوی انتخاب ماه
-                                        $('.pdp-month-container span, .pdp-month').each(function() {
-                                            let text = $(this).text();
-                                            text = text
-                                                .replace(/فروردین/g, 'حمل')
-                                                .replace(/اردیبهشت/g, 'ثور')
-                                                .replace(/خرداد/g, 'جوزا')
-                                                .replace(/تیر/g, 'سرطان')
-                                                .replace(/مرداد/g, 'اسد')
-                                                .replace(/شهریور/g, 'سنبله')
-                                                .replace(/مهر/g, 'میزان')
-                                                .replace(/آبان/g, 'عقرب')
-                                                .replace(/آذر/g, 'قوس')
-                                                .replace(/دی/g, 'جدی')
-                                                .replace(/بهمن/g, 'دلو')
-                                                .replace(/اسفند/g, 'حوت');
-                                            $(this).text(text);
-                                        });
-                                    };
-
-                                    // اجرای اولیه
-                                    replaceMonths();
-
-                                    // اجرای هر 500 میلی‌ثانیه تا زمانی که تقویم لود شود
-                                    const interval = setInterval(() => {
-                                        if ($('.pdp-monthyear').length > 0) {
+                                            // اجرای اولیه
                                             replaceMonths();
+
+                                            // اجرای هر 500 میلی‌ثانیه تا زمانی که تقویم لود شود
+                                            const interval = setInterval(() => {
+                                                if ($('.pdp-monthyear').length > 0) {
+                                                    replaceMonths();
+                                                }
+                                            }, 500);
+
+                                            // توقف بعد از 5 ثانیه
+                                            setTimeout(() => {
+                                                clearInterval(interval);
+                                            }, 5000);
+
+                                            // همچنین وقتی روی input کلیک می‌شود
+                                            $(document).on('click', '#startDate, #endDate', () => {
+                                                setTimeout(replaceMonths, 300);
+                                            });
+
+                                            // وقتی تقویم باز می‌شود
+                                            $(document).on('click', '.pdp-header', () => {
+                                                setTimeout(replaceMonths, 300);
+                                            });
                                         }
-                                    }, 500);
-
-                                    // توقف بعد از 5 ثانیه
-                                    setTimeout(() => {
-                                        clearInterval(interval);
-                                    }, 5000);
-
-                                    // همچنین وقتی روی input کلیک می‌شود
-                                    $(document).on('click', '#startDate, #endDate', () => {
-                                        setTimeout(replaceMonths, 300);
-                                    });
-
-                                    // وقتی تقویم باز می‌شود
-                                    $(document).on('click', '.pdp-header', () => {
-                                        setTimeout(replaceMonths, 300);
-                                    });
-                                }
-                            }" x-init="initDatepickers()">
+                                    }" x-init="initDatepickers()">
 
                             <div class="w-full">
                                 <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">تاریخ شروع</label>
                                 <div class="relative">
-                                    <input type="text" id="startDate" wire:model="startDateDisplay"
+                                    <input type="text" id="startDate"
                                         class="w-full pr-12 h-[59px] rounded-[12px] bg-white border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400 placeholder:text-[#404040] cursor-pointer shadow-sm"
-                                        placeholder="1404/حمل/01" readonly>
+                                        placeholder="1404/حمل/01" readonly value="{{ $startDateDisplay }}">
                                     <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                                         📅
                                     </div>
                                 </div>
-                                @error('startDate')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
+                             
                             </div>
 
                             <div class="w-full">
                                 <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">تاریخ ختم</label>
                                 <div class="relative">
-                                    <input type="text" id="endDate" wire:model="endDateDisplay"
+                                    <input type="text" id="endDate"
                                         class="w-full pr-12 h-[59px] rounded-[12px] bg-white border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400 placeholder:text-[#404040] cursor-pointer shadow-sm"
-                                        placeholder="1404/جوزا/01" readonly>
+                                        placeholder="1404/جوزا/01" readonly value="{{ $endDateDisplay }}">
                                     <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                                         📅
                                     </div>
                                 </div>
-                                @error('endDate')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
+                               
                             </div>
                         </div>
-
                         <style>
                             /* استایل برای ماه‌های افغانی */
                             .pdp-monthyear,
@@ -392,6 +384,12 @@
                             در حال تولید...
                         </span>
                     </button>
+
+                 <!-- در بخش دکمه‌ها -->
+{{-- <button type="button" wire:click="testPreviousBalance" 
+    class="bg-purple-500 hover:bg-purple-600 text-white text-[16px] font-medium rounded-[12px] w-full py-4 transition">
+    تست موجودی قبلی
+</button> --}}
 
                     {{-- <button type="button" wire:click="debugDates"
                         class="bg-yellow-500 hover:bg-yellow-600 text-white text-[16px] font-medium rounded-[12px] w-full py-4 transition">
@@ -510,40 +508,38 @@
 
         </div>
 
-        {{-- General Table --}}
-        {{-- General Table --}}
-        <div class="w-full max-w-[1465px] bg-[#F5F5F5] rounded-[12px] mt-10 p-6 mx-auto">
+       {{-- General Table --}}
+<div class="w-full max-w-[1465px] bg-[#F5F5F5] rounded-[12px] mt-10 p-6 mx-auto">
 
-            <div class="flex justify-between items-center text-center mx-auto mb-6">
-                <h1 class="text-xl font-bold">مجموعه کل</h1>
-                <button
-                    class="w-[31px] h-[29.232500076293945px] rounded-[8px] bg-transparent border border-[#000000] pr-1 ">
-                    <img src="{{ asset('assets/sarafi/all_icon/printer.svg') }}" alt=""
-                        class="w-[21.0575008392334px] h-[19.232500076293945px]">
-                </button>
-            </div>
+    <div class="flex justify-between items-center text-center mx-auto mb-6">
+        <h1 class="text-xl font-bold">مجموعه کل</h1>
+        <button
+            class="w-[31px] h-[29.232500076293945px] rounded-[8px] bg-transparent border border-[#000000] pr-1 ">
+            <img src="{{ asset('assets/sarafi/all_icon/printer.svg') }}" alt=""
+                class="w-[21.0575008392334px] h-[19.232500076293945px]">
+        </button>
+    </div>
 
-            <table class="w-full text-sm md:text-base text-left mt-6 rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead
-                    class="bg-[#2B65E5] w-full text-white text-[14px] md:text-[16px] h-[50px] md:h-[67px] sticky top-0"
-                    style="box-shadow: 0px 4px 4px 0px #00000040;">
-                    <!-- سطر اول -->
-                    <tr>
-                        <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-12 md:w-16" rowspan="2">#</th>
-                        <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-32 md:w-48" rowspan="2">واحد پول</th>
-                        <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">موجودی قبلی</th>
-                        <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-32 md:w-40" rowspan="2">رسید</th>
-                        <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">برد</th>
-                        <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">بیلانس</th>
-                        <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">موجودی فعلی</th>
-                        <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">وضعیت</th>
-                    </tr>
-                </thead>
+    <table class="w-full text-sm md:text-base text-left mt-6 rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead
+            class="bg-[#2B65E5] w-full text-white text-[14px] md:text-[16px] h-[50px] md:h-[67px] sticky top-0"
+            style="box-shadow: 0px 4px 4px 0px #00000040;">
+            <tr>
+                <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-12 md:w-16" rowspan="2">#</th>
+                <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-32 md:w-48" rowspan="2">واحد پول</th>
+                <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">موجودی قبلی</th>
+                <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-32 md:w-40" rowspan="2">رسید</th>
+                <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">برد</th>
+                <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">بیلانس</th>
+                <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">موجودی فعلی</th>
+                <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">وضعیت</th>
+            </tr>
+        </thead>
 
-                <tbody class="text-[18px] md:text-[18px] text-gray-800">
-                    @if(count($balances) > 0)
-                    @php $counter = 1; @endphp
-                    @foreach($balances as $balance)
+        <tbody class="text-[18px] md:text-[18px] text-gray-800">
+            @if(count($balances) > 0)
+                @php $counter = 1; @endphp
+                @foreach($balances as $balance)
                     <tr>
                         <td class="px-2 py-4 vazir text-[18px] md:text-[16px] font-medium text-center w-16">
                             {{ $counter++ }}
@@ -580,21 +576,21 @@
                             </span>
                         </td>
                     </tr>
-                    @endforeach
-                    @else
-                    <tr>
-                        <td colspan="8" class="px-4 py-8 text-center text-gray-500">
-                            هیچ موجودی فعالی وجود ندارد
-                        </td>
-                    </tr>
-                    @endif
-                </tbody>
-            </table>
+                @endforeach
+            @else
+                <tr>
+                    <td colspan="8" class="px-4 py-8 text-center text-gray-500">
+                        هیچ موجودی فعالی وجود ندارد
+                    </td>
+                </tr>
+            @endif
+        </tbody>
+    </table>
 
-        </div>
+</div>
     </div>
 
-    
+
 
 </div>
 
@@ -619,4 +615,3 @@
         }
     });
 </script>
-

@@ -7,12 +7,13 @@ use App\Models\Sarafi\Customer;
 use App\Models\Sarafi\Transaction;
 use App\Models\Sarafi\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Morilog\Jalali\Jalalian;
-use NumberFormatter;
 use Mpdf\Mpdf;
-use Illuminate\Support\Facades\Storage;
+use NumberFormatter;
 
 
 
@@ -24,7 +25,6 @@ class Transactions extends Component
     public $customer_id;
     public $selectedAccount;
     public $byUser;
-
     public $currency;
     public $currencies = [];
     public $amount;
@@ -77,7 +77,7 @@ class Transactions extends Component
     }
 
 
-   
+
     public $currenciesdefault = [
         ['name' => 'افغانی', 'value' => 0],
         ['name' => 'دالر', 'value' => 0],
@@ -176,7 +176,7 @@ class Transactions extends Component
 
         $customer = Customer::find($customerId);
         if ($customer) {
-            $this->search = $customer->fullname;
+            $this->search = $customer->fullname; // این خط اضافه شده
 
             if (!$this->customers->contains('id', $customer->id)) {
                 $this->customers->push($customer);
@@ -189,11 +189,25 @@ class Transactions extends Component
 
             $this->updateTransactions();
             $this->updateCustomerCurrencyBalance();
+
+            // لاگ برای دیباگ
+            Log::debug("Customer selected", [
+                'customer_id' => $customerId,
+                'customer_name' => $customer->fullname,
+                'search_value' => $this->search
+            ]);
+        }
+    }
+
+    public function updatedSelectedAccount($value)
+    {
+        if ($value) {
+            $this->selectCustomer($value);
         }
     }
 
 
-
+    
 
     public function updateCustomerCurrencyBalance()
     {
@@ -300,24 +314,31 @@ class Transactions extends Component
     public function clearFilter()
     {
         $this->selectedCustomerId = null;
+        $this->selectedAccount = null;
         $this->search = '';
         $this->filteredCustomers = [];
         $this->updateTransactions();
         $this->updateCustomerCurrencyBalance();
+
     }
 
     public function clearSearch()
     {
         $this->search = '';
         $this->filteredCustomers = [];
+        $this->updateCustomerCurrencyBalance();
+
     }
 
     public function clearSearchAndFilter()
     {
         $this->search = '';
         $this->selectedCustomerId = null;
+        $this->selectedAccount = null;
         $this->filteredCustomers = [];
         $this->updateTransactions();
+        $this->updateCustomerCurrencyBalance(); 
+
     }
 
     public function updateTransactions()
@@ -331,7 +352,7 @@ class Transactions extends Component
         $adminId = $user->admin_id ?? $user->id;
 
         $query = Transaction::with('customer')
-            ->where('admin_id', $adminId); 
+            ->where('admin_id', $adminId);
 
         if ($this->selectedCustomerId) {
             $query->where('customer_id', $this->selectedCustomerId);
@@ -685,7 +706,16 @@ class Transactions extends Component
 
     public function showReport()
     {
-        return redirect()->route('sarafi.transaction-reports');
+        if (!$this->selectedCustomerId) {
+            session()->flash('error', 'لطفاً ابتدا یک مشتری را انتخاب کنید');
+            return;
+        }
+
+        // ذخیره ID مشتری در سشن
+        session(['selected_customer_id' => $this->selectedCustomerId]);
+
+        // انتقال به صفحه گزارشات
+        return redirect()->route('sarafi.transaction-reports'); // مسیر صفحه گزارشات
     }
 
 

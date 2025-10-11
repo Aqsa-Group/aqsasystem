@@ -15,23 +15,26 @@
 
         
         <div class="scroll-container overflow-x-auto whitespace-nowrap py-3 -mt-5">
+            <!-- در کارت‌های ارزها -->
             <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currenciesdefault; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
                 <div class="flex flex-col h-[149px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px]
-                            <?php if($currency['name'] === 'خلاصه بیلانس به دالر'): ?> 
-                                bg-gradient-to-b from-[#11BEC7] to-[#6371D0]
-                            <?php else: ?>
-                                bg-gradient-to-b from-[#2563EB] to-[#5474BB] 
-                            <?php endif; ?>">
+                <?php if($currency['name'] === 'خلاصه بیلانس به دالر'): ?> 
+                    bg-gradient-to-b from-[#11BEC7] to-[#6371D0]
+                <?php else: ?>
+                    bg-gradient-to-b from-[#2563EB] to-[#5474BB] 
+                <?php endif; ?>">
 
                     <h1 class="text-[24px] text-white"><?php echo e($currency['name']); ?></h1>
                     <h2 class="text-center text-[30px] text-white mt-2"><?php echo e($currency['value']); ?></h2>
 
-                    <button wire:click="showReport"
-                        class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition">
-                        نمایش گزارش
+                    <button wire:click="showReport" wire:loading.attr="disabled"
+                        class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
+                        <span wire:loading.remove>نمایش گزارش</span>
+                        <span wire:loading>
+                            در حال انتقال...
+                        </span>
                     </button>
-
                 </div>
             </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
@@ -67,44 +70,51 @@
                     
                     <div class="mt-2 flex flex-col lg:flex-row gap-3">
                         
+                        <!-- در بخش نمبر حساب -->
                         <div class="flex-1">
                             <div class="relative w-full">
                                 <label class="block text-[16px] font-medium text-black mb-1 vazir">نمبر حساب</label>
-
                                 <div x-data="{
-                                        searchValue: '',
-                                        selectedId: <?php if ((object) ('selectedAccount') instanceof \Livewire\WireDirective) : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccount'->value()); ?>')<?php echo e('selectedAccount'->hasModifier('live') ? '.live' : ''); ?><?php else : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccount'); ?>')<?php endif; ?>,
-                                        customers: <?php echo \Illuminate\Support\Js::from($customers)->toHtml() ?>,
-                                        handleSelect(event) {
-                                            const selected = this.customers.find(c => event.target.value === `${c.account_number} - ${c.fullname}`);
-                                            if (selected) {
-                                                this.selectedId = selected.id;
-                                                this.searchValue = `${selected.account_number} - ${selected.fullname}`;
-                                            }
-                                        },
-                                        updateDisplay() {
-                                            const selected = this.customers.find(c => c.id === this.selectedId);
-                                            this.searchValue = selected ? `${selected.account_number} - ${selected.fullname}` : '';
-                                        }
-                                    }" x-init="updateDisplay(); $watch('selectedId', () => updateDisplay())"
-                                    class="relative w-full">
+            searchValue: '',
+            selectedId: <?php if ((object) ('selectedAccount') instanceof \Livewire\WireDirective) : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccount'->value()); ?>')<?php echo e('selectedAccount'->hasModifier('live') ? '.live' : ''); ?><?php else : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccount'); ?>')<?php endif; ?>,
+            customers: <?php echo \Illuminate\Support\Js::from($customers)->toHtml() ?>,
+            handleSelect(event) {
+                const selected = this.customers.find(
+                    c => event.target.value === `${c.account_number} - ${c.fullname}`
+                );
+                if (selected) {
+                    this.selectedId = selected.id;
+                    this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                    // ✅ فراخوانی متد Livewire برای انتخاب مشتری
+                    $wire.selectCustomer(selected.id);
+                    // به روزرسانی جستجو
+                    $wire.set('search', selected.fullname);
+                } else {
+                    // اگر چیزی اشتباه وارد شد، مقدار پاک شود
+                    this.selectedId = null;
+                    this.searchValue = '';
+                    $wire.set('selectedAccount', null);
+                    $wire.set('search', '');
+                }
+            },
+            updateDisplay() {
+                const selected = this.customers.find(c => c.id === this.selectedId);
+                this.searchValue = selected ? `${selected.account_number} - ${selected.fullname}` : '';
+            }
+        }" x-init="updateDisplay(); $watch('selectedId', () => updateDisplay())" class="relative w-full">
                                     <input list="customersList" x-model="searchValue" @change="handleSelect"
                                         placeholder="جستجو یا انتخاب حساب..."
-                                        class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500"
+                                        class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
                                         autocomplete="off">
-
                                     <datalist id="customersList">
                                         <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
-                                        </option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                     </datalist>
-
                                     <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                         <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
                                     </div>
                                 </div>
-
                                 <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['selectedAccount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -117,7 +127,6 @@ endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
                         </div>
-
                         
                         <div class="flex items-end lg:w-[191px]">
                             <button type="button" wire:click="addCustomer"
