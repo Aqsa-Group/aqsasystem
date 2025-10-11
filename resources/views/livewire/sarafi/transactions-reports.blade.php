@@ -1,53 +1,107 @@
 <div>
     <div class="flex flex-col pr-20 mx-auto">
-        <div class="flex flex-col p-4  space-y-3">
+        <div class="flex flex-col p-4 space-y-3">
             <h1 class="text-[25px] vazir">گزارش حساب و بیلانس</h1>
-            <h1 class="text-[#8C8C8C]  border-b border-[#D9D9D9] pb-6">لیست تمام مشتریان و خزانه</h1>
+            <h1 class="text-[#8C8C8C] border-b border-[#D9D9D9] pb-6">لیست تمام مشتریان و خزانه</h1>
             <h1 class="text-[24px] font-medium">گزارش اختصاصـــــی</h1>
         </div>
 
         {{-- Form --}}
         <div class="w-full max-w-[1465px] bg-[#F5F5F5] rounded-[12px] p-6 mx-auto"
             style="box-shadow: 0px 4px 4px 0px #00000040;">
-            <form action="" class="space-y-8">
+            <form wire:submit.prevent="loadTransactions" class="space-y-8">
 
                 <div class="flex flex-col md:flex-row gap-8">
                     <!-- ستون سمت راست -->
                     <div class="flex-1 flex flex-col space-y-6">
 
                         {{-- نمبر حساب --}}
-                        <div>
-                            <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">نمبر حساب</label>
-                            <select
-                                class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
-                                <option value="">نمبر حساب را انتخاب کنید</option>
-                            </select>
+                        <div class="flex-1">
+                            <div class="relative w-full">
+                                <label class="block text-[16px] font-medium text-black mb-1 vazir">نمبر حساب</label>
+
+                                <div x-data="{
+                searchValue: '',
+                selectedId: @entangle('selectedAccount'),
+                customers: @js($customers),
+
+                handleSelect(event) {
+                    const selected = this.customers.find(
+                        c => event.target.value === `${c.account_number} - ${c.fullname}`
+                    );
+                    if (selected) {
+                        this.selectedId = selected.id;
+                        this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                        // ✅ فراخوانی متد Livewire برای انتخاب مشتری
+                        $wire.selectCustomer(selected.id);
+                    } else {
+                        // اگر چیزی اشتباه وارد شد، مقدار پاک شود
+                        this.selectedId = null;
+                        this.searchValue = '';
+                        $wire.set('selectedAccount', null);
+                    }
+                },
+
+                updateDisplay() {
+                    const selected = this.customers.find(c => c.id === this.selectedId);
+                    this.searchValue = selected ? `${selected.account_number} - ${selected.fullname}` : '';
+                }
+            }" x-init="updateDisplay(); $watch('selectedId', () => updateDisplay())" class="relative w-full">
+                                    <input list="customersList" x-model="searchValue" @change="handleSelect"
+                                        placeholder="جستجو یا انتخاب حساب..."
+                                        class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
+                                        autocomplete="off">
+
+                                    <datalist id="customersList">
+                                        @foreach ($customers as $customer)
+                                        <option value="{{ $customer['account_number'] }} - {{ $customer['fullname'] }}">
+                                        </option>
+                                        @endforeach
+                                    </datalist>
+
+                                    <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                        <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
+                                    </div>
+                                </div>
+
+                                @error('selectedAccount')
+                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                                @enderror
+                            </div>
                         </div>
+
 
                         {{-- نوع سند --}}
                         <div>
                             <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">نوع سند</label>
-                            <select
+                            <select wire:model="typeDocument"
                                 class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
-                                <option value="">نوع سند</option>
+                                <option value="">همه اسناد</option>
+                                <option value="خرید">خرید</option>
+                                <option value="فروش">فروش</option>
+                                <option value="انتقال">انتقال</option>
+                                <option value="دریافت">دریافت</option>
+                                <option value="پرداخت">پرداخت</option>
                             </select>
                         </div>
 
                         {{-- نوع معامله --}}
                         <div>
                             <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">نوع معامله</label>
-                            <select
+                            <select wire:model="typeTransaction"
                                 class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
-                                <option value="">نوع معامله</option>
+                                <option value="">همه معاملات</option>
+                                <option value="رسید">رسید</option>
+                                <option value="برد">برد</option>
                             </select>
                         </div>
 
                         {{-- توضیحات --}}
                         <div>
                             <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">توضیحات</label>
-                            <input type="text"
+                            <input type="text" wire:model="description"
                                 class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400 placeholder:text-[#404040]"
-                                placeholder="متن خود را وارد کنید">
+                                placeholder="درج توضیحات">
                         </div>
                     </div>
 
@@ -60,24 +114,62 @@
                             <select
                                 class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
                                 <option value="">همه ترانزکشن‌ها</option>
+                                <option value="">رسید</option>
+                                <option value="">برد</option>
                             </select>
                         </div>
 
                         {{-- واحد ارز --}}
-                        <div>
-                            <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">انتخاب واحد ارز برای
-                                گزارش</label>
-                            <select
-                                class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
-                                <option value="">نوع ارز</option>
-                            </select>
+                        <div class="relative w-full" x-data="{ 
+                                    open: false, 
+                                    selectedCurrencies: @entangle('selectedCurrencies'), 
+                                    currencyMap: @js(collect($currencies)->mapWithKeys(fn($c) => [$c['code'] => $c['name_fa']])->toArray()) 
+                                }">
+                            <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">
+                                انتخاب واحد ارز برای گزارش
+                            </label>
+
+                            <!-- Container کلیک‌شدنی و نمایش انتخاب‌ها به جای placeholder -->
+                            <div @click="open = !open"
+                                class="flex flex-wrap gap-2 items-center min-h-[59px] border border-[#8C8C8C] rounded-[12px] p-2 cursor-pointer">
+                                <template x-if="selectedCurrencies.length > 0">
+                                    <template x-for="code in selectedCurrencies" :key="code">
+                                        <span
+                                            class="bg-blue-100 text-blue-800 px-2 py-1 rounded-md flex items-center gap-1">
+                                            <span x-text="currencyMap[code] || code"></span>
+                                            <button type="button"
+                                                @click.stop="selectedCurrencies = selectedCurrencies.filter(c => c !== code)"
+                                                class="text-blue-600 hover:text-red-600">×</button>
+                                        </span>
+                                    </template>
+                                </template>
+                                <template x-if="selectedCurrencies.length === 0">
+                                    <span class="text-gray-400">انتخاب ارز...</span>
+                                </template>
+                            </div>
+
+                            <!-- Dropdown چک‌باکس‌ها -->
+                            <div x-show="open" @click.away="open = false"
+                                class="absolute z-50 w-full bg-white border border-gray-300 mt-1 max-h-60 overflow-y-auto rounded-md shadow-lg">
+                                <div class="p-2 flex flex-wrap gap-2">
+                                    @foreach($currencies as $currency)
+                                    <label
+                                        class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 cursor-pointer border border-transparent hover:border-blue-200">
+                                        <input type="checkbox" value="{{ $currency['code'] }}"
+                                            x-model="selectedCurrencies"
+                                            class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                                        <span class="text-gray-700 font-medium">{{ $currency['name_fa'] }}</span>
+                                    </label>
+                                    @endforeach
+                                </div>
+                            </div>
                         </div>
 
                         {{-- زون و توسط --}}
                         <div class="flex flex-col md:flex-row gap-4">
                             <div class="w-full">
                                 <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">زون</label>
-                                <select
+                                <select wire:model="zone"
                                     class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
                                     <option value="">انتخاب زون</option>
                                     <option value="غرب">غرب (هرات، بادغیس، غور، فراه)</option>
@@ -93,173 +185,337 @@
 
                             <div class="w-full">
                                 <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">توسط</label>
-                                <input type="text"
+                                <input type="text" wire:model="by"
                                     class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400 placeholder:text-[#404040]"
                                     placeholder="جستجو توسط">
                             </div>
                         </div>
 
-                        {{-- تاریخ‌ها --}}
-                        <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex flex-col md:flex-row gap-4" x-data="{
+                                initDatepickers() {
+                                    const afghanMonths = [
+                                        'حمل', 'ثور', 'جوزا', 'سرطان', 
+                                        'اسد', 'سنبله', 'میزان', 'عقرب', 
+                                        'قوس', 'جدی', 'دلو', 'حوت'
+                                    ];
+
+                                    // تقویم تاریخ شروع
+                                    $('#startDate').persianDatepicker({
+                                        format: 'YYYY/MM/DD',
+                                        autoClose: true,
+                                        initialValue: @js($startDate),
+                                        initialValueType: 'persian',
+                                        position: 'auto',
+                                        calendar: {
+                                            persian: {
+                                                locale: 'fa',
+                                                showHint: true,
+                                                leapYearMode: 'algorithmic',
+                                                epochs: [1348, 1348]
+                                            }
+                                        },
+                                        onSelect: (unixTimestamp) => {
+                                            const selectedDate = new PersianDate(unixTimestamp);
+                                            const year = selectedDate.year();
+                                            const month = selectedDate.month();
+                                            const day = selectedDate.date();
+                                            
+                                            const dateString = year + '/' + 
+                                                            (month < 10 ? '0' + month : month) + '/' + 
+                                                            (day < 10 ? '0' + day : day);
+                                            
+                                            @this.setStartDate(dateString);
+                                        }
+                                    });
+
+                                    // تقویم تاریخ پایان
+                                    $('#endDate').persianDatepicker({
+                                        format: 'YYYY/MM/DD',
+                                        autoClose: true,
+                                        initialValue: @js($endDate),
+                                        initialValueType: 'persian',
+                                        position: 'auto',
+                                        calendar: {
+                                            persian: {
+                                                locale: 'fa',
+                                                showHint: true,
+                                                leapYearMode: 'algorithmic',
+                                                epochs: [1348, 1348]
+                                            }
+                                        },
+                                        onSelect: (unixTimestamp) => {
+                                            const selectedDate = new PersianDate(unixTimestamp);
+                                            const year = selectedDate.year();
+                                            const month = selectedDate.month();
+                                            const day = selectedDate.date();
+                                            
+                                            const dateString = year + '/' + 
+                                                            (month < 10 ? '0' + month : month) + '/' + 
+                                                            (day < 10 ? '0' + day : day);
+                                            
+                                            @this.setEndDate(dateString);
+                                        }
+                                    });
+
+                                    // جایگزینی ماه‌ها در تقویم
+                                    this.replaceCalendarMonths();
+                                },
+
+                                replaceCalendarMonths() {
+                                    // تابع برای جایگزینی ماه‌ها
+                                    const replaceMonths = () => {
+                                        // جایگزینی ماه‌ها در هدر تقویم
+                                        $('.pdp-monthyear').each(function() {
+                                            let text = $(this).text();
+                                            text = text
+                                                .replace(/فروردین/g, 'حمل')
+                                                .replace(/اردیبهشت/g, 'ثور')
+                                                .replace(/خرداد/g, 'جوزا')
+                                                .replace(/تیر/g, 'سرطان')
+                                                .replace(/مرداد/g, 'اسد')
+                                                .replace(/شهریور/g, 'سنبله')
+                                                .replace(/مهر/g, 'میزان')
+                                                .replace(/آبان/g, 'عقرب')
+                                                .replace(/آذر/g, 'قوس')
+                                                .replace(/دی/g, 'جدی')
+                                                .replace(/بهمن/g, 'دلو')
+                                                .replace(/اسفند/g, 'حوت');
+                                            $(this).text(text);
+                                        });
+
+                                        // جایگزینی ماه‌ها در منوی انتخاب ماه
+                                        $('.pdp-month-container span, .pdp-month').each(function() {
+                                            let text = $(this).text();
+                                            text = text
+                                                .replace(/فروردین/g, 'حمل')
+                                                .replace(/اردیبهشت/g, 'ثور')
+                                                .replace(/خرداد/g, 'جوزا')
+                                                .replace(/تیر/g, 'سرطان')
+                                                .replace(/مرداد/g, 'اسد')
+                                                .replace(/شهریور/g, 'سنبله')
+                                                .replace(/مهر/g, 'میزان')
+                                                .replace(/آبان/g, 'عقرب')
+                                                .replace(/آذر/g, 'قوس')
+                                                .replace(/دی/g, 'جدی')
+                                                .replace(/بهمن/g, 'دلو')
+                                                .replace(/اسفند/g, 'حوت');
+                                            $(this).text(text);
+                                        });
+                                    };
+
+                                    // اجرای اولیه
+                                    replaceMonths();
+
+                                    // اجرای هر 500 میلی‌ثانیه تا زمانی که تقویم لود شود
+                                    const interval = setInterval(() => {
+                                        if ($('.pdp-monthyear').length > 0) {
+                                            replaceMonths();
+                                        }
+                                    }, 500);
+
+                                    // توقف بعد از 5 ثانیه
+                                    setTimeout(() => {
+                                        clearInterval(interval);
+                                    }, 5000);
+
+                                    // همچنین وقتی روی input کلیک می‌شود
+                                    $(document).on('click', '#startDate, #endDate', () => {
+                                        setTimeout(replaceMonths, 300);
+                                    });
+
+                                    // وقتی تقویم باز می‌شود
+                                    $(document).on('click', '.pdp-header', () => {
+                                        setTimeout(replaceMonths, 300);
+                                    });
+                                }
+                            }" x-init="initDatepickers()">
+
                             <div class="w-full">
                                 <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">تاریخ شروع</label>
-                                <input type="text"
-                                    class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400 placeholder:text-[#404040]"
-                                    placeholder="1404/05/06">
+                                <div class="relative">
+                                    <input type="text" id="startDate" wire:model="startDateDisplay"
+                                        class="w-full pr-12 h-[59px] rounded-[12px] bg-white border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400 placeholder:text-[#404040] cursor-pointer shadow-sm"
+                                        placeholder="1404/حمل/01" readonly>
+                                    <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                        📅
+                                    </div>
+                                </div>
+                                @error('startDate')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
+
                             <div class="w-full">
                                 <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">تاریخ ختم</label>
-                                <input type="text"
-                                    class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400 placeholder:text-[#404040]"
-                                    placeholder="1404/07/01">
+                                <div class="relative">
+                                    <input type="text" id="endDate" wire:model="endDateDisplay"
+                                        class="w-full pr-12 h-[59px] rounded-[12px] bg-white border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400 placeholder:text-[#404040] cursor-pointer shadow-sm"
+                                        placeholder="1404/جوزا/01" readonly>
+                                    <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                        📅
+                                    </div>
+                                </div>
+                                @error('endDate')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
+
+                        <style>
+                            /* استایل برای ماه‌های افغانی */
+                            .pdp-monthyear,
+                            .pdp-month-container span,
+                            .pdp-month {
+                                font-family: system-ui, -apple-system, sans-serif !important;
+                                font-weight: 500 !important;
+                            }
+
+                            .persian-date-picker-table td {
+                                font-family: system-ui, -apple-system, sans-serif !important;
+                            }
+                        </style>
+
                     </div>
                 </div>
 
-                <!-- دکمه‌ها -->
+                <!-- در بخش دکمه‌ها -->
                 <div class="flex justify-center gap-4 pt-4">
                     <button type="submit"
                         class="bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-[16px] font-medium rounded-[12px] w-full px-8 py-4 transition">
                         بروزرسانی گزارش
                     </button>
 
-                    <button type="button"
-                        class="bg-[#B10909] hover:bg-[#8B0000] text-white text-[16px] font-medium rounded-[12px] w-full py-4 transition">
-                        چاپ گزارش
+                    <button type="button" wire:click="print" wire:loading.attr="disabled"
+                        class="bg-[#B10909] hover:bg-[#8B0000] text-white text-[16px] font-medium rounded-[12px] w-full py-4 transition flex items-center justify-center gap-2">
+                        <span wire:loading.remove>چاپ گزارش</span>
+                        <span wire:loading>
+                            در حال تولید...
+                        </span>
                     </button>
+
+                    {{-- <button type="button" wire:click="debugDates"
+                        class="bg-yellow-500 hover:bg-yellow-600 text-white text-[16px] font-medium rounded-[12px] w-full py-4 transition">
+                        دیباگ تاریخ‌ها
+                    </button> --}}
                 </div>
 
             </form>
         </div>
 
+        {{-- Report Table --}}
+        <div class="w-full max-w-[1465px] bg-[#F5F5F5] rounded-[12px] mt-10 p-6 mx-auto"
+            style="box-shadow: 0px 4px 4px 0px #00000040;">
 
-    {{-- Report Table --}}
-<div class="w-full max-w-[1465px] bg-[#F5F5F5] rounded-[12px] mt-10 p-6 mx-auto"
-     style="box-shadow: 0px 4px 4px 0px #00000040;">
+            <div class="flex justify-between items-center mb-4">
+                <div class="relative w-[302px]">
+                    <input type="text" id="searchTable"
+                        class="border border-[#8C8C8C] bg-transparent rounded-[12px] h-[51px] w-[302px] pl-10 pr-4"
+                        placeholder="جستجو در جدول...">
+                    <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt="search"
+                        class="absolute left-3 top-3 w-5 h-5">
+                </div>
 
-    <div class="relative w-[302px]">
-        <input type="text"
-               class="border border-[#8C8C8C] bg-transparent rounded-[12px] h-[51px] w-[302px] pl-10 pr-4"
-               placeholder="جستجو کنید...">
-        <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt="search"
-             class="absolute left-3 top-3 w-5 h-5">
-    </div>
+                @if($selectedCustomer)
+                <div class="text-right">
+                    <h3 class="text-lg font-bold">{{ $selectedCustomerName }}</h3>
+                    <p class="text-sm text-gray-600">تعداد تراکنش‌ها: {{ count($transactions) }}</p>
+                </div>
+                @endif
+            </div>
 
-    <table class="w-full text-sm md:text-base text-left mt-6 rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="bg-[#2B65E5] w-full text-white text-[14px] md:text-[16px] h-[50px] md:h-[67px] sticky top-0"
-               style="box-shadow: 0px 4px 4px 0px #00000040;">
-            <!-- سطر اول -->
-            <tr class="w-full">
-                <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-12 md:w-16" rowspan="2">#</th>
-                <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-32 md:w-48" rowspan="2">تاریخ</th>
-                <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">نمبر سند</th>
-                <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-32 md:w-40" rowspan="2">توضیحات</th>
-                <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">توسط</th>
+            <table class="w-full text-sm md:text-base text-left mt-6 rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead
+                    class="bg-[#2B65E5] w-full text-white text-[14px] md:text-[16px] h-[50px] md:h-[67px] sticky top-0"
+                    style="box-shadow: 0px 4px 4px 0px #00000040;">
+                    <!-- سطر اول -->
+                    <tr class="w-full">
+                        <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-12 md:w-16" rowspan="2">#</th>
+                        <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-32 md:w-48" rowspan="2">تاریخ</th>
+                        <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">نمبر سند</th>
+                        <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-32 md:w-40" rowspan="2">توضیحات</th>
+                        <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">توسط</th>
 
-                <th class="px-4 md:px-6 py-3 md:py-4 font-bold text-center" colspan="2">دالر</th>
-                <th class="px-4 md:px-6 py-3 md:py-4 font-bold text-center" colspan="2">افغانی</th>
-                <th class="px-4 md:px-6 py-3 md:py-4 font-bold text-center" colspan="2">تومان</th>
-                <th class="px-4 md:px-6 py-3 md:py-4 font-bold text-center" colspan="2">یورو</th>
-                <th class="px-2 md:px-4 py-3 md:py-4 font-bold w-36 md:w-48 text-center" rowspan="2">تسویه</th>
-            </tr>
-            <!-- سطر دوم -->
-            <tr>
-                <!-- دالر -->
-                <th class="px-2 md:px-3 py-2 font-semibold text-center min-w-[70px] md:min-w-[80px]">رسید</th>
-                <th class="px-2 md:px-3 py-2 font-semibold text-center min-w-[70px] md:min-w-[80px]">برد</th>
+                        <!-- نمایش داینامیک ارزها بر اساس مشتری -->
+                        @foreach($active_currencies as $code => $currency)
+                        @php
+                        $currencyName = is_array($currency) ? $currency['name_fa'] : $currency;
+                        $colspan = 2;
+                        @endphp
+                        <th class="px-4 md:px-6 py-3 md:py-4 font-bold text-center" colspan="{{ $colspan }}">
+                            {{ $currencyName }}
+                        </th>
+                        @endforeach
 
-                <!-- افغانی -->
-                <th class="px-2 md:px-3 py-2 font-semibold text-center min-w-[70px] md:min-w-[80px]">رسید</th>
-                <th class="px-2 md:px-3 py-2 font-semibold text-center min-w-[70px] md:min-w-[80px]">برد</th>
+                        <th class="px-2 md:px-4 py-3 md:py-4 font-bold w-36 md:w-48 text-center" rowspan="2">تسویه</th>
+                    </tr>
+                    <!-- سطر دوم -->
+                    <tr>
+                        <!-- نمایش ستون‌های رسید و برد برای هر ارز -->
+                        @foreach($active_currencies as $code => $currency)
+                        <th class="px-2 md:px-3 py-2 font-semibold text-center min-w-[70px] md:min-w-[80px]">رسید</th>
+                        <th class="px-2 md:px-3 py-2 font-semibold text-center min-w-[70px] md:min-w-[80px]">برد</th>
+                        @endforeach
+                    </tr>
+                </thead>
 
-                <!-- تومان -->
-                <th class="px-2 md:px-3 py-2 font-semibold text-center min-w-[70px] md:min-w-[80px]">رسید</th>
-                <th class="px-2 md:px-3 py-2 font-semibold text-center min-w-[70px] md:min-w-[80px]">برد</th>
+                <tbody class="text-[14px] md:text-[15px] text-gray-800">
+                    @if(count($transactions) > 0)
+                    @foreach($transactions as $index => $transaction)
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="px-2 md:px-4 py-3 text-center">{{ $index + 1 }}</td>
+                        <td class="px-2 md:px-4 py-3">
+                            <div class="flex flex-col">
+                                <span>{{ $transaction->date }}</span>
+                            </div>
+                        </td>
+                        <td class="px-2 md:px-4 py-3">{{ $transaction->document_number ?? 'SN-' .
+                            str_pad($transaction->id, 3, '0', STR_PAD_LEFT) }}</td>
+                        <td class="px-2 md:px-4 py-3">{{ $transaction->description }}</td>
+                        <td class="px-2 md:px-4 py-3">{{ $transaction->by }}</td>
 
-                <!-- یورو -->
-                <th class="px-2 md:px-3 py-2 font-semibold text-center min-w-[70px] md:min-w-[80px]">رسید</th>
-                <th class="px-2 md:px-3 py-2 font-semibold text-center min-w-[70px] md:min-w-[80px]">برد</th>
-            </tr>
-        </thead>
+                        <!-- نمایش داینامیک مقادیر برای هر ارز -->
+                        @foreach($active_currencies as $code => $currency)
+                        <td class="px-2 md:px-3 py-3 text-center">
+                            {{ $transaction->currency == $code && $transaction->type == 'رسید' ?
+                            number_format($transaction->amount) : '-' }}
+                        </td>
+                        <td class="px-2 md:px-3 py-3 text-center">
+                            {{ $transaction->currency == $code && $transaction->type == 'برد' ?
+                            number_format($transaction->amount) : '-' }}
+                        </td>
+                        @endforeach
 
-        <tbody class="text-[14px] md:text-[15px] text-gray-800">
-            <!-- سطر توضیح بیلانس‌ها -->
-       
+                        <td class="px-2 md:px-4 py-3 text-center">
+                            <span
+                                class="px-2 py-1 rounded-full text-xs {{ $transaction->status == 'تأیید شده' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                {{ $transaction->status ?? 'در انتظار' }}
+                            </span>
+                        </td>
+                    </tr>
+                    @endforeach
+                    @else
+                    <tr>
+                        <td colspan="{{ 5 + (count($active_currencies) * 2) + 1 }}"
+                            class="px-4 py-8 text-center text-gray-500">
+                            @if($selectedCustomer)
+                            هیچ تراکنشی با فیلترهای انتخاب شده یافت نشد
+                            @else
+                            لطفاً ابتدا یک مشتری را انتخاب کنید
+                            @endif
+                        </td>
+                    </tr>
+                    @endif
+                </tbody>
+            </table>
 
-            <!-- داده‌های نمونه -->
-            <tr class="border-b hover:bg-gray-50">
-                <td class="px-2 md:px-4 py-3 text-center">1</td>
-                <td class="px-2 md:px-4 py-3">
-                    <div class="flex flex-col">
-                        <span>1403/05/15</span>
-                        <span>1403/05/15</span>
-                    </div>
-                </td>
-                <td class="px-2 md:px-4 py-3">SN-001</td>
-                <td class="px-2 md:px-4 py-3">خرید مواد اولیه</td>
-                <td class="px-2 md:px-4 py-3">احمدی</td>
+        </div>
 
-                <!-- دالر -->
-                <td class="px-2 md:px-3 py-3 text-center">500</td>
-                <td class="px-2 md:px-3 py-3 text-center">0</td>
-
-                <!-- افغانی -->
-                <td class="px-2 md:px-3 py-3 text-center">0</td>
-                <td class="px-2 md:px-3 py-3 text-center">25,000</td>
-
-                <!-- تومان -->
-                <td class="px-2 md:px-3 py-3 text-center">-</td>
-                <td class="px-2 md:px-3 py-3 text-center">1,500,000</td>
-
-                <!-- یورو -->
-                <td class="px-2 md:px-3 py-3 text-center">200</td>
-                <td class="px-2 md:px-3 py-3 text-center">0</td>
-
-                <td class="px-2 md:px-4 py-3 text-center">تأیید شده</td>
-            </tr>
-
-            <tr class="border-b hover:bg-gray-50">
-                <td class="px-2 md:px-4 py-3 text-center">2</td>
-               <td class="px-2 md:px-4 py-3">
-                    <div class="flex flex-col">
-                        <span>1403/05/15</span>
-                        <span>1403/05/15</span>
-                    </div>
-                </td>
-                <td class="px-2 md:px-4 py-3">SN-002</td>
-                <td class="px-2 md:px-4 py-3">فروش محصول</td>
-                <td class="px-2 md:px-4 py-3">رضایی</td>
-
-                <!-- دالر -->
-                <td class="px-2 md:px-3 py-3 text-center">0</td>
-                <td class="px-2 md:px-3 py-3 text-center">150</td>
-
-                <!-- افغانی -->
-                <td class="px-2 md:px-3 py-3 text-center">45,000</td>
-                <td class="px-2 md:px-3 py-3 text-center">0</td>
-
-                <!-- تومان -->
-                <td class="px-2 md:px-3 py-3 text-center">2,800,000</td>
-                <td class="px-2 md:px-3 py-3 text-center">0</td>
-
-                <!-- یورو -->
-                <td class="px-2 md:px-3 py-3 text-center">0</td>
-                <td class="px-2 md:px-3 py-3 text-center">75</td>
-
-                <td class="px-2 md:px-4 py-3 text-center">در انتظار</td>
-            </tr>
-        </tbody>
-    </table>
-
-</div>
-
-
+        {{-- General Table --}}
         {{-- General Table --}}
         <div class="w-full max-w-[1465px] bg-[#F5F5F5] rounded-[12px] mt-10 p-6 mx-auto">
 
-            <div class="flex justify-between items-center text-center mx-auto">
-                <h1>مجموعه کل</h1>
+            <div class="flex justify-between items-center text-center mx-auto mb-6">
+                <h1 class="text-xl font-bold">مجموعه کل</h1>
                 <button
                     class="w-[31px] h-[29.232500076293945px] rounded-[8px] bg-transparent border border-[#000000] pr-1 ">
                     <img src="{{ asset('assets/sarafi/all_icon/printer.svg') }}" alt=""
@@ -267,7 +523,7 @@
                 </button>
             </div>
 
-           <table class="w-full text-sm md:text-base text-left mt-6 rtl:text-right text-gray-500 dark:text-gray-400">
+            <table class="w-full text-sm md:text-base text-left mt-6 rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead
                     class="bg-[#2B65E5] w-full text-white text-[14px] md:text-[16px] h-[50px] md:h-[67px] sticky top-0"
                     style="box-shadow: 0px 4px 4px 0px #00000040;">
@@ -282,56 +538,85 @@
                         <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">موجودی فعلی</th>
                         <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">وضعیت</th>
                     </tr>
-
-
                 </thead>
 
                 <tbody class="text-[18px] md:text-[18px] text-gray-800">
-
-
+                    @if(count($balances) > 0)
+                    @php $counter = 1; @endphp
+                    @foreach($balances as $balance)
                     <tr>
                         <td class="px-2 py-4 vazir text-[18px] md:text-[16px] font-medium text-center w-16">
-                            1
+                            {{ $counter++ }}
                         </td>
 
                         <td class="px-2 py-4 vazir text-[18px] md:text-[16px] font-medium text-center w-16">
-                            دالر
+                            {{ $balance['name_fa'] }}
                         </td>
 
                         <td class="px-2 py-4 vazir text-[18px] md:text-[16px] font-medium text-center w-16">
-                            2500
-                        </td>
-
-
-                        <td class="px-2 py-4 vazir text-[18px] md:text-[16px] font-medium text-center w-16">
-                            7830
+                            {{ number_format($balance['previous_balance']) }}
                         </td>
 
                         <td class="px-2 py-4 vazir text-[18px] md:text-[16px] font-medium text-center w-16">
-                            7200
+                            {{ number_format($balance['received']) }}
                         </td>
 
                         <td class="px-2 py-4 vazir text-[18px] md:text-[16px] font-medium text-center w-16">
-                            4930
-                        </td>
-                        <td class="px-2 py-4 vazir text-[18px] md:text-[16px] font-medium text-center w-16">
-                            4930
+                            {{ number_format($balance['spent']) }}
                         </td>
 
                         <td class="px-2 py-4 vazir text-[18px] md:text-[16px] font-medium text-center w-16">
-                            طلبکار
+                            {{ number_format($balance['balance']) }}
                         </td>
 
+                        <td class="px-2 py-4 vazir text-[18px] md:text-[16px] font-medium text-center w-16">
+                            {{ number_format($balance['current_balance']) }}
+                        </td>
 
-
+                        <td class="px-2 py-4 vazir text-[18px] md:text-[16px] font-medium text-center w-16">
+                            <span
+                                class="px-2 py-1 rounded-full text-xs {{ $balance['status'] == 'طلبکار' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                {{ $balance['status'] }}
+                            </span>
+                        </td>
                     </tr>
-
-
+                    @endforeach
+                    @else
+                    <tr>
+                        <td colspan="8" class="px-4 py-8 text-center text-gray-500">
+                            هیچ موجودی فعالی وجود ندارد
+                        </td>
+                    </tr>
+                    @endif
                 </tbody>
             </table>
 
         </div>
-
-
     </div>
+
+    
+
 </div>
+
+<script>
+    // جستجوی ساده در جدول
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchTable');
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                const searchText = this.value.toLowerCase();
+                const rows = document.querySelectorAll('tbody tr');
+                
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    if (text.includes(searchText)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        }
+    });
+</script>
+

@@ -331,7 +331,7 @@ class Transactions extends Component
         $adminId = $user->admin_id ?? $user->id;
 
         $query = Transaction::with('customer')
-            ->where('admin_id', $adminId); // فقط داده‌های مخصوص همین گروه
+            ->where('admin_id', $adminId); 
 
         if ($this->selectedCustomerId) {
             $query->where('customer_id', $this->selectedCustomerId);
@@ -575,7 +575,7 @@ class Transactions extends Component
 
         $mpdf = new Mpdf([
             'mode' => 'utf-8',
-            'format' => [80, 600],
+            'format' => [80, 250],
             'directionality' => 'rtl',
             'margin_top' => 2,
             'margin_bottom' => 2,
@@ -726,7 +726,7 @@ class Transactions extends Component
         $safe->save();
     }
 
-    
+
 
     private function resetForm()
     {

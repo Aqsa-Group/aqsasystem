@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="<?php echo e(session('locale', config('app.locale'))); ?>" dir="<?php echo e(session('locale') === 'en' ? 'ltr' : 'rtl'); ?>">
+<html  lang="<?php echo e(session('locale', config('app.locale'))); ?>" dir="<?php echo e(session('locale') === 'en' ? 'ltr' : 'rtl'); ?>">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard RTL</title>
+    <title>سیستم صرافی اقصی</title>
     <?php echo $__env->make('Sarafi.layouts.links', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     <style>
@@ -272,6 +272,7 @@
         .dark body {
             background-color: #1a202c;
             color: #e2e8f0;
+            @apply text-white
         }
 
         .dark header {
@@ -291,7 +292,7 @@
     </style>
 </head>
 
-<body class="vazir">
+<body class="vazir dark:text-white">
 
     <!-- لودر فوق العاده زیبا -->
     <div id="loader">
@@ -447,8 +448,8 @@
             </div>
         </header>
 
-        <div class="flex flex-1 mt-10 min-h-screen">
-            <aside class="w-72 hidden md:block p-5">
+        <div class="flex flex-1 mt-10 min-h-screen sticky ">
+            <aside class="w-72 hidden md:block p-5 dark:text-white static">
                 <nav class="mt-0 space-y-0" x-data="{
             openItems: {
                 customers: false,

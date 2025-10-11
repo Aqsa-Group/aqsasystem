@@ -1,6 +1,6 @@
 <div class="p-6 border-[#8C8C8C] min-h-screen" style="font-family: 'header';">
 
-    <h1 class="mb-8 text-3xl font-bold text-gray-700 vazir">{{ __('messages.page_title') }}</h1>
+    <h1 class="mb-8 text-3xl font-bold text-gray-700  vazir">{{ __('messages.page_title') }}</h1>
 
     <div class="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-3">
 
@@ -27,7 +27,7 @@
         <div
             class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
             <i class="fa-solid fa-book-open text-white text-xl"></i>
-            <a href="" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+            <a href="{{ route('sarafi.accountsjornal') }}" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 {{ __('messages.newspaper_accounts') }}
             </a>
         </div>
@@ -35,7 +35,7 @@
         <!-- خرید و فروش ارز و صندوق -->
         <div class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center  gap-3 text-white text-[16px] font-bold">
             <img src="{{ asset('assets/sarafi/all_icon/bitcoin-(btc).svg') }}" alt="">
-            <a href="" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+            <a href="{{ route('sarafi.buy-sell-currency') }}" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 {{ __('messages.selling') }}
             </a>
         </div>
@@ -253,26 +253,26 @@
             </template>
 
 
-          <template x-if="activeTab === 'safes'">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 vazir">
+            <template x-if="activeTab === 'safes'">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 vazir">
 
-        @foreach($currencies as $key => $label)
-            <div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
-                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-                <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
-                    <img src="{{ asset('assets/sarafi/all_icon/coin.svg') }}" alt="" class="h-10 w-10">
-                </div>
-                <div class="space-y-2">
-                    <h1 class="text-[16px] font-semibold text-gray-600">{{ $label }}</h1>
-                    <p class="text-[25px] font-extrabold text-[#2563EB]">
-                        {{ number_format($safe->$key ?? 0) }}
-                    </p>
-                </div>
-            </div>
-        @endforeach
+                    @foreach($currencies as $key => $label)
+                    <div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
+                        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                        <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
+                            <img src="{{ asset('assets/sarafi/all_icon/coin.svg') }}" alt="" class="h-10 w-10">
+                        </div>
+                        <div class="space-y-2">
+                            <h1 class="text-[16px] font-semibold text-gray-600">{{ $label }}</h1>
+                            <p class="text-[25px] font-extrabold text-[#2563EB]">
+                                {{ number_format($safe->$key ?? 0) }}
+                            </p>
+                        </div>
+                    </div>
+                    @endforeach
 
-    </div>
-</template>
+                </div>
+            </template>
 
 
 

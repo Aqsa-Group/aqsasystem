@@ -189,6 +189,26 @@ Route::get('/sarafi/transactions-reports', function () {
 
 
 
+Route::get('/sarafi/accounts-jornal', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.accountsjornal');
+})->name('sarafi.accountsjornal');
+
+
+Route::get('/sarafi/buy-sell-currency', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.buy-sell-currency');
+})->name('sarafi.buy-sell-currency');
+
+
+
+
+
+
 
 
 
