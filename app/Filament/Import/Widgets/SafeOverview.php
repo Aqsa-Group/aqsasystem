@@ -2,6 +2,8 @@
 
 namespace App\Filament\Import\Widgets;
 
+use App\Models\Import\Company;
+use App\Models\Import\CompanyPayment;
 use App\Models\Import\Customer;
 use App\Models\Import\Inventory;
 use App\Models\Import\Loan;
@@ -16,6 +18,7 @@ use Filament\Widgets\StatsOverviewWidget\Card;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class SafeOverview extends BaseWidget
 {
@@ -55,6 +58,14 @@ class SafeOverview extends BaseWidget
             ->whereBetween('created_at', [$today, $tomorrow])
             ->where('currency', 'USD')
             ->sum('amount');
+
+
+        //    طلب مردم
+
+        $totalcompanyAFN = Company::sum('AFN');
+        $totalcompanyUSD = Company::sum('USD');
+
+
 
         // --- موجودی‌ها ---
         $totalBalance = $safeRow->total;
@@ -171,8 +182,21 @@ class SafeOverview extends BaseWidget
                     </div>
                 "))
 
-                ->url(route('filament.import.resources.loans.index'))
-            // ->color($totalLoan > 0 ? 'warning' : 'success'),
+                ->url(route('filament.import.resources.loans.index')),
+
+            Card::make('طلب شرکت‌ها', '')
+                ->description(new HtmlString("
+        <div class='grid grid-cols-2 gap-x-4 text-2xl'>
+            <div class='text-black dark:text-white font-bold'>افغانی</div>
+            <div class='text-right text-black dark:text-white font-bold'>" . number_format($totalcompanyAFN, 0) . "</div>
+
+            <div class='text-black dark:text-white font-bold'>دالر</div>
+            <div class='text-right text-black dark:text-white font-bold'>" . number_format($totalcompanyUSD, 2) . "</div>
+        </div>
+    "))
+                ->color(($totalcompanyAFN + $totalcompanyUSD) > 0 ? 'danger' : 'success')
+
+
         ];
     }
 }

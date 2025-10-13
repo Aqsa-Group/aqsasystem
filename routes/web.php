@@ -206,6 +206,19 @@ Route::get('/sarafi/buy-sell-currency', function () {
 
 
 
+Route::get('/sarafi/conversion-transfer', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.conversion-transfer');
+})->name('sarafi.conversion-transfer');
+
+
+
+
+
+
+
 
 
 

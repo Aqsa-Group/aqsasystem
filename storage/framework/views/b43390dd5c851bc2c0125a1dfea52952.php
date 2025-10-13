@@ -1,16 +1,16 @@
 <div>
     <div class="container mx-auto px-4">
-        <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
-        <div x-data="{ show: true }" x-init="setTimeout(() => show = false,  4000)" x-show="show" x-transition
-            class="p-4 mb-4 h-[103px] w-full absolute flex justify-start items-center top-0 left-0 bg-[#2B65E5] vazir">
+<!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
+<div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
+    class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
+    <div class="h-[80px] w-full flex justify-start items-center px-4">
+        <h2 class="text-white vazir text-[18px]">
+            <?php echo e(session('message')); ?>
 
-            <h2 class="text-white vazir text-[18px]">
-                <?php echo e(session('message')); ?>
-
-            </h2>
-        </div>
-        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-
+        </h2>
+    </div>
+</div>
+<?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
 
         
@@ -50,8 +50,11 @@
                 
                 <div class="flex flex-row justify-between p-[10px] border border-[#8C8C8C] rounded-[12px] flex-wrap">
                     <p class="flex justify-center items-center text-center">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" alt="" class="h-6 w-6"> فورم
+                        <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" alt="" class="h-6 w-6">
+                        <?php echo e($transactionId ? 'فورم ویرایش ترانزکشن' : 'فورم ثبت ترانزکشن'); ?>
+
                     </p>
+
                     <div class="flex gap-4 flex-wrap">
                         <button class="bg-[#DD2424] rounded-[8px] p-[10px] text-white vazir font-semibold">توقف
                             پیامک</button>
@@ -330,16 +333,28 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
 
-                    
+                    <!-- دکمه‌های نهایی -->
                     <div class="flex gap-4 p-4 justify-center items-center text-center flex-wrap">
                         <button type="submit"
-                            class="bg-[#61B138] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">ثبت</button>
+                            class="bg-[#61B138] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
+                            <?php echo e($transactionId ? 'بروزرسانی' : 'ثبت'); ?>
+
+                        </button>
+
+                        <!--[if BLOCK]><![endif]--><?php if(!$transactionId): ?>
                         <button type="button" wire:click="submitAndPrint"
-                            class="bg-[#2563EB] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">ثبت
-                            و چاپ</button>
+                            class="bg-[#2563EB] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
+                            ثبت و چاپ
+                        </button>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
                         <button type="button" wire:click="cancel"
-                            class="bg-[#DD2424] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">انصراف</button>
+                            class="bg-[#DD2424] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
+                            <?php echo e($transactionId ? 'لغو ویرایش' : 'انصراف'); ?>
+
+                        </button>
                     </div>
+
                 </form>
             </div>
             

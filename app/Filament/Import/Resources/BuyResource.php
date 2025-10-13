@@ -300,6 +300,7 @@ class BuyResource extends Resource
                 ->numeric()
                 ->dehydrated(true)
                 ->lazy()
+                ->default(0)
                 ->afterStateUpdated(function (callable $set, $state, callable $get) {
                     $amount = $get('amount') ?? 0;
                     $set('remaining', max($amount - ($state ?? 0), 0));

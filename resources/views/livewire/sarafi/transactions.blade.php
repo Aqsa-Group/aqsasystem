@@ -1,15 +1,15 @@
 <div>
     <div class="container mx-auto px-4">
         @if (session()->has('message'))
-        <div x-data="{ show: true }" x-init="setTimeout(() => show = false,  4000)" x-show="show" x-transition
-            class="p-4 mb-4 h-[103px] w-full absolute flex justify-start items-center top-0 left-0 bg-[#2B65E5] vazir">
-
-            <h2 class="text-white vazir text-[18px]">
-                {{ session('message') }}
-            </h2>
+        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
+            class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
+            <div class="h-[80px] w-full flex justify-start items-center px-4">
+                <h2 class="text-white vazir text-[18px]">
+                    {{ session('message') }}
+                </h2>
+            </div>
         </div>
         @endif
-
 
 
         {{-- کارت‌های ارزها با اسکرول افقی --}}
@@ -49,8 +49,10 @@
                 {{-- بالای فرم: فورم و دکمه‌ها --}}
                 <div class="flex flex-row justify-between p-[10px] border border-[#8C8C8C] rounded-[12px] flex-wrap">
                     <p class="flex justify-center items-center text-center">
-                        <img src="{{ asset('assets/sarafi/all_icon/edit-2.svg') }}" alt="" class="h-6 w-6"> فورم
+                        <img src="{{ asset('assets/sarafi/all_icon/edit-2.svg') }}" alt="" class="h-6 w-6">
+                        {{ $transactionId ? 'فورم ویرایش ترانزکشن' : 'فورم ثبت ترانزکشن' }}
                     </p>
+
                     <div class="flex gap-4 flex-wrap">
                         <button class="bg-[#DD2424] rounded-[8px] p-[10px] text-white vazir font-semibold">توقف
                             پیامک</button>
@@ -279,16 +281,26 @@
                         </div>
                     </div>
 
-                    {{-- دکمه‌های نهایی --}}
+                    <!-- دکمه‌های نهایی -->
                     <div class="flex gap-4 p-4 justify-center items-center text-center flex-wrap">
                         <button type="submit"
-                            class="bg-[#61B138] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">ثبت</button>
+                            class="bg-[#61B138] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
+                            {{ $transactionId ? 'بروزرسانی' : 'ثبت' }}
+                        </button>
+
+                        @if(!$transactionId)
                         <button type="button" wire:click="submitAndPrint"
-                            class="bg-[#2563EB] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">ثبت
-                            و چاپ</button>
+                            class="bg-[#2563EB] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
+                            ثبت و چاپ
+                        </button>
+                        @endif
+
                         <button type="button" wire:click="cancel"
-                            class="bg-[#DD2424] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">انصراف</button>
+                            class="bg-[#DD2424] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
+                            {{ $transactionId ? 'لغو ویرایش' : 'انصراف' }}
+                        </button>
                     </div>
+
                 </form>
             </div>
             {{-- جدول تراکنش‌ها --}}
@@ -540,5 +552,6 @@
         input[list]::-ms-clear,
         input[list]::-ms-expand {
             display: none !important;
+        }
     </style>
 </div>

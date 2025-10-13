@@ -875,7 +875,7 @@ private function preparePdfData()
     return [
         'transactions' => $this->transactions,
         'customer_name' => $this->selectedCustomerName,
-        'customer' => $customer, // اطمینان از پاس دادن customer object
+        'customer' => $customer, 
         'start_date' => $this->startDateDisplay,
         'end_date' => $this->endDateDisplay,
         'active_currencies' => $activeCurrencies,

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>تراکنش صرافی - {{ $user->sarafi_name ?? 'صرافی' }}</title>
+    <title>تراکنش صرافی - <?php echo e($user->sarafi_name ?? 'صرافی'); ?></title>
     <style>
         /* همه عناصر بدون حاشیه و با فونت پیشفرض */
         * {
@@ -112,16 +112,12 @@
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            /* راست‌چین کردن محتوا */
-            /* فاصله کل بخش امضا با بخش بالایی */
         }
 
         .signature-top-border {
-            /* بورد بالایی */
             width: 100%;
             padding-left: 20px;
             margin-bottom: 30px;
-            /* فاصله بین بورد و متن/خط پایین */
         }
 
         .signature-text {
@@ -175,29 +171,53 @@
 
 <body>
     <div class="document">
-        <h1 style="text-align:center; font-family: amiri ,sans-serif" class="shabnam-fd "> صرافی {{
-            $user->sarafi_name ?? 'صرافی' }}</h1>
+        <h1 style="text-align:center; font-family: amiri ,sans-serif" class="shabnam-fd "> صرافی <?php echo e(Auth::guard('sarafi')->user()->sarafi_name); ?></h1>
         <div class="header">
             <table class="header-table" style="width:100%; border-collapse: collapse;">
                 <tr>
-                    <td style="text-align:right;">نوع تراکنش : {{ $transaction->type }}</td>
-                    <td style="text-align:left;">تاریخ ثبت تراکنش :
-                        @php
-                        $dateParts = explode('-', $transaction->date);
-                        if(count($dateParts) === 3) {
-                        echo $dateParts[2] . '-' . $dateParts[1] . '-' . $dateParts[0];
-                        } else {
-                        echo $transaction->date;
+                    <td style="text-align:right;">نوع معامله : <?php echo e($transaction->type); ?></td>
+                    <td style="text-align:left;">تاریخ ثبت معامله :
+                        <?php
+                        // تبدیل ساده تاریخ میلادی به شمسی
+                        function gregorianToJalali($gy, $gm, $gd) {
+                            $g_d_m = [0,31,59,90,120,151,181,212,243,273,304,334];
+                            $jy = ($gy <= 1600) ? 0 : 979;
+                            $gy -= ($gy <= 1600) ? 621 : 1600;
+                            $gy2 = ($gm > 2) ? ($gy + 1) : $gy;
+                            $days = (365 * $gy) + ((int)(($gy2 + 3) / 4)) - ((int)(($gy2 + 99) / 100)) 
+                                  + ((int)(($gy2 + 399) / 400)) - 80 + $gd + $g_d_m[$gm-1];
+                            $jy += 33 * ((int)($days / 12053)); 
+                            $days %= 12053;
+                            $jy += 4 * ((int)($days / 1461));
+                            $days %= 1461;
+                            $jy += (int)(($days - 1) / 365);
+                            if ($days > 365) $days = ($days-1) % 365;
+                            $jm = ($days < 186) ? 1 + (int)($days / 31) : 7 + (int)(($days - 186) / 30);
+                            $jd = 1 + (($days < 186) ? ($days % 31) : (($days - 186) % 30));
+                            return [$jy, $jm, $jd];
                         }
-                        @endphp
+
+                        try {
+                            $dateParts = explode('-', $transaction->date);
+                            if(count($dateParts) === 3) {
+                                list($year, $month, $day) = gregorianToJalali(
+                                    $dateParts[0], $dateParts[1], $dateParts[2]
+                                );
+                                echo $year . '/' . sprintf('%02d', $month) . '/' . sprintf('%02d', $day);
+                            } else {
+                                echo $transaction->date;
+                            }
+                        } catch (Exception $e) {
+                            echo $transaction->date;
+                        }
+                        ?>
                     </td>
                 </tr>
             </table>
         </div>
 
-
         <table class="info-table">
-            @php
+            <?php
             $currenciesFa = [
                 'afn' => 'افغانی',
                 'usd' => 'دالر',
@@ -212,69 +232,89 @@
                 'sar' => 'ریال سعودی',
                 'inr' => 'روپیه',
             ];
-            @endphp
+            ?>
 
             <tr>
                 <td>از ارز:</td>
                 <td>
-                    {{ $currenciesFa[strtolower($transaction->from_currency)] ?? $transaction->from_currency }}
-                    ({{ strtoupper($transaction->from_currency) }})
+                    <?php echo e($currenciesFa[strtolower($transaction->from_currency)] ?? $transaction->from_currency); ?>
+
+                   
                 </td>
             </tr>
 
             <tr>
                 <td>مبلغ:</td>
                 <td>
-                    {{ number_format((float)$transaction->amount) }}
+                    <?php echo e(number_format((float)$transaction->amount)); ?>
+
                 </td>
             </tr>
 
             <tr>
                 <td>به ارز:</td>
                 <td>
-                    {{ $currenciesFa[strtolower($transaction->to_currency)] ?? $transaction->to_currency }}
-                    ({{ strtoupper($transaction->to_currency) }})
+                    <?php echo e($currenciesFa[strtolower($transaction->to_currency)] ?? $transaction->to_currency); ?>
+
+                  
                 </td>
             </tr>
 
             <tr>
                 <td>مبلغ معادل:</td>
                 <td>
-                    {{ number_format((float)$transaction->eq_amount) }}
+                    <?php echo e(number_format((float)$transaction->eq_amount ,2)); ?>
+
                 </td>
             </tr>
 
             <tr>
                 <td>نرخ ارز:</td>
-                <td>{{ number_format((float)$transaction->exchange_rate, 2) }}</td>
+                <td><?php echo e(number_format((float)$transaction->exchange_rate, 2)); ?></td>
             </tr>
 
-            <tr>
-                <td>کاربر ثبت کننده:</td>
-                <td>{{ $transaction->user->name ?? '-' }}</td>
-            </tr>
+          
 
             <tr>
                 <td>تاریخ:</td>
-                <td>{{ $transaction->date }}</td>
+                <td>
+                    <?php
+                    try {
+                        $dateParts = explode('-', $transaction->date);
+                        if(count($dateParts) === 3) {
+                            list($year, $month, $day) = gregorianToJalali(
+                                $dateParts[0], $dateParts[1], $dateParts[2]
+                            );
+                            echo $year . '/' . sprintf('%02d', $month) . '/' . sprintf('%02d', $day);
+                        } else {
+                            echo $transaction->date;
+                        }
+                    } catch (Exception $e) {
+                        echo $transaction->date;
+                    }
+                    ?>
+                </td>
             </tr>
 
             <tr>
-                <td>زمان:</td>
+                <td>زمان ثبت:</td>
                 <td>
-                    {{ $transaction->created_at->format('h:i:s') }}
-                    {{ $transaction->created_at->format('A') == 'AM' ? 'قبل از ظهر' : 'بعد از ظهر' }}
+                    <?php
+                        try {
+                            $time = \Carbon\Carbon::parse($transaction->created_at);
+                            echo $time->format('h:i:s') . ' ' . ($time->format('A') == 'AM' ? 'ق.ظ' : 'ب.ظ');
+                        } catch (Exception $e) {
+                            echo $transaction->created_at->format('h:i:s');
+                        }
+                    ?>
                 </td>
-            </tr>
-            <tr>
-                <td>شناسه تراکنش:</td>
-                <td>{{ $transaction->id }}</td>
             </tr>
         </table>
 
         <div class="description">
-            <h3>توضیحات تراکنش:</h3>
-            {{ $transaction->description ?? 'بدون توضیحات بیشتر' }}
+            <h3>توضیحات معامله:</h3>
+            <?php echo e($transaction->description ?? 'بدون توضیحات بیشتر'); ?>
+
         </div>
 
         <div class="signature">
@@ -284,16 +324,17 @@
         </div>
 
         <div class="contact-info">
-            <table style="width:100%; border-collapse: collapse; pass">
+            <table style="width:100%; border-collapse: collapse;">
                 <tr>
                     <td>
-                        <strong>تماس:</strong> 93{{ $user->phone ?? '-' }}+
+                        <strong>تماس:</strong> 93<?php echo e(Auth::guard('sarafi')->user()->phone); ?>+
                     </td>
                 </tr>
 
                 <tr>
                     <td>
-                        <strong>آدرس:</strong> افغانستان {{ $user->address ?? '-' }}
+                        <strong>آدرس:</strong> افغانستان <?php echo e(Auth::guard('sarafi')->user()->address); ?>
+
                     </td>
                 </tr>
             </table>
@@ -306,4 +347,4 @@
     </div>
 </body>
 
-</html>
+</html><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/pdf/Sarafi/cash-exchange.blade.php ENDPATH**/ ?>
