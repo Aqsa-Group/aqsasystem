@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>تراکنش صرافی - {{ $user->sarafi_name ?? 'صرافی' }}</title>
+    <title>تبدیل ارز صرافی - {{ Auth::guard('sarafi')->user()->sarafi_name ?? 'صرافی' }}</title>
     <style>
         /* همه عناصر بدون حاشیه و با فونت پیشفرض */
         * {
@@ -82,7 +82,6 @@
             border-top: 1px solid black;
             border-left: 1px solid black;
             border-bottom: 1px solid black;
-
         }
 
         .description h3 {
@@ -106,7 +105,6 @@
             text-align: center;
         }
 
-
         .signature {
             text-align: right;
             display: flex;
@@ -122,7 +120,6 @@
 
         .signature-text {
             margin-bottom: 60px;
-
         }
 
         .signature-line {
@@ -130,7 +127,6 @@
             height: 1px;
             background: #777;
         }
-
 
         .note {
             font-size: 16px;
@@ -171,48 +167,13 @@
 
 <body>
     <div class="document">
-        <h1 style="text-align:center; font-family: amiri ,sans-serif" class="shabnam-fd "> صرافی {{
-            Auth::guard('sarafi')->user()->sarafi_name }}</h1>
+        <h1 style="text-align:center; font-family: amiri ,sans-serif" class="shabnam-fd">صرافی {{ Auth::guard('sarafi')->user()->sarafi_name }}</h1>
+        
         <div class="header">
             <table class="header-table" style="width:100%; border-collapse: collapse;">
                 <tr>
-                    <td style="text-align:right;">نوع معامله : {{ $transaction->type }}</td>
-                    <td style="text-align:left;">تاریخ ثبت معامله :
-                        @php
-                        // تبدیل ساده تاریخ میلادی به شمسی
-                        function gregorianToJalali($gy, $gm, $gd) {
-                            $g_d_m = [0,31,59,90,120,151,181,212,243,273,304,334];
-                            $jy = ($gy <= 1600) ? 0 : 979;
-                            $gy -= ($gy <= 1600) ? 621 : 1600;
-                            $gy2 = ($gm > 2) ? ($gy + 1) : $gy;
-                            $days = (365 * $gy) + ((int)(($gy2 + 3) / 4)) - ((int)(($gy2 + 99) / 100)) 
-                                  + ((int)(($gy2 + 399) / 400)) - 80 + $gd + $g_d_m[$gm-1];
-                            $jy += 33 * ((int)($days / 12053)); 
-                            $days %= 12053;
-                            $jy += 4 * ((int)($days / 1461));
-                            $days %= 1461;
-                            $jy += (int)(($days - 1) / 365);
-                            if ($days > 365) $days = ($days-1) % 365;
-                            $jm = ($days < 186) ? 1 + (int)($days / 31) : 7 + (int)(($days - 186) / 30);
-                            $jd = 1 + (($days < 186) ? ($days % 31) : (($days - 186) % 30));
-                            return [$jy, $jm, $jd];
-                        }
-
-                        try {
-                            $dateParts = explode('-', $transaction->date);
-                            if(count($dateParts) === 3) {
-                                list($year, $month, $day) = gregorianToJalali(
-                                    $dateParts[0], $dateParts[1], $dateParts[2]
-                                );
-                                echo $year . '/' . sprintf('%02d', $month) . '/' . sprintf('%02d', $day);
-                            } else {
-                                echo $transaction->date;
-                            }
-                        } catch (Exception $e) {
-                            echo $transaction->date;
-                        }
-                        @endphp
-                    </td>
+                    <td style="text-align:right;">نوع معامله: {{ $conversion->type }}</td>
+                    <td style="text-align:left;">تاریخ ثبت معامله: {{ $conversion->transaction_date }}</td>
                 </tr>
             </table>
         </div>
@@ -233,64 +194,90 @@
                 'sar' => 'ریال سعودی',
                 'inr' => 'روپیه',
             ];
+
+            // تابع تبدیل تاریخ میلادی به شمسی
+            function gregorianToJalali($gy, $gm, $gd) {
+                $g_d_m = [0,31,59,90,120,151,181,212,243,273,304,334];
+                $jy = ($gy <= 1600) ? 0 : 979;
+                $gy -= ($gy <= 1600) ? 621 : 1600;
+                $gy2 = ($gm > 2) ? ($gy + 1) : $gy;
+                $days = (365 * $gy) + ((int)(($gy2 + 3) / 4)) - ((int)(($gy2 + 99) / 100)) 
+                      + ((int)(($gy2 + 399) / 400)) - 80 + $gd + $g_d_m[$gm-1];
+                $jy += 33 * ((int)($days / 12053)); 
+                $days %= 12053;
+                $jy += 4 * ((int)($days / 1461));
+                $days %= 1461;
+                $jy += (int)(($days - 1) / 365);
+                if ($days > 365) $days = ($days-1) % 365;
+                $jm = ($days < 186) ? 1 + (int)($days / 31) : 7 + (int)(($days - 186) / 30);
+                $jd = 1 + (($days < 186) ? ($days % 31) : (($days - 186) % 30));
+                return [$jy, $jm, $jd];
+            }
             @endphp
 
             <tr>
-                <td>از ارز:</td>
-                <td>
-                    {{ $currenciesFa[strtolower($transaction->from_currency)] ?? $transaction->from_currency }}
-                   
-                </td>
+                <td>حساب برداشت:</td>
+                <td>{{ $conversion->fromCustomer->fullname ?? 'نامشخص' }}</td>
             </tr>
 
             <tr>
-                <td>مبلغ:</td>
-                <td>
-                    {{ number_format((float)$transaction->amount) }}
-                </td>
+                <td>شماره حساب برداشت:</td>
+                <td>{{ $conversion->fromCustomer->account_number ?? 'نامشخص' }}</td>
+            </tr>
+
+            <tr>
+                <td>از ارز:</td>
+                <td>{{ $currenciesFa[strtolower($conversion->from_currency)] ?? $conversion->from_currency }}</td>
+            </tr>
+
+            <tr>
+                <td>مبلغ برداشت:</td>
+                <td>{{ number_format((float)$conversion->withdrawal_amount) }}</td>
+            </tr>
+
+            <tr>
+                <td>حساب دریافت:</td>
+                <td>{{ $conversion->toCustomer->fullname ?? 'نامشخص' }}</td>
+            </tr>
+
+            <tr>
+                <td>شماره حساب دریافت:</td>
+                <td>{{ $conversion->toCustomer->account_number ?? 'نامشخص' }}</td>
             </tr>
 
             <tr>
                 <td>به ارز:</td>
-                <td>
-                    {{ $currenciesFa[strtolower($transaction->to_currency)] ?? $transaction->to_currency }}
-                  
-                </td>
+                <td>{{ $currenciesFa[strtolower($conversion->to_currency)] ?? $conversion->to_currency }}</td>
             </tr>
 
             <tr>
-                <td>مبلغ معادل:</td>
-                <td>
-                    {{ number_format((float)$transaction->eq_amount ,2) }}
-                </td>
+                <td>مبلغ دریافت:</td>
+                <td>{{ number_format((float)$conversion->received_amount, 2) }}</td>
             </tr>
 
             <tr>
                 <td>نرخ ارز:</td>
-                <td>{{ number_format((float)$transaction->exchange_rate, 2) }}</td>
+                <td>{{ number_format((float)$conversion->currency_rate, 4) }}</td>
             </tr>
 
-          
+            <tr>
+                <td>زون برداشت:</td>
+                <td>{{ $conversion->zone_sender }}</td>
+            </tr>
 
             <tr>
-                <td>تاریخ:</td>
-                <td>
-                    @php
-                    try {
-                        $dateParts = explode('-', $transaction->date);
-                        if(count($dateParts) === 3) {
-                            list($year, $month, $day) = gregorianToJalali(
-                                $dateParts[0], $dateParts[1], $dateParts[2]
-                            );
-                            echo $year . '/' . sprintf('%02d', $month) . '/' . sprintf('%02d', $day);
-                        } else {
-                            echo $transaction->date;
-                        }
-                    } catch (Exception $e) {
-                        echo $transaction->date;
-                    }
-                    @endphp
-                </td>
+                <td>زون دریافت:</td>
+                <td>{{ $conversion->zone_receiver }}</td>
+            </tr>
+
+            <tr>
+                <td>مسئول برداشت:</td>
+                <td>{{ $conversion->by_sender ?? 'نامشخص' }}</td>
+            </tr>
+
+            <tr>
+                <td>مسئول دریافت:</td>
+                <td>{{ $conversion->by_receiver ?? 'نامشخص' }}</td>
             </tr>
 
             <tr>
@@ -298,10 +285,10 @@
                 <td>
                     @php
                         try {
-                            $time = \Carbon\Carbon::parse($transaction->created_at);
+                            $time = \Carbon\Carbon::parse($conversion->created_at);
                             echo $time->format('h:i:s') . ' ' . ($time->format('A') == 'AM' ? 'ق.ظ' : 'ب.ظ');
                         } catch (Exception $e) {
-                            echo $transaction->created_at->format('h:i:s');
+                            echo $conversion->created_at;
                         }
                     @endphp
                 </td>
@@ -309,8 +296,8 @@
         </table>
 
         <div class="description">
-            <h3>توضیحات معامله:</h3>
-            {{ $transaction->description ?? 'بدون توضیحات بیشتر' }}
+            <h3>شرح تراکنش:</h3>
+            {{ $conversion->description ?? 'تبدیل ارز - بدون توضیحات بیشتر' }}
         </div>
 
         <div class="signature">
@@ -323,13 +310,13 @@
             <table style="width:100%; border-collapse: collapse;">
                 <tr>
                     <td>
-                        <strong>تماس:</strong> 93{{ Auth::guard('sarafi')->user()->phone}}+
+                        <strong>تماس:</strong> +93{{ Auth::guard('sarafi')->user()->phone }}
                     </td>
                 </tr>
 
                 <tr>
                     <td>
-                        <strong>آدرس:</strong> افغانستان {{ Auth::guard('sarafi')->user()->address}}
+                        <strong>آدرس:</strong> افغانستان {{ Auth::guard('sarafi')->user()->address }}
                     </td>
                 </tr>
             </table>

@@ -75,33 +75,34 @@
                             <div class="relative w-full">
                                 <label class="block text-[16px] font-medium text-black mb-1 vazir">نمبر حساب</label>
                                 <div x-data="{
-            searchValue: '',
-            selectedId: @entangle('selectedAccount'),
-            customers: @js($customers),
-            handleSelect(event) {
-                const selected = this.customers.find(
-                    c => event.target.value === `${c.account_number} - ${c.fullname}`
-                );
-                if (selected) {
-                    this.selectedId = selected.id;
-                    this.searchValue = `${selected.account_number} - ${selected.fullname}`;
-                    // ✅ فراخوانی متد Livewire برای انتخاب مشتری
-                    $wire.selectCustomer(selected.id);
-                    // به روزرسانی جستجو
-                    $wire.set('search', selected.fullname);
-                } else {
-                    // اگر چیزی اشتباه وارد شد، مقدار پاک شود
-                    this.selectedId = null;
-                    this.searchValue = '';
-                    $wire.set('selectedAccount', null);
-                    $wire.set('search', '');
-                }
-            },
-            updateDisplay() {
-                const selected = this.customers.find(c => c.id === this.selectedId);
-                this.searchValue = selected ? `${selected.account_number} - ${selected.fullname}` : '';
-            }
-        }" x-init="updateDisplay(); $watch('selectedId', () => updateDisplay())" class="relative w-full">
+                                            searchValue: '',
+                                            selectedId: @entangle('selectedAccount'),
+                                            customers: @js($customers),
+                                            handleSelect(event) {
+                                                const selected = this.customers.find(
+                                                    c => event.target.value === `${c.account_number} - ${c.fullname}`
+                                                );
+                                                if (selected) {
+                                                    this.selectedId = selected.id;
+                                                    this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                                                    // ✅ فراخوانی متد Livewire برای انتخاب مشتری
+                                                    $wire.selectCustomer(selected.id);
+                                                    // به روزرسانی جستجو
+                                                    $wire.set('search', selected.fullname);
+                                                } else {
+                                                    // اگر چیزی اشتباه وارد شد، مقدار پاک شود
+                                                    this.selectedId = null;
+                                                    this.searchValue = '';
+                                                    $wire.set('selectedAccount', null);
+                                                    $wire.set('search', '');
+                                                }
+                                            },
+                                            updateDisplay() {
+                                                const selected = this.customers.find(c => c.id === this.selectedId);
+                                                this.searchValue = selected ? `${selected.account_number} - ${selected.fullname}` : '';
+                                            }
+                                        }" x-init="updateDisplay(); $watch('selectedId', () => updateDisplay())"
+                                    class="relative w-full">
                                     <input list="customersList" x-model="searchValue" @change="handleSelect"
                                         placeholder="جستجو یا انتخاب حساب..."
                                         class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
@@ -466,7 +467,7 @@
 
                                             <!-- دکمه پرینت -->
                                             <button wire:click="print({{ $transaction->id }})" class="w-12 h-12 flex items-center justify-center  
-                    rounded-full transition-colors" title="پرینت">
+                                             rounded-full transition-colors" title="پرینت">
                                                 <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"
                                                     class="w-10 h-10" alt="Print">
                                             </button>

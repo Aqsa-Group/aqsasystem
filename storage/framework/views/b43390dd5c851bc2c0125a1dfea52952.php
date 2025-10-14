@@ -1,16 +1,16 @@
 <div>
     <div class="container mx-auto px-4">
-<!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
-<div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
-    class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
-    <div class="h-[80px] w-full flex justify-start items-center px-4">
-        <h2 class="text-white vazir text-[18px]">
-            <?php echo e(session('message')); ?>
+        <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
+        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
+            class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
+            <div class="h-[80px] w-full flex justify-start items-center px-4">
+                <h2 class="text-white vazir text-[18px]">
+                    <?php echo e(session('message')); ?>
 
-        </h2>
-    </div>
-</div>
-<?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                </h2>
+            </div>
+        </div>
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
 
         
@@ -78,33 +78,34 @@
                             <div class="relative w-full">
                                 <label class="block text-[16px] font-medium text-black mb-1 vazir">نمبر حساب</label>
                                 <div x-data="{
-            searchValue: '',
-            selectedId: <?php if ((object) ('selectedAccount') instanceof \Livewire\WireDirective) : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccount'->value()); ?>')<?php echo e('selectedAccount'->hasModifier('live') ? '.live' : ''); ?><?php else : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccount'); ?>')<?php endif; ?>,
-            customers: <?php echo \Illuminate\Support\Js::from($customers)->toHtml() ?>,
-            handleSelect(event) {
-                const selected = this.customers.find(
-                    c => event.target.value === `${c.account_number} - ${c.fullname}`
-                );
-                if (selected) {
-                    this.selectedId = selected.id;
-                    this.searchValue = `${selected.account_number} - ${selected.fullname}`;
-                    // ✅ فراخوانی متد Livewire برای انتخاب مشتری
-                    $wire.selectCustomer(selected.id);
-                    // به روزرسانی جستجو
-                    $wire.set('search', selected.fullname);
-                } else {
-                    // اگر چیزی اشتباه وارد شد، مقدار پاک شود
-                    this.selectedId = null;
-                    this.searchValue = '';
-                    $wire.set('selectedAccount', null);
-                    $wire.set('search', '');
-                }
-            },
-            updateDisplay() {
-                const selected = this.customers.find(c => c.id === this.selectedId);
-                this.searchValue = selected ? `${selected.account_number} - ${selected.fullname}` : '';
-            }
-        }" x-init="updateDisplay(); $watch('selectedId', () => updateDisplay())" class="relative w-full">
+                                            searchValue: '',
+                                            selectedId: <?php if ((object) ('selectedAccount') instanceof \Livewire\WireDirective) : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccount'->value()); ?>')<?php echo e('selectedAccount'->hasModifier('live') ? '.live' : ''); ?><?php else : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccount'); ?>')<?php endif; ?>,
+                                            customers: <?php echo \Illuminate\Support\Js::from($customers)->toHtml() ?>,
+                                            handleSelect(event) {
+                                                const selected = this.customers.find(
+                                                    c => event.target.value === `${c.account_number} - ${c.fullname}`
+                                                );
+                                                if (selected) {
+                                                    this.selectedId = selected.id;
+                                                    this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                                                    // ✅ فراخوانی متد Livewire برای انتخاب مشتری
+                                                    $wire.selectCustomer(selected.id);
+                                                    // به روزرسانی جستجو
+                                                    $wire.set('search', selected.fullname);
+                                                } else {
+                                                    // اگر چیزی اشتباه وارد شد، مقدار پاک شود
+                                                    this.selectedId = null;
+                                                    this.searchValue = '';
+                                                    $wire.set('selectedAccount', null);
+                                                    $wire.set('search', '');
+                                                }
+                                            },
+                                            updateDisplay() {
+                                                const selected = this.customers.find(c => c.id === this.selectedId);
+                                                this.searchValue = selected ? `${selected.account_number} - ${selected.fullname}` : '';
+                                            }
+                                        }" x-init="updateDisplay(); $watch('selectedId', () => updateDisplay())"
+                                    class="relative w-full">
                                     <input list="customersList" x-model="searchValue" @change="handleSelect"
                                         placeholder="جستجو یا انتخاب حساب..."
                                         class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
@@ -528,7 +529,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                                             <!-- دکمه پرینت -->
                                             <button wire:click="print(<?php echo e($transaction->id); ?>)" class="w-12 h-12 flex items-center justify-center  
-                    rounded-full transition-colors" title="پرینت">
+                                             rounded-full transition-colors" title="پرینت">
                                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
                                                     class="w-10 h-10" alt="Print">
                                             </button>
@@ -614,5 +615,6 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
         input[list]::-ms-clear,
         input[list]::-ms-expand {
             display: none !important;
+        }
     </style>
 </div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/transactions.blade.php ENDPATH**/ ?>

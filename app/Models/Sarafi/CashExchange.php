@@ -23,3 +23,5 @@ class CashExchange extends Model
     }
 
 }
+
+

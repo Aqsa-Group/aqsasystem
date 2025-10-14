@@ -1,28 +1,30 @@
 <?php
 
-use App\Http\Controllers\ContractPrintController;
-use App\Http\Controllers\ShopkeeperPrintController;
-use App\Http\Controllers\SignedImagePdfController;
-use App\Http\Controllers\WithdrawPrint;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\StaffContractPrintController;
-use App\Http\Controllers\DepositLogPrintController;
+use App\Filament\Import\Pages\SaleReportGeneral;
 use App\Http\Controllers\AccountingPrintController;
 use App\Http\Controllers\AmountController;
+use App\Http\Controllers\ContractPrintController;
+use App\Http\Controllers\DepositLogPrintController;
 use App\Http\Controllers\InventoryPrintController;
 use App\Http\Controllers\OutsideController;
 use App\Http\Controllers\PrintBoothContract;
-use App\Http\Controllers\SalaryPrintController;
-use App\Http\Controllers\WarehousePrintController;
-use App\Http\Controllers\Sarafi\Auth\CustomController;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Cookie;
 use App\Http\Controllers\PrintContract;
 use App\Http\Controllers\printLoan;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Auth;
-use App\Filament\Import\Pages\SaleReportGeneral;
+use App\Http\Controllers\SalaryPrintController;
+use App\Http\Controllers\Sarafi\Auth\CustomController;
+use App\Http\Controllers\ShopkeeperPrintController;
+use App\Http\Controllers\SignedImagePdfController;
+use App\Http\Controllers\StaffContractPrintController;
+use App\Http\Controllers\WarehousePrintController;
+use App\Http\Controllers\WithdrawPrint;
 use App\Http\Livewire\Sarafi\customers;
+use App\Livewire\Sarafi\ConversionTransfer;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
+
  
 
 
@@ -213,6 +215,9 @@ Route::get('/sarafi/conversion-transfer', function () {
     return view('Sarafi.components.conversion-transfer');
 })->name('sarafi.conversion-transfer');
 
+
+Route::get('/conversion-transfer/print/{id}', [ConversionTransfer::class, 'printTransaction'])
+    ->name('sarafi.conversion.print');
 
 
 
