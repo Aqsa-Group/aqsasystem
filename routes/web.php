@@ -216,8 +216,13 @@ Route::get('/sarafi/conversion-transfer', function () {
 })->name('sarafi.conversion-transfer');
 
 
-Route::get('/conversion-transfer/print/{id}', [ConversionTransfer::class, 'printTransaction'])
-    ->name('sarafi.conversion.print');
+Route::get('/sarafi/conversion-in-account', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.conversion-in-account');
+})->name('sarafi.conversion.in.account');
+
 
 
 

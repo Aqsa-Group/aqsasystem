@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>سند برداشت - صرافی <?php echo e(Auth::guard('sarafi')->user()->sarafi_name); ?></title>
+    <title>تراکنش صرافی - <?php echo e($user->sarafi_name ?? 'صرافی'); ?></title>
     <style>
         /* همه عناصر بدون حاشیه و با فونت پیشفرض */
         * {
@@ -175,12 +175,12 @@
 
 <body>
     <div class="document">
-        <h1 style="text-align:center; font-family: amiri ,sans-serif" class="shabnam-fd "> صرافی <?php echo e(Auth::guard('sarafi')->user()->sarafi_name); ?></h1>
+        <h1 style="text-align:center; font-family: amiri ,sans-serif" class="shabnam-fd "> صرافی <?php echo e($user->sarafi_name ?? 'صرافی'); ?></h1>
         <div class="header">
             <table class="header-table" style="width:100%; border-collapse: collapse;">
                 <tr>
-                    <td style="text-align:right;">نوع ترانزکشن : <?php echo e($transaction->type); ?></td>
-                    <td style="text-align:left;">تاریخ ثبت ترانزکشن :
+                    <td style="text-align:right;">نوع تراکنش : <?php echo e($transaction->type); ?></td>
+                    <td style="text-align:left;">تاریخ ثبت تراکنش :
                         <?php
                         $dateParts = explode('-', $transaction->date);
                         if(count($dateParts) === 3) {
@@ -196,10 +196,8 @@
 
 
         <table class="info-table">
-           
-            <tr>
-                <?php
-                $currenciesFa = [
+            <?php
+            $currenciesFa = [
                 'afn' => 'افغانی',
                 'usd' => 'دالر',
                 'eur' => 'یورو',
@@ -212,30 +210,51 @@
                 'jpy' => 'ین',
                 'sar' => 'ریال سعودی',
                 'inr' => 'روپیه',
-                ];
-                ?>
-                <td>شماره حساب:</td>
-                <td><?php echo e($transaction->customer->account_number); ?></td>
-            </tr>
+            ];
+            ?>
 
-             <tr>
-                <td>نام کامل</td>
+            <tr>
+                <td>از ارز:</td>
                 <td>
-                <?php echo e($transaction->customer->fullname); ?>
+                    <?php echo e($currenciesFa[strtolower($transaction->from_currency)] ?? $transaction->from_currency); ?>
 
+                    (<?php echo e(strtoupper($transaction->from_currency)); ?>)
                 </td>
             </tr>
+
             <tr>
                 <td>مبلغ:</td>
                 <td>
-                    <?php echo e(number_format((float)$transaction->amount)); ?> /
-                    <?php echo e($currenciesFa[strtolower($transaction->currency)] ?? '-'); ?>
+                    <?php echo e(number_format((float)$transaction->amount)); ?>
 
                 </td>
             </tr>
+
             <tr>
-                <td>توسط:</td>
-                <td><?php echo e($transaction->by ?? ($transaction->user->name ?? '-')); ?></td>
+                <td>به ارز:</td>
+                <td>
+                    <?php echo e($currenciesFa[strtolower($transaction->to_currency)] ?? $transaction->to_currency); ?>
+
+                    (<?php echo e(strtoupper($transaction->to_currency)); ?>)
+                </td>
+            </tr>
+
+            <tr>
+                <td>مبلغ معادل:</td>
+                <td>
+                    <?php echo e(number_format((float)$transaction->eq_amount)); ?>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>نرخ ارز:</td>
+                <td><?php echo e(number_format((float)$transaction->exchange_rate, 2)); ?></td>
+            </tr>
+
+            <tr>
+                <td>کاربر ثبت کننده:</td>
+                <td><?php echo e($transaction->user->name ?? '-'); ?></td>
             </tr>
 
             <tr>
@@ -253,18 +272,16 @@
                 </td>
             </tr>
             <tr>
-                <td>سند:</td>
+                <td>شناسه تراکنش:</td>
                 <td><?php echo e($transaction->id); ?></td>
             </tr>
         </table>
 
         <div class="description">
-            <h3>توضیحات ترانزکشن:</h3>
+            <h3>توضیحات تراکنش:</h3>
             <?php echo e($transaction->description ?? 'بدون توضیحات بیشتر'); ?>
 
         </div>
-
-
 
         <div class="signature">
             <div class="signature-top-border"></div>
@@ -272,28 +289,21 @@
             <div class="signature-line"></div>
         </div>
 
-
-
         <div class="contact-info">
-
             <table style="width:100%; border-collapse: collapse; pass">
                 <tr>
                     <td>
-                        <strong>تماس:</strong> 93<?php echo e(Auth::guard('sarafi')->user()->phone ?? '-'); ?>+
-
+                        <strong>تماس:</strong> 93<?php echo e($user->phone ?? '-'); ?>+
                     </td>
-
                 </tr>
 
                 <tr>
                     <td>
-                        <strong>آدرس:</strong> افغانستان <?php echo e(Auth::guard('sarafi')->user()->address); ?>
-
+                        <strong>آدرس:</strong> افغانستان <?php echo e($user->address ?? '-'); ?>
 
                     </td>
                 </tr>
             </table>
-
         </div>
 
         <div class="note">

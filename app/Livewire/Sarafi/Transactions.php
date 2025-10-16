@@ -341,26 +341,26 @@ class Transactions extends Component
 
     }
 
-    public function updateTransactions()
-    {
-        $user = Auth::guard('sarafi')->user();
-        if (!$user) {
-            $this->transactions = collect();
-            return;
-        }
-
-        $adminId = $user->admin_id ?? $user->id;
-
-        $query = Transaction::with('customer')
-            ->where('admin_id', $adminId);
-
-        if ($this->selectedCustomerId) {
-            $query->where('customer_id', $this->selectedCustomerId);
-        }
-
-        $this->transactions = $query->latest()->get();
+ public function updateTransactions()
+{
+    $user = Auth::guard('sarafi')->user();
+    if (!$user) {
+        $this->transactions = collect();
+        return;
     }
 
+    $adminId = $user->admin_id ?? $user->id;
+
+    $query = Transaction::with('customer')
+        ->where('admin_id', $adminId)
+        ->whereIn('type', ['برد', 'رسید']); 
+
+    if ($this->selectedCustomerId) {
+        $query->where('customer_id', $this->selectedCustomerId);
+    }
+
+    $this->transactions = $query->latest()->get();
+}
 
 
     public function render()

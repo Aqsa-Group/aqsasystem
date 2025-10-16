@@ -14,9 +14,9 @@
     <div class="mb-6">
         <select wire:model="selectedCompany" class="border border-gray-300 rounded-lg px-4 py-2 text-gray-700">
             <option value="">انتخاب شرکت</option>
-            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $companies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $company): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php $__currentLoopData = $companies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $company): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <option value="<?php echo e($company->id); ?>"><?php echo e($company->name); ?></option>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </select>
     </div>
 
@@ -34,7 +34,7 @@
                 </tr>
             </thead>
             <tbody>
-                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $payments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $payment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <?php $__empty_1 = true; $__currentLoopData = $payments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $payment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                     <tr class="bg-white hover:bg-gray-50">
                      
                         <td class="border px-4 py-2"><?php echo e($payment->company->name); ?></td>
@@ -53,7 +53,7 @@
                             هیچ رسیدی یافت نشد
                         </td>
                     </tr>
-                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                <?php endif; ?>
             </tbody>
         </table>
     </div>

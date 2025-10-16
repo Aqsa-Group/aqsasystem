@@ -45,7 +45,7 @@ unset($__defined_vars, $__key, $__value); ?>
         </span>
 
         <div class="flex flex-wrap gap-1.5">
-            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $indicators; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $indicator): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php $__currentLoopData = $indicators; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $indicator): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php if (isset($component)) { $__componentOriginal986dce9114ddce94a270ab00ce6c273d = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal986dce9114ddce94a270ab00ce6c273d = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.badge','data' => ['color' => $indicator->getColor()]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -59,9 +59,9 @@ unset($__defined_vars, $__key, $__value); ?>
                     <?php echo e($indicator->getLabel()); ?>
 
 
-                    <!--[if BLOCK]><![endif]--><?php if($indicator->isRemovable()): ?>
+                    <?php if($indicator->isRemovable()): ?>
                          <?php $__env->slot('deleteButton', null, ['label' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(__('filament-tables::table.filters.actions.remove.label')),'wire:click' => ''.e($indicator->getRemoveLivewireClickHandler()).'','wire:loading.attr' => 'disabled','wire:target' => 'removeTableFilter']); ?>  <?php $__env->endSlot(); ?>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?>
                  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal986dce9114ddce94a270ab00ce6c273d)): ?>
@@ -72,11 +72,11 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php $component = $__componentOriginal986dce9114ddce94a270ab00ce6c273d; ?>
 <?php unset($__componentOriginal986dce9114ddce94a270ab00ce6c273d); ?>
 <?php endif; ?>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
     </div>
 
-    <!--[if BLOCK]><![endif]--><?php if(collect($indicators)->contains(fn (\Filament\Tables\Filters\Indicator $indicator): bool => $indicator->isRemovable())): ?>
+    <?php if(collect($indicators)->contains(fn (\Filament\Tables\Filters\Indicator $indicator): bool => $indicator->isRemovable())): ?>
         <div class="mt-0.5">
             <?php if (isset($component)) { $__componentOriginalf0029cce6d19fd6d472097ff06a800a1 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalf0029cce6d19fd6d472097ff06a800a1 = $attributes; } ?>
@@ -99,6 +99,6 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php unset($__componentOriginalf0029cce6d19fd6d472097ff06a800a1); ?>
 <?php endif; ?>
         </div>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?>
 </div>
 <?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/vendor/filament/tables/resources/views/components/filters/indicators.blade.php ENDPATH**/ ?>

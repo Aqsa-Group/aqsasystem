@@ -53,7 +53,7 @@
 
 
                     
-                    <!--[if BLOCK]><![endif]--><?php if($withdrawType === 'salary'): ?>
+                    <?php if($withdrawType === 'salary'): ?>
                         <div class="mb-5 grid">
                             <label for="staff_id" class="mb-2 font-semibold text-gray-700 dark:text-gray-300">
                                 انتخاب کارمند
@@ -64,12 +64,12 @@
                                        focus:outline-none focus:ring-2 focus:ring-blue-500
                                        dark:bg-gray-800 dark:text-gray-100">
                                 <option value="">انتخاب کارمند</option>
-                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $staffList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $staff): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php $__currentLoopData = $staffList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $staff): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($staff->id); ?>"><?php echo e($staff->name); ?></option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </select>
                         </div>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?>
 
                     
                     <div class="mb-5 grid">

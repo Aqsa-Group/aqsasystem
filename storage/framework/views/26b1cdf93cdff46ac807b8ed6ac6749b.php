@@ -19,14 +19,14 @@
                <label for="amount" class="block mb-1 font-medium text-gray-700">مبلغ</label>
                <input type="number" id="amount" wire:model="addAmount" placeholder="مبلغ"
                   class="w-full rounded-md border-gray-300 p-2" min="0" step="0.01" required>
-               <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['addAmount'];
+               <?php $__errorArgs = ['addAmount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-600 text-sm"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
             </div>
 
             
@@ -37,14 +37,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                   <option value="USD">دالر</option>
                </select>
 
-               <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['currency'];
+               <?php $__errorArgs = ['currency'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-600 text-sm"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
             </div>
 
             
@@ -53,14 +53,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                <textarea id="note" wire:model="note" cols="52" rows="4"
                   class="w-full outline-none rounded-md border-gray-300 p-2"
                   placeholder="توضیحات افزودن به صندوق را بنویسید!"></textarea>
-               <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['note'];
+               <?php $__errorArgs = ['note'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-600 text-sm"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
             </div>
 
             

@@ -65,9 +65,9 @@
                     <select wire:model.defer="customer_id"
                         class="w-full border rounded-lg px-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 dark:text-gray-100 focus:ring-2 focus:ring-green-400">
                         <option value="">انتخاب خریدار...</option>
-                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = \App\Models\Import\Customer::where('user_id', auth()->id())->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php $__currentLoopData = \App\Models\Import\Customer::where('user_id', auth()->id())->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <option value="<?php echo e($customer->id); ?>"><?php echo e($customer->name); ?></option>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
                 </div>
             </template>
@@ -95,18 +95,18 @@
                                 محصول</label>
                             <input wire:model.debounce.200ms="searchName" placeholder="نام محصول..." autocomplete="off"
                                 class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-100" />
-                            <!--[if BLOCK]><![endif]--><?php if(!empty($suggestions)): ?>
+                            <?php if(!empty($suggestions)): ?>
                             <div
                                 class="absolute w-full bg-white dark:bg-gray-800 border rounded-lg shadow mt-1 max-h-40 overflow-y-auto z-50">
-                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $suggestions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php $__currentLoopData = $suggestions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <div class="px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-gray-800 dark:text-gray-200"
                                     wire:click="selectProduct(<?php echo e($product['id']); ?>)">
                                     <?php echo e($product['name']); ?>
 
                                 </div>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </div>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                            <?php endif; ?>
                         </div>
 
                         <div>
@@ -159,7 +159,7 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-                            <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                            <?php $__empty_1 = true; $__currentLoopData = $items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                             <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
                                 <td class="p-2 text-gray-800 dark:text-gray-200"><?php echo e($item['name']); ?></td>
                                 <td class="p-2 flex items-center justify-center gap-2">
@@ -185,12 +185,12 @@
                             <tr>
                                 <td colspan="5" class="text-center py-6 text-gray-400">هیچ کالایی ثبت نشده است.</td>
                             </tr>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
 
-                <!--[if BLOCK]><![endif]--><?php if(count($items) > 0): ?>
+                <?php if(count($items) > 0): ?>
                 <div
                     class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 space-y-4">
 
@@ -304,7 +304,7 @@
 
 
                 </div>
-                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                <?php endif; ?>
 
             </div>
         </div>

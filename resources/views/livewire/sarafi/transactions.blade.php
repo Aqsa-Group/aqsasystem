@@ -411,7 +411,11 @@
                                     </td>
                                     <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-40">
                                         <div class="whitespace-nowrap">
-                                            <div class="font-medium">{{ $transaction->date }}</div>
+                                            <div class="font-medium">
+
+                                        {{ explode(' ', $transaction->date)[0] }}
+
+                                            </div>
                                             <div class="text-gray-500 text-sm mt-1">
                                                 {{ \Carbon\Carbon::parse($transaction->created_at)->format('h:i A') }}
                                             </div>
@@ -437,9 +441,9 @@
                                             <!-- مودال تأیید حذف -->
                                             @if ($confirmDeleteId)
                                             <div
-                                                class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                                                class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-10 z-50">
                                                 <div
-                                                    class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px] pb-[21px] rounded-[12px] shadow-xl w-[653px] h-[252.7267608642578px] text-center animate-fadeIn z-50 border-[1px]  border-[#E1DED3]">
+                                                    class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px]  rounded-[12px] shadow-xl w-[653px] h-[239.7267608642578px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
                                                     <button wire:click="$set('confirmDeleteId', null)"
                                                         class="flex right-0 h-4 w-4"><img
                                                             src="{{ asset('assets/sarafi/all_icon/close.svg') }}"
@@ -451,11 +455,11 @@
                                                         ترانزکشن را حذف کنید؟</p>
                                                     <div class="flex justify-center gap-4">
                                                         <button wire:click="$set('confirmDeleteId', null)"
-                                                            class="px-20  text-white text-xl shabnam-fd py-4 bg-[#DD2424] rounded-xl transition">
+                                                            class="px-20  text-white text-xl shabnam-fd py-3 bg-[#DD2424] rounded-xl transition">
                                                             {{ __('messages.no') }}
                                                         </button>
                                                         <button wire:click="deleteConfirmed"
-                                                            class="px-20 py-4 bg-[#2563EB] text-xl shabnam-fd text-white rounded-xl  transition flex items-center gap-2">
+                                                            class="px-20 py-3 bg-[#2563EB] text-xl shabnam-fd text-white rounded-xl  transition flex items-center gap-2">
                                                             {{ __('messages.yes') }}
                                                         </button>
                                                     </div>

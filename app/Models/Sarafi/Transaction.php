@@ -24,7 +24,8 @@ class Transaction extends Model
         'date',
         'description',
         'transaction_file',
-        'conversion_transfer_id'
+        'conversion_transfer_id',
+        'conversion_in_account_id'
     ];
 
     protected $casts = [
@@ -51,6 +52,13 @@ class Transaction extends Model
     {
         return $this->belongsTo(ConversionTransfers::class, 'conversion_transfer_id');
     }
+
+
+      public function conversionInAccount()
+    {
+        return $this->belongsTo(ConversionInAccounts::class, 'conversion_in_account_id');
+    }
+
 
     public function currencyInfo()
     {

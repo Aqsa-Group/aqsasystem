@@ -53,44 +53,92 @@ class ConversionTransfer extends Component
     public $confirmDeleteId = null;
     public $editingConversionId = null;
 
-    public function render()
-    {
-        $user = Auth::guard('sarafi')->user();
+  public function render()
+{
+    $user = Auth::guard('sarafi')->user();
 
-        if (!$user) {
-            return view('livewire.sarafi.conversion-transfer', [
-                'customers' => collect(),
-                'conversionTransactions' => collect(),
-            ]);
-        }
-
-        $adminId = $user->admin_id ?? $user->id;
-
-        // بارگذاری مشتریان اگر خالی است
-        if (empty($this->customers)) {
-            $this->loadCustomers($adminId);
-        }
-
-        // استفاده از join به جای with
-        $conversionTransactions = ConversionTransfers::select(
-            'conversion_transfer.*',
-            'from_customer.fullname as from_customer_name',
-            'from_customer.account_number as from_customer_account',
-            'to_customer.fullname as to_customer_name',
-            'to_customer.account_number as to_customer_account'
-        )
-            ->leftJoin('customers as from_customer', 'conversion_transfer.form_customer', '=', 'from_customer.id')
-            ->leftJoin('customers as to_customer', 'conversion_transfer.to_customer', '=', 'to_customer.id')
-            ->where('conversion_transfer.admin_id', $adminId)
-            ->latest('conversion_transfer.created_at')
-            ->paginate(10);
-
+    if (!$user) {
         return view('livewire.sarafi.conversion-transfer', [
-            'customers' => collect($this->customers),
-            'conversionTransactions' => $conversionTransactions,
+            'customers' => collect(),
+            'conversionTransactions' => collect(),
         ]);
     }
 
+    $adminId = $user->admin_id ?? $user->id;
+
+    // بارگذاری مشتریان اگر خالی است
+    if (empty($this->customers)) {
+        $this->loadCustomers($adminId);
+    }
+
+    // ایجاد کوئری پایه با join
+    $query = ConversionTransfers::select(
+        'conversion_transfer.*',
+        'from_customer.fullname as from_customer_name',
+        'from_customer.account_number as from_customer_account',
+        'to_customer.fullname as to_customer_name',
+        'to_customer.account_number as to_customer_account'
+    )
+    ->leftJoin('customers as from_customer', 'conversion_transfer.form_customer', '=', 'from_customer.id')
+    ->leftJoin('customers as to_customer', 'conversion_transfer.to_customer', '=', 'to_customer.id')
+    ->where('conversion_transfer.admin_id', $adminId);
+
+    // اعمال جستجو اگر مقدار وجود دارد
+    if (!empty($this->search)) {
+        $query->where(function($q) {
+            $q->where('from_customer.fullname', 'like', '%' . $this->search . '%')
+              ->orWhere('from_customer.account_number', 'like', '%' . $this->search . '%')
+              ->orWhere('to_customer.fullname', 'like', '%' . $this->search . '%')
+              ->orWhere('to_customer.account_number', 'like', '%' . $this->search . '%')
+              ->orWhere('conversion_transfer.from_currency', 'like', '%' . $this->search . '%')
+              ->orWhere('conversion_transfer.to_currency', 'like', '%' . $this->search . '%')
+              ->orWhere('conversion_transfer.withdrawal_amount', 'like', '%' . $this->search . '%')
+              ->orWhere('conversion_transfer.received_amount', 'like', '%' . $this->search . '%')
+              ->orWhere('conversion_transfer.currency_rate', 'like', '%' . $this->search . '%')
+              ->orWhere('conversion_transfer.description', 'like', '%' . $this->search . '%')
+              ->orWhere('conversion_transfer.type', 'like', '%' . $this->search . '%')
+              ->orWhere('conversion_transfer.zone_sender', 'like', '%' . $this->search . '%')
+              ->orWhere('conversion_transfer.zone_receiver', 'like', '%' . $this->search . '%');
+        });
+    }
+
+    $conversionTransactions = $query->latest('conversion_transfer.created_at')->paginate(10);
+
+    return view('livewire.sarafi.conversion-transfer', [
+        'customers' => collect($this->customers),
+        'conversionTransactions' => $conversionTransactions,
+    ]);
+}
+  public function showReport()
+{
+    if (!$this->withdrawalCustomerId) {
+        session()->flash('error', 'لطفاً ابتدا یک مشتری را برای حساب برداشت انتخاب کنید');
+        return redirect()->back();
+    }
+
+    // پیدا کردن مشتری برای اطمینان از وجود
+    $customer = Customer::find($this->withdrawalCustomerId);
+    if (!$customer) {
+        session()->flash('error', 'مشتری انتخاب شده یافت نشد');
+        return redirect()->back();
+    }
+
+    // ذخیره اطلاعات مشتری در سشن
+    session([
+        'selected_customer_id' => $this->withdrawalCustomerId,
+        'selected_customer_name' => $customer->fullname,
+        'selected_customer_account' => $customer->account_number
+    ]);
+
+    // انتقال به صفحه گزارشات
+    return redirect()->route('sarafi.transaction-reports');
+}
+
+
+public function search()
+{
+    $this->resetPage(); 
+}
     private function loadCustomers($adminId)
     {
         $relatedUserIds = \App\Models\Sarafi\User::where('admin_id', $adminId)

@@ -576,22 +576,29 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px]"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
-                
                 <div
                     class="flex flex-col md:flex-row justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                     <h1 class="text-lg md:text-xl lg:text-2xl vazir">تراکنش های تبدیل ارز ثبت شده</h1>
 
                     <div class="flex items-center gap-3">
                         <div class="relative w-full md:w-[250px]">
-                            <input type="text" wire:model.live="search"
+                            <input type="text" wire:model.live="search" wire:keydown.debounce.500ms="search"
                                 class="border border-[#8C8C8C] w-full h-12 md:h-[51px] bg-transparent rounded-[12px] p-2 md:p-3 text-sm md:text-base pr-10"
-                                placeholder="جستجو...">
+                                placeholder="جستجو بر اساس نام،...">
 
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
                                 class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6">
+
+                            <!--[if BLOCK]><![endif]--><?php if($search): ?>
+                            <button wire:click="$set('search', '')"
+                                class="absolute left-8 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                                ✕
+                            </button>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
                 </div>
+
 
                 
                 <div class="overflow-x-auto w-full">
@@ -710,35 +717,33 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </div>
-            <!-- مودال تأیید حذف -->
-            <!--[if BLOCK]><![endif]--><?php if($confirmDeleteId): ?>
-            <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                <div
-                    class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px] pb-[21px] rounded-[12px] shadow-xl w-[653px] h-[252.7267608642578px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
-                    <!-- دکمه بستن -->
-                    <button wire:click="$set('confirmDeleteId', null)"
-                        class="absolute left-4 top-4 h-6 w-6 flex items-center justify-center">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/close.svg')); ?>" alt="بستن" class="w-4 h-4">
-                    </button>
+             <!-- مودال تأیید حذف -->
+    <!--[if BLOCK]><![endif]--><?php if($confirmDeleteId): ?>
+    <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div
+            class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px]  rounded-[12px] shadow-xl w-[653px] h-[219.7267608642578px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
+            <!-- دکمه بستن -->
+            <button wire:click="$set('confirmDeleteId', null)"
+                class="absolute left-0 right-4 top-4 h-6 w-6 flex items-center justify-center">
+                <img src="<?php echo e(asset('assets/sarafi/all_icon/close.svg')); ?>" alt="بستن" class="w-4 h-4">
+            </button>
 
-                    <h1 class="text-2xl text-black shabnam font-medium leading-[100%] mt-2">حذف ترانزکشــــــــــن</h1>
-                    <hr class="bg-[#E1DED3] mt-4 mx-4">
-                    <p class="mb-6 text-xl shabnam mt-5">آیا مطمئن هستید می خواهید این ترانزکشن را حذف کنید؟</p>
-                    <div class="flex justify-center gap-4">
-                        <button wire:click="$set('confirmDeleteId', null)"
-                            class="px-12 text-white text-lg shabnam-fd py-3 bg-[#DD2424] rounded-xl transition hover:bg-red-700">
-                            <?php echo e(__('messages.no') ?? 'خیر'); ?>
-
-                        </button>
-                        <button wire:click="deleteConversion"
-                            class="px-12 py-3 bg-[#2563EB] text-lg shabnam-fd text-white rounded-xl transition hover:bg-blue-700 flex items-center gap-2">
-                            <?php echo e(__('messages.yes') ?? 'بلی'); ?>
-
-                        </button>
-                    </div>
-                </div>
+            <h1 class="text-2xl text-black shabnam font-medium leading-[100%] mt-2">حذف تراکنش تبدیل ارز</h1>
+            <hr class="bg-[#E1DED3] mt-4 mx-4">
+            <p class="mb-6 text-xl shabnam mt-5">آیا مطمئن هستید می خواهید این تراکنش را حذف کنید؟</p>
+            <div class="flex justify-center gap-4">
+                <button wire:click="$set('confirmDeleteId', null)"
+                    class="px-12 text-white text-lg shabnam-fd py-3 bg-[#DD2424] rounded-xl transition hover:bg-red-700">
+                    خیر
+                </button>
+                <button wire:click="deleteConversion"
+                    class="px-12 py-3 bg-[#2563EB] text-lg shabnam-fd text-white rounded-xl transition hover:bg-blue-700 flex items-center gap-2">
+                    بلی
+                </button>
             </div>
-            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+        </div>
+    </div>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </div>
     </div>
 
