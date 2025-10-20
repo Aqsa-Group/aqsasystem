@@ -36,6 +36,19 @@
 
 
 @font-face {
+    font-family: "Mj_Afrigha";
+    src: url("/fonts/Mj_Afrigha.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+.Mj_Afrigha{
+    font-family: "Mj_Afrigha", sans-serif;
+}
+
+
+
+
+@font-face {
     font-family: "shabnam";
     src: url("/fonts/Shabnam-FD.ttf") format("truetype");
     font-weight: normal;
