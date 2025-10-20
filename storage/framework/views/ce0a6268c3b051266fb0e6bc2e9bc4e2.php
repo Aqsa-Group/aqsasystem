@@ -25,7 +25,9 @@
         }
 
         @keyframes fadeIn {
-            to { opacity: 1; }
+            to {
+                opacity: 1;
+            }
         }
 
         .text-container {
@@ -51,26 +53,29 @@
 
     <!-- دو دکمه پنل‌ها -->
     <div class="button-container flex flex-col sm:flex-row gap-6">
-        <a href="/market/login"
-           class="flex items-center justify-center gap-3 px-10 py-6 rounded-xl text-lg font-semibold
+        <a href="/market/login" class="flex items-center justify-center gap-3 px-10 py-6 rounded-xl text-lg font-semibold
                   bg-blue-600 text-white hover:bg-blue-700 transition duration-300">
             <i class="fa-solid fa-store"></i> ورود به پنل مدیریت مارکت
         </a>
 
-        <a href="/import/login"
-           class="flex items-center justify-center gap-3 px-10 py-6 rounded-xl text-lg font-semibold
+        <a href="/import/login" class="flex items-center justify-center gap-3 px-10 py-6 rounded-xl text-lg font-semibold
                   bg-green-600 text-white hover:bg-green-700 transition duration-300">
             <i class="fa-solid fa-cart-shopping"></i> ورود به پنل فروشات
         </a>
 
-         <a href="/sarafi"
-       class="flex items-center justify-center gap-3 px-10 py-6 rounded-xl text-lg font-semibold
+        <a href="/sarafi" class="flex items-center justify-center gap-3 px-10 py-6 rounded-xl text-lg font-semibold
               bg-purple-600 text-white hover:bg-purple-700 transition duration-300">
-        <i class="fa-solid fa-money-bill-transfer"></i> ورود به پنل صرافی
-    </a>
+            <i class="fa-solid fa-money-bill-transfer"></i> ورود به پنل صرافی
+        </a>
+
+
+         <a href="/tools" class="flex items-center justify-center gap-3 px-10 py-6 rounded-xl text-lg font-semibold
+              bg-orange-600 text-white hover:bg-orange-700 transition duration-300">
+           <i class="fa-solid fa-screwdriver-wrench"></i> ورود به   پنل ابزارآلات
+        </a>
+
     </div>
 
 </body>
 
-</html>
-<?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/welcome.blade.php ENDPATH**/ ?>
+</html><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/welcome.blade.php ENDPATH**/ ?>

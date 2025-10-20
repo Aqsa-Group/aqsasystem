@@ -18,9 +18,13 @@ return new class extends Migration
             $table->string('sarafi_name')->nullable();
             $table->string('address')->nullable();
             $table->integer('phone')->nullable();
+            $table->string('zone');
             $table->string('username');
             $table->string('password');
             $table->string('role');
+            $table->integer('user_limition');
+            $table->boolean('status')->nullable();
+            $table->integer('admin_id')->nullable();
             $table->timestamps();
         });
     }

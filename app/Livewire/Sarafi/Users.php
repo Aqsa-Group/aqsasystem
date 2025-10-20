@@ -2,16 +2,17 @@
 
 namespace App\Livewire\Sarafi;
 
-use Livewire\Component;
-use Livewire\WithPagination;
 use App\Models\Sarafi\User;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use Livewire\WithPagination;
+use Mpdf\Mpdf;
 
 class Users extends Component
 {
 
 
-     use WithPagination;
+    use WithPagination;
 
     // Search, modal and edit state
     public $search = '';
@@ -21,7 +22,7 @@ class Users extends Component
 
 
     // Form fields
-    public $name, $lastname, $username, $password, $role, $sarafi_name, $address, $phone, $user_limition;
+    public $name, $lastname, $username, $password, $role, $sarafi_name, $address, $phone, $user_limition, $zone;
 
     // Alerts and delete confirmation
     public $alert = null;
@@ -39,16 +40,21 @@ class Users extends Component
         'password' => 'nullable|string|min:6',
         'role' => 'required',
         'user_limition' => 'nullable|integer|min:0',
+        'zone' => 'required|string|max:255',
+
     ];
 
 
     public $roles = [
-    'superadmin' => 'سوپر ادمین',
-    'admin' => 'مدیر',
-    'warehouse_manager' => 'خزانه دار',
-    'internal_officer' => 'مسوول احواله جات داخلی',
-    'external_officer' => 'مسوول احواله جات خارجی',
-];
+        'superadmin' => 'سوپر ادمین',
+        'admin' => 'مدیر',
+        'warehouse_manager' => 'خزانه دار',
+        'internal_officer' => 'مسوول احواله جات داخلی',
+        'external_officer' => 'مسوول احواله جات خارجی',
+    ];
+
+
+
 
 
 
@@ -57,9 +63,45 @@ class Users extends Component
     // -------------------------
     public function mount()
     {
-        //
+
+        $this->setDefaultValues();
     }
 
+    private function setDefaultValues()
+    {
+        $currentUser = Auth::guard('sarafi')->user();
+
+        if ($currentUser->role === 'admin') {
+            $this->sarafi_name = $currentUser->sarafi_name;
+            $this->address = $currentUser->address;
+        } else {
+            $this->zone = $currentUser->zone;
+        }
+    }
+
+    private function convertToEnglishNumbers($value)
+    {
+        if (!$value) return $value;
+
+        $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        $arabic = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+        $english = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+        $value = str_replace($persian, $english, $value);
+        $value = str_replace($arabic, $english, $value);
+
+        return $value;
+    }
+
+    public function updatedPhone($value)
+    {
+        $this->phone = $this->convertToEnglishNumbers($value);
+    }
+
+    public function updatedPassword($value)
+    {
+        $this->password = $this->convertToEnglishNumbers($value);
+    }
 
 
     // -------------------------
@@ -72,12 +114,11 @@ class Users extends Component
         $this->username = '';
         $this->password = '';
         $this->role = '';
-        $this->sarafi_name = '';
-        $this->address = '';
         $this->phone = '';
         $this->user_limition = '';
         $this->modalOpen = false;
         $this->editId = null;
+        $this->zone = '';
     }
 
     // -------------------------
@@ -86,6 +127,8 @@ class Users extends Component
     public function openCreateModal()
     {
         $this->resetInputFields();
+        $this->zone = Auth::guard('sarafi')->user()->zone;
+        $this->setDefaultValues();
         $this->modalOpen = true;
     }
 
@@ -106,6 +149,7 @@ class Users extends Component
         $this->phone = $user->phone ?? '';
         $this->user_limition = $user->user_limition ?? null;
         $this->modalOpen = true;
+        $this->zone = $user->zone;
     }
 
     // -------------------------
@@ -121,7 +165,7 @@ class Users extends Component
     // -------------------------
     public function applyFilter()
     {
-    $this->filterOpen = false; 
+        $this->filterOpen = false;
     }
 
     // -------------------------
@@ -147,6 +191,8 @@ class Users extends Component
             'address' => $this->address,
             'phone' => $this->phone,
             'status' => $this->editId ? User::find($this->editId)->status : 0,
+            'zone' => $this->zone,
+
         ];
 
         if ($this->password) {
@@ -181,7 +227,10 @@ class Users extends Component
         // Save or update
         if ($this->editId) {
             User::find($this->editId)->update($data);
-            $this->alert = ['title' => __('messages.Success'), 'message' => __('messages.user_updated')];
+            $this->alert = [
+                'title' => __('messages.Success'),
+                'message' => $this->editId ? __('messages.user_updated') : __('messages.user_created')
+            ];
         } else {
             User::create($data);
             $this->alert = ['title' => __('messages.Success'), 'message' => __('messages.user_created')];
@@ -199,6 +248,12 @@ class Users extends Component
         $this->confirmDeleteId = $id;
     }
 
+
+    public function clearAlert()
+    {
+        $this->alert = null;
+    }
+
     // -------------------------
     // Delete user
     // -------------------------
@@ -206,47 +261,87 @@ class Users extends Component
     {
         if ($this->confirmDeleteId) {
             User::findOrFail($this->confirmDeleteId)->delete();
-            $this->alert = ['title' => __('messages.Success'), 'message' => __('messages.user_deleted')];
+            $this->alert = [
+                'title' => __('messages.Success'),
+                'message' => __('messages.user_deleted')
+            ];
             $this->confirmDeleteId = null;
         }
     }
 
+
+    public function print($id)
+    {
+        $user = User::findOrFail($id);
+
+        $mpdf = new Mpdf([
+            'mode' => 'utf-8',
+            'format' => [80, 135],
+            'directionality' => 'rtl',
+            'margin_top' => 2,
+            'margin_bottom' => 2,
+            'margin_left' => 2,
+            'margin_right' => 2,
+            'fontDir' => array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'], [
+                public_path('fonts'),
+            ]),
+            'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+                'Shabnam' => [
+                    'R' => 'Shabnam-FD.ttf',
+                ],
+            ],
+            'default_font' => 'Shabnam',
+        ]);
+
+        $mpdf->SetAutoPageBreak(false);
+
+        $html = view('pdf.Sarafi.user-print', compact('user'))->render();
+        $mpdf->WriteHTML($html);
+
+        $fileName = $user->name . '.pdf';
+
+        return response()->streamDownload(function () use ($mpdf) {
+            echo $mpdf->Output('', 'S');
+        }, $fileName);
+    }
+
+
     // -------------------------
     // Get paginated users
     // -------------------------
-   public function getUsersProperty()
-{
-    $currentUser = Auth::guard('sarafi')->user();
-    $query = User::query();
+    public function getUsersProperty()
+    {
+        $currentUser = Auth::guard('sarafi')->user();
+        $query = User::query();
 
-    // Role-based filtering (برای محدود کردن دسترسی کاربر جاری)
-    if ($currentUser->role === 'admin') {
-        $query->where('admin_id', $currentUser->id)
-              ->orWhere('id', $currentUser->id);
-    } elseif ($currentUser->role !== 'superadmin') {
-        $query->where('id', $currentUser->id);
+        // Role-based filtering (برای محدود کردن دسترسی کاربر جاری)
+        if ($currentUser->role === 'admin') {
+            $query->where('admin_id', $currentUser->id)
+                ->orWhere('id', $currentUser->id);
+        } elseif ($currentUser->role !== 'superadmin') {
+            $query->where('id', $currentUser->id);
+        }
+
+        // Search
+        if ($this->search) {
+            $query->where(function ($q) {
+                $q->where('name', 'like', '%' . $this->search . '%')
+                    ->orWhere('lastname', 'like', '%' . $this->search . '%')
+                    ->orWhere('username', 'like', '%' . $this->search . '%');
+            });
+        }
+
+        // **Filters**
+        if ($this->filterRole) {
+            $query->where('role', $this->filterRole);
+        }
+
+        if ($this->filterSarafi) {
+            $query->where('sarafi_name', $this->filterSarafi);
+        }
+
+        return $query->orderBy('id', 'desc')->paginate(10);
     }
-
-    // Search
-    if ($this->search) {
-        $query->where(function($q) {
-            $q->where('name', 'like', '%' . $this->search . '%')
-              ->orWhere('lastname', 'like', '%' . $this->search . '%')
-              ->orWhere('username', 'like', '%' . $this->search . '%');
-        });
-    }
-
-    // **Filters**
-    if ($this->filterRole) {
-        $query->where('role', $this->filterRole);
-    }
-
-    if ($this->filterSarafi) {
-        $query->where('sarafi_name', $this->filterSarafi);
-    }
-
-    return $query->orderBy('id', 'desc')->paginate(10);
-}
 
 
     // -------------------------
@@ -265,11 +360,11 @@ class Users extends Component
         return User::select('sarafi_name')->whereNotNull('sarafi_name')->distinct()->pluck('sarafi_name')->toArray();
     }
 
-    
+
     public function render()
     {
-         $currentUser = Auth::guard('sarafi')->user();
+        $currentUser = Auth::guard('sarafi')->user();
         $users = $this->users;
-        return view('livewire.sarafi.users' , compact('users', 'currentUser'));
+        return view('livewire.sarafi.users', compact('users', 'currentUser'));
     }
 }

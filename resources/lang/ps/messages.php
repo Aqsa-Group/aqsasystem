@@ -290,6 +290,8 @@ return [
     'placeholder_whatsapp' => '07xx.xxxx.xxxx',
     'placeholder_password' => 'پاسورډ',
     'placeholder_select_user' => 'نقش وټاکئ',
+    'placeholder_zone' => 'ده کاربر زون',
+
 
     // categories
     'category_normal' => 'عادي مشتری',
@@ -311,7 +313,11 @@ return [
     'edit' => 'ایډیټ',
     'view' => 'کتل',
     'delete' => 'ړنګول',
-
+    'zone' => 'زون',
+    "all_company" => "ټول شرکتونه",
+    "company_name" => "د شرکت نوم",
+    "financial_manager" => "مالي مدیر",
+    "accounting_manager" => "محاسب"
 
 
 

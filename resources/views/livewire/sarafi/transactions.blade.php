@@ -192,50 +192,14 @@
                         <div class="lg:w-[250px]">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">درج زون ها</label>
                             <div class="relative">
-                                <select wire:model="zone"
+                                <select wire:model="zone" wire:init="setDefaultZone"
                                     class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white appearance-none"
                                     style="max-height: 200px; overflow-y: auto;">
-
                                     <option value="">انتخاب زون</option>
-                                    <!-- غرب -->
-                                    <option value="غرب">غرب (هرات، بادغیس، غور، فراه)</option>
-                                    <!-- مرکز -->
-                                    <option value="مرکز">مرکز (کابل، پروان، کاپیسا، وردک، لوگر)</option>
-
-                                    <!-- شمال -->
-                                    <option value="شمال">شمال (بلخ، جوزجان، سرپل، سمنگان، فاریاب)</option>
-
-                                    <!-- شمال‌شرق -->
-                                    <option value="">انتخاب زون</option>
-                                    <!-- غرب -->
-                                    <option value="غرب">غرب (هرات، بادغیس، غور، فراه)</option>
-                                    <!-- مرکز -->
-                                    <option value="مرکز">مرکز (کابل، پروان، کاپیسا، وردک، لوگر)</option>
-
-                                    <!-- شمال -->
-                                    <option value="شمال">شمال (بلخ، جوزجان، سرپل، سمنگان، فاریاب)</option>
-
-                                    <!-- شمال‌شرق -->
-                                    <option value="شمال‌شرق">شمال‌شرق (کندز، تخار، بدخشان، بغلان)</option>
-
-
-
-                                    <!-- جنوب -->
-                                    <option value="جنوب">جنوب (قندهار، ارزگان، زابل، هلمند)</option>
-
-                                    <!-- جنوب‌شرق -->
-                                    <option value="جنوب‌شرق">جنوب‌شرق (خوست، پکتیا، پکتیکا)</option>
-
-                                    <!-- شرق -->
-                                    <option value="شرق">شرق (ننگرهار، لغمان، کنر، نورستان)</option>
-
-                                    <!-- جنوب‌غرب -->
-                                    <option value="جنوب‌غرب">جنوب‌غرب (نیمروز)</option>
-
+                                    <option value="{{ Auth::guard('sarafi')->user()->zone }}">
+                                        {{ Auth::guard('sarafi')->user()->zone }}
+                                    </option>
                                 </select>
-                                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
-                                </div>
                             </div>
                             @error('zone')
                             <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
@@ -413,7 +377,7 @@
                                         <div class="whitespace-nowrap">
                                             <div class="font-medium">
 
-                                        {{ explode(' ', $transaction->date)[0] }}
+                                                {{ explode(' ', $transaction->date)[0] }}
 
                                             </div>
                                             <div class="text-gray-500 text-sm mt-1">

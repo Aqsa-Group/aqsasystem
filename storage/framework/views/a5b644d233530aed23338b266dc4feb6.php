@@ -1,4 +1,16 @@
 <div class="min-h-screen  dark:bg-gray-900 py-4 w-full p-6" >
+      <?php if(session()->has('message')): ?>
+    <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
+        class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
+        <div class="h-[80px] w-full flex justify-start items-center px-4">
+            <h2 class="text-white vazir text-[18px]">
+                <?php echo e(session('message')); ?>
+
+            </h2>
+        </div>
+    </div>
+<?php endif; ?>
+
     <div class="w-full p-4 bg-[#F5F5F5] dark:bg-gray-800 rounded-2xl " style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
         <!-- هدر -->
         <div class="text-center mb-6">
@@ -305,29 +317,6 @@ unset($__errorArgs, $__bag); ?>
         </form>
     </div>
 
-    <!-- مودال موفقیت -->
-    <?php if($showSuccessModal): ?>
-    <div class="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
-        wire:click.self="$set('showSuccessModal', false)">
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-96">
-            <div class="flex justify-center mb-4">
-                <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
-                    <i class="fa-solid fa-check text-2xl text-green-600 dark:text-green-400"></i>
-                </div>
-            </div>
-            <h2 class="text-xl font-bold text-green-600 text-center"><?php echo e(__('messages.success_title')); ?></h2>
-            <p class="text-gray-700 dark:text-gray-200 text-center mt-2 mb-4">
-                <?php echo e($successMessage); ?>
 
-            </p>
-            <div class="flex justify-center">
-                <button wire:click="closeSuccessModal"
-                    class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
-                    <?php echo e(__('messages.close')); ?>
 
-                </button>
-            </div>
-        </div>
-    </div>
-    <?php endif; ?>
 </div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/customers.blade.php ENDPATH**/ ?>

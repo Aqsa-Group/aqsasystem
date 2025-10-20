@@ -14,7 +14,7 @@ class SetLocale
      */
     public function handle($request, Closure $next)
     {
-        if ($request->is('sarafi/*') || $request->is('sarafi')) {
+        if ($request->is('sarafi/*') || $request->is('sarafi') || $request->is('tools/*') || $request->is('tools'))  {
             $default = config('app.locale', 'fa');
             $locale = Session::get('locale', Cookie::get('locale', $default));
             $available = ['fa', 'ps', 'en'];

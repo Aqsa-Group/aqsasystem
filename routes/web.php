@@ -15,6 +15,7 @@ use App\Http\Controllers\Sarafi\Auth\CustomController;
 use App\Http\Controllers\ShopkeeperPrintController;
 use App\Http\Controllers\SignedImagePdfController;
 use App\Http\Controllers\StaffContractPrintController;
+use App\Http\Controllers\ToolsPanel\Auth\UserController;
 use App\Http\Controllers\WarehousePrintController;
 use App\Http\Controllers\WithdrawPrint;
 use App\Http\Livewire\Sarafi\customers;
@@ -223,11 +224,60 @@ Route::get('/sarafi/conversion-in-account', function () {
     return view('Sarafi.components.conversion-in-account');
 })->name('sarafi.conversion.in.account');
 
+Route::get('/sarafi/account_to_account', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.account-to-account');
+})->name('sarafi.account_to_account');
 
 
 
 
 
+
+// ToolsPanel Route
+Route::get('/tools', [UserController::class, 'showLoginForm'])->name('tools.login.form');
+
+Route::post('/tools/login', [UserController::class, 'login'])->name('tools.login');
+
+Route::post('/tools/logout', [UserController::class, 'logout'])->name('tools.logout');
+
+
+
+Route::get('/set-locale/{locale}', function ($locale) {
+    $availableLocales = ['fa', 'ps', 'en'];
+
+    if (in_array($locale, $availableLocales)) {
+        Session::put('locale', $locale);
+        Cookie::queue('locale', $locale, 60 * 24 * 30); // 30 روز
+    }
+
+    return redirect()->back();
+})->name('set-locale');
+
+// Pages    
+
+Route::get('/tools/home', function () {
+    if (!Auth::guard('tools')->check()) {
+        return redirect()->route('tools.login.form');
+    }
+    return view('ToolsPanel.components.dashboard');
+})->name('tools.home');
+
+
+
+Route::get('/tools/users', function () {
+    if (!Auth::guard('tools')->check()) {
+        return redirect()->route('tools.login.form');
+    }
+    
+    $customerId = request('customerId');
+    
+    return view('ToolsPanel.components.users', [
+        'customerId' => $customerId
+    ]);
+})->name('tools.users');
 
 
 

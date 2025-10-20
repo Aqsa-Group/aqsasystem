@@ -28,7 +28,11 @@ class User extends Authenticatable
         'user_limition',
         'status',
         'admin_id',   
+        'zone',
     ];
+
+
+    
 
  
 

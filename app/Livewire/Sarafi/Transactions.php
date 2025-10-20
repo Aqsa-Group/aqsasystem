@@ -93,6 +93,7 @@ class Transactions extends Component
     public function mount()
     {
         $this->date = Jalalian::now()->format('Y/m/d');
+        $this->zone = Auth::guard('sarafi')->user()->zone;
 
         $this->currencies = [
             ['code' => 'usd', 'name_fa' => 'دالر'],
@@ -433,6 +434,13 @@ class Transactions extends Component
         $this->transactionType = $this->transactionType === 'برد' ? 'رسید' : 'برد';
     }
 
+
+    public function setDefaultZone()
+{
+    if (empty($this->zone)) {
+        $this->zone = Auth::guard('sarafi')->user()->zone;
+    }
+}
     public function edit($id)
     {
         $transaction = Transaction::findOrFail($id);
@@ -768,11 +776,11 @@ class Transactions extends Component
             'amountInWords',
             'description',
             'file',
-            'zone',
             'transactionId',
         ]);
 
         $this->date = Jalalian::now()->format('Y/m/d');
         $this->transactionType = 'برد';
+        $this->zone = Auth::guard('sarafi')->user()->zone; 
     }
 }

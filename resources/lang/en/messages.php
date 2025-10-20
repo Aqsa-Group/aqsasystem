@@ -293,6 +293,7 @@ return [
     'placeholder_lastname' => 'Last name...',
     'placeholder_name' => 'Name...',
     'placeholder_address' => 'Address...',
+    'placeholder_zone' => 'zone of user',
 
     'placeholder_phone_user' => 'Phone number...',
     'placeholder_tazkira' => 'Tazkira number',
@@ -320,5 +321,10 @@ return [
     'edit' => 'Edit',
     'view' => 'View',
     'delete' => 'Delete',
+    'zone'=>'zone',
+    "all_company"=> "All Companies",
+    "company_name"=> "Company Name",
+    "financial_manager" => "Financial Manager",
+    "accounting_manager" => "Accountant"
 
 ];

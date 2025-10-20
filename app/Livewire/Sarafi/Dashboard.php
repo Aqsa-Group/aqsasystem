@@ -15,6 +15,8 @@ class Dashboard extends Component
     public $safe;
     public $currencies = [];
 
+    
+
     public function mount()
     {
         $user = Auth::guard('sarafi')->user();

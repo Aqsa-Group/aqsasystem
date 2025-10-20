@@ -1,29 +1,34 @@
 <?php
 
-    namespace App\Http\Middleware;
+namespace App\Http\Middleware;
 
-    use Closure;
-    use Illuminate\Http\Request;
-    use Illuminate\Support\Facades\Auth;
-    use Symfony\Component\HttpFoundation\Response;
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
-    class PreventBack
+class PreventBack
+{
+    public function handle(Request $request, Closure $next): Response
     {
-        public function handle(Request $request, Closure $next): Response
-        {
-            $response = $next($request);
+        $response = $next($request);
 
-            // جلوگیری از کش مرورگر
-           $response->headers->set('Cache-Control', 'no-cache, no-store, max-age=0, must-revalidate');
-            $response->headers->set('Pragma', 'no-cache');
-            $response->headers->set('Expires', '0');
+        $response->headers->set('Cache-Control', 'no-cache, no-store, max-age=0, must-revalidate');
+        $response->headers->set('Pragma', 'no-cache');
+        $response->headers->set('Expires', '0');
 
-
-            // اگر کاربر لاگین نیست، اجباری به فرم لاگین ریدایرکت کن
+        if ($request->is('sarafi/*') || $request->is('sarafi')) {
             if (!Auth::guard('sarafi')->check()) {
                 return redirect()->route('sarafi.login.form');
             }
-
-            return $response;
         }
+
+        if ($request->is('tools/*') || $request->is('tools')) {
+            if (!Auth::guard('tools')->check()) {
+                return redirect()->route('tools.login.form');
+            }
+        }
+
+        return $response;
     }
+}

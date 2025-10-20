@@ -2,10 +2,11 @@
 
 namespace App\Livewire\Sarafi;
 
-use Livewire\Component;
-use Livewire\WithPagination;
 use App\Models\Sarafi\Customer;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use Livewire\WithPagination;
+use Mpdf\Mpdf;
 
 class CustomersTable extends Component
 {
@@ -63,6 +64,62 @@ class CustomersTable extends Component
     {
         return redirect()->route('sarafi.customer-create');
     }
+
+
+  public function print($id)
+{
+    $customer = Customer::findOrFail($id);
+
+    // ایجاد متن برای QR Code با تمام اطلاعات مشتری
+    $qrText = "صرافی زرین - Zareen Exchange\n";
+    $qrText .= "=======================\n";
+    $qrText .= "نام کامل: " . ($customer->fullname ?? '---') . "\n";
+    $qrText .= "شماره تماس: " . ($customer->phone ?? '---') . "\n";
+    $qrText .= "شهر: " . ($customer->city ?? '---') . "\n";
+    $qrText .= "کد ملی: " . ($customer->idcard_number ?? '---') . "\n";
+    $qrText .= "شماره حساب: " . ($customer->account_number ?? '---') . "\n";
+    $qrText .= "واتساپ: " . ($customer->whatsapp_number ?? '---') . "\n";
+    $qrText .= "نوع مشتری: " . ($customer->type ?? '---') . "\n";
+    $qrText .= "تاریخ ثبت: " . ($customer->created_at ? $customer->created_at->format('Y/m/d') : '---') . "\n";
+    $qrText .= "=======================\n";
+    $qrText .= "www.zareen-exchange.com";
+
+    // استفاده از سرویس آنلاین QR Code
+    $qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" . urlencode($qrText);
+
+    $mpdf = new Mpdf([
+        'mode' => 'utf-8',
+        'format' => [125, 104],
+        'directionality' => 'ltr', // تغییر به LTR برای دیزاین کارت
+        'margin_top' => 2,
+        'margin_bottom' => 2,
+        'margin_left' => 2,
+        'margin_right' => 2,
+        'fontDir' => array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'], [
+            public_path('fonts'),
+        ]),
+        'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+            'Shabnam' => [
+                'R' => 'amiri-regular.ttf',
+            ],
+        ],
+        'default_font' => 'Shabnam',
+    ]);
+
+    $mpdf->SetAutoPageBreak(false);
+
+    $html = view('pdf.Sarafi.customer-card', compact('customer', 'qrCodeUrl'))->render();
+    $mpdf->WriteHTML($html);
+
+    $fileName = $customer->fullname . '.pdf';
+
+    return response()->streamDownload(function () use ($mpdf) {
+        echo $mpdf->Output('', 'S');
+    }, $fileName);
+}
+
+
+
    public function render()
 {
     $user = Auth::guard('sarafi')->user();

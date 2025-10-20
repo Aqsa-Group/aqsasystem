@@ -24,6 +24,10 @@ return new class extends Migration
             $table->string('id_card_image')->nullable();
             $table->string('password')->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('admin_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
+            $table->foreign('admin_id')->references('id')->on('users')->nullOnDelete();
             $table->timestamps();
         });
     }

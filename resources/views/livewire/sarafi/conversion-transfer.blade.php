@@ -63,7 +63,6 @@
         </div>
 
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
-
             {{-- فرم تراکنش --}}
             <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[574px] p-[12px] h-fit rounded-[12px] space-y-2"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
@@ -614,33 +613,33 @@
                 </div>
                 @endif
             </div>
-             <!-- مودال تأیید حذف -->
-    @if ($confirmDeleteId)
-    <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-        <div
-            class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px]  rounded-[12px] shadow-xl w-[653px] h-[219.7267608642578px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
-            <!-- دکمه بستن -->
-            <button wire:click="$set('confirmDeleteId', null)"
-                class="absolute left-0 right-4 top-4 h-6 w-6 flex items-center justify-center">
-                <img src="{{ asset('assets/sarafi/all_icon/close.svg') }}" alt="بستن" class="w-4 h-4">
-            </button>
+            <!-- مودال تأیید حذف -->
+            @if ($confirmDeleteId)
+            <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                <div
+                    class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px]  rounded-[12px] shadow-xl w-[653px] h-[219.7267608642578px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
+                    <!-- دکمه بستن -->
+                    <button wire:click="$set('confirmDeleteId', null)"
+                        class="absolute left-0 right-4 top-4 h-6 w-6 flex items-center justify-center">
+                        <img src="{{ asset('assets/sarafi/all_icon/close.svg') }}" alt="بستن" class="w-4 h-4">
+                    </button>
 
-            <h1 class="text-2xl text-black shabnam font-medium leading-[100%] mt-2">حذف تراکنش تبدیل ارز</h1>
-            <hr class="bg-[#E1DED3] mt-4 mx-4">
-            <p class="mb-6 text-xl shabnam mt-5">آیا مطمئن هستید می خواهید این تراکنش را حذف کنید؟</p>
-            <div class="flex justify-center gap-4">
-                <button wire:click="$set('confirmDeleteId', null)"
-                    class="px-12 text-white text-lg shabnam-fd py-3 bg-[#DD2424] rounded-xl transition hover:bg-red-700">
-                    خیر
-                </button>
-                <button wire:click="deleteConversion"
-                    class="px-12 py-3 bg-[#2563EB] text-lg shabnam-fd text-white rounded-xl transition hover:bg-blue-700 flex items-center gap-2">
-                    بلی
-                </button>
+                    <h1 class="text-2xl text-black shabnam font-medium leading-[100%] mt-2">حذف تراکنش تبدیل ارز</h1>
+                    <hr class="bg-[#E1DED3] mt-4 mx-4">
+                    <p class="mb-6 text-xl shabnam mt-5">آیا مطمئن هستید می خواهید این تراکنش را حذف کنید؟</p>
+                    <div class="flex justify-center gap-4">
+                        <button wire:click="$set('confirmDeleteId', null)"
+                            class="px-12 text-white text-lg shabnam-fd py-3 bg-[#DD2424] rounded-xl transition hover:bg-red-700">
+                            خیر
+                        </button>
+                        <button wire:click="deleteConversion"
+                            class="px-12 py-3 bg-[#2563EB] text-lg shabnam-fd text-white rounded-xl transition hover:bg-blue-700 flex items-center gap-2">
+                            بلی
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    @endif
+            @endif
         </div>
     </div>
 

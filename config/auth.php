@@ -55,6 +55,11 @@ return [
                 'driver' => 'session',
                 'provider' => 'sarafies',
             ],
+
+             'tools' => [
+                'driver' => 'session',
+                'provider' => 'tools',
+            ],
         ],
 
         /*
@@ -94,6 +99,12 @@ return [
             'driver' => 'eloquent',
              'model' => App\Models\Sarafi\User::class,
         ],
+
+          'tools' => [
+            'driver' => 'eloquent',
+             'model' => App\Models\Tools\User::class,
+        ],
+
 
 
 

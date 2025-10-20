@@ -19,7 +19,7 @@
         <div
             class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
             <i class="fa-solid fa-arrow-right-arrow-left text-white text-xl"></i>
-            <a href="" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+            <a href="<?php echo e(route('sarafi.account_to_account')); ?>" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 <?php echo e(__('messages.transfer')); ?>
 
             </a>

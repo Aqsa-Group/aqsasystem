@@ -1,4 +1,15 @@
 <div>
+    @if (session()->has('message'))
+    <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
+        class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
+        <div class="h-[80px] w-full flex justify-start items-center px-4">
+            <h2 class="text-white vazir text-[18px]">
+                {{ session('message') }}
+            </h2>
+        </div>
+    </div>
+    @endif
+
     <div class="flex flex-col md:flex-row items-center  gap-4 mb-6 mr-14">
         <!-- دکمه افزودن مشتری جدید -->
         <button wire:click="createCustomer"
@@ -30,7 +41,7 @@
                     <th colspan="9" class="rounded-2xl p-3">
                         <table class="w-full">
                             <tr>
-                              
+
                                 <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.fullname') }}</th>
                                 <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.account_number') }}</th>
                                 <th class="px-6 py-3 text-[18px] font-bold">{{ __('messages.category') }}</th>
@@ -78,7 +89,7 @@
                         </button>
 
                         <!-- دکمه چاپ -->
-                        <button class="px-2 py-2">
+                        <button class="px-2 py-2" wire:click="print({{ $customer->id }})">
                             <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}" alt="Edit"
                                 class="w-[40px] h-[40px]">
                         </button>
@@ -109,45 +120,52 @@
         </div>
     </div>
 
-    <!-- ✅ Success message -->
-    @if (session()->has('message'))
-    <div class="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+
+    @php
+    $currentUser=Auth::guard('sarafi')->user();
+    @endphp
+
+    @if ($currentUser && $currentUser->role==='admin')
+    <!-- مودال تأیید حذف مشتری -->
+    @if ($confirmingDelete)
+    <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-10 z-50">
         <div
-            class="bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-100 rounded-lg shadow-xl p-6 w-80 text-center">
-            <p class="font-semibold">
-                {{ session('message') }}
-            </p>
-            <button onclick="this.parentElement.parentElement.remove()"
-                class="mt-4 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-                ✖ بستن
+            class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px] rounded-[12px] shadow-xl w-[653px] h-[240px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
+
+            <!-- دکمه بستن -->
+            <button wire:click="$set('confirmingDelete', null)"
+                class="absolute top-4 right-4 h-4 w-4 flex items-center justify-center">
+                <img src="{{ asset('assets/sarafi/all_icon/close.svg') }}" alt="Close">
             </button>
-        </div>
-    </div>
-    @endif
 
-
-    <!-- ❗ Delete Confirmation Modal -->
-    @if($confirmingDelete)
-    <div class="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-96">
-            <h2 class="text-xl font-bold text-red-600 mb-4">
+            <!-- عنوان -->
+            <h1 class="text-2xl text-black shabnam font-medium leading-[100%]">
                 {{ __('messages.delete_customer_title') }}
-            </h2>
-            <p class="text-gray-700 dark:text-gray-200">
+            </h1>
+
+            <hr class="bg-[#E1DED3] mt-8">
+
+            <!-- پیام -->
+            <p class="mb-6 text-xl shabnam mt-5">
                 {{ __('messages.delete_customer_message') }}
             </p>
 
-            <div class="mt-6 flex justify-end gap-3">
+            <!-- دکمه‌ها -->
+            <div class="flex justify-center gap-4">
                 <button wire:click="$set('confirmingDelete', null)"
-                    class="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500">
-                    {{ __('messages.cancel') }}
+                    class="px-20 py-3 bg-[#DD2424] text-white text-xl shabnam-fd rounded-xl transition">
+                    {{ __('messages.no') }}
                 </button>
-                <button wire:click="deleteCustomer" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
-                    {{ __('messages.delete') }}
+                <button wire:click="deleteCustomer"
+                    class="px-20 py-3 bg-[#2563EB] text-white text-xl shabnam-fd rounded-xl transition flex items-center gap-2">
+                    {{ __('messages.yes') }}
                 </button>
             </div>
         </div>
     </div>
     @endif
+    @endif
+
+
 
 </div>

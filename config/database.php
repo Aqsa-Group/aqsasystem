@@ -82,6 +82,24 @@ return [
            
         ],
 
+            'import' => [
+            'driver' => 'mysql',
+            'host' => env('DB_IMPORT_HOST', '127.0.0.1'),
+            'port' => env('DB_IMPORT_PORT', '3306'),
+            'database' => env('DB_IMPORT_DATABASE', 'aqsasystem_importpanel'),
+            'username' => env('DB_IMPORT_USERNAME', 'root'),
+            'password' => env('DB_IMPORT_PASSWORD', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => env('DB_CHARSET', 'utf8mb4'),
+            'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+           
+        ],
+
+
 
         'sarafi' => [
             'driver' => 'mysql',
@@ -101,13 +119,15 @@ return [
            
         ],
 
-        'import' => [
+
+         'tools' => [
             'driver' => 'mysql',
-            'host' => env('DB_IMPORT_HOST', '127.0.0.1'),
-            'port' => env('DB_IMPORT_PORT', '3306'),
-            'database' => env('DB_IMPORT_DATABASE', 'aqsasystem_importpanel'),
-            'username' => env('DB_IMPORT_USERNAME', 'root'),
-            'password' => env('DB_IMPORT_PASSWORD', ''),
+            'url' => env('DB_URL'),
+            'host' => env('DB_Tools_HOST', '127.0.0.1'),
+            'port' => env('DB_Tools_PORT', '3306'),
+            'database' => env('DB_Tools_DATABASE', 'aqsasystem_tools'),
+            'username' => env('DB_Tools_USERNAME', 'root'),
+            'password' => env('DB_Tools_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => env('DB_CHARSET', 'utf8mb4'),
             'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
@@ -117,7 +137,7 @@ return [
             'engine' => null,
            
         ],
-
+    
 
         'mariadb' => [
             'driver' => 'mariadb',
