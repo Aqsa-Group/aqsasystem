@@ -25,7 +25,7 @@
                 }, 4000);
             }
         }" x-show="show" x-transition
-            class="fixed top-0 left-0 right-0 w-full z-[9999] {{ $alert['title'] === 'Error' ? 'bg-red-500' : 'bg-[#2B65E5]' }} vazir">
+            class="fixed top-0 left-0 right-0 w-full z-[9999] {{ $alert['title'] === 'Error' ? 'bg-red-500' : 'bg-gradient-to-br from-indigo-400 to-indigo-500' }} vazir">
             <div class="h-[80px] w-full flex justify-start items-center px-4">
                 <h2 class="text-white vazir text-[18px]">
                     {{ $alert['message'] }}
@@ -37,7 +37,7 @@
         {{-- پیام Session --}}
         @if (session()->has('message'))
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
-            class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
+            class="fixed top-0 left-0 right-0 w-full z-[9999] bg-gradient-to-br from-indigo-50 to-indigo-10 vazir">
             <div class="h-[80px] w-full flex justify-start items-center px-4">
                 <h2 class="text-white vazir text-[18px]">
                     {{ session('message') }}
@@ -62,7 +62,7 @@
             <p class="text-lg text-gray-600 dark:text-gray-400 vazir">
                 {{ __('messages.subtitle_user') }}
             </p>
-            <div class="bg-[#2563EB] rounded-full h-20 w-20 mx-auto flex items-center justify-center">
+            <div class="bg-gradient-to-br from-indigo-400 to-indigo-500 rounded-full h-20 w-20 mx-auto flex items-center justify-center">
                 <img src="{{ asset('assets/sarafi/all_icon/light.user.svg') }}" alt="" class="mt-2">
             </div>
         </div>
@@ -284,7 +284,7 @@
                     {{ __('messages.cancel') }}
                 </button>
                 <button type="submit"
-                    class="flex-1 py-4 bg-[#2563EB] text-white rounded-xl hover:bg-blue-700 transition">
+                    class="flex-1 py-4 bg-gradient-to-br from-indigo-400 to-indigo-500 text-white rounded-xl hover:bg-blue-700 transition">
                     {{ __('messages.save') }}
                 </button>
             </div>
@@ -299,7 +299,7 @@
         <!-- دکمه فیلتر -->
         <div class="relative">
             <button wire:click="$toggle('filterOpen')"
-                class="px-3 py-2 border rounded-lg bg-[#2563EB] transition flex items-center gap-2 text-white">
+                class="px-3 py-2 border rounded-lg bg-gradient-to-br from-indigo-400 to-indigo-500 transition flex items-center gap-2 text-white">
                 <img src="{{ asset('assets/sarafi/all_icon/filter.svg') }}" alt="">
                 <span class="text-white">{{ __('messages.filter') }}</span>
             </button>
@@ -321,7 +321,7 @@
                 </select>
 
                 <button wire:click="applyFilter"
-                    class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 w-full">
+                    class="px-3 py-2 bg-gradient-to-br from-indigo-400 to-indigo-500 text-white rounded-lg hover:bg-blue-700 w-full">
                     {{ __('messages.apply_filter') }}
                 </button>
             </div>
@@ -344,7 +344,7 @@
         <table class="min-w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mb-5">
 
             <!-- هدر جدول -->
-            <thead class="bg-[#2563EB] dark:bg-gray-700 text-white text-[18px] vazir h-20">
+            <thead class="bg-gradient-to-br from-indigo-400 to-indigo-500 dark:bg-gray-700 text-white text-[18px] vazir h-20">
                 <tr>
                     <th class="px-6 py-6 font-bold">
                         <span class="border border-white h-2 w-5 px-3 rounded-lg">#</span>
@@ -407,7 +407,7 @@
 
 
 
-    @if($currentUser && $currentUser->role === 'admin')
+    @if($currentUser && $currentUser->role === 'admin' || $currentUser->role==='superadmin' )
 
     {{-- مودال تأیید حذف --}}
     @if ($confirmDeleteId)
@@ -441,7 +441,7 @@
                     {{ __('messages.no') }}
                 </button>
                 <button wire:click="delete"
-                    class="px-12 py-3 bg-[#2563EB] text-lg shabnam-fd text-white rounded-xl transition hover:bg-blue-700 flex items-center gap-2">
+                    class="px-12 py-3 bg-gradient-to-br from-indigo-400 to-indigo-500 text-lg shabnam-fd text-white rounded-xl transition hover:bg-blue-700 flex items-center gap-2">
                     {{ __('messages.yes') }}
                 </button>
             </div>

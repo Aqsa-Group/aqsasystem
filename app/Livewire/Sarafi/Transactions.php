@@ -710,25 +710,6 @@ class Transactions extends Component
     }
 
 
-
-
-    public function showReport()
-    {
-        if (!$this->selectedCustomerId) {
-            session()->flash('error', 'لطفاً ابتدا یک مشتری را انتخاب کنید');
-            return;
-        }
-
-        // ذخیره ID مشتری در سشن
-        session(['selected_customer_id' => $this->selectedCustomerId]);
-
-        // انتقال به صفحه گزارشات
-        return redirect()->route('sarafi.transaction-reports'); // مسیر صفحه گزارشات
-    }
-
-
-
-
     private function updateCurrencySafe($userId, $currency, $amount)
     {
         $user = Auth::guard('sarafi')->user();
@@ -763,6 +744,26 @@ class Transactions extends Component
 
         $safe->save();
     }
+
+
+
+
+    public function showReport()
+    {
+        if (!$this->selectedCustomerId) {
+            session()->flash('error', 'لطفاً ابتدا یک مشتری را انتخاب کنید');
+            return;
+        }
+
+        // ذخیره ID مشتری در سشن
+        session(['selected_customer_id' => $this->selectedCustomerId]);
+
+        // انتقال به صفحه گزارشات
+        return redirect()->route('sarafi.transaction-reports'); // مسیر صفحه گزارشات
+    }
+
+
+
 
 
 

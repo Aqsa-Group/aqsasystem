@@ -514,8 +514,7 @@
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="active = 'customer-create'"
                                 :class="active === 'customer-create' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                                <img src="{{ asset('assets/sarafi/all_icon/edit-2.svg') }}" class="w-4 h-4"
-                                    :class="active === 'customer-create' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                      <i class="fa-solid fa-user-pen w-4 h-4"  :class="active === 'customer-create' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
                                 {{ __('messages.customer_create') }}
                             </a>
 
@@ -524,8 +523,7 @@
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="active = 'customer-table'"
                                 :class="active === 'customer-table' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                                <img src="{{ asset('assets/sarafi/all_icon/edit-2.svg') }}" class="w-4 h-4"
-                                    :class="active === 'customer-table' ? 'filter invert brightness-0' : 'text-gray-500'">
+                               <i class="fa-solid fa-users-gear h-4 w-4" :class="active === 'customer-table' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
                                 {{ __('messages.customer_list') }}
                             </a>
                         </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html  lang="<?php echo e(session('locale', config('app.locale'))); ?>" dir="<?php echo e(session('locale') === 'en' ? 'ltr' : 'rtl'); ?>">
+<html lang="<?php echo e(session('locale', config('app.locale'))); ?>" dir="<?php echo e(session('locale') === 'en' ? 'ltr' : 'rtl'); ?>">
 
 <head>
     <meta charset="UTF-8">
@@ -326,7 +326,7 @@
         <header
             class="bg-white w-full h-[80px] flex items-center justify-between px-6 shadow-[0_4px_4px_rgba(32,41,199,0.4)]">
             <div class="flex items-center space-x-4 rtl:space-x-reverse gap-6 justify-center ">
-                <div class="text-[40px] text-[#353e73] font-bold Mj_Afrigha"> شرکت <?php echo e(Auth::guard('tools')->user()->company_name); ?>
+                <div class="text-[40px] text-[#353e73] font-bold amiri"> شرکت <?php echo e(Auth::guard('tools')->user()->company_name); ?>
 
                 </div>
             </div>
@@ -373,8 +373,7 @@
                         <div class="flex justify-start items-center  ">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/account_profile.svg')); ?>" alt="">
 
-                            <a href="<?php echo e(route('tools.users')); ?>"
-                                class="block px-4 py-2 text-gray-700 vazir">تنظیمات</a>
+                            <a href="<?php echo e(route('tools.users')); ?>" class="block px-4 py-2 text-gray-700 vazir">تنظیمات</a>
                         </div>
 
                         <form action="<?php echo e(route('tools.logout')); ?>" method="POST">
@@ -393,34 +392,24 @@
             </div>
         </header>
 
-        <div class="flex flex-1 mt-10 min-h-screen sticky ">
-            <aside class="w-72 hidden md:block  p-5 dark:text-white static">
+        <div class="flex flex-1 mt-4 min-h-screen sticky ">
+            <aside class="w-72 hidden md:block shadow-xl p-5 dark:text-white static">
                 <nav class="mt-0 space-y-0" x-data="{
-            openItems: {
-                customers: false,
-                accounts: false,
-                bankFiles: false,
-                editAccounts: false,
-                reports: false,
-                transactions: false,
-                deletedTransactions: false,
-                management: false,
-                sms: false,
-                notifications: false,
-                support: false,
-                settings: false
-            },
-            active: 'dashboard'
-        }">
+                            openItems: {
+                                customers: false,
+                                accounting: false
+                            },
+                            active: '<?php echo e(Route::currentRouteName()); ?>' // همواره با route فعلی هماهنگ
+                        }">
 
                     <!-- داشبورد -->
                     <a href="<?php echo e(route('tools.home')); ?>"
                         class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir"
-                        @click="active = 'dashboard'"
-                        :class="active === 'dashboard' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'">
+                        @click="active = '<?php echo e(Route::currentRouteName()); ?>'"
+                        :class="active === 'tools.home' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'">
                         <span class="flex items-center gap-2">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/element-3.svg')); ?>" class="w-5 h-5"
-                                :class="active === 'dashboard' ? 'filter invert brightness-0' : 'text-gray-500' ">
+                                :class="active === 'tools.home' ? 'filter invert brightness-0' : 'text-gray-500' ">
                             <?php echo e(__('messages.dashboard')); ?>
 
                         </span>
@@ -429,61 +418,93 @@
                     <!-- کاربران -->
                     <a href="<?php echo e(route('tools.users')); ?>"
                         class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir dark:text-white"
-                        @click="active = 'users'"
-                        :class="active === 'users' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'">
+                        @click="active = 'tools.users'"
+                        :class="active === 'tools.users' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'">
                         <span class="flex items-center gap-2">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/profile-2user.svg')); ?>" class="w-5 h-5"
-                                :class="active === 'users' ? 'filter invert brightness-0' : 'text-gray-500' ">
-                            <span class="dark:text-white">  <?php echo e(__('messages.users')); ?></span>
+                                :class="active === 'tools.users' ? 'filter invert brightness-0' : 'text-gray-500' ">
+                            <?php echo e(__('messages.users')); ?>
+
                         </span>
                     </a>
 
                     <!-- مشتریان -->
                     <div>
-                        <button @click="openItems.customers = !openItems.customers; active = 'customers'"
-                            :class="active === 'customers' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                        <button @click="openItems.customers = !openItems.customers"
+                            :class="active.startsWith('tools.customer') ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/people.svg')); ?>" class="w-5 h-5"
-                                    :class="active === 'customers' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                    :class="active.startsWith('tools.customer') ? 'filter invert brightness-0' : 'text-gray-500'">
                                 <?php echo e(__('messages.customers')); ?>
 
                             </span>
-                            <svg :class="[openItems.customers ? 'rotate-180' : '', active === 'customers' ? 'text-white' : 'text-gray-500']"
+                            <svg :class="[openItems.customers ? 'rotate-180' : '', active.startsWith('tools.customer') ? 'text-white' : 'text-gray-500']"
                                 class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
+
                         <div x-show="openItems.customers" x-transition class="mr-6 mt-1 space-y-1">
-                            <a href="<?php echo e(route('sarafi.customer-create')); ?>"
+                            <a href="<?php echo e(route('tools.customer-create')); ?>"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                                @click="active = 'customer-create'"
-                                :class="active === 'customer-create' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" class="w-4 h-4"
-                                    :class="active === 'customer-create' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                @click="active = 'tools.customer-create'"
+                                :class="active === 'tools.customer-create' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                <i class="fa-solid fa-user-pen w-4 h-4"
+                                    :class="active === 'tools.customer-create' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
                                 <?php echo e(__('messages.customer_create')); ?>
 
                             </a>
 
-
-                            <a href="<?php echo e(route('sarafi.customer-table')); ?>"
+                            <a href="<?php echo e(route('tools.customer-table')); ?>"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                                @click="active = 'customer-table'"
-                                :class="active === 'customer-table' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" class="w-4 h-4"
-                                    :class="active === 'customer-table' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                @click="active = 'tools.customer-table'"
+                                :class="active === 'tools.customer-table' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                <i class="fa-solid fa-users-gear h-4 w-4"
+                                    :class="active === 'tools.customer-table' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
                                 <?php echo e(__('messages.customer_list')); ?>
 
                             </a>
                         </div>
                     </div>
 
-             
+                    <!-- حسابداری -->
+                    <div>
+                        <!-- دکمه حسابداری -->
+                        <button @click="openItems.accounting = !openItems.accounting"
+                            :class="active.startsWith('tools.loans') ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            <span class="flex items-center gap-2">
+                                <img src="<?php echo e(asset('assets/tools/gameboy.svg')); ?>" class="w-5 h-5"
+                                    :class="active.startsWith('tools.loans') ? 'filter invert brightness-0' : 'text-gray-500'">
+                                حسابداری
+                            </span>
+                            <svg :class="[openItems.accounting ? 'rotate-180' : '', active.startsWith('tools.loans') ? 'text-white' : 'text-gray-500']"
+                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <!-- زیرمنو -->
+                        <div x-show="openItems.accounting" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="<?php echo e(route('tools.loans')); ?>"
+                                @click="active = 'tools.loans'; openItems.accounting = true"
+                                :class="active === 'tools.loans' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir">
+                                <i class="fa-solid fa-money-bill-transfer w-4 h-4"
+                                    :class="active === 'tools.loans' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
+                                قرضه ها
+                            </a>
+                        </div>
+                    </div>
+
 
                 </nav>
             </aside>
+
 
             <main class="flex-1  ">
                 <?php echo $__env->yieldContent('content'); ?>

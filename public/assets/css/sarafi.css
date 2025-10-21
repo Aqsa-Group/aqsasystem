@@ -61,10 +61,17 @@
 
 
 @font-face {
-    font-family: "amiri";
-    src: url("/fonts/amiri-regular.ttf") format("truetype");
+    font-family: "Yekan-Regular";
+    src: url("/fonts/Yekan-Regular.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
+}
+
+
+
+
+.amiri {
+    font-family: "Yekan-Regular", sans-serif;
 }
 
 

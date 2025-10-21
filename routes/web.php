@@ -266,7 +266,7 @@ Route::get('/tools/home', function () {
 })->name('tools.home');
 
 
-
+// user
 Route::get('/tools/users', function () {
     if (!Auth::guard('tools')->check()) {
         return redirect()->route('tools.login.form');
@@ -278,6 +278,42 @@ Route::get('/tools/users', function () {
         'customerId' => $customerId
     ]);
 })->name('tools.users');
+
+// customer
+Route::get('/tools/customer-create', function () {
+    if (!Auth::guard('tools')->check()) {
+        return redirect()->route('tools.login.form');
+    }
+    
+    $customerId = request('customerId');
+    
+    return view('ToolsPanel.components.customer-create', [
+        'customerId' => $customerId
+    ]);
+})->name('tools.customer-create');
+
+
+
+
+Route::get('/tools/customer-table', function () {
+    if (!Auth::guard('tools')->check()) {
+        return redirect()->route('tools.login.form');
+    }
+    return view('ToolsPanel.components.customer_table');
+})->name('tools.customer-table');
+
+
+Route::get('/tools/loans', function () {
+    if (!Auth::guard('tools')->check()) {
+        return redirect()->route('tools.login.form');
+    }
+    return view('ToolsPanel.components.loans');
+})->name('tools.loans');
+
+
+
+
+
 
 
 
