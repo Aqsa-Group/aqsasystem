@@ -160,7 +160,7 @@
     <div class="particles" id="particles"></div>
 
     <!-- هدر -->
-    <header class="py-6 px-4 sm:px-8 flex justify-between items-center">
+    <header class="py-4 px-4 sm:px-8 flex justify-between items-center">
         <div class="flex items-center gap-3">
             <div
                 class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 flex items-center justify-center mr-3 glow">
@@ -177,10 +177,10 @@
     </header>
 
     <!-- بخش اصلی -->
-    <main class="flex-grow hero-section flex flex-col items-center justify-center py-12 px-4">
+    <main class="flex-grow hero-section flex flex-col items-center justify-center py-2 px-4">
         <div class="max-w-4xl mx-auto text-center">
             <!-- لوگو و عنوان -->
-            <div class="mb-8 floating ">
+            <div class="mb-2 floating ">
                 <div
                     class="w-24 h-24 mx-auto rounded-full bg-gradient-to-r from-amber-400 to-amber-600 flex items-center justify-center mb-4 glow">
                     <img src="{{ asset('assets/icon.jpg') }}" class="rounded-full" alt="">

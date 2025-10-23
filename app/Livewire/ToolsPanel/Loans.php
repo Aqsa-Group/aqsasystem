@@ -386,7 +386,7 @@ public function updateLoanCards()
 
     public function updatedSearch($value)
     {
-        $user = Auth::guard('sarafi')->user();
+        $user = Auth::guard('tools')->user();
         $adminId = $user->admin_id ?? $user->id;
 
         if (empty($value)) {
@@ -512,7 +512,7 @@ public function updateLoanCards()
             return;
         }
 
-        $user = Auth::guard('sarafi')->user();
+        $user = Auth::guard('tools')->user();
         $adminId = $user->admin_id ?? $user->id;
 
         $transactions = Loan::where('customer_id', $this->selectedCustomerId)

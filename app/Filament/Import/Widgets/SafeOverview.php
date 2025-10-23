@@ -65,14 +65,13 @@ class SafeOverview extends BaseWidget
         $totalcompanyAFN = Company::sum('AFN');
         $totalcompanyUSD = Company::sum('USD');
 
-
-
         // --- موجودی‌ها ---
         $totalBalance = $safeRow->total;
         $totalBalanceAFN = $safeRow->AFN;
         $totalBalanceUSD = $safeRow->USD;
         $totalInventoryBalance  = Inventory::where('user_id', $userId)->sum('total_price');
-        $totalWarehouseBalance  = Warehouse::where('user_id', $userId)->sum('total_price');
+        $totalWarehouse  = Warehouse::where('user_id', $userId)->sum('total_price');
+        $totalWarehouseBalance = $totalWarehouse - $totalcompanyUSD; 
         $totalBoot  = $totalInventoryBalance + $totalWarehouseBalance + $totalBalance;
 
         // --- صرافی ---

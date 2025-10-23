@@ -241,7 +241,6 @@ class BuyResource extends Resource
       Forms\Components\Select::make('currency')
     ->label('خرید به ارز')
     ->options([
-        'AFN' => 'افغانی',
         'USD' => 'دالر',
     ])
     ->reactive()

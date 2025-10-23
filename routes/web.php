@@ -313,6 +313,26 @@ Route::get('/tools/loans', function () {
 
 
 
+Route::get('/tools/staff', function () {
+    if (!Auth::guard('tools')->check()) {
+        return redirect()->route('tools.login.form');
+    }
+    return view('ToolsPanel.components.staff');
+})->name('tools.staff');
+
+
+Route::get('/tools/salary', function () {
+    if (!Auth::guard('tools')->check()) {
+        return redirect()->route('tools.login.form');
+    }
+    return view('ToolsPanel.components.salary');
+})->name('tools.salary');
+
+
+
+
+
+
 
 
 

@@ -394,22 +394,22 @@
         </header>
 
         <div class="flex flex-1 mt-4 min-h-screen sticky ">
-            <aside class="w-72 hidden md:block shadow-xl p-5 dark:text-white static">
-                <nav class="mt-0 space-y-0" x-data="{
-                            openItems: {
-                                customers: false,
-                                accounting: false
-                            },
-                            active: '{{ Route::currentRouteName() }}' // همواره با route فعلی هماهنگ
-                        }">
+            <aside class="w-80 hidden md:block shadow-xl p-6 dark:text-white static">
+                <nav class="mt-0 space-y-1" x-data="{
+                openItems: {
+                    customers: false,
+                    accounting: false
+                },
+                active: '{{ Route::currentRouteName() }}' // همواره با route فعلی هماهنگ
+            }">
 
                     <!-- داشبورد -->
                     <a href="{{ route('tools.home') }}"
-                        class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir"
+                        class="nav-link flex items-center justify-between py-4 px-5 rounded-lg transition vazir text-[16px]"
                         @click="active = '{{ Route::currentRouteName() }}'"
                         :class="active === 'tools.home' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'">
-                        <span class="flex items-center gap-2">
-                            <img src="{{ asset('assets/sarafi/all_icon/element-3.svg') }}" class="w-5 h-5"
+                        <span class="flex items-center gap-3">
+                            <img src="{{ asset('assets/sarafi/all_icon/element-3.svg') }}" class="w-6 h-6"
                                 :class="active === 'tools.home' ? 'filter invert brightness-0' : 'text-gray-500' ">
                             {{ __('messages.dashboard') }}
                         </span>
@@ -417,13 +417,25 @@
 
                     <!-- کاربران -->
                     <a href="{{ route('tools.users') }}"
-                        class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir dark:text-white"
+                        class="nav-link flex items-center justify-between py-4 px-5 rounded-lg transition vazir dark:text-white text-[16px]"
                         @click="active = 'tools.users'"
                         :class="active === 'tools.users' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'">
-                        <span class="flex items-center gap-2">
-                            <img src="{{ asset('assets/sarafi/all_icon/profile-2user.svg') }}" class="w-5 h-5"
+                        <span class="flex items-center gap-3">
+                            <img src="{{ asset('assets/sarafi/all_icon/profile-2user.svg') }}" class="w-6 h-6"
                                 :class="active === 'tools.users' ? 'filter invert brightness-0' : 'text-gray-500' ">
                             {{ __('messages.users') }}
+                        </span>
+                    </a>
+
+                    <!-- کارمندان -->
+                    <a href="{{ route('tools.staff') }}"
+                        class="nav-link flex items-center justify-between py-4 px-5 rounded-lg transition vazir dark:text-white text-[16px]"
+                        @click="active = 'tools.staff'"
+                        :class="active === 'tools.staff' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'">
+                        <span class="flex items-center gap-3">
+                            <img src="{{ asset('assets/sarafi/all_icon/tag-user.svg') }}" class="w-7 h-6"
+                                :class="active === 'tools.staff' ? 'filter invert brightness-0' : 'text-gray-500' ">
+                            ثبت کارمندان
                         </span>
                     </a>
 
@@ -431,35 +443,35 @@
                     <div>
                         <button @click="openItems.customers = !openItems.customers"
                             :class="active.startsWith('tools.customer') ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'"
-                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
-                            <span class="flex items-center gap-2">
-                                <img src="{{ asset('assets/sarafi/all_icon/people.svg') }}" class="w-5 h-5"
+                            class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
+                            <span class="flex items-center gap-3">
+                                <img src="{{ asset('assets/sarafi/all_icon/people.svg') }}" class="w-6 h-6"
                                     :class="active.startsWith('tools.customer') ? 'filter invert brightness-0' : 'text-gray-500'">
                                 {{ __('messages.customers') }}
                             </span>
                             <svg :class="[openItems.customers ? 'rotate-180' : '', active.startsWith('tools.customer') ? 'text-white' : 'text-gray-500']"
-                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                                class="w-5 h-5 transition-transform" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
 
-                        <div x-show="openItems.customers" x-transition class="mr-6 mt-1 space-y-1">
+                        <div x-show="openItems.customers" x-transition class="mr-7 mt-2 space-y-2">
                             <a href="{{ route('tools.customer-create') }}"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir"
                                 @click="active = 'tools.customer-create'"
                                 :class="active === 'tools.customer-create' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'">
-                                <i class="fa-solid fa-user-pen w-4 h-4"
+                                <i class="fa-solid fa-user-pen w-5 h-5"
                                     :class="active === 'tools.customer-create' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
                                 {{ __('messages.customer_create') }}
                             </a>
 
                             <a href="{{ route('tools.customer-table') }}"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir"
                                 @click="active = 'tools.customer-table'"
                                 :class="active === 'tools.customer-table' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'">
-                                <i class="fa-solid fa-users-gear h-4 w-4"
+                                <i class="fa-solid fa-users-gear h-5 w-5"
                                     :class="active === 'tools.customer-table' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
                                 {{ __('messages.customer_list') }}
                             </a>
@@ -471,36 +483,43 @@
                         <!-- دکمه حسابداری -->
                         <button @click="openItems.accounting = !openItems.accounting"
                             :class="active.startsWith('tools.loans') ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'"
-                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
-                            <span class="flex items-center gap-2">
-                                <img src="{{ asset('assets/tools/gameboy.svg') }}" class="w-5 h-5"
+                            class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
+                            <span class="flex items-center gap-3">
+                                <img src="{{ asset('assets/tools/gameboy.svg') }}" class="w-6 h-6"
                                     :class="active.startsWith('tools.loans') ? 'filter invert brightness-0' : 'text-gray-500'">
                                 حسابداری
                             </span>
                             <svg :class="[openItems.accounting ? 'rotate-180' : '', active.startsWith('tools.loans') ? 'text-white' : 'text-gray-500']"
-                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                                class="w-5 h-5 transition-transform" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
                         <!-- زیرمنو -->
-                        <div x-show="openItems.accounting" x-transition class="mr-6 mt-1 space-y-1">
+                        <div x-show="openItems.accounting" x-transition class="mr-7 mt-2 space-y-2">
                             <a href="{{ route('tools.loans') }}"
                                 @click="active = 'tools.loans'; openItems.accounting = true"
                                 :class="active === 'tools.loans' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir">
-                                <i class="fa-solid fa-money-bill-transfer w-4 h-4"
+                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                <i class="fa-solid fa-money-bill-transfer w-5 h-5"
                                     :class="active === 'tools.loans' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
                                 قرضه ها
+                            </a>
+
+                            <a href="{{ route('tools.salary') }}"
+                                @click="active = 'tools.salary'; openItems.accounting = true"
+                                :class="active === 'tools.salary' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
+                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                <i class="fa-solid fa-money-check-dollar w-7 h-5"
+                                    :class="active === 'tools.salary' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
+                                پراخت معاشات
                             </a>
                         </div>
                     </div>
 
-
                 </nav>
             </aside>
-
 
             <main class="flex-1  ">
                 @yield('content')
