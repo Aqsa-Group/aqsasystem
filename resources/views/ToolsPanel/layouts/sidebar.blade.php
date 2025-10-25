@@ -530,12 +530,12 @@
                     <!-- معاملات صرافی -->
                     <div>
                         <!-- دکمه اصلی -->
-                        <button @click="openItems.sarafi = !openItems.sarafi" :class="active.startsWith('tools.transactions') || active.startsWith('tools.buy-sell-currency') || active.startsWith('tools.account_to_account') 
-            ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' 
-            : 'text-gray-700 hover:bg-gray-100'"
-                            class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
-                            <span class="flex items-center gap-3">
-                                <i class="fa-solid fa-coins w-6 h-6"
+                                    <button @click="openItems.sarafi = !openItems.sarafi" :class="active.startsWith('tools.transactions') || active.startsWith('tools.buy-sell-currency') || active.startsWith('tools.account_to_account') 
+                        ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' 
+                        : 'text-gray-700 hover:bg-gray-100'"
+                                        class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
+                                        <span class="flex items-center gap-3">
+                                            <i class="fa-solid fa-coins w-6 h-6"
                                     :class="active.startsWith('tools.transactions') ? 'text-white' : 'text-gray-500'"></i>
                                 معاملات صرافی
                             </span>
@@ -590,6 +590,19 @@
                             </a>
                         </div>
                     </div>
+
+                 <!-- صندوق ها -->
+                    <a href="{{ route('tools.safes') }}"
+                        class="nav-link flex items-center justify-between py-4 px-5 rounded-lg transition vazir dark:text-white text-[16px]"
+                        @click="active = 'tools.safes'"
+                        :class="active === 'tools.safes' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'">
+                        <span class="flex items-center gap-3">
+                            <img src="{{ asset('assets/tools/safe.png') }}" class="w-6 h-6"
+                                :class="active === 'tools.safes' ? 'filter invert brightness-0' : 'text-gray-500' ">
+                             موجودی صندوق ها
+                        </span>
+                    </a>
+
 
 
                 </nav>

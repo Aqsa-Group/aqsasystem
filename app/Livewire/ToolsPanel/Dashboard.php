@@ -47,7 +47,7 @@ class Dashboard extends Component
         
     public function render()
     {
-          $user = Auth::guard('tools')->user();
+           $user = Auth::guard('tools')->user();
            $adminId = $user->admin_id ?? $user->id;
 
             $customerCount = Customer::where('admin_id', $adminId)->count();

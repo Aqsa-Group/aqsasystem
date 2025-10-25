@@ -387,10 +387,22 @@ Route::get('/tools/conversion-in-account', function () {
 
 Route::get('/tools/account_to_account', function () {
     if (!Auth::guard('tools')->check()) {
-        return redirect()->route('sarafi.login.form');
+        return redirect()->route('tools.login.form');
     }
     return view('ToolsPanel.components.account-to-account');
 })->name('tools.account_to_account');
+
+
+
+Route::get('/tools/safes', function () {
+    if (!Auth::guard('tools')->check()) {
+        return redirect()->route('tools.login.form');
+    }
+    return view('ToolsPanel.components.safes');
+})->name('tools.safes');
+
+
+
 
 
 
