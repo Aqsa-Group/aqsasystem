@@ -1,6 +1,6 @@
 <div class="p-6 border-[#8C8C8C] min-h-screen" style="font-family: 'header';">
 
-    <h1 class="mb-8 text-3xl font-bold text-gray-700  vazir"><?php echo e(__('messages.page_title')); ?></h1>
+    <h1 class="mb-8 text-3xl font-bold text-gray-700  vazir dark:text-white"><?php echo e(__('messages.page_title')); ?></h1>
 
     <div class="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-3">
 

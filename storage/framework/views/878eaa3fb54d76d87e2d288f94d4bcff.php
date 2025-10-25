@@ -172,8 +172,7 @@
         <div class="header">
             <table class="header-table" style="width:100%; border-collapse: collapse;">
                 <tr>
-                    <td style="text-align:right;">نوع معامله: <?php echo e($conversion->type); ?></td>
-                    <td style="text-align:left;">تاریخ ثبت معامله: <?php echo e($conversion->transaction_date); ?></td>
+                    <td style="text-align:center;">نوع معامله: <?php echo e($transaction->type); ?></td>
                 </tr>
             </table>
         </div>
@@ -215,80 +214,46 @@
             }
             ?>
 
-            <tr>
-                <td>حساب برداشت:</td>
-                <td><?php echo e($conversion->fromCustomer->fullname ?? 'نامشخص'); ?></td>
-            </tr>
-
-            <tr>
-                <td>شماره حساب برداشت:</td>
-                <td><?php echo e($conversion->fromCustomer->account_number ?? 'نامشخص'); ?></td>
-            </tr>
+            
 
             <tr>
                 <td>از ارز:</td>
-                <td><?php echo e($currenciesFa[strtolower($conversion->from_currency)] ?? $conversion->from_currency); ?></td>
+                <td><?php echo e($currenciesFa[strtolower($transaction->from_currency)] ?? $transaction->from_currency); ?></td>
             </tr>
 
             <tr>
                 <td>مبلغ برداشت:</td>
-                <td><?php echo e(number_format((float)$conversion->withdrawal_amount)); ?></td>
-            </tr>
-
-            <tr>
-                <td>حساب دریافت:</td>
-                <td><?php echo e($conversion->toCustomer->fullname ?? 'نامشخص'); ?></td>
-            </tr>
-
-            <tr>
-                <td>شماره حساب دریافت:</td>
-                <td><?php echo e($conversion->toCustomer->account_number ?? 'نامشخص'); ?></td>
+                <td><?php echo e(number_format((float)$transaction->amount)); ?></td>
             </tr>
 
             <tr>
                 <td>به ارز:</td>
-                <td><?php echo e($currenciesFa[strtolower($conversion->to_currency)] ?? $conversion->to_currency); ?></td>
+                <td><?php echo e($currenciesFa[strtolower($transaction->to_currency)] ?? $transaction->to_currency); ?></td>
             </tr>
 
-            <tr>
-                <td>مبلغ دریافت:</td>
-                <td><?php echo e(number_format((float)$conversion->received_amount, 2)); ?></td>
-            </tr>
-
+          
             <tr>
                 <td>نرخ ارز:</td>
-                <td><?php echo e(number_format((float)$conversion->currency_rate, 4)); ?></td>
+                <td><?php echo e(number_format((float)$transaction->exchange_rate, 2)); ?></td>
             </tr>
 
-            <tr>
-                <td>زون برداشت:</td>
-                <td><?php echo e($conversion->zone_sender); ?></td>
+               <tr>
+                <td> مبلغ دریافتی:</td>
+                <td><?php echo e(number_format((float)$transaction->eq_amount, 2)); ?></td>
             </tr>
 
-            <tr>
-                <td>زون دریافت:</td>
-                <td><?php echo e($conversion->zone_receiver); ?></td>
-            </tr>
 
-            <tr>
-                <td>مسئول برداشت:</td>
-                <td><?php echo e($conversion->by_sender ?? 'نامشخص'); ?></td>
-            </tr>
-
-            <tr>
-                <td>مسئول دریافت:</td>
-                <td><?php echo e($conversion->by_receiver ?? 'نامشخص'); ?></td>
-            </tr>
-
+        
+        
             <tr>
                 <td>زمان ثبت:</td>
                 <td>
                     <?php
                         try {
-                            $time = \Carbon\Carbon::parse($conversion->created_at);
+                            $time = \Carbon\Carbon::parse($transaction->created_at);
                             echo $time->format('h:i:s') . ' ' . ($time->format('A') == 'AM' ? 'ق.ظ' : 'ب.ظ');
                         } catch (Exception $e) {
-                            echo $conversion->created_at;
+                            echo $transaction->created_at;
                         }
                     ?>
                 </td>
@@ -297,7 +262,7 @@
 
         <div class="description">
             <h3>شرح تراکنش:</h3>
-            <?php echo e($conversion->description ?? 'تبدیل ارز - بدون توضیحات بیشتر'); ?>
+            <?php echo e($transaction->description ?? 'تبدیل ارز - بدون توضیحات بیشتر'); ?>
 
         </div>
 

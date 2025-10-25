@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
+<?php
+    $currentUser = Auth::guard('sarafi')->user();
+?>
 <head>
     <meta charset="UTF-8">
-    <title>تراکنش صرافی - <?php echo e($user->sarafi_name ?? 'صرافی'); ?></title>
+    <title>تراکنش صرافی - <?php echo e($sarafi_name ?? 'صرافی'); ?></title>
     <style>
         /* همه عناصر بدون حاشیه و با فونت پیشفرض */
         * {
@@ -120,7 +122,8 @@
             /* بورد بالایی */
             width: 100%;
             padding-left: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 30px;<?php echo e(explode(' ', $transaction->date)[0]); ?>
+
             /* فاصله بین بورد و متن/خط پایین */
         }
 
@@ -175,21 +178,12 @@
 
 <body>
     <div class="document">
-        <h1 style="text-align:center; font-family: amiri ,sans-serif" class="shabnam-fd "> صرافی <?php echo e($user->sarafi_name ?? 'صرافی'); ?></h1>
+        <h1 style="text-align:center; font-family: amiri ,sans-serif" class="shabnam-fd "> صرافی <?php echo e($currentUser->sarafi_name ?? 'صرافی'); ?></h1>
         <div class="header">
             <table class="header-table" style="width:100%; border-collapse: collapse;">
                 <tr>
-                    <td style="text-align:right;">نوع تراکنش : <?php echo e($transaction->type); ?></td>
-                    <td style="text-align:left;">تاریخ ثبت تراکنش :
-                        <?php
-                        $dateParts = explode('-', $transaction->date);
-                        if(count($dateParts) === 3) {
-                        echo $dateParts[2] . '-' . $dateParts[1] . '-' . $dateParts[0];
-                        } else {
-                        echo $transaction->date;
-                        }
-                        ?>
-                    </td>
+                    <td style="text-align:center;">نوع تراکنش : <?php echo e($transaction->type); ?></td>
+                    
                 </tr>
             </table>
         </div>
@@ -213,12 +207,22 @@
             ];
             ?>
 
-            <tr>
-                <td>از ارز:</td>
-                <td>
-                    <?php echo e($currenciesFa[strtolower($transaction->from_currency)] ?? $transaction->from_currency); ?>
 
-                    (<?php echo e(strtoupper($transaction->from_currency)); ?>)
+   <tr>
+                <td>حساب مشتری:</td>
+                <td><?php echo e($transaction->customer->fullname ?? 'نامشخص'); ?></td>
+            </tr>
+
+            <tr>
+                <td>شماره حساب :</td>
+                <td><?php echo e($transaction->customer->account_number ?? 'نامشخص'); ?></td>
+            </tr>
+            <tr>
+                <td> ارز:</td>
+                <td>
+                    <?php echo e($currenciesFa[strtolower($transaction->currency)] ?? $transaction->currency); ?>
+
+                    (<?php echo e(strtoupper($transaction->currency)); ?>)
                 </td>
             </tr>
 
@@ -231,35 +235,11 @@
             </tr>
 
             <tr>
-                <td>به ارز:</td>
-                <td>
-                    <?php echo e($currenciesFa[strtolower($transaction->to_currency)] ?? $transaction->to_currency); ?>
-
-                    (<?php echo e(strtoupper($transaction->to_currency)); ?>)
-                </td>
-            </tr>
-
-            <tr>
-                <td>مبلغ معادل:</td>
-                <td>
-                    <?php echo e(number_format((float)$transaction->eq_amount)); ?>
-
-                </td>
-            </tr>
-
-            <tr>
-                <td>نرخ ارز:</td>
-                <td><?php echo e(number_format((float)$transaction->exchange_rate, 2)); ?></td>
-            </tr>
-
-            <tr>
-                <td>کاربر ثبت کننده:</td>
-                <td><?php echo e($transaction->user->name ?? '-'); ?></td>
-            </tr>
-
-            <tr>
                 <td>تاریخ:</td>
-                <td><?php echo e($transaction->date); ?></td>
+                 <td>
+                       <?php echo e(explode(' ', $transaction->date)[0]); ?>
+
+                 </td>
             </tr>
 
             <tr>
@@ -293,13 +273,13 @@
             <table style="width:100%; border-collapse: collapse; pass">
                 <tr>
                     <td>
-                        <strong>تماس:</strong> 93<?php echo e($user->phone ?? '-'); ?>+
+                        <strong>تماس:</strong> 93<?php echo e($currentUser->phone ?? '-'); ?>+
                     </td>
                 </tr>
 
                 <tr>
                     <td>
-                        <strong>آدرس:</strong> افغانستان <?php echo e($user->address ?? '-'); ?>
+                        <strong>آدرس:</strong> افغانستان <?php echo e($currentUser->address ?? '-'); ?>
 
                     </td>
                 </tr>

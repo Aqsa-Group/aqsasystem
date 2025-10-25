@@ -340,7 +340,7 @@
                                     <td class="px-6 py-3 vazir text-[18px] font-medium">{{ $transaction->description }}
                                     </td>
                                     <td class="px-2 py-3 vazir text-[18px] font-medium">
-                                        {{ \Morilog\Jalali\Jalalian::forge($transaction->date)->format('Y/m/d') }}
+                                                {{ explode(' ', $transaction->date)[0] }}
                                     </td>
 
                                     <!-- در بخش عملیات جدول -->

@@ -2,6 +2,10 @@
 
 namespace App\Livewire\ToolsPanel;
 
+use App\Models\Tools\Customer;
+use App\Models\Tools\User;
+use App\Models\Tools\Loan;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Dashboard extends Component
@@ -33,7 +37,6 @@ class Dashboard extends Component
         $this->profitPerMonth = array_map(function($v){ return $v + rand(-200, 600); }, $baseProfit);
         $this->lossPerMonth   = array_map(function($v){ return $v + rand(-150, 400); }, $baseLoss);
 
-        // کارت‌ها — تولید اعداد تصادفی معقول
         $this->salesToday = rand(80000, 160000);
         $this->profitToday = rand(5000, 45000);
         $this->lossToday = rand(0, 15000);
@@ -44,6 +47,27 @@ class Dashboard extends Component
         
     public function render()
     {
-        return view('livewire.tools-panel.dashboard');
+          $user = Auth::guard('tools')->user();
+           $adminId = $user->admin_id ?? $user->id;
+
+            $customerCount = Customer::where('admin_id', $adminId)->count();
+            $UserCount = User::where('admin_id', $adminId)->count();
+            $LoanUsdcome = Loan::where('admin_id', $adminId)->where('currency' ,'usd')->where('type', 'رسید')->sum('amount');
+            $LoanUsdwithdraw = Loan::where('admin_id', $adminId)->where('currency' ,'usd')->where('type', 'برد')->sum('amount');
+            $totalUsdLoan = $LoanUsdwithdraw -$LoanUsdcome;
+
+             $LoanAFNcome = Loan::where('admin_id', $adminId)->where('currency' ,'afn')->where('type', 'رسید')->sum('amount');
+            $LoanAFNwithdraw = Loan::where('admin_id', $adminId)->where('currency' ,'afn')->where('type', 'برد')->sum('amount');
+            $totalAFNLoan =  $LoanAFNwithdraw  - $LoanAFNcome;
+
+
+
+        return view('livewire.tools-panel.dashboard' , [
+            'countcustomer' =>$customerCount,
+            'usercount'=> $UserCount,
+            'totalUsdLoan'=>$totalUsdLoan,
+            'totalAFNLoan'=>$totalAFNLoan,
+        ]);
+          
     }
 }

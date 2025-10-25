@@ -24,7 +24,6 @@ return new class extends Migration
             $table->foreign('staff_id')->references('id')->on('staff')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
             $table->foreign('admin_id')->references('id')->on('users')->nullOnDelete();
-
         });
     }
 

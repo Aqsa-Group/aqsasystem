@@ -2,7 +2,7 @@
 
 namespace App\Livewire\ToolsPanel;
 
-use App\Models\Tools\CurrencySafe;
+use App\Models\Tools\ShopSafe;
 use App\Models\Tools\Staffs;
 use App\Models\Tools\Salarys;
 use App\Models\Tools\User;
@@ -117,7 +117,7 @@ class Salary extends Component
         $monthlyPercentage = $monthlySalary > 0 ? round(($monthlyPaid / $monthlySalary) * 100, 1) : 0;
 
         // دیباگ اطلاعات
-        \Log::info("Salary Cards Debug", [
+        Log::info("Salary Cards Debug", [
             'staff_id' => $this->selectedStaffId,
             'monthly_salary' => $monthlySalary,
             'total_paid' => $totalPaid,
@@ -283,7 +283,7 @@ class Salary extends Component
         $factor = $reverse ? 1 : -1;
         $change = $amount * $factor;
 
-        $safe = CurrencySafe::firstOrCreate(
+        $safe = ShopSafe::firstOrCreate(
             ['user_id' => $adminId, 'admin_id' => null],
             ['afn' => 0]
         );

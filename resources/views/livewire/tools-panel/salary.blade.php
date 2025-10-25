@@ -347,7 +347,7 @@
                         </thead>
                         <tbody>
                             @forelse($salaries as $key => $salary)
-                            <tr class="text-black border-b border-[#D9D9D9] bg-transparent">
+                            <tr class="ttransactionext-black border-b border-[#D9D9D9] bg-transparent">
                                 <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">
                                     {{ $key + 1 }}
                                 </td>

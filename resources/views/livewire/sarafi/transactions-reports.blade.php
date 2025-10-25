@@ -454,7 +454,9 @@
                         <td class="px-2 md:px-4 py-3 text-center">{{ $index + 1 }}</td>
                         <td class="px-2 md:px-4 py-3">
                             <div class="flex flex-col">
-                                <span>{{ $transaction->date }}</span>
+                                <span>
+                       {{ explode(' ', $transaction->date)[0] }}
+                                </span>
                             </div>
                         </td>
                         <td class="px-2 md:px-4 py-3">{{ $transaction->document_number ?? 'SN-' .

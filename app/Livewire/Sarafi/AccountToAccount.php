@@ -746,7 +746,7 @@ class AccountToAccount extends Component
             $html = view('pdf.Sarafi.account-to-account', compact('conversion'))->render();
             $mpdf->WriteHTML($html);
 
-            $fileName = 'تبدیل_ارز_' . $conversion->id . '_' . $conversion->type . '.pdf';
+            $fileName = 'تبدیل بین حسابات' . $conversion->id . '_' . $conversion->type . '.pdf';
 
             return response()->streamDownload(function () use ($mpdf) {
                 echo $mpdf->Output('', 'S');

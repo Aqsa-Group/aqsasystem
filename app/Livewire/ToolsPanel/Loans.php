@@ -2,7 +2,7 @@
 
 namespace App\Livewire\ToolsPanel;
 
-use App\Models\Tools\CurrencySafe;
+use App\Models\Tools\ShopSafe;
 use App\Models\Tools\Customer;
 use App\Models\Tools\User;
 use Illuminate\Support\Facades\Auth;
@@ -179,7 +179,7 @@ public function updateLoanCards()
         $change = $amount * $factor; 
     }
 
-    $safe = CurrencySafe::firstOrCreate(
+    $safe = ShopSafe::firstOrCreate(
         ['user_id' => $adminId, 'admin_id' => null],
         [
             'usd' => 0,
@@ -240,7 +240,7 @@ public function updateLoanCards()
         $user = Auth::guard('tools')->user();
         $adminId = $user->admin_id ?? $user->id;
 
-        $safe = CurrencySafe::firstOrCreate(
+        $safe = ShopSafe::firstOrCreate(
             [
                 'user_id'          => $user->id,
                 'admin_id'         => $adminId,

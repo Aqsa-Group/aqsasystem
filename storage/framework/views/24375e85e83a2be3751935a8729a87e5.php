@@ -57,6 +57,16 @@
         body.loading {
             overflow: hidden;
         }
+        
+        /* استایل برای آیتم‌های اکتیو */
+        .nav-item.active {
+            background: linear-gradient(135deg, #4f6bff, #122EE1) !important;
+            color: white !important;
+        }
+        
+        .nav-item.active img {
+            filter: invert(1) brightness(100);
+        }
     </style>
 </head>
 
@@ -81,8 +91,8 @@
                 $locale = session('locale', config('app.locale'));
             ?>
 
-            <div class="relative inline-block w-[145px] h-[56px] p-2 vazir">
-                <button id="dropdownButton"
+            <div class="relative inline-block w-[145px] h-[56px] p-2 vazir" x-data="{ open: false }">
+                <button @click="open = !open"
                     class="border border-[#1129C766] bg-white rounded-lg px-3 py-2 w-full flex items-center justify-between font-vazir text-sm text-[#1129C7]">
                     <img src="<?php echo e($locale === 'en' ? asset('assets/sarafi/all_icon/united.png') : asset('assets/sarafi/all_icon/Flags.png')); ?>"
                         class="w-5 h-5 ml-2" alt="Lang">
@@ -97,8 +107,8 @@
                     </span>
                 </button>
 
-                <ul id="dropdownMenu"
-                    class="absolute left-0 mt-1 w-full bg-white border border-gray-200 rounded-lg hidden z-10">
+                <ul x-show="open" @click.away="open = false"
+                    class="absolute left-0 mt-1 w-full bg-white border border-gray-200 rounded-lg z-10">
                     <li>
                         <a href="<?php echo e(route('set-locale', 'fa')); ?>" class="locale-link flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/Flags.png')); ?>" class="w-5 h-5 ml-2" alt="fa">
@@ -153,53 +163,76 @@
     <div class="flex flex-1 min-h-screen">
         <!-- سایدبار -->
         <aside class="w-64 hidden md:block p-5">
-            <nav class="mt-4 space-y-1" x-data="{ openSettings: false, active: 'dashboard' }">
+            <nav class="mt-4 space-y-1" x-data="navigationState()">
                 <!-- داشبورد -->
-                <a href="<?php echo e(route('sarafi.home')); ?>" class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir"
-                    @click="active = 'dashboard'" 
-                    :class="active === 'dashboard' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'">
+                <a href="<?php echo e(route('sarafi.home')); ?>"
+                    class="nav-item flex items-center justify-between py-3 px-4 rounded-lg transition vazir"
+                    :class="active === 'dashboard' ? 'active' : 'text-gray-700 hover:bg-gray-100'"
+                    @click="setActive('dashboard')">
                     <span class="flex items-center gap-2">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/element-3.svg')); ?>" class="w-5 h-5"
-                            :class="active === 'dashboard' ? 'filter invert brightness-0' : 'text-gray-500'">
+                        <img src="<?php echo e(asset('assets/sarafi/all_icon/element-3.svg')); ?>" class="w-5 h-5">
                         داشبورد
                     </span>
                 </a>
 
                 <!-- کاربران -->
-                <a href="#" class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir"
-                    @click="active = 'users'"
-                    :class="active === 'users' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'">
+                <a href="#" class="nav-item flex items-center justify-between py-3 px-4 rounded-lg transition vazir"
+                    :class="active === 'users' ? 'active' : 'text-gray-700 hover:bg-gray-100'"
+                    @click="setActive('users')">
                     <span class="flex items-center gap-2">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/profile-2user.svg')); ?>" class="w-5 h-5"
-                            :class="active === 'users' ? 'filter invert brightness-0' : 'text-gray-500'">
+                        <img src="<?php echo e(asset('assets/sarafi/all_icon/profile-2user.svg')); ?>" class="w-5 h-5">
                         کاربران
                     </span>
                 </a>
 
-                <!-- مشتریان (با زیرمنو) -->
+                <!-- مشتریان -->
                 <div>
-                    <button @click="openSettings = !openSettings; active = 'settings'"
-                        :class="active === 'settings' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
-                        class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                    <button @click="toggleSection('customers')"
+                        class="nav-item flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir"
+                        :class="active === 'customers' ? 'active' : 'text-gray-700 hover:bg-gray-100'">
                         <span class="flex items-center gap-2">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/people.svg')); ?>" class="w-5 h-5"
-                                :class="active === 'settings' ? 'filter invert brightness-0' : 'text-gray-500'">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/people.svg')); ?>" class="w-5 h-5">
                             مشتریان
                         </span>
-                        <svg :class="[openSettings ? 'rotate-180' : '', active === 'settings' ? 'text-white' : 'text-gray-500']"
+                        <svg :class="[openCustomers ? 'rotate-180' : '']"
                             class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
 
-                    <!-- زیرمنو -->
-                    <div x-show="openSettings" x-transition class="ml-6 mt-1 space-y-1">
-                        <a href="<?php echo e(route('sarafi.customer-create')); ?>" class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                            @click="active = 'settings-profile'"
-                            :class="active === 'settings-profile' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" class="w-4 h-4"
-                                :class="active === 'settings-profile' ? 'filter invert brightness-0' : 'text-gray-500'">
+                    <div x-show="openCustomers" x-transition class="ml-6 mt-1 space-y-1">
+                        <a href="<?php echo e(route('sarafi.customer-create')); ?>"
+                            class="nav-item flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                            :class="active === 'customer-create' ? 'active' : 'text-gray-600 hover:bg-gray-100'"
+                            @click="setActive('customer-create')">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" class="w-4 h-4">
                             ثبت مشتری
+                        </a>
+                    </div>
+                </div>
+
+                <!-- حسابداری -->
+                <div>
+                    <button @click="toggleSection('accounting')"
+                        class="nav-item flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir"
+                        :class="active === 'accounting' ? 'active' : 'text-gray-700 hover:bg-gray-100'">
+                        <span class="flex items-center gap-2">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/people.svg')); ?>" class="w-5 h-5">
+                            حسابداری
+                        </span>
+                        <svg :class="[openAccounting ? 'rotate-180' : '']"
+                            class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+
+                    <div x-show="openAccounting" x-transition class="ml-6 mt-1 space-y-1">
+                        <a href="<?php echo e(route('sarafi.accounting-report')); ?>"
+                            class="nav-item flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                            :class="active === 'accounting-report' ? 'active' : 'text-gray-600 hover:bg-gray-100'"
+                            @click="setActive('accounting-report')">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" class="w-4 h-4">
+                            گزارش حسابداری
                         </a>
                     </div>
                 </div>
@@ -212,6 +245,60 @@
     </div>
 
     <script>
+        // مدیریت وضعیت navigation
+        function navigationState() {
+            return {
+                active: 'dashboard',
+                openCustomers: false,
+                openAccounting: false,
+                
+                init() {
+                    // تنظیم وضعیت اولیه بر اساس URL فعلی
+                    this.setInitialState();
+                },
+                
+                setInitialState() {
+                    const path = window.location.pathname;
+                    
+                    if (path.includes('customer-create')) {
+                        this.active = 'customer-create';
+                        this.openCustomers = true;
+                    } else if (path.includes('accounting-report')) {
+                        this.active = 'accounting-report';
+                        this.openAccounting = true;
+                    } else if (path.includes('home')) {
+                        this.active = 'dashboard';
+                    }
+                    // می‌توانید شرایط بیشتری بر اساس URL اضافه کنید
+                },
+                
+                setActive(item) {
+                    this.active = item;
+                    
+                    // اگر آیتم مربوط به یک بخش است، آن بخش را باز کنید
+                    if (item === 'customer-create') {
+                        this.openCustomers = true;
+                    } else if (item === 'accounting-report') {
+                        this.openAccounting = true;
+                    } else if (item === 'customers') {
+                        this.openCustomers = !this.openCustomers;
+                    } else if (item === 'accounting') {
+                        this.openAccounting = !this.openAccounting;
+                    }
+                },
+                
+                toggleSection(section) {
+                    if (section === 'customers') {
+                        this.openCustomers = !this.openCustomers;
+                        this.active = this.openCustomers ? 'customers' : this.active;
+                    } else if (section === 'accounting') {
+                        this.openAccounting = !this.openAccounting;
+                        this.active = this.openAccounting ? 'accounting' : this.active;
+                    }
+                }
+            }
+        }
+
         // لودر صفحه
         const pageLoader = document.getElementById('pageLoader');
         
@@ -231,7 +318,7 @@
         // نمایش لودر هنگام کلیک روی لینک‌ها
         document.addEventListener('DOMContentLoaded', function() {
             // لینک‌های نویگیشن
-            const navLinks = document.querySelectorAll('.nav-link');
+            const navLinks = document.querySelectorAll('.nav-item');
             const localeLinks = document.querySelectorAll('.locale-link');
             
             const allLinks = [...navLinks, ...localeLinks];
@@ -255,21 +342,6 @@
                     }
                 });
             });
-            
-            // مدیریت dropdown زبان
-            const btn = document.getElementById('dropdownButton');
-            const menu = document.getElementById('dropdownMenu');
-            
-            if (btn && menu) {
-                btn.addEventListener('click', () => menu.classList.toggle('hidden'));
-                
-                menu.querySelectorAll('li').forEach(li => {
-                    li.addEventListener('click', () => {
-                        btn.innerHTML = li.innerHTML;
-                        menu.classList.add('hidden');
-                    });
-                });
-            }
         });
 
         // نمایش لودر هنگام submit فرم‌ها (اگر فرمی دارید)

@@ -1,5 +1,5 @@
 <div>
-    <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
+    <?php if(session()->has('message')): ?>
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
         class="fixed top-0 left-0 right-0 w-full z-[9999] bg-gradient-to-br from-indigo-400 to-indigo-500 vazir">
         <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -9,7 +9,7 @@
             </h2>
         </div>
     </div>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?>
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-4 pb-0 pt-1">
     
     <!-- کارت ۱: کل مبلغ قرضه -->
@@ -176,15 +176,15 @@
                                 class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
                                 autocomplete="off">
                             <datalist id="customersList">
-                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </datalist>
                             <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['selectedAccount'];
+                        <?php $__errorArgs = ['selectedAccount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -193,7 +193,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <!-- نوع ارز -->
@@ -203,15 +203,15 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <select wire:model="currency" id="selectCurrency"
                                 class="w-full h-[60px] p-3 rounded-[12px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500">
                                 <option value="">انتخاب ارز</option>
-                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($c['code']); ?>"><?php echo e($c['name_fa']); ?></option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </select>
                             <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓" class="w-4 h-4">
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['currency'];
+                        <?php $__errorArgs = ['currency'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -220,7 +220,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
 
@@ -233,10 +233,10 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 class="w-full h-[60px] p-3 rounded-[12px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500"
                                 oninput="this.value = this.value.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[^0-9]/g, '')" />
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php if($amountInWords): ?>
+                        <?php if($amountInWords): ?>
                         <p class="text-sm text-blue-600 mt-2 vazir"><?php echo e($amountInWords); ?></p>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['amount'];
+                        <?php endif; ?>
+                        <?php $__errorArgs = ['amount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -245,7 +245,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="lg:w-[290px]">
@@ -260,7 +260,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     <label class="block text-[16px] font-medium text-black mb-2 vazir">شرح قرضه</label>
                     <textarea wire:model="description" rows="3" placeholder="توضیحات قرضه..."
                         class="w-full p-3 rounded-[12px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['description'];
+                    <?php $__errorArgs = ['description'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -269,7 +269,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <!-- دکمه‌ها -->
@@ -280,12 +280,12 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                     </button>
 
-                    <!--[if BLOCK]><![endif]--><?php if(!$transactionId): ?>
+                    <?php if(!$transactionId): ?>
                     <button type="button" wire:click="submitAndPrint"
                         class="bg-gradient-to-br from-indigo-400 to-indigo-500 text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
                         ثبت و چاپ
                     </button>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?>
 
                     <button type="button" wire:click="cancel"
                         class="bg-[#DD2424] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
@@ -309,7 +309,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                 <div class="flex items-center gap-3">
                     
-                    <!--[if BLOCK]><![endif]--><?php if($selectedCustomerId): ?>
+                    <?php if($selectedCustomerId): ?>
                     <?php
                     $selectedCustomer = \App\Models\Tools\Customer::find($selectedCustomerId);
                     ?>
@@ -319,7 +319,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             ✕
                         </button>
                     </div>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?>
 
                     <div class="relative w-full md:w-[302px]">
                         <!-- Input جستجوی زنده با wire:model.live -->
@@ -331,26 +331,26 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6">
 
                         <!-- دکمه پاک کردن جستجو -->
-                        <!--[if BLOCK]><![endif]--><?php if($search): ?>
+                        <?php if($search): ?>
                         <button wire:click="clearSearchAndFilter"
                             class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
                             ✕
                         </button>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endif; ?>
 
                         <!-- لیست پیشنهادات -->
-                        <!--[if BLOCK]><![endif]--><?php if($search && count($filteredCustomers) > 0 && !$selectedCustomerId): ?>
+                        <?php if($search && count($filteredCustomers) > 0 && !$selectedCustomerId): ?>
                         <ul
                             class="absolute z-50 w-full bg-white border border-gray-300 mt-1 rounded-md shadow-lg max-h-60 overflow-y-auto">
-                            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $filteredCustomers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php $__currentLoopData = $filteredCustomers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <li wire:click="selectCustomer(<?php echo e($customer->id); ?>)"
                                 class="px-3 py-2 hover:bg-blue-100 cursor-pointer flex justify-between items-center">
                                 <span><?php echo e($customer->fullname); ?></span>
                                 <span class="text-gray-500 text-sm"><?php echo e($customer->account_number); ?></span>
                             </li>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </ul>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -375,7 +375,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </tr>
                         </thead>
                         <tbody>
-                            <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $transactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $transaction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                            <?php $__empty_1 = true; $__currentLoopData = $transactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $transaction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                             <tr class="text-black border-b border-[#D9D9D9] bg-transparent">
                                 <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">
                                     <?php echo e($key + 1); ?>
@@ -439,7 +439,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                         </button>
 
                                         <!-- مودال تأیید حذف -->
-                                        <!--[if BLOCK]><![endif]--><?php if($confirmDeleteId): ?>
+                                        <?php if($confirmDeleteId): ?>
                                         <div
                                             class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-10 z-50">
                                             <div
@@ -467,7 +467,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                                 </div>
                                             </div>
                                         </div>
-                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                        <?php endif; ?>
 
 
 
@@ -485,14 +485,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                             <tr>
                                 <td colspan="8" class="text-center text-gray-500 py-8 text-lg">
-                                    <!--[if BLOCK]><![endif]--><?php if($selectedCustomerId): ?>
+                                    <?php if($selectedCustomerId): ?>
                                     هیچ تراکنشی برای این مشتری یافت نشد
                                     <?php else: ?>
                                     هیچ تراکنشی یافت نشد
-                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endif; ?>
                                 </td>
                             </tr>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>

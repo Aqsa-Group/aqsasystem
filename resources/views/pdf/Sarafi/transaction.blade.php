@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
+@php
+    $currentUser = Auth::guard('sarafi')->user();
+@endphp
 <head>
     <meta charset="UTF-8">
-    <title>تراکنش صرافی - {{ $user->sarafi_name ?? 'صرافی' }}</title>
+    <title>تراکنش صرافی - {{ $sarafi_name ?? 'صرافی' }}</title>
     <style>
         /* همه عناصر بدون حاشیه و با فونت پیشفرض */
         * {
@@ -120,7 +122,7 @@
             /* بورد بالایی */
             width: 100%;
             padding-left: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 30px;{{ explode(' ', $transaction->date)[0] }}
             /* فاصله بین بورد و متن/خط پایین */
         }
 
@@ -176,21 +178,12 @@
 <body>
     <div class="document">
         <h1 style="text-align:center; font-family: amiri ,sans-serif" class="shabnam-fd "> صرافی {{
-            $user->sarafi_name ?? 'صرافی' }}</h1>
+            $currentUser->sarafi_name ?? 'صرافی' }}</h1>
         <div class="header">
             <table class="header-table" style="width:100%; border-collapse: collapse;">
                 <tr>
-                    <td style="text-align:right;">نوع تراکنش : {{ $transaction->type }}</td>
-                    <td style="text-align:left;">تاریخ ثبت تراکنش :
-                        @php
-                        $dateParts = explode('-', $transaction->date);
-                        if(count($dateParts) === 3) {
-                        echo $dateParts[2] . '-' . $dateParts[1] . '-' . $dateParts[0];
-                        } else {
-                        echo $transaction->date;
-                        }
-                        @endphp
-                    </td>
+                    <td style="text-align:center;">نوع تراکنش : {{ $transaction->type }}</td>
+                    
                 </tr>
             </table>
         </div>
@@ -214,11 +207,21 @@
             ];
             @endphp
 
+
+   <tr>
+                <td>حساب مشتری:</td>
+                <td>{{ $transaction->customer->fullname ?? 'نامشخص' }}</td>
+            </tr>
+
             <tr>
-                <td>از ارز:</td>
+                <td>شماره حساب :</td>
+                <td>{{ $transaction->customer->account_number ?? 'نامشخص' }}</td>
+            </tr>
+            <tr>
+                <td> ارز:</td>
                 <td>
-                    {{ $currenciesFa[strtolower($transaction->from_currency)] ?? $transaction->from_currency }}
-                    ({{ strtoupper($transaction->from_currency) }})
+                    {{ $currenciesFa[strtolower($transaction->currency)] ?? $transaction->currency }}
+                    ({{ strtoupper($transaction->currency) }})
                 </td>
             </tr>
 
@@ -230,33 +233,10 @@
             </tr>
 
             <tr>
-                <td>به ارز:</td>
-                <td>
-                    {{ $currenciesFa[strtolower($transaction->to_currency)] ?? $transaction->to_currency }}
-                    ({{ strtoupper($transaction->to_currency) }})
-                </td>
-            </tr>
-
-            <tr>
-                <td>مبلغ معادل:</td>
-                <td>
-                    {{ number_format((float)$transaction->eq_amount) }}
-                </td>
-            </tr>
-
-            <tr>
-                <td>نرخ ارز:</td>
-                <td>{{ number_format((float)$transaction->exchange_rate, 2) }}</td>
-            </tr>
-
-            <tr>
-                <td>کاربر ثبت کننده:</td>
-                <td>{{ $transaction->user->name ?? '-' }}</td>
-            </tr>
-
-            <tr>
                 <td>تاریخ:</td>
-                <td>{{ $transaction->date }}</td>
+                 <td>
+                       {{ explode(' ', $transaction->date)[0] }}
+                 </td>
             </tr>
 
             <tr>
@@ -287,13 +267,13 @@
             <table style="width:100%; border-collapse: collapse; pass">
                 <tr>
                     <td>
-                        <strong>تماس:</strong> 93{{ $user->phone ?? '-' }}+
+                        <strong>تماس:</strong> 93{{ $currentUser->phone ?? '-' }}+
                     </td>
                 </tr>
 
                 <tr>
                     <td>
-                        <strong>آدرس:</strong> افغانستان {{ $user->address ?? '-' }}
+                        <strong>آدرس:</strong> افغانستان {{ $currentUser->address ?? '-' }}
                     </td>
                 </tr>
             </table>

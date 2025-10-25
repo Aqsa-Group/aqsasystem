@@ -396,12 +396,12 @@
         <div class="flex flex-1 mt-4 min-h-screen sticky ">
             <aside class="w-80 hidden md:block shadow-xl p-6 dark:text-white static">
                 <nav class="mt-0 space-y-1" x-data="{
-                openItems: {
-                    customers: false,
-                    accounting: false
-                },
-                active: '{{ Route::currentRouteName() }}' // همواره با route فعلی هماهنگ
-            }">
+                    openItems: {
+                        customers: false,
+                        accounting: false
+                    },
+                    active: '{{ Route::currentRouteName() }}' // همواره با route فعلی هماهنگ
+                }">
 
                     <!-- داشبورد -->
                     <a href="{{ route('tools.home') }}"
@@ -480,13 +480,15 @@
 
                     <!-- حسابداری -->
                     <div>
-                        <!-- دکمه حسابداری -->
-                        <button @click="openItems.accounting = !openItems.accounting"
-                            :class="active.startsWith('tools.loans') ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'"
-                            class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
-                            <span class="flex items-center gap-3">
-                                <img src="{{ asset('assets/tools/gameboy.svg') }}" class="w-6 h-6"
-                                    :class="active.startsWith('tools.loans') ? 'filter invert brightness-0' : 'text-gray-500'">
+                        <!-- دکمه اصلی -->
+                        <button @click="openItems.accounting = !openItems.accounting" :class="active.startsWith('tools.loans') || active.startsWith('tools.salary') || active.startsWith('tools.withdrawals') 
+                                ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' 
+                                : 'text-gray-700 hover:bg-gray-100'"
+                                                class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
+                                                <span class="flex items-center gap-3">
+                                                    <i class="fa-solid fa-calculator w-6 h-6" :class="active.startsWith('tools.loans') || active.startsWith('tools.salary') || active.startsWith('tools.withdrawals')
+                                        ? 'text-white'
+                                        : 'text-gray-500'"></i>
                                 حسابداری
                             </span>
                             <svg :class="[openItems.accounting ? 'rotate-180' : '', active.startsWith('tools.loans') ? 'text-white' : 'text-gray-500']"
@@ -496,27 +498,99 @@
                                     d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
+
                         <!-- زیرمنو -->
                         <div x-show="openItems.accounting" x-transition class="mr-7 mt-2 space-y-2">
                             <a href="{{ route('tools.loans') }}"
                                 @click="active = 'tools.loans'; openItems.accounting = true"
                                 :class="active === 'tools.loans' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
                                 class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
-                                <i class="fa-solid fa-money-bill-transfer w-5 h-5"
-                                    :class="active === 'tools.loans' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
-                                قرضه ها
+                                <i class="fa-solid fa-hand-holding-dollar w-5 h-5"></i>
+                                قرضه‌ها
                             </a>
 
                             <a href="{{ route('tools.salary') }}"
                                 @click="active = 'tools.salary'; openItems.accounting = true"
                                 :class="active === 'tools.salary' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
                                 class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
-                                <i class="fa-solid fa-money-check-dollar w-7 h-5"
-                                    :class="active === 'tools.salary' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
-                                پراخت معاشات
+                                <i class="fa-solid fa-file-invoice-dollar w-5 h-5"></i>
+                                پرداخت معاشات
+                            </a>
+
+                            <a href="{{ route('tools.withdrawals') }}"
+                                @click="active = 'tools.withdrawals'; openItems.accounting = true"
+                                :class="active === 'tools.withdrawals' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
+                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                <i class="fa-solid fa-arrow-trend-down w-5 h-5"></i>
+                                برداشت‌ها
                             </a>
                         </div>
                     </div>
+
+                    <!-- معاملات صرافی -->
+                    <div>
+                        <!-- دکمه اصلی -->
+                        <button @click="openItems.sarafi = !openItems.sarafi" :class="active.startsWith('tools.transactions') || active.startsWith('tools.buy-sell-currency') || active.startsWith('tools.account_to_account') 
+            ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' 
+            : 'text-gray-700 hover:bg-gray-100'"
+                            class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
+                            <span class="flex items-center gap-3">
+                                <i class="fa-solid fa-coins w-6 h-6"
+                                    :class="active.startsWith('tools.transactions') ? 'text-white' : 'text-gray-500'"></i>
+                                معاملات صرافی
+                            </span>
+                            <svg :class="[openItems.sarafi ? 'rotate-180' : '', active.startsWith('tools.transactions') ? 'text-white' : 'text-gray-500']"
+                                class="w-5 h-5 transition-transform" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        <!-- زیرمنو -->
+                        <div x-show="openItems.sarafi" x-transition class="mr-7 mt-2 space-y-2">
+                            <a href="{{ route('tools.transactions') }}"
+                                @click="active = 'tools.transactions'; openItems.sarafi = true"
+                                :class="active === 'tools.transactions' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
+                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                <i class="fa-solid fa-receipt w-5 h-5"></i>
+                                رسید / بردگی صندوق
+                            </a>
+
+                            <a href="{{ route('tools.buy-sell-currency') }}"
+                                @click="active = 'tools.buy-sell-currency'; openItems.sarafi = true"
+                                :class="active === 'tools.buy-sell-currency' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
+                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                <i class="fa-solid fa-arrows-left-right-to-line w-5 h-5"></i>
+                                خرید و فروش ارز صندوق
+                            </a>
+
+                            <a href="{{ route('tools.account_to_account') }}"
+                                @click="active = 'tools.account_to_account'; openItems.sarafi = true"
+                                :class="active === 'tools.account_to_account' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
+                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                <i class="fa-solid fa-arrow-right-arrow-left w-5 h-5"></i>
+                                انتقال حساب به حساب
+                            </a>
+
+                            <a href="{{ route('tools.conversion-transfer') }}"
+                                @click="active = 'tools.conversion-transfer'; openItems.sarafi = true"
+                                :class="active === 'tools.conversion-transfer' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
+                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                <i class="fa-solid fa-arrows-rotate w-5 h-5"></i>
+                                تبدیل ارز و انتقال به حساب
+                            </a>
+
+                            <a href="{{ route('tools.conversion.in.account') }}"
+                                @click="active = 'tools.conversion.in.account'; openItems.sarafi = true"
+                                :class="active === 'tools.conversion.in.account' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
+                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                <i class="fa-solid fa-wallet w-5 h-5"></i>
+                                تبدیل ارز در حساب مشتری
+                            </a>
+                        </div>
+                    </div>
+
 
                 </nav>
             </aside>
@@ -531,118 +605,86 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-    const loader = document.getElementById('loader');
-    const mainContent = document.getElementById('mainContent');
-    const progressBar = document.querySelector('.progress');
+        const loader = document.getElementById('loader');
+        const mainContent = document.getElementById('mainContent');
+        const progressBar = document.querySelector('.progress');
 
-    const profileBtn = document.getElementById('profileBtn');
-    const profileDropdown = document.getElementById('profileDropdown');
+        const profileBtn = document.getElementById('profileBtn');
+        const profileDropdown = document.getElementById('profileDropdown');
 
-    profileBtn.addEventListener('click', () => {
-        profileDropdown.classList.toggle('hidden');
-    });
+        profileBtn.addEventListener('click', () => {
+            profileDropdown.classList.toggle('hidden');
+        });
 
-    document.addEventListener('click', (event) => {
-        if (!profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
-            profileDropdown.classList.add('hidden');
+        document.addEventListener('click', (event) => {
+            if (!profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
+                profileDropdown.classList.add('hidden');
+            }
+        });
+
+        // محتوا را ابتدا مخفی کن
+        mainContent.style.display = 'none';
+
+        let progress = 0;
+        let fakeProgressInterval;
+
+        // شروع شبیه‌سازی پیشرفت فقط اگر لود طول بکشد
+        function startFakeProgress() {
+            fakeProgressInterval = setInterval(() => {
+                progress += Math.random() * 30; // سرعت متوسط
+                if (progress > 90) progress = 90; // رسیدن به 90% و منتظر load واقعی
+                progressBar.style.width = progress + '%';
+            },10);
+        }
+
+        startFakeProgress();
+
+        // وقتی صفحه واقعاً لود شد
+        window.addEventListener('load', function() {
+            clearInterval(fakeProgressInterval);
+            progress = 100;
+            progressBar.style.width = progress + '%';
+
+            setTimeout(() => {
+                loader.classList.add('loader-complete');
+                mainContent.style.display = 'block';
+                mainContent.classList.add('content-loaded');
+
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 400);
+            }, 600); // کمی تأخیر برای انیمیشن
+        });
+
+        // مدیریت کلیک روی لینک‌ها
+        const navLinks = document.querySelectorAll('.nav-link, .locale-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href && !href.startsWith('#')) {
+                    e.preventDefault();
+                    loader.style.display = 'flex';
+                    loader.classList.remove('loader-complete');
+                    setTimeout(() => window.location.href = href, 50);
+                }
+            });
+        });
+
+        // مدیریت dropdown زبان
+        const btn = document.getElementById('dropdownButton');
+        const menu = document.getElementById('dropdownMenu');
+        if (btn && menu) {
+            btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+            document.addEventListener('click', e => {
+                if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                    menu.classList.add('hidden');
+                }
+            });
         }
     });
 
-    // محتوا را ابتدا مخفی کن
-    mainContent.style.display = 'none';
+ 
 
-    let progress = 0;
-    let fakeProgressInterval;
-
-    // شروع شبیه‌سازی پیشرفت فقط اگر لود طول بکشد
-    function startFakeProgress() {
-        fakeProgressInterval = setInterval(() => {
-            progress += Math.random() * 30; // سرعت متوسط
-            if (progress > 90) progress = 90; // رسیدن به 90% و منتظر load واقعی
-            progressBar.style.width = progress + '%';
-        },10);
-    }
-
-    startFakeProgress();
-
-    // وقتی صفحه واقعاً لود شد
-    window.addEventListener('load', function() {
-        clearInterval(fakeProgressInterval);
-        progress = 100;
-        progressBar.style.width = progress + '%';
-
-        setTimeout(() => {
-            loader.classList.add('loader-complete');
-            mainContent.style.display = 'block';
-            mainContent.classList.add('content-loaded');
-
-            setTimeout(() => {
-                loader.style.display = 'none';
-            }, 400);
-        }, 600); // کمی تأخیر برای انیمیشن
-    });
-
-    // مدیریت کلیک روی لینک‌ها
-    const navLinks = document.querySelectorAll('.nav-link, .locale-link');
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            if (href && !href.startsWith('#')) {
-                e.preventDefault();
-                loader.style.display = 'flex';
-                loader.classList.remove('loader-complete');
-                setTimeout(() => window.location.href = href, 50);
-            }
-        });
-    });
-
-    // مدیریت dropdown زبان
-    const btn = document.getElementById('dropdownButton');
-    const menu = document.getElementById('dropdownMenu');
-    if (btn && menu) {
-        btn.addEventListener('click', () => menu.classList.toggle('hidden'));
-        document.addEventListener('click', e => {
-            if (!btn.contains(e.target) && !menu.contains(e.target)) {
-                menu.classList.add('hidden');
-            }
-        });
-    }
-});
-
-const darkModeToggle = document.getElementById('darkModeToggle');
-const sunIcon = document.getElementById('sunIcon');
-const moonIcon = document.getElementById('moonIcon');
-const toggleCircle = document.getElementById('toggleCircle');
-const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-const html = document.documentElement;
-
-// بررسی حالت ذخیره‌شده
-const currentTheme = localStorage.getItem('theme');
-if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
-    html.classList.add('dark');
-    darkModeToggle.checked = true;
-    sunIcon.classList.add('hidden');
-    moonIcon.classList.remove('hidden');
-    toggleCircle.classList.add('move-dark');
-} else {
-    toggleCircle.classList.remove('move-dark');
-}
-
-darkModeToggle.addEventListener('change', function() {
-    if (this.checked) {
-        html.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-        sunIcon.classList.add('hidden');
-        moonIcon.classList.remove('hidden');
-        toggleCircle.classList.add('move-dark');
-    } else {
-        html.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-        sunIcon.classList.remove('hidden');
-        moonIcon.classList.add('hidden');
-        toggleCircle.classList.remove('move-dark');
-    }
-});
     </script>
 
 </body>

@@ -30,11 +30,13 @@
             <p class="text-lg font-semibold">اجناس دوکان</p>
         </div>
 
-        <div
-            class="bg-gradient-to-br from-indigo-50 to-indigo-100 border-l-4 border-indigo-500 text-indigo-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105">
-            <i class="fa-solid fa-money-bill-transfer text-3xl mb-2"></i>
-            <p class="text-lg font-semibold">برداشت‌ها</p>
-        </div>
+        <a href="<?php echo e(route('tools.withdrawals')); ?>">
+            <div
+                class="bg-gradient-to-br from-indigo-50 to-indigo-100 border-l-4 border-indigo-500 text-indigo-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105">
+                <i class="fa-solid fa-money-bill-transfer text-3xl mb-2"></i>
+                <p class="text-lg font-semibold">برداشت‌ها</p>
+            </div>
+        </a>
 
         <div
             class="bg-gradient-to-br from-indigo-50 to-indigo-100 border-l-4 border-indigo-500 text-indigo-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105">
@@ -210,7 +212,19 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-3xl font-bold mt-1 animate-number" data-target="35000000">0</p>
+                <div class="flex flex-col gap-2">
+                    <div class="flex justify-center items-center text-2xl ">
+                        <span>دالر : </span>
+
+                        <p class="text-3xl font-bold mt-1 animate-number" data-target="<?php echo e($totalUsdLoan); ?>">0</p>
+                    </div>
+
+                       <div class="flex justify-center items-center text-2xl ">
+                        <span>افغانی : </span>
+
+                        <p class="text-3xl font-bold mt-1 animate-number" data-target="<?php echo e($totalAFNLoan); ?>">0</p>
+                    </div>
+                </div>
                 <span class="text-sm bg-pink-200 px-2 py-1 rounded-full">-2%</span>
             </div>
         </div>
@@ -229,7 +243,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-3xl font-bold mt-1 animate-number" data-target="245">0</p>
+                <p class="text-3xl font-bold mt-1 animate-number" data-target="<?php echo e($usercount); ?>">0</p>
                 <span class="text-sm bg-teal-200 px-2 py-1 rounded-full">+18%</span>
             </div>
         </div>
@@ -248,7 +262,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-3xl font-bold mt-1 animate-number" data-target="1248">0</p>
+                <p class="text-3xl font-bold mt-1 animate-number" data-target="<?php echo e($countcustomer); ?>">0</p>
                 <span class="text-sm bg-orange-200 px-2 py-1 rounded-full">+22%</span>
             </div>
         </div>

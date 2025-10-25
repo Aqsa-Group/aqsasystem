@@ -89,7 +89,6 @@
                     {{-- حساب برداشت و دریافت --}}
                     <div class="mt-2 flex flex-col lg:flex-row gap-3">
                         {{-- حساب برداشت --}}
-                        {{-- حساب برداشت --}}
                         <div class="flex-1">
                             <div class="relative w-full">
                                 <label class="block text-[16px] font-medium text-black mb-1 vazir">حساب برداشت</label>

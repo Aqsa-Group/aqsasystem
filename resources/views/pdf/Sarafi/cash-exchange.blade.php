@@ -172,8 +172,7 @@
         <div class="header">
             <table class="header-table" style="width:100%; border-collapse: collapse;">
                 <tr>
-                    <td style="text-align:right;">نوع معامله: {{ $conversion->type }}</td>
-                    <td style="text-align:left;">تاریخ ثبت معامله: {{ $conversion->transaction_date }}</td>
+                    <td style="text-align:center;">نوع معامله: {{ $transaction->type }}</td>
                 </tr>
             </table>
         </div>
@@ -215,80 +214,46 @@
             }
             @endphp
 
-            <tr>
-                <td>حساب برداشت:</td>
-                <td>{{ $conversion->fromCustomer->fullname ?? 'نامشخص' }}</td>
-            </tr>
-
-            <tr>
-                <td>شماره حساب برداشت:</td>
-                <td>{{ $conversion->fromCustomer->account_number ?? 'نامشخص' }}</td>
-            </tr>
+            
 
             <tr>
                 <td>از ارز:</td>
-                <td>{{ $currenciesFa[strtolower($conversion->from_currency)] ?? $conversion->from_currency }}</td>
+                <td>{{ $currenciesFa[strtolower($transaction->from_currency)] ?? $transaction->from_currency }}</td>
             </tr>
 
             <tr>
                 <td>مبلغ برداشت:</td>
-                <td>{{ number_format((float)$conversion->withdrawal_amount) }}</td>
-            </tr>
-
-            <tr>
-                <td>حساب دریافت:</td>
-                <td>{{ $conversion->toCustomer->fullname ?? 'نامشخص' }}</td>
-            </tr>
-
-            <tr>
-                <td>شماره حساب دریافت:</td>
-                <td>{{ $conversion->toCustomer->account_number ?? 'نامشخص' }}</td>
+                <td>{{ number_format((float)$transaction->amount) }}</td>
             </tr>
 
             <tr>
                 <td>به ارز:</td>
-                <td>{{ $currenciesFa[strtolower($conversion->to_currency)] ?? $conversion->to_currency }}</td>
+                <td>{{ $currenciesFa[strtolower($transaction->to_currency)] ?? $transaction->to_currency }}</td>
             </tr>
 
-            <tr>
-                <td>مبلغ دریافت:</td>
-                <td>{{ number_format((float)$conversion->received_amount, 2) }}</td>
-            </tr>
-
+          
             <tr>
                 <td>نرخ ارز:</td>
-                <td>{{ number_format((float)$conversion->currency_rate, 4) }}</td>
+                <td>{{ number_format((float)$transaction->exchange_rate, 2) }}</td>
             </tr>
 
-            <tr>
-                <td>زون برداشت:</td>
-                <td>{{ $conversion->zone_sender }}</td>
+               <tr>
+                <td> مبلغ دریافتی:</td>
+                <td>{{ number_format((float)$transaction->eq_amount, 2) }}</td>
             </tr>
 
-            <tr>
-                <td>زون دریافت:</td>
-                <td>{{ $conversion->zone_receiver }}</td>
-            </tr>
 
-            <tr>
-                <td>مسئول برداشت:</td>
-                <td>{{ $conversion->by_sender ?? 'نامشخص' }}</td>
-            </tr>
-
-            <tr>
-                <td>مسئول دریافت:</td>
-                <td>{{ $conversion->by_receiver ?? 'نامشخص' }}</td>
-            </tr>
-
+        
+        
             <tr>
                 <td>زمان ثبت:</td>
                 <td>
                     @php
                         try {
-                            $time = \Carbon\Carbon::parse($conversion->created_at);
+                            $time = \Carbon\Carbon::parse($transaction->created_at);
                             echo $time->format('h:i:s') . ' ' . ($time->format('A') == 'AM' ? 'ق.ظ' : 'ب.ظ');
                         } catch (Exception $e) {
-                            echo $conversion->created_at;
+                            echo $transaction->created_at;
                         }
                     @endphp
                 </td>
@@ -297,7 +262,7 @@
 
         <div class="description">
             <h3>شرح تراکنش:</h3>
-            {{ $conversion->description ?? 'تبدیل ارز - بدون توضیحات بیشتر' }}
+            {{ $transaction->description ?? 'تبدیل ارز - بدون توضیحات بیشتر' }}
         </div>
 
         <div class="signature">

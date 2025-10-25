@@ -331,6 +331,71 @@ Route::get('/tools/salary', function () {
 
 
 
+Route::get('/tools/withdrawal', function () {
+    if (!Auth::guard('tools')->check()) {
+        return redirect()->route('tools.login.form');
+    }
+    return view('ToolsPanel.components.withdrawals');
+})->name('tools.withdrawals');
+
+
+
+Route::get('/tools/customer-transactions', function () {
+    if (!Auth::guard('tools')->check()) {
+        return redirect()->route('tools.login.form');
+    }
+    return view('ToolsPanel.components.transaction');
+})->name('tools.transactions');
+
+
+
+
+Route::get('/tools/transactions-reports', function () {
+    if (!Auth::guard('tools')->check()) {
+        return redirect()->route('tools.login.form');
+    }
+    return view('ToolsPanel.components.transactions-reports');
+})->name('tools.transaction-reports');
+
+
+
+
+
+Route::get('/tools/buy-sell-currency', function () {
+    if (!Auth::guard('tools')->check()) {
+        return redirect()->route('tools.login.form');
+    }
+    return view('ToolsPanel.components.buy-sell-currency');
+})->name('tools.buy-sell-currency');
+
+
+
+Route::get('/tools/conversion-transfer', function () {
+    if (!Auth::guard('tools')->check()) {
+        return redirect()->route('tools.login.form');
+    }
+    return view('ToolsPanel.components.conversion-transfer');
+})->name('tools.conversion-transfer');
+
+
+Route::get('/tools/conversion-in-account', function () {
+    if (!Auth::guard('tools')->check()) {
+        return redirect()->route('tools.login.form');
+    }
+    return view('ToolsPanel.components.conversion-in-account');
+})->name('tools.conversion.in.account');
+
+Route::get('/tools/account_to_account', function () {
+    if (!Auth::guard('tools')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('ToolsPanel.components.account-to-account');
+})->name('tools.account_to_account');
+
+
+
+
+
 
 
 
