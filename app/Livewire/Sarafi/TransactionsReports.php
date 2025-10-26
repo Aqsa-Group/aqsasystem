@@ -237,9 +237,10 @@ class TransactionsReports extends Component
 
         $this->transactions = $baseQuery->orderBy('date')->get();
 
-        Log::debug("loadTransactions: Transactions loaded", [
-            'transactions_count' => $this->transactions->count()
-        ]);
+      Log::debug("loadTransactions: Transactions loaded", [
+    'transactions_count' => count($this->transactions)
+]);
+
 
         $this->calculateTotalBalances();
 
@@ -1134,11 +1135,12 @@ private function calculateCurrencyBalanceForPdf($code, $transactions, $currency)
                 ->orWhere('account_number', 'like', "%{$value}%");
         })->limit(15)->get();
 
-        if ($this->filteredCustomers->count() === 1) {
-            $this->selectCustomer($this->filteredCustomers->first()->id);
-        } else {
-            $this->selectedCustomerId = null;
-        }
+      if (count($this->filteredCustomers) === 1) {
+    $this->selectCustomer($this->filteredCustomers[0]['id']);
+} else {
+    $this->selectedCustomerId = null;
+}
+
     }
 
     public function updatedAccountSearch($value)

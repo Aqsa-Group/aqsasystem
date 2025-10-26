@@ -14,6 +14,7 @@ use Morilog\Jalali\Jalalian;
 use Mpdf\Mpdf;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class Salary extends Component
 {
@@ -398,12 +399,13 @@ class Salary extends Component
             ->limit(15)
             ->get();
 
-        if ($this->filteredStaffs->count() === 1) {
-            $this->selectStaff($this->filteredStaffs->first()->id);
-        } else {
-            $this->selectedStaffId = null;
-            $this->updateSalaries();
-        }
+      if (count($this->filteredStaffs) === 1) {
+    $this->selectStaff($this->filteredStaffs[0]['id']);
+} else {
+    $this->selectedStaffId = null;
+    $this->updateSalaries();
+}
+
     }
 
     public function selectStaff($staffId)

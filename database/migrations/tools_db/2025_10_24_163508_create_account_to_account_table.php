@@ -23,8 +23,6 @@ return new class extends Migration
             $table->unsignedBigInteger('tax_id')->nullable();
             $table->string('by_sender')->nullable();
             $table->string('by_receiver')->nullable();
-            $table->string('zone_sender')->nullable();
-            $table->string('zone_receiver')->nullable();
             $table->text('description_sender')->nullable();
             $table->text('description_receiver')->nullable();
             $table->date('transaction_date');

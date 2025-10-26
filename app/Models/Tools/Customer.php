@@ -58,4 +58,9 @@ class Customer extends Authenticatable
     {
         return $this->hasMany(\App\Models\Sarafi\Transaction::class, 'customer_id');
     }
+
+     public function shopTransactions()
+    {
+        return $this->hasMany(ShopTransactions::class, 'customer_id');
+    }
 }

@@ -16,4 +16,6 @@ unset($__split);
 if (isset($__slots)) unset($__slots);
 ?>
 <?php $__env->stopSection(); ?>
+
+
 <?php echo $__env->make('ToolsPanel.layouts.sidebar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/ToolsPanel/components/safes.blade.php ENDPATH**/ ?>

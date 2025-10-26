@@ -484,9 +484,9 @@
                         <button @click="openItems.accounting = !openItems.accounting" :class="active.startsWith('tools.loans') || active.startsWith('tools.salary') || active.startsWith('tools.withdrawals') 
                                 ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' 
                                 : 'text-gray-700 hover:bg-gray-100'"
-                                                class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
-                                                <span class="flex items-center gap-3">
-                                                    <i class="fa-solid fa-calculator w-6 h-6" :class="active.startsWith('tools.loans') || active.startsWith('tools.salary') || active.startsWith('tools.withdrawals')
+                            class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
+                            <span class="flex items-center gap-3">
+                                <i class="fa-solid fa-calculator w-6 h-6" :class="active.startsWith('tools.loans') || active.startsWith('tools.salary') || active.startsWith('tools.withdrawals')
                                         ? 'text-white'
                                         : 'text-gray-500'"></i>
                                 حسابداری
@@ -524,18 +524,39 @@
                                 <i class="fa-solid fa-arrow-trend-down w-5 h-5"></i>
                                 برداشت‌ها
                             </a>
+
+
+                            <a href="{{ route('tools.shop-transactions') }}"
+                                @click="active = 'tools.shop-transactions'; openItems.accounting = true" :class="active === 'tools.shop-transactions' ? 
+                                    'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 
+                                    'text-gray-600 hover:bg-gray-100'"
+                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                <i class="fa-solid fa-money-bill-transfer w-5 h-5"></i>
+                                انتقال ارز از دوکان به صرافی
+                            </a>
+
+                            <a href="{{ route('tools.shop-conversion') }}"
+                                @click="active = 'tools.shop-conversion'; openItems.accounting = true" :class="active === 'tools.shop-conversion' ? 
+                                'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 
+                                'text-gray-600 hover:bg-gray-100'"
+                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                <i class="fa-solid fa-arrows-rotate w-5 h-5"></i>
+                                تبدیل و انتقال ارز از دوکان به صرافی
+                            </a>
+
+
                         </div>
                     </div>
 
                     <!-- معاملات صرافی -->
                     <div>
                         <!-- دکمه اصلی -->
-                                    <button @click="openItems.sarafi = !openItems.sarafi" :class="active.startsWith('tools.transactions') || active.startsWith('tools.buy-sell-currency') || active.startsWith('tools.account_to_account') 
+                        <button @click="openItems.sarafi = !openItems.sarafi" :class="active.startsWith('tools.transactions') || active.startsWith('tools.buy-sell-currency') || active.startsWith('tools.account_to_account') 
                         ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' 
                         : 'text-gray-700 hover:bg-gray-100'"
-                                        class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
-                                        <span class="flex items-center gap-3">
-                                            <i class="fa-solid fa-coins w-6 h-6"
+                            class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
+                            <span class="flex items-center gap-3">
+                                <i class="fa-solid fa-coins w-6 h-6"
                                     :class="active.startsWith('tools.transactions') ? 'text-white' : 'text-gray-500'"></i>
                                 معاملات صرافی
                             </span>
@@ -591,7 +612,7 @@
                         </div>
                     </div>
 
-                 <!-- صندوق ها -->
+                    <!-- صندوق ها -->
                     <a href="{{ route('tools.safes') }}"
                         class="nav-link flex items-center justify-between py-4 px-5 rounded-lg transition vazir dark:text-white text-[16px]"
                         @click="active = 'tools.safes'"
@@ -599,7 +620,7 @@
                         <span class="flex items-center gap-3">
                             <img src="{{ asset('assets/tools/safe.png') }}" class="w-6 h-6"
                                 :class="active === 'tools.safes' ? 'filter invert brightness-0' : 'text-gray-500' ">
-                             موجودی صندوق ها
+                            موجودی صندوق ها
                         </span>
                     </a>
 

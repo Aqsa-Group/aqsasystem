@@ -14,9 +14,18 @@ class ShopSafe extends Model
     protected $fillable = [
         'user_id',
         'admin_id',
-        'usd',
         'afn',
+        'usd',
         'irr',
+        'pkr',
+    ];
+
+
+      protected $casts = [
+        'afn' => 'decimal:2',
+        'usd' => 'decimal:2',
+        'irr' => 'decimal:2',
+        'pkr' => 'decimal:2',
     ];
 
   

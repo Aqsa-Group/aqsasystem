@@ -10,6 +10,8 @@ use Livewire\Component;
 use Morilog\Jalali\Jalalian;
 use Mpdf\Mpdf;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Collection;
+
 
 class TransactionsReports extends Component
 {
@@ -189,6 +191,7 @@ class TransactionsReports extends Component
     /**
      * Load transactions with applied filters
      */
+    
     public function loadTransactions()
     {
         if (!$this->selectedCustomer) {
@@ -235,11 +238,11 @@ class TransactionsReports extends Component
             'previous_balances' => $this->previousBalances
         ]);
 
-        $this->transactions = $baseQuery->orderBy('date')->get();
+      $this->transactions = $baseQuery->orderBy('date')->get();
 
-        Log::debug("loadTransactions: Transactions loaded", [
-            'transactions_count' => $this->transactions->count()
-        ]);
+      Log::debug("loadTransactions: Transactions loaded", [
+    'transactions_count' => count($this->transactions)
+    ]);
 
         $this->calculateTotalBalances();
 
@@ -1134,11 +1137,12 @@ private function calculateCurrencyBalanceForPdf($code, $transactions, $currency)
                 ->orWhere('account_number', 'like', "%{$value}%");
         })->limit(15)->get();
 
-        if ($this->filteredCustomers->count() === 1) {
-            $this->selectCustomer($this->filteredCustomers->first()->id);
-        } else {
-            $this->selectedCustomerId = null;
-        }
+       if (count($this->filteredCustomers) === 1) {
+    $this->selectCustomer($this->filteredCustomers[0]['id']);
+} else {
+    $this->selectedCustomerId = null;
+}
+
     }
 
     public function updatedAccountSearch($value)

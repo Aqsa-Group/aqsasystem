@@ -402,6 +402,26 @@ Route::get('/tools/safes', function () {
 })->name('tools.safes');
 
 
+Route::get('/tools/shop_to_sarafi', function () {
+    if (!Auth::guard('tools')->check()) {
+        return redirect()->route('tools.login.form');
+    }
+    return view('ToolsPanel.components.shop-transactions');
+})->name('tools.shop-transactions');
+
+Route::get('/tools/shop_conversion', function () {
+    if (!Auth::guard('tools')->check()) {
+        return redirect()->route('tools.login.form');
+    }
+    return view('ToolsPanel.components.shop-conversion');
+})->name('tools.shop-conversion');
+
+
+
+
+
+
+
 
 
 
