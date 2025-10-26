@@ -532,8 +532,8 @@
 
                             <a href="<?php echo e(route('tools.shop-transactions')); ?>"
                                 @click="active = 'tools.shop-transactions'; openItems.accounting = true" :class="active === 'tools.shop-transactions' ? 
-        'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 
-        'text-gray-600 hover:bg-gray-100'"
+                                    'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 
+                                    'text-gray-600 hover:bg-gray-100'"
                                 class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
                                 <i class="fa-solid fa-money-bill-transfer w-5 h-5"></i>
                                 انتقال ارز از دوکان به صرافی
@@ -541,8 +541,8 @@
 
                             <a href="<?php echo e(route('tools.shop-conversion')); ?>"
                                 @click="active = 'tools.shop-conversion'; openItems.accounting = true" :class="active === 'tools.shop-conversion' ? 
-        'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 
-        'text-gray-600 hover:bg-gray-100'"
+                                'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 
+                                'text-gray-600 hover:bg-gray-100'"
                                 class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
                                 <i class="fa-solid fa-arrows-rotate w-5 h-5"></i>
                                 تبدیل و انتقال ارز از دوکان به صرافی

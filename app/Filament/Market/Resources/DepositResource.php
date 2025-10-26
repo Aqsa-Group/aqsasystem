@@ -138,8 +138,14 @@ class DepositResource extends Resource
                 Tables\Columns\TextColumn::make('accounting.shopkeeper.fullname')->label('دوکاندار')->searchable(),
                 Tables\Columns\TextColumn::make('accounting.expanses_type')->label('نوع هزینه')->searchable(),
                 Tables\Columns\TextColumn::make('accounting.price')->label('مبلغ')->suffix('افغانی'),
-                Tables\Columns\TextColumn::make('paid')->label('پرداخت'),
-                Tables\Columns\TextColumn::make('remained')->label('باقی'),
+                Tables\Columns\TextColumn::make('paid')->label('پرداخت')
+                ->badge()
+                ->color('success')
+                ->extraAttributes(['class' => 'text-white']),
+                Tables\Columns\TextColumn::make('remained')->label('باقی')
+                ->badge()
+                ->color('danger')
+                ->extraAttributes(['class' => 'text-white']),
                 Tables\Columns\TextColumn::make('paid_date')
                 ->label('تا تاریخ')
                 ->formatStateUsing(fn($state) => Jalalian::fromDateTime($state)->format('Y/m/d')),
@@ -183,8 +189,8 @@ class DepositResource extends Resource
                 Tables\Filters\Filter::make('paid_date')
                     ->label('تاریخ پرداخت')
                     ->form([
-                        Forms\Components\DatePicker::make('from')->label('از تاریخ'),
-                        Forms\Components\DatePicker::make('to')->label('تا تاریخ'),
+                        Forms\Components\DatePicker::make('from')->label('از تاریخ')->jalali(),
+                        Forms\Components\DatePicker::make('to')->label('تا تاریخ')->jalali(),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query

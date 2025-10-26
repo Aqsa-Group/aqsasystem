@@ -462,7 +462,10 @@ unset($__errorArgs, $__bag); ?>
                         <td class="px-2 md:px-4 py-3 text-center"><?php echo e($index + 1); ?></td>
                         <td class="px-2 md:px-4 py-3">
                             <div class="flex flex-col">
-                                <span><?php echo e($transaction->date); ?></span>
+                                <span>
+                       <?php echo e(explode(' ', $transaction->date)[0]); ?>
+
+                                </span>
                             </div>
                         </td>
                         <td class="px-2 md:px-4 py-3"><?php echo e($transaction->document_number ?? 'SN-' .
