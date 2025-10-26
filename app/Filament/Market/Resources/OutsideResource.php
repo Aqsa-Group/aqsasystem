@@ -121,58 +121,59 @@ class OutsideResource extends Resource
         ]);
     }
 
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('market.name')->label('مارکت')->sortable(),
-                Tables\Columns\TextColumn::make('person_name')
-                    ->label('نوع شخص')
-                    ->getStateUsing(function ($record) {
-                        if ($record->customer_id && $record->customer) {
-                            return 'مشتری: ' . $record->customer->fullname;
-                        }
-                        if ($record->staff_id && $record->staff) {
-                            return 'کارمند: ' . $record->staff->fullname;
-                        }
-                        return '-';
-                    })
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('currency')->label('ارز')->searchable(),
-                Tables\Columns\TextColumn::make('paid')->label('مبلغ')->numeric()->sortable(),
-                Tables\Columns\TextColumn::make('description')->label('توضیحات')->searchable(),
-                Tables\Columns\TextColumn::make('date')
-                    ->label('تاریخ')
-                    ->formatStateUsing(
-                        fn($state) =>
-                        Jalalian::fromDateTime($state)->format('Y/m/d') . ' - ' . date('g:i A',)
-                    ),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('زمان ثبت')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->label('آخرین ویرایش')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('printContract')
+ public static function table(Table $table): Table
+{
+    return $table
+        ->columns([
+            Tables\Columns\TextColumn::make('market.name')->label('مارکت')->sortable(),
+            Tables\Columns\TextColumn::make('person_name')
+                ->label('نوع شخص')
+                ->getStateUsing(function ($record) {
+                    if ($record->customer_id && $record->customer) {
+                        return 'مشتری: ' . $record->customer->fullname;
+                    }
+                    if ($record->staff_id && $record->staff) {
+                        return 'کارمند: ' . $record->staff->fullname;
+                    }
+                    return '-';
+                })
+                ->sortable(),
+            Tables\Columns\TextColumn::make('currency')->label('ارز')->searchable(),
+            Tables\Columns\TextColumn::make('paid')->label('مبلغ')->numeric()->sortable(),
+            Tables\Columns\TextColumn::make('description')->label('توضیحات')->searchable(),
+            Tables\Columns\TextColumn::make('date')
+                ->label('تاریخ')
+                ->formatStateUsing(
+                    fn($state) => Jalalian::fromDateTime($state)->format('Y/m/d') . ' - ' . date('g:i A')
+                ),
+            Tables\Columns\TextColumn::make('created_at')
+                ->label('زمان ثبت')
+                ->dateTime()
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true),
+            Tables\Columns\TextColumn::make('updated_at')
+                ->label('آخرین ویرایش')
+                ->dateTime()
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true),
+        ])
+        ->defaultSort('created_at', 'desc') // ← این خط جدید
+        ->actions([
+            Tables\Actions\ViewAction::make(),
+            Tables\Actions\EditAction::make(),
+            Tables\Actions\Action::make('printContract')
                 ->label('چاپ رسید')
                 ->icon('heroicon-o-printer')
                 ->url(fn($record) => route('outside.print', $record->id))
                 ->openUrlInNewTab(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
-    }
+        ])
+        ->bulkActions([
+            Tables\Actions\BulkActionGroup::make([
+                Tables\Actions\DeleteBulkAction::make(),
+            ]),
+        ]);
+}
+
 
     public static function getRelations(): array
     {
