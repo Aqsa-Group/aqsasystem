@@ -539,28 +539,85 @@ class GeneralReports extends Component
             ->pluck('fullname', 'id');
     }
 
-    public function getSummaryProperty()
-    {
-        $data = $this->getReportData(true);
+  public function getSummaryProperty()
+{
+    $data = $this->getReportData(true);
+    
+    // محاسبه مجموع مبالغ هر ارز برای تمام انواع گزارش‌ها
+    $currencyTotals = $this->calculateCurrencyTotals($data);
+    
+    $totalAmount = match($this->reportType) {
+        'accounting' => $data->sum('price'),
+        'outside' => $data->sum('paid'),
+        'deposit' => $data->sum('price'),
+        'loan' => $data->sum('amount'),
+        'payment' => $data->sum('amount'),
+        'buy' => $data->sum('price'),
+        'sell' => $data->sum('price'),
+        'withdraw_log' => $data->sum('amount'),
+        default => 0
+    };
+    
+    return [
+        'total_count' => $data->count(),
+        'total_amount' => $totalAmount,
+        'currency_totals' => $currencyTotals,
+        'report_type' => $this->getReportTypeLabel(),
+        'current_date' => Jalalian::now()->format('Y/m/d'),
+    ];
+}
+
+/**
+ * محاسبه مجموع مبالغ هر ارز برای تمام انواع گزارش‌ها
+ */
+private function calculateCurrencyTotals($data)
+{
+    $currencyTotals = [];
+    
+    foreach ($data as $item) {
+        $currency = $item->currency ?? 'نامشخص';
         
-        $totalAmount = match($this->reportType) {
-            'accounting' => $data->sum('price'),
-            'outside' => $data->sum('paid'),
-            'deposit' => $data->sum('price'),
-            'loan' => $data->sum('amount'),
-            'payment' => $data->sum('amount'),
-            'buy' => $data->sum('price'),
-            'sell' => $data->sum('price'),
-            'withdraw_log' => $data->sum('amount'),
+        // تعیین فیلد مبلغ بر اساس نوع گزارش
+        $amount = match($this->reportType) {
+            'accounting' => $item->price ?? 0,
+            'outside' => $item->paid ?? 0,
+            'deposit' => $item->price ?? 0,
+            'loan' => $item->amount ?? 0,
+            'payment' => $item->amount ?? 0,
+            'buy' => $item->price ?? 0,
+            'sell' => $item->price ?? 0,
+            'withdraw_log' => $item->amount ?? 0,
             default => 0
         };
         
-        return [
-            'total_count' => $data->count(),
-            'total_amount' => $totalAmount,
-            'report_type' => $this->getReportTypeLabel(),
-            'current_date' => Jalalian::now()->format('Y/m/d'),
-        ];
+        if (!isset($currencyTotals[$currency])) {
+            $currencyTotals[$currency] = 0;
+        }
+        
+        $currencyTotals[$currency] += $amount;
+    }
+    
+    return $currencyTotals;
+}
+    /**
+     * محاسبه مجموع مبالغ هر ارز به صورت جداگانه برای عواید بیرونی
+     */
+    private function calculateOutsideCurrencyTotals($data)
+    {
+        $currencyTotals = [];
+        
+        foreach ($data as $item) {
+            $currency = $item->currency ?? 'نامشخص';
+            $amount = $item->paid ?? 0;
+            
+            if (!isset($currencyTotals[$currency])) {
+                $currencyTotals[$currency] = 0;
+            }
+            
+            $currencyTotals[$currency] += $amount;
+        }
+        
+        return $currencyTotals;
     }
 
     private function getReportTypeLabel()

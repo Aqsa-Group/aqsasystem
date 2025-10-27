@@ -523,12 +523,18 @@
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center gap-2">
-                                                <span class="font-bold text-gray-900">{{ number_format($report->price)
-                                                    }}</span>
-                                                <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">{{
-                                                    $report->currency }}</span>
-                                            </div>
+                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                                @switch($report->currency)
+                                                @case('AFN')
+                                                افغانی
+                                                @break
+                                                @case('USD')
+                                                دالر
+                                                @break
+                                                @default
+                                                {{ $report->currency }}
+                                                @endswitch
+                                            </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ $report->paid_date ?
@@ -580,8 +586,18 @@
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">{{
-                                                $report->currency }}</span>
+                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                                @switch($report->currency)
+                                                @case('AFN')
+                                                افغانی
+                                                @break
+                                                @case('USD')
+                                                دالر
+                                                @break
+                                                @default
+                                                {{ $report->currency }}
+                                                @endswitch
+                                            </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ $report->date ?
@@ -695,8 +711,18 @@
                                                 }}</span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">{{
-                                                $report->currency }}</span>
+                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                                @switch($report->currency)
+                                                @case('AFN')
+                                                افغانی
+                                                @break
+                                                @case('USD')
+                                                دالر
+                                                @break
+                                                @default
+                                                {{ $report->currency }}
+                                                @endswitch
+                                            </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ $report->date ?
@@ -735,8 +761,18 @@
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">{{
-                                                $report->currency }}</span>
+                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                                @switch($report->currency)
+                                                @case('AFN')
+                                                افغانی
+                                                @break
+                                                @case('USD')
+                                                دالر
+                                                @break
+                                                @default
+                                                {{ $report->currency }}
+                                                @endswitch
+                                            </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ $report->created_at ?
