@@ -161,7 +161,7 @@
                                 <td><?php echo e(number_format($report->paid)); ?></td>
                                 <td><?php echo e($report->currency); ?></td>
                                 <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?></td>
-                                <td><?php echo e(Str::limit($report->description ?? '-', 20)); ?></td>
+                                <td><?php echo e(Str::limit($report->description ?? '-', 3000)); ?></td>
                                 <?php break; ?>
                             
                             <?php case ('deposit'): ?>
@@ -200,7 +200,7 @@
                                 <td><?php echo e(number_format($report->amount)); ?></td>
                                 <td><?php echo e($report->currency); ?></td>
                                 <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?></td>
-                                <td><?php echo e(Str::limit($report->description ?? '-', 20)); ?></td>
+                                <td><?php echo e(Str::limit($report->description ?? '-', 3000)); ?></td>
                                 <?php break; ?>
 
                             <?php case ('buy'): ?>
@@ -219,7 +219,7 @@
                                 <td><?php echo e(number_format($report->price)); ?></td>
                                 <td><?php echo e($report->currency); ?></td>
                                 <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?></td>
-                                <td><?php echo e(Str::limit($report->details ?? '-', 20)); ?></td>
+                                <td><?php echo e(Str::limit($report->details ?? '-', 3000)); ?></td>
                                 <?php break; ?>
 
                             <?php case ('withdraw_log'): ?>
@@ -227,7 +227,7 @@
                                 <td><?php echo e($report->recipient_name); ?></td>
                                 <td><?php echo e(number_format($report->amount)); ?></td>
                                 <td><?php echo e($report->currency); ?></td>
-                                <td><?php echo e(Str::limit($report->description ?? '-', 20)); ?></td>
+                                <td><?php echo e(Str::limit($report->description ?? '-', 3000)); ?></td>
                                 <td><?php echo e($report->created_at ? \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-'); ?></td>
                                 <?php break; ?>
                         <?php endswitch; ?>
