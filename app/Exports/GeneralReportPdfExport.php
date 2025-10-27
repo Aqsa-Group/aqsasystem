@@ -64,7 +64,7 @@ class GeneralReportPdfExport
         // تنظیمات ساده‌تر برای mPDF
         return new Mpdf([
             'mode' => 'utf-8',
-            'format' => 'A4-L',
+            'format' => 'A4',
             'default_font_size' => 9,
             'default_font' => 'dejavusanscondensed',
             'margin_left' => 10,
@@ -73,7 +73,6 @@ class GeneralReportPdfExport
             'margin_bottom' => 10,
             'margin_header' => 5,
             'margin_footer' => 5,
-            'orientation' => 'L',
             'autoScriptToLang' => true,
             'autoLangToFont' => true,
         ]);

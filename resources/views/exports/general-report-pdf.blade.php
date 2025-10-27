@@ -161,7 +161,7 @@
                                 <td>{{ number_format($report->paid) }}</td>
                                 <td>{{ $report->currency }}</td>
                                 <td>{{ $report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-' }}</td>
-                                <td>{{ Str::limit($report->description ?? '-', 20) }}</td>
+                                <td>{{ Str::limit($report->description ?? '-', 3000) }}</td>
                                 @break
                             
                             @case('deposit')
@@ -197,7 +197,7 @@
                                 <td>{{ number_format($report->amount) }}</td>
                                 <td>{{ $report->currency }}</td>
                                 <td>{{ $report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-' }}</td>
-                                <td>{{ Str::limit($report->description ?? '-', 20) }}</td>
+                                <td>{{ Str::limit($report->description ?? '-', 3000) }}</td>
                                 @break
 
                             @case('buy')
@@ -216,7 +216,7 @@
                                 <td>{{ number_format($report->price) }}</td>
                                 <td>{{ $report->currency }}</td>
                                 <td>{{ $report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-' }}</td>
-                                <td>{{ Str::limit($report->details ?? '-', 20) }}</td>
+                                <td>{{ Str::limit($report->details ?? '-', 3000) }}</td>
                                 @break
 
                             @case('withdraw_log')
@@ -224,7 +224,7 @@
                                 <td>{{ $report->recipient_name }}</td>
                                 <td>{{ number_format($report->amount) }}</td>
                                 <td>{{ $report->currency }}</td>
-                                <td>{{ Str::limit($report->description ?? '-', 20) }}</td>
+                                <td>{{ Str::limit($report->description ?? '-', 3000) }}</td>
                                 <td>{{ $report->created_at ? \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-' }}</td>
                                 @break
                         @endswitch
