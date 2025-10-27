@@ -817,8 +817,21 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                             <span class="font-bold text-gray-900"><?php echo e(number_format($report->amount)); ?></span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded"><?php echo e($report->currency); ?></span>
+                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
+                                                case ('AFN'): ?>
+                                                افغانی
+                                                <?php break; ?>
+                                                <?php case ('USD'): ?>
+                                                دالر
+                                                <?php break; ?>
+                                                <?php default: ?>
+                                                <?php echo e($report->currency); ?>
+
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
+                                            </span>
                                         </td>
+
                                         <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
                                             <?php echo e($report->description ?? '-'); ?>
 

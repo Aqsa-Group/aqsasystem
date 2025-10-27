@@ -801,9 +801,20 @@
                                                 }}</span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">{{
-                                                $report->currency }}</span>
+                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                                @switch($report->currency)
+                                                @case('AFN')
+                                                افغانی
+                                                @break
+                                                @case('USD')
+                                                دالر
+                                                @break
+                                                @default
+                                                {{ $report->currency }}
+                                                @endswitch
+                                            </span>
                                         </td>
+
                                         <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
                                             {{ $report->description ?? '-' }}
                                         </td>

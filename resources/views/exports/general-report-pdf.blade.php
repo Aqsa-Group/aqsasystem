@@ -77,6 +77,12 @@
             background: #f9f9f9;
         }
 
+        .row-number {
+            background: #e0e0e0;
+            font-weight: bold;
+            width: 25px;
+        }
+
         .footer {
             margin-top: 15px;
             text-align: center;
@@ -109,6 +115,7 @@
     <table>
         <thead>
             <tr>
+                <th class="row-number">#</th>
                 @switch($reportType)
                 @case('accounting')
                 <th>مارکت</th>
@@ -182,8 +189,9 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($data as $report)
+            @foreach($data as $index => $report)
             <tr>
+                <td class="row-number">{{ $index + 1 }}</td>
                 @switch($reportType)
                 @case('accounting')
                 <td>{{ $report->market->name ?? '-' }}</td>
@@ -286,7 +294,7 @@
                     @break
                     @case('USD')
                     دالر
-                    @break
+                    @break 
                     @default
                     {{ $report->currency }}
                     @endswitch
