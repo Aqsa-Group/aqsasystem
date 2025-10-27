@@ -5,4 +5,5 @@ return [
     App\Providers\Filament\AdminPanelProvider::class,
     App\Providers\Filament\ImportPanelProvider::class,
     App\Providers\Filament\MarketPanelProvider::class,
+    Maatwebsite\Excel\ExcelServiceProvider::class,
 ];

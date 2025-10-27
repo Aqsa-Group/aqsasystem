@@ -1,14 +1,16 @@
 /** @type {import('tailwindcss').Config} */
-export default {
-  darkMode:'class',
+module.exports = {
   content: [
-    "./resources/**/*.blade.php",
-    "./resources/**/*.js",
-    "./resources/**/*.vue",
+    './resources/**/*.blade.php',
+    './resources/**/*.js',
+    './vendor/filament/**/*.blade.php',
+    './app/Livewire/**/*.php',
   ],
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+  ],
 }
-
