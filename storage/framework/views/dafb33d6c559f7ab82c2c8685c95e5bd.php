@@ -538,7 +538,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                                             </span>
                                         </td>
-                                           <td class="px-6 py-4 whitespace-nowrap">
+                                        <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
                                                 <!--[if BLOCK]><![endif]--><?php switch($report->currency):
                                                 case ('AFN'): ?>
@@ -603,7 +603,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                                 <span class="font-bold text-gray-900"><?php echo e(number_format($report->paid)); ?></span>
                                             </div>
                                         </td>
-                                          <td class="px-6 py-4 whitespace-nowrap">
+                                        <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
                                                 <!--[if BLOCK]><![endif]--><?php switch($report->currency):
                                                 case ('AFN'): ?>
@@ -730,7 +730,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="font-bold text-gray-900"><?php echo e(number_format($report->amount)); ?></span>
                                         </td>
-                                           <td class="px-6 py-4 whitespace-nowrap">
+                                        <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
                                                 <!--[if BLOCK]><![endif]--><?php switch($report->currency):
                                                 case ('AFN'): ?>
@@ -782,7 +782,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                                 <span class="font-bold text-gray-900"><?php echo e(number_format($report->price)); ?></span>
                                             </div>
                                         </td>
-                                           <td class="px-6 py-4 whitespace-nowrap">
+                                        <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
                                                 <!--[if BLOCK]><![endif]--><?php switch($report->currency):
                                                 case ('AFN'): ?>

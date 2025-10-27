@@ -6,9 +6,10 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, WithStyles
+class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, WithStyles, WithColumnWidths
 {
     protected $data;
     protected $reportType;
@@ -102,6 +103,14 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
 
     public function map($report): array
     {
+        // Translate currency
+        $currency = match($report->currency ?? null) {
+            'AFN' => 'افغانی',
+            'USD' => 'دالر',
+            'EUR' => 'یورو',
+            default => $report->currency ?? '-'
+        };
+
         return match($this->reportType) {
             'accounting' => [
                 $report->market->name ?? '-',
@@ -109,7 +118,7 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
                 $report->shopkeeper->fullname ?? '-',
                 $report->expanses_type,
                 $report->price,
-                $report->currency,
+                $currency,
                 $report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d') : '-',
                 $report->cleared ? 'تسویه شده' : 'در انتظار'
             ],
@@ -118,7 +127,7 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
                 $report->customer_id ? 'مشتری' : ($report->staff_id ? 'کارمند' : ($report->shopkeeper_id ? 'دوکاندار' : 'نامشخص')),
                 $report->customer->fullname ?? $report->staff->fullname ?? $report->shopkeeper->fullname ?? '-',
                 $report->paid,
-                $report->currency,
+                $currency,
                 $report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-',
                 $report->description ?? '-'
             ],
@@ -145,7 +154,7 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
             'payment' => [
                 $report->loan_id,
                 $report->amount,
-                $report->currency,
+                $currency,
                 $report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-',
                 $report->description ?? '-'
             ],
@@ -154,7 +163,7 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
                 $report->customer->fullname ?? '-',
                 $report->property,
                 $report->price,
-                $report->currency,
+                $currency,
                 $report->created_at ? \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-'
             ],
             'sell' => [
@@ -162,7 +171,7 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
                 $report->customer->fullname ?? '-',
                 $report->property,
                 $report->price,
-                $report->currency,
+                $currency,
                 $report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-',
                 $report->details ?? '-'
             ],
@@ -170,7 +179,7 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
                 $report->expanses_type,
                 $report->recipient_name,
                 $report->amount,
-                $report->currency,
+                $currency,
                 $report->description ?? '-',
                 $report->created_at ? \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-'
             ],
@@ -183,8 +192,91 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
         return [
             1 => [
                 'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
-                'fill' => ['fillType' => 'solid', 'startColor' => ['rgb' => '3B82F6']]
+                'fill' => ['fillType' => 'solid', 'startColor' => ['rgb' => '3B82F6']],
+                'alignment' => ['horizontal' => 'center', 'vertical' => 'center']
             ],
+            'A:Z' => [
+                'alignment' => ['horizontal' => 'center', 'vertical' => 'center']
+            ]
         ];
+    }
+
+    public function columnWidths(): array
+    {
+        return match($this->reportType) {
+            'accounting' => [
+                'A' => 15, // مارکت
+                'B' => 10, // نوع
+                'C' => 20, // دوکاندار
+                'D' => 15, // نوع مصرف
+                'E' => 15, // مبلغ
+                'F' => 12, // واحد پول
+                'G' => 15, // تاریخ پرداخت
+                'H' => 12, // وضعیت
+            ],
+            'outside' => [
+                'A' => 15, // مارکت
+                'B' => 12, // نوع شخص
+                'C' => 20, // نام شخص
+                'D' => 15, // مبلغ
+                'E' => 12, // واحد پول
+                'F' => 15, // تاریخ
+                'G' => 25, // توضیحات
+            ],
+            'deposit' => [
+                'A' => 15, // مارکت
+                'B' => 20, // دوکاندار
+                'C' => 15, // نوع هزینه
+                'D' => 15, // مبلغ کل
+                'E' => 15, // پرداخت شده
+                'F' => 15, // باقی مانده
+                'G' => 15, // تاریخ پرداخت
+            ],
+            'loan' => [
+                'A' => 15, // مارکت
+                'B' => 12, // نوع شخص
+                'C' => 20, // نام شخص
+                'D' => 15, // مبلغ اصلی
+                'E' => 15, // پرداخت شده
+                'F' => 15, // باقی مانده
+                'G' => 15, // تاریخ
+            ],
+            'payment' => [
+                'A' => 12, // کد قرضه
+                'B' => 15, // مبلغ پرداخت
+                'C' => 12, // واحد پول
+                'D' => 15, // تاریخ رسید
+                'E' => 25, // توضیحات
+            ],
+            'buy' => [
+                'A' => 15, // مارکت
+                'B' => 20, // فروشنده
+                'C' => 15, // نوع خرید
+                'D' => 15, // قیمت خرید
+                'E' => 12, // واحد پول
+                'F' => 15, // تاریخ ثبت
+            ],
+            'sell' => [
+                'A' => 15, // مارکت
+                'B' => 20, // مشتری
+                'C' => 15, // نوع ملک
+                'D' => 15, // قیمت فروش
+                'E' => 12, // واحد پول
+                'F' => 15, // تاریخ
+                'G' => 25, // جزئیات
+            ],
+            'withdraw_log' => [
+                'A' => 15, // نوع هزینه
+                'B' => 20, // دریافت کننده
+                'C' => 15, // مبلغ
+                'D' => 12, // واحد پول
+                'E' => 25, // توضیحات
+                'F' => 15, // تاریخ ثبت
+            ],
+            default => [
+                'A' => 15, 'B' => 15, 'C' => 15, 'D' => 15, 
+                'E' => 15, 'F' => 15, 'G' => 15, 'H' => 15
+            ]
+        };
     }
 }
