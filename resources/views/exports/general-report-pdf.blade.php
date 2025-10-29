@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html dir="rtl">
-
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>{{ $reportTitle }}</title>
@@ -124,9 +123,14 @@
             border-top: 1px solid #ddd;
             padding-top: 5px;
         }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
     </style>
 </head>
-
 <body>
     <div class="header">
         <h1>{{ $reportTitle }}</h1>
@@ -153,11 +157,11 @@
             <div class="currency-item">
                 <strong>
                     @switch($currency)
-                    @case('AFN') افغانی @break
-                    @case('USD') دالر @break
-                    @default {{ $currency }}
+                        @case('AFN') افغانی @break
+                        @case('USD') دالر @break
+                        @default {{ $currency }}
                     @endswitch
-                </strong>:
+                </strong>: 
                 <span class="currency-amount">{{ number_format($total) }}</span>
             </div>
             @endforeach
@@ -165,7 +169,7 @@
     </div>
     @endif
 
-    @if($data->count() > 0)
+    @if($data && $data->count() > 0)
     <table>
         <thead>
             <tr>
@@ -234,9 +238,15 @@
                 <th>تاریخ</th>
                 <th>جزئیات</th>
                 @break
-
+                @case('withdraw_log')
+                <th>هزینه</th>
+                <th>دریافت کننده</th>
+                <th>مبلغ</th>
+                <th>واحد</th>
+                <th>توضیحات</th>
+                <th>تاریخ</th>
+                @break
                 @case('salary')
-                <th class="row-number">#</th>
                 <th>مارکت</th>
                 <th>کارمند</th>
                 <th>حقوق</th>
@@ -246,34 +256,6 @@
                 <th>واحد</th>
                 <th>تاریخ</th>
                 <th>وضعیت کسر</th>
-                @break
-
-                @case('salary')
-                <td class="row-number">{{ $index + 1 }}</td>
-                <td>{{ $report->market->name ?? '-' }}</td>
-                <td>{{ $report->staff->fullname ?? '-' }}</td>
-                <td>{{ number_format($report->salary) }}</td>
-                <td>{{ number_format($report->paid) }}</td>
-                <td>{{ number_format($report->remained) }}</td>
-                <td>{{ number_format($report->loan) }}</td>
-                <td>
-                    @switch($report->currency)
-                    @case('AFN') افغانی @break
-                    @case('USD') دالر @break
-                    @default {{ $report->currency }}
-                    @endswitch
-                </td>
-                <td>{{ $report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
-                    : '-' }}</td>
-                <td>{{ $report->is_reduce ? 'فعال' : 'غیرفعال' }}</td>
-                @break
-                @case('withdraw_log')
-                <th>هزینه</th>
-                <th>دریافت کننده</th>
-                <th>مبلغ</th>
-                <th>واحد</th>
-                <th>توضیحات</th>
-                <th>تاریخ</th>
                 @break
                 @endswitch
             </tr>
@@ -296,8 +278,7 @@
                     @default {{ $report->currency }}
                     @endswitch
                 </td>
-                <td>{{ $report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
-                    : '-' }}</td>
+                <td>{{ $report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d') : '-' }}</td>
                 <td>{{ $report->cleared ? '✅' : '⏳' }}</td>
                 @break
 
@@ -309,8 +290,7 @@
                     @elseif($report->shopkeeper_id) دوکاندار
                     @else نامشخص @endif
                 </td>
-                <td>{{ $report->customer->fullname ?? $report->staff->fullname ?? $report->shopkeeper->fullname ?? '-'
-                    }}</td>
+                <td>{{ $report->customer->fullname ?? $report->staff->fullname ?? $report->shopkeeper->fullname ?? '-' }}</td>
                 <td>{{ number_format($report->paid) }}</td>
                 <td>
                     @switch($report->currency)
@@ -319,9 +299,8 @@
                     @default {{ $report->currency }}
                     @endswitch
                 </td>
-                <td>{{ $report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-' }}
-                </td>
-                <td>{{ Str::limit($report->description ?? '-', 3000) }}</td>
+                <td>{{ $report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-' }}</td>
+                <td>{{ $report->description ?? '-' }}</td>
                 @break
 
                 @case('deposit')
@@ -338,8 +317,7 @@
                     @default {{ $report->currency }}
                     @endswitch
                 </td>
-                <td>{{ $report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
-                    : '-' }}</td>
+                <td>{{ $report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d') : '-' }}</td>
                 @break
 
                 @case('loan')
@@ -364,8 +342,7 @@
                     @default {{ $report->currency }}
                     @endswitch
                 </td>
-                <td>{{ $report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-' }}
-                </td>
+                <td>{{ $report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-' }}</td>
                 @break
 
                 @case('payment')
@@ -378,9 +355,8 @@
                     @default {{ $report->currency }}
                     @endswitch
                 </td>
-                <td>{{ $report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-' }}
-                </td>
-                <td>{{ Str::limit($report->description ?? '-', 3000) }}</td>
+                <td>{{ $report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-' }}</td>
+                <td>{{ $report->description ?? '-' }}</td>
                 @break
 
                 @case('buy')
@@ -391,12 +367,11 @@
                 <td>
                     @switch($report->currency)
                     @case('AFN') افغانی @break
-                    @case('USD') دالر @break
+                    @case('USD') دالر @break 
                     @default {{ $report->currency }}
                     @endswitch
                 </td>
-                <td>{{ $report->created_at ?
-                    \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-' }}</td>
+                <td>{{ $report->created_at ? \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-' }}</td>
                 @break
 
                 @case('sell')
@@ -411,9 +386,8 @@
                     @default {{ $report->currency }}
                     @endswitch
                 </td>
-                <td>{{ $report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-' }}
-                </td>
-                <td>{{ Str::limit($report->details ?? '-', 3000) }}</td>
+                <td>{{ $report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-' }}</td>
+                <td>{{ $report->details ?? '-' }}</td>
                 @break
 
                 @case('withdraw_log')
@@ -427,17 +401,35 @@
                     @default {{ $report->currency }}
                     @endswitch
                 </td>
-                <td>{{ Str::limit($report->description ?? '-', 3000) }}</td>
-                <td>{{ $report->created_at ?
-                    \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-' }}</td>
+                <td>{{ $report->description ?? '-' }}</td>
+                <td>{{ $report->created_at ? \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-' }}</td>
                 @break
+
+                @case('salary')
+                <td>{{ $report->market->name ?? '-' }}</td>
+                <td>{{ $report->staff->fullname ?? '-' }}</td>
+                <td>{{ number_format($report->salary) }}</td>
+                <td>{{ number_format($report->paid) }}</td>
+                <td>{{ number_format($report->remained) }}</td>
+                <td>{{ number_format($report->loan) }}</td>
+                <td>
+                    @switch($report->currency)
+                    @case('AFN') افغانی @break
+                    @case('USD') دالر @break
+                    @default {{ $report->currency }}
+                    @endswitch
+                </td>
+                <td>{{ $report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d') : '-' }}</td>
+                <td>{{ $report->is_reduce ? 'فعال' : 'غیرفعال' }}</td>
+                @break
+
                 @endswitch
             </tr>
             @endforeach
         </tbody>
     </table>
     @else
-    <div style="text-align: center; padding: 40px; color: #666;">
+    <div class="no-data">
         <h3>داده‌ای برای نمایش وجود ندارد</h3>
         <p>هیچ رکوردی با فیلترهای اعمال شده مطابقت ندارد.</p>
     </div>
@@ -445,8 +437,7 @@
 
     <div class="footer">
         <div>سیستم گزارش‌گیری جامع</div>
-        <div>تعداد: {{ number_format($summary['total_count']) }} | مجموع کل: {{ number_format($summary['total_amount'])
-            }}</div>
+        <div>تعداد: {{ number_format($summary['total_count']) }} | مجموع کل: {{ number_format($summary['total_amount']) }}</div>
         @if(isset($summary['currency_totals']) && count($summary['currency_totals']) > 0)
         <div style="margin-top: 3px;">
             @foreach($summary['currency_totals'] as $currency => $total)
@@ -458,5 +449,4 @@
         @endif
     </div>
 </body>
-
 </html>

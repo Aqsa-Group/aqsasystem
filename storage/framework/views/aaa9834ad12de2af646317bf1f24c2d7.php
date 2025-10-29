@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html dir="rtl">
-
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title><?php echo e($reportTitle); ?></title>
@@ -124,9 +123,14 @@
             border-top: 1px solid #ddd;
             padding-top: 5px;
         }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
     </style>
 </head>
-
 <body>
     <div class="header">
         <h1><?php echo e($reportTitle); ?></h1>
@@ -153,12 +157,12 @@
             <div class="currency-item">
                 <strong>
                     <?php switch($currency):
-                    case ('AFN'): ?> افغانی <?php break; ?>
-                    <?php case ('USD'): ?> دالر <?php break; ?>
-                    <?php default: ?> <?php echo e($currency); ?>
+                        case ('AFN'): ?> افغانی <?php break; ?>
+                        <?php case ('USD'): ?> دالر <?php break; ?>
+                        <?php default: ?> <?php echo e($currency); ?>
 
                     <?php endswitch; ?>
-                </strong>:
+                </strong>: 
                 <span class="currency-amount"><?php echo e(number_format($total)); ?></span>
             </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -166,7 +170,7 @@
     </div>
     <?php endif; ?>
 
-    <?php if($data->count() > 0): ?>
+    <?php if($data && $data->count() > 0): ?>
     <table>
         <thead>
             <tr>
@@ -235,9 +239,15 @@
                 <th>تاریخ</th>
                 <th>جزئیات</th>
                 <?php break; ?>
-
+                <?php case ('withdraw_log'): ?>
+                <th>هزینه</th>
+                <th>دریافت کننده</th>
+                <th>مبلغ</th>
+                <th>واحد</th>
+                <th>توضیحات</th>
+                <th>تاریخ</th>
+                <?php break; ?>
                 <?php case ('salary'): ?>
-                <th class="row-number">#</th>
                 <th>مارکت</th>
                 <th>کارمند</th>
                 <th>حقوق</th>
@@ -247,35 +257,6 @@
                 <th>واحد</th>
                 <th>تاریخ</th>
                 <th>وضعیت کسر</th>
-                <?php break; ?>
-
-                <?php case ('salary'): ?>
-                <td class="row-number"><?php echo e($index + 1); ?></td>
-                <td><?php echo e($report->market->name ?? '-'); ?></td>
-                <td><?php echo e($report->staff->fullname ?? '-'); ?></td>
-                <td><?php echo e(number_format($report->salary)); ?></td>
-                <td><?php echo e(number_format($report->paid)); ?></td>
-                <td><?php echo e(number_format($report->remained)); ?></td>
-                <td><?php echo e(number_format($report->loan)); ?></td>
-                <td>
-                    <?php switch($report->currency):
-                    case ('AFN'): ?> افغانی <?php break; ?>
-                    <?php case ('USD'): ?> دالر <?php break; ?>
-                    <?php default: ?> <?php echo e($report->currency); ?>
-
-                    <?php endswitch; ?>
-                </td>
-                <td><?php echo e($report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
-                    : '-'); ?></td>
-                <td><?php echo e($report->is_reduce ? 'فعال' : 'غیرفعال'); ?></td>
-                <?php break; ?>
-                <?php case ('withdraw_log'): ?>
-                <th>هزینه</th>
-                <th>دریافت کننده</th>
-                <th>مبلغ</th>
-                <th>واحد</th>
-                <th>توضیحات</th>
-                <th>تاریخ</th>
                 <?php break; ?>
                 <?php endswitch; ?>
             </tr>
@@ -299,8 +280,7 @@
 
                     <?php endswitch; ?>
                 </td>
-                <td><?php echo e($report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
-                    : '-'); ?></td>
+                <td><?php echo e($report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d') : '-'); ?></td>
                 <td><?php echo e($report->cleared ? '✅' : '⏳'); ?></td>
                 <?php break; ?>
 
@@ -322,10 +302,8 @@
 
                     <?php endswitch; ?>
                 </td>
-                <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
-
-                </td>
-                <td><?php echo e(Str::limit($report->description ?? '-', 3000)); ?></td>
+                <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?></td>
+                <td><?php echo e($report->description ?? '-'); ?></td>
                 <?php break; ?>
 
                 <?php case ('deposit'): ?>
@@ -343,8 +321,7 @@
 
                     <?php endswitch; ?>
                 </td>
-                <td><?php echo e($report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
-                    : '-'); ?></td>
+                <td><?php echo e($report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d') : '-'); ?></td>
                 <?php break; ?>
 
                 <?php case ('loan'): ?>
@@ -373,9 +350,7 @@
 
                     <?php endswitch; ?>
                 </td>
-                <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
-
-                </td>
+                <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?></td>
                 <?php break; ?>
 
                 <?php case ('payment'): ?>
@@ -389,10 +364,8 @@
 
                     <?php endswitch; ?>
                 </td>
-                <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
-
-                </td>
-                <td><?php echo e(Str::limit($report->description ?? '-', 3000)); ?></td>
+                <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?></td>
+                <td><?php echo e($report->description ?? '-'); ?></td>
                 <?php break; ?>
 
                 <?php case ('buy'): ?>
@@ -403,13 +376,12 @@
                 <td>
                     <?php switch($report->currency):
                     case ('AFN'): ?> افغانی <?php break; ?>
-                    <?php case ('USD'): ?> دالر <?php break; ?>
+                    <?php case ('USD'): ?> دالر <?php break; ?> 
                     <?php default: ?> <?php echo e($report->currency); ?>
 
                     <?php endswitch; ?>
                 </td>
-                <td><?php echo e($report->created_at ?
-                    \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-'); ?></td>
+                <td><?php echo e($report->created_at ? \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-'); ?></td>
                 <?php break; ?>
 
                 <?php case ('sell'): ?>
@@ -425,10 +397,8 @@
 
                     <?php endswitch; ?>
                 </td>
-                <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
-
-                </td>
-                <td><?php echo e(Str::limit($report->details ?? '-', 3000)); ?></td>
+                <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?></td>
+                <td><?php echo e($report->details ?? '-'); ?></td>
                 <?php break; ?>
 
                 <?php case ('withdraw_log'): ?>
@@ -443,17 +413,36 @@
 
                     <?php endswitch; ?>
                 </td>
-                <td><?php echo e(Str::limit($report->description ?? '-', 3000)); ?></td>
-                <td><?php echo e($report->created_at ?
-                    \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-'); ?></td>
+                <td><?php echo e($report->description ?? '-'); ?></td>
+                <td><?php echo e($report->created_at ? \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-'); ?></td>
                 <?php break; ?>
+
+                <?php case ('salary'): ?>
+                <td><?php echo e($report->market->name ?? '-'); ?></td>
+                <td><?php echo e($report->staff->fullname ?? '-'); ?></td>
+                <td><?php echo e(number_format($report->salary)); ?></td>
+                <td><?php echo e(number_format($report->paid)); ?></td>
+                <td><?php echo e(number_format($report->remained)); ?></td>
+                <td><?php echo e(number_format($report->loan)); ?></td>
+                <td>
+                    <?php switch($report->currency):
+                    case ('AFN'): ?> افغانی <?php break; ?>
+                    <?php case ('USD'): ?> دالر <?php break; ?>
+                    <?php default: ?> <?php echo e($report->currency); ?>
+
+                    <?php endswitch; ?>
+                </td>
+                <td><?php echo e($report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d') : '-'); ?></td>
+                <td><?php echo e($report->is_reduce ? 'فعال' : 'غیرفعال'); ?></td>
+                <?php break; ?>
+
                 <?php endswitch; ?>
             </tr>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </tbody>
     </table>
     <?php else: ?>
-    <div style="text-align: center; padding: 40px; color: #666;">
+    <div class="no-data">
         <h3>داده‌ای برای نمایش وجود ندارد</h3>
         <p>هیچ رکوردی با فیلترهای اعمال شده مطابقت ندارد.</p>
     </div>
@@ -474,5 +463,4 @@
         <?php endif; ?>
     </div>
 </body>
-
 </html><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/exports/general-report-pdf.blade.php ENDPATH**/ ?>
