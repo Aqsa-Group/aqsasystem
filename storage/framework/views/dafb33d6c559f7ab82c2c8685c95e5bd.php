@@ -34,9 +34,9 @@
                     $reportTypes = [
                     'withdraw_log' => ['icon' => 'fa-solid fa-arrow-up-from-bracket', 'label' => 'برداشت‌ها', 'color' =>
                     'pink'],
-                    'salary' => ['icon' => 'fa-solid fa-money-check-dollar', 'label' => 'معاش کارمندان', 'color' => 'amber'],
                     'outside' => ['icon' => 'fa-solid fa-money-bill', 'label' => 'عواید بیرونی', 'color' => 'green'],
                     'accounting' => ['icon' => 'fa-solid fa-file-invoice', 'label' => 'حسابداری', 'color' => 'blue'],
+                    'salary' => ['icon' => 'fa-solid fa-money-check-dollar', 'label' => 'معاش کارمندان', 'color' => 'amber'],
                     'deposit' => ['icon' => 'fa-solid fa-hourglass-half', 'label' => 'تسویه نشده', 'color' => 'orange'],
                     'loan' => ['icon' => 'fa-solid fa-bank', 'label' => 'بردگی‌ها', 'color' => 'red'],
                     'payment' => ['icon' => 'fa-solid fa-receipt', 'label' => 'رسیدها', 'color' => 'purple'],
