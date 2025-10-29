@@ -34,6 +34,7 @@
                     $reportTypes = [
                     'withdraw_log' => ['icon' => 'fa-solid fa-arrow-up-from-bracket', 'label' => 'برداشت‌ها', 'color' =>
                     'pink'],
+                    'salary' => ['icon' => 'fa-solid fa-money-check-dollar', 'label' => 'معاش کارمندان', 'color' => 'amber'],
                     'outside' => ['icon' => 'fa-solid fa-money-bill', 'label' => 'عواید بیرونی', 'color' => 'green'],
                     'accounting' => ['icon' => 'fa-solid fa-file-invoice', 'label' => 'حسابداری', 'color' => 'blue'],
                     'deposit' => ['icon' => 'fa-solid fa-hourglass-half', 'label' => 'تسویه نشده', 'color' => 'orange'],
@@ -148,6 +149,20 @@
                                         <option value="">همه دوکان‌ها</option>
                                         <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $shops; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $number): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($id); ?>"><?php echo e($number); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                    </select>
+                                </div>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
+
+                                <!--[if BLOCK]><![endif]--><?php if(in_array($reportType, ['salary'])): ?>
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">کارمند</label>
+                                    <select wire:model.live="staffId"
+                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
+                                        <option value="">همه کارمندان</option>
+                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $staffs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($id); ?>"><?php echo e($name); ?></option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                     </select>
                                 </div>
@@ -368,6 +383,36 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             توضیحات</th>
+                                        <?php break; ?>
+
+                                        <?php case ('salary'): ?>
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            مارکت</th>
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            کارمند</th>
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            حقوق</th>
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            پرداخت شده</th>
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            باقی مانده</th>
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            قرضه</th>
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            واحد پول</th>
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            تاریخ پرداخت</th>
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            وضعیت کسر</th>
                                         <?php break; ?>
 
                                         <?php case ('deposit'): ?>
@@ -626,6 +671,57 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                         <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
                                             <?php echo e($report->description ?? '-'); ?>
 
+                                        </td>
+                                        <?php break; ?>
+
+                                        <?php case ('salary'): ?>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
+                                                    <span class="text-amber-600 text-sm">🏪</span>
+                                                </div>
+                                                <span class="font-medium text-gray-900"><?php echo e($report->market->name ?? '-'); ?></span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                            <?php echo e($report->staff->fullname ?? '-'); ?>
+
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="font-bold text-gray-900"><?php echo e(number_format($report->salary)); ?></span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="font-bold text-green-600"><?php echo e(number_format($report->paid)); ?></span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="font-bold text-red-600"><?php echo e(number_format($report->remained)); ?></span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="font-bold text-purple-600"><?php echo e(number_format($report->loan)); ?></span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
+                                                case ('AFN'): ?> افغانی <?php break; ?>
+                                                <?php case ('USD'): ?> دالر <?php break; ?>
+                                                <?php default: ?> <?php echo e($report->currency); ?>
+
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <?php echo e($report->paid_date ?
+                                            \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
+                                            : '-'); ?>
+
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium <?php echo e($report->is_reduce ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'); ?>">
+                                                <?php echo e($report->is_reduce ? 'فعال' : 'غیرفعال'); ?>
+
+                                            </span>
                                         </td>
                                         <?php break; ?>
 

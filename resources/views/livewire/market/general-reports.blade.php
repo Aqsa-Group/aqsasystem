@@ -36,6 +36,7 @@
                     'pink'],
                     'outside' => ['icon' => 'fa-solid fa-money-bill', 'label' => 'عواید بیرونی', 'color' => 'green'],
                     'accounting' => ['icon' => 'fa-solid fa-file-invoice', 'label' => 'حسابداری', 'color' => 'blue'],
+                    'salary' => ['icon' => 'fa-solid fa-money-check-dollar', 'label' => 'معاش کارمندان', 'color' => 'amber'],
                     'deposit' => ['icon' => 'fa-solid fa-hourglass-half', 'label' => 'تسویه نشده', 'color' => 'orange'],
                     'loan' => ['icon' => 'fa-solid fa-bank', 'label' => 'بردگی‌ها', 'color' => 'red'],
                     'payment' => ['icon' => 'fa-solid fa-receipt', 'label' => 'رسیدها', 'color' => 'purple'],
@@ -148,6 +149,20 @@
                                         <option value="">همه دوکان‌ها</option>
                                         @foreach($shops as $id => $number)
                                         <option value="{{ $id }}">{{ $number }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @endif
+
+
+                                @if(in_array($reportType, ['salary']))
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">کارمند</label>
+                                    <select wire:model.live="staffId"
+                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
+                                        <option value="">همه کارمندان</option>
+                                        @foreach($staffs as $id => $name)
+                                        <option value="{{ $id }}">{{ $name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -354,6 +369,36 @@
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             توضیحات</th>
+                                        @break
+
+                                        @case('salary')
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            مارکت</th>
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            کارمند</th>
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            حقوق</th>
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            پرداخت شده</th>
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            باقی مانده</th>
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            قرضه</th>
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            واحد پول</th>
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            تاریخ پرداخت</th>
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            وضعیت کسر</th>
                                         @break
 
                                         @case('deposit')
@@ -606,6 +651,58 @@
                                         </td>
                                         <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
                                             {{ $report->description ?? '-' }}
+                                        </td>
+                                        @break
+
+                                        @case('salary')
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
+                                                    <span class="text-amber-600 text-sm">🏪</span>
+                                                </div>
+                                                <span class="font-medium text-gray-900">{{ $report->market->name ?? '-'
+                                                    }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                            {{ $report->staff->fullname ?? '-' }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="font-bold text-gray-900">{{ number_format($report->salary)
+                                                }}</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="font-bold text-green-600">{{ number_format($report->paid)
+                                                }}</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="font-bold text-red-600">{{ number_format($report->remained)
+                                                }}</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="font-bold text-purple-600">{{ number_format($report->loan)
+                                                }}</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                                @switch($report->currency)
+                                                @case('AFN') افغانی @break
+                                                @case('USD') دالر @break
+                                                @default {{ $report->currency }}
+                                                @endswitch
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {{ $report->paid_date ?
+                                            \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
+                                            : '-' }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ $report->is_reduce ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
+                                                {{ $report->is_reduce ? 'فعال' : 'غیرفعال' }}
+                                            </span>
                                         </td>
                                         @break
 

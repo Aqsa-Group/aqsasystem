@@ -9,6 +9,7 @@ use App\Models\Market\Outside;
 use App\Models\Market\Deposit;
 use App\Models\Market\Loan;
 use App\Models\Market\Payment;
+use App\Models\Market\Salary;
 use App\Models\Market\Buy;
 use App\Models\Market\Sell;
 use App\Models\Market\WithdrawLog;
@@ -48,6 +49,7 @@ class GeneralReports extends Component
     public $search = '';
     public $amountMin;
     public $amountMax;
+    
 
     protected $queryString = [
         'reportType' => ['except' => 'accounting'],
@@ -258,6 +260,9 @@ class GeneralReports extends Component
                 case 'accounting':
                     $query = $this->buildAccountingQuery();
                     break;
+                case 'salary':
+                $query = $this->buildSalaryQuery();
+                break;
                 case 'outside':
                     $query = $this->buildOutsideQuery();
                     break;
@@ -315,6 +320,25 @@ class GeneralReports extends Component
         
         return $query;
     }
+
+    // اضافه کردن متد buildSalaryQuery
+private function buildSalaryQuery()
+{
+    return Salary::with(['market', 'staff', 'loan'])
+        ->when($this->marketId, fn($q) => $q->where('market_id', $this->marketId))
+        ->when($this->staffId, fn($q) => $q->where('staff_id', $this->staffId))
+        ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
+        ->when($this->startDate, fn($q) => $q->whereDate('paid_date', '>=', $this->startDate))
+        ->when($this->endDate, fn($q) => $q->whereDate('paid_date', '<=', $this->endDate))
+        ->when($this->amountMin, fn($q) => $q->where('salary', '>=', $this->amountMin))
+        ->when($this->amountMax, fn($q) => $q->where('salary', '<=', $this->amountMax))
+        ->when($this->search, function($q) {
+            $q->whereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
+              ->orWhereHas('market', fn($q2) => $q2->where('name', 'like', "%{$this->search}%"));
+        })
+        ->orderBy('created_at', 'desc');
+}
+
 
     private function buildAccountingQuery()
     {
@@ -549,6 +573,7 @@ class GeneralReports extends Component
     $totalAmount = match($this->reportType) {
         'accounting' => $data->sum('price'),
         'outside' => $data->sum('paid'),
+        'salary' => $data->sum('salary'),
         'deposit' => $data->sum('price'),
         'loan' => $data->sum('amount'),
         'payment' => $data->sum('amount'),
@@ -582,6 +607,7 @@ private function calculateCurrencyTotals($data)
             'accounting' => $item->price ?? 0,
             'outside' => $item->paid ?? 0,
             'deposit' => $item->price ?? 0,
+             'salary' => $item->salary ?? 0,
             'loan' => $item->amount ?? 0,
             'payment' => $item->amount ?? 0,
             'buy' => $item->price ?? 0,
@@ -625,6 +651,7 @@ private function calculateCurrencyTotals($data)
         $types = [
             'accounting' => 'حسابداری',
             'outside' => 'عواید بیرونی',
+            'salary' => 'معاش کارمندان',
             'deposit' => 'تسویه نشده‌ها',
             'loan' => 'بردگی‌ها',
             'payment' => 'رسیدها',

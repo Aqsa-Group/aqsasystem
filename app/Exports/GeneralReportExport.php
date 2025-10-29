@@ -28,6 +28,18 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
     public function headings(): array
     {
         return match($this->reportType) {
+            
+            'salary' => [
+            'مارکت',
+            'کارمند',
+            'حقوق',
+            'پرداخت شده', 
+            'باقی مانده',
+            'قرضه',
+            'واحد پول',
+            'تاریخ پرداخت',
+            'وضعیت کسر'
+        ],
             'accounting' => [
                 'مارکت',
                 'نوع',
@@ -38,6 +50,8 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
                 'تاریخ پرداخت',
                 'وضعیت'
             ],
+
+            
             'outside' => [
                 'مارکت',
                 'نوع شخص',
@@ -122,6 +136,18 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
                 $report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d') : '-',
                 $report->cleared ? 'تسویه شده' : 'در انتظار'
             ],
+
+                    'salary' => [
+            $report->market->name ?? '-',
+            $report->staff->fullname ?? '-',
+            $report->salary,
+            $report->paid,
+            $report->remained,
+            $report->loan,
+            $currency,
+            $report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d') : '-',
+            $report->is_reduce ? 'فعال' : 'غیرفعال'
+        ],
             'outside' => [
                 $report->market->name ?? '-',
                 $report->customer_id ? 'مشتری' : ($report->staff_id ? 'کارمند' : ($report->shopkeeper_id ? 'دوکاندار' : 'نامشخص')),
@@ -214,6 +240,17 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
                 'G' => 15, // تاریخ پرداخت
                 'H' => 12, // وضعیت
             ],
+            'salary' => [
+            'A' => 15, // مارکت
+            'B' => 20, // کارمند
+            'C' => 15, // حقوق
+            'D' => 15, // پرداخت شده
+            'E' => 15, // باقی مانده
+            'F' => 15, // قرضه
+            'G' => 12, // واحد پول
+            'H' => 15, // تاریخ پرداخت
+            'I' => 12, // وضعیت کسر
+        ],
             'outside' => [
                 'A' => 15, // مارکت
                 'B' => 12, // نوع شخص

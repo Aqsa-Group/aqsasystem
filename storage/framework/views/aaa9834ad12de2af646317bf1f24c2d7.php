@@ -153,12 +153,12 @@
             <div class="currency-item">
                 <strong>
                     <?php switch($currency):
-                        case ('AFN'): ?> افغانی <?php break; ?>
-                        <?php case ('USD'): ?> دالر <?php break; ?>
-                        <?php default: ?> <?php echo e($currency); ?>
+                    case ('AFN'): ?> افغانی <?php break; ?>
+                    <?php case ('USD'): ?> دالر <?php break; ?>
+                    <?php default: ?> <?php echo e($currency); ?>
 
                     <?php endswitch; ?>
-                </strong>: 
+                </strong>:
                 <span class="currency-amount"><?php echo e(number_format($total)); ?></span>
             </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -235,6 +235,40 @@
                 <th>تاریخ</th>
                 <th>جزئیات</th>
                 <?php break; ?>
+
+                <?php case ('salary'): ?>
+                <th class="row-number">#</th>
+                <th>مارکت</th>
+                <th>کارمند</th>
+                <th>حقوق</th>
+                <th>پرداخت شده</th>
+                <th>باقی مانده</th>
+                <th>قرضه</th>
+                <th>واحد</th>
+                <th>تاریخ</th>
+                <th>وضعیت کسر</th>
+                <?php break; ?>
+
+                <?php case ('salary'): ?>
+                <td class="row-number"><?php echo e($index + 1); ?></td>
+                <td><?php echo e($report->market->name ?? '-'); ?></td>
+                <td><?php echo e($report->staff->fullname ?? '-'); ?></td>
+                <td><?php echo e(number_format($report->salary)); ?></td>
+                <td><?php echo e(number_format($report->paid)); ?></td>
+                <td><?php echo e(number_format($report->remained)); ?></td>
+                <td><?php echo e(number_format($report->loan)); ?></td>
+                <td>
+                    <?php switch($report->currency):
+                    case ('AFN'): ?> افغانی <?php break; ?>
+                    <?php case ('USD'): ?> دالر <?php break; ?>
+                    <?php default: ?> <?php echo e($report->currency); ?>
+
+                    <?php endswitch; ?>
+                </td>
+                <td><?php echo e($report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
+                    : '-'); ?></td>
+                <td><?php echo e($report->is_reduce ? 'فعال' : 'غیرفعال'); ?></td>
+                <?php break; ?>
                 <?php case ('withdraw_log'): ?>
                 <th>هزینه</th>
                 <th>دریافت کننده</th>
@@ -265,7 +299,8 @@
 
                     <?php endswitch; ?>
                 </td>
-                <td><?php echo e($report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d') : '-'); ?></td>
+                <td><?php echo e($report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
+                    : '-'); ?></td>
                 <td><?php echo e($report->cleared ? '✅' : '⏳'); ?></td>
                 <?php break; ?>
 
@@ -287,7 +322,9 @@
 
                     <?php endswitch; ?>
                 </td>
-                <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?></td>
+                <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
+
+                </td>
                 <td><?php echo e(Str::limit($report->description ?? '-', 3000)); ?></td>
                 <?php break; ?>
 
@@ -306,7 +343,8 @@
 
                     <?php endswitch; ?>
                 </td>
-                <td><?php echo e($report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d') : '-'); ?></td>
+                <td><?php echo e($report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
+                    : '-'); ?></td>
                 <?php break; ?>
 
                 <?php case ('loan'): ?>
@@ -335,7 +373,9 @@
 
                     <?php endswitch; ?>
                 </td>
-                <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?></td>
+                <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
+
+                </td>
                 <?php break; ?>
 
                 <?php case ('payment'): ?>
@@ -349,7 +389,9 @@
 
                     <?php endswitch; ?>
                 </td>
-                <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?></td>
+                <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
+
+                </td>
                 <td><?php echo e(Str::limit($report->description ?? '-', 3000)); ?></td>
                 <?php break; ?>
 
@@ -361,12 +403,13 @@
                 <td>
                     <?php switch($report->currency):
                     case ('AFN'): ?> افغانی <?php break; ?>
-                    <?php case ('USD'): ?> دالر <?php break; ?> 
+                    <?php case ('USD'): ?> دالر <?php break; ?>
                     <?php default: ?> <?php echo e($report->currency); ?>
 
                     <?php endswitch; ?>
                 </td>
-                <td><?php echo e($report->created_at ? \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-'); ?></td>
+                <td><?php echo e($report->created_at ?
+                    \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-'); ?></td>
                 <?php break; ?>
 
                 <?php case ('sell'): ?>
@@ -382,7 +425,9 @@
 
                     <?php endswitch; ?>
                 </td>
-                <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?></td>
+                <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
+
+                </td>
                 <td><?php echo e(Str::limit($report->details ?? '-', 3000)); ?></td>
                 <?php break; ?>
 
@@ -399,7 +444,8 @@
                     <?php endswitch; ?>
                 </td>
                 <td><?php echo e(Str::limit($report->description ?? '-', 3000)); ?></td>
-                <td><?php echo e($report->created_at ? \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-'); ?></td>
+                <td><?php echo e($report->created_at ?
+                    \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-'); ?></td>
                 <?php break; ?>
                 <?php endswitch; ?>
             </tr>
@@ -427,41 +473,6 @@
         </div>
         <?php endif; ?>
     </div>
-
-    <!-- نمایش موجودی هر ارز بر اساس ادمین -->
-<?php if(isset($summary['admin_balances']) && count($summary['admin_balances']) > 0): ?>
-<div class="admin-balance-summary" style="margin: 15px 0; padding: 10px; background: #e3f2fd; border-radius: 5px; border-right: 3px solid #2196f3;">
-    <h4 style="margin: 0 0 8px 0; font-size: 11px; color: #0d47a1; text-align: center;">💰 موجودی هر ارز بر اساس ادمین</h4>
-    
-    <?php $__currentLoopData = $summary['admin_balances']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $adminId => $currencies): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-    <?php $admin = $currencies->first()->admin ?? null; ?>
-    <div style="margin: 8px 0; padding: 8px; background: white; border-radius: 4px; border: 1px solid #bbdefb;">
-        <div style="font-weight: bold; font-size: 9px; color: #1565c0; margin-bottom: 5px;">
-            🏢 ادمین: <?php echo e($admin->name ?? 'ادمین ناشناس'); ?> (<?php echo e($admin->email ?? 'بدون ایمیل'); ?>)
-        </div>
-        <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 8px;">
-            <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyBalance): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <div style="background: #e8f5e8; padding: 4px 8px; border-radius: 3px; border: 1px solid #c8e6c9;">
-                <strong>
-                    <?php switch($currencyBalance->currency):
-                        case ('AFN'): ?> افغانی <?php break; ?>
-                        <?php case ('USD'): ?> دالر <?php break; ?>
-                        <?php default: ?> <?php echo e($currencyBalance->currency); ?>
-
-                    <?php endswitch; ?>
-                </strong>: 
-                <span style="font-weight: bold; color: #1b5e20;">
-                    <?php echo e(number_format($currencyBalance->total_remained)); ?>
-
-                </span>
-            </div>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        </div>
-    </div>
-    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-</div>
-<?php endif; ?>
-
-    
 </body>
+
 </html><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/exports/general-report-pdf.blade.php ENDPATH**/ ?>
