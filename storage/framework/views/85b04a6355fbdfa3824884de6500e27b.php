@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="{{ session('locale', config('app.locale')) }}" dir="{{ session('locale') === 'en' ? 'ltr' : 'rtl' }}">
+<html lang="<?php echo e(session('locale', config('app.locale'))); ?>" dir="<?php echo e(session('locale') === 'en' ? 'ltr' : 'rtl'); ?>">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سیستم ابزارآلات اقصی</title>
-    @include('Sarafi.layouts.links')
+    <?php echo $__env->make('Sarafi.layouts.links', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     <style>
         /* لودر تمام صفحه فوق العاده زیبا */
@@ -308,11 +308,11 @@
                 <div class="spinner spinner-2"></div>
                 <div class="spinner spinner-3"></div>
                 <div class="logo-loader">
-                    <span>{{ mb_substr(Auth::guard('tools')->user()->company_name, 0, 1) }}</span>
+                    <span><?php echo e(mb_substr(Auth::guard('tools')->user()->company_name, 0, 1)); ?></span>
                 </div>
             </div>
 
-            <div class="loader-text">فروشگاه {{ Auth::guard('tools')->user()->company_name }}</div>
+            <div class="loader-text">فروشگاه <?php echo e(Auth::guard('tools')->user()->company_name); ?></div>
             <div class="loader-subtext">در حال بارگذاری...</div>
 
             <div class="progress-bar">
@@ -326,8 +326,8 @@
         <header
             class="bg-white w-full h-[80px] flex items-center justify-between px-6 shadow-[0_4px_4px_rgba(32,41,199,0.4)]">
             <div class="flex items-center space-x-4 rtl:space-x-reverse gap-6 justify-center ">
-                <div class="text-[40px] text-[#353e73] font-bold amiri"> شرکت {{
-                    Auth::guard('tools')->user()->company_name }}
+                <div class="text-[40px] text-[#353e73] font-bold amiri"> شرکت <?php echo e(Auth::guard('tools')->user()->company_name); ?>
+
                 </div>
             </div>
 
@@ -338,15 +338,15 @@
             <!-- سرچ، اعلان، پروفایل -->
             <div class="flex items-center space-x-4 gap-1  pl-10 rtl:space-x-reverse">
                 <div class="relative">
-                    <input type="text" placeholder="{{ __('messages.search_placeholder') }}"
+                    <input type="text" placeholder="<?php echo e(__('messages.search_placeholder')); ?>"
                         class="border border-[#8C8C8C] placeholder:text-black vazir rounded-2xl px-3 py-3 pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
+                    <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
                         class="h-7 w-7 absolute left-2 bottom-3">
                 </div>
 
                 <button
                     class="relative flex items-center justify-center w-[50px] h-[50px] rounded-[25px] bg-[#E5E5E5] hover:bg-gray-300 transition">
-                    <img src="{{ asset('assets/sarafi/all_icon/bill-header.svg') }}" alt="اعلان" class="w-7 h-7">
+                    <img src="<?php echo e(asset('assets/sarafi/all_icon/bill-header.svg')); ?>" alt="اعلان" class="w-7 h-7">
                     <span
                         class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
                 </button>
@@ -354,7 +354,7 @@
                 <div class="relative">
                     <div id="profileBtn"
                         class="w-[70px] h-[70px] rounded-full border  overflow-hidden flex items-center justify-center cursor-pointer transition">
-                        <img src="{{ asset('assets/tools/man.png') }}" alt="پروفایل"
+                        <img src="<?php echo e(asset('assets/tools/man.png')); ?>" alt="پروفایل"
                             class="w-[50px] h-[50px] object-cover">
                     </div>
 
@@ -364,23 +364,22 @@
 
                         <div class="p-3 border-b space-y-5">
                             <div class="flex flex-col justify-center items-center ">
-                                <img src="{{ asset('assets/tools/man.png') }}" alt="" class="h-20 w-20">
-                                <p class="font-vazir font-semibold text-gray-700 mt-5">{{
-                                    Auth::guard('tools')->user()->name }}</p>
+                                <img src="<?php echo e(asset('assets/tools/man.png')); ?>" alt="" class="h-20 w-20">
+                                <p class="font-vazir font-semibold text-gray-700 mt-5"><?php echo e(Auth::guard('tools')->user()->name); ?></p>
 
                             </div>
 
                         </div>
                         <div class="flex justify-start items-center  ">
-                            <img src="{{ asset('assets/sarafi/all_icon/account_profile.svg') }}" alt="">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/account_profile.svg')); ?>" alt="">
 
-                            <a href="{{ route('tools.users') }}" class="block px-4 py-2 text-gray-700 vazir">تنظیمات</a>
+                            <a href="<?php echo e(route('tools.users')); ?>" class="block px-4 py-2 text-gray-700 vazir">تنظیمات</a>
                         </div>
 
-                        <form action="{{ route('tools.logout') }}" method="POST">
-                            @csrf
+                        <form action="<?php echo e(route('tools.logout')); ?>" method="POST">
+                            <?php echo csrf_field(); ?>
                             <div class="flex justify-start items-center">
-                                <img src="{{ asset('assets/sarafi/all_icon/logout.svg') }}" alt="">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/logout.svg')); ?>" alt="">
                                 <button type="submit" class="px-4 py-2 text-gray-700 vazir">
                                     خروج از حساب
                                 </button>
@@ -400,40 +399,42 @@
                         customers: false,
                         accounting: false
                     },
-                    active: '{{ Route::currentRouteName() }}' // همواره با route فعلی هماهنگ
+                    active: '<?php echo e(Route::currentRouteName()); ?>' // همواره با route فعلی هماهنگ
                 }">
 
                     <!-- داشبورد -->
-                    <a href="{{ route('tools.home') }}"
+                    <a href="<?php echo e(route('tools.home')); ?>"
                         class="nav-link flex items-center justify-between py-4 px-5 rounded-lg transition vazir text-[16px]"
-                        @click="active = '{{ Route::currentRouteName() }}'"
+                        @click="active = '<?php echo e(Route::currentRouteName()); ?>'"
                         :class="active === 'tools.home' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'">
                         <span class="flex items-center gap-3">
-                            <img src="{{ asset('assets/sarafi/all_icon/element-3.svg') }}" class="w-6 h-6"
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/element-3.svg')); ?>" class="w-6 h-6"
                                 :class="active === 'tools.home' ? 'filter invert brightness-0' : 'text-gray-500' ">
-                            {{ __('messages.dashboard') }}
+                            <?php echo e(__('messages.dashboard')); ?>
+
                         </span>
                     </a>
 
                     <!-- کاربران -->
-                    <a href="{{ route('tools.users') }}"
+                    <a href="<?php echo e(route('tools.users')); ?>"
                         class="nav-link flex items-center justify-between py-4 px-5 rounded-lg transition vazir dark:text-white text-[16px]"
                         @click="active = 'tools.users'"
                         :class="active === 'tools.users' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'">
                         <span class="flex items-center gap-3">
-                            <img src="{{ asset('assets/sarafi/all_icon/profile-2user.svg') }}" class="w-6 h-6"
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/profile-2user.svg')); ?>" class="w-6 h-6"
                                 :class="active === 'tools.users' ? 'filter invert brightness-0' : 'text-gray-500' ">
-                            {{ __('messages.users') }}
+                            <?php echo e(__('messages.users')); ?>
+
                         </span>
                     </a>
 
                     <!-- کارمندان -->
-                    <a href="{{ route('tools.staff') }}"
+                    <a href="<?php echo e(route('tools.staff')); ?>"
                         class="nav-link flex items-center justify-between py-4 px-5 rounded-lg transition vazir dark:text-white text-[16px]"
                         @click="active = 'tools.staff'"
                         :class="active === 'tools.staff' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'">
                         <span class="flex items-center gap-3">
-                            <img src="{{ asset('assets/sarafi/all_icon/tag-user.svg') }}" class="w-7 h-6"
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/tag-user.svg')); ?>" class="w-7 h-6"
                                 :class="active === 'tools.staff' ? 'filter invert brightness-0' : 'text-gray-500' ">
                             ثبت کارمندان
                         </span>
@@ -445,9 +446,10 @@
                             :class="active.startsWith('tools.customer') ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'"
                             class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
                             <span class="flex items-center gap-3">
-                                <img src="{{ asset('assets/sarafi/all_icon/people.svg') }}" class="w-6 h-6"
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/people.svg')); ?>" class="w-6 h-6"
                                     :class="active.startsWith('tools.customer') ? 'filter invert brightness-0' : 'text-gray-500'">
-                                {{ __('messages.customers') }}
+                                <?php echo e(__('messages.customers')); ?>
+
                             </span>
                             <svg :class="[openItems.customers ? 'rotate-180' : '', active.startsWith('tools.customer') ? 'text-white' : 'text-gray-500']"
                                 class="w-5 h-5 transition-transform" fill="none" stroke="currentColor"
@@ -458,22 +460,24 @@
                         </button>
 
                         <div x-show="openItems.customers" x-transition class="mr-7 mt-2 space-y-2">
-                            <a href="{{ route('tools.customer-create') }}"
+                            <a href="<?php echo e(route('tools.customer-create')); ?>"
                                 class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir"
                                 @click="active = 'tools.customer-create'"
                                 :class="active === 'tools.customer-create' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'">
                                 <i class="fa-solid fa-user-pen w-5 h-5"
                                     :class="active === 'tools.customer-create' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
-                                {{ __('messages.customer_create') }}
+                                <?php echo e(__('messages.customer_create')); ?>
+
                             </a>
 
-                            <a href="{{ route('tools.customer-table') }}"
+                            <a href="<?php echo e(route('tools.customer-table')); ?>"
                                 class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir"
                                 @click="active = 'tools.customer-table'"
                                 :class="active === 'tools.customer-table' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'">
                                 <i class="fa-solid fa-users-gear h-5 w-5"
                                     :class="active === 'tools.customer-table' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
-                                {{ __('messages.customer_list') }}
+                                <?php echo e(__('messages.customer_list')); ?>
+
                             </a>
                         </div>
                     </div>
@@ -501,7 +505,7 @@
 
                         <!-- زیرمنو -->
                         <div x-show="openItems.accounting" x-transition class="mr-7 mt-2 space-y-2">
-                            <a href="{{ route('tools.loans') }}"
+                            <a href="<?php echo e(route('tools.loans')); ?>"
                                 @click="active = 'tools.loans'; openItems.accounting = true"
                                 :class="active === 'tools.loans' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
                                 class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
@@ -509,7 +513,7 @@
                                 قرضه‌ها
                             </a>
 
-                            <a href="{{ route('tools.salary') }}"
+                            <a href="<?php echo e(route('tools.salary')); ?>"
                                 @click="active = 'tools.salary'; openItems.accounting = true"
                                 :class="active === 'tools.salary' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
                                 class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
@@ -517,7 +521,7 @@
                                 پرداخت معاشات
                             </a>
 
-                            <a href="{{ route('tools.withdrawals') }}"
+                            <a href="<?php echo e(route('tools.withdrawals')); ?>"
                                 @click="active = 'tools.withdrawals'; openItems.accounting = true"
                                 :class="active === 'tools.withdrawals' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
                                 class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
@@ -526,7 +530,7 @@
                             </a>
 
 
-                            <a href="{{ route('tools.shop-transactions') }}"
+                            <a href="<?php echo e(route('tools.shop-transactions')); ?>"
                                 @click="active = 'tools.shop-transactions'; openItems.accounting = true" :class="active === 'tools.shop-transactions' ? 
                                     'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 
                                     'text-gray-600 hover:bg-gray-100'"
@@ -535,7 +539,7 @@
                                 انتقال ارز از دوکان به صرافی
                             </a>
 
-                            <a href="{{ route('tools.shop-conversion') }}"
+                            <a href="<?php echo e(route('tools.shop-conversion')); ?>"
                                 @click="active = 'tools.shop-conversion'; openItems.accounting = true" :class="active === 'tools.shop-conversion' ? 
                                 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 
                                 'text-gray-600 hover:bg-gray-100'"
@@ -570,7 +574,7 @@
 
                         <!-- زیرمنو -->
                         <div x-show="openItems.sarafi" x-transition class="mr-7 mt-2 space-y-2">
-                            <a href="{{ route('tools.transactions') }}"
+                            <a href="<?php echo e(route('tools.transactions')); ?>"
                                 @click="active = 'tools.transactions'; openItems.sarafi = true"
                                 :class="active === 'tools.transactions' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
                                 class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
@@ -578,7 +582,7 @@
                                 رسید / بردگی صندوق
                             </a>
 
-                            <a href="{{ route('tools.buy-sell-currency') }}"
+                            <a href="<?php echo e(route('tools.buy-sell-currency')); ?>"
                                 @click="active = 'tools.buy-sell-currency'; openItems.sarafi = true"
                                 :class="active === 'tools.buy-sell-currency' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
                                 class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
@@ -586,7 +590,7 @@
                                 خرید و فروش ارز صندوق
                             </a>
 
-                            <a href="{{ route('tools.account_to_account') }}"
+                            <a href="<?php echo e(route('tools.account_to_account')); ?>"
                                 @click="active = 'tools.account_to_account'; openItems.sarafi = true"
                                 :class="active === 'tools.account_to_account' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
                                 class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
@@ -594,7 +598,7 @@
                                 انتقال حساب به حساب
                             </a>
 
-                            <a href="{{ route('tools.conversion-transfer') }}"
+                            <a href="<?php echo e(route('tools.conversion-transfer')); ?>"
                                 @click="active = 'tools.conversion-transfer'; openItems.sarafi = true"
                                 :class="active === 'tools.conversion-transfer' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
                                 class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
@@ -602,7 +606,7 @@
                                 تبدیل ارز و انتقال به حساب
                             </a>
 
-                            <a href="{{ route('tools.conversion.in.account') }}"
+                            <a href="<?php echo e(route('tools.conversion.in.account')); ?>"
                                 @click="active = 'tools.conversion.in.account'; openItems.sarafi = true"
                                 :class="active === 'tools.conversion.in.account' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
                                 class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
@@ -637,7 +641,7 @@
 
                         <!-- زیرمنو -->
                         <div x-show="openItems.shopping" x-transition class="mr-7 mt-2 space-y-2">
-                            <a href="{{ route('tools.inventory') }}"
+                            <a href="<?php echo e(route('tools.inventory')); ?>"
                                 @click="active = 'tools.inventory'; openItems.shopping = true"
                                 :class="active === 'tools.inventory' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
                                 class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
@@ -647,7 +651,7 @@
 
 
 
-                            <a href="{{ route('tools.warehouse') }}"
+                            <a href="<?php echo e(route('tools.warehouse')); ?>"
                                 @click="active = 'tools.warehouse'; openItems.shopping = true"
                                 :class="active === ' tools.warehouse' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
                                 class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
@@ -666,12 +670,12 @@
 
 
                     <!-- صندوق ها -->
-                    <a href="{{ route('tools.safes') }}"
+                    <a href="<?php echo e(route('tools.safes')); ?>"
                         class="nav-link flex items-center justify-between py-4 px-5 rounded-lg transition vazir dark:text-white text-[16px]"
                         @click="active = 'tools.safes'"
                         :class="active === 'tools.safes' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'">
                         <span class="flex items-center gap-3">
-                            <img src="{{ asset('assets/tools/safe.png') }}" class="w-6 h-6"
+                            <img src="<?php echo e(asset('assets/tools/safe.png')); ?>" class="w-6 h-6"
                                 :class="active === 'tools.safes' ? 'filter invert brightness-0' : 'text-gray-500' ">
                             موجودی صندوق ها
                         </span>
@@ -683,7 +687,7 @@
             </aside>
 
             <main class="flex-1  ">
-                @yield('content')
+                <?php echo $__env->yieldContent('content'); ?>
             </main>
         </div>
 
@@ -776,4 +780,4 @@
 
 </body>
 
-</html>
+</html><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/ToolsPanel/layouts/sidebar.blade.php ENDPATH**/ ?>

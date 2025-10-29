@@ -427,5 +427,41 @@
         </div>
         <?php endif; ?>
     </div>
+
+    <!-- نمایش موجودی هر ارز بر اساس ادمین -->
+<?php if(isset($summary['admin_balances']) && count($summary['admin_balances']) > 0): ?>
+<div class="admin-balance-summary" style="margin: 15px 0; padding: 10px; background: #e3f2fd; border-radius: 5px; border-right: 3px solid #2196f3;">
+    <h4 style="margin: 0 0 8px 0; font-size: 11px; color: #0d47a1; text-align: center;">💰 موجودی هر ارز بر اساس ادمین</h4>
+    
+    <?php $__currentLoopData = $summary['admin_balances']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $adminId => $currencies): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+    <?php $admin = $currencies->first()->admin ?? null; ?>
+    <div style="margin: 8px 0; padding: 8px; background: white; border-radius: 4px; border: 1px solid #bbdefb;">
+        <div style="font-weight: bold; font-size: 9px; color: #1565c0; margin-bottom: 5px;">
+            🏢 ادمین: <?php echo e($admin->name ?? 'ادمین ناشناس'); ?> (<?php echo e($admin->email ?? 'بدون ایمیل'); ?>)
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 8px;">
+            <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyBalance): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <div style="background: #e8f5e8; padding: 4px 8px; border-radius: 3px; border: 1px solid #c8e6c9;">
+                <strong>
+                    <?php switch($currencyBalance->currency):
+                        case ('AFN'): ?> افغانی <?php break; ?>
+                        <?php case ('USD'): ?> دالر <?php break; ?>
+                        <?php default: ?> <?php echo e($currencyBalance->currency); ?>
+
+                    <?php endswitch; ?>
+                </strong>: 
+                <span style="font-weight: bold; color: #1b5e20;">
+                    <?php echo e(number_format($currencyBalance->total_remained)); ?>
+
+                </span>
+            </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        </div>
+    </div>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+</div>
+<?php endif; ?>
+
+    
 </body>
 </html><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/exports/general-report-pdf.blade.php ENDPATH**/ ?>

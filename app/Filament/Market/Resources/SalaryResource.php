@@ -190,7 +190,7 @@ class SalaryResource extends Resource
                     ' - ' .
                     date('g:i A', strtotime($state))
                 ),
-        ])
+        ]) ->defaultSort('id', 'desc')
         ->actions([
             Tables\Actions\ViewAction::make(),
             Tables\Actions\EditAction::make(),

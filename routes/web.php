@@ -419,6 +419,27 @@ Route::get('/tools/shop_conversion', function () {
 
 
 
+Route::get('/tools/inventory', function () {
+    if (!Auth::guard('tools')->check()) {
+        return redirect()->route('tools.login.form');
+    }
+    return view('ToolsPanel.components.inventory');
+})->name('tools.inventory');
+
+
+
+Route::get('/tools/warehouse', function () {
+    if (!Auth::guard('tools')->check()) {
+        return redirect()->route('tools.login.form');
+    }
+    return view('ToolsPanel.components.warehouse');
+})->name('tools.warehouse');
+
+
+
+
+
+
 
 
 
