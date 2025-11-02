@@ -15,7 +15,7 @@
             <div class="lg:col-span-1 space-y-6">
                 <!-- Report Type Selector -->
                 <div
-                    class="w-full max-w-full bg-gradient-to-br from-gray-100 to-gray-200 border-l-4 border-pink-500 p-6 rounded-xl shadow-lg transition-all duration-300">
+                    class="w-full max-w-full bg-gradient-to-br from-gray-100 to-gray-200 border-l-4 border-blue-500 p-6 rounded-xl shadow-lg transition-all duration-300">
                     <h3 class="text-2xl font-semibold text-gray-900 mb-6 flex items-center gap-2 yekan vazir">
                         نوع گزارش
                     </h3>
@@ -59,57 +59,33 @@
                     <!-- Filters Card -->
                     <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
                         <div
-                            class="bg-gradient-to-br from-black to-blue-400 border-l-4 border-pink-500 text-white p-6 rounded-xl shadow-lg transition-all duration-300">
+                            class="bg-gradient-to-br from-black to-gray-500 border-l-4 border-blue-500 text-white p-6 rounded-xl shadow-lg transition-all duration-300">
                             <h2 class="text-xl font-bold text-white flex items-center gap-3">
-                                <span class="text-2xl">🎛️</span>
+                                <span class="text-2xl"> <i class="fas fa-filters"></i> </span>
                                 فیلترهای پیشرفته
                             </h2>
                         </div>
 
                         <div class="p-6 space-y-6">
-                            <!-- Basic Filters -->
+                            <!-- فیلترهای پایه -->
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <!-- Currency Select -->
-                                <div class="space-y-2">
-                                    <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
-                                        <span class="text-green-600">💵</span>
-                                        واحد پول
-                                    </label>
-                                    <select wire:model.live="currency"
-                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
-                                        <option value="">همه واحدها</option>
-                                        <option value="AFN">🇦🇫 افغانی</option>
-                                        <option value="USD">🇺🇸 دالر</option>
-                                        <option value="EUR">🇪🇺 یورو</option>
-                                    </select>
-                                </div>
-
-                                <!-- Search -->
+                                <!-- جستجو -->
                                 <div class="space-y-2 mt-7">
                                     <div class="relative flex">
                                         <input type="text" wire:model.live="search" placeholder="جستجو..."
                                             class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
                                         <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                                            <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt="">
+                                            <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}"
+                                                alt="آیکون جستجو">
                                         </div>
-                                    </div>
-                                </div>
-
-                                <!-- Amount Range -->
-                                <div class="space-y-2">
-                                    <label class="block text-sm font-semibold text-gray-700">محدوده مبلغ</label>
-                                    <div class="grid grid-cols-2 gap-2">
-                                        <input type="number" wire:model.live="amountMin" placeholder="حداقل"
-                                            class="border-2 border-gray-200 rounded-xl px-3 py-2 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200">
-                                        <input type="number" wire:model.live="amountMax" placeholder="حداکثر"
-                                            class="border-2 border-gray-200 rounded-xl px-3 py-2 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200">
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Dynamic Filters Based on Report Type -->
+                            <!-- فیلترهای پویا بر اساس نوع گزارش -->
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                <!-- Product Filters for Inventory/Warehouse -->
+
+                                <!-- فیلترهای محصول برای موجودی/انبار -->
                                 @if(in_array($reportType, ['inventory', 'warehouse', 'sale_items']))
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">نام محصول</label>
@@ -140,7 +116,7 @@
                                 </div>
                                 @endif
 
-                                <!-- Status Filter -->
+                                <!-- فیلتر وضعیت -->
                                 @if(in_array($reportType, ['inventory', 'warehouse']))
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">وضعیت</label>
@@ -152,19 +128,9 @@
                                         @endforeach
                                     </select>
                                 </div>
-
-                                <div class="space-y-2">
-                                    <label class="block text-sm font-semibold text-gray-700">فعال/غیرفعال</label>
-                                    <select wire:model.live="isActive"
-                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
-                                        <option value="">همه</option>
-                                        <option value="1">فعال</option>
-                                        <option value="0">غیرفعال</option>
-                                    </select>
-                                </div>
                                 @endif
 
-                                <!-- Sale Type Filter -->
+                                <!-- فیلتر نوع فروش -->
                                 @if($reportType === 'sale')
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">نوع فروش</label>
@@ -177,7 +143,7 @@
                                 </div>
                                 @endif
 
-                                <!-- Type Filter for Withdrawal/Loan -->
+                                <!-- فیلتر نوع برای برداشت/وام -->
                                 @if(in_array($reportType, ['withdrawal', 'loan', 'inventory_history',
                                 'warehouse_history']))
                                 <div class="space-y-2">
@@ -187,16 +153,7 @@
                                 </div>
                                 @endif
 
-                                <!-- Supplier Filter -->
-                                @if(in_array($reportType, ['inventory', 'warehouse']))
-                                <div class="space-y-2">
-                                    <label class="block text-sm font-semibold text-gray-700">تأمین کننده</label>
-                                    <input type="text" wire:model.live="supplierName" placeholder="نام تأمین کننده..."
-                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
-                                </div>
-                                @endif
-
-                                <!-- Start Date -->
+                                <!-- تاریخ شروع -->
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">از تاریخ</label>
                                     <div class="relative">
@@ -212,7 +169,7 @@
                                     @enderror
                                 </div>
 
-                                <!-- End Date -->
+                                <!-- تاریخ پایان -->
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">تا تاریخ</label>
                                     <div class="relative">
@@ -235,7 +192,7 @@
                     <div class="rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
                         <!-- Table Header -->
                         <div
-                            class="bg-gradient-to-br from-black to-blue-400 border-l-4 border-pink-500 text-white px-6 py-4">
+                            class="bg-gradient-to-br from-black to-gray-400 border-l-4 border-blue-500 text-white px-6 py-4">
                             <div class="flex items-center justify-between">
                                 <h3 class="text-lg font-bold text-white flex items-center gap-2">
                                     <span class="text-xl">📈</span>
@@ -1002,7 +959,7 @@
                         بازنشانی فیلترها
                     </button>
 
-                  
+
                 </div>
             </div>
         </div>

@@ -27,7 +27,7 @@
     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
 <!-- کارت‌های آماری -->
-<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 p-2 sm:p-4">
+<div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 p-2 sm:p-4">
     <!-- فروش امروز -->
     <div
         class="flex flex-col justify-between bg-gradient-to-br from-green-100 to-green-200 border-l-4 border-green-500 text-green-800 p-3 sm:p-4 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300">
