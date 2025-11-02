@@ -440,6 +440,21 @@
                 left: auto !important;
             }
         }
+        /* برای حالت collapsed در دسکتاپ */
+.sidebar-collapsed {
+    display: none !important;
+}
+
+/* اطمینان از نمایش سایدبار در دسکتاپ */
+@media (min-width: 768px) {
+    #sidebar {
+        display: block !important;
+    }
+    
+    .sidebar-collapsed {
+        display: none !important;
+    }
+}
     </style>
 </head>
 
@@ -549,436 +564,454 @@
         </header>
 
         <!-- Overlay for mobile menu -->
-        <div class="mobile-overlay" id="mobileOverlay"></div>
+            <div class="mobile-overlay" id="mobileOverlay"></div>
 
-        <div class="flex flex-1 mt-4 min-h-screen sticky">
-            <aside class="w-80 hidden md:block shadow-xl p-6 dark:text-white static" id="sidebar">
-                <nav class="mt-0 space-y-1" x-data="{
-                    openItems: {
-                        customers: false,
-                        accounting: false,
-                        sarafi: false,
-                        shopping: false
-                    },
-                    active: '<?php echo e(Route::currentRouteName()); ?>' // همواره با route فعلی هماهنگ
-                }">
+            <div class="flex flex-1 mt-4 min-h-screen sticky">
+                <aside class="w-80 hidden md:block shadow-xl p-6 dark:text-white static" id="sidebar">
+                    <nav class="mt-0 space-y-1" x-data="{
+                        openItems: {
+                            customers: false,
+                            accounting: false,
+                            sarafi: false,
+                            shopping: false
+                        },
+                        active: '<?php echo e(Route::currentRouteName()); ?>' // همواره با route فعلی هماهنگ
+                    }">
 
-                    <!-- داشبورد -->
-                    <a href="<?php echo e(route('tools.home')); ?>"
-                        class="nav-link flex items-center justify-between py-4 px-5 rounded-lg transition vazir text-[16px]"
-                        @click="active = '<?php echo e(Route::currentRouteName()); ?>'; closeMobileMenu()"
-                        :class="active === 'tools.home' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'">
-                        <span class="flex items-center gap-3">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/element-3.svg')); ?>" class="w-6 h-6"
-                                :class="active === 'tools.home' ? 'filter invert brightness-0' : 'text-gray-500' ">
-                            <?php echo e(__('messages.dashboard')); ?>
-
-                        </span>
-                    </a>
-
-                    <!-- کاربران -->
-                    <a href="<?php echo e(route('tools.users')); ?>"
-                        class="nav-link flex items-center justify-between py-4 px-5 rounded-lg transition vazir dark:text-white text-[16px]"
-                        @click="active = 'tools.users'; closeMobileMenu()"
-                        :class="active === 'tools.users' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'">
-                        <span class="flex items-center gap-3">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/profile-2user.svg')); ?>" class="w-6 h-6"
-                                :class="active === 'tools.users' ? 'filter invert brightness-0' : 'text-gray-500' ">
-                            <?php echo e(__('messages.users')); ?>
-
-                        </span>
-                    </a>
-
-                    <!-- کارمندان -->
-                    <a href="<?php echo e(route('tools.staff')); ?>"
-                        class="nav-link flex items-center justify-between py-4 px-5 rounded-lg transition vazir dark:text-white text-[16px]"
-                        @click="active = 'tools.staff'; closeMobileMenu()"
-                        :class="active === 'tools.staff' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'">
-                        <span class="flex items-center gap-3">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/tag-user.svg')); ?>" class="w-7 h-6"
-                                :class="active === 'tools.staff' ? 'filter invert brightness-0' : 'text-gray-500' ">
-                            ثبت کارمندان
-                        </span>
-                    </a>
-
-                    <!-- مشتریان -->
-                    <div>
-                        <button @click="openItems.customers = !openItems.customers"
-                            :class="active.startsWith('tools.customer') ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'"
-                            class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
+                        <!-- داشبورد -->
+                        <a href="<?php echo e(route('tools.home')); ?>"
+                            class="nav-link flex items-center justify-between py-4 px-5 rounded-lg transition vazir text-[16px]"
+                            @click="active = '<?php echo e(Route::currentRouteName()); ?>'; closeMobileMenu()"
+                            :class="active === 'tools.home' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'">
                             <span class="flex items-center gap-3">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/people.svg')); ?>" class="w-6 h-6"
-                                    :class="active.startsWith('tools.customer') ? 'filter invert brightness-0' : 'text-gray-500'">
-                                <?php echo e(__('messages.customers')); ?>
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/element-3.svg')); ?>" class="w-6 h-6"
+                                    :class="active === 'tools.home' ? 'filter invert brightness-0' : 'text-gray-500' ">
+                                <?php echo e(__('messages.dashboard')); ?>
 
                             </span>
-                            <svg :class="[openItems.customers ? 'rotate-180' : '', active.startsWith('tools.customer') ? 'text-white' : 'text-gray-500']"
-                                class="w-5 h-5 transition-transform" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
+                        </a>
 
-                        <div x-show="openItems.customers" x-transition class="mr-7 mt-2 space-y-2">
-                            <a href="<?php echo e(route('tools.customer-create')); ?>"
-                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir"
-                                @click="active = 'tools.customer-create'; closeMobileMenu()"
-                                :class="active === 'tools.customer-create' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'">
-                                <i class="fa-solid fa-user-pen w-5 h-5"
-                                    :class="active === 'tools.customer-create' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
-                                <?php echo e(__('messages.customer_create')); ?>
+                        <!-- کاربران -->
+                        <a href="<?php echo e(route('tools.users')); ?>"
+                            class="nav-link flex items-center justify-between py-4 px-5 rounded-lg transition vazir dark:text-white text-[16px]"
+                            @click="active = 'tools.users'; closeMobileMenu()"
+                            :class="active === 'tools.users' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'">
+                            <span class="flex items-center gap-3">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/profile-2user.svg')); ?>" class="w-6 h-6"
+                                    :class="active === 'tools.users' ? 'filter invert brightness-0' : 'text-gray-500' ">
+                                <?php echo e(__('messages.users')); ?>
 
-                            </a>
+                            </span>
+                        </a>
 
-                            <a href="<?php echo e(route('tools.customer-table')); ?>"
-                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir"
-                                @click="active = 'tools.customer-table'; closeMobileMenu()"
-                                :class="active === 'tools.customer-table' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'">
-                                <i class="fa-solid fa-users-gear h-5 w-5"
-                                    :class="active === 'tools.customer-table' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
-                                <?php echo e(__('messages.customer_list')); ?>
+                        <!-- کارمندان -->
+                        <a href="<?php echo e(route('tools.staff')); ?>"
+                            class="nav-link flex items-center justify-between py-4 px-5 rounded-lg transition vazir dark:text-white text-[16px]"
+                            @click="active = 'tools.staff'; closeMobileMenu()"
+                            :class="active === 'tools.staff' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'">
+                            <span class="flex items-center gap-3">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/tag-user.svg')); ?>" class="w-7 h-6"
+                                    :class="active === 'tools.staff' ? 'filter invert brightness-0' : 'text-gray-500' ">
+                                ثبت کارمندان
+                            </span>
+                        </a>
 
-                            </a>
+                        <!-- مشتریان -->
+                        <div>
+                            <button @click="openItems.customers = !openItems.customers"
+                                :class="active.startsWith('tools.customer') ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'"
+                                class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
+                                <span class="flex items-center gap-3">
+                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/people.svg')); ?>" class="w-6 h-6"
+                                        :class="active.startsWith('tools.customer') ? 'filter invert brightness-0' : 'text-gray-500'">
+                                    <?php echo e(__('messages.customers')); ?>
+
+                                </span>
+                                <svg :class="[openItems.customers ? 'rotate-180' : '', active.startsWith('tools.customer') ? 'text-white' : 'text-gray-500']"
+                                    class="w-5 h-5 transition-transform" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+
+                            <div x-show="openItems.customers" x-transition class="mr-7 mt-2 space-y-2">
+                                <a href="<?php echo e(route('tools.customer-create')); ?>"
+                                    class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir"
+                                    @click="active = 'tools.customer-create'; closeMobileMenu()"
+                                    :class="active === 'tools.customer-create' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                    <i class="fa-solid fa-user-pen w-5 h-5"
+                                        :class="active === 'tools.customer-create' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
+                                    <?php echo e(__('messages.customer_create')); ?>
+
+                                </a>
+
+                                <a href="<?php echo e(route('tools.customer-table')); ?>"
+                                    class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir"
+                                    @click="active = 'tools.customer-table'; closeMobileMenu()"
+                                    :class="active === 'tools.customer-table' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                    <i class="fa-solid fa-users-gear h-5 w-5"
+                                        :class="active === 'tools.customer-table' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
+                                    <?php echo e(__('messages.customer_list')); ?>
+
+                                </a>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- حسابداری -->
-                    <div>
-                        <!-- دکمه اصلی -->
-                        <button @click="openItems.accounting = !openItems.accounting" :class="active.startsWith('tools.loans') || active.startsWith('tools.salary') || active.startsWith('tools.withdrawals') 
-                                ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' 
-                                : 'text-gray-700 hover:bg-gray-100'"
-                            class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
-                            <span class="flex items-center gap-3">
-                                <i class="fa-solid fa-calculator w-6 h-6" :class="active.startsWith('tools.loans') || active.startsWith('tools.salary') || active.startsWith('tools.withdrawals')
-                                        ? 'text-white'
-                                        : 'text-gray-500'"></i>
-                                حسابداری
-                            </span>
-                            <svg :class="[openItems.accounting ? 'rotate-180' : '', active.startsWith('tools.loans') ? 'text-white' : 'text-gray-500']"
-                                class="w-5 h-5 transition-transform" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
+                        <!-- حسابداری -->
+                        <div>
+                            <!-- دکمه اصلی -->
+                            <button @click="openItems.accounting = !openItems.accounting" :class="active.startsWith('tools.loans') || active.startsWith('tools.salary') || active.startsWith('tools.withdrawals') 
+                                    ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' 
+                                    : 'text-gray-700 hover:bg-gray-100'"
+                                class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
+                                <span class="flex items-center gap-3">
+                                    <i class="fa-solid fa-calculator w-6 h-6" :class="active.startsWith('tools.loans') || active.startsWith('tools.salary') || active.startsWith('tools.withdrawals')
+                                            ? 'text-white'
+                                            : 'text-gray-500'"></i>
+                                    حسابداری
+                                </span>
+                                <svg :class="[openItems.accounting ? 'rotate-180' : '', active.startsWith('tools.loans') ? 'text-white' : 'text-gray-500']"
+                                    class="w-5 h-5 transition-transform" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
 
-                        <!-- زیرمنو -->
-                        <div x-show="openItems.accounting" x-transition class="mr-7 mt-2 space-y-2">
-                            <a href="<?php echo e(route('tools.loans')); ?>"
-                                @click="active = 'tools.loans'; openItems.accounting = true; closeMobileMenu()"
-                                :class="active === 'tools.loans' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
-                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
-                                <i class="fa-solid fa-hand-holding-dollar w-5 h-5"></i>
-                                قرضه‌ها
-                            </a>
+                            <!-- زیرمنو -->
+                            <div x-show="openItems.accounting" x-transition class="mr-7 mt-2 space-y-2">
+                                <a href="<?php echo e(route('tools.loans')); ?>"
+                                    @click="active = 'tools.loans'; openItems.accounting = true; closeMobileMenu()"
+                                    :class="active === 'tools.loans' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
+                                    class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                    <i class="fa-solid fa-hand-holding-dollar w-5 h-5"></i>
+                                    قرضه‌ها
+                                </a>
 
-                            <a href="<?php echo e(route('tools.salary')); ?>"
-                                @click="active = 'tools.salary'; openItems.accounting = true; closeMobileMenu()"
-                                :class="active === 'tools.salary' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
-                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
-                                <i class="fa-solid fa-file-invoice-dollar w-5 h-5"></i>
-                                پرداخت معاشات
-                            </a>
+                                <a href="<?php echo e(route('tools.salary')); ?>"
+                                    @click="active = 'tools.salary'; openItems.accounting = true; closeMobileMenu()"
+                                    :class="active === 'tools.salary' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
+                                    class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                    <i class="fa-solid fa-file-invoice-dollar w-5 h-5"></i>
+                                    پرداخت معاشات
+                                </a>
 
-                            <a href="<?php echo e(route('tools.withdrawals')); ?>"
-                                @click="active = 'tools.withdrawals'; openItems.accounting = true; closeMobileMenu()"
-                                :class="active === 'tools.withdrawals' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
-                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
-                                <i class="fa-solid fa-arrow-trend-down w-5 h-5"></i>
-                                برداشت‌ها
-                            </a>
+                                <a href="<?php echo e(route('tools.withdrawals')); ?>"
+                                    @click="active = 'tools.withdrawals'; openItems.accounting = true; closeMobileMenu()"
+                                    :class="active === 'tools.withdrawals' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
+                                    class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                    <i class="fa-solid fa-arrow-trend-down w-5 h-5"></i>
+                                    برداشت‌ها
+                                </a>
 
 
-                            <a href="<?php echo e(route('tools.shop-transactions')); ?>"
-                                @click="active = 'tools.shop-transactions'; openItems.accounting = true; closeMobileMenu()"
-                                :class="active === 'tools.shop-transactions' ? 
+                                <a href="<?php echo e(route('tools.shop-transactions')); ?>"
+                                    @click="active = 'tools.shop-transactions'; openItems.accounting = true; closeMobileMenu()"
+                                    :class="active === 'tools.shop-transactions' ? 
+                                        'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 
+                                        'text-gray-600 hover:bg-gray-100'"
+                                    class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                    <i class="fa-solid fa-money-bill-transfer w-5 h-5"></i>
+                                    انتقال ارز از دوکان به صرافی
+                                </a>
+
+                                <a href="<?php echo e(route('tools.shop-conversion')); ?>"
+                                    @click="active = 'tools.shop-conversion'; openItems.accounting = true; closeMobileMenu()"
+                                    :class="active === 'tools.shop-conversion' ? 
                                     'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 
                                     'text-gray-600 hover:bg-gray-100'"
-                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
-                                <i class="fa-solid fa-money-bill-transfer w-5 h-5"></i>
-                                انتقال ارز از دوکان به صرافی
-                            </a>
-
-                            <a href="<?php echo e(route('tools.shop-conversion')); ?>"
-                                @click="active = 'tools.shop-conversion'; openItems.accounting = true; closeMobileMenu()"
-                                :class="active === 'tools.shop-conversion' ? 
-                                'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 
-                                'text-gray-600 hover:bg-gray-100'"
-                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
-                                <i class="fa-solid fa-arrows-rotate w-5 h-5"></i>
-                                تبدیل و انتقال ارز از دوکان به صرافی
-                            </a>
+                                    class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                    <i class="fa-solid fa-arrows-rotate w-5 h-5"></i>
+                                    تبدیل و انتقال ارز از دوکان به صرافی
+                                </a>
 
 
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- معاملات صرافی -->
-                    <div>
-                        <!-- دکمه اصلی -->
-                        <button @click="openItems.sarafi = !openItems.sarafi" :class="active.startsWith('tools.transactions') || active.startsWith('tools.buy-sell-currency') || active.startsWith('tools.account_to_account') 
-                        ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' 
-                        : 'text-gray-700 hover:bg-gray-100'"
-                            class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
+                        <!-- معاملات صرافی -->
+                        <div>
+                            <!-- دکمه اصلی -->
+                            <button @click="openItems.sarafi = !openItems.sarafi" :class="active.startsWith('tools.transactions') || active.startsWith('tools.buy-sell-currency') || active.startsWith('tools.account_to_account') 
+                            ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' 
+                            : 'text-gray-700 hover:bg-gray-100'"
+                                class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
+                                <span class="flex items-center gap-3">
+                                    <i class="fa-solid fa-coins w-6 h-6"
+                                        :class="active.startsWith('tools.transactions') ? 'text-white' : 'text-gray-500'"></i>
+                                    معاملات صرافی
+                                </span>
+                                <svg :class="[openItems.sarafi ? 'rotate-180' : '', active.startsWith('tools.transactions') ? 'text-white' : 'text-gray-500']"
+                                    class="w-5 h-5 transition-transform" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+
+                            <!-- زیرمنو -->
+                            <div x-show="openItems.sarafi" x-transition class="mr-7 mt-2 space-y-2">
+                                <a href="<?php echo e(route('tools.transactions')); ?>"
+                                    @click="active = 'tools.transactions'; openItems.sarafi = true; closeMobileMenu()"
+                                    :class="active === 'tools.transactions' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
+                                    class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                    <i class="fa-solid fa-receipt w-5 h-5"></i>
+                                    رسید / بردگی صندوق
+                                </a>
+
+                                <a href="<?php echo e(route('tools.buy-sell-currency')); ?>"
+                                    @click="active = 'tools.buy-sell-currency'; openItems.sarafi = true; closeMobileMenu()"
+                                    :class="active === 'tools.buy-sell-currency' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
+                                    class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                    <i class="fa-solid fa-arrows-left-right-to-line w-5 h-5"></i>
+                                    خرید و فروش ارز صندوق
+                                </a>
+
+                                <a href="<?php echo e(route('tools.account_to_account')); ?>"
+                                    @click="active = 'tools.account_to_account'; openItems.sarafi = true; closeMobileMenu()"
+                                    :class="active === 'tools.account_to_account' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
+                                    class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                    <i class="fa-solid fa-arrow-right-arrow-left w-5 h-5"></i>
+                                    انتقال حساب به حساب
+                                </a>
+
+                                <a href="<?php echo e(route('tools.conversion-transfer')); ?>"
+                                    @click="active = 'tools.conversion-transfer'; openItems.sarafi = true; closeMobileMenu()"
+                                    :class="active === 'tools.conversion-transfer' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
+                                    class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                    <i class="fa-solid fa-arrows-rotate w-5 h-5"></i>
+                                    تبدیل ارز و انتقال به حساب
+                                </a>
+
+                                <a href="<?php echo e(route('tools.conversion.in.account')); ?>"
+                                    @click="active = 'tools.conversion.in.account'; openItems.sarafi = true; closeMobileMenu()"
+                                    :class="active === 'tools.conversion.in.account' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
+                                    class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                    <i class="fa-solid fa-wallet w-5 h-5"></i>
+                                    تبدیل ارز در حساب مشتری
+                                </a>
+                            </div>
+                        </div>
+
+
+
+                        <!-- بخش دوکانداری -->
+                        <div>
+                            <!-- دکمه اصلی -->
+                            <button @click="openItems.shopping = !openItems.shopping" :class="active.startsWith('tools.inventory') || active.startsWith('tools.warehouse') || active.startsWith('tools.sales') 
+                ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' 
+                : 'text-gray-700 hover:bg-gray-100'"
+                                class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
+                                <span class="flex items-center gap-3">
+                                    <i class="fa-solid fa-store w-6 h-6" :class="active.startsWith('tools.inventory') || active.startsWith('tools.warehouse') || active.startsWith('tools.sales')
+                        ? 'text-white'
+                        : 'text-gray-500'"></i>
+                                    بخش دوکانداری
+                                </span>
+                                <svg :class="[openItems.shopping ? 'rotate-180' : '', active.startsWith('tools.inventory') || active.startsWith('tools.warehouse') || active.startsWith('tools.sales') ? 'text-white' : 'text-gray-500']"
+                                    class="w-5 h-5 transition-transform" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+
+                            <!-- زیرمنو -->
+                            <div x-show="openItems.shopping" x-transition class="mr-7 mt-2 space-y-2">
+                                <a href="<?php echo e(route('tools.inventory')); ?>"
+                                    @click="active = 'tools.inventory'; openItems.shopping = true; closeMobileMenu()"
+                                    :class="active === 'tools.inventory' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
+                                    class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                    <i class="fa-solid fa-warehouse w-5 h-5"></i>
+                                    اجناس گدام
+                                </a>
+
+                                <a href="<?php echo e(route('tools.warehouse')); ?>"
+                                    @click="active = 'tools.warehouse'; openItems.shopping = true; closeMobileMenu()"
+                                    :class="active === 'tools.warehouse' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
+                                    class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                    <i class="fa-solid fa-boxes-stacked w-5 h-5"></i>
+                                    اجناس دوکان
+                                </a>
+
+                                <a href="<?php echo e(route('tools.sales')); ?>"
+                                    @click="active = 'tools.sales'; openItems.shopping = true; closeMobileMenu()"
+                                    :class="active === 'tools.sales' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
+                                    class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
+                                    <i class="fa-solid fa-cart-shopping w-5 h-5"></i>
+                                    بخش فروشات
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- صندوق ها -->
+                        <a href="<?php echo e(route('tools.safes')); ?>"
+                            class="nav-link flex items-center justify-between py-4 px-5 rounded-lg transition vazir dark:text-white text-[16px]"
+                            @click="active = 'tools.safes'; closeMobileMenu()"
+                            :class="active === 'tools.safes' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'">
                             <span class="flex items-center gap-3">
-                                <i class="fa-solid fa-coins w-6 h-6"
-                                    :class="active.startsWith('tools.transactions') ? 'text-white' : 'text-gray-500'"></i>
-                                معاملات صرافی
+                                <img src="<?php echo e(asset('assets/tools/safe.png')); ?>" class="w-6 h-6"
+                                    :class="active === 'tools.safes' ? 'filter invert brightness-0' : 'text-gray-500' ">
+                                موجودی صندوق ها
                             </span>
-                            <svg :class="[openItems.sarafi ? 'rotate-180' : '', active.startsWith('tools.transactions') ? 'text-white' : 'text-gray-500']"
-                                class="w-5 h-5 transition-transform" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-
-                        <!-- زیرمنو -->
-                        <div x-show="openItems.sarafi" x-transition class="mr-7 mt-2 space-y-2">
-                            <a href="<?php echo e(route('tools.transactions')); ?>"
-                                @click="active = 'tools.transactions'; openItems.sarafi = true; closeMobileMenu()"
-                                :class="active === 'tools.transactions' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
-                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
-                                <i class="fa-solid fa-receipt w-5 h-5"></i>
-                                رسید / بردگی صندوق
-                            </a>
-
-                            <a href="<?php echo e(route('tools.buy-sell-currency')); ?>"
-                                @click="active = 'tools.buy-sell-currency'; openItems.sarafi = true; closeMobileMenu()"
-                                :class="active === 'tools.buy-sell-currency' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
-                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
-                                <i class="fa-solid fa-arrows-left-right-to-line w-5 h-5"></i>
-                                خرید و فروش ارز صندوق
-                            </a>
-
-                            <a href="<?php echo e(route('tools.account_to_account')); ?>"
-                                @click="active = 'tools.account_to_account'; openItems.sarafi = true; closeMobileMenu()"
-                                :class="active === 'tools.account_to_account' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
-                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
-                                <i class="fa-solid fa-arrow-right-arrow-left w-5 h-5"></i>
-                                انتقال حساب به حساب
-                            </a>
-
-                            <a href="<?php echo e(route('tools.conversion-transfer')); ?>"
-                                @click="active = 'tools.conversion-transfer'; openItems.sarafi = true; closeMobileMenu()"
-                                :class="active === 'tools.conversion-transfer' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
-                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
-                                <i class="fa-solid fa-arrows-rotate w-5 h-5"></i>
-                                تبدیل ارز و انتقال به حساب
-                            </a>
-
-                            <a href="<?php echo e(route('tools.conversion.in.account')); ?>"
-                                @click="active = 'tools.conversion.in.account'; openItems.sarafi = true; closeMobileMenu()"
-                                :class="active === 'tools.conversion.in.account' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
-                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
-                                <i class="fa-solid fa-wallet w-5 h-5"></i>
-                                تبدیل ارز در حساب مشتری
-                            </a>
-                        </div>
-                    </div>
+                        </a>
 
 
-
-                    <!-- بخش دوکانداری -->
-                    <div>
-                        <!-- دکمه اصلی -->
-                        <button @click="openItems.shopping = !openItems.shopping" :class="active.startsWith('tools.inventory') || active.startsWith('tools.warehouse') || active.startsWith('tools.sales') 
-            ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' 
-            : 'text-gray-700 hover:bg-gray-100'"
-                            class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
+                        <!-- گزارشات   -->
+                        <a href="<?php echo e(route('tools.reports')); ?>"
+                            class="nav-link flex items-center justify-between py-4 px-5 rounded-lg transition vazir dark:text-white text-[16px]"
+                            @click="active = 'tools.reports'; closeMobileMenu()"
+                            :class="active === 'tools.reports' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'">
                             <span class="flex items-center gap-3">
-                                <i class="fa-solid fa-store w-6 h-6" :class="active.startsWith('tools.inventory') || active.startsWith('tools.warehouse') || active.startsWith('tools.sales')
-                    ? 'text-white'
-                    : 'text-gray-500'"></i>
-                                بخش دوکانداری
+                                <img src="<?php echo e(asset('assets/tools/statistics.png')); ?>" class="w-6 h-6"
+                                    :class="active === 'tools.reports' ? 'filter invert brightness-0' : 'text-gray-500' ">
+                                گزارشات
                             </span>
-                            <svg :class="[openItems.shopping ? 'rotate-180' : '', active.startsWith('tools.inventory') || active.startsWith('tools.warehouse') || active.startsWith('tools.sales') ? 'text-white' : 'text-gray-500']"
-                                class="w-5 h-5 transition-transform" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
+                        </a>
 
-                        <!-- زیرمنو -->
-                        <div x-show="openItems.shopping" x-transition class="mr-7 mt-2 space-y-2">
-                            <a href="<?php echo e(route('tools.inventory')); ?>"
-                                @click="active = 'tools.inventory'; openItems.shopping = true; closeMobileMenu()"
-                                :class="active === 'tools.inventory' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
-                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
-                                <i class="fa-solid fa-warehouse w-5 h-5"></i>
-                                اجناس گدام
-                            </a>
+                    </nav>
+                </aside>
 
-                            <a href="<?php echo e(route('tools.warehouse')); ?>"
-                                @click="active = 'tools.warehouse'; openItems.shopping = true; closeMobileMenu()"
-                                :class="active === 'tools.warehouse' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
-                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
-                                <i class="fa-solid fa-boxes-stacked w-5 h-5"></i>
-                                اجناس دوکان
-                            </a>
-
-                            <a href="<?php echo e(route('tools.sales')); ?>"
-                                @click="active = 'tools.sales'; openItems.shopping = true; closeMobileMenu()"
-                                :class="active === 'tools.sales' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-600 hover:bg-gray-100'"
-                                class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
-                                <i class="fa-solid fa-cart-shopping w-5 h-5"></i>
-                                بخش فروشات
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- صندوق ها -->
-                    <a href="<?php echo e(route('tools.safes')); ?>"
-                        class="nav-link flex items-center justify-between py-4 px-5 rounded-lg transition vazir dark:text-white text-[16px]"
-                        @click="active = 'tools.safes'; closeMobileMenu()"
-                        :class="active === 'tools.safes' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'">
-                        <span class="flex items-center gap-3">
-                            <img src="<?php echo e(asset('assets/tools/safe.png')); ?>" class="w-6 h-6"
-                                :class="active === 'tools.safes' ? 'filter invert brightness-0' : 'text-gray-500' ">
-                            موجودی صندوق ها
-                        </span>
-                    </a>
-
-
-                    <!-- گزارشات   -->
-                    <a href="<?php echo e(route('tools.reports')); ?>"
-                        class="nav-link flex items-center justify-between py-4 px-5 rounded-lg transition vazir dark:text-white text-[16px]"
-                        @click="active = 'tools.reports'; closeMobileMenu()"
-                        :class="active === 'tools.reports' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-gray-700 hover:bg-gray-100'">
-                        <span class="flex items-center gap-3">
-                            <img src="<?php echo e(asset('assets/tools/statistics.png')); ?>" class="w-6 h-6"
-                                :class="active === 'tools.reports' ? 'filter invert brightness-0' : 'text-gray-500' ">
-                            گزارشات
-                        </span>
-                    </a>
-
-                </nav>
-            </aside>
-
-            <main class="flex-1">
-                <?php echo $__env->yieldContent('content'); ?>
-            </main>
-        </div>
+                <main class="flex-1">
+                    <?php echo $__env->yieldContent('content'); ?>
+                </main>
+            </div>
 
 
 
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const loader = document.getElementById('loader');
-            const mainContent = document.getElementById('mainContent');
-            const progressBar = document.querySelector('.progress');
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const loader = document.getElementById('loader');
+        const mainContent = document.getElementById('mainContent');
+        const progressBar = document.querySelector('.progress');
 
-            const profileBtn = document.getElementById('profileBtn');
-            const profileDropdown = document.getElementById('profileDropdown');
-            
-            // Mobile menu elements
-            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-            const sidebar = document.getElementById('sidebar');
-            const mobileOverlay = document.getElementById('mobileOverlay');
-            
-            // Function to close mobile menu
-            function closeMobileMenu() {
-                if (window.innerWidth < 768) {
-                    sidebar.classList.remove('active');
-                    mobileOverlay.classList.remove('active');
-                    mobileMenuBtn.classList.remove('active');
-                }
+        const profileBtn = document.getElementById('profileBtn');
+        const profileDropdown = document.getElementById('profileDropdown');
+        
+        // Mobile menu elements
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        
+        // Function to close mobile menu - بدون شرط موبایل
+        function closeMobileMenu() {
+            sidebar.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+            if (mobileMenuBtn) {
+                mobileMenuBtn.classList.remove('active');
             }
-            
-            // Mobile menu toggle
-            if (mobileMenuBtn && sidebar && mobileOverlay) {
-                mobileMenuBtn.addEventListener('click', function() {
+        }
+        
+        // Mobile menu toggle - بهبود یافته
+        if (mobileMenuBtn && sidebar && mobileOverlay) {
+            mobileMenuBtn.addEventListener('click', function() {
+                const isMobile = window.innerWidth < 768;
+                
+                if (isMobile) {
+                    // حالت موبایل
                     sidebar.classList.toggle('active');
                     mobileOverlay.classList.toggle('active');
                     mobileMenuBtn.classList.toggle('active');
-                });
-                
-                mobileOverlay.addEventListener('click', function() {
-                    sidebar.classList.remove('active');
-                    mobileOverlay.classList.remove('active');
-                    mobileMenuBtn.classList.remove('active');
-                });
-            }
-
-            profileBtn.addEventListener('click', () => {
-                profileDropdown.classList.toggle('hidden');
-            });
-
-            document.addEventListener('click', (event) => {
-                if (!profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
-                    profileDropdown.classList.add('hidden');
+                } else {
+                    // حالت دسکتاپ - toggle سایدبار
+                    sidebar.classList.toggle('sidebar-collapsed');
                 }
             });
+            
+            mobileOverlay.addEventListener('click', function() {
+                closeMobileMenu();
+            });
+        }
 
-            // محتوا را ابتدا مخفی کن
-            mainContent.style.display = 'none';
+        // بقیه کدها بدون تغییر...
+        profileBtn.addEventListener('click', () => {
+            profileDropdown.classList.toggle('hidden');
+        });
 
-            let progress = 0;
-            let fakeProgressInterval;
-
-            // شروع شبیه‌سازی پیشرفت فقط اگر لود طول بکشد
-            function startFakeProgress() {
-                fakeProgressInterval = setInterval(() => {
-                    progress += Math.random() * 30; // سرعت متوسط
-                    if (progress > 90) progress = 90; // رسیدن به 90% و منتظر load واقعی
-                    progressBar.style.width = progress + '%';
-                },10);
+        document.addEventListener('click', (event) => {
+            if (!profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
+                profileDropdown.classList.add('hidden');
             }
+        });
 
+        // محتوا را ابتدا مخفی کن
+        if (mainContent) {
+            mainContent.style.display = 'none';
+        }
+
+        let progress = 0;
+        let fakeProgressInterval;
+
+        // شروع شبیه‌سازی پیشرفت فقط اگر لود طول بکشد
+        function startFakeProgress() {
+            fakeProgressInterval = setInterval(() => {
+                progress += Math.random() * 30;
+                if (progress > 90) progress = 90;
+                if (progressBar) {
+                    progressBar.style.width = progress + '%';
+                }
+            }, 10);
+        }
+
+        if (loader && progressBar) {
             startFakeProgress();
 
             // وقتی صفحه واقعاً لود شد
             window.addEventListener('load', function() {
                 clearInterval(fakeProgressInterval);
                 progress = 100;
-                progressBar.style.width = progress + '%';
+                if (progressBar) {
+                    progressBar.style.width = progress + '%';
+                }
 
                 setTimeout(() => {
                     loader.classList.add('loader-complete');
-                    mainContent.style.display = 'block';
-                    mainContent.classList.add('content-loaded');
+                    if (mainContent) {
+                        mainContent.style.display = 'block';
+                        mainContent.classList.add('content-loaded');
+                    }
 
                     setTimeout(() => {
                         loader.style.display = 'none';
                     }, 400);
-                }, 600); // کمی تأخیر برای انیمیشن
+                }, 600);
             });
+        }
 
-            // مدیریت کلیک روی لینک‌ها
-            const navLinks = document.querySelectorAll('.nav-link, .locale-link');
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    const href = this.getAttribute('href');
-                    if (href && !href.startsWith('#')) {
-                        e.preventDefault();
+        // مدیریت کلیک روی لینک‌ها
+        const navLinks = document.querySelectorAll('.nav-link, .locale-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href && !href.startsWith('#')) {
+                    e.preventDefault();
+                    if (loader) {
                         loader.style.display = 'flex';
                         loader.classList.remove('loader-complete');
-                        setTimeout(() => window.location.href = href, 50);
                     }
-                });
+                    setTimeout(() => window.location.href = href, 50);
+                }
             });
-
-            // مدیریت dropdown زبان
-            const btn = document.getElementById('dropdownButton');
-            const menu = document.getElementById('dropdownMenu');
-            if (btn && menu) {
-                btn.addEventListener('click', () => menu.classList.toggle('hidden'));
-                document.addEventListener('click', e => {
-                    if (!btn.contains(e.target) && !menu.contains(e.target)) {
-                        menu.classList.add('hidden');
-                    }
-                });
-            }
-            
-            // Expose closeMobileMenu function to Alpine.js
-            window.closeMobileMenu = closeMobileMenu;
         });
-    </script>
 
+        // مدیریت dropdown زبان
+        const btn = document.getElementById('dropdownButton');
+        const menu = document.getElementById('dropdownMenu');
+        if (btn && menu) {
+            btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+            document.addEventListener('click', e => {
+                if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                    menu.classList.add('hidden');
+                }
+            });
+        }
+        
+        // Expose closeMobileMenu function to Alpine.js
+        window.closeMobileMenu = closeMobileMenu;
+    });
+</script>   
 </body>
 
 </html><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/ToolsPanel/layouts/sidebar.blade.php ENDPATH**/ ?>

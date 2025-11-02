@@ -440,6 +440,20 @@
                 left: auto !important;
             }
         }
+
+        .sidebar-collapsed {
+            display: none !important;
+        }
+
+        @media (min-width: 768px) {
+            #sidebar {
+                display: block !important;
+            }
+
+            .sidebar-collapsed {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 
@@ -555,14 +569,14 @@
         <div class="flex flex-1 mt-4 min-h-screen sticky">
             <aside class="w-80 hidden md:block shadow-xl p-6 dark:text-white static" id="sidebar">
                 <nav class="mt-0 space-y-1" x-data="{
-                    openItems: {
-                        customers: false,
-                        accounting: false,
-                        sarafi: false,
-                        shopping: false
-                    },
-                    active: '{{ Route::currentRouteName() }}' // همواره با route فعلی هماهنگ
-                }">
+                        openItems: {
+                            customers: false,
+                            accounting: false,
+                            sarafi: false,
+                            shopping: false
+                        },
+                        active: '{{ Route::currentRouteName() }}' // همواره با route فعلی هماهنگ
+                    }">
 
                     <!-- داشبورد -->
                     <a href="{{ route('tools.home') }}"
@@ -643,13 +657,13 @@
                     <div>
                         <!-- دکمه اصلی -->
                         <button @click="openItems.accounting = !openItems.accounting" :class="active.startsWith('tools.loans') || active.startsWith('tools.salary') || active.startsWith('tools.withdrawals') 
-                                ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' 
-                                : 'text-gray-700 hover:bg-gray-100'"
+                                    ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' 
+                                    : 'text-gray-700 hover:bg-gray-100'"
                             class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
                             <span class="flex items-center gap-3">
                                 <i class="fa-solid fa-calculator w-6 h-6" :class="active.startsWith('tools.loans') || active.startsWith('tools.salary') || active.startsWith('tools.withdrawals')
-                                        ? 'text-white'
-                                        : 'text-gray-500'"></i>
+                                            ? 'text-white'
+                                            : 'text-gray-500'"></i>
                                 حسابداری
                             </span>
                             <svg :class="[openItems.accounting ? 'rotate-180' : '', active.startsWith('tools.loans') ? 'text-white' : 'text-gray-500']"
@@ -690,8 +704,8 @@
                             <a href="{{ route('tools.shop-transactions') }}"
                                 @click="active = 'tools.shop-transactions'; openItems.accounting = true; closeMobileMenu()"
                                 :class="active === 'tools.shop-transactions' ? 
-                                    'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 
-                                    'text-gray-600 hover:bg-gray-100'"
+                                        'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 
+                                        'text-gray-600 hover:bg-gray-100'"
                                 class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
                                 <i class="fa-solid fa-money-bill-transfer w-5 h-5"></i>
                                 انتقال ارز از دوکان به صرافی
@@ -700,8 +714,8 @@
                             <a href="{{ route('tools.shop-conversion') }}"
                                 @click="active = 'tools.shop-conversion'; openItems.accounting = true; closeMobileMenu()"
                                 :class="active === 'tools.shop-conversion' ? 
-                                'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 
-                                'text-gray-600 hover:bg-gray-100'"
+                                    'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 
+                                    'text-gray-600 hover:bg-gray-100'"
                                 class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
                                 <i class="fa-solid fa-arrows-rotate w-5 h-5"></i>
                                 تبدیل و انتقال ارز از دوکان به صرافی
@@ -715,8 +729,8 @@
                     <div>
                         <!-- دکمه اصلی -->
                         <button @click="openItems.sarafi = !openItems.sarafi" :class="active.startsWith('tools.transactions') || active.startsWith('tools.buy-sell-currency') || active.startsWith('tools.account_to_account') 
-                        ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' 
-                        : 'text-gray-700 hover:bg-gray-100'"
+                            ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' 
+                            : 'text-gray-700 hover:bg-gray-100'"
                             class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
                             <span class="flex items-center gap-3">
                                 <i class="fa-solid fa-coins w-6 h-6"
@@ -781,13 +795,13 @@
                     <div>
                         <!-- دکمه اصلی -->
                         <button @click="openItems.shopping = !openItems.shopping" :class="active.startsWith('tools.inventory') || active.startsWith('tools.warehouse') || active.startsWith('tools.sales') 
-            ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' 
-            : 'text-gray-700 hover:bg-gray-100'"
+                ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' 
+                : 'text-gray-700 hover:bg-gray-100'"
                             class="flex items-center justify-between w-full py-4 px-5 rounded-lg transition vazir text-[16px]">
                             <span class="flex items-center gap-3">
                                 <i class="fa-solid fa-store w-6 h-6" :class="active.startsWith('tools.inventory') || active.startsWith('tools.warehouse') || active.startsWith('tools.sales')
-                    ? 'text-white'
-                    : 'text-gray-500'"></i>
+                        ? 'text-white'
+                        : 'text-gray-500'"></i>
                                 بخش دوکانداری
                             </span>
                             <svg :class="[openItems.shopping ? 'rotate-180' : '', active.startsWith('tools.inventory') || active.startsWith('tools.warehouse') || active.startsWith('tools.sales') ? 'text-white' : 'text-gray-500']"
@@ -864,117 +878,135 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const loader = document.getElementById('loader');
-            const mainContent = document.getElementById('mainContent');
-            const progressBar = document.querySelector('.progress');
+        const loader = document.getElementById('loader');
+        const mainContent = document.getElementById('mainContent');
+        const progressBar = document.querySelector('.progress');
 
-            const profileBtn = document.getElementById('profileBtn');
-            const profileDropdown = document.getElementById('profileDropdown');
-            
-            // Mobile menu elements
-            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-            const sidebar = document.getElementById('sidebar');
-            const mobileOverlay = document.getElementById('mobileOverlay');
-            
-            // Function to close mobile menu
-            function closeMobileMenu() {
-                if (window.innerWidth < 768) {
-                    sidebar.classList.remove('active');
-                    mobileOverlay.classList.remove('active');
-                    mobileMenuBtn.classList.remove('active');
-                }
+        const profileBtn = document.getElementById('profileBtn');
+        const profileDropdown = document.getElementById('profileDropdown');
+        
+        // Mobile menu elements
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        
+        // Function to close mobile menu - بدون شرط موبایل
+        function closeMobileMenu() {
+            sidebar.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+            if (mobileMenuBtn) {
+                mobileMenuBtn.classList.remove('active');
             }
-            
-            // Mobile menu toggle
-            if (mobileMenuBtn && sidebar && mobileOverlay) {
-                mobileMenuBtn.addEventListener('click', function() {
+        }
+        
+        // Mobile menu toggle - بهبود یافته
+        if (mobileMenuBtn && sidebar && mobileOverlay) {
+            mobileMenuBtn.addEventListener('click', function() {
+                const isMobile = window.innerWidth < 768;
+                
+                if (isMobile) {
+                    // حالت موبایل
                     sidebar.classList.toggle('active');
                     mobileOverlay.classList.toggle('active');
                     mobileMenuBtn.classList.toggle('active');
-                });
-                
-                mobileOverlay.addEventListener('click', function() {
-                    sidebar.classList.remove('active');
-                    mobileOverlay.classList.remove('active');
-                    mobileMenuBtn.classList.remove('active');
-                });
-            }
-
-            profileBtn.addEventListener('click', () => {
-                profileDropdown.classList.toggle('hidden');
-            });
-
-            document.addEventListener('click', (event) => {
-                if (!profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
-                    profileDropdown.classList.add('hidden');
+                } else {
+                    // حالت دسکتاپ - toggle سایدبار
+                    sidebar.classList.toggle('sidebar-collapsed');
                 }
             });
+            
+            mobileOverlay.addEventListener('click', function() {
+                closeMobileMenu();
+            });
+        }
 
-            // محتوا را ابتدا مخفی کن
-            mainContent.style.display = 'none';
+        // بقیه کدها بدون تغییر...
+        profileBtn.addEventListener('click', () => {
+            profileDropdown.classList.toggle('hidden');
+        });
 
-            let progress = 0;
-            let fakeProgressInterval;
-
-            // شروع شبیه‌سازی پیشرفت فقط اگر لود طول بکشد
-            function startFakeProgress() {
-                fakeProgressInterval = setInterval(() => {
-                    progress += Math.random() * 30; // سرعت متوسط
-                    if (progress > 90) progress = 90; // رسیدن به 90% و منتظر load واقعی
-                    progressBar.style.width = progress + '%';
-                },10);
+        document.addEventListener('click', (event) => {
+            if (!profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
+                profileDropdown.classList.add('hidden');
             }
+        });
 
+        // محتوا را ابتدا مخفی کن
+        if (mainContent) {
+            mainContent.style.display = 'none';
+        }
+
+        let progress = 0;
+        let fakeProgressInterval;
+
+        // شروع شبیه‌سازی پیشرفت فقط اگر لود طول بکشد
+        function startFakeProgress() {
+            fakeProgressInterval = setInterval(() => {
+                progress += Math.random() * 30;
+                if (progress > 90) progress = 90;
+                if (progressBar) {
+                    progressBar.style.width = progress + '%';
+                }
+            }, 10);
+        }
+
+        if (loader && progressBar) {
             startFakeProgress();
 
             // وقتی صفحه واقعاً لود شد
             window.addEventListener('load', function() {
                 clearInterval(fakeProgressInterval);
                 progress = 100;
-                progressBar.style.width = progress + '%';
+                if (progressBar) {
+                    progressBar.style.width = progress + '%';
+                }
 
                 setTimeout(() => {
                     loader.classList.add('loader-complete');
-                    mainContent.style.display = 'block';
-                    mainContent.classList.add('content-loaded');
+                    if (mainContent) {
+                        mainContent.style.display = 'block';
+                        mainContent.classList.add('content-loaded');
+                    }
 
                     setTimeout(() => {
                         loader.style.display = 'none';
                     }, 400);
-                }, 600); // کمی تأخیر برای انیمیشن
+                }, 600);
             });
+        }
 
-            // مدیریت کلیک روی لینک‌ها
-            const navLinks = document.querySelectorAll('.nav-link, .locale-link');
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    const href = this.getAttribute('href');
-                    if (href && !href.startsWith('#')) {
-                        e.preventDefault();
+        // مدیریت کلیک روی لینک‌ها
+        const navLinks = document.querySelectorAll('.nav-link, .locale-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href && !href.startsWith('#')) {
+                    e.preventDefault();
+                    if (loader) {
                         loader.style.display = 'flex';
                         loader.classList.remove('loader-complete');
-                        setTimeout(() => window.location.href = href, 50);
                     }
-                });
+                    setTimeout(() => window.location.href = href, 50);
+                }
             });
-
-            // مدیریت dropdown زبان
-            const btn = document.getElementById('dropdownButton');
-            const menu = document.getElementById('dropdownMenu');
-            if (btn && menu) {
-                btn.addEventListener('click', () => menu.classList.toggle('hidden'));
-                document.addEventListener('click', e => {
-                    if (!btn.contains(e.target) && !menu.contains(e.target)) {
-                        menu.classList.add('hidden');
-                    }
-                });
-            }
-            
-            // Expose closeMobileMenu function to Alpine.js
-            window.closeMobileMenu = closeMobileMenu;
         });
-    </script>
 
+        // مدیریت dropdown زبان
+        const btn = document.getElementById('dropdownButton');
+        const menu = document.getElementById('dropdownMenu');
+        if (btn && menu) {
+            btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+            document.addEventListener('click', e => {
+                if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                    menu.classList.add('hidden');
+                }
+            });
+        }
+        
+        // Expose closeMobileMenu function to Alpine.js
+        window.closeMobileMenu = closeMobileMenu;
+    });
+    </script>
 </body>
 
 </html>
