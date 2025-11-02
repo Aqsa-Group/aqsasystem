@@ -24,98 +24,98 @@
     </div>
     @endif
 
-    <!-- کارت‌های آماری -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 p-2 sm:p-4">
-        <!-- فروش امروز -->
-        <div
-            class="bg-gradient-to-br from-green-100 to-green-200 border-l-2 sm:border-l-4 border-green-500 text-green-800 p-2 sm:p-4 rounded-lg sm:rounded-xl shadow hover:shadow-lg transition-all duration-300">
-            <div class="flex items-center justify-between">
-                <h3 class="text-xs sm:text-sm font-bold">فروش امروز</h3>
-                <div class="bg-green-500 p-1 sm:p-2 rounded-full">
-                    <i class="fa-solid fa-shopping-cart text-white text-xs sm:text-sm"></i>
-                </div>
-            </div>
-            <div class="text-center mt-1 sm:mt-2">
-                <div class="text-sm sm:text-lg font-bold">{{ number_format($todaySales) }}</div>
-                <div class="text-xs mt-1">افغانی</div>
+<!-- کارت‌های آماری -->
+<div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 p-2 sm:p-4">
+    <!-- فروش امروز -->
+    <div
+        class="flex flex-col justify-between bg-gradient-to-br from-green-100 to-green-200 border-l-4 border-green-500 text-green-800 p-3 sm:p-4 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300">
+        <div class="flex items-center justify-between">
+            <h3 class="text-xs sm:text-sm font-bold truncate">فروش امروز</h3>
+            <div class="bg-green-500 p-1.5 sm:p-2 rounded-full">
+                <i class="fa-solid fa-shopping-cart text-white text-xs sm:text-sm"></i>
             </div>
         </div>
-
-        <!-- سود امروز -->
-        <div
-            class="bg-gradient-to-br from-blue-100 to-blue-200 border-l-2 sm:border-l-4 border-blue-500 text-blue-800 p-2 sm:p-4 rounded-lg sm:rounded-xl shadow hover:shadow-lg transition-all duration-300">
-            <div class="flex items-center justify-between">
-                <h3 class="text-xs sm:text-sm font-bold">سود امروز</h3>
-                <div class="bg-blue-500 p-1 sm:p-2 rounded-full">
-                    <i class="fa-solid fa-chart-line text-white text-xs sm:text-sm"></i>
-                </div>
-            </div>
-            <div class="text-center mt-1 sm:mt-2">
-                <div class="text-sm sm:text-lg font-bold">{{ number_format($todayProfit) }}</div>
-                <div class="text-xs mt-1">افغانی</div>
-            </div>
-        </div>
-
-        <!-- فروش ماه -->
-        <div
-            class="bg-gradient-to-br from-purple-100 to-purple-200 border-l-2 sm:border-l-4 border-purple-500 text-purple-800 p-2 sm:p-4 rounded-lg sm:rounded-xl shadow hover:shadow-lg transition-all duration-300">
-            <div class="flex items-center justify-between">
-                <h3 class="text-xs sm:text-sm font-bold">فروش ماه</h3>
-                <div class="bg-purple-500 p-1 sm:p-2 rounded-full">
-                    <i class="fa-solid fa-calendar text-white text-xs sm:text-sm"></i>
-                </div>
-            </div>
-            <div class="text-center mt-1 sm:mt-2">
-                <div class="text-sm sm:text-lg font-bold">{{ number_format($monthSales) }}</div>
-                <div class="text-xs mt-1">افغانی</div>
-            </div>
-        </div>
-
-        <!-- سود ماه -->
-        <div
-            class="bg-gradient-to-br from-orange-100 to-orange-200 border-l-2 sm:border-l-4 border-orange-500 text-orange-800 p-2 sm:p-4 rounded-lg sm:rounded-xl shadow hover:shadow-lg transition-all duration-300">
-            <div class="flex items-center justify-between">
-                <h3 class="text-xs sm:text-sm font-bold">سود ماه</h3>
-                <div class="bg-orange-500 p-1 sm:p-2 rounded-full">
-                    <i class="fa-solid fa-money-bill-trend-up text-white text-xs sm:text-sm"></i>
-                </div>
-            </div>
-            <div class="text-center mt-1 sm:mt-2">
-                <div class="text-sm sm:text-lg font-bold">{{ number_format($monthProfit) }}</div>
-                <div class="text-xs mt-1">افغانی</div>
-            </div>
-        </div>
-
-        <!-- کل فروش -->
-        <div
-            class="bg-gradient-to-br from-red-100 to-red-200 border-l-2 sm:border-l-4 border-red-500 text-red-800 p-2 sm:p-4 rounded-lg sm:rounded-xl shadow hover:shadow-lg transition-all duration-300">
-            <div class="flex items-center justify-between">
-                <h3 class="text-xs sm:text-sm font-bold">کل فروش</h3>
-                <div class="bg-red-500 p-1 sm:p-2 rounded-full">
-                    <i class="fa-solid fa-chart-bar text-white text-xs sm:text-sm"></i>
-                </div>
-            </div>
-            <div class="text-center mt-1 sm:mt-2">
-                <div class="text-sm sm:text-lg font-bold">{{ number_format($totalSales) }}</div>
-                <div class="text-xs mt-1">افغانی</div>
-            </div>
-        </div>
-
-        <!-- کل سود -->
-        <div
-            class="bg-gradient-to-br from-teal-100 to-teal-200 border-l-2 sm:border-l-4 border-teal-500 text-teal-800 p-2 sm:p-4 rounded-lg sm:rounded-xl shadow hover:shadow-lg transition-all duration-300">
-            <div class="flex items-center justify-between">
-                <h3 class="text-xs sm:text-sm font-bold">کل سود</h3>
-                <div class="bg-teal-500 p-1 sm:p-2 rounded-full">
-                    <i class="fa-solid fa-coins text-white text-xs sm:text-sm"></i>
-                </div>
-            </div>
-            <div class="text-center mt-1 sm:mt-2">
-                <div class="text-sm sm:text-lg font-bold">{{ number_format($totalProfit) }}</div>
-                <div class="text-xs mt-1">افغانی</div>
-            </div>
+        <div class="text-center mt-2">
+            <div class="text-sm sm:text-lg font-bold leading-tight">{{ number_format($todaySales) }}</div>
+            <div class="text-[10px] sm:text-xs mt-1 opacity-80">افغانی</div>
         </div>
     </div>
+
+    <!-- سود امروز -->
+    <div
+        class="flex flex-col justify-between bg-gradient-to-br from-blue-100 to-blue-200 border-l-4 border-blue-500 text-blue-800 p-3 sm:p-4 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300">
+        <div class="flex items-center justify-between">
+            <h3 class="text-xs sm:text-sm font-bold truncate">سود امروز</h3>
+            <div class="bg-blue-500 p-1.5 sm:p-2 rounded-full">
+                <i class="fa-solid fa-chart-line text-white text-xs sm:text-sm"></i>
+            </div>
+        </div>
+        <div class="text-center mt-2">
+            <div class="text-sm sm:text-lg font-bold leading-tight">{{ number_format($todayProfit) }}</div>
+            <div class="text-[10px] sm:text-xs mt-1 opacity-80">افغانی</div>
+        </div>
+    </div>
+
+    <!-- فروش ماه -->
+    <div
+        class="flex flex-col justify-between bg-gradient-to-br from-purple-100 to-purple-200 border-l-4 border-purple-500 text-purple-800 p-3 sm:p-4 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300">
+        <div class="flex items-center justify-between">
+            <h3 class="text-xs sm:text-sm font-bold truncate">فروش ماه</h3>
+            <div class="bg-purple-500 p-1.5 sm:p-2 rounded-full">
+                <i class="fa-solid fa-calendar text-white text-xs sm:text-sm"></i>
+            </div>
+        </div>
+        <div class="text-center mt-2">
+            <div class="text-sm sm:text-lg font-bold leading-tight">{{ number_format($monthSales) }}</div>
+            <div class="text-[10px] sm:text-xs mt-1 opacity-80">افغانی</div>
+        </div>
+    </div>
+
+    <!-- سود ماه -->
+    <div
+        class="flex flex-col justify-between bg-gradient-to-br from-orange-100 to-orange-200 border-l-4 border-orange-500 text-orange-800 p-3 sm:p-4 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300">
+        <div class="flex items-center justify-between">
+            <h3 class="text-xs sm:text-sm font-bold truncate">سود ماه</h3>
+            <div class="bg-orange-500 p-1.5 sm:p-2 rounded-full">
+                <i class="fa-solid fa-money-bill-trend-up text-white text-xs sm:text-sm"></i>
+            </div>
+        </div>
+        <div class="text-center mt-2">
+            <div class="text-sm sm:text-lg font-bold leading-tight">{{ number_format($monthProfit) }}</div>
+            <div class="text-[10px] sm:text-xs mt-1 opacity-80">افغانی</div>
+        </div>
+    </div>
+
+    <!-- کل فروش -->
+    <div
+        class="flex flex-col justify-between bg-gradient-to-br from-red-100 to-red-200 border-l-4 border-red-500 text-red-800 p-3 sm:p-4 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300">
+        <div class="flex items-center justify-between">
+            <h3 class="text-xs sm:text-sm font-bold truncate">کل فروش</h3>
+            <div class="bg-red-500 p-1.5 sm:p-2 rounded-full">
+                <i class="fa-solid fa-chart-bar text-white text-xs sm:text-sm"></i>
+            </div>
+        </div>
+        <div class="text-center mt-2">
+            <div class="text-sm sm:text-lg font-bold leading-tight">{{ number_format($totalSales) }}</div>
+            <div class="text-[10px] sm:text-xs mt-1 opacity-80">افغانی</div>
+        </div>
+    </div>
+
+    <!-- کل سود -->
+    <div
+        class="flex flex-col justify-between bg-gradient-to-br from-teal-100 to-teal-200 border-l-4 border-teal-500 text-teal-800 p-3 sm:p-4 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300">
+        <div class="flex items-center justify-between">
+            <h3 class="text-xs sm:text-sm font-bold truncate">کل سود</h3>
+            <div class="bg-teal-500 p-1.5 sm:p-2 rounded-full">
+                <i class="fa-solid fa-coins text-white text-xs sm:text-sm"></i>
+            </div>
+        </div>
+        <div class="text-center mt-2">
+            <div class="text-sm sm:text-lg font-bold leading-tight">{{ number_format($totalProfit) }}</div>
+            <div class="text-[10px] sm:text-xs mt-1 opacity-80">افغانی</div>
+        </div>
+    </div>
+</div>
 
 
     {{-- فرم و جدول کنار هم --}}
