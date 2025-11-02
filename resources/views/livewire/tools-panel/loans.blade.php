@@ -1,5 +1,5 @@
 <div>
-    @if (session()->has('message'))
+  @if (session()->has('message'))
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
         class="fixed top-0 left-0 right-0 w-full z-[9999] bg-gradient-to-br from-indigo-400 to-indigo-500 vazir">
         <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -9,6 +9,7 @@
         </div>
     </div>
     @endif
+
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-4 pb-0 pt-1">
     
     <!-- کارت ۱: کل مبلغ قرضه -->

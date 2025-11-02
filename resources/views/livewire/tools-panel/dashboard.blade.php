@@ -4,11 +4,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-3 text-center">
-        <div
-            class="bg-gradient-to-br from-indigo-50 to-indigo-100 border-l-4 border-indigo-500 text-indigo-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105">
-            <i class="fa-solid fa-cash-register text-2xl "></i>
-            <p class="text-lg font-semibold">فروشات</p>
-        </div>
+
+        <a href="{{ route('tools.sales') }}">
+            <div
+                class="bg-gradient-to-br from-indigo-50 to-indigo-100 border-l-4 border-indigo-500 text-indigo-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105">
+                <i class="fa-solid fa-cart-shopping text-2xl "></i>
+                <p class="text-lg font-semibold">فروشات</p>
+            </div>
+        </a>
+
+
         <a href="{{ route('tools.loans') }}">
 
             <div
@@ -18,17 +23,21 @@
             </div>
         </a>
 
-        <div
-            class="bg-gradient-to-br from-indigo-50 to-indigo-100 border-l-4 border-indigo-500 text-indigo-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105">
-            <i class="fa-solid fa-warehouse text-3xl mb-2"></i>
-            <p class="text-lg font-semibold">اجناس گدام</p>
-        </div>
+        <a href="{{ route("tools.inventory") }}">
+            <div
+                class="bg-gradient-to-br from-indigo-50 to-indigo-100 border-l-4 border-indigo-500 text-indigo-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105">
+                <i class="fa-solid fa-warehouse text-3xl mb-2"></i>
+                <p class="text-lg font-semibold">اجناس گدام</p>
+            </div>
+        </a>
 
-        <div
-            class="bg-gradient-to-br from-indigo-50 to-indigo-100 border-l-4 border-indigo-500 text-indigo-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105">
-            <i class="fa-solid fa-store text-3xl mb-2"></i>
-            <p class="text-lg font-semibold">اجناس دوکان</p>
-        </div>
+        <a href="{{ route('tools.warehouse') }}">
+            <div
+                class="bg-gradient-to-br from-indigo-50 to-indigo-100 border-l-4 border-indigo-500 text-indigo-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105">
+                <i class="fa-solid fa-store text-3xl mb-2"></i>
+                <p class="text-lg font-semibold">اجناس دوکان</p>
+            </div>
+        </a>
 
         <a href="{{ route('tools.withdrawals') }}">
             <div
@@ -63,7 +72,6 @@
         </div>
 
     </div>
-
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 p-4">
         <!-- کارت فروشات امروز -->
         <div
@@ -79,7 +87,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-3xl font-bold mt-1 animate-number" data-target="12500000">0</p>
+                <p class="text-3xl font-bold mt-1 animate-number" data-target="{{ $todaysale }}">0</p>
                 <span class="text-sm bg-green-200 px-2 py-1 rounded-full">+12%</span>
             </div>
         </div>
@@ -98,7 +106,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-3xl font-bold mt-1 animate-number" data-target="3200000">0</p>
+                <p class="text-3xl font-bold mt-1 animate-number" data-target="{{ $todayprofit }}">0</p>
                 <span class="text-sm bg-blue-200 px-2 py-1 rounded-full">+8%</span>
             </div>
         </div>
@@ -117,7 +125,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-3xl font-bold mt-1 animate-number" data-target="850000">0</p>
+                <p class="text-3xl font-bold mt-1 animate-number vazir" data-target="{{ $withdrawals }}">0</p>
                 <span class="text-sm bg-red-200 px-2 py-1 rounded-full">-3%</span>
             </div>
         </div>
@@ -136,7 +144,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-3xl font-bold mt-1 animate-number" data-target="285000000">0</p>
+                <p class="text-3xl font-bold mt-1 animate-number" data-target="{{ $thismonthsale }}">0</p>
                 <span class="text-sm bg-purple-200 px-2 py-1 rounded-full">+15%</span>
             </div>
         </div>
@@ -155,7 +163,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-3xl font-bold mt-1 animate-number" data-target="75000000">0</p>
+                <p class="text-3xl font-bold mt-1 animate-number" data-target="{{ $inventorytotalprice }}">0</p>
                 <span class="text-sm bg-indigo-200 px-2 py-1 rounded-full">+5%</span>
             </div>
         </div>
@@ -174,7 +182,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-3xl font-bold mt-1 animate-number" data-target="45000000">0</p>
+                <p class="text-3xl font-bold mt-1 animate-number" data-target="{{ $warehousetotalprice }}">0</p>
                 <span class="text-sm bg-amber-200 px-2 py-1 rounded-full">+7%</span>
             </div>
         </div>
@@ -193,7 +201,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-3xl font-bold mt-1 animate-number" data-target="120000000">0</p>
+                <p class="text-3xl font-bold mt-1 animate-number" data-target="{{ $totalstock }}">0</p>
                 <span class="text-sm bg-cyan-200 px-2 py-1 rounded-full">+10%</span>
             </div>
         </div>
@@ -213,13 +221,13 @@
             </div>
             <div class="flex items-end justify-between">
                 <div class="flex flex-col gap-2">
-                    <div class="flex justify-center items-center text-2xl ">
+                    <div class="flex justify-center items-center text-2xl vazir ">
                         <span>دالر : </span>
 
-                        <p class="text-3xl font-bold mt-1 animate-number" data-target="{{$totalUsdLoan }}">0</p>
+                        <p class="text-3xl font-bold mt-1 animate-number vazir" data-target="{{$totalUsdLoan }}">0</p>
                     </div>
 
-                       <div class="flex justify-center items-center text-2xl ">
+                    <div class="flex justify-center items-center text-2xl ">
                         <span>افغانی : </span>
 
                         <p class="text-3xl font-bold mt-1 animate-number" data-target="{{$totalAFNLoan }}">0</p>
@@ -297,9 +305,14 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
 
-    const months = ['حمل', 'ثور', 'جوزا', 'سرطان', 'اسد', 'سنبله', 'میزان', 'عقرب', 'قوس', 'جدی', 'دلو', 'حوت'];
-    const profitData = [1200, 1800, 2500, 1900, 2700, 3100, 3400, 3000, 3600, 4100, 4300, 4600];
-    const lossData   = [800, 600, 1100, 900, 1200, 700, 500, 800, 900, 750, 620, 700];
+    // دریافت داده‌های واقعی از کامپوننت Livewire
+    const months = @json($months);
+    const profitData = @json($profitPerMonth);
+    const lossData = @json($lossPerMonth);
+
+    // اگر داده‌ای وجود ندارد، از داده‌های پیش‌فرض استفاده کن
+    const finalProfitData = profitData && profitData.length > 0 ? profitData : [1200, 1800, 2500, 1900, 2700, 3100, 3400, 3000, 3600, 4100, 4300, 4600];
+    const finalLossData = lossData && lossData.length > 0 ? lossData : [800, 600, 1100, 900, 1200, 700, 500, 800, 900, 750, 620, 700];
 
     const baseChart = {
         chart: {
@@ -316,42 +329,97 @@
         },
         stroke: { curve: 'smooth', width: 3 },
         dataLabels: { enabled: false },
-        xaxis: { categories: months },
-        tooltip: { theme: 'dark' },
-        grid: { borderColor: '#eee', strokeDashArray: 4 }
+        xaxis: { 
+            categories: months,
+            labels: {
+                style: {
+                    fontFamily: 'system-ui, -apple-system, sans-serif',
+                    fontSize: '11px'
+                }
+            }
+        },
+        yaxis: {
+            labels: {
+                formatter: function(value) {
+                    return value.toLocaleString('fa-IR') + ' AFN';
+                },
+                style: {
+                    fontFamily: 'system-ui, -apple-system, sans-serif',
+                    fontSize: '11px'
+                }
+            }
+        },
+        tooltip: { 
+            theme: 'dark',
+            y: {
+                formatter: function(value) {
+                    return value.toLocaleString('fa-IR') + ' AFN';
+                }
+            }
+        },
+        grid: { 
+            borderColor: '#eee', 
+            strokeDashArray: 4 
+        },
+        legend: {
+            show: true,
+            position: 'top',
+            horizontalAlign: 'left',
+            fontFamily: 'system-ui, -apple-system, sans-serif'
+        }
     };
 
     // فایده (سبز)
     const profitChart = new ApexCharts(document.querySelector("#profit-chart"), {
         ...baseChart,
-        series: [{ name: 'فایده', data: profitData }],
+        series: [{ name: 'فایده', data: finalProfitData }],
         colors: ['#16a34a'],
-      fill: {
-    type: 'gradient',
-    gradient: {
-        shadeIntensity: 0.9,  
-        opacityFrom: 0.8,    
-        opacityTo: 0.4,        
-        stops: [0, 90, 100]
-    }
-}
-
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shadeIntensity: 0.9,  
+                opacityFrom: 0.8,    
+                opacityTo: 0.4,        
+                stops: [0, 90, 100]
+            }
+        },
+        title: {
+            text: 'سود ماهانه بر اساس فروش',
+            align: 'right',
+            style: {
+                fontSize: '14px',
+                fontFamily: 'system-ui, -apple-system, sans-serif'
+            }
+        }
     });
     profitChart.render();
 
     // ضرر (قرمز)
     const lossChart = new ApexCharts(document.querySelector("#loss-chart"), {
         ...baseChart,
-        series: [{ name: 'ضرر', data: lossData }],
+        series: [{ name: 'ضرر', data: finalLossData }],
         colors: ['#dc2626'],
         fill: {
             type: 'gradient',
-            gradient: { shadeIntensity: 0.9, opacityFrom: 0.8, opacityTo: 0.4, stops: [0, 90, 100] }
+            gradient: { 
+                shadeIntensity: 0.9, 
+                opacityFrom: 0.8, 
+                opacityTo: 0.4, 
+                stops: [0, 90, 100] 
+            }
+        },
+        title: {
+            text: 'ضرر ماهانه بر اساس آیتم‌های فروش',
+            align: 'right',
+            style: {
+                fontSize: '14px',
+                fontFamily: 'system-ui, -apple-system, sans-serif'
+            }
         }
     });
     lossChart.render();
 
-    // انیمیشن اعداد
+    // انیمیشن اعداد برای کارت‌ها
     function animateNumber(el, target, duration = 1000) {
         let start = 0;
         const range = target - start;
@@ -367,9 +435,46 @@
         requestAnimationFrame(step);
     }
 
+    // انیمیشن برای تمام اعداد
     document.querySelectorAll('.animate-number').forEach(el => {
         const target = parseInt(el.getAttribute('data-target')) || 0;
         animateNumber(el, target, 1200 + Math.random() * 800);
+    });
+
+    // انیمیشن برای داده‌های واقعی از کامپوننت
+    function animateRealDataNumbers() {
+        // امروز
+        const todayProfitEl = document.querySelector('[data-target="today-profit"]');
+        const todaySaleEl = document.querySelector('[data-target="today-sale"]');
+        const thisMonthSaleEl = document.querySelector('[data-target="this-month-sale"]');
+        
+        if (todayProfitEl) {
+            animateNumber(todayProfitEl, @json($todayprofit), 1500);
+        }
+        if (todaySaleEl) {
+            animateNumber(todaySaleEl, @json($todaysale), 1500);
+        }
+        if (thisMonthSaleEl) {
+            animateNumber(thisMonthSaleEl, @json($thismonthsale), 1500);
+        }
+    }
+
+    // اجرای انیمیشن پس از لود کامل صفحه
+    setTimeout(animateRealDataNumbers, 500);
+
+    // رفرش چارت هنگام تغییر داده‌ها
+    Livewire.on('chartUpdated', () => {
+        setTimeout(() => {
+            profitChart.updateSeries([{
+                name: 'فایده',
+                data: @this.profitPerMonth
+            }]);
+            
+            lossChart.updateSeries([{
+                name: 'ضرر', 
+                data: @this.lossPerMonth
+            }]);
+        }, 100);
     });
 
 });

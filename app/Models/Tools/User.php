@@ -53,4 +53,17 @@ class User extends Authenticatable
     {
         return $this->belongsTo(User::class, 'admin_id');
     }
+
+    public function subUsers()
+{
+    return $this->hasMany(User::class, 'admin_id');
+}
+
+public static function getAdminAndSubUserIds($adminId)
+{
+    return self::where('id', $adminId)
+        ->orWhere('admin_id', $adminId)
+        ->pluck('id');
+}
+
 }

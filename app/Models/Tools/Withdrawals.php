@@ -38,4 +38,5 @@ class Withdrawals extends Model
         return $this->belongsTo(User::class, 'admin_id');
     }
 
+
 }

@@ -28,11 +28,6 @@ class Loan extends Model
         'date' => 'date',
     ];
 
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class, 'customer_id');
-    }
-
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -76,15 +71,15 @@ class Loan extends Model
     public static function getCustomerBalance($customerId, $currency)
     {
         $loans = self::where('customer_id', $customerId)
-                    ->where('currency', $currency)
-                    ->get();
+            ->where('currency', $currency)
+            ->get();
 
         $balance = 0;
         foreach ($loans as $loan) {
             if ($loan->type === 'برد') {
-                $balance += $loan->amount; 
+                $balance += $loan->amount;
             } else { // رسید
-                $balance -= $loan->amount; 
+                $balance -= $loan->amount;
             }
         }
 
@@ -94,13 +89,13 @@ class Loan extends Model
     public static function getCustomerTotalBalance($customerId)
     {
         $loans = self::where('customer_id', $customerId)->get();
-        
+
         $balances = [];
         foreach ($loans as $loan) {
             if (!isset($balances[$loan->currency])) {
                 $balances[$loan->currency] = 0;
             }
-            
+
             if ($loan->type === 'برد') {
                 $balances[$loan->currency] += $loan->amount;
             } else {
@@ -110,27 +105,29 @@ class Loan extends Model
 
         return $balances;
     }
-
-    // متد جدید برای گرفتن وضعیت قرضه بر اساس ارز
     public static function getLoanStatusByCurrency($customerId, $adminId = null)
     {
-        $query = self::where('customer_id', $customerId);
-        
-        if ($adminId) {
-            $query->where('admin_id', $adminId);
+        if (!$adminId && auth('tools')->check()) {
+            $adminId = auth('tools')->user()->role === 'admin'
+                ? auth('tools')->id()
+                : auth('tools')->user()->admin_id;
         }
 
-        $loans = $query->get();
+        $allowedUserIds = User::getAdminAndSubUserIds($adminId);
+
+        $loans = self::where('customer_id', $customerId)
+            ->whereIn('user_id', $allowedUserIds)
+            ->get();
 
         $statusByCurrency = [];
         foreach ($loans as $loan) {
             $currency = $loan->currency;
-            
+
             if (!isset($statusByCurrency[$currency])) {
                 $statusByCurrency[$currency] = [
                     'total_loan' => 0,
                     'total_paid' => 0,
-                    'remaining_loan' => 0
+                    'remaining_loan' => 0,
                 ];
             }
 
@@ -140,10 +137,16 @@ class Loan extends Model
                 $statusByCurrency[$currency]['total_paid'] += $loan->amount;
             }
 
-            $statusByCurrency[$currency]['remaining_loan'] = 
+            $statusByCurrency[$currency]['remaining_loan'] =
                 $statusByCurrency[$currency]['total_loan'] - $statusByCurrency[$currency]['total_paid'];
         }
 
         return $statusByCurrency;
     }
+
+        public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
+    }
+
 }

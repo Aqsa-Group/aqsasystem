@@ -234,6 +234,7 @@ class Warehouses extends Model
     /**
      * روابط
      */
+    
     public function histories()
     {
         return $this->hasMany(WarehousesHistory::class, 'warehouse_id');

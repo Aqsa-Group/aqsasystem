@@ -154,13 +154,13 @@
                         <div class="relative w-full">
                             <select wire:model="type"
                                 class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 appearance-none">
-                                <option value="afn">کرایه</option>
-                                <option value="usd">پول برق</option>
-                                <option value="toman">غذا</option>
-                                <option value="toman">تعمیرات</option>
-                                <option value="toman">خرید لوازم</option>
-                                <option value="toman">خرید جنس</option>
-                                <option value="toman">متفرقه</option>
+                                <option value="کرایه">کرایه</option>
+                                <option value="پول برق">پول برق</option>
+                                <option value="غذا">غذا</option>
+                                <option value="تعمیرات">تعمیرات</option>
+                                <option value="خرید لوازم">خرید لوازم</option>
+                                <option value="خرید جنس">خرید جنس</option>
+                                <option value="متفرقه">متفرقه</option>
                             </select>
                             <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                 <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">

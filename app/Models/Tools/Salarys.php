@@ -1,17 +1,32 @@
 <?php
 
 namespace App\Models\Tools;
-use App\Models\Tools\Staffs;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Tools\User;
 
 class Salarys extends Model
 {
-   protected $connection = 'tools';
-   protected $table = 'salary';
+    protected $connection = 'tools';
+    protected $table = 'salary';
+    
+    protected $fillable = [
+        'admin_id',
+        'userـid',
+        'staff_id',
+        'currency',
+        'amount',
+        'description',
+        'date',
 
-   protected $guarded = [];
+    ];
 
+
+     
+    protected $casts = [
+        'date' => 'date',
+        'amount' => 'integer',
+    ];
 
     public function staff()
     {

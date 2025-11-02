@@ -49,11 +49,12 @@ class Customer extends Authenticatable
     {
         return $this->belongsTo(User::class, 'admin_id');
     }
-    public function loans()
+    
+    public function loan()
     {
-        return $this->hasMany(Loan::class, 'customer_id');
+        return $this->hasMany(Loan::class);
     }
-
+    
     public function transactions()
     {
         return $this->hasMany(\App\Models\Sarafi\Transaction::class, 'customer_id');
@@ -63,4 +64,13 @@ class Customer extends Authenticatable
     {
         return $this->hasMany(ShopTransactions::class, 'customer_id');
     }
+
+
+
+
+        public function sales()
+    {
+        return $this->hasMany(Sale::class);
+    }
+    
 }

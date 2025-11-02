@@ -438,13 +438,20 @@ Route::get('/tools/warehouse', function () {
 
 
 
+Route::get('/tools/sales', function () {
+    if (!Auth::guard('tools')->check()) {
+        return redirect()->route('tools.login.form');
+    }
+    return view('ToolsPanel.components.sales');
+})->name('tools.sales');
 
 
-
-
-
-
-
+Route::get('/tools/reports', function () {
+    if (!Auth::guard('tools')->check()) {
+        return redirect()->route('tools.login.form');
+    }
+    return view('ToolsPanel.components.general-report');
+})->name('tools.reports');
 
 
 

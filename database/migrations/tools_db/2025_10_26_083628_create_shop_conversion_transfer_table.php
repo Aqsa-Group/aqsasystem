@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+
         Schema::create('shop_conversion_transfer', function (Blueprint $table) {
             $table->id();
             $table->string('type');
@@ -31,6 +32,7 @@ return new class extends Migration
             $table->foreign('admin_id')->references('id')->on('users')->onDelete('SET NULL');
             $table->timestamps();
         });
+        
     }
 
     /**

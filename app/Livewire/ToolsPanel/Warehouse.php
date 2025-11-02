@@ -16,10 +16,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class Warehouse extends Component
+
 {
     use WithFileUploads, WithPagination;
-
-    // Properties for form
     public $barcode;
     public $product_name;
     public $unit;
