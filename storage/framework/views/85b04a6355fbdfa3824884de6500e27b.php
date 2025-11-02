@@ -357,11 +357,11 @@
             .company-name {
                 font-size: 24px !important;
             }
-            
+
             .header-right {
                 gap: 8px !important;
             }
-            
+
             .search-input {
                 width: 160px !important;
             }
@@ -371,7 +371,7 @@
             .mobile-menu-btn {
                 display: block;
             }
-            
+
             aside {
                 position: fixed;
                 top: 0;
@@ -382,15 +382,15 @@
                 transition: transform 0.3s ease;
                 overflow-y: auto;
             }
-            
+
             aside.active {
                 transform: translateX(0);
             }
-            
+
             .mobile-overlay.active {
                 display: block;
             }
-            
+
             .company-name {
                 font-size: 18px !important;
                 max-width: 150px;
@@ -398,25 +398,25 @@
                 text-overflow: ellipsis;
                 white-space: nowrap;
             }
-            
+
             .header-right {
                 gap: 4px !important;
             }
-            
+
             .search-input {
                 display: none;
             }
-            
+
             .profile-image {
                 width: 40px !important;
                 height: 40px !important;
             }
-            
+
             .notification-btn {
                 width: 40px !important;
                 height: 40px !important;
             }
-            
+
             .notification-btn img {
                 width: 20px !important;
                 height: 20px !important;
@@ -428,12 +428,12 @@
                 padding-left: 10px !important;
                 padding-right: 10px !important;
             }
-            
+
             .company-name {
                 font-size: 16px !important;
                 max-width: 120px;
             }
-            
+
             .profile-dropdown {
                 width: 280px !important;
                 right: 0;
@@ -692,7 +692,8 @@
 
 
                             <a href="<?php echo e(route('tools.shop-transactions')); ?>"
-                                @click="active = 'tools.shop-transactions'; openItems.accounting = true; closeMobileMenu()" :class="active === 'tools.shop-transactions' ? 
+                                @click="active = 'tools.shop-transactions'; openItems.accounting = true; closeMobileMenu()"
+                                :class="active === 'tools.shop-transactions' ? 
                                     'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 
                                     'text-gray-600 hover:bg-gray-100'"
                                 class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
@@ -701,7 +702,8 @@
                             </a>
 
                             <a href="<?php echo e(route('tools.shop-conversion')); ?>"
-                                @click="active = 'tools.shop-conversion'; openItems.accounting = true; closeMobileMenu()" :class="active === 'tools.shop-conversion' ? 
+                                @click="active = 'tools.shop-conversion'; openItems.accounting = true; closeMobileMenu()"
+                                :class="active === 'tools.shop-conversion' ? 
                                 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 
                                 'text-gray-600 hover:bg-gray-100'"
                                 class="nav-link flex items-center gap-3 py-3 px-4 rounded-md text-[15px] transition vazir">
@@ -841,7 +843,7 @@
                     </a>
 
 
-                         <!-- گزارشات   -->
+                    <!-- گزارشات   -->
                     <a href="<?php echo e(route('tools.reports')); ?>"
                         class="nav-link flex items-center justify-between py-4 px-5 rounded-lg transition vazir dark:text-white text-[16px]"
                         @click="active = 'tools.reports'; closeMobileMenu()"
@@ -849,7 +851,7 @@
                         <span class="flex items-center gap-3">
                             <img src="<?php echo e(asset('assets/tools/statistics.png')); ?>" class="w-6 h-6"
                                 :class="active === 'tools.reports' ? 'filter invert brightness-0' : 'text-gray-500' ">
-                             گزارشات
+                            گزارشات
                         </span>
                     </a>
 

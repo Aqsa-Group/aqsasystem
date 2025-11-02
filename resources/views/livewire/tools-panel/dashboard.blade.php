@@ -47,11 +47,13 @@
             </div>
         </a>
 
-        <div
+   <a href="{{ route('tools.reports') }}">
+         <div
             class="bg-gradient-to-br from-indigo-50 to-indigo-100 border-l-4 border-indigo-500 text-indigo-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105">
             <i class="fa-solid fa-chart-line text-3xl mb-2"></i>
             <p class="text-lg font-semibold">گزارشات</p>
         </div>
+   </a>
     </div>
 
     <!-- دو چارت در دو ستون -->

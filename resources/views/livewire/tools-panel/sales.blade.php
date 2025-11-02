@@ -25,7 +25,7 @@
     @endif
 
     <!-- کارت‌های آماری -->
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 p-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 p-4">
         <!-- فروش امروز -->
         <div
             class="bg-gradient-to-br from-green-100 to-green-200 border-l-4 border-green-500 text-green-800 p-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
