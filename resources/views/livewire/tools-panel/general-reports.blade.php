@@ -1,5 +1,5 @@
 <div class="filament-page vazir text-xl">
-    <div class="space-y-3">
+    <div class="space-y-3 p-8">
         <h1 class="text-4xl font-medium yekan">
             سیستم گزارش‌گیری جامع
         </h1>

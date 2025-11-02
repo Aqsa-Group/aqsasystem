@@ -3,8 +3,8 @@
     @if (session()->has('message'))
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
         class="fixed top-0 left-0 right-0 w-full z-[9999] bg-gradient-to-br bg-gradient-to-br from-indigo-400 to-indigo-500 vazir">
-        <div class="h-[80px] w-full flex justify-start items-center px-4">
-            <h2 class="text-white vazir text-[18px]">
+        <div class="h-[60px] sm:h-[80px] w-full flex justify-start items-center px-4">
+            <h2 class="text-white vazir text-[14px] sm:text-[18px]">
                 <i class="fa-solid fa-check-circle ml-2"></i>
                 {{ session('message') }}
             </h2>
@@ -15,8 +15,8 @@
     @if (session()->has('error'))
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
         class="fixed top-0 left-0 right-0 w-full z-[9999] bg-red-500 vazir">
-        <div class="h-[80px] w-full flex justify-start items-center px-4">
-            <h2 class="text-white vazir text-[18px]">
+        <div class="h-[60px] sm:h-[80px] w-full flex justify-start items-center px-4">
+            <h2 class="text-white vazir text-[14px] sm:text-[18px]">
                 <i class="fa-solid fa-exclamation-triangle ml-2"></i>
                 {{ session('error') }}
             </h2>
@@ -25,93 +25,93 @@
     @endif
 
     <!-- کارت‌های آماری -->
-    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 p-4">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 p-2 sm:p-4">
         <!-- فروش امروز -->
         <div
-            class="bg-gradient-to-br from-green-100 to-green-200 border-l-4 border-green-500 text-green-800 p-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+            class="bg-gradient-to-br from-green-100 to-green-200 border-l-2 sm:border-l-4 border-green-500 text-green-800 p-2 sm:p-4 rounded-lg sm:rounded-xl shadow hover:shadow-lg transition-all duration-300">
             <div class="flex items-center justify-between">
-                <h3 class="text-sm font-bold">فروش امروز</h3>
-                <div class="bg-green-500 p-2 rounded-full">
-                    <i class="fa-solid fa-shopping-cart text-white text-sm"></i>
+                <h3 class="text-xs sm:text-sm font-bold">فروش امروز</h3>
+                <div class="bg-green-500 p-1 sm:p-2 rounded-full">
+                    <i class="fa-solid fa-shopping-cart text-white text-xs sm:text-sm"></i>
                 </div>
             </div>
-            <div class="text-center mt-2">
-                <div class="text-lg font-bold">{{ number_format($todaySales) }}</div>
+            <div class="text-center mt-1 sm:mt-2">
+                <div class="text-sm sm:text-lg font-bold">{{ number_format($todaySales) }}</div>
                 <div class="text-xs mt-1">افغانی</div>
             </div>
         </div>
 
         <!-- سود امروز -->
         <div
-            class="bg-gradient-to-br from-blue-100 to-blue-200 border-l-4 border-blue-500 text-blue-800 p-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+            class="bg-gradient-to-br from-blue-100 to-blue-200 border-l-2 sm:border-l-4 border-blue-500 text-blue-800 p-2 sm:p-4 rounded-lg sm:rounded-xl shadow hover:shadow-lg transition-all duration-300">
             <div class="flex items-center justify-between">
-                <h3 class="text-sm font-bold">سود امروز</h3>
-                <div class="bg-blue-500 p-2 rounded-full">
-                    <i class="fa-solid fa-chart-line text-white text-sm"></i>
+                <h3 class="text-xs sm:text-sm font-bold">سود امروز</h3>
+                <div class="bg-blue-500 p-1 sm:p-2 rounded-full">
+                    <i class="fa-solid fa-chart-line text-white text-xs sm:text-sm"></i>
                 </div>
             </div>
-            <div class="text-center mt-2">
-                <div class="text-lg font-bold">{{ number_format($todayProfit) }}</div>
+            <div class="text-center mt-1 sm:mt-2">
+                <div class="text-sm sm:text-lg font-bold">{{ number_format($todayProfit) }}</div>
                 <div class="text-xs mt-1">افغانی</div>
             </div>
         </div>
 
         <!-- فروش ماه -->
         <div
-            class="bg-gradient-to-br from-purple-100 to-purple-200 border-l-4 border-purple-500 text-purple-800 p-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+            class="bg-gradient-to-br from-purple-100 to-purple-200 border-l-2 sm:border-l-4 border-purple-500 text-purple-800 p-2 sm:p-4 rounded-lg sm:rounded-xl shadow hover:shadow-lg transition-all duration-300">
             <div class="flex items-center justify-between">
-                <h3 class="text-sm font-bold">فروش ماه</h3>
-                <div class="bg-purple-500 p-2 rounded-full">
-                    <i class="fa-solid fa-calendar text-white text-sm"></i>
+                <h3 class="text-xs sm:text-sm font-bold">فروش ماه</h3>
+                <div class="bg-purple-500 p-1 sm:p-2 rounded-full">
+                    <i class="fa-solid fa-calendar text-white text-xs sm:text-sm"></i>
                 </div>
             </div>
-            <div class="text-center mt-2">
-                <div class="text-lg font-bold">{{ number_format($monthSales) }}</div>
+            <div class="text-center mt-1 sm:mt-2">
+                <div class="text-sm sm:text-lg font-bold">{{ number_format($monthSales) }}</div>
                 <div class="text-xs mt-1">افغانی</div>
             </div>
         </div>
 
         <!-- سود ماه -->
         <div
-            class="bg-gradient-to-br from-orange-100 to-orange-200 border-l-4 border-orange-500 text-orange-800 p-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+            class="bg-gradient-to-br from-orange-100 to-orange-200 border-l-2 sm:border-l-4 border-orange-500 text-orange-800 p-2 sm:p-4 rounded-lg sm:rounded-xl shadow hover:shadow-lg transition-all duration-300">
             <div class="flex items-center justify-between">
-                <h3 class="text-sm font-bold">سود ماه</h3>
-                <div class="bg-orange-500 p-2 rounded-full">
-                    <i class="fa-solid fa-money-bill-trend-up text-white text-sm"></i>
+                <h3 class="text-xs sm:text-sm font-bold">سود ماه</h3>
+                <div class="bg-orange-500 p-1 sm:p-2 rounded-full">
+                    <i class="fa-solid fa-money-bill-trend-up text-white text-xs sm:text-sm"></i>
                 </div>
             </div>
-            <div class="text-center mt-2">
-                <div class="text-lg font-bold">{{ number_format($monthProfit) }}</div>
+            <div class="text-center mt-1 sm:mt-2">
+                <div class="text-sm sm:text-lg font-bold">{{ number_format($monthProfit) }}</div>
                 <div class="text-xs mt-1">افغانی</div>
             </div>
         </div>
 
         <!-- کل فروش -->
         <div
-            class="bg-gradient-to-br from-red-100 to-red-200 border-l-4 border-red-500 text-red-800 p-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+            class="bg-gradient-to-br from-red-100 to-red-200 border-l-2 sm:border-l-4 border-red-500 text-red-800 p-2 sm:p-4 rounded-lg sm:rounded-xl shadow hover:shadow-lg transition-all duration-300">
             <div class="flex items-center justify-between">
-                <h3 class="text-sm font-bold">کل فروش</h3>
-                <div class="bg-red-500 p-2 rounded-full">
-                    <i class="fa-solid fa-chart-bar text-white text-sm"></i>
+                <h3 class="text-xs sm:text-sm font-bold">کل فروش</h3>
+                <div class="bg-red-500 p-1 sm:p-2 rounded-full">
+                    <i class="fa-solid fa-chart-bar text-white text-xs sm:text-sm"></i>
                 </div>
             </div>
-            <div class="text-center mt-2">
-                <div class="text-lg font-bold">{{ number_format($totalSales) }}</div>
+            <div class="text-center mt-1 sm:mt-2">
+                <div class="text-sm sm:text-lg font-bold">{{ number_format($totalSales) }}</div>
                 <div class="text-xs mt-1">افغانی</div>
             </div>
         </div>
 
         <!-- کل سود -->
         <div
-            class="bg-gradient-to-br from-teal-100 to-teal-200 border-l-4 border-teal-500 text-teal-800 p-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+            class="bg-gradient-to-br from-teal-100 to-teal-200 border-l-2 sm:border-l-4 border-teal-500 text-teal-800 p-2 sm:p-4 rounded-lg sm:rounded-xl shadow hover:shadow-lg transition-all duration-300">
             <div class="flex items-center justify-between">
-                <h3 class="text-sm font-bold">کل سود</h3>
-                <div class="bg-teal-500 p-2 rounded-full">
-                    <i class="fa-solid fa-coins text-white text-sm"></i>
+                <h3 class="text-xs sm:text-sm font-bold">کل سود</h3>
+                <div class="bg-teal-500 p-1 sm:p-2 rounded-full">
+                    <i class="fa-solid fa-coins text-white text-xs sm:text-sm"></i>
                 </div>
             </div>
-            <div class="text-center mt-2">
-                <div class="text-lg font-bold">{{ number_format($totalProfit) }}</div>
+            <div class="text-center mt-1 sm:mt-2">
+                <div class="text-sm sm:text-lg font-bold">{{ number_format($totalProfit) }}</div>
                 <div class="text-xs mt-1">افغانی</div>
             </div>
         </div>
@@ -119,32 +119,32 @@
 
 
     {{-- فرم و جدول کنار هم --}}
-    <div class="flex flex-col lg:flex-row gap-6 p-4">
+    <div class="flex flex-col xl:flex-row gap-4 sm:gap-6 p-2 sm:p-4">
 
         {{-- فرم ثبت فروش --}}
-        <div class="flex flex-col bg-white w-full lg:w-1/2 p-6 rounded-xl shadow-lg border border-gray-200">
-            <div class="flex justify-between items-center p-4 border-b border-gray-300 mb-6">
-                <h2 class="text-xl font-bold vazir text-gray-800">
+        <div class="flex flex-col bg-white w-full xl:w-1/2 p-4 sm:p-6 rounded-lg sm:rounded-xl shadow-lg border border-gray-200">
+            <div class="flex justify-between items-center p-3 sm:p-4 border-b border-gray-300 mb-4 sm:mb-6">
+                <h2 class="text-lg sm:text-xl font-bold vazir text-gray-800">
                     <i class="fa-solid fa-cart-plus ml-2 text-green-600"></i>
                     فورم ثبت فروش
                 </h2>
             </div>
 
             <!-- نوع فروش و تاریخ -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2 vazir">
+                    <label class="block text-sm font-medium text-gray-700 mb-1 sm:mb-2 vazir">
                         <i class="fa-solid fa-tag ml-1 text-blue-600"></i>
                         نوع فروش
                     </label>
-                    <div class="flex gap-2">
+                    <div class="flex gap-1 sm:gap-2">
                         <button wire:click="switchToRetail"
-                            class="flex-1 px-4 py-3 rounded-lg font-medium transition-all duration-200 {{ $saleType === 'retail' ? 'bg-blue-500 text-white shadow-lg' : 'bg-gray-100 text-gray-700 border border-gray-300' }}">
+                            class="flex-1 px-2 sm:px-4 py-2 sm:py-3 rounded-lg font-medium transition-all duration-200 text-xs sm:text-sm {{ $saleType === 'retail' ? 'bg-blue-500 text-white shadow-lg' : 'bg-gray-100 text-gray-700 border border-gray-300' }}">
                             <i class="fa-solid fa-user ml-1"></i>
                             پرچون
                         </button>
                         <button wire:click="switchToWholesale"
-                            class="flex-1 px-4 py-3 rounded-lg font-medium transition-all duration-200 {{ $saleType === 'wholesale' ? 'bg-purple-500 text-white shadow-lg' : 'bg-gray-100 text-gray-700 border border-gray-300' }}">
+                            class="flex-1 px-2 sm:px-4 py-2 sm:py-3 rounded-lg font-medium transition-all duration-200 text-xs sm:text-sm {{ $saleType === 'wholesale' ? 'bg-purple-500 text-white shadow-lg' : 'bg-gray-100 text-gray-700 border border-gray-300' }}">
                             <i class="fa-solid fa-users ml-1"></i>
                             عمده
                         </button>
@@ -152,39 +152,39 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2 vazir">
+                    <label class="block text-sm font-medium text-gray-700 mb-1 sm:mb-2 vazir">
                         <i class="fa-solid fa-calendar ml-1 text-green-600"></i>
                         تاریخ فروش
                     </label>
                     <input type="text" id="datePicker" wire:model="date" placeholder="YYYY/MM/DD"
-                        class="w-full h-12 border border-gray-300 rounded-lg p-3 vazir focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 cursor-pointer" />
+                        class="w-full h-10 sm:h-12 border border-gray-300 rounded-lg p-2 sm:p-3 vazir focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 cursor-pointer text-sm sm:text-base" />
                 </div>
             </div>
 
             <!-- مشتری (فقط برای فروش عمده) -->
             @if($saleType === 'wholesale')
-            <div class="mb-6">
-                <label class="block text-sm font-medium text-gray-700 mb-2 vazir">
+            <div class="mb-4 sm:mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-1 sm:mb-2 vazir">
                     <i class="fa-solid fa-user-tie ml-1 text-purple-600"></i>
                     مشتری عمده
                 </label>
                 <div class="relative">
                     <input type="text" wire:model.live="searchCustomer" placeholder="جستجوی مشتری..."
-                        class="w-full h-12 border border-gray-300 rounded-lg p-3 vazir focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 pr-10" />
-                    <i class="fa-solid fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        class="w-full h-10 sm:h-12 border border-gray-300 rounded-lg p-2 sm:p-3 vazir focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 pr-8 sm:pr-10 text-sm sm:text-base" />
+                    <i class="fa-solid fa-search absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
 
                     @if($searchCustomer && count($filteredCustomers) > 0)
                     <div
                         class="absolute z-10 w-full bg-white border border-gray-300 rounded-lg mt-1 max-h-60 overflow-y-auto shadow-lg">
                         @foreach($filteredCustomers as $customer)
                         <div wire:click="selectCustomer({{ $customer->id }})"
-                            class="p-3 hover:bg-purple-50 cursor-pointer border-b border-gray-100 transition-colors duration-200">
-                            <div class="font-medium text-gray-900">{{ $customer->fullname }}</div>
-                            <div class="text-sm text-gray-500 mt-1">
+                            class="p-2 sm:p-3 hover:bg-purple-50 cursor-pointer border-b border-gray-100 transition-colors duration-200">
+                            <div class="font-medium text-gray-900 text-sm">{{ $customer->fullname }}</div>
+                            <div class="text-xs text-gray-500 mt-1">
                                 <i class="fa-solid fa-phone ml-1"></i>
                                 {{ $customer->phone }}
                                 @if($customer->idcard_number)
-                                <span class="mr-4">
+                                <span class="mr-2 sm:mr-4">
                                     <i class="fa-solid fa-id-card ml-1"></i>
                                     {{ $customer->idcard_number }}
                                 </span>
@@ -195,29 +195,27 @@
                     </div>
                     @endif
                 </div>
-
-
             </div>
             @endif
 
             <!-- جستجوی محصول -->
-            <div class="mb-6">
-                <label class="block text-sm font-medium text-gray-700 mb-2 vazir">
+            <div class="mb-4 sm:mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-1 sm:mb-2 vazir">
                     <i class="fa-solid fa-box ml-1 text-indigo-600"></i>
                     جستجوی محصول
                 </label>
                 <div class="relative">
                     <input type="text" wire:model.live="searchProduct"
                         placeholder="نام محصول یا بارکد را تایپ یا اسکن کنید..."
-                        class="w-full h-12 border border-gray-300 rounded-lg p-3 vazir focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 pr-10"
+                        class="w-full h-10 sm:h-12 border border-gray-300 rounded-lg p-2 sm:p-3 vazir focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 pr-8 sm:pr-10 text-sm sm:text-base"
                         id="productSearch" x-data @keydown.enter.prevent="" />
-                    <i class="fa-solid fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    <i class="fa-solid fa-search absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
 
                     <!-- دکمه پاک کردن -->
                     @if($searchProduct)
                     <button type="button" wire:click="clearCurrentProduct"
-                        class="absolute left-10 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200">
-                        <i class="fa-solid fa-times"></i>
+                        class="absolute left-8 sm:left-10 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200">
+                        <i class="fa-solid fa-times text-sm"></i>
                     </button>
                     @endif
                 </div>
@@ -237,24 +235,24 @@
                     </div>
                     @foreach($filteredProducts as $product)
                     <div wire:click="selectProduct({{ $product->id }})"
-                        class="p-3 hover:bg-indigo-50 cursor-pointer border-b border-gray-100 transition-colors duration-200">
+                        class="p-2 sm:p-3 hover:bg-indigo-50 cursor-pointer border-b border-gray-100 transition-colors duration-200">
                         <div class="flex justify-between items-start">
                             <div class="flex-1">
-                                <div class="font-medium text-gray-900">{{ $product->product_name }}</div>
-                                <div class="text-sm text-gray-500 mt-1">
-                                    <span class="ml-3">
+                                <div class="font-medium text-gray-900 text-sm">{{ $product->product_name }}</div>
+                                <div class="text-xs text-gray-500 mt-1">
+                                    <span class="ml-2 sm:ml-3">
                                         <i class="fa-solid fa-barcode ml-1"></i>
                                         {{ $product->barcode }}
                                     </span>
                                     @if($product->category)
-                                    <span class="ml-3">
+                                    <span class="ml-2 sm:ml-3">
                                         <i class="fa-solid fa-folder ml-1"></i>
                                         {{ $product->category }}
                                     </span>
                                     @endif
                                 </div>
                             </div>
-                            <div class="text-right text-sm">
+                            <div class="text-right text-xs sm:text-sm">
                                 <div class="font-medium text-green-600">
                                     <i class="fa-solid fa-cubes ml-1"></i>
                                     {{ number_format($product->total_quantity) }} {{ $product->unit }}
@@ -277,18 +275,18 @@
                 <!-- نمایش اطلاعات محصول انتخاب شده -->
                 @if($selectedProduct)
                 <div
-                    class="mt-3 p-4 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg shadow-sm">
-                    <div class="flex justify-between items-start mb-4">
+                    class="mt-3 p-3 sm:p-4 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg shadow-sm">
+                    <div class="flex justify-between items-start mb-3 sm:mb-4">
                         <div>
-                            <h4 class="font-bold text-green-800 text-lg">
+                            <h4 class="font-bold text-green-800 text-sm sm:text-lg">
                                 <i class="fa-solid fa-check-circle ml-1"></i>
                                 {{ $selectedProduct->product_name }}
                             </h4>
-                            <p class="text-sm text-green-600 mt-1">
+                            <p class="text-xs sm:text-sm text-green-600 mt-1">
                                 <i class="fa-solid fa-barcode ml-1"></i>
                                 بارکد: {{ $selectedProduct->barcode }}
                                 @if($selectedProduct->category)
-                                <span class="mr-4">
+                                <span class="mr-2 sm:mr-4">
                                     <i class="fa-solid fa-tag ml-1"></i>
                                     {{ $selectedProduct->category }}
                                 </span>
@@ -301,49 +299,49 @@
                         </button>
                     </div>
 
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                        <div class="text-center bg-white p-3 rounded-lg border border-gray-200">
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 text-xs sm:text-sm">
+                        <div class="text-center bg-white p-2 sm:p-3 rounded-lg border border-gray-200">
                             <div class="font-medium text-gray-700">
                                 <i class="fa-solid fa-cubes ml-1"></i>
                                 موجودی
                             </div>
-                            <div class="text-lg font-bold text-blue-600 mt-1">
+                            <div class="text-sm sm:text-lg font-bold text-blue-600 mt-1">
                                 {{ number_format($selectedProduct->total_quantity) }} {{ $selectedProduct->unit }}
                             </div>
                         </div>
-                        <div class="text-center bg-white p-3 rounded-lg border border-gray-200">
+                        <div class="text-center bg-white p-2 sm:p-3 rounded-lg border border-gray-200">
                             <div class="font-medium text-gray-700">
                                 <i class="fa-solid fa-shopping-cart ml-1"></i>
                                 قیمت خرید
                             </div>
-                            <div class="text-lg font-bold text-gray-600 mt-1">
+                            <div class="text-sm sm:text-lg font-bold text-gray-600 mt-1">
                                 {{ number_format($selectedProduct->purchase_price_per_unit) }}
                             </div>
                         </div>
-                        <div class="text-center bg-white p-3 rounded-lg border border-gray-200">
+                        <div class="text-center bg-white p-2 sm:p-3 rounded-lg border border-gray-200">
                             <div class="font-medium text-gray-700">
                                 <i class="fa-solid fa-user ml-1"></i>
                                 قیمت پرچون
                             </div>
-                            <div class="text-lg font-bold text-purple-600 mt-1">
+                            <div class="text-sm sm:text-lg font-bold text-purple-600 mt-1">
                                 {{ number_format($selectedProduct->retail_price) }}
                             </div>
                         </div>
-                        <div class="text-center bg-white p-3 rounded-lg border border-gray-200">
+                        <div class="text-center bg-white p-2 sm:p-3 rounded-lg border border-gray-200">
                             <div class="font-medium text-gray-700">
                                 <i class="fa-solid fa-users ml-1"></i>
                                 قیمت عمده
                             </div>
-                            <div class="text-lg font-bold text-orange-600 mt-1">
+                            <div class="text-sm sm:text-lg font-bold text-orange-600 mt-1">
                                 {{ number_format($selectedProduct->wholesale_price) }}
                             </div>
                         </div>
                     </div>
 
                     @if($selectedProduct->is_low_stock)
-                    <div class="mt-3 p-3 bg-yellow-100 border border-yellow-300 rounded-lg flex items-center">
+                    <div class="mt-3 p-2 sm:p-3 bg-yellow-100 border border-yellow-300 rounded-lg flex items-center">
                         <i class="fa-solid fa-exclamation-triangle text-yellow-600 ml-2"></i>
-                        <span class="text-yellow-800 text-sm font-medium">
+                        <span class="text-yellow-800 text-xs sm:text-sm font-medium">
                             موجودی این محصول کم است! (حداقل موجودی: {{ $selectedProduct->min_stock_level }})
                         </span>
                     </div>
@@ -354,14 +352,14 @@
 
 
             <!-- در بخش مقدار و قیمت -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2 vazir">
+                    <label class="block text-sm font-medium text-gray-700 mb-1 sm:mb-2 vazir">
                         <i class="fa-solid fa-hashtag ml-1 text-blue-600"></i>
                         تعداد/مقدار
                     </label>
                     <input type="number" wire:model="quantity" step="0.01" min="0.01"
-                        class="w-full h-12 border border-gray-300 rounded-lg p-3 vazir focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                        class="w-full h-10 sm:h-12 border border-gray-300 rounded-lg p-2 sm:p-3 vazir focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm sm:text-base"
                         id="quantityInput" wire:loading.attr="disabled" />
                     @if($selectedProduct)
                     <div class="text-xs text-gray-500 mt-2 flex items-center">
@@ -371,36 +369,36 @@
                     @endif
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2 vazir">
+                    <label class="block text-sm font-medium text-gray-700 mb-1 sm:mb-2 vazir">
                         <i class="fa-solid fa-tag ml-1 text-green-600"></i>
                         قیمت واحد
                     </label>
                     <input type="number" wire:model="unitPrice"
-                        class="w-full h-12 border border-gray-300 rounded-lg p-3 vazir focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+                        class="w-full h-10 sm:h-12 border border-gray-300 rounded-lg p-2 sm:p-3 vazir focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 text-sm sm:text-base"
                         id="unitPriceInput" wire:loading.attr="disabled" />
                 </div>
             </div>
 
             <!-- دکمه اضافه به سبد -->
             <button wire:click="addToCart"
-                class="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 rounded-lg font-bold hover:from-green-600 hover:to-green-700 transition-all duration-200 shadow-lg hover:shadow-xl mb-6 flex items-center justify-center">
+                class="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-3 sm:py-4 rounded-lg font-bold hover:from-green-600 hover:to-green-700 transition-all duration-200 shadow-lg hover:shadow-xl mb-4 sm:mb-6 flex items-center justify-center text-sm sm:text-base">
                 <i class="fa-solid fa-cart-plus ml-2 text-lg"></i>
                 اضافه به سبد خرید
             </button>
 
             <!-- سبد خرید -->
             @if(count($cartItems) > 0)
-            <div class="border-t pt-6">
-                <h3 class="text-lg font-bold mb-4 flex items-center">
+            <div class="border-t pt-4 sm:pt-6">
+                <h3 class="text-base sm:text-lg font-bold mb-3 sm:mb-4 flex items-center">
                     <i class="fa-solid fa-shopping-basket ml-2 text-indigo-600"></i>
                     سبد خرید ({{ count($cartItems) }} محصول)
                 </h3>
 
-                <div class="space-y-3 max-h-60 overflow-y-auto mb-6">
+                <div class="space-y-2 sm:space-y-3 max-h-60 overflow-y-auto mb-4 sm:mb-6">
                     @foreach($cartItems as $index => $item)
                     <div
-                        class="flex justify-between items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
-                        <div class="flex-1">
+                        class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 sm:p-4 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <div class="flex-1 mb-2 sm:mb-0">
                             <div class="font-medium text-gray-900 text-sm">{{ $item['product_name'] }}</div>
                             <div class="text-xs text-gray-500 mt-1">
                                 <i class="fa-solid fa-barcode ml-1"></i>
@@ -412,27 +410,27 @@
                             </div>
                         </div>
 
-                        <div class="flex items-center gap-3">
-                            <span class="font-bold text-green-600 text-lg">{{ number_format($item['total']) }}</span>
+                        <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-between sm:justify-start">
+                            <span class="font-bold text-green-600 text-base sm:text-lg">{{ number_format($item['total']) }}</span>
 
                             <div class="flex items-center gap-1">
                                 <button wire:click="decreaseCartQuantity({{ $index }})"
-                                    class="w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors duration-200">
+                                    class="w-6 h-6 sm:w-8 sm:h-8 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors duration-200">
                                     <i class="fa-solid fa-minus text-xs"></i>
                                 </button>
 
                                 <span
-                                    class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-sm font-medium">
+                                    class="w-6 h-6 sm:w-8 sm:h-8 bg-gray-100 rounded-full flex items-center justify-center text-xs sm:text-sm font-medium">
                                     {{ $item['quantity'] }}
                                 </span>
 
                                 <button wire:click="increaseCartQuantity({{ $index }})"
-                                    class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center hover:bg-green-600 transition-colors duration-200">
+                                    class="w-6 h-6 sm:w-8 sm:h-8 bg-green-500 text-white rounded-full flex items-center justify-center hover:bg-green-600 transition-colors duration-200">
                                     <i class="fa-solid fa-plus text-xs"></i>
                                 </button>
 
                                 <button wire:click="removeFromCart({{ $index }})"
-                                    class="w-8 h-8 bg-gray-500 text-white rounded-full flex items-center justify-center hover:bg-gray-600 transition-colors duration-200">
+                                    class="w-6 h-6 sm:w-8 sm:h-8 bg-gray-500 text-white rounded-full flex items-center justify-center hover:bg-gray-600 transition-colors duration-200">
                                     <i class="fa-solid fa-times text-xs"></i>
                                 </button>
                             </div>
@@ -442,58 +440,58 @@
                 </div>
 
                 <!-- در بخش خلاصه فاکتور -->
-                <div class="bg-gradient-to-r from-gray-50 to-slate-100 p-6 rounded-lg border border-gray-200 shadow-sm">
-                    <h4 class="font-bold text-gray-800 mb-4 text-lg flex items-center">
+                <div class="bg-gradient-to-r from-gray-50 to-slate-100 p-4 sm:p-6 rounded-lg border border-gray-200 shadow-sm">
+                    <h4 class="font-bold text-gray-800 mb-3 sm:mb-4 text-base sm:text-lg flex items-center">
                         <i class="fa-solid fa-receipt ml-2 text-purple-600"></i>
                         خلاصه فاکتور
                     </h4>
 
-                    <div class="space-y-3">
+                    <div class="space-y-2 sm:space-y-3">
                         <div class="flex justify-between items-center">
-                            <span class="text-gray-700">مجموع سبد:</span>
-                            <span class="font-bold text-lg text-gray-900">{{ number_format($cartTotal) }} افغانی</span>
+                            <span class="text-gray-700 text-sm sm:text-base">مجموع سبد:</span>
+                            <span class="font-bold text-base sm:text-lg text-gray-900">{{ number_format($cartTotal) }} افغانی</span>
                         </div>
 
                         <!-- نمایش سود قبل از تخفیف -->
-                        <div class="flex justify-between items-center bg-blue-50 p-3 rounded-lg">
-                            <span class="text-gray-700 font-medium">
+                        <div class="flex justify-between items-center bg-blue-50 p-2 sm:p-3 rounded-lg">
+                            <span class="text-gray-700 font-medium text-sm sm:text-base">
                                 <i class="fa-solid fa-chart-line ml-1 text-blue-600"></i>
                                 سود قبل از تخفیف:
                             </span>
-                            <span class="font-bold text-lg text-blue-600">{{ number_format($cartProfitBeforeDiscount) }}
+                            <span class="font-bold text-base sm:text-lg text-blue-600">{{ number_format($cartProfitBeforeDiscount) }}
                                 افغانی</span>
                         </div>
 
                         <div class="flex justify-between items-center">
-                            <span class="text-gray-700">تخفیف:</span>
-                            <div class="flex items-center gap-2">
+                            <span class="text-gray-700 text-sm sm:text-base">تخفیف:</span>
+                            <div class="flex items-center gap-1 sm:gap-2">
                                 <input type="number" wire:model="discount" wire:change="calculateCartTotals"
-                                    class="w-32 text-right border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200"
+                                    class="w-24 sm:w-32 text-right border border-gray-300 rounded-lg p-1 sm:p-2 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 text-sm sm:text-base"
                                     placeholder="0" max="{{ $cartProfitBeforeDiscount }}" />
-                                <span class="text-gray-500">افغانی</span>
+                                <span class="text-gray-500 text-sm sm:text-base">افغانی</span>
                             </div>
                         </div>
 
                         <!-- نمایش سود خالص -->
                         <div
-                            class="flex justify-between items-center bg-green-50 p-3 rounded-lg border-2 border-green-200">
-                            <span class="text-gray-700 font-bold">
+                            class="flex justify-between items-center bg-green-50 p-2 sm:p-3 rounded-lg border-2 border-green-200">
+                            <span class="text-gray-700 font-bold text-sm sm:text-base">
                                 <i class="fa-solid fa-calculator ml-1 text-green-600"></i>
                                 سود خالص:
                             </span>
-                            <span class="font-bold text-xl text-green-600">{{ number_format($cartProfit) }}
+                            <span class="font-bold text-lg sm:text-xl text-green-600">{{ number_format($cartProfit) }}
                                 افغانی</span>
                         </div>
 
                         <div class="flex justify-between items-center">
-                            <span class="text-gray-700">مبلغ پرداختی:</span>
-                            <div class="flex items-center gap-2">
+                            <span class="text-gray-700 text-sm sm:text-base">مبلغ پرداختی:</span>
+                            <div class="flex items-center gap-1 sm:gap-2">
                                 @if($saleType === 'retail')
                                 <!-- در فروش پرچون، مبلغ پرداختی غیرقابل ویرایش است -->
                                 <input type="number" wire:model="paidAmount"
-                                    class="w-32 text-right border border-gray-300 rounded-lg p-2 bg-gray-100 cursor-not-allowed"
+                                    class="w-24 sm:w-32 text-right border border-gray-300 rounded-lg p-1 sm:p-2 bg-gray-100 cursor-not-allowed text-sm sm:text-base"
                                     readonly />
-                                <span class="text-gray-500">افغانی</span>
+                                <span class="text-gray-500 text-sm sm:text-base">افغانی</span>
                                 <div class="text-xs text-green-600 flex items-center">
                                     <i class="fa-solid fa-lock ml-1"></i>
                                     نقدی
@@ -501,18 +499,18 @@
                                 @else
                                 <!-- در فروش عمده، مبلغ پرداختی قابل ویرایش است -->
                                 <input type="number" wire:model="paidAmount" wire:change="calculateCartTotals"
-                                    class="w-32 text-right border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+                                    class="w-24 sm:w-32 text-right border border-gray-300 rounded-lg p-1 sm:p-2 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 text-sm sm:text-base"
                                     placeholder="0" />
-                                <span class="text-gray-500">افغانی</span>
+                                <span class="text-gray-500 text-sm sm:text-base">افغانی</span>
                                 @endif
                             </div>
                         </div>
 
-                        <div class="border-t pt-3 mt-3">
+                        <div class="border-t pt-2 sm:pt-3 mt-2 sm:mt-3">
                             <div class="flex justify-between items-center">
-                                <span class="font-bold text-gray-800">باقی مانده:</span>
+                                <span class="font-bold text-gray-800 text-sm sm:text-base">باقی مانده:</span>
                                 <span
-                                    class="font-bold text-xl {{ $remainingAmount > 0 ? 'text-red-600' : 'text-green-600' }}">
+                                    class="font-bold text-lg sm:text-xl {{ $remainingAmount > 0 ? 'text-red-600' : 'text-green-600' }}">
                                     @if($saleType === 'retail')
                                     <span class="text-green-600">۰</span>
                                     @else
@@ -531,9 +529,9 @@
                     </div>
                 </div>
                 <!-- دکمه‌های نهایی -->
-                <div class="flex gap-4 pt-6">
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 sm:pt-6">
                     <button wire:click="submitSale"
-                        class="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-4 rounded-lg font-bold hover:from-green-600 hover:to-green-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center"
+                        class="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-3 sm:py-4 rounded-lg font-bold hover:from-green-600 hover:to-green-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center text-sm sm:text-base"
                         wire:loading.attr="disabled">
                         <span wire:loading.remove wire:target="submitSale">
                             <i class="fa-solid fa-check-circle ml-2"></i>
@@ -546,7 +544,7 @@
                     </button>
 
                     <button wire:click="resetForm"
-                        class="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white py-4 rounded-lg font-bold hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center">
+                        class="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white py-3 sm:py-4 rounded-lg font-bold hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center text-sm sm:text-base">
                         <i class="fa-solid fa-times-circle ml-2"></i>
                         انصراف
                     </button>
@@ -556,20 +554,19 @@
         </div>
 
         {{-- جدول فروش‌ها --}}
-        <div class="flex-1 flex flex-col bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+        <div class="flex-1 flex flex-col bg-white p-4 sm:p-6 rounded-lg sm:rounded-xl shadow-lg border border-gray-200 mt-4 xl:mt-0">
             <div
-                class="flex flex-col md:flex-row justify-between items-start md:items-center p-4 border-b border-gray-300 mb-6 gap-4">
-                <h2 class="text-xl font-bold vazir text-gray-800">
+                class="flex flex-col md:flex-row justify-between items-start md:items-center p-3 sm:p-4 border-b border-gray-300 mb-4 sm:mb-6 gap-3 sm:gap-4">
+                <h2 class="text-lg sm:text-xl font-bold vazir text-gray-800">
                     <i class="fa-solid fa-list ml-2 text-indigo-600"></i>
                     لیست فروش‌های ثبت شده
                 </h2>
 
-                <div class="flex gap-2 items-center">
-                    <div class="relative">
+                <div class="flex gap-2 items-center w-full md:w-auto">
+                    <div class="relative flex-1 md:flex-none">
                         <input type="text" wire:model.live="filterInvoice" placeholder="جستجو براساس شماره فاکتور"
-                            class="border border-gray-300 rounded-lg p-3 vazir text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 w-64"
+                            class="border border-gray-300 rounded-lg p-2 sm:p-3 vazir text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 w-full md:w-64"
                             dir="ltr" />
-
                     </div>
                     @if($filterInvoice)
                     <button wire:click="$set('filterInvoice', '')"
@@ -581,31 +578,31 @@
             </div>
 
             <div class="overflow-x-auto rounded-lg border border-gray-200">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                    <thead class="bg-gradient-to-br from-indigo-400 to-indigo-500 text-white text-sm vazir">
+                <table class="w-full text-xs sm:text-sm text-left rtl:text-right text-gray-500">
+                    <thead class="bg-gradient-to-br from-indigo-400 to-indigo-500 text-white text-xs sm:text-sm vazir">
                         <tr>
-                            <th class="p-4 font-bold text-center">#</th>
-                            <th class="p-4 font-bold">نوع فروش</th>
-                            <th class="p-4 font-bold">شرح فروش</th>
-                            <th class="p-4 font-bold">مشتری</th>
-                            <th class="p-4 font-bold text-center">مبلغ کل</th>
-                            <th class="p-4 font-bold text-center">پرداختی</th>
-                            <th class="p-4 font-bold text-center">باقی‌مانده</th>
-                            <th class="p-4 font-bold text-center">سود</th>
-                            <th class="p-4 font-bold text-center">عملیات</th>
+                            <th class="p-2 sm:p-4 font-bold text-center">#</th>
+                            <th class="p-2 sm:p-4 font-bold">نوع فروش</th>
+                            <th class="p-2 sm:p-4 font-bold">شرح فروش</th>
+                            <th class="p-2 sm:p-4 font-bold">مشتری</th>
+                            <th class="p-2 sm:p-4 font-bold text-center">مبلغ کل</th>
+                            <th class="p-2 sm:p-4 font-bold text-center">پرداختی</th>
+                            <th class="p-2 sm:p-4 font-bold text-center">باقی‌مانده</th>
+                            <th class="p-2 sm:p-4 font-bold text-center">سود</th>
+                            <th class="p-2 sm:p-4 font-bold text-center">عملیات</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($sales as $sale)
                         <tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors duration-200">
-                            <td class="p-4 text-center">
-                                <span class="text-sm font-medium text-gray-700 bg-gray-100 px-2 py-1 rounded-full">
+                            <td class="p-2 sm:p-4 text-center">
+                                <span class="text-xs sm:text-sm font-medium text-gray-700 bg-gray-100 px-2 py-1 rounded-full">
                                     {{ $sale->id }}
                                 </span>
                             </td>
-                            <td class="p-4">
+                            <td class="p-2 sm:p-4">
                                 <span
-                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ $sale->sale_type === 'retail' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800' }}">
+                                    class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium {{ $sale->sale_type === 'retail' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800' }}">
                                     @if($sale->sale_type === 'retail')
                                     <i class="fa-solid fa-user mr-1"></i>
                                     @else
@@ -614,9 +611,9 @@
                                     {{ $sale->sale_type === 'retail' ? 'پرچون' : 'عمده' }}
                                 </span>
                             </td>
-                            <td class="p-4">
+                            <td class="p-2 sm:p-4">
                                 <div class="flex flex-col">
-                                    <span class="font-medium text-gray-900 text-sm">
+                                    <span class="font-medium text-gray-900 text-xs sm:text-sm">
                                         {{ $sale->buyer_name ?: 'بدون توضیح' }}
                                     </span>
                                     <span class="text-xs text-gray-500 mt-1">
@@ -627,15 +624,15 @@
                                     @if($sale->description)
                                     <span class="text-xs text-gray-500 mt-1">
                                         <i class="fa-solid fa-file-lines ml-1"></i>
-                                        {{ Str::limit($sale->description, 50) }}
+                                        {{ Str::limit($sale->description, 30) }}
                                     </span>
                                     @endif
                                 </div>
                             </td>
-                            <td class="p-4">
+                            <td class="p-2 sm:p-4">
                                 @if($sale->customer)
                                 <div class="flex flex-col">
-                                    <span class="font-medium text-gray-700">{{ $sale->customer->fullname }}</span>
+                                    <span class="font-medium text-gray-700 text-xs sm:text-sm">{{ $sale->customer->fullname }}</span>
                                     @if($sale->customer->phone)
                                     <span class="text-xs text-gray-500 mt-1 flex items-center">
                                         <i class="fa-solid fa-phone ml-1"></i>
@@ -644,57 +641,55 @@
                                     @endif
                                 </div>
                                 @else
-                                <span class="text-gray-400 italic">-</span>
+                                <span class="text-gray-400 italic text-xs">-</span>
                                 @endif
                             </td>
-                            <td class="p-4 text-center">
-                                <span class="font-bold text-gray-900">{{ number_format($sale->total_price) }}</span>
+                            <td class="p-2 sm:p-4 text-center">
+                                <span class="font-bold text-gray-900 text-xs sm:text-sm">{{ number_format($sale->total_price) }}</span>
                                 <div class="text-xs text-gray-500 mt-1">افغانی</div>
                             </td>
-                            <td class="p-4 text-center">
-                                <span class="font-bold text-green-600">{{ number_format($sale->received_amount)
+                            <td class="p-2 sm:p-4 text-center">
+                                <span class="font-bold text-green-600 text-xs sm:text-sm">{{ number_format($sale->received_amount)
                                     }}</span>
                                 <div class="text-xs text-gray-500 mt-1">افغانی</div>
                             </td>
-                            <td class="p-4 text-center">
+                            <td class="p-2 sm:p-4 text-center">
                                 <span
-                                    class="font-bold {{ $sale->remaining_amount > 0 ? 'text-red-600' : 'text-green-600' }}">
+                                    class="font-bold {{ $sale->remaining_amount > 0 ? 'text-red-600' : 'text-green-600' }} text-xs sm:text-sm">
                                     {{ number_format($sale->remaining_amount) }}
                                 </span>
                                 <div class="text-xs text-gray-500 mt-1">افغانی</div>
                             </td>
-                            <td class="p-4 text-center">
+                            <td class="p-2 sm:p-4 text-center">
                                 <div class="flex flex-col items-center">
                                     @php
                                     $saleProfit = $sale->saleItems->sum('profit');
                                     @endphp
-                                    <span class="font-bold {{ $saleProfit >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                                    <span class="font-bold {{ $saleProfit >= 0 ? 'text-green-600' : 'text-red-600' }} text-xs sm:text-sm">
                                         {{ number_format($saleProfit) }}
                                     </span>
                                     <div class="text-xs text-gray-500 mt-1">افغانی</div>
                                 </div>
                             </td>
-                            <td class="p-4 text-center">
-                                <div class="flex justify-center items-center space-x-2 space-x-reverse">
+                            <td class="p-2 sm:p-4 text-center">
+                                <div class="flex justify-center items-center space-x-1 sm:space-x-2 space-x-reverse">
                                     <button wire:click="printInvoice({{ $sale->id }})"
-                                        class="inline-flex items-center justify-center w-10 h-10 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full transition-colors duration-200 border border-blue-200"
+                                        class="inline-flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-full transition-colors duration-200 border border-blue-200 text-xs sm:text-sm"
                                         title="چاپ فاکتور" wire:loading.attr="disabled"
                                         wire:target="printInvoice({{ $sale->id }})">
                                         <i class="fa-solid fa-print"></i>
                                     </button>
 
-
                                     <!-- دکمه برگشت کالا -->
                                     <button wire:click="selectSaleForReturn({{ $sale->id }})"
-                                        class="inline-flex items-center justify-center w-10 h-10 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full transition-colors duration-200 border border-red-200"
+                                        class="inline-flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full transition-colors duration-200 border border-red-200 text-xs sm:text-sm"
                                         title="برگشت کالا">
                                         <i class="fa-solid fa-rotate-left"></i>
                                     </button>
-
                                 </div>
 
                                 <!-- نمایش loading هنگام چاپ -->
-                                <div wire:loading wire:target="printInvoice({{ $sale->id }})" class="mt-2">
+                                <div wire:loading wire:target="printInvoice({{ $sale->id }})" class="mt-1 sm:mt-2">
                                     <div
                                         class="inline-flex items-center text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
                                         <i class="fa-solid fa-spinner fa-spin mr-1"></i>
@@ -705,11 +700,11 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="9" class="p-8 text-center">
-                                <div class="flex flex-col items-center justify-center text-gray-500 py-8">
-                                    <i class="fa-solid fa-cart-shopping text-6xl mb-4 text-gray-300"></i>
-                                    <p class="text-lg font-medium mb-2 text-gray-400">هیچ فروشی یافت نشد</p>
-                                    <p class="text-sm text-gray-500">فروش جدیدی ثبت کنید تا در اینجا نمایش داده شود</p>
+                            <td colspan="9" class="p-4 sm:p-8 text-center">
+                                <div class="flex flex-col items-center justify-center text-gray-500 py-4 sm:py-8">
+                                    <i class="fa-solid fa-cart-shopping text-4xl sm:text-6xl mb-2 sm:mb-4 text-gray-300"></i>
+                                    <p class="text-base sm:text-lg font-medium mb-1 sm:mb-2 text-gray-400">هیچ فروشی یافت نشد</p>
+                                    <p class="text-xs sm:text-sm text-gray-500">فروش جدیدی ثبت کنید تا در اینجا نمایش داده شود</p>
                                 </div>
                             </td>
                         </tr>
@@ -720,7 +715,7 @@
 
             <!-- صفحه‌بندی -->
             @if($sales->hasPages())
-            <div class="mt-6 px-4">
+            <div class="mt-4 sm:mt-6 px-2 sm:px-4">
                 {{ $sales->links() }}
             </div>
             @endif
@@ -729,24 +724,24 @@
 
     <!-- مودال برگشت کالا -->
     @if($selectedSaleForReturn)
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-            <div class="p-6 border-b border-gray-200">
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
+        <div class="bg-white rounded-lg sm:rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="p-4 sm:p-6 border-b border-gray-200">
                 <div class="flex justify-between items-center">
-                    <h3 class="text-xl font-bold text-gray-800">
+                    <h3 class="text-lg sm:text-xl font-bold text-gray-800">
                         <i class="fa-solid fa-rotate-left ml-2 text-red-600"></i>
                         برگشت کالا - فاکتور شماره {{ $selectedSaleForReturn->invoice_number }}
                     </h3>
                     <button wire:click="resetReturn" class="text-gray-400 hover:text-gray-600">
-                        <i class="fa-solid fa-times text-xl"></i>
+                        <i class="fa-solid fa-times text-lg sm:text-xl"></i>
                     </button>
                 </div>
             </div>
 
-            <div class="p-6">
+            <div class="p-4 sm:p-6">
                 <!-- اطلاعات فاکتور -->
-                <div class="bg-blue-50 p-4 rounded-lg mb-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div class="bg-blue-50 p-3 sm:p-4 rounded-lg mb-4 sm:mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 text-xs sm:text-sm">
                         <div>
                             <span class="font-medium">مشتری:</span>
                             <span>{{ $selectedSaleForReturn->customer ? $selectedSaleForReturn->customer->fullname :
@@ -766,47 +761,47 @@
                 </div>
 
                 <!-- آیتم‌های قابل برگشت -->
-                <div class="mb-6">
-                    <h4 class="font-bold text-lg mb-4 text-gray-700">کالاهای قابل برگشت</h4>
-                    <div class="space-y-3">
+                <div class="mb-4 sm:mb-6">
+                    <h4 class="font-bold text-base sm:text-lg mb-3 sm:mb-4 text-gray-700">کالاهای قابل برگشت</h4>
+                    <div class="space-y-2 sm:space-y-3">
                         @foreach($returnItems as $index => $item)
-                        <div class="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg">
-                            <div class="flex-1">
-                                <div class="font-medium text-gray-900">{{ $item['product_name'] }}</div>
-                                <div class="text-sm text-gray-500">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 sm:p-4 bg-white border border-gray-200 rounded-lg">
+                            <div class="flex-1 mb-2 sm:mb-0">
+                                <div class="font-medium text-gray-900 text-sm">{{ $item['product_name'] }}</div>
+                                <div class="text-xs text-gray-500">
                                     <i class="fa-solid fa-barcode ml-1"></i>
                                     {{ $item['barcode'] }}
                                 </div>
-                                <div class="text-sm text-gray-500">
+                                <div class="text-xs text-gray-500">
                                     قیمت واحد: {{ number_format($item['unit_price']) }} افغانی
                                 </div>
                             </div>
 
-                            <div class="flex items-center gap-4">
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
                                 <div class="text-center">
-                                    <div class="text-sm text-gray-600">تعداد خریداری شده</div>
-                                    <div class="font-bold text-blue-600">{{ $item['quantity'] }}</div>
+                                    <div class="text-xs text-gray-600">تعداد خریداری شده</div>
+                                    <div class="font-bold text-blue-600 text-sm">{{ $item['quantity'] }}</div>
                                 </div>
 
-                                <div class="flex items-center gap-2">
+                                <div class="flex items-center gap-1 sm:gap-2">
                                     <button wire:click="decreaseReturnQuantity({{ $index }})"
-                                        class="w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors">
-                                        <i class="fa-solid fa-minus text-xs"></i>
+                                        class="w-6 h-6 sm:w-8 sm:h-8 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors text-xs">
+                                        <i class="fa-solid fa-minus"></i>
                                     </button>
 
                                     <input type="number" wire:model="returnItems.{{ $index }}.return_quantity" min="0"
                                         max="{{ $item['max_returnable'] }}"
-                                        class="w-20 text-center border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                        class="w-16 sm:w-20 text-center border border-gray-300 rounded-lg p-1 sm:p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
 
                                     <button wire:click="increaseReturnQuantity({{ $index }})"
-                                        class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center hover:bg-green-600 transition-colors">
-                                        <i class="fa-solid fa-plus text-xs"></i>
+                                        class="w-6 h-6 sm:w-8 sm:h-8 bg-green-500 text-white rounded-full flex items-center justify-center hover:bg-green-600 transition-colors text-xs">
+                                        <i class="fa-solid fa-plus"></i>
                                     </button>
                                 </div>
 
                                 <div class="text-center">
-                                    <div class="text-sm text-gray-600">مبلغ برگشتی</div>
-                                    <div class="font-bold text-green-600">
+                                    <div class="text-xs text-gray-600">مبلغ برگشتی</div>
+                                    <div class="font-bold text-green-600 text-sm">
                                         {{ number_format($item['return_quantity'] * $item['unit_price']) }} افغانی
                                     </div>
                                 </div>
@@ -817,43 +812,43 @@
                 </div>
 
                 <!-- خلاصه برگشت -->
-                <div class="bg-gradient-to-r from-gray-50 to-slate-100 p-6 rounded-lg border border-gray-200 mb-6">
-                    <h4 class="font-bold text-gray-800 mb-4">خلاصه برگشت</h4>
-                    <div class="space-y-3">
+                <div class="bg-gradient-to-r from-gray-50 to-slate-100 p-4 sm:p-6 rounded-lg border border-gray-200 mb-4 sm:mb-6">
+                    <h4 class="font-bold text-gray-800 mb-3 sm:mb-4 text-base sm:text-lg">خلاصه برگشت</h4>
+                    <div class="space-y-2 sm:space-y-3">
                         <div class="flex justify-between items-center">
-                            <span class="text-gray-700">مجموع مبلغ برگشتی:</span>
-                            <span class="font-bold text-lg text-red-600">{{ number_format($returnTotal) }} افغانی</span>
+                            <span class="text-gray-700 text-sm sm:text-base">مجموع مبلغ برگشتی:</span>
+                            <span class="font-bold text-base sm:text-lg text-red-600">{{ number_format($returnTotal) }} افغانی</span>
                         </div>
 
                         <div class="flex justify-between items-center">
-                            <span class="text-gray-700">مبلغ قابل بازگشت:</span>
-                            <span class="font-bold text-lg text-green-600">{{ number_format($refundAmount) }}
+                            <span class="text-gray-700 text-sm sm:text-base">مبلغ قابل بازگشت:</span>
+                            <span class="font-bold text-base sm:text-lg text-green-600">{{ number_format($refundAmount) }}
                                 افغانی</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- دلیل برگشت -->
-                <div class="mb-6">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                <div class="mb-4 sm:mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                         <i class="fa-solid fa-comment ml-1 text-orange-600"></i>
                         دلیل برگشت
                     </label>
                     <textarea wire:model="returnReason" rows="3"
-                        class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 resize-none"
+                        class="w-full border border-gray-300 rounded-lg p-2 sm:p-3 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 resize-none text-sm sm:text-base"
                         placeholder="دلیل برگشت کالا را وارد کنید..."></textarea>
                 </div>
 
                 <!-- دکمه‌های اقدام -->
-                <div class="flex gap-4">
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
                     <button wire:click="submitReturn"
-                        class="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white py-4 rounded-lg font-bold hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center">
+                        class="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white py-3 sm:py-4 rounded-lg font-bold hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center text-sm sm:text-base">
                         <i class="fa-solid fa-check-circle ml-2"></i>
                         ثبت برگشت و بازگشت وجه
                     </button>
 
                     <button wire:click="resetReturn"
-                        class="flex-1 bg-gradient-to-r from-gray-500 to-gray-600 text-white py-4 rounded-lg font-bold hover:from-gray-600 hover:to-gray-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center">
+                        class="flex-1 bg-gradient-to-r from-gray-500 to-gray-600 text-white py-3 sm:py-4 rounded-lg font-bold hover:from-gray-600 hover:to-gray-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center text-sm sm:text-base">
                         <i class="fa-solid fa-times-circle ml-2"></i>
                         انصراف
                     </button>
@@ -862,7 +857,6 @@
         </div>
     </div>
     @endif
-
 </div>
 
 @push('scripts')
