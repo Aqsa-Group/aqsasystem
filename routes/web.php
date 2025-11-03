@@ -232,6 +232,15 @@ Route::get('/sarafi/account_to_account', function () {
 })->name('sarafi.account_to_account');
 
 
+Route::get('/sarafi/exchange-rate', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.exchange-rate');
+})->name('sarafi.exchange-rate');
+
+
+
 
 
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html  lang="{{ session('locale', config('app.locale')) }}" dir="{{ session('locale') === 'en' ? 'ltr' : 'rtl' }}">
+<html lang="{{ session('locale', config('app.locale')) }}" dir="{{ session('locale') === 'en' ? 'ltr' : 'rtl' }}">
 
 <head>
     <meta charset="UTF-8">
@@ -238,20 +238,15 @@
         /* محتوای اصلی - اصلاح شده */
         #mainContent {
             display: none;
-            /* ابتدا مخفی باشد */
             opacity: 1;
-            /* opacity را 1 قرار دهید */
         }
 
         .content-loaded {
             display: block;
-            /* نمایش داده شود */
             opacity: 1;
-            /* کاملاً قابل دیدن */
         }
 
         /* استایل‌های دارک مود */
-        /* انیمیشن حرکت توگل */
         #toggleCircle {
             transition: transform 0.3s ease-in-out;
         }
@@ -264,7 +259,6 @@
             transform: translateX(2rem);
         }
 
-        /* حالت دارک */
         .dark {
             color-scheme: dark;
         }
@@ -272,7 +266,6 @@
         .dark body {
             background-color: #1a202c;
             color: #e2e8f0;
-            @apply text-white
         }
 
         .dark header {
@@ -288,6 +281,256 @@
             background-color: #4a5568;
             color: #e2e8f0;
             border-color: #718096;
+        }
+
+        /* استایل‌های ریسپانسیو جدید */
+
+        /* هدر ریسپانسیو */
+        .header-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1rem;
+            width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .header-container {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 1.5rem;
+                height: 80px;
+            }
+        }
+
+        /* لایه موبایل */
+        .mobile-header-layout {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 1rem;
+        }
+
+        .mobile-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .mobile-header-bottom {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            gap: 0.5rem;
+        }
+
+        .mobile-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #122EE1;
+        }
+
+        .mobile-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .mobile-search-full {
+            flex: 1;
+        }
+
+        .mobile-tools {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .mobile-header-layout {
+                display: none;
+            }
+        }
+
+        /* لایه دسکتاپ */
+        .desktop-header-layout {
+            display: none;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        @media (min-width: 768px) {
+            .desktop-header-layout {
+                display: flex;
+            }
+        }
+
+        .desktop-brand-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .desktop-actions-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* منوی همبرگری برای موبایل */
+        .mobile-menu-btn {
+            display: block;
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 100;
+            background: #122EE1;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (min-width: 768px) {
+            .mobile-menu-btn {
+                display: none;
+            }
+        }
+
+        /* سایدبار ریسپانسیو */
+        .sidebar-container {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 280px;
+            background: white;
+            z-index: 90;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            padding: 1rem 0.5rem;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-container.open {
+            transform: translateX(0);
+        }
+
+        @media (min-width: 768px) {
+            .sidebar-container {
+                position: static;
+                transform: none;
+                width: 18rem;
+                height: auto;
+                box-shadow: none;
+                padding: 1.25rem;
+            }
+        }
+
+        /* محتوای اصلی ریسپانسیو */
+        .main-content-wrapper {
+            margin-top: 1rem;
+            padding: 0 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .main-content-wrapper {
+                margin-top: 2.5rem;
+                padding: 0;
+            }
+        }
+
+        /* لایه overlay برای موبایل */
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 80;
+            display: none;
+        }
+
+        .mobile-overlay.open {
+            display: block;
+        }
+
+        @media (min-width: 768px) {
+            .mobile-overlay {
+                display: none !important;
+            }
+        }
+
+        /* بهبود استایل‌های عمومی */
+        .responsive-text {
+            font-size: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .responsive-text {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* استایل برای دکمه‌های موبایل */
+        .btn-mobile-small {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-img-mobile {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* استایل برای dropdown موبایل */
+        .dropdown-mobile {
+            width: 120px;
+        }
+
+        .dropdown-mobile button {
+            padding: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .dropdown-mobile img {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* دارک مود موبایل */
+        .dark-mode-toggle-mobile {
+            width: 40px;
+            height: 20px;
+        }
+
+        .dark-mode-toggle-mobile label {
+            height: 20px;
+            padding: 0 0.25rem;
+        }
+
+        .dark-mode-toggle-mobile span {
+            width: 16px;
+            height: 16px;
+        }
+
+        .dark-mode-toggle-mobile svg {
+            width: 12px;
+            height: 12px;
         }
     </style>
 </head>
@@ -323,151 +566,283 @@
 
     <!-- محتوای اصلی -->
     <div id="mainContent">
+        <!-- دکمه منوی موبایل -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+
+        <!-- لایه overlay برای موبایل -->
+        <div class="mobile-overlay" id="mobileOverlay"></div>
+
         <header
-            class="bg-white w-full h-[80px] flex items-center justify-between px-6 shadow-[0_4px_4px_rgba(17,41,199,0.4)]">
-            <!-- برند + انتخاب زبان -->
-            <div class="flex items-center space-x-4 rtl:space-x-reverse gap-6 justify-center ">
-                <div class="text-[40px] text-[#122EE1] font-bold yekan">{{ Auth::guard('sarafi')->user()->sarafi_name }}
-                </div>
+            class="bg-white w-full py-4 md:py-0 md:h-[80px] flex items-center shadow-[0_4px_4px_rgba(17,41,199,0.4)]">
+            <div class="header-container">
+                <!-- لایه موبایل -->
+                <div class="mobile-header-layout">
+                    <div class="mobile-header-top">
+                        <!-- برند -->
+                        <div class="mobile-brand yekan">{{ Auth::guard('sarafi')->user()->sarafi_name }}</div>
 
-                @php $locale = session('locale', config('app.locale')); @endphp
-                <div class="relative inline-block w-[145px] h-[56px] p-2 vazir">
-                    <button id="dropdownButton"
-                        class="border border-[#1129C766] bg-white rounded-lg px-3 py-2 w-full flex items-center justify-between font-vazir text-sm text-[#1129C7]">
-                        <img src="{{ $locale === 'en' ? asset('assets/sarafi/all_icon/united.png') : asset('assets/sarafi/all_icon/Flags.png') }}"
-                            class="w-5 h-5 ml-2" alt="Lang">
-                        <span>
-                            @if ($locale === 'fa') فارسی
-                            @elseif($locale === 'ps') پشتو
-                            @else English
-                            @endif
-                        </span>
-                    </button>
+                        <!-- اعلان و پروفایل -->
+                        <div class="mobile-actions">
+                            <button
+                                class="btn-mobile-small relative rounded-full bg-[#E5E5E5] hover:bg-gray-300 transition">
+                                <img src="{{ asset('assets/sarafi/all_icon/bill-header.svg') }}" alt="اعلان"
+                                    class="w-6 h-6">
+                                <span
+                                    class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
+                            </button>
 
-                    <ul id="dropdownMenu"
-                        class="absolute left-0 mt-1 w-full bg-white border border-gray-200 rounded-lg hidden z-10">
-                        <li><a href="{{ route('set-locale', 'fa') }}"
-                                class="locale-link flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer"><img
-                                    src="{{ asset('assets/sarafi/all_icon/Flags.png') }}" class="w-5 h-5 ml-2" alt="fa">
-                                فارسی</a></li>
-                        <li><a href="{{ route('set-locale', 'ps') }}"
-                                class="locale-link flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer"><img
-                                    src="{{ asset('assets/sarafi/all_icon/Flags.png') }}" class="w-5 h-5 ml-2" alt="ps">
-                                پشتو</a></li>
-                        <li><a href="{{ route('set-locale', 'en') }}"
-                                class="locale-link flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer"><img
-                                    src="{{ asset('assets/sarafi/all_icon/united.png') }}" class="w-5 h-5 ml-2"
-                                    alt="en"> English</a></li>
-                    </ul>
-                </div>
-
-                <!-- سوییچ دارک مود -->
-                <div class="relative inline-block w-16 h-8 mx-4">
-                    <input type="checkbox" id="darkModeToggle" class="sr-only">
-                    <label for="darkModeToggle"
-                        class="flex items-center w-full h-8 bg-gray-300 rounded-full cursor-pointer transition-colors duration-300 ease-in-out dark:bg-gray-700 px-1">
-                        <span id="toggleCircle"
-                            class="flex items-center justify-center w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 ease-in-out">
-                            <!-- آیکون خورشید -->
-                            <svg id="sunIcon" class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                            <!-- آیکون ماه -->
-                            <svg id="moonIcon" class="w-4 h-4 text-blue-300 hidden" fill="currentColor"
-                                viewBox="0 0 20 20">
-                                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-                            </svg>
-                        </span>
-                    </label>
-                </div>
-
-            </div>
-
-
-
-
-
-            <!-- سرچ، اعلان، پروفایل -->
-            <div class="flex items-center space-x-4 gap-1 pl-10 rtl:space-x-reverse">
-                <div class="relative">
-                    <input type="text" placeholder="{{ __('messages.search_placeholder') }}"
-                        class="border border-[#8C8C8C] placeholder:text-black vazir rounded-full px-3 py-2 pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
-                        class="h-5 w-5 absolute left-2 bottom-3">
-                </div>
-
-                <button
-                    class="relative flex items-center justify-center w-[50px] h-[50px] rounded-[25px] bg-[#E5E5E5] hover:bg-gray-300 transition">
-                    <img src="{{ asset('assets/sarafi/all_icon/bill-header.svg') }}" alt="اعلان" class="w-7 h-7">
-                    <span
-                        class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
-                </button>
-
-                <div class="relative">
-                    <div id="profileBtn"
-                        class="w-[70px] h-[70px] rounded-full border  overflow-hidden flex items-center justify-center cursor-pointer transition">
-                        <img src="{{ asset('assets/sarafi/all_icon/man.png') }}" alt="پروفایل"
-                            class="w-[50px] h-[50px] object-cover">
+                            <div class="header-profile-section">
+                                <div class="relative">
+                                    <div id="profileBtnMobile"
+                                        class="profile-img-mobile border overflow-hidden flex items-center justify-center cursor-pointer transition">
+                                        <img src="{{ asset('assets/sarafi/all_icon/man.png') }}" alt="پروفایل"
+                                            class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- منو dropdown -->
-                    <div id="profileDropdown" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;"
-                        class="absolute top-full left-0 space-y-3 text-2xl w-72 h-76 bg-white rounded-lg shadow-lg border hidden z-50 p-4">
-
-                        <div class="p-3 border-b space-y-5">
-                            <div class="flex flex-col justify-center items-center ">
-                                <img src="{{ asset('assets/sarafi/all_icon/man.png') }}" alt="" class="h-20 w-20">
-                                <p class="font-vazir font-semibold text-gray-700 mt-5">{{
-                                    Auth::guard('sarafi')->user()->name }}</p>
-
+                    <div class="mobile-header-bottom">
+                        <!-- جستجو -->
+                        <div class="mobile-search-full">
+                            <div class="relative">
+                                <input type="text" placeholder="{{ __('messages.search_placeholder') }}"
+                                    class="border border-[#8C8C8C] placeholder:text-black vazir rounded-full px-3 py-2 pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500 w-full text-sm">
+                                <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
+                                    class="h-4 w-4 absolute left-2 bottom-3">
                             </div>
-
-                        </div>
-                        <div class="flex justify-start items-center  ">
-                            <img src="{{ asset('assets/sarafi/all_icon/account_profile.svg') }}" alt="">
-
-                            <a href="{{ route('sarafi.users') }}"
-                                class="block px-4 py-2 text-gray-700 vazir">تنظیمات</a>
                         </div>
 
-                        <form action="{{ route('sarafi.logout') }}" method="POST">
-                            @csrf
-                            <div class="flex justify-start items-center">
-                                <img src="{{ asset('assets/sarafi/all_icon/logout.svg') }}" alt="">
-                                <button type="submit" class="px-4 py-2 text-gray-700 vazir">
-                                    خروج از حساب
+                        <!-- زبان و دارک مود -->
+                        <div class="mobile-tools">
+                            @php $locale = session('locale', config('app.locale')); @endphp
+                            <div class="relative dropdown-mobile vazir">
+                                <button id="dropdownButtonMobile"
+                                    class="border border-[#1129C766] bg-white rounded-lg px-2 py-1 w-full flex items-center justify-between font-vazir text-xs text-[#1129C7]">
+                                    <img src="{{ $locale === 'en' ? asset('assets/sarafi/all_icon/united.png') : asset('assets/sarafi/all_icon/Flags.png') }}"
+                                        class="w-4 h-4 ml-1" alt="Lang">
+                                    <span>
+                                        @if ($locale === 'fa') فارسی
+                                        @elseif($locale === 'ps') پشتو
+                                        @else EN
+                                        @endif
+                                    </span>
                                 </button>
+
+                                <ul id="dropdownMenuMobile"
+                                    class="absolute left-5 mt-1 w-full bg-white border border-gray-200 rounded-lg hidden z-10">
+                                    <li><a href="{{ route('set-locale', 'fa') }}"
+                                            class="locale-link flex items-center px-2 py-1 hover:bg-gray-100 cursor-pointer text-xs"><img
+                                                src="{{ asset('assets/sarafi/all_icon/Flags.png') }}"
+                                                class="w-4 h-4 ml-1" alt="fa">
+                                            فارسی</a></li>
+                                    <li><a href="{{ route('set-locale', 'ps') }}"
+                                            class="locale-link flex items-center px-2 py-1 hover:bg-gray-100 cursor-pointer text-xs"><img
+                                                src="{{ asset('assets/sarafi/all_icon/Flags.png') }}"
+                                                class="w-4 h-4 ml-1" alt="ps">
+                                            پشتو</a></li>
+                                    <li><a href="{{ route('set-locale', 'en') }}"
+                                            class="locale-link flex items-center px-2 py-1 hover:bg-gray-100 cursor-pointer text-xs"><img
+                                                src="{{ asset('assets/sarafi/all_icon/united.png') }}"
+                                                class="w-4 h-4 ml-1" alt="en"> English</a></li>
+                                </ul>
                             </div>
-                        </form>
 
+                            <!-- سوییچ دارک مود -->
+                            <div class="relative dark-mode-toggle-mobile">
+                                <input type="checkbox" id="darkModeToggleMobile" class="sr-only">
+                                <label for="darkModeToggleMobile"
+                                    class="flex items-center w-full h-full bg-gray-300 rounded-full cursor-pointer transition-colors duration-300 ease-in-out dark:bg-gray-700 px-1">
+                                    <span id="toggleCircleMobile"
+                                        class="flex items-center justify-center bg-white rounded-full shadow-md transform transition-transform duration-300 ease-in-out">
+                                        <!-- آیکون خورشید -->
+                                        <svg id="sunIconMobile" class="text-yellow-500" fill="currentColor"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        <!-- آیکون ماه -->
+                                        <svg id="moonIconMobile" class="text-blue-300 hidden" fill="currentColor"
+                                            viewBox="0 0 20 20">
+                                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
+                <!-- لایه دسکتاپ -->
+                <div class="desktop-header-layout">
+                    <!-- برند + انتخاب زبان -->
+                    <div class="desktop-brand-section">
+                        <div class="responsive-text text-[#122EE1] font-bold yekan">{{
+                            Auth::guard('sarafi')->user()->sarafi_name }}</div>
+
+                        @php $locale = session('locale', config('app.locale')); @endphp
+                        <div class="relative inline-block w-[145px] h-[56px] p-2 vazir">
+                            <button id="dropdownButton"
+                                class="border border-[#1129C766] bg-white rounded-lg px-3 py-2 w-full flex items-center justify-between font-vazir text-sm text-[#1129C7]">
+                                <img src="{{ $locale === 'en' ? asset('assets/sarafi/all_icon/united.png') : asset('assets/sarafi/all_icon/Flags.png') }}"
+                                    class="w-5 h-5 ml-2" alt="Lang">
+                                <span>
+                                    @if ($locale === 'fa') فارسی
+                                    @elseif($locale === 'ps') پشتو
+                                    @else English
+                                    @endif
+                                </span>
+                            </button>
+
+                            <ul id="dropdownMenu"
+                                class="absolute left-0 mt-1 w-full bg-white border border-gray-200 rounded-lg hidden z-10">
+                                <li><a href="{{ route('set-locale', 'fa') }}"
+                                        class="locale-link flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer"><img
+                                            src="{{ asset('assets/sarafi/all_icon/Flags.png') }}" class="w-5 h-5 ml-2"
+                                            alt="fa">
+                                        فارسی</a></li>
+                                <li><a href="{{ route('set-locale', 'ps') }}"
+                                        class="locale-link flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer"><img
+                                            src="{{ asset('assets/sarafi/all_icon/Flags.png') }}" class="w-5 h-5 ml-2"
+                                            alt="ps">
+                                        پشتو</a></li>
+                                <li><a href="{{ route('set-locale', 'en') }}"
+                                        class="locale-link flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer"><img
+                                            src="{{ asset('assets/sarafi/all_icon/united.png') }}" class="w-5 h-5 ml-2"
+                                            alt="en"> English</a></li>
+                            </ul>
+                        </div>
+
+                        <!-- سوییچ دارک مود -->
+                        <div class="relative inline-block w-16 h-8 mx-4">
+                            <input type="checkbox" id="darkModeToggle" class="sr-only">
+                            <label for="darkModeToggle"
+                                class="flex items-center w-full h-8 bg-gray-300 rounded-full cursor-pointer transition-colors duration-300 ease-in-out dark:bg-gray-700 px-1">
+                                <span id="toggleCircle"
+                                    class="flex items-center justify-center w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 ease-in-out">
+                                    <!-- آیکون خورشید -->
+                                    <svg id="sunIcon" class="w-4 h-4 text-yellow-500" fill="currentColor"
+                                        viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <!-- آیکون ماه -->
+                                    <svg id="moonIcon" class="w-4 h-4 text-blue-300 hidden" fill="currentColor"
+                                        viewBox="0 0 20 20">
+                                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z">
+                                        </path>
+                                    </svg>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- سرچ، اعلان، پروفایل -->
+                    <div class="desktop-actions-section">
+                        <div class="header-search-section">
+                            <div class="relative">
+                                <input type="text" placeholder="{{ __('messages.search_placeholder') }}"
+                                    class="border border-[#8C8C8C] placeholder:text-black vazir rounded-full px-3 py-2 pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
+                                <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
+                                    class="h-5 w-5 absolute left-2 bottom-3">
+                            </div>
+                        </div>
+
+                        <button
+                            class="relative flex items-center justify-center w-[50px] h-[50px] rounded-[25px] bg-[#E5E5E5] hover:bg-gray-300 transition">
+                            <img src="{{ asset('assets/sarafi/all_icon/bill-header.svg') }}" alt="اعلان"
+                                class="w-7 h-7">
+                            <span
+                                class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
+                        </button>
+
+                        <div class="header-profile-section">
+                            <div class="relative">
+                                <div id="profileBtnDesktop"
+                                    class="w-[50px] h-[50px] md:w-[70px] md:h-[70px] rounded-full border overflow-hidden flex items-center justify-center cursor-pointer transition">
+                                    <img src="{{ asset('assets/sarafi/all_icon/man.png') }}" alt="پروفایل"
+                                        class="w-full h-full object-cover">
+                                </div>
+
+                                <!-- منو dropdown -->
+                                <div id="profileDropdownDesktop"
+                                    style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;"
+                                    class="absolute top-full left-0 space-y-3 text-2xl w-72 h-76 bg-white rounded-lg shadow-lg border hidden z-50 p-4">
+
+                                    <div class="p-3 border-b space-y-5">
+                                        <div class="flex flex-col justify-center items-center ">
+                                            <img src="{{ asset('assets/sarafi/all_icon/man.png') }}" alt=""
+                                                class="h-20 w-20">
+                                            <p class="font-vazir font-semibold text-gray-700 mt-5">{{
+                                                Auth::guard('sarafi')->user()->name }}</p>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="flex justify-start items-center  ">
+                                        <img src="{{ asset('assets/sarafi/all_icon/account_profile.svg') }}" alt="">
+
+                                        <a href="{{ route('sarafi.users') }}"
+                                            class="block px-4 py-2 text-gray-700 vazir">تنظیمات</a>
+                                    </div>
+
+                                    <form action="{{ route('sarafi.logout') }}" method="POST">
+                                        @csrf
+                                        <div class="flex justify-start items-center">
+                                            <img src="{{ asset('assets/sarafi/all_icon/logout.svg') }}" alt="">
+                                            <button type="submit" class="px-4 py-2 text-gray-700 vazir">
+                                                خروج از حساب
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </header>
 
-        <div class="flex flex-1 mt-10 min-h-screen sticky ">
-            <aside class="w-72 hidden md:block p-5 dark:text-white static">
+        <div class="flex flex-col md:flex-row mt-10 min-h-screen">
+            <!-- سایدبار -->
+            <div class="sidebar-container" id="sidebar">
                 <nav class="mt-0 space-y-0" x-data="{
-            openItems: {
-                customers: false,
-                accounts: false,
-                bankFiles: false,
-                editAccounts: false,
-                reports: false,
-                transactions: false,
-                deletedTransactions: false,
-                management: false,
-                sms: false,
-                notifications: false,
-                support: false,
-                settings: false
-            },
-            active: 'dashboard'
-        }">
-
+                    openItems: {
+                        customers: false,
+                        accounts: false,
+                        bankFiles: false,
+                        editAccounts: false,
+                        reports: false,
+                        transactions: false,
+                        deletedTransactions: false,
+                        management: false,
+                        sms: false,
+                        notifications: false,
+                        support: false,
+                        settings: false
+                    },
+                    active: 'dashboard',
+                    
+                    setActive(item, parent = null) {
+                        this.active = item;
+                        if (parent && this.openItems.hasOwnProperty(parent)) {
+                            this.openItems[parent] = true;
+                        }
+                        if (window.innerWidth < 768) {
+                            document.getElementById('sidebar').classList.remove('open');
+                            document.getElementById('mobileOverlay').classList.remove('open');
+                        }
+                    }
+                }">
                     <!-- داشبورد -->
                     <a href="{{ route('sarafi.home') }}"
                         class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir"
@@ -488,21 +863,21 @@
                         <span class="flex items-center gap-2">
                             <img src="{{ asset('assets/sarafi/all_icon/profile-2user.svg') }}" class="w-5 h-5"
                                 :class="active === 'users' ? 'filter invert brightness-0' : 'text-gray-500' ">
-                            <span class="dark:text-white">  {{ __('messages.users') }}</span>
+                            <span class="dark:text-white"> {{ __('messages.users') }}</span>
                         </span>
                     </a>
 
                     <!-- مشتریان -->
                     <div>
                         <button @click="openItems.customers = !openItems.customers; active = 'customers'"
-                            :class="active === 'customers' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            :class="(active === 'customers' || active === 'customer-create' || active === 'customer-table') ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2">
                                 <img src="{{ asset('assets/sarafi/all_icon/people.svg') }}" class="w-5 h-5"
-                                    :class="active === 'customers' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                    :class="(active === 'customers' || active === 'customer-create' || active === 'customer-table') ? 'filter invert brightness-0' : 'text-gray-500'">
                                 {{ __('messages.customers') }}
                             </span>
-                            <svg :class="[openItems.customers ? 'rotate-180' : '', active === 'customers' ? 'text-white' : 'text-gray-500']"
+                            <svg :class="[openItems.customers ? 'rotate-180' : '', (active === 'customers' || active === 'customer-create' || active === 'customer-table') ? 'text-white' : 'text-gray-500']"
                                 class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -512,18 +887,19 @@
                         <div x-show="openItems.customers" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="{{ route('sarafi.customer-create') }}"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                                @click="active = 'customer-create'"
+                                @click="setActive('customer-create', 'customers')"
                                 :class="active === 'customer-create' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                                      <i class="fa-solid fa-user-pen w-4 h-4"  :class="active === 'customer-create' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
+                                <i class="fa-solid fa-user-pen w-4 h-4"
+                                    :class="active === 'customer-create' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
                                 {{ __('messages.customer_create') }}
                             </a>
 
-
                             <a href="{{ route('sarafi.customer-table') }}"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                                @click="active = 'customer-table'"
+                                @click="setActive('customer-table', 'customers')"
                                 :class="active === 'customer-table' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                               <i class="fa-solid fa-users-gear h-4 w-4" :class="active === 'customer-table' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
+                                <i class="fa-solid fa-users-gear h-4 w-4"
+                                    :class="active === 'customer-table' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
                                 {{ __('messages.customer_list') }}
                             </a>
                         </div>
@@ -532,14 +908,14 @@
                     <!-- ثبت حسابات و نرخ ارز -->
                     <div>
                         <button @click="openItems.accounts = !openItems.accounts; active = 'accounts'"
-                            :class="active === 'accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            :class="(active === 'accounts' || active === 'register-accounts') ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2 ">
                                 <img src="{{ asset('assets/sarafi/all_icon/edit-2.svg') }}" class="w-5 h-5"
-                                    :class="active === 'accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                    :class="(active === 'accounts' || active === 'register-accounts') ? 'filter invert brightness-0' : 'text-gray-500'">
                                 {{ __('messages.accounts') }}
                             </span>
-                            <svg :class="[openItems.accounts ? 'rotate-180' : '', active === 'accounts' ? 'text-white' : 'text-gray-500']"
+                            <svg :class="[openItems.accounts ? 'rotate-180' : '', (active === 'accounts' || active === 'register-accounts') ? 'text-white' : 'text-gray-500']"
                                 class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -549,7 +925,7 @@
                         <div x-show="openItems.accounts" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="#"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                                @click="active = 'register-accounts'"
+                                @click="setActive('register-accounts', 'accounts')"
                                 :class="active === 'register-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                                 <img src="{{ asset('assets/sarafi/all_icon/add.svg') }}" class="w-4 h-4"
                                     :class="active === 'register-accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
@@ -561,14 +937,14 @@
                     <!-- بارگذاری فایل بانکی -->
                     <div>
                         <button @click="openItems.bankFiles = !openItems.bankFiles; active = 'bankFiles'"
-                            :class="active === 'bankFiles' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            :class="(active === 'bankFiles' || active === 'upload-bank') ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2">
                                 <img src="{{ asset('assets/sarafi/all_icon/receive-square.svg') }}" class="w-5 h-5"
-                                    :class="active === 'bankFiles' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                    :class="(active === 'bankFiles' || active === 'upload-bank') ? 'filter invert brightness-0' : 'text-gray-500'">
                                 {{ __('messages.bank_files') }}
                             </span>
-                            <svg :class="[openItems.bankFiles ? 'rotate-180' : '', active === 'bankFiles' ? 'text-white' : 'text-gray-500']"
+                            <svg :class="[openItems.bankFiles ? 'rotate-180' : '', (active === 'bankFiles' || active === 'upload-bank') ? 'text-white' : 'text-gray-500']"
                                 class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -578,7 +954,7 @@
                         <div x-show="openItems.bankFiles" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="#"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                                @click="active = 'upload-bank'"
+                                @click="setActive('upload-bank', 'bankFiles')"
                                 :class="active === 'upload-bank' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                                 <img src="{{ asset('assets/sarafi/all_icon/upload.svg') }}" class="w-4 h-4"
                                     :class="active === 'upload-bank' ? 'filter invert brightness-0' : 'text-gray-500'">
@@ -590,14 +966,14 @@
                     <!-- ویرایش حسابات و نرخ ارز -->
                     <div>
                         <button @click="openItems.editAccounts = !openItems.editAccounts; active = 'editAccounts'"
-                            :class="active === 'editAccounts' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            :class="(active === 'editAccounts' || active === 'edit-accounts') ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2">
                                 <img src="{{ asset('assets/sarafi/all_icon/edit.svg') }}" class="w-5 h-5"
-                                    :class="active === 'editAccounts' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                    :class="(active === 'editAccounts' || active === 'edit-accounts') ? 'filter invert brightness-0' : 'text-gray-500'">
                                 {{ __('messages.edit_accounts') }}
                             </span>
-                            <svg :class="[openItems.editAccounts ? 'rotate-180' : '', active === 'editAccounts' ? 'text-white' : 'text-gray-500']"
+                            <svg :class="[openItems.editAccounts ? 'rotate-180' : '', (active === 'editAccounts' || active === 'edit-accounts') ? 'text-white' : 'text-gray-500']"
                                 class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -607,7 +983,7 @@
                         <div x-show="openItems.editAccounts" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="#"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                                @click="active = 'edit-accounts'"
+                                @click="setActive('edit-accounts', 'editAccounts')"
                                 :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                                 <img src="{{ asset('assets/sarafi/all_icon/edit.svg') }}" class="w-4 h-4"
                                     :class="active === 'edit-accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
@@ -619,14 +995,14 @@
                     <!-- گزارش و آمار حسابات -->
                     <div>
                         <button @click="openItems.reports = !openItems.reports; active = 'reports'"
-                            :class="active === 'reports' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            :class="(active === 'reports' || active === 'view-reports') ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2">
                                 <img src="{{ asset('assets/sarafi/all_icon/graph.svg') }}" class="w-5 h-5"
-                                    :class="active === 'reports' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                    :class="(active === 'reports' || active === 'view-reports') ? 'filter invert brightness-0' : 'text-gray-500'">
                                 {{ __('messages.reports') }}
                             </span>
-                            <svg :class="[openItems.reports ? 'rotate-180' : '', active === 'reports' ? 'text-white' : 'text-gray-500']"
+                            <svg :class="[openItems.reports ? 'rotate-180' : '', (active === 'reports' || active === 'view-reports') ? 'text-white' : 'text-gray-500']"
                                 class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -636,7 +1012,7 @@
                         <div x-show="openItems.reports" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="#"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                                @click="active = 'view-reports'"
+                                @click="setActive('view-reports', 'reports')"
                                 :class="active === 'view-reports' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                                 <img src="{{ asset('assets/sarafi/all_icon/chart.svg') }}" class="w-4 h-4"
                                     :class="active === 'view-reports' ? 'filter invert brightness-0' : 'text-gray-500'">
@@ -648,14 +1024,14 @@
                     <!-- کنترول و بررسی معاملات -->
                     <div>
                         <button @click="openItems.transactions = !openItems.transactions; active = 'transactions'"
-                            :class="active === 'transactions' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            :class="(active === 'transactions' || active === 'control-transactions') ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2">
                                 <img src="{{ asset('assets/sarafi/all_icon/health.svg') }}" class="w-5 h-5"
-                                    :class="active === 'transactions' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                    :class="(active === 'transactions' || active === 'control-transactions') ? 'filter invert brightness-0' : 'text-gray-500'">
                                 {{ __('messages.transactions') }}
                             </span>
-                            <svg :class="[openItems.transactions ? 'rotate-180' : '', active === 'transactions' ? 'text-white' : 'text-gray-500']"
+                            <svg :class="[openItems.transactions ? 'rotate-180' : '', (active === 'transactions' || active === 'control-transactions') ? 'text-white' : 'text-gray-500']"
                                 class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -665,7 +1041,7 @@
                         <div x-show="openItems.transactions" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="#"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                                @click="active = 'control-transactions'"
+                                @click="setActive('control-transactions', 'transactions')"
                                 :class="active === 'control-transactions' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                                 <img src="{{ asset('assets/sarafi/all_icon/eye.svg') }}" class="w-4 h-4"
                                     :class="active === 'control-transactions' ? 'filter invert brightness-0' : 'text-gray-500'">
@@ -678,14 +1054,14 @@
                     <div>
                         <button
                             @click="openItems.deletedTransactions = !openItems.deletedTransactions; active = 'deletedTransactions'"
-                            :class="active === 'deletedTransactions' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            :class="(active === 'deletedTransactions' || active === 'deleted-transactions') ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2">
                                 <img src="{{ asset('assets/sarafi/all_icon/trash.svg') }}" class="w-5 h-5"
-                                    :class="active === 'deletedTransactions' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                    :class="(active === 'deletedTransactions' || active === 'deleted-transactions') ? 'filter invert brightness-0' : 'text-gray-500'">
                                 {{ __('messages.deleted_transactions') }}
                             </span>
-                            <svg :class="[openItems.deletedTransactions ? 'rotate-180' : '', active === 'deletedTransactions' ? 'text-white' : 'text-gray-500']"
+                            <svg :class="[openItems.deletedTransactions ? 'rotate-180' : '', (active === 'deletedTransactions' || active === 'deleted-transactions') ? 'text-white' : 'text-gray-500']"
                                 class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -695,7 +1071,7 @@
                         <div x-show="openItems.deletedTransactions" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="#"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                                @click="active = 'deleted-transactions'"
+                                @click="setActive('deleted-transactions', 'deletedTransactions')"
                                 :class="active === 'deleted-transactions' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                                 <img src="{{ asset('assets/sarafi/all_icon/archive.svg') }}" class="w-4 h-4"
                                     :class="active === 'deleted-transactions' ? 'filter invert brightness-0' : 'text-gray-500'">
@@ -707,14 +1083,14 @@
                     <!-- مدیریت و دسترسی -->
                     <div>
                         <button @click="openItems.management = !openItems.management; active = 'management'"
-                            :class="active === 'management' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            :class="(active === 'management' || active === 'user-management') ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2">
                                 <img src="{{ asset('assets/sarafi/all_icon/Group 1325.svg') }}" class="w-5 h-5"
-                                    :class="active === 'management' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                    :class="(active === 'management' || active === 'user-management') ? 'filter invert brightness-0' : 'text-gray-500'">
                                 {{ __('messages.management') }}
                             </span>
-                            <svg :class="[openItems.management ? 'rotate-180' : '', active === 'management' ? 'text-white' : 'text-gray-500']"
+                            <svg :class="[openItems.management ? 'rotate-180' : '', (active === 'management' || active === 'user-management') ? 'text-white' : 'text-gray-500']"
                                 class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -724,7 +1100,7 @@
                         <div x-show="openItems.management" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="#"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                                @click="active = 'user-management'"
+                                @click="setActive('user-management', 'management')"
                                 :class="active === 'user-management' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                                 <img src="{{ asset('assets/sarafi/all_icon/user.svg') }}" class="w-4 h-4"
                                     :class="active === 'user-management' ? 'filter invert brightness-0' : 'text-gray-500'">
@@ -736,14 +1112,14 @@
                     <!-- مدیریت پیامک ها -->
                     <div>
                         <button @click="openItems.sms = !openItems.sms; active = 'sms'"
-                            :class="active === 'sms' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            :class="(active === 'sms' || active === 'sms-management') ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2">
                                 <img src="{{ asset('assets/sarafi/all_icon/sms.svg') }}" class="w-5 h-5"
-                                    :class="active === 'sms' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                    :class="(active === 'sms' || active === 'sms-management') ? 'filter invert brightness-0' : 'text-gray-500'">
                                 {{ __('messages.sms') }}
                             </span>
-                            <svg :class="[openItems.sms ? 'rotate-180' : '', active === 'sms' ? 'text-white' : 'text-gray-500']"
+                            <svg :class="[openItems.sms ? 'rotate-180' : '', (active === 'sms' || active === 'sms-management') ? 'text-white' : 'text-gray-500']"
                                 class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -753,7 +1129,7 @@
                         <div x-show="openItems.sms" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="#"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                                @click="active = 'sms-management'"
+                                @click="setActive('sms-management', 'sms')"
                                 :class="active === 'sms-management' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                                 <img src="{{ asset('assets/sarafi/all_icon/message.svg') }}" class="w-4 h-4"
                                     :class="active === 'sms-management' ? 'filter invert brightness-0' : 'text-gray-500'">
@@ -765,14 +1141,14 @@
                     <!-- اطلاعیه های آنلاین -->
                     <div>
                         <button @click="openItems.notifications = !openItems.notifications; active = 'notifications'"
-                            :class="active === 'notifications' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            :class="(active === 'notifications' || active === 'online-notifications') ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2">
                                 <img src="{{ asset('assets/sarafi/all_icon/wifi.svg') }}" class="w-5 h-5"
-                                    :class="active === 'notifications' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                    :class="(active === 'notifications' || active === 'online-notifications') ? 'filter invert brightness-0' : 'text-gray-500'">
                                 {{ __('messages.notifications') }}
                             </span>
-                            <svg :class="[openItems.notifications ? 'rotate-180' : '', active === 'notifications' ? 'text-white' : 'text-gray-500']"
+                            <svg :class="[openItems.notifications ? 'rotate-180' : '', (active === 'notifications' || active === 'online-notifications') ? 'text-white' : 'text-gray-500']"
                                 class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -782,7 +1158,7 @@
                         <div x-show="openItems.notifications" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="#"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                                @click="active = 'online-notifications'"
+                                @click="setActive('online-notifications', 'notifications')"
                                 :class="active === 'online-notifications' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                                 <img src="{{ asset('assets/sarafi/all_icon/notification.svg') }}" class="w-4 h-4"
                                     :class="active === 'online-notifications' ? 'filter invert brightness-0' : 'text-gray-500'">
@@ -794,14 +1170,14 @@
                     <!-- پشتیبانی سیستم -->
                     <div>
                         <button @click="openItems.support = !openItems.support; active = 'support'"
-                            :class="active === 'support' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            :class="(active === 'support' || active === 'system-support') ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2">
                                 <img src="{{ asset('assets/sarafi/all_icon/document-copy.svg') }}" class="w-5 h-5"
-                                    :class="active === 'support' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                    :class="(active === 'support' || active === 'system-support') ? 'filter invert brightness-0' : 'text-gray-500'">
                                 {{ __('messages.support') }}
                             </span>
-                            <svg :class="[openItems.support ? 'rotate-180' : '', active === 'support' ? 'text-white' : 'text-gray-500']"
+                            <svg :class="[openItems.support ? 'rotate-180' : '', (active === 'support' || active === 'system-support') ? 'text-white' : 'text-gray-500']"
                                 class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -811,7 +1187,7 @@
                         <div x-show="openItems.support" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="#"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                                @click="active = 'system-support'"
+                                @click="setActive('system-support', 'support')"
                                 :class="active === 'system-support' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                                 <img src="{{ asset('assets/sarafi/all_icon/support.svg') }}" class="w-4 h-4"
                                     :class="active === 'system-support' ? 'filter invert brightness-0' : 'text-gray-500'">
@@ -823,14 +1199,14 @@
                     <!-- تنظیمات -->
                     <div>
                         <button @click="openItems.settings = !openItems.settings; active = 'settings'"
-                            :class="active === 'settings' ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            :class="(active === 'settings' || active === 'system-settings') ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2">
                                 <img src="{{ asset('assets/sarafi/all_icon/setting-2.svg') }}" class="w-5 h-5"
-                                    :class="active === 'settings' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                    :class="(active === 'settings' || active === 'system-settings') ? 'filter invert brightness-0' : 'text-gray-500'">
                                 {{ __('messages.settings') }}
                             </span>
-                            <svg :class="[openItems.settings ? 'rotate-180' : '', active === 'settings' ? 'text-white' : 'text-gray-500']"
+                            <svg :class="[openItems.settings ? 'rotate-180' : '', (active === 'settings' || active === 'system-settings') ? 'text-white' : 'text-gray-500']"
                                 class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -840,141 +1216,203 @@
                         <div x-show="openItems.settings" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="#"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                                @click="active = 'system-settings'"
+                                @click="setActive('system-settings', 'settings')"
                                 :class="active === 'system-settings' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                                 <img src="{{ asset('assets/sarafi/all_icon/settings.svg') }}" class="w-4 h-4"
                                     :class="active === 'system-settings' ? 'filter invert brightness-0' : 'text-gray-500'">
                                 {{ __('messages.system_settings') }}
-
                             </a>
                         </div>
                     </div>
-
                 </nav>
-            </aside>
+            </div>
 
-            <main class="flex-1 ">
+            <!-- محتوای اصلی -->
+            <main class="flex-1 main-content-wrapper">
                 @yield('content')
             </main>
         </div>
-
-
-
     </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-    const loader = document.getElementById('loader');
-    const mainContent = document.getElementById('mainContent');
-    const progressBar = document.querySelector('.progress');
+            const loader = document.getElementById('loader');
+            const mainContent = document.getElementById('mainContent');
+            const progressBar = document.querySelector('.progress');
 
-    const profileBtn = document.getElementById('profileBtn');
-    const profileDropdown = document.getElementById('profileDropdown');
+            // مدیریت منوی موبایل
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+                mobileOverlay.classList.toggle('open');
+            });
+            
+            mobileOverlay.addEventListener('click', function() {
+                sidebar.classList.remove('open');
+                mobileOverlay.classList.remove('open');
+            });
 
-    profileBtn.addEventListener('click', () => {
-        profileDropdown.classList.toggle('hidden');
-    });
+            // مدیریت پروفایل در موبایل
+            const profileBtnMobile = document.getElementById('profileBtnMobile');
+            if (profileBtnMobile) {
+                profileBtnMobile.addEventListener('click', () => {
+                    window.location.href = "{{ route('sarafi.users') }}";
+                });
+            }
 
-    document.addEventListener('click', (event) => {
-        if (!profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
-            profileDropdown.classList.add('hidden');
+            // مدیریت پروفایل در دسکتاپ
+            const profileBtnDesktop = document.getElementById('profileBtnDesktop');
+            const profileDropdownDesktop = document.getElementById('profileDropdownDesktop');
+            if (profileBtnDesktop && profileDropdownDesktop) {
+                profileBtnDesktop.addEventListener('click', () => {
+                    profileDropdownDesktop.classList.toggle('hidden');
+                });
+
+                document.addEventListener('click', (event) => {
+                    if (!profileBtnDesktop.contains(event.target) && !profileDropdownDesktop.contains(event.target)) {
+                        profileDropdownDesktop.classList.add('hidden');
+                    }
+                });
+            }
+
+            // محتوا را ابتدا مخفی کن
+            mainContent.style.display = 'none';
+
+            let progress = 0;
+            let fakeProgressInterval;
+
+            function startFakeProgress() {
+                fakeProgressInterval = setInterval(() => {
+                    progress += Math.random() * 30;
+                    if (progress > 90) progress = 90;
+                    progressBar.style.width = progress + '%';
+                },10);
+            }
+
+            startFakeProgress();
+
+            window.addEventListener('load', function() {
+                clearInterval(fakeProgressInterval);
+                progress = 100;
+                progressBar.style.width = progress + '%';
+
+                setTimeout(() => {
+                    loader.classList.add('loader-complete');
+                    mainContent.style.display = 'block';
+                    mainContent.classList.add('content-loaded');
+
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                    }, 400);
+                }, 600);
+            });
+
+            // مدیریت کلیک روی لینک‌ها
+            const navLinks = document.querySelectorAll('.nav-link, .locale-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href && !href.startsWith('#')) {
+                        e.preventDefault();
+                        loader.style.display = 'flex';
+                        loader.classList.remove('loader-complete');
+                        setTimeout(() => window.location.href = href, 50);
+                    }
+                });
+            });
+
+            // مدیریت dropdown زبان برای دسکتاپ
+            const btn = document.getElementById('dropdownButton');
+            const menu = document.getElementById('dropdownMenu');
+            if (btn && menu) {
+                btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+                document.addEventListener('click', e => {
+                    if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                        menu.classList.add('hidden');
+                    }
+                });
+            }
+
+            // مدیریت dropdown زبان برای موبایل
+            const btnMobile = document.getElementById('dropdownButtonMobile');
+            const menuMobile = document.getElementById('dropdownMenuMobile');
+            if (btnMobile && menuMobile) {
+                btnMobile.addEventListener('click', () => menuMobile.classList.toggle('hidden'));
+                document.addEventListener('click', e => {
+                    if (!btnMobile.contains(e.target) && !menuMobile.contains(e.target)) {
+                        menuMobile.classList.add('hidden');
+                    }
+                });
+            }
+        });
+
+        // مدیریت دارک مود
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
+        const toggleCircle = document.getElementById('toggleCircle');
+        
+        const darkModeToggleMobile = document.getElementById('darkModeToggleMobile');
+        const sunIconMobile = document.getElementById('sunIconMobile');
+        const moonIconMobile = document.getElementById('moonIconMobile');
+        const toggleCircleMobile = document.getElementById('toggleCircleMobile');
+        
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        const html = document.documentElement;
+
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
+            html.classList.add('dark');
+            if (darkModeToggle) darkModeToggle.checked = true;
+            if (darkModeToggleMobile) darkModeToggleMobile.checked = true;
+            if (sunIcon) sunIcon.classList.add('hidden');
+            if (sunIconMobile) sunIconMobile.classList.add('hidden');
+            if (moonIcon) moonIcon.classList.remove('hidden');
+            if (moonIconMobile) moonIconMobile.classList.remove('hidden');
+            if (toggleCircle) toggleCircle.classList.add('move-dark');
+            if (toggleCircleMobile) toggleCircleMobile.classList.add('move-dark');
         }
-    });
 
-    // محتوا را ابتدا مخفی کن
-    mainContent.style.display = 'none';
+        if (darkModeToggle) {
+            darkModeToggle.addEventListener('change', function() {
+                updateDarkMode(this.checked);
+            });
+        }
 
-    let progress = 0;
-    let fakeProgressInterval;
+        if (darkModeToggleMobile) {
+            darkModeToggleMobile.addEventListener('change', function() {
+                updateDarkMode(this.checked);
+            });
+        }
 
-    // شروع شبیه‌سازی پیشرفت فقط اگر لود طول بکشد
-    function startFakeProgress() {
-        fakeProgressInterval = setInterval(() => {
-            progress += Math.random() * 30; // سرعت متوسط
-            if (progress > 90) progress = 90; // رسیدن به 90% و منتظر load واقعی
-            progressBar.style.width = progress + '%';
-        },10);
-    }
-
-    startFakeProgress();
-
-    // وقتی صفحه واقعاً لود شد
-    window.addEventListener('load', function() {
-        clearInterval(fakeProgressInterval);
-        progress = 100;
-        progressBar.style.width = progress + '%';
-
-        setTimeout(() => {
-            loader.classList.add('loader-complete');
-            mainContent.style.display = 'block';
-            mainContent.classList.add('content-loaded');
-
-            setTimeout(() => {
-                loader.style.display = 'none';
-            }, 400);
-        }, 600); // کمی تأخیر برای انیمیشن
-    });
-
-    // مدیریت کلیک روی لینک‌ها
-    const navLinks = document.querySelectorAll('.nav-link, .locale-link');
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            if (href && !href.startsWith('#')) {
-                e.preventDefault();
-                loader.style.display = 'flex';
-                loader.classList.remove('loader-complete');
-                setTimeout(() => window.location.href = href, 50);
+        function updateDarkMode(isDark) {
+            if (isDark) {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                if (sunIcon) sunIcon.classList.add('hidden');
+                if (sunIconMobile) sunIconMobile.classList.add('hidden');
+                if (moonIcon) moonIcon.classList.remove('hidden');
+                if (moonIconMobile) moonIconMobile.classList.remove('hidden');
+                if (toggleCircle) toggleCircle.classList.add('move-dark');
+                if (toggleCircleMobile) toggleCircleMobile.classList.add('move-dark');
+                if (darkModeToggle) darkModeToggle.checked = true;
+                if (darkModeToggleMobile) darkModeToggleMobile.checked = true;
+            } else {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                if (sunIcon) sunIcon.classList.remove('hidden');
+                if (sunIconMobile) sunIconMobile.classList.remove('hidden');
+                if (moonIcon) moonIcon.classList.add('hidden');
+                if (moonIconMobile) moonIconMobile.classList.add('hidden');
+                if (toggleCircle) toggleCircle.classList.remove('move-dark');
+                if (toggleCircleMobile) toggleCircleMobile.classList.remove('move-dark');
+                if (darkModeToggle) darkModeToggle.checked = false;
+                if (darkModeToggleMobile) darkModeToggleMobile.checked = false;
             }
-        });
-    });
-
-    // مدیریت dropdown زبان
-    const btn = document.getElementById('dropdownButton');
-    const menu = document.getElementById('dropdownMenu');
-    if (btn && menu) {
-        btn.addEventListener('click', () => menu.classList.toggle('hidden'));
-        document.addEventListener('click', e => {
-            if (!btn.contains(e.target) && !menu.contains(e.target)) {
-                menu.classList.add('hidden');
-            }
-        });
-    }
-});
-
-const darkModeToggle = document.getElementById('darkModeToggle');
-const sunIcon = document.getElementById('sunIcon');
-const moonIcon = document.getElementById('moonIcon');
-const toggleCircle = document.getElementById('toggleCircle');
-const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-const html = document.documentElement;
-
-// بررسی حالت ذخیره‌شده
-const currentTheme = localStorage.getItem('theme');
-if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
-    html.classList.add('dark');
-    darkModeToggle.checked = true;
-    sunIcon.classList.add('hidden');
-    moonIcon.classList.remove('hidden');
-    toggleCircle.classList.add('move-dark');
-} else {
-    toggleCircle.classList.remove('move-dark');
-}
-
-darkModeToggle.addEventListener('change', function() {
-    if (this.checked) {
-        html.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-        sunIcon.classList.add('hidden');
-        moonIcon.classList.remove('hidden');
-        toggleCircle.classList.add('move-dark');
-    } else {
-        html.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-        sunIcon.classList.remove('hidden');
-        moonIcon.classList.add('hidden');
-        toggleCircle.classList.remove('move-dark');
-    }
-});
+        }
     </script>
 
 </body>

@@ -238,20 +238,15 @@
         /* محتوای اصلی - اصلاح شده */
         #mainContent {
             display: none;
-            /* ابتدا مخفی باشد */
             opacity: 1;
-            /* opacity را 1 قرار دهید */
         }
 
         .content-loaded {
             display: block;
-            /* نمایش داده شود */
             opacity: 1;
-            /* کاملاً قابل دیدن */
         }
 
         /* استایل‌های دارک مود */
-        /* انیمیشن حرکت توگل */
         #toggleCircle {
             transition: transform 0.3s ease-in-out;
         }
@@ -264,7 +259,6 @@
             transform: translateX(2rem);
         }
 
-        /* حالت دارک */
         .dark {
             color-scheme: dark;
         }
@@ -272,7 +266,6 @@
         .dark body {
             background-color: #1a202c;
             color: #e2e8f0;
-            @apply text-white
         }
 
         .dark header {
@@ -297,6 +290,7 @@
             border: none;
             cursor: pointer;
             padding: 8px;
+            z-index: 100;
         }
 
         .mobile-menu-icon {
@@ -352,18 +346,86 @@
             display: none;
         }
 
+        /* استایل‌های هدر ریسپانسیو */
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            height: 100%;
+            padding: 0 1rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .company-name {
+            font-size: 40px;
+            font-weight: bold;
+            color: #353e73;
+        }
+
+        .search-input {
+            width: 250px;
+        }
+
+        .profile-image {
+            width: 70px;
+            height: 70px;
+        }
+
+        .notification-btn {
+            width: 50px;
+            height: 50px;
+        }
+
+        /* استایل‌های سایدبار ریسپانسیو */
+        .sidebar-container {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 320px;
+            background: white;
+            z-index: 50;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            padding: 1.5rem;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-container.active {
+            transform: translateX(0);
+        }
+
+        .mobile-overlay.active {
+            display: block;
+        }
+
+        /* استایل‌های اصلی برای محتوا */
+        .main-content-container {
+            margin-top: 1rem;
+            padding: 0 1rem;
+        }
+
         /* استایل‌های ریسپانسیو برای صفحه‌های کوچک */
         @media (max-width: 1024px) {
             .company-name {
-                font-size: 24px !important;
-            }
-
-            .header-right {
-                gap: 8px !important;
+                font-size: 32px !important;
             }
 
             .search-input {
-                width: 160px !important;
+                width: 200px !important;
             }
         }
 
@@ -372,66 +434,36 @@
                 display: block;
             }
 
-            aside {
-                position: fixed;
-                top: 0;
-                right: 0;
-                height: 100vh;
-                z-index: 50;
-                transform: translateX(100%);
-                transition: transform 0.3s ease;
-                overflow-y: auto;
-            }
-
-            aside.active {
-                transform: translateX(0);
-            }
-
-            .mobile-overlay.active {
-                display: block;
-            }
-
             .company-name {
-                font-size: 18px !important;
-                max-width: 150px;
+                font-size: 24px !important;
+                max-width: 200px;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
             }
 
-            .header-right {
-                gap: 4px !important;
+            .header-container {
+                padding: 0 0.5rem;
             }
 
             .search-input {
+                width: 150px !important;
                 display: none;
             }
 
             .profile-image {
-                width: 40px !important;
-                height: 40px !important;
+                width: 50px !important;
+                height: 50px !important;
             }
 
             .notification-btn {
-                width: 40px !important;
-                height: 40px !important;
+                width: 45px !important;
+                height: 45px !important;
             }
 
             .notification-btn img {
                 width: 20px !important;
                 height: 20px !important;
-            }
-        }
-
-        @media (max-width: 480px) {
-            header {
-                padding-left: 10px !important;
-                padding-right: 10px !important;
-            }
-
-            .company-name {
-                font-size: 16px !important;
-                max-width: 120px;
             }
 
             .profile-dropdown {
@@ -439,20 +471,85 @@
                 right: 0;
                 left: auto !important;
             }
+
+            /* سایدبار دسکتاپ مخفی شود */
+            #sidebar.desktop-sidebar {
+                display: none;
+            }
         }
 
-        .sidebar-collapsed {
-            display: none !important;
+        @media (max-width: 640px) {
+            .company-name {
+                font-size: 20px !important;
+                max-width: 150px;
+            }
+
+            .search-input {
+                display: none;
+            }
+
+            .header-right {
+                gap: 0.5rem !important;
+            }
         }
 
-        @media (min-width: 768px) {
-            #sidebar {
+        @media (max-width: 480px) {
+            header {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+                height: 70px !important;
+            }
+
+            .company-name {
+                font-size: 18px !important;
+                max-width: 120px;
+            }
+
+            .profile-image {
+                width: 45px !important;
+                height: 45px !important;
+            }
+
+            .notification-btn {
+                width: 40px !important;
+                height: 40px !important;
+            }
+
+            .sidebar-container {
+                width: 280px;
+            }
+        }
+
+        /* استایل‌های دسکتاپ */
+        @media (min-width: 769px) {
+            .sidebar-container {
+                position: static;
+                transform: none;
+                width: 320px;
+                height: auto;
+                box-shadow: none;
                 display: block !important;
             }
 
-            .sidebar-collapsed {
+            .mobile-overlay {
                 display: none !important;
             }
+
+            .mobile-menu-btn {
+                display: none;
+            }
+        }
+
+        /* استایل‌های عمومی برای محتوای اصلی */
+        .main-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex: 1;
         }
     </style>
 </head>
@@ -488,76 +585,79 @@
 
     <!-- محتوای اصلی -->
     <div id="mainContent">
-        <header
-            class="bg-white w-full h-[80px] flex items-center justify-between px-6 shadow-[0_4px_4px_rgba(32,41,199,0.4)]">
-            <!-- دکمه منو موبایل -->
-            <button class="mobile-menu-btn" id="mobileMenuBtn">
-                <div class="mobile-menu-icon">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </button>
+        <header class="bg-white w-full h-[80px] shadow-[0_4px_4px_rgba(32,41,199,0.4)]">
+            <div class="header-container">
+                <!-- بخش چپ هدر -->
+                <div class="header-left">
+                    <!-- دکمه منو موبایل -->
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <div class="mobile-menu-icon">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </button>
 
-            <div class="flex items-center space-x-4 rtl:space-x-reverse gap-6 justify-center">
-                <div class="text-[40px] text-[#353e73] font-bold amiri company-name"> شرکت {{
-                    Auth::guard('tools')->user()->company_name }}
-                </div>
-            </div>
-
-            <!-- سرچ، اعلان، پروفایل -->
-            <div class="flex items-center space-x-4 gap-1 pl-10 rtl:space-x-reverse header-right">
-                <div class="relative">
-                    <input type="text" placeholder="{{ __('messages.search_placeholder') }}"
-                        class="border border-[#8C8C8C] placeholder:text-black vazir rounded-2xl px-3 py-3 pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500 search-input">
-                    <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
-                        class="h-7 w-7 absolute left-2 bottom-3">
+                    <!-- نام شرکت -->
+                    <div class="text-[40px] text-[#353e73] font-bold amiri company-name">
+                        شرکت {{ Auth::guard('tools')->user()->company_name }}
+                    </div>
                 </div>
 
-                <button
-                    class="relative flex items-center justify-center w-[50px] h-[50px] rounded-[25px] bg-[#E5E5E5] hover:bg-gray-300 transition notification-btn">
-                    <img src="{{ asset('assets/sarafi/all_icon/bill-header.svg') }}" alt="اعلان" class="w-7 h-7">
-                    <span
-                        class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
-                </button>
-
-                <div class="relative">
-                    <div id="profileBtn"
-                        class="w-[70px] h-[70px] rounded-full border overflow-hidden flex items-center justify-center cursor-pointer transition profile-image">
-                        <img src="{{ asset('assets/tools/man.png') }}" alt="پروفایل"
-                            class="w-[50px] h-[50px] object-cover">
+                <!-- بخش راست هدر -->
+                <div class="header-right">
+                    <!-- جستجو -->
+                    <div class="relative">
+                        <input type="text" placeholder="{{ __('messages.search_placeholder') }}"
+                            class="border border-[#8C8C8C] placeholder:text-black vazir rounded-2xl px-3 py-3 pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500 search-input">
+                        <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
+                            class="h-7 w-7 absolute left-2 bottom-3">
                     </div>
 
-                    <!-- منو dropdown -->
-                    <div id="profileDropdown" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;"
-                        class="absolute top-full left-0 space-y-3 text-2xl w-72 h-76 bg-white rounded-lg shadow-lg border hidden z-50 p-4 profile-dropdown">
+                    <!-- اعلان -->
+                    <button
+                        class="relative flex items-center justify-center rounded-[25px] bg-[#E5E5E5] hover:bg-gray-300 transition notification-btn">
+                        <img src="{{ asset('assets/sarafi/all_icon/bill-header.svg') }}" alt="اعلان" class="w-7 h-7">
+                        <span
+                            class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
+                    </button>
 
-                        <div class="p-3 border-b space-y-5">
-                            <div class="flex flex-col justify-center items-center ">
-                                <img src="{{ asset('assets/tools/man.png') }}" alt="" class="h-20 w-20">
-                                <p class="font-vazir font-semibold text-gray-700 mt-5">{{
-                                    Auth::guard('tools')->user()->name }}</p>
+                    <!-- پروفایل -->
+                    <div class="relative">
+                        <div id="profileBtn"
+                            class="rounded-full border overflow-hidden flex items-center justify-center cursor-pointer transition profile-image">
+                            <img src="{{ asset('assets/tools/man.png') }}" alt="پروفایل"
+                                class="w-full h-full object-cover">
+                        </div>
 
+                        <!-- منو dropdown -->
+                        <div id="profileDropdown" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;"
+                            class="absolute top-full left-0 space-y-3 text-2xl w-72 h-76 bg-white rounded-lg shadow-lg border hidden z-50 p-4 profile-dropdown">
+
+                            <div class="p-3 border-b space-y-5">
+                                <div class="flex flex-col justify-center items-center ">
+                                    <img src="{{ asset('assets/tools/man.png') }}" alt="" class="h-20 w-20">
+                                    <p class="font-vazir font-semibold text-gray-700 mt-5">
+                                        {{ Auth::guard('tools')->user()->name }}
+                                    </p>
+                                </div>
                             </div>
-
-                        </div>
-                        <div class="flex justify-start items-center  ">
-                            <img src="{{ asset('assets/sarafi/all_icon/account_profile.svg') }}" alt="">
-
-                            <a href="{{ route('tools.users') }}" class="block px-4 py-2 text-gray-700 vazir">تنظیمات</a>
-                        </div>
-
-                        <form action="{{ route('tools.logout') }}" method="POST">
-                            @csrf
+                            
                             <div class="flex justify-start items-center">
-                                <img src="{{ asset('assets/sarafi/all_icon/logout.svg') }}" alt="">
-                                <button type="submit" class="px-4 py-2 text-gray-700 vazir">
-                                    خروج از حساب
-                                </button>
+                                <img src="{{ asset('assets/sarafi/all_icon/account_profile.svg') }}" alt="">
+                                <a href="{{ route('tools.users') }}" class="block px-4 py-2 text-gray-700 vazir">تنظیمات</a>
                             </div>
-                        </form>
 
-
+                            <form action="{{ route('tools.logout') }}" method="POST">
+                                @csrf
+                                <div class="flex justify-start items-center">
+                                    <img src="{{ asset('assets/sarafi/all_icon/logout.svg') }}" alt="">
+                                    <button type="submit" class="px-4 py-2 text-gray-700 vazir">
+                                        خروج از حساب
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -566,17 +666,18 @@
         <!-- Overlay for mobile menu -->
         <div class="mobile-overlay" id="mobileOverlay"></div>
 
-        <div class="flex flex-1 mt-4 min-h-screen sticky">
-            <aside class="w-80 hidden md:block shadow-xl p-6 dark:text-white static" id="sidebar">
+        <div class="content-wrapper mt-5">
+            <!-- سایدبار موبایل -->
+            <div class="sidebar-container" id="mobileSidebar">
                 <nav class="mt-0 space-y-1" x-data="{
-                        openItems: {
-                            customers: false,
-                            accounting: false,
-                            sarafi: false,
-                            shopping: false
-                        },
-                        active: '{{ Route::currentRouteName() }}' // همواره با route فعلی هماهنگ
-                    }">
+                    openItems: {
+                        customers: false,
+                        accounting: false,
+                        sarafi: false,
+                        shopping: false
+                    },
+                    active: '{{ Route::currentRouteName() }}'
+                }">
 
                     <!-- داشبورد -->
                     <a href="{{ route('tools.home') }}"
@@ -655,7 +756,6 @@
 
                     <!-- حسابداری -->
                     <div>
-                        <!-- دکمه اصلی -->
                         <button @click="openItems.accounting = !openItems.accounting" :class="active.startsWith('tools.loans') || active.startsWith('tools.salary') || active.startsWith('tools.withdrawals') 
                                     ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' 
                                     : 'text-gray-700 hover:bg-gray-100'"
@@ -674,7 +774,6 @@
                             </svg>
                         </button>
 
-                        <!-- زیرمنو -->
                         <div x-show="openItems.accounting" x-transition class="mr-7 mt-2 space-y-2">
                             <a href="{{ route('tools.loans') }}"
                                 @click="active = 'tools.loans'; openItems.accounting = true; closeMobileMenu()"
@@ -700,7 +799,6 @@
                                 برداشت‌ها
                             </a>
 
-
                             <a href="{{ route('tools.shop-transactions') }}"
                                 @click="active = 'tools.shop-transactions'; openItems.accounting = true; closeMobileMenu()"
                                 :class="active === 'tools.shop-transactions' ? 
@@ -720,14 +818,11 @@
                                 <i class="fa-solid fa-arrows-rotate w-5 h-5"></i>
                                 تبدیل و انتقال ارز از دوکان به صرافی
                             </a>
-
-
                         </div>
                     </div>
 
                     <!-- معاملات صرافی -->
                     <div>
-                        <!-- دکمه اصلی -->
                         <button @click="openItems.sarafi = !openItems.sarafi" :class="active.startsWith('tools.transactions') || active.startsWith('tools.buy-sell-currency') || active.startsWith('tools.account_to_account') 
                             ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' 
                             : 'text-gray-700 hover:bg-gray-100'"
@@ -745,7 +840,6 @@
                             </svg>
                         </button>
 
-                        <!-- زیرمنو -->
                         <div x-show="openItems.sarafi" x-transition class="mr-7 mt-2 space-y-2">
                             <a href="{{ route('tools.transactions') }}"
                                 @click="active = 'tools.transactions'; openItems.sarafi = true; closeMobileMenu()"
@@ -789,11 +883,8 @@
                         </div>
                     </div>
 
-
-
                     <!-- بخش دوکانداری -->
                     <div>
-                        <!-- دکمه اصلی -->
                         <button @click="openItems.shopping = !openItems.shopping" :class="active.startsWith('tools.inventory') || active.startsWith('tools.warehouse') || active.startsWith('tools.sales') 
                 ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' 
                 : 'text-gray-700 hover:bg-gray-100'"
@@ -812,7 +903,6 @@
                             </svg>
                         </button>
 
-                        <!-- زیرمنو -->
                         <div x-show="openItems.shopping" x-transition class="mr-7 mt-2 space-y-2">
                             <a href="{{ route('tools.inventory') }}"
                                 @click="active = 'tools.inventory'; openItems.shopping = true; closeMobileMenu()"
@@ -852,8 +942,7 @@
                         </span>
                     </a>
 
-
-                    <!-- گزارشات   -->
+                    <!-- گزارشات -->
                     <a href="{{ route('tools.reports') }}"
                         class="nav-link flex items-center justify-between py-4 px-5 rounded-lg transition vazir dark:text-white text-[16px]"
                         @click="active = 'tools.reports'; closeMobileMenu()"
@@ -864,148 +953,140 @@
                             گزارشات
                         </span>
                     </a>
-
                 </nav>
-            </aside>
+            </div>
 
-            <main class="flex-1">
+        
+
+            <!-- محتوای اصلی -->
+            <main class="flex-1 main-content-container">
                 @yield('content')
             </main>
         </div>
-
-
-
     </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-        const loader = document.getElementById('loader');
-        const mainContent = document.getElementById('mainContent');
-        const progressBar = document.querySelector('.progress');
+            const loader = document.getElementById('loader');
+            const mainContent = document.getElementById('mainContent');
+            const progressBar = document.querySelector('.progress');
 
-        const profileBtn = document.getElementById('profileBtn');
-        const profileDropdown = document.getElementById('profileDropdown');
-        
-        // Mobile menu elements
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const sidebar = document.getElementById('sidebar');
-        const mobileOverlay = document.getElementById('mobileOverlay');
-        
-        // Function to close mobile menu - بدون شرط موبایل
-        function closeMobileMenu() {
-            sidebar.classList.remove('active');
-            mobileOverlay.classList.remove('active');
-            if (mobileMenuBtn) {
-                mobileMenuBtn.classList.remove('active');
+            const profileBtn = document.getElementById('profileBtn');
+            const profileDropdown = document.getElementById('profileDropdown');
+            
+            // Mobile menu elements
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileSidebar = document.getElementById('mobileSidebar');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            
+            // Function to close mobile menu
+            function closeMobileMenu() {
+                mobileSidebar.classList.remove('active');
+                mobileOverlay.classList.remove('active');
+                if (mobileMenuBtn) {
+                    mobileMenuBtn.classList.remove('active');
+                }
             }
-        }
-        
-        // Mobile menu toggle - بهبود یافته
-        if (mobileMenuBtn && sidebar && mobileOverlay) {
-            mobileMenuBtn.addEventListener('click', function() {
-                const isMobile = window.innerWidth < 768;
-                
-                if (isMobile) {
-                    // حالت موبایل
-                    sidebar.classList.toggle('active');
+            
+            // Mobile menu toggle
+            if (mobileMenuBtn && mobileSidebar && mobileOverlay) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    mobileSidebar.classList.toggle('active');
                     mobileOverlay.classList.toggle('active');
                     mobileMenuBtn.classList.toggle('active');
-                } else {
-                    // حالت دسکتاپ - toggle سایدبار
-                    sidebar.classList.toggle('sidebar-collapsed');
-                }
-            });
-            
-            mobileOverlay.addEventListener('click', function() {
-                closeMobileMenu();
-            });
-        }
-
-        // بقیه کدها بدون تغییر...
-        profileBtn.addEventListener('click', () => {
-            profileDropdown.classList.toggle('hidden');
-        });
-
-        document.addEventListener('click', (event) => {
-            if (!profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
-                profileDropdown.classList.add('hidden');
+                });
+                
+                mobileOverlay.addEventListener('click', function() {
+                    closeMobileMenu();
+                });
             }
-        });
 
-        // محتوا را ابتدا مخفی کن
-        if (mainContent) {
-            mainContent.style.display = 'none';
-        }
+            // Profile dropdown
+            profileBtn.addEventListener('click', () => {
+                profileDropdown.classList.toggle('hidden');
+            });
 
-        let progress = 0;
-        let fakeProgressInterval;
-
-        // شروع شبیه‌سازی پیشرفت فقط اگر لود طول بکشد
-        function startFakeProgress() {
-            fakeProgressInterval = setInterval(() => {
-                progress += Math.random() * 30;
-                if (progress > 90) progress = 90;
-                if (progressBar) {
-                    progressBar.style.width = progress + '%';
+            document.addEventListener('click', (event) => {
+                if (!profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
+                    profileDropdown.classList.add('hidden');
                 }
-            }, 10);
-        }
+            });
 
-        if (loader && progressBar) {
-            startFakeProgress();
+            // محتوا را ابتدا مخفی کن
+            if (mainContent) {
+                mainContent.style.display = 'none';
+            }
 
-            // وقتی صفحه واقعاً لود شد
-            window.addEventListener('load', function() {
-                clearInterval(fakeProgressInterval);
-                progress = 100;
-                if (progressBar) {
-                    progressBar.style.width = progress + '%';
-                }
+            let progress = 0;
+            let fakeProgressInterval;
 
-                setTimeout(() => {
-                    loader.classList.add('loader-complete');
-                    if (mainContent) {
-                        mainContent.style.display = 'block';
-                        mainContent.classList.add('content-loaded');
+            // شروع شبیه‌سازی پیشرفت فقط اگر لود طول بکشد
+            function startFakeProgress() {
+                fakeProgressInterval = setInterval(() => {
+                    progress += Math.random() * 30;
+                    if (progress > 90) progress = 90;
+                    if (progressBar) {
+                        progressBar.style.width = progress + '%';
+                    }
+                }, 10);
+            }
+
+            if (loader && progressBar) {
+                startFakeProgress();
+
+                // وقتی صفحه واقعاً لود شد
+                window.addEventListener('load', function() {
+                    clearInterval(fakeProgressInterval);
+                    progress = 100;
+                    if (progressBar) {
+                        progressBar.style.width = progress + '%';
                     }
 
                     setTimeout(() => {
-                        loader.style.display = 'none';
-                    }, 400);
-                }, 600);
-            });
-        }
+                        loader.classList.add('loader-complete');
+                        if (mainContent) {
+                            mainContent.style.display = 'block';
+                            mainContent.classList.add('content-loaded');
+                        }
 
-        // مدیریت کلیک روی لینک‌ها
-        const navLinks = document.querySelectorAll('.nav-link, .locale-link');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                const href = this.getAttribute('href');
-                if (href && !href.startsWith('#')) {
-                    e.preventDefault();
-                    if (loader) {
-                        loader.style.display = 'flex';
-                        loader.classList.remove('loader-complete');
+                        setTimeout(() => {
+                            loader.style.display = 'none';
+                        }, 400);
+                    }, 600);
+                });
+            }
+
+            // مدیریت کلیک روی لینک‌ها
+            const navLinks = document.querySelectorAll('.nav-link, .locale-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href && !href.startsWith('#')) {
+                        e.preventDefault();
+                        if (loader) {
+                            loader.style.display = 'flex';
+                            loader.classList.remove('loader-complete');
+                        }
+                        setTimeout(() => window.location.href = href, 50);
                     }
-                    setTimeout(() => window.location.href = href, 50);
-                }
+                });
             });
-        });
 
-        // مدیریت dropdown زبان
-        const btn = document.getElementById('dropdownButton');
-        const menu = document.getElementById('dropdownMenu');
-        if (btn && menu) {
-            btn.addEventListener('click', () => menu.classList.toggle('hidden'));
-            document.addEventListener('click', e => {
-                if (!btn.contains(e.target) && !menu.contains(e.target)) {
-                    menu.classList.add('hidden');
-                }
-            });
-        }
-        
-        // Expose closeMobileMenu function to Alpine.js
-        window.closeMobileMenu = closeMobileMenu;
-    });
+            // مدیریت dropdown زبان
+            const btn = document.getElementById('dropdownButton');
+            const menu = document.getElementById('dropdownMenu');
+            if (btn && menu) {
+                btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+                document.addEventListener('click', e => {
+                    if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                        menu.classList.add('hidden');
+                    }
+                });
+            }
+            
+            // Expose closeMobileMenu function to Alpine.js
+            window.closeMobileMenu = closeMobileMenu;
+        });
     </script>
 </body>
 

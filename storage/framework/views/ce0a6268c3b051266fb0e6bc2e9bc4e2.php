@@ -205,7 +205,7 @@
             <!-- کارت‌های پنل‌ها -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
                 <!-- پنل مدیریت مارکت -->
-                <a href="/market/login" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
+                <a href="/market" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
                     <div
                         class="w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 flex items-center justify-center mb-4 group-hover:glow transition-all">
                         <i class="fas fa-store text-white text-2xl"></i>
@@ -218,7 +218,7 @@
                 </a>
 
                 <!-- پنل فروشات -->
-                <a href="/import/login" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
+                <a href="/import" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
                     <div
                         class="w-16 h-16 rounded-full bg-gradient-to-r from-green-500 to-green-700 flex items-center justify-center mb-4 group-hover:glow transition-all">
                         <i class="fas fa-cart-shopping text-white text-2xl"></i>
