@@ -810,7 +810,7 @@
             </div>
         </header>
 
-        <div class="flex flex-col md:flex-row mt-10 min-h-screen">
+        <div class="flex flex-col md:flex-row mt-4 min-h-screen">
             <!-- سایدبار -->
             <div class="sidebar-container" id="sidebar">
                 <nav class="mt-0 space-y-0" x-data="{
@@ -926,14 +926,13 @@
                             </svg>
                         </button>
                         <div x-show="openItems.accounts" x-transition class="mr-6 mt-1 space-y-1">
-                            <a href="#"
+                            <a href="<?php echo e(route('sarafi.exchange-rate')); ?>"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('register-accounts', 'accounts')"
                                 :class="active === 'register-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/add.svg')); ?>" class="w-4 h-4"
                                     :class="active === 'register-accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
-                                <?php echo e(__('messages.register_accounts')); ?>
-
+                                  ثبت نرخ ارز
                             </a>
                         </div>
                     </div>
@@ -1252,7 +1251,7 @@
             </div>
 
             <!-- محتوای اصلی -->
-            <main class="flex-1 main-content-wrapper">
+            <main class="flex-1  main-content-wrapper">
                 <?php echo $__env->yieldContent('content'); ?>
             </main>
         </div>

@@ -9,7 +9,7 @@
     <div class="flex flex-col bg-[#F5F5F5] w-full mt-1 lg:w-[574px] p-[12px] h-[760px] rounded-[12px] space-y-2"
         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
         <div class="flex  gap-2 border border-[#8C8C8C] rounded-[12px] p-6 ">
-            <img src="{{ asset('assets/sarafi/all_icon/exchange-rate.svg') }}" alt="">
+            <img src="<?php echo e(asset('assets/sarafi/all_icon/exchange-rate.svg')); ?>" alt="">
             <p>ثبت قیمت ارز</p>
         </div>
 
@@ -36,32 +36,33 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php
+                    <?php
                     $currencies = ['افغانی', 'تومان', 'یورو', 'کلدار', 'درهم', 'لیره', 'یوان چین', 'لیره'];
-                    @endphp
+                    ?>
 
-                    @foreach($currencies as $index => $currency)
+                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr class="border-b">
-                        {{-- واحد ارز --}}
+                        
                         <td class="px-4 py-2 font-bold text-gray-700">
-                            {{ $currency }}
+                            <?php echo e($currency); ?>
+
                         </td>
 
-                        {{-- قیمت خرید --}}
+                        
                         <td class="px-4 py-2">
-                            <input type="text" step="0.01" wire:model.defer="exchangeRates.{{ $currency }}.buy"
+                            <input type="text" step="0.01" wire:model.defer="exchangeRates.<?php echo e($currency); ?>.buy"
                                 class="w-full outline-none bg-transparent rounded px-2 py-1 text-right"
                                 placeholder="0.00">
                         </td>
 
-                        {{-- قیمت فروش --}}
+                        
                         <td class="px-4 py-2">
-                            <input type="text" step="0.01" wire:model.defer="exchangeRates.{{ $currency }}.sell"
+                            <input type="text" step="0.01" wire:model.defer="exchangeRates.<?php echo e($currency); ?>.sell"
                                 class="w-full outline-none bg-transparent rounded px-2 py-1 text-right"
                                 placeholder="0.00">
                         </td>
                     </tr>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                 </tbody>
             </table>
             <div class="flex gap-4 p-4 justify-center items-center text-center flex-wrap">
@@ -86,4 +87,4 @@
     
 
 
-</div>
+</div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/exchange-rate.blade.php ENDPATH**/ ?>
