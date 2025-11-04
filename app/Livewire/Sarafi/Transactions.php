@@ -4,6 +4,7 @@ namespace App\Livewire\Sarafi;
 
 use App\Models\Sarafi\CurrencySafe;
 use App\Models\Sarafi\Customer;
+use App\Models\Sarafi\ExchangeRates;
 use App\Models\Sarafi\Transaction;
 use App\Models\Sarafi\User;
 use Illuminate\Support\Facades\Auth;
@@ -208,7 +209,7 @@ class Transactions extends Component
     }
 
 
-    
+
 
     public function updateCustomerCurrencyBalance()
     {
@@ -223,7 +224,6 @@ class Transactions extends Component
                 ['name' => 'لیره', 'value' => 0],
                 ['name' => 'یوان', 'value' => 0],
                 ['name' => 'روپیه', 'value' => 0],
-
                 ['name' => 'خلاصه بیلانس به دالر', 'value' => 0],
             ];
             return;
@@ -235,6 +235,7 @@ class Transactions extends Component
         $transactions = Transaction::where('customer_id', $this->selectedCustomerId)
             ->where('admin_id', $adminId)
             ->get();
+
         $balances = [
             'افغانی' => 0,
             'دالر' => 0,
@@ -245,7 +246,6 @@ class Transactions extends Component
             'لیره' => 0,
             'یوان' => 0,
             'روپیه' => 0,
-
         ];
 
         foreach ($transactions as $transaction) {
@@ -257,20 +257,21 @@ class Transactions extends Component
             }
         }
 
-        $totalInUsd = 0;
-        $exchangeRates = [
-            'افغانی' => 0.011,
-            'دالر' => 1,
-            'تومان' => 0.000024,
-            'یورو' => 1.07,
-            'کلدار' => 0.0036,
-            'درهم' => 0.27,
-            'لیره' => 0.031,
-            'یوان' => 0.14,
-            'روپیه' => 0.14,
+        $latestExchangeRate = ExchangeRates::latest()->first();
 
+        $exchangeRates = [
+            'افغانی' => $latestExchangeRate->afn_buy ?? 0.011,
+            'دالر' => 1,
+            'تومان' => $latestExchangeRate->irr_buy ?? 0.000024,
+            'یورو' => $latestExchangeRate->eur_buy ?? 1.07,
+            'کلدار' => $latestExchangeRate->pkr_buy ?? 0.0036,
+            'درهم' => $latestExchangeRate->aed_buy ?? 0.27,
+            'لیره' => $latestExchangeRate->try_buy ?? 0.031,
+            'یوان' => $latestExchangeRate->cny_buy ?? 0.14,
+            'روپیه' => 0.14,
         ];
 
+        $totalInUsd = 0;
         foreach ($balances as $currency => $balance) {
             if ($currency !== 'خلاصه بیلانس به دالر' && isset($exchangeRates[$currency])) {
                 $totalInUsd += $balance * $exchangeRates[$currency];
@@ -287,11 +288,9 @@ class Transactions extends Component
             ['name' => 'لیره', 'value' => $balances['لیره']],
             ['name' => 'یوان', 'value' => $balances['یوان']],
             ['name' => 'روپیه', 'value' => $balances['روپیه']],
-
             ['name' => 'خلاصه بیلانس به دالر', 'value' => $totalInUsd],
         ];
     }
-
     private function getCurrencyName($currencyCode)
     {
         $currencyMap = [
@@ -320,7 +319,6 @@ class Transactions extends Component
         $this->filteredCustomers = [];
         $this->updateTransactions();
         $this->updateCustomerCurrencyBalance();
-
     }
 
     public function clearSearch()
@@ -328,7 +326,6 @@ class Transactions extends Component
         $this->search = '';
         $this->filteredCustomers = [];
         $this->updateCustomerCurrencyBalance();
-
     }
 
     public function clearSearchAndFilter()
@@ -338,30 +335,29 @@ class Transactions extends Component
         $this->selectedAccount = null;
         $this->filteredCustomers = [];
         $this->updateTransactions();
-        $this->updateCustomerCurrencyBalance(); 
-
+        $this->updateCustomerCurrencyBalance();
     }
 
- public function updateTransactions()
-{
-    $user = Auth::guard('sarafi')->user();
-    if (!$user) {
-        $this->transactions = collect();
-        return;
+    public function updateTransactions()
+    {
+        $user = Auth::guard('sarafi')->user();
+        if (!$user) {
+            $this->transactions = collect();
+            return;
+        }
+
+        $adminId = $user->admin_id ?? $user->id;
+
+        $query = Transaction::with('customer')
+            ->where('admin_id', $adminId)
+            ->whereIn('type', ['برد', 'رسید']);
+
+        if ($this->selectedCustomerId) {
+            $query->where('customer_id', $this->selectedCustomerId);
+        }
+
+        $this->transactions = $query->latest()->get();
     }
-
-    $adminId = $user->admin_id ?? $user->id;
-
-    $query = Transaction::with('customer')
-        ->where('admin_id', $adminId)
-        ->whereIn('type', ['برد', 'رسید']); 
-
-    if ($this->selectedCustomerId) {
-        $query->where('customer_id', $this->selectedCustomerId);
-    }
-
-    $this->transactions = $query->latest()->get();
-}
 
 
     public function render()
@@ -436,11 +432,11 @@ class Transactions extends Component
 
 
     public function setDefaultZone()
-{
-    if (empty($this->zone)) {
-        $this->zone = Auth::guard('sarafi')->user()->zone;
+    {
+        if (empty($this->zone)) {
+            $this->zone = Auth::guard('sarafi')->user()->zone;
+        }
     }
-}
     public function edit($id)
     {
         $transaction = Transaction::findOrFail($id);
@@ -782,6 +778,6 @@ class Transactions extends Component
 
         $this->date = Jalalian::now()->format('Y/m/d');
         $this->transactionType = 'برد';
-        $this->zone = Auth::guard('sarafi')->user()->zone; 
+        $this->zone = Auth::guard('sarafi')->user()->zone;
     }
 }

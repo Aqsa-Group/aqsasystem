@@ -37,7 +37,7 @@
 
 
 
-            <div class="md:w-1/2 w-[450px] p-0 md:pr-4 mb-6">
+            <div class="md:w-1/2 w-[450px] p-0 md:pr-4 ">
                 <form action="<?php echo e(route('tools.login')); ?>" method="POST"
                     class="space-y-5 border border-[#8C8C8C] p-6 rounded-lg bg-white relative">
                     <?php echo csrf_field(); ?>

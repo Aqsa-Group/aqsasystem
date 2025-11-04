@@ -5,7 +5,7 @@ namespace App\Models\Sarafi;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ExchangeRate extends Model
+class ExchangeRates extends Model
 {
     use HasFactory;
 
