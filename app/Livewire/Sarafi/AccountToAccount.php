@@ -202,20 +202,20 @@ class AccountToAccount extends Component
             $this->$property = '';
         }
     }
-   public function toggleTransactionType()
-{
-    $this->transactionType = $this->transactionType === 'بدون تفاوت'
-        ? 'باتفاوت'
-        : 'بدون تفاوت';
+    public function toggleTransactionType()
+    {
+        $this->transactionType = $this->transactionType === 'باتفاوت'
+            ? 'بدون تفاوت'
+            : 'باتفاوت';
 
-    if ($this->transactionType === 'بدون تفاوت') {
-        $this->commission_amount = '';
-        $this->transferable_amount = '';
-        $this->commissionAccount = '';
+        if ($this->transactionType === 'بدون تفاوت') {
+            $this->commission_amount = '';
+            $this->transferable_amount = '';
+            $this->commissionAccount = '';
+        }
+
+        $this->calculateAmounts();
     }
-
-    $this->calculateAmounts();
-}
 
     // محاسبه خودکار مبلغ قابل انتقال و مبلغ دریافت
     public function calculateAmounts()
@@ -901,8 +901,7 @@ class AccountToAccount extends Component
     public function mount()
     {
         $this->transaction_date = Jalalian::now()->format('Y/m/d');
-        $this->transactionType = 'بدون تفاوت';
-
+        $this->transactionType = 'باتفاوت';
         $this->currencies = [
             ['code' => 'usd', 'name_fa' => 'دالر'],
             ['code' => 'afn', 'name_fa' => 'افغانی'],

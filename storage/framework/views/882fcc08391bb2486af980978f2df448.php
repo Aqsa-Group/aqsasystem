@@ -145,13 +145,11 @@
                     </p>
                     <button class="bg-[#DD2424] rounded-[8px] p-[10px] text-white vazir font-semibold">توقف
                         پیامک</button>
-                    <button type="button" wire:click="toggleTransactionType" class="rounded-[8px] px-6 py-3 text-white vazir font-semibold text-sm md:text-base
-        transition-all duration-300 ease-in-out transform hover:scale-105
-        <?php echo e($transactionType === 'باتفاوت' ? 'bg-[#2563EB] hover:bg-[#1D4ED8]' : 'bg-[#DD2424] hover:bg-[#B91C1C]'); ?>">
+                    <button wire:click="toggleTransactionType" class="rounded-[8px] p-[10px] text-white vazir font-semibold transition-colors duration-500 ease-in-out
+                         <?php echo e($transactionType === 'باتفاوت' ? 'bg-[#2563EB]' : 'bg-[#DD2424]'); ?>">
                         <?php echo e($transactionType === 'باتفاوت' ? 'باتفاوت کمیشن' : 'بدون تفاوت کمیشن'); ?>
 
                     </button>
-
 
                 </div>
 
