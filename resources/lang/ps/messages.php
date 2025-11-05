@@ -40,6 +40,7 @@ return [
     'tab_general' => 'عمومي پینل',
     'tab_reports' => 'د راپورونو او بیلانس پینل',
     'tab_safes'   => 'د صندوق راپورونه',
+    'account_safes'   => 'د کارت صندوق راپورونه',
     'general_users' => 'د کارونکو شمېر',
     'general_customers' => 'د مشتریانو شمېر',
     'general_today_transactions' => 'نن ورځې تراکنشونه',

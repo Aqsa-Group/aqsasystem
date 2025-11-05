@@ -53,10 +53,10 @@
                                         autocomplete="off">
 
                                     <datalist id="customersList">
-                                        <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
                                         </option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                     </datalist>
 
                                     <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
@@ -64,7 +64,7 @@
                                     </div>
                                 </div>
 
-                                <?php $__errorArgs = ['selectedAccount'];
+                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['selectedAccount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -73,7 +73,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
                         </div>
 
@@ -94,12 +94,12 @@ unset($__errorArgs, $__bag); ?>
 
                         
                         <div>
-                            <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">نوع معامله</label>
-                            <select wire:model="typeTransaction"
+                            <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">نوع حساب</label>
+                            <select wire:model="accountType"
                                 class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
-                                <option value="">همه معاملات</option>
-                                <option value="رسید">رسید</option>
-                                <option value="برد">برد</option>
+                                <option value="">همه حساب ها</option>
+                                <option value="نقدی">نقدی</option>
+                                <option value="بانکی">بانکی</option>
                             </select>
                         </div>
 
@@ -159,7 +159,7 @@ unset($__errorArgs, $__bag); ?>
                             <div x-show="open" @click.away="open = false"
                                 class="absolute z-50 w-full bg-white border border-gray-300 mt-1 max-h-60 overflow-y-auto rounded-md shadow-lg">
                                 <div class="p-2 flex flex-wrap gap-2">
-                                    <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <label
                                         class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 cursor-pointer border border-transparent hover:border-blue-200">
                                         <input type="checkbox" value="<?php echo e($currency['code']); ?>"
@@ -167,7 +167,7 @@ unset($__errorArgs, $__bag); ?>
                                             class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
                                         <span class="text-gray-700 font-medium"><?php echo e($currency['name_fa']); ?></span>
                                     </label>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </div>
                             </div>
                         </div>
@@ -411,12 +411,12 @@ unset($__errorArgs, $__bag); ?>
                         class="absolute left-3 top-3 w-5 h-5">
                 </div>
 
-                <?php if($selectedCustomer): ?>
+                <!--[if BLOCK]><![endif]--><?php if($selectedCustomer): ?>
                 <div class="text-right">
                     <h3 class="text-lg font-bold"><?php echo e($selectedCustomerName); ?></h3>
                     <p class="text-sm text-gray-600">تعداد تراکنش‌ها: <?php echo e(count($transactions)); ?></p>
                 </div>
-                <?php endif; ?>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </div>
 
             <table class="w-full text-sm md:text-base text-left mt-6 rtl:text-right text-gray-500 dark:text-gray-400">
@@ -427,12 +427,13 @@ unset($__errorArgs, $__bag); ?>
                     <tr class="w-full">
                         <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-12 md:w-16" rowspan="2">#</th>
                         <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-32 md:w-48" rowspan="2">تاریخ</th>
+                        <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-32 md:w-48" rowspan="2">حساب</th>
                         <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">نمبر سند</th>
                         <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-32 md:w-40" rowspan="2">توضیحات</th>
                         <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">توسط</th>
 
                         <!-- نمایش داینامیک ارزها بر اساس مشتری -->
-                        <?php $__currentLoopData = $active_currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code => $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $active_currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code => $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <?php
                         $currencyName = is_array($currency) ? $currency['name_fa'] : $currency;
                         $colspan = 2;
@@ -441,23 +442,23 @@ unset($__errorArgs, $__bag); ?>
                             <?php echo e($currencyName); ?>
 
                         </th>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
 
                         <th class="px-2 md:px-4 py-3 md:py-4 font-bold w-36 md:w-48 text-center" rowspan="2">تسویه</th>
                     </tr>
                     <!-- سطر دوم -->
                     <tr>
                         <!-- نمایش ستون‌های رسید و برد برای هر ارز -->
-                        <?php $__currentLoopData = $active_currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code => $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $active_currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code => $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <th class="px-2 md:px-3 py-2 font-semibold text-center min-w-[70px] md:min-w-[80px]">رسید</th>
                         <th class="px-2 md:px-3 py-2 font-semibold text-center min-w-[70px] md:min-w-[80px]">برد</th>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                     </tr>
                 </thead>
 
                 <tbody class="text-[14px] md:text-[15px] text-gray-800">
-                    <?php if(count($transactions) > 0): ?>
-                    <?php $__currentLoopData = $transactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $transaction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <!--[if BLOCK]><![endif]--><?php if(count($transactions) > 0): ?>
+                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $transactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $transaction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr class="border-b hover:bg-gray-50">
                         <td class="px-2 md:px-4 py-3 text-center"><?php echo e($index + 1); ?></td>
                         <td class="px-2 md:px-4 py-3">
@@ -468,13 +469,14 @@ unset($__errorArgs, $__bag); ?>
                                 </span>
                             </div>
                         </td>
+                         <td class="px-2 md:px-4 py-3"><?php echo e($transaction->account_type); ?></td>
                         <td class="px-2 md:px-4 py-3"><?php echo e($transaction->document_number ?? 'SN-' .
                             str_pad($transaction->id, 3, '0', STR_PAD_LEFT)); ?></td>
                         <td class="px-2 md:px-4 py-3"><?php echo e($transaction->description); ?></td>
                         <td class="px-2 md:px-4 py-3"><?php echo e($transaction->by); ?></td>
 
                         <!-- نمایش داینامیک مقادیر برای هر ارز -->
-                        <?php $__currentLoopData = $active_currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code => $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $active_currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code => $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <td class="px-2 md:px-3 py-3 text-center">
                             <?php echo e($transaction->currency == $code && $transaction->type == 'رسید' ?
                             number_format($transaction->amount) : '-'); ?>
@@ -485,7 +487,7 @@ unset($__errorArgs, $__bag); ?>
                             number_format($transaction->amount) : '-'); ?>
 
                         </td>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
 
                         <td class="px-2 md:px-4 py-3 text-center">
                             <span
@@ -495,19 +497,19 @@ unset($__errorArgs, $__bag); ?>
                             </span>
                         </td>
                     </tr>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                     <?php else: ?>
                     <tr>
                         <td colspan="<?php echo e(5 + (count($active_currencies) * 2) + 1); ?>"
                             class="px-4 py-8 text-center text-gray-500">
-                            <?php if($selectedCustomer): ?>
+                            <!--[if BLOCK]><![endif]--><?php if($selectedCustomer): ?>
                             هیچ تراکنشی با فیلترهای انتخاب شده یافت نشد
                             <?php else: ?>
                             لطفاً ابتدا یک مشتری را انتخاب کنید
-                            <?php endif; ?>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </td>
                     </tr>
-                    <?php endif; ?>
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                 </tbody>
             </table>
 
@@ -542,9 +544,9 @@ unset($__errorArgs, $__bag); ?>
         </thead>
 
         <tbody class="text-[18px] md:text-[18px] text-gray-800">
-            <?php if(count($balances) > 0): ?>
+            <!--[if BLOCK]><![endif]--><?php if(count($balances) > 0): ?>
                 <?php $counter = 1; ?>
-                <?php $__currentLoopData = $balances; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $balance): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $balances; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $balance): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
                         <td class="px-2 py-4 vazir text-[18px] md:text-[16px] font-medium text-center w-16">
                             <?php echo e($counter++); ?>
@@ -589,14 +591,14 @@ unset($__errorArgs, $__bag); ?>
                             </span>
                         </td>
                     </tr>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
             <?php else: ?>
                 <tr>
                     <td colspan="8" class="px-4 py-8 text-center text-gray-500">
                         هیچ موجودی فعالی وجود ندارد
                     </td>
                 </tr>
-            <?php endif; ?>
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </tbody>
     </table>
 

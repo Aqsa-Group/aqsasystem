@@ -47,6 +47,7 @@ return [
     'tab_general' => 'General Panel',
     'tab_reports' => 'Reports & Balance Panel',
     'tab_safes'   => 'Safes Reports',
+    'account_safes'   => 'Account Safe Reports',
     'general_users' => 'Users Count',
     'general_customers' => 'Customers Count',
     'general_today_transactions' => 'Today\'s Transactions',

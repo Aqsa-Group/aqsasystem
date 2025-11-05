@@ -19,7 +19,8 @@
         <div
             class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
             <i class="fa-solid fa-arrow-right-arrow-left text-white text-xl"></i>
-            <a href="<?php echo e(route('sarafi.account_to_account')); ?>" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+            <a href="<?php echo e(route('sarafi.account_to_account')); ?>"
+                class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 <?php echo e(__('messages.transfer')); ?>
 
             </a>
@@ -29,7 +30,8 @@
         <div
             class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
             <i class="fa-solid fa-book-open text-white text-xl"></i>
-            <a href="<?php echo e(route('sarafi.accountsjornal')); ?>" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+            <a href="<?php echo e(route('sarafi.accountsjornal')); ?>"
+                class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 <?php echo e(__('messages.newspaper_accounts')); ?>
 
             </a>
@@ -38,7 +40,8 @@
         <!-- خرید و فروش ارز و صندوق -->
         <div class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center  gap-3 text-white text-[16px] font-bold">
             <img src="<?php echo e(asset('assets/sarafi/all_icon/bitcoin-(btc).svg')); ?>" alt="">
-            <a href="<?php echo e(route('sarafi.buy-sell-currency')); ?>" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+            <a href="<?php echo e(route('sarafi.buy-sell-currency')); ?>"
+                class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 <?php echo e(__('messages.selling')); ?>
 
             </a>
@@ -48,7 +51,8 @@
         <div
             class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
             <i class="fa-solid fa-exchange-alt text-white text-xl"></i>
-            <a href="<?php echo e(route('sarafi.conversion.in.account')); ?>" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+            <a href="<?php echo e(route('sarafi.conversion.in.account')); ?>"
+                class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 <?php echo e(__('messages.coversion_account')); ?>
 
             </a>
@@ -58,7 +62,8 @@
         <div
             class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
             <i class="fa-solid fa-hand-holding-dollar text-white text-xl"></i>
-            <a href="<?php echo e(route('sarafi.conversion-transfer')); ?>" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+            <a href="<?php echo e(route('sarafi.conversion-transfer')); ?>"
+                class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
                 <?php echo e(__('messages.coversion_transfer')); ?>
 
             </a>
@@ -100,6 +105,15 @@
                     'bg-white border-x border-t border-[#2563EBB0] text-[#1E3A8A] shadow-sm' :
                     'text-gray-600 hover:text-[#1E3A8A] hover:border-b-2 hover:border-indigo-400'">
                 <?php echo e(__('messages.tab_safes')); ?>
+
+            </a>
+
+            <a href="#" @click.prevent="activeTab = 'account_safe'" class="px-5 py-2 font-bold transition rounded-t-lg"
+                :class="activeTab === 'account_safe'
+            ?
+            'bg-white border-x border-t border-[#2563EBB0] text-[#1E3A8A] shadow-sm' :
+            'text-gray-600 hover:text-[#1E3A8A] hover:border-b-2 hover:border-indigo-400'">
+                <?php echo e(__('messages.account_safes')); ?>
 
             </a>
         </div>
@@ -269,7 +283,7 @@
             <template x-if="activeTab === 'safes'">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 vazir">
 
-                    <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
                         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
                         <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
@@ -283,11 +297,30 @@
                             </p>
                         </div>
                     </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
 
                 </div>
             </template>
 
+            <template x-if="activeTab === 'account_safe'">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 vazir">
+                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
+                        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                        <div class="rounded-full bg-[#6939c9cf] p-6 flex items-center justify-center">
+                            <i class="fa-solid fa-credit-card text-white text-2xl"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e($label); ?></h1>
+                            <p class="text-[25px] font-extrabold text-[#6939c9cf]">
+                                <?php echo e(number_format($safe_account[$key] ?? 0)); ?>
+
+                            </p>
+                        </div>
+                    </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                </div>
+            </template>
 
 
 

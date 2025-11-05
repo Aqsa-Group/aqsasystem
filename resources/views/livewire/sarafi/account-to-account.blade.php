@@ -11,6 +11,8 @@
         </div>
         @endif
 
+
+
         @if (session()->has('error'))
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#DC2626] vazir">
@@ -23,16 +25,36 @@
         @endif
 
         <div class="scroll-container overflow-x-auto whitespace-nowrap py-3 -mt-5">
-            <!-- در کارت‌های ارزها -->
-            @foreach ($currenciesdefault as $currency)
-            <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
-                <div class="flex flex-col h-[149px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px]
-                @if ($currency['name'] === 'خلاصه بیلانس به دالر') bg-gradient-to-b from-[#11BEC7] to-[#6371D0]
-                @else
-                    bg-gradient-to-b from-[#2563EB] to-[#5474BB] @endif">
+            @foreach ($currencies as $currencyItem)
+            @php
+            $currencyName = $currencyItem['name_fa'];
+            $cashBalance = $customerCashBalances[$currencyName] ?? 0;
+            $bankBalance = $customerBankBalances[$currencyName] ?? 0;
+            $totalBalance = $customerTotalBalances[$currencyName] ?? 0;
+            @endphp
 
-                    <h1 class="text-[24px] text-white">{{ $currency['name'] }}</h1>
-                    <h2 class="text-center text-[30px] text-white mt-2">{{ number_format($currency['value']) }}</h2>
+            {{-- نمایش تمام کارت‌ها حتی با موجودی صفر --}}
+            <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
+                <div
+                    class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] bg-gradient-to-b from-[#2563EB] to-[#5474BB] text-white">
+
+                    <h1 class="text-[24px] text-white">{{ $currencyName }}</h1>
+
+                    <div class="flex flex-col gap-1 mt-1 text-center">
+                        <div class="flex justify-between items-center text-[14px]">
+                            <span>نقدی:</span>
+                            <span class="font-bold">{{ number_format($cashBalance) }}</span>
+                        </div>
+                        <div class="flex justify-between items-center text-[14px]">
+                            <span>بانکی:</span>
+                            <span class="font-bold">{{ number_format($bankBalance) }}</span>
+                        </div>
+                        <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
+                            <span class="font-semibold">مجموعه:</span>
+                            <span class="font-bold text-[16px]">{{ number_format($totalBalance) }}</span>
+                        </div>
+                    </div>
+
                     <button wire:click="showReport" wire:loading.attr="disabled"
                         class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
                         <span wire:loading.remove>نمایش گزارش</span>
@@ -43,8 +65,70 @@
                 </div>
             </div>
             @endforeach
-        </div>
 
+            {{-- کارت خلاصه بیلانس به دالر --}}
+            @if($withdrawalCustomerId)
+            <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
+                <div
+                    class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
+
+                    <h1 class="text-[24px] text-white">خلاصه بیلانس به دالر</h1>
+
+                    <div class="flex flex-col gap-1 mt-1 text-center">
+                        @php
+                        $totalCashUsd = 0;
+                        $totalBankUsd = 0;
+                        $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
+                        $exchangeRates = [
+                        'افغانی' => $latestExchangeRate->afn_buy ?? 0.011,
+                        'دالر' => 1,
+                        'تومان' => $latestExchangeRate->irr_buy ?? 0.000024,
+                        'یورو' => $latestExchangeRate->eur_buy ?? 1.07,
+                        'کلدار' => $latestExchangeRate->pkr_buy ?? 0.0036,
+                        'درهم' => $latestExchangeRate->aed_buy ?? 0.27,
+                        'لیره' => $latestExchangeRate->try_buy ?? 0.031,
+                        'یوان' => $latestExchangeRate->cny_buy ?? 0.14,
+                        'روپیه' => 0.14,
+                        ];
+
+                        foreach($customerCashBalances as $currency => $balance) {
+                        if(isset($exchangeRates[$currency])) {
+                        $totalCashUsd += $balance * $exchangeRates[$currency];
+                        }
+                        }
+
+                        foreach($customerBankBalances as $currency => $balance) {
+                        if(isset($exchangeRates[$currency])) {
+                        $totalBankUsd += $balance * $exchangeRates[$currency];
+                        }
+                        }
+                        $grandTotalUsd = $totalCashUsd + $totalBankUsd;
+                        @endphp
+                        <div class="flex justify-between items-center text-[14px]">
+                            <span>نقدی:</span>
+                            <span class="font-bold">{{ number_format($totalCashUsd, 2) }}</span>
+                        </div>
+                        <div class="flex justify-between items-center text-[14px]">
+                            <span>بانکی:</span>
+                            <span class="font-bold">{{ number_format($totalBankUsd, 2) }}</span>
+                        </div>
+                        <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
+                            <span class="font-semibold">مجموعه:</span>
+                            <span class="font-bold text-[16px]">{{ number_format($grandTotalUsd, 2) }}</span>
+                        </div>
+                    </div>
+
+                    <button wire:click="showReport" wire:loading.attr="disabled"
+                        class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
+                        <span wire:loading.remove>نمایش گزارش</span>
+                        <span wire:loading>
+                            در حال انتقال...
+                        </span>
+                    </button>
+                </div>
+            </div>
+            @endif
+        </div>
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
             {{-- فرم تراکنش --}}
             <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[574px] p-[12px] h-fit rounded-[12px] space-y-2"
@@ -59,12 +143,12 @@
                     </p>
                     <button class="bg-[#DD2424] rounded-[8px] p-[10px] text-white vazir font-semibold">توقف
                         پیامک</button>
-                    <button type="button" wire:click="toggleTransactionType"
-                        class="rounded-[8px] px-6 py-3 text-white vazir font-semibold text-sm md:text-base
-                            transition-all duration-300 ease-in-out transform hover:scale-105
-                            {{ $transactionType === 'باتفاوت' ? 'bg-[#2563EB] hover:bg-[#1D4ED8]' : 'bg-[#DD2424] hover:bg-[#B91C1C]' }}">
+                    <button type="button" wire:click="toggleTransactionType" class="rounded-[8px] px-6 py-3 text-white vazir font-semibold text-sm md:text-base
+        transition-all duration-300 ease-in-out transform hover:scale-105
+        {{ $transactionType === 'باتفاوت' ? 'bg-[#2563EB] hover:bg-[#1D4ED8]' : 'bg-[#DD2424] hover:bg-[#B91C1C]' }}">
                         {{ $transactionType === 'باتفاوت' ? 'باتفاوت کمیشن' : 'بدون تفاوت کمیشن' }}
                     </button>
+
 
                 </div>
 
@@ -188,6 +272,34 @@
                         </div>
                     </div>
 
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
+                        <div>
+                            <label class="block text-[16px] font-medium text-black mb-1 vazir">از حساب</label>
+                            <select wire:model="from_account"
+                                class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 appearance-none">
+                                <option value="نقدی">نقدی</option>
+                                <option value="بانکی">بانکی</option>
+                            </select>
+                            @error('from_account')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label class="block text-[16px] font-medium text-black mb-1 vazir">به حساب</label>
+                            <select wire:model="to_account"
+                                class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 appearance-none">
+                                <option value="نقدی">نقدی</option>
+                                <option value="بانکی">بانکی</option>
+                            </select>
+                            @error('to_account')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                    </div>
+
                     {{-- بخش مبالغ --}}
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
                         {{-- مبلغ اصلی --}}
@@ -214,13 +326,13 @@
                             @error('commission_amount')
                             <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                             @enderror
-                            
+
                         </div>
 
-                            {{-- مبلغ دریافت --}}
+                        {{-- مبلغ دریافت --}}
                         <div>
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">مبلغ قابل انتقال
-                                </label>
+                            </label>
                             <input type="text" wire:model="received_amount" placeholder="0" readonly
                                 class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-gray-100 focus:ring-2 focus:ring-blue-500" />
                             @if ($receivedAmountInWords)
@@ -305,8 +417,10 @@
                             @enderror
                         </div>
 
-                  
+
                     </div>
+
+
 
                     {{-- توسط و زون‌ها --}}
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
@@ -494,7 +608,7 @@
                                     </td>
                                     <td class="px-2 py-3 vazir text-[16px] md:text-[18px] text-center w-28">
                                         <div class="whitespace-nowrap">
-                                          {{ explode(' ', $conversion->transaction_date)[0] }}
+                                            {{ explode(' ', $conversion->transaction_date)[0] }}
                                             <div class="text-gray-500 text-[16px] mt-1">
                                                 {{ \Carbon\Carbon::parse($conversion->created_at)->format('h:i A') }}
                                             </div>

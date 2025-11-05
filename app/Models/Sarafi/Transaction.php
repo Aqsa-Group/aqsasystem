@@ -19,6 +19,7 @@ class Transaction extends Model
         'currency',
         'amount',
         'type',
+        'account_type',
         'zone',
         'by',
         'date',

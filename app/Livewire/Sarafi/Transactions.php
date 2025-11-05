@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Sarafi;
 
+use App\Models\Sarafi\BankAccount;
 use App\Models\Sarafi\CurrencySafe;
 use App\Models\Sarafi\Customer;
 use App\Models\Sarafi\ExchangeRates;
@@ -16,8 +17,6 @@ use Morilog\Jalali\Jalalian;
 use Mpdf\Mpdf;
 use NumberFormatter;
 
-
-
 class Transactions extends Component
 {
     use WithFileUploads;
@@ -31,7 +30,8 @@ class Transactions extends Component
     public $amount;
     public $amountInWords;
     public $customers;
-    public $transactionType = 'برد';
+    public $transactionType = 'رسید';
+    public $accountType = 'نقدی';
     public $date;
     public $description;
     public $file;
@@ -49,7 +49,10 @@ class Transactions extends Component
     public $additionalCustomers = [];
     public $accountSearch = '';
 
-
+    // اضافه کردن متغیرهای جدید برای نمایش موجودی‌ها
+    public $customerCashBalances = [];
+    public $customerBankBalances = [];
+    public $customerTotalBalances = [];
 
     public function updatedAccountSearch($value)
     {
@@ -76,8 +79,6 @@ class Transactions extends Component
             ->limit(15)
             ->get();
     }
-
-
 
     public $currenciesdefault = [
         ['name' => 'افغانی', 'value' => 0],
@@ -140,7 +141,6 @@ class Transactions extends Component
         $this->customers = collect($this->customers);
     }
 
-
     public function updatedSearch($value)
     {
         $user = Auth::guard('sarafi')->user();
@@ -160,7 +160,6 @@ class Transactions extends Component
             ->limit(15)
             ->get();
 
-
         if ($this->filteredCustomers->count() === 1) {
             $this->selectCustomer($this->filteredCustomers->first()->id);
         } else {
@@ -168,7 +167,6 @@ class Transactions extends Component
             $this->updateTransactions();
         }
     }
-
 
     public function selectCustomer($customerId)
     {
@@ -178,7 +176,7 @@ class Transactions extends Component
 
         $customer = Customer::find($customerId);
         if ($customer) {
-            $this->search = $customer->fullname; // این خط اضافه شده
+            $this->search = $customer->fullname;
 
             if (!$this->customers->contains('id', $customer->id)) {
                 $this->customers->push($customer);
@@ -192,7 +190,6 @@ class Transactions extends Component
             $this->updateTransactions();
             $this->updateCustomerCurrencyBalance();
 
-            // لاگ برای دیباگ
             Log::debug("Customer selected", [
                 'customer_id' => $customerId,
                 'customer_name' => $customer->fullname,
@@ -207,9 +204,6 @@ class Transactions extends Component
             $this->selectCustomer($value);
         }
     }
-
-
-
 
     public function updateCustomerCurrencyBalance()
     {
@@ -226,6 +220,11 @@ class Transactions extends Component
                 ['name' => 'روپیه', 'value' => 0],
                 ['name' => 'خلاصه بیلانس به دالر', 'value' => 0],
             ];
+
+            // ریست کردن موجودی‌های تفکیک شده
+            $this->customerCashBalances = [];
+            $this->customerBankBalances = [];
+            $this->customerTotalBalances = [];
             return;
         }
 
@@ -236,7 +235,20 @@ class Transactions extends Component
             ->where('admin_id', $adminId)
             ->get();
 
-        $balances = [
+        // محاسبه موجودی‌های نقدی و بانکی جداگانه
+        $cashBalances = [
+            'افغانی' => 0,
+            'دالر' => 0,
+            'تومان' => 0,
+            'یورو' => 0,
+            'کلدار' => 0,
+            'درهم' => 0,
+            'لیره' => 0,
+            'یوان' => 0,
+            'روپیه' => 0,
+        ];
+
+        $bankBalances = [
             'افغانی' => 0,
             'دالر' => 0,
             'تومان' => 0,
@@ -252,13 +264,18 @@ class Transactions extends Component
             $currencyName = $this->getCurrencyName($transaction->currency);
             $amount = $transaction->type === 'رسید' ? $transaction->amount : -$transaction->amount;
 
-            if (array_key_exists($currencyName, $balances)) {
-                $balances[$currencyName] += $amount;
+            if ($transaction->account_type === 'نقدی') {
+                if (array_key_exists($currencyName, $cashBalances)) {
+                    $cashBalances[$currencyName] += $amount;
+                }
+            } else {
+                if (array_key_exists($currencyName, $bankBalances)) {
+                    $bankBalances[$currencyName] += $amount;
+                }
             }
         }
 
         $latestExchangeRate = ExchangeRates::latest()->first();
-
         $exchangeRates = [
             'افغانی' => $latestExchangeRate->afn_buy ?? 0.011,
             'دالر' => 1,
@@ -271,26 +288,38 @@ class Transactions extends Component
             'روپیه' => 0.14,
         ];
 
+        // محاسبه مجموع برای نمایش در کارت‌های اصلی
+        $totalBalances = [];
+        foreach ($cashBalances as $currency => $balance) {
+            $totalBalances[$currency] = $balance + $bankBalances[$currency];
+        }
+
         $totalInUsd = 0;
-        foreach ($balances as $currency => $balance) {
+        foreach ($totalBalances as $currency => $balance) {
             if ($currency !== 'خلاصه بیلانس به دالر' && isset($exchangeRates[$currency])) {
                 $totalInUsd += $balance * $exchangeRates[$currency];
             }
         }
 
         $this->currenciesdefault = [
-            ['name' => 'افغانی', 'value' => $balances['افغانی']],
-            ['name' => 'دالر', 'value' => $balances['دالر']],
-            ['name' => 'تومان', 'value' => $balances['تومان']],
-            ['name' => 'یورو', 'value' => $balances['یورو']],
-            ['name' => 'کلدار', 'value' => $balances['کلدار']],
-            ['name' => 'درهم', 'value' => $balances['درهم']],
-            ['name' => 'لیره', 'value' => $balances['لیره']],
-            ['name' => 'یوان', 'value' => $balances['یوان']],
-            ['name' => 'روپیه', 'value' => $balances['روپیه']],
+            ['name' => 'افغانی', 'value' => $totalBalances['افغانی']],
+            ['name' => 'دالر', 'value' => $totalBalances['دالر']],
+            ['name' => 'تومان', 'value' => $totalBalances['تومان']],
+            ['name' => 'یورو', 'value' => $totalBalances['یورو']],
+            ['name' => 'کلدار', 'value' => $totalBalances['کلدار']],
+            ['name' => 'درهم', 'value' => $totalBalances['درهم']],
+            ['name' => 'لیره', 'value' => $totalBalances['لیره']],
+            ['name' => 'یوان', 'value' => $totalBalances['یوان']],
+            ['name' => 'روپیه', 'value' => $totalBalances['روپیه']],
             ['name' => 'خلاصه بیلانس به دالر', 'value' => $totalInUsd],
         ];
+
+        // ذخیره موجودی‌های تفکیک شده برای نمایش در کارت‌های جدید
+        $this->customerCashBalances = $cashBalances;
+        $this->customerBankBalances = $bankBalances;
+        $this->customerTotalBalances = $totalBalances;
     }
+
     private function getCurrencyName($currencyCode)
     {
         $currencyMap = [
@@ -359,7 +388,6 @@ class Transactions extends Component
         $this->transactions = $query->latest()->get();
     }
 
-
     public function render()
     {
         $user = Auth::guard('sarafi')->user();
@@ -395,9 +423,11 @@ class Transactions extends Component
         return view('livewire.sarafi.transactions', [
             'customers' => $this->customers,
             'transactions' => $this->transactions,
+            'customerCashBalances' => $this->customerCashBalances,
+            'customerBankBalances' => $this->customerBankBalances,
+            'customerTotalBalances' => $this->customerTotalBalances,
         ]);
     }
-
 
     public function updatedAmount($value)
     {
@@ -413,7 +443,22 @@ class Transactions extends Component
             $this->amountInWords = null;
         }
     }
+    public function toggleTransactionType()
+    {
+        $this->transactionType = $this->transactionType === 'رسید' ? 'برد' : 'رسید';
+    }
 
+    public function toggleAccountType()
+    {
+        $this->accountType = $this->accountType === 'نقدی' ? 'بانکی' : 'نقدی';
+    }
+
+    public function setDefaultZone()
+    {
+        if (empty($this->zone)) {
+            $this->zone = Auth::guard('sarafi')->user()->zone;
+        }
+    }
 
 
     public function formatAmount()
@@ -424,19 +469,6 @@ class Transactions extends Component
     }
 
 
-
-    public function toggleTransactionType()
-    {
-        $this->transactionType = $this->transactionType === 'برد' ? 'رسید' : 'برد';
-    }
-
-
-    public function setDefaultZone()
-    {
-        if (empty($this->zone)) {
-            $this->zone = Auth::guard('sarafi')->user()->zone;
-        }
-    }
     public function edit($id)
     {
         $transaction = Transaction::findOrFail($id);
@@ -449,8 +481,8 @@ class Transactions extends Component
         $this->date = $transaction->date;
         $this->description = $transaction->description;
         $this->transactionType = $transaction->type;
+        $this->accountType = $transaction->account_type;
     }
-
 
     public function confirmDelete($id)
     {
@@ -462,23 +494,20 @@ class Transactions extends Component
         $transaction = Transaction::findOrFail($this->confirmDeleteId);
 
         $user = Auth::guard('sarafi')->user();
-        $this->applyCurrencyChange($user, $transaction->currency, $transaction->amount, $transaction->type, true);
+        $this->applyCurrencyChange($user, $transaction->currency, $transaction->amount, $transaction->type, $transaction->account_type, true);
 
         $transaction->delete();
 
         session()->flash('message', 'ترانزکشن موفقـــــانــــــه حذف گردید.');
 
         $this->updateTransactions();
+        $this->updateCustomerCurrencyBalance();
 
         $this->confirmDeleteId = null;
     }
 
-
-
     public function submitTransaction()
     {
-
-
         $this->selectedAccount = (int) $this->selectedAccount;
         $this->amount = str_replace(',', '', $this->amount);
         $user = Auth::guard('sarafi')->user();
@@ -489,6 +518,7 @@ class Transactions extends Component
             'currency'       => 'required|string',
             'amount'         => 'required|numeric|min:1',
             'transactionType' => 'required|string',
+            'accountType' => 'required|string',
             'date'           => 'required|date',
             'description'    => 'nullable|string|max:500',
             'zone'           => 'required|string',
@@ -505,6 +535,7 @@ class Transactions extends Component
             'currency'         => $this->currency,
             'amount'           => $this->amount,
             'type'             => $this->transactionType,
+            'account_type'     => $this->accountType,
             'date'             => $this->date,
             'description'      => $this->description,
             'zone'             => $this->zone,
@@ -515,25 +546,24 @@ class Transactions extends Component
         if ($this->transactionId) {
             $old = Transaction::findOrFail($this->transactionId);
 
-            $this->applyCurrencyChange($user, $old->currency, $old->amount, $old->type, true);
+            $this->applyCurrencyChange($user, $old->currency, $old->amount, $old->type, $old->account_type, true);
 
             $old->update($data);
 
-            $this->applyCurrencyChange($user, $this->currency, $this->amount, $this->transactionType);
+            $this->applyCurrencyChange($user, $this->currency, $this->amount, $this->transactionType, $this->accountType);
 
             session()->flash('message', 'تراکنش با موفقیت بروزرسانی شد.');
         } else {
             Transaction::create($data);
 
-            $this->applyCurrencyChange($user, $this->currency, $this->amount, $this->transactionType);
+            $this->applyCurrencyChange($user, $this->currency, $this->amount, $this->transactionType, $this->accountType);
 
             session()->flash('message', 'تراکنش با موفقیت ثبت شد.');
         }
         $this->updateTransactions();
+        $this->updateCustomerCurrencyBalance();
         $this->resetForm();
     }
-
-
 
     public function submitAndPrint()
     {
@@ -547,6 +577,7 @@ class Transactions extends Component
             'currency'         => 'required|string',
             'amount'           => 'required|numeric|min:1',
             'transactionType'  => 'required|string',
+            'accountType'      => 'required|string',
             'date'             => 'required|date',
             'description'      => 'nullable|string|max:500',
             'zone'             => 'required|string',
@@ -563,6 +594,7 @@ class Transactions extends Component
             'currency'         => $this->currency,
             'amount'           => $this->amount,
             'type'             => $this->transactionType,
+            'account_type'     => $this->accountType,
             'date'             => $this->date,
             'description'      => $this->description,
             'zone'             => $this->zone,
@@ -573,11 +605,11 @@ class Transactions extends Component
         if ($this->transactionId) {
             $old = Transaction::findOrFail($this->transactionId);
 
-            $this->applyCurrencyChange($user, $old->currency, $old->amount, $old->type, true);
+            $this->applyCurrencyChange($user, $old->currency, $old->amount, $old->type, $old->account_type, true);
 
             $old->update($data);
 
-            $this->applyCurrencyChange($user, $this->currency, $this->amount, $this->transactionType);
+            $this->applyCurrencyChange($user, $this->currency, $this->amount, $this->transactionType, $this->accountType);
 
             $transaction = $old;
 
@@ -585,18 +617,16 @@ class Transactions extends Component
         } else {
             $transaction = Transaction::create($data);
 
-            $this->applyCurrencyChange($user, $this->currency, $this->amount, $this->transactionType);
+            $this->applyCurrencyChange($user, $this->currency, $this->amount, $this->transactionType, $this->accountType);
 
             session()->flash('message', 'تراکنش با موفقیت ثبت شد.');
         }
 
         $this->updateTransactions();
+        $this->updateCustomerCurrencyBalance();
         $this->resetForm();
 
-
-
         $html = view('pdf.Sarafi.transaction', ['transaction' => $transaction])->render();
-
 
         $mpdf = new Mpdf([
             'mode' => 'utf-8',
@@ -627,9 +657,6 @@ class Transactions extends Component
             echo $mpdf->Output('', 'S');
         }, $fileName);
     }
-
-
-
 
     public function print($transactionId)
     {
@@ -666,11 +693,7 @@ class Transactions extends Component
         }, $fileName);
     }
 
-
-
-
-
-    private function applyCurrencyChange($user, $currency, $amount, $transactionType, $reverse = false)
+    private function applyCurrencyChange($user, $currency, $amount, $transactionType, $accountType, $reverse = false)
     {
         $adminId = $user->admin_id ?? $user->id;
 
@@ -678,71 +701,62 @@ class Transactions extends Component
 
         $change = ($transactionType === 'رسید' ? 1 : -1) * $amount * $factor;
 
-        $safe = CurrencySafe::firstOrCreate(
-            ['user_id' => $adminId, 'admin_id' => null],
-            [
-                'usd' => 0,
-                'afn' => 0,
-                'eur' => 0,
-                'irr' => 0,
-                'aed' => 0,
-                'try' => 0,
-                'cny' => 0,
-                'pkr' => 0,
-                'gbp' => 0,
-                'jpy' => 0,
-                'sar' => 0,
-                'inr' => 0
-            ]
-        );
+        if ($accountType === 'نقدی') {
+            // اعمال تغییرات روی CurrencySafe
+            $safe = CurrencySafe::firstOrCreate(
+                ['user_id' => $adminId, 'admin_id' => null],
+                [
+                    'usd' => 0,
+                    'afn' => 0,
+                    'eur' => 0,
+                    'irr' => 0,
+                    'aed' => 0,
+                    'try' => 0,
+                    'cny' => 0,
+                    'pkr' => 0,
+                    'gbp' => 0,
+                    'jpy' => 0,
+                    'sar' => 0,
+                    'inr' => 0
+                ]
+            );
 
-        $safe->$currency += $change;
+            $safe->$currency += $change;
 
-        if ($safe->$currency < 0) {
-            $safe->$currency = 0;
+            if ($safe->$currency < 0) {
+                $safe->$currency = 0;
+            }
+
+            $safe->save();
+        } else {
+            // اعمال تغییرات روی BankAccount
+            $bankAccount = BankAccount::firstOrCreate(
+                ['user_id' => $adminId, 'admin_id' => null],
+                [
+                    'usd' => 0,
+                    'afn' => 0,
+                    'eur' => 0,
+                    'irr' => 0,
+                    'aed' => 0,
+                    'try' => 0,
+                    'cny' => 0,
+                    'pkr' => 0,
+                    'gbp' => 0,
+                    'jpy' => 0,
+                    'sar' => 0,
+                    'inr' => 0
+                ]
+            );
+
+            $bankAccount->$currency += $change;
+
+            if ($bankAccount->$currency < 0) {
+                $bankAccount->$currency = 0;
+            }
+
+            $bankAccount->save();
         }
-
-        $safe->save();
     }
-
-
-    private function updateCurrencySafe($userId, $currency, $amount)
-    {
-        $user = Auth::guard('sarafi')->user();
-        $adminId = $user->admin_id ?? $user->id;
-
-        $safe = CurrencySafe::firstOrCreate(
-            [
-                'user_id'          => $user->id,
-                'admin_id'         => $adminId,
-            ],
-            [
-                'usd' => 0,
-                'afn' => 0,
-                'eur' => 0,
-                'irr' => 0,
-                'aed' => 0,
-                'try' => 0,
-                'cny' => 0,
-                'pkr' => 0,
-                'gbp' => 0,
-                'jpy' => 0,
-                'sar' => 0,
-                'inr' => 0,
-            ]
-        );
-
-        $safe->$currency += $amount;
-
-        if ($safe->$currency < 0) {
-            $safe->$currency = 0;
-        }
-
-        $safe->save();
-    }
-
-
-
 
     public function showReport()
     {
@@ -751,17 +765,10 @@ class Transactions extends Component
             return;
         }
 
-        // ذخیره ID مشتری در سشن
         session(['selected_customer_id' => $this->selectedCustomerId]);
 
-        // انتقال به صفحه گزارشات
-        return redirect()->route('sarafi.transaction-reports'); // مسیر صفحه گزارشات
+        return redirect()->route('sarafi.transaction-reports');
     }
-
-
-
-
-
 
     private function resetForm()
     {
@@ -778,6 +785,7 @@ class Transactions extends Component
 
         $this->date = Jalalian::now()->format('Y/m/d');
         $this->transactionType = 'برد';
+        $this->accountType = 'نقدی';
         $this->zone = Auth::guard('sarafi')->user()->zone;
     }
 }

@@ -43,6 +43,7 @@ return [
   'tab_general' => 'پنل عمومی',
   'tab_reports' => 'پنل گزارشات و بیلانس',
   'tab_safes'   => 'گزارشات صندوق',
+  'account_safes'   => 'گزارشات صندوق کارت' ,  
   'general_users' => 'تعداد کاربران',
   'general_customers' => 'تعداد مشتریان',
   'general_today_transactions' => 'ترانزکشن‌های امروز',

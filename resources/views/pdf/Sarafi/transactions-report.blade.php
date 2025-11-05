@@ -193,6 +193,7 @@
             <tr>
                 <th rowspan="2">#</th>
                 <th rowspan="2">تاریخ</th>
+                <th rowspan="2">نوع حساب</th>
                 <th rowspan="2">شماره سند</th>
                 <th rowspan="2">توضیحات</th>
                 <th rowspan="2">توسط</th>
@@ -213,6 +214,7 @@
             <tr>
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $transaction->date }}</td>
+                <td>{{ $transaction->account_type }}</td>
                 <td>{{ $transaction->document_number ?? 'SN-' . str_pad($transaction->id, 3, '0', STR_PAD_LEFT) }}</td>
                 <td>{{ Str::limit($transaction->description, 20) }}</td>
                 <td>{{ Str::limit($transaction->by, 15) }}</td>

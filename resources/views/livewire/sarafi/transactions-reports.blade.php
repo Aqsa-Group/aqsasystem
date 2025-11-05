@@ -87,12 +87,12 @@
 
                         {{-- نوع معامله --}}
                         <div>
-                            <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">نوع معامله</label>
-                            <select wire:model="typeTransaction"
+                            <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">نوع حساب</label>
+                            <select wire:model="accountType"
                                 class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
-                                <option value="">همه معاملات</option>
-                                <option value="رسید">رسید</option>
-                                <option value="برد">برد</option>
+                                <option value="">همه حساب ها</option>
+                                <option value="نقدی">نقدی</option>
+                                <option value="بانکی">بانکی</option>
                             </select>
                         </div>
 
@@ -420,6 +420,7 @@
                     <tr class="w-full">
                         <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-12 md:w-16" rowspan="2">#</th>
                         <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-32 md:w-48" rowspan="2">تاریخ</th>
+                        <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-32 md:w-48" rowspan="2">حساب</th>
                         <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">نمبر سند</th>
                         <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-32 md:w-40" rowspan="2">توضیحات</th>
                         <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">توسط</th>
@@ -459,6 +460,7 @@
                                 </span>
                             </div>
                         </td>
+                         <td class="px-2 md:px-4 py-3">{{ $transaction->account_type }}</td>
                         <td class="px-2 md:px-4 py-3">{{ $transaction->document_number ?? 'SN-' .
                             str_pad($transaction->id, 3, '0', STR_PAD_LEFT) }}</td>
                         <td class="px-2 md:px-4 py-3">{{ $transaction->description }}</td>

@@ -217,6 +217,11 @@
                 <td>شماره حساب :</td>
                 <td>{{ $transaction->customer->account_number ?? 'نامشخص' }}</td>
             </tr>
+
+              <tr>
+                <td>نوع حساب :</td>
+                <td>{{ $transaction->account_type ?? 'نامشخص' }}</td>
+            </tr>
             <tr>
                 <td> ارز:</td>
                 <td>

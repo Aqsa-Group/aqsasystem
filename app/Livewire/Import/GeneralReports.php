@@ -346,24 +346,33 @@ private function getReportData($forExport = false)
             ->orderBy('created_at', 'desc');
     }
 
-    private function buildTransactionQuery()
-    {
-        return Transaction::with(['customer', 'staff', 'sarafi', 'user'])
-            ->when($this->customerId, fn($q) => $q->where('customer_id', $this->customerId))
-            ->when($this->staffId, fn($q) => $q->where('staff_id', $this->staffId))
-            ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
-            ->when($this->type, fn($q) => $q->where('type', $this->type))
-            ->when($this->startDate, fn($q) => $q->whereDate('created_at', '>=', $this->startDate))
-            ->when($this->endDate, fn($q) => $q->whereDate('created_at', '<=', $this->endDate))
-            ->when($this->amountMin, fn($q) => $q->where('amount', '>=', $this->amountMin))
-            ->when($this->amountMax, fn($q) => $q->where('amount', '<=', $this->amountMax))
-            ->when($this->search, function ($q) {
-                $q->whereHas('customer', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-                    ->orWhereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-                    ->orWhereHas('sarafi', fn($q2) => $q2->where('name', 'like', "%{$this->search}%"));
-            })
-            ->orderBy('created_at', 'desc');
-    }
+ private function buildTransactionQuery()
+{
+    return Transaction::with(['customer', 'staff', 'sarafi', 'user'])
+        ->when($this->customerId, fn($q) => $q->where('customer_id', $this->customerId))
+        ->when($this->staffId, fn($q) => $q->where('staff_id', $this->staffId))
+        ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
+        ->when($this->type, fn($q) => $q->where('type', $this->type))
+        ->when($this->startDate, function ($q) {
+            $gregorianDate = \Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $this->startDate)->toCarbon();
+            $q->whereDate('created_at', '>=', $gregorianDate);
+        })
+        ->when($this->endDate, function ($q) {
+            $gregorianDate = \Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $this->endDate)->toCarbon();
+            $q->whereDate('created_at', '<=', $gregorianDate);
+        })
+        ->when($this->amountMin, fn($q) => $q->where('amount', '>=', $this->amountMin))
+        ->when($this->amountMax, fn($q) => $q->where('amount', '<=', $this->amountMax))
+        ->when($this->search, function ($q) {
+            $q->where(function ($query) {
+                $query->whereHas('customer', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
+                      ->orWhereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
+                      ->orWhereHas('sarafi', fn($q2) => $q2->where('name', 'like', "%{$this->search}%"));
+            });
+        })
+        ->orderBy('created_at', 'desc');
+}
+
 
     private function buildCompanyPaymentQuery()
     {

@@ -2,8 +2,9 @@
 
 namespace App\Livewire\Sarafi;
 
-use App\Models\Sarafi\SendToAccount;
 use App\Models\Sarafi\Customer;
+use App\Models\Sarafi\ExchangeRates;
+use App\Models\Sarafi\SendToAccount;
 use App\Models\Sarafi\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +25,8 @@ class AccountToAccount extends Component
     // حساب دریافت
     public $depositAccount;
     public $depositCustomerId;
+    public $from_account = 'نقدی';
+    public $to_account = 'نقدی';
 
     // حساب کمیشن
     public $commissionAccount;
@@ -36,6 +39,8 @@ class AccountToAccount extends Component
     public $transferable_amount = '';
     public $received_amount = '';
     public $transaction_date;
+
+
     public $description_sender = '';
     public $description_receiver = '';
     public $zone_sender = '';
@@ -47,7 +52,7 @@ class AccountToAccount extends Component
     public $withdrawalAmountInWords = '';
     public $receivedAmountInWords = '';
 
-    public $transactionType = 'بدون تفاوت';
+    public $transactionType = 'باتفاوت';
     public $currencies = [];
     public $customers = [];
     public $search = '';
@@ -56,6 +61,13 @@ class AccountToAccount extends Component
     public $accountSearch = '';
     public $confirmDeleteId = null;
     public $editingConversionId = null;
+
+
+
+    // اضافه کردن متغیرهای جدید برای نمایش موجودی‌ها
+    public $customerCashBalances = [];
+    public $customerBankBalances = [];
+    public $customerTotalBalances = [];
 
     public $currenciesdefault = [
         ['name' => 'افغانی', 'value' => 0],
@@ -96,25 +108,25 @@ class AccountToAccount extends Component
             'to_customer.fullname as to_customer_name',
             'to_customer.account_number as to_customer_account'
         )
-        ->leftJoin('customers as from_customer', 'account_to_account.form_customer', '=', 'from_customer.id')
-        ->leftJoin('customers as to_customer', 'account_to_account.to_customer', '=', 'to_customer.id')
-        ->where('account_to_account.admin_id', $adminId);
+            ->leftJoin('customers as from_customer', 'account_to_account.form_customer', '=', 'from_customer.id')
+            ->leftJoin('customers as to_customer', 'account_to_account.to_customer', '=', 'to_customer.id')
+            ->where('account_to_account.admin_id', $adminId);
 
         // اعمال جستجو اگر مقدار وجود دارد
         if (!empty($this->search)) {
-            $query->where(function($q) {
+            $query->where(function ($q) {
                 $q->where('from_customer.fullname', 'like', '%' . $this->search . '%')
-                  ->orWhere('from_customer.account_number', 'like', '%' . $this->search . '%')
-                  ->orWhere('to_customer.fullname', 'like', '%' . $this->search . '%')
-                  ->orWhere('to_customer.account_number', 'like', '%' . $this->search . '%')
-                  ->orWhere('account_to_account.currency', 'like', '%' . $this->search . '%')
-                  ->orWhere('account_to_account.withdrawal_amount', 'like', '%' . $this->search . '%')
-                  ->orWhere('account_to_account.received_amount', 'like', '%' . $this->search . '%')
-                  ->orWhere('account_to_account.description_sender', 'like', '%' . $this->search . '%')
-                  ->orWhere('account_to_account.description_receiver', 'like', '%' . $this->search . '%')
-                  ->orWhere('account_to_account.type', 'like', '%' . $this->search . '%')
-                  ->orWhere('account_to_account.zone_sender', 'like', '%' . $this->search . '%')
-                  ->orWhere('account_to_account.zone_receiver', 'like', '%' . $this->search . '%');
+                    ->orWhere('from_customer.account_number', 'like', '%' . $this->search . '%')
+                    ->orWhere('to_customer.fullname', 'like', '%' . $this->search . '%')
+                    ->orWhere('to_customer.account_number', 'like', '%' . $this->search . '%')
+                    ->orWhere('account_to_account.currency', 'like', '%' . $this->search . '%')
+                    ->orWhere('account_to_account.withdrawal_amount', 'like', '%' . $this->search . '%')
+                    ->orWhere('account_to_account.received_amount', 'like', '%' . $this->search . '%')
+                    ->orWhere('account_to_account.description_sender', 'like', '%' . $this->search . '%')
+                    ->orWhere('account_to_account.description_receiver', 'like', '%' . $this->search . '%')
+                    ->orWhere('account_to_account.type', 'like', '%' . $this->search . '%')
+                    ->orWhere('account_to_account.zone_sender', 'like', '%' . $this->search . '%')
+                    ->orWhere('account_to_account.zone_receiver', 'like', '%' . $this->search . '%');
             });
         }
 
@@ -150,7 +162,7 @@ class AccountToAccount extends Component
 
     public function search()
     {
-        $this->resetPage(); 
+        $this->resetPage();
     }
 
     private function loadCustomers($adminId)
@@ -190,19 +202,20 @@ class AccountToAccount extends Component
             $this->$property = '';
         }
     }
+   public function toggleTransactionType()
+{
+    $this->transactionType = $this->transactionType === 'بدون تفاوت'
+        ? 'باتفاوت'
+        : 'بدون تفاوت';
 
-    public function toggleTransactionType()
-    {
-        $this->transactionType = $this->transactionType === 'بدون تفاوت' ? 'باتفاوت' : 'بدون تفاوت';
-        
-        if ($this->transactionType === 'بدون تفاوت') {
-            $this->commission_amount = '';
-            $this->transferable_amount = '';
-            $this->commissionAccount = '';
-        }
-        
-        $this->calculateAmounts();
+    if ($this->transactionType === 'بدون تفاوت') {
+        $this->commission_amount = '';
+        $this->transferable_amount = '';
+        $this->commissionAccount = '';
     }
+
+    $this->calculateAmounts();
+}
 
     // محاسبه خودکار مبلغ قابل انتقال و مبلغ دریافت
     public function calculateAmounts()
@@ -211,7 +224,7 @@ class AccountToAccount extends Component
         if ($this->withdrawal_amount && $this->commission_amount) {
             $withdrawal = floatval($this->withdrawal_amount);
             $commission = floatval($this->commission_amount);
-            
+
             if ($withdrawal >= $commission) {
                 $this->transferable_amount = number_format($withdrawal - $commission, 2, '.', '');
                 $this->received_amount = $this->transferable_amount;
@@ -263,31 +276,124 @@ class AccountToAccount extends Component
 
         $search = $this->accountSearch;
         $this->filteredCustomers = collect($this->customers)->filter(function ($customer) use ($search) {
-            return str_contains($customer['account_number'], $search) || 
-                   str_contains($customer['fullname'], $search);
+            return str_contains($customer['account_number'], $search) ||
+                str_contains($customer['fullname'], $search);
         });
     }
 
-    public function updateCustomerCurrencyBalance($customerId = null)
+    public function updateCustomerCurrencyBalance()
     {
-        $targetCustomerId = $customerId ?: $this->withdrawalCustomerId;
+        if (!$this->withdrawalCustomerId) {
+            $this->currenciesdefault = [
+                ['name' => 'افغانی', 'value' => 0],
+                ['name' => 'دالر', 'value' => 0],
+                ['name' => 'تومان', 'value' => 0],
+                ['name' => 'یورو', 'value' => 0],
+                ['name' => 'کلدار', 'value' => 0],
+                ['name' => 'درهم', 'value' => 0],
+                ['name' => 'لیره', 'value' => 0],
+                ['name' => 'یوان', 'value' => 0],
+                ['name' => 'روپیه', 'value' => 0],
+                ['name' => 'خلاصه بیلانس به دالر', 'value' => 0],
+            ];
 
-        if (!$targetCustomerId) {
-            $this->resetCurrenciesDefault();
+            // ریست کردن موجودی‌های تفکیک شده
+            $this->customerCashBalances = [];
+            $this->customerBankBalances = [];
+            $this->customerTotalBalances = [];
             return;
         }
 
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
 
-        $transactions = Transaction::where('customer_id', $targetCustomerId)
+        $transactions = Transaction::where('customer_id', $this->withdrawalCustomerId)
             ->where('admin_id', $adminId)
             ->get();
 
-        $balances = $this->calculateBalances($transactions);
-        $totalInUsd = $this->calculateTotalInUsd($balances);
+        // محاسبه موجودی‌های نقدی و بانکی جداگانه
+        $cashBalances = [
+            'افغانی' => 0,
+            'دالر' => 0,
+            'تومان' => 0,
+            'یورو' => 0,
+            'کلدار' => 0,
+            'درهم' => 0,
+            'لیره' => 0,
+            'یوان' => 0,
+            'روپیه' => 0,
+        ];
 
-        $this->updateCurrenciesDefault($balances, $totalInUsd);
+        $bankBalances = [
+            'افغانی' => 0,
+            'دالر' => 0,
+            'تومان' => 0,
+            'یورو' => 0,
+            'کلدار' => 0,
+            'درهم' => 0,
+            'لیره' => 0,
+            'یوان' => 0,
+            'روپیه' => 0,
+        ];
+
+        foreach ($transactions as $transaction) {
+            $currencyName = $this->getCurrencyName($transaction->currency);
+            $amount = $transaction->type === 'رسید' ? $transaction->amount : -$transaction->amount;
+
+            if ($transaction->account_type === 'نقدی') {
+                if (array_key_exists($currencyName, $cashBalances)) {
+                    $cashBalances[$currencyName] += $amount;
+                }
+            } else {
+                if (array_key_exists($currencyName, $bankBalances)) {
+                    $bankBalances[$currencyName] += $amount;
+                }
+            }
+        }
+
+        $latestExchangeRate = ExchangeRates::latest()->first();
+        $exchangeRates = [
+            'افغانی' => $latestExchangeRate->afn_buy ?? 0.011,
+            'دالر' => 1,
+            'تومان' => $latestExchangeRate->irr_buy ?? 0.000024,
+            'یورو' => $latestExchangeRate->eur_buy ?? 1.07,
+            'کلدار' => $latestExchangeRate->pkr_buy ?? 0.0036,
+            'درهم' => $latestExchangeRate->aed_buy ?? 0.27,
+            'لیره' => $latestExchangeRate->try_buy ?? 0.031,
+            'یوان' => $latestExchangeRate->cny_buy ?? 0.14,
+            'روپیه' => 0.14,
+        ];
+
+        // محاسبه مجموع برای نمایش در کارت‌های اصلی
+        $totalBalances = [];
+        foreach ($cashBalances as $currency => $balance) {
+            $totalBalances[$currency] = $balance + $bankBalances[$currency];
+        }
+
+        $totalInUsd = 0;
+        foreach ($totalBalances as $currency => $balance) {
+            if ($currency !== 'خلاصه بیلانس به دالر' && isset($exchangeRates[$currency])) {
+                $totalInUsd += $balance * $exchangeRates[$currency];
+            }
+        }
+
+        $this->currenciesdefault = [
+            ['name' => 'افغانی', 'value' => $totalBalances['افغانی']],
+            ['name' => 'دالر', 'value' => $totalBalances['دالر']],
+            ['name' => 'تومان', 'value' => $totalBalances['تومان']],
+            ['name' => 'یورو', 'value' => $totalBalances['یورو']],
+            ['name' => 'کلدار', 'value' => $totalBalances['کلدار']],
+            ['name' => 'درهم', 'value' => $totalBalances['درهم']],
+            ['name' => 'لیره', 'value' => $totalBalances['لیره']],
+            ['name' => 'یوان', 'value' => $totalBalances['یوان']],
+            ['name' => 'روپیه', 'value' => $totalBalances['روپیه']],
+            ['name' => 'خلاصه بیلانس به دالر', 'value' => $totalInUsd],
+        ];
+
+        // ذخیره موجودی‌های تفکیک شده برای نمایش در کارت‌های جدید
+        $this->customerCashBalances = $cashBalances;
+        $this->customerBankBalances = $bankBalances;
+        $this->customerTotalBalances = $totalBalances;
     }
 
     private function resetCurrenciesDefault()
@@ -356,21 +462,21 @@ class AccountToAccount extends Component
         return round($totalInUsd, 2);
     }
 
- private function updateCurrenciesDefault($balances, $totalInUsd)
-{
-    $this->currenciesdefault = [
-        ['name' => 'افغانی', 'value' => $balances['افغانی']],
-        ['name' => 'دالر', 'value' => $balances['دالر']],
-        ['name' => 'تومان', 'value' => $balances['تومان']],
-        ['name' => 'یورو', 'value' => $balances['یورو']],
-        ['name' => 'کلدار', 'value' => $balances['کلدار']],
-        ['name' => 'درهم', 'value' => $balances['درهم']],
-        ['name' => 'لیره', 'value' => $balances['لیره']],
-        ['name' => 'یوان', 'value' => $balances['یوان']],
-        ['name' => 'روپیه', 'value' => $balances['روپیه']],
-        ['name' => 'خلاصه بیلانس به دالر', 'value' => $totalInUsd],
-    ];
-}
+    private function updateCurrenciesDefault($balances, $totalInUsd)
+    {
+        $this->currenciesdefault = [
+            ['name' => 'افغانی', 'value' => $balances['افغانی']],
+            ['name' => 'دالر', 'value' => $balances['دالر']],
+            ['name' => 'تومان', 'value' => $balances['تومان']],
+            ['name' => 'یورو', 'value' => $balances['یورو']],
+            ['name' => 'کلدار', 'value' => $balances['کلدار']],
+            ['name' => 'درهم', 'value' => $balances['درهم']],
+            ['name' => 'لیره', 'value' => $balances['لیره']],
+            ['name' => 'یوان', 'value' => $balances['یوان']],
+            ['name' => 'روپیه', 'value' => $balances['روپیه']],
+            ['name' => 'خلاصه بیلانس به دالر', 'value' => $totalInUsd],
+        ];
+    }
 
     public function selectWithdrawalAccount($customerId)
     {
@@ -404,6 +510,8 @@ class AccountToAccount extends Component
             'depositAccount' => 'required|integer|exists:sarafi.customers,id',
             'currency' => 'required|string',
             'withdrawal_amount' => 'required|numeric|min:0.01',
+            'from_account' => 'required|string',
+            'to_account' => 'required|string',
             'transaction_date' => 'required|date',
             'description_sender' => 'nullable|string|max:500',
             'description_receiver' => 'nullable|string|max:500',
@@ -427,7 +535,7 @@ class AccountToAccount extends Component
 
         try {
             // محاسبه مبلغ دریافتی
-            $receivedAmount = $this->transactionType === 'باتفاوت' 
+            $receivedAmount = $this->transactionType === 'باتفاوت'
                 ? floatval($this->withdrawal_amount) - floatval($this->commission_amount)
                 : floatval($this->withdrawal_amount);
 
@@ -439,6 +547,8 @@ class AccountToAccount extends Component
                 'to_customer' => $this->depositAccount,
                 'received_amount' => $receivedAmount,
                 'transaction_date' => $this->transaction_date,
+                'from_account' => $this->from_account,
+                'to_account' => $this->to_account,
                 'description_sender' => $this->description_sender,
                 'description_receiver' => $this->description_receiver,
                 'zone_sender' => $this->zone_sender,
@@ -462,7 +572,7 @@ class AccountToAccount extends Component
                 if ($conversion) {
                     // حذف تراکنش‌های قبلی
                     Transaction::where('account_to_id', $conversion->id)->delete();
-                    
+
                     // آپدیت رکورد
                     $conversion->update($conversionData);
                     $conversionId = $conversion->id;
@@ -484,6 +594,7 @@ class AccountToAccount extends Component
                     'amount' => $this->withdrawal_amount,
                     'type' => 'برداشت',
                     'date' => $this->transaction_date,
+                    'account_type' => $this->from_account,
                     'description' => $this->description_sender . ' - انتقال به حساب دیگر (' . $this->transactionType . ')',
                     'zone' => $this->zone_sender,
                     'by' => $this->by_sender,
@@ -498,12 +609,12 @@ class AccountToAccount extends Component
                     'amount' => $receivedAmount,
                     'type' => 'رسید',
                     'date' => $this->transaction_date,
+                    'account_type' => $this->to_account,
                     'description' => $this->description_receiver . ' - دریافت از حساب دیگر (' . $this->transactionType . ')',
                     'zone' => $this->zone_receiver,
                     'by' => $this->by_receiver,
                     'account_to_id' => $conversionId,
                 ]);
-
             } else {
                 // حالت با تفاوت
                 Transaction::create([
@@ -514,6 +625,7 @@ class AccountToAccount extends Component
                     'amount' => $this->withdrawal_amount,
                     'type' => 'برداشت',
                     'date' => $this->transaction_date,
+                    'account_type' => $this->from_account,
                     'description' => $this->description_sender . ' - انتقال با کمیشن',
                     'zone' => $this->zone_sender,
                     'by' => $this->by_sender,
@@ -528,6 +640,7 @@ class AccountToAccount extends Component
                     'amount' => $receivedAmount,
                     'type' => 'رسید',
                     'date' => $this->transaction_date,
+                    'account_type' => $this->to_account,
                     'description' => $this->description_receiver . ' - دریافت با کمیشن',
                     'zone' => $this->zone_receiver,
                     'by' => $this->by_receiver,
@@ -542,6 +655,7 @@ class AccountToAccount extends Component
                     'amount' => $this->commission_amount,
                     'type' => 'رسید',
                     'date' => $this->transaction_date,
+                    'account_type' => $this->from_account,
                     'description' => 'کمیشن انتقال از حساب دیگر',
                     'zone' => $this->zone_sender,
                     'by' => $this->by_sender,
@@ -612,7 +726,10 @@ class AccountToAccount extends Component
             $this->currency = $conversion->currency;
             $this->withdrawal_amount = $conversion->withdrawal_amount;
             $this->received_amount = $conversion->received_amount;
+            $this->from_account = $conversion->from_account;
+            $this->to_account = $conversion->to_account;
             $this->transaction_date = $conversion->transaction_date;
+
             $this->description_sender = $conversion->description_sender;
             $this->description_receiver = $conversion->description_receiver;
             $this->zone_sender = $conversion->zone_sender;
@@ -632,7 +749,7 @@ class AccountToAccount extends Component
 
             $this->convertAmountToWords($this->withdrawal_amount, 'withdrawalAmountInWords');
             $this->convertAmountToWords($this->received_amount, 'receivedAmountInWords');
-            
+
 
             $this->updateCustomerCurrencyBalance($conversion->form_customer);
 
@@ -708,20 +825,20 @@ class AccountToAccount extends Component
     }
 
 
-      /**
+    /**
      * Generate PDF for conversion transaction
      */
     private function generateConversionPdf($conversionId)
     {
         try {
             $conversion = SendToAccount::with(['fromCustomer', 'toCustomer', 'user'])->findOrFail($conversionId);
-            
+
             $user = Auth::guard('sarafi')->user();
             if ($conversion->user_id !== $user->id && $conversion->admin_id !== $user->id) {
                 session()->flash('error', 'دسترسی به این تراکنش مجاز نیست.');
                 return null;
             }
-            
+
             $mpdf = new \Mpdf\Mpdf([
                 'mode' => 'utf-8',
                 'format' => [85, 220],
@@ -751,7 +868,6 @@ class AccountToAccount extends Component
             return response()->streamDownload(function () use ($mpdf) {
                 echo $mpdf->Output('', 'S');
             }, $fileName);
-
         } catch (\Exception $e) {
             Log::error('PDF generation error: ' . $e->getMessage());
             session()->flash('error', 'خطا در ایجاد PDF: ' . $e->getMessage());
@@ -766,16 +882,15 @@ class AccountToAccount extends Component
     {
         try {
             $conversion = SendToAccount::findOrFail($conversionId);
-            
+
             // Check user access
             $user = Auth::guard('sarafi')->user();
             if ($conversion->user_id !== $user->id && $conversion->admin_id !== $user->id) {
                 session()->flash('error', 'دسترسی به این تراکنش مجاز نیست.');
                 return redirect()->back();
             }
-            
+
             return $this->generateConversionPdf($conversion->id);
-            
         } catch (\Exception $e) {
             Log::error('Print conversion error: ' . $e->getMessage());
             session()->flash('error', 'خطا در چاپ تراکنش: ' . $e->getMessage());

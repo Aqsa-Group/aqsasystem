@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Sarafi;
 
+use App\Models\Sarafi\BankAccount;
 use App\Models\Sarafi\CurrencySafe;
 use App\Models\Sarafi\Customer;
 use App\Models\Sarafi\Transaction;
@@ -13,19 +14,37 @@ class Dashboard extends Component
 {
     public $activeTab = 'general';
     public $safe;
-    public $currencies = [];
+    public $safe_account = [];
 
-    
+    public $currencies = [];
 
     public function mount()
     {
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
 
-        // گرفتن موجودی ادمین اصلی
         $this->safe = CurrencySafe::where('user_id', $adminId)->first();
+        
+        $safeAccountData = BankAccount::where('user_id', $adminId)->first();
+        $this->safe_account = $safeAccountData ? $safeAccountData->toArray() : [];
 
-        // لیست ارزها (key => label)
+        if (empty($this->safe_account)) {
+            $this->safe_account = [
+                'afn' => 0,
+                'usd' => 0,
+                'eur' => 0,
+                'irr' => 0,
+                'aed' => 0,
+                'try' => 0,
+                'cny' => 0,
+                'pkr' => 0,
+                'gbp' => 0,
+                'jpy' => 0,
+                'sar' => 0,
+                'inr' => 0,
+            ];
+        }
+
         $this->currencies = [
             'afn' => __('messages.safes_afn'),
             'usd' => __('messages.safes_usd'),
@@ -47,16 +66,16 @@ class Dashboard extends Component
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
 
-            $customerCount = Customer::where('admin_id', $adminId)->count();
-            $UserCount = User::where('admin_id', $adminId)->count();
-            $TransactionCount = Transaction::where('admin_id', $adminId)->count();
-
+        $customerCount = Customer::where('admin_id', $adminId)->count();
+        $UserCount = User::where('admin_id', $adminId)->count();
+        $TransactionCount = Transaction::where('admin_id', $adminId)->count();
 
         return view('livewire.sarafi.dashboard', [
             'UserCount' => $UserCount,
             'customerCount' => $customerCount,
             'TransactionCount' => $TransactionCount,
             'safe' => $this->safe,
+            'safe_account' => $this->safe_account, 
             'currencies' => $this->currencies,
         ]);
     }

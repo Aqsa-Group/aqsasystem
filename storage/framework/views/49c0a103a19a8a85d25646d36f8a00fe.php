@@ -217,6 +217,11 @@
                 <td>شماره حساب :</td>
                 <td><?php echo e($transaction->customer->account_number ?? 'نامشخص'); ?></td>
             </tr>
+
+              <tr>
+                <td>نوع حساب :</td>
+                <td><?php echo e($transaction->account_type ?? 'نامشخص'); ?></td>
+            </tr>
             <tr>
                 <td> ارز:</td>
                 <td>

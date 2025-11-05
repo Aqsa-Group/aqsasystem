@@ -37,7 +37,9 @@ class SendToAccount extends Model
         'zone_receiver',
         'status',
         'tracking_code',
-        'account_to_id'
+        'account_to_id',
+        'from_account',
+        'to_account'
     ];
 
     /**

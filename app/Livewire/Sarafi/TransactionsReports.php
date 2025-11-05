@@ -29,6 +29,7 @@ class TransactionsReports extends Component
     public $endDate;
     public $startDateDisplay;
     public $endDateDisplay;
+    public $accountType;
 
     // Filter properties
     public $selectedCurrencies = [];
@@ -315,6 +316,11 @@ class TransactionsReports extends Component
 
         if ($this->typeTransaction2) {
             $query->where('type', $this->typeTransaction2);
+        }
+
+
+        if ($this->accountType) {
+            $query->where('account_type', $this->accountType);
         }
 
         if ($this->typeDocument) {
@@ -692,6 +698,8 @@ private function calculateTotalBalances()
         $spent = $transactions->where('currency', $code)
             ->where('type', 'برد')
             ->sum('amount');
+
+
 
         $balance = $received - $spent;
         
