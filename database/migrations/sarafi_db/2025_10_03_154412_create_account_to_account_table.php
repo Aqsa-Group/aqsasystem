@@ -20,6 +20,8 @@ return new class extends Migration
             $table->decimal('tax_amount', 20, 10)->nullable();
             $table->decimal('received_amount', 20, 10)->nullable();
             $table->unsignedBigInteger('to_customer');
+            $table->string('from_account');
+            $table->string('to_account');
             $table->unsignedBigInteger('tax_id')->nullable();
             $table->string('by_sender')->nullable();
             $table->string('by_receiver')->nullable();

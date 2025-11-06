@@ -45,15 +45,15 @@
                     <div class="flex flex-col gap-1 mt-1 text-center">
                         <div class="flex justify-between items-center text-[14px]">
                             <span>نقدی:</span>
-                            <span class="font-bold"><?php echo e(number_format($cashBalance)); ?></span>
+                            <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($cashBalance)); ?></span>
                         </div>
                         <div class="flex justify-between items-center text-[14px]">
                             <span>بانکی:</span>
-                            <span class="font-bold"><?php echo e(number_format($bankBalance)); ?></span>
+                            <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($bankBalance)); ?></span>
                         </div>
                         <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
                             <span class="font-semibold">مجموعه:</span>
-                            <span class="font-bold text-[16px]"><?php echo e(number_format($totalBalance)); ?></span>
+                            <span class="font-bold text-[16px] text-left" dir="ltr"><?php echo e(number_format($totalBalance)); ?></span>
                         </div>
                     </div>
 
@@ -108,15 +108,15 @@
                         ?>
                         <div class="flex justify-between items-center text-[14px]">
                             <span>نقدی:</span>
-                            <span class="font-bold"><?php echo e(number_format($totalCashUsd, 2)); ?></span>
+                            <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($totalCashUsd, 2)); ?></span>
                         </div>
                         <div class="flex justify-between items-center text-[14px]">
                             <span>بانکی:</span>
-                            <span class="font-bold"><?php echo e(number_format($totalBankUsd, 2)); ?></span>
+                            <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($totalBankUsd, 2)); ?></span>
                         </div>
                         <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
                             <span class="font-semibold">مجموعه:</span>
-                            <span class="font-bold text-[16px]"><?php echo e(number_format($grandTotalUsd, 2)); ?></span>
+                            <span class="font-bold text-[16px] text-left" dir="ltr"><?php echo e(number_format($grandTotalUsd, 2)); ?></span>
                         </div>
                     </div>
 
@@ -131,6 +131,8 @@
             </div>
             <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </div>
+
+        
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
             
             <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[574px] p-[12px] h-fit rounded-[12px] space-y-2"
@@ -353,11 +355,22 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         
+                        <div>
+                            <label class="block text-[16px] font-medium text-black mb-1 vazir">مبلغ قابل انتقال
+                            </label>
+                            <input type="text" wire:model.lazy="transferable_amount" placeholder=""
+                                class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-gray-100 focus:ring-2 focus:ring-blue-500" />
+                            <!--[if BLOCK]><![endif]--><?php if($receivedAmountInWords): ?>
+                            <div class="mt-2 text-sm text-gray-600"><?php echo e($receivedAmountInWords); ?></div>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        </div>
+
+                        
                         <!--[if BLOCK]><![endif]--><?php if($transactionType === 'باتفاوت'): ?>
                         <div>
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">مبلغ کمیشن</label>
-                            <input type="text" wire:model.live="commission_amount" placeholder="0"
-                                class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 bg-transparent"
+                            <input type="text" wire:model="commission_amount" placeholder="0" readonly dir="ltr"
+                                class="w-full h-[60px] p-3 text-left rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 bg-transparent"
                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
                             <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['commission_amount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -369,19 +382,9 @@ $message = $__bag->first($__errorArgs[0]); ?>
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-
                         </div>
 
-                        
-                        <div>
-                            <label class="block text-[16px] font-medium text-black mb-1 vazir">مبلغ قابل انتقال
-                            </label>
-                            <input type="text" wire:model="received_amount" placeholder="0" readonly
-                                class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-gray-100 focus:ring-2 focus:ring-blue-500" />
-                            <!--[if BLOCK]><![endif]--><?php if($receivedAmountInWords): ?>
-                            <div class="mt-2 text-sm text-gray-600"><?php echo e($receivedAmountInWords); ?></div>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                        </div>
+
 
                         <div>
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">حساب کمیشن</label>
@@ -502,8 +505,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                         <div>
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">نمبر سند</label>
-                            <input type="text" placeholder="13425"
-                                class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500" />
+                            <input type="text" wire:model="documentNumber" readonly
+                                class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-gray-100 focus:ring-2 focus:ring-blue-500 cursor-not-allowed" />
                         </div>
                     </div>
 
@@ -514,12 +517,20 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <select wire:model="zone_sender"
                                 class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="">انتخاب زون</option>
-                                <option value="غرب">غرب</option>
-                                <option value="مرکز">مرکز</option>
-                                <option value="شمال">شمال</option>
-                                <option value="جنوب">جنوب</option>
-                                <option value="شرق">شرق</option>
+                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $zones; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $zone): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($zone); ?>"><?php echo e($zone); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                             </select>
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['zone_sender'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         <div>
@@ -527,12 +538,20 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <select wire:model="zone_receiver"
                                 class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="">انتخاب زون</option>
-                                <option value="غرب">غرب</option>
-                                <option value="مرکز">مرکز</option>
-                                <option value="شمال">شمال</option>
-                                <option value="جنوب">جنوب</option>
-                                <option value="شرق">شرق</option>
+                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $zones; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $zone): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($zone); ?>"><?php echo e($zone); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                             </select>
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['zone_receiver'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
 

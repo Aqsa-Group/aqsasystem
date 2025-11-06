@@ -43,15 +43,16 @@
                     <div class="flex flex-col gap-1 mt-1 text-center">
                         <div class="flex justify-between items-center text-[14px]">
                             <span>نقدی:</span>
-                            <span class="font-bold">{{ number_format($cashBalance) }}</span>
+                            <span class="font-bold text-left" dir="ltr">{{ number_format($cashBalance) }}</span>
                         </div>
                         <div class="flex justify-between items-center text-[14px]">
                             <span>بانکی:</span>
-                            <span class="font-bold">{{ number_format($bankBalance) }}</span>
+                            <span class="font-bold text-left" dir="ltr">{{ number_format($bankBalance) }}</span>
                         </div>
                         <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
                             <span class="font-semibold">مجموعه:</span>
-                            <span class="font-bold text-[16px]">{{ number_format($totalBalance) }}</span>
+                            <span class="font-bold text-[16px] text-left" dir="ltr">{{ number_format($totalBalance)
+                                }}</span>
                         </div>
                     </div>
 
@@ -106,15 +107,16 @@
                         @endphp
                         <div class="flex justify-between items-center text-[14px]">
                             <span>نقدی:</span>
-                            <span class="font-bold">{{ number_format($totalCashUsd, 2) }}</span>
+                            <span class="font-bold text-left" dir="ltr">{{ number_format($totalCashUsd, 2) }}</span>
                         </div>
                         <div class="flex justify-between items-center text-[14px]">
                             <span>بانکی:</span>
-                            <span class="font-bold">{{ number_format($totalBankUsd, 2) }}</span>
+                            <span class="font-bold text-left" dir="ltr">{{ number_format($totalBankUsd, 2) }}</span>
                         </div>
                         <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
                             <span class="font-semibold">مجموعه:</span>
-                            <span class="font-bold text-[16px]">{{ number_format($grandTotalUsd, 2) }}</span>
+                            <span class="font-bold text-[16px] text-left" dir="ltr">{{ number_format($grandTotalUsd, 2)
+                                }}</span>
                         </div>
                     </div>
 
@@ -129,6 +131,8 @@
             </div>
             @endif
         </div>
+
+        
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
             {{-- فرم تراکنش --}}
             <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[574px] p-[12px] h-fit rounded-[12px] space-y-2"
@@ -314,29 +318,30 @@
                             @enderror
                         </div>
 
-                        {{-- فیلدهای مربوط به کمیشن --}}
-                        @if ($transactionType === 'باتفاوت')
-                        <div>
-                            <label class="block text-[16px] font-medium text-black mb-1 vazir">مبلغ کمیشن</label>
-                            <input type="text" wire:model.live="commission_amount" placeholder="0"
-                                class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 bg-transparent"
-                                oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
-                            @error('commission_amount')
-                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                            @enderror
-
-                        </div>
-
                         {{-- مبلغ دریافت --}}
                         <div>
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">مبلغ قابل انتقال
                             </label>
-                            <input type="text" wire:model="received_amount" placeholder="0" readonly
+                            <input type="text" wire:model.lazy="transferable_amount" placeholder=""
                                 class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-gray-100 focus:ring-2 focus:ring-blue-500" />
                             @if ($receivedAmountInWords)
                             <div class="mt-2 text-sm text-gray-600">{{ $receivedAmountInWords }}</div>
                             @endif
                         </div>
+
+                        {{-- فیلدهای مربوط به کمیشن --}}
+                        @if ($transactionType === 'باتفاوت')
+                        <div>
+                            <label class="block text-[16px] font-medium text-black mb-1 vazir">مبلغ کمیشن</label>
+                            <input type="text" wire:model="commission_amount" placeholder="0" readonly dir="ltr"
+                                class="w-full h-[60px] p-3 text-left rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 bg-transparent"
+                                oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
+                            @error('commission_amount')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+
 
                         <div>
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">حساب کمیشن</label>
@@ -443,8 +448,8 @@
                         </div>
                         <div>
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">نمبر سند</label>
-                            <input type="text" placeholder="13425"
-                                class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500" />
+                            <input type="text" wire:model="documentNumber" readonly
+                                class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-gray-100 focus:ring-2 focus:ring-blue-500 cursor-not-allowed" />
                         </div>
                     </div>
 
@@ -455,12 +460,13 @@
                             <select wire:model="zone_sender"
                                 class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="">انتخاب زون</option>
-                                <option value="غرب">غرب</option>
-                                <option value="مرکز">مرکز</option>
-                                <option value="شمال">شمال</option>
-                                <option value="جنوب">جنوب</option>
-                                <option value="شرق">شرق</option>
+                                @foreach($zones as $zone)
+                                <option value="{{ $zone }}">{{ $zone }}</option>
+                                @endforeach
                             </select>
+                            @error('zone_sender')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div>
@@ -468,12 +474,13 @@
                             <select wire:model="zone_receiver"
                                 class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="">انتخاب زون</option>
-                                <option value="غرب">غرب</option>
-                                <option value="مرکز">مرکز</option>
-                                <option value="شمال">شمال</option>
-                                <option value="جنوب">جنوب</option>
-                                <option value="شرق">شرق</option>
+                                @foreach($zones as $zone)
+                                <option value="{{ $zone }}">{{ $zone }}</option>
+                                @endforeach
                             </select>
+                            @error('zone_receiver')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 

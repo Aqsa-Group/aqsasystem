@@ -30,37 +30,111 @@
         </div>
         @endif
 
-        <!-- کارت‌های موجودی ارزها -->
-        <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-full pb-4 p-[12px] h-[264px] rounded-[12px] space-y-2"
-            style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+       {{-- کارت‌های ارزها با اسکرول افقی --}}
+        <div class="scroll-container overflow-x-auto whitespace-nowrap py-3 -mt-5">
+            @foreach ($currencies as $currencyItem)
+            @php
+            $currencyName = $currencyItem['name_fa'];
+            $cashBalance = $customerCashBalances[$currencyName] ?? 0;
+            $bankBalance = $customerBankBalances[$currencyName] ?? 0;
+            $totalBalance = $customerTotalBalances[$currencyName] ?? 0;
+            @endphp
 
-            <div class="flex w-full h-[58px] bg-[#2563EB] rounded-[12px]">
-                <p class="text-white text-[18px] vazir text-center justify-center flex items-center p-5">موجودی حساب
-                    مشتری</p>
-            </div>
+            {{-- نمایش تمام کارت‌ها حتی با موجودی صفر --}}
+            <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
+                <div
+                    class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] bg-gradient-to-b from-[#2563EB] to-[#5474BB] text-white">
 
-            <div class="scroll-container overflow-x-auto overflow-y-hidden whitespace-nowrap py-3 pb-12 mt-4 w-full">
-                <div class="grid grid-flow-col auto-cols-max gap-4 px-4">
-                    @foreach ($currenciesdefault as $currency)
-                    <div class="w-[273px] h-[130px] pr-5 pl-5 pt-3 rounded-[12px] mb-5
-                        @if ($currency['name'] === 'خلاصه بیلانس به دالر') 
-                            bg-gradient-to-b from-[#11BEC7] to-[#6371D0]
-                        @else
-                            bg-gradient-to-b from-[#2563EB] to-[#5474BB] 
-                        @endif text-white">
+                    <h1 class="text-[24px] text-white">{{ $currencyName }}</h1>
 
-                        <h1 class="text-[22px] truncate">{{ $currency['name'] }}</h1>
-                        <h2 class="text-center text-[28px] mt-1 font-bold">{{ number_format($currency['value']) }}</h2>
-
-                        <button wire:click="showReport" wire:loading.attr="disabled"
-                            class="bg-white rounded-[12px] text-[14px] p-1.5 mt-1 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2 w-full font-medium">
-                            <span wire:loading.remove>نمایش گزارش</span>
-                            <span wire:loading>در حال انتقال...</span>
-                        </button>
+                    <div class="flex flex-col gap-1 mt-1 text-center">
+                        <div class="flex justify-between items-center text-[14px]">
+                            <span>نقدی:</span>
+                            <span class="font-bold text-left" dir="ltr">{{ number_format($cashBalance) }}</span>
+                        </div>
+                        <div class="flex justify-between items-center text-[14px]">
+                            <span>بانکی:</span>
+                            <span class="font-bold text-left" dir="ltr">{{ number_format($bankBalance) }}</span>
+                        </div>
+                        <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
+                            <span class="font-semibold">مجموعه:</span>
+                            <span class="font-bold text-[16px] text-left" dir="ltr">{{ number_format($totalBalance) }}</span>
+                        </div>
                     </div>
-                    @endforeach
+
+                    <button wire:click="showReport" wire:loading.attr="disabled"
+                        class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
+                        <span wire:loading.remove>نمایش گزارش</span>
+                        <span wire:loading>
+                            در حال انتقال...
+                        </span>
+                    </button>
                 </div>
             </div>
+            @endforeach
+
+            {{-- کارت خلاصه بیلانس به دالر --}}
+            @if($selectedCustomerId)
+            <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
+                <div
+                    class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
+
+                    <h1 class="text-[24px] text-white">خلاصه بیلانس به دالر</h1>
+
+                    <div class="flex flex-col gap-1 mt-1 text-center">
+                        @php
+                        $totalCashUsd = 0;
+                        $totalBankUsd = 0;
+                        $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
+                        $exchangeRates = [
+                        'افغانی' => $latestExchangeRate->afn_buy ?? 0.011,
+                        'دالر' => 1,
+                        'تومان' => $latestExchangeRate->irr_buy ?? 0.000024,
+                        'یورو' => $latestExchangeRate->eur_buy ?? 1.07,
+                        'کلدار' => $latestExchangeRate->pkr_buy ?? 0.0036,
+                        'درهم' => $latestExchangeRate->aed_buy ?? 0.27,
+                        'لیره' => $latestExchangeRate->try_buy ?? 0.031,
+                        'یوان' => $latestExchangeRate->cny_buy ?? 0.14,
+                        'روپیه' => 0.14,
+                        ];
+
+                        foreach($customerCashBalances as $currency => $balance) {
+                        if(isset($exchangeRates[$currency])) {
+                        $totalCashUsd += $balance * $exchangeRates[$currency];
+                        }
+                        }
+
+                        foreach($customerBankBalances as $currency => $balance) {
+                        if(isset($exchangeRates[$currency])) {
+                        $totalBankUsd += $balance * $exchangeRates[$currency];
+                        }
+                        }
+                        $grandTotalUsd = $totalCashUsd + $totalBankUsd;
+                        @endphp
+                        <div class="flex justify-between items-center text-[14px]">
+                            <span>نقدی:</span>
+                            <span class="font-bold text-left" dir="ltr">{{ number_format($totalCashUsd, 2) }}</span>
+                        </div>
+                        <div class="flex justify-between items-center text-[14px]">
+                            <span>بانکی:</span>
+                            <span class="font-bold text-left" dir="ltr">{{ number_format($totalBankUsd, 2) }}</span>
+                        </div>
+                        <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
+                            <span class="font-semibold">مجموعه:</span>
+                            <span class="font-bold text-[16px] text-left" dir="ltr">{{ number_format($grandTotalUsd, 2) }}</span>
+                        </div>
+                    </div>
+
+                    <button wire:click="showReport" wire:loading.attr="disabled"
+                        class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
+                        <span wire:loading.remove>نمایش گزارش</span>
+                        <span wire:loading>
+                            در حال انتقال...
+                        </span>
+                    </button>
+                </div>
+            </div>
+            @endif
         </div>
 
         <div class="flex flex-col lg:flex-row gap-5 mt-4">

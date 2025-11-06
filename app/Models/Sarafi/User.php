@@ -16,23 +16,23 @@ class User extends Authenticatable
     protected $table = 'users';
     protected $guard = 'sarafi';
 
-    protected $fillable = [
-        'name',
-        'lastname',
-        'sarafi_name',
-        'address',
-        'phone',
-        'username',
-        'password',
-        'role',
-        'user_limition',
-        'status',
-        'admin_id',   
-        'zone',
-    ];
+        protected $fillable = [
+            'name',
+            'lastname',
+            'sarafi_name',
+            'address',
+            'phone',
+            'username',
+            'password',
+            'role',
+            'user_limition',
+            'status',
+            'admin_id',   
+            'zone',
+        ];
 
 
-    
+        
 
  
 

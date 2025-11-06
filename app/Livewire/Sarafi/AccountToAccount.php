@@ -62,6 +62,11 @@ class AccountToAccount extends Component
     public $confirmDeleteId = null;
     public $editingConversionId = null;
 
+    public $documentNumber;
+
+    public $zones = [];
+
+
 
 
     // اضافه کردن متغیرهای جدید برای نمایش موجودی‌ها
@@ -217,31 +222,34 @@ class AccountToAccount extends Component
         $this->calculateAmounts();
     }
 
-    // محاسبه خودکار مبلغ قابل انتقال و مبلغ دریافت
     public function calculateAmounts()
     {
-        // محاسبه مبلغ قابل انتقال
-        if ($this->withdrawal_amount && $this->commission_amount) {
+        if ($this->withdrawal_amount && $this->transferable_amount) {
+            $withdrawal = floatval($this->withdrawal_amount);
+            $transferable = floatval($this->transferable_amount);
+
+            // کمیشن مستقیم و می‌تواند منفی باشد
+            $this->commission_amount = $withdrawal - $transferable;
+
+            $this->received_amount = $this->transferable_amount;
+        } elseif ($this->withdrawal_amount && $this->commission_amount !== '') {
+
             $withdrawal = floatval($this->withdrawal_amount);
             $commission = floatval($this->commission_amount);
 
-            if ($withdrawal >= $commission) {
-                $this->transferable_amount = number_format($withdrawal - $commission, 2, '.', '');
-                $this->received_amount = $this->transferable_amount;
-            } else {
-                $this->transferable_amount = '0';
-                $this->received_amount = '0';
-                $this->commission_amount = $this->withdrawal_amount;
-            }
+            // چون کمیشن می‌تونه منفی بشه، دیگه شرط مقایسه نمی‌گذاریم
+            $this->transferable_amount = number_format($withdrawal - $commission, 2, '.', '');
+            $this->received_amount = $this->transferable_amount;
         } else {
             $this->transferable_amount = $this->withdrawal_amount;
             $this->received_amount = $this->withdrawal_amount;
+            $this->commission_amount = '';
         }
 
-        // تبدیل به حروف
         $this->convertAmountToWords($this->withdrawal_amount, 'withdrawalAmountInWords');
         $this->convertAmountToWords($this->received_amount, 'receivedAmountInWords');
     }
+
 
     // Event Listeners برای محاسبه خودکار
     public function updated($property)
@@ -249,6 +257,7 @@ class AccountToAccount extends Component
         if (in_array($property, [
             'withdrawal_amount',
             'commission_amount',
+            'transferable_amount',
             'transactionType'
         ])) {
             $this->calculateAmounts();
@@ -259,13 +268,15 @@ class AccountToAccount extends Component
         }
 
         if ($property === 'withdrawalAccount' && $this->withdrawalAccount) {
-            $this->updateCustomerCurrencyBalance($this->withdrawalAccount);
+            $this->updateCustomerCurrencyBalance();
         }
 
         if ($property === 'accountSearch') {
             $this->filterCustomers();
         }
     }
+
+
 
     public function filterCustomers()
     {
@@ -509,7 +520,8 @@ class AccountToAccount extends Component
             'withdrawalAccount' => 'required|integer|exists:sarafi.customers,id',
             'depositAccount' => 'required|integer|exists:sarafi.customers,id',
             'currency' => 'required|string',
-            'withdrawal_amount' => 'required|numeric|min:0.01',
+            'documentNumber' => 'required|integer|min:1',
+            'withdrawal_amount' => 'required|numeric',
             'from_account' => 'required|string',
             'to_account' => 'required|string',
             'transaction_date' => 'required|date',
@@ -522,9 +534,10 @@ class AccountToAccount extends Component
         ];
 
         if ($this->transactionType === 'باتفاوت') {
-            $validationRules['commission_amount'] = 'required|numeric|min:0|max:' . $this->withdrawal_amount;
+            $validationRules['commission_amount'] = 'required|numeric';
             $validationRules['commissionAccount'] = 'required|integer|exists:sarafi.customers,id';
         }
+
 
         $this->validate($validationRules);
 
@@ -543,6 +556,7 @@ class AccountToAccount extends Component
             $conversionData = [
                 'form_customer' => $this->withdrawalAccount,
                 'currency' => $this->currency,
+                'document_number' => $this->documentNumber,
                 'withdrawal_amount' => $this->withdrawal_amount,
                 'to_customer' => $this->depositAccount,
                 'received_amount' => $receivedAmount,
@@ -709,6 +723,7 @@ class AccountToAccount extends Component
 
         $this->transactionType = 'بدون تفاوت';
         $this->transaction_date = Jalalian::now()->format('Y/m/d');
+        $this->generateDocumentNumber();
         $this->updateCustomerCurrencyBalance();
         $this->accountSearch = '';
         $this->filteredCustomers = null;
@@ -720,7 +735,7 @@ class AccountToAccount extends Component
 
         if ($conversion) {
             $this->editingConversionId = $conversionId;
-
+            $this->documentNumber = $conversion->document_number;
             $this->withdrawalAccount = $conversion->form_customer;
             $this->depositAccount = $conversion->to_customer;
             $this->currency = $conversion->currency;
@@ -902,6 +917,9 @@ class AccountToAccount extends Component
     {
         $this->transaction_date = Jalalian::now()->format('Y/m/d');
         $this->transactionType = 'باتفاوت';
+
+        $this->generateDocumentNumber();
+
         $this->currencies = [
             ['code' => 'usd', 'name_fa' => 'دالر'],
             ['code' => 'afn', 'name_fa' => 'افغانی'],
@@ -918,6 +936,34 @@ class AccountToAccount extends Component
         if ($user) {
             $adminId = $user->admin_id ?? $user->id;
             $this->loadCustomers($adminId);
+             $this->loadZones($adminId);
         }
     }
+
+
+    private function generateDocumentNumber()
+    {
+        $latestDocument = SendToAccount::latest('id')->first();
+        $this->documentNumber = $latestDocument ? $latestDocument->id + 1 : 1;
+    }
+
+
+    private function loadZones($adminId)
+{
+    $this->zones = \App\Models\Sarafi\User::where(function($query) use ($adminId) {
+            $query->where('admin_id', $adminId) 
+                  ->orWhere('id', $adminId);
+        })
+        ->whereNotNull('zone')
+        ->where('zone', '!=', '')
+        ->pluck('zone')
+        ->unique()
+        ->values()
+        ->toArray();
+
+    
+    if (empty($this->zones)) {
+        $this->zones = ['غرب', 'مرکز', 'شمال', 'جنوب', 'شرق'];
+    }
+}
 }

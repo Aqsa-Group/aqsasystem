@@ -30,6 +30,7 @@ class TransactionsReports extends Component
     public $startDateDisplay;
     public $endDateDisplay;
     public $accountType;
+    public $documentNumber;
 
     // Filter properties
     public $selectedCurrencies = [];
@@ -63,6 +64,10 @@ class TransactionsReports extends Component
         $this->loadCustomers();
         $this->setDefaultDates();
 
+
+            $this->generateDocumentNumber();
+
+
         // Check if customer is selected from main page
         if (session()->has('selected_customer_id')) {
             $customerId = session('selected_customer_id');
@@ -77,6 +82,8 @@ class TransactionsReports extends Component
 
         $this->initializeUserCustomers();
     }
+
+
 
     /**
      * Initialize customers based on user permissions

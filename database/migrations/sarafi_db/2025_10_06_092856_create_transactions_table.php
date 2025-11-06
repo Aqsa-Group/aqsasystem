@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('by');
             $table->decimal('amount', 15, 2);
             $table->string('type');
+             $table->string('account_type');
             $table->date('date');
             $table->text('description')->nullable();
             $table->string('transaction_file')->nullable();

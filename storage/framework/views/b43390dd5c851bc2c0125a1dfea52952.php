@@ -33,15 +33,15 @@
                     <div class="flex flex-col gap-1 mt-1 text-center">
                         <div class="flex justify-between items-center text-[14px]">
                             <span>نقدی:</span>
-                            <span class="font-bold"><?php echo e(number_format($cashBalance)); ?></span>
+                            <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($cashBalance)); ?></span>
                         </div>
                         <div class="flex justify-between items-center text-[14px]">
                             <span>بانکی:</span>
-                            <span class="font-bold"><?php echo e(number_format($bankBalance)); ?></span>
+                            <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($bankBalance)); ?></span>
                         </div>
                         <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
                             <span class="font-semibold">مجموعه:</span>
-                            <span class="font-bold text-[16px]"><?php echo e(number_format($totalBalance)); ?></span>
+                            <span class="font-bold text-[16px] text-left" dir="ltr"><?php echo e(number_format($totalBalance)); ?></span>
                         </div>
                     </div>
 
@@ -96,15 +96,15 @@
                         ?>
                         <div class="flex justify-between items-center text-[14px]">
                             <span>نقدی:</span>
-                            <span class="font-bold"><?php echo e(number_format($totalCashUsd, 2)); ?></span>
+                            <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($totalCashUsd, 2)); ?></span>
                         </div>
                         <div class="flex justify-between items-center text-[14px]">
                             <span>بانکی:</span>
-                            <span class="font-bold"><?php echo e(number_format($totalBankUsd, 2)); ?></span>
+                            <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($totalBankUsd, 2)); ?></span>
                         </div>
                         <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
                             <span class="font-semibold">مجموعه:</span>
-                            <span class="font-bold text-[16px]"><?php echo e(number_format($grandTotalUsd, 2)); ?></span>
+                            <span class="font-bold text-[16px] text-left" dir="ltr"><?php echo e(number_format($grandTotalUsd, 2)); ?></span>
                         </div>
                     </div>
 
