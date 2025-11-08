@@ -15,7 +15,7 @@
     <!-- کارت ۱: کل مبلغ قرضه -->
     <div class="bg-gradient-to-br from-rose-100 to-rose-200 border-l-4 border-rose-500 text-rose-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
         <div class="flex items-center justify-between mb-4">
-    1,000        <h3 class="text-lg font-bold">کل مبلغ قرضه</h3>
+        <h3 class="text-lg font-bold">مجموعه بردگی ها</h3>
             <div class="bg-rose-500 p-2 rounded-full">
                 <i class="fa-solid fa-hand-holding-dollar text-white text-lg"></i>
             </div>
@@ -39,7 +39,7 @@
     <!-- کارت ۲: کل مبلغ پرداختی -->
     <div class="bg-gradient-to-br from-green-100 to-green-200 border-l-4 border-green-500 text-green-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
         <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-bold">کل مبلغ پرداختی</h3>
+            <h3 class="text-lg font-bold">مجموعه رسیدها</h3>
             <div class="bg-green-500 p-2 rounded-full">
                 <i class="fa-solid fa-money-bill-trend-up text-white text-lg"></i>
             </div>
@@ -63,7 +63,7 @@
     <!-- کارت ۳: مانده قرضه -->
     <div class="bg-gradient-to-br from-blue-100 to-blue-200 border-l-4 border-blue-500 text-blue-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
         <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-bold">مانده قرضه</h3>
+            <h3 class="text-lg font-bold">الباقی قرضه</h3>
             <div class="bg-blue-500 p-2 rounded-full">
                 <i class="fa-solid fa-scale-balanced text-white text-lg"></i>
             </div>
