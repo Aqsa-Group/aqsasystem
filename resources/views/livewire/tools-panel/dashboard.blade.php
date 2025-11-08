@@ -89,7 +89,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-3xl font-bold mt-1 animate-number" data-target="{{ $todaysale }}">0</p>
+                <p class="text-sm font-bold mt-1 animate-number" data-target="{{ $todaysale }}">0</p>
                 <span class="text-sm bg-green-200 px-2 py-1 rounded-full">+12%</span>
             </div>
         </div>
@@ -108,7 +108,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-3xl font-bold mt-1 animate-number" data-target="{{ $todayprofit }}">0</p>
+                <p class="text-[25px] font-bold mt-1 animate-number" data-target="{{ $todayprofit }}">0</p>
                 <span class="text-sm bg-blue-200 px-2 py-1 rounded-full">+8%</span>
             </div>
         </div>
@@ -127,7 +127,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-3xl font-bold mt-1 animate-number vazir" data-target="{{ $withdrawals }}">0</p>
+                <p class="text-[25px] font-bold mt-1 animate-number vazir" data-target="{{ $withdrawals }}">0</p>
                 <span class="text-sm bg-red-200 px-2 py-1 rounded-full">-3%</span>
             </div>
         </div>
@@ -146,7 +146,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-3xl font-bold mt-1 animate-number" data-target="{{ $thismonthsale }}">0</p>
+                <p class="text-[25px] font-bold mt-1 animate-number" data-target="{{ $thismonthsale }}">0</p>
                 <span class="text-sm bg-purple-200 px-2 py-1 rounded-full">+15%</span>
             </div>
         </div>
@@ -165,7 +165,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-3xl font-bold mt-1 animate-number" data-target="{{ $inventorytotalprice }}">0</p>
+                <p class="text-[25px] font-bold mt-1 animate-number" data-target="{{ $inventorytotalprice }}">0</p>
                 <span class="text-sm bg-indigo-200 px-2 py-1 rounded-full">+5%</span>
             </div>
         </div>
@@ -184,7 +184,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-3xl font-bold mt-1 animate-number" data-target="{{ $warehousetotalprice }}">0</p>
+                <p class="text-[25px] font-bold mt-1 animate-number" data-target="{{ $warehousetotalprice }}">0</p>
                 <span class="text-sm bg-amber-200 px-2 py-1 rounded-full">+7%</span>
             </div>
         </div>
@@ -203,7 +203,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-3xl font-bold mt-1 animate-number" data-target="{{ $totalstock }}">0</p>
+                <p class="text-[25px] font-bold mt-1 animate-number" data-target="{{ $totalstock }}">0</p>
                 <span class="text-sm bg-cyan-200 px-2 py-1 rounded-full">+10%</span>
             </div>
         </div>
@@ -224,15 +224,15 @@
             <div class="flex items-end justify-between">
                 <div class="flex flex-col gap-2">
                     <div class="flex justify-center items-center text-2xl vazir ">
-                        <span>دالر : </span>
+                        <span>دالر:</span>
 
-                        <p class="text-3xl font-bold mt-1 animate-number vazir" data-target="{{$totalUsdLoan }}">0</p>
+                        <p class="text-[25px] font-bold mt-1 animate-number vazir" data-target="{{$totalUsdLoan }}">0</p>
                     </div>
 
                     <div class="flex justify-center items-center text-2xl ">
-                        <span>افغانی : </span>
+                        <span> اف: </span>
 
-                        <p class="text-3xl font-bold mt-1 animate-number" data-target="{{$totalAFNLoan }}">0</p>
+                        <p class="text-[25px] font-bold mt-1 animate-number" data-target="{{$totalAFNLoan }}">0</p>
                     </div>
                 </div>
                 <span class="text-sm bg-pink-200 px-2 py-1 rounded-full">-2%</span>
@@ -243,7 +243,7 @@
         <div
             class="bg-gradient-to-br from-teal-50 to-teal-100 border-l-4 border-teal-500 text-teal-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 h-40 flex flex-col justify-between">
             <div class="flex items-center justify-between">
-                <h3 class="text-lg font-bold">تعداد کاربران</h3>
+                <h3 class="text-lg font-bold">تعداد کاربران</h3> 
                 <div class="bg-teal-500 p-2 rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -253,7 +253,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-3xl font-bold mt-1 animate-number" data-target="{{ $usercount }}">0</p>
+                <p class="text-[25px] font-bold mt-1 animate-number" data-target="{{ $usercount }}">0</p>
                 <span class="text-sm bg-teal-200 px-2 py-1 rounded-full">+18%</span>
             </div>
         </div>
@@ -272,7 +272,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-3xl font-bold mt-1 animate-number" data-target="{{ $countcustomer }}">0</p>
+                <p class="text-[25px] font-bold mt-1 animate-number" data-target="{{ $countcustomer }}">0</p>
                 <span class="text-sm bg-orange-200 px-2 py-1 rounded-full">+22%</span>
             </div>
         </div>

@@ -1,5 +1,5 @@
 <div>
-  <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
+    <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
         class="fixed top-0 left-0 right-0 w-full z-[9999] bg-gradient-to-br from-indigo-400 to-indigo-500 vazir">
         <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -11,112 +11,116 @@
     </div>
     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-4 pb-0 pt-1">
-    
-    <!-- کارت ۱: کل مبلغ قرضه -->
-    <div class="bg-gradient-to-br from-rose-100 to-rose-200 border-l-4 border-rose-500 text-rose-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
-        <div class="flex items-center justify-between mb-4">
-        <h3 class="text-lg font-bold">مجموعه بردگی ها</h3>
-            <div class="bg-rose-500 p-2 rounded-full">
-                <i class="fa-solid fa-hand-holding-dollar text-white text-lg"></i>
-            </div>
-        </div>
-        <div class="space-y-3">
-            <div class="flex justify-between items-center">
-                <span class="font-medium">افغانی:</span>
-                <span class="font-bold"><?php echo e(number_format($loanCards['total_loan']['afn'])); ?></span>
-            </div>
-            <div class="flex justify-between items-center">
-                <span class="font-medium">دالر:</span>
-                <span class="font-bold"><?php echo e(number_format($loanCards['total_loan']['usd'])); ?></span>
-            </div>
-            <div class="flex justify-between items-center">
-                <span class="font-medium">تومان:</span>
-                <span class="font-bold"><?php echo e(number_format($loanCards['total_loan']['irr'])); ?></span>
-            </div>
-        </div>
-    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-4 pb-0 pt-1">
 
-    <!-- کارت ۲: کل مبلغ پرداختی -->
-    <div class="bg-gradient-to-br from-green-100 to-green-200 border-l-4 border-green-500 text-green-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
-        <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-bold">مجموعه رسیدها</h3>
-            <div class="bg-green-500 p-2 rounded-full">
-                <i class="fa-solid fa-money-bill-trend-up text-white text-lg"></i>
+        <!-- کارت ۱: کل مبلغ قرضه -->
+        <div
+            class="bg-gradient-to-br from-rose-100 to-rose-200 border-l-4 border-rose-500 text-rose-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold">مجموعه بردگی ها</h3>
+                <div class="bg-rose-500 p-2 rounded-full">
+                    <i class="fa-solid fa-hand-holding-dollar text-white text-lg"></i>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <div class="flex justify-between items-center">
+                    <span class="font-medium">افغانی:</span>
+                    <span class="font-bold"><?php echo e(number_format($loanCards['total_loan']['afn'])); ?></span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-medium">دالر:</span>
+                    <span class="font-bold"><?php echo e(number_format($loanCards['total_loan']['usd'])); ?></span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-medium">تومان:</span>
+                    <span class="font-bold"><?php echo e(number_format($loanCards['total_loan']['irr'])); ?></span>
+                </div>
             </div>
         </div>
-        <div class="space-y-3">
-            <div class="flex justify-between items-center">
-                <span class="font-medium">افغانی:</span>
-                <span class="font-bold"><?php echo e(number_format($loanCards['total_paid']['afn'])); ?></span>
-            </div>
-            <div class="flex justify-between items-center">
-                <span class="font-medium">دالر:</span>
-                <span class="font-bold"><?php echo e(number_format($loanCards['total_paid']['usd'])); ?></span>
-            </div>
-            <div class="flex justify-between items-center">
-                <span class="font-medium">تومان:</span>
-                <span class="font-bold"><?php echo e(number_format($loanCards['total_paid']['irr'])); ?></span>
-            </div>
-        </div>
-    </div>
 
-    <!-- کارت ۳: مانده قرضه -->
-    <div class="bg-gradient-to-br from-blue-100 to-blue-200 border-l-4 border-blue-500 text-blue-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
-        <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-bold">الباقی قرضه</h3>
-            <div class="bg-blue-500 p-2 rounded-full">
-                <i class="fa-solid fa-scale-balanced text-white text-lg"></i>
+        <!-- کارت ۲: کل مبلغ پرداختی -->
+        <div
+            class="bg-gradient-to-br from-green-100 to-green-200 border-l-4 border-green-500 text-green-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold">مجموعه رسیدها</h3>
+                <div class="bg-green-500 p-2 rounded-full">
+                    <i class="fa-solid fa-money-bill-trend-up text-white text-lg"></i>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <div class="flex justify-between items-center">
+                    <span class="font-medium">افغانی:</span>
+                    <span class="font-bold"><?php echo e(number_format($loanCards['total_paid']['afn'])); ?></span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-medium">دالر:</span>
+                    <span class="font-bold"><?php echo e(number_format($loanCards['total_paid']['usd'])); ?></span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-medium">تومان:</span>
+                    <span class="font-bold"><?php echo e(number_format($loanCards['total_paid']['irr'])); ?></span>
+                </div>
             </div>
         </div>
-        <div class="space-y-3">
-            <div class="flex justify-between items-center">
-                <span class="font-medium">افغانی:</span>
-                <span class="font-bold"><?php echo e(number_format($loanCards['remaining_loan']['afn'])); ?></span>
-            </div>
-            <div class="flex justify-between items-center">
-                <span class="font-medium">دالر:</span>
-                <span class="font-bold"><?php echo e(number_format($loanCards['remaining_loan']['usd'])); ?></span>
-            </div>
-            <div class="flex justify-between items-center">
-                <span class="font-medium">تومان:</span>
-                <span class="font-bold"><?php echo e(number_format($loanCards['remaining_loan']['irr'])); ?></span>
-            </div>
-        </div>
-    </div>
 
-    <!-- کارت ۴: درصد بازپرداخت -->
-    <div class="bg-gradient-to-br from-purple-100 to-purple-200 border-l-4 border-purple-500 text-purple-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
-        <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-bold">درصد بازپرداخت</h3>
-            <div class="bg-purple-500 p-2 rounded-full">
-                <i class="fa-solid fa-chart-pie text-white text-lg"></i>
+        <!-- کارت ۳: مانده قرضه -->
+        <div
+            class="bg-gradient-to-br from-blue-100 to-blue-200 border-l-4 border-blue-500 text-blue-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold">الباقی قرضه</h3>
+                <div class="bg-blue-500 p-2 rounded-full">
+                    <i class="fa-solid fa-scale-balanced text-white text-lg"></i>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <div class="flex justify-between items-center">
+                    <span class="font-medium">افغانی:</span>
+                    <span class="font-bold"><?php echo e(number_format($loanCards['remaining_loan']['afn'])); ?></span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-medium">دالر:</span>
+                    <span class="font-bold"><?php echo e(number_format($loanCards['remaining_loan']['usd'])); ?></span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-medium">تومان:</span>
+                    <span class="font-bold"><?php echo e(number_format($loanCards['remaining_loan']['irr'])); ?></span>
+                </div>
             </div>
         </div>
-        <div class="space-y-3">
-            <div class="flex justify-between items-center">
-                <span class="font-medium">افغانی:</span>
-                <span class="font-bold"><?php echo e($loanCards['percentage']['afn']); ?>%</span>
-            </div>
-            <div class="flex justify-between items-center">
-                <span class="font-medium">دالر:</span>
-                <span class="font-bold"><?php echo e($loanCards['percentage']['usd']); ?>%</span>
-            </div>
-            <div class="flex justify-between items-center">
-                <span class="font-medium">تومان:</span>
-                <span class="font-bold"><?php echo e($loanCards['percentage']['irr']); ?>%</span>
-            </div>
-        </div>
-    </div>
 
-</div>
+        <!-- کارت ۴: درصد بازپرداخت -->
+        <div
+            class="bg-gradient-to-br from-purple-100 to-purple-200 border-l-4 border-purple-500 text-purple-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold">درصد بازپرداخت</h3>
+                <div class="bg-purple-500 p-2 rounded-full">
+                    <i class="fa-solid fa-chart-pie text-white text-lg"></i>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <div class="flex justify-between items-center">
+                    <span class="font-medium">افغانی:</span>
+                    <span class="font-bold"><?php echo e($loanCards['percentage']['afn']); ?>%</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-medium">دالر:</span>
+                    <span class="font-bold"><?php echo e($loanCards['percentage']['usd']); ?>%</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-medium">تومان:</span>
+                    <span class="font-bold"><?php echo e($loanCards['percentage']['irr']); ?>%</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
 
 
     
     <div class="flex flex-col lg:flex-row gap-10 mt-4 p-4">
 
         
-        <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[574px] p-[12px] h-[620px] rounded-[12px] space-y-2"
+        <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[494px] p-[12px] h-auto rounded-[12px] space-y-2"
             style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
             
@@ -273,34 +277,32 @@ endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
 
-                <!-- دکمه‌ها -->
-                <div class="flex gap-4 p-4 justify-center items-center text-center flex-wrap">
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-2">
                     <button type="submit"
-                        class="bg-[#61B138] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
+                        class="bg-[#61B138] text-[16px] vazir font-semibold rounded-[8px] px-12 py-1 text-white">
                         <?php echo e($transactionId ? 'بروزرسانی' : 'ثبت'); ?>
 
                     </button>
 
                     <!--[if BLOCK]><![endif]--><?php if(!$transactionId): ?>
                     <button type="button" wire:click="submitAndPrint"
-                        class="bg-gradient-to-br from-indigo-400 to-indigo-500 text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
+                        class="bg-gradient-to-br from-indigo-400 to-indigo-500 text-[16px] vazir font-semibold rounded-[8px] px-12   py-1 text-white">
                         ثبت و چاپ
                     </button>
                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                     <button type="button" wire:click="cancel"
-                        class="bg-[#DD2424] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
+                        class="bg-[#DD2424] text-[16px] vazir font-semibold rounded-[8px] px-12 py-1 text-white">
                         <?php echo e($transactionId ? 'لغو ویرایش' : 'انصراف'); ?>
 
                     </button>
                 </div>
-
             </form>
 
         </div>
 
         
-        <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px]"
+        <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px] w-[400px] mt-[30px] md:mt-0 lg:mt-0 md:w-[400px] lg:w-[440px] "
             style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
             
@@ -404,7 +406,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 </td>
                                 <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-80">
                                     <div class="space-y-1 text-right">
-                                       
+
                                         <p class="text-sm">تفصیلات: <?php echo e($transaction->description); ?></p>
                                     </div>
                                 </td>
@@ -503,8 +505,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
     </div>
 
 
-<script>
-    document.addEventListener('livewire:load', function() {
+    <script>
+        document.addEventListener('livewire:load', function() {
         Livewire.hook('element.updated', (el, component) => {
             if (el.hasAttribute('wire:model') || el.hasAttribute('wire:click')) {
                 document.querySelectorAll('.animate-number').forEach(el => {
@@ -525,7 +527,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             }
         });
     });
-</script>
+    </script>
 
     <style>
         #selectCustomer {
@@ -560,28 +562,27 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             display: none !important;
         }
 
-            .currency-card {
-        min-height: 200px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-    
-    .currency-row {
-        padding: 4px 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    }
-    
-    .currency-row:last-child {
-        border-bottom: none;
-    }
-    
-    @media (max-width: 768px) {
         .currency-card {
-            min-height: 180px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-    }
 
+        .currency-row {
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .currency-row:last-child {
+            border-bottom: none;
+        }
+
+        @media (max-width: 768px) {
+            .currency-card {
+                min-height: 180px;
+            }
+        }
     </style>
 
 </div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/tools-panel/loans.blade.php ENDPATH**/ ?>

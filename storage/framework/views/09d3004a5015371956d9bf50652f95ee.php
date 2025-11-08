@@ -3,7 +3,7 @@
 
 <head>
     <?php
-        $currentUser = Auth::guard('tools')->user();
+    $currentUser = Auth::guard('tools')->user();
     ?>
     <meta charset="UTF-8">
     <title> شرکت - <?php echo e($currentUser->company_name ?? 'صرافی'); ?></title>
@@ -182,17 +182,7 @@
         <div class="header">
             <table class="header-table" style="width:100%; border-collapse: collapse;">
                 <tr>
-                    <td style="text-align:right;">نوع قرضه : <?php echo e($transaction->type); ?></td>
-                    <td style="text-align:left;">تاریخ ثبت قرضه :
-                        <?php
-                        $dateParts = explode('-', $transaction->date);
-                        if(count($dateParts) === 3) {
-                        echo $dateParts[2] . '-' . $dateParts[1] . '-' . $dateParts[0];
-                        } else {
-                        echo $transaction->date;
-                        }
-                        ?>
-                    </td>
+                    <td style="text-align:center;">نوع قرضه : <?php echo e($transaction->type); ?></td>
                 </tr>
             </table>
         </div>
@@ -201,18 +191,18 @@
         <table class="info-table">
             <?php
             $currenciesFa = [
-                'afn' => 'افغانی',
-                'usd' => 'دالر',
-                'eur' => 'یورو',
-                'irr' => 'تومان',
-                'aed' => 'درهم',
-                'try' => 'لیره',
-                'cny' => 'یوان',
-                'pkr' => 'کلدار',
-                'gbp' => 'پوند',
-                'jpy' => 'ین',
-                'sar' => 'ریال سعودی',
-                'inr' => 'روپیه',
+            'afn' => 'افغانی',
+            'usd' => 'دالر',
+            'eur' => 'یورو',
+            'irr' => 'تومان',
+            'aed' => 'درهم',
+            'try' => 'لیره',
+            'cny' => 'یوان',
+            'pkr' => 'کلدار',
+            'gbp' => 'پوند',
+            'jpy' => 'ین',
+            'sar' => 'ریال سعودی',
+            'inr' => 'روپیه',
             ];
             ?>
 
@@ -234,10 +224,10 @@
                 </td>
             </tr>
 
-    
+
             <tr>
                 <td>تاریخ:</td>
-                <td><?php echo e($transaction->date); ?></td>
+                <td><?php echo e(explode(' ', $transaction->date)[0]); ?></td>
             </tr>
 
             <tr>
@@ -250,10 +240,10 @@
                 </td>
             </tr>
 
-              <tr>
+            <tr>
                 <td>توضیحات:</td>
                 <td>
-                        <?php echo e($transaction->description ?? 'بدون توضیحات بیشتر'); ?>
+                    <?php echo e($transaction->description ?? 'بدون توضیحات بیشتر'); ?>
 
 
                 </td>
@@ -261,10 +251,10 @@
 
 
 
-           
+
         </table>
 
-      
+
 
         <div class="signature">
             <div class="signature-top-border"></div>
@@ -282,7 +272,7 @@
 
                 <tr>
                     <td>
-                        <strong>آدرس:</strong> افغانستان <?php echo e($currentUser    ->address ?? '-'); ?>
+                        <strong>آدرس:</strong> افغانستان <?php echo e($currentUser ->address ?? '-'); ?>
 
                     </td>
                 </tr>

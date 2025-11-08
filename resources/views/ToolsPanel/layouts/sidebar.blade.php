@@ -8,7 +8,6 @@
     @include('Sarafi.layouts.links')
 
     <style>
-        /* لودر تمام صفحه فوق العاده زیبا */
         #loader {
             position: fixed;
             top: 0;
@@ -235,7 +234,6 @@
             }
         }
 
-        /* محتوای اصلی - اصلاح شده */
         #mainContent {
             display: none;
             opacity: 1;
@@ -246,7 +244,6 @@
             opacity: 1;
         }
 
-        /* استایل‌های دارک مود */
         #toggleCircle {
             transition: transform 0.3s ease-in-out;
         }
@@ -283,7 +280,6 @@
             border-color: #718096;
         }
 
-        /* استایل‌های جدید برای ریسپانسیو */
         .mobile-menu-btn {
             display: none;
             background: none;
@@ -346,7 +342,6 @@
             display: none;
         }
 
-        /* استایل‌های هدر ریسپانسیو */
         .header-container {
             display: flex;
             align-items: center;
@@ -388,7 +383,6 @@
             height: 50px;
         }
 
-        /* استایل‌های سایدبار ریسپانسیو */
         .sidebar-container {
             position: fixed;
             top: 0;
@@ -412,13 +406,11 @@
             display: block;
         }
 
-        /* استایل‌های اصلی برای محتوا */
         .main-content-container {
             margin-top: 1rem;
             padding: 0 1rem;
         }
 
-        /* استایل‌های ریسپانسیو برای صفحه‌های کوچک */
         @media (max-width: 1024px) {
             .company-name {
                 font-size: 32px !important;
@@ -472,7 +464,6 @@
                 left: auto !important;
             }
 
-            /* سایدبار دسکتاپ مخفی شود */
             #sidebar.desktop-sidebar {
                 display: none;
             }
@@ -520,7 +511,6 @@
             }
         }
 
-        /* استایل‌های دسکتاپ */
         @media (min-width: 769px) {
             .sidebar-container {
                 position: static;
@@ -540,7 +530,6 @@
             }
         }
 
-        /* استایل‌های عمومی برای محتوای اصلی */
         .main-wrapper {
             display: flex;
             flex-direction: column;
@@ -556,7 +545,6 @@
 
 <body class="vazir dark:text-white">
 
-    <!-- لودر فوق العاده زیبا -->
     <div id="loader">
         <div class="floating-elements">
             <div class="floating-element element-1"></div>
@@ -966,6 +954,7 @@
     </div>
 
     <script>
+        
         document.addEventListener('DOMContentLoaded', function() {
             const loader = document.getElementById('loader');
             const mainContent = document.getElementById('mainContent');
@@ -974,12 +963,10 @@
             const profileBtn = document.getElementById('profileBtn');
             const profileDropdown = document.getElementById('profileDropdown');
             
-            // Mobile menu elements
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const mobileSidebar = document.getElementById('mobileSidebar');
             const mobileOverlay = document.getElementById('mobileOverlay');
             
-            // Function to close mobile menu
             function closeMobileMenu() {
                 mobileSidebar.classList.remove('active');
                 mobileOverlay.classList.remove('active');
@@ -988,7 +975,6 @@
                 }
             }
             
-            // Mobile menu toggle
             if (mobileMenuBtn && mobileSidebar && mobileOverlay) {
                 mobileMenuBtn.addEventListener('click', function() {
                     mobileSidebar.classList.toggle('active');
@@ -1001,7 +987,6 @@
                 });
             }
 
-            // Profile dropdown
             profileBtn.addEventListener('click', () => {
                 profileDropdown.classList.toggle('hidden');
             });
@@ -1012,7 +997,6 @@
                 }
             });
 
-            // محتوا را ابتدا مخفی کن
             if (mainContent) {
                 mainContent.style.display = 'none';
             }
@@ -1020,7 +1004,6 @@
             let progress = 0;
             let fakeProgressInterval;
 
-            // شروع شبیه‌سازی پیشرفت فقط اگر لود طول بکشد
             function startFakeProgress() {
                 fakeProgressInterval = setInterval(() => {
                     progress += Math.random() * 30;
@@ -1034,7 +1017,6 @@
             if (loader && progressBar) {
                 startFakeProgress();
 
-                // وقتی صفحه واقعاً لود شد
                 window.addEventListener('load', function() {
                     clearInterval(fakeProgressInterval);
                     progress = 100;
@@ -1056,7 +1038,6 @@
                 });
             }
 
-            // مدیریت کلیک روی لینک‌ها
             const navLinks = document.querySelectorAll('.nav-link, .locale-link');
             navLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
@@ -1072,7 +1053,6 @@
                 });
             });
 
-            // مدیریت dropdown زبان
             const btn = document.getElementById('dropdownButton');
             const menu = document.getElementById('dropdownMenu');
             if (btn && menu) {
@@ -1084,7 +1064,6 @@
                 });
             }
             
-            // Expose closeMobileMenu function to Alpine.js
             window.closeMobileMenu = closeMobileMenu;
         });
     </script>

@@ -3,7 +3,7 @@
 
 <head>
     @php
-        $currentUser = Auth::guard('tools')->user();
+    $currentUser = Auth::guard('tools')->user();
     @endphp
     <meta charset="UTF-8">
     <title> شرکت - {{ $currentUser->company_name ?? 'صرافی' }}</title>
@@ -183,17 +183,7 @@
         <div class="header">
             <table class="header-table" style="width:100%; border-collapse: collapse;">
                 <tr>
-                    <td style="text-align:right;">نوع قرضه : {{ $transaction->type }}</td>
-                    <td style="text-align:left;">تاریخ ثبت قرضه :
-                        @php
-                        $dateParts = explode('-', $transaction->date);
-                        if(count($dateParts) === 3) {
-                        echo $dateParts[2] . '-' . $dateParts[1] . '-' . $dateParts[0];
-                        } else {
-                        echo $transaction->date;
-                        }
-                        @endphp
-                    </td>
+                    <td style="text-align:center;">نوع قرضه : {{ $transaction->type }}</td>
                 </tr>
             </table>
         </div>
@@ -202,18 +192,18 @@
         <table class="info-table">
             @php
             $currenciesFa = [
-                'afn' => 'افغانی',
-                'usd' => 'دالر',
-                'eur' => 'یورو',
-                'irr' => 'تومان',
-                'aed' => 'درهم',
-                'try' => 'لیره',
-                'cny' => 'یوان',
-                'pkr' => 'کلدار',
-                'gbp' => 'پوند',
-                'jpy' => 'ین',
-                'sar' => 'ریال سعودی',
-                'inr' => 'روپیه',
+            'afn' => 'افغانی',
+            'usd' => 'دالر',
+            'eur' => 'یورو',
+            'irr' => 'تومان',
+            'aed' => 'درهم',
+            'try' => 'لیره',
+            'cny' => 'یوان',
+            'pkr' => 'کلدار',
+            'gbp' => 'پوند',
+            'jpy' => 'ین',
+            'sar' => 'ریال سعودی',
+            'inr' => 'روپیه',
             ];
             @endphp
 
@@ -232,10 +222,10 @@
                 </td>
             </tr>
 
-    
+
             <tr>
                 <td>تاریخ:</td>
-                <td>{{ $transaction->date }}</td>
+                <td>{{explode(' ', $transaction->date)[0]}}</td>
             </tr>
 
             <tr>
@@ -246,20 +236,20 @@
                 </td>
             </tr>
 
-              <tr>
+            <tr>
                 <td>توضیحات:</td>
                 <td>
-                        {{ $transaction->description ?? 'بدون توضیحات بیشتر' }}
+                    {{ $transaction->description ?? 'بدون توضیحات بیشتر' }}
 
                 </td>
             </tr>
 
 
 
-           
+
         </table>
 
-      
+
 
         <div class="signature">
             <div class="signature-top-border"></div>
@@ -277,7 +267,7 @@
 
                 <tr>
                     <td>
-                        <strong>آدرس:</strong> افغانستان {{ $currentUser    ->address ?? '-' }}
+                        <strong>آدرس:</strong> افغانستان {{ $currentUser ->address ?? '-' }}
                     </td>
                 </tr>
             </table>
