@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Sarafi;
 
+use App\Models\Sarafi\BankAccount;
+use App\Models\Sarafi\CurrencySafe;
 use App\Models\Sarafi\Customer;
 use App\Models\Sarafi\ExchangeRates;
 use App\Models\Sarafi\SendToAccount;
@@ -676,6 +678,44 @@ class AccountToAccount extends Component
                     'account_to_id' => $conversionId,
                 ]);
             }
+            // ===== نقدی → بانکی =====
+            if ($this->from_account === 'نقدی' && $this->to_account === 'بانکی') {
+
+                // کم کردن از صندوق نقدی
+                $safe = CurrencySafe::firstOrCreate([
+                    'admin_id' => $adminId,
+                ], [
+                    'user_id' => $user->id,
+                ]);
+                $safe->decrement(strtolower($this->currency), $receivedAmount);
+
+                // اضافه کردن به صندوق بانکی
+                $bank = BankAccount::firstOrCreate([
+                    'admin_id' => $adminId,
+                ], [
+                    'user_id' => $user->id,
+                ]);
+                $bank->increment(strtolower($this->currency), $receivedAmount);
+            }
+
+
+            // ===== بانکی → نقدی =====
+            if ($this->from_account === 'بانکی' && $this->to_account === 'نقدی') {
+
+                // کم کردن از صندوق بانکی
+                $bank = BankAccount::where('admin_id', $adminId)->first();
+                if ($bank) {
+                    $bank->decrement(strtolower($this->currency), $this->withdrawal_amount);
+                }
+
+                // اضافه کردن به صندوق نقدی
+                $safe = CurrencySafe::firstOrCreate([
+                    'admin_id' => $adminId,
+                ], [
+                    'user_id' => $user->id,
+                ]);
+                $safe->increment(strtolower($this->currency), $this->withdrawal_amount);
+            }
 
             DB::connection('sarafi')->commit();
 
@@ -695,6 +735,38 @@ class AccountToAccount extends Component
             ]);
         }
     }
+
+    /**
+ * متد ایمن برای به‌روزرسانی صندوق نقدی
+ */
+private function updateCurrencySafe($adminId, $userId, $currency, $amount, $operation = 'increment')
+{
+    $currencyColumn = strtolower($currency);
+    
+    $safe = CurrencySafe::firstOrCreate([
+        'admin_id' => $adminId,
+    ], [
+        'user_id' => $userId,
+        'usd' => 0, 'afn' => 0, 'eur' => 0, 'irr' => 0,
+        'aed' => 0, 'try' => 0, 'cny' => 0, 'pkr' => 0, 'inr' => 0
+    ]);
+    
+    // اگر مقدار NULL باشد، آن را صفر کنیم
+    if (is_null($safe->{$currencyColumn})) {
+        $safe->update([$currencyColumn => 0]);
+        $safe->refresh(); // رفرش کردن مدل پس از آپدیت
+    }
+    
+    if ($operation === 'increment') {
+        $safe->increment($currencyColumn, $amount);
+    } else {
+        $safe->decrement($currencyColumn, $amount);
+    }
+    
+    return $safe;
+}
+
+
 
     public function resetForm()
     {

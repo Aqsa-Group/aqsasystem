@@ -698,14 +698,13 @@ class Transactions extends Component
         $adminId = $user->admin_id ?? $user->id;
 
         $factor = $reverse ? -1 : 1;
-
         $change = ($transactionType === 'رسید' ? 1 : -1) * $amount * $factor;
 
         if ($accountType === 'نقدی') {
-            // اعمال تغییرات روی CurrencySafe
             $safe = CurrencySafe::firstOrCreate(
-                ['user_id' => $adminId, 'admin_id' => null],
+                ['admin_id' => $adminId],
                 [
+                    'user_id' => $user->id,
                     'usd' => 0,
                     'afn' => 0,
                     'eur' => 0,
@@ -722,17 +721,15 @@ class Transactions extends Component
             );
 
             $safe->$currency += $change;
-
             if ($safe->$currency < 0) {
                 $safe->$currency = 0;
             }
-
             $safe->save();
         } else {
-            // اعمال تغییرات روی BankAccount
             $bankAccount = BankAccount::firstOrCreate(
-                ['user_id' => $adminId, 'admin_id' => null],
+                ['admin_id' => $adminId],
                 [
+                    'user_id' => $user->id,
                     'usd' => 0,
                     'afn' => 0,
                     'eur' => 0,
@@ -749,14 +746,13 @@ class Transactions extends Component
             );
 
             $bankAccount->$currency += $change;
-
             if ($bankAccount->$currency < 0) {
                 $bankAccount->$currency = 0;
             }
-
             $bankAccount->save();
         }
     }
+
 
     public function showReport()
     {

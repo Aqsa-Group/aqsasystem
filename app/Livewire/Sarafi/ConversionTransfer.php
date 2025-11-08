@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Sarafi;
 
+use App\Models\Sarafi\BankAccount;
 use App\Models\Sarafi\ConversionTransfers;
+use App\Models\Sarafi\CurrencySafe;
 use App\Models\Sarafi\Customer;
 use App\Models\Sarafi\ExchangeRates;
 use App\Models\Sarafi\Transaction;
@@ -610,7 +612,7 @@ class ConversionTransfer extends Component
                 'customer_id' => $this->withdrawalAccount,
                 'user_id' => $user->id,
                 'admin_id' => $adminId,
-                'account_type'=>$this->from_account,
+                'account_type' => $this->from_account,
                 'currency' => $this->from_currency,
                 'amount' => $this->withdrawal_amount,
                 'type' => 'برداشت',
@@ -628,7 +630,7 @@ class ConversionTransfer extends Component
                 'admin_id' => $adminId,
                 'currency' => $this->to_currency,
                 'amount' => $this->received_amount,
-                'account_type'=>$this->to_account,
+                'account_type' => $this->to_account,
                 'type' => 'رسید',
                 'date' => $this->transaction_date,
                 'description' => $this->description . ' - تبدیل از ' . $this->getCurrencyName($this->from_currency) . ' (' . $this->transactionType . ')',
@@ -636,6 +638,46 @@ class ConversionTransfer extends Component
                 'by' => $this->by_receiver,
                 'conversion_transfer_id' => $conversionId,
             ]);
+
+            // ===== نقدی → بانکی =====
+            if ($this->from_account === 'نقدی' && $this->to_account === 'بانکی') {
+
+                // کم کردن از صندوق نقدی (ارز مبدا)
+                $safe = CurrencySafe::firstOrCreate([
+                    'admin_id' => $adminId,
+                ], [
+                    'user_id' => $user->id,
+                ]);
+                $safe->decrement(strtolower($this->from_currency), $this->withdrawal_amount);
+
+                // اضافه کردن به حساب بانکی (ارز مقصد)
+                $bank = BankAccount::firstOrCreate([
+                    'admin_id' => $adminId,
+                ], [
+                    'user_id' => $user->id,
+                ]);
+                $bank->increment(strtolower($this->to_currency), $this->received_amount);
+            }
+
+            // ===== بانکی → نقدی =====
+            if ($this->from_account === 'بانکی' && $this->to_account === 'نقدی') {
+
+                // کم کردن از حساب بانکی (ارز مبدا)
+                $bank = BankAccount::where('admin_id', $adminId)->first();
+                if ($bank) {
+                    $bank->decrement(strtolower($this->from_currency), $this->withdrawal_amount);
+                }
+
+                // اضافه کردن به صندوق نقدی (ارز مقصد)
+                $safe = CurrencySafe::firstOrCreate([
+                    'admin_id' => $adminId,
+                ], [
+                    'user_id' => $user->id,
+                ]);
+                $safe->increment(strtolower($this->to_currency), $this->received_amount);
+            }
+
+
 
             DB::connection('sarafi')->commit();
 
@@ -885,10 +927,10 @@ class ConversionTransfer extends Component
         if ($user) {
             $adminId = $user->admin_id ?? $user->id;
             $this->loadCustomers($adminId);
-               $this->loadZones($adminId);
+            $this->loadZones($adminId);
         }
     }
-     private function loadZones($adminId)
+    private function loadZones($adminId)
     {
         $this->zones = \App\Models\Sarafi\User::where(function ($query) use ($adminId) {
             $query->where('admin_id', $adminId)

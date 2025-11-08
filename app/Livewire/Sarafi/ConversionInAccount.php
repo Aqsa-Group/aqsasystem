@@ -312,8 +312,6 @@ class ConversionInAccount extends Component
             'selectedAccount' => 'required|integer|exists:sarafi.customers,id',
             'from_currency' => 'required|string',
             'to_currency' => 'required|string',
-            'from_account' => 'required|string',
-            'to_account' => 'required|string',
             'buy_amount' => 'required|numeric|min:0.01',
             'sell_amount' => 'required|numeric|min:0.01',
             'currency_rate' => 'required|numeric|min:0.0001',
