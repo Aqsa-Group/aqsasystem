@@ -724,7 +724,6 @@ class AccountToAccount extends Component
         $this->transactionType = 'بدون تفاوت';
         $this->transaction_date = Jalalian::now()->format('Y/m/d');
         $this->generateDocumentNumber();
-        $this->updateCustomerCurrencyBalance();
         $this->accountSearch = '';
         $this->filteredCustomers = null;
     }
@@ -936,7 +935,7 @@ class AccountToAccount extends Component
         if ($user) {
             $adminId = $user->admin_id ?? $user->id;
             $this->loadCustomers($adminId);
-             $this->loadZones($adminId);
+            $this->loadZones($adminId);
         }
     }
 
@@ -949,21 +948,21 @@ class AccountToAccount extends Component
 
 
     private function loadZones($adminId)
-{
-    $this->zones = \App\Models\Sarafi\User::where(function($query) use ($adminId) {
-            $query->where('admin_id', $adminId) 
-                  ->orWhere('id', $adminId);
+    {
+        $this->zones = \App\Models\Sarafi\User::where(function ($query) use ($adminId) {
+            $query->where('admin_id', $adminId)
+                ->orWhere('id', $adminId);
         })
-        ->whereNotNull('zone')
-        ->where('zone', '!=', '')
-        ->pluck('zone')
-        ->unique()
-        ->values()
-        ->toArray();
+            ->whereNotNull('zone')
+            ->where('zone', '!=', '')
+            ->pluck('zone')
+            ->unique()
+            ->values()
+            ->toArray();
 
-    
-    if (empty($this->zones)) {
-        $this->zones = ['غرب', 'مرکز', 'شمال', 'جنوب', 'شرق'];
+
+        if (empty($this->zones)) {
+            $this->zones = ['غرب', 'مرکز', 'شمال', 'جنوب', 'شرق'];
+        }
     }
-}
 }

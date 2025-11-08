@@ -167,7 +167,17 @@
 
         </div>
     </td>
+    
 </tr>
+
+
+            <tr>
+                <td>تبدیل شده از حساب</td>
+                <td>
+                    <?php echo e($conversion->account_type); ?>
+
+                </td>
+            </tr>
 
             <tr>
                 <td>ارز تبدیل شده :</td>

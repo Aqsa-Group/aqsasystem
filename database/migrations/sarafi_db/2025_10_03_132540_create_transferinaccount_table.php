@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('currency_rate', 20, 2);
             $table->string('to_currency');
             $table->decimal('sell_amount', 20, 10);
+            $table->string('account_type'); 
             $table->string('by_sender')->nullable();
             $table->string('by_receiver')->nullable();
             $table->string('zone_sender')->nullable();

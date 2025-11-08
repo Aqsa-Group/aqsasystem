@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <title>تبدیل ارز - <?php echo e($conversion->type); ?></title>
@@ -115,6 +116,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="document">
         <div class="header">
@@ -123,7 +125,7 @@
                 <strong>تبدیل ارز و انتفال </strong>
             </div>
             <div style="font-size: 10px; margin-top: 5px;">
-                 تاریخ: <?php echo e($conversion->transaction_date); ?>
+                تاریخ: <?php echo e($conversion->transaction_date); ?>
 
             </div>
         </div>
@@ -131,29 +133,29 @@
         <table class="info-table">
             <?php
             $currenciesFa = [
-                'afn' => 'افغانی',
-                'usd' => 'دالر',
-                'eur' => 'یورو',
-                'irr' => 'تومان',
-                'aed' => 'درهم',
-                'try' => 'لیره',
-                'cny' => 'یوان',
-                'pkr' => 'کلدار',
-                'gbp' => 'پوند',
-                'jpy' => 'ین',
-                'sar' => 'ریال سعودی',
-                'inr' => 'روپیه',
+            'afn' => 'افغانی',
+            'usd' => 'دالر',
+            'eur' => 'یورو',
+            'irr' => 'تومان',
+            'aed' => 'درهم',
+            'try' => 'لیره',
+            'cny' => 'یوان',
+            'pkr' => 'کلدار',
+            'gbp' => 'پوند',
+            'jpy' => 'ین',
+            'sar' => 'ریال سعودی',
+            'inr' => 'روپیه',
             ];
 
             function convertToWords($number) {
-                if (!is_numeric($number)) return '';
-                try {
-                    $formatter = new NumberFormatter("fa", NumberFormatter::SPELLOUT);
-                    $words = $formatter->format(floatval($number));
-                    return str_replace(['دویست', 'سیصد', 'پانصد'], ['دوصد', 'سه صد', 'پنجصد'], $words);
-                } catch (\Exception $e) {
-                    return '';
-                }
+            if (!is_numeric($number)) return '';
+            try {
+            $formatter = new NumberFormatter("fa", NumberFormatter::SPELLOUT);
+            $words = $formatter->format(floatval($number));
+            return str_replace(['دویست', 'سیصد', 'پانصد'], ['دوصد', 'سه صد', 'پنجصد'], $words);
+            } catch (\Exception $e) {
+            return '';
+            }
             }
             ?>
 
@@ -163,7 +165,7 @@
                     <?php echo e($conversion->fromCustomer->fullname ?? 'نامشخص'); ?>
 
                     <div class="amount-in-words">
-                         <?php echo e($conversion->fromCustomer->account_number ?? 'نامشخص'); ?>
+                        <?php echo e($conversion->fromCustomer->account_number ?? 'نامشخص'); ?>
 
                     </div>
                 </td>
@@ -177,12 +179,32 @@
                 </td>
             </tr>
 
+
+            <tr>
+                <td> از حساب :</td>
+                <td>
+                    <?php echo e($conversion->from_account); ?>
+
+                </td>
+            </tr>
+
+
+            <tr>
+                <td> به حساب:</td>
+                <td>
+                    <?php echo e($conversion->to_account); ?>
+
+                </td>
+            </tr>
+
+
+
             <tr>
                 <td>مبلغ برداشت:</td>
                 <td>
                     <?php echo e(number_format((float)$conversion->withdrawal_amount)); ?>
 
-                    
+
                 </td>
             </tr>
 
@@ -192,7 +214,7 @@
                     <?php echo e($conversion->toCustomer->fullname ?? 'نامشخص'); ?>
 
                     <div class="amount-in-words">
-                     <?php echo e($conversion->toCustomer->account_number ?? 'نامشخص'); ?>
+                        <?php echo e($conversion->toCustomer->account_number ?? 'نامشخص'); ?>
 
                     </div>
                 </td>
@@ -211,7 +233,7 @@
                 <td>
                     <?php echo e(number_format((float)$conversion->received_amount, 2)); ?>
 
-                  
+
                 </td>
             </tr>
 
@@ -220,7 +242,7 @@
                 <td>
                     <?php echo e(number_format((float)$conversion->currency_rate, 4)); ?>
 
-                 
+
                 </td>
             </tr>
 
@@ -248,12 +270,12 @@
                 <td>زمان ثبت:</td>
                 <td>
                     <?php
-                        try {
-                            $time = \Carbon\Carbon::parse($conversion->created_at);
-                            echo $time->format('h:i:s') . ' ' . ($time->format('A') == 'AM' ? 'ق.ظ' : 'ب.ظ');
-                        } catch (Exception $e) {
-                            echo $conversion->created_at;
-                        }
+                    try {
+                    $time = \Carbon\Carbon::parse($conversion->created_at);
+                    echo $time->format('h:i:s') . ' ' . ($time->format('A') == 'AM' ? 'ق.ظ' : 'ب.ظ');
+                    } catch (Exception $e) {
+                    echo $conversion->created_at;
+                    }
                     ?>
                 </td>
             </tr>
@@ -272,11 +294,13 @@
 
         <div class="contact-info">
             <div style="margin-bottom: 5px;">
-                <strong>تماس:</strong> <?php echo e(Auth::guard('sarafi')->user()->phone ? '+93' . Auth::guard('sarafi')->user()->phone : 'نامشخص'); ?>
+                <strong>تماس:</strong> <?php echo e(Auth::guard('sarafi')->user()->phone ? '+93' .
+                Auth::guard('sarafi')->user()->phone : 'نامشخص'); ?>
 
             </div>
             <div>
-                <strong>آدرس:</strong> <?php echo e(Auth::guard('sarafi')->user()->address ? 'افغانستان - ' . Auth::guard('sarafi')->user()->address : 'نامشخص'); ?>
+                <strong>آدرس:</strong> <?php echo e(Auth::guard('sarafi')->user()->address ? 'افغانستان - ' .
+                Auth::guard('sarafi')->user()->address : 'نامشخص'); ?>
 
             </div>
         </div>
@@ -291,4 +315,5 @@
         </div>
     </div>
 </body>
+
 </html><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/pdf/Sarafi/conversion-transaction.blade.php ENDPATH**/ ?>

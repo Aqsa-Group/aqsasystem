@@ -35,10 +35,10 @@ return [
   // dashboard
   'recipt/withdraw' => 'رسید/بردگی صندوق',
   'transfer' => 'انتفال حساب به حساب',
-  'newspaper_accounts' => 'ژورنال حسابات',
+  'newspaper_accounts' => 'گزارش حسابات',
   'coversion_account' => 'تبدیل ارز در حساب',
   'coversion_transfer' => 'تبدیل ارز و انتفال',
-  'general_jornal' => 'ژورنال عمومی',
+  'general_jornal' => 'گزارشات عمومی',
   'page_title' => 'صفحه اصلی گزارشات و آمار',
   'tab_general' => 'پنل عمومی',
   'tab_reports' => 'پنل گزارشات و بیلانس',

@@ -4,6 +4,7 @@ namespace App\Livewire\Sarafi;
 
 use App\Models\Sarafi\ConversionTransfers;
 use App\Models\Sarafi\Customer;
+use App\Models\Sarafi\ExchangeRates;
 use App\Models\Sarafi\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -44,6 +45,8 @@ class ConversionTransfer extends Component
     public $currencyRateInWords = '';
 
     public $transactionType = 'خرید';
+    public $from_account = 'نقدی';
+    public $to_account = 'نقدی';
     public $currencies = [];
     public $customers = [];
     public $search = '';
@@ -53,92 +56,99 @@ class ConversionTransfer extends Component
     public $confirmDeleteId = null;
     public $editingConversionId = null;
 
-  public function render()
-{
-    $user = Auth::guard('sarafi')->user();
+    // اضافه کردن متغیرهای جدید برای نمایش موجودی‌ها
+    public $customerCashBalances = [];
+    public $customerBankBalances = [];
+    public $customerTotalBalances = [];
+    public $zones = [];
 
-    if (!$user) {
+
+    public function render()
+    {
+        $user = Auth::guard('sarafi')->user();
+
+        if (!$user) {
+            return view('livewire.sarafi.conversion-transfer', [
+                'customers' => collect(),
+                'conversionTransactions' => collect(),
+            ]);
+        }
+
+        $adminId = $user->admin_id ?? $user->id;
+
+        // بارگذاری مشتریان اگر خالی است
+        if (empty($this->customers)) {
+            $this->loadCustomers($adminId);
+        }
+
+        // ایجاد کوئری پایه با join
+        $query = ConversionTransfers::select(
+            'conversion_transfer.*',
+            'from_customer.fullname as from_customer_name',
+            'from_customer.account_number as from_customer_account',
+            'to_customer.fullname as to_customer_name',
+            'to_customer.account_number as to_customer_account'
+        )
+            ->leftJoin('customers as from_customer', 'conversion_transfer.form_customer', '=', 'from_customer.id')
+            ->leftJoin('customers as to_customer', 'conversion_transfer.to_customer', '=', 'to_customer.id')
+            ->where('conversion_transfer.admin_id', $adminId);
+
+        // اعمال جستجو اگر مقدار وجود دارد
+        if (!empty($this->search)) {
+            $query->where(function ($q) {
+                $q->where('from_customer.fullname', 'like', '%' . $this->search . '%')
+                    ->orWhere('from_customer.account_number', 'like', '%' . $this->search . '%')
+                    ->orWhere('to_customer.fullname', 'like', '%' . $this->search . '%')
+                    ->orWhere('to_customer.account_number', 'like', '%' . $this->search . '%')
+                    ->orWhere('conversion_transfer.from_currency', 'like', '%' . $this->search . '%')
+                    ->orWhere('conversion_transfer.to_currency', 'like', '%' . $this->search . '%')
+                    ->orWhere('conversion_transfer.withdrawal_amount', 'like', '%' . $this->search . '%')
+                    ->orWhere('conversion_transfer.received_amount', 'like', '%' . $this->search . '%')
+                    ->orWhere('conversion_transfer.currency_rate', 'like', '%' . $this->search . '%')
+                    ->orWhere('conversion_transfer.description', 'like', '%' . $this->search . '%')
+                    ->orWhere('conversion_transfer.type', 'like', '%' . $this->search . '%')
+                    ->orWhere('conversion_transfer.zone_sender', 'like', '%' . $this->search . '%')
+                    ->orWhere('conversion_transfer.zone_receiver', 'like', '%' . $this->search . '%');
+            });
+        }
+
+        $conversionTransactions = $query->latest('conversion_transfer.created_at')->paginate(10);
+
         return view('livewire.sarafi.conversion-transfer', [
-            'customers' => collect(),
-            'conversionTransactions' => collect(),
+            'customers' => collect($this->customers),
+            'conversionTransactions' => $conversionTransactions,
         ]);
     }
+    public function showReport()
+    {
+        if (!$this->withdrawalCustomerId) {
+            session()->flash('error', 'لطفاً ابتدا یک مشتری را برای حساب برداشت انتخاب کنید');
+            return redirect()->back();
+        }
 
-    $adminId = $user->admin_id ?? $user->id;
+        // پیدا کردن مشتری برای اطمینان از وجود
+        $customer = Customer::find($this->withdrawalCustomerId);
+        if (!$customer) {
+            session()->flash('error', 'مشتری انتخاب شده یافت نشد');
+            return redirect()->back();
+        }
 
-    // بارگذاری مشتریان اگر خالی است
-    if (empty($this->customers)) {
-        $this->loadCustomers($adminId);
+        // ذخیره اطلاعات مشتری در سشن
+        session([
+            'selected_customer_id' => $this->withdrawalCustomerId,
+            'selected_customer_name' => $customer->fullname,
+            'selected_customer_account' => $customer->account_number
+        ]);
+
+        // انتقال به صفحه گزارشات
+        return redirect()->route('sarafi.transaction-reports');
     }
 
-    // ایجاد کوئری پایه با join
-    $query = ConversionTransfers::select(
-        'conversion_transfer.*',
-        'from_customer.fullname as from_customer_name',
-        'from_customer.account_number as from_customer_account',
-        'to_customer.fullname as to_customer_name',
-        'to_customer.account_number as to_customer_account'
-    )
-    ->leftJoin('customers as from_customer', 'conversion_transfer.form_customer', '=', 'from_customer.id')
-    ->leftJoin('customers as to_customer', 'conversion_transfer.to_customer', '=', 'to_customer.id')
-    ->where('conversion_transfer.admin_id', $adminId);
 
-    // اعمال جستجو اگر مقدار وجود دارد
-    if (!empty($this->search)) {
-        $query->where(function($q) {
-            $q->where('from_customer.fullname', 'like', '%' . $this->search . '%')
-              ->orWhere('from_customer.account_number', 'like', '%' . $this->search . '%')
-              ->orWhere('to_customer.fullname', 'like', '%' . $this->search . '%')
-              ->orWhere('to_customer.account_number', 'like', '%' . $this->search . '%')
-              ->orWhere('conversion_transfer.from_currency', 'like', '%' . $this->search . '%')
-              ->orWhere('conversion_transfer.to_currency', 'like', '%' . $this->search . '%')
-              ->orWhere('conversion_transfer.withdrawal_amount', 'like', '%' . $this->search . '%')
-              ->orWhere('conversion_transfer.received_amount', 'like', '%' . $this->search . '%')
-              ->orWhere('conversion_transfer.currency_rate', 'like', '%' . $this->search . '%')
-              ->orWhere('conversion_transfer.description', 'like', '%' . $this->search . '%')
-              ->orWhere('conversion_transfer.type', 'like', '%' . $this->search . '%')
-              ->orWhere('conversion_transfer.zone_sender', 'like', '%' . $this->search . '%')
-              ->orWhere('conversion_transfer.zone_receiver', 'like', '%' . $this->search . '%');
-        });
+    public function search()
+    {
+        $this->resetPage();
     }
-
-    $conversionTransactions = $query->latest('conversion_transfer.created_at')->paginate(10);
-
-    return view('livewire.sarafi.conversion-transfer', [
-        'customers' => collect($this->customers),
-        'conversionTransactions' => $conversionTransactions,
-    ]);
-}
-  public function showReport()
-{
-    if (!$this->withdrawalCustomerId) {
-        session()->flash('error', 'لطفاً ابتدا یک مشتری را برای حساب برداشت انتخاب کنید');
-        return redirect()->back();
-    }
-
-    // پیدا کردن مشتری برای اطمینان از وجود
-    $customer = Customer::find($this->withdrawalCustomerId);
-    if (!$customer) {
-        session()->flash('error', 'مشتری انتخاب شده یافت نشد');
-        return redirect()->back();
-    }
-
-    // ذخیره اطلاعات مشتری در سشن
-    session([
-        'selected_customer_id' => $this->withdrawalCustomerId,
-        'selected_customer_name' => $customer->fullname,
-        'selected_customer_account' => $customer->account_number
-    ]);
-
-    // انتقال به صفحه گزارشات
-    return redirect()->route('sarafi.transaction-reports');
-}
-
-
-public function search()
-{
-    $this->resetPage(); 
-}
     private function loadCustomers($adminId)
     {
         $relatedUserIds = \App\Models\Sarafi\User::where('admin_id', $adminId)
@@ -300,26 +310,119 @@ public function search()
         ['name' => 'خلاصه بیلانس به دالر', 'value' => 0],
     ];
 
-    public function updateCustomerCurrencyBalance($customerId = null)
+    public function updateCustomerCurrencyBalance()
     {
-        $targetCustomerId = $customerId ?: $this->withdrawalCustomerId;
+        if (!$this->withdrawalCustomerId) {
+            $this->currenciesdefault = [
+                ['name' => 'افغانی', 'value' => 0],
+                ['name' => 'دالر', 'value' => 0],
+                ['name' => 'تومان', 'value' => 0],
+                ['name' => 'یورو', 'value' => 0],
+                ['name' => 'کلدار', 'value' => 0],
+                ['name' => 'درهم', 'value' => 0],
+                ['name' => 'لیره', 'value' => 0],
+                ['name' => 'یوان', 'value' => 0],
+                ['name' => 'روپیه', 'value' => 0],
+                ['name' => 'خلاصه بیلانس به دالر', 'value' => 0],
+            ];
 
-        if (!$targetCustomerId) {
-            $this->resetCurrenciesDefault();
+            // ریست کردن موجودی‌های تفکیک شده
+            $this->customerCashBalances = [];
+            $this->customerBankBalances = [];
+            $this->customerTotalBalances = [];
             return;
         }
 
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
 
-        $transactions = Transaction::where('customer_id', $targetCustomerId)
+        $transactions = Transaction::where('customer_id', $this->withdrawalCustomerId)
             ->where('admin_id', $adminId)
             ->get();
 
-        $balances = $this->calculateBalances($transactions);
-        $totalInUsd = $this->calculateTotalInUsd($balances);
+        // محاسبه موجودی‌های نقدی و بانکی جداگانه
+        $cashBalances = [
+            'افغانی' => 0,
+            'دالر' => 0,
+            'تومان' => 0,
+            'یورو' => 0,
+            'کلدار' => 0,
+            'درهم' => 0,
+            'لیره' => 0,
+            'یوان' => 0,
+            'روپیه' => 0,
+        ];
 
-        $this->updateCurrenciesDefault($balances, $totalInUsd);
+        $bankBalances = [
+            'افغانی' => 0,
+            'دالر' => 0,
+            'تومان' => 0,
+            'یورو' => 0,
+            'کلدار' => 0,
+            'درهم' => 0,
+            'لیره' => 0,
+            'یوان' => 0,
+            'روپیه' => 0,
+        ];
+
+        foreach ($transactions as $transaction) {
+            $currencyName = $this->getCurrencyName($transaction->currency);
+            $amount = $transaction->type === 'رسید' ? $transaction->amount : -$transaction->amount;
+
+            if ($transaction->account_type === 'نقدی') {
+                if (array_key_exists($currencyName, $cashBalances)) {
+                    $cashBalances[$currencyName] += $amount;
+                }
+            } else {
+                if (array_key_exists($currencyName, $bankBalances)) {
+                    $bankBalances[$currencyName] += $amount;
+                }
+            }
+        }
+
+        $latestExchangeRate = ExchangeRates::latest()->first();
+        $exchangeRates = [
+            'افغانی' => $latestExchangeRate->afn_buy ?? 0.011,
+            'دالر' => 1,
+            'تومان' => $latestExchangeRate->irr_buy ?? 0.000024,
+            'یورو' => $latestExchangeRate->eur_buy ?? 1.07,
+            'کلدار' => $latestExchangeRate->pkr_buy ?? 0.0036,
+            'درهم' => $latestExchangeRate->aed_buy ?? 0.27,
+            'لیره' => $latestExchangeRate->try_buy ?? 0.031,
+            'یوان' => $latestExchangeRate->cny_buy ?? 0.14,
+            'روپیه' => 0.14,
+        ];
+
+        // محاسبه مجموع برای نمایش در کارت‌های اصلی
+        $totalBalances = [];
+        foreach ($cashBalances as $currency => $balance) {
+            $totalBalances[$currency] = $balance + $bankBalances[$currency];
+        }
+
+        $totalInUsd = 0;
+        foreach ($totalBalances as $currency => $balance) {
+            if ($currency !== 'خلاصه بیلانس به دالر' && isset($exchangeRates[$currency])) {
+                $totalInUsd += $balance * $exchangeRates[$currency];
+            }
+        }
+
+        $this->currenciesdefault = [
+            ['name' => 'افغانی', 'value' => $totalBalances['افغانی']],
+            ['name' => 'دالر', 'value' => $totalBalances['دالر']],
+            ['name' => 'تومان', 'value' => $totalBalances['تومان']],
+            ['name' => 'یورو', 'value' => $totalBalances['یورو']],
+            ['name' => 'کلدار', 'value' => $totalBalances['کلدار']],
+            ['name' => 'درهم', 'value' => $totalBalances['درهم']],
+            ['name' => 'لیره', 'value' => $totalBalances['لیره']],
+            ['name' => 'یوان', 'value' => $totalBalances['یوان']],
+            ['name' => 'روپیه', 'value' => $totalBalances['روپیه']],
+            ['name' => 'خلاصه بیلانس به دالر', 'value' => $totalInUsd],
+        ];
+
+        // ذخیره موجودی‌های تفکیک شده برای نمایش در کارت‌های جدید
+        $this->customerCashBalances = $cashBalances;
+        $this->customerBankBalances = $bankBalances;
+        $this->customerTotalBalances = $totalBalances;
     }
 
     private function resetCurrenciesDefault()
@@ -426,6 +529,8 @@ public function search()
             'depositAccount' => 'required|integer|exists:sarafi.customers,id',
             'from_currency' => 'required|string',
             'to_currency' => 'required|string',
+            'from_account' => 'required|string',
+            'to_account' => 'required|string',
             'withdrawal_amount' => 'required|numeric|min:0.01',
             'received_amount' => 'required|numeric|min:0.01',
             'currency_rate' => 'required|numeric|min:0.0001',
@@ -459,6 +564,8 @@ public function search()
                         'withdrawal_amount' => $this->withdrawal_amount,
                         'to_customer' => $this->depositAccount,
                         'to_currency' => $this->to_currency,
+                        'from_account' => $this->from_account,
+                        'to_account' => $this->to_account,
                         'received_amount' => $this->received_amount,
                         'currency_rate' => $this->currency_rate,
                         'transaction_date' => $this->transaction_date,
@@ -480,6 +587,8 @@ public function search()
                     'withdrawal_amount' => $this->withdrawal_amount,
                     'to_customer' => $this->depositAccount,
                     'to_currency' => $this->to_currency,
+                    'from_account' => $this->from_account,
+                    'to_account' => $this->to_account,
                     'received_amount' => $this->received_amount,
                     'currency_rate' => $this->currency_rate,
                     'transaction_date' => $this->transaction_date,
@@ -501,6 +610,7 @@ public function search()
                 'customer_id' => $this->withdrawalAccount,
                 'user_id' => $user->id,
                 'admin_id' => $adminId,
+                'account_type'=>$this->from_account,
                 'currency' => $this->from_currency,
                 'amount' => $this->withdrawal_amount,
                 'type' => 'برداشت',
@@ -518,6 +628,7 @@ public function search()
                 'admin_id' => $adminId,
                 'currency' => $this->to_currency,
                 'amount' => $this->received_amount,
+                'account_type'=>$this->to_account,
                 'type' => 'رسید',
                 'date' => $this->transaction_date,
                 'description' => $this->description . ' - تبدیل از ' . $this->getCurrencyName($this->from_currency) . ' (' . $this->transactionType . ')',
@@ -570,7 +681,6 @@ public function search()
 
         $this->transactionType = 'خرید';
         $this->transaction_date = Jalalian::now()->format('Y/m/d');
-        $this->updateCustomerCurrencyBalance();
     }
 
     public function editConversion($conversionId)
@@ -587,6 +697,8 @@ public function search()
             $this->from_currency = $conversion->from_currency;
             $this->to_currency = $conversion->to_currency;
             $this->withdrawal_amount = $conversion->withdrawal_amount;
+            $this->from_account = $conversion->from_account;
+            $this->to_account = $conversion->to_account;
             $this->received_amount = $conversion->received_amount;
             $this->currency_rate = $conversion->currency_rate;
             $this->transaction_date = $conversion->transaction_date;
@@ -674,7 +786,7 @@ public function search()
         return $currencyMap[$currencyCode] ?? $currencyCode;
     }
 
- 
+
     /**
      * Generate PDF for conversion transaction
      */
@@ -682,14 +794,14 @@ public function search()
     {
         try {
             $conversion = ConversionTransfers::with(['fromCustomer', 'toCustomer', 'user'])->findOrFail($conversionId);
-            
+
             // Check user access
             $user = Auth::guard('sarafi')->user();
             if ($conversion->user_id !== $user->id && $conversion->admin_id !== $user->id) {
                 session()->flash('error', 'دسترسی به این تراکنش مجاز نیست.');
                 return null;
             }
-            
+
             $mpdf = new \Mpdf\Mpdf([
                 'mode' => 'utf-8',
                 'format' => [85, 220],
@@ -719,7 +831,6 @@ public function search()
             return response()->streamDownload(function () use ($mpdf) {
                 echo $mpdf->Output('', 'S');
             }, $fileName);
-
         } catch (\Exception $e) {
             Log::error('PDF generation error: ' . $e->getMessage());
             session()->flash('error', 'خطا در ایجاد PDF: ' . $e->getMessage());
@@ -734,16 +845,15 @@ public function search()
     {
         try {
             $conversion = ConversionTransfers::findOrFail($conversionId);
-            
+
             // Check user access
             $user = Auth::guard('sarafi')->user();
             if ($conversion->user_id !== $user->id && $conversion->admin_id !== $user->id) {
                 session()->flash('error', 'دسترسی به این تراکنش مجاز نیست.');
                 return redirect()->back();
             }
-            
+
             return $this->generateConversionPdf($conversion->id);
-            
         } catch (\Exception $e) {
             Log::error('Print conversion error: ' . $e->getMessage());
             session()->flash('error', 'خطا در چاپ تراکنش: ' . $e->getMessage());
@@ -775,6 +885,25 @@ public function search()
         if ($user) {
             $adminId = $user->admin_id ?? $user->id;
             $this->loadCustomers($adminId);
+               $this->loadZones($adminId);
+        }
+    }
+     private function loadZones($adminId)
+    {
+        $this->zones = \App\Models\Sarafi\User::where(function ($query) use ($adminId) {
+            $query->where('admin_id', $adminId)
+                ->orWhere('id', $adminId);
+        })
+            ->whereNotNull('zone')
+            ->where('zone', '!=', '')
+            ->pluck('zone')
+            ->unique()
+            ->values()
+            ->toArray();
+
+
+        if (empty($this->zones)) {
+            $this->zones = ['غرب', 'مرکز', 'شمال', 'جنوب', 'شرق'];
         }
     }
 }

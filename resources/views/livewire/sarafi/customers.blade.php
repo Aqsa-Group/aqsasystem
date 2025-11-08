@@ -101,7 +101,7 @@
                                 <input type="text" wire:model.lazy="account"
                                     placeholder="{{ __('messages.placeholder_account') }} "
                                     class="w-full p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                    maxlength="16" @if(!$customerId) readonly @endif>
+                                    maxlength="16" @if(!$customerId)  @endif>
                                 <div class="absolute left-3 top-4 text-gray-400">
                                     <img src="{{ asset('assets/sarafi/all_icon/card.svg') }}" alt="">
 

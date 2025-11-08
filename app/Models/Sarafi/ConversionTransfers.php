@@ -16,6 +16,8 @@ class ConversionTransfers extends Model
         'form_customer',
         'from_currency',
         'withdrawal_amount',
+        'from_account',
+        'to_account',
         'to_customer',
         'to_currency',
         'received_amount',

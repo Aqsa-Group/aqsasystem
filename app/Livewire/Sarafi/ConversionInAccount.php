@@ -33,6 +33,9 @@ class ConversionInAccount extends Component
     public $zone_receiver = '';
     public $by_sender = '';
     public $by_receiver = '';
+    public $accountType = 'نقدی';
+    public $zones = [];
+
 
     // نمایش حروفی
     public $withdrawalAmountInWords = '';
@@ -53,6 +56,7 @@ class ConversionInAccount extends Component
     public $customerCashBalances = [];
     public $customerBankBalances = [];
     public $customerTotalBalances = [];
+    
 
 
     // موجودی ارزها
@@ -96,6 +100,8 @@ class ConversionInAccount extends Component
         if ($user) {
             $adminId = $user->admin_id ?? $user->id;
             $this->loadCustomers($adminId);
+            $this->loadZones($adminId);
+
         }
     }
 
@@ -126,20 +132,20 @@ class ConversionInAccount extends Component
 
         // اعمال جستجو
         if (!empty($this->search)) {
-            $query->where(function($q) {
-                $q->whereHas('customer', function($customerQuery) {
+            $query->where(function ($q) {
+                $q->whereHas('customer', function ($customerQuery) {
                     $customerQuery->where('fullname', 'like', '%' . $this->search . '%')
-                                 ->orWhere('account_number', 'like', '%' . $this->search . '%');
+                        ->orWhere('account_number', 'like', '%' . $this->search . '%');
                 })
-                ->orWhere('from_currency', 'like', '%' . $this->search . '%')
-                ->orWhere('to_currency', 'like', '%' . $this->search . '%')
-                ->orWhere('buy_amount', 'like', '%' . $this->search . '%')
-                ->orWhere('sell_amount', 'like', '%' . $this->search . '%')
-                ->orWhere('currency_rate', 'like', '%' . $this->search . '%')
-                ->orWhere('description', 'like', '%' . $this->search . '%')
-                ->orWhere('type', 'like', '%' . $this->search . '%')
-                ->orWhere('zone_sender', 'like', '%' . $this->search . '%')
-                ->orWhere('zone_receiver', 'like', '%' . $this->search . '%');
+                    ->orWhere('from_currency', 'like', '%' . $this->search . '%')
+                    ->orWhere('to_currency', 'like', '%' . $this->search . '%')
+                    ->orWhere('buy_amount', 'like', '%' . $this->search . '%')
+                    ->orWhere('sell_amount', 'like', '%' . $this->search . '%')
+                    ->orWhere('currency_rate', 'like', '%' . $this->search . '%')
+                    ->orWhere('description', 'like', '%' . $this->search . '%')
+                    ->orWhere('type', 'like', '%' . $this->search . '%')
+                    ->orWhere('zone_sender', 'like', '%' . $this->search . '%')
+                    ->orWhere('zone_receiver', 'like', '%' . $this->search . '%');
             });
         }
 
@@ -156,7 +162,7 @@ class ConversionInAccount extends Component
      */
     public function search()
     {
-        $this->resetPage(); 
+        $this->resetPage();
     }
 
     /**
@@ -218,6 +224,11 @@ class ConversionInAccount extends Component
         $this->dispatch('transactionTypeToggled');
     }
 
+    public function toggleAccountType()
+    {
+        $this->accountType = $this->accountType === 'نقدی' ? 'بانکی' : 'نقدی';
+    }
+
     /**
      * محاسبه خودکار مبلغ دریافت بر اساس نرخ ارز
      */
@@ -275,7 +286,7 @@ class ConversionInAccount extends Component
     {
         if (in_array($property, [
             'buy_amount',
-            'currency_rate', 
+            'currency_rate',
             'from_currency',
             'to_currency',
             'transactionType'
@@ -300,7 +311,9 @@ class ConversionInAccount extends Component
         $this->validate([
             'selectedAccount' => 'required|integer|exists:sarafi.customers,id',
             'from_currency' => 'required|string',
-            'to_currency' => 'required|string', 
+            'to_currency' => 'required|string',
+            'from_account' => 'required|string',
+            'to_account' => 'required|string',
             'buy_amount' => 'required|numeric|min:0.01',
             'sell_amount' => 'required|numeric|min:0.01',
             'currency_rate' => 'required|numeric|min:0.0001',
@@ -313,7 +326,7 @@ class ConversionInAccount extends Component
         ]);
 
         $user = Auth::guard('sarafi')->user();
-        
+
         if (!$user) {
             session()->flash('error', 'کاربر احراز هویت نشده است.');
             return;
@@ -326,7 +339,7 @@ class ConversionInAccount extends Component
         try {
             // بررسی موجودی کافی در ارز مبدا
             $fromCurrencyBalance = $this->getCustomerCurrencyBalance($this->selectedAccount, $this->from_currency);
-            
+
             if ($fromCurrencyBalance < floatval($this->buy_amount)) {
                 throw new \Exception('موجودی کافی در ارز مبدا وجود ندارد. موجودی فعلی: ' . number_format($fromCurrencyBalance));
             }
@@ -352,6 +365,7 @@ class ConversionInAccount extends Component
                     'to_currency' => $this->to_currency,
                     'sell_amount' => $this->sell_amount,
                     'currency_rate' => $this->currency_rate,
+                    'account_type' => $this->accountType,
                     'transaction_date' => $this->transaction_date,
                     'description' => $this->description,
                     'zone_sender' => $this->zone_sender,
@@ -362,11 +376,11 @@ class ConversionInAccount extends Component
                 ]);
 
                 $conversionId = $conversion->id;
-
             } else {
                 // حالت ایجاد جدید
                 $conversion = ConversionInAccounts::create([
                     'customer_id' => $this->selectedAccount,
+                    'account_type' => $this->accountType,
                     'from_currency' => $this->from_currency,
                     'buy_amount' => $this->buy_amount,
                     'to_currency' => $this->to_currency,
@@ -398,6 +412,7 @@ class ConversionInAccount extends Component
                 'description' => $this->generateWithdrawalDescription(),
                 'zone' => $this->zone_sender,
                 'by' => $this->by_sender,
+                'account_type' => $this->accountType,
                 'conversion_in_account_id' => $conversionId,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -411,6 +426,7 @@ class ConversionInAccount extends Component
                 'currency' => $this->to_currency,
                 'amount' => $this->sell_amount,
                 'type' => 'رسید',
+                'account_type' => $this->accountType,
                 'date' => $this->transaction_date,
                 'description' => $this->generateDepositDescription(),
                 'zone' => $this->zone_receiver,
@@ -422,15 +438,15 @@ class ConversionInAccount extends Component
 
             DB::connection('sarafi')->commit();
 
-            $message = $this->editingConversionId ? 
-                'تبدیل ارز با موفقیت ویرایش شد.' : 
+            $message = $this->editingConversionId ?
+                'تبدیل ارز با موفقیت ویرایش شد.' :
                 'تبدیل ارز با موفقیت ثبت شد.';
-            
+
             session()->flash('message', $message);
-            
+
             // به‌روزرسانی موجودی‌ها بعد از ثبت
             $this->updateCustomerCurrencyBalance($this->selectedAccount);
-            
+
             // لاگ کردن عملیات موفق
             Log::info('Conversion in account completed successfully', [
                 'conversion_id' => $conversionId,
@@ -442,15 +458,14 @@ class ConversionInAccount extends Component
                 'user_id' => $user->id,
                 'admin_id' => $adminId,
             ]);
-            
+
             $this->resetForm();
-            
         } catch (\Exception $e) {
             DB::connection('sarafi')->rollBack();
-            
+
             $errorMessage = 'خطا در ثبت تبدیل ارز: ' . $e->getMessage();
             session()->flash('error', $errorMessage);
-            
+
             Log::error('Conversion in account error: ' . $e->getMessage(), [
                 'customer_id' => $this->selectedAccount,
                 'from_currency' => $this->from_currency,
@@ -500,7 +515,7 @@ class ConversionInAccount extends Component
 
             $this->dispatch('edit-mode-activated', [
                 'selectedAccount' => $this->selectedAccount,
-                'selectedCustomer' => $conversion->customer ? 
+                'selectedCustomer' => $conversion->customer ?
                     $conversion->customer->account_number . ' - ' . $conversion->customer->fullname : ''
             ]);
         }
@@ -531,7 +546,7 @@ class ConversionInAccount extends Component
             if ($conversion) {
                 // حذف تراکنش‌های مرتبط
                 Transaction::where('conversion_in_account_id', $conversion->id)->delete();
-                
+
                 // حذف تبدیل ارز
                 $conversion->delete();
 
@@ -573,11 +588,10 @@ class ConversionInAccount extends Component
 
         $this->transactionType = 'خرید';
         $this->transaction_date = Jalalian::now()->format('Y/m/d');
-        $this->updateCustomerCurrencyBalance();
     }
 
 
-   // ==================== متدهای PDF ====================
+    // ==================== متدهای PDF ====================
 
     /**
      * Generate PDF for conversion transaction
@@ -586,14 +600,14 @@ class ConversionInAccount extends Component
     {
         try {
             $conversion = ConversionInAccounts::with(['customer', 'user'])->findOrFail($conversionId);
-            
+
             // Check user access
             $user = Auth::guard('sarafi')->user();
             if ($conversion->user_id !== $user->id && $conversion->admin_id !== $user->id) {
                 session()->flash('error', 'دسترسی به این تراکنش مجاز نیست.');
                 return null;
             }
-            
+
             $mpdf = new \Mpdf\Mpdf([
                 'mode' => 'utf-8',
                 'format' => [85, 220],
@@ -623,7 +637,6 @@ class ConversionInAccount extends Component
             return response()->streamDownload(function () use ($mpdf) {
                 echo $mpdf->Output('', 'S');
             }, $fileName);
-
         } catch (\Exception $e) {
             Log::error('PDF generation error: ' . $e->getMessage());
             session()->flash('error', 'خطا در ایجاد PDF: ' . $e->getMessage());
@@ -638,16 +651,15 @@ class ConversionInAccount extends Component
     {
         try {
             $conversion = ConversionInAccounts::findOrFail($conversionId);
-            
+
             // Check user access
             $user = Auth::guard('sarafi')->user();
             if ($conversion->user_id !== $user->id && $conversion->admin_id !== $user->id) {
                 session()->flash('error', 'دسترسی به این تراکنش مجاز نیست.');
                 return redirect()->back();
             }
-            
+
             return $this->generateConversionPdf($conversion->id);
-            
         } catch (\Exception $e) {
             Log::error('Print conversion error: ' . $e->getMessage());
             session()->flash('error', 'خطا در چاپ تراکنش: ' . $e->getMessage());
@@ -690,7 +702,7 @@ class ConversionInAccount extends Component
     {
         $baseDescription = $this->description ? $this->description . ' - ' : '';
         $conversionType = $this->transactionType === 'خرید' ? 'خرید' : 'فروش';
-        
+
         return $baseDescription . 'تبدیل به ' . $this->getCurrencyName($this->to_currency) . ' (' . $conversionType . ')';
     }
 
@@ -701,7 +713,7 @@ class ConversionInAccount extends Component
     {
         $baseDescription = $this->description ? $this->description . ' - ' : '';
         $conversionType = $this->transactionType === 'خرید' ? 'خرید' : 'فروش';
-        
+
         return $baseDescription . 'تبدیل از ' . $this->getCurrencyName($this->from_currency) . ' (' . $conversionType . ')';
     }
 
@@ -715,6 +727,7 @@ class ConversionInAccount extends Component
 
         $transactions = Transaction::where('customer_id', $customerId)
             ->where('admin_id', $adminId)
+            ->where('account_type', $this->accountType)
             ->where('currency', $currencyCode)
             ->get();
 
@@ -733,7 +746,7 @@ class ConversionInAccount extends Component
     /**
      * به‌روزرسانی موجودی ارزهای مشتری
      */
-       public function updateCustomerCurrencyBalance()
+    public function updateCustomerCurrencyBalance()
     {
         if (!$this->selectedCustomerId) {
             $this->currenciesdefault = [
@@ -984,5 +997,24 @@ class ConversionInAccount extends Component
         ];
 
         return $currencyMap[$currencyCode] ?? $currencyCode;
+    }
+
+      private function loadZones($adminId)
+    {
+        $this->zones = \App\Models\Sarafi\User::where(function ($query) use ($adminId) {
+            $query->where('admin_id', $adminId)
+                ->orWhere('id', $adminId);
+        })
+            ->whereNotNull('zone')
+            ->where('zone', '!=', '')
+            ->pluck('zone')
+            ->unique()
+            ->values()
+            ->toArray();
+
+
+        if (empty($this->zones)) {
+            $this->zones = ['غرب', 'مرکز', 'شمال', 'جنوب', 'شرق'];
+        }
     }
 }

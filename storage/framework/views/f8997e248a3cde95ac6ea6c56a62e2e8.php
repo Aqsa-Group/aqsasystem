@@ -32,7 +32,7 @@
         </div>
         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-       
+        
         <div class="scroll-container overflow-x-auto whitespace-nowrap py-3 -mt-5">
             <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <?php
@@ -152,11 +152,9 @@
                         <span class="vazir font-semibold">فورم تبدیل ارز در حساب</span>
                     </p>
 
-                    <button type="button" wire:click="toggleTransactionType"
-                        class="rounded-[8px] px-6 py-3 text-white vazir font-semibold text-sm md:text-base
-                            transition-all duration-300 ease-in-out transform hover:scale-105
-                            <?php echo e($transactionType === 'خرید' ? 'bg-[#2563EB] hover:bg-[#1D4ED8]' : 'bg-[#DD2424] hover:bg-[#B91C1C]'); ?>">
-                        <?php echo e($transactionType === 'خرید' ? 'خرید ارز از مشتری' : 'فروش ارز به مشتری'); ?>
+                    <button wire:click="toggleAccountType" class="rounded-[8px] p-[10px] text-white vazir px-12 font-semibold transition-colors duration-500 ease-in-out
+                        <?php echo e($accountType === 'نقدی' ? 'bg-[#2563EB]' : 'bg-[#DD2424]'); ?>">
+                        <?php echo e($accountType === 'نقدی' ? 'نقدی' : 'بانکی'); ?>
 
                     </button>
                 </div>
@@ -422,7 +420,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
-                        </div>
+                        </div>  
 
                         <!-- توسط دریافت -->
                         <div class="flex-1">
@@ -445,27 +443,17 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
                     <!-- زون‌ها -->
-                    <div class="mt-2 flex flex-col lg:flex-row gap-3">
-                        <!-- زون برداشت -->
-                        <div class="lg:w-[250px]">
+                       
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
+                        <div>
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">زون برداشت</label>
-                            <div class="relative">
-                                <select wire:model="zone_sender"
-                                    class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 appearance-none">
-                                    <option value="">انتخاب زون</option>
-                                    <option value="غرب">غرب (هرات، بادغیس، غور، فراه)</option>
-                                    <option value="مرکز">مرکز (کابل، پروان، کاپیسا، وردک، لوگر)</option>
-                                    <option value="شمال">شمال (بلخ، جوزجان، سرپل، سمنگان، فاریاب)</option>
-                                    <option value="شمال‌شرق">شمال‌شرق (کندز، تخار، بدخشان، بغلان)</option>
-                                    <option value="جنوب">جنوب (قندهار، ارزگان، زابل، هلمند)</option>
-                                    <option value="جنوب‌شرق">جنوب‌شرق (خوست، پکتیا، پکتیکا)</option>
-                                    <option value="شرق">شرق (ننگرهار، لغمان، کنر، نورستان)</option>
-                                    <option value="جنوب‌غرب">جنوب‌غرب (نیمروز)</option>
-                                </select>
-                                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
-                                </div>
-                            </div>
+                            <select wire:model="zone_sender"
+                                class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
+                                <option value="">انتخاب زون</option>
+                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $zones; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $zone): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($zone); ?>"><?php echo e($zone); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                            </select>
                             <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['zone_sender'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -478,26 +466,15 @@ endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
-                        <!-- زون دریافت -->
-                        <div class="lg:w-[290px]">
+                        <div>
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">زون دریافت</label>
-                            <div class="relative">
-                                <select wire:model="zone_receiver"
-                                    class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 appearance-none">
-                                    <option value="">انتخاب زون</option>
-                                    <option value="غرب">غرب (هرات، بادغیس، غور، فراه)</option>
-                                    <option value="مرکز">مرکز (کابل، پروان، کاپیسا، وردک، لوگر)</option>
-                                    <option value="شمال">شمال (بلخ، جوزجان، سرپل، سمنگان، فاریاب)</option>
-                                    <option value="شمال‌شرق">شمال‌شرق (کندز، تخار، بدخشان، بغلان)</option>
-                                    <option value="جنوب">جنوب (قندهار، ارزگان، زابل، هلمند)</option>
-                                    <option value="جنوب‌شرق">جنوب‌شرق (خوست، پکتیا، پکتیکا)</option>
-                                    <option value="شرق">شرق (ننگرهار، لغمان، کنر، نورستان)</option>
-                                    <option value="جنوب‌غرب">جنوب‌غرب (نیمروز)</option>
-                                </select>
-                                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
-                                </div>
-                            </div>
+                            <select wire:model="zone_receiver"
+                                class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
+                                <option value="">انتخاب زون</option>
+                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $zones; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $zone): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($zone); ?>"><?php echo e($zone); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                            </select>
                             <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['zone_receiver'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -510,6 +487,7 @@ endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
+
 
                     <!-- شرح تراکنش -->
                     <div class="mt-3">
@@ -622,7 +600,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                         </div>
                                     </td>
                                     <td class="px-1 py-3 vazir text-[13px] md:text-[18px] w-44">
-                                        <?php echo e(number_format($conversion->currency_rate, 4)); ?>
+                                        <?php echo e(number_format($conversion->currency_rate, 2)); ?>
 
                                     </td>
                                     <td class="px-2 py-3 vazir text-[13px] md:text-[18px] font-medium w-36">
@@ -661,7 +639,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                                     class="w-7 h-7" alt="Delete">
                                             </button>
 
-                                               <button wire:click="printTransaction(<?php echo e($conversion->id); ?>)"
+                                            <button wire:click="printTransaction(<?php echo e($conversion->id); ?>)"
                                                 class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-green-100"
                                                 title="پرینت PDF">
                                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"

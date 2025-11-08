@@ -31,10 +31,10 @@ return [
     // dashboard
     'recipt/withdraw' => 'رسید/پور فنډ',
     'transfer' => 'حساب ته حساب لیږدول',
-    'newspaper_accounts' => 'د حسابونو ژورنال',
+    'newspaper_accounts' => 'د حسابونو گزارشونه',
     'coversion_account' => ' په حساب کې د اسعارو تبادله',
     'coversion_transfer' => 'داسعارو تبادله او لیږد',
-    'general_jornal' => 'عمومي ژورنال',
+    'general_jornal' => 'عمومي گزارشونه',
     'selling' => 'د اسعارو او صندوق پیرود او پلور',
     'page_title' => 'د راپورونو او احصایې اصلي پاڼه',
     'tab_general' => 'عمومي پینل',

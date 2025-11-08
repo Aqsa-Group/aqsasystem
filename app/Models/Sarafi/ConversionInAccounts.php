@@ -10,14 +10,15 @@ class ConversionInAccounts extends Model
 {
     protected $connection = 'sarafi';
     protected $table = 'transferinaccount';
-    
+
     protected $fillable = [
         'customer_id',
         'from_currency',
-        'buy_amount', 
+        'buy_amount',
         'currency_rate',
         'to_currency',
         'sell_amount',
+        'account_type',
         'by_sender',
         'by_receiver',
         'zone_sender',

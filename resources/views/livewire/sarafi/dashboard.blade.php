@@ -24,15 +24,6 @@
             </a>
         </div>
 
-        <!-- حساب‌های روزنامه -->
-        <div
-            class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
-            <i class="fa-solid fa-book-open text-white text-xl"></i>
-            <a href="{{ route('sarafi.accountsjornal') }}"
-                class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
-                {{ __('messages.newspaper_accounts') }}
-            </a>
-        </div>
 
         <!-- خرید و فروش ارز و صندوق -->
         <div class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center  gap-3 text-white text-[16px] font-bold">
@@ -63,6 +54,17 @@
             </a>
         </div>
 
+        <!-- حساب‌های روزنامه -->
+        <div
+            class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
+            <i class="fa-solid fa-book-open text-white text-xl"></i>
+            <a href="{{ route('sarafi.accountsjornal') }}"
+                class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+                {{ __('messages.newspaper_accounts') }}
+            </a>
+        </div>
+
+
         <!-- ژورنال عمومی -->
         <div
             class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
@@ -84,13 +86,7 @@
                     'text-gray-600 hover:text-[#1E3A8A] hover:border-b-2 hover:border-indigo-400'">
                 {{ __('messages.tab_general') }}
             </a>
-            <a href="#" @click.prevent="activeTab = 'reports'" class="px-5 py-2 font-bold transition rounded-t-lg"
-                :class="activeTab === 'reports'
-                    ?
-                    'bg-white border-x border-t border-[#2563EBB0] text-[#1E3A8A] shadow-sm' :
-                    'text-gray-600 hover:text-[#1E3A8A] hover:border-b-2 hover:border-indigo-400'">
-                {{ __('messages.tab_reports') }}
-            </a>
+
             <a href="#" @click.prevent="activeTab = 'safes'" class="px-5 py-2 font-bold transition rounded-t-lg" :class="activeTab === 'safes'
                     ?
                     'bg-white border-x border-t border-[#2563EBB0] text-[#1E3A8A] shadow-sm' :
@@ -236,34 +232,6 @@
                 </div>
             </template>
 
-
-            <template x-if="activeTab === 'reports'">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pr-6">
-
-
-                    <div class="border bg-[#E5E5E5] rounded-2xl p-6 shadow-md" style="height:532px; width:687px;">
-                        <div class="flex items-center gap-3 mb-4">
-                            <img src="{{ asset('assets/sarafi/all_icon/bit-gr.svg') }}" alt="" class="h-8 w-8">
-                            <h2 class="text-lg font-bold text-gray-700">
-                                {{ __('messages.reports_monthly_profit_loss') }}
-                            </h2>
-                        </div>
-                        <canvas id="monthlyProfitLossChart" class="w-full h-[450px]"></canvas>
-                    </div>
-
-
-                    <div class="border bg-[#E5E5E5] rounded-2xl p-6 shadow-md" style="height:532px; width:687px;">
-                        <div class="flex items-center gap-3 mb-4">
-                            <img src="{{ asset('assets/sarafi/all_icon/chart.svg') }}" alt="" class="h-8 w-8">
-                            <h2 class="text-lg font-bold text-gray-700">
-                                {{ __('messages.reports_transactions_by_currency') }}
-                            </h2>
-                        </div>
-                        <canvas id="transactionsByCurrencyChart" class="w-full h-[450px]"></canvas>
-                    </div>
-
-                </div>
-            </template>
 
 
             <template x-if="activeTab === 'safes'">

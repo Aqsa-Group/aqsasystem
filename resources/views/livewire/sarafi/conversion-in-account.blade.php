@@ -30,7 +30,7 @@
         </div>
         @endif
 
-       {{-- کارت‌های ارزها با اسکرول افقی --}}
+        {{-- کارت‌های ارزها با اسکرول افقی --}}
         <div class="scroll-container overflow-x-auto whitespace-nowrap py-3 -mt-5">
             @foreach ($currencies as $currencyItem)
             @php
@@ -58,7 +58,8 @@
                         </div>
                         <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
                             <span class="font-semibold">مجموعه:</span>
-                            <span class="font-bold text-[16px] text-left" dir="ltr">{{ number_format($totalBalance) }}</span>
+                            <span class="font-bold text-[16px] text-left" dir="ltr">{{ number_format($totalBalance)
+                                }}</span>
                         </div>
                     </div>
 
@@ -121,7 +122,8 @@
                         </div>
                         <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
                             <span class="font-semibold">مجموعه:</span>
-                            <span class="font-bold text-[16px] text-left" dir="ltr">{{ number_format($grandTotalUsd, 2) }}</span>
+                            <span class="font-bold text-[16px] text-left" dir="ltr">{{ number_format($grandTotalUsd, 2)
+                                }}</span>
                         </div>
                     </div>
 
@@ -150,11 +152,9 @@
                         <span class="vazir font-semibold">فورم تبدیل ارز در حساب</span>
                     </p>
 
-                    <button type="button" wire:click="toggleTransactionType"
-                        class="rounded-[8px] px-6 py-3 text-white vazir font-semibold text-sm md:text-base
-                            transition-all duration-300 ease-in-out transform hover:scale-105
-                            {{ $transactionType === 'خرید' ? 'bg-[#2563EB] hover:bg-[#1D4ED8]' : 'bg-[#DD2424] hover:bg-[#B91C1C]' }}">
-                        {{ $transactionType === 'خرید' ? 'خرید ارز از مشتری' : 'فروش ارز به مشتری' }}
+                    <button wire:click="toggleAccountType" class="rounded-[8px] p-[10px] text-white vazir px-12 font-semibold transition-colors duration-500 ease-in-out
+                        {{ $accountType === 'نقدی' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
+                        {{ $accountType === 'نقدی' ? 'نقدی' : 'بانکی' }}
                     </button>
                 </div>
 
@@ -360,7 +360,7 @@
                                 <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                                 @enderror
                             </div>
-                        </div>
+                        </div>  
 
                         <!-- توسط دریافت -->
                         <div class="flex-1">
@@ -376,57 +376,37 @@
                     </div>
 
                     <!-- زون‌ها -->
-                    <div class="mt-2 flex flex-col lg:flex-row gap-3">
-                        <!-- زون برداشت -->
-                        <div class="lg:w-[250px]">
+                       {{-- زون برداشت و دریافت --}}
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
+                        <div>
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">زون برداشت</label>
-                            <div class="relative">
-                                <select wire:model="zone_sender"
-                                    class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 appearance-none">
-                                    <option value="">انتخاب زون</option>
-                                    <option value="غرب">غرب (هرات، بادغیس، غور، فراه)</option>
-                                    <option value="مرکز">مرکز (کابل، پروان، کاپیسا، وردک، لوگر)</option>
-                                    <option value="شمال">شمال (بلخ، جوزجان، سرپل، سمنگان، فاریاب)</option>
-                                    <option value="شمال‌شرق">شمال‌شرق (کندز، تخار، بدخشان، بغلان)</option>
-                                    <option value="جنوب">جنوب (قندهار، ارزگان، زابل، هلمند)</option>
-                                    <option value="جنوب‌شرق">جنوب‌شرق (خوست، پکتیا، پکتیکا)</option>
-                                    <option value="شرق">شرق (ننگرهار، لغمان، کنر، نورستان)</option>
-                                    <option value="جنوب‌غرب">جنوب‌غرب (نیمروز)</option>
-                                </select>
-                                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
-                                </div>
-                            </div>
+                            <select wire:model="zone_sender"
+                                class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
+                                <option value="">انتخاب زون</option>
+                                @foreach($zones as $zone)
+                                <option value="{{ $zone }}">{{ $zone }}</option>
+                                @endforeach
+                            </select>
                             @error('zone_sender')
                             <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                             @enderror
                         </div>
 
-                        <!-- زون دریافت -->
-                        <div class="lg:w-[290px]">
+                        <div>
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">زون دریافت</label>
-                            <div class="relative">
-                                <select wire:model="zone_receiver"
-                                    class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 appearance-none">
-                                    <option value="">انتخاب زون</option>
-                                    <option value="غرب">غرب (هرات، بادغیس، غور، فراه)</option>
-                                    <option value="مرکز">مرکز (کابل، پروان، کاپیسا، وردک، لوگر)</option>
-                                    <option value="شمال">شمال (بلخ، جوزجان، سرپل، سمنگان، فاریاب)</option>
-                                    <option value="شمال‌شرق">شمال‌شرق (کندز، تخار، بدخشان، بغلان)</option>
-                                    <option value="جنوب">جنوب (قندهار، ارزگان، زابل، هلمند)</option>
-                                    <option value="جنوب‌شرق">جنوب‌شرق (خوست، پکتیا، پکتیکا)</option>
-                                    <option value="شرق">شرق (ننگرهار، لغمان، کنر، نورستان)</option>
-                                    <option value="جنوب‌غرب">جنوب‌غرب (نیمروز)</option>
-                                </select>
-                                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
-                                </div>
-                            </div>
+                            <select wire:model="zone_receiver"
+                                class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
+                                <option value="">انتخاب زون</option>
+                                @foreach($zones as $zone)
+                                <option value="{{ $zone }}">{{ $zone }}</option>
+                                @endforeach
+                            </select>
                             @error('zone_receiver')
                             <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
+
 
                     <!-- شرح تراکنش -->
                     <div class="mt-3">
@@ -531,7 +511,7 @@
                                         </div>
                                     </td>
                                     <td class="px-1 py-3 vazir text-[13px] md:text-[18px] w-44">
-                                        {{ number_format($conversion->currency_rate, 4) }}
+                                        {{ number_format($conversion->currency_rate, 2) }}
                                     </td>
                                     <td class="px-2 py-3 vazir text-[13px] md:text-[18px] font-medium w-36">
                                         <div class="text-right truncate" title="{{ $conversion->description }}">
@@ -566,7 +546,7 @@
                                                     class="w-7 h-7" alt="Delete">
                                             </button>
 
-                                               <button wire:click="printTransaction({{ $conversion->id }})"
+                                            <button wire:click="printTransaction({{ $conversion->id }})"
                                                 class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-green-100"
                                                 title="پرینت PDF">
                                                 <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"

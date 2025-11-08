@@ -240,6 +240,15 @@ Route::get('/sarafi/exchange-rate', function () {
 })->name('sarafi.exchange-rate');
 
 
+Route::get('/sarafi/remittance', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.remittance');
+})->name('sarafi.remittance');
+
+
+
 
 
 
