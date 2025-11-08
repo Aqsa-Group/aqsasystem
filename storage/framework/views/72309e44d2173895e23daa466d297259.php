@@ -19,7 +19,7 @@
 
 
             <div class="w-full md:w-1/2 flex justify-center relative">
-                <img src="<?php echo e(asset('assets/tools/tools.jpg')); ?>" alt="ورود به پنل صرافی"
+                <img src="<?php echo e(asset('assets/tools/tools.webp')); ?>" alt="ورود به پنل صرافی"
                     class="shadow-md w-full h-[600px] object-cover rounded-xl">
 
                 <!-- لایه نیمه شفاف -->
