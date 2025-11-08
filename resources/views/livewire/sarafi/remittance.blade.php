@@ -14,8 +14,8 @@
 
         <!-- Page Header -->
         <div class="space-y-4 mb-6">
-            <h1 class="text-[24px] font-medium vazir">ثبت احواله جات</h1>
-            <h1 class="text-[#8C8C8C]">صفحه ثبت و ویراش احواله جات بانکی</h1>
+            <h1 class="text-[24px] font-medium vazir">ثبت احواله ها</h1>
+            <h1 class="text-[#8C8C8C]">صفحه ثبت و ویراش احواله های بانکی</h1>
         </div>
         
         <hr class="my-6 border-t border-[#D9D9D9] w-full">
