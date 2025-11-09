@@ -1,4 +1,4 @@
-<div>
+<div >
     <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
         class="fixed top-0 left-0 right-0 w-full z-[9999] bg-gradient-to-br from-indigo-400 to-indigo-500 vazir">
@@ -11,7 +11,7 @@
     </div>
     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-4 pb-0 pt-1">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6  pb-0 pt-1">
 
         <!-- کارت ۱: کل مبلغ قرضه -->
         <div
@@ -117,7 +117,7 @@
 
 
     
-    <div class="flex flex-col lg:flex-row gap-10 mt-4 p-4">
+    <div class="flex flex-col lg:flex-row gap-5 mt-4 ">
 
         
         <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[494px] p-[12px] h-auto rounded-[12px] space-y-2"
@@ -302,13 +302,13 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
         </div>
 
         
-        <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px] w-[400px] mt-[30px] md:mt-0 lg:mt-0 md:w-[400px] lg:w-[440px] "
+        <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px]  mt-[30px] sm:overflow-x-auto md:mt-0 lg:mt-0 mx-auto  md:mx-auto lg:mx-auto w-[440px] mb-5 md:w-[430px] lg:w-[200px] "
             style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
             
             <div
                 class="flex flex-col md:flex-row justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
-                <h1 class="text-lg md:text-xl lg:text-2xl vazir">قرضه های ثبت شده</h1>
+                <h1 class="text-lg md:text-xl lg:text-xl vazir">قرضه های ثبت شده</h1>
 
                 <div class="flex items-center gap-3">
                     
@@ -324,10 +324,10 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                    <div class="relative w-full md:w-[302px]">
+                    <div class="relative w-full md:w-full">
                         <!-- Input جستجوی زنده با wire:model.live -->
                         <input type="text" wire:model.live="search"
-                            class="border border-[#8C8C8C] w-full h-12 md:h-[51px] bg-transparent rounded-[12px] p-2 md:p-3 text-sm md:text-base pr-10"
+                            class="border border-[#8C8C8C] w-[400px] md:w-full lg:w-[300px] h-12 md:h-[51px] bg-transparent rounded-[12px] p-2 md:p-3 text-sm md:text-base pr-10"
                             placeholder="جستجو بر اساس نام یا نمبر حساب...">
 
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""

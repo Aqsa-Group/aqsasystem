@@ -128,10 +128,10 @@
     </div>
 
     {{-- فرم و جدول کنار هم --}}
-    <div class="flex flex-col lg:flex-row gap-10 mt-4 p-4">
+    <div class="flex flex-col lg:flex-row gap-5 mt-4 ">
 
         {{-- فرم برداشت --}}
-        <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[574px] p-[12px] h-[620px] rounded-[12px] space-y-2"
+        <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[474px] p-[10px] h-auto rounded-[12px] space-y-2"
             style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
             {{-- بالای فرم: عنوان --}}
@@ -248,7 +248,7 @@
         </div>
 
         {{-- جدول برداشت‌ها --}}
-        <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px]"
+        <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px]  mt-[30px] sm:overflow-x-auto md:mt-0 lg:mt-0 mx-auto  md:mx-auto lg:mx-auto w-[460px] mb-5 md:w-[430px] lg:w-[200px] "
             style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
             {{-- بالای جدول: عنوان --}}

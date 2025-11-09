@@ -1,6 +1,6 @@
 <div>
     <!-- پیام‌های موفقیت و خطا -->
-    <?php if(session()->has('message')): ?>
+    <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
         class="fixed top-0 left-0 right-0 w-full z-[9999] bg-gradient-to-br bg-gradient-to-br from-indigo-400 to-indigo-500 vazir">
         <div class="h-[60px] sm:h-[80px] w-full flex justify-start items-center px-4">
@@ -11,7 +11,7 @@
             </h2>
         </div>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
     <?php if(session()->has('error')): ?>
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
@@ -24,7 +24,7 @@
             </h2>
         </div>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
 <!-- کارت‌های آماری -->
 <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 p-2 sm:p-4">
@@ -124,8 +124,8 @@
     <div class="flex flex-col xl:flex-row gap-4 sm:gap-6 p-2 sm:p-4">
 
         
-        <div class="flex flex-col bg-white w-full xl:w-1/2 p-4 sm:p-6 rounded-lg sm:rounded-xl shadow-lg border border-gray-200">
-            <div class="flex justify-between items-center p-3 sm:p-4 border-b border-gray-300 mb-4 sm:mb-6">
+<div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[474px] p-[10px] h-auto  rounded-[12px] space-y-2"
+            style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">            <div class="flex justify-between items-center p-3 sm:p-4 border-b border-gray-300 mb-4 sm:mb-6">
                 <h2 class="text-lg sm:text-xl font-bold vazir text-gray-800">
                     <i class="fa-solid fa-cart-plus ml-2 text-green-600"></i>
                     فورم ثبت فروش
@@ -164,7 +164,7 @@
             </div>
 
             <!-- مشتری (فقط برای فروش عمده) -->
-            <?php if($saleType === 'wholesale'): ?>
+            <!--[if BLOCK]><![endif]--><?php if($saleType === 'wholesale'): ?>
             <div class="mb-4 sm:mb-6">
                 <label class="block text-sm font-medium text-gray-700 mb-1 sm:mb-2 vazir">
                     <i class="fa-solid fa-user-tie ml-1 text-purple-600"></i>
@@ -175,10 +175,10 @@
                         class="w-full h-10 sm:h-12 border border-gray-300 rounded-lg p-2 sm:p-3 vazir focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 pr-8 sm:pr-10 text-sm sm:text-base" />
                     <i class="fa-solid fa-search absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
 
-                    <?php if($searchCustomer && count($filteredCustomers) > 0): ?>
+                    <!--[if BLOCK]><![endif]--><?php if($searchCustomer && count($filteredCustomers) > 0): ?>
                     <div
                         class="absolute z-10 w-full bg-white border border-gray-300 rounded-lg mt-1 max-h-60 overflow-y-auto shadow-lg">
-                        <?php $__currentLoopData = $filteredCustomers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $filteredCustomers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div wire:click="selectCustomer(<?php echo e($customer->id); ?>)"
                             class="p-2 sm:p-3 hover:bg-purple-50 cursor-pointer border-b border-gray-100 transition-colors duration-200">
                             <div class="font-medium text-gray-900 text-sm"><?php echo e($customer->fullname); ?></div>
@@ -186,21 +186,21 @@
                                 <i class="fa-solid fa-phone ml-1"></i>
                                 <?php echo e($customer->phone); ?>
 
-                                <?php if($customer->idcard_number): ?>
+                                <!--[if BLOCK]><![endif]--><?php if($customer->idcard_number): ?>
                                 <span class="mr-2 sm:mr-4">
                                     <i class="fa-solid fa-id-card ml-1"></i>
                                     <?php echo e($customer->idcard_number); ?>
 
                                 </span>
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
                         </div>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
-                    <?php endif; ?>
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
             </div>
-            <?php endif; ?>
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
             <!-- جستجوی محصول -->
             <div class="mb-4 sm:mb-6">
@@ -216,16 +216,16 @@
                     <i class="fa-solid fa-search absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
 
                     <!-- دکمه پاک کردن -->
-                    <?php if($searchProduct): ?>
+                    <!--[if BLOCK]><![endif]--><?php if($searchProduct): ?>
                     <button type="button" wire:click="clearCurrentProduct"
                         class="absolute left-8 sm:left-10 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200">
                         <i class="fa-solid fa-times text-sm"></i>
                     </button>
-                    <?php endif; ?>
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
 
                 <!-- نمایش لیست محصولات -->
-                <?php if($searchProduct && count($filteredProducts) > 0 && !$selectedProduct): ?>
+                <!--[if BLOCK]><![endif]--><?php if($searchProduct && count($filteredProducts) > 0 && !$selectedProduct): ?>
                 <div
                     class="absolute z-20 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-xl max-h-60 overflow-y-auto">
                     <!-- دکمه غیرفعال کردن انتخاب خودکار -->
@@ -237,7 +237,7 @@
                             توقف انتخاب خودکار
                         </button>
                     </div>
-                    <?php $__currentLoopData = $filteredProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $filteredProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div wire:click="selectProduct(<?php echo e($product->id); ?>)"
                         class="p-2 sm:p-3 hover:bg-indigo-50 cursor-pointer border-b border-gray-100 transition-colors duration-200">
                         <div class="flex justify-between items-start">
@@ -249,13 +249,13 @@
                                         <?php echo e($product->barcode); ?>
 
                                     </span>
-                                    <?php if($product->category): ?>
+                                    <!--[if BLOCK]><![endif]--><?php if($product->category): ?>
                                     <span class="ml-2 sm:ml-3">
                                         <i class="fa-solid fa-folder ml-1"></i>
                                         <?php echo e($product->category); ?>
 
                                     </span>
-                                    <?php endif; ?>
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </div>
                             </div>
                             <div class="text-right text-xs sm:text-sm">
@@ -277,12 +277,12 @@
                             </div>
                         </div>
                     </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
-                <?php endif; ?>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                 <!-- نمایش اطلاعات محصول انتخاب شده -->
-                <?php if($selectedProduct): ?>
+                <!--[if BLOCK]><![endif]--><?php if($selectedProduct): ?>
                 <div
                     class="mt-3 p-3 sm:p-4 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg shadow-sm">
                     <div class="flex justify-between items-start mb-3 sm:mb-4">
@@ -296,13 +296,13 @@
                                 <i class="fa-solid fa-barcode ml-1"></i>
                                 بارکد: <?php echo e($selectedProduct->barcode); ?>
 
-                                <?php if($selectedProduct->category): ?>
+                                <!--[if BLOCK]><![endif]--><?php if($selectedProduct->category): ?>
                                 <span class="mr-2 sm:mr-4">
                                     <i class="fa-solid fa-tag ml-1"></i>
                                     <?php echo e($selectedProduct->category); ?>
 
                                 </span>
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </p>
                         </div>
                         <button type="button" wire:click="clearCurrentProduct"
@@ -354,16 +354,16 @@
                         </div>
                     </div>
 
-                    <?php if($selectedProduct->is_low_stock): ?>
+                    <!--[if BLOCK]><![endif]--><?php if($selectedProduct->is_low_stock): ?>
                     <div class="mt-3 p-2 sm:p-3 bg-yellow-100 border border-yellow-300 rounded-lg flex items-center">
                         <i class="fa-solid fa-exclamation-triangle text-yellow-600 ml-2"></i>
                         <span class="text-yellow-800 text-xs sm:text-sm font-medium">
                             موجودی این محصول کم است! (حداقل موجودی: <?php echo e($selectedProduct->min_stock_level); ?>)
                         </span>
                     </div>
-                    <?php endif; ?>
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
-                <?php endif; ?>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </div>
 
 
@@ -377,13 +377,13 @@
                     <input type="number" wire:model="quantity" step="0.01" min="0.01"
                         class="w-full h-10 sm:h-12 border border-gray-300 rounded-lg p-2 sm:p-3 vazir focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm sm:text-base"
                         id="quantityInput" wire:loading.attr="disabled" />
-                    <?php if($selectedProduct): ?>
+                    <!--[if BLOCK]><![endif]--><?php if($selectedProduct): ?>
                     <div class="text-xs text-gray-500 mt-2 flex items-center">
                         <i class="fa-solid fa-info-circle ml-1"></i>
                         حداکثر: <?php echo e(number_format($selectedProduct->total_quantity)); ?> <?php echo e($selectedProduct->unit); ?>
 
                     </div>
-                    <?php endif; ?>
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1 sm:mb-2 vazir">
@@ -404,7 +404,7 @@
             </button>
 
             <!-- سبد خرید -->
-            <?php if(count($cartItems) > 0): ?>
+            <!--[if BLOCK]><![endif]--><?php if(count($cartItems) > 0): ?>
             <div class="border-t pt-4 sm:pt-6">
                 <h3 class="text-base sm:text-lg font-bold mb-3 sm:mb-4 flex items-center">
                     <i class="fa-solid fa-shopping-basket ml-2 text-indigo-600"></i>
@@ -412,7 +412,7 @@
                 </h3>
 
                 <div class="space-y-2 sm:space-y-3 max-h-60 overflow-y-auto mb-4 sm:mb-6">
-                    <?php $__currentLoopData = $cartItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $cartItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div
                         class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 sm:p-4 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
                         <div class="flex-1 mb-2 sm:mb-0">
@@ -455,7 +455,7 @@
                             </div>
                         </div>
                     </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
 
                 <!-- در بخش خلاصه فاکتور -->
@@ -507,7 +507,7 @@
                         <div class="flex justify-between items-center">
                             <span class="text-gray-700 text-sm sm:text-base">مبلغ پرداختی:</span>
                             <div class="flex items-center gap-1 sm:gap-2">
-                                <?php if($saleType === 'retail'): ?>
+                                <!--[if BLOCK]><![endif]--><?php if($saleType === 'retail'): ?>
                                 <!-- در فروش پرچون، مبلغ پرداختی غیرقابل ویرایش است -->
                                 <input type="number" wire:model="paidAmount"
                                     class="w-24 sm:w-32 text-right border border-gray-300 rounded-lg p-1 sm:p-2 bg-gray-100 cursor-not-allowed text-sm sm:text-base"
@@ -523,7 +523,7 @@
                                     class="w-24 sm:w-32 text-right border border-gray-300 rounded-lg p-1 sm:p-2 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 text-sm sm:text-base"
                                     placeholder="0" />
                                 <span class="text-gray-500 text-sm sm:text-base">افغانی</span>
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
                         </div>
 
@@ -532,21 +532,21 @@
                                 <span class="font-bold text-gray-800 text-sm sm:text-base">باقی مانده:</span>
                                 <span
                                     class="font-bold text-lg sm:text-xl <?php echo e($remainingAmount > 0 ? 'text-red-600' : 'text-green-600'); ?>">
-                                    <?php if($saleType === 'retail'): ?>
+                                    <!--[if BLOCK]><![endif]--><?php if($saleType === 'retail'): ?>
                                     <span class="text-green-600">۰</span>
                                     <?php else: ?>
                                     <?php echo e(number_format($remainingAmount)); ?>
 
-                                    <?php endif; ?>
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                     افغانی
                                 </span>
                             </div>
-                            <?php if($saleType === 'retail'): ?>
+                            <!--[if BLOCK]><![endif]--><?php if($saleType === 'retail'): ?>
                             <div class="text-xs text-green-600 mt-1 flex items-center">
                                 <i class="fa-solid fa-check-circle ml-1"></i>
                                 فروش پرچون به صورت نقدی انجام می‌شود
                             </div>
-                            <?php endif; ?>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
                 </div>
@@ -572,12 +572,12 @@
                     </button>
                 </div>
             </div>
-            <?php endif; ?>
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </div>
 
         
-        <div class="flex-1 flex flex-col bg-white p-4 sm:p-6 rounded-lg sm:rounded-xl shadow-lg border border-gray-200 mt-4 xl:mt-0">
-            <div
+    <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px]  mt-[30px] sm:overflow-x-auto md:mt-0 lg:mt-0 mx-auto  md:mx-auto lg:mx-auto w-[440px] mb-5 md:w-[430px] lg:w-[200px] "
+            style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">            <div
                 class="flex flex-col md:flex-row justify-between items-start md:items-center p-3 sm:p-4 border-b border-gray-300 mb-4 sm:mb-6 gap-3 sm:gap-4">
                 <h2 class="text-lg sm:text-xl font-bold vazir text-gray-800">
                     <i class="fa-solid fa-list ml-2 text-indigo-600"></i>
@@ -590,12 +590,12 @@
                             class="border border-gray-300 rounded-lg p-2 sm:p-3 vazir text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 w-full md:w-64"
                             dir="ltr" />
                     </div>
-                    <?php if($filterInvoice): ?>
+                    <!--[if BLOCK]><![endif]--><?php if($filterInvoice): ?>
                     <button wire:click="$set('filterInvoice', '')"
                         class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
                         <i class="fa-solid fa-times"></i>
                     </button>
-                    <?php endif; ?>
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
             </div>
 
@@ -615,7 +615,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php $__empty_1 = true; $__currentLoopData = $sales; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sale): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                        <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $sales; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sale): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                         <tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors duration-200">
                             <td class="p-2 sm:p-4 text-center">
                                 <span class="text-xs sm:text-sm font-medium text-gray-700 bg-gray-100 px-2 py-1 rounded-full">
@@ -626,11 +626,11 @@
                             <td class="p-2 sm:p-4">
                                 <span
                                     class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium <?php echo e($sale->sale_type === 'retail' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'); ?>">
-                                    <?php if($sale->sale_type === 'retail'): ?>
+                                    <!--[if BLOCK]><![endif]--><?php if($sale->sale_type === 'retail'): ?>
                                     <i class="fa-solid fa-user mr-1"></i>
                                     <?php else: ?>
                                     <i class="fa-solid fa-users mr-1"></i>
-                                    <?php endif; ?>
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                     <?php echo e($sale->sale_type === 'retail' ? 'پرچون' : 'عمده'); ?>
 
                                 </span>
@@ -647,30 +647,30 @@
                                         H:i')); ?>
 
                                     </span>
-                                    <?php if($sale->description): ?>
+                                    <!--[if BLOCK]><![endif]--><?php if($sale->description): ?>
                                     <span class="text-xs text-gray-500 mt-1">
                                         <i class="fa-solid fa-file-lines ml-1"></i>
                                         <?php echo e(Str::limit($sale->description, 30)); ?>
 
                                     </span>
-                                    <?php endif; ?>
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </div>
                             </td>
                             <td class="p-2 sm:p-4">
-                                <?php if($sale->customer): ?>
+                                <!--[if BLOCK]><![endif]--><?php if($sale->customer): ?>
                                 <div class="flex flex-col">
                                     <span class="font-medium text-gray-700 text-xs sm:text-sm"><?php echo e($sale->customer->fullname); ?></span>
-                                    <?php if($sale->customer->phone): ?>
+                                    <!--[if BLOCK]><![endif]--><?php if($sale->customer->phone): ?>
                                     <span class="text-xs text-gray-500 mt-1 flex items-center">
                                         <i class="fa-solid fa-phone ml-1"></i>
                                         <?php echo e($sale->customer->phone); ?>
 
                                     </span>
-                                    <?php endif; ?>
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </div>
                                 <?php else: ?>
                                 <span class="text-gray-400 italic text-xs">-</span>
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </td>
                             <td class="p-2 sm:p-4 text-center">
                                 <span class="font-bold text-gray-900 text-xs sm:text-sm"><?php echo e(number_format($sale->total_price)); ?></span>
@@ -737,23 +737,23 @@
                                 </div>
                             </td>
                         </tr>
-                        <?php endif; ?>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                     </tbody>
                 </table>
             </div>
 
             <!-- صفحه‌بندی -->
-            <?php if($sales->hasPages()): ?>
+            <!--[if BLOCK]><![endif]--><?php if($sales->hasPages()): ?>
             <div class="mt-4 sm:mt-6 px-2 sm:px-4">
                 <?php echo e($sales->links()); ?>
 
             </div>
-            <?php endif; ?>
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </div>
     </div>
 
     <!-- مودال برگشت کالا -->
-    <?php if($selectedSaleForReturn): ?>
+    <!--[if BLOCK]><![endif]--><?php if($selectedSaleForReturn): ?>
     <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
         <div class="bg-white rounded-lg sm:rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             <div class="p-4 sm:p-6 border-b border-gray-200">
@@ -794,7 +794,7 @@
                 <div class="mb-4 sm:mb-6">
                     <h4 class="font-bold text-base sm:text-lg mb-3 sm:mb-4 text-gray-700">کالاهای قابل برگشت</h4>
                     <div class="space-y-2 sm:space-y-3">
-                        <?php $__currentLoopData = $returnItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $returnItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 sm:p-4 bg-white border border-gray-200 rounded-lg">
                             <div class="flex-1 mb-2 sm:mb-0">
                                 <div class="font-medium text-gray-900 text-sm"><?php echo e($item['product_name']); ?></div>
@@ -838,7 +838,7 @@
                                 </div>
                             </div>
                         </div>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
                 </div>
 
@@ -888,7 +888,7 @@
             </div>
         </div>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 </div>
 
 <?php $__env->startPush('scripts'); ?>

@@ -122,8 +122,8 @@
     <div class="flex flex-col xl:flex-row gap-4 sm:gap-6 p-2 sm:p-4">
 
         {{-- فرم ثبت فروش --}}
-        <div class="flex flex-col bg-white w-full xl:w-1/2 p-4 sm:p-6 rounded-lg sm:rounded-xl shadow-lg border border-gray-200">
-            <div class="flex justify-between items-center p-3 sm:p-4 border-b border-gray-300 mb-4 sm:mb-6">
+<div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[474px] p-[10px] h-auto  rounded-[12px] space-y-2"
+            style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">            <div class="flex justify-between items-center p-3 sm:p-4 border-b border-gray-300 mb-4 sm:mb-6">
                 <h2 class="text-lg sm:text-xl font-bold vazir text-gray-800">
                     <i class="fa-solid fa-cart-plus ml-2 text-green-600"></i>
                     فورم ثبت فروش
@@ -554,8 +554,8 @@
         </div>
 
         {{-- جدول فروش‌ها --}}
-        <div class="flex-1 flex flex-col bg-white p-4 sm:p-6 rounded-lg sm:rounded-xl shadow-lg border border-gray-200 mt-4 xl:mt-0">
-            <div
+    <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px]  mt-[30px] sm:overflow-x-auto md:mt-0 lg:mt-0 mx-auto  md:mx-auto lg:mx-auto w-[440px] mb-5 md:w-[430px] lg:w-[200px] "
+            style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">            <div
                 class="flex flex-col md:flex-row justify-between items-start md:items-center p-3 sm:p-4 border-b border-gray-300 mb-4 sm:mb-6 gap-3 sm:gap-4">
                 <h2 class="text-lg sm:text-xl font-bold vazir text-gray-800">
                     <i class="fa-solid fa-list ml-2 text-indigo-600"></i>

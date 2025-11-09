@@ -26,7 +26,7 @@
     <div class="space-y-6">
 
         <!-- کارت‌های سالانه -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-4 pb-0 pt-1">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6  pb-0 pt-1">
             <!-- کارت ۱: کل معاش سالانه -->
             <div
                 class="bg-gradient-to-br from-rose-100 to-rose-200 border-l-4 border-rose-500 text-rose-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
@@ -89,7 +89,7 @@
         </div>
 
         <!-- کارت‌های ماهانه -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-4 pb-0 pt-1">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6  pb-0 pt-1">
             <!-- کارت ۵: معاش پایه ماهانه -->
             <div
                 class="bg-gradient-to-br from-orange-100 to-orange-200 border-l-4 border-orange-500 text-orange-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
@@ -153,14 +153,14 @@
     </div>
 
     {{-- فرم و جدول کنار هم --}}
-    <div class="flex flex-col lg:flex-row gap-10 mt-4 p-4">
+    <div class="flex flex-col lg:flex-row gap-4 mt-4 ">
 
         {{-- فرم پرداخت معاش --}}
-        <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[574px] p-[12px] h-[620px] rounded-[12px] space-y-2"
+        <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[474px] p-[10px] h-auto  rounded-[12px] space-y-2"
             style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
             {{-- بالای فرم: عنوان --}}
-            <div class="flex flex-row justify-between p-[16px] border border-[#8C8C8C] rounded-[12px] flex-wrap mb-5">
+            <div class="flex flex-row justify-between p-[16px] border border-[#8C8C8C] space-x-3 rounded-[12px] flex-wrap mb-5">
                 <p class="flex justify-center items-center text-center">
                     <img src="{{ asset('assets/sarafi/all_icon/edit-2.svg') }}" alt="" class="h-6 w-6">
                     {{ $salaryId ? 'فورم ویرایش معاش' : 'فورم ثبت پرداخت معاش' }}
@@ -274,7 +274,7 @@
         </div>
 
         {{-- جدول پرداخت‌های معاش --}}
-        <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px]"
+              <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px]  mt-[30px] sm:overflow-x-auto md:mt-0 lg:mt-0 mx-auto  md:mx-auto lg:mx-auto w-[440px] mb-5 md:w-[430px] lg:w-[200px] "
             style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
             {{-- بالای جدول: عنوان و جستجو --}}

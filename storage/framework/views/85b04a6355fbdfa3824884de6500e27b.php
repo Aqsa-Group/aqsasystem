@@ -162,6 +162,8 @@
             animation-delay: 2s;
         }
 
+        
+
         @keyframes spin {
             0% {
                 transform: rotate(0deg);
@@ -394,7 +396,6 @@
             transform: translateX(100%);
             transition: transform 0.3s ease;
             overflow-y: auto;
-            padding: 1.5rem;
             box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
         }
 
@@ -515,7 +516,7 @@
             .sidebar-container {
                 position: static;
                 transform: none;
-                width: 320px;
+                width: 240px;
                 height: auto;
                 box-shadow: none;
                 display: block !important;
@@ -656,10 +657,10 @@
         <!-- Overlay for mobile menu -->
         <div class="mobile-overlay" id="mobileOverlay"></div>
 
-        <div class="content-wrapper mt-5">
+        <div class="content-wrapper mt-5 p-0">
             <!-- سایدبار موبایل -->
             <div class="sidebar-container" id="mobileSidebar">
-                <nav class="mt-0 space-y-1" x-data="{
+                <nav class="mt-0 space-y-1 w-[220px] " x-data="{
                     openItems: {
                         customers: false,
                         accounting: false,
@@ -954,7 +955,7 @@
         
 
             <!-- محتوای اصلی -->
-            <main class="flex-1 main-content-container">
+            <main class="flex-1 main-content-container px-2">
                 <?php echo $__env->yieldContent('content'); ?>
             </main>
         </div>
