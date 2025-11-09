@@ -96,9 +96,9 @@ class Dashboard extends Component
         $LoanAFNcome = Loan::where('admin_id', $adminId)->where('currency', 'afn')->where('type', 'رسید')->sum('amount');
         $LoanAFNwithdraw = Loan::where('admin_id', $adminId)->where('currency', 'afn')->where('type', 'برد')->sum('amount');
         $totalAFNLoan =  $LoanAFNwithdraw  - $LoanAFNcome;
-        $Inventorytotalprice = Inventories::where('user_id', $user->id)->sum('total_purchase_amount');
+        $Inventorytotalprice = Inventories::where('admin_id', $adminId)->sum('total_purchase_amount');
         $Warehousetotalprice = Warehouses::where('user_id', $user->id)->sum('total_purchase_amount');
-        $shopsafeafn = ShopSafe::where('user_id', $user->id)->sum('afn');
+        $shopsafeafn = ShopSafe::where('admin_id', $adminId)->sum('afn');
         $TotalStock = $Inventorytotalprice + $Warehousetotalprice +  $shopsafeafn;
 
         $Withdrawals = Withdrawals::where('admin_id', $adminId)

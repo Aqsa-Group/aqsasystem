@@ -188,7 +188,7 @@ class Warehouse extends Component
                 $existingProduct->calculateTotalPurchaseAmount();
                 $existingProduct->calculateProfitLoss();
                 $existingProduct->updateStatus();
-                $existingProduct->save(); 
+                $existingProduct->save();
 
                 $message = 'موجودی محصول در دوکان افزایش یافت!';
                 $targetProduct = $existingProduct;
@@ -271,38 +271,38 @@ class Warehouse extends Component
         session()->flash('message', 'انتقال لغو شد.');
     }
 
- private function recordInventoryHistory($product, $type, $quantityChange, $previousQuantity, $newQuantity, $unitPrice = null, $notes = null)
-{
-    $user = Auth::guard('tools')->user();
+    private function recordInventoryHistory($product, $type, $quantityChange, $previousQuantity, $newQuantity, $unitPrice = null, $notes = null)
+    {
+        $user = Auth::guard('tools')->user();
 
-    // بررسی مقدار معتبر برای type
-    $validTypes = ['ورود', 'خروج', 'تعدیل', 'فروش', 'خرید'];
-    if (!in_array($type, $validTypes)) {
-        throw new \InvalidArgumentException("نوع تاریخچه نامعتبر است: {$type}");
+        // بررسی مقدار معتبر برای type
+        $validTypes = ['ورود', 'خروج', 'تعدیل', 'فروش', 'خرید'];
+        if (!in_array($type, $validTypes)) {
+            throw new \InvalidArgumentException("نوع تاریخچه نامعتبر است: {$type}");
+        }
+
+        $historyData = [
+            'inventory_id' => $product->id,
+            'type' => $type,
+            'quantity_change' => $quantityChange,
+            'previous_quantity' => $previousQuantity,
+            'new_quantity' => $newQuantity,
+            'unit_price' => $unitPrice ?? 0,
+            'total_amount' => $unitPrice ? abs($quantityChange) * $unitPrice : 0,
+            'notes' => $notes,
+            'created_by' => $user->name ?? 'system',
+        ];
+
+        if ($user && Schema::hasColumn('inventory_histories', 'user_id')) {
+            $historyData['user_id'] = $user->id;
+        }
+
+        if ($user && Schema::hasColumn('inventory_histories', 'admin_id')) {
+            $historyData['admin_id'] = $user->admin_id ?? $user->id;
+        }
+
+        InventoryHistory::create($historyData);
     }
-
-    $historyData = [
-        'inventory_id' => $product->id,
-        'type' => $type,
-        'quantity_change' => $quantityChange,
-        'previous_quantity' => $previousQuantity,
-        'new_quantity' => $newQuantity,
-        'unit_price' => $unitPrice ?? 0,
-        'total_amount' => $unitPrice ? abs($quantityChange) * $unitPrice : 0,
-        'notes' => $notes,
-        'created_by' => $user->name ?? 'system',
-    ];
-
-    if ($user && Schema::hasColumn('inventory_histories', 'user_id')) {
-        $historyData['user_id'] = $user->id;
-    }
-
-    if ($user && Schema::hasColumn('inventory_histories', 'admin_id')) {
-        $historyData['admin_id'] = $user->admin_id ?? $user->id;
-    }
-
-    InventoryHistory::create($historyData);
-}
 
 
     private function recordWarehouseHistory($product, $type, $quantityChange, $previousQuantity, $newQuantity, $unitPrice = null, $notes = null)
@@ -401,166 +401,160 @@ class Warehouse extends Component
         }
     }
 
- public function saveProduct()
-{
-    // اگر محصول از گدام می‌آید، از تابع انتقال استفاده کن
-    if ($this->is_from_inventory && $this->transfer_quantity > 0) {
-        $this->transferFromInventory();
-        return;
-    }
-
-    // اگر بارکد خالی بود، بارکد خودکار ایجاد کن
-    if (empty($this->barcode)) {
-        $this->barcode = $this->generateAutoBarcode();
-    }
-
-    // در غیر این صورت محصول جدید ثبت کن
-    $this->validate([
-        'barcode' => 'required|string|unique:tools.warehouses,barcode,' . $this->editingId,
-        'product_name' => 'required|string|max:255',
-        'unit' => 'required|string',
-        'package_type' => 'required|in:کارتن,بسته,دانه',
-        'quantity_per_package' => 'required|integer|min:1',
-        'total_packages' => 'required|integer|min:0',
-        'purchase_price_per_package' => 'required|numeric|min:0',
-        'retail_price' => 'required|numeric|min:0',
-        'wholesale_price' => 'required|numeric|min:0',
-        'country_of_origin' => 'required|string',
-        'production_year' => 'required|integer|min:1380|max:' . (Jalalian::now()->getYear() + 1),
-        'min_stock_level' => 'required|integer|min:0',
-        'category' => 'nullable|string',
-    ]);
-
-    // بررسی یکتایی بارکد (اگر کاربر دستی وارد کرده)
-    $existingProduct = Warehouses::where('barcode', $this->barcode)
-        ->when($this->editingId, function ($query) {
-            $query->where('id', '!=', $this->editingId);
-        })
-        ->first();
-
-    if ($existingProduct) {
-        $this->addError('barcode', 'این بارکد قبلاً ثبت شده است.');
-        return;
-    }
-
-    // Perform calculations before saving
-    $this->calculatePrices();
-
-     $user = Auth::guard('tools')->user();
-    $adminId = $user->admin_id ?? $user->id;
-    $imagePath = $this->product_image ? $this->product_image->store('products', 'public') : null;
-
-    $productData = [
-        'barcode' => $this->barcode,
-        'product_name' => $this->product_name,
-        'unit' => $this->unit,
-        'package_type' => $this->package_type,
-        'quantity_per_package' => $this->quantity_per_package,
-        'total_packages' => $this->total_packages,
-        'total_quantity' => $this->total_quantity,
-        'purchase_price_per_package' => $this->purchase_price_per_package,
-        'purchase_price_per_unit' => $this->purchase_price_per_unit,
-        'total_purchase_amount' => $this->total_purchase_amount,
-        'retail_price' => $this->retail_price,
-        'wholesale_price' => $this->wholesale_price,
-        'profit_loss_per_unit' => $this->profit_loss_per_unit,
-        'total_profit_loss' => $this->total_profit_loss,
-        'country_of_origin' => $this->country_of_origin,
-        'production_year' => $this->production_year,
-        'notes' => $this->notes,
-        'image_path' => $imagePath,
-        'category' => $this->category,
-        'user_id' => $user,
-        'admin_id' => $adminId,
-        'sub_category' => $this->sub_category,
-        'supplier_name' => $this->supplier_name,
-        'supplier_contact' => $this->supplier_contact,
-        'min_stock_level' => $this->min_stock_level,
-        'max_stock_level' => $this->max_stock_level,
-        'expiry_date' => $this->expiry_date,
-        'status' => $this->status,
-        'is_active' => $this->is_active,
-        'last_purchase_date' => $this->editingId ? null : now(),
-    ];
-
-    // اضافه کردن user_id و admin_id اگر فیلدها وجود دارند
-    if ($user && Schema::hasColumn('warehouses', 'user_id')) {
-        $productData['user_id'] = $user->id;
-    }
-
-    if ($user && Schema::hasColumn('warehouses', 'admin_id')) {
-        $productData['admin_id'] = $user->admin_id ?? $user->id;
-    }
-
-    DB::beginTransaction();
-    try {
-        if ($this->editingId) {
-            $product = Warehouses::findOrFail($this->editingId);
-            $product->update($productData);
-            $message = 'محصول با موفقیت بروزرسانی شد!';
-        } else {
-            Warehouses::create($productData);
-            $message = 'محصول جدید با موفقیت ثبت شد!';
+    public function saveProduct()
+    {
+        // اگر محصول از گدام می‌آید، از تابع انتقال استفاده کن
+        if ($this->is_from_inventory && $this->transfer_quantity > 0) {
+            $this->transferFromInventory();
+            return;
         }
 
-        DB::commit();
-        $this->resetForm();
-        session()->flash('message', $message);
-    } catch (\Exception $e) {
-        DB::rollBack();
-        session()->flash('error', 'خطا در ذخیره محصول: ' . $e->getMessage());
-    }
-}
+        // اگر بارکد خالی بود، بارکد خودکار ایجاد کن
+        if (empty($this->barcode)) {
+            $this->barcode = $this->generateAutoBarcode();
+        }
 
-/**
- * تولید بارکد خودکار
- */
-private function generateAutoBarcode()
-{
-    $prefix = 'AUTO'; // پیشوند برای بارکدهای خودکار
-    $timestamp = now()->format('YmdHis');
-    $random = \Illuminate\Support\Str::random(4); // ۴ کاراکتر تصادفی
-    
-    $autoBarcode = $prefix . $timestamp . strtoupper($random);
-    
-    // بررسی یکتایی
-    $counter = 0;
-    while (\App\Models\Tools\Warehouses::where('barcode', $autoBarcode)->exists() && $counter < 10) {
-        $random = \Illuminate\Support\Str::random(4);
+        // در غیر این صورت محصول جدید ثبت کن
+        $this->validate([
+            'barcode' => 'required|string|unique:tools.warehouses,barcode,' . $this->editingId,
+            'product_name' => 'required|string|max:255',
+            'unit' => 'required|string',
+            'package_type' => 'required|in:کارتن,بسته,دانه',
+            'quantity_per_package' => 'required|integer|min:1',
+            'total_packages' => 'required|integer|min:0',
+            'purchase_price_per_package' => 'required|numeric|min:0',
+            'retail_price' => 'required|numeric|min:0',
+            'wholesale_price' => 'required|numeric|min:0',
+            'country_of_origin' => 'required|string',
+            'production_year' => 'required|integer|min:1380|max:' . (Jalalian::now()->getYear() + 1),
+            'min_stock_level' => 'required|integer|min:0',
+            'category' => 'nullable|string',
+        ]);
+
+        // بررسی یکتایی بارکد (اگر کاربر دستی وارد کرده)
+        $existingProduct = Warehouses::where('barcode', $this->barcode)
+            ->when($this->editingId, function ($query) {
+                $query->where('id', '!=', $this->editingId);
+            })
+            ->first();
+
+        if ($existingProduct) {
+            $this->addError('barcode', 'این بارکد قبلاً ثبت شده است.');
+            return;
+        }
+
+        // Perform calculations before saving
+        $this->calculatePrices();
+
+
+        $imagePath = $this->product_image ? $this->product_image->store('products', 'public') : null;
+        $user = Auth::guard('tools')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        $productData = [
+            'barcode' => $this->barcode,
+            'product_name' => $this->product_name,
+            'unit' => $this->unit,
+            'package_type' => $this->package_type,
+            'quantity_per_package' => $this->quantity_per_package,
+            'total_packages' => $this->total_packages,
+            'total_quantity' => $this->total_quantity,
+            'purchase_price_per_package' => $this->purchase_price_per_package,
+            'purchase_price_per_unit' => $this->purchase_price_per_unit,
+            'total_purchase_amount' => $this->total_purchase_amount,
+            'retail_price' => $this->retail_price,
+            'wholesale_price' => $this->wholesale_price,
+            'profit_loss_per_unit' => $this->profit_loss_per_unit,
+            'total_profit_loss' => $this->total_profit_loss,
+            'country_of_origin' => $this->country_of_origin,
+            'production_year' => $this->production_year,
+            'notes' => $this->notes,
+            'image_path' => $imagePath,
+            'category' => $this->category,
+            'user_id' => $user->id,       // ✅ فقط id کاربر
+            'admin_id' => $adminId,       // ✅ عدد id
+            'sub_category' => $this->sub_category,
+            'supplier_name' => $this->supplier_name,
+            'supplier_contact' => $this->supplier_contact,
+            'min_stock_level' => $this->min_stock_level,
+            'max_stock_level' => $this->max_stock_level,
+            'expiry_date' => $this->expiry_date,
+            'status' => $this->status,
+            'is_active' => $this->is_active,
+            'last_purchase_date' => $this->editingId ? null : now(),
+        ];
+
+
+
+        DB::beginTransaction();
+        try {
+            if ($this->editingId) {
+                $product = Warehouses::findOrFail($this->editingId);
+                $product->update($productData);
+                $message = 'محصول با موفقیت بروزرسانی شد!';
+            } else {
+                Warehouses::create($productData);
+                $message = 'محصول جدید با موفقیت ثبت شد!';
+            }
+
+            DB::commit();
+            $this->resetForm();
+            session()->flash('message', $message);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            session()->flash('error', 'خطا در ذخیره محصول: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * تولید بارکد خودکار
+     */
+    private function generateAutoBarcode()
+    {
+        $prefix = 'AUTO'; // پیشوند برای بارکدهای خودکار
+        $timestamp = now()->format('YmdHis');
+        $random = \Illuminate\Support\Str::random(4); // ۴ کاراکتر تصادفی
+
         $autoBarcode = $prefix . $timestamp . strtoupper($random);
-        $counter++;
-    }
-    
-    // اگر هنوز تکراری بود، از timestamp متفاوت استفاده کن
-    if (\App\Models\Tools\Warehouses::where('barcode', $autoBarcode)->exists()) {
-        $autoBarcode = $prefix . now()->format('YmdHisu') . strtoupper(\Illuminate\Support\Str::random(4));
-    }
-    
-    return $autoBarcode;
-}
 
-/**
- * روش جایگزین: تولید بارکد عددی
- */
-private function generateNumericBarcode()
-{
-    $prefix = '8';
-    $maxAttempts = 10;
-    $attempt = 0;
-    
-    do {
-        $randomNumber = mt_rand(1, 99999999999);
-        $barcode = $prefix . str_pad($randomNumber, 11, '0', STR_PAD_LEFT);
-        $attempt++;
-    } while (\App\Models\Tools\Warehouses::where('barcode', $barcode)->exists() && $attempt < $maxAttempts);
-    
-    // اگر بعد از ۱۰ بار موفق نشد، از روش timestamp استفاده کن
-    if ($attempt >= $maxAttempts) {
-        $barcode = '8' . now()->format('YmdHis') . mt_rand(100, 999);
+        // بررسی یکتایی
+        $counter = 0;
+        while (\App\Models\Tools\Warehouses::where('barcode', $autoBarcode)->exists() && $counter < 10) {
+            $random = \Illuminate\Support\Str::random(4);
+            $autoBarcode = $prefix . $timestamp . strtoupper($random);
+            $counter++;
+        }
+
+        // اگر هنوز تکراری بود، از timestamp متفاوت استفاده کن
+        if (\App\Models\Tools\Warehouses::where('barcode', $autoBarcode)->exists()) {
+            $autoBarcode = $prefix . now()->format('YmdHisu') . strtoupper(\Illuminate\Support\Str::random(4));
+        }
+
+        return $autoBarcode;
     }
-    
-    return $barcode;
-}
+
+    /**
+     * روش جایگزین: تولید بارکد عددی
+     */
+    private function generateNumericBarcode()
+    {
+        $prefix = '8';
+        $maxAttempts = 10;
+        $attempt = 0;
+
+        do {
+            $randomNumber = mt_rand(1, 99999999999);
+            $barcode = $prefix . str_pad($randomNumber, 11, '0', STR_PAD_LEFT);
+            $attempt++;
+        } while (\App\Models\Tools\Warehouses::where('barcode', $barcode)->exists() && $attempt < $maxAttempts);
+
+        // اگر بعد از ۱۰ بار موفق نشد، از روش timestamp استفاده کن
+        if ($attempt >= $maxAttempts) {
+            $barcode = '8' . now()->format('YmdHis') . mt_rand(100, 999);
+        }
+
+        return $barcode;
+    }
 
     public function editProduct($productId)
     {

@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
-
 class Inventory extends Component
 {
     use WithFileUploads, WithPagination;
@@ -56,6 +55,10 @@ class Inventory extends Component
     public $selectedCategory = '';
     public $selectedStatus = '';
 
+    public $categories = [];
+    public $subCategories = [];
+    public $availableSubCategories = [];
+
     // Stock management
     public $stock_quantity = 0;
     public $stock_type = 'ورود';
@@ -68,7 +71,140 @@ class Inventory extends Component
     {
         $this->production_year = Jalalian::now()->getYear();
         $this->expiry_date = null;
+        $this->initializeCategories();
         $this->calculatePrices();
+    }
+    /**
+     * Initialize categories and subcategories
+     */
+private function initializeCategories()
+    {
+        $this->categories = [
+            'ابزار و صنعتی',
+            'سوپرمارکت',
+            'آرایشی و بهداشتی',
+            'خودرو و موتورسیکلت',
+            'لوازم خانگی',
+            'الکترونیک و دیجیتال',
+            'پوشاک و مد',
+            'خانه و آشپزخانه',
+            'سرگرمی و hobbies',
+            'کودک و نوزاد',
+        ];
+
+        $this->subCategories = [
+            'ابزار و صنعتی' => [
+                'ابزار دستی',
+                'ابزار برقی',
+                'تجهیزات ایمنی',
+                'لوازم صنعتی',
+                'پیچ و مهره'
+            ],
+            'سوپرمارکت' => [
+                'خوراکی',
+                'نوشیدنی',
+                'خشکبار',
+                'لبنیات',
+                'نان و شیرینی'
+            ],
+            'آرایشی و بهداشتی' => [
+                'لوازم آرایشی',
+                'لوازم بهداشتی',
+                'عطر و ادکلن',
+                'مراقبت پوست',
+                'مراقبت مو'
+            ],
+            'خودرو و موتورسیکلت' => [
+                'لوازم یدکی خودرو',
+                'لوازم یدکی موتور',
+                'لوازم جانبی',
+                'روغن و مواد شیمیایی',
+                'تجهیزات کارواش'
+            ],
+            'لوازم خانگی' => [
+                'لوازم برقی خانگی',
+                'لوازم آشپزخانه',
+                'لوازم نظافتی',
+                'لوازم روشنایی',
+                'سیستم گرمایش و سرمایش'
+            ],
+            'الکترونیک و دیجیتال' => [
+                'موبایل',
+                'لپ تاپ',
+                'تبلت',
+                'لوازم جانبی الکترونیک',
+                'کامپیوتر و قطعات'
+            ],
+            'پوشاک و مد' => [
+                'لباس مردانه',
+                'لباس زنانه',
+                'لباس بچه گانه',
+                'کفش',
+                'اکسسوری'
+            ],
+            'خانه و آشپزخانه' => [
+                'دکوراسیون',
+                'لوازم آشپزخانه',
+                'مبلمان',
+                'فرش و گلیم',
+                'لوازم خواب'
+            ],
+            'سرگرمی و hobbies' => [
+                'کتاب',
+                'موزیک',
+                'اسباب بازی',
+                'ورزشی',
+                'لوازم سفر'
+            ],
+            'کودک و نوزاد' => [
+                'لباس نوزاد',
+                'اسباب بازی',
+                'غذای کودک',
+                'لوازم بهداشتی کودک',
+                'وسایل خواب کودک'
+            ],
+        ];
+    }
+
+    /**
+     * Get subcategories based on selected category
+     */
+    public function getSubCategoriesForCategory($category)
+    {
+        return $this->subCategories[$category] ?? [];
+    }
+
+
+    /**
+     * When category changes, reset sub_category
+     */
+     public function updatedCategory($value)
+    {
+        $this->sub_category = null;
+        $this->availableSubCategories = $this->getSubCategoriesForCategory($value);
+        $this->calculatePrices();
+    }
+
+    
+
+    /**
+     * Get unique categories from database for filter
+     */
+    public function getDatabaseCategoriesProperty()
+    {
+        $user = Auth::guard('tools')->user();
+
+        $query = Inventories::query();
+
+        if ($user && Schema::hasColumn('inventories', 'admin_id')) {
+            $adminId = $user->admin_id ?? $user->id;
+            $query->where('admin_id', $adminId);
+        }
+
+        return $query->whereNotNull('category')
+            ->distinct()
+            ->pluck('category')
+            ->toArray();
     }
 
     public function calculatePrices()
@@ -125,7 +261,7 @@ class Inventory extends Component
             'package_type',
             'wholesale_price',
             'min_stock_level',
-            'retail_price' // اضافه کردن این
+            'retail_price'
         ];
 
         if (in_array($property, $calculateProperties)) {
@@ -138,11 +274,9 @@ class Inventory extends Component
         }
     }
 
-
     public function saveProduct()
     {
         $this->validate([
-            // حذف required از بarcode و اضافه کردن nullable
             'barcode' => 'nullable|string|unique:tools.inventories,barcode,' . $this->editingId,
             'product_name' => 'required|string|max:255',
             'unit' => 'required|string',
@@ -176,7 +310,6 @@ class Inventory extends Component
         // Perform calculations before saving
         $this->calculatePrices();
 
-
         $user = Auth::guard('tools')->user();
         $adminId = $user->admin_id ?? $user->id;
         $imagePath = $this->product_image ? $this->product_image->store('products', 'public') : null;
@@ -207,9 +340,9 @@ class Inventory extends Component
             'min_stock_level' => $this->min_stock_level,
             'max_stock_level' => $this->max_stock_level,
             'expiry_date' => $this->expiry_date,
-            'status' => $this->status,
             'user_id' =>$user,
-            'admin_id' =>$adminId,
+            'admin_id'=>$adminId,
+            'status' => $this->status,
             'is_active' => $this->is_active,
             'last_purchase_date' => $this->editingId ? null : now(),
         ];
@@ -248,13 +381,12 @@ class Inventory extends Component
      */
     private function generateAutoBarcode()
     {
-        $prefix = 'AUTO'; // پیشوند برای بارکدهای خودکار
+        $prefix = 'AUTO';
         $timestamp = now()->format('YmdHis');
-        $random = Str::random(4); // ۴ کاراکتر تصادفی
+        $random = Str::random(4);
 
         $autoBarcode = $prefix . $timestamp . strtoupper($random);
 
-        // بررسی یکتایی
         $counter = 0;
         while (Inventories::where('barcode', $autoBarcode)->exists() && $counter < 10) {
             $random = Str::random(4);
@@ -262,60 +394,11 @@ class Inventory extends Component
             $counter++;
         }
 
-        // اگر هنوز تکراری بود، از timestamp متفاوت استفاده کن
         if (Inventories::where('barcode', $autoBarcode)->exists()) {
             $autoBarcode = $prefix . now()->format('YmdHisu') . strtoupper(Str::random(4));
         }
 
         return $autoBarcode;
-    }
-
-    /**
-     * روش جایگزین: تولید بارکد عددی
-     */
-    private function generateNumericBarcode()
-    {
-        $prefix = '8';
-        $maxAttempts = 10;
-        $attempt = 0;
-
-        do {
-            $randomNumber = mt_rand(1, 99999999999);
-            $barcode = $prefix . str_pad($randomNumber, 11, '0', STR_PAD_LEFT);
-            $attempt++;
-        } while (Inventories::where('barcode', $barcode)->exists() && $attempt < $maxAttempts);
-
-        // اگر بعد از ۱۰ بار موفق نشد، از روش timestamp استفاده کن
-        if ($attempt >= $maxAttempts) {
-            $barcode = '8' . now()->format('YmdHis') . mt_rand(100, 999);
-        }
-
-        return $barcode;
-    }
-
-    /**
-     * روش جایگزین: تولید بارکد بر اساس نام محصول
-     */
-    private function generateNameBasedBarcode()
-    {
-        if (empty($this->product_name)) {
-            return $this->generateAutoBarcode();
-        }
-
-        $namePart = substr(preg_replace('/[^a-zA-Z0-9]/', '', $this->product_name), 0, 6);
-        $timestamp = now()->format('mdHis');
-        $random = mt_rand(100, 999);
-
-        $barcode = strtoupper($namePart) . $timestamp . $random;
-
-        $counter = 0;
-        while (Inventories::where('barcode', $barcode)->exists() && $counter < 5) {
-            $random = mt_rand(100, 999);
-            $barcode = strtoupper($namePart) . $timestamp . $random;
-            $counter++;
-        }
-
-        return $barcode;
     }
 
     public function editProduct($productId)
@@ -349,7 +432,6 @@ class Inventory extends Component
         $this->calculatePrices();
     }
 
-
     public $confirmDeleteId = null;
 
     public function confirmDelete($productId)
@@ -373,9 +455,6 @@ class Inventory extends Component
 
                 DB::commit();
                 session()->flash('message', 'محصول با موفقیت حذف شد!');
-
-                // رفرش کامپوننت
-                $this->dispatch('$refresh');
             } catch (\Exception $e) {
                 DB::rollBack();
                 session()->flash('error', 'خطا در حذف محصول: ' . $e->getMessage());
@@ -541,19 +620,12 @@ class Inventory extends Component
         $this->calculatePrices();
     }
 
-
     public function clearFilters()
     {
         $this->reset(['search', 'selectedCategory', 'selectedStatus']);
         $this->resetPage();
-
-        // اطمینان از محاسبه مجدد قیمت‌ها
         $this->calculatePrices();
-
-        // اگر می‌خواهید فرم هم ریست شود:
-        // $this->resetForm();
     }
-
 
     public function clearStockForm()
     {
@@ -567,7 +639,6 @@ class Inventory extends Component
 
         $query = Inventories::query();
 
-        // اگر فیلد admin_id وجود دارد و کاربر لاگین کرده، فیلتر کنیم
         if ($user && Schema::hasColumn('inventories', 'admin_id')) {
             $adminId = $user->admin_id ?? $user->id;
             $query->where('admin_id', $adminId);
@@ -586,7 +657,6 @@ class Inventory extends Component
 
         $query = Inventories::query();
 
-        // اگر فیلد admin_id وجود دارد و کاربر لاگین کرده، فیلتر کنیم
         if ($user && Schema::hasColumn('inventories', 'admin_id')) {
             $adminId = $user->admin_id ?? $user->id;
             $query->where('admin_id', $adminId);
@@ -604,7 +674,6 @@ class Inventory extends Component
 
         $query = Inventories::query();
 
-        // اگر فیلد admin_id وجود دارد و کاربر لاگین کرده، فیلتر کنیم
         if ($user && Schema::hasColumn('inventories', 'admin_id')) {
             $adminId = $user->admin_id ?? $user->id;
             $query->where('admin_id', $adminId);
@@ -629,7 +698,6 @@ class Inventory extends Component
 
         $query = Inventories::query();
 
-        // اگر فیلد admin_id وجود دارد و کاربر لاگین کرده، فیلتر کنیم
         if ($user && Schema::hasColumn('inventories', 'admin_id')) {
             $adminId = $user->admin_id ?? $user->id;
             $query->where('admin_id', $adminId);
@@ -654,11 +722,12 @@ class Inventory extends Component
         return $query->orderBy('created_at', 'desc')->paginate(10);
     }
 
-
     public function render()
     {
         return view('livewire.tools-panel.inventory', [
             'categories' => $this->categories,
+            'subCategories' => $this->subCategories,
+            'databaseCategories' => $this->databaseCategories,
             'lowStockProducts' => $this->lowStockProducts,
             'inventoryStats' => $this->inventoryStats,
             'products' => $this->products,

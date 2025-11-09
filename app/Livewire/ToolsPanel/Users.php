@@ -27,7 +27,7 @@ class Users extends Component
     // Alerts and delete confirmation
     public $alert = null;
     public $confirmDeleteId = null;
-public $currentUser;
+    public $currentUser;
 
     // Filters
     public $filterRole = '';
@@ -63,7 +63,7 @@ public $currentUser;
     public function mount()
     {
 
-           $this->currentUser = Auth::guard('tools')->user();
+        $this->currentUser = Auth::guard('tools')->user();
         $this->setDefaultValues();
     }
 
@@ -167,73 +167,81 @@ public $currentUser;
     // -------------------------
     // Save or update user
     // -------------------------
-    public function save()
-    {
-        $currentUser = Auth::guard('tools')->user();
-        $rules = $this->rules;
+  public function save()
+{
+    $currentUser = Auth::guard('tools')->user();
+    $rules = $this->rules;
 
-        if ($this->editId) {
-            $rules['username'] = 'required|string|max:255|unique:tools.users,username,' . $this->editId;
-        }
+    if ($this->editId) {
+        $rules['username'] = 'required|string|max:255|unique:tools.users,username,' . $this->editId;
+    }
 
-        $this->validate($rules);
+    $this->validate($rules);
 
-        $data = [
-            'name' => $this->name,
-            'lastname' => $this->lastname,
-            'username' => $this->username,
-            'role' => $this->role,
-            'company_name' => $this->company_name,
-            'address' => $this->address,
-            'phone' => $this->phone,
-            'status' => $this->editId ? User::find($this->editId)->status : 0,
+    $data = [
+        'name' => $this->name,
+        'lastname' => $this->lastname,
+        'username' => $this->username,
+        'role' => $this->role,
+        'company_name' => $this->company_name,
+        'address' => $this->address,
+        'phone' => $this->phone,
+        'status' => $this->editId ? User::find($this->editId)->status : 0,
+    ];
 
-        ];
+    if ($this->password) {
+        $data['password'] = bcrypt($this->password);
+    }
 
-        if ($this->password) {
-            $data['password'] = bcrypt($this->password);
-        }
-
-        // Superadmin rules
-        if ($currentUser && $currentUser->role === 'superadmin') {
-            $data['admin_id'] = $this->role === 'admin' && !$this->editId ? null : null;
-            if ($this->role === 'admin' && !$this->editId) {
+    // قوانین superadmin
+    if ($currentUser && $currentUser->role === 'superadmin') {
+        if ($this->role === 'admin') {
+            // چه در ایجاد و چه ویرایش، admin_id = id superadmin
+            $data['admin_id'] = $currentUser->id;
+            if (!$this->editId) {
                 $data['user_limition'] = $this->user_limition ?? 0;
             }
-        }
-
-        // Admin rules
-        if ($currentUser && $currentUser->role === 'admin' && !$this->editId) {
-            $userCount = User::where('admin_id', $currentUser->id)->count();
-            if ($userCount >= ($currentUser->user_limition ?? 0)) {
-                $this->alert = ['title' => 'Error', 'message' => 'Maximum users reached.'];
-                return;
-            }
-
-            $data['admin_id'] = $currentUser->id;
-            $data['user_limition'] = 0;
-
-            if ($this->role === 'superadmin') {
-                $this->alert = ['title' => 'Error', 'message' => 'Admin cannot create superadmin.'];
-                return;
-            }
-        }
-
-        // Save or update
-        if ($this->editId) {
-            User::find($this->editId)->update($data);
-            $this->alert = [
-                'title' => __('messages.Success'),
-                'message' => $this->editId ? __('messages.user_updated') : __('messages.user_created')
-            ];
         } else {
-            User::create($data);
-            $this->alert = ['title' => __('messages.Success'), 'message' => __('messages.user_created')];
+            // اگر superadmin ایجاد/ویرایش کند و نقش superadmin باشد
+            $data['admin_id'] = null;
+        }
+    }
+
+    // قوانین admin
+    if ($currentUser && $currentUser->role === 'admin' && !$this->editId) {
+        $userCount = User::where('admin_id', $currentUser->id)->count();
+        if ($userCount >= ($currentUser->user_limition ?? 0)) {
+            $this->alert = ['title' => 'Error', 'message' => 'Maximum users reached.'];
+            return;
         }
 
-        $this->modalOpen = false;
-        $this->resetInputFields();
+        $data['admin_id'] = $currentUser->id;
+        $data['user_limition'] = 0;
+
+        if ($this->role === 'superadmin') {
+            $this->alert = ['title' => 'Error', 'message' => 'Admin cannot create superadmin.'];
+            return;
+        }
     }
+
+    // ذخیره یا بروزرسانی
+    if ($this->editId) {
+        User::find($this->editId)->update($data);
+        $this->alert = [
+            'title' => __('messages.Success'),
+            'message' => __('messages.user_updated')
+        ];
+    } else {
+        User::create($data);
+        $this->alert = [
+            'title' => __('messages.Success'),
+            'message' => __('messages.user_created')
+        ];
+    }
+
+    $this->modalOpen = false;
+    $this->resetInputFields();
+}
 
     // -------------------------
     // Confirm deletion
@@ -355,13 +363,11 @@ public $currentUser;
         return User::select('company_name')->whereNotNull('company_name')->distinct()->pluck('company_name')->toArray();
     }
 
-public function render()
-{
-    $this->currentUser = Auth::guard('tools')->user();
-    return view('livewire.tools-panel.users', [
-        'users' => $this->users,
-    ]);
-}
-
-
+    public function render()
+    {
+        $this->currentUser = Auth::guard('tools')->user();
+        return view('livewire.tools-panel.users', [
+            'users' => $this->users,
+        ]);
+    }
 }

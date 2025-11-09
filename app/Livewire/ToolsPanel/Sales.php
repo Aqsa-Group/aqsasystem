@@ -552,8 +552,12 @@ class Sales extends Component
     private function updateShopSafe($amount)
     {
         $user = Auth::guard('tools')->user();
+            $adminId = $user->admin_id ?? $user->id;
         $safe = ShopSafe::firstOrCreate(
-            ['user_id' => $user->id],
+            ['user_id' => $user->id,
+            'admin_id' =>$adminId
+
+        ],
             ['afn' => 0]
         );
         $safe->afn += $amount;
