@@ -589,7 +589,7 @@
 
                     <!-- نام شرکت -->
                     <div class="text-[40px] text-[#353e73] font-bold amiri company-name">
-                        شرکت {{ Auth::guard('tools')->user()->company_name }}
+                         {{ Auth::guard('tools')->user()->company_name }}
                     </div>
                 </div>
 
