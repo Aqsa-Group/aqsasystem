@@ -27,9 +27,9 @@
 
 
       <div class="flex flex-col  space-y-3 pr-0 md:pr-10 lg:pr-24 xl:pr-24">
-            <h1 class="text-[45px] mb-4 yekan">مدیریت اجناس گدام </h1>
+            <h1 class="text-[25px] mb-2 yekan">مدیریت اجناس گدام </h1>
             <h1 class="text-[rgb(140,140,140)] border-b border-[#D9D9D9] pb-6">لیست تمام محصولات و موجودی گدام</h1>
-            <h1 class="text-[24px] font-medium pb-2">ثبت محصول جدید</h1>
+            <h1 class="text-[16px] font-medium pb-4">ثبت محصول جدید</h1>
         </div> 
 
 
