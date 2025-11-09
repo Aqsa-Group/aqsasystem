@@ -1,7 +1,7 @@
 <div>
     <div class="pl-10 pr-10 mb-5">
         <div class="flex flex-col space-y-3">
-            <h1 class="text-[24px] font-semibold text-black"> تبدیل ارز و انتقال از دوکان  به صرافی و برعکس</h1>
+            <h1 class="text-[24px] font-semibold text-black"> تبدیل ارز و انتقال از دوکان به صرافی و برعکس</h1>
             <h1 class="text-[#8C8C8C] text-[18px]">صفحه درج تبدیل ارز و انتقال از دوکان به صرافی</h1>
         </div>
     </div>
@@ -29,61 +29,65 @@
         </div>
         @endif
 
-        {{-- کارت‌های ارزها با اسکرول افقی --}}
-        <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-full pb-4 p-[12px] h-[274px] rounded-[12px] space-y-2"
-            style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+ {{-- کارت‌های ارزها با گرید ریسپانسیو (بدون اسکرول افقی) --}}
+<div class="flex flex-col bg-[#F5F5F5] w-full pb-4 p-[12px] rounded-[12px] space-y-2"
+    style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
-            <div class="flex w-full h-[58px]   bg-gradient-to-br from-black to-blue-400 border-l-4 border-pink-500 text-white  rounded-[12px]">
-                <p class="text-white text-[18px] vazir text-center justify-center flex items-center p-5">موجودی صندوق دوکان
-                    </p>
-            </div>
+    {{-- هدر --}}
+    <div class="flex w-full h-[58px] bg-gradient-to-br from-black to-blue-400 border-l-4 border-pink-500 text-white rounded-[12px]">
+        <p class="text-white text-[18px] vazir text-center justify-center flex items-center p-5">
+            موجودی صندوق دوکان
+        </p>
+    </div>
 
-            <div class="scroll-container overflow-x-auto overflow-y-hidden whitespace-nowrap py-3 pb-12 mt-4 w-full">
-                <div class="grid grid-flow-col auto-cols-max gap-4 px-4">
-                    @foreach ($currenciesdefault as $currency)
-                    <div class="w-[273px] h-[135px] pr-5 pl-5 pt-3 rounded-[12px] mb-5
-                @if ($currency['name'] === 'خلاصه بیلانس به دالر') 
-                      bg-gradient-to-br from-black to-blue-400 border-l-4 border-pink-500 text-white p-6 rounded-xl shadow-lg transition-all duration-300 
-                @else
-                      bg-gradient-to-br from-black to-blue-400 border-l-4 border-pink-500 text-white p-6 rounded-xl shadow-lg transition-all duration-300 
-                @endif text-white">
+    {{-- گرید کارت‌ها --}}
+    <div class="mt-4 w-full">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 px-2 sm:px-4 pb-4">
+            @foreach ($currenciesdefault as $currency)
+                <div class="h-[135px] w-full pr-5 pl-5 pt-3 rounded-[12px]
+                    bg-gradient-to-br from-black to-blue-400 border-l-4 border-pink-500 text-white 
+                    p-6 rounded-xl shadow-lg transition-all duration-300">
 
-                        <h1 class="text-[22px] truncate">{{ $currency['name'] }}</h1>
-                        <h2 class="text-center text-[28px] mt-1 font-bold">{{ number_format($currency['value']) }}</h2>
+                    <h1 class="text-[20px] md:text-[22px] truncate">{{ $currency['name'] }}</h1>
+                    <h2 class="text-center text-[26px] md:text-[28px] mt-1 font-bold">
+                        {{ number_format($currency['value']) }}
+                    </h2>
 
-                        <button wire:click="showReport" wire:loading.attr="disabled"
-                            class="bg-white rounded-[12px] text-[14px] p-1.5 mt-1 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2 w-full font-medium">
-                            <span wire:loading.remove>نمایش گزارش</span>
-                            <span wire:loading>در حال انتقال...</span>
-                        </button>
-                    </div>
-                    @endforeach
+                    <button wire:click="showReport" wire:loading.attr="disabled"
+                        class="bg-white rounded-[12px] text-[14px] p-1.5 mt-1 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2 w-full font-medium">
+                        <span wire:loading.remove>نمایش گزارش</span>
+                        <span wire:loading>در حال انتقال...</span>
+                    </button>
                 </div>
-            </div>
+            @endforeach
         </div>
+    </div>
+</div>
+
 
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
             {{-- فرم تراکنش --}}
-            <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[574px] p-[12px] h-fit rounded-[12px] space-y-2"
+            <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[474px] p-[12px] h-fit rounded-[12px] space-y-2"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 {{-- بالای فرم: فورم و دکمه‌ها --}}
-           <div class="flex flex-row justify-between p-[20px] border border-[#8C8C8C] rounded-[12px] flex-wrap items-center">
-    <p class="flex justify-between items-center text-center gap-2">
-        <img src="{{ asset('assets/sarafi/all_icon/pencil.svg') }}" alt="" class="h-6 w-6">
-        <span class="vazir font-semibold">فورم تبدیل ارز و انتقال</span>
-    </p>
+                <div
+                    class="flex flex-row justify-between p-[20px] border border-[#8C8C8C] rounded-[12px] flex-wrap items-center">
+                    <p class="flex justify-between items-center text-center gap-2">
+                        <img src="{{ asset('assets/sarafi/all_icon/pencil.svg') }}" alt="" class="h-6 w-6">
+                        <span class="vazir font-semibold">فورم تبدیل ارز و انتقال</span>
+                    </p>
 
-  
-</div>
+
+                </div>
 
 
                 {{-- فرم --}}
                 <form wire:submit.prevent="submitConversion">
 
-                     {{-- حساب برداشت و دریافت --}}
+                    {{-- حساب برداشت و دریافت --}}
                     <div class="mt-2 flex flex-col lg:flex-row gap-3">
-                     
+
                         {{-- انتخاب حساب --}}
                         <div class="flex-1">
                             <div class="relative w-full">
@@ -299,9 +303,11 @@
                     </div>
 
                     {{-- دکمه‌های نهایی --}}
-                    <div class="flex gap-4 p-4 justify-center items-center text-center flex-wrap">
-                        <button type="submit" wire:loading.attr="disabled"
-                            class="bg-gradient-to-br from-black to-blue-500 text-[16px] vazir font-semibold rounded-[8px] px-[74px] py-4 text-white hover:bg-blue-700 transition disabled:opacity-50">
+
+                       <!-- دکمه‌های نهایی -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mt-2">
+                      <button type="submit" wire:loading.attr="disabled"
+                            class="bg-gradient-to-br flex from-black to-blue-500 text-[14px] vazir font-semibold rounded-[8px] px-[74px] py-1 p-2 text-white hover:bg-blue-700 transition disabled:opacity-50">
                             @if($editingConversionId)
                             <span wire:loading.remove>ویرایش تبدیل ارز</span>
                             @else
@@ -310,20 +316,21 @@
                             <span wire:loading>در حال ثبت...</span>
                         </button>
                         <button type="button" wire:click="resetForm" wire:loading.attr="disabled"
-                            class="bg-[#DD2424] text-[16px] vazir fobg-gradient-to-br from-black to-blue-500  text-white p-6 rounded-xl shadow-lg transition-all duration-300nt-semibold rounded-[8px] px-[74px] py-4 text-white hover:bg-red-700 transition">
+                            class="bg-[#DD2424] text-[16px] vazir fobg-gradient-to-br from-black to-blue-500  text-white p-6 rounded-xl shadow-lg transition-all duration-300nt-semibold rounded-[8px] px-[74px] py-1 text-white hover:bg-red-700 transition">
                             @if($editingConversionId) انصراف از ویرایش @else انصراف @endif
                         </button>
                     </div>
+                   
                 </form>
             </div>
 
             {{-- جدول تراکنش‌های تبدیل ارز --}}
-            <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px]"
+             <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px]  mt-[30px] sm:overflow-x-auto md:mt-0 lg:mt-0 mx-auto  md:mx-auto lg:mx-auto w-[440px] mb-5 md:w-[430px] lg:w-[200px] "
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-
+                {{-- بالای جدول: عنوان و جستجو --}}
                 <div
                     class="flex flex-col md:flex-row justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
-                    <h1 class="text-lg md:text-xl lg:text-2xl vazir">تراکنش های تبدیل ارز ثبت شده</h1>
+                    <h1 class="text-lg md:text-xl lg:text-2xl vazir">ترانزکشن های ثبت شده</h1>
 
                     <div class="flex items-center gap-3">
                         <div class="relative w-full md:w-[250px]">
@@ -350,7 +357,7 @@
                     <div class="max-h-[680px] overflow-y-auto min-w-[890px]">
                         <table class="w-[890px] text-sm md:text-base text-left rtl:text-right text-gray-500">
                             <thead
-                                class="bg-gradient-to-br from-black to-blue-400   text-white text-[14px] md:text-[16px] vazir h-[50px] md:h-[60px] sticky top-0"
+                                class="bg-gradient-to-br from-black to-blue-400   text-white text-[14px] md:text-[16px] vazir h-[50px] md:h-[60px] sticky top-0 "
                                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
                                 <tr>
                                     <th class="px-2 py-3 font-bold w-12">#</th>
@@ -371,7 +378,7 @@
                                         {{ $key + 1 }}
                                     </td>
                                     <td class="px-2 py-3 vazir text-[16px] md:text-[18px] font-medium w-32">
-                                       صندوق دوکان
+                                        صندوق دوکان
                                     </td>
                                     <td class="px-2 py-3 vazir text-[16px] md:text-[18px] font-medium w-32">
                                         <div class="truncate" title="{{ $conversion->to_customer_name ?? '-' }}">
@@ -426,7 +433,7 @@
                                             </button>
 
                                             <!-- دکمه پرینت -->
-                                              <button wire:click="printTransaction({{ $conversion->id }})"
+                                            <button wire:click="printTransaction({{ $conversion->id }})"
                                                 class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-green-100"
                                                 title="پرینت PDF">
                                                 <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"
