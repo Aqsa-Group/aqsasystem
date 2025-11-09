@@ -89,7 +89,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-sm font-bold mt-1 animate-number" data-target="{{ $todaysale }}">0</p>
+                <p lang='en' dir="ltr" class=" text-left text-sm font-bold mt-1 animate-number" data-target="{{ $todaysale }}">0</p>
                 <span class="text-sm bg-green-200 px-2 py-1 rounded-full">+12%</span>
             </div>
         </div>
@@ -108,7 +108,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-[25px] font-bold mt-1 animate-number" data-target="{{ $todayprofit }}">0</p>
+                <p lang='en' dir="ltr" class=" text-left text-[25px] font-bold mt-1 animate-number" data-target="{{ $todayprofit }}">0</p>
                 <span class="text-sm bg-blue-200 px-2 py-1 rounded-full">+8%</span>
             </div>
         </div>
@@ -127,7 +127,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-[25px] font-bold mt-1 animate-number vazir" data-target="{{ $withdrawals }}">0</p>
+                <p lang='en' dir="ltr" class=" text-left text-[25px] font-bold mt-1 animate-number vazir" data-target="{{ $withdrawals }}">0</p>
                 <span class="text-sm bg-red-200 px-2 py-1 rounded-full">-3%</span>
             </div>
         </div>
@@ -146,7 +146,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-[25px] font-bold mt-1 animate-number" data-target="{{ $thismonthsale }}">0</p>
+                <p lang='en' dir="ltr" class=" text-left text-[25px] font-bold mt-1 animate-number" data-target="{{ $thismonthsale }}">0</p>
                 <span class="text-sm bg-purple-200 px-2 py-1 rounded-full">+15%</span>
             </div>
         </div>
@@ -165,7 +165,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-[25px] font-bold mt-1 animate-number" data-target="{{ $inventorytotalprice }}">0</p>
+                <p lang='en' dir="ltr" class=" text-left text-[25px] font-bold mt-1 animate-number" data-target="{{ $inventorytotalprice }}">0</p>
                 <span class="text-sm bg-indigo-200 px-2 py-1 rounded-full">+5%</span>
             </div>
         </div>
@@ -184,7 +184,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-[25px] font-bold mt-1 animate-number" data-target="{{ $warehousetotalprice }}">0</p>
+                <p lang='en' dir="ltr" class=" text-left text-[25px] font-bold mt-1 animate-number" data-target="{{ $warehousetotalprice }}">0</p>
                 <span class="text-sm bg-amber-200 px-2 py-1 rounded-full">+7%</span>
             </div>
         </div>
@@ -203,7 +203,7 @@
                 </div>
             </div>
             <div class="flex items-end justify-between">
-                <p class="text-[25px] font-bold mt-1 animate-number" data-target="{{ $totalstock }}">0</p>
+                <p dir="ltr"  lang="en" class=" text-left text-[25px] font-bold mt-1 animate-number" data-target="{{ $totalstock }}">0</p>
                 <span class="text-sm bg-cyan-200 px-2 py-1 rounded-full">+10%</span>
             </div>
         </div>
@@ -226,13 +226,13 @@
                     <div class="flex justify-center items-center text-2xl vazir ">
                         <span>دالر:</span>
 
-                        <p class="text-[25px] font-bold mt-1 animate-number vazir" data-target="{{$totalUsdLoan }}">0</p>
+                        <p lang="en" dir="ltr" class="text-[25px] text-left font-bold mt-1 animate-number vazir" data-target="{{$totalUsdLoan }}">0</p>
                     </div>
 
                     <div class="flex justify-center items-center text-2xl ">
                         <span> اف: </span>
 
-                        <p class="text-[25px] font-bold mt-1 animate-number" data-target="{{$totalAFNLoan }}">0</p>
+                        <p  lang="en" dir="ltr" class="text-[25px] text-left font-bold mt-1 animate-number" data-target="{{$totalAFNLoan }}">0</p>
                     </div>
                 </div>
                 <span class="text-sm bg-pink-200 px-2 py-1 rounded-full">-2%</span>
@@ -431,7 +431,7 @@
             const elapsed = now - startTime;
             const progress = Math.min(elapsed / duration, 1);
             const value = Math.floor(start + (range * progress));
-            el.textContent = value.toLocaleString('fa-IR');
+            el.textContent = value.toLocaleString('en');
             if (progress < 1) requestAnimationFrame(step);
         }
         requestAnimationFrame(step);
