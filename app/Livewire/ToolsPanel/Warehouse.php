@@ -169,7 +169,7 @@ class Warehouse extends Component
             // ثبت تاریخچه در گدام با نوع کوتاه
             $this->recordInventoryHistory(
                 $this->inventory_product,
-                'انتقال',
+                'خروج',
                 -$this->transfer_quantity,
                 $previousInventoryQuantity,
                 $this->inventory_product->total_quantity,
@@ -188,7 +188,7 @@ class Warehouse extends Component
                 $existingProduct->calculateTotalPurchaseAmount();
                 $existingProduct->calculateProfitLoss();
                 $existingProduct->updateStatus();
-                $existingProduct->save();
+                $existingProduct->save(); 
 
                 $message = 'موجودی محصول در دوکان افزایش یافت!';
                 $targetProduct = $existingProduct;
@@ -271,33 +271,39 @@ class Warehouse extends Component
         session()->flash('message', 'انتقال لغو شد.');
     }
 
-    // توابع ثبت تاریخچه
-    private function recordInventoryHistory($product, $type, $quantityChange, $previousQuantity, $newQuantity, $unitPrice = null, $notes = null)
-    {
-        $user = Auth::guard('tools')->user();
+ private function recordInventoryHistory($product, $type, $quantityChange, $previousQuantity, $newQuantity, $unitPrice = null, $notes = null)
+{
+    $user = Auth::guard('tools')->user();
 
-        $historyData = [
-            'inventory_id' => $product->id,
-            'type' => $type,
-            'quantity_change' => $quantityChange,
-            'previous_quantity' => $previousQuantity,
-            'new_quantity' => $newQuantity,
-            'unit_price' => $unitPrice,
-            'total_amount' => $unitPrice ? abs($quantityChange) * $unitPrice : null,
-            'notes' => $notes,
-            'created_by' => $user->name ?? 'system',
-        ];
-
-        if ($user && Schema::hasColumn('inventory_histories', 'user_id')) {
-            $historyData['user_id'] = $user->id;
-        }
-
-        if ($user && Schema::hasColumn('inventory_histories', 'admin_id')) {
-            $historyData['admin_id'] = $user->admin_id ?? $user->id;
-        }
-
-        InventoryHistory::create($historyData);
+    // بررسی مقدار معتبر برای type
+    $validTypes = ['ورود', 'خروج', 'تعدیل', 'فروش', 'خرید'];
+    if (!in_array($type, $validTypes)) {
+        throw new \InvalidArgumentException("نوع تاریخچه نامعتبر است: {$type}");
     }
+
+    $historyData = [
+        'inventory_id' => $product->id,
+        'type' => $type,
+        'quantity_change' => $quantityChange,
+        'previous_quantity' => $previousQuantity,
+        'new_quantity' => $newQuantity,
+        'unit_price' => $unitPrice ?? 0,
+        'total_amount' => $unitPrice ? abs($quantityChange) * $unitPrice : 0,
+        'notes' => $notes,
+        'created_by' => $user->name ?? 'system',
+    ];
+
+    if ($user && Schema::hasColumn('inventory_histories', 'user_id')) {
+        $historyData['user_id'] = $user->id;
+    }
+
+    if ($user && Schema::hasColumn('inventory_histories', 'admin_id')) {
+        $historyData['admin_id'] = $user->admin_id ?? $user->id;
+    }
+
+    InventoryHistory::create($historyData);
+}
+
 
     private function recordWarehouseHistory($product, $type, $quantityChange, $previousQuantity, $newQuantity, $unitPrice = null, $notes = null)
     {

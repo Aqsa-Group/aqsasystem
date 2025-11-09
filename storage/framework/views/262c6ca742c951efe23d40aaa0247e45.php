@@ -1,6 +1,6 @@
 <div>
     <!-- Alert Messages -->
-    <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
+    <?php if(session()->has('message')): ?>
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
         class="fixed top-0 left-0 right-0 w-full z-[9999] bg-gradient-to-br from-indigo-400 to-indigo-500 vazir">
         <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -10,7 +10,7 @@
             </h2>
         </div>
     </div>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?>
 
     <?php if(session()->has('error')): ?>
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
@@ -22,7 +22,7 @@
             </h2>
         </div>
     </div>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?>
 
 
 
@@ -66,7 +66,7 @@
                                 <div class="text-xs text-gray-500 mt-1">
                                     پس از وارد کردن بارکد یا نام محصول، دکمه "جستجو در گدام" را بزنید
                                 </div>
-                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['search_query'];
+                                <?php $__errorArgs = ['search_query'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -74,11 +74,11 @@ $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs"
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                             </div>
 
                             
-                            <!--[if BLOCK]><![endif]--><?php if($show_transfer_section && $inventory_product): ?>
+                            <?php if($show_transfer_section && $inventory_product): ?>
                             <div class="bg-green-50 p-3 rounded-lg border border-green-200 mb-4">
                                 <h4 class="font-medium text-green-800">محصول یافت شده در گدام:</h4>
                                 <div class="grid grid-cols-2 gap-2 mt-2 text-sm">
@@ -122,7 +122,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     </button>
                                 </div>
 
-                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['transfer_quantity'];
+                                <?php $__errorArgs = ['transfer_quantity'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -131,9 +131,9 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                             </div>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                            <?php endif; ?>
                         </div>
                         
                         <div class="flex-1">
@@ -141,14 +141,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <input type="text" wire:model="barcode"
                                 class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
                                 placeholder="بارکد محصول را وارد کنید">
-                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['barcode'];
+                            <?php $__errorArgs = ['barcode'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                         </div>
 
                         
@@ -157,14 +157,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <input type="text" wire:model="product_name"
                                 class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400 placeholder:text-[#404040]"
                                 placeholder="نام کامل محصول">
-                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['product_name'];
+                            <?php $__errorArgs = ['product_name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                         </div>
 
 
@@ -212,14 +212,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <option value="جعبه">جعبه</option>
                                 <option value="بسته">بسته</option>
                             </select>
-                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['unit'];
+                            <?php $__errorArgs = ['unit'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                         </div>
 
                         
@@ -237,17 +237,17 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                             <div class="w-full">
                                 <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">
-                                    <!--[if BLOCK]><![endif]--><?php if($package_type === 'دانه'): ?>
+                                    <?php if($package_type === 'دانه'): ?>
                                     تعداد
                                     <?php else: ?>
                                     تعداد در هر <?php echo e($package_type); ?>
 
-                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endif; ?>
                                 </label>
                                 <input type="number" wire:model="quantity_per_package" wire:change="calculatePrices"
                                     min="1"
                                     class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
-                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['quantity_per_package'];
+                                <?php $__errorArgs = ['quantity_per_package'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -255,7 +255,7 @@ $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs"
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -268,7 +268,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 </label>
                                 <input type="number" wire:model="total_packages" wire:change="calculatePrices" min="0"
                                     class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
-                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['total_packages'];
+                                <?php $__errorArgs = ['total_packages'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -276,7 +276,7 @@ $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs"
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                             </div>
 
                             <div class="w-full">
@@ -292,14 +292,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 اعلان</label>
                             <input type="number" wire:model="min_stock_level" min="0"
                                 class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
-                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['min_stock_level'];
+                            <?php $__errorArgs = ['min_stock_level'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                         </div>
                     </div>
 
@@ -316,14 +316,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <input type="number" wire:model="purchase_price_per_package"
                                     wire:change="calculatePrices" min="0" step="0.01"
                                     class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
-                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['purchase_price_per_package'];
+                                <?php $__errorArgs = ['purchase_price_per_package'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                             </div>
 
                             <div class="w-full">
@@ -347,7 +347,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     (هر <?php echo e($unit); ?>)</label>
                                 <input type="number" wire:model="retail_price" min="0" step="0.01"
                                     class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
-                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['retail_price'];
+                                <?php $__errorArgs = ['retail_price'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -355,7 +355,7 @@ $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs"
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                             </div>
 
                             <div class="w-full">
@@ -364,7 +364,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <input type="number" wire:model="wholesale_price" wire:change="calculatePrices" min="0"
                                     step="0.01"
                                     class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
-                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['wholesale_price'];
+                                <?php $__errorArgs = ['wholesale_price'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -372,7 +372,7 @@ $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs"
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -380,13 +380,13 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         <div class="flex flex-col md:flex-row gap-4">
                             <div class="w-full">
                                 <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">
-                                    <!--[if BLOCK]><![endif]--><?php if($profit_loss_per_unit >= 0): ?>
+                                    <?php if($profit_loss_per_unit >= 0): ?>
                                     سود هر <?php echo e($unit); ?>
 
                                     <?php else: ?>
                                     ضرر هر <?php echo e($unit); ?>
 
-                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endif; ?>
                                 </label>
                                 <input type="text" value="<?php echo e(number_format(abs($profit_loss_per_unit), 2)); ?>"
                                     class="w-full pr-4 h-[59px] rounded-[12px] bg-gray-100 border border-[#8C8C8C] <?php echo e($profit_loss_per_unit >= 0 ? 'text-green-600' : 'text-red-600'); ?>"
@@ -395,11 +395,11 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                             <div class="w-full">
                                 <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">
-                                    <!--[if BLOCK]><![endif]--><?php if($total_profit_loss >= 0): ?>
+                                    <?php if($total_profit_loss >= 0): ?>
                                     سود کل
                                     <?php else: ?>
                                     ضرر کل
-                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endif; ?>
                                 </label>
                                 <input type="text" value="<?php echo e(number_format(abs($total_profit_loss), 2)); ?>"
                                     class="w-full pr-4 h-[59px] rounded-[12px] bg-gray-100 border border-[#8C8C8C] <?php echo e($total_profit_loss >= 0 ? 'text-green-600' : 'text-red-600'); ?>"
@@ -415,7 +415,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <input type="text" wire:model="country_of_origin"
                                     class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400"
                                     placeholder="کشور سازنده">
-                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['country_of_origin'];
+                                <?php $__errorArgs = ['country_of_origin'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -423,14 +423,14 @@ $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs"
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                             </div>
 
                             <div class="w-full">
                                 <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">سال تولید</label>
                                 <input type="number" wire:model="production_year"
                                     class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
-                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['production_year'];
+                                <?php $__errorArgs = ['production_year'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -438,7 +438,7 @@ $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs"
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -457,7 +457,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     <input type="file" class="hidden" x-ref="fileInput"
                                         x-on:change="$wire.upload('product_image', $event.target.files[0])">
                                 </div>
-                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['file'];
+                                <?php $__errorArgs = ['file'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -466,7 +466,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                     </div>
@@ -474,23 +474,23 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                 <!-- دکمه‌ها -->
                 <div class="flex justify-center gap-4 pt-4">
-                    <!--[if BLOCK]><![endif]--><?php if(!$show_transfer_section): ?>
+                    <?php if(!$show_transfer_section): ?>
                     <button type="submit"
                         class="bg-gradient-to-br from-black to-blue-400 hover:bg-[#1D4ED8] text-white text-[16px] font-medium rounded-[12px] w-full px-8 py-4 transition">
-                        <!--[if BLOCK]><![endif]--><?php if($editingId): ?>
+                        <?php if($editingId): ?>
                         بروزرسانی محصول
                         <?php else: ?>
                         ثبت محصول جدید
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endif; ?>
                     </button>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?>
 
-                    <!--[if BLOCK]><![endif]--><?php if($editingId): ?>
+                    <?php if($editingId): ?>
                     <button type="button" wire:click="resetForm"
                         class="bg-[#6B7280] hover:bg-[#4B5563] text-white text-[16px] font-medium rounded-[12px] w-full py-4 transition">
                         انصراف
                     </button>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?>
                 </div>
 
             </form>
@@ -499,7 +499,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
 
         
-        <!--[if BLOCK]><![endif]--><?php if($lowStockProducts->count() > 0): ?>
+        <?php if($lowStockProducts->count() > 0): ?>
         <div class="w-[400px] md:w-[800px] lg:w-[750px] xl:w-[1300px] mt-6 mx-auto">
             <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                 <div class="flex items-center">
@@ -510,15 +510,15 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     <?php echo e($lowStockProducts->count()); ?> محصول موجودی کمی دارند و نیاز به تکمیل دارند.
                 </p>
                 <div class="mt-2">
-                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $lowStockProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php $__currentLoopData = $lowStockProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded mr-2 mb-1">
                         <?php echo e($product->product_name); ?> (<?php echo e($product->total_quantity); ?> <?php echo e($product->unit); ?>)
                     </span>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
             </div>
         </div>
-        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+        <?php endif; ?>
 
         
         <div class=" w-[400px] md:w-[200px] lg:w-[750px] xl:w-[1300px]  bg-[#F5F5F5] rounded-[12px] mt-6 p-6 mx-auto"
@@ -537,9 +537,9 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     <select wire:model.live="selectedCategory"
                         class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
                         <option value="">همه دسته‌ها</option>
-                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <option value="<?php echo e($category); ?>"><?php echo e($category); ?></option>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
                 </div>
 
@@ -586,36 +586,36 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </thead>
 
                     <tbody class="text-[14px] md:text-[15px] text-gray-800">
-                        <!--[if BLOCK]><![endif]--><?php if($products->count() > 0): ?>
-                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php if($products->count() > 0): ?>
+                        <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr class="border-b border-gray-400 hover:bg-gray-50">
                             <td class="px-4 py-3 text-center"><?php echo e($index + 1); ?></td>
                             <td class="px-4 py-3 font-mono"><?php echo e($product->barcode); ?></td>
                             <td class="px-4 py-3">
                                 <div class="flex items-center gap-2">
-                                    <!--[if BLOCK]><![endif]--><?php if($product->image_path): ?>
+                                    <?php if($product->image_path): ?>
                                     <img src="<?php echo e(Storage::url($product->image_path)); ?>"
                                         class="w-10 h-10 object-cover rounded">
                                     <?php else: ?>
                                     <div class="w-10 h-10 bg-gray-200 rounded flex items-center justify-center">
                                         <i class="fas fa-box text-gray-400"></i>
                                     </div>
-                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endif; ?>
                                     <div>
                                         <div class="font-medium"><?php echo e($product->product_name); ?></div>
-                                        <!--[if BLOCK]><![endif]--><?php if($product->supplier_name): ?>
+                                        <?php if($product->supplier_name): ?>
                                         <div class="text-xs text-gray-500"><?php echo e($product->supplier_name); ?></div>
-                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-4 py-3">
-                                <!--[if BLOCK]><![endif]--><?php if($product->category): ?>
+                                <?php if($product->category): ?>
                                 <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded"><?php echo e($product->category); ?></span>
-                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                                <!--[if BLOCK]><![endif]--><?php if($product->sub_category): ?>
+                                <?php endif; ?>
+                                <?php if($product->sub_category): ?>
                                 <div class="text-xs text-gray-500 mt-1"><?php echo e($product->sub_category); ?></div>
-                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                <?php endif; ?>
                             </td>
                             <td class="px-4 py-3 text-center"><?php echo e($product->unit); ?></td>
                             <td class="px-4 py-3 text-center">
@@ -626,9 +626,9 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                                     </span>
                                     <span class="text-xs text-gray-500"><?php echo e($product->unit); ?></span>
-                                    <!--[if BLOCK]><![endif]--><?php if($product->total_quantity <= $product->min_stock_level): ?>
+                                    <?php if($product->total_quantity <= $product->min_stock_level): ?>
                                         <span class="text-red-500 text-xs mt-1">⚠️ موجودی کم</span>
-                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                        <?php endif; ?>
                                 </div>
                             </td>
                             <td class="px-4 py-3 text-center">
@@ -712,7 +712,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 </div>
                             </td>
                         </tr>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         <?php else: ?>
                         <tr>
                             <td colspan="11" class="px-4 py-8 text-center text-gray-500">
@@ -723,13 +723,13 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 </div>
                             </td>
                         </tr>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
 
             <!-- مودال تأیید حذف محصول -->
-            <!--[if BLOCK]><![endif]--><?php if($confirmDeleteId): ?>
+            <?php if($confirmDeleteId): ?>
             <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                 <div
                     class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px] rounded-[12px] shadow-xl w-[653px] h-[219.7267608642578px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
@@ -757,15 +757,15 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
                 </div>
             </div>
-            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            <?php endif; ?>
 
             
-            <!--[if BLOCK]><![endif]--><?php if($products->hasPages()): ?>
+            <?php if($products->hasPages()): ?>
             <div class="mt-4">
                 <?php echo e($products->links()); ?>
 
             </div>
-            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            <?php endif; ?>
         </div>
     </div>
 

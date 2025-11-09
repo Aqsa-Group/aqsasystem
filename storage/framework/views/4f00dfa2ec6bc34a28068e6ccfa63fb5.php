@@ -1,5 +1,5 @@
 <div>
-    <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
+    <?php if(session()->has('message')): ?>
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
         class="fixed top-0 left-0 right-0 w-full z-[9999] bg-gradient-to-br from-indigo-400 to-indigo-500 vazir">
         <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -9,7 +9,7 @@
             </h2>
         </div>
     </div>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?>
 
     
     <?php if(session()->has('error')): ?>
@@ -22,7 +22,7 @@
             </h2>
         </div>
     </div>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?>
 
     <!-- کارت‌های آماری -->
     <div class="space-y-6">
@@ -206,17 +206,17 @@
                             class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
                             autocomplete="off">
                         <datalist id="staffsList">
-                            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $staffs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $staff): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php $__currentLoopData = $staffs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $staff): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <option value="<?php echo e($staff->name); ?> <?php echo e($staff->lastname); ?> - <?php echo e($staff->job); ?>">
                                 <?php echo e($staff->name); ?> <?php echo e($staff->lastname); ?> (<?php echo e($staff->job); ?>) - <?php echo e(number_format($staff->salary)); ?> افغانی
                             </option>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </datalist>
                         <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
                         </div>
                     </div>
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['selectedStaff'];
+                    <?php $__errorArgs = ['selectedStaff'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -225,7 +225,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
 
 
                 </div>
@@ -242,10 +242,10 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 افغانی
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php if($amountInWords): ?>
+                        <?php if($amountInWords): ?>
                         <p class="text-sm text-blue-600 mt-2 vazir"><?php echo e($amountInWords); ?></p>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['amount'];
+                        <?php endif; ?>
+                        <?php $__errorArgs = ['amount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -254,7 +254,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="lg:w-[290px]">
@@ -269,7 +269,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     <label class="block text-[16px] font-medium text-black mb-2 vazir">شرح پرداخت</label>
                     <textarea wire:model="description" rows="3" placeholder="توضیحات پرداخت معاش..."
                         class="w-full p-3 rounded-[12px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['description'];
+                    <?php $__errorArgs = ['description'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -278,7 +278,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <!-- دکمه‌ها -->
@@ -309,7 +309,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                 <div class="flex items-center gap-3">
                     
-                    <!--[if BLOCK]><![endif]--><?php if($selectedStaffId): ?>
+                    <?php if($selectedStaffId): ?>
                     <?php
                     $selectedStaff = \App\Models\Tools\Staffs::find($selectedStaffId);
                     ?>
@@ -319,7 +319,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             ✕
                         </button>
                     </div>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?>
 
                     <div class="relative w-full md:w-[302px]">
                         <input type="text" wire:model.live="search"
@@ -329,25 +329,25 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
                             class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6">
 
-                        <!--[if BLOCK]><![endif]--><?php if($search): ?>
+                        <?php if($search): ?>
                         <button wire:click="clearSearchAndFilter"
                             class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
                             ✕
                         </button>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endif; ?>
 
-                        <!--[if BLOCK]><![endif]--><?php if($search && count($filteredStaffs) > 0 && !$selectedStaffId): ?>
+                        <?php if($search && count($filteredStaffs) > 0 && !$selectedStaffId): ?>
                         <ul
                             class="absolute z-50 w-full bg-white border border-gray-300 mt-1 rounded-md shadow-lg max-h-60 overflow-y-auto">
-                            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $filteredStaffs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $staff): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php $__currentLoopData = $filteredStaffs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $staff): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <li wire:click="selectStaff(<?php echo e($staff->id); ?>)"
                                 class="px-3 py-2 hover:bg-blue-100 cursor-pointer flex justify-between items-center">
                                 <span><?php echo e($staff->name); ?> <?php echo e($staff->lastname); ?></span>
                                 <span class="text-gray-500 text-sm"><?php echo e($staff->job); ?></span>
                             </li>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </ul>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -370,7 +370,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </tr>
                         </thead>
                         <tbody>
-                            <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $salaries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $salary): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                            <?php $__empty_1 = true; $__currentLoopData = $salaries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $salary): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                             <tr class="ttransactionext-black border-b border-[#D9D9D9] bg-transparent">
                                 <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">
                                     <?php echo e($key + 1); ?>
@@ -428,14 +428,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                             <tr>
                                 <td colspan="7" class="text-center text-gray-500 py-8 text-lg">
-                                    <!--[if BLOCK]><![endif]--><?php if($selectedStaffId): ?>
+                                    <?php if($selectedStaffId): ?>
                                     هیچ پرداخت معاش برای این کارمند یافت نشد
                                     <?php else: ?>
                                     هیچ پرداخت معاش یافت نشد
-                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endif; ?>
                                 </td>
                             </tr>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
@@ -444,7 +444,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
     </div>
 
     
-    <!--[if BLOCK]><![endif]--><?php if($confirmDeleteId): ?>
+    <?php if($confirmDeleteId): ?>
     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
         <div
             class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px] rounded-[12px] shadow-xl w-[653px] h-[239.7267608642578px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
@@ -463,7 +463,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             </div>
         </div>
     </div>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?>
 
     <script>
         document.addEventListener('livewire:load', function() {
