@@ -13,32 +13,24 @@
         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
 
-         
-        <div class="scroll-container overflow-x-auto whitespace-nowrap py-3 -mt-5">
-            <!-- در کارت‌های ارزها -->
-            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currenciesdefault; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <div class="inline-block align-top mx-auto justify-center items-center mr-4 last:ml-0 min-w-[273px]">
-                <div class="flex flex-col h-[149px] w-[273px] mx-auto pt-3 rounded-[12px]
-                <?php if($currency['name'] === 'خلاصه بیلانس به دالر'): ?> 
-                   bg-gradient-to-br from-black to-blue-400 border-l-4 border-pink-500 text-white p-6 rounded-xl shadow-lg transition-all duration-300 
-                <?php else: ?>
-                   bg-gradient-to-br from-black to-blue-400 border-l-4 border-pink-500 text-white p-6 rounded-xl shadow-lg transition-all duration-300 
-                <?php endif; ?>">
+      
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 py-3 -mt-5">
+    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currenciesdefault; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <div class="flex flex-col h-[149px] w-full mx-auto pt-3 rounded-[12px]
+            bg-gradient-to-br from-black to-blue-400 border-l-4 border-pink-500 text-white p-6 
+            rounded-xl shadow-lg transition-all duration-300">
 
-                    <h1 class="text-[24px] text-white"><?php echo e($currency['name']); ?></h1>
-                    <h2 class="text-center text-[30px] text-white mt-2"><?php echo e($currency['value']); ?></h2>
+            <h1 class="text-[20px] sm:text-[22px] md:text-[24px] text-white"><?php echo e($currency['name']); ?></h1>
+            <h2 class="text-center text-[26px] sm:text-[28px] md:text-[30px] text-white mt-2"><?php echo e($currency['value']); ?></h2>
 
-                    <button wire:click="showReport" wire:loading.attr="disabled"
-                        class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
-                        <span wire:loading.remove>نمایش گزارش</span>
-                        <span wire:loading>
-                            در حال انتقال...
-                        </span>
-                    </button>
-                </div>
-            </div>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
-        </div> 
+            <button wire:click="showReport" wire:loading.attr="disabled"
+                class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
+                <span wire:loading.remove>نمایش گزارش</span>
+                <span wire:loading>در حال انتقال...</span>
+            </button>
+        </div>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+</div>
 
         
         <div class="flex flex-col lg:flex-row gap-5 mt-4 overflow-x-hidden">
