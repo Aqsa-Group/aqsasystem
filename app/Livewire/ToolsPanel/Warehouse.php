@@ -72,13 +72,153 @@ class Warehouse extends Component
     // Delete confirmation
     public $confirmDeleteId = null;
 
+
+    public $categories = [];
+    public $subCategories = [];
+    public $availableSubCategories = [];
+
     protected $paginationTheme = 'bootstrap';
 
     public function mount()
     {
         $this->production_year = Jalalian::now()->getYear();
         $this->expiry_date = null;
+        $this->initializeCategories();
         $this->calculatePrices();
+    }
+
+
+    /**
+     * Initialize categories and subcategories
+     */
+    private function initializeCategories()
+    {
+        $this->categories = [
+            'ابزار و صنعتی',
+            'سوپرمارکت',
+            'آرایشی و بهداشتی',
+            'خودرو و موتورسیکلت',
+            'لوازم خانگی',
+            'الکترونیک و دیجیتال',
+            'پوشاک و مد',
+            'خانه و آشپزخانه',
+            'سرگرمی و hobbies',
+            'کودک و نوزاد',
+        ];
+
+        $this->subCategories = [
+            'ابزار و صنعتی' => [
+                'ابزار دستی',
+                'ابزار برقی',
+                'تجهیزات ایمنی',
+                'لوازم صنعتی',
+                'پیچ و مهره'
+            ],
+            'سوپرمارکت' => [
+                'خوراکی',
+                'نوشیدنی',
+                'خشکبار',
+                'لبنیات',
+                'نان و شیرینی'
+            ],
+            'آرایشی و بهداشتی' => [
+                'لوازم آرایشی',
+                'لوازم بهداشتی',
+                'عطر و ادکلن',
+                'مراقبت پوست',
+                'مراقبت مو'
+            ],
+            'خودرو و موتورسیکلت' => [
+                'لوازم یدکی خودرو',
+                'لوازم یدکی موتور',
+                'لوازم جانبی',
+                'روغن و مواد شیمیایی',
+                'تجهیزات کارواش'
+            ],
+            'لوازم خانگی' => [
+                'لوازم برقی خانگی',
+                'لوازم آشپزخانه',
+                'لوازم نظافتی',
+                'لوازم روشنایی',
+                'سیستم گرمایش و سرمایش'
+            ],
+            'الکترونیک و دیجیتال' => [
+                'موبایل',
+                'لپ تاپ',
+                'تبلت',
+                'لوازم جانبی الکترونیک',
+                'کامپیوتر و قطعات'
+            ],
+            'پوشاک و مد' => [
+                'لباس مردانه',
+                'لباس زنانه',
+                'لباس بچه گانه',
+                'کفش',
+                'اکسسوری'
+            ],
+            'خانه و آشپزخانه' => [
+                'دکوراسیون',
+                'لوازم آشپزخانه',
+                'مبلمان',
+                'فرش و گلیم',
+                'لوازم خواب'
+            ],
+            'سرگرمی و hobbies' => [
+                'کتاب',
+                'موزیک',
+                'اسباب بازی',
+                'ورزشی',
+                'لوازم سفر'
+            ],
+            'کودک و نوزاد' => [
+                'لباس نوزاد',
+                'اسباب بازی',
+                'غذای کودک',
+                'لوازم بهداشتی کودک',
+                'وسایل خواب کودک'
+            ],
+        ];
+    }
+
+    /**
+     * Get subcategories based on selected category
+     */
+    public function getSubCategoriesForCategory($category)
+    {
+        return $this->subCategories[$category] ?? [];
+    }
+
+
+    /**
+     * When category changes, reset sub_category
+     */
+    public function updatedCategory($value)
+    {
+        $this->sub_category = null;
+        $this->availableSubCategories = $this->getSubCategoriesForCategory($value);
+        $this->calculatePrices();
+    }
+
+
+
+    /**
+     * Get unique categories from database for filter
+     */
+    public function getDatabaseCategoriesProperty()
+    {
+        $user = Auth::guard('tools')->user();
+
+        $query = Warehouses::query();
+
+        if ($user && Schema::hasColumn('warehouses', 'admin_id')) {
+            $adminId = $user->admin_id ?? $user->id;
+            $query->where('admin_id', $adminId);
+        }
+
+        return $query->whereNotNull('category')
+            ->distinct()
+            ->pluck('category')
+            ->toArray();
     }
 
     // تابع جدید برای جستجوی محصول از گدام

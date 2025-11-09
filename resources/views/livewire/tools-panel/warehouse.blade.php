@@ -145,31 +145,35 @@
                         <div class="flex flex-col md:flex-row gap-4">
                             <div class="w-full">
                                 <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">دسته بندی</label>
-                                <select id="categorySelect"
+                                <select wire:model="category" wire:change="$refresh"
                                     class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
                                     <option value="">انتخاب دسته بندی</option>
-                                    <option value="ابزار و صنعتی">ابزار و صنعتی</option>
-                                    <option value="سوپرمارکت">سوپرمارکت</option>
-                                    <option value="آرایشی و بهداشتی">آرایشی و بهداشتی</option>
-                                    <option value="خودرو و موتورسیکلت">خودرو و موتورسیکلت</option>
-                                    <option value="لوازم خانگی">لوازم خانگی</option>
-                                    <option value="الکترونیک و دیجیتال">الکترونیک و دیجیتال</option>
-                                    <option value="پوشاک و مد">پوشاک و مد</option>
-                                    <option value="خانه و آشپزخانه">خانه و آشپزخانه</option>
-                                    <option value="سرگرمی و hobbies">سرگرمی و hobbies</option>
-                                    <option value="کودک و نوزاد">کودک و نوزاد</option>
+                                    @foreach($categories as $cat)
+                                    <option value="{{ $cat }}">{{ $cat }}</option>
+                                    @endforeach
                                 </select>
+                                @error('category')
+                                <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <div class="w-full">
                                 <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">زیر دسته</label>
-                                <select id="subCategorySelect"
-                                    class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
-                                    <option value="">ابتدا دسته بندی را انتخاب کنید</option>
+                                <select wire:model="sub_category"
+                                    class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400"
+                                    @if(!$category) disabled @endif>
+                                    <option value="">انتخاب زیر دسته</option>
+                                    @if($category && count($availableSubCategories) > 0)
+                                    @foreach($availableSubCategories as $subCat)
+                                    <option value="{{ $subCat }}">{{ $subCat }}</option>
+                                    @endforeach
+                                    @endif
                                 </select>
+                                @error('sub_category')
+                                <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
-
 
                         {{-- واحد جنس --}}
                         <div>
