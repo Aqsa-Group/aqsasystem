@@ -27,16 +27,16 @@
       <div class="flex flex-col  space-y-3 pr-0 md:pr-10 lg:pr-24 xl:pr-24">
             <h1 class="text-[45px] mb-4 yekan">مدیریت اجناس گدام </h1>
             <h1 class="text-[rgb(140,140,140)] border-b border-[#D9D9D9] pb-6">لیست تمام محصولات و موجودی گدام</h1>
-            <h1 class="text-[24px] font-medium">ثبت محصول جدید</h1>
-        </div>
+            <h1 class="text-[24px] font-medium pb-2">ثبت محصول جدید</h1>
+        </div> 
 
 
-    <div class="flex flex-col pr-0 md:pr-24  ">
+    <div class="flex flex-col  ">
       
 
 
     {{-- Form --}}
-    <div class="w-[400px] md:w-[400px] lg:w-[750px] xl:w-[1300px]    bg-[#F5F5F5] rounded-[12px] p-6 mx-auto"
+    <div class="w-[400px] md:w-[600px] lg:w-[350px] xl:w-[1200px]    bg-[#F5F5F5] rounded-[12px] p-6 mx-auto"
         style="box-shadow: 0px 4px 4px 0px #00000040;">
         <form wire:submit.prevent="saveProduct" class="space-y-8">
 
@@ -329,7 +329,7 @@
 
     {{-- Low Stock Alert --}}
     @if($lowStockProducts->count() > 0)
-    <div class="w-[400px] md:w-[800px] lg:w-[750px] xl:w-[1300px] mt-6 mx-auto">
+    <div class="w-[400px] md:w-[600px] lg:w-[350px] xl:w-[1200px]  mt-6 mx-auto">
         <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
             <div class="flex items-center">
                 <i class="fas fa-exclamation-triangle text-yellow-600 text-xl ml-2"></i>
@@ -352,7 +352,7 @@
 
 
     {{-- Filters and Search --}}
-    <div class="w-[400px] md:w-[200px] lg:w-[750px] xl:w-[1300px]   bg-[#F5F5F5] rounded-[12px] mb-4 mt-6 p-6 mx-auto"
+    <div class="w-[400px] md:w-[600px] lg:w-[350px] xl:w-[1200px]   bg-[#F5F5F5] rounded-[12px] mb-4 mt-6 p-6 mx-auto"
         style="box-shadow: 0px 4px 4px 0px #00000040;">
 
         <div class="flex flex-col md:flex-row gap-4 mb-6">

@@ -29,42 +29,41 @@
         </div>
         @endif
 
-        {{-- کارت‌های ارزها با اسکرول افقی --}}
-        <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-full pb-4 p-[12px] h-[264px] rounded-[12px] space-y-2"
-            style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+     {{-- کارت‌های ارزها با گرید ریسپانسیو --}}
+<div class="flex flex-col bg-[#F5F5F5] w-full lg:w-full pb-4 p-3 rounded-[12px] space-y-2"
+    style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
-            <div class="flex w-full h-[58px]   bg-gradient-to-br from-black to-blue-400 border-l-4 border-pink-500 text-white  rounded-[12px]">
-                <p class="text-white text-[18px] vazir text-center justify-center flex items-center p-5">موجودی حساب
-                    برداشت</p>
-            </div>
+    {{-- هدر --}}
+    <div class="flex w-full h-[58px] bg-gradient-to-br from-black to-blue-400 border-l-4 border-pink-500 text-white rounded-[12px]">
+        <p class="text-white text-[18px] vazir text-center justify-center flex items-center w-full">موجودی حساب برداشت</p>
+    </div>
 
-            <div class="scroll-container overflow-x-auto overflow-y-hidden whitespace-nowrap py-3 pb-12 mt-4 w-full">
-                <div class="grid grid-flow-col auto-cols-max gap-4 px-4">
-                    @foreach ($currenciesdefault as $currency)
-                    <div class="w-[273px] h-[130px] pr-5 pl-5 pt-3 rounded-[12px] mb-5
-                @if ($currency['name'] === 'خلاصه بیلانس به دالر') 
-                      bg-gradient-to-br from-black to-blue-400 border-l-4 border-pink-500 text-white p-6 rounded-xl shadow-lg transition-all duration-300 
-                @else
-                      bg-gradient-to-br from-black to-blue-400 border-l-4 border-pink-500 text-white p-6 rounded-xl shadow-lg transition-all duration-300 
-                @endif text-white">
+    {{-- کارت‌ها --}}
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-4">
+        @foreach ($currenciesdefault as $currency)
+        <div class="flex flex-col h-[130px] w-full rounded-[12px]
+            @if ($currency['name'] === 'خلاصه بیلانس به دالر') 
+                bg-gradient-to-br from-black to-blue-400 border-l-4 border-pink-500 text-white p-6 rounded-xl shadow-lg transition-all duration-300 
+            @else
+                bg-gradient-to-br from-black to-blue-400 border-l-4 border-pink-500 text-white p-6 rounded-xl shadow-lg transition-all duration-300 
+            @endif">
 
-                        <h1 class="text-[22px] truncate">{{ $currency['name'] }}</h1>
-                        <h2 class="text-center text-[28px] mt-1 font-bold">{{ number_format($currency['value']) }}</h2>
+            <h1 class="text-[22px] truncate">{{ $currency['name'] }}</h1>
+            <h2 class="text-center text-[28px] mt-1 font-bold">{{ number_format($currency['value']) }}</h2>
 
-                        <button wire:click="showReport" wire:loading.attr="disabled"
-                            class="bg-white rounded-[12px] text-[14px] p-1.5 mt-1 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2 w-full font-medium">
-                            <span wire:loading.remove>نمایش گزارش</span>
-                            <span wire:loading>در حال انتقال...</span>
-                        </button>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
+            <button wire:click="showReport" wire:loading.attr="disabled"
+                class="bg-white rounded-[12px] text-[14px] p-1.5 mt-1 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2 w-full font-medium">
+                <span wire:loading.remove>نمایش گزارش</span>
+                <span wire:loading>در حال انتقال...</span>
+            </button>
         </div>
+        @endforeach
+    </div>
+</div>
 
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
             {{-- فرم تراکنش --}}
-            <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[574px] p-[12px] h-fit rounded-[12px] space-y-2"
+            <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[470px] p-[12px] h-fit rounded-[12px] space-y-2"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 {{-- بالای فرم: فورم و دکمه‌ها --}}
@@ -93,52 +92,52 @@
                             <div class="relative w-full">
                                 <label class="block text-[16px] font-medium text-black mb-1 vazir">حساب برداشت</label>
                                 <div x-data="{
-            searchValue: '',
-            selectedId: @entangle('withdrawalAccount'),
-            customers: @js($customers),
-            init() {
-                this.updateDisplay();
-                
-                // گوش دادن به رویداد ویرایش
-                $wire.on('edit-mode-activated', (data) => {
-                    console.log('Edit mode activated - withdrawal:', data);
-                    this.selectedId = data.withdrawalAccount;
-                    this.searchValue = data.withdrawalCustomer;
-                    setTimeout(() => {
-                        this.updateDisplay();
-                    }, 100);
-                });
-                
-                // گوش دادن به تغییرات از Livewire
-                $wire.on('accountsSwapped', () => {
-                    setTimeout(() => {
-                        this.updateDisplay();
-                    }, 100);
-                });
-            },
-            handleSelect(event) {
-                const selected = this.customers.find(
-                    c => event.target.value === `${c.account_number} - ${c.fullname}`
-                );
-                if (selected) {
-                    this.selectedId = selected.id;
-                    this.searchValue = `${selected.account_number} - ${selected.fullname}`;
-                    $wire.selectWithdrawalAccount(selected.id);
-                } else {
-                    this.selectedId = null;
-                    this.searchValue = '';
-                    $wire.set('withdrawalAccount', null);
-                }
-            },
-            updateDisplay() {
-                if (this.selectedId) {
-                    const selected = this.customers.find(c => c.id == this.selectedId);
-                    if (selected) {
-                        this.searchValue = `${selected.account_number} - ${selected.fullname}`;
-                    }
-                }
-            }
-        }" x-init="init()" class="relative w-full">
+                                                searchValue: '',
+                                                selectedId: @entangle('withdrawalAccount'),
+                                                customers: @js($customers),
+                                                init() {
+                                                    this.updateDisplay();
+                                                    
+                                                    // گوش دادن به رویداد ویرایش
+                                                    $wire.on('edit-mode-activated', (data) => {
+                                                        console.log('Edit mode activated - withdrawal:', data);
+                                                        this.selectedId = data.withdrawalAccount;
+                                                        this.searchValue = data.withdrawalCustomer;
+                                                        setTimeout(() => {
+                                                            this.updateDisplay();
+                                                        }, 100);
+                                                    });
+                                                    
+                                                    // گوش دادن به تغییرات از Livewire
+                                                    $wire.on('accountsSwapped', () => {
+                                                        setTimeout(() => {
+                                                            this.updateDisplay();
+                                                        }, 100);
+                                                    });
+                                                },
+                                                handleSelect(event) {
+                                                    const selected = this.customers.find(
+                                                        c => event.target.value === `${c.account_number} - ${c.fullname}`
+                                                    );
+                                                    if (selected) {
+                                                        this.selectedId = selected.id;
+                                                        this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                                                        $wire.selectWithdrawalAccount(selected.id);
+                                                    } else {
+                                                        this.selectedId = null;
+                                                        this.searchValue = '';
+                                                        $wire.set('withdrawalAccount', null);
+                                                    }
+                                                },
+                                                updateDisplay() {
+                                                    if (this.selectedId) {
+                                                        const selected = this.customers.find(c => c.id == this.selectedId);
+                                                        if (selected) {
+                                                            this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                                                        }
+                                                    }
+                                                }
+                                            }" x-init="init()" class="relative w-full">
                                     <input list="withdrawalCustomersList" x-model="searchValue" @change="handleSelect"
                                         placeholder="جستجو یا انتخاب حساب برداشت..."
                                         class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
@@ -164,52 +163,52 @@
                             <div class="relative w-full">
                                 <label class="block text-[16px] font-medium text-black mb-1 vazir">حساب دریافت</label>
                                 <div x-data="{
-            searchValue: '',
-            selectedId: @entangle('depositAccount'),
-            customers: @js($customers),
-            init() {
-                this.updateDisplay();
-                
-                // گوش دادن به رویداد ویرایش
-                $wire.on('edit-mode-activated', (data) => {
-                    console.log('Edit mode activated - deposit:', data);
-                    this.selectedId = data.depositAccount;
-                    this.searchValue = data.depositCustomer;
-                    setTimeout(() => {
-                        this.updateDisplay();
-                    }, 100);
-                });
-                
-                // گوش دادن به تغییرات از Livewire
-                $wire.on('accountsSwapped', () => {
-                    setTimeout(() => {
-                        this.updateDisplay();
-                    }, 100);
-                });
-            },
-            handleSelect(event) {
-                const selected = this.customers.find(
-                    c => event.target.value === `${c.account_number} - ${c.fullname}`
-                );
-                if (selected) {
-                    this.selectedId = selected.id;
-                    this.searchValue = `${selected.account_number} - ${selected.fullname}`;
-                    $wire.selectDepositAccount(selected.id);
-                } else {
-                    this.selectedId = null;
-                    this.searchValue = '';
-                    $wire.set('depositAccount', null);
-                }
-            },
-            updateDisplay() {
-                if (this.selectedId) {
-                    const selected = this.customers.find(c => c.id == this.selectedId);
-                    if (selected) {
-                        this.searchValue = `${selected.account_number} - ${selected.fullname}`;
-                    }
-                }
-            }
-        }" x-init="init()" class="relative w-full">
+                                                searchValue: '',
+                                                selectedId: @entangle('depositAccount'),
+                                                customers: @js($customers),
+                                                init() {
+                                                    this.updateDisplay();
+                                                    
+                                                    // گوش دادن به رویداد ویرایش
+                                                    $wire.on('edit-mode-activated', (data) => {
+                                                        console.log('Edit mode activated - deposit:', data);
+                                                        this.selectedId = data.depositAccount;
+                                                        this.searchValue = data.depositCustomer;
+                                                        setTimeout(() => {
+                                                            this.updateDisplay();
+                                                        }, 100);
+                                                    });
+                                                    
+                                                    // گوش دادن به تغییرات از Livewire
+                                                    $wire.on('accountsSwapped', () => {
+                                                        setTimeout(() => {
+                                                            this.updateDisplay();
+                                                        }, 100);
+                                                    });
+                                                },
+                                                handleSelect(event) {
+                                                    const selected = this.customers.find(
+                                                        c => event.target.value === `${c.account_number} - ${c.fullname}`
+                                                    );
+                                                    if (selected) {
+                                                        this.selectedId = selected.id;
+                                                        this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                                                        $wire.selectDepositAccount(selected.id);
+                                                    } else {
+                                                        this.selectedId = null;
+                                                        this.searchValue = '';
+                                                        $wire.set('depositAccount', null);
+                                                    }
+                                                },
+                                                updateDisplay() {
+                                                    if (this.selectedId) {
+                                                        const selected = this.customers.find(c => c.id == this.selectedId);
+                                                        if (selected) {
+                                                            this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                                                        }
+                                                    }
+                                                }
+                                            }" x-init="init()" class="relative w-full">
                                     <input list="depositCustomersList" x-model="searchValue" @change="handleSelect"
                                         placeholder="جستجو یا انتخاب حساب دریافت..."
                                         class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
@@ -401,9 +400,9 @@
                     </div>
 
                     {{-- دکمه‌های نهایی --}}
-                    <div class="flex gap-4 p-4 justify-center items-center text-center flex-wrap">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2">
                         <button type="submit" wire:loading.attr="disabled"
-                            class="bg-gradient-to-br from-black to-blue-500 text-[16px] vazir font-semibold rounded-[8px] px-[74px] py-4 text-white hover:bg-blue-700 transition disabled:opacity-50">
+                            class="bg-gradient-to-br from-black to-blue-500 text-[16px] vazir font-semibold rounded-[8px] px-[74px] py-1 text-white hover:bg-blue-700 transition disabled:opacity-50">
                             @if($editingConversionId)
                             <span wire:loading.remove>ویرایش تبدیل ارز</span>
                             @else
@@ -412,7 +411,7 @@
                             <span wire:loading>در حال ثبت...</span>
                         </button>
                         <button type="button" wire:click="resetForm" wire:loading.attr="disabled"
-                            class="bg-[#DD2424] text-[16px] vazir fobg-gradient-to-br from-black to-blue-500  text-white p-6 rounded-xl shadow-lg transition-all duration-300nt-semibold rounded-[8px] px-[74px] py-4 text-white hover:bg-red-700 transition">
+                            class="bg-[#DD2424] text-[16px] vazir fobg-gradient-to-br from-black to-blue-500  text-white p-6 rounded-xl shadow-lg transition-all duration-300nt-semibold rounded-[8px] px-[74px] py-1 text-white hover:bg-red-700 transition">
                             @if($editingConversionId) انصراف از ویرایش @else انصراف @endif
                         </button>
                     </div>
@@ -420,7 +419,7 @@
             </div>
 
             {{-- جدول تراکنش‌های تبدیل ارز --}}
-            <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px]"
+            <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px] w-[440px] mb-5 md:w-[430px] lg:w-[200px]"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 <div

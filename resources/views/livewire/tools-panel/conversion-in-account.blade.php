@@ -30,42 +30,43 @@
         </div>
         @endif
 
-        <!-- کارت‌های موجودی ارزها -->
-        <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-full pb-4 p-[12px] h-[264px] rounded-[12px] space-y-2"
+        <!-- کارت‌های موجودی ارزها ریسپانسیو -->
+        <div class="flex flex-col bg-[#F5F5F5] w-full pb-4 p-3 rounded-[12px] space-y-2"
             style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
+            <!-- هدر -->
             <div class="flex w-full h-[58px] bg-gradient-to-br from-black to-blue-400 rounded-[12px]">
-                <p class="text-white text-[18px] vazir text-center justify-center flex items-center p-5">موجودی حساب
+                <p class="text-white text-[18px] vazir text-center justify-center flex items-center w-full">موجودی حساب
                     مشتری</p>
             </div>
 
-            <div class="scroll-container overflow-x-auto overflow-y-hidden whitespace-nowrap py-3 pb-12 mt-4 w-full">
-                <div class="grid grid-flow-col auto-cols-max gap-4 px-4">
-                    @foreach ($currenciesdefault as $currency)
-                    <div class="w-[273px] h-[140px] pr-5 pl-5 pt-3 rounded-[12px] mb-5
-                          @if ($currency['name'] === 'خلاصه بیلانس به دالر') 
-                      bg-gradient-to-br from-black to-blue-400 border-l-4 border-pink-500 text-white p-6 rounded-xl shadow-lg transition-all duration-300 
-                @else
-                      bg-gradient-to-br from-black to-blue-400 border-l-4 border-pink-500 text-white p-6 rounded-xl shadow-lg transition-all duration-300 
-                @endif text-white">
+            <!-- کارت‌ها -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-4">
+                @foreach ($currenciesdefault as $currency)
+                <div class="flex flex-col h-[160px] w-full rounded-[12px]
+            @if ($currency['name'] === 'خلاصه بیلانس به دالر') 
+                bg-gradient-to-br from-black to-blue-400 border-l-4 border-pink-500 text-white p-6 rounded-xl shadow-lg transition-all duration-300 
+            @else
+                bg-gradient-to-br from-black to-blue-400 border-l-4 border-pink-500 text-white p-6 rounded-xl shadow-lg transition-all duration-300 
+            @endif">
 
-                        <h1 class="text-[22px] truncate">{{ $currency['name'] }}</h1>
-                        <h2 class="text-center text-[28px] mt-1 font-bold">{{ number_format($currency['value']) }}</h2>
+                    <h1 class="text-[22px] truncate">{{ $currency['name'] }}</h1>
+                    <h2 class="text-center text-[28px] mt-1 font-bold">{{ number_format($currency['value']) }}</h2>
 
-                        <button wire:click="showReport" wire:loading.attr="disabled"
-                            class="bg-white rounded-[12px] text-[14px] p-1.5 mt-1 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2 w-full font-medium">
-                            <span wire:loading.remove>نمایش گزارش</span>
-                            <span wire:loading>در حال انتقال...</span>
-                        </button>
-                    </div>
-                    @endforeach
+                    <button wire:click="showReport" wire:loading.attr="disabled"
+                        class="bg-white rounded-[12px] text-[14px] p-1.5 mt-1 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2 w-full font-medium">
+                        <span wire:loading.remove>نمایش گزارش</span>
+                        <span wire:loading>در حال انتقال...</span>
+                    </button>
                 </div>
+                @endforeach
             </div>
         </div>
 
+
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
             <!-- فرم تبدیل ارز -->
-            <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[574px] p-[12px] h-fit rounded-[12px] space-y-2"
+            <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[470px] p-[12px] h-fit rounded-[12px] space-y-2"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 <!-- هدر فرم -->
@@ -255,7 +256,7 @@
                             <div class="mt-2 text-sm text-gray-600">
                                 <strong>
                                     {{ $receivedAmountInWords }}
-                                 </strong> 
+                                </strong>
 
                             </div>{{ $receivedAmountInWords }}
                             @endif
@@ -304,7 +305,7 @@
                         </div>
                     </div>
 
-               
+
                     <!-- شرح تراکنش -->
                     <div class="mt-3">
                         <div class="w-full">
@@ -318,9 +319,9 @@
                     </div>
 
                     <!-- دکمه‌های نهایی -->
-                    <div class="flex gap-4 p-4 justify-center items-center text-center flex-wrap">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2">
                         <button type="submit" wire:loading.attr="disabled"
-                            class="bg-gradient-to-br from-black to-blue-400 text-[14px] vazir font-semibold rounded-[8px] px-[74px] py-4 text-white hover:bg-blue-700 transition disabled:opacity-50">
+                            class="bg-gradient-to-br from-black to-blue-400 text-[14px] vazir font-semibold rounded-[8px] px-[74px] py-2 text-white hover:bg-blue-700 transition disabled:opacity-50">
                             @if($editingConversionId)
                             <span wire:loading.remove>ویرایش تبدیل ارز</span>
                             @else
@@ -329,7 +330,7 @@
                             <span wire:loading>در حال ثبت...</span>
                         </button>
                         <button type="button" wire:click="resetForm" wire:loading.attr="disabled"
-                            class="bg-[#DD2424] text-[14px] vazir font-semibold rounded-[8px] px-[74px] py-4 text-white hover:bg-red-700 transition">
+                            class="bg-[#DD2424] text-[14px] vazir font-semibold rounded-[8px] px-[74px] py-2 text-white hover:bg-red-700 transition">
                             @if($editingConversionId) انصراف از ویرایش @else انصراف @endif
                         </button>
                     </div>
@@ -337,7 +338,7 @@
             </div>
 
             <!-- جدول تراکنش‌های تبدیل ارز -->
-            <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px]"
+            <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px] w-[440px] mb-5 md:w-[430px] lg:w-[200px]"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 <div
@@ -391,7 +392,7 @@
                                         <div class="truncate" title="{{ $conversion->customer->fullname ?? '-' }}">
                                             {{ $conversion->customer->fullname ?? '-' }}
                                         </div>
-                                     
+
                                     </td>
                                     <td class="px-3 py-3 vazir text-[13px] md:text-[16px] font-medium w-52">
                                         <div class="text-left">
@@ -441,7 +442,7 @@
                                                     class="w-7 h-7" alt="Delete">
                                             </button>
 
-                                               <button wire:click="printTransaction({{ $conversion->id }})"
+                                            <button wire:click="printTransaction({{ $conversion->id }})"
                                                 class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-green-100"
                                                 title="پرینت PDF">
                                                 <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"

@@ -17,63 +17,65 @@
         </div>
         @endif
 
-        <div class="flex gap-10 mt-3 justify-center">
-            <!-- جدول خرید -->
-            <div class="max-h-[680px] overflow-y-auto min-w-[500px]">
-                <table class="w-[700px] text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <h1 class="text-[24px] mb-5">مجموعه خرید ارز</h1>
-                    <thead
-                        class="bg-gradient-to-br from-black to-blue-400 w-full dark:bg-gray-700 text-white text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0"
-                        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-                        <tr>
-                            <th class="px-6 py-4 font-bold w-16">#</th>
-                            @foreach (['usd', 'afn', 'irr', 'pkr',] as $currency)
-                            <th class="px-6 py-4 font-bold w-48 text-center">{{ $this->getCurrencyName($currency) }}
-                            </th>
-                            @endforeach
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="text-black border-b border-[#D9D9D9] bg-transparent">
-                            <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">1</td>
-                            @foreach (['usd', 'afn', 'irr','pkr',] as $currency)
-                            <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center">
-                                {{ number_format($totalBuy[$currency] ?? 0 ,2) }}
-                            </td>
-                            @endforeach
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    {{-- جداول خرید و فروش ارز با طراحی ریسپانسیو --}}
+<div class="flex flex-col lg:flex-row gap-6 lg:gap-10 mt-3 justify-center items-center lg:items-start w-full px-2">
+    
+    <!-- جدول خرید -->
+    <div class="w-full lg:w-auto max-h-[680px] overflow-y-auto overflow-x-auto">
+        <h1 class="text-[20px] md:text-[24px] mb-3 text-center lg:text-start">مجموعه خرید ارز</h1>
+        <table class="min-w-[500px] text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead
+                class="bg-gradient-to-br from-black to-blue-400 w-full dark:bg-gray-700 text-white 
+                       text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0"
+                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                <tr>
+                    <th class="px-6 py-4 font-bold w-16">#</th>
+                    @foreach (['usd', 'afn', 'irr', 'pkr'] as $currency)
+                        <th class="px-6 py-4 font-bold w-48 text-center">{{ $this->getCurrencyName($currency) }}</th>
+                    @endforeach
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="text-black border-b border-[#D9D9D9] bg-transparent">
+                    <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">1</td>
+                    @foreach (['usd', 'afn', 'irr','pkr'] as $currency)
+                        <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center">
+                            {{ number_format($totalBuy[$currency] ?? 0 ,2) }}
+                        </td>
+                    @endforeach
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-            <!-- جدول فروش -->
-            <div class="max-h-[680px] overflow-y-auto min-w-[500px]">
-                <table class="w-[700px] text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <h1 class="text-[24px] mb-5">مجموعه فروش ارز</h1>
-                    <thead
-                        class="bg-gradient-to-br from-black to-blue-400 w-full dark:bg-gray-700 text-white text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0"
-                        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-                        <tr>
-                            <th class="px-6 py-4 font-bold w-16">#</th>
-                            @foreach (['usd', 'afn', 'irr','pkr',] as $currency)
-                            <th class="px-6 py-4 font-bold w-48 text-center">{{ $this->getCurrencyName($currency) }}
-                            </th>
-                            @endforeach
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="text-black border-b border-[#D9D9D9] bg-transparent">
-                            <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">1</td>
-                            @foreach (['usd', 'afn', 'irr','pkr'] as $currency)
-                            <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center">
-                                {{ number_format($totalSell[$currency] ?? 0 ,2) }}
-                            </td>
-                            @endforeach
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <!-- جدول فروش -->
+    <div class="w-full lg:w-auto max-h-[680px] overflow-y-auto overflow-x-auto mt-6 lg:mt-0">
+        <h1 class="text-[20px] md:text-[24px] mb-3 text-center lg:text-start">مجموعه فروش ارز</h1>
+        <table class="min-w-[500px] text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead
+                class="bg-gradient-to-br from-black to-blue-400 w-full dark:bg-gray-700 text-white 
+                       text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0"
+                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                <tr>
+                    <th class="px-6 py-4 font-bold w-16">#</th>
+                    @foreach (['usd', 'afn', 'irr','pkr'] as $currency)
+                        <th class="px-6 py-4 font-bold w-48 text-center">{{ $this->getCurrencyName($currency) }}</th>
+                    @endforeach
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="text-black border-b border-[#D9D9D9] bg-transparent">
+                    <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">1</td>
+                    @foreach (['usd', 'afn', 'irr','pkr'] as $currency)
+                        <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center">
+                            {{ number_format($totalSell[$currency] ?? 0 ,2) }}
+                        </td>
+                    @endforeach
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 
         <!-- مانده خالص -->
@@ -94,7 +96,7 @@
         </div>
         <div class="flex flex-col lg:flex-row gap-8 mt-7">
             <!-- فرم تراکنش -->
-            <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[580px] p-[12px] h-fit rounded-[12px] space-y-2"
+            <div class="flex flex-col bg-[#F5F5F5] w-full    lg:w-[474px] p-[12px] h-fit rounded-[12px] space-y-2"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 <div
@@ -106,10 +108,7 @@
 
 
                     <div class="flex items-center gap-2 pl-2 ">
-                        <button wire:click="swapCurrencies" type="button"
-                            class="bg-gradient-to-br from-black to-blue-500  text-white p-6 rounded-xl shadow-lg transition-all duration-300 rounded-[8px] px-2 py-4 text-white vazir text-[15px] whitespace-nowrap">
-                            تبدیل مبدا _ مقصد
-                        </button>
+                     
                         <button wire:click="toggleTransactionType" type="button" class="rounded-[8px] p-[10px] text-white vazir text-[14px]
                                 transition-colors duration-500 ease-in-out py-4
                                 {{ $transactionType === 'خرید' ? 'bg-gradient-to-br from-black to-blue-500  text-white p-6 rounded-xl shadow-lg transition-all duration-300' : 'bg-gradient-to-br from-black to-red-500  text-white p-6 rounded-xl shadow-lg transition-all duration-300' }}">
@@ -287,7 +286,7 @@
             </div>
 
             <!-- جدول تراکنش‌ها -->
-            <div class="flex-1 flex flex-col bg-[#F5F5F5] p-4 rounded-[12px]"
+            <div class="flex-1 flex flex-col bg-[#F5F5F5] p-4 rounded-[12px]  w-[440px] mb-5 md:w-[430px] lg:w-[200px]"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 <div
