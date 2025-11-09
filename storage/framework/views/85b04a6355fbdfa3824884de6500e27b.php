@@ -589,7 +589,7 @@
 
                     <!-- نام شرکت -->
                     <div class="text-[40px] text-[#353e73] font-bold amiri company-name">
-                        شرکت <?php echo e(Auth::guard('tools')->user()->company_name); ?>
+                         <?php echo e(Auth::guard('tools')->user()->company_name); ?>
 
                     </div>
                 </div>

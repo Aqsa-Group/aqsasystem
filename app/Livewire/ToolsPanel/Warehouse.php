@@ -446,7 +446,8 @@ class Warehouse extends Component
     // Perform calculations before saving
     $this->calculatePrices();
 
-    $user = Auth::guard('tools')->user();
+     $user = Auth::guard('tools')->user();
+    $adminId = $user->admin_id ?? $user->id;
     $imagePath = $this->product_image ? $this->product_image->store('products', 'public') : null;
 
     $productData = [
@@ -469,6 +470,8 @@ class Warehouse extends Component
         'notes' => $this->notes,
         'image_path' => $imagePath,
         'category' => $this->category,
+        'user_id' => $user,
+        'admin_id' => $adminId,
         'sub_category' => $this->sub_category,
         'supplier_name' => $this->supplier_name,
         'supplier_contact' => $this->supplier_contact,
