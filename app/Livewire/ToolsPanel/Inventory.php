@@ -64,14 +64,14 @@ class Inventory extends Component
 
     protected $paginationTheme = 'bootstrap';
 
-     public function mount()
+    public function mount()
     {
         $this->production_year = Jalalian::now()->getYear();
         $this->expiry_date = null;
         $this->calculatePrices();
     }
 
-        public function calculatePrices()
+    public function calculatePrices()
     {
         // Calculate unit price
         if ($this->purchase_price_per_package > 0 && $this->quantity_per_package > 0) {
@@ -82,7 +82,7 @@ class Inventory extends Component
 
         // Calculate total quantity
         if ($this->total_packages > 0) {
-            $this->total_quantity = $this->package_type === 'دانه' 
+            $this->total_quantity = $this->package_type === 'دانه'
                 ? $this->total_packages
                 : $this->total_packages * $this->quantity_per_package;
 
@@ -105,7 +105,7 @@ class Inventory extends Component
         $this->updateStatus();
     }
 
-     public function updateStatus()
+    public function updateStatus()
     {
         if ($this->total_quantity <= 0) {
             $this->status = 'ناموجود';
@@ -116,7 +116,7 @@ class Inventory extends Component
         }
     }
 
-      public function updated($property)
+    public function updated($property)
     {
         $calculateProperties = [
             'purchase_price_per_package',
@@ -176,9 +176,9 @@ class Inventory extends Component
         // Perform calculations before saving
         $this->calculatePrices();
 
-    $user = Auth::guard('tools')->user();
-    $adminId = $user->admin_id ?? $user->id;
-    $imagePath = $this->product_image ? $this->product_image->store('products', 'public') : null;
+        $user = Auth::guard('tools')->user();
+        $adminId = $user->admin_id ?? $user->id;
+        $imagePath = $this->product_image ? $this->product_image->store('products', 'public') : null;
 
         $productData = [
             'barcode' => $this->barcode,
@@ -200,8 +200,8 @@ class Inventory extends Component
             'notes' => $this->notes,
             'image_path' => $imagePath,
             'category' => $this->category,
-            'user_id'=>$user,
-            'admin_id' =>$adminId,
+            'user_id' => $user->id,
+            'admin_id' => $user->admin_id ?? $user->id,
             'sub_category' => $this->sub_category,
             'supplier_name' => $this->supplier_name,
             'supplier_contact' => $this->supplier_contact,
@@ -217,7 +217,7 @@ class Inventory extends Component
         if ($user && Schema::hasColumn('inventories', 'user_id')) {
             $productData['user_id'] = $user->id;
         }
-        
+
         if ($user && Schema::hasColumn('inventories', 'admin_id')) {
             $productData['admin_id'] = $user->admin_id ?? $user->id;
         }
@@ -236,7 +236,6 @@ class Inventory extends Component
             DB::commit();
             $this->resetForm();
             session()->flash('message', $message);
-            
         } catch (\Exception $e) {
             DB::rollBack();
             session()->flash('error', 'خطا در ذخیره محصول: ' . $e->getMessage());
@@ -251,9 +250,9 @@ class Inventory extends Component
         $prefix = 'AUTO'; // پیشوند برای بارکدهای خودکار
         $timestamp = now()->format('YmdHis');
         $random = Str::random(4); // ۴ کاراکتر تصادفی
-        
+
         $autoBarcode = $prefix . $timestamp . strtoupper($random);
-        
+
         // بررسی یکتایی
         $counter = 0;
         while (Inventories::where('barcode', $autoBarcode)->exists() && $counter < 10) {
@@ -261,12 +260,12 @@ class Inventory extends Component
             $autoBarcode = $prefix . $timestamp . strtoupper($random);
             $counter++;
         }
-        
+
         // اگر هنوز تکراری بود، از timestamp متفاوت استفاده کن
         if (Inventories::where('barcode', $autoBarcode)->exists()) {
             $autoBarcode = $prefix . now()->format('YmdHisu') . strtoupper(Str::random(4));
         }
-        
+
         return $autoBarcode;
     }
 
@@ -278,18 +277,18 @@ class Inventory extends Component
         $prefix = '8';
         $maxAttempts = 10;
         $attempt = 0;
-        
+
         do {
             $randomNumber = mt_rand(1, 99999999999);
             $barcode = $prefix . str_pad($randomNumber, 11, '0', STR_PAD_LEFT);
             $attempt++;
         } while (Inventories::where('barcode', $barcode)->exists() && $attempt < $maxAttempts);
-        
+
         // اگر بعد از ۱۰ بار موفق نشد، از روش timestamp استفاده کن
         if ($attempt >= $maxAttempts) {
             $barcode = '8' . now()->format('YmdHis') . mt_rand(100, 999);
         }
-        
+
         return $barcode;
     }
 
@@ -301,27 +300,27 @@ class Inventory extends Component
         if (empty($this->product_name)) {
             return $this->generateAutoBarcode();
         }
-        
+
         $namePart = substr(preg_replace('/[^a-zA-Z0-9]/', '', $this->product_name), 0, 6);
         $timestamp = now()->format('mdHis');
         $random = mt_rand(100, 999);
-        
+
         $barcode = strtoupper($namePart) . $timestamp . $random;
-        
+
         $counter = 0;
         while (Inventories::where('barcode', $barcode)->exists() && $counter < 5) {
             $random = mt_rand(100, 999);
             $barcode = strtoupper($namePart) . $timestamp . $random;
             $counter++;
         }
-        
+
         return $barcode;
     }
 
     public function editProduct($productId)
     {
         $product = Inventories::findOrFail($productId);
-        
+
         $this->editingId = $product->id;
         $this->barcode = $product->barcode;
         $this->product_name = $product->product_name;
@@ -352,49 +351,48 @@ class Inventory extends Component
 
     public $confirmDeleteId = null;
 
-public function confirmDelete($productId)
-{
-    $this->confirmDeleteId = $productId;
-}
+    public function confirmDelete($productId)
+    {
+        $this->confirmDeleteId = $productId;
+    }
 
-public function deleteProductConfirmed()
-{
-    if ($this->confirmDeleteId) {
-        DB::beginTransaction();
-        try {
-            $product = Inventories::findOrFail($this->confirmDeleteId);
-            
-            // Delete associated image if exists
-            if ($product->image_path) {
-                Storage::disk('public')->delete($product->image_path);
+    public function deleteProductConfirmed()
+    {
+        if ($this->confirmDeleteId) {
+            DB::beginTransaction();
+            try {
+                $product = Inventories::findOrFail($this->confirmDeleteId);
+
+                // Delete associated image if exists
+                if ($product->image_path) {
+                    Storage::disk('public')->delete($product->image_path);
+                }
+
+                $product->delete();
+
+                DB::commit();
+                session()->flash('message', 'محصول با موفقیت حذف شد!');
+
+                // رفرش کامپوننت
+                $this->dispatch('$refresh');
+            } catch (\Exception $e) {
+                DB::rollBack();
+                session()->flash('error', 'خطا در حذف محصول: ' . $e->getMessage());
             }
-            
-            $product->delete();
-            
-            DB::commit();
-            session()->flash('message', 'محصول با موفقیت حذف شد!');
-            
-            // رفرش کامپوننت
-            $this->dispatch('$refresh');
-            
-        } catch (\Exception $e) {
-            DB::rollBack();
-            session()->flash('error', 'خطا در حذف محصول: ' . $e->getMessage());
+
+            $this->confirmDeleteId = null;
         }
-        
+    }
+
+    public function cancelDelete()
+    {
         $this->confirmDeleteId = null;
     }
-}
-
-public function cancelDelete()
-{
-    $this->confirmDeleteId = null;
-}
 
     public function applyStockChange($productId)
     {
         $this->selectedProductId = $productId;
-        
+
         $this->validate([
             'stock_quantity' => 'required|integer|min:1',
             'stock_type' => 'required|in:ورود,خروج,تعدیل,فروش,خرید',
@@ -421,11 +419,11 @@ public function cancelDelete()
             } else {
                 // کاهش موجودی
                 $previousQuantity = $product->total_quantity;
-                
+
                 if ($this->stock_quantity > $product->total_packages) {
                     throw new \Exception('موجودی کافی نیست');
                 }
-                
+
                 $product->total_packages -= $this->stock_quantity;
                 $product->calculateTotalQuantity();
                 $product->calculateTotalPurchaseAmount();
@@ -449,7 +447,7 @@ public function cancelDelete()
     private function recordHistory($product, $type, $quantityChange, $previousQuantity, $newQuantity, $unitPrice = null, $notes = null)
     {
         $user = Auth::guard('tools')->user();
-        
+
         $historyData = [
             'inventory_id' => $product->id,
             'type' => $type,
@@ -466,7 +464,7 @@ public function cancelDelete()
         if ($user && Schema::hasColumn('inventory_histories', 'user_id')) {
             $historyData['user_id'] = $user->id;
         }
-        
+
         if ($user && Schema::hasColumn('inventory_histories', 'admin_id')) {
             $historyData['admin_id'] = $user->admin_id ?? $user->id;
         }
@@ -479,17 +477,16 @@ public function cancelDelete()
         DB::beginTransaction();
         try {
             $product = Inventories::findOrFail($productId);
-            
+
             // Delete associated image if exists
             if ($product->image_path) {
                 Storage::disk('public')->delete($product->image_path);
             }
-            
+
             $product->delete();
-            
+
             DB::commit();
             session()->flash('message', 'محصول با موفقیت حذف شد!');
-            
         } catch (\Exception $e) {
             DB::rollBack();
             session()->flash('error', 'خطا در حذف محصول: ' . $e->getMessage());
@@ -501,14 +498,14 @@ public function cancelDelete()
         try {
             $product = Inventories::findOrFail($productId);
             $product->update(['is_active' => !$product->is_active]);
-            
+
             session()->flash('message', 'وضعیت محصول تغییر کرد!');
         } catch (\Exception $e) {
             session()->flash('error', 'خطا در تغییر وضعیت: ' . $e->getMessage());
         }
     }
 
-   public function resetForm()
+    public function resetForm()
     {
         $this->reset([
             'barcode',
@@ -533,7 +530,7 @@ public function cancelDelete()
             'expiry_date',
             'editingId'
         ]);
-        
+
         $this->package_type = 'کارتن';
         $this->quantity_per_package = 1;
         $this->production_year = Jalalian::now()->getYear();
@@ -544,17 +541,17 @@ public function cancelDelete()
     }
 
 
-   public function clearFilters()
-{
-    $this->reset(['search', 'selectedCategory', 'selectedStatus']);
-    $this->resetPage();
-    
-    // اطمینان از محاسبه مجدد قیمت‌ها
-    $this->calculatePrices();
-    
-    // اگر می‌خواهید فرم هم ریست شود:
-    // $this->resetForm();
-}
+    public function clearFilters()
+    {
+        $this->reset(['search', 'selectedCategory', 'selectedStatus']);
+        $this->resetPage();
+
+        // اطمینان از محاسبه مجدد قیمت‌ها
+        $this->calculatePrices();
+
+        // اگر می‌خواهید فرم هم ریست شود:
+        // $this->resetForm();
+    }
 
 
     public function clearStockForm()
@@ -566,9 +563,9 @@ public function cancelDelete()
     public function getCategoriesProperty()
     {
         $user = Auth::guard('tools')->user();
-        
+
         $query = Inventories::query();
-        
+
         // اگر فیلد admin_id وجود دارد و کاربر لاگین کرده، فیلتر کنیم
         if ($user && Schema::hasColumn('inventories', 'admin_id')) {
             $adminId = $user->admin_id ?? $user->id;
@@ -585,9 +582,9 @@ public function cancelDelete()
     public function getLowStockProductsProperty()
     {
         $user = Auth::guard('tools')->user();
-        
+
         $query = Inventories::query();
-        
+
         // اگر فیلد admin_id وجود دارد و کاربر لاگین کرده، فیلتر کنیم
         if ($user && Schema::hasColumn('inventories', 'admin_id')) {
             $adminId = $user->admin_id ?? $user->id;
@@ -603,9 +600,9 @@ public function cancelDelete()
     public function getInventoryStatsProperty()
     {
         $user = Auth::guard('tools')->user();
-        
+
         $query = Inventories::query();
-        
+
         // اگر فیلد admin_id وجود دارد و کاربر لاگین کرده، فیلتر کنیم
         if ($user && Schema::hasColumn('inventories', 'admin_id')) {
             $adminId = $user->admin_id ?? $user->id;
@@ -619,7 +616,7 @@ public function cancelDelete()
             'active_products' => $activeProducts->count(),
             'out_of_stock' => $activeProducts->where('status', 'ناموجود')->count(),
             'low_stock' => $activeProducts->where('status', 'در حال تکمیل')->count(),
-            'total_value' => $activeProducts->sum(function($product) {
+            'total_value' => $activeProducts->sum(function ($product) {
                 return $product->total_quantity * $product->purchase_price_per_unit;
             }),
         ];
@@ -628,7 +625,7 @@ public function cancelDelete()
     public function getProductsProperty()
     {
         $user = Auth::guard('tools')->user();
-        
+
         $query = Inventories::query();
 
         // اگر فیلد admin_id وجود دارد و کاربر لاگین کرده، فیلتر کنیم
@@ -638,10 +635,10 @@ public function cancelDelete()
         }
 
         if ($this->search) {
-            $query->where(function($q) {
+            $query->where(function ($q) {
                 $q->where('product_name', 'like', "%{$this->search}%")
-                  ->orWhere('barcode', 'like', "%{$this->search}%")
-                  ->orWhere('category', 'like', "%{$this->search}%");
+                    ->orWhere('barcode', 'like', "%{$this->search}%")
+                    ->orWhere('category', 'like', "%{$this->search}%");
             });
         }
 
@@ -655,7 +652,7 @@ public function cancelDelete()
 
         return $query->orderBy('created_at', 'desc')->paginate(10);
     }
-    
+
 
     public function render()
     {
