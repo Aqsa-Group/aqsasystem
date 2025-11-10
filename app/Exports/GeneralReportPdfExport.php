@@ -25,7 +25,7 @@ class GeneralReportPdfExport
             $mpdf->WriteHTML($html);
 
             $filename = 'general_report_' . $this->reportType . '_' . now()->format('Y_m_d') . '.pdf';
-            
+
             return response($mpdf->Output('', 'S'), 200, [
                 'Content-Type' => 'application/pdf',
                 'Content-Disposition' => 'attachment; filename="' . $filename . '"',
@@ -33,7 +33,6 @@ class GeneralReportPdfExport
                 'Pragma' => 'no-cache',
                 'Expires' => '0'
             ]);
-
         } catch (\Exception $e) {
             throw new \Exception('خطا در تولید PDF: ' . $e->getMessage());
         }
@@ -53,7 +52,6 @@ class GeneralReportPdfExport
                 'Pragma' => 'no-cache',
                 'Expires' => '0'
             ]);
-
         } catch (\Exception $e) {
             throw new \Exception('خطا در نمایش PDF: ' . $e->getMessage());
         }
@@ -61,7 +59,6 @@ class GeneralReportPdfExport
 
     protected function createMpdf()
     {
-        // تنظیمات ساده‌تر برای mPDF
         return new Mpdf([
             'mode' => 'utf-8',
             'format' => 'A4',
@@ -81,6 +78,7 @@ class GeneralReportPdfExport
     protected function generateHtml()
     {
         $reportTypes = [
+            'withdraw_salary' => 'گزارش برداشت‌ها و معاش کارمندان',
             'accounting' => 'گزارش حسابداری',
             'outside' => 'گزارش عواید بیرونی',
             'deposit' => 'گزارش تسویه نشده‌ها',
@@ -103,7 +101,13 @@ class GeneralReportPdfExport
 
     protected function calculateSummary()
     {
-        $totalAmount = match($this->reportType) {
+        $totalAmount = match ($this->reportType) {
+            'withdraw_salary' => $this->data->sum(function ($item) {
+                return isset($item->record_type) && $item->record_type === 'برداشت'
+                    ? ($item->amount ?? 0)
+                    : ($item->paid ?? $item->salary ?? 0);
+            }),
+
             'accounting' => $this->data->sum('price'),
             'outside' => $this->data->sum('paid'),
             'deposit' => $this->data->sum('price'),

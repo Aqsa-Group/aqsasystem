@@ -26,12 +26,13 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Morilog\Jalali\Jalalian;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class GeneralReports extends Component
 {
     use WithPagination;
 
-    public $reportType = 'accounting';
+    public $reportType = 'withdraw_salary';
     public $startDate;
     public $endDate;
     public $startDateJalali; 
@@ -49,10 +50,9 @@ class GeneralReports extends Component
     public $search = '';
     public $amountMin;
     public $amountMax;
-    
 
     protected $queryString = [
-        'reportType' => ['except' => 'accounting'],
+        'reportType' => ['except' => 'withdraw_salary'],
         'startDate' => ['except' => ''],
         'endDate' => ['except' => ''],
         'startDateJalali' => ['except' => ''],
@@ -90,7 +90,6 @@ class GeneralReports extends Component
         $this->startDate = $oneMonthAgo->toCarbon()->format('Y-m-d');
     }
 
-    // وقتی تاریخ شمسی شروع تغییر کرد
     public function updatedStartDateJalali($value)
     {
         if ($value) {
@@ -108,7 +107,6 @@ class GeneralReports extends Component
         $this->resetPage();
     }
 
-    // وقتی تاریخ شمسی پایان تغییر کرد
     public function updatedEndDateJalali($value)
     {
         if ($value) {
@@ -126,7 +124,6 @@ class GeneralReports extends Component
         $this->resetPage();
     }
 
-    // وقتی تاریخ میلادی شروع تغییر کرد (برای سازگاری)
     public function updatedStartDate($value)
     {
         if ($value) {
@@ -142,7 +139,6 @@ class GeneralReports extends Component
         $this->resetPage();
     }
 
-    // وقتی تاریخ میلادی پایان تغییر کرد (برای سازگاری)
     public function updatedEndDate($value)
     {
         if ($value) {
@@ -257,38 +253,47 @@ class GeneralReports extends Component
         
         try {
             switch ($this->reportType) {
+                case 'withdraw_salary':
+                    if ($forExport) {
+                        return $this->getCombinedDataForExport();
+                    }
+                    return $this->buildWithdrawSalaryQuery();
+                    
                 case 'accounting':
                     $query = $this->buildAccountingQuery();
                     break;
-                case 'salary':
-                $query = $this->buildSalaryQuery();
-                break;
+                    
                 case 'outside':
                     $query = $this->buildOutsideQuery();
                     break;
+                    
                 case 'deposit':
                     $query = $this->buildDepositQuery();
                     break;
+                    
                 case 'loan':
                     $query = $this->buildLoanQuery();
                     break;
+                    
                 case 'payment':
                     $query = $this->buildPaymentQuery();
                     break;
+                    
                 case 'buy':
                     $query = $this->buildBuyQuery();
                     break;
+                    
                 case 'sell':
                     $query = $this->buildSellQuery();
                     break;
-                case 'withdraw_log':
-                    $query = $this->buildWithdrawLogQuery();
-                    break;
+                    
                 default:
-                    $query = $this->buildAccountingQuery();
+                    $query = $this->buildWithdrawSalaryQuery();
             }
 
-            $query = $this->applyAccessControl($query, $user);
+            if ($this->reportType !== 'withdraw_salary') {
+                $query = $this->applyAccessControl($query, $user);
+            }
 
             return $forExport ? $query->get() : $query->paginate(20);
 
@@ -301,30 +306,121 @@ class GeneralReports extends Component
             return $forExport ? collect() : collect()->paginate(20);
         }
     }
-
-    private function applyAccessControl($query, $user)
-    {
-        if ($user->role === 'superadmin') {
-            return $query;
-        }
-        
-        $adminId = $user->role === 'admin' ? $user->id : $user->admin_id;
-        
-        $model = $query->getModel();
-        $table = $model->getTable();
-        $columns = $model->getConnection()->getSchemaBuilder()->getColumnListing($table);
-        
-        if (in_array('admin_id', $columns)) {
-            return $query->where('admin_id', $adminId);
-        }
-        
+private function applyAccessControl($query, $user)
+{
+    if ($user->role === 'superadmin') {
         return $query;
     }
+    
+    $adminId = $user->role === 'admin' ? $user->id : $user->admin_id;
+    
+    $model = $query->getModel();
+    $table = $model->getTable();
+    $columns = $model->getConnection()->getSchemaBuilder()->getColumnListing($table);
+    
+    if (in_array('admin_id', $columns)) {
+        return $query->where(function ($q) use ($adminId) {
+            $q->where('admin_id', $adminId)
+              ->orWhereNull('admin_id');
+        });
+    }
+    
+    return $query;
+}   
 
-    // اضافه کردن متد buildSalaryQuery
-private function buildSalaryQuery()
+ private function buildWithdrawSalaryQuery()
 {
-    return Salary::with(['market', 'staff', 'loan'])
+    $user = Auth::user();
+
+    // Get withdrawals data
+    $withdrawalsQuery = WithdrawLog::with(['customer', 'staff'])
+        ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
+        ->when($this->expansesType, fn($q) => $q->where('expanses_type', $this->expansesType))
+        ->when($this->startDate, fn($q) => $q->whereDate('created_at', '>=', $this->startDate))
+        ->when($this->endDate, fn($q) => $q->whereDate('created_at', '<=', $this->endDate))
+        ->when($this->amountMin, fn($q) => $q->where('amount', '>=', $this->amountMin))
+        ->when($this->amountMax, fn($q) => $q->where('amount', '<=', $this->amountMax))
+        ->when($this->search, function($q) {
+            $q->where('recipient_name', 'like', "%{$this->search}%")
+              ->orWhere('description', 'like', "%{$this->search}%");
+        });
+
+    // Apply access control for withdrawals
+    $withdrawalsQuery = $this->applyAccessControl($withdrawalsQuery, $user);
+
+    $withdrawals = $withdrawalsQuery->get()
+        ->map(function($item) {
+            $item->record_type = 'withdraw';
+            return $item;
+        });
+
+    // Get salaries data
+    $salariesQuery = Salary::with(['market', 'staff', 'loan'])
+        ->when($this->marketId, fn($q) => $q->where('market_id', $this->marketId))
+        ->when($this->staffId, fn($q) => $q->where('staff_id', $this->staffId))
+        ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
+        ->when($this->startDate, fn($q) => $q->whereDate('paid_date', '>=', $this->startDate))
+        ->when($this->endDate, fn($q) => $q->whereDate('paid_date', '<=', $this->endDate))
+        ->when($this->amountMin, fn($q) => $q->where('paid', '>=', $this->amountMin))
+        ->when($this->amountMax, fn($q) => $q->where('paid', '<=', $this->amountMax))
+        ->when($this->search, function($q) {
+            $q->whereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
+              ->orWhereHas('market', fn($q2) => $q2->where('name', 'like', "%{$this->search}%"));
+        });
+
+    // Apply access control for salaries
+    $salariesQuery = $this->applyAccessControl($salariesQuery, $user);
+
+    $salaries = $salariesQuery->get()
+        ->map(function($item) {
+            $item->record_type = 'salary';
+            return $item;
+        });
+
+    // Combine and sort by creation date
+    $combined = $withdrawals->merge($salaries)
+        ->sortByDesc(function($item) {
+            return $item->record_type === 'withdraw' ? $item->created_at : $item->paid_date;
+        });
+
+    // For pagination
+    $page = LengthAwarePaginator::resolveCurrentPage();
+    $perPage = 20;
+    $results = $combined->slice(($page - 1) * $perPage, $perPage)->values();
+    
+    return new LengthAwarePaginator(
+        $results,
+        $combined->count(),
+        $perPage,
+        $page,
+        ['path' => LengthAwarePaginator::resolveCurrentPath()]
+    );
+}
+ private function getCombinedDataForExport()
+{
+    $user = Auth::user();
+
+  $withdrawalsQuery = WithdrawLog::query()
+    ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
+    ->when($this->startDate, fn($q) => $q->whereDate('created_at', '>=', $this->startDate))
+    ->when($this->endDate, fn($q) => $q->whereDate('created_at', '<=', $this->endDate))
+    ->when($this->amountMin, fn($q) => $q->where('amount', '>=', $this->amountMin))
+    ->when($this->amountMax, fn($q) => $q->where('amount', '<=', $this->amountMax))
+    ->when($this->search, function($q) {
+        $q->where('recipient_name', 'like', "%{$this->search}%")
+          ->orWhere('description', 'like', "%{$this->search}%");
+    });
+
+
+    $withdrawalsQuery = $this->applyAccessControl($withdrawalsQuery, $user);
+
+ $withdrawals = $withdrawalsQuery->get()
+    ->map(function($item) {
+        $item->record_type = 'withdraw';
+        return $item;
+    });
+
+    $salariesQuery = Salary::with(['market', 'staff', 'loan'])
         ->when($this->marketId, fn($q) => $q->where('market_id', $this->marketId))
         ->when($this->staffId, fn($q) => $q->where('staff_id', $this->staffId))
         ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
@@ -335,10 +431,21 @@ private function buildSalaryQuery()
         ->when($this->search, function($q) {
             $q->whereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
               ->orWhereHas('market', fn($q2) => $q2->where('name', 'like', "%{$this->search}%"));
-        })
-        ->orderBy('created_at', 'desc');
-}
+        });
 
+    $salariesQuery = $this->applyAccessControl($salariesQuery, $user);
+
+  $salaries = $salariesQuery->get()
+    ->map(function($item) {
+        $item->record_type = 'salary';
+        return $item;
+    });
+
+    return $withdrawals->merge($salaries)
+        ->sortByDesc(function($item) {
+            return $item->record_type === 'برداشت' ? $item->created_at : $item->paid_date;
+        });
+}
 
     private function buildAccountingQuery()
     {
@@ -563,78 +670,57 @@ private function buildSalaryQuery()
             ->pluck('fullname', 'id');
     }
 
-  public function getSummaryProperty()
-{
-    $data = $this->getReportData(true);
-    
-    // محاسبه مجموع مبالغ هر ارز برای تمام انواع گزارش‌ها
-    $currencyTotals = $this->calculateCurrencyTotals($data);
-    
-    $totalAmount = match($this->reportType) {
-        'accounting' => $data->sum('price'),
-        'outside' => $data->sum('paid'),
-        'salary' => $data->sum('salary'),
-        'deposit' => $data->sum('price'),
-        'loan' => $data->sum('amount'),
-        'payment' => $data->sum('amount'),
-        'buy' => $data->sum('price'),
-        'sell' => $data->sum('price'),
-        'withdraw_log' => $data->sum('amount'),
-        default => 0
-    };
-    
-    return [
-        'total_count' => $data->count(),
-        'total_amount' => $totalAmount,
-        'currency_totals' => $currencyTotals,
-        'report_type' => $this->getReportTypeLabel(),
-        'current_date' => Jalalian::now()->format('Y/m/d'),
-    ];
-}
-
-/**
- * محاسبه مجموع مبالغ هر ارز برای تمام انواع گزارش‌ها
- */
-private function calculateCurrencyTotals($data)
-{
-    $currencyTotals = [];
-    
-    foreach ($data as $item) {
-        $currency = $item->currency ?? 'نامشخص';
+    public function getSummaryProperty()
+    {
+        $data = $this->getReportData(true);
         
-        // تعیین فیلد مبلغ بر اساس نوع گزارش
-        $amount = match($this->reportType) {
-            'accounting' => $item->price ?? 0,
-            'outside' => $item->paid ?? 0,
-            'deposit' => $item->price ?? 0,
-             'salary' => $item->salary ?? 0,
-            'loan' => $item->amount ?? 0,
-            'payment' => $item->amount ?? 0,
-            'buy' => $item->price ?? 0,
-            'sell' => $item->price ?? 0,
-            'withdraw_log' => $item->amount ?? 0,
+        $currencyTotals = $this->calculateCurrencyTotals($data);
+        
+        $totalAmount = match($this->reportType) {
+            'withdraw_salary' => $data->sum(function($item) {
+                return $item->record_type === 'withdraw' ? $item->amount : ($item->salary ?? 0);
+            }),
+            'accounting' => $data->sum('price'),
+            'outside' => $data->sum('paid'),
+            'salary' => $data->sum('salary'),
+            'deposit' => $data->sum('price'),
+            'loan' => $data->sum('amount'),
+            'payment' => $data->sum('amount'),
+            'buy' => $data->sum('price'),
+            'sell' => $data->sum('price'),
+            'withdraw_log' => $data->sum('amount'),
             default => 0
         };
         
-        if (!isset($currencyTotals[$currency])) {
-            $currencyTotals[$currency] = 0;
-        }
-        
-        $currencyTotals[$currency] += $amount;
+        return [
+            'total_count' => $data->count(),
+            'total_amount' => $totalAmount,
+            'currency_totals' => $currencyTotals,
+            'report_type' => $this->getReportTypeLabel(),
+            'current_date' => Jalalian::now()->format('Y/m/d'),
+        ];
     }
-    
-    return $currencyTotals;
-}
-    /**
-     * محاسبه مجموع مبالغ هر ارز به صورت جداگانه برای عواید بیرونی
-     */
-    private function calculateOutsideCurrencyTotals($data)
+
+    private function calculateCurrencyTotals($data)
     {
         $currencyTotals = [];
         
         foreach ($data as $item) {
             $currency = $item->currency ?? 'نامشخص';
-            $amount = $item->paid ?? 0;
+            
+            $amount = match($this->reportType) {
+                'withdraw_salary' => $item->record_type === 'withdraw' ? $item->amount : ($item->salary ?? 0),
+                'accounting' => $item->price ?? 0,
+                'outside' => $item->paid ?? 0,
+                'deposit' => $item->price ?? 0,
+                'salary' => $item->salary ?? 0,
+                'loan' => $item->amount ?? 0,
+                'payment' => $item->amount ?? 0,
+                'buy' => $item->price ?? 0,
+                'sell' => $item->price ?? 0,
+                'withdraw_log' => $item->amount ?? 0,
+                default => 0
+            };
             
             if (!isset($currencyTotals[$currency])) {
                 $currencyTotals[$currency] = 0;
@@ -649,6 +735,7 @@ private function calculateCurrencyTotals($data)
     private function getReportTypeLabel()
     {
         $types = [
+            'withdraw_salary' => 'برداشت‌ها و معاش کارمندان',
             'accounting' => 'حسابداری',
             'outside' => 'عواید بیرونی',
             'salary' => 'معاش کارمندان',
@@ -671,7 +758,6 @@ private function calculateCurrencyTotals($data)
             'expansesType', 'status', 'search', 'amountMin', 'amountMax'
         ]);
         
-        // بازنشانی به تاریخ‌های پیش‌فرض شمسی
         $this->setDefaultJalaliDates();
         $this->resetPage();
         
@@ -695,7 +781,6 @@ private function calculateCurrencyTotals($data)
         ]);
     }
 
-    // متد کمکی برای پاک کردن خطاها
     private function clearError($field)
     {
         $errors = $this->getErrorBag();
