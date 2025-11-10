@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
+
 class Inventory extends Component
 {
     use WithFileUploads, WithPagination;
@@ -55,10 +56,6 @@ class Inventory extends Component
     public $selectedCategory = '';
     public $selectedStatus = '';
 
-    public $categories = [];
-    public $subCategories = [];
-    public $availableSubCategories = [];
-
     // Stock management
     public $stock_quantity = 0;
     public $stock_type = 'ورود';
@@ -67,147 +64,14 @@ class Inventory extends Component
 
     protected $paginationTheme = 'bootstrap';
 
-    public function mount()
+     public function mount()
     {
         $this->production_year = Jalalian::now()->getYear();
         $this->expiry_date = null;
-        $this->initializeCategories();
-        $this->calculatePrices();
-    }
-    /**
-     * Initialize categories and subcategories
-     */
-private function initializeCategories()
-    {
-        $this->categories = [
-            'ابزار و صنعتی',
-            'سوپرمارکت',
-            'آرایشی و بهداشتی',
-            'خودرو و موتورسیکلت',
-            'لوازم خانگی',
-            'الکترونیک و دیجیتال',
-            'پوشاک و مد',
-            'خانه و آشپزخانه',
-            'سرگرمی و hobbies',
-            'کودک و نوزاد',
-        ];
-
-        $this->subCategories = [
-            'ابزار و صنعتی' => [
-                'ابزار دستی',
-                'ابزار برقی',
-                'تجهیزات ایمنی',
-                'لوازم صنعتی',
-                'پیچ و مهره'
-            ],
-            'سوپرمارکت' => [
-                'خوراکی',
-                'نوشیدنی',
-                'خشکبار',
-                'لبنیات',
-                'نان و شیرینی'
-            ],
-            'آرایشی و بهداشتی' => [
-                'لوازم آرایشی',
-                'لوازم بهداشتی',
-                'عطر و ادکلن',
-                'مراقبت پوست',
-                'مراقبت مو'
-            ],
-            'خودرو و موتورسیکلت' => [
-                'لوازم یدکی خودرو',
-                'لوازم یدکی موتور',
-                'لوازم جانبی',
-                'روغن و مواد شیمیایی',
-                'تجهیزات کارواش'
-            ],
-            'لوازم خانگی' => [
-                'لوازم برقی خانگی',
-                'لوازم آشپزخانه',
-                'لوازم نظافتی',
-                'لوازم روشنایی',
-                'سیستم گرمایش و سرمایش'
-            ],
-            'الکترونیک و دیجیتال' => [
-                'موبایل',
-                'لپ تاپ',
-                'تبلت',
-                'لوازم جانبی الکترونیک',
-                'کامپیوتر و قطعات'
-            ],
-            'پوشاک و مد' => [
-                'لباس مردانه',
-                'لباس زنانه',
-                'لباس بچه گانه',
-                'کفش',
-                'اکسسوری'
-            ],
-            'خانه و آشپزخانه' => [
-                'دکوراسیون',
-                'لوازم آشپزخانه',
-                'مبلمان',
-                'فرش و گلیم',
-                'لوازم خواب'
-            ],
-            'سرگرمی و hobbies' => [
-                'کتاب',
-                'موزیک',
-                'اسباب بازی',
-                'ورزشی',
-                'لوازم سفر'
-            ],
-            'کودک و نوزاد' => [
-                'لباس نوزاد',
-                'اسباب بازی',
-                'غذای کودک',
-                'لوازم بهداشتی کودک',
-                'وسایل خواب کودک'
-            ],
-        ];
-    }
-
-    /**
-     * Get subcategories based on selected category
-     */
-    public function getSubCategoriesForCategory($category)
-    {
-        return $this->subCategories[$category] ?? [];
-    }
-
-
-    /**
-     * When category changes, reset sub_category
-     */
-     public function updatedCategory($value)
-    {
-        $this->sub_category = null;
-        $this->availableSubCategories = $this->getSubCategoriesForCategory($value);
         $this->calculatePrices();
     }
 
-    
-
-    /**
-     * Get unique categories from database for filter
-     */
-    public function getDatabaseCategoriesProperty()
-    {
-        $user = Auth::guard('tools')->user();
-
-        $query = Inventories::query();
-
-        if ($user && Schema::hasColumn('inventories', 'admin_id')) {
-            $adminId = $user->admin_id ?? $user->id;
-            $query->where('admin_id', $adminId);
-        }
-
-        return $query->whereNotNull('category')
-            ->distinct()
-            ->pluck('category')
-            ->toArray();
-    }
-
-    public function calculatePrices()
+        public function calculatePrices()
     {
         // Calculate unit price
         if ($this->purchase_price_per_package > 0 && $this->quantity_per_package > 0) {
@@ -218,7 +82,7 @@ private function initializeCategories()
 
         // Calculate total quantity
         if ($this->total_packages > 0) {
-            $this->total_quantity = $this->package_type === 'دانه'
+            $this->total_quantity = $this->package_type === 'دانه' 
                 ? $this->total_packages
                 : $this->total_packages * $this->quantity_per_package;
 
@@ -241,7 +105,7 @@ private function initializeCategories()
         $this->updateStatus();
     }
 
-    public function updateStatus()
+     public function updateStatus()
     {
         if ($this->total_quantity <= 0) {
             $this->status = 'ناموجود';
@@ -252,7 +116,7 @@ private function initializeCategories()
         }
     }
 
-    public function updated($property)
+      public function updated($property)
     {
         $calculateProperties = [
             'purchase_price_per_package',
@@ -261,7 +125,7 @@ private function initializeCategories()
             'package_type',
             'wholesale_price',
             'min_stock_level',
-            'retail_price'
+            'retail_price' // اضافه کردن این
         ];
 
         if (in_array($property, $calculateProperties)) {
@@ -274,9 +138,11 @@ private function initializeCategories()
         }
     }
 
+
     public function saveProduct()
     {
         $this->validate([
+            // حذف required از بarcode و اضافه کردن nullable
             'barcode' => 'nullable|string|unique:tools.inventories,barcode,' . $this->editingId,
             'product_name' => 'required|string|max:255',
             'unit' => 'required|string',
@@ -311,7 +177,6 @@ private function initializeCategories()
         $this->calculatePrices();
 
         $user = Auth::guard('tools')->user();
-        $adminId = $user->admin_id ?? $user->id;
         $imagePath = $this->product_image ? $this->product_image->store('products', 'public') : null;
 
         $productData = [
@@ -340,8 +205,6 @@ private function initializeCategories()
             'min_stock_level' => $this->min_stock_level,
             'max_stock_level' => $this->max_stock_level,
             'expiry_date' => $this->expiry_date,
-            'user_id' =>$user,
-            'admin_id'=>$adminId,
             'status' => $this->status,
             'is_active' => $this->is_active,
             'last_purchase_date' => $this->editingId ? null : now(),
@@ -351,7 +214,7 @@ private function initializeCategories()
         if ($user && Schema::hasColumn('inventories', 'user_id')) {
             $productData['user_id'] = $user->id;
         }
-
+        
         if ($user && Schema::hasColumn('inventories', 'admin_id')) {
             $productData['admin_id'] = $user->admin_id ?? $user->id;
         }
@@ -370,6 +233,7 @@ private function initializeCategories()
             DB::commit();
             $this->resetForm();
             session()->flash('message', $message);
+            
         } catch (\Exception $e) {
             DB::rollBack();
             session()->flash('error', 'خطا در ذخیره محصول: ' . $e->getMessage());
@@ -381,30 +245,80 @@ private function initializeCategories()
      */
     private function generateAutoBarcode()
     {
-        $prefix = 'AUTO';
+        $prefix = 'AUTO'; // پیشوند برای بارکدهای خودکار
         $timestamp = now()->format('YmdHis');
-        $random = Str::random(4);
-
+        $random = Str::random(4); // ۴ کاراکتر تصادفی
+        
         $autoBarcode = $prefix . $timestamp . strtoupper($random);
-
+        
+        // بررسی یکتایی
         $counter = 0;
         while (Inventories::where('barcode', $autoBarcode)->exists() && $counter < 10) {
             $random = Str::random(4);
             $autoBarcode = $prefix . $timestamp . strtoupper($random);
             $counter++;
         }
-
+        
+        // اگر هنوز تکراری بود، از timestamp متفاوت استفاده کن
         if (Inventories::where('barcode', $autoBarcode)->exists()) {
             $autoBarcode = $prefix . now()->format('YmdHisu') . strtoupper(Str::random(4));
         }
-
+        
         return $autoBarcode;
+    }
+
+    /**
+     * روش جایگزین: تولید بارکد عددی
+     */
+    private function generateNumericBarcode()
+    {
+        $prefix = '8';
+        $maxAttempts = 10;
+        $attempt = 0;
+        
+        do {
+            $randomNumber = mt_rand(1, 99999999999);
+            $barcode = $prefix . str_pad($randomNumber, 11, '0', STR_PAD_LEFT);
+            $attempt++;
+        } while (Inventories::where('barcode', $barcode)->exists() && $attempt < $maxAttempts);
+        
+        // اگر بعد از ۱۰ بار موفق نشد، از روش timestamp استفاده کن
+        if ($attempt >= $maxAttempts) {
+            $barcode = '8' . now()->format('YmdHis') . mt_rand(100, 999);
+        }
+        
+        return $barcode;
+    }
+
+    /**
+     * روش جایگزین: تولید بارکد بر اساس نام محصول
+     */
+    private function generateNameBasedBarcode()
+    {
+        if (empty($this->product_name)) {
+            return $this->generateAutoBarcode();
+        }
+        
+        $namePart = substr(preg_replace('/[^a-zA-Z0-9]/', '', $this->product_name), 0, 6);
+        $timestamp = now()->format('mdHis');
+        $random = mt_rand(100, 999);
+        
+        $barcode = strtoupper($namePart) . $timestamp . $random;
+        
+        $counter = 0;
+        while (Inventories::where('barcode', $barcode)->exists() && $counter < 5) {
+            $random = mt_rand(100, 999);
+            $barcode = strtoupper($namePart) . $timestamp . $random;
+            $counter++;
+        }
+        
+        return $barcode;
     }
 
     public function editProduct($productId)
     {
         $product = Inventories::findOrFail($productId);
-
+        
         $this->editingId = $product->id;
         $this->barcode = $product->barcode;
         $this->product_name = $product->product_name;
@@ -432,47 +346,52 @@ private function initializeCategories()
         $this->calculatePrices();
     }
 
+
     public $confirmDeleteId = null;
 
-    public function confirmDelete($productId)
-    {
-        $this->confirmDeleteId = $productId;
-    }
+public function confirmDelete($productId)
+{
+    $this->confirmDeleteId = $productId;
+}
 
-    public function deleteProductConfirmed()
-    {
-        if ($this->confirmDeleteId) {
-            DB::beginTransaction();
-            try {
-                $product = Inventories::findOrFail($this->confirmDeleteId);
-
-                // Delete associated image if exists
-                if ($product->image_path) {
-                    Storage::disk('public')->delete($product->image_path);
-                }
-
-                $product->delete();
-
-                DB::commit();
-                session()->flash('message', 'محصول با موفقیت حذف شد!');
-            } catch (\Exception $e) {
-                DB::rollBack();
-                session()->flash('error', 'خطا در حذف محصول: ' . $e->getMessage());
+public function deleteProductConfirmed()
+{
+    if ($this->confirmDeleteId) {
+        DB::beginTransaction();
+        try {
+            $product = Inventories::findOrFail($this->confirmDeleteId);
+            
+            // Delete associated image if exists
+            if ($product->image_path) {
+                Storage::disk('public')->delete($product->image_path);
             }
-
-            $this->confirmDeleteId = null;
+            
+            $product->delete();
+            
+            DB::commit();
+            session()->flash('message', 'محصول با موفقیت حذف شد!');
+            
+            // رفرش کامپوننت
+            $this->dispatch('$refresh');
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+            session()->flash('error', 'خطا در حذف محصول: ' . $e->getMessage());
         }
-    }
-
-    public function cancelDelete()
-    {
+        
         $this->confirmDeleteId = null;
     }
+}
+
+public function cancelDelete()
+{
+    $this->confirmDeleteId = null;
+}
 
     public function applyStockChange($productId)
     {
         $this->selectedProductId = $productId;
-
+        
         $this->validate([
             'stock_quantity' => 'required|integer|min:1',
             'stock_type' => 'required|in:ورود,خروج,تعدیل,فروش,خرید',
@@ -499,11 +418,11 @@ private function initializeCategories()
             } else {
                 // کاهش موجودی
                 $previousQuantity = $product->total_quantity;
-
+                
                 if ($this->stock_quantity > $product->total_packages) {
                     throw new \Exception('موجودی کافی نیست');
                 }
-
+                
                 $product->total_packages -= $this->stock_quantity;
                 $product->calculateTotalQuantity();
                 $product->calculateTotalPurchaseAmount();
@@ -527,7 +446,7 @@ private function initializeCategories()
     private function recordHistory($product, $type, $quantityChange, $previousQuantity, $newQuantity, $unitPrice = null, $notes = null)
     {
         $user = Auth::guard('tools')->user();
-
+        
         $historyData = [
             'inventory_id' => $product->id,
             'type' => $type,
@@ -544,7 +463,7 @@ private function initializeCategories()
         if ($user && Schema::hasColumn('inventory_histories', 'user_id')) {
             $historyData['user_id'] = $user->id;
         }
-
+        
         if ($user && Schema::hasColumn('inventory_histories', 'admin_id')) {
             $historyData['admin_id'] = $user->admin_id ?? $user->id;
         }
@@ -557,16 +476,17 @@ private function initializeCategories()
         DB::beginTransaction();
         try {
             $product = Inventories::findOrFail($productId);
-
+            
             // Delete associated image if exists
             if ($product->image_path) {
                 Storage::disk('public')->delete($product->image_path);
             }
-
+            
             $product->delete();
-
+            
             DB::commit();
             session()->flash('message', 'محصول با موفقیت حذف شد!');
+            
         } catch (\Exception $e) {
             DB::rollBack();
             session()->flash('error', 'خطا در حذف محصول: ' . $e->getMessage());
@@ -578,14 +498,14 @@ private function initializeCategories()
         try {
             $product = Inventories::findOrFail($productId);
             $product->update(['is_active' => !$product->is_active]);
-
+            
             session()->flash('message', 'وضعیت محصول تغییر کرد!');
         } catch (\Exception $e) {
             session()->flash('error', 'خطا در تغییر وضعیت: ' . $e->getMessage());
         }
     }
 
-    public function resetForm()
+   public function resetForm()
     {
         $this->reset([
             'barcode',
@@ -610,7 +530,7 @@ private function initializeCategories()
             'expiry_date',
             'editingId'
         ]);
-
+        
         $this->package_type = 'کارتن';
         $this->quantity_per_package = 1;
         $this->production_year = Jalalian::now()->getYear();
@@ -620,12 +540,19 @@ private function initializeCategories()
         $this->calculatePrices();
     }
 
-    public function clearFilters()
-    {
-        $this->reset(['search', 'selectedCategory', 'selectedStatus']);
-        $this->resetPage();
-        $this->calculatePrices();
-    }
+
+   public function clearFilters()
+{
+    $this->reset(['search', 'selectedCategory', 'selectedStatus']);
+    $this->resetPage();
+    
+    // اطمینان از محاسبه مجدد قیمت‌ها
+    $this->calculatePrices();
+    
+    // اگر می‌خواهید فرم هم ریست شود:
+    // $this->resetForm();
+}
+
 
     public function clearStockForm()
     {
@@ -636,9 +563,10 @@ private function initializeCategories()
     public function getCategoriesProperty()
     {
         $user = Auth::guard('tools')->user();
-
+        
         $query = Inventories::query();
-
+        
+        // اگر فیلد admin_id وجود دارد و کاربر لاگین کرده، فیلتر کنیم
         if ($user && Schema::hasColumn('inventories', 'admin_id')) {
             $adminId = $user->admin_id ?? $user->id;
             $query->where('admin_id', $adminId);
@@ -654,9 +582,10 @@ private function initializeCategories()
     public function getLowStockProductsProperty()
     {
         $user = Auth::guard('tools')->user();
-
+        
         $query = Inventories::query();
-
+        
+        // اگر فیلد admin_id وجود دارد و کاربر لاگین کرده، فیلتر کنیم
         if ($user && Schema::hasColumn('inventories', 'admin_id')) {
             $adminId = $user->admin_id ?? $user->id;
             $query->where('admin_id', $adminId);
@@ -671,9 +600,10 @@ private function initializeCategories()
     public function getInventoryStatsProperty()
     {
         $user = Auth::guard('tools')->user();
-
+        
         $query = Inventories::query();
-
+        
+        // اگر فیلد admin_id وجود دارد و کاربر لاگین کرده، فیلتر کنیم
         if ($user && Schema::hasColumn('inventories', 'admin_id')) {
             $adminId = $user->admin_id ?? $user->id;
             $query->where('admin_id', $adminId);
@@ -686,7 +616,7 @@ private function initializeCategories()
             'active_products' => $activeProducts->count(),
             'out_of_stock' => $activeProducts->where('status', 'ناموجود')->count(),
             'low_stock' => $activeProducts->where('status', 'در حال تکمیل')->count(),
-            'total_value' => $activeProducts->sum(function ($product) {
+            'total_value' => $activeProducts->sum(function($product) {
                 return $product->total_quantity * $product->purchase_price_per_unit;
             }),
         ];
@@ -695,19 +625,20 @@ private function initializeCategories()
     public function getProductsProperty()
     {
         $user = Auth::guard('tools')->user();
-
+        
         $query = Inventories::query();
 
+        // اگر فیلد admin_id وجود دارد و کاربر لاگین کرده، فیلتر کنیم
         if ($user && Schema::hasColumn('inventories', 'admin_id')) {
             $adminId = $user->admin_id ?? $user->id;
             $query->where('admin_id', $adminId);
         }
 
         if ($this->search) {
-            $query->where(function ($q) {
+            $query->where(function($q) {
                 $q->where('product_name', 'like', "%{$this->search}%")
-                    ->orWhere('barcode', 'like', "%{$this->search}%")
-                    ->orWhere('category', 'like', "%{$this->search}%");
+                  ->orWhere('barcode', 'like', "%{$this->search}%")
+                  ->orWhere('category', 'like', "%{$this->search}%");
             });
         }
 
@@ -721,13 +652,12 @@ private function initializeCategories()
 
         return $query->orderBy('created_at', 'desc')->paginate(10);
     }
+    
 
     public function render()
     {
         return view('livewire.tools-panel.inventory', [
             'categories' => $this->categories,
-            'subCategories' => $this->subCategories,
-            'databaseCategories' => $this->databaseCategories,
             'lowStockProducts' => $this->lowStockProducts,
             'inventoryStats' => $this->inventoryStats,
             'products' => $this->products,
