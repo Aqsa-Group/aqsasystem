@@ -334,7 +334,10 @@ class Warehouse extends Component
                 $targetProduct = $existingProduct;
             } else {
                 // ایجاد محصول جدید در دوکان
+
                 $user = Auth::guard('tools')->user();
+                $adminId = $user->admin_id ?? $user->id;
+
 
                 $productData = [
                     'barcode' => $this->barcode, // استفاده از بارکد پر شده
@@ -349,6 +352,8 @@ class Warehouse extends Component
                     'country_of_origin' => $this->inventory_product->country_of_origin,
                     'production_year' => $this->inventory_product->production_year,
                     'category' => $this->inventory_product->category,
+                    'user_id' => $user->id,
+                    'admin_id' => $adminId ?? $user->id,
                     'sub_category' => $this->inventory_product->sub_category,
                     'supplier_name' => $this->inventory_product->supplier_name,
                     'supplier_contact' => $this->inventory_product->supplier_contact,

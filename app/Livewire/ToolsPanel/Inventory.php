@@ -201,7 +201,7 @@ class Inventory extends Component
             'image_path' => $imagePath,
             'category' => $this->category,
             'user_id' => $user->id,
-            'admin_id' => $user->admin_id ?? $user->id,
+            'admin_id' => $adminId ?? $user->id,
             'sub_category' => $this->sub_category,
             'supplier_name' => $this->supplier_name,
             'supplier_contact' => $this->supplier_contact,
