@@ -10,12 +10,13 @@
     </div>
     @endif
 
-    <div class="w-full max-w-6xl mx-auto p-3 md:p-4 bg-[#F5F5F5] dark:bg-gray-800 rounded-xl md:rounded-2xl" 
-         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-        
+    <div class="w-full max-w-6xl mx-auto p-3 md:p-4 bg-[#F5F5F5] dark:bg-gray-800 rounded-xl md:rounded-2xl"
+        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+
         <!-- هدر -->
         <div class="text-center mb-4 md:mb-6">
-            <h2 class="text-lg md:text-2xl font-bold text-gray-900 vazir dark:text-white tracking-wider md:tracking-widest">
+            <h2
+                class="text-lg md:text-2xl font-bold text-gray-900 vazir dark:text-white tracking-wider md:tracking-widest">
                 {{ $customerId ? __('messages.title_edit') : __('messages.title_add') }}
             </h2>
 
@@ -40,8 +41,10 @@
                         <img src="{{ asset('storage/' . $profile) }}"
                             class="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover border-2 border-gray-300">
                         @else
-                        <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-500 flex items-center justify-center">
-                            <img src="{{ asset('assets/sarafi/all_icon/profile-circle.svg') }}" alt="" class="w-8 h-8 md:w-10 md:h-10">
+                        <div
+                            class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-500 flex items-center justify-center">
+                            <img src="{{ asset('assets/sarafi/all_icon/profile-circle.svg') }}" alt=""
+                                class="w-8 h-8 md:w-10 md:h-10">
                         </div>
                         @endif
                         <input type="file" wire:model="newProfile" accept="image/*"
@@ -62,8 +65,10 @@
                         <img src="{{ asset('storage/' . $idCardImage) }}"
                             class="w-16 h-16 md:w-20 md:h-20 rounded-lg object-cover border-2 border-gray-300">
                         @else
-                        <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-500 flex items-center justify-center">
-                            <img src="{{ asset('assets/sarafi/all_icon/id.svg') }}" alt="" class="w-8 h-8 md:w-10 md:h-10">
+                        <div
+                            class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-500 flex items-center justify-center">
+                            <img src="{{ asset('assets/sarafi/all_icon/id.svg') }}" alt=""
+                                class="w-8 h-8 md:w-10 md:h-10">
                         </div>
                         @endif
                         <input type="file" wire:model="newIdCardImage" accept="image/*"
@@ -77,7 +82,8 @@
                 <!-- ردیف 1 -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 w-full">
                     <div class="w-full">
-                        <label class="block text-xs md:text-sm font-medium text-black vazir dark:text-gray-300 mb-1 md:mb-2">
+                        <label
+                            class="block text-xs md:text-sm font-medium text-black vazir dark:text-gray-300 mb-1 md:mb-2">
                             {{ __('messages.fullname') }}
                         </label>
                         <div class="relative w-full">
@@ -85,7 +91,8 @@
                                 placeholder="{{ __('messages.placeholder_fullname') }}"
                                 class="w-full p-2 md:p-3 rounded-lg md:rounded-xl border py-3 md:py-4 focus:ring-2 bg-transparent border-[#8C8C8C] focus:border-none focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm md:text-base">
                             <div class="absolute left-2 md:left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                                <img src="{{ asset('assets/sarafi/all_icon/profile.svg') }}" alt="" class="w-4 h-4 md:w-5 md:h-5">
+                                <img src="{{ asset('assets/sarafi/all_icon/profile.svg') }}" alt=""
+                                    class="w-4 h-4 md:w-5 md:h-5">
                             </div>
                         </div>
                         @error('fullname') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
@@ -102,13 +109,15 @@
                                     class="w-full p-2 md:p-3 rounded-lg md:rounded-xl py-3 md:py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm md:text-base"
                                     maxlength="16" @if(!$customerId) readonly @endif>
                                 <div class="absolute left-2 md:left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                                    <img src="{{ asset('assets/sarafi/all_icon/card.svg') }}" alt="" class="w-4 h-4 md:w-5 md:h-5">
+                                    <img src="{{ asset('assets/sarafi/all_icon/card.svg') }}" alt=""
+                                        class="w-4 h-4 md:w-5 md:h-5">
                                 </div>
                             </div>
                             @if(!$customerId)
                             <button type="button" wire:click="generateNewAccountNumber"
                                 class="px-3 md:px-4 py-2 md:py-3 border bg-transparent border-[#8C8C8C] text-white rounded-lg transition">
-                                <img src="{{ asset('assets/sarafi/all_icon/refresh-2.svg') }}" alt="" class="w-4 h-4 md:w-5 md:h-5">
+                                <img src="{{ asset('assets/sarafi/all_icon/refresh-2.svg') }}" alt=""
+                                    class="w-4 h-4 md:w-5 md:h-5">
                             </button>
                             @endif
                         </div>
@@ -119,21 +128,24 @@
                 <!-- ردیف 2 -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 w-full">
                     <div class="w-full">
-                        <label class="block text-xs md:text-sm font-medium text-black dark:text-gray-300 mb-1 md:mb-2 vazir">
+                        <label
+                            class="block text-xs md:text-sm font-medium text-black dark:text-gray-300 mb-1 md:mb-2 vazir">
                             {{ __('messages.city') }}
                         </label>
                         <div class="relative w-full">
                             <input type="text" wire:model="city" placeholder="{{ __('messages.placeholder_city') }}"
                                 class="w-full p-2 md:p-3 rounded-lg md:rounded-xl py-3 md:py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm md:text-base">
                             <div class="absolute left-2 md:left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                                <img src="{{ asset('assets/sarafi/all_icon/Group.svg') }}" alt="" class="w-4 h-4 md:w-5 md:h-5">
+                                <img src="{{ asset('assets/sarafi/all_icon/Group.svg') }}" alt=""
+                                    class="w-4 h-4 md:w-5 md:h-5">
                             </div>
                         </div>
                         @error('city') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="w-full">
-                        <label class="block text-xs md:text-sm font-medium text-black vazir dark:text-gray-300 mb-1 md:mb-2">
+                        <label
+                            class="block text-xs md:text-sm font-medium text-black vazir dark:text-gray-300 mb-1 md:mb-2">
                             {{ __('messages.phone') }}
                         </label>
                         <div class="relative w-full">
@@ -141,7 +153,8 @@
                                 placeholder="{{ __('messages.placeholder_phone') }}"
                                 class="w-full p-2 md:p-3 rounded-lg md:rounded-xl py-3 md:py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm md:text-base">
                             <div class="absolute left-2 md:left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                                <img src="{{ asset('assets/sarafi/all_icon/call.svg') }}" alt="" class="w-4 h-4 md:w-5 md:h-5">
+                                <img src="{{ asset('assets/sarafi/all_icon/call.svg') }}" alt=""
+                                    class="w-4 h-4 md:w-5 md:h-5">
                             </div>
                         </div>
                         @error('phone') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
@@ -150,7 +163,8 @@
 
                 <!-- ردیف 3 - Tazkira Field -->
                 <div class="w-full">
-                    <label class="block text-xs md:text-sm font-medium text-black vazir dark:text-gray-300 mb-1 md:mb-2">
+                    <label
+                        class="block text-xs md:text-sm font-medium text-black vazir dark:text-gray-300 mb-1 md:mb-2">
                         {{ __('messages.tazkira') }}
                     </label>
                     <div class="relative w-full">
@@ -158,7 +172,8 @@
                             placeholder="{{ __('messages.placeholder_tazkira') }}"
                             class="w-full p-2 md:p-3 rounded-lg md:rounded-xl py-3 md:py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm md:text-base">
                         <div class="absolute left-2 md:left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                            <img src="{{ asset('assets/sarafi/all_icon/qlementine-icons_id-card-16.svg') }}" alt="" class="w-4 h-4 md:w-5 md:h-5">
+                            <img src="{{ asset('assets/sarafi/all_icon/qlementine-icons_id-card-16.svg') }}" alt=""
+                                class="w-4 h-4 md:w-5 md:h-5">
                         </div>
                     </div>
                     @error('tazkira') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
@@ -166,7 +181,8 @@
             </div>
 
             <!-- دکمه‌های اقدام -->
-            <div class="flex flex-col sm:flex-row justify-center gap-3 md:gap-4 mt-6 md:mt-8 pt-4 md:pt-6 pb-3 md:pb-5 dark:border-gray-700 w-full">
+            <div
+                class="flex flex-col sm:flex-row justify-center gap-3 md:gap-4 mt-6 md:mt-8 pt-4 md:pt-6 pb-3 md:pb-5 dark:border-gray-700 w-full">
                 <!-- لغو -->
                 <button type="button" wire:click="resetForm"
                     class="flex items-center justify-center gap-2 w-full sm:w-1/2 py-3 md:py-4 text-sm md:text-lg bg-[#B10909] text-white rounded-lg md:rounded-xl dark:bg-gray-700 dark:text-gray-200 transition">
@@ -174,9 +190,10 @@
                 </button>
 
                 <!-- ذخیره / بروزرسانی -->
-                <button type="submit"
-                    class="flex items-center justify-center gap-2 w-full sm:w-1/2 py-3 md:py-4 text-sm md:text-lg bg-gradient-to-br from-indigo-400 to-indigo-500 text-white rounded-lg md:rounded-xl hover:bg-blue-700 transition">
-                    {{ $customerId ? __('messages.update') : __('messages.save') }}
+                <button type="submit" wire:loading.attr="disabled"
+                    class="flex items-center justify-center gap-2 w-full sm:w-1/2 py-3 md:py-4 text-sm md:text-lg bg-gradient-to-br from-indigo-400 to-indigo-500 text-white rounded-lg md:rounded-xl hover:bg-blue-700 transition disabled:opacity-50">
+                    <span wire:loading.remove>{{ $customerId ? __('messages.update') : __('messages.save') }}</span>
+                    <span wire:loading>در حال ذخیره...</span>
                 </button>
             </div>
         </form>

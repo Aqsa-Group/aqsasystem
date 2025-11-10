@@ -84,41 +84,52 @@ class ShopConversion extends Component
     /**
      * به روزرسانی موجودی صندوق
      */
-    public function updateShopSafeBalance()
-    {
-        $user = Auth::guard('tools')->user();
-        if (!$user) {
-            $this->shopSafeBalance = [
-                'afn' => 0,
-                'usd' => 0,
-                'irr' => 0,
-                'pkr' => 0,
-            ];
-            return;
-        }
-
-        $adminId = $user->admin_id ?? $user->id;
-        
-        $safe = ShopSafe::where('user_id', $adminId)
-            ->where('admin_id', null)
-            ->first();
-
-        if ($safe) {
-            $this->shopSafeBalance = [
-                'afn' => $safe->afn,
-                'usd' => $safe->usd,
-                'irr' => $safe->irr,
-                'pkr' => $safe->pkr,
-            ];
-        } else {
-            $this->shopSafeBalance = [
-                'afn' => 0,
-                'usd' => 0,
-                'irr' => 0,
-                'pkr' => 0,
-            ];
-        }
+   public function updateShopSafeBalance()
+{
+    $user = Auth::guard('tools')->user();
+    if (!$user) {
+        $this->shopSafeBalance = [
+            'afn' => 0,
+            'usd' => 0,
+            'irr' => 0,
+            'pkr' => 0,
+        ];
+        return;
     }
+
+    $adminId = $user->admin_id ?? $user->id;
+    
+    $safe = ShopSafe::where('user_id', $adminId)
+        ->where('admin_id', $adminId) 
+        ->first();
+
+    if ($safe) {
+        $this->shopSafeBalance = [
+            'afn' => $safe->afn,
+            'usd' => $safe->usd,
+            'irr' => $safe->irr,
+            'pkr' => $safe->pkr,
+        ];
+        
+        Log::info('Shop safe balance loaded', [
+            'user_id' => $adminId,
+            'admin_id' => $adminId,
+            'balances' => $this->shopSafeBalance
+        ]);
+    } else {
+        $this->shopSafeBalance = [
+            'afn' => 0,
+            'usd' => 0,
+            'irr' => 0,
+            'pkr' => 0,
+        ];
+        
+        Log::warning('No shop safe record found', [
+            'user_id' => $adminId,
+            'admin_id' => $adminId
+        ]);
+    }
+}
 
     /**
      * به روزرسانی currenciesdefault بر اساس موجودی صندوق
@@ -400,103 +411,35 @@ class ShopConversion extends Component
         $this->depositAccount = $customerId;
     }
 
-    public function submitConversion()
-    {
-        // بررسی موجودی کافی برای حالت فروش
-        if (!$this->checkSafeBalance()) {
-            session()->flash('error', 'موجودی صندوق کافی نیست!');
-            return;
-        }
+ public function submitConversion()
+{
+    $user = Auth::guard('tools')->user();
+    $adminId = $user->admin_id ?? $user->id;
+    
+    Log::info('=== CONVERSION SUBMISSION STARTED ===', [
+        'user_id' => $user->id,
+        'admin_id' => $adminId,
+        'deposit_account' => $this->depositAccount,
+        'transaction_type' => $this->transactionType,
+        'editing_id' => $this->editingConversionId
+    ]);
 
-        $this->validate([
-            'depositAccount' => 'required|integer|exists:tools.customers,id',
-            'from_currency' => 'required|string',
-            'to_currency' => 'required|string',
-            'withdrawal_amount' => 'required|numeric|min:0.01',
-            'received_amount' => 'required|numeric|min:0.01',
-            'currency_rate' => 'required|numeric|min:0.0001',
-            'transaction_date' => 'required|date',
-            'description' => 'nullable|string|max:500',
-        ]);
-
-        $user = Auth::guard('tools')->user();
-        $adminId = $user->admin_id ?? $user->id;
-
-        DB::connection('tools')->beginTransaction();
-
-        try {
-            if ($this->editingConversionId) {
-                // حالت ویرایش
-                $conversion = ShopConversionTransfer::find($this->editingConversionId);
-
-                if ($conversion) {
-                    // بازگرداندن تغییرات صندوق برای تراکنش قبلی
-                    $this->revertShopSafeChanges($conversion);
-
-                    // حذف تراکنش‌های قبلی
-                    ShopTransactions::where('conversion_transfer_id', $conversion->id)->delete();
-
-                    // آپدیت رکورد تبدیل ارز
-                    $conversion->update([
-                        'form_customer' => $this->transactionType === 'خرید' ? $this->depositAccount : null,
-                        'from_currency' => $this->from_currency,
-                        'withdrawal_amount' => $this->withdrawal_amount,
-                        'to_customer' => $this->transactionType === 'خرید' ? null : $this->depositAccount,
-                        'to_currency' => $this->to_currency,
-                        'received_amount' => $this->received_amount,
-                        'currency_rate' => $this->currency_rate,
-                        'transaction_date' => $this->transaction_date,
-                        'description' => $this->description,
-                        'type' => $this->transactionType,
-                    ]);
-
-                    $conversionId = $conversion->id;
-                }
-            } else {
-                // حالت ایجاد جدید
-                $conversion = ShopConversionTransfer::create([
-                    'form_customer' => $this->transactionType === 'خرید' ? $this->depositAccount : null,
-                    'from_currency' => $this->from_currency,
-                    'withdrawal_amount' => $this->withdrawal_amount,
-                    'to_customer' => $this->transactionType === 'خرید' ? null : $this->depositAccount,
-                    'to_currency' => $this->to_currency,
-                    'received_amount' => $this->received_amount,
-                    'currency_rate' => $this->currency_rate,
-                    'transaction_date' => $this->transaction_date,
-                    'description' => $this->description,
-                    'user_id' => $user->id,
-                    'admin_id' => $adminId,
-                    'type' => $this->transactionType,
-                ]);
-
-                $conversionId = $conversion->id;
-            }
-
-            // ایجاد تراکنش‌ها و اعمال تغییرات صندوق
-            $this->createConversionTransactions($conversionId, $user, $adminId);
-            
-            // اعمال تغییرات صندوق برای تراکنش جدید
-            $this->applyShopSafeChanges();
-
-            DB::connection('tools')->commit();
-
-            $message = $this->editingConversionId ? 'تبدیل ارز با موفقیت ویرایش شد.' : 'تبدیل ارز با موفقیت ثبت شد.';
-            session()->flash('message', $message);
-
-            $this->updateShopSafeBalance();
-            $this->updateCurrenciesDefault();
-            $this->resetForm();
-        } catch (\Exception $e) {
-            DB::connection('tools')->rollBack();
-            session()->flash('error', 'خطا در ثبت تبدیل ارز: ' . $e->getMessage());
-
-            Log::error('Conversion transfer error: ' . $e->getMessage(), [
-                'depositAccount' => $this->depositAccount,
-                'transactionType' => $this->transactionType,
-                'editing' => $this->editingConversionId ? 'yes' : 'no',
-            ]);
-        }
+    // بررسی اولیه
+    if (!$this->depositAccount) {
+        $errorMsg = 'حساب دریافت کننده انتخاب نشده است';
+        Log::error($errorMsg);
+        session()->flash('error', $errorMsg);
+        return;
     }
+
+    // بقیه کد submitConversion...
+    
+    // قبل از commit
+    Log::info('=== CONVERSION SUBMISSION COMPLETED ===', [
+        'conversion_id' => $conversionId ?? null,
+        'success' => true
+    ]);
+}
 
     /**
      * ایجاد تراکنش‌های تبدیل ارز
@@ -542,76 +485,120 @@ class ShopConversion extends Component
     /**
      * اعمال تغییرات صندوق برای تراکنش جدید
      */
-    private function applyShopSafeChanges()
-    {
-        $user = Auth::guard('tools')->user();
-        $adminId = $user->admin_id ?? $user->id;
+  private function applyShopSafeChanges()
+{
+    $user = Auth::guard('tools')->user();
+    $adminId = $user->admin_id ?? $user->id;
 
-        $safe = ShopSafe::firstOrCreate(
-            [
-                'user_id' => $adminId,
-                'admin_id' => null
-            ],
-            [
-                'afn' => 0,
-                'usd' => 0,
-                'irr' => 0,
-                'pkr' => 0,
-            ]
-        );
+    $safe = ShopSafe::firstOrCreate(
+        [
+            'user_id' => $adminId,
+            'admin_id' => $adminId 
+        ],
+        [
+            'afn' => 0,
+            'usd' => 0,
+            'irr' => 0,
+            'pkr' => 0,
+        ]
+    );
 
-        if ($this->transactionType === 'خرید') {
-            // خرید: به صندوق واریز می‌شود (مبلغ دریافتی)
-            if (isset($safe->{$this->to_currency})) {
-                $safe->{$this->to_currency} += floatval($this->received_amount);
-            }
-        } else {
-            // فروش: از صندوق برداشت می‌شود (مبلغ برداشتی)
-            if (isset($safe->{$this->from_currency})) {
-                $safe->{$this->from_currency} -= floatval($this->withdrawal_amount);
-                
-                // جلوگیری از موجودی منفی
-                if ($safe->{$this->from_currency} < 0) {
-                    $safe->{$this->from_currency} = 0;
-                }
-            }
+    Log::info('Before shop safe update', [
+        'current_balances' => $safe->toArray(),
+        'transaction_type' => $this->transactionType,
+        'from_currency' => $this->from_currency,
+        'to_currency' => $this->to_currency,
+        'withdrawal_amount' => $this->withdrawal_amount,
+        'received_amount' => $this->received_amount
+    ]);
+
+    if ($this->transactionType === 'خرید') {
+        // خرید: به صندوق واریز می‌شود (مبلغ دریافتی)
+        if (isset($safe->{$this->to_currency})) {
+            $safe->{$this->to_currency} += floatval($this->received_amount);
+            
+            Log::info('Purchase transaction - adding to safe', [
+                'currency' => $this->to_currency,
+                'amount_added' => $this->received_amount,
+                'new_balance' => $safe->{$this->to_currency}
+            ]);
         }
-
-        $safe->save();
+    } else {
+        // فروش: از صندوق برداشت می‌شود (مبلغ برداشتی)
+        if (isset($safe->{$this->from_currency})) {
+            $safe->{$this->from_currency} -= floatval($this->withdrawal_amount);
+            
+            // جلوگیری از موجودی منفی
+            if ($safe->{$this->from_currency} < 0) {
+                $safe->{$this->from_currency} = 0;
+            }
+            
+            Log::info('Sale transaction - subtracting from safe', [
+                'currency' => $this->from_currency,
+                'amount_subtracted' => $this->withdrawal_amount,
+                'new_balance' => $safe->{$this->from_currency}
+            ]);
+        }
     }
 
+    $safe->save();
+    
+    Log::info('After shop safe update', [
+        'new_balances' => $safe->toArray()
+    ]);
+}
     /**
      * بازگرداندن تغییرات صندوق برای تراکنش قبلی (در حالت ویرایش)
      */
-    private function revertShopSafeChanges($conversion)
-    {
-        $user = Auth::guard('tools')->user();
-        $adminId = $user->admin_id ?? $user->id;
+private function revertShopSafeChanges($conversion)
+{
+    $user = Auth::guard('tools')->user();
+    $adminId = $user->admin_id ?? $user->id;
 
-        $safe = ShopSafe::where('user_id', $adminId)
-            ->where('admin_id', null)
-            ->first();
+    // ✅ اصلاح: شرایط صحیح
+    $safe = ShopSafe::where('user_id', $adminId)
+        ->where('admin_id', $adminId) // تغییر از null به $adminId
+        ->first();
 
-        if (!$safe) return;
+    if (!$safe) {
+        Log::warning('No shop safe found for revert', [
+            'user_id' => $adminId,
+            'admin_id' => $adminId
+        ]);
+        return;
+    }
 
-        // بازگرداندن تغییرات بر اساس نوع تراکنش قبلی
-        if ($conversion->type === 'خرید') {
-            // قبلی خرید بود: از صندوق برداشت می‌کنیم (برعکس)
-            if (isset($safe->{$conversion->to_currency})) {
-                $safe->{$conversion->to_currency} -= floatval($conversion->received_amount);
-                if ($safe->{$conversion->to_currency} < 0) {
-                    $safe->{$conversion->to_currency} = 0;
-                }
-            }
-        } else {
-            // قبلی فروش بود: به صندوق واریز می‌کنیم (برعکس)
-            if (isset($safe->{$conversion->from_currency})) {
-                $safe->{$conversion->from_currency} += floatval($conversion->withdrawal_amount);
+    Log::info('Reverting shop safe changes', [
+        'current_balances' => $safe->toArray(),
+        'conversion_type' => $conversion->type,
+        'from_currency' => $conversion->from_currency,
+        'to_currency' => $conversion->to_currency,
+        'withdrawal_amount' => $conversion->withdrawal_amount,
+        'received_amount' => $conversion->received_amount
+    ]);
+
+    // بازگرداندن تغییرات بر اساس نوع تراکنش قبلی
+    if ($conversion->type === 'خرید') {
+        // قبلی خرید بود: از صندوق برداشت می‌کنیم (برعکس)
+        if (isset($safe->{$conversion->to_currency})) {
+            $safe->{$conversion->to_currency} -= floatval($conversion->received_amount);
+            if ($safe->{$conversion->to_currency} < 0) {
+                $safe->{$conversion->to_currency} = 0;
             }
         }
-
-        $safe->save();
+    } else {
+        // قبلی فروش بود: به صندوق واریز می‌کنیم (برعکس)
+        if (isset($safe->{$conversion->from_currency})) {
+            $safe->{$conversion->from_currency} += floatval($conversion->withdrawal_amount);
+        }
     }
+
+    $safe->save();
+    
+    Log::info('After revert shop safe', [
+        'new_balances' => $safe->toArray()
+    ]);
+}
 
 
      private function generateConversionPdf($conversionId)

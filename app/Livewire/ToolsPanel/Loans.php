@@ -180,12 +180,13 @@ public function updateLoanCards()
     }
 
     $safe = ShopSafe::firstOrCreate(
-        ['user_id' => $adminId, 'admin_id' => null],
+        ['user_id' => $adminId, 
+           'admin_id'=> $user->admin_id ?? $user->id 
+         ],
         [
             'usd' => 0,
             'afn' => 0, 
             'irr' => 0
-            // فقط ارزهای مورد استفاده
         ]
     );
 

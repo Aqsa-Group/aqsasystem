@@ -279,13 +279,18 @@ class Salary extends Component
 
     private function applyCurrencyChange($user, $amount, $reverse = false)
     {
+
+        $user = Auth::guard('tools')->user();
         $adminId = $user->admin_id ?? $user->id;
 
         $factor = $reverse ? 1 : -1;
         $change = $amount * $factor;
 
         $safe = ShopSafe::firstOrCreate(
-            ['user_id' => $adminId, 'admin_id' => null],
+            [
+                'user_id' => $adminId,
+                'admin_id' => $user->admin_id ?? $user->id
+            ],
             ['afn' => 0]
         );
 
@@ -399,13 +404,12 @@ class Salary extends Component
             ->limit(15)
             ->get();
 
-      if (count($this->filteredStaffs) === 1) {
-    $this->selectStaff($this->filteredStaffs[0]['id']);
-} else {
-    $this->selectedStaffId = null;
-    $this->updateSalaries();
-}
-
+        if (count($this->filteredStaffs) === 1) {
+            $this->selectStaff($this->filteredStaffs[0]['id']);
+        } else {
+            $this->selectedStaffId = null;
+            $this->updateSalaries();
+        }
     }
 
     public function selectStaff($staffId)

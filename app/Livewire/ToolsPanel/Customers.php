@@ -25,7 +25,7 @@ class Customers extends Component
     public $successMessage = '';
     public $autoGenerateAccount = true;
 
-    public $compressionQuality = 80; 
+    public $compressionQuality = 80;
     public $maxWidth = 800;
     public $maxHeight = 800;
 
@@ -44,8 +44,7 @@ class Customers extends Component
     private function generateAccountNumber()
     {
         do {
-            $accountNumber = '6' . str_pad(mt_rand(1, 999999999999999), 15, '0', STR_PAD_LEFT);
-            $accountNumber = substr($accountNumber, 0, 2);
+            $accountNumber = '6' . str_pad(mt_rand(0, 999999999999999), 15, '0', STR_PAD_LEFT);
         } while (Customer::where('account_number', $accountNumber)->exists());
 
         $this->account = $accountNumber;
@@ -58,46 +57,49 @@ class Customers extends Component
 
     public function loadCustomerData()
     {
-        Log::info('Loading customer data for ID: ' . $this->customerId);
+        if (!$this->customerId) {
+            return;
+        }
 
         $customer = Customer::find($this->customerId);
 
-        if ($customer) {
-            $this->fullname = $customer->fullname;
-            $this->account = $customer->account_number;
-            $this->city = $customer->city;
-            $this->phone = $customer->phone;
-            $this->tazkira = $customer->idcard_number;
-            $this->profile = $customer->image;
-            $this->idCardImage = $customer->id_card_image;
-
-            Log::info('Customer data loaded:', [
-                'fullname' => $this->fullname,
-                'phone' => $this->phone,
-                'city' => $this->city
-            ]);
-        } else {
-            Log::error('Customer not found with ID: ' . $this->customerId);
+        if (!$customer) {
+            session()->flash('error', 'مشتری یافت نشد');
+            return redirect()->route('tools.customer-table');
         }
+
+        $this->fullname = $customer->fullname;
+        $this->account = $customer->account_number;
+        $this->city = $customer->city;
+        $this->phone = $customer->phone;
+        $this->tazkira = $customer->idcard_number;
+        $this->profile = $customer->image;
+        $this->idCardImage = $customer->id_card_image;
     }
 
     private function compressAndStoreImage($uploadedFile, $storagePath)
     {
-        $image = Image::make($uploadedFile->getRealPath());
+        try {
+            $image = Image::make($uploadedFile->getRealPath());
 
-        $image->resize($this->maxWidth, $this->maxHeight, function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-        });
+            // کاهش سایز برای بهینه‌سازی
+            $image->resize(400, 400, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
 
-        $image->encode($uploadedFile->getClientOriginalExtension(), $this->compressionQuality);
+            $filename = uniqid() . '.jpg'; // همیشه از jpg استفاده کن برای فشرده‌سازی بهتر
+            $fullPath = $storagePath . '/' . $filename;
 
-        $filename = uniqid() . '.' . $uploadedFile->getClientOriginalExtension();
-        $fullPath = $storagePath . '/' . $filename;
+            // ذخیره با کیفیت متعادل
+            Storage::disk('public')->put($fullPath, $image->encode('jpg', 70));
 
-        Storage::disk('public')->put($fullPath, $image->stream());
-
-        return $fullPath;
+            return $fullPath;
+        } catch (\Exception $e) {
+            Log::error('Image compression failed: ' . $e->getMessage());
+            // اگر فشرده‌سازی شکست خورد، فایل اصلی را ذخیره کن
+            return $uploadedFile->store($storagePath, 'public');
+        }
     }
 
     public function saveCustomer()
@@ -114,15 +116,16 @@ class Customers extends Component
             'account' => 'nullable|string|unique:tools.customers,account_number,' . $this->customerId,
             'city' => 'required|string|max:255',
             'phone' => 'required|string|max:255|unique:tools.customers,phone,' . $this->customerId,
-            'tazkira' => '|nullable|string|max:255|unique:tools.customers,idcard_number,' . $this->customerId,
-            'newProfile' => 'nullable|image|max:5120', 
+            'tazkira' => 'nullable|string|max:255|unique:tools.customers,idcard_number,' . $this->customerId,
+            'newProfile' => 'nullable|image|max:5120',
             'newIdCardImage' => 'nullable|image|max:5120',
         ], [
             'fullname.required' => __('messages.validation_fullname_required'),
-            'account.required' => __('messages.validation_account_required'),
             'city.required' => __('messages.validation_city_required'),
             'phone.required' => __('messages.validation_phone_required'),
-            'tazkira.required' => __('messages.validation_tazkira_required'),
+            'phone.unique' => __('messages.validation_phone_unique'),
+            'account.unique' => __('messages.validation_account_unique'),
+            'tazkira.unique' => __('messages.validation_tazkira_unique'),
         ]);
         $user = Auth::guard('tools')->user();
         $adminId = $user->admin_id ?? $user->id;
@@ -137,7 +140,7 @@ class Customers extends Component
             'admin_id'         => $adminId,
         ];
 
-       
+
 
         if ($this->newProfile) {
             $profilePath = $this->compressAndStoreImage($this->newProfile, 'customers/profiles');
@@ -195,7 +198,7 @@ class Customers extends Component
     public function removeIdCardImage()
     {
         if ($this->newIdCardImage) {
-            $this->newIdCardImage = null;
+            $this->newIdCardImage = null;   
         } else if ($this->customerId && $this->idCardImage) {
             $customer = Customer::find($this->customerId);
             if ($customer) {
@@ -260,7 +263,7 @@ class Customers extends Component
         $this->phone = $this->convertToEnglishNumbers($value);
     }
 
- 
+
 
     public function render()
     {

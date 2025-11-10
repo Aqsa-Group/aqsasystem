@@ -4,7 +4,7 @@ namespace App\Livewire\ToolsPanel;
 
 use App\Models\Tools\ShopSafe;
 use App\Models\Tools\Customer;
-use App\Models\Tools\ShopTransactions; 
+use App\Models\Tools\ShopTransactions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -17,7 +17,7 @@ class ShopTransaction extends Component
 {
 
     use WithFileUploads;
-    
+
     public $confirmDeleteId = null;
     public $customer_id;
     public $selectedAccount;
@@ -57,7 +57,7 @@ class ShopTransaction extends Component
         $this->currencies = [
             ['code' => 'usd', 'name_fa' => 'دالر'],
             ['code' => 'afn', 'name_fa' => 'افغانی'],
-            ['code' => 'irr', 'name_fa' => 'تومان'],     
+            ['code' => 'irr', 'name_fa' => 'تومان'],
             ['code' => 'pkr', 'name_fa' => 'کلدار'],
         ];
 
@@ -108,7 +108,7 @@ class ShopTransaction extends Component
         }
 
         $adminId = $user->admin_id ?? $user->id;
-        
+
         $safe = ShopSafe::where('user_id', $adminId)
             ->where('admin_id', null)
             ->first();
@@ -133,9 +133,11 @@ class ShopTransaction extends Component
     /**
      * بررسی موجودی کافی در صندوق
      */
-    public function checkSafeBalance()
-    {
-        if ($this->transactionType !== 'رسید' || !$this->currency || !$this->amount) {
+   public function checkSafeBalance()
+{
+    // فقط برای تراکنش‌های برداشت موجودی چک شود
+    if ($this->transactionType === 'برد') {
+        if (!$this->currency || !$this->amount) {
             $this->showInsufficientBalanceError = false;
             return true;
         }
@@ -147,11 +149,11 @@ class ShopTransaction extends Component
             $this->showInsufficientBalanceError = true;
             return false;
         }
-
-        $this->showInsufficientBalanceError = false;
-        return true;
     }
 
+    $this->showInsufficientBalanceError = false;
+    return true;
+}
     public function updatedAccountSearch($value)
     {
         $user = Auth::guard('tools')->user();
@@ -197,13 +199,12 @@ class ShopTransaction extends Component
             ->limit(15)
             ->get();
 
-      if (count($this->filteredCustomers) === 1) {
-    $this->selectCustomer($this->filteredCustomers[0]['id']);
-} else {
-    $this->selectedCustomerId = null;
-    $this->updateTransactions();
-}
-
+        if (count($this->filteredCustomers) === 1) {
+            $this->selectCustomer($this->filteredCustomers[0]['id']);
+        } else {
+            $this->selectedCustomerId = null;
+            $this->updateTransactions();
+        }
     }
 
     public function selectCustomer($customerId)
@@ -263,7 +264,7 @@ class ShopTransaction extends Component
         $transactions = ShopTransactions::where('customer_id', $this->selectedCustomerId)
             ->where('admin_id', $adminId)
             ->get();
-            
+
         $balances = [
             'افغانی' => 0,
             'دالر' => 0,
@@ -339,7 +340,7 @@ class ShopTransaction extends Component
         $this->selectedAccount = null;
         $this->filteredCustomers = [];
         $this->updateTransactions();
-        $this->updateCustomerCurrencyBalance(); 
+        $this->updateCustomerCurrencyBalance();
     }
 
     public function updateTransactions()
@@ -355,7 +356,7 @@ class ShopTransaction extends Component
         // استفاده از مدل ShopTransactions برای نمایش تراکنش‌ها
         $query = ShopTransactions::with('customer')
             ->where('admin_id', $adminId)
-            ->whereIn('type', ['برد', 'رسید']); 
+            ->whereIn('type', ['برد', 'رسید']);
 
         if ($this->selectedCustomerId) {
             $query->where('customer_id', $this->selectedCustomerId);
@@ -458,7 +459,7 @@ class ShopTransaction extends Component
         $this->date = $transaction->date;
         $this->description = $transaction->description;
         $this->transactionType = $transaction->type;
-        
+
         $this->checkSafeBalance();
     }
 
@@ -521,16 +522,16 @@ class ShopTransaction extends Component
 
         if ($this->transactionId) {
             $oldTransaction = ShopTransactions::findOrFail($this->transactionId);
-            
+
             // بازگرداندن تغییرات قبلی
             $this->applyShopSafeChange($user, $oldTransaction->currency, $oldTransaction->amount, $oldTransaction->type, true);
-            
+
             // بروزرسانی تراکنش
             $oldTransaction->update($data);
-            
+
             // اعمال تغییرات جدید
             $this->applyShopSafeChange($user, $this->currency, $this->amount, $this->transactionType);
-            
+
             session()->flash('message', 'تراکنش با موفقیت بروزرسانی شد.');
         } else {
             $transaction = ShopTransactions::create($data);
@@ -666,56 +667,60 @@ class ShopTransaction extends Component
     /**
      * اعمال تغییرات در صندوق دوکان
      */
-    private function applyShopSafeChange($user, $currency, $amount, $transactionType, $reverse = false)
-    {
-        $adminId = $user->admin_id ?? $user->id;
-        $factor = $reverse ? -1 : 1;
+ private function applyShopSafeChange($user, $currency, $amount, $transactionType, $reverse = false)
+{
+    $adminId = $user->admin_id ?? $user->id;
 
-        // منطق کسب و کار:
-        // - رسید: از صندوق کم شده و به حساب مشتری اضافه می‌شود
-        // - برد: از حساب مشتری کم شده و به صندوق اضافه می‌شود
-        
-        if ($transactionType === 'رسید') {
-            $safeChange = -$amount * $factor; // از صندوق کم می‌شود
-        } else {
-            $safeChange = $amount * $factor; // به صندوق اضافه می‌شود
-        }
+    // پاک کردن کاما و تبدیل به عدد
+    $amount = floatval(str_replace(',', '', $amount));
 
-        // پیدا کردن یا ایجاد رکورد صندوق
-        $safe = ShopSafe::firstOrCreate(
-            [
-                'user_id' => $adminId,
-                'admin_id' => null
-            ],
-            [
-                'afn' => 0,
-                'usd' => 0,
-                'irr' => 0,
-                'pkr' => 0,
-            ]
-        );
+    // تعیین عامل بر اساس reverse
+    $factor = $reverse ? -1 : 1;
 
-        // به روزرسانی موجودی
-        if (isset($safe->$currency)) {
-            $safe->$currency += $safeChange;
-            
-            // جلوگیری از موجودی منفی
-            if ($safe->$currency < 0) {
-                $safe->$currency = 0;
-            }
-            
-            $safe->save();
-        }
+    // محاسبه تغییر صندوق
+    if ($transactionType === 'رسید') {
+        $safeChange = $amount * $factor;   // رسید = اضافه
+    } else { // برداشت
+        $safeChange = -$amount * $factor;  // برداشت = کم
+    }
 
-        Log::debug("Shop safe updated", [
+    // گرفتن آخرین صندوق یا ایجاد
+    $safe = ShopSafe::where('user_id', $adminId)
+        ->latest('id')
+        ->first();
+
+    if (!$safe) {
+        $safe = ShopSafe::create([
             'user_id' => $adminId,
-            'currency' => $currency,
-            'amount' => $amount,
-            'transaction_type' => $transactionType,
-            'safe_change' => $safeChange,
-            'new_balance' => $safe->$currency
+            'admin_id' => null,
+            'afn' => 0,
+            'usd' => 0,
+            'irr' => 0,
+            'pkr' => 0,
         ]);
     }
+
+    // بروزرسانی موجودی
+    if (isset($safe->$currency)) {
+        $safe->$currency += $safeChange;
+
+        if ($safe->$currency < 0) {
+            $safe->$currency = 0;
+        }
+
+        $safe->save();
+    }
+
+    Log::debug("Shop safe updated", [
+        'user_id' => $adminId,
+        'currency' => $currency,
+        'amount' => $amount,
+        'transaction_type' => $transactionType,
+        'safe_change' => $safeChange,
+        'new_balance' => $safe->$currency
+    ]);
+}
+
 
     public function showReport()
     {

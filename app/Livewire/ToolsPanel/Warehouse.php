@@ -333,14 +333,14 @@ class Warehouse extends Component
                 $message = 'موجودی محصول در دوکان افزایش یافت!';
                 $targetProduct = $existingProduct;
             } else {
-                // ایجاد محصول جدید در دوکان
+              
 
                 $user = Auth::guard('tools')->user();
                 $adminId = $user->admin_id ?? $user->id;
 
 
                 $productData = [
-                    'barcode' => $this->barcode, // استفاده از بارکد پر شده
+                    'barcode' => $this->barcode, 
                     'product_name' => $this->inventory_product->product_name,
                     'unit' => $this->inventory_product->unit,
                     'package_type' => $this->inventory_product->package_type,

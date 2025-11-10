@@ -40,86 +40,103 @@ class Withdrawal extends Component
         $this->updateStats();
     }
 
-    public function submitWithdrawal()
-    {
-        // پاک کردن کاما از مقدار قبل از اعتبارسنجی
-        $cleanAmount = $this->cleanAmount($this->amount);
-        
-        // اعتبارسنجی با مقدار پاک شده
-        $this->validate([
-            'currency' => 'required|in:afn,usd,toman',
-            'type' => 'required|string|max:255',
-            'amount' => 'required',
-            'date' => 'required|date',
-            'description' => 'nullable|string|max:500',
-        ], [
-            'amount.required' => 'مقدار برداشت الزامی است.',
-            'type.required' => 'نوع برداشت الزامی است.',
-        ]);
+  public function submitWithdrawal()
+{
+    // پاک کردن کاما از مقدار قبل از اعتبارسنجی
+    $cleanAmount = $this->cleanAmount($this->amount);
+    
+    // اعتبارسنجی با مقدار پاک شده
+    $this->validate([
+        'currency' => 'required|in:afn,usd,toman',
+        'type' => 'required|string|max:255',
+        'amount' => 'required',
+        'date' => 'required|date',
+        'description' => 'nullable|string|max:500',
+    ], [
+        'amount.required' => 'مقدار برداشت الزامی است.',
+        'type.required' => 'نوع برداشت الزامی است.',
+    ]);
 
-        // اعتبارسنجی دستی برای مقدار عددی
-        if (!is_numeric($cleanAmount) || $cleanAmount <= 0) {
-            session()->flash('error', 'مقدار باید یک عدد معتبر و بزرگتر از صفر باشد.');
-            return;
-        }
+    // اعتبارسنجی دستی برای مقدار عددی
+    if (!is_numeric($cleanAmount) || floatval($cleanAmount) <= 0) {
+        session()->flash('error', 'مقدار باید یک عدد معتبر و بزرگتر از صفر باشد.');
+        return;
+    }
 
-        $user = Auth::guard('tools')->user();
-        $adminId = $user->admin_id ?? $user->id;
+    $user = Auth::guard('tools')->user();
+    $adminId = $user->admin_id ?? $user->id;
 
-        // بررسی موجودی صندوق
-        $safe = ShopSafe::where('user_id', $adminId)->first();
-        if (!$safe) {
-            session()->flash('error', 'صندوق ارزی یافت نشد!');
-            return;
-        }
+    // بررسی موجودی صندوق -> گرفتن آخرین ردیف مرتبط با admin/user
+    $safe = ShopSafe::where('user_id', $adminId)
+        ->latest('id') // مهم: آخرین ردیف را می‌گیرد
+        ->first();
 
-        // استفاده از مقدار پاک شده
-        $amountValue = (int)$cleanAmount;
+    if (!$safe) {
+        session()->flash('error', 'صندوق ارزی یافت نشد!');
+        return;
+    }
 
-        if ($amountValue > $safe->{$this->currency}) {
-            $currencyName = $this->getCurrencyName($this->currency);
-            session()->flash('error', "موجودی $currencyName کافی نیست! موجودی: " . number_format($safe->{$this->currency}));
-            return;
-        }
+    // DEBUG: برای اطمینان از این‌که کد کدام رکورد را انتخاب می‌کند
+    // بعد از تست این خط را حذف یا کامنت کن
+    session()->flash('debug', "selected safe id: {$safe->id}, {$this->currency} balance: " . number_format($safe->{$this->currency}));
 
-        $data = [
-            'user_id' => $user->id,
-            'admin_id' => $adminId,
-            'currency' => $this->currency,
-            'type' => $this->type, // اضافه کردن نوع برداشت
-            'amount' => $amountValue,
-            'date' => $this->date,
-            'description' => $this->description,
-        ];
+    // استفاده از مقدار پاک شده به صورت float (یا int اگر خواستی)
+    $amountValue = floatval($cleanAmount);
 
-        if ($this->withdrawalId) {
-            // ویرایش برداشت
-            $oldWithdrawal = Withdrawals::find($this->withdrawalId);
-            
-            // برگشت مبلغ قدیم به صندوق
-            $safe->{$oldWithdrawal->currency} += $oldWithdrawal->amount;
-            
-            // کسر مبلغ جدید از صندوق
-            $safe->{$this->currency} -= $amountValue;
+    // اطمینان از اینکه فیلد موجودی عددی است
+    $safeBalance = is_numeric($safe->{$this->currency}) ? floatval($safe->{$this->currency}) : 0;
+
+    if ($amountValue > $safeBalance) {
+        $currencyName = $this->getCurrencyName($this->currency);
+        session()->flash('error', "موجودی $currencyName کافی نیست! موجودی: " . number_format($safeBalance));
+        return;
+    }
+
+    $data = [
+        'user_id' => $user->id,
+        'admin_id' => $adminId,
+        'currency' => $this->currency,
+        'type' => $this->type,
+        'amount' => $amountValue,
+        'date' => $this->date,
+        'description' => $this->description,
+    ];
+
+    if ($this->withdrawalId) {
+        // ویرایش برداشت
+        $oldWithdrawal = Withdrawals::find($this->withdrawalId);
+        if ($oldWithdrawal) {
+            // برگشت مبلغ قدیم به صندوق (اطمینان از numeric بودن)
+            $oldCurrency = $oldWithdrawal->currency;
+            $oldAmount = floatval($oldWithdrawal->amount);
+            $safe->{$oldCurrency} = (is_numeric($safe->{$oldCurrency}) ? floatval($safe->{$oldCurrency}) : 0) + $oldAmount;
+
+            // کسر مبلغ جدید از صندوق (برای currency فعلی)
+            $safe->{$this->currency} = (is_numeric($safe->{$this->currency}) ? floatval($safe->{$this->currency}) : 0) - $amountValue;
             $safe->save();
 
             $oldWithdrawal->update($data);
             session()->flash('message', 'برداشت با موفقیت بروزرسانی شد.');
         } else {
-            // ثبت برداشت جدید
-            Withdrawals::create($data);
-            
-            // کسر از صندوق
-            $safe->{$this->currency} -= $amountValue;
-            $safe->save();
-
-            session()->flash('message', 'برداشت با موفقیت ثبت شد.');
+            session()->flash('error', 'برداشت قبلی یافت نشد.');
+            return;
         }
+    } else {
+        // ثبت برداشت جدید
+        Withdrawals::create($data);
 
-        $this->updateWithdrawals();
-        $this->updateStats();
-        $this->resetForm();
+        // کسر از صندوق
+        $safe->{$this->currency} = (is_numeric($safe->{$this->currency}) ? floatval($safe->{$this->currency}) : 0) - $amountValue;
+        $safe->save();
+
+        session()->flash('message', 'برداشت با موفقیت ثبت شد.');
     }
+
+    $this->updateWithdrawals();
+    $this->updateStats();
+    $this->resetForm();
+}
+
 
     private function cleanAmount($amount)
     {
