@@ -544,6 +544,53 @@
         </div>
         <?php endif; ?>
     </div>
+
+    <!-- جدول موجودی صندوق -->
+<?php if(isset($safeRows) && count($safeRows) > 0): ?>
+<div style="margin-top: 20px;">
+    <h4 style="text-align: center; margin-bottom: 5px;">💰 موجودی صندوق</h4>
+    <table style="width:100%; border-collapse: collapse; font-size: 8px;">
+        <thead>
+            <tr>
+                <th style="border:1px solid #555; padding:3px;">نوع مصرف</th>
+                <th style="border:1px solid #555; padding:3px;">افغانی</th>
+                <th style="border:1px solid #555; padding:3px;">دالر</th>
+                <th style="border:1px solid #555; padding:3px;">یورو</th>
+                <th style="border:1px solid #555; padding:3px;">تومان</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+                $total_af = $total_us = $total_er = $total_ir = 0;
+            ?>
+            <?php $__currentLoopData = $safeRows; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php
+                    $total_af += $row['af'];
+                    $total_us += $row['us'];
+                    $total_er += $row['er'];
+                    $total_ir += $row['ir'];
+                ?>
+                <tr>
+                    <td style="border:1px solid #ddd; padding:3px;"><?php echo e($row['type']); ?></td>
+                    <td style="border:1px solid #ddd; padding:3px; text-align:right;"><?php echo e(number_format($row['af'])); ?></td>
+                    <td style="border:1px solid #ddd; padding:3px; text-align:right;"><?php echo e(number_format($row['us'])); ?></td>
+                    <td style="border:1px solid #ddd; padding:3px; text-align:right;"><?php echo e(number_format($row['er'])); ?></td>
+                    <td style="border:1px solid #ddd; padding:3px; text-align:right;"><?php echo e(number_format($row['ir'])); ?></td>
+                </tr>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <!-- جمع کل -->
+            <tr style="font-weight:bold; background:#f0f0f0;">
+                <td style="border:1px solid #555; text-align:center;">جمع کل</td>
+                <td style="border:1px solid #555; text-align:right;"><?php echo e(number_format($total_af)); ?></td>
+                <td style="border:1px solid #555; text-align:right;"><?php echo e(number_format($total_us)); ?></td>
+                <td style="border:1px solid #555; text-align:right;"><?php echo e(number_format($total_er)); ?></td>
+                <td style="border:1px solid #555; text-align:right;"><?php echo e(number_format($total_ir)); ?></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<?php endif; ?>
+
 </body>
 
 </html><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/exports/general-report-pdf.blade.php ENDPATH**/ ?>

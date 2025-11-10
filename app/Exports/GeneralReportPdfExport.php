@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use Illuminate\Support\Facades\DB;
 use Mpdf\Mpdf;
 
 class GeneralReportPdfExport
@@ -75,29 +76,60 @@ class GeneralReportPdfExport
         ]);
     }
 
-    protected function generateHtml()
-    {
-        $reportTypes = [
-            'withdraw_salary' => 'گزارش برداشت‌ها و معاش کارمندان',
-            'accounting' => 'گزارش حسابداری',
-            'outside' => 'گزارش عواید بیرونی',
-            'deposit' => 'گزارش تسویه نشده‌ها',
-            'salary' => 'گزارش معاش کارمندان',
-            'loan' => 'گزارش بردگی‌ها',
-            'payment' => 'گزارش رسیدها',
-            'buy' => 'گزارش خریدها',
-            'sell' => 'گزارش فروش‌ها',
-            'withdraw_log' => 'گزارش برداشت‌ها',
-        ];
+    protected function getSafeSummaryRows()
+{
+    $data = DB::connection('market')->table('accountings')
+        ->select('expanses_type', 'currency', DB::raw('SUM(paid) as total_paid'))
+        ->groupBy('expanses_type', 'currency')
+        ->get();
 
-        return view('exports.general-report-pdf', [
-            'data' => $this->data,
-            'reportType' => $this->reportType,
-            'reportTitle' => $reportTypes[$this->reportType] ?? 'گزارش نامشخص',
-            'filters' => $this->filters,
-            'summary' => $this->calculateSummary(),
-        ])->render();
+    $grouped = $data->groupBy('expanses_type');
+
+    $rows = [];
+    foreach ($grouped as $type => $group) {
+        $rows[] = [
+            'type' => $type,
+            'af' => $group->firstWhere('currency', 'AFN')->total_paid ?? 0,
+            'us' => $group->firstWhere('currency', 'USD')->total_paid ?? 0,
+            'er' => $group->firstWhere('currency', 'EUR')->total_paid ?? 0,
+            'ir' => $group->firstWhere('currency', 'IRR')->total_paid ?? 0,
+        ];
     }
+
+    return $rows;
+}
+
+  protected function generateHtml()
+{
+    // عنوان گزارش بر اساس نوع گزارش
+    $reportTypes = [
+        'withdraw_salary' => 'گزارش برداشت‌ها و معاش کارمندان',
+        'accounting' => 'گزارش حسابداری',
+        'outside' => 'گزارش عواید بیرونی',
+        'deposit' => 'گزارش تسویه نشده‌ها',
+        'salary' => 'گزارش معاش کارمندان',
+        'loan' => 'گزارش بردگی‌ها',
+        'payment' => 'گزارش رسیدها',
+        'buy' => 'گزارش خریدها',
+        'sell' => 'گزارش فروش‌ها',
+        'withdraw_log' => 'گزارش برداشت‌ها',
+    ];
+
+    $reportTitle = $reportTypes[$this->reportType] ?? 'گزارش نامشخص';
+
+    // گرفتن موجودی صندوق
+    $safeRows = $this->getSafeSummaryRows();
+
+    // بازگشت HTML رندر شده با Blade
+    return view('exports.general-report-pdf', [
+        'data' => $this->data,
+        'reportType' => $this->reportType,
+        'reportTitle' => $reportTitle,
+        'filters' => $this->filters,
+        'summary' => $this->calculateSummary(),
+        'safeRows' => $safeRows,
+    ])->render();
+}
 
     protected function calculateSummary()
     {

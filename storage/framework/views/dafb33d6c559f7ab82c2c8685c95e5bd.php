@@ -594,7 +594,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                         
                                         <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
                                             <!--[if BLOCK]><![endif]--><?php if($report->record_type === 'withdraw'): ?>
-                                         
+
                                             <!--[if BLOCK]><![endif]--><?php if($report->staff_id): ?>
                                             <?php echo e($report->staff->fullname ?? '-'); ?>
 
@@ -688,6 +688,9 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="font-bold text-gray-900"><?php echo e(number_format($report->price)); ?></span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
                                                 <!--[if BLOCK]><![endif]--><?php switch($report->currency):
                                                 case ('AFN'): ?> افغانی <?php break; ?>
@@ -712,37 +715,376 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                         </td>
                                         <?php break; ?>
 
-                                        <!-- Other cases remain the same -->
                                         <?php case ('outside'): ?>
-                                        <!-- ... existing outside case ... -->
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                                                    <span class="text-green-600 text-sm">🏪</span>
+                                                </div>
+                                                <span class="font-medium text-gray-900"><?php echo e($report->market->name ?? '-'); ?></span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
+            <?php echo e($report->customer_id ? 'bg-purple-100 text-purple-800' : 
+               ($report->staff_id ? 'bg-orange-100 text-orange-800' : 
+               ($report->shopkeeper_id ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'))); ?>">
+                                                <!--[if BLOCK]><![endif]--><?php if($report->customer_id): ?>
+                                                مشتری
+                                                <?php elseif($report->staff_id): ?>
+                                                کارمند
+                                                <?php elseif($report->shopkeeper_id): ?>
+                                                دوکاندار
+                                                <?php else: ?>
+                                                نامشخص
+                                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                            <?php echo e($report->customer->fullname ?? $report->staff->fullname ??
+                                            $report->shopkeeper->fullname ?? '-'); ?>
+
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-bold text-gray-900"><?php echo e(number_format($report->paid)); ?></span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
+                                                case ('AFN'): ?> افغانی <?php break; ?>
+                                                <?php case ('USD'): ?> دالر <?php break; ?>
+                                                <?php default: ?> <?php echo e($report->currency); ?>
+
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <?php echo e($report->date ?
+                                            \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
+
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
+                                            <?php echo e($report->description ?? '-'); ?>
+
+                                        </td>
                                         <?php break; ?>
 
                                         <?php case ('salary'): ?>
-                                        <!-- ... existing salary case ... -->
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
+                                                    <span class="text-amber-600 text-sm">🏪</span>
+                                                </div>
+                                                <span class="font-medium text-gray-900"><?php echo e($report->market->name ?? '-'); ?></span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                            <?php echo e($report->staff->fullname ?? '-'); ?>
+
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="font-bold text-gray-900"><?php echo e(number_format($report->salary)); ?></span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="font-bold text-green-600"><?php echo e(number_format($report->paid)); ?></span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="font-bold text-red-600"><?php echo e(number_format($report->remained)); ?></span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="font-bold text-purple-600"><?php echo e(number_format($report->loan)); ?></span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
+                                                case ('AFN'): ?> افغانی <?php break; ?>
+                                                <?php case ('USD'): ?> دالر <?php break; ?>
+                                                <?php default: ?> <?php echo e($report->currency); ?>
+
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <?php echo e($report->paid_date ?
+                                            \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
+                                            : '-'); ?>
+
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium <?php echo e($report->is_reduce ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'); ?>">
+                                                <?php echo e($report->is_reduce ? 'فعال' : 'غیرفعال'); ?>
+
+                                            </span>
+                                        </td>
                                         <?php break; ?>
 
                                         <?php case ('deposit'): ?>
-                                        <!-- ... existing deposit case ... -->
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
+                                                    <span class="text-orange-600 text-sm">🏪</span>
+                                                </div>
+                                                <span class="font-medium text-gray-900"><?php echo e($report->accounting->market->name ?? '-'); ?></span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                            <?php echo e($report->accounting->shopkeeper->fullname ?? '-'); ?>
+
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                <?php echo e($report->expanses_type); ?>
+
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="font-bold text-gray-900"><?php echo e(number_format($report->price)); ?></span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="font-bold text-green-600"><?php echo e(number_format($report->paid)); ?></span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="font-bold text-red-600"><?php echo e(number_format($report->remained)); ?></span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
+                                                case ('AFN'): ?> افغانی <?php break; ?>
+                                                <?php case ('USD'): ?> دالر <?php break; ?>
+                                                <?php default: ?> <?php echo e($report->currency); ?>
+
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <?php echo e($report->paid_date ?
+                                            \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
+                                            : '-'); ?>
+
+                                        </td>
                                         <?php break; ?>
 
                                         <?php case ('loan'): ?>
-                                        <!-- ... existing loan case ... -->
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+                                                    <span class="text-red-600 text-sm">🏪</span>
+                                                </div>
+                                                <span class="font-medium text-gray-900"><?php echo e($report->market->name ?? '-'); ?></span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
+            <?php echo e($report->person === 'مشتری' ? 'bg-purple-100 text-purple-800' : 
+               ($report->person === 'دوکاندار' ? 'bg-blue-100 text-blue-800' : 
+               'bg-orange-100 text-orange-800')); ?>">
+                                                <?php echo e($report->person); ?>
+
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                            <!--[if BLOCK]><![endif]--><?php if($report->person === 'مشتری' && $report->customer): ?>
+                                            <?php echo e($report->customer->fullname); ?>
+
+                                            <?php elseif($report->person === 'دوکاندار' && $report->shopkeeper): ?>
+                                            <?php echo e($report->shopkeeper->fullname); ?>
+
+                                            <?php elseif($report->person === 'کارمند' && $report->staff): ?>
+                                            <?php echo e($report->staff->fullname); ?>
+
+                                            <?php else: ?>
+                                            -
+                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="font-bold text-gray-900"><?php echo e(number_format($report->amount)); ?></span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="font-bold text-green-600"><?php echo e(number_format($report->totalPaid())); ?></span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span
+                                                class="font-bold <?php echo e($report->remainingAmount() > 0 ? 'text-red-600' : 'text-green-600'); ?>">
+                                                <?php echo e(number_format($report->remainingAmount())); ?>
+
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
+                                                case ('AFN'): ?> افغانی <?php break; ?>
+                                                <?php case ('USD'): ?> دالر <?php break; ?>
+                                                <?php default: ?> <?php echo e($report->currency); ?>
+
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <?php echo e($report->date ?
+                                            \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
+
+                                        </td>
                                         <?php break; ?>
 
                                         <?php case ('payment'): ?>
-                                        <!-- ... existing payment case ... -->
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                            #<?php echo e($report->loan_id); ?>
+
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="font-bold text-gray-900"><?php echo e(number_format($report->amount)); ?></span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
+                                                case ('AFN'): ?> افغانی <?php break; ?>
+                                                <?php case ('USD'): ?> دالر <?php break; ?>
+                                                <?php default: ?> <?php echo e($report->currency); ?>
+
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <?php echo e($report->date ?
+                                            \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
+
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
+                                            <?php echo e($report->description ?? '-'); ?>
+
+                                        </td>
                                         <?php break; ?>
 
                                         <?php case ('buy'): ?>
-                                        <!-- ... existing buy case ... -->
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
+                                                    <span class="text-indigo-600 text-sm">🏪</span>
+                                                </div>
+                                                <span class="font-medium text-gray-900"><?php echo e($report->market->name ?? '-'); ?></span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                            <?php echo e($report->customer->fullname ?? '-'); ?>
+
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                                                <?php echo e($report->property); ?>
+
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-bold text-gray-900"><?php echo e(number_format($report->price)); ?></span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
+                                                case ('AFN'): ?> افغانی <?php break; ?>
+                                                <?php case ('USD'): ?> دالر <?php break; ?>
+                                                <?php default: ?> <?php echo e($report->currency); ?>
+
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <?php echo e($report->created_at ?
+                                            \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d')
+                                            : '-'); ?>
+
+                                        </td>
                                         <?php break; ?>
 
                                         <?php case ('sell'): ?>
-                                        <!-- ... existing sell case ... -->
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-8 h-8 bg-teal-100 rounded-lg flex items-center justify-center">
+                                                    <span class="text-teal-600 text-sm">🏪</span>
+                                                </div>
+                                                <span class="font-medium text-gray-900"><?php echo e($report->market->name ?? '-'); ?></span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                            <?php echo e($report->customer->fullname ?? '-'); ?>
+
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
+                                                <?php echo e($report->property); ?>
+
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-bold text-gray-900"><?php echo e(number_format($report->price)); ?></span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                                <?php echo e($report->currency); ?>
+
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <?php echo e($report->date ?
+                                            \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
+
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
+                                            <?php echo e($report->details ?? '-'); ?>
+
+                                        </td>
                                         <?php break; ?>
 
                                         <?php case ('withdraw_log'): ?>
-                                        <!-- ... existing withdraw_log case ... -->
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-800">
+                                                <?php echo e($report->expanses_type); ?>
+
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                            <?php echo e($report->recipient_name); ?>
+
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="font-bold text-gray-900"><?php echo e(number_format($report->amount)); ?></span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
+                                                case ('AFN'): ?> افغانی <?php break; ?>
+                                                <?php case ('USD'): ?> دالر <?php break; ?>
+                                                <?php default: ?> <?php echo e($report->currency); ?>
+
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
+                                            <?php echo e($report->description ?? '-'); ?>
+
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <?php echo e($report->created_at ?
+                                            \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d')
+                                            : '-'); ?>
+
+                                        </td>
                                         <?php break; ?>
 
                                         <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
