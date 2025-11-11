@@ -23,7 +23,7 @@
         <!-- Main Content - Form and Table -->
         <div class="flex flex-col lg:flex-row gap-10 mt-4">
 
-            <!-- Transaction Form -->
+            <!-- Remittance Form -->
             <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[574px] p-[12px] h-auto rounded-[12px] space-y-2"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
@@ -31,17 +31,15 @@
                 <div class="flex flex-row justify-between p-[10px] border border-[#8C8C8C] rounded-[12px] flex-wrap">
                     <p class="flex justify-center items-center text-center">
                         <img src="{{ asset('assets/sarafi/all_icon/edit-2.svg') }}" alt="" class="h-6 w-6">
-                        {{ $transactionId ? 'فورم ویرایش حواله' : 'فورم ثبت  اطلاعات  حواله' }}
+                        {{ $remittanceId ? 'فورم ویرایش حواله' : 'فورم ثبت  اطلاعات  حواله' }}
                     </p>
-
-                 
                 </div>
 
                 <!-- Form -->
-                <form wire:submit.prevent="submitTransaction">
+                <form wire:submit.prevent="submitRemittance">
                     <!-- Account Number and Currency -->
                     <div class="mt-2 flex flex-col lg:flex-row gap-3">
-                        <!-- Account Number -->
+                        <!-- Source Account Number -->
                         <div class="flex-1">
                             <div class="relative w-full">
                                 <label class="block text-[16px] font-medium text-black mb-1 vazir">نمبرحساب مشتری</label>
@@ -119,11 +117,8 @@
                             <div class="relative w-full">
                                 <input type="text" wire:model.live="amount" wire:blur="formatAmount" placeholder="0"
                                     class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:text-white"
-                                    oninput="this.value = this.value.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[^0-9]/g, '')" />
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
                             </div>
-                            @if($amountInWords)
-                            <p class="text-sm text-blue-600 mt-2 vazir">{{ $amountInWords }}</p>
-                            @endif
                             @error('amount')
                             <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                             @enderror
@@ -132,8 +127,11 @@
                         <!-- Date -->
                         <div class="lg:w-[290px]">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">تاریخ</label>
-                            <input type="text" id="datePicker" wire:model="date" wire:ignore placeholder="YYYY/MM/DD"
+                            <input type="text" id="datePicker" wire:model="date" placeholder="YYYY/MM/DD"
                                 class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
+                            @error('date')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 
@@ -142,15 +140,21 @@
                         <!-- Time -->
                         <div class="lg:w-[290px]">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">ساعت</label>
-                            <input type="text" id="datePicker" wire:model="clock" wire:ignore placeholder="2:25:20"
+                            <input type="text" wire:model="clock" placeholder="2:25:20"
                                 class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
+                            @error('clock')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <!-- Tracking Code -->
                         <div class="lg:w-[290px]">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">کد رهگیری</label>
-                            <input type="text" id="datePicker" wire:model="code" wire:ignore placeholder="5155221034568"
+                            <input type="text" wire:model="tracking_code" placeholder="5155221034568"
                                 class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
+                            @error('tracking_code')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 
@@ -159,15 +163,21 @@
                         <!-- Source Bank -->
                         <div class="lg:w-[290px]">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">بانک مبدا</label>
-                            <input type="text" id="datePicker" wire:model="from_bank" wire:ignore placeholder="سپه"
+                            <input type="text" wire:model="from_bank" placeholder="سپه"
                                 class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
+                            @error('from_bank')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <!-- Destination Bank -->
                         <div class="lg:w-[290px]">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">بانک مقصد</label>
-                            <input type="text" id="datePicker" wire:model="to_bank" wire:ignore placeholder="صادرات"
+                            <input type="text" wire:model="to_bank" placeholder="صادرات"
                                 class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
+                            @error('to_bank')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 
@@ -177,7 +187,7 @@
                         <div class="lg:w-[250px]">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">درج زون ها</label>
                             <div class="relative">
-                                <select wire:model="zone" wire:init="setDefaultZone"
+                                <select wire:model="zone"
                                     class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white appearance-none"
                                     style="max-height: 200px; overflow-y: auto;">
                                     <option value="">انتخاب زون</option>
@@ -194,25 +204,32 @@
                         <!-- Beneficiary Name -->
                         <div class="lg:w-[290px]">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir"> نام کارت گیرنده</label>
-                            <input type="text" id="datePicker" wire:model="giver_name" wire:ignore placeholder="مجید مرتضی"
+                            <input type="text" wire:model="giver_name" placeholder="مجید مرتضی"
                                 class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
+                            @error('giver_name')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 
                     <!-- Source and Destination Account Numbers -->
                     <div class="flex-1 flex gap-2 mt-2">
-                     
-                          <div class="lg:w-[440px]">
-                            <label class="block text-[16px] font-medium text-black mb-1 vazir">شماره کارت مقصد</label>
-                            <input type="text" id="datePicker" wire:model="giver_name" value="xxxx -xxxx-xxxx-1742" wire:ignore placeholder="ٓٓٓxxxx -xxxx-xxxx-1742"
-                                class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
+                        <!-- Source Account Number (Display only) -->
+                        <div class="lg:w-[440px]">
+                            <label class="block text-[16px] font-medium text-black mb-1 vazir">شماره حساب مبدا</label>
+                            <input type="text" wire:model="source_account" placeholder="شماره حساب مبدا"
+                                class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" readonly />
+                            @error('source_account')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
                         </div>
+                        
                         <!-- Destination Account -->
                         <div class="relative w-full">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">نمبرحساب مقصد</label>
                             <div x-data="{
                                 searchValue: '',
-                                selectedId: @entangle('selectedAccount'),
+                                selectedId: @entangle('toAccount'),
                                 customers: @js($customers),
                                 handleSelect(event) {
                                     const selected = this.customers.find(
@@ -221,13 +238,11 @@
                                     if (selected) {
                                         this.selectedId = selected.id;
                                         this.searchValue = `${selected.account_number} - ${selected.fullname}`;
-                                        $wire.selectCustomer(selected.id);
-                                        $wire.set('search', selected.fullname);
+                                        $wire.selectToAccount(selected.id);
                                     } else {
                                         this.selectedId = null;
                                         this.searchValue = '';
-                                        $wire.set('selectedAccount', null);
-                                        $wire.set('search', '');
+                                        $wire.set('toAccount', null);
                                     }
                                 },
                                 updateDisplay() {
@@ -236,11 +251,11 @@
                                 }
                             }" x-init="updateDisplay(); $watch('selectedId', () => updateDisplay())"
                                 class="relative w-full">
-                                <input list="customersList" x-model="searchValue" @change="handleSelect"
-                                    placeholder="جستجو یا انتخاب حساب..."
+                                <input list="customersList2" x-model="searchValue" @change="handleSelect"
+                                    placeholder="جستجو یا انتخاب حساب مقصد..."
                                     class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
                                     autocomplete="off">
-                                <datalist id="customersList">
+                                <datalist id="customersList2">
                                     @foreach ($customers as $customer)
                                     <option value="{{ $customer['account_number'] }} - {{ $customer['fullname'] }}">
                                     @endforeach
@@ -249,13 +264,13 @@
                                     <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
                                 </div>
                             </div>
-                            @error('selectedAccount')
+                            @error('toAccount')
                             <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
 
-                    <!-- Transaction Description -->
+                    <!-- Remittance Description -->
                     <div class="mt-3 flex gap-3">
                         <div class="w-full">
                             <textarea wire:model="description" rows="3" placeholder="شرح حواله..."
@@ -270,16 +285,16 @@
                     <div class="mt-2 flex gap-3">
                         <div class="w-full">
                             <div x-data="{ files: [] }"
-                                x-on:drop.prevent="files = $event.dataTransfer.files; $wire.upload('file', files[0])"
+                                x-on:drop.prevent="files = $event.dataTransfer.files; $wire.upload('remittance_image', files[0])"
                                 x-on:dragover.prevent
                                 class="w-full h-[150px] p-3 rounded-[12px] border border-dashed focus:ring-2 bg-white border-[#112080] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition"
                                 x-on:click="$refs.fileInput.click()">
                                 <img src="{{ asset('assets/sarafi/all_icon/upload.svg') }}" alt="آپلود" class="w-12 h-12 mb-2">
                                 <h1 class="font-vazir text-gray-600 dark:text-gray-300 text-[16px]">فایل را اینجا وارد کنید یا بکشید</h1>
                                 <input type="file" class="hidden" x-ref="fileInput"
-                                    x-on:change="$wire.upload('file', $event.target.files[0])">
+                                    x-on:change="$wire.upload('remittance_image', $event.target.files[0])">
                             </div>
-                            @error('file')
+                            @error('remittance_image')
                             <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                             @enderror
                         </div>
@@ -289,10 +304,10 @@
                     <div class="flex gap-4 p-4 justify-center items-center text-center flex-wrap">
                         <button type="submit"
                             class="bg-[#61B138] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
-                            {{ $transactionId ? 'بروزرسانی' : 'ثبت' }}
+                            {{ $remittanceId ? 'بروزرسانی' : 'ثبت' }}
                         </button>
 
-                        @if(!$transactionId)
+                        @if(!$remittanceId)
                         <button type="button" wire:click="submitAndPrint"
                             class="bg-[#2563EB] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
                             ثبت و چاپ
@@ -301,13 +316,13 @@
 
                         <button type="button" wire:click="cancel"
                             class="bg-[#DD2424] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
-                            {{ $transactionId ? 'لغو ویرایش' : 'انصراف' }}
+                            {{ $remittanceId ? 'لغو ویرایش' : 'انصراف' }}
                         </button>
                     </div>
                 </form>
             </div>
 
-            <!-- Transactions Table -->
+            <!-- Remittances Table -->
             <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px]"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
@@ -369,7 +384,7 @@
                                 <tr>
                                     <th class="px-4 py-4 font-bold w-16">#</th>
                                     <th class="px-4 py-4 font-bold w-48">نام مشتری</th>
-                                    <th class="px-4 py-4 font-bold w-32">به کارت</th>
+                                    <th class="px-4 py-4 font-bold w-32">گیرنده</th>
                                     <th class="px-4 py-4 font-bold w-40">مبلغ</th>
                                     <th class="px-4 py-4 font-bold w-32">واحد</th>
                                     <th class="px-4 py-4 font-bold w-80 text-center">توضیحات</th>
@@ -378,63 +393,56 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($transactions as $key => $transaction)
+                                @forelse($remittances as $key => $remittance)
                                 <tr class="text-black border-b border-[#D9D9D9] bg-transparent">
                                     <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">
                                         {{ $key + 1 }}
                                     </td>
                                     <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium w-48">
-                                        {{ $transaction->customer->fullname ?? '-' }}
+                                        {{ $remittance->customer->fullname ?? '-' }}
                                     </td>
                                     <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium w-32">
-                                        <span class="px-3 py-1 rounded-full text-[16px] {{ $transaction->type === 'رسید' ? ' text-green-800' : 'text-red-800' }}">
-                                            {{ $transaction->type }}
-                                        </span>
-                                    </td>
-                                    <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium w-32">
-                                        <span class="px-3 py-1 rounded-full text-[16px] {{ $transaction->type === 'نقدی' ? ' text-green-800' : 'text-red-800' }}">
-                                            {{ $transaction->account_type }}
-                                        </span>
+                                        {{ $remittance->recipient->fullname ?? $remittance->giver_name }}
                                     </td>
                                     <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium w-40">
-                                        {{ number_format($transaction->amount) }}
+                                        {{ number_format($remittance->amount) }}
                                     </td>
                                     <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium w-32">
-                                        {{ collect($currencies)->firstWhere('code', $transaction->currency)['name_fa'] ?? $transaction->currency }}
+                                        {{ collect($currencies)->firstWhere('code', $remittance->currency)['name_fa'] ?? $remittance->currency }}
                                     </td>
                                     <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-80">
                                         <div class="space-y-1 text-right">
-                                            <p class="text-sm">توسط: {{ $transaction->by }}</p>
-                                            <p class="text-sm">زون: {{ $transaction->zone }}</p>
-                                            <p class="text-sm">تفصیلات: {{ $transaction->description }}</p>
+                                            <p class="text-sm">کد رهگیری: {{ $remittance->tracking_code }}</p>
+                                            <p class="text-sm">زون: {{ $remittance->zone }}</p>
+                                            <p class="text-sm">تفصیلات: {{ $remittance->description }}</p>
                                         </div>
                                     </td>
                                     <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-40">
                                         <div class="whitespace-nowrap">
                                             <div class="font-medium">
-                                                {{ explode(' ', $transaction->date)[0] }}
+                                                {{ $remittance->date }}
                                             </div>
                                             <div class="text-gray-500 text-sm mt-1">
-                                                {{ \Carbon\Carbon::parse($transaction->created_at)->format('h:i A') }}
+                                                {{ $remittance->clock }}
                                             </div>
                                         </div>
                                     </td>
                                     <td class="py-4 text-center w-[68]">
                                         <div class="flex justify-center gap-3">
                                             <!-- Edit Button -->
-                                            <button wire:click="edit({{ $transaction->id }})" class="w-12 h-12 flex items-center justify-center rounded-full transition-colors" title="ویرایش">
+                                            <button wire:click="edit({{ $remittance->id }})" class="w-12 h-12 flex items-center justify-center rounded-full transition-colors" title="ویرایش">
                                                 <img src="{{ asset('assets/sarafi/all_icon/edit_table.svg') }}" class="w-7 h-7" alt="Edit">
                                             </button>
 
                                             <!-- Delete Button -->
-                                            <button wire:click="confirmDelete({{ $transaction->id }})"
+                                            <button wire:click="confirmDelete({{ $remittance->id }})"
                                                 class="w-12 h-12 flex items-center justify-center rounded-full transition-colors"
                                                 title="حذف">
                                                 <img src="{{ asset('assets/sarafi/all_icon/trash_table.svg') }}" class="w-8 h-8" alt="Delete">
                                             </button>
 
                                             <!-- Print Button -->
-                                            <button wire:click="print({{ $transaction->id }})" class="w-12 h-12 flex items-center justify-center rounded-full transition-colors" title="پرینت">
+                                            <button wire:click="print({{ $remittance->id }})" class="w-12 h-12 flex items-center justify-center rounded-full transition-colors" title="پرینت">
                                                 <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}" class="w-10 h-10" alt="Print">
                                             </button>
                                         </div>
@@ -492,8 +500,8 @@
     });
 </script>
 @endpush
-@push('style')
-    
+
+@push('style')    
 <!-- Scrollbar Style -->
 <style>
     .scroll-container {

@@ -169,12 +169,20 @@ protected function generateHtml()
 
     protected function calculateSummary()
     {
-        $totalAmount = match ($this->reportType) {
-            'withdraw_salary' => $this->data->sum(function ($item) {
-                return isset($item->record_type) && $item->record_type === 'برداشت'
-                    ? ($item->amount ?? 0)
-                    : ($item->paid ?? $item->salary ?? 0);
-            }),
+       $totalAmount = match ($this->reportType) {
+    'withdraw_salary' => $this->data->sum(function ($item) {
+        $amount = (float) ($item->amount ?? 0);
+        $paid   = (float) ($item->paid ?? 0);
+        $salary = (float) ($item->salary ?? 0);
+
+        // اگر نوع رکورد "برداشت" است، فقط amount را حساب نکن، بلکه همه را جمع کن
+        if (isset($item->record_type) && $item->record_type === 'برداشت') {
+            return $amount + $paid + $salary;
+        }
+
+        // در سایر موارد هم همین‌طور همه مقادیر غیر تهی را جمع کن
+        return $amount + $paid + $salary;
+    }),
 
             'accounting' => $this->data->sum('price'),
             'outside' => $this->data->sum('paid'),

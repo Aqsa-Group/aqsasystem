@@ -81,7 +81,6 @@ class Remittance extends Component
             ->push($adminId)
             ->toArray();
 
-        // Fix the query - remove the remittances relationship check
         $this->customers = Customer::select('id', 'account_number', 'fullname')
             ->where('admin_id', $adminId)
             ->orderBy('fullname')
@@ -101,15 +100,15 @@ class Remittance extends Component
         }
 
         $this->filteredCustomers = Customer::where('admin_id', $adminId)
-            ->where(function($query) use ($value) {
+            ->where(function ($query) use ($value) {
                 $query->where('fullname', 'like', "%{$value}%")
                     ->orWhere('account_number', 'like', "%{$value}%");
             })
             ->limit(15)
             ->get();
 
-        if ($this->filteredCustomers->count() === 1) {
-            $this->selectCustomer($this->filteredCustomers->first()->id);
+        if (count($this->filteredCustomers) === 1) {
+            $this->selectCustomer($this->filteredCustomers[0]['id']);
         } else {
             $this->selectedCustomerId = null;
             $this->updateRemittances();
@@ -120,7 +119,7 @@ class Remittance extends Component
     {
         $this->selectedCustomerId = $customerId;
         $this->selectedAccount = $customerId;
-        
+
         $customer = Customer::find($customerId);
         if ($customer) {
             $this->source_account = $customer->account_number;
@@ -176,6 +175,8 @@ class Remittance extends Component
 
     public function submitRemittance()
     {
+        $this->amount = str_replace(',', '', $this->amount);
+
         $this->validate([
             'selectedAccount' => 'required|exists:sarafi.customers,id',
             'toAccount' => 'required|exists:sarafi.customers,id',
@@ -219,12 +220,12 @@ class Remittance extends Component
 
         if ($this->remittanceId) {
             $remittance = Remittances::findOrFail($this->remittanceId);
-            
+
             // Delete old image if new one is uploaded
             if ($imagePath && $remittance->remittance_image) {
                 Storage::disk('public')->delete($remittance->remittance_image);
             }
-            
+
             $remittance->update($data);
             session()->flash('message', 'حواله با موفقیت بروزرسانی شد.');
         } else {
@@ -238,8 +239,8 @@ class Remittance extends Component
 
     public function edit($id)
     {
-        $remittance = Remittance::with(['customer', 'recipient'])->findOrFail($id);
-        
+        $remittance = Remittances::with(['customer', 'recipient'])->findOrFail($id);
+
         $this->remittanceId = $id;
         $this->selectedAccount = $remittance->customer_id;
         $this->toAccount = $remittance->to_account;
@@ -254,7 +255,7 @@ class Remittance extends Component
         $this->zone = $remittance->zone;
         $this->giver_name = $remittance->giver_name;
         $this->description = $remittance->description;
-        
+
         // Set the search values for display
         $this->search = $remittance->customer->fullname ?? '';
     }
@@ -266,13 +267,13 @@ class Remittance extends Component
 
     public function deleteConfirmed()
     {
-        $remittance = Remittance::findOrFail($this->confirmDeleteId);
-        
+        $remittance = Remittances::findOrFail($this->confirmDeleteId);
+
         // Delete associated image
         if ($remittance->remittance_image) {
-          Storage::disk('public')->delete($remittance->remittance_image);
+            Storage::disk('public')->delete($remittance->remittance_image);
         }
-        
+
         $remittance->delete();
 
         session()->flash('message', 'حواله با موفقیت حذف شد.');
@@ -309,6 +310,34 @@ class Remittance extends Component
         $this->search = '';
     }
 
+    // Add this method for amount formatting
+    public function formatAmount()
+    {
+        if ($this->amount) {
+            $this->amount = number_format((float) $this->amount);
+        }
+    }
+
+    // Add this method for setting default zone
+    public function setDefaultZone()
+    {
+        $this->zone = Auth::guard('sarafi')->user()->zone;
+    }
+
+    // Add this method for submit and print
+    public function submitAndPrint()
+    {
+        $this->submitRemittance();
+        // Add print logic here
+    }
+
+    // Add this method for printing
+    public function print($id)
+    {
+        // Add print logic here
+        $this->dispatch('report-alert', message: 'Print functionality for remittance ID: ' . $id);
+    }
+
     public function render()
     {
         $user = Auth::guard('sarafi')->user();
@@ -321,7 +350,7 @@ class Remittance extends Component
         }
 
         // Reload customers if empty
-        if (!$this->customers || $this->customers->isEmpty()) {
+        if (collect($this->customers)->isEmpty()) {
             $this->loadCustomers();
         }
 
