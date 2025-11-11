@@ -35,8 +35,8 @@ class GeneralReports extends Component
     public $reportType = 'withdraw_salary';
     public $startDate;
     public $endDate;
-    public $startDateJalali; 
-    public $endDateJalali; 
+    public $startDateJalali;
+    public $endDateJalali;
     public $marketId;
     public $shopId;
     public $boothId;
@@ -165,9 +165,9 @@ class GeneralReports extends Component
     {
         try {
             $data = $this->getReportData(true);
-            
+
             return Excel::download(
-                new GeneralReportExport($data, $this->reportType), 
+                new GeneralReportExport($data, $this->reportType),
                 'general_report_' . $this->reportType . '_' . now()->format('Y_m_d') . '.xlsx'
             );
         } catch (\Exception $e) {
@@ -183,16 +183,16 @@ class GeneralReports extends Component
         try {
             $data = $this->getReportData(true);
             $filters = $this->getFiltersForExport();
-            
+
             $pdfExport = new GeneralReportPdfExport($data, $this->reportType, $filters);
-            
+
             return $pdfExport->download();
         } catch (\Exception $e) {
             $this->dispatch('notify', [
                 'type' => 'error',
                 'message' => 'خطا در تولید فایل PDF: ' . $e->getMessage()
             ]);
-            
+
             Log::error('PDF Export Error: ' . $e->getMessage());
         }
     }
@@ -202,19 +202,18 @@ class GeneralReports extends Component
         try {
             $data = $this->getReportData(true);
             $filters = $this->getFiltersForExport();
-            
+
             $pdfExport = new GeneralReportPdfExport($data, $this->reportType, $filters);
-            
+
             return response()->streamDownload(function () use ($pdfExport) {
                 echo $pdfExport->stream();
             }, 'preview.pdf');
-            
         } catch (\Exception $e) {
             $this->dispatch('notify', [
                 'type' => 'error',
                 'message' => 'خطا در پیش نمایش PDF: ' . $e->getMessage()
             ]);
-            
+
             Log::error('PDF Preview Error: ' . $e->getMessage());
         }
     }
@@ -250,7 +249,7 @@ class GeneralReports extends Component
     private function getReportData($forExport = false)
     {
         $user = Auth::user();
-        
+
         try {
             switch ($this->reportType) {
                 case 'withdraw_salary':
@@ -258,35 +257,35 @@ class GeneralReports extends Component
                         return $this->getCombinedDataForExport();
                     }
                     return $this->buildWithdrawSalaryQuery();
-                    
+
                 case 'accounting':
                     $query = $this->buildAccountingQuery();
                     break;
-                    
+
                 case 'outside':
                     $query = $this->buildOutsideQuery();
                     break;
-                    
+
                 case 'deposit':
                     $query = $this->buildDepositQuery();
                     break;
-                    
+
                 case 'loan':
                     $query = $this->buildLoanQuery();
                     break;
-                    
+
                 case 'payment':
                     $query = $this->buildPaymentQuery();
                     break;
-                    
+
                 case 'buy':
                     $query = $this->buildBuyQuery();
                     break;
-                    
+
                 case 'sell':
                     $query = $this->buildSellQuery();
                     break;
-                    
+
                 default:
                     $query = $this->buildWithdrawSalaryQuery();
             }
@@ -296,151 +295,150 @@ class GeneralReports extends Component
             }
 
             return $forExport ? $query->get() : $query->paginate(20);
-
         } catch (\Exception $e) {
             Log::error('Error in getReportData: ' . $e->getMessage(), [
                 'reportType' => $this->reportType,
                 'user_id' => $user->id
             ]);
-            
+
             return $forExport ? collect() : collect()->paginate(20);
         }
     }
-private function applyAccessControl($query, $user)
-{
-    if ($user->role === 'superadmin') {
+    private function applyAccessControl($query, $user)
+    {
+        if ($user->role === 'superadmin') {
+            return $query;
+        }
+
+        $adminId = $user->role === 'admin' ? $user->id : $user->admin_id;
+
+        $model = $query->getModel();
+        $table = $model->getTable();
+        $columns = $model->getConnection()->getSchemaBuilder()->getColumnListing($table);
+
+        if (in_array('admin_id', $columns)) {
+            return $query->where(function ($q) use ($adminId) {
+                $q->where('admin_id', $adminId)
+                    ->orWhereNull('admin_id');
+            });
+        }
+
         return $query;
     }
-    
-    $adminId = $user->role === 'admin' ? $user->id : $user->admin_id;
-    
-    $model = $query->getModel();
-    $table = $model->getTable();
-    $columns = $model->getConnection()->getSchemaBuilder()->getColumnListing($table);
-    
-    if (in_array('admin_id', $columns)) {
-        return $query->where(function ($q) use ($adminId) {
-            $q->where('admin_id', $adminId)
-              ->orWhereNull('admin_id');
+
+    private function buildWithdrawSalaryQuery()
+    {
+        $user = Auth::user();
+
+        // Withdrawals
+        $withdrawalsQuery = WithdrawLog::with(['customer', 'staff'])
+            ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
+            ->when($this->expansesType, fn($q) => $q->where('expanses_type', $this->expansesType))
+            ->when($this->startDate, fn($q) => $q->whereDate('created_at', '>=', $this->startDate))
+            ->when($this->endDate, fn($q) => $q->whereDate('created_at', '<=', $this->endDate))
+            ->when($this->amountMin, fn($q) => $q->where('amount', '>=', $this->amountMin))
+            ->when($this->amountMax, fn($q) => $q->where('amount', '<=', $this->amountMax))
+            ->when($this->search, function ($q) {
+                $q->where('recipient_name', 'like', "%{$this->search}%")
+                    ->orWhere('description', 'like', "%{$this->search}%");
+            });
+
+        $withdrawalsQuery = $this->applyAccessControl($withdrawalsQuery, $user);
+
+        $withdrawals = $withdrawalsQuery->get()->map(function ($item) {
+            $item->record_type = 'withdraw';
+            return $item;
         });
+
+        // Salaries (🔧 اصلاح salary → paid)
+        $salariesQuery = Salary::with(['market', 'staff', 'loan'])
+            ->when($this->marketId, fn($q) => $q->where('market_id', $this->marketId))
+            ->when($this->staffId, fn($q) => $q->where('staff_id', $this->staffId))
+            ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
+            ->when($this->startDate, fn($q) => $q->whereDate('paid_date', '>=', $this->startDate))
+            ->when($this->endDate, fn($q) => $q->whereDate('paid_date', '<=', $this->endDate))
+            ->when($this->amountMin, fn($q) => $q->where('paid', '>=', $this->amountMin))   // ✅
+            ->when($this->amountMax, fn($q) => $q->where('paid', '<=', $this->amountMax))   // ✅
+            ->when($this->search, function ($q) {
+                $q->whereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
+                    ->orWhereHas('market', fn($q2) => $q2->where('name', 'like', "%{$this->search}%"));
+            });
+
+        $salariesQuery = $this->applyAccessControl($salariesQuery, $user);
+
+        $salaries = $salariesQuery->get()->map(function ($item) {
+            $item->record_type = 'salary';
+            return $item;
+        });
+
+        // Combine & sort
+        $combined = $withdrawals->merge($salaries)
+            ->sortByDesc(fn($item) => $item->record_type === 'withdraw' ? $item->created_at : $item->paid_date);
+
+        // Pagination
+        $page = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = 20;
+        $results = $combined->slice(($page - 1) * $perPage, $perPage)->values();
+
+        return new LengthAwarePaginator(
+            $results,
+            $combined->count(),
+            $perPage,
+            $page,
+            ['path' => LengthAwarePaginator::resolveCurrentPath()]
+        );
     }
-    
-    return $query;
-}   
 
-private function buildWithdrawSalaryQuery()
-{
-    $user = Auth::user();
+    private function getCombinedDataForExport()
+    {
+        $user = Auth::user();
 
-    // Withdrawals
-    $withdrawalsQuery = WithdrawLog::with(['customer', 'staff'])
-        ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
-        ->when($this->expansesType, fn($q) => $q->where('expanses_type', $this->expansesType))
-        ->when($this->startDate, fn($q) => $q->whereDate('created_at', '>=', $this->startDate))
-        ->when($this->endDate, fn($q) => $q->whereDate('created_at', '<=', $this->endDate))
-        ->when($this->amountMin, fn($q) => $q->where('amount', '>=', $this->amountMin))
-        ->when($this->amountMax, fn($q) => $q->where('amount', '<=', $this->amountMax))
-        ->when($this->search, function ($q) {
-            $q->where('recipient_name', 'like', "%{$this->search}%")
-              ->orWhere('description', 'like', "%{$this->search}%");
-        });
-
-    $withdrawalsQuery = $this->applyAccessControl($withdrawalsQuery, $user);
-
-    $withdrawals = $withdrawalsQuery->get()->map(function ($item) {
-        $item->record_type = 'withdraw';
-        return $item;
-    });
-
-    // Salaries (🔧 اصلاح salary → paid)
-    $salariesQuery = Salary::with(['market', 'staff', 'loan'])
-        ->when($this->marketId, fn($q) => $q->where('market_id', $this->marketId))
-        ->when($this->staffId, fn($q) => $q->where('staff_id', $this->staffId))
-        ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
-        ->when($this->startDate, fn($q) => $q->whereDate('paid_date', '>=', $this->startDate))
-        ->when($this->endDate, fn($q) => $q->whereDate('paid_date', '<=', $this->endDate))
-        ->when($this->amountMin, fn($q) => $q->where('paid', '>=', $this->amountMin))   // ✅
-        ->when($this->amountMax, fn($q) => $q->where('paid', '<=', $this->amountMax))   // ✅
-        ->when($this->search, function ($q) {
-            $q->whereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-              ->orWhereHas('market', fn($q2) => $q2->where('name', 'like', "%{$this->search}%"));
-        });
-
-    $salariesQuery = $this->applyAccessControl($salariesQuery, $user);
-
-    $salaries = $salariesQuery->get()->map(function ($item) {
-        $item->record_type = 'salary';
-        return $item;
-    });
-
-    // Combine & sort
-    $combined = $withdrawals->merge($salaries)
-        ->sortByDesc(fn($item) => $item->record_type === 'withdraw' ? $item->created_at : $item->paid_date);
-
-    // Pagination
-    $page = LengthAwarePaginator::resolveCurrentPage();
-    $perPage = 20;
-    $results = $combined->slice(($page - 1) * $perPage, $perPage)->values();
-
-    return new LengthAwarePaginator(
-        $results,
-        $combined->count(),
-        $perPage,
-        $page,
-        ['path' => LengthAwarePaginator::resolveCurrentPath()]
-    );
-}
-
- private function getCombinedDataForExport()
-{
-    $user = Auth::user();
-
-  $withdrawalsQuery = WithdrawLog::query()
-    ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
-    ->when($this->startDate, fn($q) => $q->whereDate('created_at', '>=', $this->startDate))
-    ->when($this->endDate, fn($q) => $q->whereDate('created_at', '<=', $this->endDate))
-    ->when($this->amountMin, fn($q) => $q->where('amount', '>=', $this->amountMin))
-    ->when($this->amountMax, fn($q) => $q->where('amount', '<=', $this->amountMax))
-    ->when($this->search, function($q) {
-        $q->where('recipient_name', 'like', "%{$this->search}%")
-          ->orWhere('description', 'like', "%{$this->search}%");
-    });
+        $withdrawalsQuery = WithdrawLog::query()
+            ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
+            ->when($this->startDate, fn($q) => $q->whereDate('created_at', '>=', $this->startDate))
+            ->when($this->endDate, fn($q) => $q->whereDate('created_at', '<=', $this->endDate))
+            ->when($this->amountMin, fn($q) => $q->where('amount', '>=', $this->amountMin))
+            ->when($this->amountMax, fn($q) => $q->where('amount', '<=', $this->amountMax))
+            ->when($this->search, function ($q) {
+                $q->where('recipient_name', 'like', "%{$this->search}%")
+                    ->orWhere('description', 'like', "%{$this->search}%");
+            });
 
 
-    $withdrawalsQuery = $this->applyAccessControl($withdrawalsQuery, $user);
+        $withdrawalsQuery = $this->applyAccessControl($withdrawalsQuery, $user);
 
- $withdrawals = $withdrawalsQuery->get()
-    ->map(function($item) {
-        $item->record_type = 'withdraw';
-        return $item;
-    });
+        $withdrawals = $withdrawalsQuery->get()
+            ->map(function ($item) {
+                $item->record_type = 'withdraw';
+                return $item;
+            });
 
-    $salariesQuery = Salary::with(['market', 'staff', 'loan'])
-        ->when($this->marketId, fn($q) => $q->where('market_id', $this->marketId))
-        ->when($this->staffId, fn($q) => $q->where('staff_id', $this->staffId))
-        ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
-        ->when($this->startDate, fn($q) => $q->whereDate('paid_date', '>=', $this->startDate))
-        ->when($this->endDate, fn($q) => $q->whereDate('paid_date', '<=', $this->endDate))
-        ->when($this->amountMin, fn($q) => $q->where('salary', '>=', $this->amountMin))
-        ->when($this->amountMax, fn($q) => $q->where('salary', '<=', $this->amountMax))
-        ->when($this->search, function($q) {
-            $q->whereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-              ->orWhereHas('market', fn($q2) => $q2->where('name', 'like', "%{$this->search}%"));
-        });
+        $salariesQuery = Salary::with(['market', 'staff', 'loan'])
+            ->when($this->marketId, fn($q) => $q->where('market_id', $this->marketId))
+            ->when($this->staffId, fn($q) => $q->where('staff_id', $this->staffId))
+            ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
+            ->when($this->startDate, fn($q) => $q->whereDate('paid_date', '>=', $this->startDate))
+            ->when($this->endDate, fn($q) => $q->whereDate('paid_date', '<=', $this->endDate))
+            ->when($this->amountMin, fn($q) => $q->where('paid', '>=', $this->amountMin))
+            ->when($this->amountMax, fn($q) => $q->where('paid', '<=', $this->amountMax))
+            ->when($this->search, function ($q) {
+                $q->whereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
+                    ->orWhereHas('market', fn($q2) => $q2->where('name', 'like', "%{$this->search}%"));
+            });
 
-    $salariesQuery = $this->applyAccessControl($salariesQuery, $user);
+        $salariesQuery = $this->applyAccessControl($salariesQuery, $user);
 
-  $salaries = $salariesQuery->get()
-    ->map(function($item) {
-        $item->record_type = 'salary';
-        return $item;
-    });
+        $salaries = $salariesQuery->get()
+            ->map(function ($item) {
+                $item->record_type = 'salary';
+                return $item;
+            });
 
-    return $withdrawals->merge($salaries)
-        ->sortByDesc(function($item) {
-            return $item->record_type === 'برداشت' ? $item->created_at : $item->paid_date;
-        });
-}
+        return $withdrawals->merge($salaries)
+            ->sortByDesc(function ($item) {
+                return $item->record_type === 'برداشت' ? $item->created_at : $item->paid_date;
+            });
+    }
 
     private function buildAccountingQuery()
     {
@@ -456,11 +454,11 @@ private function buildWithdrawSalaryQuery()
             ->when($this->endDate, fn($q) => $q->whereDate('paid_date', '<=', $this->endDate))
             ->when($this->amountMin, fn($q) => $q->where('price', '>=', $this->amountMin))
             ->when($this->amountMax, fn($q) => $q->where('price', '<=', $this->amountMax))
-            ->when($this->search, function($q) {
+            ->when($this->search, function ($q) {
                 $q->whereHas('shopkeeper', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-                  ->orWhereHas('shop', fn($q2) => $q2->where('number', 'like', "%{$this->search}%"))
-                  ->orWhereHas('booth', fn($q2) => $q2->where('number', 'like', "%{$this->search}%"))
-                  ->orWhere('meter_serial', 'like', "%{$this->search}%");
+                    ->orWhereHas('shop', fn($q2) => $q2->where('number', 'like', "%{$this->search}%"))
+                    ->orWhereHas('booth', fn($q2) => $q2->where('number', 'like', "%{$this->search}%"))
+                    ->orWhere('meter_serial', 'like', "%{$this->search}%");
             })
             ->orderBy('created_at', 'desc');
     }
@@ -478,11 +476,11 @@ private function buildWithdrawSalaryQuery()
             ->when($this->endDate, fn($q) => $q->whereDate('date', '<=', $this->endDate))
             ->when($this->amountMin, fn($q) => $q->where('paid', '>=', $this->amountMin))
             ->when($this->amountMax, fn($q) => $q->where('paid', '<=', $this->amountMax))
-            ->when($this->search, function($q) {
+            ->when($this->search, function ($q) {
                 $q->whereHas('customer', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-                  ->orWhereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-                  ->orWhereHas('shopkeeper', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-                  ->orWhere('description', 'like', "%{$this->search}%");
+                    ->orWhereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
+                    ->orWhereHas('shopkeeper', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
+                    ->orWhere('description', 'like', "%{$this->search}%");
             })
             ->orderBy('created_at', 'desc');
     }
@@ -518,11 +516,11 @@ private function buildWithdrawSalaryQuery()
             ->when($this->endDate, fn($q) => $q->whereDate('date', '<=', $this->endDate))
             ->when($this->amountMin, fn($q) => $q->where('amount', '>=', $this->amountMin))
             ->when($this->amountMax, fn($q) => $q->where('amount', '<=', $this->amountMax))
-            ->when($this->search, function($q) {
+            ->when($this->search, function ($q) {
                 $q->whereHas('customer', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-                  ->orWhereHas('shopkeeper', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-                  ->orWhereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-                  ->orWhere('description', 'like', "%{$this->search}%");
+                    ->orWhereHas('shopkeeper', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
+                    ->orWhereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
+                    ->orWhere('description', 'like', "%{$this->search}%");
             })
             ->orderBy('created_at', 'desc');
     }
@@ -539,11 +537,11 @@ private function buildWithdrawSalaryQuery()
             ->when($this->endDate, fn($q) => $q->whereDate('date', '<=', $this->endDate))
             ->when($this->amountMin, fn($q) => $q->where('amount', '>=', $this->amountMin))
             ->when($this->amountMax, fn($q) => $q->where('amount', '<=', $this->amountMax))
-            ->when($this->search, function($q) {
+            ->when($this->search, function ($q) {
                 $q->whereHas('customer', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-                  ->orWhereHas('shopkeeper', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-                  ->orWhereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-                  ->orWhere('description', 'like', "%{$this->search}%");
+                    ->orWhereHas('shopkeeper', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
+                    ->orWhereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
+                    ->orWhere('description', 'like', "%{$this->search}%");
             })
             ->orderBy('created_at', 'desc');
     }
@@ -558,9 +556,9 @@ private function buildWithdrawSalaryQuery()
             ->when($this->endDate, fn($q) => $q->whereDate('created_at', '<=', $this->endDate))
             ->when($this->amountMin, fn($q) => $q->where('price', '>=', $this->amountMin))
             ->when($this->amountMax, fn($q) => $q->where('price', '<=', $this->amountMax))
-            ->when($this->search, function($q) {
+            ->when($this->search, function ($q) {
                 $q->whereHas('customer', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-                  ->orWhere('property', 'like', "%{$this->search}%");
+                    ->orWhere('property', 'like', "%{$this->search}%");
             })
             ->orderBy('created_at', 'desc');
     }
@@ -576,10 +574,10 @@ private function buildWithdrawSalaryQuery()
             ->when($this->endDate, fn($q) => $q->whereDate('date', '<=', $this->endDate))
             ->when($this->amountMin, fn($q) => $q->where('price', '>=', $this->amountMin))
             ->when($this->amountMax, fn($q) => $q->where('price', '<=', $this->amountMax))
-            ->when($this->search, function($q) {
+            ->when($this->search, function ($q) {
                 $q->whereHas('customer', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-                  ->orWhere('property', 'like', "%{$this->search}%")
-                  ->orWhere('details', 'like', "%{$this->search}%");
+                    ->orWhere('property', 'like', "%{$this->search}%")
+                    ->orWhere('details', 'like', "%{$this->search}%");
             })
             ->orderBy('created_at', 'desc');
     }
@@ -593,10 +591,10 @@ private function buildWithdrawSalaryQuery()
             ->when($this->endDate, fn($q) => $q->whereDate('created_at', '<=', $this->endDate))
             ->when($this->amountMin, fn($q) => $q->where('amount', '>=', $this->amountMin))
             ->when($this->amountMax, fn($q) => $q->where('amount', '<=', $this->amountMax))
-            ->when($this->search, function($q) {
+            ->when($this->search, function ($q) {
                 $q->whereHas('customer', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-                  ->orWhereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-                  ->orWhere('description', 'like', "%{$this->search}%");
+                    ->orWhereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
+                    ->orWhere('description', 'like', "%{$this->search}%");
             })
             ->orderBy('created_at', 'desc');
     }
@@ -609,7 +607,7 @@ private function buildWithdrawSalaryQuery()
     public function getMarketsProperty()
     {
         $user = Auth::user();
-        
+
         return Market::when($user->role === 'admin', fn($q) => $q->where('admin_id', $user->id))
             ->when($user->role !== 'superadmin' && $user->role !== 'admin', fn($q) => $q->where('admin_id', $user->admin_id))
             ->pluck('name', 'id');
@@ -618,7 +616,7 @@ private function buildWithdrawSalaryQuery()
     public function getShopsProperty()
     {
         $user = Auth::user();
-        
+
         return Shop::when($this->marketId, fn($q) => $q->where('market_id', $this->marketId))
             ->when($user->role === 'admin', fn($q) => $q->where('admin_id', $user->id))
             ->when($user->role !== 'superadmin' && $user->role !== 'admin', fn($q) => $q->where('admin_id', $user->admin_id))
@@ -628,7 +626,7 @@ private function buildWithdrawSalaryQuery()
     public function getBoothsProperty()
     {
         $user = Auth::user();
-        
+
         return Booth::when($this->marketId, fn($q) => $q->where('market_id', $this->marketId))
             ->when($user->role === 'admin', fn($q) => $q->where('admin_id', $user->id))
             ->when($user->role !== 'superadmin' && $user->role !== 'admin', fn($q) => $q->where('admin_id', $user->admin_id))
@@ -638,7 +636,7 @@ private function buildWithdrawSalaryQuery()
     public function getShopkeepersProperty()
     {
         $user = Auth::user();
-        
+
         return Shopkeeper::when($this->marketId, fn($q) => $q->where('market_id', $this->marketId))
             ->when($user->role === 'admin', fn($q) => $q->where('admin_id', $user->id))
             ->when($user->role !== 'superadmin' && $user->role !== 'admin', fn($q) => $q->where('admin_id', $user->admin_id))
@@ -648,7 +646,7 @@ private function buildWithdrawSalaryQuery()
     public function getCustomersProperty()
     {
         $user = Auth::user();
-        
+
         return Customer::when($this->marketId, fn($q) => $q->where('market_id', $this->marketId))
             ->when($user->role === 'admin', fn($q) => $q->where('admin_id', $user->id))
             ->when($user->role !== 'superadmin' && $user->role !== 'admin', fn($q) => $q->where('admin_id', $user->admin_id))
@@ -658,7 +656,7 @@ private function buildWithdrawSalaryQuery()
     public function getStaffsProperty()
     {
         $user = Auth::user();
-        
+
         return Staff::when($this->marketId, fn($q) => $q->where('market_id', $this->marketId))
             ->when($user->role === 'admin', fn($q) => $q->where('admin_id', $user->id))
             ->when($user->role !== 'superadmin' && $user->role !== 'admin', fn($q) => $q->where('admin_id', $user->admin_id))
@@ -668,11 +666,11 @@ private function buildWithdrawSalaryQuery()
     public function getSummaryProperty()
     {
         $data = $this->getReportData(true);
-        
+
         $currencyTotals = $this->calculateCurrencyTotals($data);
-        
-        $totalAmount = match($this->reportType) {
-            'withdraw_salary' => $data->sum(function($item) {
+
+        $totalAmount = match ($this->reportType) {
+            'withdraw_salary' => $data->sum(function ($item) {
                 return $item->record_type === 'withdraw' ? $item->amount : ($item->salary ?? 0);
             }),
             'accounting' => $data->sum('price'),
@@ -686,7 +684,7 @@ private function buildWithdrawSalaryQuery()
             'withdraw_log' => $data->sum('amount'),
             default => 0
         };
-        
+
         return [
             'total_count' => $data->count(),
             'total_amount' => $totalAmount,
@@ -699,11 +697,11 @@ private function buildWithdrawSalaryQuery()
     private function calculateCurrencyTotals($data)
     {
         $currencyTotals = [];
-        
+
         foreach ($data as $item) {
             $currency = $item->currency ?? 'نامشخص';
-            
-            $amount = match($this->reportType) {
+
+            $amount = match ($this->reportType) {
                 'withdraw_salary' => $item->record_type === 'withdraw' ? $item->amount : ($item->salary ?? 0),
                 'accounting' => $item->price ?? 0,
                 'outside' => $item->paid ?? 0,
@@ -716,14 +714,14 @@ private function buildWithdrawSalaryQuery()
                 'withdraw_log' => $item->amount ?? 0,
                 default => 0
             };
-            
+
             if (!isset($currencyTotals[$currency])) {
                 $currencyTotals[$currency] = 0;
             }
-            
+
             $currencyTotals[$currency] += $amount;
         }
-        
+
         return $currencyTotals;
     }
 
@@ -741,21 +739,35 @@ private function buildWithdrawSalaryQuery()
             'sell' => 'فروش‌ها',
             'withdraw_log' => 'برداشت‌ها',
         ];
-        
+
         return $types[$this->reportType] ?? 'نامشخص';
     }
 
     public function resetFilters()
     {
         $this->reset([
-            'startDate', 'endDate', 'startDateJalali', 'endDateJalali', 'marketId', 'shopId', 'boothId', 
-            'shopkeeperId', 'customerId', 'staffId', 'currency', 'type', 
-            'expansesType', 'status', 'search', 'amountMin', 'amountMax'
+            'startDate',
+            'endDate',
+            'startDateJalali',
+            'endDateJalali',
+            'marketId',
+            'shopId',
+            'boothId',
+            'shopkeeperId',
+            'customerId',
+            'staffId',
+            'currency',
+            'type',
+            'expansesType',
+            'status',
+            'search',
+            'amountMin',
+            'amountMax'
         ]);
-        
+
         $this->setDefaultJalaliDates();
         $this->resetPage();
-        
+
         $this->dispatch('notify', [
             'type' => 'success',
             'message' => 'تمامی فیلترها بازنشانی شدند'
