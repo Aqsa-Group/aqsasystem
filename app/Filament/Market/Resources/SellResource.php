@@ -145,7 +145,7 @@ class SellResource extends Resource
                 ->label('مبلغ پرداخت شده')
                 ->placeholder('مبلغ پرداخت شده')
                 ->numeric()
-                ->reactive()
+                ->lazy()
                 ->required()
                 ->visible(fn($get) => $get('payment_type') === 'قسطی')
                 ->prefix(fn($get) => match ($get('currency')) {
