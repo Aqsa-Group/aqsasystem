@@ -371,12 +371,10 @@ class GeneralReports extends Component
             return $item;
         });
 
-    $combined = $withdrawals->merge($salaries)
-    ->sortBy(function ($item) {
-        return $item->record_type === 'withdraw' 
-            ? strtotime($item->created_at) 
-            : strtotime($item->paid_date);  
-    });
+        // Combine & sort
+        $combined = $withdrawals->merge($salaries)
+            ->sortByDesc(fn($item) => $item->record_type === 'withdraw' ? $item->created_at : $item->paid_date);
+
 
         // Pagination
         $page = LengthAwarePaginator::resolveCurrentPage();
@@ -437,10 +435,16 @@ class GeneralReports extends Component
                 return $item;
             });
 
-        return $withdrawals->merge($salaries)
-            ->sortByDesc(function ($item) {
-                return $item->record_type === 'برداشت' ? $item->created_at : $item->paid_date;
-            });
+       return $withdrawals->merge($salaries)
+    ->sortByDesc(function ($item) {
+       
+        if ($item->record_type === 'withdraw') {
+            return strtotime($item->created_at);
+        } else { 
+            return strtotime($item->paid_date);
+        }
+    });
+
     }
 
     private function buildAccountingQuery()
