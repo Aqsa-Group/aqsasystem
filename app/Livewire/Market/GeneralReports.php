@@ -371,10 +371,12 @@ class GeneralReports extends Component
             return $item;
         });
 
-        // Combine & sort
-      $combined = $withdrawals->merge($salaries)
-    ->sortByDesc(fn($item) => $item->record_type === 'withdraw' ? $item->created_at : $item->paid_date);
-
+    $combined = $withdrawals->merge($salaries)
+    ->sortBy(function ($item) {
+        return $item->record_type === 'withdraw' 
+            ? strtotime($item->created_at) 
+            : strtotime($item->paid_date);  
+    });
 
         // Pagination
         $page = LengthAwarePaginator::resolveCurrentPage();
@@ -664,43 +666,43 @@ class GeneralReports extends Component
             ->pluck('fullname', 'id');
     }
 
- public function getSummaryProperty()
-{
-    $data = $this->getReportData(true);
+    public function getSummaryProperty()
+    {
+        $data = $this->getReportData(true);
 
-    $currencyTotals = $this->calculateCurrencyTotals($data);
+        $currencyTotals = $this->calculateCurrencyTotals($data);
 
-    $totalAmount = $data->sum(function ($item) {
-        if ($item->record_type === 'withdraw') {
-            return $item->amount ?? 0;
-        }
+        $totalAmount = $data->sum(function ($item) {
+            if ($item->record_type === 'withdraw') {
+                return $item->amount ?? 0;
+            }
 
-        if ($item->record_type === 'salary') {
-            return $item->paid ?? 0;
-        }
+            if ($item->record_type === 'salary') {
+                return $item->paid ?? 0;
+            }
 
-        return 0;
-    });
+            return 0;
+        });
 
-    return [
-        'total_count' => $data->count(),
-        'total_amount' => $totalAmount,
-        'currency_totals' => $currencyTotals,
-        'report_type' => $this->getReportTypeLabel(),
-        'current_date' => Jalalian::now()->format('Y/m/d'),
+        return [
+            'total_count' => $data->count(),
+            'total_amount' => $totalAmount,
+            'currency_totals' => $currencyTotals,
+            'report_type' => $this->getReportTypeLabel(),
+            'current_date' => Jalalian::now()->format('Y/m/d'),
 
-        // جمع‌های دیگر برای انواع گزارش
-        'accounting' => $data->sum('price'),
-        'outside' => $data->sum('paid'),
-        'salary' => $data->sum('salary'),
-        'deposit' => $data->sum('price'),
-        'loan' => $data->sum('amount'),
-        'payment' => $data->sum('amount'),
-        'buy' => $data->sum('price'),
-        'sell' => $data->sum('price'),
-        'withdraw_log' => $data->sum('amount'),
-    ];
-}
+            // جمع‌های دیگر برای انواع گزارش
+            'accounting' => $data->sum('price'),
+            'outside' => $data->sum('paid'),
+            'salary' => $data->sum('salary'),
+            'deposit' => $data->sum('price'),
+            'loan' => $data->sum('amount'),
+            'payment' => $data->sum('amount'),
+            'buy' => $data->sum('price'),
+            'sell' => $data->sum('price'),
+            'withdraw_log' => $data->sum('amount'),
+        ];
+    }
 
     private function calculateCurrencyTotals($data)
     {
