@@ -203,8 +203,8 @@
                     <div class="flex-1 flex gap-2 mt-2">
                      
                           <div class="lg:w-[440px]">
-                            <label class="block text-[16px] font-medium text-black mb-1 vazir"> نام کارت گیرنده</label>
-                            <input type="text" id="datePicker" wire:model="giver_name" wire:ignore placeholder="مجید مرتضی"
+                            <label class="block text-[16px] font-medium text-black mb-1 vazir">شماره کارت مقصد</label>
+                            <input type="text" id="datePicker" wire:model="giver_name" value="xxxx -xxxx-xxxx-1742" wire:ignore placeholder="ٓٓٓxxxx -xxxx-xxxx-1742"
                                 class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
                         </div>
                         <!-- Destination Account -->

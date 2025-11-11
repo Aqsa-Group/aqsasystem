@@ -77,59 +77,87 @@ class GeneralReportPdfExport
     }
 
     protected function getSafeSummaryRows()
-{
-    $data = DB::connection('market')->table('accountings')
-        ->select('expanses_type', 'currency', DB::raw('SUM(paid) as total_paid'))
-        ->groupBy('expanses_type', 'currency')
-        ->get();
+    {
+        $user = \Illuminate\Support\Facades\Auth::user();
 
-    $grouped = $data->groupBy('expanses_type');
+        if (!$user) {
+            return [];
+        }
 
-    $rows = [];
-    foreach ($grouped as $type => $group) {
-        $rows[] = [
-            'type' => $type,
-            'af' => $group->firstWhere('currency', 'AFN')->total_paid ?? 0,
-            'us' => $group->firstWhere('currency', 'USD')->total_paid ?? 0,
-            'er' => $group->firstWhere('currency', 'EUR')->total_paid ?? 0,
-            'ir' => $group->firstWhere('currency', 'IRR')->total_paid ?? 0,
-        ];
+        $query = \Illuminate\Support\Facades\DB::connection('market')
+            ->table('accountings')
+            ->select('expanses_type', 'currency', \Illuminate\Support\Facades\DB::raw('SUM(paid) as total_paid'));
+
+        // 🔹 نقش superadmin همه را می‌بیند
+        if ($user->role !== 'superadmin') {
+            $adminId = $user->role === 'admin' ? $user->id : $user->admin_id;
+            $query->where('admin_id', $adminId);
+        }
+
+        // 🔹 فیلتر زمانی (در صورت وجود)
+        if (!empty($this->filters['from_date'])) {
+            $query->whereDate('created_at', '>=', $this->filters['from_date']);
+        }
+        if (!empty($this->filters['to_date'])) {
+            $query->whereDate('created_at', '<=', $this->filters['to_date']);
+        }
+
+        // 🔹 فیلتر نوع صندوق (در صورت وجود)
+        if (!empty($this->filters['expanses_type'])) {
+            $query->where('expanses_type', $this->filters['expanses_type']);
+        }
+
+        $data = $query->groupBy('expanses_type', 'currency')->get();
+
+        // 🔹 گروه‌بندی داده‌ها
+        $grouped = $data->groupBy('expanses_type');
+
+        $rows = [];
+        foreach ($grouped as $type => $group) {
+            $rows[] = [
+                'type' => $type,
+                'af' => $group->firstWhere('currency', 'AFN')?->total_paid ?? 0,
+                'us' => $group->firstWhere('currency', 'USD')?->total_paid ?? 0,
+                'er' => $group->firstWhere('currency', 'EUR')?->total_paid ?? 0,
+                'ir' => $group->firstWhere('currency', 'IRR')?->total_paid ?? 0,
+            ];
+        }
+
+        return $rows;
     }
 
-    return $rows;
-}
+    protected function generateHtml()
+    {
+        // عنوان گزارش بر اساس نوع گزارش
+        $reportTypes = [
+            'withdraw_salary' => 'گزارش برداشت‌ها و معاش کارمندان',
+            'accounting' => 'گزارش حسابداری',
+            'outside' => 'گزارش عواید بیرونی',
+            'deposit' => 'گزارش تسویه نشده‌ها',
+            'salary' => 'گزارش معاش کارمندان',
+            'loan' => 'گزارش بردگی‌ها',
+            'payment' => 'گزارش رسیدها',
+            'buy' => 'گزارش خریدها',
+            'sell' => 'گزارش فروش‌ها',
+            'withdraw_log' => 'گزارش برداشت‌ها',
+        ];
 
-  protected function generateHtml()
-{
-    // عنوان گزارش بر اساس نوع گزارش
-    $reportTypes = [
-        'withdraw_salary' => 'گزارش برداشت‌ها و معاش کارمندان',
-        'accounting' => 'گزارش حسابداری',
-        'outside' => 'گزارش عواید بیرونی',
-        'deposit' => 'گزارش تسویه نشده‌ها',
-        'salary' => 'گزارش معاش کارمندان',
-        'loan' => 'گزارش بردگی‌ها',
-        'payment' => 'گزارش رسیدها',
-        'buy' => 'گزارش خریدها',
-        'sell' => 'گزارش فروش‌ها',
-        'withdraw_log' => 'گزارش برداشت‌ها',
-    ];
+        $reportTitle = $reportTypes[$this->reportType] ?? 'گزارش نامشخص';
 
-    $reportTitle = $reportTypes[$this->reportType] ?? 'گزارش نامشخص';
+        // گرفتن موجودی صندوق با فیلترها
+        $safeRows = $this->getSafeSummaryRows();
 
-    // گرفتن موجودی صندوق
-    $safeRows = $this->getSafeSummaryRows();
+        // بازگشت HTML رندر شده
+        return view('exports.general-report-pdf', [
+            'data' => $this->data,
+            'reportType' => $this->reportType,
+            'reportTitle' => $reportTitle,
+            'filters' => $this->filters,
+            'summary' => $this->calculateSummary(),
+            'safeRows' => $safeRows,
+        ])->render();
+    }
 
-    // بازگشت HTML رندر شده با Blade
-    return view('exports.general-report-pdf', [
-        'data' => $this->data,
-        'reportType' => $this->reportType,
-        'reportTitle' => $reportTitle,
-        'filters' => $this->filters,
-        'summary' => $this->calculateSummary(),
-        'safeRows' => $safeRows,
-    ])->render();
-}
 
     protected function calculateSummary()
     {

@@ -31,6 +31,28 @@ class Customer extends Authenticatable
         'password',
     ];
 
+
+
+        // Relationship with sent remittances
+    public function sentRemittances()
+    {
+        return $this->hasMany(Remittances::class, 'customer_id');
+    }
+
+    // Relationship with received remittances
+    public function receivedRemittances()
+    {
+        return $this->hasMany(Remittances::class, 'to_account');
+    }
+
+    // Get all remittances (both sent and received)
+    public function allRemittances()
+    {
+        return Remittances::where('customer_id', $this->id)
+            ->orWhere('to_account', $this->id)
+            ->get();
+    }
+
     
     public function creator(): BelongsTo
     {
