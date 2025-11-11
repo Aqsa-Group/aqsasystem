@@ -435,15 +435,15 @@ class GeneralReports extends Component
                 return $item;
             });
 
-       return $withdrawals->merge($salaries)
-    ->sortByDesc(function ($item) {
-       
+   return $withdrawals->merge($salaries)
+    ->sortBy(function ($item) {
         if ($item->record_type === 'withdraw') {
             return strtotime($item->created_at);
         } else { 
             return strtotime($item->paid_date);
         }
     });
+
 
     }
 
