@@ -47,7 +47,11 @@ class BuyResource extends Resource
 
                 Forms\Components\Select::make('market_id')
                 ->label('مارکت')
-                ->options(Market::where('admin_id', $adminId)->pluck('name', 'id'))
+                   ->options(function () use ($user) {
+                    return Market::when($user->role === 'admin', fn($q) => $q->where('admin_id', $user->id))
+                        ->when($user->role !== 'superadmin' && $user->role !== 'admin', fn($q) => $q->where('admin_id', $user->admin_id))
+                        ->pluck('name', 'id');
+                })
                 ->required()
                 ->reactive(),
 

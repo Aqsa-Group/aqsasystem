@@ -17,9 +17,13 @@ class Sell extends Model
      'advertisment_id',
      'admin_id',
      'booth_id',
+     'shop_id',
      'property',
      'price',
      'currency',
+     'payment_type',
+     'amount',
+     'remining',
      'date',
      'details',
    ];
@@ -36,6 +40,10 @@ class Sell extends Model
  
    public function booth(){
     return $this->belongsTo(Booth::class);
+   }
+
+    public function shop(){
+    return $this->belongsTo(Shop::class);
    }
 
 

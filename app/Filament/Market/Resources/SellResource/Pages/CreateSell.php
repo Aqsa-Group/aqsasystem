@@ -16,7 +16,6 @@ class CreateSell extends CreateRecord
     {
         $user = Auth::user();
 
-    
         if ($user->role === 'superadmin' || $user->role === 'admin') {
             $data['admin_id'] = $user->id;
         } else {
@@ -26,30 +25,39 @@ class CreateSell extends CreateRecord
         return $data;
     }
 
-    protected function afterCreate(): void
-    {
-        $sell = $this->record;
+ protected function afterCreate(): void
+{
+    $sell = $this->record;
 
-        if ($sell->shop_id && $sell->customer_id) {
-            Shop::where('id', $sell->shop_id)->update([
-                'is_sell'     => true,
-                'customer_id' => $sell->customer_id,
-            ]);
-        }
-
-        if ($sell->price > 0) {
-            DB::connection('market')->table('accountings')->insert([
-                'expanses_type' => 'عواید فروش ملک',
-                'currency'      => $sell->currency,
-                'paid'          => $sell->price,
-                'type'          => 'Sell',
-                'market_id'     => $sell->market_id,
-                'admin_id'      => $sell->admin_id,
-                'created_at'    => now(),
-                'updated_at'    => now(),
-            ]);
-        }
+    if ($sell->shop_id && $sell->customer_id) {
+        Shop::where('id', $sell->shop_id)->update([
+            'is_sell'     => true,
+            'customer_id' => $sell->customer_id,
+        ]);
     }
+
+    $paidAmount = 0;
+
+    if ($sell->payment_type === 'پراخت کامل') {
+        $paidAmount = $sell->price; 
+    } elseif ($sell->payment_type === 'قسطی') {
+        $paidAmount = $sell->amount ?? 0; 
+    }
+
+    if ($paidAmount > 0) {
+        DB::connection('market')->table('accountings')->insert([
+            'expanses_type' => 'عواید فروش ملک',
+            'currency'      => $sell->currency,
+            'paid'          => $paidAmount,
+            'type'          => 'Sell',
+            'market_id'     => $sell->market_id,
+            'admin_id'      => $sell->admin_id,
+            'created_at'    => now(),
+            'updated_at'    => now(),
+        ]);
+    }
+}
+
 
     protected function getRedirectUrl(): string
     {

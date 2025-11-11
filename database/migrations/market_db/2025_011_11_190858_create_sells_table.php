@@ -16,10 +16,14 @@ return new class extends Migration
             $table->foreignId('market_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('customer_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('booth_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('shop_id')->nullable()->constrained()->onDelete('set null');
+            $table->string('payment_type');
+            $table->integer('amount');
             $table->foreignId('advertisment_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('admin_id')->nullable()->constrained('users')->onDelete('set null');
             $table->string('property');
             $table->integer('price');
+            $table->integer('remining');
             $table->string('currency');
             $table->string('details');
             $table->string('date');
