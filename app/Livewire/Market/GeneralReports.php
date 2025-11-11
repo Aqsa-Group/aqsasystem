@@ -328,11 +328,11 @@ private function applyAccessControl($query, $user)
     return $query;
 }   
 
- private function buildWithdrawSalaryQuery()
+private function buildWithdrawSalaryQuery()
 {
     $user = Auth::user();
 
-    // Get withdrawals data
+    // Withdrawals
     $withdrawalsQuery = WithdrawLog::with(['customer', 'staff'])
         ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
         ->when($this->expansesType, fn($q) => $q->where('expanses_type', $this->expansesType))
@@ -340,54 +340,48 @@ private function applyAccessControl($query, $user)
         ->when($this->endDate, fn($q) => $q->whereDate('created_at', '<=', $this->endDate))
         ->when($this->amountMin, fn($q) => $q->where('amount', '>=', $this->amountMin))
         ->when($this->amountMax, fn($q) => $q->where('amount', '<=', $this->amountMax))
-        ->when($this->search, function($q) {
+        ->when($this->search, function ($q) {
             $q->where('recipient_name', 'like', "%{$this->search}%")
               ->orWhere('description', 'like', "%{$this->search}%");
         });
 
-    // Apply access control for withdrawals
     $withdrawalsQuery = $this->applyAccessControl($withdrawalsQuery, $user);
 
-    $withdrawals = $withdrawalsQuery->get()
-        ->map(function($item) {
-            $item->record_type = 'withdraw';
-            return $item;
-        });
+    $withdrawals = $withdrawalsQuery->get()->map(function ($item) {
+        $item->record_type = 'withdraw';
+        return $item;
+    });
 
-    // Get salaries data
+    // Salaries (🔧 اصلاح salary → paid)
     $salariesQuery = Salary::with(['market', 'staff', 'loan'])
         ->when($this->marketId, fn($q) => $q->where('market_id', $this->marketId))
         ->when($this->staffId, fn($q) => $q->where('staff_id', $this->staffId))
         ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
         ->when($this->startDate, fn($q) => $q->whereDate('paid_date', '>=', $this->startDate))
         ->when($this->endDate, fn($q) => $q->whereDate('paid_date', '<=', $this->endDate))
-        ->when($this->amountMin, fn($q) => $q->where('paid', '>=', $this->amountMin))
-        ->when($this->amountMax, fn($q) => $q->where('paid', '<=', $this->amountMax))
-        ->when($this->search, function($q) {
+        ->when($this->amountMin, fn($q) => $q->where('paid', '>=', $this->amountMin))   // ✅
+        ->when($this->amountMax, fn($q) => $q->where('paid', '<=', $this->amountMax))   // ✅
+        ->when($this->search, function ($q) {
             $q->whereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
               ->orWhereHas('market', fn($q2) => $q2->where('name', 'like', "%{$this->search}%"));
         });
 
-    // Apply access control for salaries
     $salariesQuery = $this->applyAccessControl($salariesQuery, $user);
 
-    $salaries = $salariesQuery->get()
-        ->map(function($item) {
-            $item->record_type = 'salary';
-            return $item;
-        });
+    $salaries = $salariesQuery->get()->map(function ($item) {
+        $item->record_type = 'salary';
+        return $item;
+    });
 
-    // Combine and sort by creation date
+    // Combine & sort
     $combined = $withdrawals->merge($salaries)
-        ->sortByDesc(function($item) {
-            return $item->record_type === 'withdraw' ? $item->created_at : $item->paid_date;
-        });
+        ->sortByDesc(fn($item) => $item->record_type === 'withdraw' ? $item->created_at : $item->paid_date);
 
-    // For pagination
+    // Pagination
     $page = LengthAwarePaginator::resolveCurrentPage();
     $perPage = 20;
     $results = $combined->slice(($page - 1) * $perPage, $perPage)->values();
-    
+
     return new LengthAwarePaginator(
         $results,
         $combined->count(),
@@ -396,6 +390,7 @@ private function applyAccessControl($query, $user)
         ['path' => LengthAwarePaginator::resolveCurrentPath()]
     );
 }
+
  private function getCombinedDataForExport()
 {
     $user = Auth::user();
