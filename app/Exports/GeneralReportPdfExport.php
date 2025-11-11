@@ -173,15 +173,14 @@ protected function generateHtml()
     'withdraw_salary' => $this->data->sum(function ($item) {
         $amount = (float) ($item->amount ?? 0);
         $paid   = (float) ($item->paid ?? 0);
-        $salary = (float) ($item->salary ?? 0);
 
         // اگر نوع رکورد "برداشت" است، فقط amount را حساب نکن، بلکه همه را جمع کن
         if (isset($item->record_type) && $item->record_type === 'برداشت') {
-            return $amount + $paid + $salary;
+            return $amount + $paid ;
         }
 
         // در سایر موارد هم همین‌طور همه مقادیر غیر تهی را جمع کن
-        return $amount + $paid + $salary;
+        return $amount + $paid;
     }),
 
             'accounting' => $this->data->sum('price'),

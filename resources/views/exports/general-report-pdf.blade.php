@@ -345,7 +345,7 @@
                         {{ number_format(
                         ($report->record_type == 'withdraw' || $report->record_type == 'withdraw_salary')
                         ? ($report->amount ?? 0)
-                        : ($report->salary ?? $report->paid ?? 0)
+                        : ($report-> $report->paid ?? 0)
                         ) }}
                     </span>
                 </td>
