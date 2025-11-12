@@ -31,15 +31,6 @@ use Illuminate\Support\Facades\Session;
 
 // Sarafi
 
-
-
-
-
-
-
-
-
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -246,6 +237,16 @@ Route::get('/sarafi/remittance', function () {
     }
     return view('Sarafi.components.remittance');
 })->name('sarafi.remittance');
+
+Route::get('/sarafi/remittance-approval', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.remittance-approval');
+})->name('sarafi.remittance-approval');
+
+
+
 
 
 

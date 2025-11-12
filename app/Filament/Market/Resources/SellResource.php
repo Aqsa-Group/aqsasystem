@@ -41,253 +41,291 @@ class SellResource extends Resource
         return $form->schema([
 
 
+            Forms\Components\Section::make('اطلاعات فروش ملک')
+                ->description('خانه پوری بخش های فوق الزامی میباشد.')
+                ->schema([
+                    Forms\Components\Select::make('property')
+                        ->label('ملک فروشی')
+                        ->placeholder('انتخاب نوع ملک')
+                        ->options([
+                            'دوکان' => 'دوکان',
+                            'غرفه' => 'غرفه',
+                            'زمین' => 'زمین',
+                            'خانه' => 'خانه',
+                        ])
+                        ->reactive()
+                        ->required(),
+
+                    Forms\Components\Select::make('market_id')
+                        ->label('نام مارکت')
+                        ->placeholder('انتخاب نام مارکت')
+                        ->options(function () {
+                            $user = Auth::user();
+                            return $user->role === 'superadmin'
+                                ? Market::pluck('name', 'id')
+                                : Market::where('admin_id', $user->role === 'admin' ? $user->id : $user->admin_id)
+                                ->pluck('name', 'id');
+                        })
+                        ->reactive()
+                        ->visible(fn($get) => in_array($get('property'), ['دوکان', 'غرفه',]))
+                        ->required(),
 
 
-            Forms\Components\Select::make('property')
-                ->label('ملک فروشی')
-                ->placeholder('انتخاب نوع ملک')
-                ->options([
-                    'دوکان' => 'دوکان',
-                    'غرفه' => 'غرفه',
-                    'زمین' => 'زمین',
-                    'خانه' => 'خانه',
+                    Forms\Components\Select::make('booth_id')
+                        ->label('شماره غرفه')
+                        ->placeholder('انتخاب نمبر غرفه')
+                        ->options(fn($get) => $get('market_id') ? Booth::where('market_id', $get('market_id'))->pluck('number', 'id') : [])
+                        ->reactive()
+                        ->visible(fn($get) => $get('property') === 'غرفه'),
+
+
+                    Forms\Components\Select::make('shop_id')
+                        ->label('شماره دوکان')
+                        ->placeholder('انتخاب نمبر دوکان')
+                        ->options(fn($get) => $get('market_id') ? Shop::where('market_id', $get('market_id'))->pluck('number', 'id') : [])
+                        ->reactive()
+                        ->visible(fn($get) => $get('property') === 'دوکان'),
+
+                    Forms\Components\Select::make('customer_id')
+                        ->label('خریدار')
+                        ->placeholder('انتخاب نام خریدار')
+                        ->options(fn($get) => $get('market_id') ? Customer::where('market_id', $get('market_id'))->pluck('fullname', 'id') : [])
+                        ->reactive()
+                        ->required(),
+
+                    Forms\Components\Select::make('advertisment_id')
+                        ->label('انتخاب ملک ثبت شده')
+                        ->placeholder('انتخاب ملک از قبل ثبت شده')
+                        ->options(fn($get) => $get('market_id') ? Advertisment::where('market_id', $get('market_id'))->pluck('property', 'id') : [])
+                        ->reactive()
+                        ->visible(fn($get) => in_array($get('property'), ['خانه', 'زمین'])),
+
+                    Forms\Components\Hidden::make('admin_id')->default(null),
+
+                    Forms\Components\Select::make('currency')
+                        ->label('ارز')
+                        ->placeholder('انتخاب نوع ارز')
+                        ->options([
+                            'AFN' => 'افغانی',
+                            'USD' => 'دالر',
+                            'EUR' => 'یورو',
+                            'IRR' => 'تومان',
+                        ])
+                        ->reactive()
+                        ->required(),
+
+
+                    Forms\Components\TextInput::make('price')
+                        ->label('قیمت فروش')
+                        ->placeholder('مبلغ فروش')
+                        ->numeric()
+                        ->required()
+                        ->reactive()
+                        ->prefix(fn($get) => match ($get('currency')) {
+                            'AFN' => '؋',
+                            'USD' => '$',
+                            'EUR' => '€',
+                            'IRR' => '﷼',
+                            default => '',
+                        })
+                        ->afterStateUpdated(
+                            fn($state, callable $set, callable $get) =>
+                            $set('remining', max(($get('price') ?? 0) - ($get('amount') ?? 0), 0))
+                        ),
+
+                    Forms\Components\Select::make('payment_type')
+                        ->label('نوع پرداخت')
+                        ->options([
+                            'پراخت کامل' => 'پراخت کامل',
+                            'قسطی' => 'قسطی',
+                        ])
+                        ->reactive()
+                        ->required(),
+
+                    Forms\Components\TextInput::make('amount')
+                        ->label('مبلغ پرداخت شده')
+                        ->placeholder('مبلغ پرداخت شده')
+                        ->numeric()
+                        ->lazy()
+                        ->required()
+                        ->visible(fn($get) => $get('payment_type') === 'قسطی')
+                        ->prefix(fn($get) => match ($get('currency')) {
+                            'AFN' => '؋',
+                            'USD' => '$',
+                            'EUR' => '€',
+                            'IRR' => '﷼',
+                            default => '',
+                        })
+                        ->afterStateUpdated(
+                            fn($state, callable $set, callable $get) =>
+                            $set('remining', max(($get('price') ?? 0) - ($get('amount') ?? 0), 0))
+                        ),
+
+                    Forms\Components\TextInput::make('remining')
+                        ->label('مبلغ باقیمانده')
+                        ->placeholder('مبلغ باقیمانده')
+                        ->numeric()
+                        ->disabled()
+                        ->dehydrated(true)
+                        ->visible(fn($get) => $get('payment_type') === 'قسطی')
+                        ->prefix(fn($get) => match ($get('currency')) {
+                            'AFN' => '؋',
+                            'USD' => '$',
+                            'EUR' => '€',
+                            'IRR' => '﷼',
+                            default => '',
+                        })
+                        ->reactive(),
+                ])->columns(2),
+
+
+
+            Forms\Components\Section::make('سایر جزئیات (اختیاری) ')
+                ->description('خانه پوری بخش های فوق برای خانه و زمین پیشنهاد میشود.')
+                ->icon('heroicon-m-building-office-2')
+                ->schema([
+                    Forms\Components\TextInput::make('city')
+                        ->label('شهر'),
+                    Forms\Components\TextInput::make('district')
+                        ->label('ولسوالی'),
+                    Forms\Components\TextInput::make('village')
+                        ->label('قریه'),
+                    Forms\Components\TextInput::make('area')
+                        ->label('ناحیه'),
+                    Forms\Components\TextInput::make('passage')
+                        ->label('گذر'),
+                    Forms\Components\TextInput::make('north')
+                        ->label('شمال'),
+                    Forms\Components\TextInput::make('east')
+                        ->label('شرق'),
+                    Forms\Components\TextInput::make('south')
+                        ->label('جنوب'),
+                    Forms\Components\TextInput::make('west')
+                        ->label('غرب'),
                 ])
-                ->reactive()
-                ->required(),
-
-            Forms\Components\Select::make('market_id')
-                ->label('نام مارکت')
-                ->placeholder('انتخاب نام مارکت')
-                ->options(function () {
-                    $user = Auth::user();
-                    return $user->role === 'superadmin'
-                        ? Market::pluck('name', 'id')
-                        : Market::where('admin_id', $user->role === 'admin' ? $user->id : $user->admin_id)
-                        ->pluck('name', 'id');
-                })
-                ->reactive()
-                ->visible(fn($get) => in_array($get('property'), ['دوکان', 'غرفه',]))
-                ->required(),
+                ->columns(3),
 
 
-            Forms\Components\Select::make('booth_id')
-                ->label('شماره غرفه')
-                ->placeholder('انتخاب نمبر غرفه')
-                ->options(fn($get) => $get('market_id') ? Booth::where('market_id', $get('market_id'))->pluck('number', 'id') : [])
-                ->reactive()
-                ->visible(fn($get) => $get('property') === 'غرفه'),
+            Forms\Components\Section::make('توضیحات و تاریخ')
+                ->description('خانه پوری بخش های فوق لازمی و حتمی میباشد.')
+                ->icon('heroicon-m-building-office-2')
+                ->schema([
+
+                    Forms\Components\Textarea::make('details')
+                        ->label('توضیحات')
+                        ->rows(3)
+                        ->placeholder('توضیحات اختیاری')
+                        ->nullable(),
 
 
-            Forms\Components\Select::make('shop_id')
-                ->label('شماره دوکان')
-                ->placeholder('انتخاب نمبر دوکان')
-                ->options(fn($get) => $get('market_id') ? Shop::where('market_id', $get('market_id'))->pluck('number', 'id') : [])
-                ->reactive()
-                ->visible(fn($get) => $get('property') === 'دوکان'),
+                    Forms\Components\DatePicker::make('date')
+                        ->label('تاریخ ')
+                        ->jalali()
+                        ->required(),
 
-            Forms\Components\Select::make('customer_id')
-                ->label('خریدار')
-                ->placeholder('انتخاب نام خریدار')
-                ->options(fn($get) => $get('market_id') ? Customer::where('market_id', $get('market_id'))->pluck('fullname', 'id') : [])
-                ->reactive()
-                ->required(),
-
-            Forms\Components\Select::make('advertisment_id')
-                ->label('انتخاب ملک ثبت شده')
-                ->placeholder('انتخاب ملک از قبل ثبت شده')
-                ->options(fn($get) => $get('market_id') ? Advertisment::where('market_id', $get('market_id'))->pluck('property', 'id') : [])
-                ->reactive()
-                ->visible(fn($get) => in_array($get('property'), ['خانه', 'زمین'])),
-
-            Forms\Components\Hidden::make('admin_id')->default(null),
-
-            Forms\Components\Select::make('currency')
-                ->label('ارز')
-                ->placeholder('انتخاب نوع ارز')
-                ->options([
-                    'AFN' => 'افغانی',
-                    'USD' => 'دالر',
-                    'EUR' => 'یورو',
-                    'IRR' => 'تومان',
                 ])
-                ->reactive()
-                ->required(),
+                ->columns(2),
 
 
-            Forms\Components\TextInput::make('price')
-                ->label('قیمت فروش')
-                ->placeholder('مبلغ فروش')
-                ->numeric()
-                ->required()
-                ->reactive()
-                ->prefix(fn($get) => match ($get('currency')) {
-                    'AFN' => '؋',
-                    'USD' => '$',
-                    'EUR' => '€',
-                    'IRR' => '﷼',
-                    default => '',
-                })
-                ->afterStateUpdated(
-                    fn($state, callable $set, callable $get) =>
-                    $set('remining', max(($get('price') ?? 0) - ($get('amount') ?? 0), 0))
-                ),
-
-            Forms\Components\Select::make('payment_type')
-                ->label('نوع پرداخت')
-                ->options([
-                    'پراخت کامل' => 'پراخت کامل',
-                    'قسطی' => 'قسطی',
-                ])
-                ->reactive()
-                ->required(),
-
-            Forms\Components\TextInput::make('amount')
-                ->label('مبلغ پرداخت شده')
-                ->placeholder('مبلغ پرداخت شده')
-                ->numeric()
-                ->lazy()
-                ->required()
-                ->visible(fn($get) => $get('payment_type') === 'قسطی')
-                ->prefix(fn($get) => match ($get('currency')) {
-                    'AFN' => '؋',
-                    'USD' => '$',
-                    'EUR' => '€',
-                    'IRR' => '﷼',
-                    default => '',
-                })
-                ->afterStateUpdated(
-                    fn($state, callable $set, callable $get) =>
-                    $set('remining', max(($get('price') ?? 0) - ($get('amount') ?? 0), 0))
-                ),
-
-            Forms\Components\TextInput::make('remining')
-                ->label('مبلغ باقیمانده')
-                ->placeholder('مبلغ باقیمانده')
-                ->numeric()
-                ->disabled()
-                ->dehydrated(true)
-                ->visible(fn($get) => $get('payment_type') === 'قسطی')
-                ->prefix(fn($get) => match ($get('currency')) {
-                    'AFN' => '؋',
-                    'USD' => '$',
-                    'EUR' => '€',
-                    'IRR' => '﷼',
-                    default => '',
-                })
-                ->reactive(),
-
-
-
-
-            Forms\Components\DatePicker::make('date')
-                ->label('تاریخ ')
-                ->jalali()
-                ->required(),
-
-            Forms\Components\Textarea::make('details')
-                ->label('توضیحات')
-                ->rows(3)
-                ->placeholder('توضیحات اختیاری')
-                ->nullable(),
         ]);
-    }
+    } 
 
-  public static function table(Table $table): Table
-{
-    return $table->columns([
-        Tables\Columns\TextColumn::make('property')->label('نوع ملک')->searchable(),
-        Tables\Columns\TextColumn::make('market.name')->label('مارکت'),
-        Tables\Columns\TextColumn::make('booth.number')->label('شماره غرفه')->searchable(),
-        Tables\Columns\TextColumn::make('shop.number')->label('شماره دوکان')->searchable(),
-        Tables\Columns\TextColumn::make('customer.fullname')->label('خریدار')->searchable(),
-        Tables\Columns\TextColumn::make('advertisment.property')->label('ملک ثبت شده'),
-        Tables\Columns\TextColumn::make('price')
-            ->label('قیمت')
-            ->formatStateUsing(function ($state, $record) {
-                $prefix = match ($record->currency) {
-                    'AFN' => '؋',
-                    'USD' => '$',
-                    'EUR' => '€',
-                    'IRR' => '﷼',
-                    default => '',
-                };
-                return $prefix . number_format($state);
-            })
-            ->sortable(),
-
-        Tables\Columns\TextColumn::make('remining')
-            ->label('مبلغ باقیمانده')
-            ->formatStateUsing(function ($state, $record) {
-                $prefix = match ($record->currency) {
-                    'AFN' => '؋',
-                    'USD' => '$',
-                    'EUR' => '€',
-                    'IRR' => '﷼',
-                    default => '',
-                };
-                return $prefix . number_format($state ?? 0);
-            })
-            ->sortable(),
-
-        Tables\Columns\TextColumn::make('currency')->label('ارز'),
-        Tables\Columns\TextColumn::make('created_at')->label('تاریخ ایجاد')->dateTime()->sortable(),
-    ])
-    ->filters([])
-    ->actions([
-        Tables\Actions\ViewAction::make(),
-        Tables\Actions\EditAction::make(),
-        Tables\Actions\Action::make('receipt')
-             ->button()
-            ->label('ثبت رسید')
-            ->icon('heroicon-o-receipt-refund')
-            ->color('success')
-             ->modalWidth('lg') 
-            ->visible(fn($record) => $record->remining > 0)
-            ->form([
-                Forms\Components\TextInput::make('amount')
-                    ->label('مبلغ رسید شده')
-                    ->numeric()
-                    ->required()
-                    ->prefix(fn($record) => match ($record->currency) {
+    public static function table(Table $table): Table
+    {
+        return $table->columns([
+            Tables\Columns\TextColumn::make('property')->label('نوع ملک')->searchable(),
+            Tables\Columns\TextColumn::make('market.name')->label('مارکت'),
+            Tables\Columns\TextColumn::make('booth.number')->label('شماره غرفه')->searchable(),
+            Tables\Columns\TextColumn::make('shop.number')->label('شماره دوکان')->searchable(),
+            Tables\Columns\TextColumn::make('customer.fullname')->label('خریدار')->searchable(),
+            Tables\Columns\TextColumn::make('advertisment.property')->label('ملک ثبت شده'),
+            Tables\Columns\TextColumn::make('price')
+                ->label('قیمت')
+                ->formatStateUsing(function ($state, $record) {
+                    $prefix = match ($record->currency) {
                         'AFN' => '؋',
                         'USD' => '$',
                         'EUR' => '€',
                         'IRR' => '﷼',
                         default => '',
+                    };
+                    return $prefix . number_format($state);
+                })
+                ->sortable(),
+
+            Tables\Columns\TextColumn::make('remining')
+                ->label('مبلغ باقیمانده')
+                ->formatStateUsing(function ($state, $record) {
+                    $prefix = match ($record->currency) {
+                        'AFN' => '؋',
+                        'USD' => '$',
+                        'EUR' => '€',
+                        'IRR' => '﷼',
+                        default => '',
+                    };
+                    return $prefix . number_format($state ?? 0);
+                })
+                ->sortable(),
+
+            Tables\Columns\TextColumn::make('currency')->label('ارز'),
+            Tables\Columns\TextColumn::make('created_at')->label('تاریخ ایجاد')->dateTime()->sortable(),
+        ])
+            ->filters([])
+            ->actions([
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('receipt')
+                    ->button()
+                    ->label('ثبت رسید')
+                    ->icon('heroicon-o-receipt-refund')
+                    ->color('success')
+                    ->modalWidth('lg')
+                    ->visible(fn($record) => $record->remining > 0)
+                    ->form([
+                        Forms\Components\TextInput::make('amount')
+                            ->label('مبلغ رسید شده')
+                            ->numeric()
+                            ->required()
+                            ->prefix(fn($record) => match ($record->currency) {
+                                'AFN' => '؋',
+                                'USD' => '$',
+                                'EUR' => '€',
+                                'IRR' => '﷼',
+                                default => '',
+                            }),
+
+                    ])
+                    ->action(function (array $data, $record): void {
+                        $amount = (float) $data['amount'];
+
+                        DB::connection('market')->table('accountings')->insert([
+                            'expanses_type' => 'رسید پرداخت قسط فروش',
+                            'currency'      => $record->currency,
+                            'paid'          => $amount,
+                            'type'          => 'Sell-Receipt',
+                            'market_id'     => $record->market_id,
+                            'admin_id'      => $record->admin_id,
+                            'created_at'    => now(),
+                            'updated_at'    => now(),
+                        ]);
+
+                        $newRemining = max(($record->remining ?? 0) - $amount, 0);
+
+                        $record->update([
+                            'remining' => $newRemining,
+                        ]);
+
+                        \Filament\Notifications\Notification::make()
+                            ->title('رسید با موفقیت ثبت شد')
+                            ->body('مبلغ ' . number_format($amount) . ' از قسط پرداخت شد.')
+                            ->success()
+                            ->send();
                     }),
-             
             ])
-            ->action(function (array $data, $record): void {
-                $amount = (float) $data['amount'];
-
-                DB::connection('market')->table('accountings')->insert([
-                    'expanses_type' => 'رسید پرداخت قسط فروش',
-                    'currency'      => $record->currency,
-                    'paid'          => $amount,
-                    'type'          => 'Sell-Receipt',
-                    'market_id'     => $record->market_id,
-                    'admin_id'      => $record->admin_id,
-                    'created_at'    => now(),
-                    'updated_at'    => now(),
-                ]);
-
-                $newRemining = max(($record->remining ?? 0) - $amount, 0);
-
-                $record->update([
-                    'remining' => $newRemining,
-                ]);
-
-                \Filament\Notifications\Notification::make()
-                    ->title('رسید با موفقیت ثبت شد')
-                    ->body('مبلغ ' . number_format($amount) . ' از قسط پرداخت شد.')
-                    ->success()
-                    ->send();
-            }),
-    ])
-    ->bulkActions([
-        Tables\Actions\DeleteBulkAction::make(),
-    ]);
-}
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make(),
+            ]);
+    }
 
     public static function getRelations(): array
     {

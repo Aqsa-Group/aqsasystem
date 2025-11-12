@@ -18,6 +18,17 @@ return new class extends Migration
             $table->foreignId('booth_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('shop_id')->nullable()->constrained()->onDelete('set null');
             $table->string('payment_type');
+            $table->string('city')->nullable();
+            $table->string('district')->nullable();
+            $table->string('village')->nullable();
+            $table->string('area')->nullable();
+            $table->string('passage')->nullable();
+            $table->string('north')->nullable();
+            $table->string('south')->nullable();
+            $table->string('east')->nullable();
+            $table->string('west')->nullable();
+            $table->string('width')->nullable();
+            $table->string('hight')->nullable();
             $table->integer('amount');
             $table->foreignId('advertisment_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('admin_id')->nullable()->constrained('users')->onDelete('set null');

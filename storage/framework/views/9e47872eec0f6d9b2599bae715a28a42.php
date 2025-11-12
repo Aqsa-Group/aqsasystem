@@ -18,7 +18,7 @@
             <h1 class="text-[24px] font-medium vazir">ثبت احواله ها</h1>
             <h1 class="text-[#8C8C8C]">صفحه ثبت و ویراش احواله های بانکی</h1>
         </div>
-        
+
         <hr class="my-6 border-t border-[#D9D9D9] w-full">
 
         <!-- Main Content - Form and Table -->
@@ -32,7 +32,7 @@
                 <div class="flex flex-row justify-between p-[10px] border border-[#8C8C8C] rounded-[12px] flex-wrap">
                     <p class="flex justify-center items-center text-center">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" alt="" class="h-6 w-6">
-                        <?php echo e($remittanceId ? 'فورم ویرایش حواله' : 'فورم ثبت  اطلاعات  حواله'); ?>
+                        <?php echo e($remittanceId ? 'فورم ویرایش حواله' : 'فورم ثبت اطلاعات حواله'); ?>
 
                     </p>
                 </div>
@@ -44,7 +44,8 @@
                         <!-- Source Account Number -->
                         <div class="flex-1">
                             <div class="relative w-full">
-                                <label class="block text-[16px] font-medium text-black mb-1 vazir">نمبرحساب مشتری</label>
+                                <label class="block text-[16px] font-medium text-black mb-1 vazir">نمبرحساب
+                                    مشتری</label>
                                 <div x-data="{
                                     searchValue: '',
                                     selectedId: <?php if ((object) ('selectedAccount') instanceof \Livewire\WireDirective) : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccount'->value()); ?>')<?php echo e('selectedAccount'->hasModifier('live') ? '.live' : ''); ?><?php else : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccount'); ?>')<?php endif; ?>,
@@ -78,7 +79,7 @@
                                     <datalist id="customersList">
                                         <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                     </datalist>
                                     <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                         <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
@@ -109,7 +110,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </select>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓" class="w-4 h-4">
+                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓"
+                                        class="w-4 h-4">
                                 </div>
                             </div>
                             <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['currency'];
@@ -290,9 +292,17 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         <!-- Source Account Number (Display only) -->
                         <div class="lg:w-[440px]">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">شماره حساب مبدا</label>
-                            <input type="text" wire:model="source_account" placeholder="شماره حساب مبدا"
-                                class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" readonly />
-                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['source_account'];
+                            <div class="relative">
+                                <div
+                                    class="flex items-center bg-white border border-[#8C8C8C] rounded-[12px] h-[60px] px-3">
+                                    <input dir="ltr" type="text" wire:model="source_account_last_four" maxlength="4"
+                                        placeholder="1234"
+                                        class="w-12 h-full bg-transparent text-center border-0 outline-none font-mono"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                                    <span class="text-gray-500 vazir whitespace-nowrap mr-2">- xxxx - xxxx - xxxx</span>
+                                </div>
+                            </div>
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['source_account_last_four'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -303,7 +313,6 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
-                        
                         <!-- Destination Account -->
                         <div class="relative w-full">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">نمبرحساب مقصد</label>
@@ -338,7 +347,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <datalist id="customersList2">
                                     <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </datalist>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                     <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
@@ -383,8 +392,10 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 x-on:dragover.prevent
                                 class="w-full h-[150px] p-3 rounded-[12px] border border-dashed focus:ring-2 bg-white border-[#112080] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition"
                                 x-on:click="$refs.fileInput.click()">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/upload.svg')); ?>" alt="آپلود" class="w-12 h-12 mb-2">
-                                <h1 class="font-vazir text-gray-600 dark:text-gray-300 text-[16px]">فایل را اینجا وارد کنید یا بکشید</h1>
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/upload.svg')); ?>" alt="آپلود"
+                                    class="w-12 h-12 mb-2">
+                                <h1 class="font-vazir text-gray-600 dark:text-gray-300 text-[16px]">فایل را اینجا وارد
+                                    کنید یا بکشید</h1>
                                 <input type="file" class="hidden" x-ref="fileInput"
                                     x-on:change="$wire.upload('remittance_image', $event.target.files[0])">
                             </div>
@@ -430,7 +441,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 <!-- Table Header -->
-                <div class="flex flex-col md:flex-row justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
+                <div
+                    class="flex flex-col md:flex-row justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                     <h1 class="text-lg md:text-xl lg:text-2xl vazir">حواله های ثبت شده</h1>
 
                     <div class="flex items-center gap-3">
@@ -464,7 +476,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                             <!--[if BLOCK]><![endif]--><?php if($search && count($filteredCustomers) > 0 && !$selectedCustomerId): ?>
-                            <ul class="absolute z-50 w-full bg-white border border-gray-300 mt-1 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                            <ul
+                                class="absolute z-50 w-full bg-white border border-gray-300 mt-1 rounded-md shadow-lg max-h-60 overflow-y-auto">
                                 <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $filteredCustomers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <li wire:click="selectCustomer(<?php echo e($customer->id); ?>)"
                                     class="px-3 py-2 hover:bg-blue-100 cursor-pointer flex justify-between items-center">
@@ -481,8 +494,10 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 <!-- Table -->
                 <div class="overflow-x-auto w-full">
                     <div class="max-h-[680px] overflow-y-auto min-w-[890px]">
-                        <table class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead class="bg-[#2B65E5] dark:bg-gray-700 text-white text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0"
+                        <table
+                            class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <thead
+                                class="bg-[#2B65E5] dark:bg-gray-700 text-white text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0"
                                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
                                 <tr>
                                     <th class="px-4 py-4 font-bold w-16">#</th>
@@ -490,6 +505,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     <th class="px-4 py-4 font-bold w-32">گیرنده</th>
                                     <th class="px-4 py-4 font-bold w-40">مبلغ</th>
                                     <th class="px-4 py-4 font-bold w-32">واحد</th>
+                                    <th class="px-4 py-4 font-bold w-32">وضعیت</th>
                                     <th class="px-4 py-4 font-bold w-80 text-center">توضیحات</th>
                                     <th class="px-4 py-4 font-bold w-40">تاریخ</th>
                                     <th class="px-4 py-4 font-bold w-48 text-center">عملیات</th>
@@ -515,8 +531,16 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                                     </td>
                                     <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium w-32">
-                                        <?php echo e(collect($currencies)->firstWhere('code', $remittance->currency)['name_fa'] ?? $remittance->currency); ?>
+                                        <?php echo e(collect($currencies)->firstWhere('code', $remittance->currency)['name_fa'] ??
+                                        $remittance->currency); ?>
 
+                                    </td>
+                                    <td>
+                                        <!--[if BLOCK]><![endif]--><?php if($remittance->state===0): ?>
+                                        <span class="text-red-500">در انتظار تایید</span>
+                                        <?php else: ?>
+                                        <span class="text-green-500">تاییده شده</span>
+                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                     </td>
                                     <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-80">
                                         <div class="space-y-1 text-right">
@@ -528,7 +552,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-40">
                                         <div class="whitespace-nowrap">
                                             <div class="font-medium">
-                                                <?php echo e($remittance->date); ?>
+                                                <?php echo e(explode(' ',$remittance->date)[0]); ?>
 
                                             </div>
                                             <div class="text-gray-500 text-sm mt-1">
@@ -540,20 +564,27 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     <td class="py-4 text-center w-[68]">
                                         <div class="flex justify-center gap-3">
                                             <!-- Edit Button -->
-                                            <button wire:click="edit(<?php echo e($remittance->id); ?>)" class="w-12 h-12 flex items-center justify-center rounded-full transition-colors" title="ویرایش">
-                                                <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>" class="w-7 h-7" alt="Edit">
+                                            <button wire:click="edit(<?php echo e($remittance->id); ?>)"
+                                                class="w-12 h-12 flex items-center justify-center rounded-full transition-colors"
+                                                title="ویرایش">
+                                                <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>"
+                                                    class="w-7 h-7" alt="Edit">
                                             </button>
 
                                             <!-- Delete Button -->
                                             <button wire:click="confirmDelete(<?php echo e($remittance->id); ?>)"
                                                 class="w-12 h-12 flex items-center justify-center rounded-full transition-colors"
                                                 title="حذف">
-                                                <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>" class="w-8 h-8" alt="Delete">
+                                                <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>"
+                                                    class="w-8 h-8" alt="Delete">
                                             </button>
 
                                             <!-- Print Button -->
-                                            <button wire:click="print(<?php echo e($remittance->id); ?>)" class="w-12 h-12 flex items-center justify-center rounded-full transition-colors" title="پرینت">
-                                                <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>" class="w-10 h-10" alt="Print">
+                                            <button wire:click="print(<?php echo e($remittance->id); ?>)"
+                                                class="w-12 h-12 flex items-center justify-center rounded-full transition-colors"
+                                                title="پرینت">
+                                                <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
+                                                    class="w-10 h-10" alt="Print">
                                             </button>
                                         </div>
                                     </td>
@@ -580,7 +611,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
     <!-- Delete Confirmation Modal -->
     <!--[if BLOCK]><![endif]--><?php if($confirmDeleteId): ?>
     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-10 z-50">
-        <div class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px] rounded-[12px] shadow-xl w-[653px] h-[239.7267608642578px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
+        <div
+            class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px] rounded-[12px] shadow-xl w-[653px] h-[239.7267608642578px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
             <button wire:click="$set('confirmDeleteId', null)" class="flex right-0 h-4 w-4">
                 <img src="<?php echo e(asset('assets/sarafi/all_icon/close.svg')); ?>" alt="">
             </button>
@@ -604,16 +636,17 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 </div>
 
+
 <!-- Event Alert -->
 <?php $__env->startPush('script'); ?>
-    <script>
+<script>
     window.addEventListener('report-alert', event => {
         alert(event.detail.message);
     });
 </script>
 <?php $__env->stopPush(); ?>
 
-<?php $__env->startPush('style'); ?>    
+<?php $__env->startPush('style'); ?>
 <!-- Scrollbar Style -->
 <style>
     .scroll-container {

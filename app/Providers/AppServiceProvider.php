@@ -9,6 +9,8 @@ use App\Models\Import\Inventory;
 use App\Observers\InventoryObserver;
 use App\Models\Import\Warehouse;
 use App\Observers\WarehouseObserver;
+use App\Models\Sarafi\Remittances;
+use App\Observers\RemittanceObserver;
 
 
 
@@ -33,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
         DateTimePicker::$defaultDateDisplayFormat = 'Y/m/d';
         Inventory::observe(InventoryObserver::class);
         Warehouse::observe(WarehouseObserver::class);
+        Remittances::observe(RemittanceObserver::class);
 
 
     }

@@ -1039,13 +1039,13 @@
                             </svg>
                         </button>
                         <div x-show="openItems.transactions" x-transition class="mr-6 mt-1 space-y-1">
-                            <a href="#"
+                            <a href="{{ route('sarafi.remittance-approval') }}"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('control-transactions', 'transactions')"
                                 :class="active === 'control-transactions' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                                 <img src="{{ asset('assets/sarafi/all_icon/eye.svg') }}" class="w-4 h-4"
                                     :class="active === 'control-transactions' ? 'filter invert brightness-0' : 'text-gray-500'">
-                                {{ __('messages.control_transactions') }}
+                                 احواله های تایید نشده
                             </a>
                         </div>
                     </div>

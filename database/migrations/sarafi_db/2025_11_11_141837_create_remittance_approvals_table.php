@@ -6,13 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('remittance', function (Blueprint $table) {
+        Schema::create('remittance_approvals', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('remittance_id');
             $table->unsignedBigInteger('customer_id');
             $table->unsignedBigInteger('to_account');
             $table->unsignedBigInteger('user_id')->nullable();
@@ -29,22 +27,24 @@ return new class extends Migration
             $table->string('giver_name');
             $table->text('description');
             $table->string('remittance_image')->nullable();
-            $table->boolean('state')->default(0);
+            $table->boolean('approved')->default(0); 
+            $table->unsignedBigInteger('approved_by')->nullable(); 
+            $table->timestamp('approved_at')->nullable(); 
+            $table->text('approval_notes')->nullable();
             $table->timestamps();
+            
+            // Foreign keys
+            $table->foreign('remittance_id')->references('id')->on('remittance')->onDelete('cascade');
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->foreign('to_account')->references('id')->on('customers')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
             $table->foreign('admin_id')->references('id')->on('users')->nullOnDelete();
+            $table->foreign('approved_by')->references('id')->on('users')->nullOnDelete();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('remittance');
+        Schema::dropIfExists('remittance_approvals');
     }
-
-
 };

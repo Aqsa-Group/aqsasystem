@@ -11,22 +11,7 @@ class Sell extends Model
     protected $connection= 'market';
     protected $table= 'sells';
     
-   protected $fillable = [
-     'market_id',
-     'customer_id',
-     'advertisment_id',
-     'admin_id',
-     'booth_id',
-     'shop_id',
-     'property',
-     'price',
-     'currency',
-     'payment_type',
-     'amount',
-     'remining',
-     'date',
-     'details',
-   ];
+    protected $guarded = [];
 
    public function market(){
     return $this->belongsTo(Market::class);
