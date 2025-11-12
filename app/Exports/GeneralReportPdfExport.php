@@ -75,129 +75,155 @@ class GeneralReportPdfExport
             'autoLangToFont' => true,
         ]);
     }
-protected function getSafeSummaryRows()
-{
-    $user = \Illuminate\Support\Facades\Auth::guard('market')->user();
-
-    if (!$user) {
-        return []; 
-    }
-
-    // اگر admin_id نداشت، از id خودش استفاده می‌کنیم
-    $adminId = $user->admin_id ?? $user->id;
-
-    $query = \Illuminate\Support\Facades\DB::connection('market')
-        ->table('accountings')
-        ->select('expanses_type', 'currency', \Illuminate\Support\Facades\DB::raw('SUM(paid) as total_paid'));
-
-    // 🔹 اگر نقش superadmin نیست، فقط اطلاعات مربوط به adminId خودش را ببیند
-    if ($user->role !== 'superadmin') {
-        $query->where('admin_id', $adminId);
-    }
-
-    // 🔹 فیلترهای تاریخ
-    if (!empty($this->filters['from_date'])) {
-        $query->whereDate('created_at', '>=', $this->filters['from_date']);
-    }
-
-    if (!empty($this->filters['to_date'])) {
-        $query->whereDate('created_at', '<=', $this->filters['to_date']);
-    }
-
-    // 🔹 فیلتر نوع صندوق (در صورت وجود)
-    if (!empty($this->filters['expanses_type'])) {
-        $query->where('expanses_type', $this->filters['expanses_type']);
-    }
-
-    // 🔹 فیلتر نوع ارز (در صورت وجود)
-    if (!empty($this->filters['currency'])) {
-        $query->where('currency', $this->filters['currency']);
-    }
-
-    $data = $query->groupBy('expanses_type', 'currency')->get();
-
-    // 🔹 گروه‌بندی داده‌ها
-    $grouped = $data->groupBy('expanses_type');
-
-    $rows = [];
-    foreach ($grouped as $type => $group) {
-        $rows[] = [
-            'type' => $type,
-            'af' => $group->firstWhere('currency', 'AFN')?->total_paid ?? 0,
-            'us' => $group->firstWhere('currency', 'USD')?->total_paid ?? 0,
-            'er' => $group->firstWhere('currency', 'EUR')?->total_paid ?? 0,
-            'ir' => $group->firstWhere('currency', 'IRR')?->total_paid ?? 0,
-        ];
-    }
-
-    return $rows;
-}
-
-
-protected function generateHtml()
-{
-    // عنوان گزارش بر اساس نوع گزارش
-    $reportTypes = [
-        'withdraw_salary' => 'گزارش برداشت‌ها و معاش کارمندان',
-        'accounting' => 'گزارش حسابداری',
-        'outside' => 'گزارش عواید بیرونی',
-        'deposit' => 'گزارش تسویه نشده‌ها',
-        'salary' => 'گزارش معاش کارمندان',
-        'loan' => 'گزارش بردگی‌ها',
-        'payment' => 'گزارش رسیدها',
-        'buy' => 'گزارش خریدها',
-        'sell' => 'گزارش فروش‌ها',
-        'withdraw_log' => 'گزارش برداشت‌ها',
-    ];
-
-    $reportTitle = $reportTypes[$this->reportType] ?? 'گزارش نامشخص';
-
-    // گرفتن موجودی صندوق با فیلترها
-    $safeRows = $this->getSafeSummaryRows();
-
-    // بازگشت HTML رندر شده
-    return view('exports.general-report-pdf', [
-        'data' => $this->data,
-        'reportType' => $this->reportType,
-        'reportTitle' => $reportTitle,
-        'filters' => $this->filters,
-        'summary' => $this->calculateSummary(),
-        'safeRows' => $safeRows,
-    ])->render();
-}
-
-
-    protected function calculateSummary()
+    protected function getSafeSummaryRows()
     {
-       $totalAmount = match ($this->reportType) {
-    'withdraw_salary' => $this->data->sum(function ($item) {
-        $amount = (float) ($item->amount ?? 0);
-        $paid   = (float) ($item->paid ?? 0);
+        $user = \Illuminate\Support\Facades\Auth::guard('market')->user();
 
-        // اگر نوع رکورد "برداشت" است، فقط amount را حساب نکن، بلکه همه را جمع کن
-        if (isset($item->record_type) && $item->record_type === 'برداشت') {
-            return $amount + $paid ;
+        if (!$user) {
+            return [];
         }
 
-        // در سایر موارد هم همین‌طور همه مقادیر غیر تهی را جمع کن
-        return $amount + $paid;
-    }),
+        // اگر admin_id نداشت، از id خودش استفاده می‌کنیم
+        $adminId = $user->admin_id ?? $user->id;
 
-            'accounting' => $this->data->sum('price'),
-            'outside' => $this->data->sum('paid'),
-            'deposit' => $this->data->sum('price'),
-            'salary' => $this->data->sum('salary'),
-            'loan' => $this->data->sum('amount'),
-            'payment' => $this->data->sum('amount'),
-            'buy' => $this->data->sum('price'),
-            'sell' => $this->data->sum('price'),
-            'withdraw_log' => $this->data->sum('amount'),
-            default => 0
-        };
+        $query = \Illuminate\Support\Facades\DB::connection('market')
+            ->table('accountings')
+            ->select('expanses_type', 'currency', \Illuminate\Support\Facades\DB::raw('SUM(paid) as total_paid'));
 
-        return [
-            'total_count' => $this->data->count(),
-            'total_amount' => $totalAmount,
-        ];
+        // 🔹 اگر نقش superadmin نیست، فقط اطلاعات مربوط به adminId خودش را ببیند
+        if ($user->role !== 'superadmin') {
+            $query->where('admin_id', $adminId);
+        }
+
+        // 🔹 فیلترهای تاریخ
+        if (!empty($this->filters['from_date'])) {
+            $query->whereDate('created_at', '>=', $this->filters['from_date']);
+        }
+
+        if (!empty($this->filters['to_date'])) {
+            $query->whereDate('created_at', '<=', $this->filters['to_date']);
+        }
+
+        // 🔹 فیلتر نوع صندوق (در صورت وجود)
+        if (!empty($this->filters['expanses_type'])) {
+            $query->where('expanses_type', $this->filters['expanses_type']);
+        }
+
+        // 🔹 فیلتر نوع ارز (در صورت وجود)
+        if (!empty($this->filters['currency'])) {
+            $query->where('currency', $this->filters['currency']);
+        }
+
+        $data = $query->groupBy('expanses_type', 'currency')->get();
+
+        // 🔹 گروه‌بندی داده‌ها
+        $grouped = $data->groupBy('expanses_type');
+
+        $rows = [];
+        foreach ($grouped as $type => $group) {
+            $rows[] = [
+                'type' => $type,
+                'af' => $group->firstWhere('currency', 'AFN')?->total_paid ?? 0,
+                'us' => $group->firstWhere('currency', 'USD')?->total_paid ?? 0,
+                'er' => $group->firstWhere('currency', 'EUR')?->total_paid ?? 0,
+                'ir' => $group->firstWhere('currency', 'IRR')?->total_paid ?? 0,
+            ];
+        }
+
+        return $rows;
     }
+
+
+    protected function generateHtml()
+    {
+        // عنوان گزارش بر اساس نوع گزارش
+        $reportTypes = [
+            'withdraw_salary' => 'گزارش برداشت‌ها و معاش کارمندان',
+            'accounting' => 'گزارش حسابداری',
+            'outside' => 'گزارش عواید بیرونی',
+            'deposit' => 'گزارش تسویه نشده‌ها',
+            'salary' => 'گزارش معاش کارمندان',
+            'loan' => 'گزارش بردگی‌ها',
+            'payment' => 'گزارش رسیدها',
+            'buy' => 'گزارش خریدها',
+            'sell' => 'گزارش فروش‌ها',
+            'withdraw_log' => 'گزارش برداشت‌ها',
+        ];
+
+        $reportTitle = $reportTypes[$this->reportType] ?? 'گزارش نامشخص';
+
+        $safeRows = $this->getSafeSummaryRows();
+
+        return view('exports.general-report-pdf', [
+            'data' => $this->data,
+            'reportType' => $this->reportType,
+            'reportTitle' => $reportTitle,
+            'filters' => $this->filters,
+            'summary' => $this->calculateSummary(),
+            'safeRows' => $safeRows,
+        ])->render();
+    }
+
+
+   protected function calculateSummary()
+{
+    $totalAmount = 0;
+    
+    switch ($this->reportType) {
+        case 'withdraw_salary':
+            $totalAmount = $this->data->sum(function ($item) {
+                if ($item->record_type === 'withdraw') {
+                    return (float)($item->amount ?? 0);
+                } else {
+                    return (float)($item->paid ?? 0);
+                }
+            });
+            break;
+            
+        case 'accounting':
+            $totalAmount = $this->data->sum('price');
+            break;
+            
+        case 'outside':
+            $totalAmount = $this->data->sum('paid');
+            break;
+            
+        case 'deposit':
+            $totalAmount = $this->data->sum('price');
+            break;
+            
+        case 'salary':
+            $totalAmount = $this->data->sum('paid');
+            break;
+            
+        case 'loan':
+            $totalAmount = $this->data->sum('amount');
+            break;
+            
+        case 'payment':
+            $totalAmount = $this->data->sum('amount');
+            break;
+            
+        case 'buy':
+            $totalAmount = $this->data->sum('price');
+            break;
+            
+        case 'sell':
+            $totalAmount = $this->data->sum('price');
+            break;
+            
+        case 'withdraw_log':
+            $totalAmount = $this->data->sum('amount');
+            break;
+            
+        default:
+            $totalAmount = 0;
+    }
+
+    return [
+        'total_count' => $this->data->count(),
+        'total_amount' => $totalAmount,
+    ];
+}
+
 }

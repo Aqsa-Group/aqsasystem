@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Log;
 use Morilog\Jalali\Jalalian;
 use Illuminate\Pagination\LengthAwarePaginator;
 
+
 class GeneralReports extends Component
 {
     use WithPagination;
@@ -50,6 +51,7 @@ class GeneralReports extends Component
     public $search = '';
     public $amountMin;
     public $amountMax;
+
 
     protected $queryString = [
         'reportType' => ['except' => 'withdraw_salary'],
@@ -79,12 +81,10 @@ class GeneralReports extends Component
 
     private function setDefaultJalaliDates()
     {
-        // تاریخ پایان = امروز
         $today = Jalalian::now();
         $this->endDateJalali = $today->format('Y/m/d');
         $this->endDate = $today->toCarbon()->format('Y-m-d');
 
-        // تاریخ شروع = یک ماه قبل
         $oneMonthAgo = $today->subMonths(1);
         $this->startDateJalali = $oneMonthAgo->format('Y/m/d');
         $this->startDate = $oneMonthAgo->toCarbon()->format('Y-m-d');
@@ -390,62 +390,56 @@ class GeneralReports extends Component
         );
     }
 
-    private function getCombinedDataForExport()
-    {
-        $user = Auth::user();
+ private function getCombinedDataForExport()
+{
+    $user = Auth::user();
 
-        $withdrawalsQuery = WithdrawLog::query()
-            ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
-            ->when($this->startDate, fn($q) => $q->whereDate('created_at', '>=', $this->startDate))
-            ->when($this->endDate, fn($q) => $q->whereDate('created_at', '<=', $this->endDate))
-            ->when($this->amountMin, fn($q) => $q->where('amount', '>=', $this->amountMin))
-            ->when($this->amountMax, fn($q) => $q->where('amount', '<=', $this->amountMax))
-            ->when($this->search, function ($q) {
-                $q->where('recipient_name', 'like', "%{$this->search}%")
-                    ->orWhere('description', 'like', "%{$this->search}%");
-            });
+    $withdrawalsQuery = WithdrawLog::query()
+        ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
+        ->when($this->startDate, fn($q) => $q->whereDate('created_at', '>=', $this->startDate))
+        ->when($this->endDate, fn($q) => $q->whereDate('created_at', '<=', $this->endDate))
+        ->when($this->amountMin, fn($q) => $q->where('amount', '>=', $this->amountMin))
+        ->when($this->amountMax, fn($q) => $q->where('amount', '<=', $this->amountMax))
+        ->when($this->search, function ($q) {
+            $q->where('recipient_name', 'like', "%{$this->search}%")
+                ->orWhere('description', 'like', "%{$this->search}%");
+        });
 
+    $withdrawalsQuery = $this->applyAccessControl($withdrawalsQuery, $user);
 
-        $withdrawalsQuery = $this->applyAccessControl($withdrawalsQuery, $user);
+    $withdrawals = $withdrawalsQuery->get()
+        ->map(function ($item) {
+            $item->record_type = 'withdraw';
+            $item->sort_date = $item->created_at;
+            return $item;
+        });
 
-        $withdrawals = $withdrawalsQuery->get()
-            ->map(function ($item) {
-                $item->record_type = 'withdraw';
-                return $item;
-            });
+    $salariesQuery = Salary::with(['market', 'staff', 'loan'])
+        ->when($this->marketId, fn($q) => $q->where('market_id', $this->marketId))
+        ->when($this->staffId, fn($q) => $q->where('staff_id', $this->staffId))
+        ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
+        ->when($this->startDate, fn($q) => $q->whereDate('paid_date', '>=', $this->startDate))
+        ->when($this->endDate, fn($q) => $q->whereDate('paid_date', '<=', $this->endDate))
+        ->when($this->amountMin, fn($q) => $q->where('paid', '>=', $this->amountMin))
+        ->when($this->amountMax, fn($q) => $q->where('paid', '<=', $this->amountMax))
+        ->when($this->search, function ($q) {
+            $q->whereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
+                ->orWhereHas('market', fn($q2) => $q2->where('name', 'like', "%{$this->search}%"));
+        });
 
-        $salariesQuery = Salary::with(['market', 'staff', 'loan'])
-            ->when($this->marketId, fn($q) => $q->where('market_id', $this->marketId))
-            ->when($this->staffId, fn($q) => $q->where('staff_id', $this->staffId))
-            ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
-            ->when($this->startDate, fn($q) => $q->whereDate('paid_date', '>=', $this->startDate))
-            ->when($this->endDate, fn($q) => $q->whereDate('paid_date', '<=', $this->endDate))
-            ->when($this->amountMin, fn($q) => $q->where('paid', '>=', $this->amountMin))
-            ->when($this->amountMax, fn($q) => $q->where('paid', '<=', $this->amountMax))
-            ->when($this->search, function ($q) {
-                $q->whereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-                    ->orWhereHas('market', fn($q2) => $q2->where('name', 'like', "%{$this->search}%"));
-            });
+    $salariesQuery = $this->applyAccessControl($salariesQuery, $user);
 
-        $salariesQuery = $this->applyAccessControl($salariesQuery, $user);
+    $salaries = $salariesQuery->get()
+        ->map(function ($item) {
+            $item->record_type = 'salary';
+            $item->sort_date = $item->paid_date;
+            return $item;
+        });
 
-        $salaries = $salariesQuery->get()
-            ->map(function ($item) {
-                $item->record_type = 'salary';
-                return $item;
-            });
-
-   return $withdrawals->merge($salaries)
-    ->sortBy(function ($item) {
-        if ($item->record_type === 'withdraw') {
-            return strtotime($item->created_at);
-        } else { 
-            return strtotime($item->paid_date);
-        }
-    });
-
-
-    }
+    return $withdrawals->merge($salaries)
+        ->sortByDesc('sort_date')
+        ->values();
+}
 
     private function buildAccountingQuery()
     {
@@ -811,4 +805,5 @@ class GeneralReports extends Component
             $errors->forget($field);
         }
     }
+
 }
