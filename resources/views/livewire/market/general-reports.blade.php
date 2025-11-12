@@ -458,9 +458,15 @@
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             باقی مانده</th>
+
+                                              <th>
+                                                نوع ارز
+                                            </th>
                                         <th
+                                        
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             تاریخ</th>
+                                          
                                         @break
 
                                         @case('payment')

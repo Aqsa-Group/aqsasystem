@@ -672,6 +672,7 @@ class GeneralReports extends Component
 
     public function getSummaryProperty()
     {
+        
         $data = $this->getReportData(true);
 
         $currencyTotals = $this->calculateCurrencyTotals($data);
@@ -688,17 +689,16 @@ class GeneralReports extends Component
             return 0;
         });
 
+
         return [
             'total_count' => $data->count(),
             'total_amount' => $totalAmount,
             'currency_totals' => $currencyTotals,
             'report_type' => $this->getReportTypeLabel(),
             'current_date' => Jalalian::now()->format('Y/m/d'),
-
-            // جمع‌های دیگر برای انواع گزارش
             'accounting' => $data->sum('price'),
             'outside' => $data->sum('paid'),
-            'salary' => $data->sum('salary'),
+            'salary' => $data->sum('paid'),
             'deposit' => $data->sum('price'),
             'loan' => $data->sum('amount'),
             'payment' => $data->sum('amount'),
@@ -707,6 +707,8 @@ class GeneralReports extends Component
             'withdraw_log' => $data->sum('amount'),
         ];
     }
+    
+
 
     private function calculateCurrencyTotals($data)
     {
