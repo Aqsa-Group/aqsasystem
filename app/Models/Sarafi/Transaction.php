@@ -4,6 +4,8 @@ namespace App\Models\Sarafi;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Sarafi\Trash;
+use Illuminate\Support\Facades\Auth;
 
 class Transaction extends Model
 {
@@ -55,14 +57,14 @@ class Transaction extends Model
         return $this->belongsTo(ConversionTransfers::class, 'conversion_transfer_id');
     }
 
-        public function accounttoid()
+    public function accounttoid()
     {
         return $this->belongsTo(SendToAccount::class, ' ');
     }
 
 
 
-      public function conversionInAccount()
+    public function conversionInAccount()
     {
         return $this->belongsTo(ConversionInAccounts::class, 'conversion_in_account_id');
     }
@@ -116,5 +118,41 @@ class Transaction extends Model
         ];
 
         return $currencyMap[$this->currency] ?? $this->currency;
+    }
+
+
+    protected static function booted()
+    {
+
+        static::updating(function ($model) {
+            $user = Auth::guard('sarafi')->user();
+            $adminId = $user->admin_id ?? $user->id;
+            Trash::create([
+                'document_type' => 'رسید /برد صندوق',
+                'record_id' => $model->id,
+                'action' => 'ویرایش',
+                'document_discription'=>  $model->description,
+                'old_data' => $model->getOriginal(),
+                'new_data' => $model->getAttributes(),
+                'registered_user'=> $model->user_id,
+                'user_id'  => $user->id,
+                'admin_id' => $adminId,
+            ]);
+        });
+
+        static::deleting(function ($model) {
+            $user = Auth::guard('sarafi')->user();
+            $adminId = $user->admin_id ?? $user->id;
+            Trash::create([
+                'document_type' => 'رسید /برد صندوق',
+                'record_id' => $model->id,
+                'action' => 'حذف',
+                'document_discription'=>  $model->description,
+                'old_data' => $model->getAttributes(),
+                'registered_user'=> $model->user_id,
+                'user_id'     => $user->id,
+                'admin_id'         => $adminId,
+            ]);
+        });
     }
 }

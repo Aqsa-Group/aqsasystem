@@ -246,6 +246,16 @@ Route::get('/sarafi/remittance-approval', function () {
 })->name('sarafi.remittance-approval');
 
 
+Route::get('/sarafi/trash-edit', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.trash-edit');
+})->name('sarafi.trash-edit');
+
+
+
+
 
 
 

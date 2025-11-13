@@ -5,6 +5,7 @@ namespace App\Models\Sarafi;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Auth;
 
 class ConversionInAccounts extends Model
 {
@@ -114,5 +115,42 @@ class ConversionInAccounts extends Model
     public function getFormattedReceivedAttribute(): string
     {
         return number_format($this->sell_amount) . ' ' . $this->to_currency_name;
+    }
+
+
+
+      protected static function booted()
+    {
+
+        static::updating(function ($model) {
+            $user = Auth::guard('sarafi')->user();
+            $adminId = $user->admin_id ?? $user->id;
+            Trash::create([
+                'document_type' =>'تبدیل ارز در حساب',
+                'record_id' => $model->id,
+                'action' => 'ویرایش',
+                'document_discription'=>  $model->description,
+                'old_data' => $model->getOriginal(),
+                'new_data' => $model->getAttributes(),
+                'registered_user'=> $model->user_id,
+                'user_id'  => $user->id,
+                'admin_id' => $adminId,
+            ]);
+        });
+
+        static::deleting(function ($model) {
+            $user = Auth::guard('sarafi')->user();
+            $adminId = $user->admin_id ?? $user->id;
+            Trash::create([
+                'document_type' =>'تبدیل ارز در حساب',
+                'record_id' => $model->id,
+                'action' => 'حذف',
+                'document_discription'=>  $model->description,
+                'old_data' => $model->getAttributes(),
+                'registered_user'=> $model->user_id,
+                'user_id'     => $user->id,
+                'admin_id'         => $adminId,
+            ]);
+        });
     }
 }
