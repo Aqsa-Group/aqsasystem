@@ -43,7 +43,7 @@ return [
   'tab_general' => 'پنل عمومی',
   'tab_reports' => 'پنل گزارشات و بیلانس',
   'tab_safes'   => 'گزارشات صندوق',
-  'account_safes'   => 'گزارشات صندوق کارت' ,  
+  'account_safes'   => 'گزارشات صندوق کارت',
   'general_users' => 'تعداد کاربران',
   'general_customers' => 'تعداد مشتریان',
   'general_today_transactions' => 'ترانزکشن‌های امروز',
@@ -66,7 +66,7 @@ return [
   'safes_jpy' => 'موجودی ین ژاپن',
   'safes_sar' => 'موجودی ریال سعودی',
   'safes_inr' => 'موجودی روپیه هند',
-  'selling' => 'خرید و فروش ارز و صندوق',
+  'selling' => 'خرید و فروش ارز ',
   'month_hamal' => 'حمل',
   'month_sawr' => 'ثور',
   'month_jawza' => 'جوزا',
@@ -235,6 +235,9 @@ return [
   'edit' => 'ویرایش',
   'view' => 'نمایش',
   'delete' => 'حذف',
+  'related_customer' => 'مشتری معرف',
+  'choose_related_customer' => 'انتخاب مشتری معرف',
+  'validation_related_customer_exists' => 'مشتری انتخاب شده معتبر نیست.',
 
 
   // cutomer_table
@@ -271,6 +274,7 @@ return [
   'user_deleted' => 'کاربر موفقانه حذف شد!',
   'user_created' => 'کاربر موفقانه ایجاد شد!',
   'user_updated' => 'کاربر موفقانه ویرایش شد !',
+
 
 
 
@@ -331,6 +335,13 @@ return [
   'edit' => 'ویرایش',
   'view' => 'نمایش',
   'delete' => 'حذف',
+  'related_customer' => 'مشتری معرف',
+  'choose_related_customer' => 'انتخاب مشتری معرف',
+  'validation_related_customer_exists' => 'مشتری انتخاب شده معتبر نیست.',
+  'related_customer' => 'مشتری معرف',
+  'search_customer_placeholder' => 'جستجو با شماره حساب یا نام مشتری...',
+  'choose_related_customer' => 'انتخاب مشتری معرف',
+  'validation_related_customer_exists' => 'مشتری انتخاب شده معتبر نیست.',
 
 
   // cutomer_table
@@ -345,13 +356,13 @@ return [
 
   // staff
 
-    'staff_created' => 'کارمند با موفقیت ثبت شد.',
-    'staff_updated' => 'اطلاعات کارمند با موفقیت به‌روزرسانی شد.',
-    'staff_deleted' => 'کارمند با موفقیت حذف شد.',
-    'all_jobs' => 'تمام وظایف',
-    'job' => 'وظیفه',
-    'salary' => 'معاش',
-    'phone' => 'شماره تماس',
+  'staff_created' => 'کارمند با موفقیت ثبت شد.',
+  'staff_updated' => 'اطلاعات کارمند با موفقیت به‌روزرسانی شد.',
+  'staff_deleted' => 'کارمند با موفقیت حذف شد.',
+  'all_jobs' => 'تمام وظایف',
+  'job' => 'وظیفه',
+  'salary' => 'معاش',
+  'phone' => 'شماره تماس',
 
 
 

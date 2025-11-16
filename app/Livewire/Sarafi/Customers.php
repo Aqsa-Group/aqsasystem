@@ -24,11 +24,14 @@ class Customers extends Component
     public $showSuccessModal = false;
     public $successMessage = '';
     public $autoGenerateAccount = true;
-
-    // اضافه کردن تنظیمات compression
-    public $compressionQuality = 80; // کیفیت بین 0-100
+    public $compressionQuality = 80; 
     public $maxWidth = 800;
     public $maxHeight = 800;
+    
+    // اضافه کردن property های جدید برای مشتری معرف
+    public $relatedCustomerId;
+    public $relatedCustomers = [];
+    public $relatedCustomerSearch = '';
 
     public function mount($customerId = null)
     {
@@ -40,6 +43,47 @@ class Customers extends Component
         } else {
             $this->generateAccountNumber();
         }
+
+        // بارگذاری لیست مشتریان برای datalist
+        $this->loadRelatedCustomers();
+    }
+
+    // تابع برای بارگذاری مشتریان موجود
+    private function loadRelatedCustomers()
+    {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        $this->relatedCustomers = Customer::where('admin_id', $adminId)
+            ->when($this->customerId, function ($query) {
+                $query->where('id', '!=', $this->customerId);
+            })
+            ->orderBy('fullname')
+            ->get(['id', 'fullname', 'account_number', 'phone'])
+            ->toArray();
+
+        Log::info('Related customers loaded:', ['count' => count($this->relatedCustomers)]);
+    }
+
+    // تابع برای انتخاب مشتری معرف
+    public function selectRelatedCustomer($customerId)
+    {
+        $this->relatedCustomerId = $customerId;
+        Log::info('Related customer selected:', ['customerId' => $customerId]);
+        
+        // پیدا کردن مشتری انتخاب شده و تنظیم مقدار جستجو
+        $selectedCustomer = collect($this->relatedCustomers)->firstWhere('id', $customerId);
+        if ($selectedCustomer) {
+            $this->relatedCustomerSearch = $selectedCustomer['account_number'] . ' - ' . $selectedCustomer['fullname'];
+        }
+    }
+
+    // تابع برای پاک کردن انتخاب مشتری معرف
+    public function clearRelatedCustomer()
+    {
+        $this->relatedCustomerId = null;
+        $this->relatedCustomerSearch = '';
+        Log::info('Related customer selection cleared');
     }
 
     private function generateAccountNumber()
@@ -74,18 +118,28 @@ class Customers extends Component
             $this->password = '';
             $this->profile = $customer->image;
             $this->idCardImage = $customer->id_card_image;
+            $this->relatedCustomerId = $customer->related_customer_id;
+
+            // تنظیم مقدار جستجو برای مشتری معرف
+            if ($this->relatedCustomerId) {
+                $relatedCustomer = Customer::find($this->relatedCustomerId);
+                if ($relatedCustomer) {
+                    $this->relatedCustomerSearch = $relatedCustomer->account_number . ' - ' . $relatedCustomer->fullname;
+                }
+            }
 
             Log::info('Customer data loaded:', [
                 'fullname' => $this->fullname,
                 'phone' => $this->phone,
-                'city' => $this->city
+                'city' => $this->city,
+                'related_customer_id' => $this->relatedCustomerId
             ]);
         } else {
             Log::error('Customer not found with ID: ' . $this->customerId);
         }
     }
 
-    // تابع جدید برای compress کردن تصاویر
+    // تابع برای compress کردن تصاویر
     private function compressAndStoreImage($uploadedFile, $storagePath)
     {
         // ایجاد instance از Intervention Image
@@ -131,6 +185,7 @@ class Customers extends Component
             'password' => 'nullable|string|min:6',
             'newProfile' => 'nullable|image|max:5120', 
             'newIdCardImage' => 'nullable|image|max:5120',
+            'relatedCustomerId' => 'nullable|exists:sarafi.customers,id',
         ], [
             'fullname.required' => __('messages.validation_fullname_required'),
             'account.required' => __('messages.validation_account_required'),
@@ -138,7 +193,9 @@ class Customers extends Component
             'phone.required' => __('messages.validation_phone_required'),
             'tazkira.required' => __('messages.validation_tazkira_required'),
             'password.required' => __('messages.validation_password_required'),
+            'relatedCustomerId.exists' => __('messages.validation_related_customer_exists'),
         ]);
+
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
 
@@ -150,8 +207,9 @@ class Customers extends Component
             'phone' => $this->phone,
             'idcard_number' => $this->tazkira,
             'whatsapp_number' => $this->whatsapp,
-            'user_id'          => $user->id,
-            'admin_id'         => $adminId,
+            'user_id' => $user->id,
+            'admin_id' => $adminId,
+            'related_customer_id' => $this->relatedCustomerId,
         ];
 
         if ($this->password) {
@@ -181,12 +239,16 @@ class Customers extends Component
             if ($customer) {
                 $customer->update($data);
                 session()->flash('message', __('messages.customer_updated'));
-                Log::info('Customer updated with ID: ' . $this->customerId);
+                Log::info('Customer updated with ID: ' . $this->customerId, [
+                    'related_customer_id' => $this->relatedCustomerId
+                ]);
             }
         } else {
             Customer::create($data);
             session()->flash('message', __('messages.customer_created'));
-            Log::info('New customer created');
+            Log::info('New customer created', [
+                'related_customer_id' => $this->relatedCustomerId
+            ]);
         }
 
         $this->showSuccessModal = true;
@@ -264,6 +326,9 @@ class Customers extends Component
     public function hydrate()
     {
         Log::info('Customer Component Hydrated', ['customerId' => $this->customerId]);
+        
+        // بارگذاری مجدد لیست مشتریان هنگام hydrate
+        $this->loadRelatedCustomers();
     }
 
     public function updatedAccount($value)
@@ -289,6 +354,15 @@ class Customers extends Component
     public function updatedWhatsapp($value)
     {
         $this->whatsapp = $this->convertToEnglishNumbers($value);
+    }
+
+    // تابع برای زمانی که مقدار جستجوی مشتری معرف تغییر می‌کند
+    public function updatedRelatedCustomerSearch($value)
+    {
+        // اگر مقدار جستجو پاک شد، انتخاب مشتری معرف نیز پاک شود
+        if (empty($value)) {
+            $this->clearRelatedCustomer();
+        }
     }
 
     public function render()

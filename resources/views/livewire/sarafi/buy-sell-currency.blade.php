@@ -1,5 +1,5 @@
 <div>
-    <div class="pl-10 pr-10 mb-5">
+    <div class=" mb-5">
         <div class="flex flex-col space-y-3">
             <h1 class="text-[24px] font-semibold text-black">خرید و فروش ارز</h1>
             <h1 class="text-[#8C8C8C] text-[18px]">صفحه درج خرید و فروش ارز</h1>
@@ -17,9 +17,9 @@
         </div>
         @endif
 
-        <div class="flex gap-10 mt-3 justify-center">
+        <div class=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2  px-10  gap-10 mt-3 justify-center">
             <!-- جدول خرید -->
-            <div class="max-h-[680px] overflow-y-auto min-w-[500px]">
+            <div class="max-h-[680px] overflow-y-auto w-full">
                 <table class="w-[500px] text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <h1 class="text-[24px] mb-5">مجموعه خرید ارز</h1>
                     <thead
@@ -47,7 +47,7 @@
             </div>
 
             <!-- جدول فروش -->
-            <div class="max-h-[680px] overflow-y-auto min-w-[500px]">
+            <div class="max-h-[680px] overflow-y-auto w-full">
                 <table class="w-[500px] text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <h1 class="text-[24px] mb-5">مجموعه فروش ارز</h1>
                     <thead
@@ -77,7 +77,7 @@
 
 
         <!-- مانده خالص -->
-        <div class="grid grid-cols-8 md:grid-cols-8 justify-center items-center text-center mx-auto pr-14 mt-6">
+        <div class="grid grid-cols-3 md:grid-cols-8 justify-center items-center text-center mx-auto pr-14 mt-6">
             @foreach ([ 'afn', 'usd' , 'irr' ,'pkr', 'eur', 'aed', 'try', 'cny'] as $currency)
             @php
             $balance = $netAmounts[$currency] ?? 0;
@@ -92,9 +92,9 @@
             </div>
             @endforeach
         </div>
-        <div class="flex flex-col lg:flex-row gap-8 mt-7">
+        <div class="flex flex-col lg:flex-row gap-5 mt-7 mx-auto">
             <!-- فرم تراکنش -->
-            <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[580px] p-[12px] h-fit rounded-[12px] space-y-2"
+            <div class="flex flex-col bg-[#F5F5F5] w-[420px] lg:w-[534px] p-[12px] h-auto rounded-[12px] space-y-2  mx-auto"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 <div
@@ -106,10 +106,7 @@
 
 
                     <div class="flex items-center gap-2 pl-2 ">
-                        <button wire:click="swapCurrencies" type="button"
-                            class="bg-[#2563EB] rounded-[8px] px-2 py-4 text-white vazir text-[15px] whitespace-nowrap">
-                            تبدیل مبدا _ مقصد
-                        </button>
+                    
                         <button wire:click="toggleTransactionType" type="button" class="rounded-[8px] p-[10px] text-white vazir text-[14px]
                                 transition-colors duration-500 ease-in-out py-4
                                 {{ $transactionType === 'خرید' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
@@ -207,11 +204,23 @@
                             @enderror
                         </div>
 
-                        <div class="flex-1">
+                        <div class="flex-1 relative">
                             <label class="block text-[15px] font-medium text-black mb-1 vazir">تاریخ</label>
                             <input type="text" id="datePicker" wire:model="date" wire:ignore placeholder="YYYY/MM/DD"
                                 class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
-                        </div>
+                             <svg class="absolute left-3 bottom-3 -translate-y-1/2 pointer-events-none" width="20"
+                                height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                                <path
+                                    d="M8 2V5M16 2V5M3.5 9.09H20.5M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z"
+                                    stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+
+                                <path
+                                    d="M15.6947 13.7H15.7037M15.6947 16.7H15.7037M11.9955 13.7H12.0045M11.9955 16.7H12.0045M8.29431 13.7H8.30329M8.29431 16.7H8.30329"
+                                    stroke="#8C8C8C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            </div>
                     </div>
 
 
@@ -265,7 +274,7 @@
                         @enderror
                     </div>
                     <!-- دکمه‌های نهایی -->
-                    <div class="flex gap-3 justify-center items-center text-center flex-wrap">
+                    <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-3 gap-3 justify-center items-center text-center flex-wrap">
                         <button type="submit"
                             class="bg-[#61B138] text-[15px] vazir font-semibold rounded-[8px] px-10 py-3 text-white hover:bg-green-700 transition">
                             {{ $isEditing ? 'بروزرسانی' : 'ثبت' }}
@@ -278,22 +287,25 @@
                         </button>
                         @endif
 
+
                         <button type="button" wire:click="cancel"
                             class="bg-[#DD2424] text-[15px] vazir font-semibold rounded-[8px] px-10 py-3 text-white hover:bg-red-700 transition">
                             {{ $isEditing ? 'لغو ویرایش' : 'انصراف' }}
                         </button>
+
+                     
                     </div>
                 </form>
             </div>
 
             <!-- جدول تراکنش‌ها -->
-            <div class="flex-1 flex flex-col bg-[#F5F5F5] p-4 rounded-[12px]"
+            <div class="flex-1 flex flex-col bg-[#F5F5F5] p-4 rounded-[12px] w-[440px] mb-5 md:w-[410px] lg:w-[300px] mx-auto"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 <div
-                    class="flex md:flex-row justify-between items-center border border-[#8C8C8C] p-3 rounded-[12px] mb-3 gap-3">
+                    class="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                     <h1 class="text-lg md:text-[16px] vazir">ترانزکشن های ثبت شده</h1>
-                    <div class="relative w-full md:w-[260px]">
+                        <div class="relative w-full">
                         <input type="text" wire:model.live="search"
                             class="border border-[#8C8C8C] w-full h-[46px] bg-transparent rounded-[10px] p-2 pr-10 text-sm"
                             placeholder="جستجو ...">

@@ -11,10 +11,10 @@
     </div>
     <?php endif; ?>
 
-    <div class="flex flex-col md:flex-row items-center  gap-4 mb-6 mr-14">
+    <div class="flex flex-col  md:flex-row items-center md:pr-[90px]   gap-4 mb-6 mx-auto">
         <!-- دکمه افزودن مشتری جدید -->
         <button wire:click="createCustomer"
-            class="flex items-center justify-center rounded-xl w-[218px] h-[54px] bg-blue-600 text-white  hover:bg-blue-700">
+            class="flex items-center justify-center rounded-xl w-[338px] md:w-[218px] h-[54px] bg-blue-600 text-white  hover:bg-blue-700">
             <img src="<?php echo e(asset('assets/sarafi/all_icon/user-add.svg')); ?>" alt="Add" class="w-[30px] h-[30px] me-2">
             <?php echo e(__('messages.add_customer')); ?>
 
@@ -31,19 +31,18 @@
     </div>
 
 
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-[1500px] mr-10 bg-[#F5F5F5] dark:bg-gray-900"
+    <div class=" overflow-x-auto shadow-md sm:rounded-lg  w-[420px]   md-w-[800px] lg:w-[1268px] mx-auto bg-[#F5F5F5] dark:bg-gray-900"
         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
 
 
         <!-- 📊 Table -->
-        <table class="w-[1468px] text-sm  text-left rtl:text-right text-gray-500 dark:text-gray-400 mx-auto">
-            <thead class="bg-[#2563EB] dark:bg-gray-700 text-white text-[18px] vazir mt-4">
+        <table class="w-[1268px] text-sm  overflow-x-auto   text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
+            <thead class="bg-[#2563EB] w-full  dark:bg-gray-700 text-white text-[18px] vazir mt-4">
                 <tr class="mt-3">
-                    <th colspan="9" class="rounded-2xl p-3">
+                    <th colspan="9" class="p-3">
                         <table class="w-full">
                             <tr>
-
                                 <th class="px-6 py-3 text-[18px] font-bold"><?php echo e(__('messages.fullname')); ?></th>
                                 <th class="px-6 py-3 text-[18px] font-bold"><?php echo e(__('messages.account_number')); ?></th>
                                 <th class="px-6 py-3 text-[18px] font-bold"><?php echo e(__('messages.category')); ?></th>

@@ -1,5 +1,5 @@
 <div>
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto px-0 ">
         <?php if(session()->has('message')): ?>
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
@@ -14,7 +14,7 @@
 
 
         
-        <div class="scroll-container overflow-x-auto whitespace-nowrap py-3 -mt-5">
+        <div class="scroll-container overflow-x-auto whitespace-nowrap py-3 ">
             <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <?php
             $currencyName = $currencyItem['name_fa'];
@@ -24,9 +24,9 @@
             ?>
 
             
-            <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
+            <div class="inline-block align-top ml-4 h-auto ">
                 <div
-                    class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] bg-gradient-to-b from-[#2563EB] to-[#5474BB] text-white">
+                    class="flex flex-col h-[180px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] bg-gradient-to-b from-[#2563EB] to-[#5474BB] text-white">
 
                     <h1 class="text-[24px] text-white"><?php echo e($currencyName); ?></h1>
 
@@ -120,14 +120,14 @@
             <?php endif; ?>
         </div>
         
-        <div class="flex flex-col lg:flex-row gap-10 mt-4">
+        <div class="flex flex-col lg:flex-row gap-5 mt-4">
 
             
-            <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[574px] p-[12px] h-[820px] rounded-[12px] space-y-2"
+            <div class="flex flex-col  bg-[#F5F5F5]  mx-auto w-[420px] lg:w-[474px] p-[10px]  h-auto rounded-[12px] space-y-2"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 
-                <div class="flex flex-row justify-between p-[10px] border border-[#8C8C8C] rounded-[12px] flex-wrap">
+                <div class="flex  space-y-3 flex-row justify-between p-[10px] border border-[#8C8C8C] rounded-[12px] flex-wrap">
                     <p class="flex justify-center items-center text-center">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" alt="" class="h-6 w-6">
                         <?php echo e($transactionId ? 'فورم ویرایش ترانزکشن' : 'فورم ثبت ترانزکشن'); ?>
@@ -135,9 +135,7 @@
                     </p>
 
                     <div class="flex gap-4 flex-wrap">
-                        <button class="bg-[#DD2424] rounded-[8px] p-[10px] text-white vazir font-semibold">توقف
-                            پیامک</button>
-
+                     
                         <button wire:click="toggleAccountType" class="rounded-[8px] p-[10px] text-white vazir font-semibold transition-colors duration-500 ease-in-out
     <?php echo e($accountType === 'نقدی' ? 'bg-[#2563EB]' : 'bg-[#DD2424]'); ?>">
                             <?php echo e($accountType === 'نقدی' ? 'نقدی' : 'بانکی'); ?>
@@ -219,7 +217,7 @@ unset($__errorArgs, $__bag); ?>
                         </div>
                         
                         <div class="flex items-end lg:w-[191px]">
-                            <button type="button" wire:click="addCustomer"
+                            <button type="button" wire:click.prevent="goToCustomers"
                                 class="flex items-center justify-center gap-2 w-full h-[60px] rounded-[12px] bg-transparent border-[#8C8C8C] border text-black font-vazir text-[16px] font-medium transition">
                                 افزودن مشتری
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/customer-add.svg')); ?>" alt="افزودن"
@@ -332,11 +330,30 @@ unset($__errorArgs, $__bag); ?>
                         </div>
 
                         
-                        <div class="lg:w-[290px]">
+                        <div class="lg:w-[290px] relative">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">تاریخ</label>
-                            <input type="text" id="datePicker" wire:model="date" wire:ignore placeholder="YYYY/MM/DD"
-                                class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
+
+                            <div class="relative">
+                                <input type="text" id="datePicker" wire:model="date" wire:ignore
+                                    placeholder="YYYY/MM/DD"
+                                    class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
+
+                                <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" width="20"
+                                    height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                                    <path
+                                        d="M8 2V5M16 2V5M3.5 9.09H20.5M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z"
+                                        stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+
+                                    <path
+                                        d="M15.6947 13.7H15.7037M15.6947 16.7H15.7037M11.9955 13.7H12.0045M11.9955 16.7H12.0045M8.29431 13.7H8.30329M8.29431 16.7H8.30329"
+                                        stroke="#8C8C8C" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </div>
                         </div>
+
                     </div>
 
                     
@@ -386,36 +403,38 @@ unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <!-- دکمه‌های نهایی -->
-                    <div class="flex gap-4 p-4 justify-center items-center text-center flex-wrap">
+                    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 py-4 justify-center items-center text-center ">
                         <button type="submit"
-                            class="bg-[#61B138] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
+                            class="bg-[#61B138] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
                             <?php echo e($transactionId ? 'بروزرسانی' : 'ثبت'); ?>
 
                         </button>
 
                         <?php if(!$transactionId): ?>
                         <button type="button" wire:click="submitAndPrint"
-                            class="bg-[#2563EB] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
+                            class="bg-[#2563EB] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
                             ثبت و چاپ
                         </button>
                         <?php endif; ?>
 
-                        <button type="button" wire:click="cancel"
-                            class="bg-[#DD2424] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
+                               <button type="button" wire:click="cancel"
+                            class="bg-[#DD2424] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
                             <?php echo e($transactionId ? 'لغو ویرایش' : 'انصراف'); ?>
 
                         </button>
+
+                      
                     </div>
 
                 </form>
             </div>
             
-            <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px]"
+            <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px] w-[440px] mb-5 md:w-[410px] lg:w-[150px] mx-auto"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 
                 <div
-                    class="flex flex-col md:flex-row justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
+                    class="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                     <h1 class="text-lg md:text-xl lg:text-2xl vazir">ترانزکشن های ثبت شده</h1>
 
                     <div class="flex items-center gap-3">
@@ -432,7 +451,7 @@ unset($__errorArgs, $__bag); ?>
                         </div>
                         <?php endif; ?>
 
-                        <div class="relative w-full md:w-[302px]">
+                        <div class="relative w-[340px] md:w-[500px]">
                             <!-- Input جستجوی زنده با wire:model.live -->
                             <input type="text" wire:model.live="search"
                                 class="border border-[#8C8C8C] w-full h-12 md:h-[51px] bg-transparent rounded-[12px] p-2 md:p-3 text-sm md:text-base pr-10"
@@ -513,7 +532,7 @@ unset($__errorArgs, $__bag); ?>
 
                                         </span>
                                     </td>
-                                    
+
                                     <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium w-40">
                                         <?php echo e(number_format($transaction->amount)); ?>
 
@@ -633,7 +652,13 @@ unset($__errorArgs, $__bag); ?>
         window.addEventListener('report-alert', event => {
                 alert(event.detail.message);
             });
+
+                window.addEventListener('redirectToCustomers', () => {
+        window.location.href = "<?php echo e(route('sarafi.customers.create')); ?>";
+    });
     </script>
+
+
 
     
     <style>

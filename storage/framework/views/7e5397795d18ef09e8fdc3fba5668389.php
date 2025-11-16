@@ -1,85 +1,79 @@
-<div class="p-6 border-[#8C8C8C] min-h-screen" style="font-family: 'header';">
+<div class="border-[#8C8C8C] min-h-screen" style="font-family: 'header';">
 
-    <h1 class="mb-8 text-3xl font-bold text-gray-700  vazir dark:text-white"><?php echo e(__('messages.page_title')); ?></h1>
+    <h1 class="mb-8 text-3xl font-bold text-gray-700   dark:text-white"><?php echo e(__('messages.page_title')); ?></h1>
 
     <div class="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-3">
 
         <!-- رسید/بردگی -->
-        <div
-            class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
-            <i class="fa-solid fa-wallet text-white text-xl"></i>
-            <a href="<?php echo e(route('sarafi.transactions')); ?>"
-                class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
-                <?php echo e(__('messages.recipt/withdraw')); ?>
+        <a href="<?php echo e(route('sarafi.transactions')); ?>" class="block">
+            <div class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 
+                text-white text-[16px] font-bold">
+                <i class="fa-solid fa-wallet text-white text-xl"></i>
+                <span class=" whitespace-nowrap overflow-hidden text-ellipsis font-bold">
+                    <?php echo e(__('messages.recipt/withdraw')); ?>
 
-            </a>
-        </div>
+                </span>
+            </div>
+        </a>
 
         <!-- انتقال -->
-        <div
-            class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
-            <i class="fa-solid fa-arrow-right-arrow-left text-white text-xl"></i>
-            <a href="<?php echo e(route('sarafi.account_to_account')); ?>"
-                class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
-                <?php echo e(__('messages.transfer')); ?>
-
-            </a>
-        </div>
+        <a href="<?php echo e(route('sarafi.account_to_account')); ?>" class="block">
+            <div
+                class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
+                <i class="fa-solid fa-arrow-right-arrow-left text-white text-xl"></i>
+                <span><?php echo e(__('messages.transfer')); ?></span>
+            </div>
+        </a>
 
 
         <!-- خرید و فروش ارز و صندوق -->
-        <div class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center  gap-3 text-white text-[16px] font-bold">
-            <img src="<?php echo e(asset('assets/sarafi/all_icon/bitcoin-(btc).svg')); ?>" alt="">
-            <a href="<?php echo e(route('sarafi.buy-sell-currency')); ?>"
-                class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
-                <?php echo e(__('messages.selling')); ?>
-
-            </a>
-        </div>
+        <a href="<?php echo e(route('sarafi.buy-sell-currency')); ?>" class="block">
+            <div
+                class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center gap-3 text-white text-[16px] font-bold">
+                <img src="<?php echo e(asset('assets/sarafi/all_icon/bitcoin-(btc).svg')); ?>" alt="">
+                <span><?php echo e(__('messages.selling')); ?></span>
+            </div>
+        </a>
 
         <!-- حساب تبدیل -->
-        <div
-            class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
-            <i class="fa-solid fa-exchange-alt text-white text-xl"></i>
-            <a href="<?php echo e(route('sarafi.conversion.in.account')); ?>"
-                class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
-                <?php echo e(__('messages.coversion_account')); ?>
-
-            </a>
-        </div>
+        <a href="<?php echo e(route('sarafi.conversion.in.account')); ?>" class="block">
+            <div
+                class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
+                <i class="fa-solid fa-exchange-alt text-white text-xl"></i>
+                <span><?php echo e(__('messages.coversion_account')); ?></span>
+            </div>
+        </a>
 
         <!-- انتقال تبدیل -->
-        <div
-            class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
-            <i class="fa-solid fa-hand-holding-dollar text-white text-xl"></i>
-            <a href="<?php echo e(route('sarafi.conversion-transfer')); ?>"
-                class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
-                <?php echo e(__('messages.coversion_transfer')); ?>
+        <a href="<?php echo e(route('sarafi.conversion-transfer')); ?>" class="block">
+            <div
+                class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
+                <i class="fa-solid fa-hand-holding-dollar text-white text-xl"></i>
+                <span><?php echo e(__('messages.coversion_transfer')); ?></span>
+            </div>
+        </a>
 
-            </a>
-        </div>
 
         <!-- حساب‌های روزنامه -->
-        <div
-            class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
-            <i class="fa-solid fa-book-open text-white text-xl"></i>
-            <a href="<?php echo e(route('sarafi.accountsjornal')); ?>"
-                class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
-                <?php echo e(__('messages.newspaper_accounts')); ?>
+        <a href="<?php echo e(route('sarafi.account-reports')); ?>" class="block">
+            <div
+                class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
+                <i class="fa-solid fa-book-open text-white text-xl"></i>
+                <span><?php echo e(__('messages.newspaper_accounts')); ?></span>
+            </div>
+        </a>
 
-            </a>
-        </div>
 
 
         <!-- ژورنال عمومی -->
-        <div
-            class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
-            <i class="fa-solid fa-file-invoice-dollar text-white text-xl"></i>
-            <a href="" class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
-                <?php echo e(__('messages.general_jornal')); ?>
+        <a href="" class="block">
+            <div
+                class="border bg-[#2563EB] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
+                <i class="fa-solid fa-file-invoice-dollar text-white text-xl"></i>
+                <span><?php echo e(__('messages.general_jornal')); ?></span>
+            </div>
+        </a>
 
-            </a>
-        </div>
 
     </div>
 
@@ -122,7 +116,7 @@
 
                     <!-- تعداد کاربران -->
                     <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#FF9AA2] to-[#E52C1C]
-   text-white">
+                      text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/  users.svg')); ?>" alt="" class="h-10 w-10">
@@ -137,7 +131,7 @@
 
                     <!-- تعداد مشتریان -->
                     <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform hover:scale-105 h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#FF9AA2] to-[#526FF5]
- text-white">
+                                     text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/customers.svg')); ?>" alt="" class="h-10 w-10">
@@ -152,7 +146,7 @@
 
                     <!-- تراکنش‌های امروز -->
                     <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#3293CC]
- text-white">
+                                     text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/exchange.svg')); ?>" alt="" class="h-10 w-10">
@@ -167,7 +161,7 @@
 
                     <!-- تراکنش‌های در انتظار -->
                     <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#239ABB] to-[#61B138]
- text-white">
+                                     text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/timer.svg')); ?>" alt="" class="h-10 w-10">
@@ -182,7 +176,7 @@
 
                     <!-- امروز سود -->
                     <div class="rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#F6F884] to-[#B2620C]
- text-white">
+                                     text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/dollar-circle.svg')); ?>" alt="" class="h-10 w-10">
@@ -196,7 +190,7 @@
 
                     <!-- مجموع تراکنش‌ها -->
                     <div class="rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#AAB2BE] to-[#1874F6]
- text-white">
+                                     text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/receipt-2.svg')); ?>" alt="" class="h-10 w-10">
@@ -211,7 +205,7 @@
 
                     <!-- حواله‌ها -->
                     <div class="rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#659EEF] to-[#2297B7]
- text-white">
+                                     text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/send-2.svg')); ?>" alt="" class="h-10 w-10">
@@ -226,7 +220,7 @@
 
                     <!-- مجموع موجودی حساب‌ها -->
                     <div class="rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#BC83F6] to-[#5A0FA6]
- text-white">
+                                     text-white">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/wallet-3.svg')); ?>" alt="" class="h-10 w-10">
@@ -272,12 +266,12 @@
                     <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
                         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-                        <div class="rounded-full bg-[#6939c9cf] p-6 flex items-center justify-center">
+                        <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
                             <i class="fa-solid fa-credit-card text-white text-2xl"></i>
                         </div>
                         <div class="space-y-2">
                             <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e($label); ?></h1>
-                            <p class="text-[25px] font-extrabold text-[#6939c9cf]">
+                            <p class="text-[25px] font-extrabold text-[#2563EB]">
                                 <?php echo e(number_format($safe_account[$key] ?? 0)); ?>
 
                             </p>

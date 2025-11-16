@@ -2,15 +2,19 @@
 
 namespace App\Livewire\Sarafi;
 
+use App\Models\Sarafi\BankAccount;
 use App\Models\Sarafi\Customer;
+use App\Models\Sarafi\RemittanceApproval;
 use App\Models\Sarafi\Remittances;
+use App\Models\Sarafi\Transaction;
 use App\Models\Sarafi\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Morilog\Jalali\Jalalian;
-use App\Models\Sarafi\RemittanceApproval;
 
 class Remittance extends Component
 {
@@ -18,7 +22,6 @@ class Remittance extends Component
 
     public $confirmDeleteId = null;
     public $remittanceId = null;
-
     public $selectedAccount;
     public $toAccount;
     public $source_account;
@@ -326,22 +329,172 @@ private function updateRemittanceApproval(Remittances $remittance)
         $this->confirmDeleteId = $id;
     }
 
- public function deleteConfirmed()
-{
-    $remittance = Remittances::findOrFail($this->confirmDeleteId);
+   public function deleteConfirmed()
+    {
+        DB::connection('sarafi')->transaction(function () {
+            $remittance = Remittances::findOrFail($this->confirmDeleteId);
+            
+            // اگر حواله تایید شده است، عملیات برگشت انجام شود
+            if ($remittance->state == 1) {
+                $this->reverseApprovedRemittance($remittance);
+            } else {
+                // اگر حواله تایید نشده، فقط حذف ساده
+                $this->deletePendingRemittance($remittance);
+            }
 
-    RemittanceApproval::where('remittance_id', $remittance->id)->delete();
+            session()->flash('message', 'حواله با موفقیت حذف شد.');
+        });
 
-    if ($remittance->remittance_image) {
-        Storage::disk('public')->delete($remittance->remittance_image);
+        $this->updateRemittances();
+        $this->confirmDeleteId = null;
     }
 
-    $remittance->delete();
 
-    session()->flash('message', 'حواله با موفقیت حذف شد.');
-    $this->updateRemittances();
-    $this->confirmDeleteId = null;
-}
+
+    /**
+     * برگشت دادن حواله تایید شده
+     */
+      private function reverseApprovedRemittance(Remittances $remittance)
+    {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        // 1. برگشت تراکنش‌های ایجاد شده
+        $this->reverseTransactions($remittance, $user, $adminId);
+
+        // 2. برگشت موجودی بانک
+        $this->reverseBankAccount($remittance, $user, $adminId);
+
+        // 3. آپدیت وضعیت تایید به "حذف شده"
+        $approval = RemittanceApproval::where('remittance_id', $remittance->id)->first();
+        if ($approval) {
+            $approval->update([
+                'approved' => 3, // 3 = حذف شده
+                'deleted_by' => $user->id,
+                'deleted_at' => now(),
+            ]);
+        }
+
+        // 4. حذف تصویر اگر وجود دارد
+        if ($remittance->remittance_image) {
+            Storage::disk('public')->delete($remittance->remittance_image);
+        }
+
+        // 5. حذف حواله اصلی
+        $remittance->delete();
+    }
+
+
+
+
+        /**
+     * حذف حواله در انتظار تایید
+     */
+      private function deletePendingRemittance(Remittances $remittance)
+    {
+        // حذف درخواست تایید
+        RemittanceApproval::where('remittance_id', $remittance->id)->delete();
+
+        // حذف تصویر اگر وجود دارد
+        if ($remittance->remittance_image) {
+            Storage::disk('public')->delete($remittance->remittance_image);
+        }
+
+        // حذف حواله اصلی
+        $remittance->delete();
+    }
+
+ private function reverseTransactions(Remittances $remittance, $user, $adminId)
+    {
+        // پیدا کردن تراکنش‌های مربوط به این حواله
+        $transactions = Transaction::where('remittance_id', $remittance->id)
+            ->where(function ($q) use ($adminId, $user) {
+                $q->where('admin_id', $adminId)
+                  ->orWhere('user_id', $user->id);
+            })
+            ->get();
+
+        foreach ($transactions as $transaction) {
+            // ایجاد تراکنش معکوس برای مشتری فرستنده (برداشت برگشتی)
+            if ($transaction->customer_id) {
+                Transaction::create([
+                    'customer_id' => $transaction->customer_id,
+                    'remittance_id' => $transaction->remittance_id,
+                    'user_id' => $user->id,
+                    'admin_id' => $adminId,
+                    'date' => now(),
+                    'type' => 'برد', // معکوس کردن نوع - برداشت از مشتری
+                    'amount' => $transaction->amount,
+                    'currency' => $transaction->currency,
+                    'account_type' => 'بانکی',
+                    'description' => 'برگشت حواله حذف شده - ' . ($transaction->description ?? ''),
+                    'document_number' => 'REV-' . ($transaction->document_number ?? 'REM-' . $remittance->id),
+                    'zone' => $transaction->zone,
+                    'by' => $user->name,
+                    'rate' => $transaction->rate ?? 1,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+
+            // ایجاد تراکنش معکوس برای مشتری گیرنده (واریز برگشتی)
+            if ($transaction->recipient_id) {
+                Transaction::create([
+                    'recipient_id' => $transaction->recipient_id,
+                    'remittance_id' => $transaction->remittance_id,
+                    'user_id' => $user->id,
+                    'admin_id' => $adminId,
+                    'date' => now(),
+                    'type' => 'رسید', // معکوس کردن نوع - واریز به گیرنده
+                    'amount' => $transaction->amount,
+                    'currency' => $transaction->currency,
+                    'account_type' => 'بانکی',
+                    'description' => 'برگشت حواله حذف شده - ' . ($transaction->description ?? ''),
+                    'document_number' => 'REV-' . ($transaction->document_number ?? 'REM-' . $remittance->id),
+                    'zone' => $transaction->zone,
+                    'by' => $user->name,
+                    'rate' => $transaction->rate ?? 1,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+
+            // غیرفعال کردن تراکنش اصلی (اختیاری)
+            $transaction->update(['status' => 'reversed']);
+        }
+    }
+
+       /**
+     * برگشت موجودی بانک
+     */
+   private function reverseBankAccount(Remittances $remittance, $user, $adminId)
+    {
+        $bankAccount = BankAccount::where('admin_id', $adminId)->first();
+
+        if ($bankAccount) {
+            $currentBalance = $bankAccount->{$remittance->currency} ?? 0;
+            
+            // کاهش موجودی بانک (چون هنگام تایید افزایش یافته بود)
+            if ($currentBalance >= $remittance->amount) {
+                $bankAccount->decrement($remittance->currency, $remittance->amount);
+            } else {
+                // اگر موجودی کافی نبود، فقط تا صفر کاهش دهید
+                $bankAccount->update([
+                    $remittance->currency => 0
+                ]);
+                
+                Log::warning("موجودی بانک برای برگشت کامل حواله کافی نبود", [
+                    'remittance_id' => $remittance->id,
+                    'currency' => $remittance->currency,
+                    'amount' => $remittance->amount,
+                    'current_balance' => $currentBalance
+                ]);
+            }
+        }
+    }
+
+
+
 
     public function cancel()
     {

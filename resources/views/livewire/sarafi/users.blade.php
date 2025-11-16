@@ -50,8 +50,9 @@
 
 
     @if($currentUser && $currentUser->role === 'admin' || $currentUser->role === 'superadmin' )
-    <!-- فرم ثبت کاربر -->
-    <div class="w-[1360px] p-4 bg-[#F5F5F5] dark:bg-gray-800 rounded-2xl mx-auto space-y-2"
+     <div class="pl-5">
+           <!-- فرم ثبت کاربر -->
+    <div class="w-[460px] md-w-[100px] lg:w-[1200px] p-4 mx-auto bg-[#F5F5F5] dark:bg-gray-800 rounded-2xl mx-auto space-y-2"
         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
         <!-- عنوان و آیکون -->
@@ -306,11 +307,12 @@
             </div>
         </form>
     </div>
+     </div>
 
     @endif
 
     <!-- فیلتر و سرچ -->
-    <div class="flex items-center mt-5 gap-3 w-[1360px] mx-auto">
+    <div class="flex w-[460px] md-w-[800px] lg:w-[1200px] items-center mt-5 gap-3 mx-auto">
 
         <!-- دکمه فیلتر -->
         <div class="relative">
@@ -345,7 +347,7 @@
         </div>
 
         <!-- جستجو -->
-        <div class="relative w-96">
+        <div class="relative w-80">
             <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
                 class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5">
             <input type="text" wire:model.debounce.500ms="search" wire:keydown.enter="searchUser"
@@ -355,12 +357,12 @@
     </div>
 
     <!-- جدول کاربران -->
-    <div class="w-[1360px] mt-4 mx-auto relative overflow-x-auto shadow-md sm:rounded-lg bg-[#F5F5F5] dark:bg-gray-900"
+    <div class="w-[420px] md-w-[1700px] lg:w-[1200px] p-6 mt-4  relative overflow-x-auto shadow-md sm:rounded-lg mb-4 mx-auto bg-[#F5F5F5] dark:bg-gray-900"
         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
         <table class="min-w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mb-5">
 
             <!-- هدر جدول -->
-            <thead class="bg-[#2563EB] dark:bg-gray-700 text-white text-[18px] vazir h-20">
+            <thead class="bg-[#2563EB] dark:bg-gray-700 text-white w-full text-[18px] vazir h-20">
                 <tr>
                     <th class="px-6 py-6 font-bold">
                         <span class="border border-white h-2 w-5 px-3 rounded-lg">#</span>

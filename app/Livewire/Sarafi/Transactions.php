@@ -205,6 +205,11 @@ class Transactions extends Component
         }
     }
 
+public function goToCustomers()
+{
+    $this->dispatch('redirectToCustomers');
+}
+
     public function updateCustomerCurrencyBalance()
     {
         if (!$this->selectedCustomerId) {

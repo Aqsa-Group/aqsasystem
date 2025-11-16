@@ -245,7 +245,6 @@
             <thead>
                 <tr>
                     <th>واحد پول</th>
-                    <th>موجودی قبلی</th>
                     <th>رسید</th>
                     <th>برد</th>
                     <th>بیلانس</th>
@@ -257,7 +256,6 @@
                 @foreach($balances as $balance)
                 <tr>
                     <td><strong>{{ $balance['name_fa'] }}</strong></td>
-                    <td class="amount-cell">{{ number_format($balance['previous_balance']) }}</td>
                     <td class="amount-cell">{{ number_format($balance['received']) }}</td>
                     <td class="amount-cell">{{ number_format($balance['spent']) }}</td>
                     <td class="amount-cell">{{ number_format($balance['balance']) }}</td>

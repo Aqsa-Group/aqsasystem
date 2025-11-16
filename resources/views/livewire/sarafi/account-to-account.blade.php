@@ -1,5 +1,5 @@
 <div>
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto ">
         @if (session()->has('message'))
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
@@ -24,7 +24,7 @@
         </div>
         @endif
 
-        <div class="scroll-container overflow-x-auto whitespace-nowrap py-3 -mt-5">
+        <div class="scroll-container overflow-x-auto whitespace-nowrap py-3">
             @foreach ($currencies as $currencyItem)
             @php
             $currencyName = $currencyItem['name_fa'];
@@ -132,10 +132,10 @@
             @endif
         </div>
 
-        
+
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
             {{-- فرم تراکنش --}}
-            <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[574px] p-[12px] h-fit rounded-[12px] space-y-2"
+            <div class="flex flex-col mx-auto bg-[#F5F5F5] w-[420px] lg:w-[534px] p-[10px] h-fit rounded-[12px] space-y-2"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 {{-- بالای فرم: فورم و دکمه‌ها --}}
@@ -207,9 +207,12 @@
                                     <option value="{{ $customer['account_number'] }} - {{ $customer['fullname'] }}">
                                         @endforeach
                                 </datalist>
+                                @if(empty($withdrawalAccount))
+
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                     <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
                                 </div>
+                                @endif
                             </div>
                             @error('withdrawalAccount')
                             <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
@@ -264,9 +267,13 @@
                                     <option value="{{ $customer['account_number'] }} - {{ $customer['fullname'] }}">
                                         @endforeach
                                 </datalist>
+                                @if (empty($depositAccount))
+                                    
+                            
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                     <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
                                 </div>
+                                @endif
                             </div>
                             @error('depositAccount')
                             <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
@@ -346,40 +353,40 @@
                         <div>
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">حساب کمیشن</label>
                             <div x-data="{
-                searchValue: '',
-                selectedId: @entangle('commissionAccount'),
-                customers: @js($customers),
-                init() {
-                    this.updateDisplay();
-                    $wire.on('edit-mode-activated', (data) => {
-                        this.selectedId = data.commissionAccount;
-                        this.searchValue = data.commissionCustomer;
-                        setTimeout(() => this.updateDisplay(), 100);
-                    });
-                },
-                handleSelect(event) {
-                    const selected = this.customers.find(
-                        c => event.target.value === `${c.account_number} - ${c.fullname}`
-                    );
-                    if (selected) {
-                        this.selectedId = selected.id;
-                        this.searchValue = `${selected.account_number} - ${selected.fullname}`;
-                        $wire.set('commissionAccount', selected.id);
-                    } else {
-                        this.selectedId = null;
-                        this.searchValue = '';
-                        $wire.set('commissionAccount', null);
-                    }
-                },
-                updateDisplay() {
-                    if (this.selectedId) {
-                        const selected = this.customers.find(c => c.id == this.selectedId);
-                        if (selected) {
-                            this.searchValue = `${selected.account_number} - ${selected.fullname}`;
-                        }
-                    }
-                }
-            }" x-init="init()" class="relative w-full">
+                                        searchValue: '',
+                                        selectedId: @entangle('commissionAccount'),
+                                        customers: @js($customers),
+                                        init() {
+                                            this.updateDisplay();
+                                            $wire.on('edit-mode-activated', (data) => {
+                                                this.selectedId = data.commissionAccount;
+                                                this.searchValue = data.commissionCustomer;
+                                                setTimeout(() => this.updateDisplay(), 100);
+                                            });
+                                        },
+                                        handleSelect(event) {
+                                            const selected = this.customers.find(
+                                                c => event.target.value === `${c.account_number} - ${c.fullname}`
+                                            );
+                                            if (selected) {
+                                                this.selectedId = selected.id;
+                                                this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                                                $wire.set('commissionAccount', selected.id);
+                                            } else {
+                                                this.selectedId = null;
+                                                this.searchValue = '';
+                                                $wire.set('commissionAccount', null);
+                                            }
+                                        },
+                                        updateDisplay() {
+                                            if (this.selectedId) {
+                                                const selected = this.customers.find(c => c.id == this.selectedId);
+                                                if (selected) {
+                                                    this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                                                }
+                                            }
+                                        }
+                                    }" x-init="init()" class="relative w-full">
                                 <input list="commissionCustomersList" x-model="searchValue" @change="handleSelect"
                                     placeholder="حساب دریافت کمیشن"
                                     class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
@@ -389,9 +396,11 @@
                                     <option value="{{ $customer['account_number'] }} - {{ $customer['fullname'] }}">
                                         @endforeach
                                 </datalist>
+                                @if(empty($commissionAccount))
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                     <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
                                 </div>
+                                @endif
                             </div>
                             @error('commissionAccount')
                             <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
@@ -441,10 +450,22 @@
 
                     {{-- تاریخ و شماره سند --}}
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
-                        <div>
+                        <div class="relative">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">تاریخ</label>
                             <input type="text" wire:model="transaction_date" placeholder="1404/4/20"
                                 class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500" />
+                            <svg class="absolute left-3 bottom-2 -translate-y-1/2 pointer-events-none" width="20"
+                                height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                                <path
+                                    d="M8 2V5M16 2V5M3.5 9.09H20.5M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z"
+                                    stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+
+                                <path
+                                    d="M15.6947 13.7H15.7037M15.6947 16.7H15.7037M11.9955 13.7H12.0045M11.9955 16.7H12.0045M8.29431 13.7H8.30329M8.29431 16.7H8.30329"
+                                    stroke="#8C8C8C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
                         </div>
                         <div>
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">نمبر سند</label>
@@ -522,15 +543,14 @@
             </div>
 
             {{-- جدول تراکنش‌های تبدیل ارز --}}
-            <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px]"
+            <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 rounded-[12px] w-[440px] mb-5 md:w-[410px] lg:w-[150px] mx-auto"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-
-                <div
-                    class="flex flex-col md:flex-row justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
+              <div
+                    class="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                     <h1 class="text-lg md:text-xl lg:text-2xl vazir">تراکنش های تبدیل ارز ثبت شده</h1>
 
                     <div class="flex items-center gap-3">
-                        <div class="relative w-full md:w-[250px]">
+                           <div class="relative w-[340px] md:w-[500px]">
                             <input type="text" wire:model.live="search" wire:keydown.debounce.500ms="search"
                                 class="border border-[#8C8C8C] w-full h-12 md:h-[51px] bg-transparent rounded-[12px] p-2 md:p-3 text-sm md:text-base pr-10"
                                 placeholder="جستجو بر اساس نام،...">

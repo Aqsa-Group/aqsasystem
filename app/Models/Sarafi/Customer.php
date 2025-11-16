@@ -25,6 +25,7 @@ class Customer extends Authenticatable
         'user_id',
         'admin_id',
         'created_by',
+        'related_customer_id'
     ];
 
     protected $hidden = [

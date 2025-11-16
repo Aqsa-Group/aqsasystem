@@ -515,58 +515,53 @@
         </button>
     </div>
 
-    <table class="w-full text-sm md:text-base text-left mt-6 rtl:text-right text-gray-500 dark:text-gray-400">
+<div class="overflow-x-auto w-full mt-6">
+    <table class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead
-            class="bg-[#2B65E5] w-full text-white text-[14px] md:text-[16px] h-[50px] md:h-[67px] sticky top-0"
+            class="bg-[#2B65E5] text-white text-[14px] md:text-[16px] h-[50px] md:h-[67px] sticky top-0"
             style="box-shadow: 0px 4px 4px 0px #00000040;">
             <tr>
-                <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-12 md:w-16" rowspan="2">#</th>
-                <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-32 md:w-48" rowspan="2">واحد پول</th>
-                <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">موجودی قبلی</th>
-                <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-32 md:w-40" rowspan="2">رسید</th>
-                <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">برد</th>
-                <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">بیلانس</th>
-                <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">موجودی فعلی</th>
-                <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-24 md:w-32" rowspan="2">وضعیت</th>
+                <th class="px-3 py-3 font-bold text-center" style="width: 5%;">#</th>
+                <th class="px-3 py-3 font-bold text-center" style="width: 15%;">واحد پول</th>
+                <th class="px-3 py-3 font-bold text-center" style="width: 15%;">رسید</th>
+                <th class="px-3 py-3 font-bold text-center" style="width: 15%;">برد</th>
+                <th class="px-3 py-3 font-bold text-center" style="width: 15%;">بیلانس</th>
+                <th class="px-3 py-3 font-bold text-center" style="width: 15%;">موجودی</th>
+                <th class="px-3 py-3 font-bold text-center" style="width: 20%;">وضعیت</th>
             </tr>
         </thead>
 
-        <tbody class="text-[18px] md:text-[18px] text-gray-800">
+        <tbody class="text-[16px] md:text-[18px] text-gray-800 bg-white">
             @if(count($balances) > 0)
-                @php $counter = 1; @endphp
-                @foreach($balances as $balance)
-                    <tr>
-                        <td class="px-2 py-4 vazir text-[18px] md:text-[16px] font-medium text-center w-16">
-                            {{ $counter++ }}
+                @foreach($balances as $index => $balance)
+                    <tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors duration-200">
+                        <td class="px-3 py-4 vazir font-medium text-center align-middle">
+                            {{ $index + 1 }}
                         </td>
 
-                        <td class="px-2 py-4 vazir text-[18px] md:text-[16px] font-medium text-center w-16">
+                        <td class="px-3 py-4 vazir font-medium text-center align-middle">
                             {{ $balance['name_fa'] }}
                         </td>
 
-                        <td class="px-2 py-4 vazir text-[18px] md:text-[16px] font-medium text-center w-16">
-                            {{ number_format($balance['previous_balance']) }}
-                        </td>
-
-                        <td class="px-2 py-4 vazir text-[18px] md:text-[16px] font-medium text-center w-16">
+                        <td class="px-3 py-4 vazir font-medium text-center align-middle">
                             {{ number_format($balance['received']) }}
                         </td>
 
-                        <td class="px-2 py-4 vazir text-[18px] md:text-[16px] font-medium text-center w-16">
+                        <td class="px-3 py-4 vazir font-medium text-center align-middle">
                             {{ number_format($balance['spent']) }}
                         </td>
 
-                        <td class="px-2 py-4 vazir text-[18px] md:text-[16px] font-medium text-center w-16">
+                        <td class="px-3 py-4 vazir font-medium text-center align-middle">
                             {{ number_format($balance['balance']) }}
                         </td>
 
-                        <td class="px-2 py-4 vazir text-[18px] md:text-[16px] font-medium text-center w-16">
+                        <td class="px-3 py-4 vazir font-medium text-center align-middle">
                             {{ number_format($balance['current_balance']) }}
                         </td>
 
-                        <td class="px-2 py-4 vazir text-[18px] md:text-[16px] font-medium text-center w-16">
+                        <td class="px-3 py-4 text-center align-middle">
                             <span
-                                class="px-2 py-1 rounded-full text-xs {{ $balance['status'] == 'طلبکار' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                class="inline-block px-3 py-1 rounded-full text-sm font-medium {{ $balance['status'] == 'طلبکار' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200' }}">
                                 {{ $balance['status'] }}
                             </span>
                         </td>
@@ -574,13 +569,14 @@
                 @endforeach
             @else
                 <tr>
-                    <td colspan="8" class="px-4 py-8 text-center text-gray-500">
+                    <td colspan="7" class="px-4 py-8 text-center text-gray-500 text-[16px]">
                         هیچ موجودی فعالی وجود ندارد
                     </td>
                 </tr>
             @endif
         </tbody>
     </table>
+</div>
 
 </div>
     </div>

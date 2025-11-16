@@ -140,7 +140,7 @@
 
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
             
-            <div class="flex flex-col bg-[#F5F5F5] w-full lg:w-[574px] p-[12px] h-fit rounded-[12px] space-y-2"
+            <div class="flex flex-col bg-[#F5F5F5] mx-auto w-[420px] lg:w-[500px] p-[12px] h-fit rounded-[12px] space-y-2"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 
@@ -219,9 +219,12 @@
                                         <option value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </datalist>
+                                    <?php if(empty($withdrawalAccount)): ?>
+
                                     <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                         <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
                                     </div>
+                                    <?php endif; ?>
                                 </div>
                                 <?php $__errorArgs = ['withdrawalAccount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -297,9 +300,13 @@ unset($__errorArgs, $__bag); ?>
                                         <option value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </datalist>
+                                    <?php if(empty($depositAccount)): ?>
+
+
                                     <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                         <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
                                     </div>
+                                    <?php endif; ?>
                                 </div>
                                 <?php $__errorArgs = ['depositAccount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -511,12 +518,24 @@ endif;
 unset($__errorArgs, $__bag); ?>
                         </div>
                         
-                        <div class="flex-1">
+                        <div class="flex- relative">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">تاریخ</label>
                             <div class="relative w-full">
                                 <input type="text" wire:model="transaction_date" placeholder="1404/4/20"
                                     class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" />
-                                <?php $__errorArgs = ['transaction_date'];
+                                    <svg class="absolute left-3 bottom-2 -translate-y-1/2 pointer-events-none" width="20"
+                                height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                                <path
+                                    d="M8 2V5M16 2V5M3.5 9.09H20.5M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z"
+                                    stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+
+                                <path
+                                    d="M15.6947 13.7H15.7037M15.6947 16.7H15.7037M11.9955 13.7H12.0045M11.9955 16.7H12.0045M8.29431 13.7H8.30329M8.29431 16.7H8.30329"
+                                    stroke="#8C8C8C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                                    <?php $__errorArgs = ['transaction_date'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -639,7 +658,7 @@ unset($__errorArgs, $__bag); ?>
                     </div>
 
                     
-                    <div class="flex gap-4 p-4 justify-center items-center text-center flex-wrap">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 py-4 justify-center items-center text-center flex-wrap">
                         <button type="submit" wire:loading.attr="disabled"
                             class="bg-[#2563EB] text-[14px] vazir font-semibold rounded-[8px] px-[74px] py-4 text-white hover:bg-blue-700 transition disabled:opacity-50">
                             <?php if($editingConversionId): ?>
@@ -650,7 +669,7 @@ unset($__errorArgs, $__bag); ?>
                             <span wire:loading>در حال ثبت...</span>
                         </button>
                         <button type="button" wire:click="resetForm" wire:loading.attr="disabled"
-                            class="bg-[#DD2424] text-[14px] vazir font-semibold rounded-[8px] px-[74px] py-4 text-white hover:bg-red-700 transition">
+                            class="bg-[#DD2424] text-[14px] vazir font-semibold rounded-[8px] px-[52px] py-4 text-white hover:bg-red-700 transition">
                             <?php if($editingConversionId): ?> انصراف از ویرایش <?php else: ?> انصراف <?php endif; ?>
                         </button>
                     </div>
@@ -658,7 +677,7 @@ unset($__errorArgs, $__bag); ?>
             </div>
 
             
-            <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px]"
+            <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px] w-[440px] mb-5 md:w-[1010px] lg:w-[150px]"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 <div

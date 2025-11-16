@@ -246,7 +246,6 @@
             <thead>
                 <tr>
                     <th>واحد پول</th>
-                    <th>موجودی قبلی</th>
                     <th>رسید</th>
                     <th>برد</th>
                     <th>بیلانس</th>
@@ -258,7 +257,6 @@
                 <?php $__currentLoopData = $balances; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $balance): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr>
                     <td><strong><?php echo e($balance['name_fa']); ?></strong></td>
-                    <td class="amount-cell"><?php echo e(number_format($balance['previous_balance'])); ?></td>
                     <td class="amount-cell"><?php echo e(number_format($balance['received'])); ?></td>
                     <td class="amount-cell"><?php echo e(number_format($balance['spent'])); ?></td>
                     <td class="amount-cell"><?php echo e(number_format($balance['balance'])); ?></td>

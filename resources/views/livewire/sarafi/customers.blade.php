@@ -1,5 +1,5 @@
-<div class="min-h-screen  dark:bg-gray-900 py-4 w-full p-6" >
-      @if (session()->has('message'))
+<div class="min-h-screen  dark:bg-gray-900 py-4 w-full p-6">
+    @if (session()->has('message'))
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
         class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
         <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -8,9 +8,10 @@
             </h2>
         </div>
     </div>
-@endif
+    @endif
 
-    <div class="w-full p-4 bg-[#F5F5F5] dark:bg-gray-800 rounded-2xl " style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+    <div class="w-full h-auto p-4 bg-[#F5F5F5] dark:bg-gray-800 rounded-2xl "
+        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
         <!-- هدر -->
         <div class="text-center mb-6">
             <h2 class="text-2xl font-bold text-gray-900 vazir dark:text-white tracking-widest">
@@ -25,7 +26,7 @@
 
         <form wire:submit.prevent="saveCustomer" class="w-full">
             <!-- بخش آپلود تصاویر -->
-            <div class="flex justify-center gap-72 mb-6">
+            <div class="grid grid-cols-2  gap-4 md:gap-44 mb-6">
                 <!-- عکس پروفایل -->
                 <div class="flex flex-col items-center">
                     <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -76,7 +77,7 @@
             <!-- فیلدهای اطلاعات -->
             <div class="space-y-4 w-full">
                 <!-- ردیف 1 -->
-                <div class="grid grid-cols-2 gap-4 w-full">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 w-full">
                     <div class="w-full">
                         <label class="block text-sm font-medium text-black vazir dark:text-gray-300 mb-2">
                             {{ __('messages.fullname') }}
@@ -101,7 +102,7 @@
                                 <input type="text" wire:model.lazy="account"
                                     placeholder="{{ __('messages.placeholder_account') }} "
                                     class="w-full p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                    maxlength="16" @if(!$customerId)  @endif>
+                                    maxlength="16" @if(!$customerId) @endif>
                                 <div class="absolute left-3 top-4 text-gray-400">
                                     <img src="{{ asset('assets/sarafi/all_icon/card.svg') }}" alt="">
 
@@ -120,7 +121,7 @@
                 </div>
 
                 <!-- ردیف 2 -->
-                <div class="grid grid-cols-2 gap-4 w-full">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 w-full">
                     <div class="w-full">
                         <label class="block text-sm font-medium text-black dark:text-gray-300 mb-2 vazir">
                             {{ __('messages.category') }}
@@ -129,10 +130,13 @@
                             <select wire:model="category"
                                 class="w-full p-3 rounded-xl py-4 border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white appearance-none">
                                 <option value="">{{ __('messages.choose') }}</option>
-                                <option value="{{ __('messages.category_normal') }}">{{ __('messages.category_normal') }}</option>
-                                <option value="{{ __('messages.category_regular') }}">{{ __('messages.category_regular') }}</option>
+                                <option value="{{ __('messages.category_normal') }}">{{ __('messages.category_normal')
+                                    }}</option>
+                                <option value="{{ __('messages.category_regular') }}">{{ __('messages.category_regular')
+                                    }}</option>
                                 <option value="gold">{{ __('messages.category_gold') }}</option>
-                                <option value="{{ __('messages.category_special') }}">{{ __('messages.category_special') }}</option>
+                                <option value="{{ __('messages.category_special') }}">{{ __('messages.category_special')
+                                    }}</option>
                             </select>
                             <div class="absolute left-3 top-4 text-gray-400">
                                 <img src="{{ asset('assets/sarafi/all_icon/clipboard.svg') }}" alt="">
@@ -144,108 +148,256 @@
 
                     <div class="w-full">
                         <label class="block text-sm font-medium text-black dark:text-gray-300 mb-2 vazir">
-                            {{ __('messages.city') }}
-
+                            {{ __('messages.related_customer') }}
                         </label>
+
                         <div class="relative w-full">
-                            <input type="text" wire:model="city" placeholder="{{ __('messages.placeholder_city') }} "
-                                class="w-full p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <div class="absolute left-3 top-4 text-gray-400">
-                                <img src="{{ asset('assets/sarafi/all_icon/Group.svg') }}" alt="">
+                            <div x-data="{
+                                    searchValue: '',
+                                    selectedId: @entangle('relatedCustomerId'),
+                                    customers: @js($relatedCustomers),
+
+                                    handleSelect(event) {
+                                        const selected = this.customers.find(
+                                            c => event.target.value === `${c.account_number} - ${c.fullname}`
+                                        );
+                                        if (selected) {
+                                            this.selectedId = selected.id;
+                                            this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                                            // فراخوانی متد Livewire برای انتخاب مشتری
+                                            $wire.selectRelatedCustomer(selected.id);
+                                        } else {
+                                            // اگر چیزی اشتباه وارد شد، مقدار پاک شود
+                                            this.selectedId = null;
+                                            this.searchValue = '';
+                                            $wire.set('relatedCustomerId', null);
+                                        }
+                                    },
+
+                                    updateDisplay() {
+                                        const selected = this.customers.find(c => c.id === this.selectedId);
+                                        this.searchValue = selected ? `${selected.account_number} - ${selected.fullname}` : '';
+                                    },
+
+                                    clearSelection() {
+                                        this.selectedId = null;
+                                        this.searchValue = '';
+                                        $wire.set('relatedCustomerId', null);
+                                    }
+                                }" x-init="updateDisplay(); $watch('selectedId', () => updateDisplay())" class="relative w-full">
+
+                                <!-- فیلد جستجو -->
+                                <input type="text" list="relatedCustomersList" x-model="searchValue"
+                                    @change="handleSelect"
+                                    placeholder="{{ __('messages.search_customer_placeholder') }}"
+                                    class="w-full p-3 rounded-xl py-4 border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white pr-10"
+                                    autocomplete="off">
+
+                                <!-- دیتالیست برای گزینه‌ها -->
+                                <datalist id="relatedCustomersList">
+                                    @foreach ($relatedCustomers as $customer)
+                                    <option value="{{ $customer['account_number'] }} - {{ $customer['fullname'] }}">
+                                        {{ $customer['fullname'] }} ({{ $customer['phone'] }})
+                                    </option>
+                                    @endforeach
+                                </datalist>
+
+                                <!-- آیکون dropdown -->
+                                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
+                                            stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                        <path d="M3.40991 22C3.40991 18.13 7.25994 15 11.9999 15" stroke="#292D32"
+                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path
+                                            d="M18.2 21.4C19.9673 21.4 21.4 19.9673 21.4 18.2C21.4 16.4327 19.9673 15 18.2 15C16.4327 15 15 16.4327 15 18.2C15 19.9673 16.4327 21.4 18.2 21.4Z"
+                                            stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                        <path d="M22 22L21 21" stroke="#292D32" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </div>
+
+                                <!-- دکمه پاک کردن (فقط وقتی مقداری انتخاب شده باشد) -->
+                                <template x-if="selectedId">
+                                    <button type="button" @click="clearSelection()"
+                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-red-500 transition-colors">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </button>
+                                </template>
                             </div>
                         </div>
-                        @error('city') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+
+                        @error('relatedCustomerId')
+                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
 
-                <!-- ردیف 3 -->
-                <div class="grid grid-cols-2 gap-4 w-full">
-                    <div class="w-full">
-                        <label class="block text-sm font-medium text-black vazir dark:text-gray-300 mb-2">
-                            {{ __('messages.phone') }}
-                        </label>
-                        <div class="relative w-full">
-                            <input type="text" wire:model.lazy="phone"
-                                placeholder="{{ __('messages.placeholder_phone') }} "
-                                class="w-full p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <div class="absolute left-3 top-4 text-gray-400">
-                                <img src="{{ asset('assets/sarafi/all_icon/call.svg') }}" alt="">
+                <div class="w-full">
+                    <label class="block text-sm font-medium text-black dark:text-gray-300 mb-2 vazir">
+                        {{ __('messages.city') }}
 
-                            </div>
+                    </label>
+                    <div class="relative w-full">
+                        <input type="text" wire:model="city" placeholder="{{ __('messages.placeholder_city') }} "
+                            class="w-full p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <div class="absolute left-3 top-4 text-gray-400">
+                            <img src="{{ asset('assets/sarafi/all_icon/Group.svg') }}" alt="">
                         </div>
-                        @error('phone') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                     </div>
-
-                    <div class="w-full">
-                        <label class="block text-sm font-medium text-black vazir dark:text-gray-300 mb-2">
-                            {{ __('messages.tazkira') }}
-
-                        </label>
-                        <div class="relative w-full">
-                            <input type="text" wire:model.lazy="tazkira"
-                                placeholder="{{ __('messages.placeholder_tazkira') }} "
-                                class="w-full p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <div class="absolute left-3 top-4 text-gray-400">
-                                <img src="{{ asset('assets/sarafi/all_icon/qlementine-icons_id-card-16.svg') }}" alt="">
-                            </div>
-                        </div>
-                        @error('tazkira') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                    </div>
-                </div>
-
-                <!-- ردیف 4 -->
-                <div class="grid grid-cols-2 gap-4 w-full">
-                    <div class="w-full">
-                        <label class="block text-sm font-medium text-black dark:text-gray-300 mb-2">
-                            {{ __('messages.whatsapp') }}
-                        </label>
-                        <div class="relative w-full">
-                            <input type="text" wire:model.lazy="whatsapp"
-                                placeholder="{{ __('messages.placeholder_whatsapp') }} "
-                                class="w-full p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <div class="absolute left-3 top-4 text-green-500">
-                                <img src="{{ asset('assets/sarafi/all_icon/Vector.svg') }}" alt="">
-                            </div>
-                        </div>
-                        @error('whatsapp') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                    </div>
-
-                    <div class="w-full">
-                        <label class="block text-sm font-medium text-black dark:text-gray-300 mb-2">
-                            {{ __('messages.password') }}
-                        </label>
-                        <div class="relative w-full">
-                            <input type="password" wire:model="password"
-                                placeholder="{{ __('messages.placeholder_password') }} "
-                                class="w-full p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <div class="absolute left-3 top-4 text-gray-400">
-                                <img src="{{ asset('assets/sarafi/all_icon/lock.svg') }}" alt="">
-                            </div>
-                        </div>
-                        @error('password') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                    </div>
+                    @error('city') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                 </div>
             </div>
 
-            <!-- دکمه‌های اقدام -->
-            <div class="flex justify-center gap-4 mt-8 pt-6 pb-5  dark:border-gray-700 w-full">
-                <!-- لغو -->
-                <button type="button" wire:click="resetForm"
-                    class="flex items-center justify-center gap-2 w-1/2 py-4 text-sm bg-[#B10909] text-white rounded-xl dark:bg-gray-700 dark:text-gray-200 transition">
-                    {{ __('messages.cancel') }}
+            <!-- ردیف 3 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 w-full">
+                <div class="w-full">
+                    <label class="block text-sm font-medium text-black vazir dark:text-gray-300 mb-2">
+                        {{ __('messages.phone') }}
+                    </label>
+                    <div class="relative w-full">
+                        <input type="text" wire:model.lazy="phone" placeholder="{{ __('messages.placeholder_phone') }} "
+                            class="w-full p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <div class="absolute left-3 top-4 text-gray-400">
+                            <img src="{{ asset('assets/sarafi/all_icon/call.svg') }}" alt="">
 
-                </button>
+                        </div>
+                    </div>
+                    @error('phone') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                </div>
 
-                <!-- ذخیره / بروزرسانی -->
-                <button type="submit"
-                    class="flex items-center justify-center gap-2 w-1/2 py-4 text-sm bg-[#2563EB] text-white rounded-xl hover:bg-blue-700 transition">
-                    {{ $customerId ? __('messages.update') : __('messages.save') }}
-                </button>
+                <div class="w-full">
+                    <label class="block text-sm font-medium text-black vazir dark:text-gray-300 mb-2">
+                        {{ __('messages.tazkira') }}
+
+                    </label>
+                    <div class="relative w-full">
+                        <input type="text" wire:model.lazy="tazkira"
+                            placeholder="{{ __('messages.placeholder_tazkira') }} "
+                            class="w-full p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <div class="absolute left-3 top-4 text-gray-400">
+                            <img src="{{ asset('assets/sarafi/all_icon/qlementine-icons_id-card-16.svg') }}" alt="">
+                        </div>
+                    </div>
+                    @error('tazkira') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                </div>
             </div>
 
-        </form>
+            <!-- ردیف 4 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 w-full">
+                <div class="w-full">
+                    <label class="block text-sm font-medium text-black dark:text-gray-300 mb-2">
+                        {{ __('messages.whatsapp') }}
+                    </label>
+                    <div class="relative w-full">
+                        <input type="text" wire:model.lazy="whatsapp"
+                            placeholder="{{ __('messages.placeholder_whatsapp') }} "
+                            class="w-full p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <div class="absolute left-3 top-4 text-green-500">
+                            <img src="{{ asset('assets/sarafi/all_icon/Vector.svg') }}" alt="">
+                        </div>
+                    </div>
+                    @error('whatsapp') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
+                <div class="w-full">
+                    <label class="block text-sm font-medium text-black dark:text-gray-300 mb-2">
+                        {{ __('messages.password') }}
+                    </label>
+                    <div class="relative w-full">
+                        <input type="password" wire:model="password"
+                            placeholder="{{ __('messages.placeholder_password') }} "
+                            class="w-full p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <div class="absolute left-3 top-4 text-gray-400">
+                            <img src="{{ asset('assets/sarafi/all_icon/lock.svg') }}" alt="">
+                        </div>
+                    </div>
+                    @error('password') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                </div>
+            </div>
+              <!-- دکمه‌های اقدام -->
+    <div class="flex justify-center gap-4 mt-8 pt-6 pb-5  dark:border-gray-700 w-full">
+        <!-- لغو -->
+        <button type="button" wire:click="resetForm"
+            class="flex items-center justify-center gap-2 w-1/2 py-4 text-sm bg-[#B10909] text-white rounded-xl dark:bg-gray-700 dark:text-gray-200 transition">
+            {{ __('messages.cancel') }}
+
+        </button>
+
+        <!-- ذخیره / بروزرسانی -->
+        <button type="submit"
+            class="flex items-center justify-center gap-2 w-1/2 py-4 text-sm bg-[#2563EB] text-white rounded-xl hover:bg-blue-700 transition">
+            {{ $customerId ? __('messages.update') : __('messages.save') }}
+        </button>
     </div>
+
+    </div>
+
+  
+    </form>
+
+    <style>
+        .scroll-container {
+            scrollbar-width: thin;
+            scrollbar-color: #e5e7eb #f9fafb;
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .scroll-container::-webkit-scrollbar-track {
+            background: #f9fafb;
+            border-radius: 10px;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: #e5e7eb;
+            border-radius: 10px;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb:hover {
+            background: #cbd5e1;
+        }
+
+        #selectCustomer {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: transparent;
+            padding-left: 1rem;
+        }
+
+        input[list]::-webkit-calendar-picker-indicator {
+            display: none !important;
+            -webkit-appearance: none;
+        }
+
+        /* در Firefox */
+        input[list]::-moz-list-button {
+            display: none !important;
+        }
+
+        /* در Edge جدید */  
+        input[list]::-ms-clear,
+        input[list]::-ms-expand {
+            display: none !important;
+        }
+    </style>
+</div>
 
 
 
 </div>
+@push('script')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+@endpush

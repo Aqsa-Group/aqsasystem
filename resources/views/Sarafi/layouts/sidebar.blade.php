@@ -8,6 +8,7 @@
     @include('Sarafi.layouts.links')
 
     <style>
+
         /* لودر تمام صفحه فوق العاده زیبا */
         #loader {
             position: fixed;
@@ -535,7 +536,7 @@
     </style>
 </head>
 
-<body class="vazir dark:text-white">
+<body class="vazir dark:text-white overflow-x-hidden">
 
     <!-- لودر فوق العاده زیبا -->
     <div id="loader">
@@ -963,65 +964,8 @@
                         </div>
                     </div>
 
-                    <!-- ویرایش حسابات و نرخ ارز -->
-                    <div>
-                        <button @click="openItems.editAccounts = !openItems.editAccounts; active = 'editAccounts'"
-                            :class="(active === 'editAccounts' || active === 'edit-accounts') ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
-                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
-                            <span class="flex items-center gap-2">
-                                <img src="{{ asset('assets/sarafi/all_icon/edit.svg') }}" class="w-5 h-5"
-                                    :class="(active === 'editAccounts' || active === 'edit-accounts') ? 'filter invert brightness-0' : 'text-gray-500'">
-                                {{ __('messages.edit_accounts') }}
-                            </span>
-                            <svg :class="[openItems.editAccounts ? 'rotate-180' : '', (active === 'editAccounts' || active === 'edit-accounts') ? 'text-white' : 'text-gray-500']"
-                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                        <div x-show="openItems.editAccounts" x-transition class="mr-6 mt-1 space-y-1">
-                            <a href="#"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                                @click="setActive('edit-accounts', 'editAccounts')"
-                                :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                                <img src="{{ asset('assets/sarafi/all_icon/edit.svg') }}" class="w-4 h-4"
-                                    :class="active === 'edit-accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
-                                {{ __('messages.edit_accounts_info') }}
-                            </a>
-                        </div>
-                    </div>
 
-                    <!-- گزارش و آمار حسابات -->
-                    <div>
-                        <button @click="openItems.reports = !openItems.reports; active = 'reports'"
-                            :class="(active === 'reports' || active === 'view-reports') ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
-                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
-                            <span class="flex items-center gap-2">
-                                <img src="{{ asset('assets/sarafi/all_icon/graph.svg') }}" class="w-5 h-5"
-                                    :class="(active === 'reports' || active === 'view-reports') ? 'filter invert brightness-0' : 'text-gray-500'">
-                                {{ __('messages.reports') }}
-                            </span>
-                            <svg :class="[openItems.reports ? 'rotate-180' : '', (active === 'reports' || active === 'view-reports') ? 'text-white' : 'text-gray-500']"
-                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                        <div x-show="openItems.reports" x-transition class="mr-6 mt-1 space-y-1">
-                            <a href="#"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                                @click="setActive('view-reports', 'reports')"
-                                :class="active === 'view-reports' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                                <img src="{{ asset('assets/sarafi/all_icon/chart.svg') }}" class="w-4 h-4"
-                                    :class="active === 'view-reports' ? 'filter invert brightness-0' : 'text-gray-500'">
-                                {{ __('messages.view_reports') }}
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- کنترول و بررسی معاملات -->
+                          <!-- کنترول و بررسی معاملات -->
                     <div>
                         <button @click="openItems.transactions = !openItems.transactions; active = 'transactions'"
                             :class="(active === 'transactions' || active === 'control-transactions') ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
@@ -1079,6 +1023,68 @@
                             </a>
                         </div>
                     </div>
+
+
+                         <!-- گزارش و آمار حسابات -->
+                    <div>
+                        <button @click="openItems.reports = !openItems.reports; active = 'reports'"
+                            :class="(active === 'reports' || active === 'view-reports') ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            <span class="flex items-center gap-2">
+                                <img src="{{ asset('assets/sarafi/all_icon/graph.svg') }}" class="w-5 h-5"
+                                    :class="(active === 'reports' || active === 'view-reports') ? 'filter invert brightness-0' : 'text-gray-500'">
+                                {{ __('messages.reports') }}
+                            </span>
+                            <svg :class="[openItems.reports ? 'rotate-180' : '', (active === 'reports' || active === 'view-reports') ? 'text-white' : 'text-gray-500']"
+                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="openItems.reports" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="{{ route('sarafi.account-reports') }}"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="setActive('view-reports', 'reports')"
+                                :class="active === 'view-reports' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                <img src="{{ asset('assets/sarafi/all_icon/chart.svg') }}" class="w-4 h-4"
+                                    :class="active === 'view-reports' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                گزارش حسابات
+                            </a>
+                        </div>
+                    </div>
+                    <!-- ویرایش حسابات و نرخ ارز -->
+                    <div>
+                        <button @click="openItems.editAccounts = !openItems.editAccounts; active = 'editAccounts'"
+                            :class="(active === 'editAccounts' || active === 'edit-accounts') ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            <span class="flex items-center gap-2">
+                                <img src="{{ asset('assets/sarafi/all_icon/edit.svg') }}" class="w-5 h-5"
+                                    :class="(active === 'editAccounts' || active === 'edit-accounts') ? 'filter invert brightness-0' : 'text-gray-500'">
+                                {{ __('messages.edit_accounts') }}
+                            </span>
+                            <svg :class="[openItems.editAccounts ? 'rotate-180' : '', (active === 'editAccounts' || active === 'edit-accounts') ? 'text-white' : 'text-gray-500']"
+                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="openItems.editAccounts" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="#"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="setActive('edit-accounts', 'editAccounts')"
+                                :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                <img src="{{ asset('assets/sarafi/all_icon/edit.svg') }}" class="w-4 h-4"
+                                    :class="active === 'edit-accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                {{ __('messages.edit_accounts_info') }}
+                            </a>
+                        </div>
+                    </div>
+
+               
+
+              
 
                     <!-- مدیریت و دسترسی -->
                     <div>
@@ -1228,7 +1234,7 @@
             </div>
 
             <!-- محتوای اصلی -->
-            <main class="flex-1  main-content-wrapper">
+            <main class="flex-1 mx-auto main-content-wrapper px-3  w-[500px] overflow-x-hidden">
                 @yield('content')
             </main>
         </div>

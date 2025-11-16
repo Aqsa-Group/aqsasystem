@@ -109,7 +109,7 @@
         </div>
 
         <!-- جدول سمت راست -->
-        <div class="flex-1 flex flex-col bg-[#F5F5F5] p-1 md:p-4 lg:p-6 rounded-[12px] w-[420px] overflow-x-auto md:w-full lg:w-full"
+        <div class="flex-1 flex flex-col bg-[#F5F5F5] p-1 md:p-4 lg:p-6 rounded-[12px] w-[420px] overflow-x-auto md:w-full lg:w-full mb-4 mx-auto"
             style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
             <div class="flex gap-2 border border-[#8C8C8C] rounded-[12px] p-6 mb-4">
                 <img src="{{ asset('assets/sarafi/all_icon/exchange-rate.svg') }}" alt="">

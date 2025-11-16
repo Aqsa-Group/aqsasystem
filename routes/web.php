@@ -254,6 +254,17 @@ Route::get('/sarafi/trash-edit', function () {
 })->name('sarafi.trash-edit');
 
 
+Route::get('/sarafi/account-reports', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.account-reports');
+})->name('sarafi.account-reports');
+
+
+
+
+
 
 
 

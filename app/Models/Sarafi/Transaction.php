@@ -29,7 +29,8 @@ class Transaction extends Model
         'transaction_file',
         'conversion_transfer_id',
         'conversion_in_account_id',
-        'account_to_id'
+        'account_to_id',
+        'remittance_id'
     ];
 
     protected $casts = [
