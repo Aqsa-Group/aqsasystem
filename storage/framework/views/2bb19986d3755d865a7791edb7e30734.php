@@ -1,5 +1,5 @@
 <div>
-    <?php if(session()->has('message')): ?>
+    <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
         class="fixed top-0 left-0 right-0 w-full z-[9999] bg-gradient-to-br from-indigo-400 to-indigo-500 vazir">
         <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -9,7 +9,7 @@
             </h2>
         </div>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
     <?php if(session()->has('error')): ?>
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
@@ -21,7 +21,7 @@
             </h2>
         </div>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
     <!-- کارت‌های آماری برداشت -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
@@ -156,7 +156,7 @@
                             </select>
 
                         </div>
-                        <?php $__errorArgs = ['type'];
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['type'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -165,7 +165,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
                     <div class="flex-1">
@@ -179,7 +179,7 @@ unset($__errorArgs, $__bag); ?>
                             </select>
 
                         </div>
-                        <?php $__errorArgs = ['currency'];
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['currency'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -188,7 +188,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
 
@@ -206,13 +206,13 @@ unset($__errorArgs, $__bag); ?>
                                 class="w-full h-[60px] p-3 rounded-[12px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500"
                                 oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
                             <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
-                                <?php if($currency === 'AFN'): ?> افغانی
+                                <!--[if BLOCK]><![endif]--><?php if($currency === 'AFN'): ?> افغانی
                                 <?php elseif($currency === 'USD'): ?> دالر
                                 <?php else: ?> تومان
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
                         </div>
-                        <?php $__errorArgs = ['amount'];
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['amount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -221,7 +221,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
                     <div class="lg:w-[290px]">
@@ -237,7 +237,7 @@ unset($__errorArgs, $__bag); ?>
                     <label class="block text-[16px] font-medium text-black mb-2 vazir">شرح برداشت</label>
                     <textarea wire:model="description" rows="3" placeholder="توضیحات برداشت از صندوق..."
                         class="w-full p-3 rounded-[12px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
-                    <?php $__errorArgs = ['description'];
+                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['description'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -246,7 +246,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
 
                 <!-- دکمه‌ها -->
@@ -278,24 +278,26 @@ unset($__errorArgs, $__bag); ?>
             </div>
 
             
-            <div class="overflow-x-auto w-full">
-                <div class="max-h-[400px] overflow-y-auto min-w-[890px]">
-                    <table
-                        class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead
-                            class="bg-gradient-to-br from-indigo-400 to-indigo-500 dark:bg-gray-700 text-white text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0">
-                            <tr>
-                                <th class="px-4 py-4 font-bold w-16">#</th>
-                                <th class="px-4 py-4 font-bold w-32">نوع برداشت</th>
-                                <th class="px-4 py-4 font-bold w-32">ارز</th>
-                                <th class="px-4 py-4 font-bold w-40">مبلغ</th>
-                                <th class="px-4 py-4 font-bold w-80 text-center">توضیحات</th>
-                                <th class="px-4 py-4 font-bold w-40">تاریخ</th>
-                                <th class="px-4 py-4 font-bold w-48 text-center">عملیات</th>
-                            </tr>
-                        </thead>
+           <div class="overflow-x-auto w-full">
+    <div class="max-h-[400px] overflow-y-auto min-w-[890px]">
+
+        <table class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500">
+            <thead
+                class="bg-gradient-to-br from-indigo-400 to-indigo-500 text-white
+                text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0 z-10">
+                <tr>
+                    <th class="px-4 py-4 font-bold w-16">#</th>
+                    <th class="px-4 py-4 font-bold w-32">نوع برداشت</th>
+                    <th class="px-4 py-4 font-bold w-32">ارز</th>
+                    <th class="px-4 py-4 font-bold w-40">مبلغ</th>
+                    <th class="px-4 py-4 font-bold w-80 text-center">توضیحات</th>
+                    <th class="px-4 py-4 font-bold w-40">تاریخ</th>
+                    <th class="px-4 py-4 font-bold w-48 text-center">عملیات</th>
+                </tr>
+            </thead>
+
                         <tbody>
-                            <?php $__empty_1 = true; $__currentLoopData = $withdrawals; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $withdrawal): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                            <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $withdrawals; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $withdrawal): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                             <tr class="text-black border-b border-[#D9D9D9] bg-transparent">
                                 <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">
                                     <?php echo e($key + 1); ?>
@@ -321,22 +323,22 @@ unset($__errorArgs, $__bag); ?>
 
 
                                 <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium w-32">
-                                    <?php if($withdrawal->currency === 'AFN'): ?>
+                                    <!--[if BLOCK]><![endif]--><?php if($withdrawal->currency === 'AFN'): ?>
                                     <span class="bg-rose-100 text-rose-800 px-3 py-1 rounded-full">افغانی</span>
                                     <?php elseif($withdrawal->currency === 'USD'): ?>
                                     <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full">دالر</span>
                                     <?php else: ?>
                                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">تومان</span>
-                                    <?php endif; ?>
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </td>
                                 <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium w-40">
                                     <?php echo e(number_format($withdrawal->amount)); ?>
 
                                     <span class="text-sm text-gray-500">
-                                        <?php if($withdrawal->currency === 'afn'): ?> افغانی
-                                        <?php elseif($withdrawal->currency === 'usd'): ?> دالر
+                                        <!--[if BLOCK]><![endif]--><?php if($withdrawal->currency === 'AFN'): ?> افغانی
+                                        <?php elseif($withdrawal->currency === 'USD'): ?> دالر
                                         <?php else: ?> تومان
-                                        <?php endif; ?>
+                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                     </span>
                                 </td>
                                 <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-80">
@@ -390,10 +392,10 @@ unset($__errorArgs, $__bag); ?>
                                     هیچ برداشتی یافت نشد
                                 </td>
                             </tr>
-                            <?php endif; ?>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                             
-                            <?php if($confirmDeleteId): ?>
+                            <!--[if BLOCK]><![endif]--><?php if($confirmDeleteId): ?>
                             <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                                 <div
                                     class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px] rounded-[12px] shadow-xl w-[653px] h-[239.7267608642578px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
@@ -415,7 +417,7 @@ unset($__errorArgs, $__bag); ?>
                                     </div>
                                 </div>
                             </div>
-                            <?php endif; ?>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                         </tbody>
                     </table>
@@ -440,13 +442,11 @@ unset($__errorArgs, $__bag); ?>
     </script>
 
     <?php $__env->startPush('styles'); ?>
-    <!-- ✅ Tailwind از CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-    <!-- ✅ تنظیمات Tailwind -->
     <script>
         tailwind.config = {
             darkMode: 'class',

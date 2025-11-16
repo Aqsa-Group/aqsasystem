@@ -247,10 +247,10 @@
             {{-- جدول --}}
             <div class="overflow-x-auto w-full">
                 <div class="max-h-[400px] overflow-y-auto min-w-[890px]">
-                    <table
-                        class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead
-                            class="bg-gradient-to-br from-indigo-400 to-indigo-500 dark:bg-gray-700 text-white text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0">
+
+                    <table class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500">
+                        <thead class="bg-gradient-to-br from-indigo-400 to-indigo-500 text-white
+                text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0 z-10">
                             <tr>
                                 <th class="px-4 py-4 font-bold w-16">#</th>
                                 <th class="px-4 py-4 font-bold w-32">نوع برداشت</th>
@@ -261,6 +261,7 @@
                                 <th class="px-4 py-4 font-bold w-48 text-center">عملیات</th>
                             </tr>
                         </thead>
+
                         <tbody>
                             @forelse($withdrawals as $key => $withdrawal)
                             <tr class="text-black border-b border-[#D9D9D9] bg-transparent">
@@ -403,13 +404,11 @@
     </script>
 
     @push('styles')
-    <!-- ✅ Tailwind از CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-    <!-- ✅ تنظیمات Tailwind -->
     <script>
         tailwind.config = {
             darkMode: 'class',
