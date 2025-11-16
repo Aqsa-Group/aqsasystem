@@ -297,8 +297,8 @@
                                 <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium w-40">
                                     {{ number_format($withdrawal->amount) }}
                                     <span class="text-sm text-gray-500">
-                                        @if($withdrawal->currency === 'afn') افغانی
-                                        @elseif($withdrawal->currency === 'usd') دالر
+                                        @if($withdrawal->currency === 'AFN') افغانی
+                                        @elseif($withdrawal->currency === 'USD') دالر
                                         @else تومان
                                         @endif
                                     </span>
