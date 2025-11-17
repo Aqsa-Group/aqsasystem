@@ -474,17 +474,15 @@ class Withdrawals extends Component
             ->toArray();
     }
 
-    public function getWithdrawalsProperty()
-    {
-        $adminId = $this->getAdminId();
+ public function getWithdrawalsProperty()
+{
+    $adminId = $this->getAdminId();
 
-        // استفاده مستقیم از DB برای اطمینان از نمایش داده‌ها
-        return DB::connection('market')
-            ->table('withdraw_logs')
-            ->where('admin_id', $adminId)
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
-    }
+    return WithdrawLog::with(['staff', 'customer'])
+        ->where('admin_id', $adminId)
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+}
 
     /**
      * Render component

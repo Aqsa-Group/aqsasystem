@@ -24,15 +24,14 @@ class WithdrawLog extends Model
         'customer_id',
         'staff_id'
     ];
-    
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class);
-    }
-    
     public function staff()
     {
-        return $this->belongsTo(Staff::class);
+        return $this->belongsTo(Staff::class, 'staff_id');
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
     
     public function getRecipientNameAttribute()
