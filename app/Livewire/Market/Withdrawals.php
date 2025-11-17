@@ -41,7 +41,7 @@ class Withdrawals extends Component
         'currency' => 'required|in:AFN,USD,EUR,IRR',
         'amount' => 'required|numeric|min:1',
         'receiver_type' => 'required|in:staff,customer',
-        'description' => 'nullable|string|max:500',
+        'description' => 'nullable|string|max:4000',
     ];
 
     protected $messages = [
