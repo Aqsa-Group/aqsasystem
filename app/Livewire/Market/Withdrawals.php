@@ -178,119 +178,123 @@ class Withdrawals extends Component
         $this->updateStats();
     }
 
-    /**
-     * Update existing withdrawal
-     */
-    private function updateWithdrawal()
-    {
-        $withdrawal = WithdrawLog::findOrFail($this->editingId);
-        $adminId = $this->getAdminId();
+  /**
+ * Update existing withdrawal
+ */
+private function updateWithdrawal()
+{
+    $withdrawal = WithdrawLog::findOrFail($this->editingId);
+    $adminId = $this->getAdminId();
+    
+    DB::transaction(function () use ($withdrawal, $adminId) {
+        // Reverse previous withdrawal
+        $this->reversePreviousWithdrawal($withdrawal);
+        
+        // Check safe balance for new amount
+        $total = DB::connection('market')->table('accountings')
+            ->where('admin_id', $adminId)
+            ->where('currency', $this->currency)
+            ->sum('paid');
 
-        DB::transaction(function () use ($withdrawal, $adminId) {
-            // Reverse previous withdrawal
-            $this->reversePreviousWithdrawal($withdrawal);
-
-            // Check safe balance for new amount
-            $total = DB::connection('market')->table('accountings')
-                ->where('admin_id', $adminId)
-                ->where('currency', $this->currency)
-                ->sum('paid');
-
-            if ($this->amount > $total) {
-                throw new \Exception("موجودی کافی برای برداشت {$this->amount} {$this->currency} در صندوق وجود ندارد.");
-            }
-
-            // Process customer withdrawal if applicable
-            if ($this->receiver_type === 'customer') {
-                $customer = Customer::find($this->customer_id);
-
-                if (!$customer) {
-                    throw new \Exception('مشتری یافت نشد.');
-                }
-
-                if ($this->type === 'کرایه دوکان‌های گروی و سرقفلی') {
-                    if ($customer->rent_money < $this->amount) {
-                        throw new \Exception("مشتری موجودی کافی برای برداشت {$this->amount} کرایه ندارد.");
-                    }
-                    $customer->rent_money -= $this->amount;
-                    $customer->save();
-                } else {
-                    $currencyField = match ($this->currency) {
-                        'AFN' => 'balance_afn',
-                        'USD' => 'balance_usd',
-                        'EUR' => 'balance_eur',
-                        'IRR' => 'balance_irr',
-                    };
-
-                    if ($customer->$currencyField < $this->amount) {
-                        throw new \Exception("مشتری موجودی کافی برای برداشت {$this->amount} {$this->currency} ندارد.");
-                    }
-
-                    $customer->$currencyField -= $this->amount;
-                    $customer->save();
-                }
-            }
-
-            // Update withdrawal record
-            DB::connection('market')->table('withdraw_logs')
-                ->where('id', $withdrawal->id)
-                ->update([
-                    'expanses_type' => $this->type,
-                    'currency' => $this->currency,
-                    'amount' => $this->amount,
-                    'staff_id' => $this->receiver_type === 'staff' ? $this->staff_id : null,
-                    'customer_id' => $this->receiver_type === 'customer' ? $this->customer_id : null,
-                    'description' => $this->description,
-                    'updated_at' => now(),
-                ]);
-
-            // Record new accounting transaction
-            DB::connection('market')->table('accountings')->insert([
-                'admin_id' => $adminId,
-                'expanses_type' => $this->type,
-                'currency' => $this->currency,
-                'paid' => -1 * $this->amount,
-                'type' => 'withdraw',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        });
-
-        session()->flash('message', 'برداشت با موفقیت بروزرسانی شد.');
-        $this->cancelEdit();
-        $this->updateStats();
-    }
-
-    /**
-     * Edit withdrawal
-     */
-    public function edit($id)
-    {
-        // استفاده از مدل به جای DB::table
-        $withdrawal = WithdrawLog::find($id);
-
-        if (!$withdrawal) {
-            session()->flash('error', 'برداشت مورد نظر یافت نشد.');
-            return;
+        if ($this->amount > $total) {
+            throw new \Exception("موجودی کافی برای برداشت {$this->amount} {$this->currency} در صندوق وجود ندارد.");
         }
 
-        $this->editingId = $id;
-        $this->type = $withdrawal->expanses_type;
-        $this->currency = $withdrawal->currency;
-        $this->amount = $withdrawal->amount;
-        $this->description = $withdrawal->description;
+        // Process customer withdrawal if applicable
+        if ($this->receiver_type === 'customer' && $this->customer_id) {
+            $customer = Customer::find($this->customer_id);
 
-        // Determine receiver type
-        if ($withdrawal->staff_id) {
-            $this->receiver_type = 'staff';
-            $this->staff_id = $withdrawal->staff_id;
-        } elseif ($withdrawal->customer_id) {
-            $this->receiver_type = 'customer';
-            $this->customer_id = $withdrawal->customer_id;
+            if (!$customer) {
+                throw new \Exception('مشتری یافت نشد.');
+            }
+
+            if ($this->type === 'کرایه دوکان‌های گروی و سرقفلی') {
+                if ($customer->rent_money < $this->amount) {
+                    throw new \Exception("مشتری موجودی کافی برای برداشت {$this->amount} کرایه ندارد.");
+                }
+                $customer->rent_money -= $this->amount;
+                $customer->save();
+            } else {
+                $currencyField = match ($this->currency) {
+                    'AFN' => 'balance_afn',
+                    'USD' => 'balance_usd',
+                    'EUR' => 'balance_eur',
+                    'IRR' => 'balance_irr',
+                };
+
+                if ($customer->$currencyField < $this->amount) {
+                    throw new \Exception("مشتری موجودی کافی برای برداشت {$this->amount} {$this->currency} ندارد.");
+                }
+
+                $customer->$currencyField -= $this->amount;
+                $customer->save();
+            }
         }
 
-        session()->flash('message', 'در حال ویرایش برداشت...');
+        // Update withdrawal record
+        $withdrawal->update([
+            'expanses_type' => $this->type,
+            'currency' => $this->currency,
+            'amount' => $this->amount,
+            'staff_id' => $this->receiver_type === 'staff' ? $this->staff_id : null,
+            'customer_id' => $this->receiver_type === 'customer' ? $this->customer_id : null,
+            'description' => $this->description,
+            'updated_at' => now(),
+        ]);
+
+        // Record new accounting transaction
+        DB::connection('market')->table('accountings')->insert([
+            'admin_id' => $adminId,
+            'expanses_type' => $this->type,
+            'currency' => $this->currency,
+            'paid' => -1 * $this->amount,
+            'type' => 'withdraw',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+    });
+
+    session()->flash('message', 'برداشت با موفقیت بروزرسانی شد.');
+    $this->cancelEdit();
+    $this->updateStats();
+}
+/**
+ * Edit withdrawal
+ */
+public function edit($id)
+{
+    // استفاده از مدل به جای DB::table
+    $withdrawal = WithdrawLog::find($id);
+
+    if (!$withdrawal) {
+        session()->flash('error', 'برداشت مورد نظر یافت نشد.');
+        return;
     }
+
+    $this->editingId = $id;
+    $this->type = $withdrawal->expanses_type;
+    $this->currency = $withdrawal->currency;
+    $this->amount = $withdrawal->amount;
+    $this->description = $withdrawal->description;
+
+    // Determine receiver type based on what exists
+    if ($withdrawal->staff_id) {
+        $this->receiver_type = 'staff';
+        $this->staff_id = $withdrawal->staff_id;
+        $this->customer_id = null; // مطمئن شویم customer_id پاک شده
+    } elseif ($withdrawal->customer_id) {
+        $this->receiver_type = 'customer';
+        $this->customer_id = $withdrawal->customer_id;
+        $this->staff_id = null; // مطمئن شویم staff_id پاک شده
+    } else {
+        // اگر هیچکدام نبود، می‌تواند برای برداشت از صندوق باشد
+        $this->receiver_type = 'staff'; // یا مقدار پیش‌فرض
+        $this->staff_id = null;
+        $this->customer_id = null;
+    }
+
+    session()->flash('message', 'در حال ویرایش برداشت...');
+}
 
     /**
      * Confirm deletion
