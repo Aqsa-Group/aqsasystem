@@ -302,7 +302,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
         </div>
 
         <!-- Withdrawals Table -->
-        <div class="w-full lg:w-1/2 xl:w-3/5">
+        <div class="w-full lg:w-[400px] xl:w-3/5">
             <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
                 <!-- Table Header -->
                 <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-6">

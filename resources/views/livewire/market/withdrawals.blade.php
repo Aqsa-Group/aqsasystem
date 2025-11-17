@@ -25,7 +25,8 @@
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
         <!-- Today's Withdrawals -->
-        <div class="bg-gradient-to-br from-rose-100 to-rose-200 border-l-4 border-rose-500 text-rose-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
+        <div
+            class="bg-gradient-to-br from-rose-100 to-rose-200 border-l-4 border-rose-500 text-rose-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-bold vazir">برداشت‌های امروز</h3>
                 <div class="bg-rose-500 p-2 rounded-full">
@@ -36,14 +37,16 @@
                 @foreach(['AFN' => 'افغانی', 'USD' => 'دالر', 'EUR' => 'یورو', 'IRR' => 'تومان'] as $currency => $label)
                 <div class="flex justify-between items-center">
                     <span class="text-sm text-rose-700 vazir">{{ $label }}:</span>
-                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['today'][$currency]) }}</span>
+                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['today'][$currency])
+                        }}</span>
                 </div>
                 @endforeach
             </div>
         </div>
 
         <!-- This Week's Withdrawals -->
-        <div class="bg-gradient-to-br from-green-100 to-green-200 border-l-4 border-green-500 text-green-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
+        <div
+            class="bg-gradient-to-br from-green-100 to-green-200 border-l-4 border-green-500 text-green-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-bold vazir">برداشت‌های این هفته</h3>
                 <div class="bg-green-500 p-2 rounded-full">
@@ -54,14 +57,16 @@
                 @foreach(['AFN' => 'افغانی', 'USD' => 'دالر', 'EUR' => 'یورو', 'IRR' => 'تومان'] as $currency => $label)
                 <div class="flex justify-between items-center">
                     <span class="text-sm text-green-700 vazir">{{ $label }}:</span>
-                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['week'][$currency]) }}</span>
+                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['week'][$currency])
+                        }}</span>
                 </div>
                 @endforeach
             </div>
         </div>
 
         <!-- This Month's Withdrawals -->
-        <div class="bg-gradient-to-br from-blue-100 to-blue-200 border-l-4 border-blue-500 text-blue-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
+        <div
+            class="bg-gradient-to-br from-blue-100 to-blue-200 border-l-4 border-blue-500 text-blue-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-bold vazir">برداشت‌های این ماه</h3>
                 <div class="bg-blue-500 p-2 rounded-full">
@@ -72,14 +77,16 @@
                 @foreach(['AFN' => 'افغانی', 'USD' => 'دالر', 'EUR' => 'یورو', 'IRR' => 'تومان'] as $currency => $label)
                 <div class="flex justify-between items-center">
                     <span class="text-sm text-blue-700 vazir">{{ $label }}:</span>
-                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['month'][$currency]) }}</span>
+                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['month'][$currency])
+                        }}</span>
                 </div>
                 @endforeach
             </div>
         </div>
 
         <!-- Total Withdrawals -->
-        <div class="bg-gradient-to-br from-purple-100 to-purple-200 border-l-4 border-purple-500 text-purple-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
+        <div
+            class="bg-gradient-to-br from-purple-100 to-purple-200 border-l-4 border-purple-500 text-purple-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-bold vazir">برداشت‌های کلی</h3>
                 <div class="bg-purple-500 p-2 rounded-full">
@@ -90,7 +97,8 @@
                 @foreach(['AFN' => 'افغانی', 'USD' => 'دالر', 'EUR' => 'یورو', 'IRR' => 'تومان'] as $currency => $label)
                 <div class="flex justify-between items-center">
                     <span class="text-sm text-purple-700 vazir">{{ $label }}:</span>
-                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['total'][$currency]) }}</span>
+                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['total'][$currency])
+                        }}</span>
                 </div>
                 @endforeach
             </div>
@@ -99,7 +107,7 @@
 
     <!-- Main Content -->
     <div class="flex flex-col lg:flex-row gap-6 p-4">
-        
+
         <!-- Withdrawal Form -->
         <div class="w-full lg:w-1/2 xl:w-2/5">
             <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
@@ -119,7 +127,7 @@
                 <!-- Form Body -->
                 <div class="p-6 space-y-6">
                     <form wire:submit.prevent="withdraw" class="space-y-6">
-                        
+
                         <!-- Withdrawal Type -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2 vazir">
@@ -129,11 +137,11 @@
                                 class="w-full h-12 px-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir">
                                 <option value="">انتخاب نوع برداشت</option>
                                 @foreach($this->expansesTypes as $key => $value)
-                                    <option value="{{ $key }}">{{ $value }}</option>
+                                <option value="{{ $key }}">{{ $value }}</option>
                                 @endforeach
                             </select>
                             @error('type')
-                                <p class="mt-1 text-sm text-red-600 vazir">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-600 vazir">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -152,7 +160,7 @@
                                     <option value="IRR">تومان</option>
                                 </select>
                                 @error('currency')
-                                    <p class="mt-1 text-sm text-red-600 vazir">{{ $message }}</p>
+                                <p class="mt-1 text-sm text-red-600 vazir">{{ $message }}</p>
                                 @enderror
                             </div>
 
@@ -165,7 +173,7 @@
                                     class="w-full h-12 px-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir"
                                     placeholder="0">
                                 @error('amount')
-                                    <p class="mt-1 text-sm text-red-600 vazir">{{ $message }}</p>
+                                <p class="mt-1 text-sm text-red-600 vazir">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
@@ -185,33 +193,33 @@
                         <!-- Receiver Selection -->
                         <div>
                             @if($receiver_type === 'staff')
-                                <label class="block text-sm font-medium text-gray-700 mb-2 vazir">
-                                    کارمند دریافت‌کننده <span class="text-red-500">*</span>
-                                </label>
-                                <select wire:model="staff_id"
-                                    class="w-full h-12 px-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir">
-                                    <option value="">انتخاب کارمند</option>
-                                    @foreach($this->staffs as $id => $name)
-                                        <option value="{{ $id }}">{{ $name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('staff_id')
-                                    <p class="mt-1 text-sm text-red-600 vazir">{{ $message }}</p>
-                                @enderror
+                            <label class="block text-sm font-medium text-gray-700 mb-2 vazir">
+                                کارمند دریافت‌کننده <span class="text-red-500">*</span>
+                            </label>
+                            <select wire:model="staff_id"
+                                class="w-full h-12 px-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir">
+                                <option value="">انتخاب کارمند</option>
+                                @foreach($this->staffs as $id => $name)
+                                <option value="{{ $id }}">{{ $name }}</option>
+                                @endforeach
+                            </select>
+                            @error('staff_id')
+                            <p class="mt-1 text-sm text-red-600 vazir">{{ $message }}</p>
+                            @enderror
                             @else
-                                <label class="block text-sm font-medium text-gray-700 mb-2 vazir">
-                                    مشتری دریافت‌کننده <span class="text-red-500">*</span>
-                                </label>
-                                <select wire:model="customer_id"
-                                    class="w-full h-12 px-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir">
-                                    <option value="">انتخاب مشتری</option>
-                                    @foreach($this->customers as $id => $info)
-                                        <option value="{{ $id }}">{{ $info }}</option>
-                                    @endforeach
-                                </select>
-                                @error('customer_id')
-                                    <p class="mt-1 text-sm text-red-600 vazir">{{ $message }}</p>
-                                @enderror
+                            <label class="block text-sm font-medium text-gray-700 mb-2 vazir">
+                                مشتری دریافت‌کننده <span class="text-red-500">*</span>
+                            </label>
+                            <select wire:model="customer_id"
+                                class="w-full h-12 px-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir">
+                                <option value="">انتخاب مشتری</option>
+                                @foreach($this->customers as $id => $info)
+                                <option value="{{ $id }}">{{ $info }}</option>
+                                @endforeach
+                            </select>
+                            @error('customer_id')
+                            <p class="mt-1 text-sm text-red-600 vazir">{{ $message }}</p>
+                            @enderror
                             @endif
                         </div>
 
@@ -224,7 +232,7 @@
                                 class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition resize-none vazir"
                                 placeholder="دلیل برداشت را وارد کنید..."></textarea>
                             @error('description')
-                                <p class="mt-1 text-sm text-red-600 vazir">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-600 vazir">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -235,19 +243,19 @@
                                 <i class="fa-solid fa-check ml-2"></i>
                                 {{ $editingId ? 'بروزرسانی برداشت' : 'ثبت برداشت' }}
                             </button>
-                            
+
                             @if($editingId)
-                                <button type="button" wire:click="cancelEdit"
-                                    class="flex-1 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-3 px-6 rounded-xl font-medium transition shadow-lg vazir">
-                                    <i class="fa-solid fa-times ml-2"></i>
-                                    لغو ویرایش
-                                </button>
+                            <button type="button" wire:click="cancelEdit"
+                                class="flex-1 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-3 px-6 rounded-xl font-medium transition shadow-lg vazir">
+                                <i class="fa-solid fa-times ml-2"></i>
+                                لغو ویرایش
+                            </button>
                             @else
-                                <button type="button" wire:click="resetForm"
-                                    class="flex-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-3 px-6 rounded-xl font-medium transition shadow-lg vazir">
-                                    <i class="fa-solid fa-eraser ml-2"></i>
-                                    پاک کردن فرم
-                                </button>
+                            <button type="button" wire:click="resetForm"
+                                class="flex-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-3 px-6 rounded-xl font-medium transition shadow-lg vazir">
+                                <i class="fa-solid fa-eraser ml-2"></i>
+                                پاک کردن فرم
+                            </button>
                             @endif
                         </div>
                     </form>
@@ -298,20 +306,21 @@
                                     </td>
                                     <td class="px-4 py-3">
                                         @php
-                                            $currencyStyles = [
-                                                'AFN' => 'bg-rose-100 text-rose-800',
-                                                'USD' => 'bg-green-100 text-green-800',
-                                                'EUR' => 'bg-blue-100 text-blue-800',
-                                                'IRR' => 'bg-purple-100 text-purple-800',
-                                            ];
-                                            $currencyLabels = [
-                                                'AFN' => 'افغانی',
-                                                'USD' => 'دالر',
-                                                'EUR' => 'یورو',
-                                                'IRR' => 'تومان',
-                                            ];
+                                        $currencyStyles = [
+                                        'AFN' => 'bg-rose-100 text-rose-800',
+                                        'USD' => 'bg-green-100 text-green-800',
+                                        'EUR' => 'bg-blue-100 text-blue-800',
+                                        'IRR' => 'bg-purple-100 text-purple-800',
+                                        ];
+                                        $currencyLabels = [
+                                        'AFN' => 'افغانی',
+                                        'USD' => 'دالر',
+                                        'EUR' => 'یورو',
+                                        'IRR' => 'تومان',
+                                        ];
                                         @endphp
-                                        <span class="px-3 py-1 rounded-full text-xs font-medium {{ $currencyStyles[$withdrawal->currency] ?? 'bg-gray-100 text-gray-800' }}">
+                                        <span
+                                            class="px-3 py-1 rounded-full text-xs font-medium {{ $currencyStyles[$withdrawal->currency] ?? 'bg-gray-100 text-gray-800' }}">
                                             {{ $currencyLabels[$withdrawal->currency] ?? $withdrawal->currency }}
                                         </span>
                                     </td>
@@ -320,17 +329,17 @@
                                     </td>
                                     <td class="px-4 py-3">
                                         @if($withdrawal->staff_id && $withdrawal->staff)
-                                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">
-                                                {{ $withdrawal->staff->fullname }}
-                                            </span>
+                                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">
+                                            {{ $withdrawal->staff->fullname }}
+                                        </span>
                                         @elseif($withdrawal->customer_id && $withdrawal->customer)
-                                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">
-                                                {{ $withdrawal->customer->fullname }}
-                                            </span>
+                                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">
+                                            {{ $withdrawal->customer->fullname }}
+                                        </span>
                                         @else
-                                            <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs">
-                                                صندوق
-                                            </span>
+                                        <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs">
+                                            صندوق
+                                        </span>
                                         @endif
                                     </td>
                                     <td class="px-4 py-3 max-w-xs truncate">
@@ -338,8 +347,11 @@
                                     </td>
                                     <td class="px-4 py-3 text-center whitespace-nowrap">
                                         <div class="text-sm font-medium">
-                                            {{ \Carbon\Carbon::parse($withdrawal->created_at)->format('Y/m/d') }}
+                                            {{
+                                            \Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($withdrawal->created_at))->format('Y/m/d')
+                                            }}
                                         </div>
+
                                         <div class="text-xs text-gray-500">
                                             {{ \Carbon\Carbon::parse($withdrawal->created_at)->format('H:i') }}
                                         </div>
@@ -416,14 +428,13 @@
     @endif
 </div>
 
-  @push('styles')
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+@push('styles')
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-    <script>
-        tailwind.config = {
+<script>
+    tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
@@ -444,63 +455,63 @@
                 },
             },
         }
-    </script>
+</script>
 
-    <!-- ✅ فونت‌ها و کلاس‌ها -->
-    <style>
-        @font-face {
-            font-family: "DimaYekan";
-            src: url("/fonts/Yekan-Regular.ttf") format("truetype");
-        }
+<!-- ✅ فونت‌ها و کلاس‌ها -->
+<style>
+    @font-face {
+        font-family: "DimaYekan";
+        src: url("/fonts/Yekan-Regular.ttf") format("truetype");
+    }
 
-        @font-face {
-            font-family: "times";
-            src: url("/fonts/times.ttf") format("truetype");
-        }
+    @font-face {
+        font-family: "times";
+        src: url("/fonts/times.ttf") format("truetype");
+    }
 
-        @font-face {
-            font-family: "vazir";
-            src: url("/fonts/Vazir.ttf") format("truetype");
-        }
+    @font-face {
+        font-family: "vazir";
+        src: url("/fonts/Vazir.ttf") format("truetype");
+    }
 
-        @font-face {
-            font-family: "shabnam";
-            src: url("/fonts/Shabnam-Medium.ttf") format("truetype");
-        }
+    @font-face {
+        font-family: "shabnam";
+        src: url("/fonts/Shabnam-Medium.ttf") format("truetype");
+    }
 
-        @font-face {
-            font-family: "Mj_Afrigha";
-            src: url("/fonts/Mj_Afrigha.ttf") format("truetype");
-        }
+    @font-face {
+        font-family: "Mj_Afrigha";
+        src: url("/fonts/Mj_Afrigha.ttf") format("truetype");
+    }
 
-        @font-face {
-            font-family: "Yekan-Regular";
-            src: url("/fonts/Yekan-Regular.ttf") format("truetype");
-        }
+    @font-face {
+        font-family: "Yekan-Regular";
+        src: url("/fonts/Yekan-Regular.ttf") format("truetype");
+    }
 
-        /* کلاس‌های کمکی برای انتخاب سریع فونت */
-        .yekan {
-            font-family: "DimaYekan", sans-serif;
-        }
+    /* کلاس‌های کمکی برای انتخاب سریع فونت */
+    .yekan {
+        font-family: "DimaYekan", sans-serif;
+    }
 
-        .shabnam {
-            font-family: "shabnam", sans-serif;
-        }
+    .shabnam {
+        font-family: "shabnam", sans-serif;
+    }
 
-        .Mj_Afrigha {
-            font-family: "Mj_Afrigha", sans-serif;
-        }
+    .Mj_Afrigha {
+        font-family: "Mj_Afrigha", sans-serif;
+    }
 
-        .vazir {
-            font-family: "vazir", sans-serif;
-        }
+    .vazir {
+        font-family: "vazir", sans-serif;
+    }
 
-        .amiri {
-            font-family: "Yekan-Regular", sans-serif;
-        }
+    .amiri {
+        font-family: "Yekan-Regular", sans-serif;
+    }
 
-        .times {
-            font-family: "times", serif;
-        }
-    </style>
-    @endpush
+    .times {
+        font-family: "times", serif;
+    }
+</style>
+@endpush
