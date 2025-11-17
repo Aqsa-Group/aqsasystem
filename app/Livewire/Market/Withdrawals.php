@@ -187,7 +187,7 @@ class Withdrawals extends Component
         $adminId = $this->getAdminId();
 
         DB::transaction(function () use ($withdrawal, $adminId) {
-            // Reverse previous withdrawal
+            // Reverse previous withdrawal FIRST
             $this->reversePreviousWithdrawal($withdrawal);
 
             // Check safe balance for new amount
@@ -258,12 +258,12 @@ class Withdrawals extends Component
         $this->cancelEdit();
         $this->updateStats();
     }
+
     /**
      * Edit withdrawal
      */
     public function edit($id)
     {
-        // استفاده از مدل به جای DB::table
         $withdrawal = WithdrawLog::find($id);
 
         if (!$withdrawal) {
@@ -287,7 +287,6 @@ class Withdrawals extends Component
             $this->customer_id = $withdrawal->customer_id;
             $this->staff_id = null; 
         } else {
-          
             $this->receiver_type = 'staff'; 
             $this->staff_id = null;
             $this->customer_id = null;
@@ -309,14 +308,18 @@ class Withdrawals extends Component
      */
     public function deleteWithdrawal()
     {
-        $withdrawal = DB::connection('market')->table('withdraw_logs')->find($this->confirmDeleteId);
+        $withdrawal = WithdrawLog::find($this->confirmDeleteId);
+
+        if (!$withdrawal) {
+            session()->flash('error', 'برداشت مورد نظر یافت نشد.');
+            return;
+        }
 
         DB::transaction(function () use ($withdrawal) {
             $this->reversePreviousWithdrawal($withdrawal);
 
-            DB::connection('market')->table('withdraw_logs')
-                ->where('id', $this->confirmDeleteId)
-                ->delete();
+            // Delete the withdrawal log
+            $withdrawal->delete();
         });
 
         session()->flash('message', 'برداشت با موفقیت حذف شد.');
@@ -352,7 +355,7 @@ class Withdrawals extends Component
     }
 
     /**
-     * Reverse previous withdrawal
+     * Reverse previous withdrawal - CORRECTED VERSION
      */
     private function reversePreviousWithdrawal($withdrawal)
     {
@@ -382,16 +385,21 @@ class Withdrawals extends Component
             }
         }
 
-        // Return balance to safe
-        DB::connection('market')->table('accountings')->insert([
-            'admin_id' => $adminId,
-            'expanses_type' => $withdrawal->expanses_type . ' (برگشت)',
-            'currency' => $withdrawal->currency,
-            'paid' => $withdrawal->amount,
-            'type' => 'deposit',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // Find and delete the original accounting transaction instead of creating a reverse one
+        $originalTransaction = DB::connection('market')->table('accountings')
+            ->where('admin_id', $adminId)
+            ->where('expanses_type', $withdrawal->expanses_type)
+            ->where('currency', $withdrawal->currency)
+            ->where('paid', -1 * $withdrawal->amount)
+            ->where('type', 'withdraw')
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        if ($originalTransaction) {
+            DB::connection('market')->table('accountings')
+                ->where('id', $originalTransaction->id)
+                ->delete();
+        }
     }
 
     /**
@@ -437,40 +445,40 @@ class Withdrawals extends Component
         }
     }
 
-public function getExpansesTypesProperty()
-{
-    $adminId = $this->getAdminId();
+    public function getExpansesTypesProperty()
+    {
+        $adminId = $this->getAdminId();
 
-   
-    $expansesTypes = DB::connection('market')->table('accountings')
-        ->where('admin_id', $adminId) 
-        ->whereNotNull('expanses_type')
-        ->where('expanses_type', '!=', '')
-        ->distinct()
-        ->orderBy('expanses_type', 'asc')
-        ->pluck('expanses_type', 'expanses_type')
-        ->toArray();
+        $expansesTypes = DB::connection('market')->table('accountings')
+            ->where('admin_id', $adminId) 
+            ->whereNotNull('expanses_type')
+            ->where('expanses_type', '!=', '')
+            ->distinct()
+            ->orderBy('expanses_type', 'asc')
+            ->pluck('expanses_type', 'expanses_type')
+            ->toArray();
 
-    if (empty($expansesTypes)) {
-        $expansesTypes = [
-            'برق' => 'برق',
-            'آب' => 'آب',
-            'گاز' => 'گاز', 
-            'اجاره' => 'اجاره',
-            'حقوق' => 'حقوق کارمند',
-            'خرید' => 'خرید ملزومات',
-            'تعمیرات' => 'تعمیرات',
-            'حمل و نقل' => 'حمل و نقل',
-            'بیمه' => 'بیمه',
-            'مالیات' => 'مالیات',
-            'بازاریابی' => 'بازاریابی',
-            'متفرقه' => 'متفرقه',
-            'کرایه دوکان‌های گروی و سرقفلی' => 'کرایه دوکان‌های گروی و سرقفلی'
-        ];
+        if (empty($expansesTypes)) {
+            $expansesTypes = [
+                'برق' => 'برق',
+                'آب' => 'آب',
+                'گاز' => 'گاز', 
+                'اجاره' => 'اجاره',
+                'حقوق' => 'حقوق کارمند',
+                'خرید' => 'خرید ملزومات',
+                'تعمیرات' => 'تعمیرات',
+                'حمل و نقل' => 'حمل و نقل',
+                'بیمه' => 'بیمه',
+                'مالیات' => 'مالیات',
+                'بازاریابی' => 'بازاریابی',
+                'متفرقه' => 'متفرقه',
+                'کرایه دوکان‌های گروی و سرقفلی' => 'کرایه دوکان‌های گروی و سرقفلی'
+            ];
+        }
+
+        return $expansesTypes;
     }
 
-    return $expansesTypes;
-}
     public function getStaffsProperty()
     {
         $adminId = $this->getAdminId();

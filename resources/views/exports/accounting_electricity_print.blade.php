@@ -23,9 +23,16 @@
             box-sizing: border-box;
             width: 100%;
             height: 100%;
+            padding: 2mm;
         }
 
-
+        /* قاب کلی دو بخش */
+        .card {
+            width: 100%;
+            border: 2px solid #666;
+            padding: 14px;
+            box-sizing: border-box;
+        }
 
         /* جدول اصلی برای دو ستون */
         .two-col-table {
@@ -139,9 +146,9 @@
     <div class="page">
         <div class="card" role="main" aria-label="فرم پرداخت برق">
             <table class="two-col-table">
-                <tr style="gap: 5px">
+                <tr>
                     <!-- ستون راست -->
-                    <td style="border: solid 1px black; padding: 20px;">
+                    <td>
                         <div class="column column-right">
                             <div class="header">
                                 <div style="width: 100%; direction: rtl; font-family: 'DejaVu Sans'; font-size: 12pt;">
@@ -164,180 +171,180 @@
                                 <div>
                                     <div style="font-size:12px; margin-top:4px;">
                                         مسلسل:
-                                        <span>{{
+                                        <span style="border-bottom:1px solid #000; width:150px; margin-top:2px;">{{
                                             $accounting->meter_serial }}</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <table class="form-table small-row" role="table" style="margin-top: 4px">
-                                <thead>
-                                    <tr>
-                                        <th style="width:22%;">دوکاندار</th>
-                                        <th style="width:26%;">مارکت</th>
-                                        <th style="width:18%;">نمبر دوکان</th>
-                                        <th style="width:18%;">از تاریخ</th>
-                                        <th style="width:16%;">تا تاریخ</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>{{ $accounting->shopkeeper->fullname }}</td>
-                                        <td>{{ $accounting->market->name }}</td>
-                                        <td>{{ $accounting->shop->number ?? '-' }}</td>
-                                        <td>{{
-                                            \Morilog\Jalali\Jalalian::fromDateTime($accounting->paid_date)->format('Y/m/d')
-                                            }}</td>
-                                        <td>{{
-                                            \Morilog\Jalali\Jalalian::fromDateTime($accounting->expiration_date)->format('Y/m/d')
-                                            }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                       <table class="form-table small-row" role="table">
+    <thead>
+        <tr>
+            <th style="width:22%;">دوکاندار</th>
+            <th style="width:26%;">مارکت</th>
+            <th style="width:18%;">نمبر دوکان</th>
+            <th style="width:18%;">از تاریخ</th>
+            <th style="width:16%;">تا تاریخ</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ $accounting->shopkeeper->fullname }}</td>
+            <td>{{ $accounting->market->name }}</td>
+            <td>{{ $accounting->shop->number ?? '-' }}</td>
+            <td>{{
+                \Morilog\Jalali\Jalalian::fromDateTime($accounting->paid_date)->format('Y/m/d')
+                }}</td>
+            <td>{{
+                \Morilog\Jalali\Jalalian::fromDateTime($accounting->expiration_date)->format('Y/m/d')
+                }}</td>
+        </tr>
+    </tbody>
+</table>
 
-                            <div style="display: table; width: 100%;">
-                                <div style="display: table-cell; width: 100%;">
-                                    <table class="amount-rows">
-                                        <tbody>
-                                            <tr>
-                                                <td>درجه فعلی</td>
-                                                <td>{{ $accounting->current_degree ?? '-' }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>درجه قبلی</td>
-                                                <td>{{ $accounting->past_degree ?? '-' }}</td>
-                                            </tr>
-                                            <tr>
-                                                @php
-                                                $current = $accounting->current_degree ?? null;
-                                                $past = $accounting->past_degree ?? null;
+<div style="display: table; width: 100%;">
+    <div style="display: table-cell; width: 100%;">
+        <table class="amount-rows">
+            <tbody>
+                <tr>
+                    <td>درجه فعلی</td>
+                    <td>{{ $accounting->current_degree ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <td>درجه قبلی</td>
+                    <td>{{ $accounting->past_degree ?? '-' }}</td>
+                </tr>
+                <tr>
+                    @php
+                    $current = $accounting->current_degree ?? null;
+                    $past = $accounting->past_degree ?? null;
 
-                                                $usage = ($current !== null && $past !== null)
-                                                ? ($current - $past)
-                                                : '-';
-                                                @endphp
-                                                <td>مقدار مصرف</td>
-                                                <td>{{ $usage }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>قیمت فی کیلووات</td>
-                                                <td>{{ $accounting->degree_price }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>مبلغ قابل پرداخت</td>
-                                                <td>{{ $accounting->price }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>مبلغ پرداخت شده</td>
-                                                <td>{{ $accounting->paid }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>باقیات</td>
-                                                <td>{{ $accounting->remained }}</td>
-                                            </tr>
-                                        </tbody>
+                    $usage = ($current !== null && $past !== null)
+                    ? ($current - $past)
+                    : '-';
+                    @endphp
+                    <td>مقدار مصرف</td>
+                    <td>{{ $usage }}</td>
+                </tr>
+                <tr>
+                    <td>قیمت فی کیلووات</td>
+                    <td>{{ $accounting->degree_price }}</td>
+                </tr>
+                <tr>
+                    <td>مبلغ قابل پرداخت</td>
+                    <td>{{ $accounting->price }}</td>
+                </tr>
+                <tr>
+                    <td>مبلغ پرداخت شده</td>
+                    <td>{{ $accounting->paid }}</td>
+                </tr>
+                <tr>
+                    <td>باقیات</td>
+                    <td>{{ $accounting->remained }}</td>
+                </tr>
+            </tbody>
+            
+        </table>
+    </div>
+</div>
+                                    <!-- باکس سه‌ستونه زیر از تاریخ / تا تاریخ -->
 
-                                    </table>
+
+                                    
                                 </div>
                             </div>
-                            <!-- باکس سه‌ستونه زیر از تاریخ / تا تاریخ -->
+                        </div>
+                    </td>
 
+                    <!-- ستون چپ (کپی یا فرم دیگری مشابه) -->
+                    <td>
+                        <div class="column column-left" style="margin-top: 10px;">
+                            <div class="header">
+                                <div style="width: 100%; direction: rtl; font-family: 'DejaVu Sans'; font-size: 12pt;">
+                                    <table style="width: 100%; border-collapse: collapse; border: none;">
+                                        <tr>
+                                               <td
+                                                style="width: 90%; text-align: right; vertical-align: middle; color: #1e3a8a; border: none;">
+                                                <strong style="font-size: 10pt;">مجتمع تجارتی عادلیار</strong>
+                                            </td>
 
+                                            <!-- سمت چپ: لوگو -->
+                                            <td style="width: 40%; text-align: left; border: none;">
+                                                <img src="{{ public_path('assets/logo.png') }}" alt="لوگو"
+                                                    style="height: 80px; width:90px;" />
+                                            </td>
+
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div>
+                                    <div style="font-size:12px; margin-top:4px;">
+                                        مسلسل:
+                                        <span style="border-bottom:1px solid #000; width:150px; margin-top:2px;">{{
+                                            $accounting->meter_serial }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table class="form-table small-row" role="table">
+                                <tr>
+                                    <td style="width:20%;">دوکاندار</td>
+                                    <td style="width:30%;">مارکت مربوطه</td>
+                                    <td style="width:25%;">نمبر دوکان</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ $accounting->shopkeeper->fullname }}</td>
+                                    <td>{{ $accounting->market->name }}</td>
+                                    <td>{{ $accounting->shop->number ?? '-' }}</td>
+                                </tr>
+                            </table>
+
+                            <div style="margin-top:6px;">
+                                <table class="amount-rows">
+                                    <tr>
+                                        <td style="width:55%;">درجه فعلی</td>
+                                        <td>{{ $accounting->current_degree ?? '-' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>درجه قبلی</td>
+                                        <td>{{ $accounting->past_degree ?? '-' }}</td>
+                                    </tr>
+                                    <tr>
+                                        @php
+                                        $current = $accounting->current_degree ?? null;
+                                        $past = $accounting->past_degree ?? null;
+
+                                        $usage = ($current !== null && $past !== null)
+                                        ? ($current - $past)
+                                        : '-';
+                                        @endphp
+                                        <td>مقدار مصرف</td>
+                                        <td>{{ $usage }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>قیمت فی کیلووات</td>
+                                        <td>{{ $accounting->degree_price }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>مبلغ قابل پرداخت</td>
+                                        <td>{{ $accounting->price }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>مبلغ پرداخت شده</td>
+                                        <td>{{ $accounting->paid }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>باقیات</td>
+                                        <td>{{ $accounting->remained }}</td>
+                                    </tr>
+                                </table>
+                            </div>
 
                         </div>
-                   </div>
-    </div>
-    </td>
-
-    <!-- ستون چپ (کپی یا فرم دیگری مشابه) -->
-     <td style="border: solid 1px black; padding: 20px;">
-        <div class="column column-left" style="margin-top: 10px;">
-            <div class="header">
-                <div style="width: 100%; direction: rtl; font-family: 'DejaVu Sans'; font-size: 12pt;">
-                    <table style="width: 100%; border-collapse: collapse; border: none;">
-                        <tr>
-                            <td
-                                style="width: 90%; text-align: right; vertical-align: middle; color: #1e3a8a; border: none;">
-                                <strong style="font-size: 10pt;">مجتمع تجارتی عادلیار</strong>
-                            </td>
-
-                            <!-- سمت چپ: لوگو -->
-                            <td style="width: 40%; text-align: left; border: none;">
-                                <img src="{{ public_path('assets/logo.png') }}" alt="لوگو"
-                                    style="height: 80px; width:90px;" />
-                            </td>
-
-                        </tr>
-                    </table>
-                </div>
-                <div>
-                    <div style="font-size:12px; margin-top:4px; margin-bottom: 4px">
-                        مسلسل:
-                        <span>{{
-                            $accounting->meter_serial }}</span>
-                    </div>
-                </div>
-            </div>
-
-            <table class="form-table small-row" role="table" style="margin-top: 4px">
-                <tr>
-                    <td style="width:20%;">دوکاندار</td>
-                    <td style="width:30%;">مارکت مربوطه</td>
-                    <td style="width:25%;">نمبر دوکان</td>
-                </tr>
-                <tr>
-                    <td>{{ $accounting->shopkeeper->fullname }}</td>
-                    <td>{{ $accounting->market->name }}</td>
-                    <td>{{ $accounting->shop->number ?? '-' }}</td>
+                    </td>
                 </tr>
             </table>
-
-            <div style="margin-top:6px;">
-                <table class="amount-rows">
-                    <tr>
-                        <td style="width:55%;">درجه فعلی</td>
-                        <td>{{ $accounting->current_degree ?? '-' }}</td>
-                    </tr>
-                    <tr>
-                        <td>درجه قبلی</td>
-                        <td>{{ $accounting->past_degree ?? '-' }}</td>
-                    </tr>
-                    <tr>
-                        @php
-                        $current = $accounting->current_degree ?? null;
-                        $past = $accounting->past_degree ?? null;
-
-                        $usage = ($current !== null && $past !== null)
-                        ? ($current - $past)
-                        : '-';
-                        @endphp
-                        <td>مقدار مصرف</td>
-                        <td>{{ $usage }}</td>
-                    </tr>
-                    <tr>
-                        <td>قیمت فی کیلووات</td>
-                        <td>{{ $accounting->degree_price }}</td>
-                    </tr>
-                    <tr>
-                        <td>مبلغ قابل پرداخت</td>
-                        <td>{{ $accounting->price }}</td>
-                    </tr>
-                    <tr>
-                        <td>مبلغ پرداخت شده</td>
-                        <td>{{ $accounting->paid }}</td>
-                    </tr>
-                    <tr>
-                        <td>باقیات</td>
-                        <td>{{ $accounting->remained }}</td>
-                    </tr> 
-                </table>
-            </div>
-
-        </div>
-    </td>
-    </tr>
-    </table>
-    </div> <!-- card -->
+        </div> <!-- card -->
     </div>
 </body>
 
