@@ -67,7 +67,7 @@ class Withdrawals extends Component
      */
     private function getAuthUser()
     {
-        return Auth::user(); // مانند Filament از Auth::user() استفاده می‌کنیم
+        return Auth::guard('market')->user(); // مانند Filament از Auth::user() استفاده می‌کنیم
     }
 
     /**

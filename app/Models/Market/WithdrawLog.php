@@ -4,6 +4,10 @@ namespace App\Models\Market;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Market\Customer;
+use App\Models\Market\Staff;
+
+
 
 class WithdrawLog extends Model
 {
@@ -17,6 +21,8 @@ class WithdrawLog extends Model
         'currency',
         'amount',
         'description',
+        'customer_id',
+        'staff_id'
     ];
     
     public function customer()

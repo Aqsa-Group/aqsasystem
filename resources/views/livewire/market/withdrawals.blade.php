@@ -345,7 +345,7 @@
                                         </div>
                                     </td>
                                     <td class="px-4 py-3">
-                                        <div class="flex justify-center space-x-2">
+                                        <div class="flex justify-center gap-1 space-x-2">
                                             <button wire:click="edit({{ $withdrawal->id }})"
                                                 class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg transition tooltip"
                                                 title="ویرایش">
