@@ -1,7 +1,7 @@
 <?php
 
-namespace App\Livewire\Market;
 
+namespace App\Livewire\Market;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Market\Accounting;
@@ -51,7 +51,6 @@ class GeneralReports extends Component
     public $search = '';
     public $amountMin;
     public $amountMax;
-
 
     protected $queryString = [
         'reportType' => ['except' => 'withdraw_salary'],

@@ -437,42 +437,40 @@ class Withdrawals extends Component
         }
     }
 
-    /**
-     * Computed properties - مطابق با Filament
-     */
-    public function getExpansesTypesProperty()
-    {
-        $adminId = $this->getAdminId();
+public function getExpansesTypesProperty()
+{
+    $adminId = $this->getAdminId();
 
-        $expansesTypes = DB::connection('market')->table('accountings')
-            ->where('admin_id', $adminId)
-            ->whereNotNull('expanses_type')
-            ->distinct()
-            ->pluck('expanses_type', 'expanses_type')
-            ->toArray();
+   
+    $expansesTypes = DB::connection('market')->table('accountings')
+        ->where('admin_id', $adminId) 
+        ->whereNotNull('expanses_type')
+        ->where('expanses_type', '!=', '')
+        ->distinct()
+        ->orderBy('expanses_type', 'asc')
+        ->pluck('expanses_type', 'expanses_type')
+        ->toArray();
 
-        // اگر خالی بود، مقادیر پیش‌فرض برگردانید
-        if (empty($expansesTypes)) {
-            $expansesTypes = [
-                'برق' => 'برق',
-                'آب' => 'آب',
-                'گاز' => 'گاز',
-                'اجاره' => 'اجاره',
-                'حقوق' => 'حقوق کارمند',
-                'خرید' => 'خرید ملزومات',
-                'تعمیرات' => 'تعمیرات',
-                'حمل و نقل' => 'حمل و نقل',
-                'بیمه' => 'بیمه',
-                'مالیات' => 'مالیات',
-                'بازاریابی' => 'بازاریابی',
-                'متفرقه' => 'متفرقه',
-                'کرایه دوکان‌های گروی و سرقفلی' => 'کرایه دوکان‌های گروی و سرقفلی'
-            ];
-        }
-
-        return $expansesTypes;
+    if (empty($expansesTypes)) {
+        $expansesTypes = [
+            'برق' => 'برق',
+            'آب' => 'آب',
+            'گاز' => 'گاز', 
+            'اجاره' => 'اجاره',
+            'حقوق' => 'حقوق کارمند',
+            'خرید' => 'خرید ملزومات',
+            'تعمیرات' => 'تعمیرات',
+            'حمل و نقل' => 'حمل و نقل',
+            'بیمه' => 'بیمه',
+            'مالیات' => 'مالیات',
+            'بازاریابی' => 'بازاریابی',
+            'متفرقه' => 'متفرقه',
+            'کرایه دوکان‌های گروی و سرقفلی' => 'کرایه دوکان‌های گروی و سرقفلی'
+        ];
     }
 
+    return $expansesTypes;
+}
     public function getStaffsProperty()
     {
         $adminId = $this->getAdminId();
