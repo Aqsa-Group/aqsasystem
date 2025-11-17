@@ -185,11 +185,11 @@ class Withdrawals extends Component
     {
         $withdrawal = WithdrawLog::findOrFail($this->editingId);
         $adminId = $this->getAdminId();
-        
+
         DB::transaction(function () use ($withdrawal, $adminId) {
             // Reverse previous withdrawal
             $this->reversePreviousWithdrawal($withdrawal);
-            
+
             // Check safe balance for new amount
             $total = DB::connection('market')->table('accountings')
                 ->where('admin_id', $adminId)
@@ -266,14 +266,20 @@ class Withdrawals extends Component
      */
     public function edit($id)
     {
-        $withdrawal = DB::connection('market')->table('withdraw_logs')->find($id);
-        
+        // استفاده از مدل به جای DB::table
+        $withdrawal = WithdrawLog::find($id);
+
+        if (!$withdrawal) {
+            session()->flash('error', 'برداشت مورد نظر یافت نشد.');
+            return;
+        }
+
         $this->editingId = $id;
         $this->type = $withdrawal->expanses_type;
         $this->currency = $withdrawal->currency;
         $this->amount = $withdrawal->amount;
         $this->description = $withdrawal->description;
-        
+
         // Determine receiver type
         if ($withdrawal->staff_id) {
             $this->receiver_type = 'staff';
@@ -300,10 +306,10 @@ class Withdrawals extends Component
     public function deleteWithdrawal()
     {
         $withdrawal = DB::connection('market')->table('withdraw_logs')->find($this->confirmDeleteId);
-        
+
         DB::transaction(function () use ($withdrawal) {
             $this->reversePreviousWithdrawal($withdrawal);
-            
+
             DB::connection('market')->table('withdraw_logs')
                 ->where('id', $this->confirmDeleteId)
                 ->delete();
@@ -329,8 +335,13 @@ class Withdrawals extends Component
     private function resetForm()
     {
         $this->reset([
-            'type', 'currency', 'amount', 'receiver_type', 
-            'staff_id', 'customer_id', 'description'
+            'type',
+            'currency',
+            'amount',
+            'receiver_type',
+            'staff_id',
+            'customer_id',
+            'description'
         ]);
         $this->currency = 'AFN';
         $this->receiver_type = 'staff';
@@ -341,6 +352,10 @@ class Withdrawals extends Component
      */
     private function reversePreviousWithdrawal($withdrawal)
     {
+        if (!$withdrawal) {
+            throw new \Exception('برداشت معتبر نیست.');
+        }
+
         $adminId = $this->getAdminId();
 
         // Return balance to customer if applicable
@@ -355,6 +370,7 @@ class Withdrawals extends Component
                         'USD' => 'balance_usd',
                         'EUR' => 'balance_eur',
                         'IRR' => 'balance_irr',
+                        default => 'balance_afn',
                     };
                     $customer->$currencyField += $withdrawal->amount;
                 }
@@ -409,7 +425,7 @@ class Withdrawals extends Component
     private function calculatePeriodStats($withdrawals, $period)
     {
         $currencies = ['AFN', 'USD', 'EUR', 'IRR'];
-        
+
         foreach ($currencies as $currency) {
             $this->withdrawalStats[$period][$currency] = $withdrawals
                 ->where('currency', $currency)
@@ -465,24 +481,24 @@ class Withdrawals extends Component
     public function getCustomersProperty()
     {
         $adminId = $this->getAdminId();
-        
+
         return Customer::where('admin_id', $adminId)
             ->get()
-            ->mapWithKeys(fn ($customer) => [
+            ->mapWithKeys(fn($customer) => [
                 $customer->id => $customer->fullname . ' - ' . $customer->phone
             ])
             ->toArray();
     }
 
- public function getWithdrawalsProperty()
-{
-    $adminId = $this->getAdminId();
+    public function getWithdrawalsProperty()
+    {
+        $adminId = $this->getAdminId();
 
-    return WithdrawLog::with(['staff', 'customer'])
-        ->where('admin_id', $adminId)
-        ->orderBy('created_at', 'desc')
-        ->paginate(10);
-}
+        return WithdrawLog::with(['staff', 'customer'])
+            ->where('admin_id', $adminId)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+    }
 
     /**
      * Render component
@@ -493,4 +509,4 @@ class Withdrawals extends Component
             'withdrawals' => $this->withdrawals
         ]);
     }
-}       
+}

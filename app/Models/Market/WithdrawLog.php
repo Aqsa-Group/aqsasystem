@@ -11,8 +11,8 @@ use App\Models\Market\Staff;
 
 class WithdrawLog extends Model
 {
+    protected $connection = 'market';
     protected $table = 'withdraw_logs';
-    protected $connection= 'market';
 
     
     protected $fillable = [
