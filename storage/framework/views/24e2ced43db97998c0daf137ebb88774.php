@@ -20,11 +20,11 @@
 
 
             <div class="md:w-1/2 w-[200px] flex justify-center relative">
-                <img src="<?php echo e(asset('assets/sarafi/all_icon/photo_2025-09-27_10-18-45.jpg')); ?>" alt="ورود به پنل کلپ"
+                <img src="<?php echo e(asset('assets/gym1.webp')); ?>" alt="ورود به پنل کلپ"
                     class="shadow-md w-full h-[600px] object-cover rounded-xl">
 
                 <!-- لایه نیمه شفاف -->
-                <div class="absolute inset-0 bg-[#051580]/70 rounded-xl"></div>
+                <div class="absolute inset-0 bg-[#051580]/30 rounded-xl"></div>
 
                 <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
                     <h1 class="text-[50px] font-bold yekan text-white">

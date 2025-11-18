@@ -528,6 +528,17 @@ Route::get('/gym/home', function () {
 
 
 
+Route::get('/gym/clubaccounting', function () {
+    if (!Auth::guard('gyms')->check()) {
+        return redirect()->route('gym.login.form');
+    }
+    return view('Gym.ClubAccounting.dashboard');
+})->name('gym.clubaccounting');
+
+
+
+
+
 
 
 
