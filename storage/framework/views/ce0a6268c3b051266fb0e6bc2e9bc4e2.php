@@ -202,8 +202,10 @@
                 </p>
             </div>
 
-            <!-- کارت‌های پنل‌ها -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+           
+        </div>
+         <!-- کارت‌های پنل‌ها -->
+            <div class="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-6 mt-8 mb-16">
                 <!-- پنل مدیریت مارکت -->
                 <a href="/market" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
                     <div
@@ -255,8 +257,21 @@
                         <i class="fas fa-arrow-left ml-1"></i> ورود به پنل
                     </div>
                 </a>
+
+                 <!-- پنل کلپ -->
+
+                    <a href="/gym" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
+                    <div
+                        class="w-16 h-16 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-700 flex items-center justify-center mb-4 group-hover:glow transition-all">
+                        <i class="fas fa-dumbbell text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">پنل کلپ های ورزشی</h3>
+                    <p class="text-blue-200 text-sm">مدیریت حسابداری و کانتین</p>
+                    <div class="mt-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <i class="fas fa-arrow-left ml-1"></i> ورود به پنل
+                    </div>
+                </a>
             </div>
-        </div>
     </main>
 
     <!-- فوتر -->

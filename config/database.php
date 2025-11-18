@@ -137,6 +137,26 @@ return [
             'engine' => null,
            
         ],
+
+
+
+         'gyms' => [
+            'driver' => 'mysql',
+            'url' => env('DB_URL'),
+            'host' => env('DB_GYM_HOST', '127.0.0.1'),
+            'port' => env('DB_GYM_PORT', '3306'),
+            'database' => env('DB_GYM_DATABASE', 'aqsasystem_gym'),
+            'username' => env('DB_GYM_USERNAME', 'root'),
+            'password' => env('DB_GYM_PASSWORD', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => env('DB_CHARSET', 'utf8mb4'),
+            'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+           
+        ],
     
 
         'mariadb' => [

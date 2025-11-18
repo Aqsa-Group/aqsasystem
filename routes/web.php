@@ -25,6 +25,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\Gym\Auth\UserControllers;
+
 
  
 
@@ -494,6 +496,35 @@ Route::get('/tools/reports', function () {
 })->name('tools.reports');
 
 
+
+
+// Gym routes
+
+Route::get('/gym', [UserControllers::class, 'showLoginForm'])->name('gym.login.form');
+
+Route::post('/gym/login', [UserControllers::class, 'login'])->name('gym.login');
+
+Route::post('/gym/logout', [UserControllers::class, 'logout'])->name('gym.logout');
+
+
+
+Route::get('/set-locale/{locale}', function ($locale) {
+    $availableLocales = ['fa', 'ps', 'en'];
+
+    if (in_array($locale, $availableLocales)) {
+        Session::put('locale', $locale);
+        Cookie::queue('locale', $locale, 60 * 24 * 30); // 30 روز
+    }
+
+    return redirect()->back();
+})->name('set-locale');
+
+Route::get('/gym/home', function () {
+    if (!Auth::guard('gyms')->check()) {
+        return redirect()->route('gym.login.form');
+    }
+    return view('Gym.components.homepage');
+})->name('gym.home');
 
 
 

@@ -60,6 +60,10 @@ return [
                 'driver' => 'session',
                 'provider' => 'tools',
             ],
+               'gyms' => [
+                'driver' => 'session',
+                'provider' => 'gyms',
+            ],
         ],
 
         /*
@@ -103,6 +107,11 @@ return [
           'tools' => [
             'driver' => 'eloquent',
              'model' => App\Models\Tools\User::class,
+        ],
+
+              'gyms' => [
+            'driver' => 'eloquent',
+             'model' => App\Models\Gym\User::class,
         ],
 
 
