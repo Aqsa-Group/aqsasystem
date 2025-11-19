@@ -173,7 +173,7 @@
                                     <div style="font-size:12px; margin-top:4px;">
                                         مسلسل:
                                         <span style="border-bottom:1px solid #000; width:150px; margin-top:2px;">{{
-                                            $accounting->meter_serial }}</span>
+                                            $accounting->id }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -283,7 +283,7 @@
                     <div style="font-size:12px; margin-top:4px;">
                         مسلسل:
                         <span style="border-bottom:1px solid #000; width:150px; margin-top:2px;">{{
-                            $accounting->meter_serial }}</span>
+                            $accounting->id }}</span>
                     </div>
                 </div>
             </div>

@@ -182,6 +182,12 @@
                 <th>نوع</th>
                 <th>دوکاندار</th>
                 <th>مصرف</th>
+                @if($report->expanses_type == 'پول برق')
+                <th>درجه فعلی</th>
+                <th>درجه قبلی</th>
+                <th>مقدار مصرف</th>
+                <th>قیمت فی کیلووات</th>
+                @endif
                 <th>مبلغ</th>
                 <th>واحد</th>
                 <th>تاریخ</th>
@@ -279,10 +285,22 @@
                 <td class="row-number">{{ $index + 1 }}</td>
                 @switch($reportType)
                 @case('accounting')
+                <!-- Data Section -->
                 <td>{{ $report->market->name ?? '-' }}</td>
                 <td>{{ $report->type }}</td>
                 <td>{{ $report->shopkeeper->fullname ?? '-' }}</td>
                 <td>{{ $report->expanses_type }}</td>
+                @if($report->expanses_type == 'پول برق')
+                <td>{{ $report->current_degree ?? '-' }}</td>
+                <td>{{ $report->past_degree ?? '-' }}</td>
+                @php
+                $current = $report->current_degree ?? null;
+                $past = $report->past_degree ?? null;
+                $usage = ($current !== null && $past !== null) ? ($current - $past) : '-';
+                @endphp
+                <td>{{ $usage }}</td>
+                <td>{{ number_format($report->degree_price ?? 0) }}</td>
+                @endif
                 <td>{{ number_format($report->price) }}</td>
                 <td>
                     @switch($report->currency)
@@ -294,29 +312,6 @@
                 <td>{{ $report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
                     : '-' }}</td>
                 <td>{{ $report->cleared ? '✅' : '⏳' }}</td>
-                @break
-
-                @case('outside')
-                <td>{{ $report->market->name ?? '-' }}</td>
-                <td>
-                    @if($report->customer_id) مشتری
-                    @elseif($report->staff_id) کارمند
-                    @elseif($report->shopkeeper_id) دوکاندار
-                    @else نامشخص @endif
-                </td>
-                <td>{{ $report->customer->fullname ?? $report->staff->fullname ?? $report->shopkeeper->fullname ?? '-'
-                    }}</td>
-                <td>{{ number_format($report->paid) }}</td>
-                <td>
-                    @switch($report->currency)
-                    @case('AFN') افغانی @break
-                    @case('USD') دالر @break
-                    @default {{ $report->currency }}
-                    @endswitch
-                </td>
-                <td>{{ $report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-' }}
-                </td>
-                <td>{{ $report->description ?? '-' }}</td>
                 @break
 
                 @case('withdraw_salary')
