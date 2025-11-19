@@ -357,7 +357,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                         </td>
                                         <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center">
                                             <div class="whitespace-nowrap">
-                                                <div class="font-medium"><?php echo e($salary->date); ?></div>
+                                                <div class="font-medium"><?php echo e(explode(' ', $salary->date)[0]); ?></div>
                                                 <div class="text-gray-500 text-sm mt-1">
                                                     <?php echo e(\Carbon\Carbon::parse($salary->created_at)->format('h:i A')); ?>
 

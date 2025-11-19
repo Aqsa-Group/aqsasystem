@@ -329,7 +329,7 @@
                                         </td>
                                         <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center">
                                             <div class="whitespace-nowrap">
-                                                <div class="font-medium">{{ $salary->date }}</div>
+                                                <div class="font-medium">{{ explode(' ', $salary->date)[0] }}</div>
                                                 <div class="text-gray-500 text-sm mt-1">
                                                     {{ \Carbon\Carbon::parse($salary->created_at)->format('h:i A') }}
                                                 </div>
