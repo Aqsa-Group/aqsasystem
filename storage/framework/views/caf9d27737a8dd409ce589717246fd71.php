@@ -287,7 +287,7 @@
 
 <body>
 
-    #191715
+  
 
     <div class="logout-container">
         <form action="<?php echo e(route('gym.logout')); ?>" method="POST">

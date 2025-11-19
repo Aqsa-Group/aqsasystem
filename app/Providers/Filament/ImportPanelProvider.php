@@ -28,13 +28,13 @@ class ImportPanelProvider extends PanelProvider
             ->path('import')
             ->sidebarCollapsibleOnDesktop()
             ->font('Scheherazade New')
-            ->theme(asset('css/filament/import/theme.css'))
-                  ->colors([
-                'primary' => Color::Blue,  // Blue for primary actions
-                'success' => Color::Green, // Green for success states
-                'warning' => Color::Amber, // Amber/Yellow for warnings
-                'danger' => Color::Red,    // Red for errors/danger
-                'info' => Color::Sky,      // Light blue for info
+            // ->viteTheme('resources/css/filament/import/theme.css') // این خط را کامنت کنید
+            ->colors([
+                'primary' => Color::Blue,
+                'success' => Color::Green,
+                'warning' => Color::Amber,
+                'danger' => Color::Red,
+                'info' => Color::Sky,
                 'gray' => Color::Gray, 
             ])
             ->login(ImportLogin::class)
@@ -47,119 +47,155 @@ class ImportPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
+            ->renderHook(
+                'panels::head.end',
+                fn () => <<<HTML
+                    <style>
+                        /* فونت‌های فارسی */
+                        @import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css');
+                        @import url('https://cdn.jsdelivr.net/gh/rastikerdar/shabnam-font@v5.0.1/dist/font-face.css');
+                        
+                        /* اعمال فونت فارسی برای کل پنل */
+                        body, .fi-body, .fi-sidebar, .fi-topbar {
+                            font-family: Vazir, Tahoma, sans-serif !important;
+                            
+                        }
+                        
+                        /* کلاس‌های فونت سفارشی */
+                        .vazir { font-family: Vazir, Tahoma, sans-serif !important; }
+                        .shabnam { font-family: Shabnam, Tahoma, sans-serif !important; }
+                        .yekan { font-family: Vazir, Tahoma, sans-serif !important; }
+                        
+                        /* 🔹 Topbar */
+                        .fi-topbar > nav {
+                            background-color: #ffffff;
+                            color: #1f2937;
+                            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                            border-bottom: 1px solid #c7d2fe;
+                            transition: all 0.3s;
+                        }
 
-   ->renderHook(
-    'panels::head.end',
-    fn () => <<<HTML
-        <style>
-            /* 🔹 Topbar */
-            .fi-topbar > nav {
-                background-color: #ffffff;
-                color: #1f2937; /* text-gray-900 */
-                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-                border-bottom: 1px solid #c7d2fe; /* border-indigo-200 */
-                transition: all 0.3s;
-            }
+                        /* 🔹 Sidebar */
+                        .fi-sidebar {
+                            background-color: #ffffff;
+                            border-left: 1px solid #e5e7eb;
+                            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                            border-top-right-radius: 1rem;
+                            transition: all 0.3s;
+                        }
 
-            /* 🔹 Sidebar */
-            .fi-sidebar {
-                background-color: #ffffff;
-                border-left: 1px solid #e5e7eb; /* border-gray-200 */
-                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-                border-top-right-radius: 1rem; /* rounded-r-4xl */
-                transition: all 0.3s;
-            }
+                        .fi-sidebar-header {
+                            background-color: #ffffff;
+                            border-bottom: 1px solid #e5e7eb;
+                            transition: all 0.3s;
+                        }
 
-            .fi-sidebar-header {
-                background-color: #ffffff;
-                border-bottom: 1px solid #e5e7eb;
-                transition: all 0.3s;
-            }
+                        .fi-sidebar .fi-sidebar-item {
+                            color: #374151;
+                            border-radius: 0.5rem;
+                            transition: all 0.2s;
+                        }
 
-            .fi-sidebar .fi-sidebar-item {
-                color: #374151; /* text-gray-700 */
-                border-radius: 0.5rem; /* rounded-lg */
-                transition: all 0.2s;
-            }
+                        .fi-sidebar .fi-sidebar-item:hover {
+                            color: #4b5563;
+                            background-color: #fecaca;
+                        }
 
-            .fi-sidebar .fi-sidebar-item:hover {
-                color: #4b5563; /* text-gray-600 */
-                background-color: #fecaca; /* red-200 */
-            }
+                        .fi-sidebar .fi-sidebar-item-active {
+                            background-color: #000000;
+                            color: #4338ca;
+                            font-weight: 600;
+                        }
 
-            .fi-sidebar .fi-sidebar-item-active {
-                background-color: #000000; /* bg-black */
-                color: #4338ca; /* text-indigo-700 */
-                font-weight: 600;
-            }
+                        /* 🔹 Body */
+                        .fi-body {
+                            background-color: #ebeceff0;
+                            transition: background-color 0.3s;
+                        }
 
-            /* 🔹 Body */
-            .fi-body {
-                background-color: #ebeceff0;
-                transition: background-color 0.3s;
-            }
+                        /* 🔹 Dark Mode */
+                        .dark .fi-topbar > nav {
+                            background-color: #1f2937;
+                            color: #f9fafb;
+                            border-color: #374151;
+                        }
 
-            /* 🔹 Header Buttons Container */
-            .flex-header-container {
-                display: flex;
-                justify-content: center;
-                gap: 0.5rem;
-            }
+                        .dark .fi-sidebar {
+                            background-color: #111827;
+                            border-color: #374151;
+                        }
 
-            /* 🔹 Dark Mode */
-            .dark .fi-topbar > nav {
-                background-color: #1f2937; /* gray-800 */
-                color: #f9fafb; /* gray-100 */
-                border-color: #374151; /* border-gray-700 */
-            }
+                        .dark .fi-sidebar-header {
+                            background-color: #111827;
+                            border-color: #374151;
+                        }
 
-            .dark .fi-sidebar {
-                background-color: #111827; /* gray-900 */
-                border-color: #374151;
-            }
+                        .dark .fi-sidebar .fi-sidebar-item {
+                            color: #d1d5db;
+                        }
 
-            .dark .fi-sidebar-header {
-                background-color: #111827;
-                border-color: #374151;
-            }
+                        .dark .fi-sidebar .fi-sidebar-item:hover {
+                            color: #818cf8;
+                            background-color: #1f2937;
+                        }
 
-            .dark .fi-sidebar .fi-sidebar-item {
-                color: #d1d5db; /* gray-300 */
-            }
+                        .dark .fi-sidebar .fi-sidebar-item-active {
+                            background-color: #1e3a8a;
+                            color: #c7d2fe;
+                            font-weight: 600;
+                        }
 
-            .dark .fi-sidebar .fi-sidebar-item:hover {
-                color: #818cf8; /* indigo-400 */
-                background-color: #1f2937; /* gray-800 */
-            }
+                        .dark .fi-body {
+                            background-color: #1e1e2f;
+                        }
 
-            .dark .fi-sidebar .fi-sidebar-item-active {
-                background-color: #1e3a8a; /* indigo-900 */
-                color: #c7d2fe; /* indigo-300 */
-                font-weight: 600;
-            }
+                        /* Light mode background */
+                        body {
+                            background: url("/images/bg-light.png") no-repeat center center fixed;
+                            background-size: cover;
+                        }
 
-            .dark .fi-body {
-                background-color: #1e1e2f;
-            }
-
-            /* Light mode background */
-            body {
-                background: url("/images/bg-light.png") no-repeat center center fixed;
-                background-size: cover;
-            }
-
-            /* Dark mode background */
-            .dark body {
-                background: url("/images/bg-dark2.png") no-repeat center center fixed;
-                background-size: cover;
-            }
-        </style>
-    HTML
-)
-
+                        /* Dark mode background */
+                        .dark body {
+                            background: url("/images/bg-dark2.png") no-repeat center center fixed;
+                            background-size: cover;
+                        }
+                    </style>
+                    
+                    <!-- اضافه کردن Tailwind برای کامپوننت‌های Livewire -->
+                    <script src="https://cdn.tailwindcss.com"></script>
+                    <script>
+                        tailwind.config = {
+                            darkMode: 'class',
+                            theme: {
+                                extend: {
+                                    colors: {
+                                        primary: {
+                                            50: '#EEF2FF',
+                                            500: '#6366F1',
+                                            600: '#4F46E5',
+                                        },
+                                    },
+                                    fontFamily: {
+                                        vazir: ['Vazir', 'sans-serif'],
+                                        shabnam: ['Shabnam', 'sans-serif'],
+                                    },
+                                },
+                            },
+                        }
+                    </script>
+                    
+                    <!-- اضافه کردن Font Awesome -->
+                    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+                    
+                    <!-- اضافه کردن Persian Datepicker -->
+                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
+                    <script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
+                HTML
+            )
             ->discoverWidgets(in: app_path('Filament/Import/Widgets'), for: 'App\\Filament\\Import\\Widgets')
             ->widgets([
-
+                // ویجت‌ها
             ])
             ->middleware([
                 EncryptCookies::class,

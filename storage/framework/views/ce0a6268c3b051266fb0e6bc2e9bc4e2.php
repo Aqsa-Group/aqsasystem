@@ -11,7 +11,7 @@
     <!-- فونت‌های فارسی -->
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&family=Mirza&display=swap"
         rel="stylesheet">
-
+      <?php echo $__env->make('Sarafi.layouts.links', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     <style>
         :root {
             --primary: #1e3a8a;

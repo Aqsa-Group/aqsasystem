@@ -77,7 +77,7 @@ class CompanyResource extends Resource
                     ->button()
                     ->label('💰 ثبت رسید')
                     ->modalHeading('ثبت رسید برای شرکت')
-                    ->modalWidth('md') 
+                    ->modalWidth('md')
                     ->form([
                         Forms\Components\Select::make('currency')
                             ->label('انتخاب ارز')
@@ -85,46 +85,72 @@ class CompanyResource extends Resource
                                 'AFN' => 'افغانی',
                                 'USD' => 'دالر',
                             ])
-                            ->required(),
+                            ->required()
+                            ->reactive(),
 
                         Forms\Components\TextInput::make('amount')
                             ->label('مبلغ رسید')
                             ->numeric()
-                            ->required(),
+                            ->required()
+                            ->minValue(1),
                     ])
                     ->action(function ($record, array $data) {
                         $currency = $data['currency'];
                         $amount = (float)$data['amount'];
 
+                        $safe = Safe::first();
+                        if (!$safe) {
+                            \Filament\Notifications\Notification::make()
+                                ->danger()
+                                ->title('خطا در سیستم صندوق')
+                                ->body('صندوق یافت نشد!')
+                                ->send();
+                            return;
+                        }
+
+                        $currentSafeBalance = $safe->{$currency} ?? 0;
+
+                        if ($currentSafeBalance < $amount) {
+                            \Filament\Notifications\Notification::make()
+                                ->danger()
+                                ->title('موجودی ناکافی')
+                                ->body('موجودی صندوق برای ارز ' . $currency . ' کافی نیست. موجودی فعلی: ' . number_format($currentSafeBalance))
+                                ->send();
+                            return;
+                        }
+
+                        // محاسبه مانده بدهی شرکت
                         $currentBalance = $record->{$currency} ?? 0;
-                        $remaining = max($currentBalance - $amount, 0);
+
+                        $actualPayment = min($amount, $currentBalance);
+                        $remaining = max($currentBalance - $actualPayment, 0);
 
                         $record->{$currency} = $remaining;
                         $record->save();
 
-                        
-                       $safe = Safe::first(); 
-                        if ($safe) {
-                            if ($currency === 'AFN') {
-                                $safe->AFN = max(($safe->AFN ?? 0) - $amount, 0);
-                            } elseif ($currency === 'USD') {
-                                $safe->USD = max(($safe->USD ?? 0) - $amount, 0);
-                            }
-                            $safe->save();
-}
+                        $safe->{$currency} = max($currentSafeBalance - $actualPayment, 0);
+                        $safe->save();
+
                         CompanyPayment::create([
                             'company_id' => $record->id,
                             'currency' => $currency,
                             'total_debt' => $currentBalance,
-                            'paid_amount' => $amount,
+                            'paid_amount' => $actualPayment,
                             'remaining' => $remaining,
                         ]);
 
                         \Filament\Notifications\Notification::make()
                             ->success()
                             ->title('رسید ثبت شد')
+                            ->body('مبلغ ' . number_format($actualPayment) . ' ' . $currency . ' با موفقیت پرداخت شد.')
                             ->send();
-                    }),
+                    })
+                    ->modalDescription(
+                        fn($record) =>
+                        "موجودی صندوق: \n" .
+                            "افغانی: " . number_format(Safe::first()->AFN ?? 0) . "\n" .
+                            "دالر: " . number_format(Safe::first()->USD ?? 0)
+                    ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

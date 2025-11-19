@@ -559,8 +559,8 @@
                 </div>
             </div>
             
-            <div class="loader-text">فیت کلاب</div>
-            <div class="loader-subtext">در حال آماده‌سازی محیط ورزشی شما</div>
+            <div class="loader-text">جیم سیتی</div>
+            <div class="loader-subtext">در حال آماده‌سازی محیط سبستم </div>
             
             <div class="weight-loader">
                 <div class="weight"></div>
@@ -597,7 +597,7 @@
 
                     <!-- نام شرکت -->
                     <div class="text-[40px] text-white font-bold amiri company-name">
-                        فیت کلاب
+                        جیم سیتی
                     </div>
                 </div>
 
@@ -672,7 +672,7 @@
             <div class="sidebar-container bg-[#191715] dark:bg-slate-900 h-full" id="mobileSidebar">
                 <nav class="mt-0 space-y-1 w-[280px] p-4">
                     <!-- داشبورد -->
-                    <a href="#"
+                    <a href="<?php echo e(route('gym.clubaccounting')); ?>"
                         class="nav-link flex items-center justify-between py-4 px-5 rounded-lg transition vazir text-[16px]"
                         :class="openMenu === 'dashboard' ? 'bg-gradient-to-br from-indigo-400 to-indigo-500 text-white' : 'text-white dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800'"
                         @click="openMenu = 'dashboard'; closeMobileMenu()">
@@ -820,46 +820,7 @@
 
             <!-- محتوای اصلی -->
             <main class="flex-1 main-content-container px-2">
-                <!-- نمایش محتوای فعال -->
-                <div x-show="openMenu === 'dashboard'">
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <h3 class="text-lg font-semibold">تعداد اعضا</h3>
-                            <p class="text-3xl font-bold mt-2">۱,۲۴۵</p>
-                            <p class="text-sm mt-1">+۱۲٪ نسبت به ماه گذشته</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3 class="text-lg font-semibold">درآمد ماهانه</h3>
-                            <p class="text-3xl font-bold mt-2">۱۲۵M</p>
-                            <p class="text-sm mt-1">+۸٪ نسبت به ماه گذشته</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3 class="text-lg font-semibold">کلاس‌های فعال</h3>
-                            <p class="text-3xl font-bold mt-2">۴۸</p>
-                            <p class="text-sm mt-1">+۵ کلاس جدید</p>
-                        </div>
-                    </div>
-                    
-                    <div class="sample-card">
-                        <h2 class="text-xl font-bold mb-4">آمار فعالیت‌های اخیر</h2>
-                        <p class="text-slate-600 dark:text-slate-400">این بخش برای نمایش محتوای اصلی صفحه استفاده می‌شود.</p>
-                    </div>
-                </div>
-
-                <div x-show="openMenu.startsWith('customer') && openMenu !== 'dashboard'" class="space-y-4">
-                    <div class="sample-card">
-                        <h2 class="text-xl font-bold mb-4" x-text="
-                            openMenu === 'customer-accounts' ? 'حساب‌های مشتریان' :
-                            openMenu === 'customer-payments' ? 'پرداخت‌های مشتریان' :
-                            openMenu === 'customer-invoices' ? 'فاکتورهای مشتریان' :
-                            openMenu === 'customer-debts' ? 'بدهی‌های مشتریان' :
-                            openMenu === 'customer-reports' ? 'گزارشات مالی مشتریان' :
-                            openMenu === 'customer-discounts' ? 'تخفیف‌های مشتریان' :
-                            'حسابداری مشتریان'
-                        "></h2>
-                        <p class="text-slate-600 dark:text-slate-400">محتوای مربوط به بخش انتخاب شده در اینجا نمایش داده می‌شود.</p>
-                    </div>
-                </div>
+                <?php echo $__env->yieldContent('content'); ?>
             </main>
         </div>
     </div>

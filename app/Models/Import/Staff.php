@@ -29,4 +29,9 @@ class Staff extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+          public function salary()
+    {
+        return $this->hasMany(Salarys::class,);
+    }
 }

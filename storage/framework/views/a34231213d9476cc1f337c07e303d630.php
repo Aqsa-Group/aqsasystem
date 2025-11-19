@@ -318,7 +318,7 @@
 
     const baseChart = {
         chart: {
-            type: 'area',
+            type: 'bar',
             height: 260,
             toolbar: { show: false },
             animations: {
