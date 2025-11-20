@@ -160,22 +160,22 @@ class GeneralReports extends Component
         }
     }
 
-    public function exportToExcel()
-    {
-        try {
-            $data = $this->getReportData(true);
+   public function exportToExcel()
+{
+    try {
+        $data = $this->getReportData(true);
 
-            return Excel::download(
-                new GeneralReportExport($data, $this->reportType),
-                'general_report_' . $this->reportType . '_' . now()->format('Y_m_d') . '.xlsx'
-            );
-        } catch (\Exception $e) {
-            $this->dispatch('notify', [
-                'type' => 'error',
-                'message' => 'خطا در تولید فایل Excel: ' . $e->getMessage()
-            ]);
-        }
+        return Excel::download(
+            new GeneralReportExport($data, $this->reportType),
+            'general_report_' . $this->reportType . '_' . now()->format('Y_m_d') . '.xlsx'
+        );
+    } catch (\Exception $e) {
+        $this->dispatch('notify', [
+            'type' => 'error',
+            'message' => 'خطا در تولید فایل Excel: ' . $e->getMessage()
+        ]);
     }
+}
 
     public function exportToPdf()
     {
@@ -338,8 +338,7 @@ class GeneralReports extends Component
             ->when($this->amountMin, fn($q) => $q->where('amount', '>=', $this->amountMin))
             ->when($this->amountMax, fn($q) => $q->where('amount', '<=', $this->amountMax))
             ->when($this->search, function ($q) {
-                $q->where('recipient_name', 'like', "%{$this->search}%")
-                    ->orWhere('description', 'like', "%{$this->search}%");
+                $q->where('description', 'like', "%{$this->search}%");
             });
 
         $withdrawalsQuery = $this->applyAccessControl($withdrawalsQuery, $user);
@@ -389,19 +388,20 @@ class GeneralReports extends Component
         );
     }
 
- private function getCombinedDataForExport()
+private function getCombinedDataForExport()
 {
     $user = Auth::user();
 
-    $withdrawalsQuery = WithdrawLog::query()
+    // Withdrawals
+    $withdrawalsQuery = WithdrawLog::with(['customer', 'staff'])
         ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
+        ->when($this->expansesType, fn($q) => $q->where('expanses_type', $this->expansesType))
         ->when($this->startDate, fn($q) => $q->whereDate('created_at', '>=', $this->startDate))
         ->when($this->endDate, fn($q) => $q->whereDate('created_at', '<=', $this->endDate))
         ->when($this->amountMin, fn($q) => $q->where('amount', '>=', $this->amountMin))
         ->when($this->amountMax, fn($q) => $q->where('amount', '<=', $this->amountMax))
         ->when($this->search, function ($q) {
-            $q->where('recipient_name', 'like', "%{$this->search}%")
-                ->orWhere('description', 'like', "%{$this->search}%");
+            $q->where('description', 'like', "%{$this->search}%");
         });
 
     $withdrawalsQuery = $this->applyAccessControl($withdrawalsQuery, $user);
@@ -413,6 +413,7 @@ class GeneralReports extends Component
             return $item;
         });
 
+    // Salaries
     $salariesQuery = Salary::with(['market', 'staff', 'loan'])
         ->when($this->marketId, fn($q) => $q->where('market_id', $this->marketId))
         ->when($this->staffId, fn($q) => $q->where('staff_id', $this->staffId))
@@ -432,6 +433,8 @@ class GeneralReports extends Component
         ->map(function ($item) {
             $item->record_type = 'salary';
             $item->sort_date = $item->paid_date;
+            // اضافه کردن فیلدهای مورد نیاز برای نمایش
+            $item->expanses_type = $item->reduce_from ?? '-';
             return $item;
         });
 

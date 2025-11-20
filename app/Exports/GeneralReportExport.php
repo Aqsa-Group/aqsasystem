@@ -28,18 +28,26 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
     public function headings(): array
     {
         return match($this->reportType) {
-            
+            'withdraw_salary' => [
+                'نوع',
+                'برداشت از',
+                'شخص',
+                'مبلغ',
+                'واحد پول',
+                'تاریخ',
+                'توضیحات'
+            ],
             'salary' => [
-            'مارکت',
-            'کارمند',
-            'حقوق',
-            'پرداخت شده', 
-            'باقی مانده',
-            'قرضه',
-            'واحد پول',
-            'تاریخ پرداخت',
-            'وضعیت کسر'
-        ],
+                'مارکت',
+                'کارمند',
+                'حقوق',
+                'پرداخت شده', 
+                'باقی مانده',
+                'قرضه',
+                'واحد پول',
+                'تاریخ پرداخت',
+                'وضعیت کسر'
+            ],
             'accounting' => [
                 'مارکت',
                 'نوع',
@@ -50,8 +58,6 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
                 'تاریخ پرداخت',
                 'وضعیت'
             ],
-
-            
             'outside' => [
                 'مارکت',
                 'نوع شخص',
@@ -126,6 +132,24 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
         };
 
         return match($this->reportType) {
+            'withdraw_salary' => [
+                $report->record_type === 'withdraw' ? 'برداشت' : 'معاش',
+                $report->record_type === 'withdraw' 
+                    ? ($report->expanses_type ?? '-')
+                    : ($report->reduce_from ?? '-'),
+                $report->staff->fullname 
+                    ?? $report->customer->fullname 
+                    ?? $report->shopkeeper->fullname 
+                    ?? '-',
+                $report->record_type === 'withdraw' 
+                    ? ($report->amount ?? 0)
+                    : ($report->paid ?? 0),
+                $currency,
+                $report->record_type === 'withdraw'
+                    ? ($report->created_at ? \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-')
+                    : ($report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d') : '-'),
+                $report->description ?? '-'
+            ],
             'accounting' => [
                 $report->market->name ?? '-',
                 $report->type,
@@ -136,18 +160,17 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
                 $report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d') : '-',
                 $report->cleared ? 'تسویه شده' : 'در انتظار'
             ],
-
-                    'salary' => [
-            $report->market->name ?? '-',
-            $report->staff->fullname ?? '-',
-            $report->salary,
-            $report->paid,
-            $report->remained,
-            $report->loan,
-            $currency,
-            $report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d') : '-',
-            $report->is_reduce ? 'فعال' : 'غیرفعال'
-        ],
+            'salary' => [
+                $report->market->name ?? '-',
+                $report->staff->fullname ?? '-',
+                $report->salary,
+                $report->paid,
+                $report->remained,
+                $report->loan,
+                $currency,
+                $report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d') : '-',
+                $report->is_reduce ? 'فعال' : 'غیرفعال'
+            ],
             'outside' => [
                 $report->market->name ?? '-',
                 $report->customer_id ? 'مشتری' : ($report->staff_id ? 'کارمند' : ($report->shopkeeper_id ? 'دوکاندار' : 'نامشخص')),
@@ -230,6 +253,15 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
     public function columnWidths(): array
     {
         return match($this->reportType) {
+            'withdraw_salary' => [
+                'A' => 10, // نوع
+                'B' => 15, // برداشت از
+                'C' => 20, // شخص
+                'D' => 15, // مبلغ
+                'E' => 12, // واحد پول
+                'F' => 15, // تاریخ
+                'G' => 25, // توضیحات
+            ],
             'accounting' => [
                 'A' => 15, // مارکت
                 'B' => 10, // نوع
@@ -241,16 +273,16 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
                 'H' => 12, // وضعیت
             ],
             'salary' => [
-            'A' => 15, // مارکت
-            'B' => 20, // کارمند
-            'C' => 15, // حقوق
-            'D' => 15, // پرداخت شده
-            'E' => 15, // باقی مانده
-            'F' => 15, // قرضه
-            'G' => 12, // واحد پول
-            'H' => 15, // تاریخ پرداخت
-            'I' => 12, // وضعیت کسر
-        ],
+                'A' => 15, // مارکت
+                'B' => 20, // کارمند
+                'C' => 15, // حقوق
+                'D' => 15, // پرداخت شده
+                'E' => 15, // باقی مانده
+                'F' => 15, // قرضه
+                'G' => 12, // واحد پول
+                'H' => 15, // تاریخ پرداخت
+                'I' => 12, // وضعیت کسر
+            ],
             'outside' => [
                 'A' => 15, // مارکت
                 'B' => 12, // نوع شخص
