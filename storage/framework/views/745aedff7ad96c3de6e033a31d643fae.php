@@ -203,7 +203,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <label class="block text-sm font-medium text-gray-700 mb-2 vazir">
                                 تحویل به <span class="text-red-500">*</span>
                             </label>
-                            <select wire:model="receiver_type"
+                            <select wire:model.live="receiver_type"
                                 class="w-full h-12 px-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir">
                                 <option value="staff">کارمند</option>
                                 <option value="customer">مشتری</option>
