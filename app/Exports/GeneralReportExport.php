@@ -53,6 +53,10 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
                 'نوع',
                 'دوکاندار', 
                 'نوع مصرف',
+                'درجه فعلی',
+                'درجه قبلی',
+                'مقدار مصرف',
+                'قیمت فی کیلووات',
                 'مبلغ',
                 'واحد پول',
                 'تاریخ پرداخت',
@@ -155,6 +159,14 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
                 $report->type,
                 $report->shopkeeper->fullname ?? '-',
                 $report->expanses_type,
+                // اطلاعات پول برق
+                $report->expanses_type == 'پول برق' ? ($report->current_degree ?? '-') : '-',
+                $report->expanses_type == 'پول برق' ? ($report->past_degree ?? '-') : '-',
+                $report->expanses_type == 'پول برق' ? 
+                    (($report->current_degree !== null && $report->past_degree !== null) ? 
+                     ($report->current_degree - $report->past_degree) : '-') : '-',
+                $report->expanses_type == 'پول برق' ? ($report->degree_price ?? 0) : '-',
+                // اطلاعات اصلی
                 $report->price,
                 $currency,
                 $report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d') : '-',
@@ -267,10 +279,14 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
                 'B' => 10, // نوع
                 'C' => 20, // دوکاندار
                 'D' => 15, // نوع مصرف
-                'E' => 15, // مبلغ
-                'F' => 12, // واحد پول
-                'G' => 15, // تاریخ پرداخت
-                'H' => 12, // وضعیت
+                'E' => 12, // درجه فعلی
+                'F' => 12, // درجه قبلی
+                'G' => 12, // مقدار مصرف
+                'H' => 15, // قیمت فی کیلووات
+                'I' => 15, // مبلغ
+                'J' => 12, // واحد پول
+                'K' => 15, // تاریخ پرداخت
+                'L' => 12, // وضعیت
             ],
             'salary' => [
                 'A' => 15, // مارکت

@@ -290,6 +290,12 @@
                 <td>{{ $report->type }}</td>
                 <td>{{ $report->shopkeeper->fullname ?? '-' }}</td>
                 <td>{{ $report->expanses_type }}</td>
+                @if($re @case('accounting')
+                <!-- Data Section -->
+                <td>{{ $report->market->name ?? '-' }}</td>
+                <td>{{ $report->type }}</td>
+                <td>{{ $report->shopkeeper->fullname ?? '-' }}</td>
+                <td>{{ $report->expanses_type }}</td>
                 @if($report->expanses_type == 'پول برق')
                 <td>{{ $report->current_degree ?? '-' }}</td>
                 <td>{{ $report->past_degree ?? '-' }}</td>
