@@ -106,10 +106,10 @@
     </div>
 
     <!-- Main Content -->
-    <div class="flex flex-col lg:flex-row gap-6 p-4">
+    <div class="flex flex-col lg:flex-row  gap-6 p-4">
 
         <!-- Withdrawal Form -->
-        <div class="w-full lg:w-1/2 xl:w-2/5">
+        <div class=" lg:w-full xl:full">
             <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
                 <!-- Form Header -->
                 <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-6">
@@ -263,8 +263,10 @@
             </div>
         </div>
 
+    
+    </div>
         <!-- Withdrawals Table -->
-        <div class="w-full lg:w-1/2 xl:w-3/5">
+        <div class="w-full lg:full xl:w-full">
             <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
                 <!-- Table Header -->
                 <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-6">
@@ -394,7 +396,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     <!-- Delete Confirmation Modal -->
     @if ($confirmDeleteId)

@@ -1,6 +1,6 @@
 <div class="min-h-screen bg-gray-50">
     <!-- Notifications -->
-    <?php if(session()->has('message')): ?>
+    <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
         class="fixed top-0 left-0 right-0 w-full z-50 bg-gradient-to-br from-indigo-400 to-indigo-500 vazir">
         <div class="h-20 w-full flex justify-start items-center px-4">
@@ -10,7 +10,7 @@
             </h2>
         </div>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
     <?php if(session()->has('error')): ?>
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
@@ -22,7 +22,7 @@
             </h2>
         </div>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
@@ -36,12 +36,12 @@
                 </div>
             </div>
             <div class="space-y-3">
-                <?php $__currentLoopData = ['AFN' => 'افغانی', 'USD' => 'دالر', 'EUR' => 'یورو', 'IRR' => 'تومان']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = ['AFN' => 'افغانی', 'USD' => 'دالر', 'EUR' => 'یورو', 'IRR' => 'تومان']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="flex justify-between items-center">
                     <span class="text-sm text-rose-700 vazir"><?php echo e($label); ?>:</span>
                     <span class="text-lg font-bold vazir"><?php echo e(number_format($withdrawalStats['today'][$currency])); ?></span>
                 </div>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
             </div>
         </div>
 
@@ -55,12 +55,12 @@
                 </div>
             </div>
             <div class="space-y-3">
-                <?php $__currentLoopData = ['AFN' => 'افغانی', 'USD' => 'دالر', 'EUR' => 'یورو', 'IRR' => 'تومان']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = ['AFN' => 'افغانی', 'USD' => 'دالر', 'EUR' => 'یورو', 'IRR' => 'تومان']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="flex justify-between items-center">
                     <span class="text-sm text-green-700 vazir"><?php echo e($label); ?>:</span>
                     <span class="text-lg font-bold vazir"><?php echo e(number_format($withdrawalStats['week'][$currency])); ?></span>
                 </div>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
             </div>
         </div>
 
@@ -74,12 +74,12 @@
                 </div>
             </div>
             <div class="space-y-3">
-                <?php $__currentLoopData = ['AFN' => 'افغانی', 'USD' => 'دالر', 'EUR' => 'یورو', 'IRR' => 'تومان']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = ['AFN' => 'افغانی', 'USD' => 'دالر', 'EUR' => 'یورو', 'IRR' => 'تومان']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="flex justify-between items-center">
                     <span class="text-sm text-blue-700 vazir"><?php echo e($label); ?>:</span>
                     <span class="text-lg font-bold vazir"><?php echo e(number_format($withdrawalStats['month'][$currency])); ?></span>
                 </div>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
             </div>
         </div>
 
@@ -93,21 +93,21 @@
                 </div>
             </div>
             <div class="space-y-3">
-                <?php $__currentLoopData = ['AFN' => 'افغانی', 'USD' => 'دالر', 'EUR' => 'یورو', 'IRR' => 'تومان']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = ['AFN' => 'افغانی', 'USD' => 'دالر', 'EUR' => 'یورو', 'IRR' => 'تومان']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="flex justify-between items-center">
                     <span class="text-sm text-purple-700 vazir"><?php echo e($label); ?>:</span>
                     <span class="text-lg font-bold vazir"><?php echo e(number_format($withdrawalStats['total'][$currency])); ?></span>
                 </div>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
             </div>
         </div>
     </div>
 
     <!-- Main Content -->
-    <div class="flex flex-col lg:flex-row gap-6 p-4">
+    <div class="flex flex-col lg:flex-row  gap-6 p-4">
 
         <!-- Withdrawal Form -->
-        <div class="w-full lg:w-1/2 xl:w-2/5">
+        <div class=" lg:w-full xl:full">
             <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
                 <!-- Form Header -->
                 <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-6">
@@ -135,11 +135,11 @@
                             <select wire:model="type"
                                 class="w-full h-12 px-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir">
                                 <option value="">انتخاب نوع برداشت</option>
-                                <?php $__currentLoopData = $this->expansesTypes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $this->expansesTypes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($key); ?>"><?php echo e($value); ?></option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                             </select>
-                            <?php $__errorArgs = ['type'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['type'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -148,7 +148,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         <!-- Currency and Amount -->
@@ -165,7 +165,7 @@ unset($__errorArgs, $__bag); ?>
                                     <option value="EUR">یورو</option>
                                     <option value="IRR">تومان</option>
                                 </select>
-                                <?php $__errorArgs = ['currency'];
+                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['currency'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -174,7 +174,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
 
                             <!-- Amount -->
@@ -185,7 +185,7 @@ unset($__errorArgs, $__bag); ?>
                                 <input type="number" wire:model="amount" step="0.01" min="0"
                                     class="w-full h-12 px-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir"
                                     placeholder="0">
-                                <?php $__errorArgs = ['amount'];
+                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['amount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -194,7 +194,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
                         </div>
 
@@ -212,18 +212,18 @@ unset($__errorArgs, $__bag); ?>
 
                         <!-- Receiver Selection -->
                         <div>
-                            <?php if($receiver_type === 'staff'): ?>
+                            <!--[if BLOCK]><![endif]--><?php if($receiver_type === 'staff'): ?>
                             <label class="block text-sm font-medium text-gray-700 mb-2 vazir">
                                 کارمند دریافت‌کننده <span class="text-red-500">*</span>
                             </label>
                             <select wire:model="staff_id"
                                 class="w-full h-12 px-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir">
                                 <option value="">انتخاب کارمند</option>
-                                <?php $__currentLoopData = $this->staffs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $this->staffs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($id); ?>"><?php echo e($name); ?></option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                             </select>
-                            <?php $__errorArgs = ['staff_id'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['staff_id'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -232,7 +232,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <?php else: ?>
                             <label class="block text-sm font-medium text-gray-700 mb-2 vazir">
                                 مشتری دریافت‌کننده <span class="text-red-500">*</span>
@@ -240,11 +240,11 @@ unset($__errorArgs, $__bag); ?>
                             <select wire:model="customer_id"
                                 class="w-full h-12 px-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir">
                                 <option value="">انتخاب مشتری</option>
-                                <?php $__currentLoopData = $this->customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $info): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $this->customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $info): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($id); ?>"><?php echo e($info); ?></option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                             </select>
-                            <?php $__errorArgs = ['customer_id'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['customer_id'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -253,8 +253,8 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
-                            <?php endif; ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         <!-- Description -->
@@ -265,7 +265,7 @@ unset($__errorArgs, $__bag); ?>
                             <textarea wire:model="description" rows="3"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition resize-none vazir"
                                 placeholder="دلیل برداشت را وارد کنید..."></textarea>
-                            <?php $__errorArgs = ['description'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['description'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -274,7 +274,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         <!-- Action Buttons -->
@@ -286,7 +286,7 @@ unset($__errorArgs, $__bag); ?>
 
                             </button>
 
-                            <?php if($editingId): ?>
+                            <!--[if BLOCK]><![endif]--><?php if($editingId): ?>
                             <button type="button" wire:click="cancelEdit"
                                 class="flex-1 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-3 px-6 rounded-xl font-medium transition shadow-lg vazir">
                                 <i class="fa-solid fa-times ml-2"></i>
@@ -298,15 +298,17 @@ unset($__errorArgs, $__bag); ?>
                                 <i class="fa-solid fa-eraser ml-2"></i>
                                 پاک کردن فرم
                             </button>
-                            <?php endif; ?>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </form>
                 </div>
             </div>
         </div>
 
+    
+    </div>
         <!-- Withdrawals Table -->
-        <div class="w-full lg:w-1/2 xl:w-3/5">
+        <div class="w-full lg:full xl:w-full">
             <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
                 <!-- Table Header -->
                 <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-6">
@@ -338,7 +340,7 @@ unset($__errorArgs, $__bag); ?>
                                 </tr>
                             </thead>
                             <tbody class="vazir">
-                                <?php $__empty_1 = true; $__currentLoopData = $withdrawals; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $withdrawal): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $withdrawals; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $withdrawal): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                 <tr class="border-b hover:bg-gray-50 transition">
                                     <td class="px-4 py-3 font-medium text-gray-900 text-center">
                                         <?php echo e(($withdrawals->currentPage() - 1) * $withdrawals->perPage() + $key + 1); ?>
@@ -374,7 +376,7 @@ unset($__errorArgs, $__bag); ?>
 
                                     </td>
                                     <td class="px-4 py-3">
-                                        <?php if($withdrawal->staff_id && $withdrawal->staff): ?>
+                                        <!--[if BLOCK]><![endif]--><?php if($withdrawal->staff_id && $withdrawal->staff): ?>
                                         <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">
                                             <?php echo e($withdrawal->staff->fullname); ?>
 
@@ -388,7 +390,7 @@ unset($__errorArgs, $__bag); ?>
                                         <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs">
                                             صندوق
                                         </span>
-                                        <?php endif; ?>
+                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                     </td>
                                     <td class="px-4 py-3 max-w-xs truncate">
                                         <?php echo e($withdrawal->description ?? 'بدون توضیح'); ?>
@@ -429,25 +431,24 @@ unset($__errorArgs, $__bag); ?>
                                         </div>
                                     </td>
                                 </tr>
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </tbody>
                         </table>
                     </div>
 
                     <!-- Pagination -->
-                    <?php if($withdrawals->hasPages()): ?>
+                    <!--[if BLOCK]><![endif]--><?php if($withdrawals->hasPages()): ?>
                     <div class="mt-6">
                         <?php echo e($withdrawals->links()); ?>
 
                     </div>
-                    <?php endif; ?>
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
             </div>
         </div>
-    </div>
 
     <!-- Delete Confirmation Modal -->
-    <?php if($confirmDeleteId): ?>
+    <!--[if BLOCK]><![endif]--><?php if($confirmDeleteId): ?>
     <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-2xl shadow-xl max-w-md w-full transform transition-all">
             <div class="p-6">
@@ -475,7 +476,7 @@ unset($__errorArgs, $__bag); ?>
             </div>
         </div>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 </div>
 
 <?php $__env->startPush('styles'); ?>

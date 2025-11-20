@@ -249,7 +249,7 @@ class Withdrawals extends Component
                 'currency' => $this->currency,
                 'paid' => -1 * $this->amount,
                 'type' => 'withdraw',
-                'created_at' => now(),
+              'created_at' => $withdrawal->created_at,
                 'updated_at' => now(),
             ]);
         });

@@ -82,8 +82,6 @@ class Dashboard extends Component
             'currencies' => $this->currencies,
             'waitting'=>$Waiting,
             'remittancecount'=>$RemittanceCount,
-
-
         ]);
     }
 }

@@ -45,19 +45,19 @@ class State extends BaseWidget
             Card::make('مصارف امروز', '')
                 ->description(new HtmlString(
                     "<div class='grid grid-cols-2 md:grid-cols-2 space-x-3 gap-x-2'>
-                        <div>افغانی</div><div class='text-right'>" . number_format($afn) . "</div>
-                        <div>دالر</div><div class='text-right'>" . number_format($usd) . "</div>
-                        <div>یورو</div><div class='text-right'>" . number_format($eur) . "</div>
-                        <div>تومان</div><div class='text-right'>" . number_format($irr) . "</div>
-                    </div>"
+                <div>افغانی</div><div class='text-right'>" . number_format($afn) . "</div>
+                <div>دالر</div><div class='text-right'>" . number_format($usd) . "</div>
+                <div>یورو</div><div class='text-right'>" . number_format($eur) . "</div>
+                <div>تومان</div><div class='text-right'>" . number_format($irr) . "</div>
+            </div>"
                 ))
                 ->icon('heroicon-o-currency-dollar')
                 ->color('white')
                 ->extraAttributes([
                     'class' => 'h-full flex flex-col justify-between bg-gradient-to-r from-green-600 to-emerald-700 text-white dark:from-green-700 dark:to-emerald-800 rounded-xl shadow-lg text-sm leading-6'
                 ]),
-            
-        
+
+
 
             Card::make('تعداد دوکان‌ها', number_format(
                 Shop::query()
@@ -71,7 +71,7 @@ class State extends BaseWidget
 
             Card::make('تعداد دوکان‌های سرقفلی', number_format(
                 Shop::query()
-                    ->where('sarqofli','بلی')
+                    ->where('sarqofli', 'بلی')
                     ->when($user->role !== 'superadmin', fn($q) => $q->where('admin_id', $user->role === 'admin' ? $user->id : $user->admin_id))
                     ->count()
             ))
@@ -94,7 +94,7 @@ class State extends BaseWidget
 
             Card::make('دوکان‌های گروی شده', number_format(
                 Shop::query()
-                    ->where('rent','بلی')
+                    ->where('rent', 'بلی')
                     // ->whereNull('shopkeeper_id')
                     ->when($user->role !== 'superadmin', fn($q) => $q->where('admin_id', $user->role === 'admin' ? $user->id : $user->admin_id))
                     ->count()
