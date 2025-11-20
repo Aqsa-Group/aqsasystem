@@ -252,7 +252,7 @@ class AccountReports extends Component
 
         foreach ($balances as $currency => $balance) {
             if (isset($exchangeRates[$currency]) && $balance != 0) {
-                $total += $balance * $exchangeRates[$currency];
+                $total += $balance / $exchangeRates[$currency];
             }
         }
 

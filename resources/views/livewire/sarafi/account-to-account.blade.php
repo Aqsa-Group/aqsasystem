@@ -72,39 +72,45 @@
             <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
                 <div
                     class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
-
-                    <h1 class="text-[24px] text-white">خلاصه بیلانس به دالر</h1>
-
+                    @php
+                    $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
+                    $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
+                    @endphp
+                    <h1 class="text-[24px] text-white">خلاصه بیلانس به {{$sourceCurrency }}</h1>
                     <div class="flex flex-col gap-1 mt-1 text-center">
                         @php
                         $totalCashUsd = 0;
                         $totalBankUsd = 0;
                         $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
+
                         $exchangeRates = [
-                        'افغانی' => $latestExchangeRate->afn_buy ?? 0.011,
+                        'افغانی' => $latestExchangeRate->afn_buy ?? 66.20,
                         'دالر' => 1,
-                        'تومان' => $latestExchangeRate->irr_buy ?? 0.000024,
-                        'یورو' => $latestExchangeRate->eur_buy ?? 1.07,
-                        'کلدار' => $latestExchangeRate->pkr_buy ?? 0.0036,
-                        'درهم' => $latestExchangeRate->aed_buy ?? 0.27,
-                        'لیره' => $latestExchangeRate->try_buy ?? 0.031,
-                        'یوان' => $latestExchangeRate->cny_buy ?? 0.14,
-                        'روپیه' => 0.14,
+                        'تومان' => $latestExchangeRate->irr_buy ?? 110000.00,
+                        'یورو' => $latestExchangeRate->eur_buy ?? 70.00,
+                        'کلدار' => $latestExchangeRate->pkr_buy ?? 32.00,
+                        'درهم' => $latestExchangeRate->aed_buy ?? 44.00,
+                        'لیره' => $latestExchangeRate->try_buy ?? 60.00,
+                        'یوان' => $latestExchangeRate->cny_buy ?? 43.00,
+                        'روپیه' => 7.14,
                         ];
 
                         foreach($customerCashBalances as $currency => $balance) {
-                        if(isset($exchangeRates[$currency])) {
-                        $totalCashUsd += $balance * $exchangeRates[$currency];
+                        if(isset($exchangeRates[$currency]) && $exchangeRates[$currency] > 0) {
+
+                        $totalCashUsd += $balance / $exchangeRates[$currency];
                         }
                         }
 
                         foreach($customerBankBalances as $currency => $balance) {
-                        if(isset($exchangeRates[$currency])) {
-                        $totalBankUsd += $balance * $exchangeRates[$currency];
+                        if(isset($exchangeRates[$currency]) && $exchangeRates[$currency] > 0) {
+                        // تقسیم کردن نه ضرب کردن!
+                        $totalBankUsd += $balance / $exchangeRates[$currency];
                         }
                         }
                         $grandTotalUsd = $totalCashUsd + $totalBankUsd;
                         @endphp
+
                         <div class="flex justify-between items-center text-[14px]">
                             <span>نقدی:</span>
                             <span class="font-bold text-left" dir="ltr">{{ number_format($totalCashUsd, 2) }}</span>
@@ -268,8 +274,8 @@
                                         @endforeach
                                 </datalist>
                                 @if (empty($depositAccount))
-                                    
-                            
+
+
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                     <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
                                 </div>
@@ -545,12 +551,12 @@
             {{-- جدول تراکنش‌های تبدیل ارز --}}
             <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 rounded-[12px] w-[440px] mb-5 md:w-[410px] lg:w-[150px] mx-auto"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-              <div
+                <div
                     class="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                     <h1 class="text-lg md:text-xl lg:text-2xl vazir">تراکنش های تبدیل ارز ثبت شده</h1>
 
                     <div class="flex items-center gap-3">
-                           <div class="relative w-[340px] md:w-[500px]">
+                        <div class="relative w-[340px] md:w-[500px]">
                             <input type="text" wire:model.live="search" wire:keydown.debounce.500ms="search"
                                 class="border border-[#8C8C8C] w-full h-12 md:h-[51px] bg-transparent rounded-[12px] p-2 md:p-3 text-sm md:text-base pr-10"
                                 placeholder="جستجو بر اساس نام،...">

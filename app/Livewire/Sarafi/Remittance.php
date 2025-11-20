@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Morilog\Jalali\Jalalian;
+use NumberFormatter;
+
 
 class Remittance extends Component
 {
@@ -22,6 +24,7 @@ class Remittance extends Component
 
     public $confirmDeleteId = null;
     public $remittanceId = null;
+    public $amountInWords;
     public $selectedAccount;
     public $toAccount;
     public $source_account;
@@ -135,8 +138,31 @@ class Remittance extends Component
     public function selectToAccount($customerId)
     {
         $this->toAccount = $customerId;
+        $this->autoFillGiverName($customerId);
     }
 
+    public function updatedAmount($value)
+    {
+        $number = preg_replace('/[^\d]/', '', $value);
+        $this->amount = $number;
+
+        if ($number > 0) {
+            $formatter = new NumberFormatter("fa", NumberFormatter::SPELLOUT);
+            $words = $formatter->format($number);
+            $words = str_replace(['دویست', 'سیصد', 'پانصد'], ['دوصد', 'سه صد', 'پنجصد'], $words);
+            $this->amountInWords = $words;
+        } else {
+            $this->amountInWords = null;
+        }
+    }
+
+    private function autoFillGiverName($customerId)
+    {
+        $customer = Customer::find($customerId);
+        if ($customer) {
+            $this->giver_name = $customer->fullname;
+        }
+    }
     public function clearFilter()
     {
         $this->selectedCustomerId = null;
@@ -176,138 +202,86 @@ class Remittance extends Component
 
         $this->remittances = $query->latest()->get();
     }
-public function submitRemittance()
-{
-    $this->amount = str_replace(',', '', $this->amount);
-    $this->source_account = $this->source_account_last_four . ' - xxxx - xxxx - xxxx';
+    public function submitRemittance()
+    {
+        $this->amount = str_replace(',', '', $this->amount);
+        $this->source_account = $this->source_account_last_four . ' - xxxx - xxxx - xxxx';
 
-    $this->validate([
-        'selectedAccount' => 'required|exists:sarafi.customers,id',
-        'toAccount' => 'required|exists:sarafi.customers,id',
-        'source_account' => 'required|string|max:255',
-        'source_account_last_four' => 'required|digits:4',
-        'currency' => 'required|string',
-        'amount' => 'required|numeric|min:1',
-        'date' => 'required|date',
-        'clock' => 'required',
-        'tracking_code' => 'required|string|max:255',
-        'from_bank' => 'required|string|max:255',
-        'to_bank' => 'required|string|max:255',
-        'zone' => 'required|string|max:255',
-        'giver_name' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'remittance_image' => 'nullable|image|max:10240',
-    ]);
+        $this->validate([
+            'selectedAccount' => 'required|exists:sarafi.customers,id',
+            'toAccount' => 'required|exists:sarafi.customers,id',
+            'source_account' => 'required|string|max:255',
+            'source_account_last_four' => 'required|digits:4',
+            'currency' => 'required|string',
+            'amount' => 'required|numeric|min:1',
+            'date' => 'required|date',
+            'clock' => 'required',
+            'tracking_code' => 'required|string|max:255',
+            'from_bank' => 'required|string|max:255',
+            'to_bank' => 'required|string|max:255',
+            'zone' => 'required|string|max:255',
+            'giver_name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'remittance_image' => 'nullable|image|max:10240',
+        ]);
 
-    $user = Auth::guard('sarafi')->user();
-    $adminId = $user->admin_id ?? $user->id;
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
 
-    $imagePath = $this->remittance_image ? $this->remittance_image->store('remittances', 'public') : null;
+        $imagePath = $this->remittance_image ? $this->remittance_image->store('remittances', 'public') : null;
 
-    $data = [
-        'customer_id' => $this->selectedAccount,
-        'to_account' => $this->toAccount,
-        'user_id' => $user->id,
-        'admin_id' => $adminId,
-        'source_account' => $this->source_account,
-        'currency' => $this->currency,
-        'amount' => $this->amount,
-        'date' => $this->date,
-        'clock' => $this->clock,
-        'tracking_code' => $this->tracking_code,
-        'from_bank' => $this->from_bank,
-        'to_bank' => $this->to_bank,
-        'zone' => $this->zone,
-        'giver_name' => $this->giver_name,
-        'description' => $this->description,
-        'remittance_image' => $imagePath,
-        'state' => 0, 
-    ];
+        $data = [
+            'customer_id' => $this->selectedAccount,
+            'to_account' => $this->toAccount,
+            'user_id' => $user->id,
+            'admin_id' => $adminId,
+            'source_account' => $this->source_account,
+            'currency' => $this->currency,
+            'amount' => $this->amount,
+            'date' => $this->date,
+            'clock' => $this->clock,
+            'tracking_code' => $this->tracking_code,
+            'from_bank' => $this->from_bank,
+            'to_bank' => $this->to_bank,
+            'zone' => $this->zone,
+            'giver_name' => $this->giver_name,
+            'description' => $this->description,
+            'remittance_image' => $imagePath,
+            'state' => 0,
+        ];
 
-    if ($this->remittanceId) {
-        $remittance = Remittances::findOrFail($this->remittanceId);
+        if ($this->remittanceId) {
+            $remittance = Remittances::findOrFail($this->remittanceId);
 
-        if ($imagePath && $remittance->remittance_image) {
-            Storage::disk('public')->delete($remittance->remittance_image);
+            if ($imagePath && $remittance->remittance_image) {
+                Storage::disk('public')->delete($remittance->remittance_image);
+            }
+
+            $remittance->update($data);
+            $this->updateRemittanceApproval($remittance);
+            session()->flash('message', 'حواله با موفقیت بروزرسانی شد.');
+        } else {
+            $remittance = Remittances::create($data);
+
+            $this->createRemittanceApproval($remittance);
+
+            session()->flash('message', 'حواله با موفقیت ثبت شد و برای تایید ارسال گردید.');
         }
 
-        $remittance->update($data);
-        $this->updateRemittanceApproval($remittance);
-        session()->flash('message', 'حواله با موفقیت بروزرسانی شد.');
-    } else {
-        $remittance = Remittances::create($data);
-        
-        $this->createRemittanceApproval($remittance);
-        
-        session()->flash('message', 'حواله با موفقیت ثبت شد و برای تایید ارسال گردید.');
+        $this->updateRemittances();
+        $this->resetForm();
     }
 
-    $this->updateRemittances();
-    $this->resetForm();
-}
 
 
- 
-private function createRemittanceApproval($remittance)
-{
-    RemittanceApproval::create([
-        'remittance_id' => $remittance->id,
-        'customer_id' => $remittance->customer_id,
-        'to_account' => $remittance->to_account,
-        'user_id' => $remittance->user_id,
-        'admin_id' => $remittance->admin_id,
-        'source_account' => $remittance->source_account,
-        'currency' => $remittance->currency,
-        'amount' => $remittance->amount,
-        'date' => $remittance->date,
-        'clock' => $remittance->clock,
-        'tracking_code' => $remittance->tracking_code,
-        'from_bank' => $remittance->from_bank,
-        'to_bank' => $remittance->to_bank,
-        'zone' => $remittance->zone,
-        'giver_name' => $remittance->giver_name,
-        'description' => $remittance->description,
-        'remittance_image' => $remittance->remittance_image,
-        'approved' => 0,
-    ]);
-}
-
-
-  public function edit($id)
-{
-    $remittance = Remittances::with(['customer', 'recipient'])->findOrFail($id);
-
-    $this->remittanceId = $id;
-    $this->selectedAccount = $remittance->customer_id;
-    $this->toAccount = $remittance->to_account;
-    $this->source_account = $remittance->source_account;
-
-    $this->source_account_last_four = substr($remittance->source_account, 0, 4);
-
-    $this->currency = $remittance->currency;
-    $this->amount = $remittance->amount;
-    $this->date = $remittance->date;
-    $this->clock = $remittance->clock;
-    $this->tracking_code = $remittance->tracking_code;
-    $this->from_bank = $remittance->from_bank;
-    $this->to_bank = $remittance->to_bank;
-    $this->zone = $remittance->zone;
-    $this->giver_name = $remittance->giver_name;
-    $this->description = $remittance->description;
-
-    $this->search = $remittance->customer->fullname ?? '';
-
-    $this->updateRemittanceApproval($remittance);
-}
-
-private function updateRemittanceApproval(Remittances $remittance)
-{
-    $approval = RemittanceApproval::where('remittance_id', $remittance->id)->first();
-    
-    if ($approval) {
-        $approval->update([
+    private function createRemittanceApproval($remittance)
+    {
+        RemittanceApproval::create([
+            'remittance_id' => $remittance->id,
             'customer_id' => $remittance->customer_id,
             'to_account' => $remittance->to_account,
+            'user_id' => $remittance->user_id,
+            'admin_id' => $remittance->admin_id,
             'source_account' => $remittance->source_account,
             'currency' => $remittance->currency,
             'amount' => $remittance->amount,
@@ -320,20 +294,73 @@ private function updateRemittanceApproval(Remittances $remittance)
             'giver_name' => $remittance->giver_name,
             'description' => $remittance->description,
             'remittance_image' => $remittance->remittance_image,
-         
+            'approved' => 0,
         ]);
     }
-}
+
+
+
+    public function edit($id)
+    {
+        $remittance = Remittances::with(['customer', 'recipient'])->findOrFail($id);
+
+        $this->remittanceId = $id;
+        $this->selectedAccount = $remittance->customer_id;
+        $this->toAccount = $remittance->to_account;
+        $this->source_account = $remittance->source_account;
+
+        $this->source_account_last_four = substr($remittance->source_account, 0, 4);
+
+        $this->currency = $remittance->currency;
+        $this->amount = $remittance->amount;
+        $this->date = $remittance->date;
+        $this->clock = $remittance->clock;
+        $this->tracking_code = $remittance->tracking_code;
+        $this->from_bank = $remittance->from_bank;
+        $this->to_bank = $remittance->to_bank;
+        $this->zone = $remittance->zone;
+        $this->giver_name = $remittance->giver_name;
+        $this->description = $remittance->description;
+
+        $this->search = $remittance->customer->fullname ?? '';
+
+        $this->updateRemittanceApproval($remittance);
+    }
+
+    private function updateRemittanceApproval(Remittances $remittance)
+    {
+        $approval = RemittanceApproval::where('remittance_id', $remittance->id)->first();
+
+        if ($approval) {
+            $approval->update([
+                'customer_id' => $remittance->customer_id,
+                'to_account' => $remittance->to_account,
+                'source_account' => $remittance->source_account,
+                'currency' => $remittance->currency,
+                'amount' => $remittance->amount,
+                'date' => $remittance->date,
+                'clock' => $remittance->clock,
+                'tracking_code' => $remittance->tracking_code,
+                'from_bank' => $remittance->from_bank,
+                'to_bank' => $remittance->to_bank,
+                'zone' => $remittance->zone,
+                'giver_name' => $remittance->giver_name,
+                'description' => $remittance->description,
+                'remittance_image' => $remittance->remittance_image,
+
+            ]);
+        }
+    }
     public function confirmDelete($id)
     {
         $this->confirmDeleteId = $id;
     }
 
-   public function deleteConfirmed()
+    public function deleteConfirmed()
     {
         DB::connection('sarafi')->transaction(function () {
             $remittance = Remittances::findOrFail($this->confirmDeleteId);
-            
+
             // اگر حواله تایید شده است، عملیات برگشت انجام شود
             if ($remittance->state == 1) {
                 $this->reverseApprovedRemittance($remittance);
@@ -354,7 +381,7 @@ private function updateRemittanceApproval(Remittances $remittance)
     /**
      * برگشت دادن حواله تایید شده
      */
-      private function reverseApprovedRemittance(Remittances $remittance)
+    private function reverseApprovedRemittance(Remittances $remittance)
     {
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
@@ -387,10 +414,10 @@ private function updateRemittanceApproval(Remittances $remittance)
 
 
 
-        /**
+    /**
      * حذف حواله در انتظار تایید
      */
-      private function deletePendingRemittance(Remittances $remittance)
+    private function deletePendingRemittance(Remittances $remittance)
     {
         // حذف درخواست تایید
         RemittanceApproval::where('remittance_id', $remittance->id)->delete();
@@ -404,13 +431,13 @@ private function updateRemittanceApproval(Remittances $remittance)
         $remittance->delete();
     }
 
- private function reverseTransactions(Remittances $remittance, $user, $adminId)
+    private function reverseTransactions(Remittances $remittance, $user, $adminId)
     {
         // پیدا کردن تراکنش‌های مربوط به این حواله
         $transactions = Transaction::where('remittance_id', $remittance->id)
             ->where(function ($q) use ($adminId, $user) {
                 $q->where('admin_id', $adminId)
-                  ->orWhere('user_id', $user->id);
+                    ->orWhere('user_id', $user->id);
             })
             ->get();
 
@@ -464,16 +491,16 @@ private function updateRemittanceApproval(Remittances $remittance)
         }
     }
 
-       /**
+    /**
      * برگشت موجودی بانک
      */
-   private function reverseBankAccount(Remittances $remittance, $user, $adminId)
+    private function reverseBankAccount(Remittances $remittance, $user, $adminId)
     {
         $bankAccount = BankAccount::where('admin_id', $adminId)->first();
 
         if ($bankAccount) {
             $currentBalance = $bankAccount->{$remittance->currency} ?? 0;
-            
+
             // کاهش موجودی بانک (چون هنگام تایید افزایش یافته بود)
             if ($currentBalance >= $remittance->amount) {
                 $bankAccount->decrement($remittance->currency, $remittance->amount);
@@ -482,7 +509,7 @@ private function updateRemittanceApproval(Remittances $remittance)
                 $bankAccount->update([
                     $remittance->currency => 0
                 ]);
-                
+
                 Log::warning("موجودی بانک برای برگشت کامل حواله کافی نبود", [
                     'remittance_id' => $remittance->id,
                     'currency' => $remittance->currency,

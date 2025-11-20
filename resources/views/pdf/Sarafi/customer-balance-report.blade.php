@@ -132,7 +132,11 @@
                 @foreach($currencies as $currencyCode => $currencyName)
                 <th width="60">{{ $currencyName }}</th>
                 @endforeach
-                <th width="80">بیلانس (دالر)</th>
+                   @php
+                    $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
+                    $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
+                    @endphp
+                <th width="80">بیلانس به {{$sourceCurrency }}</th>
             </tr>
         </thead>
         <tbody>

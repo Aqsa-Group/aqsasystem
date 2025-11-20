@@ -132,7 +132,11 @@
                 <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $currencyName): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <th width="60"><?php echo e($currencyName); ?></th>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                <th width="80">بیلانس (دالر)</th>
+                   <?php
+                    $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
+                    $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
+                    ?>
+                <th width="80">بیلانس به <?php echo e($sourceCurrency); ?></th>
             </tr>
         </thead>
         <tbody>

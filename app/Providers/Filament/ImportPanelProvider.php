@@ -61,6 +61,8 @@ class ImportPanelProvider extends PanelProvider
                             
                         }
                         
+                        
+                        
                         /* کلاس‌های فونت سفارشی */
                         .vazir { font-family: Vazir, Tahoma, sans-serif !important; }
                         .shabnam { font-family: Shabnam, Tahoma, sans-serif !important; }

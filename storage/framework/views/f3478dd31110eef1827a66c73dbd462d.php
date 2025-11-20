@@ -1,7 +1,7 @@
 <div>
     <div class="container mx-auto ">
         <!-- Session Message -->
-        <?php if(session()->has('message')): ?>
+        <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
             <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -11,7 +11,7 @@
                 </h2>
             </div>
         </div>
-        <?php endif; ?>
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
         <!-- Page Header -->
         <div class="space-y-4 mb-6">
@@ -53,7 +53,7 @@
                     <div>
                         <button wire:click="refreshReport"
                             class="w-full flex items-center justify-center gap-2 bg-[#2563EB] text-white px-4 py-4 rounded-xl hover:bg-blue-700 transition">
-                            <span>بروز رسانی    </span>
+                            <span>بروز رسانی </span>
                             <svg width="24" height="24" viewBox="0 0 30 30" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -83,9 +83,9 @@
                         <select wire:model="selectedCustomer"
                             class="appearance-none w-full border border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
                             <option value="">همه مشتریان</option>
-                            <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <option value="<?php echo e($customer['id']); ?>"><?php echo e($customer['fullname']); ?></option>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                         </select>
                         <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" width="20" height="20"
                             viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -150,7 +150,7 @@
                     </div>
                 </div>
 
-            
+
 
                 <div class="overflow-x-auto w-full mt-4">
                     <div class="max-h-[600px] overflow-y-auto">
@@ -172,11 +172,16 @@
                                     <th class="px-4 py-4 font-bold">درهم</th>
                                     <th class="px-4 py-4 font-bold">لیره</th>
                                     <th class="px-4 py-4 font-bold">یوان</th>
-                                    <th class="px-4 py-4 font-bold">بیلانس (دالر)</th>
+                                    <?php
+                                    $latestExchangeRate =
+                                    \App\Models\Sarafi\ExchangeRates::latest()->first();
+                                    $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
+                                    ?>
+                                    <th class="px-4 py-4 font-bold">بیلانس به <?php echo e($sourceCurrency); ?></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $__empty_1 = true; $__currentLoopData = $reports; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $reports; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                 <tr class=" border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
                                     <td class="px-4 py-4">
                                         <span class="border border-gray-300 px-2 py-1 rounded-lg"><?php echo e($index + 1); ?></span>
@@ -214,7 +219,7 @@
                                         هیچ داده‌ای یافت نشد
                                     </td>
                                 </tr>
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </tbody>
                         </table>
                     </div>
@@ -271,7 +276,14 @@
                                                 <th class="border border-gray-300 p-2">مشتری معرف</th>
                                                 <th class="border border-gray-300 p-2">دالر</th>
                                                 <th class="border border-gray-300 p-2">افغانی</th>
-                                                <th class="border border-gray-300 p-2">بیلانس (دالر)</th>
+                                                <?php
+                                                $latestExchangeRate =
+                                                \App\Models\Sarafi\ExchangeRates::latest()->first();
+                                                $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
+                                                ?>
+                                                <th class="border border-gray-300 p-2">بیلانس به <?php echo e($sourceCurrency); ?>
+
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>

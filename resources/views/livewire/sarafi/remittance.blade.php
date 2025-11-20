@@ -124,6 +124,9 @@
                                     class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:text-white"
                                     oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
                             </div>
+                            @if($amountInWords)
+                            <p class="text-sm text-blue-600 mt-2 vazir">{{ $amountInWords }}</p>
+                            @endif
                             @error('amount')
                             <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                             @enderror
@@ -134,18 +137,7 @@
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">تاریخ</label>
                             <input type="text" id="datePicker" wire:model="date" placeholder="YYYY/MM/DD"
                                 class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
-                            <svg class="absolute left-3 bottom-3 -translate-y-1/2 pointer-events-none" width="20"
-                                height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-                                <path
-                                    d="M8 2V5M16 2V5M3.5 9.09H20.5M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z"
-                                    stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-
-                                <path
-                                    d="M15.6947 13.7H15.7037M15.6947 16.7H15.7037M11.9955 13.7H12.0045M11.9955 16.7H12.0045M8.29431 13.7H8.30329M8.29431 16.7H8.30329"
-                                    stroke="#8C8C8C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
+                          
                             @error('date')
                             <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                             @enderror
@@ -177,7 +169,7 @@
 
                     <!-- Source and Destination Banks -->
                     <div class="mt-2 flex flex-col lg:flex-row gap-3">
-                        <!-- Source Bank -->
+                    <!-- Source Bank -->
                         <div class="lg:w-[290px]">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">بانک مبدا</label>
                             <input type="text" wire:model="from_bank" placeholder="سپه"
@@ -186,7 +178,6 @@
                             <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                             @enderror
                         </div>
-
                         <!-- Destination Bank -->
                         <div class="lg:w-[290px]">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">بانک مقصد</label>
@@ -197,7 +188,7 @@
                             @enderror
                         </div>
                     </div>
-                          <!-- Source and Destination Account Numbers -->
+                    <!-- Source and Destination Account Numbers -->
                     <div class="flex-1 flex gap-2 mt-2">
                         <!-- Source Account Number (Display only) -->
                         <div class="lg:w-[440px]">
@@ -296,7 +287,7 @@
                         </div>
                     </div>
 
-              
+
                     <!-- Remittance Description -->
                     <div class="mt-3 flex gap-3">
                         <div class="w-full">
@@ -307,28 +298,140 @@
                             @enderror
                         </div>
                     </div>
-
                     <!-- File Upload -->
                     <div class="mt-2 flex gap-3">
                         <div class="w-full">
-                            <div x-data="{ files: [] }"
-                                x-on:drop.prevent="files = $event.dataTransfer.files; $wire.upload('remittance_image', files[0])"
-                                x-on:dragover.prevent
-                                class="w-full h-[150px] p-3 rounded-[12px] border border-dashed focus:ring-2 bg-white border-[#112080] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+                            <div x-data="{
+            files: [],
+            isUploading: false,
+            uploadedFileName: @entangle('remittance_image').defer,
+            init() {
+                // گوش دادن به رویدادهای Livewire برای آپلود
+                window.addEventListener('upload:start', () => {
+                    this.isUploading = true;
+                });
+                window.addEventListener('upload:finish', () => {
+                    this.isUploading = false;
+                });
+                window.addEventListener('upload:error', () => {
+                    this.isUploading = false;
+                });
+            }
+        }" x-on:drop.prevent="
+            files = $event.dataTransfer.files; 
+            $wire.upload('remittance_image', files[0], () => {
+                uploadedFileName = files[0]?.name;
+            })
+        " x-on:dragover.prevent :class="{
+            'border-green-500 bg-green-50': uploadedFileName && !isUploading,
+            'border-blue-500 bg-blue-50': isUploading,
+            'border-[#112080] bg-white': !uploadedFileName && !isUploading
+        }" class="w-full h-[150px] p-3 rounded-[12px] border-2 border-dashed focus:ring-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300 relative"
                                 x-on:click="$refs.fileInput.click()">
-                                <img src="{{ asset('assets/sarafi/all_icon/upload.svg') }}" alt="آپلود"
-                                    class="w-12 h-12 mb-2">
-                                <h1 class="font-vazir text-gray-600 dark:text-gray-300 text-[16px]">فایل را اینجا وارد
-                                    کنید یا بکشید</h1>
-                                <input type="file" class="hidden" x-ref="fileInput"
-                                    x-on:change="$wire.upload('remittance_image', $event.target.files[0])">
+
+                                <!-- حالت آپلود در حال انجام -->
+                                <template x-if="isUploading">
+                                    <div class="flex flex-col items-center">
+                                        <div
+                                            class="w-12 h-12 mb-2 border-4 border-blue-500 border-t-transparent rounded-full animate-spin">
+                                        </div>
+                                        <h1 class="font-vazir text-blue-600 dark:text-blue-300 text-[16px]">در حال
+                                            آپلود...</h1>
+                                        <p class="font-vazir text-gray-500 dark:text-gray-400 text-sm mt-1">لطفا منتظر
+                                            بمانید</p>
+                                    </div>
+                                </template>
+
+                                <!-- حالت آپلود موفق -->
+                                <template x-if="!isUploading && uploadedFileName">
+                                    <div class="flex flex-col items-center">
+                                        <div
+                                            class="w-12 h-12 mb-2 bg-green-100 rounded-full flex items-center justify-center">
+                                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                        </div>
+                                        <h1 class="font-vazir text-green-600 dark:text-green-300 text-[16px]">آپلود موفق
+                                        </h1>
+                                        <p class="font-vazir text-gray-600 dark:text-gray-300 text-sm mt-1 truncate max-w-full"
+                                            x-text="uploadedFileName"></p>
+                                        <button type="button"
+                                            x-on:click.stop="uploadedFileName = null; $wire.set('remittance_image', null)"
+                                            class="mt-2 text-red-500 hover:text-red-700 text-sm flex items-center gap-1">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                </path>
+                                            </svg>
+                                            حذف فایل
+                                        </button>
+                                    </div>
+                                </template>
+
+                                <!-- حالت اولیه (بدون آپلود) -->
+                                <template x-if="!isUploading && !uploadedFileName">
+                                    <div class="flex flex-col items-center">
+                                        <img src="{{ asset('assets/sarafi/all_icon/upload.svg') }}" alt="آپلود"
+                                            class="w-12 h-12 mb-2">
+                                        <h1 class="font-vazir text-gray-600 dark:text-gray-300 text-[16px]">فایل را
+                                            اینجا وارد کنید یا بکشید</h1>
+                                        <p class="font-vazir text-gray-500 dark:text-gray-400 text-sm mt-1">فرمت‌های
+                                            مجاز: JPG, PNG, webpp</p>
+                                    </div>
+                                </template>
+
+                                <input type="file" class="hidden" x-ref="fileInput" accept=".jpg,.jpeg,.png,.pdf,.webp"
+                                    x-on:change="
+                       if ($event.target.files[0]) {
+                           $wire.upload('remittance_image', $event.target.files[0], () => {
+                               uploadedFileName = $event.target.files[0]?.name;
+                           });
+                       }
+                   ">
                             </div>
+
+                            <!-- نمایش خطا -->
                             @error('remittance_image')
-                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            <div class="mt-2 flex items-center gap-2 text-red-500 text-sm">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span>{{ $message }}</span>
+                            </div>
                             @enderror
+
+                        
+
+                            <!-- نمایش فایل ذخیره شده (در حالت ویرایش) -->
+                            @if($remittance_image && is_string($remittance_image))
+                            <div
+                                class="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span class="text-blue-700 text-sm">فایل قبلاً آپلود شده</span>
+                                </div>
+                                <a href="{{ Storage::url($remittance_image) }}" target="_blank"
+                                    class="text-blue-500 hover:text-blue-700 text-sm flex items-center gap-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                        </path>
+                                    </svg>
+                                    مشاهده
+                                </a>
+                            </div>
+                            @endif
                         </div>
                     </div>
-
                     <!-- Action Buttons -->
                     <div
                         class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 py-4 justify-center items-center text-center flex-wrap">

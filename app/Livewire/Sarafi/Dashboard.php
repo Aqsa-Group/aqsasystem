@@ -5,6 +5,7 @@ namespace App\Livewire\Sarafi;
 use App\Models\Sarafi\BankAccount;
 use App\Models\Sarafi\CurrencySafe;
 use App\Models\Sarafi\Customer;
+use App\Models\Sarafi\Remittances;
 use App\Models\Sarafi\Transaction;
 use App\Models\Sarafi\User;
 use Illuminate\Support\Facades\Auth;
@@ -69,6 +70,8 @@ class Dashboard extends Component
         $customerCount = Customer::where('admin_id', $adminId)->count();
         $UserCount = User::where('admin_id', $adminId)->count();
         $TransactionCount = Transaction::where('admin_id', $adminId)->count();
+        $Waiting=Remittances::where('admin_id',$adminId)->where('state', 0)->count();
+        $RemittanceCount=Remittances::where('admin_id',$adminId)->count();
 
         return view('livewire.sarafi.dashboard', [
             'UserCount' => $UserCount,
@@ -77,6 +80,10 @@ class Dashboard extends Component
             'safe' => $this->safe,
             'safe_account' => $this->safe_account, 
             'currencies' => $this->currencies,
+            'waitting'=>$Waiting,
+            'remittancecount'=>$RemittanceCount,
+
+
         ]);
     }
 }

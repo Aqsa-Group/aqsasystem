@@ -106,7 +106,7 @@
 
 
                     <div class="flex items-center gap-2 pl-2 ">
-                    
+
                         <button wire:click="toggleTransactionType" type="button" class="rounded-[8px] p-[10px] text-white vazir text-[14px]
                                 transition-colors duration-500 ease-in-out py-4
                                 {{ $transactionType === 'خرید' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
@@ -208,7 +208,7 @@
                             <label class="block text-[15px] font-medium text-black mb-1 vazir">تاریخ</label>
                             <input type="text" id="datePicker" wire:model="date" wire:ignore placeholder="YYYY/MM/DD"
                                 class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
-                             <svg class="absolute left-3 bottom-3 -translate-y-1/2 pointer-events-none" width="20"
+                            <svg class="absolute left-3 bottom-3 -translate-y-1/2 pointer-events-none" width="20"
                                 height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
                                 <path
@@ -220,7 +220,7 @@
                                     d="M15.6947 13.7H15.7037M15.6947 16.7H15.7037M11.9955 13.7H12.0045M11.9955 16.7H12.0045M8.29431 13.7H8.30329M8.29431 16.7H8.30329"
                                     stroke="#8C8C8C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
-                            </div>
+                        </div>
                     </div>
 
 
@@ -274,7 +274,8 @@
                         @enderror
                     </div>
                     <!-- دکمه‌های نهایی -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-3 gap-3 justify-center items-center text-center flex-wrap">
+                    <div
+                        class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-3 gap-3 justify-center items-center text-center flex-wrap">
                         <button type="submit"
                             class="bg-[#61B138] text-[15px] vazir font-semibold rounded-[8px] px-10 py-3 text-white hover:bg-green-700 transition">
                             {{ $isEditing ? 'بروزرسانی' : 'ثبت' }}
@@ -293,7 +294,7 @@
                             {{ $isEditing ? 'لغو ویرایش' : 'انصراف' }}
                         </button>
 
-                     
+
                     </div>
                 </form>
             </div>
@@ -305,7 +306,7 @@
                 <div
                     class="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                     <h1 class="text-lg md:text-[16px] vazir">ترانزکشن های ثبت شده</h1>
-                        <div class="relative w-full">
+                    <div class="relative w-full">
                         <input type="text" wire:model.live="search"
                             class="border border-[#8C8C8C] w-full h-[46px] bg-transparent rounded-[10px] p-2 pr-10 text-sm"
                             placeholder="جستجو ...">
@@ -352,7 +353,7 @@
                                     <td class="px-6 py-3 vazir text-[18px] font-medium">{{ $transaction->description }}
                                     </td>
                                     <td class="px-2 py-3 vazir text-[18px] font-medium">
-                                                {{ explode(' ', $transaction->date)[0] }}
+                                        {{ explode(' ', $transaction->date)[0] }}
                                     </td>
 
                                     <!-- در بخش عملیات جدول -->

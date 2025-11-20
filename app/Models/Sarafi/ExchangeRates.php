@@ -31,6 +31,8 @@ class ExchangeRates extends Model
         'cny_sell',
         'try_buy',
         'try_sell',
+        'usd_buy',
+        'usd_sell',
     ];
 
     public function user()
@@ -44,20 +46,20 @@ class ExchangeRates extends Model
     }
 
 
-      protected static function booted()
+    protected static function booted()
     {
 
         static::updating(function ($model) {
             $user = Auth::guard('sarafi')->user();
             $adminId = $user->admin_id ?? $user->id;
             Trash::create([
-                'document_type' =>'ثبت نرخ ارز',
+                'document_type' => 'ثبت نرخ ارز',
                 'record_id' => $model->id,
                 'action' => 'ویرایش',
-                'document_discription'=>  $model->description,
+                'document_discription' => 'نرخ ارز',
                 'old_data' => $model->getOriginal(),
                 'new_data' => $model->getAttributes(),
-                'registered_user'=> $model->user_id,
+                'registered_user' => $model->user_id,
                 'user_id'  => $user->id,
                 'admin_id' => $adminId,
             ]);
@@ -67,12 +69,12 @@ class ExchangeRates extends Model
             $user = Auth::guard('sarafi')->user();
             $adminId = $user->admin_id ?? $user->id;
             Trash::create([
-                'document_type' =>'ثبت نرخ ارز ',
+                'document_type' => 'ثبت نرخ ارز ',
                 'record_id' => $model->id,
                 'action' => 'حذف',
-                'document_discription'=>  $model->description,
+                'document_discription' => 'نرخ ارز',
                 'old_data' => $model->getAttributes(),
-                'registered_user'=> $model->user_id,
+                'registered_user' => $model->user_id,
                 'user_id'     => $user->id,
                 'admin_id'         => $adminId,
             ]);

@@ -62,38 +62,45 @@
                 <div
                     class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
 
-                    <h1 class="text-[24px] text-white">خلاصه بیلانس به دالر</h1>
-
+                    @php
+                    $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
+                    $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
+                    @endphp
+                    <h1 class="text-[24px] text-white">خلاصه بیلانس به {{$sourceCurrency }}</h1>
                     <div class="flex flex-col gap-1 mt-1 text-center">
                         @php
                         $totalCashUsd = 0;
                         $totalBankUsd = 0;
                         $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
+                        $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
                         $exchangeRates = [
-                        'افغانی' => $latestExchangeRate->afn_buy ?? 0.011,
+                        'افغانی' => $latestExchangeRate->afn_buy ?? 66.20,
                         'دالر' => 1,
-                        'تومان' => $latestExchangeRate->irr_buy ?? 0.000024,
-                        'یورو' => $latestExchangeRate->eur_buy ?? 1.07,
-                        'کلدار' => $latestExchangeRate->pkr_buy ?? 0.0036,
-                        'درهم' => $latestExchangeRate->aed_buy ?? 0.27,
-                        'لیره' => $latestExchangeRate->try_buy ?? 0.031,
-                        'یوان' => $latestExchangeRate->cny_buy ?? 0.14,
-                        'روپیه' => 0.14,
+                        'تومان' => $latestExchangeRate->irr_buy ?? 110000.00,
+                        'یورو' => $latestExchangeRate->eur_buy ?? 70.00,
+                        'کلدار' => $latestExchangeRate->pkr_buy ?? 32.00,
+                        'درهم' => $latestExchangeRate->aed_buy ?? 44.00,
+                        'لیره' => $latestExchangeRate->try_buy ?? 60.00,
+                        'یوان' => $latestExchangeRate->cny_buy ?? 43.00,
+                        'روپیه' => 7.14,
                         ];
 
                         foreach($customerCashBalances as $currency => $balance) {
-                        if(isset($exchangeRates[$currency])) {
-                        $totalCashUsd += $balance * $exchangeRates[$currency];
+                        if(isset($exchangeRates[$currency]) && $exchangeRates[$currency] > 0) {
+
+                        $totalCashUsd += $balance / $exchangeRates[$currency];
                         }
                         }
 
                         foreach($customerBankBalances as $currency => $balance) {
-                        if(isset($exchangeRates[$currency])) {
-                        $totalBankUsd += $balance * $exchangeRates[$currency];
+                        if(isset($exchangeRates[$currency]) && $exchangeRates[$currency] > 0) {
+                        // تقسیم کردن نه ضرب کردن!
+                        $totalBankUsd += $balance / $exchangeRates[$currency];
                         }
                         }
                         $grandTotalUsd = $totalCashUsd + $totalBankUsd;
                         @endphp
+
                         <div class="flex justify-between items-center text-[14px]">
                             <span>نقدی:</span>
                             <span class="font-bold text-left" dir="ltr">{{ number_format($totalCashUsd, 2) }}</span>
@@ -108,7 +115,6 @@
                                 }}</span>
                         </div>
                     </div>
-
                     <button wire:click="showReport" wire:loading.attr="disabled"
                         class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
                         <span wire:loading.remove>نمایش گزارش</span>
@@ -128,18 +134,19 @@
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 {{-- بالای فرم: فورم و دکمه‌ها --}}
-                <div class="flex  space-y-3 flex-row justify-between p-[10px] border border-[#8C8C8C] rounded-[12px] flex-wrap">
+                <div
+                    class="flex  space-y-3 flex-row justify-between p-[10px] border border-[#8C8C8C] rounded-[12px] flex-wrap">
                     <p class="flex justify-center items-center text-center">
                         <img src="{{ asset('assets/sarafi/all_icon/edit-2.svg') }}" alt="" class="h-6 w-6">
                         {{ $transactionId ? 'فورم ویرایش ترانزکشن' : 'فورم ثبت ترانزکشن' }}
                     </p>
 
                     <div class="flex gap-4 flex-wrap">
-                     
-                        <button wire:click="toggleAccountType" class="rounded-[8px] p-[10px] text-white vazir font-semibold transition-colors duration-500 ease-in-out
+
+                        {{-- <button wire:click="toggleAccountType" class="rounded-[8px] p-[10px] text-white vazir font-semibold transition-colors duration-500 ease-in-out
     {{ $accountType === 'نقدی' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
                             {{ $accountType === 'نقدی' ? 'نقدی' : 'بانکی' }}
-                        </button>
+                        </button> --}}
 
                         <button wire:click="toggleTransactionType" class="rounded-[8px] p-[10px] text-white vazir font-semibold transition-colors duration-500 ease-in-out
     {{ $transactionType === 'رسید' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
@@ -154,7 +161,6 @@
 
                     {{-- شماره حساب و افزودن مشتری --}}
                     <div class="mt-2 flex flex-col lg:flex-row gap-3">
-                        {{-- شماره حساب --}}
                         <!-- در بخش نمبر حساب -->
                         <div class="flex-1">
                             <div class="relative w-full">
@@ -197,9 +203,11 @@
                                         <option value="{{ $customer['account_number'] }} - {{ $customer['fullname'] }}">
                                             @endforeach
                                     </datalist>
+                                    @if (empty($selectedAccount))
                                     <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                         <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
                                     </div>
+                                    @endif
                                 </div>
                                 @error('selectedAccount')
                                 <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
@@ -332,26 +340,178 @@
                     {{-- آپلود فایل --}}
                     <div class="mt-2 flex gap-3">
                         <div class="w-full">
-                            <div x-data="{ files: [] }"
-                                x-on:drop.prevent="files = $event.dataTransfer.files; $wire.upload('file', files[0])"
-                                x-on:dragover.prevent
-                                class="w-full h-[150px] p-3 rounded-[12px] border border-dashed focus:ring-2 bg-white border-[#112080] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+                            <div x-data="{
+            files: [],
+            isUploading: false,
+            uploadedFileName: null,
+            uploadedFileUrl: null,
+            init() {
+                // گوش دادن به رویدادهای آپلود Livewire
+                this.$wire.on('upload:started', () => {
+                    this.isUploading = true;
+                    this.uploadedFileName = null;
+                    this.uploadedFileUrl = null;
+                });
+                
+                this.$wire.on('upload:finished', (event) => {
+                    this.isUploading = false;
+                    if (event.detail.filename) {
+                        this.uploadedFileName = event.detail.filename;
+                    }
+                });
+                
+                this.$wire.on('upload:error', () => {
+                    this.isUploading = false;
+                });
+            },
+            handleFileSelect(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    this.uploadedFileName = file.name;
+                    this.isUploading = true;
+                    this.$wire.upload('file', file, () => {
+                        this.isUploading = false;
+                    });
+                }
+            },
+            handleDrop(event) {
+                event.preventDefault();
+                const file = event.dataTransfer.files[0];
+                if (file) {
+                    this.uploadedFileName = file.name;
+                    this.isUploading = true;
+                    this.$wire.upload('file', file, () => {
+                        this.isUploading = false;
+                    });
+                }
+            },
+            removeFile() {
+                this.uploadedFileName = null;
+                this.uploadedFileUrl = null;
+                this.$wire.set('file', null);
+                // ریست کردن input فایل
+                if (this.$refs.fileInput) {
+                    this.$refs.fileInput.value = '';
+                }
+            }
+        }" x-on:drop.prevent="handleDrop" x-on:dragover.prevent :class="{
+            'border-green-500 bg-green-50 dark:bg-green-900/20': uploadedFileName && !isUploading,
+            'border-blue-500 bg-blue-50 dark:bg-blue-900/20': isUploading,
+            'border-[#112080] bg-white dark:bg-gray-700': !uploadedFileName && !isUploading
+        }" class="w-full h-[150px] p-3 rounded-[12px] border-2 border-dashed focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:text-white flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300 relative"
                                 x-on:click="$refs.fileInput.click()">
-                                <img src="{{ asset('assets/sarafi/all_icon/upload.svg') }}" alt="آپلود"
-                                    class="w-12 h-12 mb-2">
-                                <h1 class="font-vazir text-gray-600 dark:text-gray-300 text-[16px]">فایل را اینجا وارد
-                                    کنید یا بکشید</h1>
-                                <input type="file" class="hidden" x-ref="fileInput"
-                                    x-on:change="$wire.upload('file', $event.target.files[0])">
+
+                                <!-- حالت در حال آپلود -->
+                                <template x-if="isUploading">
+                                    <div class="flex flex-col items-center">
+                                        <div
+                                            class="w-12 h-12 mb-2 border-4 border-blue-500 border-t-transparent rounded-full animate-spin">
+                                        </div>
+                                        <h1 class="font-vazir text-blue-600 dark:text-blue-300 text-[16px]">در حال
+                                            آپلود...</h1>
+                                        <p class="font-vazir text-gray-500 dark:text-gray-400 text-sm mt-1"
+                                            x-text="uploadedFileName"></p>
+                                    </div>
+                                </template>
+
+                                <!-- حالت آپلود موفق -->
+                                <template x-if="!isUploading && uploadedFileName">
+                                    <div class="flex flex-col items-center w-full">
+                                        <div
+                                            class="w-12 h-12 mb-2 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+                                            <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                        </div>
+                                        <h1 class="font-vazir text-green-600 dark:text-green-300 text-[16px]">آپلود موفق
+                                        </h1>
+                                        <p class="font-vazir text-gray-600 dark:text-gray-300 text-sm mt-1 truncate max-w-full px-2"
+                                            x-text="uploadedFileName" :title="uploadedFileName"></p>
+                                        <button type="button" x-on:click.stop="removeFile()"
+                                            class="mt-2 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 text-sm flex items-center gap-1 transition-colors">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                </path>
+                                            </svg>
+                                            حذف فایل
+                                        </button>
+                                    </div>
+                                </template>
+
+                                <!-- حالت اولیه (بدون فایل) -->
+                                <template x-if="!isUploading && !uploadedFileName">
+                                    <div class="flex flex-col items-center">
+                                        <img src="{{ asset('assets/sarafi/all_icon/upload.svg') }}" alt="آپلود"
+                                            class="w-12 h-12 mb-2">
+                                        <h1 class="font-vazir text-gray-600 dark:text-gray-300 text-[16px]">فایل را
+                                            اینجا وارد کنید یا بکشید</h1>
+                                        <p class="font-vazir text-gray-500 dark:text-gray-400 text-sm mt-1">فرمت‌های
+                                            مجاز: JPG, PNG,WEBP</p>
+                                    </div>
+                                </template>
+
+                                <input type="file" class="hidden" x-ref="fileInput" accept=".jpg,.jpeg,.png,.pdf,.webp"
+                                    x-on:change="handleFileSelect($event)">
                             </div>
+
+                            <!-- نمایش خطاهای اعتبارسنجی -->
                             @error('file')
-                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            <div class="mt-2 flex items-center gap-2 text-red-500 dark:text-red-400 text-sm">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span>{{ $message }}</span>
+                            </div>
                             @enderror
+
+
+
+                            <!-- نمایش فایل ذخیره شده (در حالت ویرایش) -->
+                            @if($file && is_string($file))
+                            <div
+                                class="mt-2 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span class="text-blue-700 dark:text-blue-300 text-sm">فایل قبلاً آپلود شده</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <a href="{{ Storage::url($file) }}" target="_blank"
+                                        class="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm flex items-center gap-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                            </path>
+                                        </svg>
+                                        مشاهده
+                                    </a>
+                                    <button type="button" wire:click="$set('file', null)"
+                                        class="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 text-sm flex items-center gap-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                            </path>
+                                        </svg>
+                                        حذف
+                                    </button>
+                                </div>
+                            </div>
+                            @endif
                         </div>
                     </div>
 
                     <!-- دکمه‌های نهایی -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 py-4 justify-center items-center text-center ">
+                    <div
+                        class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 py-4 justify-center items-center text-center ">
                         <button type="submit"
                             class="bg-[#61B138] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
                             {{ $transactionId ? 'بروزرسانی' : 'ثبت' }}
@@ -364,12 +524,12 @@
                         </button>
                         @endif
 
-                               <button type="button" wire:click="cancel"
+                        <button type="button" wire:click="cancel"
                             class="bg-[#DD2424] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
                             {{ $transactionId ? 'لغو ویرایش' : 'انصراف' }}
                         </button>
 
-                      
+
                     </div>
 
                 </form>

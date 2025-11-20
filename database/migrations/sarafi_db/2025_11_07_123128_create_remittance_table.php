@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('admin_id')->nullable();
             $table->string('source_account', 50);
             $table->string('currency');
-            $table->decimal('amount');
+           $table->decimal('amount', 15, 4);
             $table->date('date');
             $table->time('clock');
             $table->string('tracking_code')->unique();

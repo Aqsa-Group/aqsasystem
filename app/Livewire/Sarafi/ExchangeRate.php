@@ -13,8 +13,9 @@ use NumberFormatter;
 class ExchangeRate extends Component
 {
     public $date;
-    public $source_currency = 'دالر';
+public $source_currency = 'دالر';
     public $formData = [];
+    public $currencies = [];
 
     public $editingId = null;
     public $isEditing = false;
@@ -73,6 +74,23 @@ class ExchangeRate extends Component
     {
         $this->date = Jalalian::now()->format('Y/m/d');
         $this->initializeFormData();
+
+        $this->currencies = [
+            ['code' => 'usd', 'name_fa' => 'دالر'],
+            ['code' => 'afn', 'name_fa' => 'افغانی'],
+            ['code' => 'eur', 'name_fa' => 'یورو'],
+            ['code' => 'irr', 'name_fa' => 'تومان'],
+            ['code' => 'aed', 'name_fa' => 'درهم'],
+            ['code' => 'try', 'name_fa' => 'لیره'],
+            ['code' => 'cny', 'name_fa' => 'یوان'],
+            ['code' => 'pkr', 'name_fa' => 'کلدار'],
+            ['code' => 'gbp', 'name_fa' => 'پوند'],
+            ['code' => 'jpy', 'name_fa' => 'ین'],
+            ['code' => 'sar', 'name_fa' => 'ریال سعودی'],
+            ['code' => 'inr', 'name_fa' => 'روپیه'],
+        ];
+
+        
     }
 
     private function initializeFormData()
@@ -92,9 +110,12 @@ class ExchangeRate extends Component
         $this->validate();
 
         try {
+              $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
             $data = [
-                'user_id' => Auth::id(),
-                'admin_id' => Auth::id(),
+                'user_id' => $user->id,
+                'admin_id' => $adminId,
                 'source_currency' => $this->source_currency,
                 'afn_buy' => $this->formData['افغانی']['buy'] ?: null,
                 'afn_sell' => $this->formData['افغانی']['sell'] ?: null,
@@ -238,7 +259,7 @@ class ExchangeRate extends Component
 
 
 
-    public function render()
+  public function render()
     {
         $records = ExchangeRates::with(['user', 'admin'])
             ->latest()
@@ -250,3 +271,5 @@ class ExchangeRate extends Component
         ]);
     }
 }
+
+   

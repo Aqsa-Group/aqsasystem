@@ -205,121 +205,151 @@ class Transactions extends Component
         }
     }
 
-public function goToCustomers()
-{
-    $this->dispatch('redirectToCustomers');
-}
+    public function goToCustomers()
+    {
+        $this->dispatch('redirectToCustomers');
+    }
 
     public function updateCustomerCurrencyBalance()
     {
         if (!$this->selectedCustomerId) {
-            $this->currenciesdefault = [
-                ['name' => 'افغانی', 'value' => 0],
-                ['name' => 'دالر', 'value' => 0],
-                ['name' => 'تومان', 'value' => 0],
-                ['name' => 'یورو', 'value' => 0],
-                ['name' => 'کلدار', 'value' => 0],
-                ['name' => 'درهم', 'value' => 0],
-                ['name' => 'لیره', 'value' => 0],
-                ['name' => 'یوان', 'value' => 0],
-                ['name' => 'روپیه', 'value' => 0],
-                ['name' => 'خلاصه بیلانس به دالر', 'value' => 0],
-            ];
-
-            // ریست کردن موجودی‌های تفکیک شده
-            $this->customerCashBalances = [];
-            $this->customerBankBalances = [];
-            $this->customerTotalBalances = [];
+            $this->resetBalances();
             return;
         }
 
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
 
+        // محاسبه موجودی‌ها
+        list($cashBalances, $bankBalances) = $this->calculateBalances($adminId);
+        $totalBalances = $this->calculateTotalBalances($cashBalances, $bankBalances);
+        $totalInUsd = $this->convertToUsd($totalBalances);
+
+        // تنظیم مقادیر
+        $this->setCurrencyDefaults($totalBalances, $totalInUsd);
+        $this->setCustomerBalances($cashBalances, $bankBalances, $totalBalances);
+    }
+
+    private function resetBalances()
+    {
+        $this->currenciesdefault = array_map(function ($currency) {
+            return ['name' => $currency, 'value' => 0];
+        }, [
+            'افغانی',
+            'دالر',
+            'تومان',
+            'یورو',
+            'کلدار',
+            'درهم',
+            'لیره',
+            'یوان',
+            'روپیه',
+            'خلاصه بیلانس به دالر'
+        ]);
+
+        $this->customerCashBalances = [];
+        $this->customerBankBalances = [];
+        $this->customerTotalBalances = [];
+    }
+
+    private function calculateBalances($adminId)
+    {
+        $cashBalances = array_fill_keys([
+            'افغانی',
+            'دالر',
+            'تومان',
+            'یورو',
+            'کلدار',
+            'درهم',
+            'لیره',
+            'یوان',
+            'روپیه'
+        ], 0);
+
+        $bankBalances = array_fill_keys([
+            'افغانی',
+            'دالر',
+            'تومان',
+            'یورو',
+            'کلدار',
+            'درهم',
+            'لیره',
+            'یوان',
+            'روپیه'
+        ], 0);
+
         $transactions = Transaction::where('customer_id', $this->selectedCustomerId)
             ->where('admin_id', $adminId)
             ->get();
-
-        // محاسبه موجودی‌های نقدی و بانکی جداگانه
-        $cashBalances = [
-            'افغانی' => 0,
-            'دالر' => 0,
-            'تومان' => 0,
-            'یورو' => 0,
-            'کلدار' => 0,
-            'درهم' => 0,
-            'لیره' => 0,
-            'یوان' => 0,
-            'روپیه' => 0,
-        ];
-
-        $bankBalances = [
-            'افغانی' => 0,
-            'دالر' => 0,
-            'تومان' => 0,
-            'یورو' => 0,
-            'کلدار' => 0,
-            'درهم' => 0,
-            'لیره' => 0,
-            'یوان' => 0,
-            'روپیه' => 0,
-        ];
 
         foreach ($transactions as $transaction) {
             $currencyName = $this->getCurrencyName($transaction->currency);
             $amount = $transaction->type === 'رسید' ? $transaction->amount : -$transaction->amount;
 
-            if ($transaction->account_type === 'نقدی') {
-                if (array_key_exists($currencyName, $cashBalances)) {
+            if (isset($cashBalances[$currencyName]) || isset($bankBalances[$currencyName])) {
+                if ($transaction->account_type === 'نقدی') {
                     $cashBalances[$currencyName] += $amount;
-                }
-            } else {
-                if (array_key_exists($currencyName, $bankBalances)) {
+                } else {
                     $bankBalances[$currencyName] += $amount;
                 }
             }
         }
 
-        $latestExchangeRate = ExchangeRates::latest()->first();
-        $exchangeRates = [
-            'افغانی' => $latestExchangeRate->afn_buy ?? 0.011,
-            'دالر' => 1,
-            'تومان' => $latestExchangeRate->irr_buy ?? 0.000024,
-            'یورو' => $latestExchangeRate->eur_buy ?? 1.07,
-            'کلدار' => $latestExchangeRate->pkr_buy ?? 0.0036,
-            'درهم' => $latestExchangeRate->aed_buy ?? 0.27,
-            'لیره' => $latestExchangeRate->try_buy ?? 0.031,
-            'یوان' => $latestExchangeRate->cny_buy ?? 0.14,
-            'روپیه' => 0.14,
-        ];
+        return [$cashBalances, $bankBalances];
+    }
 
-        // محاسبه مجموع برای نمایش در کارت‌های اصلی
+    private function calculateTotalBalances($cashBalances, $bankBalances)
+    {
         $totalBalances = [];
         foreach ($cashBalances as $currency => $balance) {
             $totalBalances[$currency] = $balance + $bankBalances[$currency];
         }
+        return $totalBalances;
+    }
+
+    private function convertToUsd($totalBalances)
+    {
+        $latestExchangeRate = ExchangeRates::latest()->first();
+        $exchangeRates = [
+            'افغانی' => $latestExchangeRate->afn_buy ?? 66.20,
+            'دالر' => 1,
+            'تومان' => $latestExchangeRate->irr_buy ?? 110000.00,
+            'یورو' => $latestExchangeRate->eur_buy ?? 70.00,
+            'کلدار' => $latestExchangeRate->pkr_buy ?? 32.00,
+            'درهم' => $latestExchangeRate->aed_buy ?? 44.00,
+            'لیره' => $latestExchangeRate->try_buy ?? 60.00,
+            'یوان' => $latestExchangeRate->cny_buy ?? 43.00,
+            'روپیه' => 7.14,
+        ];
 
         $totalInUsd = 0;
         foreach ($totalBalances as $currency => $balance) {
-            if ($currency !== 'خلاصه بیلانس به دالر' && isset($exchangeRates[$currency])) {
-                $totalInUsd += $balance * $exchangeRates[$currency];
+            if (isset($exchangeRates[$currency]) && $exchangeRates[$currency] > 0) {
+                $totalInUsd += $balance / $exchangeRates[$currency];
             }
         }
 
+        return $totalInUsd;
+    }
+
+    private function setCurrencyDefaults($totalBalances, $totalInUsd)
+    {
         $this->currenciesdefault = [
-            ['name' => 'افغانی', 'value' => $totalBalances['افغانی']],
-            ['name' => 'دالر', 'value' => $totalBalances['دالر']],
-            ['name' => 'تومان', 'value' => $totalBalances['تومان']],
-            ['name' => 'یورو', 'value' => $totalBalances['یورو']],
-            ['name' => 'کلدار', 'value' => $totalBalances['کلدار']],
-            ['name' => 'درهم', 'value' => $totalBalances['درهم']],
-            ['name' => 'لیره', 'value' => $totalBalances['لیره']],
-            ['name' => 'یوان', 'value' => $totalBalances['یوان']],
-            ['name' => 'روپیه', 'value' => $totalBalances['روپیه']],
+            ['name' => 'افغانی', 'value' => $totalBalances['افغانی'] ?? 0],
+            ['name' => 'دالر', 'value' => $totalBalances['دالر'] ?? 0],
+            ['name' => 'تومان', 'value' => $totalBalances['تومان'] ?? 0],
+            ['name' => 'یورو', 'value' => $totalBalances['یورو'] ?? 0],
+            ['name' => 'کلدار', 'value' => $totalBalances['کلدار'] ?? 0],
+            ['name' => 'درهم', 'value' => $totalBalances['درهم'] ?? 0],
+            ['name' => 'لیره', 'value' => $totalBalances['لیره'] ?? 0],
+            ['name' => 'یوان', 'value' => $totalBalances['یوان'] ?? 0],
+            ['name' => 'روپیه', 'value' => $totalBalances['روپیه'] ?? 0],
             ['name' => 'خلاصه بیلانس به دالر', 'value' => $totalInUsd],
         ];
+    }
 
-        // ذخیره موجودی‌های تفکیک شده برای نمایش در کارت‌های جدید
+    private function setCustomerBalances($cashBalances, $bankBalances, $totalBalances)
+    {
         $this->customerCashBalances = $cashBalances;
         $this->customerBankBalances = $bankBalances;
         $this->customerTotalBalances = $totalBalances;

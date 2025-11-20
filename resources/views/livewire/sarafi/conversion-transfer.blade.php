@@ -78,39 +78,45 @@
             <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
                 <div
                     class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
-
-                    <h1 class="text-[24px] text-white">خلاصه بیلانس به دالر</h1>
+                    @php
+                    $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
+                    $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
+                    @endphp
+                    <h1 class="text-[24px] text-white">خلاصه بیلانس به {{$sourceCurrency }}</h1>
 
                     <div class="flex flex-col gap-1 mt-1 text-center">
                         @php
                         $totalCashUsd = 0;
                         $totalBankUsd = 0;
                         $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
+
                         $exchangeRates = [
-                        'افغانی' => $latestExchangeRate->afn_buy ?? 0.011,
+                        'افغانی' => $latestExchangeRate->afn_buy ?? 66.20,
                         'دالر' => 1,
-                        'تومان' => $latestExchangeRate->irr_buy ?? 0.000024,
-                        'یورو' => $latestExchangeRate->eur_buy ?? 1.07,
-                        'کلدار' => $latestExchangeRate->pkr_buy ?? 0.0036,
-                        'درهم' => $latestExchangeRate->aed_buy ?? 0.27,
-                        'لیره' => $latestExchangeRate->try_buy ?? 0.031,
-                        'یوان' => $latestExchangeRate->cny_buy ?? 0.14,
-                        'روپیه' => 0.14,
+                        'تومان' => $latestExchangeRate->irr_buy ?? 110000.00,
+                        'یورو' => $latestExchangeRate->eur_buy ?? 70.00,
+                        'کلدار' => $latestExchangeRate->pkr_buy ?? 32.00,
+                        'درهم' => $latestExchangeRate->aed_buy ?? 44.00,
+                        'لیره' => $latestExchangeRate->try_buy ?? 60.00,
+                        'یوان' => $latestExchangeRate->cny_buy ?? 43.00,
+                        'روپیه' => 7.14,
                         ];
 
                         foreach($customerCashBalances as $currency => $balance) {
-                        if(isset($exchangeRates[$currency])) {
-                        $totalCashUsd += $balance * $exchangeRates[$currency];
+                        if(isset($exchangeRates[$currency]) && $exchangeRates[$currency] > 0) {
+
+                        $totalCashUsd += $balance / $exchangeRates[$currency];
                         }
                         }
 
                         foreach($customerBankBalances as $currency => $balance) {
-                        if(isset($exchangeRates[$currency])) {
-                        $totalBankUsd += $balance * $exchangeRates[$currency];
+                        if(isset($exchangeRates[$currency]) && $exchangeRates[$currency] > 0) {
+                        $totalBankUsd += $balance / $exchangeRates[$currency];
                         }
                         }
                         $grandTotalUsd = $totalCashUsd + $totalBankUsd;
                         @endphp
+
                         <div class="flex justify-between items-center text-[14px]">
                             <span>نقدی:</span>
                             <span class="font-bold text-left" dir="ltr">{{ number_format($totalCashUsd, 2) }}</span>
@@ -125,7 +131,6 @@
                                 }}</span>
                         </div>
                     </div>
-
                     <button wire:click="showReport" wire:loading.attr="disabled"
                         class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
                         <span wire:loading.remove>نمایش گزارش</span>
@@ -151,7 +156,7 @@
                         <span class="vazir font-semibold">فورم تبدیل ارز و انتقال</span>
                     </p>
 
-               
+
                 </div>
 
                 {{-- فرم --}}
@@ -457,19 +462,20 @@
                             <div class="relative w-full">
                                 <input type="text" wire:model="transaction_date" placeholder="1404/4/20"
                                     class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" />
-                                    <svg class="absolute left-3 bottom-2 -translate-y-1/2 pointer-events-none" width="20"
-                                height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <svg class="absolute left-3 bottom-2 -translate-y-1/2 pointer-events-none" width="20"
+                                    height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 
-                                <path
-                                    d="M8 2V5M16 2V5M3.5 9.09H20.5M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z"
-                                    stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
+                                    <path
+                                        d="M8 2V5M16 2V5M3.5 9.09H20.5M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z"
+                                        stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
 
-                                <path
-                                    d="M15.6947 13.7H15.7037M15.6947 16.7H15.7037M11.9955 13.7H12.0045M11.9955 16.7H12.0045M8.29431 13.7H8.30329M8.29431 16.7H8.30329"
-                                    stroke="#8C8C8C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                                    @error('transaction_date')
+                                    <path
+                                        d="M15.6947 13.7H15.7037M15.6947 16.7H15.7037M11.9955 13.7H12.0045M11.9955 16.7H12.0045M8.29431 13.7H8.30329M8.29431 16.7H8.30329"
+                                        stroke="#8C8C8C" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                @error('transaction_date')
                                 <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -504,7 +510,7 @@
                         </div>
                     </div>
 
-               
+
                     {{-- زون برداشت و دریافت --}}
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
                         <div>
@@ -550,7 +556,8 @@
                     </div>
 
                     {{-- دکمه‌های نهایی --}}
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 py-4 justify-center items-center text-center flex-wrap">
+                    <div
+                        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 py-4 justify-center items-center text-center flex-wrap">
                         <button type="submit" wire:loading.attr="disabled"
                             class="bg-[#2563EB] text-[14px] vazir font-semibold rounded-[8px] px-[74px] py-4 text-white hover:bg-blue-700 transition disabled:opacity-50">
                             @if($editingConversionId)

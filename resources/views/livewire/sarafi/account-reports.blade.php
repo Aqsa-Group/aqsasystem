@@ -52,7 +52,7 @@
                     <div>
                         <button wire:click="refreshReport"
                             class="w-full flex items-center justify-center gap-2 bg-[#2563EB] text-white px-4 py-4 rounded-xl hover:bg-blue-700 transition">
-                            <span>بروز رسانی    </span>
+                            <span>بروز رسانی </span>
                             <svg width="24" height="24" viewBox="0 0 30 30" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -149,7 +149,7 @@
                     </div>
                 </div>
 
-            
+
 
                 <div class="overflow-x-auto w-full mt-4">
                     <div class="max-h-[600px] overflow-y-auto">
@@ -171,7 +171,12 @@
                                     <th class="px-4 py-4 font-bold">درهم</th>
                                     <th class="px-4 py-4 font-bold">لیره</th>
                                     <th class="px-4 py-4 font-bold">یوان</th>
-                                    <th class="px-4 py-4 font-bold">بیلانس (دالر)</th>
+                                    @php
+                                    $latestExchangeRate =
+                                    \App\Models\Sarafi\ExchangeRates::latest()->first();
+                                    $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
+                                    @endphp
+                                    <th class="px-4 py-4 font-bold">بیلانس به {{ $sourceCurrency }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -275,7 +280,13 @@
                                                 <th class="border border-gray-300 p-2">مشتری معرف</th>
                                                 <th class="border border-gray-300 p-2">دالر</th>
                                                 <th class="border border-gray-300 p-2">افغانی</th>
-                                                <th class="border border-gray-300 p-2">بیلانس (دالر)</th>
+                                                @php
+                                                $latestExchangeRate =
+                                                \App\Models\Sarafi\ExchangeRates::latest()->first();
+                                                $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
+                                                @endphp
+                                                <th class="border border-gray-300 p-2">بیلانس به {{ $sourceCurrency }}
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>

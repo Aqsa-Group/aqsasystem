@@ -1,7 +1,7 @@
 <div>
     <div class="container mx-auto ">
         <!-- Session Message -->
-        <?php if(session()->has('message')): ?>
+        <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
             <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -11,7 +11,7 @@
                 </h2>
             </div>
         </div>
-        <?php endif; ?>
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
         <!-- Page Header -->
         <div class="space-y-4 mb-6">
@@ -78,17 +78,17 @@
                                         class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
                                         autocomplete="off">
                                     <datalist id="customersList">
-                                        <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
-                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                     </datalist>
-                                    <?php if(empty($selectedAccount)): ?>
+                                    <!--[if BLOCK]><![endif]--><?php if(empty($selectedAccount)): ?>
                                     <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                         <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
                                     </div>
-                                    <?php endif; ?>
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </div>
-                                <?php $__errorArgs = ['selectedAccount'];
+                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['selectedAccount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -97,7 +97,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
                         </div>
 
@@ -108,16 +108,16 @@ unset($__errorArgs, $__bag); ?>
                                 <select wire:model="currency"
                                     class="w-full h-[60px] p-3 rounded-[12px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white appearance-none">
                                     <option value="">انتخاب ارز</option>
-                                    <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($c['code']); ?>"><?php echo e($c['name_fa']); ?></option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </select>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                     <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓"
                                         class="w-4 h-4">
                                 </div>
                             </div>
-                            <?php $__errorArgs = ['currency'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['currency'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -126,7 +126,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
 
@@ -140,7 +140,10 @@ unset($__errorArgs, $__bag); ?>
                                     class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:text-white"
                                     oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
                             </div>
-                            <?php $__errorArgs = ['amount'];
+                            <!--[if BLOCK]><![endif]--><?php if($amountInWords): ?>
+                            <p class="text-sm text-blue-600 mt-2 vazir"><?php echo e($amountInWords); ?></p>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['amount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -149,7 +152,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         <!-- Date -->
@@ -157,19 +160,8 @@ unset($__errorArgs, $__bag); ?>
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">تاریخ</label>
                             <input type="text" id="datePicker" wire:model="date" placeholder="YYYY/MM/DD"
                                 class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
-                            <svg class="absolute left-3 bottom-3 -translate-y-1/2 pointer-events-none" width="20"
-                                height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-                                <path
-                                    d="M8 2V5M16 2V5M3.5 9.09H20.5M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z"
-                                    stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-
-                                <path
-                                    d="M15.6947 13.7H15.7037M15.6947 16.7H15.7037M11.9955 13.7H12.0045M11.9955 16.7H12.0045M8.29431 13.7H8.30329M8.29431 16.7H8.30329"
-                                    stroke="#8C8C8C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                            <?php $__errorArgs = ['date'];
+                          
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['date'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -178,7 +170,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
 
@@ -189,7 +181,7 @@ unset($__errorArgs, $__bag); ?>
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">ساعت</label>
                             <input type="text" wire:model="clock" placeholder="2:25:20"
                                 class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
-                            <?php $__errorArgs = ['clock'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['clock'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -198,7 +190,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         <!-- Tracking Code -->
@@ -206,7 +198,7 @@ unset($__errorArgs, $__bag); ?>
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">کد رهگیری</label>
                             <input type="text" wire:model="tracking_code" placeholder="5155221034568"
                                 class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
-                            <?php $__errorArgs = ['tracking_code'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['tracking_code'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -215,18 +207,18 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
 
                     <!-- Source and Destination Banks -->
                     <div class="mt-2 flex flex-col lg:flex-row gap-3">
-                        <!-- Source Bank -->
+                    <!-- Source Bank -->
                         <div class="lg:w-[290px]">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">بانک مبدا</label>
                             <input type="text" wire:model="from_bank" placeholder="سپه"
                                 class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
-                            <?php $__errorArgs = ['from_bank'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['from_bank'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -235,15 +227,14 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
-
                         <!-- Destination Bank -->
                         <div class="lg:w-[290px]">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">بانک مقصد</label>
                             <input type="text" wire:model="to_bank" placeholder="صادرات"
                                 class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
-                            <?php $__errorArgs = ['to_bank'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['to_bank'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -252,10 +243,10 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
-                          <!-- Source and Destination Account Numbers -->
+                    <!-- Source and Destination Account Numbers -->
                     <div class="flex-1 flex gap-2 mt-2">
                         <!-- Source Account Number (Display only) -->
                         <div class="lg:w-[440px]">
@@ -270,7 +261,7 @@ unset($__errorArgs, $__bag); ?>
                                     <span class="text-gray-500 vazir whitespace-nowrap mr-2">- xxxx - xxxx - xxxx</span>
                                 </div>
                             </div>
-                            <?php $__errorArgs = ['source_account_last_four'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['source_account_last_four'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -279,7 +270,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                         <!-- Destination Account -->
                         <div class="relative w-full">
@@ -313,17 +304,17 @@ unset($__errorArgs, $__bag); ?>
                                     class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
                                     autocomplete="off">
                                 <datalist id="customersList2">
-                                    <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </datalist>
-                                <?php if(empty($toAccount)): ?>
+                                <!--[if BLOCK]><![endif]--><?php if(empty($toAccount)): ?>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                     <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
                                 </div>
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
-                            <?php $__errorArgs = ['toAccount'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['toAccount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -332,7 +323,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
 
@@ -353,7 +344,7 @@ unset($__errorArgs, $__bag); ?>
                                     </option>
                                 </select>
                             </div>
-                            <?php $__errorArgs = ['zone'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['zone'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -362,7 +353,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         <!-- Beneficiary Name -->
@@ -370,7 +361,7 @@ unset($__errorArgs, $__bag); ?>
                             <label class="block text-[16px] font-medium text-black mb-1 vazir"> نام کارت گیرنده</label>
                             <input type="text" wire:model="giver_name" placeholder="مجید مرتضی"
                                 class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
-                            <?php $__errorArgs = ['giver_name'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['giver_name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -379,17 +370,17 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
 
-              
+
                     <!-- Remittance Description -->
                     <div class="mt-3 flex gap-3">
                         <div class="w-full">
                             <textarea wire:model="description" rows="3" placeholder="شرح حواله..."
                                 class="w-full p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white resize-none"></textarea>
-                            <?php $__errorArgs = ['description'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['description'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -398,38 +389,150 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
-
                     <!-- File Upload -->
                     <div class="mt-2 flex gap-3">
                         <div class="w-full">
-                            <div x-data="{ files: [] }"
-                                x-on:drop.prevent="files = $event.dataTransfer.files; $wire.upload('remittance_image', files[0])"
-                                x-on:dragover.prevent
-                                class="w-full h-[150px] p-3 rounded-[12px] border border-dashed focus:ring-2 bg-white border-[#112080] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+                            <div x-data="{
+            files: [],
+            isUploading: false,
+            uploadedFileName: <?php if ((object) ('remittance_image') instanceof \Livewire\WireDirective) : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('remittance_image'->value()); ?>')<?php echo e('remittance_image'->hasModifier('live') ? '.live' : ''); ?><?php else : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('remittance_image'); ?>')<?php endif; ?>.defer,
+            init() {
+                // گوش دادن به رویدادهای Livewire برای آپلود
+                window.addEventListener('upload:start', () => {
+                    this.isUploading = true;
+                });
+                window.addEventListener('upload:finish', () => {
+                    this.isUploading = false;
+                });
+                window.addEventListener('upload:error', () => {
+                    this.isUploading = false;
+                });
+            }
+        }" x-on:drop.prevent="
+            files = $event.dataTransfer.files; 
+            $wire.upload('remittance_image', files[0], () => {
+                uploadedFileName = files[0]?.name;
+            })
+        " x-on:dragover.prevent :class="{
+            'border-green-500 bg-green-50': uploadedFileName && !isUploading,
+            'border-blue-500 bg-blue-50': isUploading,
+            'border-[#112080] bg-white': !uploadedFileName && !isUploading
+        }" class="w-full h-[150px] p-3 rounded-[12px] border-2 border-dashed focus:ring-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300 relative"
                                 x-on:click="$refs.fileInput.click()">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/upload.svg')); ?>" alt="آپلود"
-                                    class="w-12 h-12 mb-2">
-                                <h1 class="font-vazir text-gray-600 dark:text-gray-300 text-[16px]">فایل را اینجا وارد
-                                    کنید یا بکشید</h1>
-                                <input type="file" class="hidden" x-ref="fileInput"
-                                    x-on:change="$wire.upload('remittance_image', $event.target.files[0])">
+
+                                <!-- حالت آپلود در حال انجام -->
+                                <template x-if="isUploading">
+                                    <div class="flex flex-col items-center">
+                                        <div
+                                            class="w-12 h-12 mb-2 border-4 border-blue-500 border-t-transparent rounded-full animate-spin">
+                                        </div>
+                                        <h1 class="font-vazir text-blue-600 dark:text-blue-300 text-[16px]">در حال
+                                            آپلود...</h1>
+                                        <p class="font-vazir text-gray-500 dark:text-gray-400 text-sm mt-1">لطفا منتظر
+                                            بمانید</p>
+                                    </div>
+                                </template>
+
+                                <!-- حالت آپلود موفق -->
+                                <template x-if="!isUploading && uploadedFileName">
+                                    <div class="flex flex-col items-center">
+                                        <div
+                                            class="w-12 h-12 mb-2 bg-green-100 rounded-full flex items-center justify-center">
+                                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                        </div>
+                                        <h1 class="font-vazir text-green-600 dark:text-green-300 text-[16px]">آپلود موفق
+                                        </h1>
+                                        <p class="font-vazir text-gray-600 dark:text-gray-300 text-sm mt-1 truncate max-w-full"
+                                            x-text="uploadedFileName"></p>
+                                        <button type="button"
+                                            x-on:click.stop="uploadedFileName = null; $wire.set('remittance_image', null)"
+                                            class="mt-2 text-red-500 hover:text-red-700 text-sm flex items-center gap-1">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                </path>
+                                            </svg>
+                                            حذف فایل
+                                        </button>
+                                    </div>
+                                </template>
+
+                                <!-- حالت اولیه (بدون آپلود) -->
+                                <template x-if="!isUploading && !uploadedFileName">
+                                    <div class="flex flex-col items-center">
+                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/upload.svg')); ?>" alt="آپلود"
+                                            class="w-12 h-12 mb-2">
+                                        <h1 class="font-vazir text-gray-600 dark:text-gray-300 text-[16px]">فایل را
+                                            اینجا وارد کنید یا بکشید</h1>
+                                        <p class="font-vazir text-gray-500 dark:text-gray-400 text-sm mt-1">فرمت‌های
+                                            مجاز: JPG, PNG, webpp</p>
+                                    </div>
+                                </template>
+
+                                <input type="file" class="hidden" x-ref="fileInput" accept=".jpg,.jpeg,.png,.pdf,.webp"
+                                    x-on:change="
+                       if ($event.target.files[0]) {
+                           $wire.upload('remittance_image', $event.target.files[0], () => {
+                               uploadedFileName = $event.target.files[0]?.name;
+                           });
+                       }
+                   ">
                             </div>
-                            <?php $__errorArgs = ['remittance_image'];
+
+                            <!-- نمایش خطا -->
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['remittance_image'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                            <div class="mt-2 flex items-center gap-2 text-red-500 text-sm">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span><?php echo e($message); ?></span>
+                            </div>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+
+                        
+
+                            <!-- نمایش فایل ذخیره شده (در حالت ویرایش) -->
+                            <!--[if BLOCK]><![endif]--><?php if($remittance_image && is_string($remittance_image)): ?>
+                            <div
+                                class="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span class="text-blue-700 text-sm">فایل قبلاً آپلود شده</span>
+                                </div>
+                                <a href="<?php echo e(Storage::url($remittance_image)); ?>" target="_blank"
+                                    class="text-blue-500 hover:text-blue-700 text-sm flex items-center gap-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                        </path>
+                                    </svg>
+                                    مشاهده
+                                </a>
+                            </div>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
-
                     <!-- Action Buttons -->
                     <div
                         class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 py-4 justify-center items-center text-center flex-wrap">
@@ -439,12 +542,12 @@ unset($__errorArgs, $__bag); ?>
 
                         </button>
 
-                        <?php if(!$remittanceId): ?>
+                        <!--[if BLOCK]><![endif]--><?php if(!$remittanceId): ?>
                         <button type="button" wire:click="submitAndPrint"
                             class="bg-[#2563EB] text-[14px] text-center justify-center vazir font-semibold rounded-[8px]  flex px-12 py-3 text-white">
                             ثبت و چاپ
                         </button>
-                        <?php endif; ?>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                         <button type="button" wire:click="cancel"
                             class="bg-[#DD2424] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
@@ -466,7 +569,7 @@ unset($__errorArgs, $__bag); ?>
 
                     <div class="flex items-center gap-3">
                         <!-- Selected Customer Filter -->
-                        <?php if($selectedCustomerId): ?>
+                        <!--[if BLOCK]><![endif]--><?php if($selectedCustomerId): ?>
                         <?php
                         $selectedCustomer = \App\Models\Sarafi\Customer::find($selectedCustomerId);
                         ?>
@@ -476,7 +579,7 @@ unset($__errorArgs, $__bag); ?>
                                 ✕
                             </button>
                         </div>
-                        <?php endif; ?>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                         <!-- Search Box -->
                         <div class="relative w-full">
@@ -487,25 +590,25 @@ unset($__errorArgs, $__bag); ?>
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
                                 class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6">
 
-                            <?php if($search): ?>
+                            <!--[if BLOCK]><![endif]--><?php if($search): ?>
                             <button wire:click="clearSearchAndFilter"
                                 class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
                                 ✕
                             </button>
-                            <?php endif; ?>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                            <?php if($search && count($filteredCustomers) > 0 && !$selectedCustomerId): ?>
+                            <!--[if BLOCK]><![endif]--><?php if($search && count($filteredCustomers) > 0 && !$selectedCustomerId): ?>
                             <ul
                                 class="absolute z-50 w-full bg-white border border-gray-300 mt-1 rounded-md shadow-lg max-h-60 overflow-y-auto">
-                                <?php $__currentLoopData = $filteredCustomers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $filteredCustomers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <li wire:click="selectCustomer(<?php echo e($customer->id); ?>)"
                                     class="px-3 py-2 hover:bg-blue-100 cursor-pointer flex justify-between items-center">
                                     <span><?php echo e($customer->fullname); ?></span>
                                     <span class="text-gray-500 text-sm"><?php echo e($customer->account_number); ?></span>
                                 </li>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                             </ul>
-                            <?php endif; ?>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
                 </div>
@@ -531,7 +634,7 @@ unset($__errorArgs, $__bag); ?>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $__empty_1 = true; $__currentLoopData = $remittances; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $remittance): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $remittances; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $remittance): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                 <tr class="text-black border-b border-[#D9D9D9] bg-transparent">
                                     <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">
                                         <?php echo e($key + 1); ?>
@@ -555,11 +658,11 @@ unset($__errorArgs, $__bag); ?>
 
                                     </td>
                                     <td>
-                                        <?php if($remittance->state===0): ?>
+                                        <!--[if BLOCK]><![endif]--><?php if($remittance->state===0): ?>
                                         <span class="text-red-500">در انتظار تایید</span>
                                         <?php else: ?>
                                         <span class="text-green-500">تاییده شده</span>
-                                        <?php endif; ?>
+                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                     </td>
                                     <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-80">
                                         <div class="space-y-1 text-right">
@@ -611,14 +714,14 @@ unset($__errorArgs, $__bag); ?>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                 <tr>
                                     <td colspan="8" class="text-center text-gray-500 py-8 text-lg">
-                                        <?php if($selectedCustomerId): ?>
+                                        <!--[if BLOCK]><![endif]--><?php if($selectedCustomerId): ?>
                                         هیچ حواله برای این مشتری یافت نشد
                                         <?php else: ?>
                                         هیچ حواله ای یافت نشد
-                                        <?php endif; ?>
+                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                     </td>
                                 </tr>
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </tbody>
                         </table>
                     </div>
@@ -628,7 +731,7 @@ unset($__errorArgs, $__bag); ?>
     </div>
 
     <!-- Delete Confirmation Modal -->
-    <?php if($confirmDeleteId): ?>
+    <!--[if BLOCK]><![endif]--><?php if($confirmDeleteId): ?>
     <?php
     $remittance = \App\Models\Sarafi\Remittances::find($confirmDeleteId);
     $isApproved = $remittance && $remittance->state == 1;
@@ -644,7 +747,7 @@ unset($__errorArgs, $__bag); ?>
             </button>
 
             <div class="mb-4">
-                <?php if($isApproved): ?>
+                <!--[if BLOCK]><![endif]--><?php if($isApproved): ?>
                 <svg class="w-16 h-16 mx-auto right-0 text-red-500 mb-4" fill="none" stroke="currentColor"
                     viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -662,10 +765,10 @@ unset($__errorArgs, $__bag); ?>
                 <hr class="bg-[#E1DED3] mt-8">
                 <p class=" mb-6 text-xl shabnam mt-5">آیا مطمئن هستید می خواهید این
                     حــــواله را حذف کنید؟</p>
-                <?php endif; ?>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </div>
 
-            <?php if($isApproved): ?>
+            <!--[if BLOCK]><![endif]--><?php if($isApproved): ?>
             <div class="mb-4">
                 <p class="text-sm text-gray-500 text-right">
                     عملیات برگشت شامل:
@@ -675,7 +778,7 @@ unset($__errorArgs, $__bag); ?>
                     <li>• تنظیم مجدد موجودی مشتریان</li>
                 </ul>
             </div>
-            <?php endif; ?>
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
             <div class="flex justify-center gap-3  items-center text-center">
                 <button wire:click="$set('confirmDeleteId', null)"
@@ -690,7 +793,7 @@ unset($__errorArgs, $__bag); ?>
             </div>
         </div>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
     
     <style>
