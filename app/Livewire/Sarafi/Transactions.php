@@ -43,9 +43,10 @@ class Transactions extends Component
     public $search = '';
 
     public $selectedCustomerId = null;
+    public $filteredCustomers;
+
     public $transactions = [];
 
-    public $filteredCustomers;
     public $additionalCustomers = [];
     public $accountSearch = '';
 

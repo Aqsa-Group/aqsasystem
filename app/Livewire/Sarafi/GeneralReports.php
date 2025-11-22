@@ -3,12 +3,13 @@
 namespace App\Livewire\Sarafi;
 
 use App\Models\Sarafi\Customer;
-use App\Models\Sarafi\Transaction;
 use App\Models\Sarafi\ExchangeRates;
-use Livewire\Component;
-use Morilog\Jalali\Jalalian;
+use App\Models\Sarafi\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Livewire\Component;
+use Morilog\Jalali\Jalalian;
 
 class GeneralReports extends Component
 {
@@ -18,6 +19,14 @@ class GeneralReports extends Component
     public $selectedCustomer = '';
     public $selectedCurrency = '';
     public $date;
+    public $customer_id;
+    public $selectedAccount;
+    public $customers;
+    public $selectedCustomerBalance = [];
+    public $currencyPercentages = [];
+    public $selectedCustomerId = null;
+    public $filteredCustomers = [];
+    public $reports = [];
 
     public $subCategories = [
         'customers' => ['گزارش بیلانس مشتریان', 'پرداخت‌های مشتری', 'صورتحساب‌ها'],
@@ -37,16 +46,159 @@ class GeneralReports extends Component
         'cny' => 'یوان'
     ];
 
-    public $reports = [];
-
     public function mount()
     {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
         $this->date = Jalalian::now()->format('Y/m/d');
 
         $this->selectedCategory = 'customers';
         $this->selectedSubCategory = 'گزارش بیلانس مشتریان';
 
         $this->generateCustomerBalanceReport();
+
+        $relatedUserIds = \App\Models\Sarafi\User::where('admin_id', $adminId)
+            ->pluck('id')
+            ->push($adminId)
+            ->toArray();
+
+        $this->customers = Customer::select('id', 'account_number', 'fullname')
+            ->where(function ($query) use ($adminId, $relatedUserIds) {
+                $query->where('admin_id', $adminId)
+                    ->orWhereHas('transactions', function ($t) use ($relatedUserIds) {
+                        $t->whereIn('user_id', $relatedUserIds)
+                            ->orWhereIn('admin_id', $relatedUserIds);
+                    });
+            })
+            ->orderBy('fullname')
+            ->get();
+
+        $this->customers = collect($this->customers);
+    }
+
+    public function selectCustomer($customerId)
+    {
+        $this->selectedCustomerId = $customerId;
+        $this->selectedAccount = $customerId;
+        $this->filteredCustomers = [];
+
+        $customer = Customer::find($customerId);
+        if ($customer) {
+            $this->search = $customer->fullname;
+
+            if (!$this->customers->contains('id', $customer->id)) {
+                $this->customers->push($customer);
+            }
+
+            // محاسبه موجودی و درصدها برای مشتری انتخاب شده
+            $this->calculateCustomerBalance($customerId);
+            
+            Log::debug("Customer selected", [
+                'customer_id' => $customerId,
+                'customer_name' => $customer->fullname,
+                'search_value' => $this->search
+            ]);
+        } else {
+            $this->selectedCustomerBalance = [];
+            $this->currencyPercentages = [];
+        }
+    }
+
+    private function calculateCustomerBalance($customerId)
+    {
+        $this->selectedCustomerBalance = [];
+        $this->currencyPercentages = [];
+        
+        $totalBalanceUSD = 0;
+        
+        // محاسبه موجودی هر ارز
+        foreach ($this->currencies as $currencyCode => $currencyName) {
+            $balance = $this->calculateBalance($customerId, $currencyCode);
+            if ($balance != 0) {
+                $balanceUSD = $this->convertToUSD($balance, $currencyCode);
+                $this->selectedCustomerBalance[$currencyCode] = [
+                    'balance' => $balance,
+                    'balance_usd' => $balanceUSD,
+                    'currency_name' => $currencyName
+                ];
+                $totalBalanceUSD += $balanceUSD;
+            }
+        }
+        
+        // محاسبه درصدها
+        if ($totalBalanceUSD > 0) {
+            foreach ($this->selectedCustomerBalance as $currencyCode => $data) {
+                $percentage = ($data['balance_usd'] / $totalBalanceUSD) * 100;
+                $this->currencyPercentages[$currencyCode] = [
+                    'percentage' => round($percentage, 1),
+                    'balance' => $data['balance'],
+                    'currency_name' => $data['currency_name'],
+                    'color' => $this->getCurrencyColor($currencyCode)
+                ];
+            }
+        }
+        
+        // دیباگ
+        Log::debug('Customer balance calculated', [
+            'customer_id' => $customerId,
+            'selectedCustomerBalance' => $this->selectedCustomerBalance,
+            'currencyPercentages' => $this->currencyPercentages,
+            'totalBalanceUSD' => $totalBalanceUSD
+        ]);
+    }
+
+    private function convertToUSD($amount, $currency)
+    {
+        $latestExchangeRate = ExchangeRates::latest()->first();
+        if (!$latestExchangeRate) {
+            Log::warning('No exchange rate found');
+            return 0;
+        }
+
+        $exchangeRates = [
+            'afn' => $latestExchangeRate->afn_buy ?? 0.011,
+            'usd' => 1,
+            'irr' => $latestExchangeRate->irr_buy ?? 0.000024,
+            'eur' => $latestExchangeRate->eur_buy ?? 1.07,
+            'pkr' => $latestExchangeRate->pkr_buy ?? 0.0036,
+            'aed' => $latestExchangeRate->aed_buy ?? 0.27,
+            'try' => $latestExchangeRate->try_buy ?? 0.031,
+            'cny' => $latestExchangeRate->cny_buy ?? 0.14,
+        ];
+
+        $result = isset($exchangeRates[$currency]) ? $amount * $exchangeRates[$currency] : 0;
+        
+        Log::debug("Currency conversion", [
+            'amount' => $amount,
+            'currency' => $currency,
+            'rate' => $exchangeRates[$currency] ?? 'N/A',
+            'result' => $result
+        ]);
+
+        return $result;
+    }
+
+    private function getCurrencyColor($currency)
+    {
+        $colors = [
+            'usd' => '#DD2424',
+            'afn' => '#2563EB', 
+            'irr' => '#61B138',
+            'eur' => '#F59E0B',
+            'pkr' => '#8B5CF6',
+            'aed' => '#EC4899',
+            'try' => '#06B6D4',
+            'cny' => '#84CC16',
+        ];
+        
+        return $colors[$currency] ?? '#6B7280';
+    }
+
+    public function updatedSelectedAccount($value)
+    {
+        if ($value) {
+            $this->selectCustomer($value);
+        }
     }
 
     public function selectCategory($category)
@@ -54,6 +206,9 @@ class GeneralReports extends Component
         $this->selectedCategory = $category;
         $this->selectedSubCategory = null;
         $this->reports = [];
+        $this->selectedCustomerId = null;
+        $this->selectedCustomerBalance = [];
+        $this->currencyPercentages = [];
     }
 
     public function updatedSelectedSubCategory($sub)
@@ -63,11 +218,12 @@ class GeneralReports extends Component
         if ($sub === 'گزارش بیلانس مشتریان') {
             $this->generateCustomerBalanceReport();
         } else {
-
             $this->reports = [];
+            $this->selectedCustomerId = null;
+            $this->selectedCustomerBalance = [];
+            $this->currencyPercentages = [];
         }
     }
-
 
     private function generateCustomerBalanceReport()
     {
@@ -135,10 +291,12 @@ class GeneralReports extends Component
 
     private function calculateBalance($customerId, $currency)
     {
-        return Transaction::where('customer_id', $customerId)
+        $balance = Transaction::where('customer_id', $customerId)
             ->where('currency', $currency)
             ->select(DB::raw('SUM(CASE WHEN type = "رسید" THEN amount ELSE -amount END) as balance'))
             ->value('balance') ?? 0;
+
+        return $balance;
     }
 
     private function getLastTransactionDate($customerId, $currency)
@@ -151,6 +309,10 @@ class GeneralReports extends Component
     private function calculateTotalBalance($balances)
     {
         $latestExchangeRate = ExchangeRates::latest()->first();
+        if (!$latestExchangeRate) {
+            return 0;
+        }
+
         $exchangeRates = [
             'afn' => $latestExchangeRate->afn_buy ?? 0.011,
             'usd' => 1,
@@ -165,7 +327,7 @@ class GeneralReports extends Component
         $total = 0;
         foreach ($balances as $currency => $balance) {
             if (isset($exchangeRates[$currency]) && $balance != 0) {
-                $total += $balance / $exchangeRates[$currency];
+                $total += $balance * $exchangeRates[$currency];
             }
         }
         return $total;
@@ -173,6 +335,8 @@ class GeneralReports extends Component
 
     public function render()
     {
-        return view('livewire.sarafi.general-reports');
+        return view('livewire.sarafi.general-reports', [
+            'customers' => $this->customers,
+        ]);
     }
 }

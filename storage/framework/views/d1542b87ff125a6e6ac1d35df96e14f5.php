@@ -634,11 +634,10 @@
             jsPDF:        { unit: 'cm', format: 'a4', orientation: 'landscape' }
         };
 
-        // ابتدا PDF بساز و بعد از اتمام، پرینت را باز کن
         html2pdf().set(opt).from(element).save().then(() => {
             setTimeout(() => {
                 window.print();
-            }, 500); // کمی تأخیر برای اطمینان
+            }, 500); 
         });
     }
 

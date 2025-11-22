@@ -276,6 +276,7 @@
             @page {
                 size: 21cm 21.9cm;
                 margin: 0;
+                padding: 0;
             }
 
             body,
