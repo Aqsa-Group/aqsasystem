@@ -341,10 +341,10 @@
                         <!-- متن‌ها وسط افقی -->
                         <div
                             style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align:center ;">
-                            <div class="title" style="font-size: 26px; font-weight: bold; display: inline-flexbox">
+                            <div class="title" style="font-size: 20px; font-weight: bold; display: inline-flexbox">
                                 مجتمع تجارتی عادلیار
                             </div>
-                            <div class="subtitle" style="font-size: 26px; margin-top: 5px; font-weight:bolder;">
+                            <div class="subtitle" style="font-size: 22px; margin-top: 5px; font-weight:bolder;">
                                 قبض برق
                             </div>
                         </div>
@@ -404,10 +404,10 @@
                     </table>
 
                     <!-- جدول دو ستونه: سمت راست جدول مقادیر، سمت چپ بلوک مسؤول برق/امضاء/نوت -->
-                    <table style="width:100%; border-collapse:separate; border-spacing:10px 0;">
+                    <table style="width:100%; border-collapse:separate; ">
                         <tr>
                             <!-- ستون مقادیر (عرض بیشتر) -->
-                            <td style="width:90%; vertical-align: top; border:none !important; padding:0;">
+                            <td style="width:70%; vertical-align: top; border:none !important; padding:0;">
                                 <table class="amount-rows" role="table" aria-label="مقادیر" style="width:100%;">
                                     <tbody>
                                         <tr>
@@ -467,7 +467,7 @@
                             </td>
 
                             <td
-                                style="width:28%; vertical-align: top; padding:5px 8px; border:none !important; background:none !important;">
+                                style="width:38%; vertical-align: top; padding:5px 8px; border:none !important; background:none !important;">
 
                                 <!-- باکس مسؤول برق + شماره -->
                                 <div style="
@@ -489,15 +489,15 @@
 
                                 <!-- باکس مهر و امضاء با پر کردن کل ارتفاع -->
                                 <div style="
-                                        border: 1px solid #444;
-                                        padding: 12px;
-                                        border-radius: 6px;
-                                        text-align: center;
-                                        background: #fff;
-                                        height: 100%;
-                                        min-height: 170px;
-                                        box-sizing: border-box;
-                                    ">
+                                            border: 1px solid #444;
+                                            padding: 12px;
+                                            border-radius: 6px;
+                                            text-align: center;
+                                            background: #fff;
+                                            height: 100%;
+                                            min-height: 210px;
+                                            box-sizing: border-box;
+                                        ">
                                     <div style="font-size:16px; font-weight:bold; margin-top:0;">
                                         مهر و امضاء
                                     </div>
@@ -521,7 +521,7 @@
                             <div class="title" style="font-size: 20px; font-weight: bold;">
                                 مجتمع تجارتی عادلیار
                             </div>
-                            <div class="subtitle" style="font-size: 26px; margin-top: 5px; font-weight: bolder;">
+                            <div class="subtitle" style="font-size: 22px; margin-top: 5px; font-weight: bolder;">
                                 قبض برق
                             </div>
                         </div>
