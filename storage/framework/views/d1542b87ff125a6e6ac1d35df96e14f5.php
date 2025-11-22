@@ -489,15 +489,15 @@
 
                                 <!-- باکس مهر و امضاء با پر کردن کل ارتفاع -->
                                 <div style="
-                                            border: 1px solid #444;
-                                            padding: 12px;
-                                            border-radius: 6px;
-                                            text-align: center;
-                                            background: #fff;
-                                            height: 100%;
-                                            min-height: 170px;
-                                            box-sizing: border-box;
-                                        ">
+                                        border: 1px solid #444;
+                                        padding: 12px;
+                                        border-radius: 6px;
+                                        text-align: center;
+                                        background: #fff;
+                                        height: 100%;
+                                        min-height: 170px;
+                                        box-sizing: border-box;
+                                    ">
                                     <div style="font-size:16px; font-weight:bold; margin-top:0;">
                                         مهر و امضاء
                                     </div>
