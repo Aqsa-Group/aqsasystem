@@ -65,7 +65,7 @@
 
 
         <!-- ژورنال عمومی -->
-        <a href="" class="block">
+        <a href="{{ route('sarafi.general-reports') }}" class="block">
             <div
                 class="border bg-gradient-to-b from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
                 <i class="fa-solid fa-file-invoice-dollar text-white text-xl"></i>

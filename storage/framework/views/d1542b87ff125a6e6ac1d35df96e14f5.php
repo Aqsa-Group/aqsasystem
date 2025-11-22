@@ -384,7 +384,7 @@
 
                                 <td>
                                     <?php if($accounting->paid_date): ?>
-                                    <?php echo e(\Carbon\Carbon::parse($accounting->paid_date)->format('Y/m/d')); ?>
+                                    <?php echo e(\Morilog\Jalali\Jalalian::fromDateTime($accounting->paid_date)->format('Y/m/d')); ?>
 
                                     <?php else: ?>
                                     ---
@@ -392,7 +392,7 @@
                                 </td>
                                 <td>
                                     <?php if($accounting->expiration_date): ?>
-                                    <?php echo e(\Carbon\Carbon::parse($accounting->expiration_date)->format('Y/m/d')); ?>
+                                    <?php echo e(\Morilog\Jalali\Jalalian::fromDateTime($accounting->expiration_date)->format('Y/m/d')); ?>
 
                                     <?php else: ?>
                                     ---
@@ -622,20 +622,35 @@
         </table>
     </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+    function downloadPDF() {
+        const element = document.querySelector(".page");
+        const opt = {
+            margin:       0.2,
+            filename:     'electricity-bill.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'cm', format: 'a4', orientation: 'landscape' }
+        };
 
-    <script>
-        // چاپ خودکار پس از لود صفحه
-        window.onload = function() {
+        // ابتدا PDF بساز و بعد از اتمام، پرینت را باز کن
+        html2pdf().set(opt).from(element).save().then(() => {
             setTimeout(() => {
                 window.print();
-            }, 500);
-        }
+            }, 500); // کمی تأخیر برای اطمینان
+        });
+    }
 
-     
-        window.afterprint = function() {
-            setTimeout(() => { window.close(); }, 1000);
-        }
-    </script>
+    window.onload = function() {
+        downloadPDF();
+    }
+
+    window.afterprint = function() {
+        setTimeout(() => { window.close(); }, 1000);
+    }
+</script>
+
 </body>
 
 </html><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/print/electricity.blade.php ENDPATH**/ ?>

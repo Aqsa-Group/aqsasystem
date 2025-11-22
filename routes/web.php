@@ -266,6 +266,12 @@ Route::get('/sarafi/account-reports', function () {
 })->name('sarafi.account-reports');
 
 
+Route::get('/sarafi/general-reports', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.general-reports');
+})->name('sarafi.general-reports');
 
 
 
@@ -496,6 +502,15 @@ Route::get('/tools/reports', function () {
     }
     return view('ToolsPanel.components.general-report');
 })->name('tools.reports');
+
+
+
+
+
+
+// Gym routes
+
+Route::get('/gym', [UserControllers::class, 'showLoginForm'])->name('gym.login.form');
 
 
 

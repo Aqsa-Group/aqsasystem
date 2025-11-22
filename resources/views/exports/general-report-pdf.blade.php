@@ -11,7 +11,7 @@
             direction: rtl;
             margin: 0;
             padding: 10px;
-            font-size: 9px;
+            font-size:  14px;
             line-height: 1.2;
         }
 
@@ -42,13 +42,13 @@
         }
 
         .summary .value {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: bold;
             display: block;
         }
 
         .summary .label {
-            font-size: 8px;
+            font-size: 14px;
             color: #666;
         }
 
@@ -62,7 +62,7 @@
 
         .currency-summary h4 {
             margin: 0 0 5px 0;
-            font-size: 10px;
+            font-size: 14px;
             color: #2e7d32;
         }
 
@@ -77,7 +77,7 @@
             padding: 4px 8px;
             border-radius: 3px;
             border: 1px solid #c8e6c9;
-            font-size: 8px;
+            font-size: 14px;
         }
 
         .currency-amount {
@@ -89,19 +89,19 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
-            font-size: 7px;
+            font-size: 14px;
         }
 
         th {
             background: #333;
             color: white;
-            padding: 4px 3px;
+            padding: 14px 3px;
             border: 1px solid #555;
             text-align: center;
         }
 
         td {
-            padding: 3px 2px;
+            padding: 13px 2px;
             border: 1px solid #ddd;
             text-align: center;
         }

@@ -11,7 +11,7 @@
             direction: rtl;
             margin: 0;
             padding: 10px;
-            font-size: 9px;
+            font-size:  14px;
             line-height: 1.2;
         }
 
@@ -42,13 +42,13 @@
         }
 
         .summary .value {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: bold;
             display: block;
         }
 
         .summary .label {
-            font-size: 8px;
+            font-size: 14px;
             color: #666;
         }
 
@@ -62,7 +62,7 @@
 
         .currency-summary h4 {
             margin: 0 0 5px 0;
-            font-size: 10px;
+            font-size: 14px;
             color: #2e7d32;
         }
 
@@ -77,7 +77,7 @@
             padding: 4px 8px;
             border-radius: 3px;
             border: 1px solid #c8e6c9;
-            font-size: 8px;
+            font-size: 14px;
         }
 
         .currency-amount {
@@ -89,19 +89,19 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
-            font-size: 7px;
+            font-size: 14px;
         }
 
         th {
             background: #333;
             color: white;
-            padding: 4px 3px;
+            padding: 14px 3px;
             border: 1px solid #555;
             text-align: center;
         }
 
         td {
-            padding: 3px 2px;
+            padding: 13px 2px;
             border: 1px solid #ddd;
             text-align: center;
         }
@@ -291,7 +291,13 @@
                 <td><?php echo e($report->type); ?></td>
                 <td><?php echo e($report->shopkeeper->fullname ?? '-'); ?></td>
                 <td><?php echo e($report->expanses_type); ?></td>
-                <?php if($report->expanses_type == 'پول برق'): ?>
+                @if($re @case('accounting')
+                <!-- Data Section -->
+                <td><?php echo e($report->market->name ?? '-'); ?></td>
+                <td><?php echo e($report->type); ?></td>
+                <td><?php echo e($report->shopkeeper->fullname ?? '-'); ?></td>
+                <td><?php echo e($report->expanses_type); ?></td>
+                @if($report->expanses_type == 'پول برق')
                 <td><?php echo e($report->current_degree ?? '-'); ?></td>
                 <td><?php echo e($report->past_degree ?? '-'); ?></td>
                 <?php
@@ -301,20 +307,20 @@
                 ?>
                 <td><?php echo e($usage); ?></td>
                 <td><?php echo e(number_format($report->degree_price ?? 0)); ?></td>
-                <?php endif; ?>
+                @endif
                 <td><?php echo e(number_format($report->price)); ?></td>
                 <td>
-                    <?php switch($report->currency):
-                    case ('AFN'): ?> افغانی <?php break; ?>
-                    <?php case ('USD'): ?> دالر <?php break; ?>
-                    <?php default: ?> <?php echo e($report->currency); ?>
+                    @switch($report->currency)
+                    @case('AFN') افغانی @break
+                    @case('USD') دالر @break
+                    @default <?php echo e($report->currency); ?>
 
-                    <?php endswitch; ?>
+                    @endswitch
                 </td>
                 <td><?php echo e($report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
                     : '-'); ?></td>
                 <td><?php echo e($report->cleared ? '✅' : '⏳'); ?></td>
-                <?php break; ?>
+                @break
 
                 <?php case ('withdraw_salary'): ?>
                 <td>
