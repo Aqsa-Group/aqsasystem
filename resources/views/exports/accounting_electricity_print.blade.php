@@ -196,9 +196,11 @@
                                         <td>{{
                                             \Morilog\Jalali\Jalalian::fromDateTime($accounting->paid_date)->format('Y/m/d')
                                             }}</td>
-                                        <td>{{
+                                        <td>
+                                            {{
                                             \Morilog\Jalali\Jalalian::fromDateTime($accounting->expiration_date)->format('Y/m/d')
-                                            }}</td>
+                                            }}
+                                            </td>
                                     </tr>
                                 </tbody>
                             </table>

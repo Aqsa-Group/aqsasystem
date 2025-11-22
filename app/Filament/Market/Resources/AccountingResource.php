@@ -401,11 +401,11 @@ class AccountingResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('print')
-                    ->label('چاپ')
-                    ->icon('heroicon-o-printer')
-                    ->url(fn($record) => route('accounting.print', $record))
-                    ->openUrlInNewTab(),
+               Tables\Actions\Action::make('print')
+    ->label('چاپ')
+    ->icon('heroicon-o-printer')
+    ->url(fn($record) => route('accounting.print.view', $record))
+    ->openUrlInNewTab(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

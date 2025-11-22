@@ -69,7 +69,9 @@ Route::get('/loan/print/{id}', [printLoan::class, 'generate'])->name('loan.print
 Route::get('/payment/print/{id}', [AmountController::class, 'generate'])->name('amount.print');
 Route::get('/outside/print/{id}', [OutsideController::class, 'generate'])->name('outside.print');
 
-
+// routes/web.php
+Route::get('/accounting/print/{id}', [AccountingPrintController::class, 'printView'])
+    ->name('accounting.print.view');
 
 
 // Import system route 
