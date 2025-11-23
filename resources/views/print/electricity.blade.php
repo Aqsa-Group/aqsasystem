@@ -549,17 +549,18 @@
                             <tr>
                                 <th>مشتری</th>
                                 <th>مارکت</th>
-                                <th>شماره مسلسل</th>
                                 <th>شماره دوکان</th>
+                                <th>شماره مسلسل</th>
+
 
                             </tr>
                             <tr>
                                 <td>{{ $accounting->shopkeeper->fullname ?? $accounting->shopkeeper->name ?? '---' }}
                                 </td>
                                 <td>{{ $accounting->market->name ?? '---' }}</td>
-                                <td>{{ $rowNumber }}</td>
 
                                 <td>{{ $accounting->shop->number ?? $accounting->booth->number ?? '---' }}</td>
+                                <td>{{ $rowNumber }}</td>
 
 
                             </tr>
