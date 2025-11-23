@@ -274,14 +274,15 @@
         /* برای چاپ A4 landscape */
         @media print {
             @page {
-                size: 21cm 21.9cm;
+                size: "A4";
                 margin: 0;
+                padding: 0;
             }
 
             body,
             html {
-                width: 21cm;
-                height: 21.9cm;
+                width: 210mm;
+                height: 99mm;
                 margin: 0;
                 padding: 0;
             }

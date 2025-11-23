@@ -110,9 +110,11 @@
         <?php break; ?>
 
         <?php case ('گزارش خلاصه بیلانس مشتریان'): ?>
-          <div>
-            سلام
-          </div>
+           <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-8">
+               <div>
+                 
+               </div>
+           </div>
         <?php break; ?>
 
         <?php default: ?>
