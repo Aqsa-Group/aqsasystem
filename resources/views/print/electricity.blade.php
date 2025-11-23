@@ -271,32 +271,41 @@
             }
         }
 
-        /* برای چاپ A4 landscape */
-        @media print {
-            @page {
-                size: 210mm 150mm;
-                margin: 0;
-                padding: 0;
-            }
+       @media print {
+    @page {
+        size: A4 portrait; /* چاپ عمودی */
+        margin: 0;
+    }
 
-            body,
-            html {
-                width: 210mm;
-                height: 99mm;
-                margin: 0;
-                padding: 0;
-            }
+    html, body {
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        padding: 0;
+    }
 
-            .no-print {
-                display: none !important;
-            }
+    .page-wrapper {
+        width: 100%;
+        height: 297mm; /* تمام ارتفاع صفحه */
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+    }
 
-            /* اختیاری: حذف سایه ها یا رنگ های پس زمینه */
-            .two-col td {
-                box-shadow: none;
-                background: #fff;
-            }
-        }
+    .receipt {
+        flex: 1; /* هر قبض دقیقا یک‌سوم صفحه */
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        border-bottom: 2px dashed #999; /* خط جداکننده برای بریدن */
+    }
+
+    .receipt:last-child {
+        border-bottom: none; /* برای قبض آخر */
+    }
+}
+
 
         /* دکمه‌های غیر چاپی */
         .no-print {
