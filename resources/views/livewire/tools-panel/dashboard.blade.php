@@ -320,7 +320,13 @@
         chart: {
             type: 'area',
             height: 260,
-            toolbar: { show: false },
+       <!-- ApexCharts CDN -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+    // دریافت داده‌های واقعی از کامپوننت Livewire
+    con     toolbar: { show: false },
             animations: {
                 enabled: true,
                 easing: 'easeinout',

@@ -24,12 +24,14 @@ class GeneralReports extends Component
     public $customers;
     public $selectedCustomerBalance = [];
     public $currencyPercentages = [];
+    public $currencyName = [];
+
     public $selectedCustomerId = null;
     public $filteredCustomers = [];
     public $reports = [];
 
     public $subCategories = [
-        'customers' => ['گزارش بیلانس مشتریان', 'پرداخت‌های مشتری', 'صورتحساب‌ها'],
+        'customers' => ['گزارش بیلانس مشتریان', 'گزارش خلاصه بیلانس مشتریان', 'صورتحساب‌ها'],
         'accounts' => ['گزارش صندوق', 'حساب‌های بانکی', 'ترازنامه'],
         'transactions' => ['معاملات خرید', 'معاملات فروش', 'تراکنش‌ها'],
         'management' => ['گزارش مدیریتی', 'تحلیل فروش', 'نمودارها']
@@ -101,6 +103,7 @@ class GeneralReports extends Component
         } else {
             $this->selectedCustomerBalance = [];
             $this->currencyPercentages = [];
+            $this->currencyName =[];
         }
     }
 
@@ -137,21 +140,12 @@ class GeneralReports extends Component
                 ];
             }
         }
-        
-        // دیباگ
-        Log::debug('Customer balance calculated', [
-            'customer_id' => $customerId,
-            'selectedCustomerBalance' => $this->selectedCustomerBalance,
-            'currencyPercentages' => $this->currencyPercentages,
-            'totalBalanceUSD' => $totalBalanceUSD
-        ]);
     }
 
     private function convertToUSD($amount, $currency)
     {
         $latestExchangeRate = ExchangeRates::latest()->first();
         if (!$latestExchangeRate) {
-            Log::warning('No exchange rate found');
             return 0;
         }
 
@@ -166,34 +160,54 @@ class GeneralReports extends Component
             'cny' => $latestExchangeRate->cny_buy ?? 0.14,
         ];
 
-        $result = isset($exchangeRates[$currency]) ? $amount * $exchangeRates[$currency] : 0;
-        
-        Log::debug("Currency conversion", [
-            'amount' => $amount,
-            'currency' => $currency,
-            'rate' => $exchangeRates[$currency] ?? 'N/A',
-            'result' => $result
-        ]);
-
-        return $result;
+        return isset($exchangeRates[$currency]) ? $amount / $exchangeRates[$currency] : 0;
     }
 
-    private function getCurrencyColor($currency)
-    {
-        $colors = [
-            'usd' => '#DD2424',
-            'afn' => '#2563EB', 
-            'irr' => '#61B138',
-            'eur' => '#F59E0B',
-            'pkr' => '#8B5CF6',
-            'aed' => '#EC4899',
-            'try' => '#06B6D4',
-            'cny' => '#84CC16',
-        ];
-        
-        return $colors[$currency] ?? '#6B7280';
-    }
+private function getCurrencyColor($currency)
+{
+    $colors = [
+        'usd' => '#DD2424',
+        'afn' => '#2563EB', 
+        'irr' => '#61B138',
+        'eur' => '#F59E0B',
+        'pkr' => '#8B5CF6',
+        'aed' => '#EC4899',
+        'try' => '#06B6D4',
+        'cny' => '#84CC16',
+    ];
+    
+    return $colors[$currency] ?? '#6B7280';
+}
 
+/**
+ * روشن کردن رنگ
+ */
+private function lightenColor($color, $percent)
+{
+    $color = ltrim($color, '#');
+    $rgb = sscanf($color, "%02x%02x%02x");
+    
+    $r = min(255, $rgb[0] + (255 - $rgb[0]) * $percent / 100);
+    $g = min(255, $rgb[1] + (255 - $rgb[1]) * $percent / 100);
+    $b = min(255, $rgb[2] + (255 - $rgb[2]) * $percent / 100);
+    
+    return sprintf("#%02x%02x%02x", $r, $g, $b);
+}
+
+/**
+ * تیره کردن رنگ
+ */
+private function darkenColor($color, $percent)
+{
+    $color = ltrim($color, '#');
+    $rgb = sscanf($color, "%02x%02x%02x");
+    
+    $r = max(0, $rgb[0] * (1 - $percent / 100));
+    $g = max(0, $rgb[1] * (1 - $percent / 100));
+    $b = max(0, $rgb[2] * (1 - $percent / 100));
+    
+    return sprintf("#%02x%02x%02x", $r, $g, $b);
+}
     public function updatedSelectedAccount($value)
     {
         if ($value) {
@@ -291,12 +305,10 @@ class GeneralReports extends Component
 
     private function calculateBalance($customerId, $currency)
     {
-        $balance = Transaction::where('customer_id', $customerId)
+        return Transaction::where('customer_id', $customerId)
             ->where('currency', $currency)
             ->select(DB::raw('SUM(CASE WHEN type = "رسید" THEN amount ELSE -amount END) as balance'))
             ->value('balance') ?? 0;
-
-        return $balance;
     }
 
     private function getLastTransactionDate($customerId, $currency)
@@ -327,7 +339,7 @@ class GeneralReports extends Component
         $total = 0;
         foreach ($balances as $currency => $balance) {
             if (isset($exchangeRates[$currency]) && $balance != 0) {
-                $total += $balance * $exchangeRates[$currency];
+                $total += $balance  / $exchangeRates[$currency];
             }
         }
         return $total;
