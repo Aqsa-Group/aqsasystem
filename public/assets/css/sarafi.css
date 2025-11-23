@@ -23,6 +23,11 @@
 }
 
 
+.vazir {
+    font-family: "vazir", sans-serif;
+}
+
+
 @font-face {
     font-family: "shabnam";
     src: url("/fonts/Shabnam-Medium.ttf") format("truetype");
@@ -77,9 +82,6 @@
 
 
 
-.vazir {
-    font-family: "vazir", sans-serif;
-}
 
 .times {
     font-family: "times", sans-serif;

@@ -7,24 +7,37 @@
     <style>
         /* استایل بسیار ساده */
         body {
-            font-family: dejavusanscondensed, sans-serif;
+            font-family: vazir, sans-serif;
             direction: rtl;
             margin: 0;
             padding: 10px;
-            font-size:  14px;
+            font-size: 14px;
             line-height: 1.2;
         }
+
+        @font-face {
+            font-family: "vazir";
+            src: url("/fonts/Vazir.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+
+
+        .vazir {
+            font-family: "vazir", sans-serif;
+        }
+
 
         .header {
             text-align: center;
             margin-bottom: 10px;
             padding-bottom: 5px;
-            border-bottom: 1px solid #333;
+            border-bottom: 1px solid #37aadb;
         }
 
         .header h1 {
             margin: 0;
-            font-size: 14px;
+            font-size: 16px;
             color: #333;
         }
 
@@ -93,35 +106,39 @@
         }
 
         th {
-            background: #333;
+            background: linear-gradient(135deg, #476680, #2799db52);
             color: white;
             padding: 14px 3px;
-            border: 1px solid #555;
+            border: 1px solid #444;
+            /* کمی ملایم‌تر از #555 */
             text-align: center;
+            font-weight: bold;
         }
+
 
         td {
             padding: 13px 2px;
-            border: 1px solid #ddd;
+            border: 1px solid #262727;
             text-align: center;
         }
 
         tr:nth-child(even) {
-            background: #f9f9f9;
+            background: #dae4ed;
         }
 
         .row-number {
-            background: #e0e0e0;
+            background: linear-gradient(135deg, #476680, #2799db52);
             font-weight: bold;
+            color: white;
             width: 25px;
         }
 
         .footer {
             margin-top: 15px;
             text-align: center;
-            font-size: 7px;
+            font-size: 16px;
             color: #666;
-            border-top: 1px solid #ddd;
+            border-top: 1px solid #7a6767;
             padding-top: 5px;
         }
 
@@ -133,7 +150,7 @@
     </style>
 </head>
 
-<body>
+<body class="vazir">
     <div class="header">
         <h1>{{ $reportTitle }}</h1>
         <div>تاریخ تولید: {{ \Morilog\Jalali\Jalalian::now()->format('Y/m/d H:i') }}</div>
@@ -585,8 +602,8 @@
     <!-- جدول موجودی صندوق -->
     @if(isset($safeRows) && count($safeRows) > 0)
     <div style="margin-top: 20px;">
-        <h4 style="text-align: center; margin-bottom: 5px;">💰 موجودی صندوق</h4>
-        <table style="width:100%; border-collapse: collapse; font-size: 8px;">
+        <h4 style="text-align: center; margin-bottom: 5px;"> موجودی صندوق</h4>
+        <table style="width:100%; border-collapse: collapse; font-size: 18px;">
             <thead>
                 <tr>
                     <th style="border:1px solid #555; padding:3px;">نوع مصرف</th>
@@ -608,24 +625,24 @@
                 $total_ir += $row['ir'];
                 @endphp
                 <tr>
-                    <td style="border:1px solid #ddd; padding:3px;">{{ $row['type'] }}</td>
-                    <td style="border:1px solid #ddd; padding:3px; text-align:right;">{{ number_format($row['af']) }}
+                    <td style="border:1px solid #262727; padding:4px;">{{ $row['type'] }}</td>
+                    <td style="border:1px solid #262727; padding:4px; text-align:center;">{{ number_format($row['af']) }}
                     </td>
-                    <td style="border:1px solid #ddd; padding:3px; text-align:right;">{{ number_format($row['us']) }}
+                    <td style="border:1px solid #262727; padding:4px; text-align:center;">{{ number_format($row['us']) }}
                     </td>
-                    <td style="border:1px solid #ddd; padding:3px; text-align:right;">{{ number_format($row['er']) }}
+                    <td style="border:1px solid #262727; padding:4px; text-align:center;">{{ number_format($row['er']) }}
                     </td>
-                    <td style="border:1px solid #ddd; padding:3px; text-align:right;">{{ number_format($row['ir']) }}
+                    <td style="border:1px solid #262727; padding:4px; text-align:center;">{{ number_format($row['ir']) }}
                     </td>
                 </tr>
                 @endforeach
                 <!-- جمع کل -->
                 <tr style="font-weight:bold; background:#f0f0f0;">
-                    <td style="border:1px solid #555; text-align:center;">جمع کل</td>
-                    <td style="border:1px solid #555; text-align:right;">{{ number_format($total_af) }}</td>
-                    <td style="border:1px solid #555; text-align:right;">{{ number_format($total_us) }}</td>
-                    <td style="border:1px solid #555; text-align:right;">{{ number_format($total_er) }}</td>
-                    <td style="border:1px solid #555; text-align:right;">{{ number_format($total_ir) }}</td>
+                    <td style="border:1px solid #262727; text-align:center;">جمع کل</td>
+                    <td style="border:1px solid #262727; text-align:center;">{{ number_format($total_af) }}</td>
+                    <td style="border:1px solid #262727; text-align:center;">{{ number_format($total_us) }}</td>
+                    <td style="border:1px solid #262727; text-align:center;">{{ number_format($total_er) }}</td>
+                    <td style="border:1px solid #262727 ; text-align:center;">{{ number_format($total_ir) }}</td>
                 </tr>
             </tbody>
         </table>
