@@ -88,7 +88,7 @@
             border: 1px solid #777;
             padding: 2px 2px;
             font-size: 14px;
-            vertical-align: middle;
+            vertical-align: right;
             text-align: center;
             width: 10px;
         }
@@ -101,41 +101,43 @@
         }
 
         /* جدول ردیف های مبلغ */
-    .amount-rows {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 6px;
-}
+        .amount-rows {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 6px;
+        }
 
-.amount-rows th {
-    border: 1px solid #999;
-    padding: 8px;
-    height: 36px;
-    font-size: 13px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    background: #fafafa; /* اختیاری برای هدر */
-    font-weight: 700;
-    text-align: center;
-}
+        .amount-rows th {
+            border: 1px solid #999;
+            padding: 8px;
+            height: 36px;
+            font-size: 13px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            background: #fafafa;
+            /* اختیاری برای هدر */
+            font-weight: 700;
+            text-align: center;
+        }
 
-.amount-rows td {
-    border: 1px solid #999;
-    padding: 8px;
-    height: 36px;
-    font-size: 13px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: center;
-}
+        .amount-rows td {
+            border: 1px solid #999;
+            padding: 8px;
+            height: 36px;
+            font-size: 13px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: right;
+        }
 
-.amount-rows td:first-child {
-    font-weight: bold;
-    font-size: 14px;
-    text-align: left; /* اگر می‌خوای ستون اول راست چین یا چپ چین باشد */
-}
+        .amount-rows td:first-child {
+            font-weight: bold;
+            font-size: 14px;
+            text-align: left;
+            /* اگر می‌خوای ستون اول راست چین یا چپ چین باشد */
+        }
 
 
         .amount-rows td {
@@ -349,12 +351,14 @@
                         <!-- متن‌ها وسط افقی -->
                         <div
                             style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align:center ;">
-                            <div class="title" style="font-size: 20px; font-weight: bold; display: inline-flexbox">
+                            <div class="title" style="font-size: 20px; font-weight: bold; display: block;">
                                 مجتمع تجارتی عادلیار
                             </div>
-                            <div class="subtitle" style="font-size: 20px; margin-top: 5px; font-weight:bolder;">
+                            <div class="subtitle"
+                                style="font-size: 20px; margin-top: 5px; font-weight: bolder; display: block;">
                                 قبض برق
                             </div>
+
                         </div>
 
                         <!-- لوگو همان‌جاست -->
@@ -439,18 +443,18 @@
                                 <table class="amount-rows" role="table" aria-label="مقادیر" style="width:100%;">
                                     <tbody>
                                         <tr>
-                                            <td>درجه فعلی</td>
-                                            <td style="text-align:center;"><?php echo e($accounting->current_degree ??
+                                            <td style="text-align:center;">درجه فعلی</td>
+                                            <td style="text-align:right ;"><?php echo e($accounting->current_degree ??
                                                 $accounting->current_reading ?? '---'); ?></td>
                                         </tr>
                                         <tr>
-                                            <td>درجه قبلی</td>
-                                            <td style="text-align:center;"><?php echo e($accounting->past_degree ??
+                                            <td style="text-align:center;">درجه قبلی</td>
+                                            <td style="text-align:right ;"><?php echo e($accounting->past_degree ??
                                                 $accounting->previous_reading ?? '---'); ?></td>
                                         </tr>
                                         <tr>
-                                            <td>مقدار مصرف</td>
-                                            <td style="text-align:center;">
+                                            <td style="text-align:center;">مقدار مصرف</td>
+                                            <td style="text-align:right ;">
                                                 <?php
                                                 $current = $accounting->current_degree ?? $accounting->current_reading
                                                 ?? null;
@@ -463,30 +467,30 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>قیمت فی کیلووات</td>
-                                            <td style="text-align:center;"><?php echo e(number_format($accounting->degree_price ??
+                                            <td style="text-align:center;">قیمت فی کیلووات</td>
+                                            <td style="text-align:right ;"><?php echo e(number_format($accounting->degree_price ??
                                                 $accounting->rate_per_kwh ?? 0)); ?> افغانی</td>
                                         </tr>
                                         <tr>
-                                            <td>مبلغ قابل تادیه</td>
+                                            <td style="text-align:center;">مبلغ قابل تادیه</td>
                                             <td style="text-align:center;"><?php echo e(number_format($accounting->price ??
                                                 $accounting->payable_amount ?? 0)); ?> افغانی</td>
                                         </tr>
                                         <tr>
-                                            <td>باقیات</td>
-                                            <td style="text-align:center;"><?php echo e(number_format($accounting->remained ??
+                                            <td style="text-align:center;">باقیات</td>
+                                            <td style="text-align:right ;"><?php echo e(number_format($accounting->remained ??
                                                 $accounting->balance ?? 0)); ?> افغانی</td>
                                         </tr>
                                         <?php
                                         $total= $accounting->remained + $accounting->price;
                                         ?>
                                         <tr>
-                                            <td>جمع کل</td>
-                                            <td style="text-align:center;"><?php echo e(number_format($total)); ?> افغانی</td>
+                                            <td style="text-align:center;">جمع کل</td>
+                                            <td style="text-align:right ;"><?php echo e(number_format($total)); ?> افغانی</td>
                                         </tr>
                                         <tr>
-                                            <td>مبلغ پرداخت شده</td>
-                                            <td style="text-align:center;"><?php echo e(number_format($accounting->paid ??
+                                            <td style="text-align:center;">مبلغ پرداخت شده</td>
+                                            <td style="text-align:right ;"><?php echo e(number_format($accounting->paid ??
                                                 $accounting->paid_amount ?? 0)); ?> افغانی</td>
                                         </tr>
 
@@ -546,10 +550,11 @@
                         <!-- متن‌ها وسط افقی -->
                         <div
                             style="position: absolute; top: 50%; left: 54%; transform: translate(-50%, -50%); text-align: center;">
-                            <div class="title" style="font-size: 20px; font-weight: bold;">
+            <div class="title" style="font-size: 20px; font-weight: bold; display: block;">
                                 مجتمع تجارتی عادلیار
                             </div>
-                            <div class="subtitle" style="font-size: 22px; margin-top: 5px; font-weight: bolder;">
+                            <div class="subtitle"
+                                style="font-size: 20px; margin-top: 5px; font-weight: bolder; display: block;">
                                 قبض برق
                             </div>
                         </div>
@@ -565,79 +570,79 @@
 
 
 
-               <table role="table" aria-label="مشخصات" 
-       style="width:100%; border-collapse: collapse; font-size:13px;">
-    <tbody>
-        <tr>
-            <th style="border:1px solid #777; padding:6px 8px; text-align:center; 
-                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
-                       height:36px; background:#fafafa; font-weight:600;">
-                مشتری
-            </th>
-            <th style="border:1px solid #777; padding:6px 8px; text-align:center; 
-                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
-                       height:36px; background:#fafafa; font-weight:600;">
-                مارکت
-            </th>
-            <th style="border:1px solid #777; padding:6px 8px; text-align:center; 
-                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
-                       height:36px; background:#fafafa; font-weight:600;">
-                <?php if(!empty($accounting->shop->number)): ?>
-                    شماره دوکان
-                <?php else: ?>
-                    شماره غرفه
-                <?php endif; ?>
-            </th>
-            <th style="border:1px solid #777; padding:6px 8px; text-align:center; 
-                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
-                       height:36px; background:#fafafa; font-weight:600;">
-                شماره مسلسل
-            </th>
-        </tr>
-        <tr>
-            <td style="border:1px solid #777; padding:6px 8px; text-align:left; 
-                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
-                       height:36px;">
-                <?php echo e($accounting->shopkeeper->fullname ?? $accounting->shopkeeper->name ?? '---'); ?>
-
-            </td>
-            <td style="border:1px solid #777; padding:6px 8px; text-align:center; 
-                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
-                       height:36px;">
-                <?php echo e($accounting->market->name ?? '---'); ?>
-
-            </td>
-            <td style="border:1px solid #777; padding:6px 8px; text-align:center; 
-                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
-                       height:36px;">
-                <?php echo e($accounting->shop->number ?? $accounting->booth->number ?? '---'); ?>
-
-            </td>
-            <td style="border:1px solid #777; padding:6px 8px; text-align:center; 
-                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
-                       height:36px;">
-                <?php echo e($rowNumber); ?>
-
-            </td>
-        </tr>
-    </tbody>
-</table>
-
-
-                    <table class="amount-rows" role="table" aria-label="مقادیر">
+                    <table role="table" aria-label="مشخصات"
+                        style="width:100%; border-collapse: collapse; font-size:13px;">
                         <tbody>
                             <tr>
-                                <td>درجه فعلی</td>
+                                <th style="border:1px solid #777; padding:6px 8px; text-align:center; 
+                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
+                       height:36px; background:#fafafa; font-weight:600;">
+                                    مشتری
+                                </th>
+                                <th style="border:1px solid #777; padding:6px 8px; text-align:center; 
+                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
+                       height:36px; background:#fafafa; font-weight:600;">
+                                    مارکت
+                                </th>
+                                <th style="border:1px solid #777; padding:6px 8px; text-align:center; 
+                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
+                       height:36px; background:#fafafa; font-weight:600;">
+                                    <?php if(!empty($accounting->shop->number)): ?>
+                                    شماره دوکان
+                                    <?php else: ?>
+                                    شماره غرفه
+                                    <?php endif; ?>
+                                </th>
+                                <th style="border:1px solid #777; padding:6px 8px; text-align:center; 
+                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
+                       height:36px; background:#fafafa; font-weight:600;">
+                                    شماره مسلسل
+                                </th>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #777; padding:6px 8px; text-align:left; 
+                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
+                       height:36px;">
+                                    <?php echo e($accounting->shopkeeper->fullname ?? $accounting->shopkeeper->name ?? '---'); ?>
+
+                                </td>
+                                <td style="border:1px solid #777; padding:6px 8px; text-align:center; 
+                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
+                       height:36px;">
+                                    <?php echo e($accounting->market->name ?? '---'); ?>
+
+                                </td>
+                                <td style="border:1px solid #777; padding:6px 8px; text-align:center; 
+                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
+                       height:36px;">
+                                    <?php echo e($accounting->shop->number ?? $accounting->booth->number ?? '---'); ?>
+
+                                </td>
+                                <td style="border:1px solid #777; padding:6px 8px; text-align:center; 
+                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
+                       height:36px;">
+                                    <?php echo e($rowNumber); ?>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                    <table class="amount-rows" role="table" aria-label="مقادیر" >
+                        <tbody>
+                            <tr>
+                                <td style="text-align:center;">درجه فعلی</td>
                                 <td style="text-align:center;"><?php echo e($accounting->current_degree ??
                                     $accounting->current_reading ?? '---'); ?></td>
                             </tr>
                             <tr>
-                                <td>درجه قبلی</td>
+                                <td style="text-align:center;">درجه قبلی</td>
                                 <td style="text-align:center;"><?php echo e($accounting->past_degree ??
                                     $accounting->previous_reading ?? '---'); ?></td>
                             </tr>
                             <tr>
-                                <td>مقدار مصرف</td>
+                                <td style="text-align:center;">مقدار مصرف</td>
                                 <td style="text-align:center;">
                                     <?php
                                     $current = $accounting->current_degree ?? $accounting->current_reading
@@ -651,17 +656,17 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>قیمت فی کیلووات</td>
+                                <td style="text-align:center;">قیمت فی کیلووات</td>
                                 <td style="text-align:center;"><?php echo e(number_format($accounting->degree_price ??
                                     $accounting->rate_per_kwh ?? 0)); ?> افغانی</td>
                             </tr>
                             <tr>
-                                <td>مبلغ قابل تادیه</td>
+                                <td style="text-align:center;">مبلغ قابل تادیه</td>
                                 <td style="text-align:center;"><?php echo e(number_format($accounting->price ??
                                     $accounting->payable_amount ?? 0)); ?> افغانی</td>
                             </tr>
                             <tr>
-                                <td>باقیات</td>
+                                <td style="text-align:center;">باقیات</td>
                                 <td style="text-align:center;"><?php echo e(number_format($accounting->remained ??
                                     $accounting->balance ?? 0)); ?> افغانی</td>
                             </tr>
@@ -669,11 +674,11 @@
                             $total= $accounting->remained + $accounting->price;
                             ?>
                             <tr>
-                                <td>جمع کل</td>
+                                <td style="text-align:center;">جمع کل</td>
                                 <td style="text-align:center;"><?php echo e(number_format($total)); ?> افغانی</td>
                             </tr>
                             <tr>
-                                <td>مبلغ پرداخت شده</td>
+                                <td style="text-align:center;">مبلغ پرداخت شده</td>
                                 <td style="text-align:center;"><?php echo e(number_format($accounting->paid ??
                                     $accounting->paid_amount ?? 0)); ?> افغانی</td>
                             </tr>
