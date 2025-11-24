@@ -6,190 +6,312 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>پرنت پول برق - مجتمع تجارتی عادلیار</title>
 
-<style>
-    /* پایه */
-    html, body {
-        width: 100%;
-        height: 148.5mm;
-        margin: 0;
-        padding: 0;
-        background: #fff;
-        font-family: "Tahoma", "Arial", sans-serif;
-        color: #111;
-        direction: rtl;
-        -webkit-print-color-adjust: exact;
-        overflow: hidden;
-    }
-
-    /* ظرف صفحه - دقیقا A5 Landscape */
-    .page {
-        width: 210mm;
-        height: 148.5mm;
-        padding: 6mm;               /* بهترین مقدار برای دو ستون */
-        box-sizing: border-box;
-    }
-
-    /* جدول دو ستونی */
-    .two-col {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 6mm;        /* مناسب برای A5 */
-    }
-
-    .two-col td {
-        vertical-align: top;
-        width: 50%;
-        padding: 4mm;
-        border: 1px solid #777;
-        border-radius: 3px;
-        background: #fff;
-        box-sizing: border-box;
-    }
-
-    /* هدر ستون */
-    .col-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 3mm;
-    }
-
-    .col-header .title {
-        font-size: 18px;
-        font-weight: 600;
-        color: #7c3a00;
-    }
-
-    .logo {
-        width: 22mm;
-        height: 22mm;
-        border: 1px solid #ccc;
-        background: #fafafa;
-        border-radius: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-    }
-
-    .logo img {
-        max-width: 100%;
-        max-height: 100%;
-    }
-
-    /* جدول‌های داخل فرم */
-    .form-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 11px;
-    }
-
-    .form-table td, .form-table th {
-        border: 1px solid #777;
-        padding: 2px 4px;
-        text-align: center;
-    }
-
-    .form-table th {
-        background: #f3f3f3;
-        font-weight: 700;
-    }
-
-    /* جدول مبلغ */
-    .amount-rows {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 4mm;
-        font-size: 12px;
-    }
-
-    .amount-rows td, .amount-rows th {
-        border: 1px solid #999;
-        padding: 3px 5px;
-        height: 10mm;
-    }
-
-    .amount-rows td:first-child {
-        font-weight: bold;
-    }
-
-    /* بخش امضا و نوت */
-    .left-sign-block {
-        width: 100%;
-        padding-top: 4mm;
-        text-align: center;
-        font-size: 12px;
-    }
-
-    .left-sign-block .electrician {
-        font-size: 14px;
-        font-weight: bold;
-        margin-bottom: 2mm;
-    }
-
-    .left-sign-block .phone {
-        font-size: 13px;
-        margin-bottom: 4mm;
-    }
-
-    .left-sign-block .stamp {
-        border-top: 2px dashed #333;
-        margin-top: 4mm;
-        padding-top: 3mm;
-        height: 15mm;
-    }
-
-    .left-sign-block .note-box {
-        border: 1px solid #aaa;
-        height: 18mm;
-        padding: 2mm;
-        font-size: 12px;
-        text-align: right;
-    }
-
-    /* فونت‌ها */
-    @font-face {
-        font-family: "vazir";
-        src: url("/fonts/Vazir.ttf") format("truetype");
-    }
-    .vazir { font-family: "vazir"; }
-
-    @media print {
-        @page {
-            size: 210mm 148.5mm;   /* A5 Landscape */
-            margin: 0;
-        }
-
+    <style>
+        /* پایه */
+        html,
         body {
-            margin: 0;
-            overflow: hidden;
+            height: 100%;
+            background: #fff;
+            font-family: "Tahoma", "Arial", sans-serif;
+            color: #111;
+            direction: rtl;
+            -webkit-print-color-adjust: exact;
         }
 
-        .no-print { display: none !important; }
-    }
+        /* ظرف صفحه */
+        .page {
+            width: 100%;
+            box-sizing: border-box;
+        }
 
-    /* دکمه‌ها */
-    .no-print {
-        position: fixed;
-        top: 8px;
-        left: 8px;
-        z-index: 9999;
-    }
+        /* جدول کلی دو ستون (هر ستون یک کپی از رسید) */
+        .two-col {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 12px;
+        }
 
-    .btn {
-        display: inline-block;
-        padding: 6px 12px;
-        background: #1976d2;
-        color: #fff;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 13px;
-        border: none;
-    }
+        .two-col td {
+            vertical-align: top;
+            width: 40%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #777;
+            background: #fff;
+        }
 
-    .btn.close { background: #c62828; }
-</style>
+        /* هدر هر ستون */
+        .col-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
 
+        .col-header .title {
+            font-size: 22px;
+            font-weight: 400;
+            color: #7c3a00;
+            /* قهوه‌ای شبیه عکس */
+        }
+
+        .logo {
+            width: 90px;
+            height: 90px;
+            display: inline-block;
+            flex-shrink: 0;
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ddd;
+            background: #fafafa;
+        }
+
+        .logo img {
+            max-width: 100%;
+            max-height: 100%;
+            display: block;
+        }
+
+        /* جدول فرم‌ها داخل ستون */
+        .form-table {
+            width: 100%;
+            height: fit-content;
+            border-collapse: collapse;
+            margin-bottom: 2px;
+        }
+
+        .form-table td,
+        .form-table th {
+            border: 1px solid #777;
+            padding: 2px 2px;
+            font-size: 14px;
+            vertical-align: middle;
+            text-align: center;
+            width: 10px;
+        }
+
+        .form-table th {
+            background: #fafafa;
+            font-weight: 700;
+            color: #111;
+            font-size: 14px;
+        }
+
+        /* جدول ردیف های مبلغ */
+        .amount-rows {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 6px;
+        }
+
+
+        .amount-rows th {
+            border: 1px solid #999;
+            padding: 8px;
+            height: 36px;
+            font-size: 13px;
+        }
+
+        .amount-rows td:first-child {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+
+        .amount-rows td {
+            border: 1px solid #999;
+            padding: 8px;
+            height: 36px;
+            font-size: 13px;
+        }
+
+        /* بخش مسؤول برق + امضا + نوت (مخصوص ستون چپ) */
+        .left-sign-block {
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+            padding: 12px;
+            /* قرارگیری سمت چپ جدول (vertical alignment handled by table cell) */
+        }
+
+        .left-sign-block .electrician {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .left-sign-block .phone {
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 14px;
+            letter-spacing: 2px;
+        }
+
+        .left-sign-block .stamp {
+            margin-top: 8px;
+            border-top: 2px dashed #333;
+            padding-top: 12px;
+            font-size: 14px;
+            height: 48px;
+        }
+
+        .left-sign-block .note-box {
+            margin-top: 12px;
+            border: 1px solid #bbb;
+            height: 60px;
+            padding: 6px;
+            box-sizing: border-box;
+            text-align: right;
+            direction: rtl;
+            font-size: 13px;
+        }
+
+        @font-face {
+            font-family: "DimaYekan";
+            src: url("/fonts/Yekan-Regular.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: "times";
+            src: url("/fonts/times.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .yekan {
+            font-family: "DimaYekan", sans-serif;
+        }
+
+        @font-face {
+            font-family: "vazir";
+            src: url("/fonts/Vazir.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+
+
+
+
+        @font-face {
+            font-family: "shabnam";
+            src: url("/fonts/Shabnam-Medium.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .shabnam {
+            font-family: "shabnam", sans-serif;
+        }
+
+
+
+        @font-face {
+            font-family: "Mj_Afrigha";
+            src: url("/fonts/Mj_Afrigha.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .Mj_Afrigha {
+            font-family: "Mj_Afrigha", sans-serif;
+        }
+
+
+
+
+        @font-face {
+            font-family: "shabnam";
+            src: url("/fonts/Shabnam-FD.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .shabnam-fd {
+            font-family: "shabnam", sans-serif;
+        }
+
+
+        @font-face {
+            font-family: "Yekan-Regular";
+            src: url("/fonts/Yekan-Regular.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+
+
+
+
+        .amiri {
+            font-family: "Yekan-Regular", sans-serif;
+        }
+
+
+
+
+        .vazir {
+            font-family: "vazir", sans-serif;
+        }
+
+        .times {
+            font-family: "times", sans-serif;
+        }
+
+        /* ریسپانسیو برای صفحه نمایش */
+        @media screen and (max-width: 900px) {
+            .two-col td {
+                display: block;
+                width: 100%;
+            }
+        }
+
+        @media print {
+            @page {
+                size: 210mm 148.5mm;
+                margin: 0;
+            }
+
+            html,
+            body {
+                width: 210mm;
+                height: 148.5mm;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+        }
+
+
+
+
+        /* دکمه‌های غیر چاپی */
+        .no-print {
+            position: fixed;
+            top: 8px;
+            left: 8px;
+            z-index: 9999;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-right: 6px;
+            padding: 8px 12px;
+            background: #1976d2;
+            color: #fff;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn.close {
+            background: #c62828;
+        }
+    </style>
 </head>
 
 <body>
@@ -207,10 +329,10 @@
                         <!-- متن‌ها وسط افقی -->
                         <div
                             style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align:center ;">
-                            <div class="title" style="font-size: 16px; font-weight: bold; display: inline-flexbox">
+                            <div class="title" style="font-size: 20px; font-weight: bold; display: inline-flexbox">
                                 مجتمع تجارتی عادلیار
                             </div>
-                            <div class="subtitle" style="font-size: 14px; margin-top: 5px; font-weight:bolder;">
+                            <div class="subtitle" style="font-size: 20px; margin-top: 5px; font-weight:bolder;">
                                 قبض برق
                             </div>
                         </div>
