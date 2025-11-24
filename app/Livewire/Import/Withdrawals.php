@@ -137,12 +137,12 @@ class Withdrawals extends Component
         ];
         return $names[$currency] ?? $currency;
     }
-
- private function updateStats()
+private function updateStats()
 {
     $user = Auth::guard('import')->user();
-
     $today = Jalalian::now()->toCarbon()->toDateString();
+
+    // امروز
     $todayWithdrawals = Withdraw::where('user_id', $user->id)
         ->whereDate('created_at', $today)
         ->get();
@@ -151,8 +151,8 @@ class Withdrawals extends Component
     $this->withdrawalStats['today']['USD'] = $todayWithdrawals->where('currency', 'USD')->sum('amount');
     $this->withdrawalStats['today']['total'] = $todayWithdrawals->sum('amount');
 
-    // این هفته
-    $startOfWeek = Jalalian::now()->subDays(7)->toCarbon()->toDateString();
+    // هفته جاری (شنبه تا امروز)
+    $startOfWeek = Jalalian::now()->toCarbon()->startOfWeek(); 
     $weekWithdrawals = Withdraw::where('user_id', $user->id)
         ->whereDate('created_at', '>=', $startOfWeek)
         ->get();
@@ -161,7 +161,7 @@ class Withdrawals extends Component
     $this->withdrawalStats['week']['USD'] = $weekWithdrawals->where('currency', 'USD')->sum('amount');
     $this->withdrawalStats['week']['total'] = $weekWithdrawals->sum('amount');
 
-    // این ماه
+    // ماه جاری
     $startOfMonth = Jalalian::now()->getFirstDayOfMonth()->toCarbon()->toDateString();
     $monthWithdrawals = Withdraw::where('user_id', $user->id)
         ->whereDate('created_at', '>=', $startOfMonth)
@@ -178,6 +178,7 @@ class Withdrawals extends Component
     $this->withdrawalStats['total']['USD'] = $totalWithdrawals->where('currency', 'USD')->sum('amount');
     $this->withdrawalStats['total']['total'] = $totalWithdrawals->sum('amount');
 }
+
 
 
     private function resetForm()
