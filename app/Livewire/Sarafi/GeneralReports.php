@@ -37,6 +37,14 @@ class GeneralReports extends Component
         'management' => ['گزارش مدیریتی', 'تحلیل فروش', 'نمودارها']
     ];
 
+    public $selectedAccounts = [];
+    public $selectedCustomersData = [];
+    public $totalBalances = [];
+    public $chartData = [];
+    public $maxValue = 0;
+    public $colors = [];
+    public $lightColors = [];
+
     public $currencies = [
         'usd' => 'دالر',
         'afn' => 'افغانی',
@@ -76,6 +84,128 @@ class GeneralReports extends Component
             ->get();
 
         $this->customers = collect($this->customers);
+
+        // تعریف رنگ‌ها
+        $this->colors = [
+            'usd' => '#DD2424',
+            'afn' => '#2563EB', 
+            'irr' => '#61B138',
+            'eur' => '#F59E0B',
+            'pkr' => '#8B5CF6',
+            'aed' => '#EC4899',
+            'try' => '#06B6D4',
+            'cny' => '#84CC16',
+        ];
+        
+        $this->lightColors = [
+            'usd' => '#FF6B6B',
+            'afn' => '#60A5FA', 
+            'irr' => '#86EFAC',
+            'eur' => '#FCD34D',
+            'pkr' => '#C4B5FD',
+            'aed' => '#F9A8D4',
+            'try' => '#67E8F9',
+            'cny' => '#BEF264',
+        ];
+    }
+
+    // متد برای آپدیت انتخاب‌ها
+    public function updatedSelectedAccounts($value)
+    {
+        $this->calculateSelectedCustomersBalance();
+    }
+
+    private function calculateSelectedCustomersBalance()
+    {
+        $this->selectedCustomersData = [];
+        $this->totalBalances = [];
+        $this->chartData = [];
+        $this->maxValue = 0;
+
+        if (empty($this->selectedAccounts)) {
+            return;
+        }
+
+        $totalBalanceUSD = 0;
+        $currencyTotals = [];
+
+        foreach ($this->selectedAccounts as $customerId) {
+            $customer = Customer::find($customerId);
+            if (!$customer) continue;
+
+            $customerData = [
+                'id' => $customer->id,
+                'name' => $customer->fullname,
+                'account_number' => $customer->account_number,
+                'balances' => []
+            ];
+
+            foreach ($this->currencies as $currencyCode => $currencyName) {
+                $balance = $this->calculateBalance($customerId, $currencyCode);
+                if ($balance != 0) {
+                    $balanceUSD = $this->convertToUSD($balance, $currencyCode);
+                    
+                    $customerData['balances'][$currencyCode] = [
+                        'balance' => $balance,
+                        'balance_usd' => $balanceUSD,
+                        'currency_name' => $currencyName
+                    ];
+
+                    if (!isset($currencyTotals[$currencyCode])) {
+                        $currencyTotals[$currencyCode] = 0;
+                    }
+                    $currencyTotals[$currencyCode] += $balanceUSD;
+                    $totalBalanceUSD += $balanceUSD;
+                    
+                    // آپدیت ماکسیمم مقدار
+                    if ($balanceUSD > $this->maxValue) {
+                        $this->maxValue = $balanceUSD;
+                    }
+                }
+            }
+
+            $this->selectedCustomersData[] = $customerData;
+        }
+
+        // محاسبه درصدها و آماده‌سازی داده‌های نمودار
+        foreach ($currencyTotals as $currencyCode => $totalUSD) {
+            $percentage = $totalBalanceUSD > 0 ? ($totalUSD / $totalBalanceUSD) * 100 : 0;
+            
+            $this->totalBalances[$currencyCode] = [
+                'total_usd' => $totalUSD,
+                'percentage' => round($percentage, 1),
+                'currency_name' => $this->currencies[$currencyCode],
+                'color' => $this->getCurrencyColor($currencyCode)
+            ];
+
+            // داده‌های نمودار
+            $this->chartData[] = [
+                'currency' => $this->currencies[$currencyCode],
+                'currency_code' => $currencyCode,
+                'value' => $totalUSD,
+                'percentage' => round($percentage, 1),
+                'color' => $this->getCurrencyColor($currencyCode),
+                'light_color' => $this->lightColors[$currencyCode] ?? '#ffffff'
+            ];
+        }
+
+        // اگر ماکسیمم مقدار هنوز صفر است، مقدار پیش‌فرض بدهید
+        if ($this->maxValue === 0) {
+            $this->maxValue = 1; // جلوگیری از تقسیم بر صفر
+        }
+
+        // مرتب کردن داده‌های نمودار بر اساس مقدار
+        usort($this->chartData, function($a, $b) {
+            return $b['value'] <=> $a['value'];
+        });
+    }
+
+    // اگر نیاز به ذخیره یا پردازش دارید
+    public function processSelectedCustomers()
+    {
+        foreach ($this->selectedAccounts as $customerId) {
+            // پردازش هر مشتری انتخاب شده
+        }
     }
 
     public function selectCustomer($customerId)
@@ -163,51 +293,41 @@ class GeneralReports extends Component
         return isset($exchangeRates[$currency]) ? $amount / $exchangeRates[$currency] : 0;
     }
 
-private function getCurrencyColor($currency)
-{
-    $colors = [
-        'usd' => '#DD2424',
-        'afn' => '#2563EB', 
-        'irr' => '#61B138',
-        'eur' => '#F59E0B',
-        'pkr' => '#8B5CF6',
-        'aed' => '#EC4899',
-        'try' => '#06B6D4',
-        'cny' => '#84CC16',
-    ];
-    
-    return $colors[$currency] ?? '#6B7280';
-}
+    private function getCurrencyColor($currency)
+    {
+        return $this->colors[$currency] ?? '#6B7280';
+    }
 
-/**
- * روشن کردن رنگ
- */
-private function lightenColor($color, $percent)
-{
-    $color = ltrim($color, '#');
-    $rgb = sscanf($color, "%02x%02x%02x");
-    
-    $r = min(255, $rgb[0] + (255 - $rgb[0]) * $percent / 100);
-    $g = min(255, $rgb[1] + (255 - $rgb[1]) * $percent / 100);
-    $b = min(255, $rgb[2] + (255 - $rgb[2]) * $percent / 100);
-    
-    return sprintf("#%02x%02x%02x", $r, $g, $b);
-}
+    /**
+     * روشن کردن رنگ
+     */
+    private function lightenColor($color, $percent)
+    {
+        $color = ltrim($color, '#');
+        $rgb = sscanf($color, "%02x%02x%02x");
+        
+        $r = min(255, $rgb[0] + (255 - $rgb[0]) * $percent / 100);
+        $g = min(255, $rgb[1] + (255 - $rgb[1]) * $percent / 100);
+        $b = min(255, $rgb[2] + (255 - $rgb[2]) * $percent / 100);
+        
+        return sprintf("#%02x%02x%02x", $r, $g, $b);
+    }
 
-/**
- * تیره کردن رنگ
- */
-private function darkenColor($color, $percent)
-{
-    $color = ltrim($color, '#');
-    $rgb = sscanf($color, "%02x%02x%02x");
-    
-    $r = max(0, $rgb[0] * (1 - $percent / 100));
-    $g = max(0, $rgb[1] * (1 - $percent / 100));
-    $b = max(0, $rgb[2] * (1 - $percent / 100));
-    
-    return sprintf("#%02x%02x%02x", $r, $g, $b);
-}
+    /**
+     * تیره کردن رنگ
+     */
+    private function darkenColor($color, $percent)
+    {
+        $color = ltrim($color, '#');
+        $rgb = sscanf($color, "%02x%02x%02x");
+        
+        $r = max(0, $rgb[0] * (1 - $percent / 100));
+        $g = max(0, $rgb[1] * (1 - $percent / 100));
+        $b = max(0, $rgb[2] * (1 - $percent / 100));
+        
+        return sprintf("#%02x%02x%02x", $r, $g, $b);
+    }
+
     public function updatedSelectedAccount($value)
     {
         if ($value) {
@@ -223,6 +343,11 @@ private function darkenColor($color, $percent)
         $this->selectedCustomerId = null;
         $this->selectedCustomerBalance = [];
         $this->currencyPercentages = [];
+        $this->selectedAccounts = [];
+        $this->selectedCustomersData = [];
+        $this->totalBalances = [];
+        $this->chartData = [];
+        $this->maxValue = 0;
     }
 
     public function updatedSelectedSubCategory($sub)
@@ -236,6 +361,11 @@ private function darkenColor($color, $percent)
             $this->selectedCustomerId = null;
             $this->selectedCustomerBalance = [];
             $this->currencyPercentages = [];
+            $this->selectedAccounts = [];
+            $this->selectedCustomersData = [];
+            $this->totalBalances = [];
+            $this->chartData = [];
+            $this->maxValue = 0;
         }
     }
 

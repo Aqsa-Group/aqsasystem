@@ -1,18 +1,20 @@
 <div class="px-5">
     <!-- دکمه‌های دسته‌بندی -->
-    <div class="grid grid-cols-1 w-[1200px] md:grid-cols-4 lg:grid-cols-4 gap-3 mb-5">
-        <button wire:click="selectCategory('customers')"
-            class="bg-[#2563EB] text-white text-[16px] w-full py-3 font-bold rounded-[12px]">گزارشات مالی
-            مشتریان</button>
-        <button wire:click="selectCategory('accounts')"
-            class="bg-[#2563EB] text-white text-[16px] w-full py-3 font-bold rounded-[12px]">گزارش حسابات و
-            صندوق</button>
-        <button wire:click="selectCategory('transactions')"
-            class="bg-[#2563EB] text-white text-[16px] w-full py-3 font-bold rounded-[12px]">گزارشات تراکنش های
-            معاملات</button>
-        <button wire:click="selectCategory('management')"
-            class="bg-[#2563EB] text-white text-[16px] w-full py-3 font-bold rounded-[12px]">گزارشات مدیریتی و
-            تحلیلی</button>
+    <div class=" w-[1200px] ">
+        <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-3 mb-5">
+            <button wire:click="selectCategory('customers')"
+                class="bg-[#2563EB] text-white text-[16px] w-full py-3 font-bold rounded-[12px]">گزارشات مالی
+                مشتریان</button>
+            <button wire:click="selectCategory('accounts')"
+                class="bg-[#2563EB] text-white text-[16px] w-full py-3 font-bold rounded-[12px]">گزارش حسابات و
+                صندوق</button>
+            <button wire:click="selectCategory('transactions')"
+                class="bg-[#2563EB] text-white text-[16px] w-full py-3 font-bold rounded-[12px]">گزارشات تراکنش های
+                معاملات</button>
+            <button wire:click="selectCategory('management')"
+                class="bg-[#2563EB] text-white text-[16px] w-full py-3 font-bold rounded-[12px]">گزارشات مدیریتی و
+                تحلیلی</button>
+        </div>
     </div>
 
 
@@ -109,11 +111,275 @@
         @break
 
         @case('گزارش خلاصه بیلانس مشتریان')
-           <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-8">
-               <div>
-                 
-               </div>
-           </div>
+        <div class="w-full rounded-[16px] bg-[#2563EB]">
+            <div class="flex-1">
+                <div class="relative w-full" x-data="{
+                        searchValue: '',
+                        searchQuery: '',
+                        selectedIds: @entangle('selectedAccounts'),
+                        customers: @js($customers->toArray()),
+                        isOpen: false,
+                        selectedCustomers: [],
+                        get filteredCustomers() {
+                            if (this.searchQuery === '') return this.customers;
+                            const query = this.searchQuery.toLowerCase();
+                            return this.customers.filter(customer =>
+                                customer.fullname.toLowerCase().includes(query) ||
+                                customer.account_number.toLowerCase().includes(query)
+                            );
+                        },
+                        init() {
+                            this.selectedCustomers = this.customers.filter(customer => 
+                                this.selectedIds.includes(customer.id)
+                            );
+                            this.updateDisplay();
+                        },
+                        toggleCustomer(customer) {
+                            const index = this.selectedCustomers.findIndex(c => c.id === customer.id);
+                            if (index > -1) this.selectedCustomers.splice(index, 1);
+                            else this.selectedCustomers.push(customer);
+
+                            this.selectedIds = this.selectedCustomers.map(c => c.id);
+                            this.updateDisplay();
+                            $wire.set('selectedAccounts', this.selectedIds);
+                        },
+                        isSelected(customerId) {
+                            return this.selectedCustomers.some(c => c.id === customerId);
+                        },
+                        updateDisplay() {
+                            this.searchValue = this.selectedCustomers.length
+                                ? this.selectedCustomers.map(c => `${c.account_number} - ${c.fullname}`).join(', ')
+                                : '';
+                        },
+                        clearAll() {
+                            this.selectedCustomers = [];
+                            this.selectedIds = [];
+                            this.searchQuery = '';
+                            this.updateDisplay();
+                            $wire.set('selectedAccounts', []);
+                        }
+                    }" x-init="init()" @click.outside="isOpen = false">
+
+                    <!-- Input Field -->
+                    <div @click="isOpen = true" class="relative">
+                        <input type="text" x-model="searchValue" placeholder="انتخاب مشتری"
+                            class="w-full h-[60px] p-3 pr-10 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 cursor-pointer text-white placeholder-white"
+                            readonly>
+
+                        <!-- Dropdown Arrow -->
+                        <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" :class="{'rotate-180': isOpen}">
+                                <path
+                                    d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                    stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </div>
+
+                        <!-- Clear Button -->
+                        <template x-if="selectedCustomers.length > 0">
+                            <div class="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+                                @click.stop="clearAll()">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M18 6L6 18M6 6l12 12" stroke="white" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- Dropdown Menu -->
+                    <div x-show="isOpen" x-transition
+                        class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto"
+                        @click.stop>
+
+                        <!-- Search Box inside Dropdown -->
+                        <div class="sticky top-0 bg-white p-2 border-b">
+                            <input type="text" x-model="searchQuery" placeholder="جستجوی مشتری..."
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <!-- Customers List -->
+                        <template x-for="customer in filteredCustomers" :key="customer.id">
+                            <label class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer border-b">
+                                <!-- Checkbox سمت چپ -->
+                                <input type="checkbox" :checked="isSelected(customer.id)"
+                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                                    @click.stop="toggleCustomer(customer)">
+
+                                <!-- Customer Info -->
+                                <div class="flex-1 text-right mr-3">
+                                    <div class="font-medium text-gray-900" x-text="customer.fullname"></div>
+                                    <div class="text-sm text-gray-500"
+                                        x-text="'شماره حساب: ' + customer.account_number"></div>
+                                </div>
+                            </label>
+                        </template>
+
+                        <!-- No Results -->
+                        <div x-show="filteredCustomers.length === 0" class="px-3 py-2 text-gray-500 text-center">
+                            مشتری یافت نشد
+                        </div>
+                    </div>
+
+
+
+                    @error('selectedAccounts')
+                    <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+        </div>
+        <h1 class="mt-5 mr-4">گزارش خلاصه بیلانس مشتریان انتخاب شده</h1>
+        <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-8 gap-5 p-4">
+            <div class="flex flex-col bg-[#FFFFFF] justify-center items-center gap-5 rounded-[12px] pt-[29px] pr-[39px] pb-[29px] pl-[39px]"
+                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                <p class="text-[#8C8C8C]">دالر</p>
+                <p class="times">1700</p>
+                <p class="text-[#8C8C8C]">USD</p>
+            </div>
+
+
+            <div class="flex flex-col bg-[#FFFFFF] justify-center items-center gap-5 rounded-[12px] pt-[29px] pr-[39px] pb-[29px] pl-[39px]"
+                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                <p class="text-[#8C8C8C]">افغانی</p>
+                <p class="times">46000</p>
+                <p class="text-[#8C8C8C]">AFN</p>
+            </div>
+
+
+            <div class="flex flex-col bg-[#FFFFFF] justify-center items-center gap-5 rounded-[12px] pt-[29px] pr-[39px] pb-[29px] pl-[39px]"
+                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                <p class="text-[#8C8C8C]">تومان </p>
+                <p class="times">200,00000</p>
+                <p class="text-[#8C8C8C]">IRR</p>
+            </div>
+
+
+            <div class="flex flex-col bg-[#FFFFFF] justify-center items-center gap-5 rounded-[12px] pt-[29px] pr-[39px] pb-[29px] pl-[39px]"
+                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                <p class="text-[#8C8C8C]">یورو</p>
+                <p class="times">3000</p>
+                <p class="text-[#8C8C8C]">EUR</p>
+            </div>
+
+            <div class="flex flex-col bg-[#FFFFFF] justify-center items-center gap-5 rounded-[12px] pt-[29px] pr-[39px] pb-[29px] pl-[39px]"
+                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                <p class="text-[#8C8C8C]">کلدار </p>
+                <p class="times">500,0000</p>
+                <p class="text-[#8C8C8C]">PKR</p>
+            </div>
+
+
+            <div class="flex flex-col bg-[#FFFFFF] justify-center items-center gap-5 rounded-[12px] pt-[29px] pr-[39px] pb-[29px] pl-[39px]"
+                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                <p class="text-[#8C8C8C]">درهم امارات</p>
+                <p class="times">100000</p>
+                <p class="text-[#8C8C8C]">AED</p>
+            </div>
+
+
+            <div class="flex flex-col bg-[#FFFFFF] justify-center items-center gap-5 rounded-[12px] pt-[29px] pr-[39px] pb-[29px] pl-[39px]"
+                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                <p class="text-[#8C8C8C]">لیره</p>
+                <p class="times">4000</p>
+                <p class="text-[#8C8C8C]">TRY</p>
+            </div>
+
+
+            <div class="flex flex-col bg-[#FFFFFF] justify-center items-center gap-5 rounded-[12px] pt-[29px] pr-[39px] pb-[29px] pl-[39px]"
+                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                <p class="text-[#8C8C8C]">یوان</p>
+                <p class="times">23000</p>
+                <p class="text-[#8C8C8C]">CNY</p>
+            </div>
+
+        </div>
+        <svg width="100%" height="350" viewBox="0 0 800 350" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                @foreach(['usd', 'afn', 'irr', 'eur', 'pkr', 'aed', 'try', 'cny'] as $currency)
+                <linearGradient id="{{ $currency }}Gradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="{{ $lightColors[$currency] ?? '#ffffff' }}" />
+                    <stop offset="100%" stop-color="{{ $colors[$currency] ?? '#000000' }}" />
+                </linearGradient>
+                @endforeach
+            </defs>
+
+            <!-- Background -->
+            <rect width="800" height="350" fill="#f8fafc" />
+
+            <!-- Title -->
+            <text x="400" y="30" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle"
+                fill="#1f2937">
+                نمودار موجودی ارزها
+            </text>
+
+            <!-- Axes -->
+            <line x1="80" y1="280" x2="750" y2="280" stroke="#94a3b8" stroke-width="2" />
+            <line x1="80" y1="60" x2="80" y2="280" stroke="#94a3b8" stroke-width="2" />
+
+            <!-- Y-axis labels -->
+            <text x="75" y="285" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">0</text>
+            <text x="75" y="65" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">
+                {{ number_format($maxValue, 0) }}
+            </text>
+            <text x="75" y="172.5" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">
+                {{ number_format($maxValue / 2, 0) }}
+            </text>
+
+            <!-- Y-axis title -->
+            <text x="30" y="170" font-family="Arial" font-size="12" text-anchor="middle" fill="#64748b"
+                transform="rotate(-90 30,170)">
+                مقدار (USD)
+            </text>
+
+            <!-- Chart bars -->
+            @php
+            $chartWidth = 670; // 750 - 80
+            $chartHeight = 220; // 280 - 60
+            $barWidth = 50;
+            $spacing = 30;
+            $totalWidth = (count($chartData) * $barWidth) + ((count($chartData) - 1) * $spacing);
+            $startX = 80 + ($chartWidth - $totalWidth) / 2;
+            @endphp
+
+            @foreach($chartData as $index => $item)
+            @php
+            $barHeight = $maxValue > 0 ? ($item['value'] / $maxValue) * $chartHeight : 0;
+            $x = $startX + ($index * ($barWidth + $spacing));
+            $y = 280 - $barHeight;
+
+            // فرمت مقدار برای نمایش
+            $displayValue = $item['value'] >= 1000000
+            ? number_format($item['value'] / 1000000, 1) . 'M'
+            : ($item['value'] >= 1000
+            ? number_format($item['value'] / 1000, 1) . 'K'
+            : number_format($item['value']));
+            @endphp
+
+            <rect x="{{ $x }}" y="{{ $y }}" width="{{ $barWidth }}" height="{{ $barHeight }}"
+                fill="url(#{{ $item['currency_code'] ?? 'usd' }}Gradient)" rx="4" />
+
+            <!-- مقدار روی میله -->
+            <text x="{{ $x + $barWidth / 2 }}" y="{{ $y - 5 }}" font-family="Arial" font-size="12" text-anchor="middle"
+                fill="#374151">
+                {{ $displayValue }}
+            </text>
+
+            <!-- نام ارز زیر میله -->
+            <text x="{{ $x + $barWidth / 2 }}" y="300" font-family="Arial" font-size="12" text-anchor="middle"
+                fill="#374151">
+                {{ $item['currency'] }}
+            </text>
+            @endforeach
+
+            <!-- Grid lines -->
+            <line x1="80" y1="60" x2="750" y2="60" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
+            <line x1="80" y1="172.5" x2="750" y2="172.5" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
+            <line x1="80" y1="280" x2="750" y2="280" stroke="#e2e8f0" stroke-width="1" />
+        </svg>
         @break
 
         @default
@@ -336,5 +602,7 @@
     @endif
 
 
- </div>
+
+
+</div>
 </div>
