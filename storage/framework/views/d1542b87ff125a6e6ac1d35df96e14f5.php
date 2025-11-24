@@ -274,40 +274,20 @@
 
        @media print {
     @page {
-        
-        size: 210mm,99.9mm; /* چاپ عمودی */
+        size: 210mm 150mm; /* نصف صفحه A5 landscape */
         margin: 0;
     }
 
-    html, body {
-          font-family: "vazir", sans-serif;
-        width: A5;
-        height:A5;
-        margin: 0;
-        padding: 0;
-    }
-
-    .page-wrapper {
-        width: 100%;
-        height: 99.9mm; /* تمام ارتفاع صفحه */
-        display: flex;
-        flex-direction: column;
+    html,
+    body {
+        width: 210mm;
+        height: 150mm;
         margin: 0;
         padding: 0;
-    }
-
-    .receipt {
-        flex: 1; /* هر قبض دقیقا یک‌سوم صفحه */
-        width: 100%;
-        padding: 10px;
-        box-sizing: border-box;
-        border-bottom: 2px dashed #999; /* خط جداکننده برای بریدن */
-    }
-
-    .receipt:last-child {
-        border-bottom: none; /* برای قبض آخر */
+        overflow: hidden;
     }
 }
+
 
 
         /* دکمه‌های غیر چاپی */
@@ -377,13 +357,14 @@
                             <tr>
                                 <th style="font-weight:600;">مشتری</th>
                                 <th style="font-weight:600;">مارکت</th>
-  <th style="font-weight:600;">
+                                <th style="font-weight:600;">
                                     <?php if(!empty($accounting->shop->number) ): ?>
                                     شماره دوکان
                                     <?php else: ?>
                                     شماره غرفه
                                     <?php endif; ?>
-                                </th>                                <th style="font-weight:600;">شماره مسلسل</th>
+                                </th>
+                                <th style="font-weight:600;">شماره مسلسل</th>
                                 <th style="font-weight:600;">از تاریخ</th>
                                 <th style="font-weight:600;">تا تاریخ</th>
                             </tr>
@@ -557,13 +538,14 @@
                             <tr>
                                 <th>مشتری</th>
                                 <th>مارکت</th>
-  <th style="font-weight:600;">
+                                <th style="font-weight:600;">
                                     <?php if(!empty($accounting->shop->number) ): ?>
                                     شماره دوکان
                                     <?php else: ?>
                                     شماره غرفه
                                     <?php endif; ?>
-                                </th>                                <th>شماره مسلسل</th>
+                                </th>
+                                <th>شماره مسلسل</th>
 
 
                             </tr>
@@ -643,9 +625,9 @@
         </table>
     </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script>
-    function downloadPDF() {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        function downloadPDF() {
         const element = document.querySelector(".page");
         const opt = {
             margin:       0.2,
@@ -669,7 +651,7 @@
     window.afterprint = function() {
         setTimeout(() => { window.close(); }, 1000);
     }
-</script>
+    </script>
 
 </body>
 
