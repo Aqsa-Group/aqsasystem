@@ -272,21 +272,21 @@
             }
         }
 
-       @media print {
+@media print {
     @page {
-        size: 210mm 150mm; /* نصف صفحه A5 landscape */
+        size: 210mm 148.5mm; 
         margin: 0;
     }
 
-    html,
-    body {
+    html, body {
         width: 210mm;
-        height: 150mm;
+        height: 148.5mm;
         margin: 0;
         padding: 0;
         overflow: hidden;
     }
 }
+
 
 
 
