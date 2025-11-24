@@ -33,7 +33,7 @@
 
         .two-col td {
             vertical-align: top;
-            width: 40%;
+            width: 4 0%;
             padding: 10px;
             box-sizing: border-box;
             border: 1px solid #777;
@@ -101,24 +101,41 @@
         }
 
         /* جدول ردیف های مبلغ */
-        .amount-rows {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 6px;
-        }
+    .amount-rows {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 6px;
+}
 
+.amount-rows th {
+    border: 1px solid #999;
+    padding: 8px;
+    height: 36px;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: #fafafa; /* اختیاری برای هدر */
+    font-weight: 700;
+    text-align: center;
+}
 
-        .amount-rows th {
-            border: 1px solid #999;
-            padding: 8px;
-            height: 36px;
-            font-size: 13px;
-        }
+.amount-rows td {
+    border: 1px solid #999;
+    padding: 8px;
+    height: 36px;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}
 
-        .amount-rows td:first-child {
-            font-weight: bold;
-            font-size: 14px;
-        }
+.amount-rows td:first-child {
+    font-weight: bold;
+    font-size: 14px;
+    text-align: left; /* اگر می‌خوای ستون اول راست چین یا چپ چین باشد */
+}
 
 
         .amount-rows td {
@@ -126,6 +143,9 @@
             padding: 8px;
             height: 36px;
             font-size: 13px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         /* بخش مسؤول برق + امضا + نوت (مخصوص ستون چپ) */
@@ -369,12 +389,26 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><?php echo e($accounting->shopkeeper->fullname ?? $accounting->shopkeeper->name ?? '---'); ?>
+                                <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    <?php echo e($accounting->shopkeeper->fullname ?? $accounting->shopkeeper->name ?? '---'); ?>
 
                                 </td>
-                                <td><?php echo e($accounting->market->name ?? '---'); ?></td>
-                                <td><?php echo e($accounting->shop->number ?? $accounting->booth->number ?? '---'); ?></td>
-                                <td><?php echo e($rowNumber); ?></td>
+
+                                <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    <?php echo e($accounting->market->name ?? '---'); ?>
+
+                                </td>
+
+                                <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    <?php echo e($accounting->shop->number ?? $accounting->booth->number ?? '---'); ?>
+
+                                </td>
+
+                                <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    <?php echo e($rowNumber); ?>
+
+                                </td>
+
 
                                 <td>
                                     <?php if($accounting->paid_date): ?>
@@ -473,7 +507,7 @@
                                             background: #fafafa;
                                         ">
                                     <div style="font-weight:bold; font-size:15px; margin-bottom:6px;">
-                                        مسؤول برق
+                                        مسؤل برق
                                     </div>
 
                                     <div class="times" style="font-size:26px; font-weight:900;">
@@ -531,35 +565,64 @@
 
 
 
-                    <table class="form-table" role="table" aria-label="مشخصات">
-                        <tbody>
-                            <tr>
-                                <th>مشتری</th>
-                                <th>مارکت</th>
-                                <th style="font-weight:600;">
-                                    <?php if(!empty($accounting->shop->number) ): ?>
-                                    شماره دوکان
-                                    <?php else: ?>
-                                    شماره غرفه
-                                    <?php endif; ?>
-                                </th>
-                                <th>شماره مسلسل</th>
+               <table role="table" aria-label="مشخصات" 
+       style="width:100%; border-collapse: collapse; font-size:13px;">
+    <tbody>
+        <tr>
+            <th style="border:1px solid #777; padding:6px 8px; text-align:center; 
+                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
+                       height:36px; background:#fafafa; font-weight:600;">
+                مشتری
+            </th>
+            <th style="border:1px solid #777; padding:6px 8px; text-align:center; 
+                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
+                       height:36px; background:#fafafa; font-weight:600;">
+                مارکت
+            </th>
+            <th style="border:1px solid #777; padding:6px 8px; text-align:center; 
+                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
+                       height:36px; background:#fafafa; font-weight:600;">
+                <?php if(!empty($accounting->shop->number)): ?>
+                    شماره دوکان
+                <?php else: ?>
+                    شماره غرفه
+                <?php endif; ?>
+            </th>
+            <th style="border:1px solid #777; padding:6px 8px; text-align:center; 
+                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
+                       height:36px; background:#fafafa; font-weight:600;">
+                شماره مسلسل
+            </th>
+        </tr>
+        <tr>
+            <td style="border:1px solid #777; padding:6px 8px; text-align:left; 
+                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
+                       height:36px;">
+                <?php echo e($accounting->shopkeeper->fullname ?? $accounting->shopkeeper->name ?? '---'); ?>
 
+            </td>
+            <td style="border:1px solid #777; padding:6px 8px; text-align:center; 
+                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
+                       height:36px;">
+                <?php echo e($accounting->market->name ?? '---'); ?>
 
-                            </tr>
-                            <tr>
-                                <td><?php echo e($accounting->shopkeeper->fullname ?? $accounting->shopkeeper->name ?? '---'); ?>
+            </td>
+            <td style="border:1px solid #777; padding:6px 8px; text-align:center; 
+                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
+                       height:36px;">
+                <?php echo e($accounting->shop->number ?? $accounting->booth->number ?? '---'); ?>
 
-                                </td>
-                                <td><?php echo e($accounting->market->name ?? '---'); ?></td>
+            </td>
+            <td style="border:1px solid #777; padding:6px 8px; text-align:center; 
+                       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; 
+                       height:36px;">
+                <?php echo e($rowNumber); ?>
 
-                                <td><?php echo e($accounting->shop->number ?? $accounting->booth->number ?? '---'); ?></td>
-                                <td><?php echo e($rowNumber); ?></td>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
-
-                            </tr>
-                        </tbody>
-                    </table>
 
                     <table class="amount-rows" role="table" aria-label="مقادیر">
                         <tbody>
