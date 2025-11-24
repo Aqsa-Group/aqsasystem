@@ -53,7 +53,7 @@
 
         .col-header .title {
             font-size: 22px;
-            font-weight: 700;
+            font-weight: 400;
             color: #7c3a00;
             /* قهوه‌ای شبیه عکس */
         }
@@ -81,15 +81,16 @@
         /* جدول فرم‌ها داخل ستون */
         .form-table {
             width: 100%;
+            height: fit-content;
             border-collapse: collapse;
-            margin-bottom: 6px;
+            margin-bottom: 2px;
         }
 
         .form-table td,
         .form-table th {
             border: 1px solid #777;
-            padding: 4px 4px;
-            font-size: 16px;
+            padding: 2px 2px;
+            font-size: 14px;
             vertical-align: middle;
             text-align: center;
             width: 10px;
@@ -97,9 +98,9 @@
 
         .form-table th {
             background: #fafafa;
-            font-weight: 900;
+            font-weight: 700;
             color: #111;
-            font-size: 16px;
+            font-size: 14px;
         }
 
         /* جدول ردیف های مبلغ */
@@ -141,12 +142,12 @@
 
         .left-sign-block .electrician {
             font-weight: 700;
-            font-size: 16px;
+            font-size: 14px;
             margin-bottom: 6px;
         }
 
         .left-sign-block .phone {
-            font-size: 20px;
+            font-size: 14px;
             font-weight: 800;
             margin-bottom: 14px;
             letter-spacing: 2px;
@@ -273,11 +274,13 @@
 
        @media print {
     @page {
-        size: A5 landscape; /* چاپ عمودی */
+        
+        size: 210mm,99.9mm; /* چاپ عمودی */
         margin: 0;
     }
 
     html, body {
+          font-family: "vazir", sans-serif;
         width: A5;
         height:A5;
         margin: 0;
@@ -286,7 +289,7 @@
 
     .page-wrapper {
         width: 100%;
-        height: 297mm; /* تمام ارتفاع صفحه */
+        height: 99.9mm; /* تمام ارتفاع صفحه */
         display: flex;
         flex-direction: column;
         margin: 0;
@@ -348,10 +351,10 @@
                         <!-- متن‌ها وسط افقی -->
                         <div
                             style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align:center ;">
-                            <div class="title" style="font-size: 20px; font-weight: bold; display: inline-flexbox">
+                            <div class="title" style="font-size: 16px; font-weight: bold; display: inline-flexbox">
                                 مجتمع تجارتی عادلیار
                             </div>
-                            <div class="subtitle" style="font-size: 22px; margin-top: 5px; font-weight:bolder;">
+                            <div class="subtitle" style="font-size: 14px; margin-top: 5px; font-weight:bolder;">
                                 قبض برق
                             </div>
                         </div>
@@ -374,8 +377,13 @@
                             <tr>
                                 <th style="font-weight:600;">مشتری</th>
                                 <th style="font-weight:600;">مارکت</th>
-                                <th style="font-weight:600;">شماره دوکان</th>
-                                <th style="font-weight:600;">شماره مسلسل</th>
+  <th style="font-weight:600;">
+                                    @if (!empty($accounting->shop->number) )
+                                    شماره دوکان
+                                    @else
+                                    شماره غرفه
+                                    @endif
+                                </th>                                <th style="font-weight:600;">شماره مسلسل</th>
                                 <th style="font-weight:600;">از تاریخ</th>
                                 <th style="font-weight:600;">تا تاریخ</th>
                             </tr>
@@ -546,8 +554,13 @@
                             <tr>
                                 <th>مشتری</th>
                                 <th>مارکت</th>
-                                <th>شماره دوکان</th>
-                                <th>شماره مسلسل</th>
+  <th style="font-weight:600;">
+                                    @if (!empty($accounting->shop->number) )
+                                    شماره دوکان
+                                    @else
+                                    شماره غرفه
+                                    @endif
+                                </th>                                <th>شماره مسلسل</th>
 
 
                             </tr>
