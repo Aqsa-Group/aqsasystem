@@ -335,10 +335,7 @@
 
 <body>
 
-    <div class="no-print">
-        <button class="btn" onclick="window.print()">🖨 چاپ</button>
-        <button class="btn close" onclick="window.close()">✕ بستن</button>
-    </div>
+
 
     <div class="page" role="main" aria-label="فرم پرداخت برق">
         <table class="two-col" role="table" aria-label="دو نسخه رسید">
