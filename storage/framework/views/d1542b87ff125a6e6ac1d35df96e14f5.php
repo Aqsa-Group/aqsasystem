@@ -273,13 +273,13 @@
 
        @media print {
     @page {
-        size: A4 portrait; /* چاپ عمودی */
+        size: A5 landscape; /* چاپ عمودی */
         margin: 0;
     }
 
     html, body {
-        width: 210mm;
-        height: 297mm;
+        width: A5;
+        height:A5;
         margin: 0;
         padding: 0;
     }
@@ -335,10 +335,7 @@
 
 <body>
 
-    <div class="no-print">
-        <button class="btn" onclick="window.print()">🖨 چاپ</button>
-        <button class="btn close" onclick="window.close()">✕ بستن</button>
-    </div>
+
 
     <div class="page" role="main" aria-label="فرم پرداخت برق">
         <table class="two-col" role="table" aria-label="دو نسخه رسید">

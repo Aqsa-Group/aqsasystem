@@ -273,13 +273,13 @@
 
        @media print {
     @page {
-        size: A4 portrait; /* چاپ عمودی */
+        size: A5 landscape; /* چاپ عمودی */
         margin: 0;
     }
 
     html, body {
-        width: 210mm;
-        height: 297mm;
+        width: A5;
+        height:A5;
         margin: 0;
         padding: 0;
     }
