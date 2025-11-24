@@ -273,7 +273,7 @@
 
         @media print {
             @page {
-                size: A4 portrait;
+                size: A5 portrait;
                 /* چاپ عمودی */
                 margin: 0;
             }
