@@ -273,7 +273,8 @@
 
         @media print {
             @page {
-                size: A5 landscape;
+                size: A4 portrait;
+                /* چاپ عمودی */
                 margin: 0;
             }
 
@@ -300,7 +301,6 @@
                 /* هر قبض دقیقا یک‌سوم صفحه */
                 width: 100%;
                 padding: 10px;
-                height: fit-content;
                 box-sizing: border-box;
                 border-bottom: 2px dashed #999;
                 /* خط جداکننده برای بریدن */
