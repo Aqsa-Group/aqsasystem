@@ -29,8 +29,6 @@ class GeneralReports extends Component
     public $selectedCustomerId = null;
     public $filteredCustomers = [];
     public $reports = [];
-       public $colors = [];
-          public $lightColors = [];
 
     // متغیرهای جدید برای گزارش خلاصه
     public $selectedAccounts = [];
