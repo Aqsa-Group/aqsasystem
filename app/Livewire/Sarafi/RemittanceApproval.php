@@ -143,8 +143,7 @@ class RemittanceApproval extends Component
     
             Transaction::create([
                 'customer_id' => $approval->customer_id,
-'remittance_id' => $approval->id,
-                'user_id' => $user->id,
+'remittance_id' => $approval->id,                'user_id' => $user->id,
                 'admin_id' => $adminId,
                 'date' => now(),
                 'type' => 'رسید',
@@ -162,8 +161,7 @@ class RemittanceApproval extends Component
 
             Transaction::create([
                 'customer_id' => $approval->to_account,
-'remittance_id' => $approval->id,
-                'user_id' => $user->id,
+'remittance_id' => $approval->id,                'user_id' => $user->id,
                 'admin_id' => $adminId,
                 'date' => now(),
                 'type' => 'رسید',
@@ -190,8 +188,7 @@ class RemittanceApproval extends Component
        
         Transaction::create([
             'customer_id' => $approval->customer_id,
-            'remittance_id' => $approval->remittance_id,
-            'user_id' => $user->id,
+'remittance_id' => $approval->id,            'user_id' => $user->id,
             'admin_id' => $adminId,
             'date' => now(),
             'type' => 'برد',
