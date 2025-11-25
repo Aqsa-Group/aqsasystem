@@ -266,8 +266,7 @@
                     </div>
 
                     <!-- نمودار میله‌ای -->
-                    <div class="bg-white p-6 rounded-[16px] shadow-lg border border-gray-200 mb-8">
-                        <h2 class="text-lg font-bold text-gray-800 mb-4">نمودار مقایسه موجودی‌ها</h2>
+                    <div class=" p-6  mb-8">
                         <svg width="100%" height="350" viewBox="0 0 1000 350" xmlns="http://www.w3.org/2000/svg">
                             <defs>
                                 <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
@@ -354,14 +353,14 @@
         @endif
     </div>
 
-   @if($selectedSubCategory == 'گزارش بیلانس مشتریان')
-    <!-- بخش انتخاب مشتری و نمایش نمودار (در یک div جداگانه) -->
-    <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px] w-full mb-5"
+    <!-- بخش گزارش بیلانس مشتریان (کارت‌ها و نمودار دایره‌ای) -->
+    @if($selectedSubCategory == 'گزارش بیلانس مشتریان')
+    <div class="flex-1 flex flex-col bg-[#F5F5F5] h-fit p-3 md:p-4 lg:p-6 rounded-[12px] w-full mb-5"
         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-        <div class="flex w-full">
-            <div class="md:w-1/2">
+        <div class="flex w-full flex-col lg:flex-row">
+            <div class="lg:w-1/2 mb-6 lg:mb-0">
                 <div class="flex-1">
-                    <div class="relative w-[589px]">
+                    <div class="relative w-full lg:w-[589px]">
                         <div x-data="{
                                 searchValue: '',
                                 selectedId: @entangle('selectedAccount'),
@@ -373,7 +372,7 @@
                                     if (selected) {
                                         this.selectedId = selected.id;
                                         this.searchValue = `${selected.account_number} - ${selected.fullname}`;
-                                        $wire.selectCustomer(selected.id);
+                                        $wire.call('selectCustomer', selected.id);
                                         $wire.set('search', selected.fullname);
                                     } else {
                                         this.selectedId = null;
@@ -395,7 +394,7 @@
                             <datalist id="customersList">
                                 @foreach ($customers as $customer)
                                 <option value="{{ $customer->account_number }} - {{ $customer->fullname }}">
-                                    @endforeach
+                                @endforeach
                             </datalist>
                             <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                 <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
@@ -408,43 +407,64 @@
                 </div>
 
                 <!-- نمایش موجودی‌ها -->
-                @if($selectedCustomerId && count($currencyPercentages) > 0)
-                <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6 mt-6 w-[589px]">
-                    <div class="space-y-4">
-                        <div
-                            class="w-full h-[79px] flex flex-col md:flex-row items-center justify-between p-6 bg-[#2563EB] text-white text-[16px] rounded-[12px]">
-                            <p class="vazir font-bold">ارزش کل موجودی</p>
-                            <p class="vazir font-bold">
-                                @php
-                                $totalUSD = 0;
-                                foreach($selectedCustomerBalance as $balance) {
-                                $totalUSD += $balance['balance_usd'];
-                                }
-                                @endphp
-                                {{ number_format($totalUSD, 2) }}
-                                <span>دالر</span>
-                            </p>
-                        </div>
+                @if($selectedCustomerId)
+                    @php
+                        $hasNonZeroBalance = false;
+                        foreach($selectedCustomerBalance as $balance) {
+                            if (abs($balance['balance']) > 0.001) {
+                                $hasNonZeroBalance = true;
+                                break;
+                            }
+                        }
+                    @endphp
 
-                        @foreach($currencyPercentages as $currencyCode => $data)
-                        <div
-                            class="w-full h-[79px] flex flex-col md:flex-row items-center justify-between p-6 bg-transparent border border-[#2563EB] text-black text-[16px] rounded-[12px]">
-                            <div class="flex items-center gap-3">
-                                <div class="w-4 h-4 rounded-full" style="background-color: {{ $data['color'] }}">
+                    @if($hasNonZeroBalance)
+                    <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6 mt-6 w-full lg:w-[589px]">
+                        <div class="space-y-4">
+                            <div
+                                class="w-full h-[79px] flex flex-col md:flex-row items-center justify-between p-6 bg-[#2563EB] text-white text-[16px] rounded-[12px]">
+                                <p class="vazir font-bold">ارزش کل موجودی</p>
+                                <p class="vazir font-bold">
+                                    @php
+                                    $totalUSD = 0;
+                                    foreach($selectedCustomerBalance as $balance) {
+                                        if (abs($balance['balance']) > 0.001) {
+                                            $totalUSD += $balance['balance_usd'];
+                                        }
+                                    }
+                                    @endphp
+                                    {{ number_format($totalUSD, 2) }}
+                                    <span>دالر</span>
+                                </p>
+                            </div>
+
+                            @foreach($selectedCustomerBalance as $currencyCode => $data)
+                                @if(abs($data['balance']) > 0.001)
+                                <div
+                                    class="w-full h-[79px] flex flex-col md:flex-row items-center justify-between p-6 bg-transparent border border-[#2563EB] text-black text-[16px] rounded-[12px] hover:bg-blue-50 transition-colors">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-4 h-4 rounded-full" style="background-color: {{ $this->getCurrencyColor($currencyCode) }}">
+                                        </div>
+                                        <span class="vazir font-bold">{{ $data['currency_name'] }}</span>
+                                    </div>
+                                    <div class="text-left">
+                                        <p class="vazir font-bold">{{ number_format($data['balance'], 2) }}</p>
+                                    </div>
                                 </div>
-                                <span class="vazir font-bold">{{ $data['currency_name'] }}</span>
-                            </div>
-                            <div class="text-left">
-                                <p class="vazir font-bold">{{ number_format($data['balance'], 2) }}</p>
-                            </div>
+                                @endif
+                            @endforeach
                         </div>
-                        @endforeach
                     </div>
-                </div>
-                @elseif($selectedCustomerId)
-                <div class="text-center py-8">
-                    <p class="text-gray-500 vazir">این مشتری موجودی ندارد</p>
-                </div>
+                    @else
+                    <div class="text-center py-8">
+                        <p class="text-gray-500 vazir">این مشتری موجودی ندارد</p>
+                        <!-- اطلاعات دیباگ -->
+                        <div class="mt-4 p-3 bg-gray-100 rounded text-xs text-gray-600">
+                            <p>Customer ID: {{ $selectedCustomerId }}</p>
+                            <p>Balances Count: {{ count($selectedCustomerBalance) }}</p>
+                        </div>
+                    </div>
+                    @endif
                 @else
                 <div class="text-center py-8">
                     <p class="text-gray-500 vazir">لطفاً یک مشتری انتخاب کنید</p>
@@ -454,7 +474,7 @@
 
             <!-- بخش نمودار SVG -->
             @if($selectedCustomerId && count($currencyPercentages) > 0)
-            <div class="md:w-1/2 mt-6">
+            <div class="lg:w-1/2 mt-6 lg:mt-0 flex justify-center">
                 @php
                 $chartData = [
                 'series' => [],
@@ -476,8 +496,8 @@
                 @endphp
 
                 <div class="p-6 relative">
-                    <div class="relative w-[300px] h-[300px] mx-auto">
-                        <svg width="400" height="400" viewBox="0 0 40 40">
+                    <div class="relative w-full max-w-[400px] h-[350px] mx-auto">
+                        <svg width="100%" height="100%" viewBox="0 0 40 40">
                             <!-- تعریف گرادینت‌ها -->
                             <defs>
                                 @foreach($chartData['colors'] as $index => $color)
@@ -533,6 +553,7 @@
                                 style="font-weight: bold; text-shadow: 0px 0px 3px rgba(0,0,0,0.5);">
                                 {{ round($percentage, 1) }}%
                             </text>
+
                             @php
                             $startAngle += $angle;
                             @endphp
@@ -541,7 +562,7 @@
                     </div>
 
                     <!-- لیبل‌ها کنار چارت -->
-                    <div class="absolute top-9 align-middle flex flex-col justify-center items-center gap-6">
+                    <div class="absolute top-9 right-4 align-middle flex flex-col justify-center items-start gap-4">
                         @foreach($chartData['labels'] as $index => $label)
                         <div class="flex items-center gap-2">
                             <div class="w-4 h-4 rounded-full shadow-sm"
@@ -559,8 +580,6 @@
         </div>
     </div>
     @endif
-
-
 
     <!-- بخش کارت‌های مشتریان برای گزارش خلاصه -->
     @if($selectedSubCategory == 'گزارش خلاصه بیلانس مشتریان' && !empty($selectedCustomersData))

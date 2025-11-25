@@ -277,8 +277,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
                     <!-- نمودار میله‌ای -->
-                    <div class="bg-white p-6 rounded-[16px] shadow-lg border border-gray-200 mb-8">
-                        <h2 class="text-lg font-bold text-gray-800 mb-4">نمودار مقایسه موجودی‌ها</h2>
+                    <div class=" p-6  mb-8">
                         <svg width="100%" height="350" viewBox="0 0 1000 350" xmlns="http://www.w3.org/2000/svg">
                             <defs>
                                 <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
@@ -362,14 +361,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
     </div>
 
-   <!--[if BLOCK]><![endif]--><?php if($selectedSubCategory == 'گزارش بیلانس مشتریان'): ?>
-    <!-- بخش انتخاب مشتری و نمایش نمودار (در یک div جداگانه) -->
-    <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px] w-full mb-5"
+    <!-- بخش گزارش بیلانس مشتریان (کارت‌ها و نمودار دایره‌ای) -->
+    <!--[if BLOCK]><![endif]--><?php if($selectedSubCategory == 'گزارش بیلانس مشتریان'): ?>
+    <div class="flex-1 flex flex-col bg-[#F5F5F5] h-fit p-3 md:p-4 lg:p-6 rounded-[12px] w-full mb-5"
         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-        <div class="flex w-full">
-            <div class="md:w-1/2">
+        <div class="flex w-full flex-col lg:flex-row">
+            <div class="lg:w-1/2 mb-6 lg:mb-0">
                 <div class="flex-1">
-                    <div class="relative w-[589px]">
+                    <div class="relative w-full lg:w-[589px]">
                         <div x-data="{
                                 searchValue: '',
                                 selectedId: <?php if ((object) ('selectedAccount') instanceof \Livewire\WireDirective) : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccount'->value()); ?>')<?php echo e('selectedAccount'->hasModifier('live') ? '.live' : ''); ?><?php else : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccount'); ?>')<?php endif; ?>,
@@ -381,7 +380,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     if (selected) {
                                         this.selectedId = selected.id;
                                         this.searchValue = `${selected.account_number} - ${selected.fullname}`;
-                                        $wire.selectCustomer(selected.id);
+                                        $wire.call('selectCustomer', selected.id);
                                         $wire.set('search', selected.fullname);
                                     } else {
                                         this.selectedId = null;
@@ -403,7 +402,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <datalist id="customersList">
                                 <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($customer->account_number); ?> - <?php echo e($customer->fullname); ?>">
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                             </datalist>
                             <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
@@ -423,44 +422,65 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
 
                 <!-- نمایش موجودی‌ها -->
-                <!--[if BLOCK]><![endif]--><?php if($selectedCustomerId && count($currencyPercentages) > 0): ?>
-                <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6 mt-6 w-[589px]">
-                    <div class="space-y-4">
-                        <div
-                            class="w-full h-[79px] flex flex-col md:flex-row items-center justify-between p-6 bg-[#2563EB] text-white text-[16px] rounded-[12px]">
-                            <p class="vazir font-bold">ارزش کل موجودی</p>
-                            <p class="vazir font-bold">
-                                <?php
-                                $totalUSD = 0;
-                                foreach($selectedCustomerBalance as $balance) {
-                                $totalUSD += $balance['balance_usd'];
-                                }
-                                ?>
-                                <?php echo e(number_format($totalUSD, 2)); ?>
+                <!--[if BLOCK]><![endif]--><?php if($selectedCustomerId): ?>
+                    <?php
+                        $hasNonZeroBalance = false;
+                        foreach($selectedCustomerBalance as $balance) {
+                            if (abs($balance['balance']) > 0.001) {
+                                $hasNonZeroBalance = true;
+                                break;
+                            }
+                        }
+                    ?>
 
-                                <span>دالر</span>
-                            </p>
-                        </div>
+                    <!--[if BLOCK]><![endif]--><?php if($hasNonZeroBalance): ?>
+                    <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6 mt-6 w-full lg:w-[589px]">
+                        <div class="space-y-4">
+                            <div
+                                class="w-full h-[79px] flex flex-col md:flex-row items-center justify-between p-6 bg-[#2563EB] text-white text-[16px] rounded-[12px]">
+                                <p class="vazir font-bold">ارزش کل موجودی</p>
+                                <p class="vazir font-bold">
+                                    <?php
+                                    $totalUSD = 0;
+                                    foreach($selectedCustomerBalance as $balance) {
+                                        if (abs($balance['balance']) > 0.001) {
+                                            $totalUSD += $balance['balance_usd'];
+                                        }
+                                    }
+                                    ?>
+                                    <?php echo e(number_format($totalUSD, 2)); ?>
 
-                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencyPercentages; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <div
-                            class="w-full h-[79px] flex flex-col md:flex-row items-center justify-between p-6 bg-transparent border border-[#2563EB] text-black text-[16px] rounded-[12px]">
-                            <div class="flex items-center gap-3">
-                                <div class="w-4 h-4 rounded-full" style="background-color: <?php echo e($data['color']); ?>">
+                                    <span>دالر</span>
+                                </p>
+                            </div>
+
+                            <?php $__currentLoopData = $selectedCustomerBalance; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <!--[if BLOCK]><![endif]--><?php if(abs($data['balance']) > 0.001): ?>
+                                <div
+                                    class="w-full h-[79px] flex flex-col md:flex-row items-center justify-between p-6 bg-transparent border border-[#2563EB] text-black text-[16px] rounded-[12px] hover:bg-blue-50 transition-colors">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-4 h-4 rounded-full" style="background-color: <?php echo e($this->getCurrencyColor($currencyCode)); ?>">
+                                        </div>
+                                        <span class="vazir font-bold"><?php echo e($data['currency_name']); ?></span>
+                                    </div>
+                                    <div class="text-left">
+                                        <p class="vazir font-bold"><?php echo e(number_format($data['balance'], 2)); ?></p>
+                                    </div>
                                 </div>
-                                <span class="vazir font-bold"><?php echo e($data['currency_name']); ?></span>
-                            </div>
-                            <div class="text-left">
-                                <p class="vazir font-bold"><?php echo e(number_format($data['balance'], 2)); ?></p>
-                            </div>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
-                </div>
-                <?php elseif($selectedCustomerId): ?>
-                <div class="text-center py-8">
-                    <p class="text-gray-500 vazir">این مشتری موجودی ندارد</p>
-                </div>
+                    <?php else: ?>
+                    <div class="text-center py-8">
+                        <p class="text-gray-500 vazir">این مشتری موجودی ندارد</p>
+                        <!-- اطلاعات دیباگ -->
+                        <div class="mt-4 p-3 bg-gray-100 rounded text-xs text-gray-600">
+                            <p>Customer ID: <?php echo e($selectedCustomerId); ?></p>
+                            <p>Balances Count: <?php echo e(count($selectedCustomerBalance)); ?></p>
+                        </div>
+                    </div>
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                 <?php else: ?>
                 <div class="text-center py-8">
                     <p class="text-gray-500 vazir">لطفاً یک مشتری انتخاب کنید</p>
@@ -470,7 +490,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
             <!-- بخش نمودار SVG -->
             <!--[if BLOCK]><![endif]--><?php if($selectedCustomerId && count($currencyPercentages) > 0): ?>
-            <div class="md:w-1/2 mt-6">
+            <div class="lg:w-1/2 mt-6 lg:mt-0 flex justify-center">
                 <?php
                 $chartData = [
                 'series' => [],
@@ -492,8 +512,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 ?>
 
                 <div class="p-6 relative">
-                    <div class="relative w-[300px] h-[300px] mx-auto">
-                        <svg width="400" height="400" viewBox="0 0 40 40">
+                    <div class="relative w-full max-w-[400px] h-[350px] mx-auto">
+                        <svg width="100%" height="100%" viewBox="0 0 40 40">
                             <!-- تعریف گرادینت‌ها -->
                             <defs>
                                 <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $chartData['colors']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $color): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -549,6 +569,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 style="font-weight: bold; text-shadow: 0px 0px 3px rgba(0,0,0,0.5);">
                                 <?php echo e(round($percentage, 1)); ?>%
                             </text>
+
                             <?php
                             $startAngle += $angle;
                             ?>
@@ -557,7 +578,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
                     <!-- لیبل‌ها کنار چارت -->
-                    <div class="absolute top-9 align-middle flex flex-col justify-center items-center gap-6">
+                    <div class="absolute top-9 right-4 align-middle flex flex-col justify-center items-start gap-4">
                         <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $chartData['labels']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="flex items-center gap-2">
                             <div class="w-4 h-4 rounded-full shadow-sm"
@@ -575,8 +596,6 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
         </div>
     </div>
     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-
-
 
     <!-- بخش کارت‌های مشتریان برای گزارش خلاصه -->
     <!--[if BLOCK]><![endif]--><?php if($selectedSubCategory == 'گزارش خلاصه بیلانس مشتریان' && !empty($selectedCustomersData)): ?>

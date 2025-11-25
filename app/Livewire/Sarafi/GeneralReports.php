@@ -29,8 +29,8 @@ class GeneralReports extends Component
     public $selectedCustomerId = null;
     public $filteredCustomers = [];
     public $reports = [];
-       public $colors = [];
-          public $lightColors = [];
+    public $colors = [];
+    public $lightColors = [];
 
     // متغیرهای جدید برای گزارش خلاصه
     public $selectedAccounts = [];
@@ -86,7 +86,8 @@ class GeneralReports extends Component
             ->get();
 
         $this->customers = collect($this->customers);
-                // تعریف رنگ‌ها
+        
+        // تعریف رنگ‌ها
         $this->colors = [
             'usd' => '#DD2424',
             'afn' => '#2563EB', 
@@ -138,7 +139,8 @@ class GeneralReports extends Component
             $this->currencyName = [];
         }
     }
-   private function calculateCustomerBalance($customerId)
+
+    private function calculateCustomerBalance($customerId)
     {
         $this->selectedCustomerBalance = [];
         $this->currencyPercentages = [];
@@ -172,7 +174,7 @@ class GeneralReports extends Component
             foreach ($this->selectedCustomerBalance as $currencyCode => $data) {
                 $percentage = ($data['balance_usd'] / $totalBalanceUSD) * 100;
                 $this->currencyPercentages[$currencyCode] = [
-                    'percentage' => round($percentage, 2), // دقت بیشتر
+                    'percentage' => round($percentage, 2),
                     'balance' => $data['balance'],
                     'currency_name' => $data['currency_name'],
                     'color' => $this->getCurrencyColor($currencyCode)
@@ -209,13 +211,13 @@ class GeneralReports extends Component
 
         // نرخ‌های تبدیل - توجه: این‌ها باید نرخ خرید باشند
         $exchangeRates = [
-            'afn' => $latestExchangeRate->afn_buy ?? 0.011,    // 1 AFN = 0.011 USD
-            'irr' => $latestExchangeRate->irr_buy ?? 0.000024, // 1 IRR = 0.000024 USD
-            'eur' => $latestExchangeRate->eur_buy ?? 1.07,     // 1 EUR = 1.07 USD
-            'pkr' => $latestExchangeRate->pkr_buy ?? 0.0036,   // 1 PKR = 0.0036 USD
-            'aed' => $latestExchangeRate->aed_buy ?? 0.27,     // 1 AED = 0.27 USD
-            'try' => $latestExchangeRate->try_buy ?? 0.031,    // 1 TRY = 0.031 USD
-            'cny' => $latestExchangeRate->cny_buy ?? 0.14,     // 1 CNY = 0.14 USD
+            'afn' => $latestExchangeRate->afn_buy ?? 0.011,
+            'irr' => $latestExchangeRate->irr_buy ?? 0.000024,
+            'eur' => $latestExchangeRate->eur_buy ?? 1.07,
+            'pkr' => $latestExchangeRate->pkr_buy ?? 0.0036,
+            'aed' => $latestExchangeRate->aed_buy ?? 0.27,
+            'try' => $latestExchangeRate->try_buy ?? 0.031,
+            'cny' => $latestExchangeRate->cny_buy ?? 0.14,
         ];
 
         $result = isset($exchangeRates[$currency]) ? $amount * $exchangeRates[$currency] : 0;
@@ -230,8 +232,6 @@ class GeneralReports extends Component
         return $result;
     }
 
-
-   
     public function getCurrencyColor($currency)
     {
         $colors = [
@@ -248,17 +248,32 @@ class GeneralReports extends Component
         return $colors[$currency] ?? '#6B7280';
     }
 
+    public function getCurrencyGradient($currency)
+    {
+        $gradients = [
+            'usd' => ['#FF6B6B', '#DC2626'],
+            'afn' => ['#60A5FA', '#1D4ED8'],
+            'irr' => ['#86EFAC', '#16A34A'],
+            'eur' => ['#FCD34D', '#D97706'],
+            'pkr' => ['#A78BFA', '#7C3AED'],
+            'aed' => ['#F9A8D4', '#DB2777'],
+            'try' => ['#67E8F9', '#0891B2'],
+            'cny' => ['#A3E635', '#65A30D'],
+        ];
+        
+        return $gradients[$currency] ?? ['#9CA3AF', '#4B5563'];
+    }
+
     /**
      * روشن کردن رنگ
      */
     public function lightenColor($color, $percent)
     {
         $color = ltrim($color, '#');
-        if (strlen($color) == 6) {
-            $rgb = sscanf($color, "%02x%02x%02x");
-        } else {
-            $rgb = [128, 128, 128]; // رنگ پیش‌فرض
+        if (strlen($color) == 3) {
+            $color = $color[0].$color[0].$color[1].$color[1].$color[2].$color[2];
         }
+        $rgb = sscanf($color, "%02x%02x%02x");
         
         $r = min(255, $rgb[0] + (255 - $rgb[0]) * $percent / 100);
         $g = min(255, $rgb[1] + (255 - $rgb[1]) * $percent / 100);
@@ -273,11 +288,10 @@ class GeneralReports extends Component
     public function darkenColor($color, $percent)
     {
         $color = ltrim($color, '#');
-        if (strlen($color) == 6) {
-            $rgb = sscanf($color, "%02x%02x%02x");
-        } else {
-            $rgb = [128, 128, 128]; // رنگ پیش‌فرض
+        if (strlen($color) == 3) {
+            $color = $color[0].$color[0].$color[1].$color[1].$color[2].$color[2];
         }
+        $rgb = sscanf($color, "%02x%02x%02x");
         
         $r = max(0, $rgb[0] * (1 - $percent / 100));
         $g = max(0, $rgb[1] * (1 - $percent / 100));
@@ -328,7 +342,7 @@ class GeneralReports extends Component
         $this->chartData = [];
         $this->maxValue = 0;
         $this->selectedCustomersData = [];
-
+ 
         if (empty($this->selectedAccounts)) {
             return;
         }
