@@ -220,7 +220,7 @@ class GeneralReports extends Component
             'cny' => $latestExchangeRate->cny_buy ?? 0.14,
         ];
 
-        $result = isset($exchangeRates[$currency]) ? $amount * $exchangeRates[$currency] : 0;
+        $result = isset($exchangeRates[$currency]) ? $amount / $exchangeRates[$currency] : 0;
         
         Log::debug("Currency conversion", [
             'amount' => $amount,
@@ -355,13 +355,12 @@ class GeneralReports extends Component
                 $total += $balance;
             }
             
-            if (abs($total) > 0.001) {
+          
                 $this->totalBalances[$currencyCode] = [
                     'total' => $total,
                     'currency_name' => $currencyName
                 ];
 
-                // آماده‌سازی داده‌های نمودار
                 $this->chartData[] = [
                     'currency' => strtoupper($currencyCode),
                     'value' => abs($total)
@@ -369,8 +368,7 @@ class GeneralReports extends Component
                 
                 $this->maxValue = max($this->maxValue, abs($total));
             }
-        }
-
+      
         // آماده‌سازی داده‌های مشتریان انتخاب شده
         foreach ($this->selectedAccounts as $customerId) {
             $customer = Customer::find($customerId);

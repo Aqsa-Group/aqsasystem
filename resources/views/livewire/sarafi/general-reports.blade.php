@@ -165,7 +165,7 @@
                                 <!-- Input Field -->
                                 <div @click="isOpen = true" class="relative">
                                     <input type="text" x-model="searchValue" placeholder="انتخاب مشتری"
-                                        class="w-full h-[60px] p-3 pr-10 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 cursor-pointer text-white placeholder-white"
+                                        class="w-full h-[30px] p-3 pr-10 rounded-[12px]  bg-transparent  cursor-pointer text-white placeholder-white"
                                         readonly>
 
                                     <!-- Dropdown Arrow -->
@@ -199,13 +199,13 @@
                                     x-transition:leave="transition ease-in duration-200"
                                     x-transition:leave-start="opacity-100 transform scale-100"
                                     x-transition:leave-end="opacity-0 transform scale-95"
-                                    class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto"
+                                    class="absolute z-50 w-full mt-1 bg-white  rounded-md shadow-lg max-h-60 overflow-auto"
                                     @click.stop>
 
                                     <!-- Search Box inside Dropdown -->
                                     <div class="sticky top-0 bg-white p-2 border-b">
                                         <input type="text" x-model="searchQuery" placeholder="جستجوی مشتری..."
-                                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+                                            class="w-full p-2   rounded-md focus:ring-2 focus:ring-blue-500">
                                     </div>
 
                                     <!-- Customers List -->
@@ -276,7 +276,7 @@
                             </defs>
 
                             <!-- محور عمودی سمت چپ برای جدا کردن مقادیر -->
-                            <line x1="146" y1="30" x2="146" y2="280" stroke="#94a3b8" stroke-width="2" />
+                            <line x1="129" y1="30" x2="129" y2="280" stroke="#94a3b8" stroke-width="2" />
                             
                             <!-- محور افقی -->
                             <line x1="100" y1="280" x2="950" y2="280" stroke="#94a3b8" stroke-width="2" />
@@ -562,9 +562,9 @@
                     </div>
 
                     <!-- لیبل‌ها کنار چارت -->
-                    <div class="absolute top-9 right-4 align-middle flex flex-col justify-center items-start gap-4">
+                    <div class="absolute right-9 flex mt-4  gap-4">
                         @foreach($chartData['labels'] as $index => $label)
-                        <div class="flex items-center gap-2">
+                        <div class="flex items-end gap-2">
                             <div class="w-4 h-4 rounded-full shadow-sm"
                                 style="background: linear-gradient(135deg, {{ $this->lightenColor($chartData['colors'][$index], 30) }}, {{ $this->darkenColor($chartData['colors'][$index], 20) }});">
                             </div>
