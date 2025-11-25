@@ -37,6 +37,7 @@ class GeneralReports extends Component
         'management' => ['گزارش مدیریتی', 'تحلیل فروش', 'نمودارها']
     ];
 
+    
     public $selectedAccounts = [];
     public $selectedCustomersData = [];
     public $totalBalances = [];
@@ -115,96 +116,99 @@ class GeneralReports extends Component
         $this->calculateSelectedCustomersBalance();
     }
 
-    private function calculateSelectedCustomersBalance()
-    {
-        $this->selectedCustomersData = [];
-        $this->totalBalances = [];
-        $this->chartData = [];
-        $this->maxValue = 0;
+  private function calculateSelectedCustomersBalance()
+{
+    $this->selectedCustomersData = [];
+    $this->totalBalances = [];
+    $this->chartData = [];
+    $this->maxValue = 0;
 
-        if (empty($this->selectedAccounts)) {
-            return;
-        }
-
-        $totalBalanceUSD = 0;
-        $currencyTotals = [];
-
-        foreach ($this->selectedAccounts as $customerId) {
-            $customer = Customer::find($customerId);
-            if (!$customer) continue;
-
-            $customerData = [
-                'id' => $customer->id,
-                'name' => $customer->fullname,
-                'account_number' => $customer->account_number,
-                'balances' => []
-            ];
-
-            foreach ($this->currencies as $currencyCode => $currencyName) {
-                $balance = $this->calculateBalance($customerId, $currencyCode);
-                if ($balance != 0) {
-                    $balanceUSD = $this->convertToUSD($balance, $currencyCode);
-                    
-                    $customerData['balances'][$currencyCode] = [
-                        'balance' => $balance,
-                        'balance_usd' => $balanceUSD,
-                        'currency_name' => $currencyName
-                    ];
-
-                    if (!isset($currencyTotals[$currencyCode])) {
-                        $currencyTotals[$currencyCode] = 0;
-                    }
-                    $currencyTotals[$currencyCode] += $balanceUSD;
-                    $totalBalanceUSD += $balanceUSD;
-                    
-                    // آپدیت ماکسیمم مقدار
-                    if ($balanceUSD > $this->maxValue) {
-                        $this->maxValue = $balanceUSD;
-                    }
-                }
-            }
-
-            $this->selectedCustomersData[] = $customerData;
-        }
-
-        // محاسبه درصدها و آماده‌سازی داده‌های نمودار
-        foreach ($currencyTotals as $currencyCode => $totalUSD) {
-            $percentage = $totalBalanceUSD > 0 ? ($totalUSD / $totalBalanceUSD) * 100 : 0;
-            
+    if (empty($this->selectedAccounts)) {
+        // حتی اگر مشتری انتخاب نشده، همه ارزها با صفر نمایش داده شوند
+        foreach ($this->currencies as $currencyCode => $currencyName) {
             $this->totalBalances[$currencyCode] = [
-                'total_usd' => $totalUSD,
-                'percentage' => round($percentage, 1),
-                'currency_name' => $this->currencies[$currencyCode],
+                'total' => 0,
+                'currency_name' => $currencyName,
                 'color' => $this->getCurrencyColor($currencyCode)
             ];
 
-            // داده‌های نمودار
             $this->chartData[] = [
-                'currency' => $this->currencies[$currencyCode],
+                'currency' => $currencyName,
                 'currency_code' => $currencyCode,
-                'value' => $totalUSD,
-                'percentage' => round($percentage, 1),
+                'value' => 0,
                 'color' => $this->getCurrencyColor($currencyCode),
                 'light_color' => $this->lightColors[$currencyCode] ?? '#ffffff'
             ];
         }
-
-        // اگر ماکسیمم مقدار هنوز صفر است، مقدار پیش‌فرض بدهید
-        if ($this->maxValue === 0) {
-            $this->maxValue = 1; // جلوگیری از تقسیم بر صفر
-        }
-
-        // مرتب کردن داده‌های نمودار بر اساس مقدار
-        usort($this->chartData, function($a, $b) {
-            return $b['value'] <=> $a['value'];
-        });
+        return;
     }
 
-    // اگر نیاز به ذخیره یا پردازش دارید
+    $currencyTotals = [];
+
+    // مقداردهی اولیه همه ارزها با صفر
+    foreach ($this->currencies as $currencyCode => $currencyName) {
+        $currencyTotals[$currencyCode] = 0;
+    }
+
+    foreach ($this->selectedAccounts as $customerId) {
+        $customer = Customer::find($customerId);
+        if (!$customer) continue;
+
+        $customerData = [
+            'id' => $customer->id,
+            'name' => $customer->fullname,
+            'account_number' => $customer->account_number,
+            'balances' => []
+        ];
+
+        foreach ($this->currencies as $currencyCode => $currencyName) {
+            $balance = $this->calculateBalance($customerId, $currencyCode);
+            
+            $customerData['balances'][$currencyCode] = [
+                'balance' => $balance,
+                'currency_name' => $currencyName
+            ];
+
+            $currencyTotals[$currencyCode] += $balance;
+            
+            // آپدیت ماکسیمم مقدار برای نمودار
+            if ($balance > $this->maxValue) {
+                $this->maxValue = $balance;
+            }
+        }
+
+        $this->selectedCustomersData[] = $customerData;
+    }
+
+    // آماده‌سازی داده‌های کارت‌ها و نمودار برای همه ارزها
+    foreach ($this->currencies as $currencyCode => $currencyName) {
+        $total = $currencyTotals[$currencyCode] ?? 0;
+        
+        $this->totalBalances[$currencyCode] = [
+            'total' => $total,
+            'currency_name' => $currencyName,
+            'color' => $this->getCurrencyColor($currencyCode)
+        ];
+
+        // داده‌های نمودار
+        $this->chartData[] = [
+            'currency' => $currencyName,
+            'currency_code' => $currencyCode,
+            'value' => $total,
+            'color' => $this->getCurrencyColor($currencyCode),
+            'light_color' => $this->lightColors[$currencyCode] ?? '#ffffff'
+        ];
+    }
+
+    if ($this->maxValue === 0) {
+        $this->maxValue = 1; 
+    }
+}
+
     public function processSelectedCustomers()
     {
         foreach ($this->selectedAccounts as $customerId) {
-            // پردازش هر مشتری انتخاب شده
+            
         }
     }
 

@@ -76,13 +76,11 @@ class Transaction extends Model
         return $this->belongsTo(Currency::class, 'currency', 'code');
     }
 
-    // Scope برای تراکنش‌های مرتبط با تبدیل ارز
     public function scopeConversionTransactions($query)
     {
         return $query->whereNotNull('conversion_transfer_id');
     }
 
-    // Scope برای تراکنش‌های عادی (غیر تبدیل ارز)
     public function scopeRegularTransactions($query)
     {
         return $query->whereNull('conversion_transfer_id');

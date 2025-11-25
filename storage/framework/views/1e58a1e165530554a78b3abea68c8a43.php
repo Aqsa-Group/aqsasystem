@@ -241,158 +241,102 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             </div>
         </div>
         <h1 class="mt-5 mr-4">گزارش خلاصه بیلانس مشتریان انتخاب شده</h1>
-        <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-8 gap-5 p-4">
-            <div class="flex flex-col bg-[#FFFFFF] justify-center items-center gap-5 rounded-[12px] pt-[29px] pr-[39px] pb-[29px] pl-[39px]"
-                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-                <p class="text-[#8C8C8C]">دالر</p>
-                <p class="times">1700</p>
-                <p class="text-[#8C8C8C]">USD</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 p-4">
+            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $totalBalances; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <div
+                class="flex flex-col bg-white justify-center items-center gap-3 rounded-xl py-6 px-4 shadow-lg border border-gray-200">
+                <p class="text-gray-500 text-sm font-medium"><?php echo e($data['currency_name']); ?></p>
+                <p class="text-2xl font-bold text-gray-800 times">
+                    <?php echo e(number_format($data['total'])); ?>
+
+                </p>
+                <p class="text-gray-400 text-xs font-medium uppercase">
+                    <!--[if BLOCK]><![endif]--><?php switch($currencyCode):
+                    case ('usd'): ?> USD <?php break; ?>
+                    <?php case ('afn'): ?> AFN <?php break; ?>
+                    <?php case ('irr'): ?> IRR <?php break; ?>
+                    <?php case ('eur'): ?> EUR <?php break; ?>
+                    <?php case ('pkr'): ?> PKR <?php break; ?>
+                    <?php case ('aed'): ?> AED <?php break; ?>
+                    <?php case ('try'): ?> TRY <?php break; ?>
+                    <?php case ('cny'): ?> CNY <?php break; ?>
+                    <?php default: ?> <?php echo e($currencyCode); ?>
+
+                    <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
+                </p>
             </div>
-
-
-            <div class="flex flex-col bg-[#FFFFFF] justify-center items-center gap-5 rounded-[12px] pt-[29px] pr-[39px] pb-[29px] pl-[39px]"
-                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-                <p class="text-[#8C8C8C]">افغانی</p>
-                <p class="times">46000</p>
-                <p class="text-[#8C8C8C]">AFN</p>
-            </div>
-
-
-            <div class="flex flex-col bg-[#FFFFFF] justify-center items-center gap-5 rounded-[12px] pt-[29px] pr-[39px] pb-[29px] pl-[39px]"
-                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-                <p class="text-[#8C8C8C]">تومان </p>
-                <p class="times">200,00000</p>
-                <p class="text-[#8C8C8C]">IRR</p>
-            </div>
-
-
-            <div class="flex flex-col bg-[#FFFFFF] justify-center items-center gap-5 rounded-[12px] pt-[29px] pr-[39px] pb-[29px] pl-[39px]"
-                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-                <p class="text-[#8C8C8C]">یورو</p>
-                <p class="times">3000</p>
-                <p class="text-[#8C8C8C]">EUR</p>
-            </div>
-
-            <div class="flex flex-col bg-[#FFFFFF] justify-center items-center gap-5 rounded-[12px] pt-[29px] pr-[39px] pb-[29px] pl-[39px]"
-                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-                <p class="text-[#8C8C8C]">کلدار </p>
-                <p class="times">500,0000</p>
-                <p class="text-[#8C8C8C]">PKR</p>
-            </div>
-
-
-            <div class="flex flex-col bg-[#FFFFFF] justify-center items-center gap-5 rounded-[12px] pt-[29px] pr-[39px] pb-[29px] pl-[39px]"
-                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-                <p class="text-[#8C8C8C]">درهم امارات</p>
-                <p class="times">100000</p>
-                <p class="text-[#8C8C8C]">AED</p>
-            </div>
-
-
-            <div class="flex flex-col bg-[#FFFFFF] justify-center items-center gap-5 rounded-[12px] pt-[29px] pr-[39px] pb-[29px] pl-[39px]"
-                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-                <p class="text-[#8C8C8C]">لیره</p>
-                <p class="times">4000</p>
-                <p class="text-[#8C8C8C]">TRY</p>
-            </div>
-
-
-            <div class="flex flex-col bg-[#FFFFFF] justify-center items-center gap-5 rounded-[12px] pt-[29px] pr-[39px] pb-[29px] pl-[39px]"
-                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-                <p class="text-[#8C8C8C]">یوان</p>
-                <p class="times">23000</p>
-                <p class="text-[#8C8C8C]">CNY</p>
-            </div>
-
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
         </div>
-<svg width="100%" height="350" viewBox="0 0 800 350" xmlns="http://www.w3.org/2000/svg">
+     <svg width="100%" height="350" viewBox="0 0 1000 350" xmlns="http://www.w3.org/2000/svg">
     <defs>
-        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = ['usd', 'afn', 'irr', 'eur', 'pkr', 'aed', 'try', 'cny']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-        <linearGradient id="<?php echo e($currency); ?>Gradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="<?php echo e($lightColors[$currency] ?? '#ffffff'); ?>" />
-            <stop offset="100%" stop-color="<?php echo e($colors[$currency] ?? '#000000'); ?>" />
+        <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#153885" />
+            <stop offset="100%" stop-color="#2563EB" />
         </linearGradient>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
     </defs>
 
-    <!-- Background -->
-    <rect width="1200" height="350" fill="#f8fafc" />
+    <!-- محور عمودی سمت چپ برای جدا کردن مقادیر -->
+    <line x1="146" y1="30" x2="146" y2="280" stroke="#94a3b8" stroke-width="2" />
+    
+    <!-- محور افقی -->
+    <line x1="100" y1="280" x2="950" y2="280" stroke="#94a3b8" stroke-width="2" />
 
-    <!-- Title -->
-    <text x="1200" y="30" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#1f2937">
-        نمودار موجودی ارزها
-    </text>
+    <!-- مقادیر عمودی سمت چپ (چپ‌چین شده) -->
+    <text x="90" y="285" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">0</text>
+    <text x="90" y="235" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b"><?php echo e(number_format($maxValue * 0.2, 0)); ?></text>
+    <text x="90" y="185" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b"><?php echo e(number_format($maxValue * 0.4, 0)); ?></text>
+    <text x="90" y="135" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b"><?php echo e(number_format($maxValue * 0.6, 0)); ?></text>
+    <text x="90" y="85" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b"><?php echo e(number_format($maxValue * 0.8, 0)); ?></text>
+    <text x="90" y="35" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b"><?php echo e(number_format($maxValue, 0)); ?></text>
 
-    <!-- Axes -->
-    <line x1="80" y1="280" x2="750" y2="280" stroke="#94a3b8" stroke-width="2" />
-    <line x1="80" y1="60" x2="80" y2="280" stroke="#94a3b8" stroke-width="2" />
+    <!-- خطوط راهنمای افقی -->
+    <line x1="100" y1="280" x2="950" y2="280" stroke="#e2e8f0" stroke-width="1" />
+    <line x1="100" y1="230" x2="950" y2="230" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
+    <line x1="100" y1="180" x2="950" y2="180" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
+    <line x1="100" y1="130" x2="950" y2="130" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
+    <line x1="100" y1="80" x2="950" y2="80" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
+    <line x1="100" y1="30" x2="950" y2="30" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
 
-    <!-- Y-axis labels -->
-    <text x="75" y="285" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">0</text>
-    <text x="75" y="65" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">
-        <?php echo e(number_format($maxValue, 0)); ?>
-
-    </text>
-    <text x="75" y="172.5" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">
-        <?php echo e(number_format($maxValue / 2, 0)); ?>
-
-    </text>
-
-    <!-- Y-axis title -->
-    <text x="30" y="170" font-family="Arial" font-size="12" text-anchor="middle" fill="#64748b" transform="rotate(-90 30,170)">
-        مقدار (USD)
-    </text>
-
-    <!-- Chart bars -->
+    <!-- میله‌های نمودار -->
     <?php
-        $chartWidth = 670; // 750 - 80
-        $chartHeight = 220; // 280 - 60
-        $barWidth = 50;
-        $spacing = 30;
-        $totalWidth = (count($chartData) * $barWidth) + ((count($chartData) - 1) * $spacing);
-        $startX = 80 + ($chartWidth - $totalWidth) / 2;
+    $chartHeight = 250; // 280 - 30
+    $barWidth = 50;
+    $spacing = 30;
+    $startX = 140; // افزایش یافته تا از خط جداکننده فاصله بگیرد
     ?>
 
     <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $chartData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-        <?php
-            $barHeight = $maxValue > 0 ? ($item['value'] / $maxValue) * $chartHeight : 0;
-            $x = $startX + ($index * ($barWidth + $spacing));
-            $y = 280 - $barHeight;
-            
-            // فرمت مقدار برای نمایش
-            $displayValue = $item['value'] >= 1000000 
-                ? number_format($item['value'] / 1000000, 1) . 'M'
-                : ($item['value'] >= 1000 
-                    ? number_format($item['value'] / 1000, 1) . 'K' 
-                    : number_format($item['value']));
-        ?>
+    <?php
+    $barHeight = $maxValue > 0 ? ($item['value'] / $maxValue) * $chartHeight : 0;
+    $x = $startX + ($index * ($barWidth + $spacing));
+    $y = 280 - $barHeight;
 
-        <rect 
-            x="<?php echo e($x); ?>" 
-            y="<?php echo e($y); ?>" 
-            width="<?php echo e($barWidth); ?>" 
-            height="<?php echo e($barHeight); ?>" 
-            fill="url(#<?php echo e($item['currency_code'] ?? 'usd'); ?>Gradient)" 
-            rx="4" 
-        />
-        
-        <!-- مقدار روی میله -->
-        <text x="<?php echo e($x + $barWidth / 2); ?>" y="<?php echo e($y - 5); ?>" font-family="Arial" font-size="12" text-anchor="middle" fill="#374151">
-            <?php echo e($displayValue); ?>
+    // فرمت مقدار برای نمایش
+    $displayValue = $item['value'] >= 1000000
+    ? number_format($item['value'] / 1000000, 1) . 'M'
+    : ($item['value'] >= 1000
+    ? number_format($item['value'] / 1000, 1) . 'K'
+    : number_format($item['value'], 0));
+    ?>
 
-        </text>
-        
-        <!-- نام ارز زیر میله -->
-        <text x="<?php echo e($x + $barWidth / 2); ?>" y="300" font-family="Arial" font-size="12" text-anchor="middle" fill="#374151">
-            <?php echo e($item['currency']); ?>
+    <!-- میله -->
+    <rect x="<?php echo e($x); ?>" y="<?php echo e($y); ?>" width="<?php echo e($barWidth); ?>" height="<?php echo e($barHeight); ?>" fill="url(#barGradient)"
+        rx="2" />
 
-        </text>
+    <!-- مقدار بالای میله -->
+    <text x="<?php echo e($x + $barWidth / 2); ?>" y="<?php echo e($y - 10); ?>" font-family="Arial" font-size="12" text-anchor="middle"
+        fill="#374151">
+        <?php echo e($displayValue); ?>
+
+    </text>
+
+    <!-- نام ارز زیر میله -->
+    <text x="<?php echo e($x + $barWidth / 2); ?>" y="300" font-family="Arial" font-size="12" text-anchor="middle"
+        fill="#374151">
+        <?php echo e($item['currency']); ?>
+
+    </text>
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
-
-    <!-- Grid lines -->
-    <line x1="80" y1="60" x2="750" y2="60" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
-    <line x1="80" y1="172.5" x2="750" y2="172.5" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
-    <line x1="80" y1="280" x2="750" y2="280" stroke="#e2e8f0" stroke-width="1" />
 </svg>
         <?php break; ?>
 
@@ -409,8 +353,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
 
     <!--[if BLOCK]><![endif]--><?php if($selectedSubCategory == 'گزارش بیلانس مشتریان'): ?>
-    <!-- بخش انتخاب مشتری و نمایش نمودار (در یک div جداگانه) -->
-    <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px] w-full mb-5"
+    <div class="flex-1 flex flex-col bg-[#F5F5F5] h-fit p-3 md:p-4 lg:p-6 rounded-[12px] w-full mb-5"
         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
         <div class="flex w-full">
             <div class="md:w-1/2">
@@ -538,8 +481,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 ?>
 
                 <div class="p-6 relative">
-                    <div class="relative w-[300px] h-[300px] mx-auto">
-                        <svg width="400" height="400" viewBox="0 0 40 40">
+                    <div class="relative w-[400px] h-[350px] mx-auto">
+                        <svg width="100%" height="100%" viewBox="0 0 40 40">
                             <!-- تعریف گرادینت‌ها -->
                             <defs>
                                 <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $chartData['colors']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $color): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -621,6 +564,74 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </div>
     </div>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
+
+
+
+    <!--[if BLOCK]><![endif]--><?php if($selectedSubCategory == 'گزارش خلاصه بیلانس مشتریان'): ?>
+    <!--[if BLOCK]><![endif]--><?php if(!empty($selectedCustomersData)): ?>
+    <div class="mt-8 bg-[#F5F5F5] p-5 rounded-[16px] mb-5"  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $selectedCustomersData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php
+            // محاسبه کل موجودی و فیلتر ارزهای دارای موجودی
+            $customerTotalUSD = 0;
+            $customerCurrenciesWithBalance = [];
+
+            foreach($customer['balances'] as $currencyCode => $balanceData) {
+            if ($balanceData['balance'] != 0) {
+            $balanceUSD = $this->convertToUSD($balanceData['balance'], $currencyCode);
+            $customerTotalUSD += $balanceUSD;
+            $customerCurrenciesWithBalance[$currencyCode] = [
+            'balance' => $balanceData['balance'],
+            'currency_name' => $balanceData['currency_name'],
+            'color' => $this->getCurrencyColor($currencyCode)
+            ];
+            }
+            }
+            ?>
+
+            <!-- کارت مشتری -->
+            <div class="w-full">
+                <div class="space-y-4">
+                    <!-- هدر کارت -->
+                    <div
+                        class="w-full h-[60px] flex flex-col md:flex-row items-center justify-between p-4 bg-[#2563EB] text-white text-[14px] rounded-[12px]">
+                        <p class="vazir font-bold"><?php echo e($customer['name']); ?></p>
+                        <p class="vazir font-bold text-sm">
+                            <?php echo e(number_format($customerTotalUSD, 2)); ?> <span class="text-xs">دالر</span>
+                        </p>
+                    </div>
+
+                    <!-- موجودی‌های ارزی -->
+                    <!--[if BLOCK]><![endif]--><?php if(count($customerCurrenciesWithBalance) > 0): ?>
+                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customerCurrenciesWithBalance; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div
+                        class="w-full h-[50px] flex flex-col md:flex-row items-center justify-between p-4 bg-transparent border border-[#2563EB] text-black text-[14px] rounded-[12px]">
+                        <div class="flex items-center gap-3">
+                            <div class="w-3 h-3 rounded-full" style="background-color: <?php echo e($data['color']); ?>"></div>
+                            <span class="vazir font-bold text-sm"><?php echo e($data['currency_name']); ?></span>
+                        </div>
+                        <div class="text-left">
+                            <p class="vazir font-bold text-sm"><?php echo e(number_format($data['balance'], 2)); ?></p>
+                        </div>
+                    </div>
+                    
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php else: ?>
+                    <div
+                        class="w-full h-[50px] flex items-center justify-center p-4 bg-transparent border border-gray-300 text-gray-500 text-[14px] rounded-[12px]">
+                        <span class="vazir text-sm">بدون موجودی</span>
+                    </div>
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                </div>
+            </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+        </div>
+    </div>
+
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
 

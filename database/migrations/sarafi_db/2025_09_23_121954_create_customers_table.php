@@ -29,6 +29,10 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
             $table->foreign('admin_id')->references('id')->on('users')->nullOnDelete();
             $table->timestamps();
+            $table->foreignId('related_customer_id')
+                ->nullable()
+                ->constrained('customers')
+                ->cascadeOnDelete();
         });
     }
 

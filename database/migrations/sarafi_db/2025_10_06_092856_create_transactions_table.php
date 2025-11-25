@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('by');
             $table->decimal('amount', 15, 2);
             $table->string('type');
-             $table->string('account_type');
+            $table->string('account_type');
             $table->date('date');
             $table->text('description')->nullable();
             $table->string('transaction_file')->nullable();
@@ -35,6 +35,8 @@ return new class extends Migration
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
             $table->foreign('admin_id')->references('id')->on('users')->nullOnDelete();
+            $table->unsignedBigInteger('remittance_id')->nullable();
+            $table->foreign('remittance_id')->references('id')->on('remittance_approvals')->onDelete('cascade');
         });
     }
 
