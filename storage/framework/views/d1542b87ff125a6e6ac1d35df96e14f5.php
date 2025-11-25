@@ -7,7 +7,7 @@
     <title>پرنت پول برق - مجتمع تجارتی عادلیار</title>
 
     <style>
-        /* پایه */
+        html,
         html,
         body {
             height: 100%;
@@ -28,13 +28,13 @@
         .two-col {
             width: 100%;
             border-collapse: separate;
-            border-spacing: 12px;
+            border-spacing: 10px;
         }
 
         .two-col td {
             vertical-align: top;
             width: 50%;
-            padding: 10px;
+            padding: 5px;
             box-sizing: border-box;
             border: 1px solid #777;
             background: #fff;
@@ -49,8 +49,8 @@
         }
 
         .col-header .title {
-            font-size: 22px;
-            font-weight: 400;
+            font-size: 20px;
+            font-weight: 300;
             color: #7c3a00;
             /* قهوه‌ای شبیه عکس */
         }
@@ -86,16 +86,15 @@
         .form-table td,
         .form-table th {
             border: 1px solid #777;
-            padding: 2px 2px;
             font-size: 14px;
-            vertical-align: middle;
-            text-align: center;
+            padding: 0px 2px;
+            text-align: start;
             width: 10px;
         }
 
         .form-table th {
             background: #fafafa;
-            font-weight: 700;
+            font-weight: 600;
             color: #111;
             font-size: 14px;
         }
@@ -369,203 +368,42 @@
                         </thead>
                         <tbody>
                             <tr>
-                           <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-    <?php echo e($accounting->shopkeeper->fullname ?? $accounting->shopkeeper->name ?? '---'); ?>
-
-</td>
-                                </td>
-                                <td><?php echo e($accounting->market->name ?? '---'); ?></td>
-                                <td><?php echo e($accounting->shop->number ?? $accounting->booth->number ?? '---'); ?></td>
-                                <td><?php echo e($rowNumber); ?></td>
-
                                 <td>
-                                    <?php if($accounting->paid_date): ?>
-                                    <?php echo e(\Morilog\Jalali\Jalalian::fromDateTime($accounting->paid_date)->format('Y/m/d')); ?>
+                                    <?php echo e($accounting->shopkeeper->fullname ?? $accounting->shopkeeper->name ?? '---'); ?>
 
-                                    <?php else: ?>
-                                    ---
-                                    <?php endif; ?>
                                 </td>
-                                <td>
-                                    <?php if($accounting->expiration_date): ?>
-                                    <?php echo e(\Morilog\Jalali\Jalalian::fromDateTime($accounting->expiration_date)->format('Y/m/d')); ?>
+                </td>
+                <td><?php echo e($accounting->market->name ?? '---'); ?></td>
+                <td><?php echo e($accounting->shop->number ?? $accounting->booth->number ?? '---'); ?></td>
+                <td><?php echo e($rowNumber); ?></td>
 
-                                    <?php else: ?>
-                                    ---
-                                    <?php endif; ?>
-                                </td>
+                <td>
+                    <?php if($accounting->paid_date): ?>
+                    <?php echo e(\Morilog\Jalali\Jalalian::fromDateTime($accounting->paid_date)->format('Y/m/d')); ?>
 
-                            </tr>
-                        </tbody>
-                    </table>
+                    <?php else: ?>
+                    ---
+                    <?php endif; ?>
+                </td>
+                <td>
+                    <?php if($accounting->expiration_date): ?>
+                    <?php echo e(\Morilog\Jalali\Jalalian::fromDateTime($accounting->expiration_date)->format('Y/m/d')); ?>
 
-                    <!-- جدول دو ستونه: سمت راست جدول مقادیر، سمت چپ بلوک مسؤول برق/امضاء/نوت -->
-                    <table style="width:100%; border-collapse:separate; ">
-                        <tr>
-                            <!-- ستون مقادیر (عرض بیشتر) -->
-                            <td style="width:70%; vertical-align: top; border:none !important; padding:0;">
-                                <table class="amount-rows" role="table" aria-label="مقادیر" style="width:100%;">
-                                    <tbody>
-                                        <tr>
-                                            <td>درجه فعلی</td>
-                                            <td style="text-align:center;"><?php echo e($accounting->current_degree ??
-                                                $accounting->current_reading ?? '---'); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>درجه قبلی</td>
-                                            <td style="text-align:center;"><?php echo e($accounting->past_degree ??
-                                                $accounting->previous_reading ?? '---'); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>مقدار مصرف</td>
-                                            <td style="text-align:center;">
-                                                <?php
-                                                $current = $accounting->current_degree ?? $accounting->current_reading
-                                                ?? null;
-                                                $past = $accounting->past_degree ?? $accounting->previous_reading ??
-                                                null;
-                                                $usage = ($current !== null && $past !== null && is_numeric($current) &&
-                                                is_numeric($past)) ? ($current - $past) : null;
-                                                ?>
-                                                <?php echo e($usage !== null ? $usage : '---'); ?> کیلووات
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>قیمت فی کیلووات</td>
-                                            <td style="text-align:center;"><?php echo e(number_format($accounting->degree_price ??
-                                                $accounting->rate_per_kwh ?? 0)); ?> افغانی</td>
-                                        </tr>
-                                        <tr>
-                                            <td>مبلغ قابل تادیه</td>
-                                            <td style="text-align:center;"><?php echo e(number_format($accounting->price ??
-                                                $accounting->payable_amount ?? 0)); ?> افغانی</td>
-                                        </tr>
-                                        <tr>
-                                            <td>باقیات</td>
-                                            <td style="text-align:center;"><?php echo e(number_format($accounting->remained ??
-                                                $accounting->balance ?? 0)); ?> افغانی</td>
-                                        </tr>
-                                        <?php
-                                        $total= $accounting->remained + $accounting->price;
-                                        ?>
-                                        <tr>
-                                            <td>جمع کل</td>
-                                            <td style="text-align:center;"><?php echo e(number_format($total)); ?> افغانی</td>
-                                        </tr>
-                                        <tr>
-                                            <td>مبلغ پرداخت شده</td>
-                                            <td style="text-align:center;"><?php echo e(number_format($accounting->paid ??
-                                                $accounting->paid_amount ?? 0)); ?> افغانی</td>
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-                            </td>
-
-                            <td
-                                style="width:38%; vertical-align: top; padding:5px 8px; border:none !important; background:none !important;">
-
-                                <!-- باکس مسؤول برق + شماره -->
-                                <div style="
-                                            border: 1px solid #444;
-                                            padding: 5px;
-                                            border-radius: 6px;
-                                            margin-bottom: 15px;
-                                            text-align: center;
-                                            background: #fafafa;
-                                        ">
-                                    <div style="font-weight:bold; font-size:15px; margin-bottom:6px;">
-                                        مسؤول برق
-                                    </div>
-
-                                    <div class="times" style="font-size:26px; font-weight:900;">
-                                        ۰۷۹۹۵۵۳۳۳۳
-                                    </div>
-                                </div>
-
-                                <!-- باکس مهر و امضاء با پر کردن کل ارتفاع -->
-                                <div style="
-                                            border: 1px solid #444;
-                                            padding: 12px;
-                                            border-radius: 6px;
-                                            text-align: center;
-                                            background: #fff;
-                                            height: 100%;
-                                            min-height: 210px;
-                                            box-sizing: border-box;
-                                        ">
-                                    <div style="font-size:16px; font-weight:bold; margin-top:0;">
-                                        مهر و امضاء
-                                    </div>
-                                </div>
-
-                            </td>
-
-
-                        </tr>
-                    </table>
-
+                    <?php else: ?>
+                    ---
+                    <?php endif; ?>
                 </td>
 
-                <!-- ستون راست (نسخه دوم) -->
-                <td role="gridcell" aria-label="نسخه راست">
-                    <div class="col-header" role="banner" style="position: relative; height: 100px;">
+            </tr>
+            </tbody>
+        </table>
 
-                        <!-- متن‌ها وسط افقی -->
-                        <div
-                            style="position: absolute; top: 50%; left: 54%; transform: translate(-50%, -50%); text-align: center;">
-                            <div class="title" style="font-size: 20px; font-weight: bold;">
-                                مجتمع تجارتی عادلیار
-                            </div>
-                            <div class="subtitle" style="font-size: 22px; margin-top: 5px; font-weight: bolder;">
-                                قبض برق
-                            </div>
-                        </div>
-
-                        <!-- لوگو همان‌جاست -->
-                        <div class="logo" aria-hidden="true"
-                            style="position: absolute; left: 0; top: 50%; transform: translateY(-50%);">
-                            <img src="<?php echo e(asset('assets/logo.png')); ?>" alt="لوگو"
-                                style="filter: sepia(1) saturate(5) hue-rotate(10deg) brightness(0.6) contrast(1.2); max-width: 80px;">
-                        </div>
-
-                    </div>
-
-
-
-                    <table class="form-table" role="table" aria-label="مشخصات">
-                        <tbody>
-                            <tr>
-                                <th>مشتری</th>
-                                <th>مارکت</th>
-                                <th style="font-weight:600;">
-                                    <?php if(!empty($accounting->shop->number) ): ?>
-                                    شماره دوکان
-                                    <?php else: ?>
-                                    شماره غرفه
-                                    <?php endif; ?>
-                                </th>
-                                <th>شماره مسلسل</th>
-
-
-                            </tr>
-                            <tr>
-                           <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-    <?php echo e($accounting->shopkeeper->fullname ?? $accounting->shopkeeper->name ?? '---'); ?>
-
-</td>
-                                </td>
-                                <td><?php echo e($accounting->market->name ?? '---'); ?></td>
-
-                                <td><?php echo e($accounting->shop->number ?? $accounting->booth->number ?? '---'); ?></td>
-                                <td><?php echo e($rowNumber); ?></td>
-
-
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <table class="amount-rows" role="table" aria-label="مقادیر">
+        <!-- جدول دو ستونه: سمت راست جدول مقادیر، سمت چپ بلوک مسؤول برق/امضاء/نوت -->
+        <table style="width:100%; border-collapse:separate; ">
+            <tr>
+                <!-- ستون مقادیر (عرض بیشتر) -->
+                <td style="width:70%; vertical-align: top; border:none !important; padding:0;">
+                    <table class="amount-rows" role="table" aria-label="مقادیر" style="width:100%;">
                         <tbody>
                             <tr>
                                 <td>درجه فعلی</td>
@@ -618,12 +456,173 @@
                                 <td style="text-align:center;"><?php echo e(number_format($accounting->paid ??
                                     $accounting->paid_amount ?? 0)); ?> افغانی</td>
                             </tr>
+
                         </tbody>
                     </table>
+                </td>
 
+                <td
+                    style="width:38%; vertical-align: top; padding:5px 8px; border:none !important; background:none !important;">
+
+                    <!-- باکس مسؤول برق + شماره -->
+                    <div style="
+                                            border: 1px solid #444;
+                                            padding: 5px;
+                                            border-radius: 6px;
+                                            margin-bottom: 15px;
+                                            text-align: center;
+                                            background: #fafafa;
+                                        ">
+                        <div style="font-weight:bold; font-size:15px; margin-bottom:6px;">
+                            مسؤول برق
+                        </div>
+
+                        <div class="times" style="font-size:26px; font-weight:900;">
+                            ۰۷۹۹۵۵۳۳۳۳
+                        </div>
+                    </div>
+
+                    <!-- باکس مهر و امضاء با پر کردن کل ارتفاع -->
+                    <div style="
+                                            border: 1px solid #444;
+                                            padding: 12px;
+                                            border-radius: 6px;
+                                            text-align: center;
+                                            background: #fff;
+                                            height: 100%;
+                                            min-height: 210px;
+                                            box-sizing: border-box;
+                                        ">
+                        <div style="font-size:16px; font-weight:bold; margin-top:0;">
+                            مهر و امضاء
+                        </div>
+                    </div>
 
                 </td>
+
+
             </tr>
+        </table>
+
+        </td>
+
+        <!-- ستون راست (نسخه دوم) -->
+        <td role="gridcell" aria-label="نسخه راست">
+            <div class="col-header" role="banner" style="position: relative; height: 100px;">
+
+                <!-- متن‌ها وسط افقی -->
+                <div
+                    style="position: absolute; top: 50%; left: 54%; transform: translate(-50%, -50%); text-align: center;">
+                    <div class="title" style="font-size: 20px; font-weight: bold;">
+                        مجتمع تجارتی عادلیار
+                    </div>
+                    <div class="subtitle" style="font-size: 22px; margin-top: 5px; font-weight: bolder;">
+                        قبض برق
+                    </div>
+                </div>
+
+                <!-- لوگو همان‌جاست -->
+                <div class="logo" aria-hidden="true"
+                    style="position: absolute; left: 0; top: 50%; transform: translateY(-50%);">
+                    <img src="<?php echo e(asset('assets/logo.png')); ?>" alt="لوگو"
+                        style="filter: sepia(1) saturate(5) hue-rotate(10deg) brightness(0.6) contrast(1.2); max-width: 80px;">
+                </div>
+
+            </div>
+
+
+
+            <table class="form-table" role="table" aria-label="مشخصات">
+                <tbody>
+                    <tr>
+                        <th>مشتری</th>
+                        <th>مارکت</th>
+                        <th style="font-weight:600;">
+                            <?php if(!empty($accounting->shop->number) ): ?>
+                            شماره دوکان
+                            <?php else: ?>
+                            شماره غرفه
+                            <?php endif; ?>
+                        </th>
+                        <th>شماره مسلسل</th>
+
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <?php echo e($accounting->shopkeeper->fullname ?? $accounting->shopkeeper->name ?? '---'); ?>
+
+                        </td>
+        </td>
+        <td><?php echo e($accounting->market->name ?? '---'); ?></td>
+
+        <td><?php echo e($accounting->shop->number ?? $accounting->booth->number ?? '---'); ?></td>
+        <td><?php echo e($rowNumber); ?></td>
+
+
+        </tr>
+        </tbody>
+        </table>
+
+        <table class="amount-rows" role="table" aria-label="مقادیر">
+            <tbody>
+                <tr>
+                    <td>درجه فعلی</td>
+                    <td style="text-align:center;"><?php echo e($accounting->current_degree ??
+                        $accounting->current_reading ?? '---'); ?></td>
+                </tr>
+                <tr>
+                    <td>درجه قبلی</td>
+                    <td style="text-align:center;"><?php echo e($accounting->past_degree ??
+                        $accounting->previous_reading ?? '---'); ?></td>
+                </tr>
+                <tr>
+                    <td>مقدار مصرف</td>
+                    <td style="text-align:center;">
+                        <?php
+                        $current = $accounting->current_degree ?? $accounting->current_reading
+                        ?? null;
+                        $past = $accounting->past_degree ?? $accounting->previous_reading ??
+                        null;
+                        $usage = ($current !== null && $past !== null && is_numeric($current) &&
+                        is_numeric($past)) ? ($current - $past) : null;
+                        ?>
+                        <?php echo e($usage !== null ? $usage : '---'); ?> کیلووات
+                    </td>
+                </tr>
+                <tr>
+                    <td>قیمت فی کیلووات</td>
+                    <td style="text-align:center;"><?php echo e(number_format($accounting->degree_price ??
+                        $accounting->rate_per_kwh ?? 0)); ?> افغانی</td>
+                </tr>
+                <tr>
+                    <td>مبلغ قابل تادیه</td>
+                    <td style="text-align:center;"><?php echo e(number_format($accounting->price ??
+                        $accounting->payable_amount ?? 0)); ?> افغانی</td>
+                </tr>
+                <tr>
+                    <td>باقیات</td>
+                    <td style="text-align:center;"><?php echo e(number_format($accounting->remained ??
+                        $accounting->balance ?? 0)); ?> افغانی</td>
+                </tr>
+                <?php
+                $total= $accounting->remained + $accounting->price;
+                ?>
+                <tr>
+                    <td>جمع کل</td>
+                    <td style="text-align:center;"><?php echo e(number_format($total)); ?> افغانی</td>
+                </tr>
+                <tr>
+                    <td>مبلغ پرداخت شده</td>
+                    <td style="text-align:center;"><?php echo e(number_format($accounting->paid ??
+                        $accounting->paid_amount ?? 0)); ?> افغانی</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        </td>
+        </tr>
         </table>
     </div>
 

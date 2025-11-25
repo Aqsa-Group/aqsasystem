@@ -30,21 +30,20 @@ class GeneralReports extends Component
     public $filteredCustomers = [];
     public $reports = [];
 
+    // متغیرهای جدید برای گزارش خلاصه
+    public $selectedAccounts = [];
+    public $totalBalances = [];
+    public $chartData = [];
+    public $maxValue = 0;
+    public $selectedCustomersData = [];
+    
+
     public $subCategories = [
         'customers' => ['گزارش بیلانس مشتریان', 'گزارش خلاصه بیلانس مشتریان', 'صورتحساب‌ها'],
         'accounts' => ['گزارش صندوق', 'حساب‌های بانکی', 'ترازنامه'],
         'transactions' => ['معاملات خرید', 'معاملات فروش', 'تراکنش‌ها'],
         'management' => ['گزارش مدیریتی', 'تحلیل فروش', 'نمودارها']
     ];
-
-    
-    public $selectedAccounts = [];
-    public $selectedCustomersData = [];
-    public $totalBalances = [];
-    public $chartData = [];
-    public $maxValue = 0;
-    public $colors = [];
-    public $lightColors = [];
 
     public $currencies = [
         'usd' => 'دالر',
@@ -85,131 +84,28 @@ class GeneralReports extends Component
             ->get();
 
         $this->customers = collect($this->customers);
-
-        // تعریف رنگ‌ها
-        $this->colors = [
-            'usd' => '#DD2424',
-            'afn' => '#2563EB', 
-            'irr' => '#61B138',
-            'eur' => '#F59E0B',
-            'pkr' => '#8B5CF6',
-            'aed' => '#EC4899',
-            'try' => '#06B6D4',
-            'cny' => '#84CC16',
-        ];
+                // تعریف رنگ‌ها
+        // $this->colors = [
+        //     'usd' => '#DD2424',
+        //     'afn' => '#2563EB', 
+        //     'irr' => '#61B138',
+        //     'eur' => '#F59E0B',
+        //     'pkr' => '#8B5CF6',
+        //     'aed' => '#EC4899',
+        //     'try' => '#06B6D4',
+        //     'cny' => '#84CC16',
+        // ];
         
-        $this->lightColors = [
-            'usd' => '#FF6B6B',
-            'afn' => '#60A5FA', 
-            'irr' => '#86EFAC',
-            'eur' => '#FCD34D',
-            'pkr' => '#C4B5FD',
-            'aed' => '#F9A8D4',
-            'try' => '#67E8F9',
-            'cny' => '#BEF264',
-        ];
-    }
-
-    // متد برای آپدیت انتخاب‌ها
-    public function updatedSelectedAccounts($value)
-    {
-        $this->calculateSelectedCustomersBalance();
-    }
-
-  private function calculateSelectedCustomersBalance()
-{
-    $this->selectedCustomersData = [];
-    $this->totalBalances = [];
-    $this->chartData = [];
-    $this->maxValue = 0;
-
-    if (empty($this->selectedAccounts)) {
-        // حتی اگر مشتری انتخاب نشده، همه ارزها با صفر نمایش داده شوند
-        foreach ($this->currencies as $currencyCode => $currencyName) {
-            $this->totalBalances[$currencyCode] = [
-                'total' => 0,
-                'currency_name' => $currencyName,
-                'color' => $this->getCurrencyColor($currencyCode)
-            ];
-
-            $this->chartData[] = [
-                'currency' => $currencyName,
-                'currency_code' => $currencyCode,
-                'value' => 0,
-                'color' => $this->getCurrencyColor($currencyCode),
-                'light_color' => $this->lightColors[$currencyCode] ?? '#ffffff'
-            ];
-        }
-        return;
-    }
-
-    $currencyTotals = [];
-
-    // مقداردهی اولیه همه ارزها با صفر
-    foreach ($this->currencies as $currencyCode => $currencyName) {
-        $currencyTotals[$currencyCode] = 0;
-    }
-
-    foreach ($this->selectedAccounts as $customerId) {
-        $customer = Customer::find($customerId);
-        if (!$customer) continue;
-
-        $customerData = [
-            'id' => $customer->id,
-            'name' => $customer->fullname,
-            'account_number' => $customer->account_number,
-            'balances' => []
-        ];
-
-        foreach ($this->currencies as $currencyCode => $currencyName) {
-            $balance = $this->calculateBalance($customerId, $currencyCode);
-            
-            $customerData['balances'][$currencyCode] = [
-                'balance' => $balance,
-                'currency_name' => $currencyName
-            ];
-
-            $currencyTotals[$currencyCode] += $balance;
-            
-            // آپدیت ماکسیمم مقدار برای نمودار
-            if ($balance > $this->maxValue) {
-                $this->maxValue = $balance;
-            }
-        }
-
-        $this->selectedCustomersData[] = $customerData;
-    }
-
-    // آماده‌سازی داده‌های کارت‌ها و نمودار برای همه ارزها
-    foreach ($this->currencies as $currencyCode => $currencyName) {
-        $total = $currencyTotals[$currencyCode] ?? 0;
-        
-        $this->totalBalances[$currencyCode] = [
-            'total' => $total,
-            'currency_name' => $currencyName,
-            'color' => $this->getCurrencyColor($currencyCode)
-        ];
-
-        // داده‌های نمودار
-        $this->chartData[] = [
-            'currency' => $currencyName,
-            'currency_code' => $currencyCode,
-            'value' => $total,
-            'color' => $this->getCurrencyColor($currencyCode),
-            'light_color' => $this->lightColors[$currencyCode] ?? '#ffffff'
-        ];
-    }
-
-    if ($this->maxValue === 0) {
-        $this->maxValue = 1; 
-    }
-}
-
-    public function processSelectedCustomers()
-    {
-        foreach ($this->selectedAccounts as $customerId) {
-            
-        }
+        // $this->lightColors = [
+        //     'usd' => '#FF6B6B',
+        //     'afn' => '#60A5FA', 
+        //     'irr' => '#86EFAC',
+        //     'eur' => '#FCD34D',
+        //     'pkr' => '#C4B5FD',
+        //     'aed' => '#F9A8D4',
+        //     'try' => '#67E8F9',
+        //     'cny' => '#BEF264',
+        // ];
     }
 
     public function selectCustomer($customerId)
@@ -237,11 +133,10 @@ class GeneralReports extends Component
         } else {
             $this->selectedCustomerBalance = [];
             $this->currencyPercentages = [];
-            $this->currencyName =[];
+            $this->currencyName = [];
         }
     }
-
-    private function calculateCustomerBalance($customerId)
+   private function calculateCustomerBalance($customerId)
     {
         $this->selectedCustomerBalance = [];
         $this->currencyPercentages = [];
@@ -251,6 +146,8 @@ class GeneralReports extends Component
         // محاسبه موجودی هر ارز
         foreach ($this->currencies as $currencyCode => $currencyName) {
             $balance = $this->calculateBalance($customerId, $currencyCode);
+            
+            // فقط اگر موجودی غیر صفر باشد، محاسبه کن
             if ($balance != 0) {
                 $balanceUSD = $this->convertToUSD($balance, $currencyCode);
                 $this->selectedCustomerBalance[$currencyCode] = [
@@ -259,56 +156,107 @@ class GeneralReports extends Component
                     'currency_name' => $currencyName
                 ];
                 $totalBalanceUSD += $balanceUSD;
+                
+                Log::debug("Balance calculated for {$currencyCode}", [
+                    'balance' => $balance,
+                    'balance_usd' => $balanceUSD,
+                    'total_usd' => $totalBalanceUSD
+                ]);
             }
         }
         
-        // محاسبه درصدها
+        // محاسبه درصدها فقط اگر مجموع بیشتر از صفر باشد
         if ($totalBalanceUSD > 0) {
             foreach ($this->selectedCustomerBalance as $currencyCode => $data) {
                 $percentage = ($data['balance_usd'] / $totalBalanceUSD) * 100;
                 $this->currencyPercentages[$currencyCode] = [
-                    'percentage' => round($percentage, 1),
+                    'percentage' => round($percentage, 2), // دقت بیشتر
                     'balance' => $data['balance'],
                     'currency_name' => $data['currency_name'],
                     'color' => $this->getCurrencyColor($currencyCode)
                 ];
+                
+                Log::debug("Percentage calculated for {$currencyCode}", [
+                    'balance_usd' => $data['balance_usd'],
+                    'total_usd' => $totalBalanceUSD,
+                    'percentage' => $percentage
+                ]);
             }
+        } else {
+            Log::debug("No balance found for customer", ['customer_id' => $customerId]);
         }
+        
+        Log::debug("Final percentages", [
+            'currencyPercentages' => $this->currencyPercentages,
+            'totalBalanceUSD' => $totalBalanceUSD
+        ]);
     }
 
     private function convertToUSD($amount, $currency)
     {
+        // اگر ارز همان USD باشد، نیازی به تبدیل نیست
+        if ($currency === 'usd') {
+            return $amount;
+        }
+
         $latestExchangeRate = ExchangeRates::latest()->first();
         if (!$latestExchangeRate) {
+            Log::warning('No exchange rate found');
             return 0;
         }
 
+        // نرخ‌های تبدیل - توجه: این‌ها باید نرخ خرید باشند
         $exchangeRates = [
-            'afn' => $latestExchangeRate->afn_buy ?? 0.011,
-            'usd' => 1,
-            'irr' => $latestExchangeRate->irr_buy ?? 0.000024,
-            'eur' => $latestExchangeRate->eur_buy ?? 1.07,
-            'pkr' => $latestExchangeRate->pkr_buy ?? 0.0036,
-            'aed' => $latestExchangeRate->aed_buy ?? 0.27,
-            'try' => $latestExchangeRate->try_buy ?? 0.031,
-            'cny' => $latestExchangeRate->cny_buy ?? 0.14,
+            'afn' => $latestExchangeRate->afn_buy ?? 0.011,    // 1 AFN = 0.011 USD
+            'irr' => $latestExchangeRate->irr_buy ?? 0.000024, // 1 IRR = 0.000024 USD
+            'eur' => $latestExchangeRate->eur_buy ?? 1.07,     // 1 EUR = 1.07 USD
+            'pkr' => $latestExchangeRate->pkr_buy ?? 0.0036,   // 1 PKR = 0.0036 USD
+            'aed' => $latestExchangeRate->aed_buy ?? 0.27,     // 1 AED = 0.27 USD
+            'try' => $latestExchangeRate->try_buy ?? 0.031,    // 1 TRY = 0.031 USD
+            'cny' => $latestExchangeRate->cny_buy ?? 0.14,     // 1 CNY = 0.14 USD
         ];
 
-        return isset($exchangeRates[$currency]) ? $amount / $exchangeRates[$currency] : 0;
+        $result = isset($exchangeRates[$currency]) ? $amount * $exchangeRates[$currency] : 0;
+        
+        Log::debug("Currency conversion", [
+            'amount' => $amount,
+            'currency' => $currency,
+            'rate' => $exchangeRates[$currency] ?? 'N/A',
+            'result' => $result
+        ]);
+
+        return $result;
     }
 
-    private function getCurrencyColor($currency)
+
+   
+    public function getCurrencyColor($currency)
     {
-        return $this->colors[$currency] ?? '#6B7280';
+        $colors = [
+            'usd' => '#DD2424',
+            'afn' => '#2563EB', 
+            'irr' => '#61B138',
+            'eur' => '#F59E0B',
+            'pkr' => '#8B5CF6',
+            'aed' => '#EC4899',
+            'try' => '#06B6D4',
+            'cny' => '#84CC16',
+        ];
+        
+        return $colors[$currency] ?? '#6B7280';
     }
 
     /**
      * روشن کردن رنگ
      */
-    private function lightenColor($color, $percent)
+    public function lightenColor($color, $percent)
     {
         $color = ltrim($color, '#');
-        $rgb = sscanf($color, "%02x%02x%02x");
+        if (strlen($color) == 6) {
+            $rgb = sscanf($color, "%02x%02x%02x");
+        } else {
+            $rgb = [128, 128, 128]; // رنگ پیش‌فرض
+        }
         
         $r = min(255, $rgb[0] + (255 - $rgb[0]) * $percent / 100);
         $g = min(255, $rgb[1] + (255 - $rgb[1]) * $percent / 100);
@@ -320,10 +268,14 @@ class GeneralReports extends Component
     /**
      * تیره کردن رنگ
      */
-    private function darkenColor($color, $percent)
+    public function darkenColor($color, $percent)
     {
         $color = ltrim($color, '#');
-        $rgb = sscanf($color, "%02x%02x%02x");
+        if (strlen($color) == 6) {
+            $rgb = sscanf($color, "%02x%02x%02x");
+        } else {
+            $rgb = [128, 128, 128]; // رنگ پیش‌فرض
+        }
         
         $r = max(0, $rgb[0] * (1 - $percent / 100));
         $g = max(0, $rgb[1] * (1 - $percent / 100));
@@ -349,9 +301,6 @@ class GeneralReports extends Component
         $this->currencyPercentages = [];
         $this->selectedAccounts = [];
         $this->selectedCustomersData = [];
-        $this->totalBalances = [];
-        $this->chartData = [];
-        $this->maxValue = 0;
     }
 
     public function updatedSelectedSubCategory($sub)
@@ -360,17 +309,81 @@ class GeneralReports extends Component
 
         if ($sub === 'گزارش بیلانس مشتریان') {
             $this->generateCustomerBalanceReport();
+        } elseif ($sub === 'گزارش خلاصه بیلانس مشتریان') {
+            $this->generateSummaryReport();
         } else {
             $this->reports = [];
             $this->selectedCustomerId = null;
             $this->selectedCustomerBalance = [];
             $this->currencyPercentages = [];
-            $this->selectedAccounts = [];
-            $this->selectedCustomersData = [];
-            $this->totalBalances = [];
-            $this->chartData = [];
-            $this->maxValue = 0;
         }
+    }
+
+    // متد جدید برای تولید گزارش خلاصه
+    public function generateSummaryReport()
+    {
+        $this->totalBalances = [];
+        $this->chartData = [];
+        $this->maxValue = 0;
+        $this->selectedCustomersData = [];
+
+        if (empty($this->selectedAccounts)) {
+            return;
+        }
+
+        // محاسبه مجموع موجودی‌ها برای هر ارز
+        foreach ($this->currencies as $currencyCode => $currencyName) {
+            $total = 0;
+            foreach ($this->selectedAccounts as $customerId) {
+                $balance = $this->calculateBalance($customerId, $currencyCode);
+                $total += $balance;
+            }
+            
+            if (abs($total) > 0.001) {
+                $this->totalBalances[$currencyCode] = [
+                    'total' => $total,
+                    'currency_name' => $currencyName
+                ];
+
+                // آماده‌سازی داده‌های نمودار
+                $this->chartData[] = [
+                    'currency' => strtoupper($currencyCode),
+                    'value' => abs($total)
+                ];
+                
+                $this->maxValue = max($this->maxValue, abs($total));
+            }
+        }
+
+        // آماده‌سازی داده‌های مشتریان انتخاب شده
+        foreach ($this->selectedAccounts as $customerId) {
+            $customer = Customer::find($customerId);
+            if ($customer) {
+                $customerBalances = [];
+                foreach ($this->currencies as $currencyCode => $currencyName) {
+                    $balance = $this->calculateBalance($customerId, $currencyCode);
+                    if (abs($balance) > 0.001) {
+                        $customerBalances[$currencyCode] = [
+                            'balance' => $balance,
+                            'currency_name' => $currencyName
+                        ];
+                    }
+                }
+                
+                $this->selectedCustomersData[] = [
+                    'id' => $customer->id,
+                    'name' => $customer->fullname,
+                    'account_number' => $customer->account_number,
+                    'balances' => $customerBalances
+                ];
+            }
+        }
+    }
+
+    // متد برای پاسخ به تغییرات selectedAccounts
+    public function updatedSelectedAccounts($value)
+    {
+        $this->generateSummaryReport();
     }
 
     private function generateCustomerBalanceReport()
@@ -422,12 +435,6 @@ class GeneralReports extends Component
                 $this->reports[] = $report;
             }
         }
-
-        if ($this->selectedCurrency) {
-            $this->reports = array_filter($this->reports, function ($report) {
-                return ($report['balances'][$this->selectedCurrency] ?? 0) != 0;
-            });
-        }
     }
 
     private function getRelatedCustomerName($relatedCustomerId)
@@ -473,7 +480,7 @@ class GeneralReports extends Component
         $total = 0;
         foreach ($balances as $currency => $balance) {
             if (isset($exchangeRates[$currency]) && $balance != 0) {
-                $total += $balance  / $exchangeRates[$currency];
+                $total += $balance / $exchangeRates[$currency];
             }
         }
         return $total;
