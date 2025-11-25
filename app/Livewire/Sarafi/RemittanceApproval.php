@@ -17,7 +17,7 @@ class RemittanceApproval extends Component
     public $confirmApproveId = null;
     public $confirmRejectId = null;
     public $approvalNotes = '';
-    
+
     // اضافه کردن پراپرتی‌های کمیشن
     public $withCommission = false;
     public $commissionAccount = null;
@@ -81,102 +81,104 @@ class RemittanceApproval extends Component
         $this->confirmRejectId = $approvalId;
     }
 
-        public function approveRemittance()
-        {
-            DB::connection('sarafi')->transaction(function () {
-                $user = Auth::guard('sarafi')->user();
-                $approval = ApprovalModel::findOrFail($this->confirmApproveId);
-                
-                // آپدیت وضعیت تایید
-                $approval->update([
-                    'approved' => 1,
-                    'approved_by' => $user->id,
-                    'approved_at' => now(),
-                    'approval_notes' => $this->approvalNotes,
+    public function approveRemittance()
+    {
+        DB::connection('sarafi')->transaction(function () {
+            $user = Auth::guard('sarafi')->user();
+            $approval = ApprovalModel::findOrFail($this->confirmApproveId);
+
+            // آپدیت وضعیت تایید
+            $approval->update([
+                'approved' => 1,
+                'approved_by' => $user->id,
+                'approved_at' => now(),
+                'approval_notes' => $this->approvalNotes,
+                'with_commission' => $this->withCommission,
+                'commission_account' => $this->commissionAccount,
+                'commission_currency' => $this->commissionCurrency,
+                'commission_amount' => $this->commissionAmount,
+            ]);
+
+            // آپدیت وضعیت حواله اصلی
+            $remittance = Remittances::find($approval->remittance_id);
+            if ($remittance) {
+                $remittance->update([
+                    'state' => 1,
                     'with_commission' => $this->withCommission,
                     'commission_account' => $this->commissionAccount,
                     'commission_currency' => $this->commissionCurrency,
                     'commission_amount' => $this->commissionAmount,
                 ]);
+            }
 
-                // آپدیت وضعیت حواله اصلی
-                $remittance = Remittances::find($approval->remittance_id);
-                if ($remittance) {
-                    $remittance->update([
-                        'state' => 1,
-                        'with_commission' => $this->withCommission,
-                        'commission_account' => $this->commissionAccount,
-                        'commission_currency' => $this->commissionCurrency,
-                        'commission_amount' => $this->commissionAmount,
-                    ]);
-                }
+            // ایجاد تراکنش‌های مالی
+            $this->createTransactions($approval, $user);
 
-                // ایجاد تراکنش‌های مالی
-                $this->createTransactions($approval, $user);
+            // اگر کمیشن فعال است، تراکنش کمیشن ایجاد کن
+            if ($this->withCommission && $this->commissionAccount && $this->commissionAmount > 0) {
+                $this->createCommissionTransaction($approval, $user);
+            }
 
-                // اگر کمیشن فعال است، تراکنش کمیشن ایجاد کن
-                if ($this->withCommission && $this->commissionAccount && $this->commissionAmount > 0) {
-                    $this->createCommissionTransaction($approval, $user);
-                }
+            // آپدیت موجودی بانک
+            $this->updateBankAccount($approval);
 
-                // آپدیت موجودی بانک
-                $this->updateBankAccount($approval);
+            $message = 'حواله با موفقیت تایید شد';
+            if ($this->withCommission) {
+                $message .= ' و کمیشن ' . number_format($this->commissionAmount) . ' ' . $this->getCurrencyName($this->commissionCurrency) . ' ثبت شد';
+            }
 
-                $message = 'حواله با موفقیت تایید شد';
-                if ($this->withCommission) {
-                    $message .= ' و کمیشن ' . number_format($this->commissionAmount) . ' ' . $this->getCurrencyName($this->commissionCurrency) . ' ثبت شد';
-                }
-                
-                session()->flash('message', $message);
-            });
+            session()->flash('message', $message);
+        });
 
-            $this->resetApprovalForm();
-        }
+        $this->resetApprovalForm();
+    }
 
-        /**
-         * ایجاد تراکنش‌های مالی هنگام تایید حواله
-         */
-        private function createTransactions(ApprovalModel $approval, $user)
-        {
-            $adminId = $user->admin_id ?? $user->id;
+    /**
+     * ایجاد تراکنش‌های مالی هنگام تایید حواله
+     */
+    private function createTransactions(ApprovalModel $approval, $user)
+    {
+        $adminId = $user->admin_id ?? $user->id;
 
-    
-            Transaction::create([
-                'customer_id' => $approval->customer_id,
-'remittance_id' => $approval->id,                'user_id' => $user->id,
-                'admin_id' => $adminId,
-                'date' => now(),
-                'type' => 'رسید',
-                'amount' => $approval->amount,
-                'currency' => $approval->currency,
-                'account_type' => 'بانکی',
-                'description' => 'برداشت برای حواله - شماره پیگیری: ' . $approval->tracking_code,
-                'document_number' => 'REM-' . $approval->remittance_id . '-OUT',
-                'zone' => $approval->zone,
-                'by' => $user->name,
-                'rate' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
 
-            Transaction::create([
-                'customer_id' => $approval->to_account,
-'remittance_id' => $approval->id,                'user_id' => $user->id,
-                'admin_id' => $adminId,
-                'date' => now(),
-                'type' => 'رسید',
-                'amount' => $approval->amount,
-                'currency' => $approval->currency,
-                'account_type' => 'بانکی',
-                'description' => 'دریافت حواله - شماره پیگیری: ' . $approval->tracking_code,
-                'document_number' => 'REM-' . $approval->remittance_id . '-IN',
-                'zone' => $approval->zone,
-                'by' => $user->name,
-                'rate' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
+        Transaction::create([
+            'customer_id' => $approval->customer_id,
+            'remittance_id' => $approval->id,
+            'user_id' => $user->id,
+            'admin_id' => $adminId,
+            'date' => now(),
+            'type' => 'رسید',
+            'amount' => $approval->amount,
+            'currency' => $approval->currency,
+            'account_type' => 'بانکی',
+            'description' => 'برداشت برای حواله - شماره پیگیری: ' . $approval->tracking_code,
+            'document_number' => 'REM-' . $approval->remittance_id . '-OUT',
+            'zone' => $approval->zone,
+            'by' => $user->name,
+            'rate' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        Transaction::create([
+            'customer_id' => $approval->to_account,
+            'remittance_id' => $approval->id,
+            'user_id' => $user->id,
+            'admin_id' => $adminId,
+            'date' => now(),
+            'type' => 'رسید',
+            'amount' => $approval->amount,
+            'currency' => $approval->currency,
+            'account_type' => 'بانکی',
+            'description' => 'دریافت حواله - شماره پیگیری: ' . $approval->tracking_code,
+            'document_number' => 'REM-' . $approval->remittance_id . '-IN',
+            'zone' => $approval->zone,
+            'by' => $user->name,
+            'rate' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+    }
 
     /**
      * ایجاد تراکنش کمیشن
@@ -185,10 +187,11 @@ class RemittanceApproval extends Component
     {
         $adminId = $user->admin_id ?? $user->id;
 
-       
+
         Transaction::create([
             'customer_id' => $approval->customer_id,
-'remittance_id' => $approval->id,            'user_id' => $user->id,
+            'remittance_id' => $approval->id,
+            'user_id' => $user->id,
             'admin_id' => $adminId,
             'date' => now(),
             'type' => 'برد',
@@ -204,9 +207,9 @@ class RemittanceApproval extends Component
             'updated_at' => now(),
         ]);
 
-            Transaction::create([
+        Transaction::create([
             'customer_id' => $this->commissionAccount,
-            'remittance_id' => $approval->remittance_id,
+            'remittance_id' => $approval->id,
             'user_id' => $user->id,
             'admin_id' => $adminId,
             'date' => now(),
@@ -228,7 +231,7 @@ class RemittanceApproval extends Component
     {
         $user = Auth::guard('sarafi')->user();
         $approval = ApprovalModel::findOrFail($this->confirmRejectId);
-        
+
         $approval->update([
             'approved' => 2,
             'approved_by' => $user->id,
@@ -237,7 +240,7 @@ class RemittanceApproval extends Component
         ]);
 
         session()->flash('message', 'حواله رد شد.');
-        
+
         $this->confirmRejectId = null;
         $this->approvalNotes = '';
     }
@@ -302,7 +305,7 @@ class RemittanceApproval extends Component
     public function render()
     {
         $pendingApprovals = $this->getPendingApprovals();
-        
+
         return view('livewire.sarafi.remittance-approval', [
             'pendingApprovals' => $pendingApprovals,
             'customers' => $this->customers
