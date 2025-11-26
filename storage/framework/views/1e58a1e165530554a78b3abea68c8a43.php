@@ -342,7 +342,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </text>
 
                             <!-- نام ارز زیر میله -->
-                            <text x="<?php echo e($x + $barWidth / 2); ?>" y="300" font-family="Arial" font-size="12" text-anchor="middle"
+                            <text x="<?php echo e($x + $barWidth / 2); ?>" y="300" font-family="Arial" font-size="16" text-anchor="middle"
                                 fill="#374151">
                                 <?php echo e($item['currency']); ?>
 
@@ -351,6 +351,102 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </svg>
                     </div>
                 <?php break; ?>
+             <?php case ('طلب مشتری ها'): ?>
+<div class="overflow-x-auto w-full mt-4 mb-8">
+    <div class="flex flex-col max-h-[600px] overflow-y-auto">
+
+        <table class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500">
+
+            
+            <thead class="bg-[#2B65E5] text-white text-[16px] vazir h-16 sticky top-0">
+                <tr>
+                    <th class="px-4 py-4 font-bold w-16">
+                        <span class="border border-white px-2 py-1 rounded-lg">#</span>
+                    </th>
+                    <th class="px-4 py-4 font-bold">نمبر حساب</th>
+                    <th class="px-4 py-4 font-bold">نام حساب</th>
+                    <th class="px-4 py-4 font-bold">آخرین تاریخ</th>
+
+                    
+                    <th class="px-4 py-4 font-bold">دالر</th>
+                    <th class="px-4 py-4 font-bold">افغانی</th>
+                    <th class="px-4 py-4 font-bold">تومان</th>
+                    <th class="px-4 py-4 font-bold">کلدار</th>
+                    <th class="px-4 py-4 font-bold">یورو</th>
+                    <th class="px-4 py-4 font-bold">درهم</th>
+                    <th class="px-4 py-4 font-bold">لیره</th>
+                    <th class="px-4 py-4 font-bold">یوان</th>
+
+                    
+                    <?php
+                        $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
+                        $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
+                    ?>
+                    <th class="px-4 py-4 font-bold">بیلانس به <?php echo e($sourceCurrency); ?></th>
+                </tr>
+            </thead>
+
+            
+            <tbody>
+                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $demands; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $demand): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <tr class="border-b hover:bg-gray-50 transition-colors">
+
+                    
+                    <td class="px-4 py-4">
+                        <span class="px-2 py-1 rounded-lg bg-gray-100"><?php echo e($index + 1); ?></span>
+                    </td>
+
+                    
+                    <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
+                        <?php echo e($demand['account_number']); ?>
+
+                    </td>
+
+                    
+                    <td class="px-4 py-4">
+                        <?php echo e($demand['fullname']); ?>
+
+                    </td>
+
+                    
+                    <td class="px-3 py-4">
+                        <?php echo e($demand['last_date'] ? \Carbon\Carbon::parse($demand['last_date'])->format('Y/m/d') : '-'); ?>
+
+                    </td>
+
+                    
+                    <td class="px-4 py-4 text-left"><?php echo e(number_format($demand['balances']['usd'] ?? 0, 2)); ?></td>
+                    <td class="px-4 py-4 text-left"><?php echo e(number_format($demand['balances']['afn'] ?? 0, 2)); ?></td>
+                    <td class="px-4 py-4 text-left"><?php echo e(number_format($demand['balances']['irr'] ?? 0, 2)); ?></td>
+                    <td class="px-4 py-4 text-left"><?php echo e(number_format($demand['balances']['pkr'] ?? 0, 2)); ?></td>
+                    <td class="px-4 py-4 text-left"><?php echo e(number_format($demand['balances']['eur'] ?? 0, 2)); ?></td>
+                    <td class="px-4 py-4 text-left"><?php echo e(number_format($demand['balances']['aed'] ?? 0, 2)); ?></td>
+                    <td class="px-4 py-4 text-left"><?php echo e(number_format($demand['balances']['try'] ?? 0, 2)); ?></td>
+                    <td class="px-4 py-4 text-left"><?php echo e(number_format($demand['balances']['cny'] ?? 0, 2)); ?></td>
+
+                    
+                    <td class="px-4 py-4 font-medium text-left">
+                        <?php echo e(number_format($demand['total_balance'], 2)); ?>
+
+                    </td>
+                </tr>
+
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                <tr>
+                    <td colspan="14" class="px-4 py-8 text-center text-gray-500">
+                        هیچ داده‌ای یافت نشد
+                    </td>
+                </tr>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+<?php break; ?>
+
+            
 
                 <?php default: ?>
                     <div class="border p-5 rounded bg-gray-50">

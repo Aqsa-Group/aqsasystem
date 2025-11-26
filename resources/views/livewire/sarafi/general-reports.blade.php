@@ -1,5 +1,4 @@
 <div class="px-5">
-    <!-- دکمه‌های دسته‌بندی -->
     <div class="w-[1200px]">
         <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-3 mb-5">
             <button wire:click="selectCategory('customers')"
@@ -23,8 +22,7 @@
 
     <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px] w-full mb-5"
         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-        
-        <!-- select زیرشاخه -->
+
         @if($selectedCategory)
         <div class="mb-5 relative w-full">
             <select wire:model.live="selectedSubCategory"
@@ -44,75 +42,76 @@
 
         <!-- نمایش محتوای زیرشاخه -->
         @if($selectedSubCategory)
-            @switch($selectedSubCategory)
-                @case('گزارش بیلانس مشتریان')
-                    <!-- بخش جدول -->
-                    <div class="overflow-x-auto w-full mt-4 mb-8">
-                        <div class="flex flex-col max-h-[600px] overflow-y-auto">
-                            <table class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500">
-                                <thead class="bg-[#2B65E5] text-white text-[16px] vazir h-16 sticky top-0">
-                                    <tr>
-                                        <th class="px-4 py-4 font-bold w-16">
-                                            <span class="border border-white px-2 py-1 rounded-lg">#</span>
-                                        </th>
-                                        <th class="px-4 py-4 font-bold">نمبرحساب</th>
-                                        <th class="px-4 py-4 font-bold">نام حساب</th>
-                                        <th class="px-4 py-4 font-bold">آخرین تاریخ</th>
-                                        <th class="px-4 py-4 font-bold">دالر</th>
-                                        <th class="px-4 py-4 font-bold">افغانی</th>
-                                        <th class="px-4 py-4 font-bold">تومان</th>
-                                        <th class="px-4 py-4 font-bold">کلدار</th>
-                                        <th class="px-4 py-4 font-bold">یورو</th>
-                                        <th class="px-4 py-4 font-bold">درهم</th>
-                                        <th class="px-4 py-4 font-bold">لیره</th>
-                                        <th class="px-4 py-4 font-bold">یوان</th>
-                                        @php
-                                        $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
-                                        $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
-                                        @endphp
-                                        <th class="px-4 py-4 font-bold">بیلانس به {{ $sourceCurrency }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($reports as $index => $report)
-                                    <tr class="border-b hover:bg-gray-50 transition-colors">
-                                        <td class="px-4 py-4">
-                                            <span class="px-2 py-1 rounded-lg bg-gray-100">{{ $index + 1 }}</span>
-                                        </td>
-                                        <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                            {{ $report['account_number'] }}
-                                        </td>
-                                        <td class="px-4 py-4">{{ $report['fullname'] }}</td>
-                                        <td class="px-3 py-4">
-                                            {{ $report['last_date'] ? \Carbon\Carbon::parse($report['last_date'])->format('Y/m/d') : '-' }}
-                                        </td>
-                                        <td class="px-4 py-4 text-left">{{ number_format($report['balances']['usd'] ?? 0, 2) }}</td>
-                                        <td class="px-4 py-4 text-left">{{ number_format($report['balances']['afn'] ?? 0, 2) }}</td>
-                                        <td class="px-4 py-4 text-left">{{ number_format($report['balances']['irr'] ?? 0, 2) }}</td>
-                                        <td class="px-4 py-4 text-left">{{ number_format($report['balances']['pkr'] ?? 0, 2) }}</td>
-                                        <td class="px-4 py-4 text-left">{{ number_format($report['balances']['eur'] ?? 0, 2) }}</td>
-                                        <td class="px-4 py-4 text-left">{{ number_format($report['balances']['aed'] ?? 0, 2) }}</td>
-                                        <td class="px-4 py-4 text-left">{{ number_format($report['balances']['try'] ?? 0, 2) }}</td>
-                                        <td class="px-4 py-4 text-left">{{ number_format($report['balances']['cny'] ?? 0, 2) }}</td>
-                                        <td class="px-4 py-4 font-medium text-left">{{ number_format($report['total_balance'], 2) }}</td>
-                                    </tr>
-                                    @empty
-                                    <tr>
-                                        <td colspan="14" class="px-4 py-8 text-center text-gray-500">
-                                            هیچ داده‌ای یافت نشد
-                                        </td>
-                                    </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                @break
+        @switch($selectedSubCategory)
+        @case('گزارش بیلانس مشتریان')
+        <div class="overflow-x-auto w-full mt-4 mb-8">
+            <div class="flex flex-col max-h-[600px] overflow-y-auto">
+                <table class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500">
+                    <thead class="bg-[#2B65E5] text-white text-[16px] vazir h-16 sticky top-0">
+                        <tr>
+                            <th class="px-4 py-4 font-bold w-16">
+                                <span class="border border-white px-2 py-1 rounded-lg">#</span>
+                            </th>
+                            <th class="px-4 py-4 font-bold">نمبرحساب</th>
+                            <th class="px-4 py-4 font-bold">نام حساب</th>
+                            <th class="px-4 py-4 font-bold">آخرین تاریخ</th>
+                            <th class="px-4 py-4 font-bold">دالر</th>
+                            <th class="px-4 py-4 font-bold">افغانی</th>
+                            <th class="px-4 py-4 font-bold">تومان</th>
+                            <th class="px-4 py-4 font-bold">کلدار</th>
+                            <th class="px-4 py-4 font-bold">یورو</th>
+                            <th class="px-4 py-4 font-bold">درهم</th>
+                            <th class="px-4 py-4 font-bold">لیره</th>
+                            <th class="px-4 py-4 font-bold">یوان</th>
+                            @php
+                            $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
+                            $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
+                            @endphp
+                            <th class="px-4 py-4 font-bold">بیلانس به {{ $sourceCurrency }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($reports as $index => $report)
+                        <tr class="border-b hover:bg-gray-50 transition-colors">
+                            <td class="px-4 py-4">
+                                <span class="px-2 py-1 rounded-lg bg-gray-100">{{ $index + 1 }}</span>
+                            </td>
+                            <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                {{ $report['account_number'] }}
+                            </td>
+                            <td class="px-4 py-4">{{ $report['fullname'] }}</td>
+                            <td class="px-3 py-4">
+                                {{ $report['last_date'] ? \Carbon\Carbon::parse($report['last_date'])->format('Y/m/d') :
+                                '-' }}
+                            </td>
+                            <td class="px-4 py-4 text-left">{{ number_format($report['balances']['usd'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left">{{ number_format($report['balances']['afn'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left">{{ number_format($report['balances']['irr'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left">{{ number_format($report['balances']['pkr'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left">{{ number_format($report['balances']['eur'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left">{{ number_format($report['balances']['aed'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left">{{ number_format($report['balances']['try'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left">{{ number_format($report['balances']['cny'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 font-medium text-left">{{ number_format($report['total_balance'], 2) }}
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="14" class="px-4 py-8 text-center text-gray-500">
+                                هیچ داده‌ای یافت نشد
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @break
 
-                @case('گزارش خلاصه بیلانس مشتریان')
-                    <div class="w-full rounded-[16px] bg-[#2563EB] p-4 mb-6">
-                        <div class="flex-1">
-                            <div class="relative w-full" x-data="{
+        @case('گزارش خلاصه بیلانس مشتریان')
+        <div class="w-full rounded-[16px] bg-[#2563EB] p-4 mb-6">
+            <div class="flex-1">
+                <div class="relative w-full" x-data="{
                                     searchValue: '',
                                     searchQuery: '',
                                     selectedIds: @entangle('selectedAccounts'),
@@ -162,194 +161,289 @@
                                     }
                                 }" x-init="init()" @click.outside="isOpen = false">
 
-                                <!-- Input Field -->
-                                <div @click="isOpen = true" class="relative">
-                                    <input type="text" x-model="searchValue" placeholder="انتخاب مشتری"
-                                        class="w-full h-[30px] p-3 pr-10 rounded-[12px]  bg-transparent  cursor-pointer text-white placeholder-white"
-                                        readonly>
+                    <!-- Input Field -->
+                    <div @click="isOpen = true" class="relative">
+                        <input type="text" x-model="searchValue" placeholder="انتخاب مشتری"
+                            class="w-full h-[30px] p-3 pr-10 rounded-[12px]  bg-transparent  cursor-pointer text-white placeholder-white"
+                            readonly>
 
-                                    <!-- Dropdown Arrow -->
-                                    <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg" :class="{'rotate-180': isOpen}" class="transition-transform">
-                                            <path
-                                                d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
-                                                stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                                                stroke-linejoin="round" />
-                                        </svg>
-                                    </div>
+                        <!-- Dropdown Arrow -->
+                        <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" :class="{'rotate-180': isOpen}"
+                                class="transition-transform">
+                                <path
+                                    d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                    stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </div>
 
-                                    <!-- Clear Button -->
-                                    <template x-if="selectedCustomers.length > 0">
-                                        <div class="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
-                                            @click.stop="clearAll()">
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M18 6L6 18M6 6l12 12" stroke="white" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </div>
-                                    </template>
-                                </div>
-
-                                <!-- Dropdown Menu -->
-                                <div x-show="isOpen" x-transition:enter="transition ease-out duration-200"
-                                    x-transition:enter-start="opacity-0 transform scale-95"
-                                    x-transition:enter-end="opacity-100 transform scale-100"
-                                    x-transition:leave="transition ease-in duration-200"
-                                    x-transition:leave-start="opacity-100 transform scale-100"
-                                    x-transition:leave-end="opacity-0 transform scale-95"
-                                    class="absolute z-50 w-full mt-1 bg-white  rounded-md shadow-lg max-h-60 overflow-auto"
-                                    @click.stop>
-
-                                    <!-- Search Box inside Dropdown -->
-                                    <div class="sticky top-0 bg-white p-2 border-b">
-                                        <input type="text" x-model="searchQuery" placeholder="جستجوی مشتری..."
-                                            class="w-full p-2   rounded-md focus:ring-2 focus:ring-blue-500">
-                                    </div>
-
-                                    <!-- Customers List -->
-                                    <template x-for="customer in filteredCustomers" :key="customer.id">
-                                        <label class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer border-b transition-colors">
-                                            <!-- Checkbox سمت چپ -->
-                                            <input type="checkbox" :checked="isSelected(customer.id)"
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                                                @click.stop="toggleCustomer(customer)">
-
-                                            <!-- Customer Info -->
-                                            <div class="flex-1 text-right mr-3">
-                                                <div class="font-medium text-gray-900" x-text="customer.fullname"></div>
-                                                <div class="text-sm text-gray-500"
-                                                    x-text="'شماره حساب: ' + customer.account_number"></div>
-                                            </div>
-                                        </label>
-                                    </template>
-
-                                    <!-- No Results -->
-                                    <div x-show="filteredCustomers.length === 0" class="px-3 py-2 text-gray-500 text-center">
-                                        مشتری یافت نشد
-                                    </div>
-                                </div>
-
-                                @error('selectedAccounts')
-                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                                @enderror
+                        <!-- Clear Button -->
+                        <template x-if="selectedCustomers.length > 0">
+                            <div class="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+                                @click.stop="clearAll()">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M18 6L6 18M6 6l12 12" stroke="white" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
                             </div>
+                        </template>
+                    </div>
+
+                    <!-- Dropdown Menu -->
+                    <div x-show="isOpen" x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 transform scale-95"
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        x-transition:leave="transition ease-in duration-200"
+                        x-transition:leave-start="opacity-100 transform scale-100"
+                        x-transition:leave-end="opacity-0 transform scale-95"
+                        class="absolute z-50 w-full mt-1 bg-white  rounded-md shadow-lg max-h-60 overflow-auto"
+                        @click.stop>
+
+                        <!-- Search Box inside Dropdown -->
+                        <div class="sticky top-0 bg-white p-2 border-b">
+                            <input type="text" x-model="searchQuery" placeholder="جستجوی مشتری..."
+                                class="w-full p-2   rounded-md focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <!-- Customers List -->
+                        <template x-for="customer in filteredCustomers" :key="customer.id">
+                            <label
+                                class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer border-b transition-colors">
+                                <!-- Checkbox سمت چپ -->
+                                <input type="checkbox" :checked="isSelected(customer.id)"
+                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                                    @click.stop="toggleCustomer(customer)">
+
+                                <!-- Customer Info -->
+                                <div class="flex-1 text-right mr-3">
+                                    <div class="font-medium text-gray-900" x-text="customer.fullname"></div>
+                                    <div class="text-sm text-gray-500"
+                                        x-text="'شماره حساب: ' + customer.account_number"></div>
+                                </div>
+                            </label>
+                        </template>
+
+                        <!-- No Results -->
+                        <div x-show="filteredCustomers.length === 0" class="px-3 py-2 text-gray-500 text-center">
+                            مشتری یافت نشد
                         </div>
                     </div>
 
-                    <h1 class="mt-5 mr-4 text-xl font-bold text-gray-800">گزارش خلاصه بیلانس مشتریان انتخاب شده</h1>
-                    
-                    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 p-4 mb-8">
-                        @foreach($totalBalances as $currencyCode => $data)
-                        <div
-                            class="flex flex-col bg-white justify-center items-center gap-3 rounded-xl py-6 px-4 shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
-                            <p class="text-gray-500 text-sm font-medium">{{ $data['currency_name'] }}</p>
-                            <p class="text-2xl font-bold text-gray-800 times">
-                                {{ number_format($data['total']) }}
-                            </p>
-                            <p class="text-gray-400 text-xs font-medium uppercase">
-                                @switch($currencyCode)
-                                    @case('usd') USD @break
-                                    @case('afn') AFN @break
-                                    @case('irr') IRR @break
-                                    @case('eur') EUR @break
-                                    @case('pkr') PKR @break
-                                    @case('aed') AED @break
-                                    @case('try') TRY @break
-                                    @case('cny') CNY @break
-                                    @default {{ $currencyCode }}
-                                @endswitch
-                            </p>
-                        </div>
-                        @endforeach
-                    </div>
+                    @error('selectedAccounts')
+                    <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+        </div>
 
-                    <!-- نمودار میله‌ای -->
-                    <div class=" p-6  mb-8">
-                        <svg width="100%" height="350" viewBox="0 0 1000 350" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stop-color="#153885" />
-                                    <stop offset="100%" stop-color="#2563EB" />
-                                </linearGradient>
-                            </defs>
+        <h1 class="mt-5 mr-4 text-xl font-bold text-gray-800">گزارش خلاصه بیلانس مشتریان انتخاب شده</h1>
 
-                            <!-- محور عمودی سمت چپ برای جدا کردن مقادیر -->
-                            <line x1="129" y1="30" x2="129" y2="280" stroke="#94a3b8" stroke-width="2" />
-                            
-                            <!-- محور افقی -->
-                            <line x1="100" y1="280" x2="950" y2="280" stroke="#94a3b8" stroke-width="2" />
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 p-4 mb-8">
+            @foreach($totalBalances as $currencyCode => $data)
+            <div
+                class="flex flex-col bg-white justify-center items-center gap-3 rounded-xl py-6 px-4 shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
+                <p class="text-gray-500 text-sm font-medium">{{ $data['currency_name'] }}</p>
+                <p class="text-2xl font-bold text-gray-800 times">
+                    {{ number_format($data['total']) }}
+                </p>
+                <p class="text-gray-400 text-xs font-medium uppercase">
+                    @switch($currencyCode)
+                    @case('usd') USD @break
+                    @case('afn') AFN @break
+                    @case('irr') IRR @break
+                    @case('eur') EUR @break
+                    @case('pkr') PKR @break
+                    @case('aed') AED @break
+                    @case('try') TRY @break
+                    @case('cny') CNY @break
+                    @default {{ $currencyCode }}
+                    @endswitch
+                </p>
+            </div>
+            @endforeach
+        </div>
 
-                            <!-- مقادیر عمودی سمت چپ (چپ‌چین شده) -->
-                            <text x="90" y="285" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">0</text>
-                            <text x="90" y="235" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
-                                number_format($maxValue * 0.2, 0) }}</text>
-                            <text x="90" y="185" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
-                                number_format($maxValue * 0.4, 0) }}</text>
-                            <text x="90" y="135" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
-                                number_format($maxValue * 0.6, 0) }}</text>
-                            <text x="90" y="85" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
-                                number_format($maxValue * 0.8, 0) }}</text>
-                            <text x="90" y="35" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
-                                number_format($maxValue, 0) }}</text>
+        <!-- نمودار میله‌ای -->
+        <div class=" p-6  mb-8">
+            <svg width="100%" height="350" viewBox="0 0 1000 350" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#153885" />
+                        <stop offset="100%" stop-color="#2563EB" />
+                    </linearGradient>
+                </defs>
 
-                            <!-- خطوط راهنمای افقی -->
-                            <line x1="100" y1="280" x2="950" y2="280" stroke="#e2e8f0" stroke-width="1" />
-                            <line x1="100" y1="230" x2="950" y2="230" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
-                            <line x1="100" y1="180" x2="950" y2="180" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
-                            <line x1="100" y1="130" x2="950" y2="130" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
-                            <line x1="100" y1="80" x2="950" y2="80" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
-                            <line x1="100" y1="30" x2="950" y2="30" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
+                <!-- محور عمودی سمت چپ برای جدا کردن مقادیر -->
+                <line x1="129" y1="30" x2="129" y2="280" stroke="#94a3b8" stroke-width="2" />
 
-                            <!-- میله‌های نمودار -->
+                <!-- محور افقی -->
+                <line x1="100" y1="280" x2="950" y2="280" stroke="#94a3b8" stroke-width="2" />
+
+                <!-- مقادیر عمودی سمت چپ (چپ‌چین شده) -->
+                <text x="90" y="285" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">0</text>
+                <text x="90" y="235" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
+                    number_format($maxValue * 0.2, 0) }}</text>
+                <text x="90" y="185" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
+                    number_format($maxValue * 0.4, 0) }}</text>
+                <text x="90" y="135" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
+                    number_format($maxValue * 0.6, 0) }}</text>
+                <text x="90" y="85" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
+                    number_format($maxValue * 0.8, 0) }}</text>
+                <text x="90" y="35" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
+                    number_format($maxValue, 0) }}</text>
+
+                <!-- خطوط راهنمای افقی -->
+                <line x1="100" y1="280" x2="950" y2="280" stroke="#e2e8f0" stroke-width="1" />
+                <line x1="100" y1="230" x2="950" y2="230" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
+                <line x1="100" y1="180" x2="950" y2="180" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
+                <line x1="100" y1="130" x2="950" y2="130" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
+                <line x1="100" y1="80" x2="950" y2="80" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
+                <line x1="100" y1="30" x2="950" y2="30" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
+
+                <!-- میله‌های نمودار -->
+                @php
+                $chartHeight = 250; // 280 - 30
+                $barWidth = 50;
+                $spacing = 30;
+                $startX = 140; // افزایش یافته تا از خط جداکننده فاصله بگیرد
+                @endphp
+
+                @foreach($chartData as $index => $item)
+                @php
+                $barHeight = $maxValue > 0 ? ($item['value'] / $maxValue) * $chartHeight : 0;
+                $x = $startX + ($index * ($barWidth + $spacing));
+                $y = 280 - $barHeight;
+
+                // فرمت مقدار برای نمایش
+                $displayValue = $item['value'] >= 1000000
+                ? number_format($item['value'] / 1000000, 1) . 'M'
+                : ($item['value'] >= 1000
+                ? number_format($item['value'] / 1000, 1) . 'K'
+                : number_format($item['value'], 0));
+                @endphp
+
+                <!-- میله -->
+                <rect x="{{ $x }}" y="{{ $y }}" width="{{ $barWidth }}" height="{{ $barHeight }}"
+                    fill="url(#barGradient)" rx="2" />
+
+                <!-- مقدار بالای میله -->
+                <text x="{{ $x + $barWidth / 2 }}" y="{{ $y - 10 }}" font-family="Arial" font-size="12"
+                    text-anchor="middle" fill="#374151">
+                    {{ $displayValue }}
+                </text>
+
+                <!-- نام ارز زیر میله -->
+                <text x="{{ $x + $barWidth / 2 }}" y="300" font-family="Arial" font-size="16" text-anchor="middle"
+                    fill="#374151">
+                    {{ $item['currency'] }}
+                </text>
+                @endforeach
+            </svg>
+        </div>
+        @break
+        @case('طلب مشتری ها')
+        <div class="overflow-x-auto w-full mt-4 mb-8">
+            <div class="flex flex-col max-h-[600px] overflow-y-auto">
+
+                <table class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500">
+
+                    {{-- هدر جدول --}}
+                    <thead class="bg-[#2B65E5] text-white text-[16px] vazir h-16 sticky top-0">
+                        <tr>
+                            <th class="px-4 py-4 font-bold w-16">
+                                <span class="border border-white px-2 py-1 rounded-lg">#</span>
+                            </th>
+                            <th class="px-4 py-4 font-bold">نمبر حساب</th>
+                            <th class="px-4 py-4 font-bold">نام حساب</th>
+                            <th class="px-4 py-4 font-bold">آخرین تاریخ</th>
+
+                            {{-- ارزها --}}
+                            <th class="px-4 py-4 font-bold">دالر</th>
+                            <th class="px-4 py-4 font-bold">افغانی</th>
+                            <th class="px-4 py-4 font-bold">تومان</th>
+                            <th class="px-4 py-4 font-bold">کلدار</th>
+                            <th class="px-4 py-4 font-bold">یورو</th>
+                            <th class="px-4 py-4 font-bold">درهم</th>
+                            <th class="px-4 py-4 font-bold">لیره</th>
+                            <th class="px-4 py-4 font-bold">یوان</th>
+
+                            {{-- تبدیل به ارز پایه --}}
                             @php
-                            $chartHeight = 250; // 280 - 30
-                            $barWidth = 50;
-                            $spacing = 30;
-                            $startX = 140; // افزایش یافته تا از خط جداکننده فاصله بگیرد
+                            $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
+                            $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
                             @endphp
+                            <th class="px-4 py-4 font-bold">بیلانس به {{ $sourceCurrency }}</th>
+                        </tr>
+                    </thead>
 
-                            @foreach($chartData as $index => $item)
-                            @php
-                            $barHeight = $maxValue > 0 ? ($item['value'] / $maxValue) * $chartHeight : 0;
-                            $x = $startX + ($index * ($barWidth + $spacing));
-                            $y = 280 - $barHeight;
+                    {{-- بدنه جدول --}}
+                    <tbody>
+                        @forelse($demands as $index => $demand)
+                        <tr class="border-b hover:bg-gray-50 transition-colors">
 
-                            // فرمت مقدار برای نمایش
-                            $displayValue = $item['value'] >= 1000000
-                            ? number_format($item['value'] / 1000000, 1) . 'M'
-                            : ($item['value'] >= 1000
-                            ? number_format($item['value'] / 1000, 1) . 'K'
-                            : number_format($item['value'], 0));
-                            @endphp
+                            {{-- شماره --}}
+                            <td class="px-4 py-4">
+                                <span class="px-2 py-1 rounded-lg bg-gray-100">{{ $index + 1 }}</span>
+                            </td>
 
-                            <!-- میله -->
-                            <rect x="{{ $x }}" y="{{ $y }}" width="{{ $barWidth }}" height="{{ $barHeight }}" fill="url(#barGradient)"
-                                rx="2" />
+                            {{-- شماره حساب --}}
+                            <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                {{ $demand['account_number'] }}
+                            </td>
 
-                            <!-- مقدار بالای میله -->
-                            <text x="{{ $x + $barWidth / 2 }}" y="{{ $y - 10 }}" font-family="Arial" font-size="12" text-anchor="middle"
-                                fill="#374151">
-                                {{ $displayValue }}
-                            </text>
+                            {{-- نام مشتری --}}
+                            <td class="px-4 py-4">
+                                {{ $demand['fullname'] }}
+                            </td>
 
-                            <!-- نام ارز زیر میله -->
-                            <text x="{{ $x + $barWidth / 2 }}" y="300" font-family="Arial" font-size="12" text-anchor="middle"
-                                fill="#374151">
-                                {{ $item['currency'] }}
-                            </text>
-                            @endforeach
-                        </svg>
-                    </div>
-                @break
+                            {{-- آخرین تاریخ --}}
+                            <td class="px-3 py-4">
+                                {{ $demand['last_date'] ? \Carbon\Carbon::parse($demand['last_date'])->format('Y/m/d') :
+                                '-' }}
+                            </td>
 
-                @default
-                    <div class="border p-5 rounded bg-gray-50">
-                        <h3 class="font-bold text-lg mb-3">{{ $selectedSubCategory }}</h3>
-                        <p>این گزارش در حال توسعه می‌باشد</p>
-                    </div>
-            @endswitch
+                            {{-- ارزها: اگر نبود، صفر نمایش بده --}}
+                            <td class="px-4 py-4 text-left">{{ number_format($demand['balances']['usd'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left">{{ number_format($demand['balances']['afn'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left">{{ number_format($demand['balances']['irr'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left">{{ number_format($demand['balances']['pkr'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left">{{ number_format($demand['balances']['eur'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left">{{ number_format($demand['balances']['aed'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left">{{ number_format($demand['balances']['try'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left">{{ number_format($demand['balances']['cny'] ?? 0, 2) }}</td>
+
+                            {{-- بیلانس به ارز پایه --}}
+                            <td class="px-4 py-4 font-medium text-left">
+                                {{ number_format($demand['total_balance'], 2) }}
+                            </td>
+                        </tr>
+
+                        @empty
+                        <tr>
+                            <td colspan="14" class="px-4 py-8 text-center text-gray-500">
+                                هیچ داده‌ای یافت نشد
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+        @break
+
+
+
+        @default
+        <div class="border p-5 rounded bg-gray-50">
+            <h3 class="font-bold text-lg mb-3">{{ $selectedSubCategory }}</h3>
+            <p>این گزارش در حال توسعه می‌باشد</p>
+        </div>
+        @endswitch
         @endif
     </div>
 
@@ -394,7 +488,7 @@
                             <datalist id="customersList">
                                 @foreach ($customers as $customer)
                                 <option value="{{ $customer->account_number }} - {{ $customer->fullname }}">
-                                @endforeach
+                                    @endforeach
                             </datalist>
                             <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                 <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
@@ -408,63 +502,64 @@
 
                 <!-- نمایش موجودی‌ها -->
                 @if($selectedCustomerId)
-                    @php
-                        $hasNonZeroBalance = false;
-                        foreach($selectedCustomerBalance as $balance) {
-                            if (abs($balance['balance']) > 0.001) {
-                                $hasNonZeroBalance = true;
-                                break;
-                            }
-                        }
-                    @endphp
+                @php
+                $hasNonZeroBalance = false;
+                foreach($selectedCustomerBalance as $balance) {
+                if (abs($balance['balance']) > 0.001) {
+                $hasNonZeroBalance = true;
+                break;
+                }
+                }
+                @endphp
 
-                    @if($hasNonZeroBalance)
-                    <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6 mt-6 w-full lg:w-[589px]">
-                        <div class="space-y-4">
-                            <div
-                                class="w-full h-[79px] flex flex-col md:flex-row items-center justify-between p-6 bg-[#2563EB] text-white text-[16px] rounded-[12px]">
-                                <p class="vazir font-bold">ارزش کل موجودی</p>
-                                <p class="vazir font-bold">
-                                    @php
-                                    $totalUSD = 0;
-                                    foreach($selectedCustomerBalance as $balance) {
-                                        if (abs($balance['balance']) > 0.001) {
-                                            $totalUSD += $balance['balance_usd'];
-                                        }
-                                    }
-                                    @endphp
-                                    {{ number_format($totalUSD, 2) }}
-                                    <span>دالر</span>
-                                </p>
-                            </div>
+                @if($hasNonZeroBalance)
+                <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6 mt-6 w-full lg:w-[589px]">
+                    <div class="space-y-4">
+                        <div
+                            class="w-full h-[79px] flex flex-col md:flex-row items-center justify-between p-6 bg-[#2563EB] text-white text-[16px] rounded-[12px]">
+                            <p class="vazir font-bold">ارزش کل موجودی</p>
+                            <p class="vazir font-bold">
+                                @php
+                                $totalUSD = 0;
+                                foreach($selectedCustomerBalance as $balance) {
+                                if (abs($balance['balance']) > 0.001) {
+                                $totalUSD += $balance['balance_usd'];
+                                }
+                                }
+                                @endphp
+                                {{ number_format($totalUSD, 2) }}
+                                <span>دالر</span>
+                            </p>
+                        </div>
 
-                            @foreach($selectedCustomerBalance as $currencyCode => $data)
-                                @if(abs($data['balance']) > 0.001)
-                                <div
-                                    class="w-full h-[79px] flex flex-col md:flex-row items-center justify-between p-6 bg-transparent border border-[#2563EB] text-black text-[16px] rounded-[12px] hover:bg-blue-50 transition-colors">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-4 h-4 rounded-full" style="background-color: {{ $this->getCurrencyColor($currencyCode) }}">
-                                        </div>
-                                        <span class="vazir font-bold">{{ $data['currency_name'] }}</span>
-                                    </div>
-                                    <div class="text-left">
-                                        <p class="vazir font-bold">{{ number_format($data['balance'], 2) }}</p>
-                                    </div>
+                        @foreach($selectedCustomerBalance as $currencyCode => $data)
+                        @if(abs($data['balance']) > 0.001)
+                        <div
+                            class="w-full h-[79px] flex flex-col md:flex-row items-center justify-between p-6 bg-transparent border border-[#2563EB] text-black text-[16px] rounded-[12px] hover:bg-blue-50 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <div class="w-4 h-4 rounded-full"
+                                    style="background-color: {{ $this->getCurrencyColor($currencyCode) }}">
                                 </div>
-                                @endif
-                            @endforeach
+                                <span class="vazir font-bold">{{ $data['currency_name'] }}</span>
+                            </div>
+                            <div class="text-left">
+                                <p class="vazir font-bold">{{ number_format($data['balance'], 2) }}</p>
+                            </div>
                         </div>
+                        @endif
+                        @endforeach
                     </div>
-                    @else
-                    <div class="text-center py-8">
-                        <p class="text-gray-500 vazir">این مشتری موجودی ندارد</p>
-                        <!-- اطلاعات دیباگ -->
-                        <div class="mt-4 p-3 bg-gray-100 rounded text-xs text-gray-600">
-                            <p>Customer ID: {{ $selectedCustomerId }}</p>
-                            <p>Balances Count: {{ count($selectedCustomerBalance) }}</p>
-                        </div>
+                </div>
+                @else
+                <div class="text-center py-8">
+                    <p class="text-gray-500 vazir">این مشتری موجودی ندارد</p>
+                    <!-- اطلاعات دیباگ -->
+                    <div class="mt-4 p-3 bg-gray-100 rounded text-xs text-gray-600">
+                        <p>Customer ID: {{ $selectedCustomerId }}</p>
+                        <p>Balances Count: {{ count($selectedCustomerBalance) }}</p>
                     </div>
-                    @endif
+                </div>
+                @endif
                 @else
                 <div class="text-center py-8">
                     <p class="text-gray-500 vazir">لطفاً یک مشتری انتخاب کنید</p>
@@ -583,7 +678,8 @@
 
     <!-- بخش کارت‌های مشتریان برای گزارش خلاصه -->
     @if($selectedSubCategory == 'گزارش خلاصه بیلانس مشتریان' && !empty($selectedCustomersData))
-    <div class="mt-8 bg-[#F5F5F5] p-5 rounded-[16px] mb-5"  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+    <div class="mt-8 bg-[#F5F5F5] p-5 rounded-[16px] mb-5"
+        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
         <h2 class="text-xl font-bold text-gray-800 mb-6">کارت‌های موجودی مشتریان انتخاب شده</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach($selectedCustomersData as $customer)
@@ -593,15 +689,15 @@
             $customerCurrenciesWithBalance = [];
 
             foreach($customer['balances'] as $currencyCode => $balanceData) {
-                if (abs($balanceData['balance']) > 0.001) {
-                    $balanceUSD = $this->convertToUSD($balanceData['balance'], $currencyCode);
-                    $customerTotalUSD += $balanceUSD;
-                    $customerCurrenciesWithBalance[$currencyCode] = [
-                        'balance' => $balanceData['balance'],
-                        'currency_name' => $balanceData['currency_name'],
-                        'color' => $this->getCurrencyColor($currencyCode)
-                    ];
-                }
+            if (abs($balanceData['balance']) > 0.001) {
+            $balanceUSD = $this->convertToUSD($balanceData['balance'], $currencyCode);
+            $customerTotalUSD += $balanceUSD;
+            $customerCurrenciesWithBalance[$currencyCode] = [
+            'balance' => $balanceData['balance'],
+            'currency_name' => $balanceData['currency_name'],
+            'color' => $this->getCurrencyColor($currencyCode)
+            ];
+            }
             }
             @endphp
 
@@ -619,23 +715,23 @@
 
                     <!-- موجودی‌های ارزی -->
                     @if(count($customerCurrenciesWithBalance) > 0)
-                        @foreach($customerCurrenciesWithBalance as $currencyCode => $data)
-                        <div
-                            class="w-full h-[50px] flex flex-col md:flex-row items-center justify-between p-4 bg-transparent border border-[#2563EB] text-black text-[14px] rounded-[12px] hover:bg-blue-50 transition-colors">
-                            <div class="flex items-center gap-3">
-                                <div class="w-3 h-3 rounded-full" style="background-color: {{ $data['color'] }}"></div>
-                                <span class="vazir font-bold text-sm">{{ $data['currency_name'] }}</span>
-                            </div>
-                            <div class="text-left">
-                                <p class="vazir font-bold text-sm">{{ number_format($data['balance'], 2) }}</p>
-                            </div>
+                    @foreach($customerCurrenciesWithBalance as $currencyCode => $data)
+                    <div
+                        class="w-full h-[50px] flex flex-col md:flex-row items-center justify-between p-4 bg-transparent border border-[#2563EB] text-black text-[14px] rounded-[12px] hover:bg-blue-50 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <div class="w-3 h-3 rounded-full" style="background-color: {{ $data['color'] }}"></div>
+                            <span class="vazir font-bold text-sm">{{ $data['currency_name'] }}</span>
                         </div>
-                        @endforeach
+                        <div class="text-left">
+                            <p class="vazir font-bold text-sm">{{ number_format($data['balance'], 2) }}</p>
+                        </div>
+                    </div>
+                    @endforeach
                     @else
-                        <div
-                            class="w-full h-[50px] flex items-center justify-center p-4 bg-transparent border border-gray-300 text-gray-500 text-[14px] rounded-[12px]">
-                            <span class="vazir text-sm">بدون موجودی</span>
-                        </div>
+                    <div
+                        class="w-full h-[50px] flex items-center justify-center p-4 bg-transparent border border-gray-300 text-gray-500 text-[14px] rounded-[12px]">
+                        <span class="vazir text-sm">بدون موجودی</span>
+                    </div>
                     @endif
                 </div>
             </div>
