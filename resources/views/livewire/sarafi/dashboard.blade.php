@@ -108,11 +108,11 @@
                       : 'bg-white'">
 
             <template x-if="activeTab === 'general'">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" >
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
                     <!-- تعداد کاربران -->
                     <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
-                      text-white"  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                      text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
                             <img src="{{ asset('assets/sarafi/all_icon/  users.svg') }}" alt="" class="h-10 w-10">
@@ -126,7 +126,7 @@
 
                     <!-- تعداد مشتریان -->
                     <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
-                                     text-white"  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                                     text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
                             <img src="{{ asset('assets/sarafi/all_icon/customers.svg') }}" alt="" class="h-10 w-10">
@@ -141,7 +141,7 @@
 
                     <!-- تراکنش‌های امروز -->
                     <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
-                                     text-white"  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                                     text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
                             <img src="{{ asset('assets/sarafi/all_icon/exchange.svg') }}" alt="" class="h-10 w-10">
@@ -156,7 +156,7 @@
 
                     <!-- تراکنش‌های در انتظار -->
                     <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
-                                     text-white"  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                                     text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
                             <img src="{{ asset('assets/sarafi/all_icon/timer.svg') }}" alt="" class="h-10 w-10">
@@ -171,7 +171,7 @@
 
                     <!-- امروز سود -->
                     <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
-                                     text-white"  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                                     text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
                             <img src="{{ asset('assets/sarafi/all_icon/dollar-circle.svg') }}" alt="" class="h-10 w-10">
@@ -180,12 +180,12 @@
                         <h1 class="text-lg font-semibold drop-shadow-md text-center">
                             {{ __('messages.general_today_profit') }}</h1>
 
-                        <p class="text-3xl font-extrabold drop-shadow-md">1,200</p>
+                        <p class="text-3xl font-extrabold drop-shadow-md">{{ $todayprofit }}</p>
                     </div>
 
                     <!-- مجموع تراکنش‌ها -->
                     <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
-                                     text-white"  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                                     text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
                             <img src="{{ asset('assets/sarafi/all_icon/receipt-2.svg') }}" alt="" class="h-10 w-10">
@@ -200,7 +200,7 @@
 
                     <!-- حواله‌ها -->
                     <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
-                                     text-white"  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                                     text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
                             <img src="{{ asset('assets/sarafi/all_icon/send-2.svg') }}" alt="" class="h-10 w-10">
@@ -215,7 +215,7 @@
 
                     <!-- مجموع موجودی حساب‌ها -->
                     <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
-                                     text-white"  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                                     text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
                             <img src="{{ asset('assets/sarafi/all_icon/wallet-3.svg') }}" alt="" class="h-10 w-10">
@@ -245,7 +245,7 @@
                         </div>
                         <div class="space-y-2">
                             <h1 class="text-[16px] font-semibold text-gray-600">{{ $label }}</h1>
-                            <p class="text-[25px] font-extrabold text-[#2563EB]">
+                            <p dir="ltr" class="  text-[25px] font-extrabold text-[#2563EB]">
                                 {{ number_format($safe->$key ?? 0) }}
                             </p>
                         </div>
@@ -265,7 +265,7 @@
                         </div>
                         <div class="space-y-2">
                             <h1 class="text-[16px] font-semibold text-gray-600">{{ $label }}</h1>
-                            <p class="text-[25px] font-extrabold text-[#2563EB]">
+                            <p dir="ltr" class="  text-[25px] font-extrabold text-[#2563EB]">
                                 {{ number_format($safe_account[$key] ?? 0) }}
                             </p>
                         </div>

@@ -2,56 +2,28 @@
 
 namespace App\Models\Sarafi;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Revenue extends Model
+class WithdrawRevenue extends Model
 {
-    
+    use HasFactory;
+
+    protected $table = 'withdraw_revenue';
     protected $connection = 'sarafi';
-    
-    protected $table = 'revenue';
 
     protected $fillable = [
-        'currency',
-        'profit', 
-        'lost',
-        'from',
-        'description',
+        'customer_id',
         'user_id',
         'admin_id',
-        'conversion_in_account_id',
-        'conversion_transfer_in_account_id',
-        'safe_exchange_id'
+        'currency',
+        'amount',
+        'date',
+        'description'
     ];
 
-    public function conversion()
-    {
-        return $this->belongsTo(ConversionInAccounts::class, 'conversion_in_account_id');
-    }
 
-      public function conversiontransfer()
-    {
-        return $this->belongsTo(ConversionTransfers::class, 'conversion_transfer_in_account_id');
-    }
-
-
-       public function conversionexchange()
-    {
-        return $this->belongsTo(CashExchange::class, 'safe_exchange_id');
-    }
-
-
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-
-    public function admin()
-    {
-        return $this->belongsTo(User::class, 'admin_id');
-    }
-
-    /**
+      /**
      * Accessor برای نام فارسی ارز
      */
     public function getCurrencyNameAttribute()
@@ -81,5 +53,27 @@ class Revenue extends Model
     {
         return $this->currency_name;
     }
+    /**
+     * رابطه با مشتری
+     */
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
 
+    /**
+     * رابطه با کاربر
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * رابطه با ادمین
+     */
+    public function admin()
+    {
+        return $this->belongsTo(User::class, 'admin_id');
+    }
 }

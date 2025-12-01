@@ -160,7 +160,7 @@ unset($__errorArgs, $__bag); ?>
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">تاریخ</label>
                             <input type="text" id="datePicker" wire:model="date" placeholder="YYYY/MM/DD"
                                 class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
-                          
+
                             <?php $__errorArgs = ['date'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -213,7 +213,7 @@ unset($__errorArgs, $__bag); ?>
 
                     <!-- Source and Destination Banks -->
                     <div class="mt-2 flex flex-col lg:flex-row gap-3">
-                    <!-- Source Bank -->
+                        <!-- Source Bank -->
                         <div class="lg:w-[290px]">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">بانک مبدا</label>
                             <input type="text" wire:model="from_bank" placeholder="سپه"
@@ -504,7 +504,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
 
-                        
+
 
                             <!-- نمایش فایل ذخیره شده (در حالت ویرایش) -->
                             <?php if($remittance_image && is_string($remittance_image)): ?>
@@ -620,238 +620,251 @@ unset($__errorArgs, $__bag); ?>
                             class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead
                                 class="bg-[#2B65E5] dark:bg-gray-700 text-white text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0"
-                                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-                                <tr>
-                                    <th class="px-4 py-4 font-bold w-16">#</th>
-                                    <th class="px-4 py-4 font-bold w-48">نام مشتری</th>
-                                    <th class="px-4 py-4 font-bold w-32">گیرنده</th>
-                                    <th class="px-4 py-4 font-bold w-40">مبلغ</th>
-                                    <th class="px-4 py-4 font-bold w-32">واحد</th>
-                                    <th class="px-4 py-4 font-bold w-32">وضعیت</th>
-                                    <th class="px-4 py-4 font-bold w-80 text-center">توضیحات</th>
-                                    <th class="px-4 py-4 font-bold w-40">تاریخ</th>
-                                    <th class="px-4 py-4 font-bold w-48 text-center">عملیات</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php $__empty_1 = true; $__currentLoopData = $remittances; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $remittance): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                                <tr class="text-black border-b border-[#D9D9D9] bg-transparent">
-                                    <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">
-                                        <?php echo e($key + 1); ?>
+                                <div class="overflow-x-auto w-full">
+                                <div class="max-h-[680px] overflow-y-auto min-w-[890px]">
+                                    <table
+                                        class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                        <thead
+                                            class="bg-[#2B65E5] dark:bg-gray-700 text-white text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0"
+                                            style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                                            <tr>
+                                                <th class="px-4 py-4 font-bold w-16">#</th>
+                                                <th class="px-4 py-4 font-bold w-48">نام مشتری</th>
+                                                <th class="px-4 py-4 font-bold w-32">گیرنده</th>
+                                                <th class="px-4 py-4 font-bold w-40">مبلغ</th>
+                                                <th class="px-4 py-4 font-bold w-32">واحد</th>
+                                                <th class="px-4 py-4 font-bold w-32">وضعیت</th>
+                                                <th class="px-4 py-4 font-bold w-80 text-center">توضیحات</th>
+                                                <th class="px-4 py-4 font-bold w-40">تاریخ</th>
+                                                <th class="px-4 py-4 font-bold w-48 text-center">عملیات</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php $__empty_1 = true; $__currentLoopData = $remittances; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $remittance): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                            <tr class="text-black border-b border-[#D9D9D9] bg-transparent">
+                                                <td
+                                                    class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">
+                                                    <?php echo e($key + 1); ?>
 
-                                    </td>
-                                    <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium w-48">
-                                        <?php echo e($remittance->customer->fullname ?? '-'); ?>
+                                                </td>
+                                                <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium w-48">
+                                                    <?php echo e($remittance->customer->fullname ?? '-'); ?>
 
-                                    </td>
-                                    <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium w-32">
-                                        <?php echo e($remittance->recipient->fullname ?? $remittance->giver_name); ?>
+                                                </td>
+                                                <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium w-32">
+                                                    <?php echo e($remittance->recipient->fullname ?? $remittance->giver_name); ?>
 
-                                    </td>
-                                    <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium w-40">
-                                        <?php echo e(number_format($remittance->amount)); ?>
+                                                </td>
+                                                <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium w-40">
+                                                    <?php echo e(number_format($remittance->amount)); ?>
 
-                                    </td>
-                                    <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium w-32">
-                                        <?php echo e(collect($currencies)->firstWhere('code', $remittance->currency)['name_fa'] ??
-                                        $remittance->currency); ?>
+                                                </td>
+                                                <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium w-32">
+                                                    <?php echo e(collect($currencies)->firstWhere('code',
+                                                    $remittance->currency)['name_fa'] ??
+                                                    $remittance->currency); ?>
 
-                                    </td>
-                                    <td>
-                                        <?php if($remittance->state===0): ?>
-                                        <span class="text-red-500">در انتظار تایید</span>
-                                        <?php else: ?>
-                                        <span class="text-green-500">تاییده شده</span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-80">
-                                        <div class="space-y-1 text-right">
-                                            <p class="text-sm">کد رهگیری: <?php echo e($remittance->tracking_code); ?></p>
-                                            <p class="text-sm">زون: <?php echo e($remittance->zone); ?></p>
-                                            <p class="text-sm">تفصیلات: <?php echo e($remittance->description); ?></p>
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-40">
-                                        <div class="whitespace-nowrap">
-                                            <div class="font-medium">
-                                                <?php echo e(explode(' ',$remittance->date)[0]); ?>
+                                                </td>
+                                                <td>
+                                                    <?php if($remittance->state===0): ?>
+                                                    <span class="text-red-500">در انتظار تایید</span>
+                                                    <?php else: ?>
+                                                    <span class="text-green-500">تاییده شده</span>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td
+                                                    class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-80">
+                                                    <div class="space-y-1 text-right">
+                                                        <p class="text-sm">کد رهگیری: <?php echo e($remittance->tracking_code); ?>
 
-                                            </div>
-                                            <div class="text-gray-500 text-sm mt-1">
-                                                <?php echo e($remittance->clock); ?>
+                                                        </p>
+                                                        <p class="text-sm">زون: <?php echo e($remittance->zone); ?></p>
+                                                        <p class="text-sm">تفصیلات: <?php echo e($remittance->description); ?></p>
+                                                    </div>
+                                                </td>
+                                                <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-40">
+                                                    <div class="whitespace-nowrap">
+                                                        <div class="font-medium">
+                                                            <?php echo e(explode(' ',$remittance->date)[0]); ?>
 
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="py-4 text-center w-[68]">
-                                        <div class="flex justify-center gap-3">
-                                            <!-- Edit Button -->
-                                            <button wire:click="edit(<?php echo e($remittance->id); ?>)"
-                                                class="w-12 h-12 flex items-center justify-center rounded-full transition-colors"
-                                                title="ویرایش">
-                                                <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>"
-                                                    class="w-7 h-7" alt="Edit">
-                                            </button>
+                                                        </div>
+                                                        <div class="text-gray-500 text-sm mt-1">
+                                                            <?php echo e($remittance->clock); ?>
 
-                                            <!-- Delete Button -->
-                                            <button wire:click="confirmDelete(<?php echo e($remittance->id); ?>)"
-                                                class="w-12 h-12 flex items-center justify-center rounded-full transition-colors"
-                                                title="حذف">
-                                                <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>"
-                                                    class="w-8 h-8" alt="Delete">
-                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="py-4 text-center w-[68]">
+                                                    <div class="flex justify-center gap-3">
+                                                        <!-- Edit Button -->
+                                                        <button wire:click="edit(<?php echo e($remittance->id); ?>)"
+                                                            class="w-12 h-12 flex items-center justify-center rounded-full transition-colors"
+                                                            title="ویرایش">
+                                                            <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>"
+                                                                class="w-7 h-7" alt="Edit">
+                                                        </button>
 
-                                            <!-- Print Button -->
-                                            <button wire:click="print(<?php echo e($remittance->id); ?>)"
-                                                class="w-12 h-12 flex items-center justify-center rounded-full transition-colors"
-                                                title="پرینت">
-                                                <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
-                                                    class="w-10 h-10" alt="Print">
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                                <tr>
-                                    <td colspan="8" class="text-center text-gray-500 py-8 text-lg">
-                                        <?php if($selectedCustomerId): ?>
-                                        هیچ حواله برای این مشتری یافت نشد
-                                        <?php else: ?>
-                                        هیچ حواله ای یافت نشد
-                                        <?php endif; ?>
-                                    </td>
-                                </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
+                                                        <!-- Delete Button -->
+                                                        <button wire:click="confirmDelete(<?php echo e($remittance->id); ?>)"
+                                                            class="w-12 h-12 flex items-center justify-center rounded-full transition-colors"
+                                                            title="حذف">
+                                                            <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>"
+                                                                class="w-8 h-8" alt="Delete">
+                                                        </button>
+
+                                                        <!-- Print Button -->
+                                                        <button wire:click="print(<?php echo e($remittance->id); ?>)"
+                                                            class="w-12 h-12 flex items-center justify-center rounded-full transition-colors"
+                                                            title="پرینت">
+                                                            <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
+                                                                class="w-10 h-10" alt="Print">
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                            <tr>
+                                                <td colspan="8" class="text-center text-gray-500 py-8 text-lg">
+                                                    <?php if($selectedCustomerId): ?>
+                                                    هیچ حواله برای این مشتری یافت نشد
+                                                    <?php else: ?>
+                                                    هیچ حواله ای یافت نشد
+                                                    <?php endif; ?>
+                                                </td>
+                                            </tr>
+                                            <?php endif; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Delete Confirmation Modal -->
-    <?php if($confirmDeleteId): ?>
-    <?php
-    $remittance = \App\Models\Sarafi\Remittances::find($confirmDeleteId);
-    $isApproved = $remittance && $remittance->state == 1;
-    ?>
-    <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-        <div
-            class="bg-white rounded-2xl shadow-xl w-full max-w-lg mx-4 p-6 text-center animate-fadeIn border border-gray-200 relative">
-            <button wire:click="$set('confirmDeleteId', null)"
-                class="absolute right-2     top-4 text-gray-500 hover:text-gray-700">
-                <svg class="w-6 h-6 right-0 " fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-
-            <div class="mb-4">
-                <?php if($isApproved): ?>
-                <svg class="w-16 h-16 mx-auto right-0 text-red-500 mb-4" fill="none" stroke="currentColor"
-                    viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                </svg>
-                <h2 class="text-xl font-bold text-gray-800 mb-2">حذف حواله تایید شده</h2>
-                <p class="text-gray-600 mb-4">این حواله قبلاً تایید شده است. آیا مطمئن هستید می‌خواهید آن را حذف کنید؟
-                </p>
-                <p class="text-sm text-orange-600 bg-orange-50 p-2 rounded-lg">
-                    ⚠️ توجه: این عمل باعث برگشت تمام تراکنش‌ها و تغییرات مربوطه خواهد شد.
-                </p>
-                <?php else: ?>
-                <h1 class="text-2xl text-black shabnam font-medium leading-[100%] ">
-                    حذف حــــواله</h1>
-                <hr class="bg-[#E1DED3] mt-8">
-                <p class=" mb-6 text-xl shabnam mt-5">آیا مطمئن هستید می خواهید این
-                    حــــواله را حذف کنید؟</p>
-                <?php endif; ?>
-            </div>
-
-            <?php if($isApproved): ?>
-            <div class="mb-4">
-                <p class="text-sm text-gray-500 text-right">
-                    عملیات برگشت شامل:
-                </p>
-                <ul class="text-sm text-gray-600 text-right space-y-1 mt-2">
-                    <li>• کاهش موجودی صندوق بانکی</li>
-                    <li>• تنظیم مجدد موجودی مشتریان</li>
-                </ul>
-            </div>
-            <?php endif; ?>
-
-            <div class="flex justify-center gap-3  items-center text-center">
+        <!-- Delete Confirmation Modal -->
+        <?php if($confirmDeleteId): ?>
+        <?php
+        $remittance = \App\Models\Sarafi\Remittances::find($confirmDeleteId);
+        $isApproved = $remittance && $remittance->state == 1;
+        ?>
+        <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div
+                class="bg-white rounded-2xl shadow-xl w-full max-w-lg mx-4 p-6 text-center animate-fadeIn border border-gray-200 relative">
                 <button wire:click="$set('confirmDeleteId', null)"
-                    class="px-16 py-3 bg-[#2563EB] text-center text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
-                    انصراف
+                    class="absolute right-2     top-4 text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6 right-0 " fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
                 </button>
-                <button wire:click="deleteConfirmed"
-                    class="px-16 py-3  <?php echo e($isApproved ? 'bg-red-600 hover:bg-red-700' : 'bg-[#DD2424] hover:bg-red-700'); ?> text-white text-sm text-center font-medium rounded-lg transition-colors flex items-center gap-2">
-                    <?php echo e($isApproved ? 'حذف و برگشت' : 'حذف'); ?>
 
-                </button>
+                <div class="mb-4">
+                    <?php if($isApproved): ?>
+                    <svg class="w-16 h-16 mx-auto right-0 text-red-500 mb-4" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                    </svg>
+                    <h2 class="text-xl font-bold text-gray-800 mb-2">حذف حواله تایید شده</h2>
+                    <p class="text-gray-600 mb-4">این حواله قبلاً تایید شده است. آیا مطمئن هستید می‌خواهید آن را حذف
+                        کنید؟
+                    </p>
+                    <p class="text-sm text-orange-600 bg-orange-50 p-2 rounded-lg">
+                        ⚠️ توجه: این عمل باعث برگشت تمام تراکنش‌ها و تغییرات مربوطه خواهد شد.
+                    </p>
+                    <?php else: ?>
+                    <h1 class="text-2xl text-black shabnam font-medium leading-[100%] ">
+                        حذف حــــواله</h1>
+                    <hr class="bg-[#E1DED3] mt-8">
+                    <p class=" mb-6 text-xl shabnam mt-5">آیا مطمئن هستید می خواهید این
+                        حــــواله را حذف کنید؟</p>
+                    <?php endif; ?>
+                </div>
+
+                <?php if($isApproved): ?>
+                <div class="mb-4">
+                    <p class="text-sm text-gray-500 text-right">
+                        عملیات برگشت شامل:
+                    </p>
+                    <ul class="text-sm text-gray-600 text-right space-y-1 mt-2">
+                        <li>• کاهش موجودی صندوق بانکی</li>
+                        <li>• تنظیم مجدد موجودی مشتریان</li>
+                    </ul>
+                </div>
+                <?php endif; ?>
+
+                <div class="flex justify-center gap-3  items-center text-center">
+                    <button wire:click="$set('confirmDeleteId', null)"
+                        class="px-16 py-3 bg-[#2563EB] text-center text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                        انصراف
+                    </button>
+                    <button wire:click="deleteConfirmed"
+                        class="px-16 py-3  <?php echo e($isApproved ? 'bg-red-600 hover:bg-red-700' : 'bg-[#DD2424] hover:bg-red-700'); ?> text-white text-sm text-center font-medium rounded-lg transition-colors flex items-center gap-2">
+                        <?php echo e($isApproved ? 'حذف و برگشت' : 'حذف'); ?>
+
+                    </button>
+                </div>
             </div>
         </div>
+        <?php endif; ?>
+
+        
+        <style>
+            .scroll-container {
+                scrollbar-width: thin;
+                scrollbar-color: #e5e7eb #f9fafb;
+            }
+
+            .scroll-container::-webkit-scrollbar {
+                height: 6px;
+            }
+
+            .scroll-container::-webkit-scrollbar-track {
+                background: #f9fafb;
+                border-radius: 10px;
+            }
+
+            .scroll-container::-webkit-scrollbar-thumb {
+                background: #e5e7eb;
+                border-radius: 10px;
+            }
+
+            .scroll-container::-webkit-scrollbar-thumb:hover {
+                background: #cbd5e1;
+            }
+
+            #selectCustomer {
+                appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                background: transparent;
+                padding-left: 1rem;
+            }
+
+            input[list]::-webkit-calendar-picker-indicator {
+                display: none !important;
+                -webkit-appearance: none;
+            }
+
+            /* در Firefox */
+            input[list]::-moz-list-button {
+                display: none !important;
+            }
+
+            /* در Edge جدید */
+            input[list]::-ms-clear,
+            input[list]::-ms-expand {
+                display: none !important;
+            }
+        </style>
     </div>
-    <?php endif; ?>
-
-    
-    <style>
-        .scroll-container {
-            scrollbar-width: thin;
-            scrollbar-color: #e5e7eb #f9fafb;
-        }
-
-        .scroll-container::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .scroll-container::-webkit-scrollbar-track {
-            background: #f9fafb;
-            border-radius: 10px;
-        }
-
-        .scroll-container::-webkit-scrollbar-thumb {
-            background: #e5e7eb;
-            border-radius: 10px;
-        }
-
-        .scroll-container::-webkit-scrollbar-thumb:hover {
-            background: #cbd5e1;
-        }
-
-        #selectCustomer {
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background: transparent;
-            padding-left: 1rem;
-        }
-
-        input[list]::-webkit-calendar-picker-indicator {
-            display: none !important;
-            -webkit-appearance: none;
-        }
-
-        /* در Firefox */
-        input[list]::-moz-list-button {
-            display: none !important;
-        }
-
-        /* در Edge جدید */
-        input[list]::-ms-clear,
-        input[list]::-ms-expand {
-            display: none !important;
-        }
-    </style>
-</div>
 
 
-<!-- Event Alert -->
-<?php $__env->startPush('script'); ?>
-<script>
-    window.addEventListener('report-alert', event => {
+    <!-- Event Alert -->
+    <?php $__env->startPush('script'); ?>
+    <script>
+        window.addEventListener('report-alert', event => {
         alert(event.detail.message);
     });
-</script>
-<?php $__env->stopPush(); ?><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/remittance.blade.php ENDPATH**/ ?>
+    </script>
+    <?php $__env->stopPush(); ?><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/remittance.blade.php ENDPATH**/ ?>

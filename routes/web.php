@@ -274,6 +274,29 @@ Route::get('/sarafi/general-reports', function () {
 })->name('sarafi.general-reports');
 
 
+Route::get('/sarafi/revenue', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.revene');
+})->name('sarafi.revenue');
+
+
+Route::get('/sarafi/profit-rates', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.profit-rates');
+})->name('sarafi.profit-rates');
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="{{ session('locale', config('app.locale')) }}" dir="{{ session('locale') === 'en' ? 'ltr' : 'rtl' }}">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سیستم صرافی اقصی</title>
     @include('Sarafi.layouts.links')
-
     <style>
-
-        /* لودر تمام صفحه فوق العاده زیبا */
-        #loader {
+           /* لودر تمام صفحه فوق العاده زیبا */
+            #loader {
             position: fixed;
             top: 0;
             left: 0;
@@ -930,7 +927,17 @@
                                 :class="active === 'register-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                                 <img src="{{ asset('assets/sarafi/all_icon/add.svg') }}" class="w-4 h-4"
                                     :class="active === 'register-accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
-                                  ثبت نرخ ارز
+                               ثبت نرخ بیلانس
+                            </a>
+
+
+                              <a href="{{ route('sarafi.profit-rates') }}"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="setActive('register-accounts', 'accounts')"
+                                :class="active === 'register-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                <img src="{{ asset('assets/sarafi/all_icon/add.svg') }}" class="w-4 h-4"
+                                    :class="active === 'register-accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                تعیین نرخ سنجش مفاد و ضرر
                             </a>
                         </div>
                     </div>
@@ -959,13 +966,13 @@
                                 :class="active === 'upload-bank' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                                 <img src="{{ asset('assets/sarafi/all_icon/upload.svg') }}" class="w-4 h-4"
                                     :class="active === 'upload-bank' ? 'filter invert brightness-0' : 'text-gray-500'">
-                                   ثبت احواله جات
+                                ثبت احواله جات
                             </a>
                         </div>
                     </div>
 
 
-                          <!-- کنترول و بررسی معاملات -->
+                    <!-- کنترول و بررسی معاملات -->
                     <div>
                         <button @click="openItems.transactions = !openItems.transactions; active = 'transactions'"
                             :class="(active === 'transactions' || active === 'control-transactions') ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
@@ -989,7 +996,7 @@
                                 :class="active === 'control-transactions' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                                 <img src="{{ asset('assets/sarafi/all_icon/eye.svg') }}" class="w-4 h-4"
                                     :class="active === 'control-transactions' ? 'filter invert brightness-0' : 'text-gray-500'">
-                                 احواله های تایید نشده
+                                احواله های تایید نشده
                             </a>
                         </div>
                     </div>
@@ -1019,13 +1026,13 @@
                                 :class="active === 'deleted-transactions' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                                 <img src="{{ asset('assets/sarafi/all_icon/archive.svg') }}" class="w-4 h-4"
                                     :class="active === 'deleted-transactions' ? 'filter invert brightness-0' : 'text-gray-500'">
-                                معاملات حذف شده و ویرایش  شده
+                                معاملات حذف شده و ویرایش شده
                             </a>
                         </div>
                     </div>
 
 
-                         <!-- گزارش و آمار حسابات -->
+                    <!-- گزارش و آمار حسابات -->
                     <div>
                         <button @click="openItems.reports = !openItems.reports; active = 'reports'"
                             :class="(active === 'reports' || active === 'view-reports') ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
@@ -1043,15 +1050,33 @@
                             </svg>
                         </button>
                         <div x-show="openItems.reports" x-transition class="mr-6 mt-1 space-y-1">
+
+                            {{-- گزارش حسابات --}}
                             <a href="{{ route('sarafi.account-reports') }}"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('view-reports', 'reports')"
                                 :class="active === 'view-reports' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+
                                 <img src="{{ asset('assets/sarafi/all_icon/chart.svg') }}" class="w-4 h-4"
                                     :class="active === 'view-reports' ? 'filter invert brightness-0' : 'text-gray-500'">
+
                                 گزارش حسابات
                             </a>
+
+                            {{-- عواید معاملات --}}
+                            <a href="{{ route('sarafi.revenue') }}"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="setActive('view-revenue', 'reports')"
+                                :class="active === 'view-revenue' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+
+                                <img src="{{ asset('assets/sarafi/all_icon/chart.svg') }}" class="w-4 h-4"
+                                    :class="active === 'view-revenue' ? 'filter invert brightness-0' : 'text-gray-500'">
+
+                                عواید معاملات
+                            </a>
+
                         </div>
+
                     </div>
                     <!-- ویرایش حسابات و نرخ ارز -->
                     <div>
@@ -1082,9 +1107,9 @@
                         </div>
                     </div>
 
-               
 
-              
+
+
 
                     <!-- مدیریت و دسترسی -->
                     <div>

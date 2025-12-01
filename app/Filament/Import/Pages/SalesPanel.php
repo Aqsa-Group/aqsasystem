@@ -57,6 +57,7 @@ class SalesPanel extends Page
 
     public ?string $receivedCurrency = null;
     public ?float $usdToAfnRate = 0.000;
+public float $convertedReceivedAmount = 0;
 
     public function getConvertedReceivedAmountProperty(): float
 {

@@ -6,8 +6,10 @@ use App\Models\Sarafi\BankAccount;
 use App\Models\Sarafi\CurrencySafe;
 use App\Models\Sarafi\Customer;
 use App\Models\Sarafi\Remittances;
+use App\Models\Sarafi\Revenue;
 use App\Models\Sarafi\Transaction;
 use App\Models\Sarafi\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -25,7 +27,7 @@ class Dashboard extends Component
         $adminId = $user->admin_id ?? $user->id;
 
         $this->safe = CurrencySafe::where('user_id', $adminId)->first();
-        
+
         $safeAccountData = BankAccount::where('user_id', $adminId)->first();
         $this->safe_account = $safeAccountData ? $safeAccountData->toArray() : [];
 
@@ -64,24 +66,42 @@ class Dashboard extends Component
 
     public function render()
     {
+
+        $timezone = 'Asia/Kabul';
+        $today = Carbon::now($timezone)->startOfDay();
+        $tomorrow = Carbon::now($timezone)->addDay()->startOfDay();
+
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | امروز
+    |--------------------------------------------------------------------------
+    */
+        $todayprofit = Revenue::where('admin_id', $adminId)
+            ->whereBetween('created_at', [$today, $tomorrow])
+            ->sum('profit');
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
 
         $customerCount = Customer::where('admin_id', $adminId)->count();
         $UserCount = User::where('admin_id', $adminId)->count();
         $TransactionCount = Transaction::where('admin_id', $adminId)->count();
-        $Waiting=Remittances::where('admin_id',$adminId)->where('state', 0)->count();
-        $RemittanceCount=Remittances::where('admin_id',$adminId)->count();
+        $Waiting = Remittances::where('admin_id', $adminId)->where('state', 0)->count();
+        $RemittanceCount = Remittances::where('admin_id', $adminId)->count();
 
         return view('livewire.sarafi.dashboard', [
             'UserCount' => $UserCount,
             'customerCount' => $customerCount,
             'TransactionCount' => $TransactionCount,
             'safe' => $this->safe,
-            'safe_account' => $this->safe_account, 
+            'safe_account' => $this->safe_account,
             'currencies' => $this->currencies,
-            'waitting'=>$Waiting,
-            'remittancecount'=>$RemittanceCount,
+            'waitting' => $Waiting,
+            'remittancecount' => $RemittanceCount,
+            'todayprofit' => $todayprofit,
         ]);
     }
 }

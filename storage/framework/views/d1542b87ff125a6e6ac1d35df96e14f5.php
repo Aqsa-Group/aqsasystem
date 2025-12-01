@@ -133,7 +133,7 @@
             box-sizing: border-box;
             text-align: center;
             padding: 12px;
-            /* قرارگیری سمت چپ جدول (vertical alignment handled by table cell) */
+            
         }
 
         .left-sign-block .electrician {

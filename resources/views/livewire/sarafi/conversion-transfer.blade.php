@@ -412,7 +412,7 @@
                             </div>
 
                             <div class="flex-1">
-                                <label class="block text-[16px] font-medium text-black mb-1 vazir">نرخ ارز</label>
+                                <label class="block text-[16px] font-medium text-black mb-1 vazir">نرخ فروش ارز</label>
                                 <div class="relative w-full">
                                     <input type="text" wire:model.live="currency_rate" placeholder="0.0000"
                                         class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"

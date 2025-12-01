@@ -190,7 +190,13 @@
                     <!-- نرخ و تاریخ -->
                     <div class="flex flex-col lg:flex-row gap-3">
                         <div class="flex-1">
-                            <label class="block text-[16px] font-medium text-black mb-1 vazir">نرخ ارز</label>
+                            <label class="block text-[16px] font-medium text-black mb-1 vazir">
+                                @if ($transactionType==='خرید')
+                                    نرخ خرید ارز
+                                    @else
+                                    نرخ فروش ارز
+                                @endif
+                            </label>
                             <div class="relative w-full">
                                 <input type="text" wire:model.live="exchange_rate" placeholder="0"
                                     class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:text-white"

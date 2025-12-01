@@ -758,7 +758,6 @@ class Transactions extends Component
 
             $safe->$currency += $change;
             if ($safe->$currency < 0) {
-                $safe->$currency = 0;
             }
             $safe->save();
         } else {

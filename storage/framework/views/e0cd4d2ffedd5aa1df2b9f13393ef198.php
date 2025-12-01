@@ -193,7 +193,10 @@
                                         <td><?php echo e($accounting->market->name); ?></td>
                                         <td><?php echo e($accounting->shop->number ?? '-'); ?></td>
                                         <td><?php echo e(\Morilog\Jalali\Jalalian::fromDateTime($accounting->paid_date)->format('Y/m/d')); ?></td>
-                                        <td><?php echo e(\Morilog\Jalali\Jalalian::fromDateTime($accounting->expiration_date)->format('Y/m/d')); ?></td>
+                                        <td>
+                                            <?php echo e(\Morilog\Jalali\Jalalian::fromDateTime($accounting->expiration_date)->format('Y/m/d')); ?>
+
+                                            </td>
                                     </tr>
                                 </tbody>
                             </table>

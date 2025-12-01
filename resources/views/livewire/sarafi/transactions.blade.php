@@ -94,8 +94,8 @@
 
                         foreach($customerBankBalances as $currency => $balance) {
                         if(isset($exchangeRates[$currency]) && $exchangeRates[$currency] > 0) {
-                        // تقسیم کردن نه ضرب کردن!
-                        $totalBankUsd += $balance / $exchangeRates[$currency];
+
+                            $totalBankUsd += $balance / $exchangeRates[$currency];
                         }
                         }
                         $grandTotalUsd = $totalCashUsd + $totalBankUsd;

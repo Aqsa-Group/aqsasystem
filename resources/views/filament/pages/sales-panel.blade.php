@@ -212,8 +212,7 @@
                             <div class="flex items-center justify-between">
                                 <span class="text-lg font-bold text-gray-800 dark:text-gray-200">🧾 باقیمانده:</span>
                                 <span class="text-xl font-extrabold text-red-600 dark:text-red-400">
-                                    {{ number_format(max((collect($items)->sum('total') - $discount) -
-                                    $this->convertedReceivedAmount,0),3) }} دالر
+                                   {{ number_format(max((collect($items)->sum('total') - $discount) - $convertedReceivedAmount,0),3) }} دالر
                                 </span>
                             </div>
                         </div>

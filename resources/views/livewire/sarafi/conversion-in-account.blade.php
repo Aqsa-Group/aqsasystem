@@ -149,7 +149,7 @@
 
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
             <!-- فرم تبدیل ارز -->
-            <div class="flex flex-col bg-[#F5F5F5] mx-auto w-[420px] lg:w-[424px] p-[12px] h-fit rounded-[12px] space-y-2"
+            <div class="flex flex-col bg-[#F5F5F5] mx-auto w-[420px] lg:w-[534px] mb-6 p-[12px] h-fit rounded-[12px] space-y-2"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 <!-- هدر فرم -->
@@ -160,10 +160,15 @@
                         <span class="vazir font-semibold">فورم تبدیل ارز در حساب</span>
                     </p>
 
+                        <button wire:click="toggleTransactionType" class="rounded-[8px] p-[10px] text-white vazir px-12 font-semibold transition-colors duration-500 ease-in-out
+                        {{ $transactionType === 'خرید' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
+                        {{ $transactionType === 'خرید' ? 'خرید' : 'فروش' }}
+                    </button>
                     <button wire:click="toggleAccountType" class="rounded-[8px] p-[10px] text-white vazir px-12 font-semibold transition-colors duration-500 ease-in-out
                         {{ $accountType === 'نقدی' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
                         {{ $accountType === 'نقدی' ? 'نقدی' : 'بانکی' }}
                     </button>
+                   
                 </div>
 
                 <!-- فرم اصلی -->
@@ -240,7 +245,13 @@
                         <div class="mt-2 flex flex-col lg:flex-row gap-3">
                             <!-- ارز مبدا -->
                             <div class="lg:w-[191px]">
-                                <label class="block text-[16px] font-medium text-black mb-1 vazir">ارز مبدا</label>
+                                <label class="block text-[16px] font-medium text-black mb-1 vazir">
+                                 @if($transactionType === 'خرید')
+                                   ارز خرید  
+                                @else
+                                ارز فروش
+                                @endif   
+                                </label>
                                 <div class="relative w-full">
                                     <select wire:model="from_currency"
                                         class="w-full h-[60px] p-3 rounded-[12px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
@@ -261,7 +272,13 @@
 
                             <!-- مبلغ خرید -->
                             <div class="flex-1">
-                                <label class="block text-[16px] font-medium text-black mb-1 vazir">مبلغ خرید</label>
+                                <label class="block text-[16px] font-medium text-black mb-1 vazir">
+                                        @if($transactionType === 'خرید')
+                                   مبلغ خرید  
+                                @else
+                                مبلغ فروش
+                                @endif  
+                                </label>
                                 <div class="relative w-full">
                                     <input type="text" wire:model.live="buy_amount" placeholder="0"
                                         class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500"
@@ -284,7 +301,13 @@
                         <div class="mt-2 flex flex-col lg:flex-row gap-3">
                             <!-- ارز مقصد -->
                             <div class="lg:w-[191px]">
-                                <label class="block text-[16px] font-medium text-black mb-1 vazir">ارز مقصد</label>
+                                <label class="block text-[16px] font-medium text-black mb-1 vazir">
+                                        @if($transactionType === 'خرید')
+                                   ارز فروش  
+                                @else
+                                ارز خرید
+                                @endif  
+                                </label>
                                 <div class="relative w-full">
                                     <select wire:model="to_currency"
                                         class="w-full h-[60px] p-3 rounded-[12px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
@@ -305,7 +328,13 @@
 
                             <!-- نرخ ارز -->
                             <div class="flex-1">
-                                <label class="block text-[16px] font-medium text-black mb-1 vazir">نرخ ارز</label>
+                                <label class="block text-[16px] font-medium text-black mb-1 vazir">
+                                        @if($transactionType === 'خرید')
+                                   نرخ فروش  
+                                @else
+                                نرخ خرید
+                                @endif  
+                                </label>
                                 <div class="relative w-full">
                                     <input type="text" wire:model.live="currency_rate" placeholder="0.0000"
                                         class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500"
@@ -327,7 +356,13 @@
                     <div class="mt-2 flex flex-col lg:flex-row gap-3">
                         <!-- مبلغ فروش -->
                         <div class="flex-1">
-                            <label class="block text-[16px] font-medium text-black mb-1 vazir">مبلغ فروش</label>
+                            <label class="block text-[16px] font-medium text-black mb-1 vazir">
+                                    @if($transactionType === 'خرید')
+                                   مبلغ فروش  
+                                @else
+                                مبلغ خرید
+                                @endif  
+                            </label>
                             <div class="relative w-full">
                                 <input type="text" wire:model="sell_amount" placeholder="0"
                                     class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 bg-gray-100"
@@ -463,7 +498,7 @@
             </div>
 
             <!-- جدول تراکنش‌های تبدیل ارز -->
-            <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px]  w-[440px] mb-5 md:w-[1010px] lg:w-[150px]"
+            <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px]  w-[440px] mb-5 md:w-[930px] lg:w-[150px]"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 <div
@@ -491,10 +526,10 @@
 
                 <!-- جدول -->
                 <div class="overflow-x-auto w-full">
-                    <div class="max-h-[680px] overflow-y-auto min-w-[890px]">
+                    <div class="max-h-[680px] overflow-y-auto min-w-full">
                         <table class="w-[890px] text-sm md:text-base text-left rtl:text-right text-gray-500">
                             <thead
-                                class="bg-[#2B65E5] text-white text-[14px] md:text-[16px] vazir h-[50px] md:h-[60px] sticky top-0"
+                                class="bg-[#2B65E5] text-white text-[14px] w-full md:text-[16px] vazir h-[50px] md:h-[60px] sticky top-0"
                                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
                                 <tr>
                                     <th class="px-2 py-3 font-bold w-12">#</th>
