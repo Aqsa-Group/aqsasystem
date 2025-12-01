@@ -154,50 +154,6 @@
                         <p class="text-3xl font-extrabold drop-shadow-md">{{ $TransactionCount }}</p>
                     </div>
 
-                    <!-- تراکنش‌های در انتظار -->
-                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
-                                     text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-
-                        <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
-                            <img src="{{ asset('assets/sarafi/all_icon/timer.svg') }}" alt="" class="h-10 w-10">
-                        </div>
-
-
-                        <h1 class="text-lg font-semibold drop-shadow-md text-center">
-                            {{ __('messages.general_pending_transactions') }}</h1>
-
-                        <p class="text-3xl font-extrabold drop-shadow-md">{{ $waitting }}</p>
-                    </div>
-
-                    <!-- امروز سود -->
-                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
-                                     text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-
-                        <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
-                            <img src="{{ asset('assets/sarafi/all_icon/dollar-circle.svg') }}" alt="" class="h-10 w-10">
-                        </div>
-
-                        <h1 class="text-lg font-semibold drop-shadow-md text-center">
-                            {{ __('messages.general_today_profit') }}</h1>
-
-                        <p class="text-3xl font-extrabold drop-shadow-md">{{ $todayprofit }}</p>
-                    </div>
-
-                    <!-- مجموع تراکنش‌ها -->
-                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
-                                     text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-
-                        <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
-                            <img src="{{ asset('assets/sarafi/all_icon/receipt-2.svg') }}" alt="" class="h-10 w-10">
-                        </div>
-
-
-                        <h1 class="text-lg font-semibold drop-shadow-md text-center">
-                            {{ __('messages.general_total_transactions') }}</h1>
-
-                        <p class="text-3xl font-extrabold drop-shadow-md">4,500</p>
-                    </div>
-
                     <!-- حواله‌ها -->
                     <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
                                      text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
@@ -213,6 +169,70 @@
                         <p class="text-3xl font-extrabold drop-shadow-md">{{ $remittancecount }}</p>
                     </div>
 
+                    @if($waitting > 0)
+                    <a href="{{ route('sarafi.remittance-approval') }}">
+                        @endif
+                        <!-- حواله های در انتظار -->
+                        <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
+                                     text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+
+                            <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
+                                <img src="{{ asset('assets/sarafi/all_icon/timer.svg') }}" alt="" class="h-10 w-10">
+                            </div>
+
+
+                            <h1 class="text-lg font-semibold drop-shadow-md text-center">
+                                {{ __('messages.general_pending_transactions') }}</h1>
+
+                            <p class="text-3xl font-extrabold drop-shadow-md">{{ $waitting }}</p>
+
+                        </div>
+
+                        @if($waitting > 0)
+                    </a>
+                    @endif
+
+
+
+
+
+                    <!-- امروز سود -->
+                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
+                                     text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+
+                        <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
+                            <img src="{{ asset('assets/sarafi/all_icon/dollar-circle.svg') }}" alt="" class="h-10 w-10">
+                        </div>
+
+                        <h1 class="text-lg font-semibold drop-shadow-md text-center">
+                            {{ __('messages.general_today_profit') }}</h1>
+
+                        <p class="text-3xl font-extrabold drop-shadow-md">{{ $todayprofit }}</p>
+                    </div>
+
+
+                    <!-- امروز سود -->
+                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
+                                     text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+
+                        <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
+                            <img src="{{ asset('assets/sarafi/all_icon/dollar-circle.svg') }}" alt="" class="h-10 w-10">
+                        </div>
+
+                        <h1 class="text-lg font-semibold drop-shadow-md text-center">
+                            {{ __('messages.general_today_lost') }}</h1>
+
+                        <p class="text-3xl font-extrabold drop-shadow-md">{{ $todaylost }}</p>
+                    </div>
+
+
+
+
+
+
+
+
+
                     <!-- مجموع موجودی حساب‌ها -->
                     <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
                                      text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
@@ -225,11 +245,10 @@
                         <h1 class="text-lg font-semibold drop-shadow-md text-center">
                             {{ __('messages.general_total_balance') }}</h1>
 
-                        <p class="text-3xl font-extrabold drop-shadow-md">120,000</p>
+                        <p class="text-3xl font-extrabold drop-shadow-md">{{ $total_balance_usd }}</p>
                     </div>
-
-
                 </div>
+
             </template>
 
 
