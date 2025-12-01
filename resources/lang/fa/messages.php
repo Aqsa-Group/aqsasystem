@@ -52,7 +52,7 @@ return [
   'general_today_lost' => 'ضرر امروز',
   'general_total_transactions' => 'مجموع تراکنش‌ها',
   'general_remittances' => 'حواله های امروز' ,
-  'general_total_balance' => 'مجموع موجودی حساب‌ها',
+  'general_total_balance' => 'مجموع موجودی حساب‌ها به دالر' ,
   'reports_monthly_profit_loss' => 'سود و زیان ماهانه',
   'reports_transactions_by_currency' => 'تراکنش‌ها به تفکیک ارز',
   'safes_afn' => 'موجودی افغانی',
