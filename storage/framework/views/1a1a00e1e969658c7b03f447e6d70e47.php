@@ -1,5 +1,5 @@
 <div>
-    <?php if(session()->has('message')): ?>
+    <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
         class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
         <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -9,7 +9,7 @@
             </h2>
         </div>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
     <div class="flex flex-col  md:flex-row items-center md:pr-[90px]   gap-4 mb-6 mx-auto">
         <!-- دکمه افزودن مشتری جدید -->
@@ -22,8 +22,11 @@
 
         <!-- 🔍 Search -->
         <div class="relative">
-            <input type="text" placeholder="<?php echo e(__('messages.search_customer')); ?>"
-                class="border border-[#8C8C8C] placeholder:text-[#8C8C8C] vazir rounded-xl w-[329px] h-[54px] pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500">
+           <input type="text" 
+       wire:model.live="search"
+       placeholder="<?php echo e(__('messages.search_customer')); ?>"
+       class="border border-[#8C8C8C] placeholder:text-[#8C8C8C] vazir rounded-xl w-[329px] h-[54px] pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500">
+
             <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
                 class="h-6 w-6 absolute left-2 bottom-4">
         </div>
@@ -61,7 +64,7 @@
 
 
             <tbody>
-                <?php $__empty_1 = true; $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr class="border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th scope="row" class="flex items-center px-6 py-4 text-gray-900 dark:text-white">
                         <img class="w-10 h-10 rounded-full"
@@ -104,7 +107,7 @@
                         هیچ مشتری یافت نشد.
                     </td>
                 </tr>
-                <?php endif; ?>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </tbody>
         </table>
 
@@ -127,9 +130,9 @@
     $currentUser=Auth::guard('sarafi')->user();
     ?>
 
-    <?php if($currentUser && $currentUser->role==='admin'): ?>
+    <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role==='admin'): ?>
     <!-- مودال تأیید حذف مشتری -->
-    <?php if($confirmingDelete): ?>
+    <!--[if BLOCK]><![endif]--><?php if($confirmingDelete): ?>
     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-10 z-50">
         <div
             class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px] rounded-[12px] shadow-xl w-[653px] h-[240px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
@@ -169,8 +172,8 @@
             </div>
         </div>
     </div>
-    <?php endif; ?>
-    <?php endif; ?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
 
 

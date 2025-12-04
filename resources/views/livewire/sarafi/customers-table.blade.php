@@ -20,8 +20,11 @@
 
         <!-- 🔍 Search -->
         <div class="relative">
-            <input type="text" placeholder="{{ __('messages.search_customer') }}"
-                class="border border-[#8C8C8C] placeholder:text-[#8C8C8C] vazir rounded-xl w-[329px] h-[54px] pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500">
+           <input type="text" 
+       wire:model.live="search"
+       placeholder="{{ __('messages.search_customer') }}"
+       class="border border-[#8C8C8C] placeholder:text-[#8C8C8C] vazir rounded-xl w-[329px] h-[54px] pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500">
+
             <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
                 class="h-6 w-6 absolute left-2 bottom-4">
         </div>

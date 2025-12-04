@@ -305,23 +305,26 @@ class BuySellCurrency extends Component
     public function calculateRealTimeProfitLoss()
     {
         try {
+            // اگر ورودی‌ها ناقص باشد، محاسبه انجام نشود
             if (!$this->amount || !$this->exchange_rate || !$this->currency || !$this->to_currency) {
                 $this->resetProfitLossDisplay();
                 return;
             }
 
+            // محاسبه سود یا ضرر
             $profitLoss = $this->calculateProfitOrLoss();
 
+            // ست کردن نتیجه
             $this->profit_loss_data = [
-                'profit' => $profitLoss['profit'],
-                'loss' => $profitLoss['loss'],
-                'predefined_rate' => $profitLoss['predefined_rate'],
+                'profit'                     => $profitLoss['profit'],
+                'loss'                       => $profitLoss['loss'],
+                'predefined_rate'            => $profitLoss['predefined_rate'],
                 'amount_with_predefined_rate' => $profitLoss['amount_with_predefined_rate'],
-                'amount_with_entered_rate' => $profitLoss['amount_with_entered_rate'],
-                'difference' => $profitLoss['difference']
+                'amount_with_entered_rate'   => $profitLoss['amount_with_entered_rate'],
+                'difference'                 => $profitLoss['difference']
             ];
 
-            // به‌روزرسانی نمایش در فرم
+            // نمایش نتیجه روی فرم
             $this->updateProfitLossDisplay();
         } catch (\Exception $e) {
             Log::error('خطا در محاسبه سود/ضرر زمان واقعی: ' . $e->getMessage());
@@ -329,89 +332,82 @@ class BuySellCurrency extends Component
         }
     }
 
-    /**
-     * محاسبه سود/ضرر برای خرید و فروش ارز - نسخه تصحیح شده
-     */
-    private function calculateProfitOrLoss()
-    {
-        try {
-            Log::info('=== شروع محاسبه سود/ضرر برای خرید/فروش ارز ===', [
-                'transaction_type' => $this->transactionType,
-                'from_currency' => $this->currency,
-                'to_currency' => $this->to_currency,
-                'amount' => $this->amount,
-                'exchange_rate' => $this->exchange_rate,
-                'eq_amount' => $this->eq_amount
-            ]);
 
-            // دریافت نرخ از پیش تعیین شده
-            $predefinedRate = $this->getBuySellPredefinedRate();
+   /**
+ * محاسبه سود/ضرر خرید یا فروش ارز
+ */
+private function calculateProfitOrLoss()
+{
+    try {
+        Log::info('=== شروع محاسبه سود/ضرر خرید/فروش ===', [
+            'transaction_type' => $this->transactionType,
+            'amount'           => $this->amount,
+            'exchange_rate'    => $this->exchange_rate,
+            'eq_amount'        => $this->eq_amount,
+            'currency'         => $this->currency,
+            'to_currency'      => $this->to_currency,
+        ]);
 
-            if ($predefinedRate === null || $predefinedRate == 0) {
-                Log::warning("❌ نرخ از پیش تعیین شده برای {$this->currency} به {$this->to_currency} یافت نشد");
-                return $this->getDefaultProfitLossResult();
-            }
+        // 1️⃣ نرخ از پیش تعیین‌شده مناسب (خرید → sell_cash ، فروش → buy_cash)
+        $predefinedRate = $this->getBuySellPredefinedRate();
 
-            // محاسبه مبلغ با نرخ از پیش تعیین شده (نرخ استاندارد بازار)
-            $amountWithPredefinedRate = $this->calculateBuySellWithPredefinedRate($predefinedRate);
-
-            // محاسبه مبلغ با نرخ وارد شده (نرخ واقعی معامله)
-            $amountWithEnteredRate = floatval($this->eq_amount);
-
-            Log::info('محاسبات خرید/فروش', [
-                'predefined_rate' => $predefinedRate,
-                'amount_with_predefined_rate' => $amountWithPredefinedRate,
-                'amount_with_entered_rate' => $amountWithEnteredRate
-            ]);
-
-            // 🔄 🔴 🔴 🔴 🔴 🔴 🔴 🔴 🔴 🔴 🔴 🔴 🔴 🔴
-            // اصلاح اصلی: منطق مقایسه برای خرید و فروش
-            // 🔄 🔴 🔴 🔴 🔴 🔴 🔴 🔴 🔴 🔴 🔴 🔴 🔴 🔴
-
-            $difference = 0;
-
-            if ($this->transactionType === 'خرید') {
-                // برای خرید: اگر مبلغ معادل با نرخ ما بیشتر از نرخ بازار باشد → سود
-                // یعنی با نرخ بهتری خرید کردیم → تومان بیشتری گرفتیم
-                $difference = $amountWithEnteredRate - $amountWithPredefinedRate;
-                Log::info("💰 محاسبه برای خرید: {$amountWithEnteredRate} - {$amountWithPredefinedRate} = {$difference}");
-            } else {
-                // برای فروش: اگر مبلغ معادل با نرخ ما کمتر از نرخ بازار باشد → سود  
-                // یعنی با نرخ بهتری فروختیم → افغانی کمتری دادیم
-                $difference = $amountWithPredefinedRate - $amountWithEnteredRate;
-                Log::info("💰 محاسبه برای فروش: {$amountWithPredefinedRate} - {$amountWithEnteredRate} = {$difference}");
-            }
-
-            // تبدیل تفاوت به دالر
-            $differenceInUsd = 0;
-            if ($difference != 0) {
-                $differenceInUsd = $this->convertBuySellToUsd(abs($difference), $this->to_currency);
-            }
-
-            // تعیین سود یا ضرر
-            $profit = $difference > 0 ? $differenceInUsd : 0;
-            $loss = $difference < 0 ? $differenceInUsd : 0;
-
-            Log::info('نتیجه نهایی خرید/فروش', [
-                'difference' => $difference,
-                'profit_usd' => $profit,
-                'loss_usd' => $loss,
-                'logic' => $this->transactionType === 'خرید' ? 'خرید: مبلغ واقعی - مبلغ استاندارد' : 'فروش: مبلغ استاندارد - مبلغ واقعی'
-            ]);
-
-            return [
-                'profit' => round($profit, 4),
-                'loss' => round($loss, 4),
-                'predefined_rate' => $predefinedRate,
-                'amount_with_predefined_rate' => $amountWithPredefinedRate,
-                'amount_with_entered_rate' => $amountWithEnteredRate,
-                'difference' => $difference
-            ];
-        } catch (\Exception $e) {
-            Log::error('❌ خطا در محاسبه سود/ضرر خرید/فروش: ' . $e->getMessage());
+        if (!$predefinedRate) {
+            Log::warning("❌ نرخ پیش‌فرض یافت نشد");
             return $this->getDefaultProfitLossResult();
         }
+
+        // 2️⃣ محاسبه مبلغ معادل براساس نرخ سیستم
+        $amountWithPredefinedRate = $this->calculateBuySellWithPredefinedRate($predefinedRate);
+
+        // 3️⃣ مبلغ معادل واقعی با نرخ وارد شده
+        $amountWithEnteredRate = floatval($this->eq_amount);
+
+        Log::info('📌 داده‌های پایه:', [
+            'predefined_rate'             => $predefinedRate,
+            'amount_with_predefined_rate' => $amountWithPredefinedRate,
+            'amount_with_entered_rate'    => $amountWithEnteredRate
+        ]);
+
+        if ($this->transactionType === 'خرید') {
+            $difference = $amountWithEnteredRate - $amountWithPredefinedRate;
+            Log::info("💰 خرید: {$amountWithEnteredRate} - {$amountWithPredefinedRate} = {$difference}");
+        } else {
+$difference = $amountWithEnteredRate - $amountWithPredefinedRate;
+            Log::info("💰 فروش: {$amountWithPredefinedRate} - {$amountWithEnteredRate} = {$difference}");
+        }
+
+        $differenceInUsd = $difference != 0
+            ? $this->convertBuySellToUsd(abs($difference), $this->to_currency)
+            : 0;
+
+        // 6️⃣ تعیین سود یا ضرر
+        $profit = $difference > 0 ? $differenceInUsd : 0;
+        $loss   = $difference < 0 ? $differenceInUsd : 0;
+
+        Log::info('🔍 نتیجه نهایی:', [
+            'difference'   => $difference,
+            'profit_usd'   => $profit,
+            'loss_usd'     => $loss,
+            'logic'        => ($this->transactionType === 'خرید')
+                                ? 'خرید: واقعی - استاندارد'
+                                : 'فروش: استاندارد - واقعی'
+        ]);
+
+        return [
+            'profit'                     => round($profit, 4),
+            'loss'                       => round($loss, 4),
+            'predefined_rate'            => $predefinedRate,
+            'amount_with_predefined_rate'=> $amountWithPredefinedRate,
+            'amount_with_entered_rate'   => $amountWithEnteredRate,
+            'difference'                 => $difference
+        ];
+
+    } catch (\Exception $e) {
+        Log::error('❌ خطا در compute سود/ضرر: '.$e->getMessage());
+        return $this->getDefaultProfitLossResult();
     }
+}
+
 
     /**
      * دریافت نرخ از پیش تعیین شده برای خرید/فروش
@@ -511,22 +507,19 @@ class BuySellCurrency extends Component
         return null;
     }
 
-    /**
-     * تعیین نوع نرخ مورد نیاز برای خرید/فروش
-     */
     private function getBuySellRateType()
     {
-        // برای خرید: از نرخ فروش نقدی استفاده می‌کنیم
-        // برای فروش: از نرخ خرید نقدی استفاده می‌کنیم
+        // در حالت خرید → sell_cash
+        // در حالت فروش → buy_cash
         return $this->transactionType === 'خرید' ? 'sell_cash' : 'buy_cash';
     }
 
-    /**
-     * دریافت نوع نرخ معکوس برای خرید/فروش
-     */
+
+
     private function getBuySellReverseRateType()
     {
-        // معکوس نرخ خرید، نرخ فروش است و بالعکس
+        // معکوس: در حالت خرید → buy_cash
+        //        در حالت فروش → sell_cash
         return $this->transactionType === 'خرید' ? 'buy_cash' : 'sell_cash';
     }
 

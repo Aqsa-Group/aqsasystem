@@ -652,7 +652,7 @@
                                 </ul>
                             </div>
 
-                            <!-- سوییچ دارک مود -->
+                            {{-- <!-- سوییچ دارک مود -->
                             <div class="relative dark-mode-toggle-mobile">
                                 <input type="checkbox" id="darkModeToggleMobile" class="sr-only">
                                 <label for="darkModeToggleMobile"
@@ -674,7 +674,7 @@
                                         </svg>
                                     </span>
                                 </label>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -719,7 +719,7 @@
                             </ul>
                         </div>
 
-                        <!-- سوییچ دارک مود -->
+                        {{-- <!-- سوییچ دارک مود -->
                         <div class="relative inline-block w-16 h-8 mx-4">
                             <input type="checkbox" id="darkModeToggle" class="sr-only">
                             <label for="darkModeToggle"
@@ -741,9 +741,9 @@
                                     </svg>
                                 </span>
                             </label>
-                        </div>
+                        </div> --}}
                     </div>
-
+ 
                     <!-- سرچ، اعلان، پروفایل -->
                     <div class="desktop-actions-section">
                         <div class="header-search-section">

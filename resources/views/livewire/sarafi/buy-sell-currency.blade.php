@@ -17,6 +17,17 @@
         </div>
         @endif
 
+        @if (session()->has('error'))
+        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
+            class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#DC2626] vazir">
+            <div class="h-[80px] w-full flex justify-start items-center px-4">
+                <h2 class="text-white vazir text-[18px]">
+                    {{ session('error') }}
+                </h2>
+            </div>
+        </div>
+        @endif
+
         <div class=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2  px-10  gap-10 mt-3 justify-center">
             <!-- جدول خرید -->
             <div class="max-h-[680px] overflow-y-auto w-full">
