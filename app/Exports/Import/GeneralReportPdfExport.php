@@ -79,7 +79,7 @@ class GeneralReportPdfExport
     {
         $reportTypes = [
             'withdraw_log' => 'گزارش برداشت‌ها',
-            'loan' => 'گزارش قرضه ها',
+            'loan' => 'گزارش قرضه ها شرکت  حبیب یونس' ,
             'sell' => 'گزارش فروش‌ها',
             'buy' => 'گزارش خریدها',
             'transaction' => 'گزارش تراکنش‌ها',
