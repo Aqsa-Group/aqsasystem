@@ -461,17 +461,22 @@ public function finalizeInvoice(): void
             $si->loss = $this->roundAmount($si->loss ?? 0);
         }
   $previousLoanRemaining = 0;
-    if ($sale->sale_type === 'wholesale' && $sale->customer_id) {
-        $previousLoan = Loan::where('customer_id', $sale->customer_id)
-            ->where('created_at', '<', $sale->created_at) // فقط قبل از این فاکتور
-            ->where('reminded', '>', 0)
-            ->latest('created_at')
-            ->first();
-            
-        if ($previousLoan) {
-            $previousLoanRemaining = $previousLoan->reminded;
-        }
-    }
+
+if ($sale->sale_type === 'wholesale' && $sale->customer_id) {
+    
+    // تمام بردها و رسیدهای قبل از این فاکتور را می‌گیریم
+    $previousData = Loan::where('customer_id', $sale->customer_id)
+        ->where('created_at', '<', $sale->created_at)
+        ->selectRaw('
+            COALESCE(SUM(amount), 0) AS total_borrow,
+            COALESCE(SUM(loan_recipt), 0) AS total_receipt
+        ')
+        ->first();
+
+    // بدهی واقعی = کل قرض - کل رسید
+    $previousLoanRemaining = $previousData->total_borrow - $previousData->total_receipt;
+}
+
 
     $html = view('pdf.invoice', [
         'sale'       => $sale,
