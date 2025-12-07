@@ -155,6 +155,10 @@
                         <img src="{{ asset('assets/sarafi/all_icon/pencil.svg') }}" alt="" class="h-6 w-6">
                         <span class="vazir font-semibold">فورم تبدیل ارز و انتقال</span>
                     </p>
+                    <button wire:click="toggleTransactionType" class="rounded-[8px] p-[10px] text-white vazir px-12 font-semibold transition-colors duration-500 ease-in-out
+                        {{ $transactionType === 'خرید' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
+                        {{ $transactionType === 'خرید' ? 'خرید' : 'فروش' }}
+                    </button>
 
 
                 </div>
@@ -412,7 +416,13 @@
                             </div>
 
                             <div class="flex-1">
-                                <label class="block text-[16px] font-medium text-black mb-1 vazir">نرخ فروش ارز</label>
+                                <label class="block text-[16px] font-medium text-black mb-1 vazir">
+                                    @if($transactionType === 'خرید')
+                                    نرخ خرید
+                                    @else
+                                    نرخ فروش
+                                    @endif
+                                </label>
                                 <div class="relative w-full">
                                     <input type="text" wire:model.live="currency_rate" placeholder="0.0000"
                                         class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
@@ -436,7 +446,6 @@
 
                     {{-- نرخ ارز و تاریخ --}}
                     <div class="mt-2 flex flex-col lg:flex-row gap-3">
-
 
                         {{-- مقدار دریافت --}}
                         <div class="flex-1">
