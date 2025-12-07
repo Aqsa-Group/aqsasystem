@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html dir="rtl">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title><?php echo e($reportTitle); ?></title>
@@ -97,11 +98,37 @@
         }
     </style>
 </head>
+
 <body>
     <div class="header">
         <h1><?php echo e($reportTitle); ?></h1>
         <div>تاریخ تولید: <?php echo e(\Morilog\Jalali\Jalalian::now()->format('Y/m/d H:i')); ?></div>
     </div>
+
+
+
+    <?php if($reportType === 'loan'): ?>
+
+    <table>
+        <thead style="background-color: blue;color: white">
+            <tr>
+                <th>مجموعه بردگی ها</th>
+                <th>مجموعه رسید ها</th>
+                <th>الباقی حساب</th>
+            </tr>
+
+
+        </thead>
+        <tbody>
+            <tr>
+                <td><?php echo e(number_format($summary['total_loans'] ?? 0)); ?></td>
+                <td><?php echo e(number_format($summary['total_receipts'] ?? 0)); ?></td>
+                <td><?php echo e(number_format($summary['remaining'] ?? 0)); ?></td>
+
+            </tr>
+        </tbody>
+    </table>
+    <?php else: ?>
 
     <div class="summary">
         <div>
@@ -114,68 +141,74 @@
         </div>
     </div>
 
+
+    <?php endif; ?>
     <?php if($data && $data->count() > 0): ?>
     <table>
         <thead>
             <tr>
                 <th class="row-number">#</th>
                 <?php switch($reportType):
-                    case ('withdraw_log'): ?>
-                        <th>نوع</th>
-                        <th>کارمند</th>
-                        <th>مبلغ</th>
-                        <th>واحد پول</th>
-                        <th>توضیحات</th>
-                        <th>تاریخ ثبت</th>
-                    <?php break; ?>
+                case ('withdraw_log'): ?>
+                <th>نوع</th>
+                <th>کارمند</th>
+                <th>مبلغ</th>
+                <th>واحد پول</th>
+                <th>توضیحات</th>
+                <th>تاریخ ثبت</th>
+                <?php break; ?>
 
-                    <?php case ('loan'): ?>
-                        <th>نوع</th>
-                        <th>مشتری</th>
-                        <th>مبلغ اصلی</th>
-                        <th>رسید</th>
-                        <th>باقی مانده</th>
-                        <th>برند</th>
-                        <th>واحد پول</th>
-                        <th>تاریخ</th>
-                    <?php break; ?>
 
-                    <?php case ('sell'): ?>
-                        <th>شماره فاکتور</th>
-                        <th>نوع فروش</th>
-                        <th>مشتری</th>
-                        <th>قیمت کل</th>
-                        <th>تخفیف</th>
-                        <th>تاریخ ثبت</th>
-                    <?php break; ?>
+                <?php case ('loan'): ?>
+                <th class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                    نوع</th>
 
-                    <?php case ('buy'): ?>
-                        <th>بارکد</th>
-                        <th>نام کالا</th>
-                        <th>شرکت</th>
-                        <th>قیمت کل</th>
-                        <th>واحد پول</th>
-                        <th>تعداد</th>
-                        <th>تاریخ واردات</th>
-                    <?php break; ?>
+                <th class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                    نام مشتری</th>
+                <th class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                    مبلغ</th>
+                <th class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                    واحد پول</th>
+                <th class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                    تاریخ</th>
+                <?php break; ?>
 
-                    <?php case ('transaction'): ?>
-                        <th>نوع</th>
-                        <th>شخص</th>
-                        <th>نام شخص</th>
-                        <th>مبلغ</th>
-                        <th>واحد پول</th>
-                        <th>تاریخ تراکنش</th>
-                    <?php break; ?>
+                <?php case ('sell'): ?>
+                <th>شماره فاکتور</th>
+                <th>نوع فروش</th>
+                <th>مشتری</th>
+                <th>قیمت کل</th>
+                <th>تخفیف</th>
+                <th>تاریخ ثبت</th>
+                <?php break; ?>
 
-                    <?php case ('company_payment'): ?>
-                        <th>شرکت</th>
-                        <th>واحد پول</th>
-                        <th>کل بدهی</th>
-                        <th>پرداخت شده</th>
-                        <th>باقی مانده</th>
-                        <th>تاریخ ثبت</th>
-                    <?php break; ?>
+                <?php case ('buy'): ?>
+                <th>بارکد</th>
+                <th>نام کالا</th>
+                <th>شرکت</th>
+                <th>قیمت کل</th>
+                <th>واحد پول</th>
+                <th>تعداد</th>
+                <th>تاریخ واردات</th>
+                <?php break; ?>
+
+                <?php case ('transaction'): ?>
+                <th>نوع</th>
+                <th>شخص</th>
+                <th>نام شخص</th>
+                <th>مبلغ</th>
+                <th>واحد پول</th>
+                <th>تاریخ تراکنش</th>
+                <?php break; ?>
+
+                <?php case ('company_payment'): ?>
+                <th>شرکت</th>
+                <th>واحد پول</th>
+                <th>کل بدهی</th>
+                <th>پرداخت شده</th>
+                <th>باقی مانده</th>
+                <th>تاریخ ثبت</th>
+                <?php break; ?>
                 <?php endswitch; ?>
             </tr>
         </thead>
@@ -184,86 +217,125 @@
             <tr>
                 <td class="row-number"><?php echo e($index + 1); ?></td>
                 <?php switch($reportType):
-                    case ('withdraw_log'): ?>
-                        <td>
-                            <?php
-                                $typeTranslations = [
-                                    'electricity' => 'برق',
-                                    'rent' => 'کرایه',
-                                    'water' => 'مالیه', 
-                                    'food' => 'غذا',
-                                    'salary' => 'معاش کارمند',
-                                    'transportation' => 'بارچلانی چین',
-                                    'other' => 'متفرقه',
-                                ];
-                            ?>
-                            <?php echo e($typeTranslations[$report->type] ?? $report->type); ?>
+                case ('withdraw_log'): ?>
+                <td>
+                    <?php
+                    $typeTranslations = [
+                    'electricity' => 'برق',
+                    'rent' => 'کرایه',
+                    'water' => 'مالیه',
+                    'food' => 'غذا',
+                    'salary' => 'معاش کارمند',
+                    'transportation' => 'بارچلانی چین',
+                    'other' => 'متفرقه',
+                    ];
+                    ?>
+                    <?php echo e($typeTranslations[$report->type] ?? $report->type); ?>
 
-                        </td>
-                        <td><?php echo e($report->staff->fullname ?? '-'); ?></td>
-                        <td><?php echo e(number_format($report->amount)); ?></td>
-                        <td><?php echo e($report->currency); ?></td>
-                        <td><?php echo e($report->description ?? '-'); ?></td>
-                        <td><?php echo e($report->created_at ? \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-'); ?></td>
-                    <?php break; ?>
+                </td>
+                <td><?php echo e($report->staff->fullname ?? '-'); ?></td>
+                <td><?php echo e(number_format($report->amount)); ?></td>
+                <td><?php echo e($report->currency); ?></td>
+                <td><?php echo e($report->description ?? '-'); ?></td>
+                <td><?php echo e($report->created_at ?
+                    \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-'); ?></td>
+                <?php break; ?>
+                <?php case ('loan'): ?>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span
+                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium <?php echo e($report->type === 'بردگی' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'); ?>">
+                        <?php echo e($report->type); ?>
 
-                    <?php case ('loan'): ?>
-                        <td><?php echo e($report->type); ?></td>
-                        <td><?php echo e($report->customer->fullname ?? '-'); ?></td>
-                        <td><?php echo e(number_format($report->amount)); ?></td>
-                        <td><?php echo e(number_format($report->loan_recipt ?? 0)); ?></td>
-                        <td><?php echo e(number_format($report->reminded ?? 0)); ?></td>
-                        <td><?php echo e($report->brand ?? '-'); ?></td>
-                        <td><?php echo e($report->currency); ?></td>
-                        <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?></td>
-                    <?php break; ?>
+                    </span>
+                </td>
 
-                    <?php case ('sell'): ?>
-                        <td><?php echo e($report->invoice_number ?? '-'); ?></td>
-                        <td><?php echo e($report->sale_type); ?></td>
-                        <td><?php echo e($report->customer->fullname ?? '-'); ?></td>
-                        <td><?php echo e(number_format($report->total_price ?? $report->price)); ?></td>
-                        <td><?php echo e(number_format($report->discount ?? 0)); ?></td>
-                        <td><?php echo e($report->created_at ? \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-'); ?></td>
-                    <?php break; ?>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span
+                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium <?php echo e($report->type === 'بردگی' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'); ?>">
+                        <?php echo e($report->customer->name); ?>
 
-                    <?php case ('buy'): ?>
-                        <td><?php echo e($report->barcode ?? '-'); ?></td>
-                        <td><?php echo e($report->name ?? '-'); ?></td>
-                        <td><?php echo e($report->company->name ?? '-'); ?></td>
-                        <td><?php echo e(number_format($report->total_price ?? $report->price)); ?></td>
-                        <td><?php echo e($report->currency); ?></td>
-                        <td><?php echo e(number_format($report->all_exist_number ?? 0)); ?></td>
-                        <td><?php echo e($report->import_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->import_date)->format('Y/m/d') : '-'); ?></td>
-                    <?php break; ?>
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="font-bold text-gray-900">
+                        <?php if($report->type === 'بردگی'): ?>
+                        <?php echo e(number_format($report->amount)); ?>
 
-                    <?php case ('transaction'): ?>
-                        <td><?php echo e($report->type); ?></td>
-                        <td>
-                            <?php if($report->customer_id): ?> مشتری
-                            <?php elseif($report->staff_id): ?> کارمند
-                            <?php elseif($report->sarafi_id): ?> صرافی
-                            <?php else: ?> دوکان <?php endif; ?>
-                        </td>
-                        <td><?php echo e($report->customer->fullname ?? $report->staff->fullname ?? $report->sarafi->name ?? '-'); ?></td>
-                        <td><?php echo e(number_format($report->amount)); ?></td>
-                        <td><?php echo e($report->currency); ?></td>
-                        <td><?php echo e($report->created_at ? \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-'); ?></td>
-                    <?php break; ?>
 
-                    <?php case ('company_payment'): ?>
-                        <td><?php echo e($report->company->name ?? '-'); ?></td>
-                        <td><?php echo e($report->currency); ?></td>
-                        <td><?php echo e(number_format($report->total_debt ?? 0)); ?></td>
-                        <td><?php echo e(number_format($report->paid_amount ?? 0)); ?></td>
-                        <td><?php echo e(number_format($report->remaining ?? 0)); ?></td>
-                        <td><?php echo e($report->created_at ? \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-'); ?></td>
-                    <?php break; ?>
+                        <?php else: ?>
+                        <?php echo e(number_format($report->loan_recipt)); ?>
+
+
+                        <?php endif; ?>
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                        <?php echo e($report->currency); ?>
+
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <?php echo e($report->date ?
+                    \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
+
+                </td>
+                <?php break; ?>
+
+                <?php case ('sell'): ?>
+                <td><?php echo e($report->invoice_number ?? '-'); ?></td>
+                <td><?php echo e($report->sale_type); ?></td>
+                <td><?php echo e($report->customer->fullname ?? '-'); ?></td>
+                <td><?php echo e(number_format($report->total_price ?? $report->price)); ?></td>
+                <td><?php echo e(number_format($report->discount ?? 0)); ?></td>
+                <td><?php echo e($report->created_at ?
+                    \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-'); ?></td>
+                <?php break; ?>
+
+                <?php case ('buy'): ?>
+                <td><?php echo e($report->barcode ?? '-'); ?></td>
+                <td><?php echo e($report->name ?? '-'); ?></td>
+                <td><?php echo e($report->company->name ?? '-'); ?></td>
+                <td><?php echo e(number_format($report->total_price ?? $report->price)); ?></td>
+                <td><?php echo e($report->currency); ?></td>
+                <td><?php echo e(number_format($report->all_exist_number ?? 0)); ?></td>
+                <td><?php echo e($report->import_date ?
+                    \Morilog\Jalali\Jalalian::fromDateTime($report->import_date)->format('Y/m/d') : '-'); ?></td>
+                <?php break; ?>
+
+                <?php case ('transaction'): ?>
+                <td><?php echo e($report->type); ?></td>
+                <td>
+                    <?php if($report->customer_id): ?> مشتری
+                    <?php elseif($report->staff_id): ?> کارمند
+                    <?php elseif($report->sarafi_id): ?> صرافی
+                    <?php else: ?> دوکان <?php endif; ?>
+                </td>
+                <td><?php echo e($report->customer->fullname ?? $report->staff->fullname ?? $report->sarafi->name ?? '-'); ?></td>
+                <td><?php echo e(number_format($report->amount)); ?></td>
+                <td><?php echo e($report->currency); ?></td>
+                <td><?php echo e($report->created_at ?
+                    \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-'); ?></td>
+                <?php break; ?>
+
+                <?php case ('company_payment'): ?>
+                <td><?php echo e($report->company->name ?? '-'); ?></td>
+                <td><?php echo e($report->currency); ?></td>
+                <td><?php echo e(number_format($report->total_debt ?? 0)); ?></td>
+                <td><?php echo e(number_format($report->paid_amount ?? 0)); ?></td>
+                <td><?php echo e(number_format($report->remaining ?? 0)); ?></td>
+                <td><?php echo e($report->created_at ?
+                    \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-'); ?></td>
+                <?php break; ?>
                 <?php endswitch; ?>
             </tr>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </tbody>
     </table>
+
+
+
+
     <?php else: ?>
     <div class="no-data">
         <h3>داده‌ای برای نمایش وجود ندارد</h3>
@@ -272,8 +344,9 @@
     <?php endif; ?>
 
     <div class="footer">
-        <div>سیستم گزارش‌گیری جامع - Tools</div>
+        <div>سیستم گزارش‌گیری جامع - پرزه جات TVS</div>
         <div>تعداد: <?php echo e(number_format($summary['total_count'])); ?> | مجموع کل: <?php echo e(number_format($summary['total_amount'])); ?></div>
     </div>
 </body>
+
 </html><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/exports/Import/general-report-pdf.blade.php ENDPATH**/ ?>

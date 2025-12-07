@@ -9,7 +9,7 @@
 
     <div class="invoice">شرکت حبیب یونس لمتید
         <div>
-            وارد کننده انواع پرزه جات TVS از قبیل پرزه جات موتر ، موتور سیکلت و سچرخ 
+            وارد کننده انواع پرزه جات TVS از قبیل پرزه جات موتر ، موتور سیکلت و سچرخ
         </div>
         <table>
             <tr>
@@ -18,12 +18,12 @@
             </tr>
         </table>
     </div>
-   
+
     <table>
         <tr>
             <td>
                 @if ($sale->sale_type === 'wholesale' && $sale->customer)
-                     محترم: {{ $sale->customer->name }}
+                محترم: {{ $sale->customer->name }}
                 @endif
             </td>
             <td>&nbsp;&nbsp; شماره فاکتور: {{ $sale->invoice_number }}</td>
@@ -32,7 +32,7 @@
     </table>
 
     @php
-        $logoPath = public_path('assets/logo2.png'); 
+    $logoPath = public_path('assets/logo2.png');
     @endphp
 
     <table style="
@@ -57,30 +57,29 @@
         </thead>
         <tbody>
             @foreach ($sale->items as $index => $item)
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $item->warehouse->name ?? '-' }}</td>
-                    <td>{{ number_format($item->price_per_unit , 2) }}</td>
-                    <td>{{ $item->quantity }}</td>
-                    @if ($sale->sale_type === 'wholesale')
-                        <td>{{ $item->warehouse->unit ?? '-' }}</td>
-                    @else
-                        <td>عدد</td>
-                    @endif
-                    <td>{{ number_format($item->total_price , 2)}}</td>
-                </tr>
+            <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>{{ $item->warehouse->name ?? '-' }}</td>
+                <td>{{ number_format($item->price_per_unit , 2) }}</td>
+                <td>{{ $item->quantity }}</td>
+                @if ($sale->sale_type === 'wholesale')
+                <td>{{ $item->warehouse->unit ?? '-' }}</td>
+                @else
+                <td>عدد</td>
+                @endif
+                <td>{{ number_format($item->total_price , 2)}}</td>
+            </tr>
             @endforeach
 
-            @for ($i = count($sale->items) + 1; $i <=15; $i++)
-                <tr>
-                    <td>{{ $i }}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+            @for ($i = count($sale->items) + 1; $i <=13; $i++) <tr>
+                <td>{{ $i }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
                 </tr>
-            @endfor
+                @endfor
         </tbody>
     </table>
 
@@ -105,19 +104,34 @@
                 </td>
             </tr>
             @if ($sale->sale_type === 'wholesale')
-                <tr>
-                    <td style="padding:6px; font-weight:bold;">مبلغ دریافت شده</td>
-                    <td style="padding:6px; text-align:center;">
-                        <strong>{{ number_format($sale->received_amount , 2) }}&nbsp;دالر</strong>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="padding:6px; font-weight:bold;">باقیمانده</td>
-                    <td style="padding:6px; text-align:center;">
-                        <strong>{{ number_format($sale->remaining_amount , 2) }}&nbsp;دالر</strong>
-                    </td>
-                </tr>
+            <tr>
+                <td style="padding:6px; font-weight:bold;">مبلغ دریافت شده</td>
+                <td style="padding:6px; text-align:center;">
+                    <strong>{{ number_format($sale->received_amount , 2) }}&nbsp;دالر</strong>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:6px; font-weight:bold;">باقیمانده فعلی</td>
+                <td style="padding:6px; text-align:center;">
+                    <strong>{{ number_format($sale->remaining_amount , 2) }}&nbsp;دالر</strong>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:6px; font-weight:bold;">باقیمانده قبل (قرض قبلی)</td>
+                <td style="padding:6px; text-align:center;">
+                    <strong>{{ number_format($previousLoanRemaining , 2) }}&nbsp;دالر</strong>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:6px; font-weight:bold; color:red; font-size:16px;">
+                    مجموع باقیمانده کل
+                </td>
+                <td style="padding:6px; text-align:center; color:red; font-size:16px;">
+                    <strong>{{ number_format($sale->remaining_amount + $previousLoanRemaining , 2) }}&nbsp;دالر</strong>
+                </td>
+            </tr>
             @endif
+
         </tbody>
     </table>
 
@@ -130,4 +144,5 @@
     <div style="height: calc(297mm - [مجموع ارتفاع محتوای شما]);"></div>
 
 </body>
+
 </html>

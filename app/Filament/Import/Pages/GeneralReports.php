@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Filament\Import\Pages;
-
+use App\Models\Import\Customer;
 use Filament\Pages\Page;
 
 class GeneralReports extends Page

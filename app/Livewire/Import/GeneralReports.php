@@ -218,7 +218,7 @@ class GeneralReports extends Component
             'startDateJalali' => $this->startDateJalali,
             'endDateJalali' => $this->endDateJalali,
             'customerId' => $this->customerId,
-            'customerName' => $this->customerId ? Customer::find($this->customerId)->fullname ?? null : null,
+            'customerName' => $this->customerId ? Customer::find($this->customerId)->name ?? null : null,
             'staffId' => $this->staffId,
             'staffName' => $this->staffId ? Staff::find($this->staffId)->fullname ?? null : null,
             'companyId' => $this->companyId,
@@ -231,51 +231,51 @@ class GeneralReports extends Component
         ];
     }
 
-private function getReportData($forExport = false)
-{
-    try {
-        switch ($this->reportType) {
-            case 'withdraw_log':
-                $query = $this->buildWithdrawQuery();
-                break;
-            case 'loan':
-                $query = $this->buildLoanQuery();
-                break;
-            case 'sell':
-                $query = $this->buildSaleQuery();
-                break;
-            case 'buy':
-                $query = $this->buildBuyQuery();
-                break;
-            case 'transaction':
-                $query = $this->buildTransactionQuery();
-                break;
-            case 'company_payment':
-                $query = $this->buildCompanyPaymentQuery();
-                break;
-            default:
-                $query = $this->buildWithdrawQuery();
-        }
+    private function getReportData($forExport = false)
+    {
+        try {
+            switch ($this->reportType) {
+                case 'withdraw_log':
+                    $query = $this->buildWithdrawQuery();
+                    break;
+                case 'loan':
+                    $query = $this->buildLoanQuery();
+                    break;
+                case 'sell':
+                    $query = $this->buildSaleQuery();
+                    break;
+                case 'buy':
+                    $query = $this->buildBuyQuery();
+                    break;
+                case 'transaction':
+                    $query = $this->buildTransactionQuery();
+                    break;
+                case 'company_payment':
+                    $query = $this->buildCompanyPaymentQuery();
+                    break;
+                default:
+                    $query = $this->buildWithdrawQuery();
+            }
 
-        return $forExport ? $query->get() : $query->paginate(20);
-    } catch (\Exception $e) {
-        Log::error('Error in getReportData: ' . $e->getMessage(), [
-            'reportType' => $this->reportType
-        ]);
+            return $forExport ? $query->get() : $query->paginate(20);
+        } catch (\Exception $e) {
+            Log::error('Error in getReportData: ' . $e->getMessage(), [
+                'reportType' => $this->reportType
+            ]);
 
-        // Return empty paginator for display, empty collection for export
-        if ($forExport) {
-            return collect();
-        } else {
-            return new \Illuminate\Pagination\LengthAwarePaginator(
-                [],
-                0,
-                20,
-                \Illuminate\Pagination\Paginator::resolveCurrentPage()
-            );
+            // Return empty paginator for display, empty collection for export
+            if ($forExport) {
+                return collect();
+            } else {
+                return new \Illuminate\Pagination\LengthAwarePaginator(
+                    [],
+                    0,
+                    20,
+                    \Illuminate\Pagination\Paginator::resolveCurrentPage()
+                );
+            }
         }
     }
-}
     private function buildWithdrawQuery()
     {
         return Withdraw::with(['staff', 'user'])
@@ -290,8 +290,7 @@ private function getReportData($forExport = false)
                 $q->whereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
                     ->orWhere('description', 'like', "%{$this->search}%");
             })
-              ->orderBy('created_at', 'desc');
-;
+            ->orderBy('created_at', 'desc');;
     }
 
     private function buildLoanQuery()
@@ -305,10 +304,17 @@ private function getReportData($forExport = false)
             ->when($this->amountMin, fn($q) => $q->where('amount', '>=', $this->amountMin))
             ->when($this->amountMax, fn($q) => $q->where('amount', '<=', $this->amountMax))
             ->when($this->search, function ($q) {
-                $q->whereHas('customer', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-                    ->orWhere('brand', 'like', "%{$this->search}%")
-                    ->orWhere('loan_recipt', 'like', "%{$this->search}%");
+                $search = "%{$this->search}%";
+                $q->where(function ($q2) use ($search) {
+                    $q2->whereHas('customer', function ($c) use ($search) {
+                        $c->where('name', 'like', $search);
+                    })
+                        ->orWhere('brand', 'like', $search)
+                        ->orWhere('loan_recipt', 'like', $search);
+                });
             })
+
+
             ->orderBy('created_at', 'desc');
     }
 
@@ -346,32 +352,32 @@ private function getReportData($forExport = false)
             ->orderBy('created_at', 'desc');
     }
 
- private function buildTransactionQuery()
-{
-    return Transaction::with(['customer', 'staff', 'sarafi', 'user'])
-        ->when($this->customerId, fn($q) => $q->where('customer_id', $this->customerId))
-        ->when($this->staffId, fn($q) => $q->where('staff_id', $this->staffId))
-        ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
-        ->when($this->type, fn($q) => $q->where('type', $this->type))
-        ->when($this->startDate, function ($q) {
-            $gregorianDate = \Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $this->startDate)->toCarbon();
-            $q->whereDate('created_at', '>=', $gregorianDate);
-        })
-        ->when($this->endDate, function ($q) {
-            $gregorianDate = \Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $this->endDate)->toCarbon();
-            $q->whereDate('created_at', '<=', $gregorianDate);
-        })
-        ->when($this->amountMin, fn($q) => $q->where('amount', '>=', $this->amountMin))
-        ->when($this->amountMax, fn($q) => $q->where('amount', '<=', $this->amountMax))
-        ->when($this->search, function ($q) {
-            $q->where(function ($query) {
-                $query->whereHas('customer', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-                      ->orWhereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-                      ->orWhereHas('sarafi', fn($q2) => $q2->where('name', 'like', "%{$this->search}%"));
-            });
-        })
-        ->orderBy('created_at', 'desc');
-}
+    private function buildTransactionQuery()
+    {
+        return Transaction::with(['customer', 'staff', 'sarafi', 'user'])
+            ->when($this->customerId, fn($q) => $q->where('customer_id', $this->customerId))
+            ->when($this->staffId, fn($q) => $q->where('staff_id', $this->staffId))
+            ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
+            ->when($this->type, fn($q) => $q->where('type', $this->type))
+            ->when($this->startDate, function ($q) {
+                $gregorianDate = \Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $this->startDate)->toCarbon();
+                $q->whereDate('created_at', '>=', $gregorianDate);
+            })
+            ->when($this->endDate, function ($q) {
+                $gregorianDate = \Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $this->endDate)->toCarbon();
+                $q->whereDate('created_at', '<=', $gregorianDate);
+            })
+            ->when($this->amountMin, fn($q) => $q->where('amount', '>=', $this->amountMin))
+            ->when($this->amountMax, fn($q) => $q->where('amount', '<=', $this->amountMax))
+            ->when($this->search, function ($q) {
+                $q->where(function ($query) {
+                    $query->whereHas('customer', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
+                        ->orWhereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
+                        ->orWhereHas('sarafi', fn($q2) => $q2->where('name', 'like', "%{$this->search}%"));
+                });
+            })
+            ->orderBy('created_at', 'desc');
+    }
 
 
     private function buildCompanyPaymentQuery()

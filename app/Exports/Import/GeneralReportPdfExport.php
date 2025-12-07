@@ -25,7 +25,7 @@ class GeneralReportPdfExport
             $mpdf->WriteHTML($html);
 
             $filename = 'general_report_' . $this->reportType . '_' . now()->format('Y_m_d') . '.pdf';
-            
+
             return response($mpdf->Output('', 'S'), 200, [
                 'Content-Type' => 'application/pdf',
                 'Content-Disposition' => 'attachment; filename="' . $filename . '"',
@@ -33,7 +33,6 @@ class GeneralReportPdfExport
                 'Pragma' => 'no-cache',
                 'Expires' => '0'
             ]);
-
         } catch (\Exception $e) {
             throw new \Exception('خطا در تولید PDF: ' . $e->getMessage());
         }
@@ -53,7 +52,6 @@ class GeneralReportPdfExport
                 'Pragma' => 'no-cache',
                 'Expires' => '0'
             ]);
-
         } catch (\Exception $e) {
             throw new \Exception('خطا در نمایش PDF: ' . $e->getMessage());
         }
@@ -81,7 +79,7 @@ class GeneralReportPdfExport
     {
         $reportTypes = [
             'withdraw_log' => 'گزارش برداشت‌ها',
-            'loan' => 'گزارش بردگی‌ها',
+            'loan' => 'گزارش قرضه ها',
             'sell' => 'گزارش فروش‌ها',
             'buy' => 'گزارش خریدها',
             'transaction' => 'گزارش تراکنش‌ها',
@@ -96,12 +94,34 @@ class GeneralReportPdfExport
             'summary' => $this->calculateSummary(),
         ])->render();
     }
-
     protected function calculateSummary()
     {
-        $totalAmount = match($this->reportType) {
+        if ($this->reportType === 'loan') {
+            $total_loans = 0;
+            $total_receipts = 0;
+
+            foreach ($this->data as $item) {
+                if (isset($item->type) && $item->type === 'بردگی') {
+                    $total_loans += isset($item->amount) ? $item->amount : 0;
+                } else {
+                    $total_receipts += isset($item->loan_recipt) ? $item->loan_recipt : 0;
+                }
+            }
+
+            $remaining = $total_loans - $total_receipts;
+
+            return [
+                'total_count' => $this->data->count(),
+                'total_amount' => $total_loans, // این خط اضافه شد
+                'total_loans' => $total_loans,
+                'total_receipts' => $total_receipts,
+                'remaining' => $remaining,
+            ];
+        }
+
+        // برای سایر گزارش‌ها
+        $totalAmount = match ($this->reportType) {
             'withdraw_log' => $this->data->sum('amount'),
-            'loan' => $this->data->sum('amount'),
             'sell' => $this->data->sum('total_price'),
             'buy' => $this->data->sum('total_price'),
             'transaction' => $this->data->sum('amount'),

@@ -9,7 +9,7 @@
 
     <div class="invoice">شرکت حبیب یونس لمتید
         <div>
-            وارد کننده انواع پرزه جات TVS از قبیل پرزه جات موتر ، موتور سیکلت و سچرخ 
+            وارد کننده انواع پرزه جات TVS از قبیل پرزه جات موتر ، موتور سیکلت و سچرخ
         </div>
         <table>
             <tr>
@@ -18,12 +18,12 @@
             </tr>
         </table>
     </div>
-   
+
     <table>
         <tr>
             <td>
                 <?php if($sale->sale_type === 'wholesale' && $sale->customer): ?>
-                     محترم: <?php echo e($sale->customer->name); ?>
+                محترم: <?php echo e($sale->customer->name); ?>
 
                 <?php endif; ?>
             </td>
@@ -33,7 +33,7 @@
     </table>
 
     <?php
-        $logoPath = public_path('assets/logo2.png'); 
+    $logoPath = public_path('assets/logo2.png');
     ?>
 
     <table style="
@@ -58,30 +58,29 @@
         </thead>
         <tbody>
             <?php $__currentLoopData = $sale->items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <tr>
-                    <td><?php echo e($index + 1); ?></td>
-                    <td><?php echo e($item->warehouse->name ?? '-'); ?></td>
-                    <td><?php echo e(number_format($item->price_per_unit , 2)); ?></td>
-                    <td><?php echo e($item->quantity); ?></td>
-                    <?php if($sale->sale_type === 'wholesale'): ?>
-                        <td><?php echo e($item->warehouse->unit ?? '-'); ?></td>
-                    <?php else: ?>
-                        <td>عدد</td>
-                    <?php endif; ?>
-                    <td><?php echo e(number_format($item->total_price , 2)); ?></td>
-                </tr>
+            <tr>
+                <td><?php echo e($index + 1); ?></td>
+                <td><?php echo e($item->warehouse->name ?? '-'); ?></td>
+                <td><?php echo e(number_format($item->price_per_unit , 2)); ?></td>
+                <td><?php echo e($item->quantity); ?></td>
+                <?php if($sale->sale_type === 'wholesale'): ?>
+                <td><?php echo e($item->warehouse->unit ?? '-'); ?></td>
+                <?php else: ?>
+                <td>عدد</td>
+                <?php endif; ?>
+                <td><?php echo e(number_format($item->total_price , 2)); ?></td>
+            </tr>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-            <?php for($i = count($sale->items) + 1; $i <=15; $i++): ?>
-                <tr>
-                    <td><?php echo e($i); ?></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+            <?php for($i = count($sale->items) + 1; $i <=13; $i++): ?> <tr>
+                <td><?php echo e($i); ?></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
                 </tr>
-            <?php endfor; ?>
+                <?php endfor; ?>
         </tbody>
     </table>
 
@@ -106,19 +105,34 @@
                 </td>
             </tr>
             <?php if($sale->sale_type === 'wholesale'): ?>
-                <tr>
-                    <td style="padding:6px; font-weight:bold;">مبلغ دریافت شده</td>
-                    <td style="padding:6px; text-align:center;">
-                        <strong><?php echo e(number_format($sale->received_amount , 2)); ?>&nbsp;دالر</strong>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="padding:6px; font-weight:bold;">باقیمانده</td>
-                    <td style="padding:6px; text-align:center;">
-                        <strong><?php echo e(number_format($sale->remaining_amount , 2)); ?>&nbsp;دالر</strong>
-                    </td>
-                </tr>
+            <tr>
+                <td style="padding:6px; font-weight:bold;">مبلغ دریافت شده</td>
+                <td style="padding:6px; text-align:center;">
+                    <strong><?php echo e(number_format($sale->received_amount , 2)); ?>&nbsp;دالر</strong>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:6px; font-weight:bold;">باقیمانده فعلی</td>
+                <td style="padding:6px; text-align:center;">
+                    <strong><?php echo e(number_format($sale->remaining_amount , 2)); ?>&nbsp;دالر</strong>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:6px; font-weight:bold;">باقیمانده قبل (قرض قبلی)</td>
+                <td style="padding:6px; text-align:center;">
+                    <strong><?php echo e(number_format($previousLoanRemaining , 2)); ?>&nbsp;دالر</strong>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:6px; font-weight:bold; color:red; font-size:16px;">
+                    مجموع باقیمانده کل
+                </td>
+                <td style="padding:6px; text-align:center; color:red; font-size:16px;">
+                    <strong><?php echo e(number_format($sale->remaining_amount + $previousLoanRemaining , 2)); ?>&nbsp;دالر</strong>
+                </td>
+            </tr>
             <?php endif; ?>
+
         </tbody>
     </table>
 
@@ -131,5 +145,5 @@
     <div style="height: calc(297mm - [مجموع ارتفاع محتوای شما]);"></div>
 
 </body>
-</html>
-<?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/pdf/invoice.blade.php ENDPATH**/ ?>
+
+</html><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/pdf/invoice.blade.php ENDPATH**/ ?>

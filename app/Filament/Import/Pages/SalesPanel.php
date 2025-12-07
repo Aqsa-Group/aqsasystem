@@ -460,12 +460,25 @@ public function finalizeInvoice(): void
             $si->profit = $this->roundAmount($si->profit ?? 0);
             $si->loss = $this->roundAmount($si->loss ?? 0);
         }
+  $previousLoanRemaining = 0;
+    if ($sale->sale_type === 'wholesale' && $sale->customer_id) {
+        $previousLoan = Loan::where('customer_id', $sale->customer_id)
+            ->where('created_at', '<', $sale->created_at) // فقط قبل از این فاکتور
+            ->where('reminded', '>', 0)
+            ->latest('created_at')
+            ->first();
+            
+        if ($previousLoan) {
+            $previousLoanRemaining = $previousLoan->reminded;
+        }
+    }
 
-        $html = view('pdf.invoice', [
-            'sale'       => $sale,
-            'discount'   => $discount,
-            'finalPrice' => $finalPrice,
-        ])->render();
+    $html = view('pdf.invoice', [
+        'sale'       => $sale,
+        'discount'   => $discount,
+        'finalPrice' => $finalPrice,
+        'previousLoanRemaining' => $previousLoanRemaining,
+    ])->render();
 
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
@@ -544,13 +557,23 @@ public function decreaseQuantity(int $index): void
         return str_replace($persian, $english, $input);
     }
 
-  public function getRemainingAmountProperty(): float
+public function getLiveRemainingAmountProperty(): float
 {
     if ($this->saleType === 'retail') {
-        return 0.000; 
+        return 0.000;
     }
-
+    
     $total = $this->roundAmount(collect($this->items)->sum('total'));
-    return $this->roundAmount(max(0, $total - $this->convertedReceivedAmount));
+    $finalPrice = max(0, $total - $this->discount);
+    
+    // محاسبه دریافتی تبدیل شده
+    $convertedReceived = 0;
+    if ($this->receivedCurrency === 'AFN' && $this->usdToAfnRate > 0) {
+        $convertedReceived = $this->roundAmount($this->receivedAmount / $this->usdToAfnRate);
+    } else {
+        $convertedReceived = $this->roundAmount($this->receivedAmount);
+    }
+    
+    return $this->roundAmount(max(0, $finalPrice - $convertedReceived));
 }
 }

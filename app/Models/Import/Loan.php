@@ -17,7 +17,6 @@ class Loan extends Model
         'customer_id',
         'amount',
         'user_id',
-
         'past_amount',
         'loan_recipt',
         'date',
@@ -28,10 +27,10 @@ class Loan extends Model
 
 
 
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class);
-    }
+   public function customer()
+{
+    return $this->belongsTo(Customer::class, 'customer_id');
+}
 
 
 

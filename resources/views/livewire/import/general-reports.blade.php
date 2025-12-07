@@ -84,8 +84,8 @@
                                     <select wire:model.live="currency"
                                         class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
                                         <option value="">همه واحدها</option>
-                                        <option value="AFN">🇦🇫 افغانی</option>
-                                        <option value="USD">🇺🇸 دالر</option>
+                                        <option value="افغانی">🇦🇫 افغانی</option>
+                                        <option value="دالر">🇺🇸 دالر</option>
                                     </select>
                                 </div>
 
@@ -173,9 +173,9 @@
                                 </div>
                                 @endif
 
-                             
 
-                              
+
+
 
                                 <!-- Start Date -->
                                 <div class="space-y-2">
@@ -269,21 +269,15 @@
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             نوع</th>
-                                        <th
+
+                                               <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             مشتری</th>
                                         <th
+
+                                        
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
-                                            مبلغ اصلی</th>
-                                        <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
-                                            رسید</th>
-                                        <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
-                                            باقی مانده</th>
-                                        <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
-                                            برند</th>
+                                            مبلغ</th>
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             واحد پول</th>
@@ -291,6 +285,7 @@
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             تاریخ</th>
                                         @break
+
 
                                         @case('sell')
                                         <th
@@ -425,7 +420,6 @@
                                             : '-' }}
                                         </td>
                                         @break
-
                                         @case('loan')
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
@@ -433,23 +427,23 @@
                                                 {{ $report->type }}
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                            {{ $report->customer->fullname ?? '-' }}
+
+                                          <td class="px-6 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ $report->type === 'بردگی' ? ' text-black' : ' text-black' }}">
+                                                {{ $report->customer->name }}
+                                            </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-gray-900">{{ number_format($report->amount)
-                                                }}</span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-green-600">{{
-                                                number_format($report->loan_recipt) }}</span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-red-600">{{ number_format($report->reminded)
-                                                }}</span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                                            {{ $report->brand ?? '-' }}
+                                            <span class="font-bold text-gray-900">
+                                                @if ($report->type === 'بردگی')
+                                                {{ number_format($report->amount) }}
+                                                    
+                                                @else
+                                                {{ number_format($report->loan_recipt) }}
+                                                  
+                                                @endif
+                                                </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
@@ -462,6 +456,7 @@
                                             }}
                                         </td>
                                         @break
+
 
                                         @case('sell')
                                         <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">

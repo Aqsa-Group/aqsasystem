@@ -199,12 +199,11 @@
 
 
                     {{-- مبلغ رسید --}}
-                    <!-- مبلغ رسید و باقی‌مانده فقط برای فروش عمده -->
                     <template x-if="saleType === 'wholesale'">
                         <div class="space-y-3">
                             <div class="flex items-center justify-between">
                                 <span class="text-lg font-bold text-gray-800 dark:text-gray-200">💵 مبلغ رسید:</span>
-                                <input wire:model.lazy="receivedAmount" type="number" min="0" step="0.001"
+                                <input wire:model.live="receivedAmount" type="number" min="0" step="0.001"
                                     class="w-40 border rounded-lg px-3 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 dark:bg-gray-800 dark:text-gray-100"
                                     placeholder="0" />
                             </div>
@@ -212,7 +211,7 @@
                             <div class="flex items-center justify-between">
                                 <span class="text-lg font-bold text-gray-800 dark:text-gray-200">🧾 باقیمانده:</span>
                                 <span class="text-xl font-extrabold text-red-600 dark:text-red-400">
-                                   {{ number_format(max((collect($items)->sum('total') - $discount) - $convertedReceivedAmount,0),3) }} دالر
+                                    {{ number_format($this->liveRemainingAmount, 3) }} دالر
                                 </span>
                             </div>
                         </div>
@@ -225,7 +224,7 @@
                     </x-filament::button>
 
 
-                    
+
 
 
 
