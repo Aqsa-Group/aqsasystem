@@ -110,7 +110,7 @@
     <?php if($reportType === 'loan'): ?>
 
     <table>
-        <thead style="background-color: blue;color: white">
+        <thead >
             <tr>
                 <th>مجموعه بردگی ها</th>
                 <th>مجموعه رسید ها</th>

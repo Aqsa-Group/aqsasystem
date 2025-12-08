@@ -37,8 +37,8 @@
                     ?>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <?php $__currentLoopData = $reportTypes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $type => $info): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <?php if(($userRole === 'warehouse_manager' && $type === 'accounting') || ($userRole !==
+                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $reportTypes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $type => $info): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <!--[if BLOCK]><![endif]--><?php if(($userRole === 'warehouse_manager' && $type === 'accounting') || ($userRole !==
                         'warehouse_manager')): ?>
                         <button wire:click="$set('reportType', '<?php echo e($type); ?>')" class="flex items-center gap-3 p-4 rounded-2xl border text-sm font-medium transition-all duration-300 shadow-sm hover:scale-105
                             <?php if($reportType === $type): ?>
@@ -49,12 +49,12 @@
                         ">
                             <i class="<?php echo e($info['icon']); ?> text-lg"></i>
                             <span class="flex-1 text-xl font-medium"><?php echo e($info['label']); ?></span>
-                            <?php if($reportType === $type): ?>
+                            <!--[if BLOCK]><![endif]--><?php if($reportType === $type): ?>
                             <span class="ml-auto text-white font-bold">✓</span>
-                            <?php endif; ?>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </button>
-                        <?php endif; ?>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
                 </div>
 
@@ -82,9 +82,9 @@
                                     <select wire:model.live="marketId"
                                         class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
                                         <option value="">همه مارکت‌ها</option>
-                                        <?php $__currentLoopData = $markets; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $markets; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($id); ?>"><?php echo e($name); ?></option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                     </select>
                                 </div>
 
@@ -119,21 +119,21 @@
                             <!-- Dynamic Filters Based on Report Type -->
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 <!-- Staff Filter for combined report -->
-                                <?php if(in_array($reportType, ['withdraw_salary'])): ?>
+                                <!--[if BLOCK]><![endif]--><?php if(in_array($reportType, ['withdraw_salary'])): ?>
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">کارمند</label>
                                     <select wire:model.live="staffId"
                                         class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
                                         <option value="">همه کارمندان</option>
-                                        <?php $__currentLoopData = $staffs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $staffs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($id); ?>"><?php echo e($name); ?></option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                     </select>
                                 </div>
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                 <!-- Expanses Type Filter for combined report -->
-                                <?php if(in_array($reportType, ['withdraw_salary'])): ?>
+                                <!--[if BLOCK]><![endif]--><?php if(in_array($reportType, ['withdraw_salary'])): ?>
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">نوع هزینه</label>
                                     <select wire:model.live="expansesType"
@@ -146,80 +146,80 @@
                                         <option value="صفایی">صفایی</option>
                                     </select>
                                 </div>
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                 <!-- Shop Filter -->
-                                <?php if(in_array($reportType, ['accounting', 'deposit'])): ?>
+                                <!--[if BLOCK]><![endif]--><?php if(in_array($reportType, ['accounting', 'deposit'])): ?>
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">شماره دوکان</label>
                                     <select wire:model.live="shopId"
                                         class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
                                         <option value="">همه دوکان‌ها</option>
-                                        <?php $__currentLoopData = $shops; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $number): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $shops; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $number): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($id); ?>"><?php echo e($number); ?></option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                     </select>
                                 </div>
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                 <!-- Booth Filter -->
-                                <?php if(in_array($reportType, ['accounting', 'deposit', 'sell'])): ?>
+                                <!--[if BLOCK]><![endif]--><?php if(in_array($reportType, ['accounting', 'deposit', 'sell'])): ?>
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">شماره غرفه</label>
                                     <select wire:model.live="boothId"
                                         class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
                                         <option value="">همه غرفه‌ها</option>
-                                        <?php $__currentLoopData = $booths; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $number): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $booths; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $number): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($id); ?>"><?php echo e($number); ?></option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                     </select>
                                 </div>
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                 <!-- Shopkeeper Filter -->
-                                <?php if(in_array($reportType, ['accounting', 'deposit', 'outside', 'loan', 'payment'])): ?>
+                                <!--[if BLOCK]><![endif]--><?php if(in_array($reportType, ['accounting', 'deposit', 'outside', 'loan', 'payment'])): ?>
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">دوکاندار</label>
                                     <select wire:model.live="shopkeeperId"
                                         class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
                                         <option value="">همه دوکانداران</option>
-                                        <?php $__currentLoopData = $shopkeepers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $shopkeepers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($id); ?>"><?php echo e($name); ?></option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                     </select>
                                 </div>
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                 <!-- Customer Filter -->
-                                <?php if(in_array($reportType, ['outside', 'loan', 'payment', 'buy', 'sell'])): ?>
+                                <!--[if BLOCK]><![endif]--><?php if(in_array($reportType, ['outside', 'loan', 'payment', 'buy', 'sell'])): ?>
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">مشتری</label>
                                     <select wire:model.live="customerId"
                                         class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
                                         <option value="">همه مشتریان</option>
-                                        <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($id); ?>"><?php echo e($name); ?></option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                     </select>
                                 </div>
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                 <!-- Staff Filter -->
-                                <?php if(in_array($reportType, ['outside', 'loan', 'payment'])): ?>
+                                <!--[if BLOCK]><![endif]--><?php if(in_array($reportType, ['outside', 'loan', 'payment'])): ?>
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">کارمند</label>
                                     <select wire:model.live="staffId"
                                         class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
                                         <option value="">همه کارمندان</option>
-                                        <?php $__currentLoopData = $staffs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $staffs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($id); ?>"><?php echo e($name); ?></option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                     </select>
                                 </div>
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                 <!-- Type Filter -->
-                                <?php if(in_array($reportType, ['accounting', 'deposit', 'outside', 'loan'])): ?>
+                                <!--[if BLOCK]><![endif]--><?php if(in_array($reportType, ['accounting', 'deposit', 'outside', 'loan'])): ?>
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">نوع</label>
                                     <select wire:model.live="type"
@@ -229,10 +229,10 @@
                                         <option value="غرفه">غرفه</option>
                                     </select>
                                 </div>
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                 <!-- Expanses Type Filter -->
-                                <?php if(in_array($reportType, ['accounting', 'deposit', 'withdraw_log'])): ?>
+                                <!--[if BLOCK]><![endif]--><?php if(in_array($reportType, ['accounting', 'deposit', 'withdraw_log'])): ?>
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">نوع هزینه</label>
                                     <select wire:model.live="expansesType"
@@ -245,7 +245,7 @@
                                         <option value="صفایی">صفایی</option>
                                     </select>
                                 </div>
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                 <!-- Start Date -->
                                 <div class="space-y-2">
@@ -258,7 +258,7 @@
                                             📅
                                         </div>
                                     </div>
-                                    <?php $__errorArgs = ['startDateJalali'];
+                                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['startDateJalali'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -267,7 +267,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 </div>
 
                                 <!-- End Date -->
@@ -281,7 +281,7 @@ unset($__errorArgs, $__bag); ?>
                                             📅
                                         </div>
                                     </div>
-                                    <?php $__errorArgs = ['endDateJalali'];
+                                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['endDateJalali'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -290,7 +290,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 </div>
                             </div>
                         </div>
@@ -312,12 +312,12 @@ unset($__errorArgs, $__bag); ?>
                                 </h3>
                                 <div class="flex items-center gap-2 text-sm text-white">
                                     <span>📊</span>
-                                    <?php if($reports->total() > 0): ?>
+                                    <!--[if BLOCK]><![endif]--><?php if($reports->total() > 0): ?>
                                     نمایش <?php echo e($reports->firstItem()); ?> - <?php echo e($reports->lastItem()); ?> از <?php echo e($reports->total()); ?>
 
                                     <?php else: ?>
                                     هیچ داده‌ای یافت نشد
-                                    <?php endif; ?>
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </div>
                             </div>
                         </div>
@@ -327,7 +327,7 @@ unset($__errorArgs, $__bag); ?>
                             <table class="w-full">
                                 <thead class="bg-gradient-to-r from-primary-50 to-primary-100">
                                     <tr>
-                                        <?php switch($reportType):
+                                        <!--[if BLOCK]><![endif]--><?php switch($reportType):
                                         case ('withdraw_salary'): ?>
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
@@ -474,14 +474,13 @@ unset($__errorArgs, $__bag); ?>
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             باقی مانده</th>
 
-                                              <th>
-                                                نوع ارز
-                                            </th>
+                                        <th>
+                                            نوع ارز
+                                        </th>
                                         <th
-                                        
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             تاریخ</th>
-                                          
+
                                         <?php break; ?>
 
                                         <?php case ('payment'): ?>
@@ -568,19 +567,19 @@ unset($__errorArgs, $__bag); ?>
                                             تاریخ ثبت</th>
                                         <?php break; ?>
 
-                                        <?php endswitch; ?>
+                                        <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
-                                    <?php $__empty_1 = true; $__currentLoopData = $reports; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                    <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $reports; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                     <tr
                                         class="hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-25 transition-all duration-200 group">
-                                        <?php switch($reportType):
+                                        <!--[if BLOCK]><![endif]--><?php switch($reportType):
                                         case ('withdraw_salary'): ?>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
                                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
-            <?php echo e($report->record_type === 'withdraw' ? 'bg-purple-100 text-purple-800' : 'bg-orange-100 text-orange-800'); ?>">
+                                                    <?php echo e($report->record_type === 'withdraw' ? 'bg-purple-100 text-purple-800' : 'bg-orange-100 text-orange-800'); ?>">
                                                 <?php echo e($report->record_type === 'withdraw' ? 'برداشت' : 'معاش'); ?>
 
                                             </span>
@@ -588,20 +587,20 @@ unset($__errorArgs, $__bag); ?>
 
                                         
                                         <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                            <?php if($report->record_type === 'withdraw'): ?>
+                                            <!--[if BLOCK]><![endif]--><?php if($report->record_type === 'withdraw'): ?>
                                             <?php echo e($report->expanses_type ?? '-'); ?>
 
                                             <?php else: ?>
                                             <?php echo e($report->reduce_from ?? '-'); ?>
 
-                                            <?php endif; ?>
+                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                         </td>
 
                                         
                                         <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                            <?php if($report->record_type === 'withdraw'): ?>
+                                            <!--[if BLOCK]><![endif]--><?php if($report->record_type === 'withdraw'): ?>
 
-                                            <?php if($report->staff_id): ?>
+                                            <!--[if BLOCK]><![endif]--><?php if($report->staff_id): ?>
                                             <?php echo e($report->staff->fullname ?? '-'); ?>
 
                                             <?php elseif($report->customer_id): ?>
@@ -609,12 +608,12 @@ unset($__errorArgs, $__bag); ?>
 
                                             <?php else: ?>
                                             -
-                                            <?php endif; ?>
+                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                             <?php else: ?>
                                             
                                             <?php echo e($report->staff->fullname ?? '-'); ?>
 
-                                            <?php endif; ?>
+                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                         </td>
 
                                         
@@ -629,18 +628,18 @@ unset($__errorArgs, $__bag); ?>
                                         
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                                <?php switch($report->currency):
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
                                                 case ('AFN'): ?> افغانی <?php break; ?>
                                                 <?php case ('USD'): ?> دالر <?php break; ?>
                                                 <?php default: ?> <?php echo e($report->currency); ?>
 
-                                                <?php endswitch; ?>
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
                                             </span>
                                         </td>
 
                                         
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            <?php if($report->record_type === 'withdraw'): ?>
+                                            <!--[if BLOCK]><![endif]--><?php if($report->record_type === 'withdraw'): ?>
                                             <?php echo e($report->created_at ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d')
                                             : '-'); ?>
@@ -650,18 +649,18 @@ unset($__errorArgs, $__bag); ?>
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
                                             : '-'); ?>
 
-                                            <?php endif; ?>
+                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                         </td>
 
                                         
                                         <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
-                                            <?php if($report->record_type === 'withdraw'): ?>
+                                            <!--[if BLOCK]><![endif]--><?php if($report->record_type === 'withdraw'): ?>
                                             <?php echo e($report->description ?? '-'); ?>
 
                                             <?php else: ?>
                                             وضعیت: <?php echo e($report->is_reduce ? 'کسر شده' : 'کسر نشده'); ?>
 
-                                            <?php endif; ?>
+                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                         </td>
                                         <?php break; ?>
 
@@ -696,16 +695,7 @@ unset($__errorArgs, $__bag); ?>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="font-bold text-gray-900"><?php echo e(number_format($report->price)); ?></span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                                <?php switch($report->currency):
-                                                case ('AFN'): ?> افغانی <?php break; ?>
-                                                <?php case ('USD'): ?> دالر <?php break; ?>
-                                                <?php default: ?> <?php echo e($report->currency); ?>
-
-                                                <?php endswitch; ?>
-                                            </span>
-                                        </td>
+                                      
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             <?php echo e($report->paid_date ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
@@ -733,10 +723,10 @@ unset($__errorArgs, $__bag); ?>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
-            <?php echo e($report->customer_id ? 'bg-purple-100 text-purple-800' : 
-               ($report->staff_id ? 'bg-orange-100 text-orange-800' : 
-               ($report->shopkeeper_id ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'))); ?>">
-                                                <?php if($report->customer_id): ?>
+                                                <?php echo e($report->customer_id ? 'bg-purple-100 text-purple-800' : 
+                                                ($report->staff_id ? 'bg-orange-100 text-orange-800' : 
+                                                ($report->shopkeeper_id ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'))); ?>">
+                                                <!--[if BLOCK]><![endif]--><?php if($report->customer_id): ?>
                                                 مشتری
                                                 <?php elseif($report->staff_id): ?>
                                                 کارمند
@@ -744,7 +734,7 @@ unset($__errorArgs, $__bag); ?>
                                                 دوکاندار
                                                 <?php else: ?>
                                                 نامشخص
-                                                <?php endif; ?>
+                                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
@@ -759,12 +749,12 @@ unset($__errorArgs, $__bag); ?>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                                <?php switch($report->currency):
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
                                                 case ('AFN'): ?> افغانی <?php break; ?>
                                                 <?php case ('USD'): ?> دالر <?php break; ?>
                                                 <?php default: ?> <?php echo e($report->currency); ?>
 
-                                                <?php endswitch; ?>
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -806,12 +796,12 @@ unset($__errorArgs, $__bag); ?>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                                <?php switch($report->currency):
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
                                                 case ('AFN'): ?> افغانی <?php break; ?>
                                                 <?php case ('USD'): ?> دالر <?php break; ?>
                                                 <?php default: ?> <?php echo e($report->currency); ?>
 
-                                                <?php endswitch; ?>
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -861,12 +851,12 @@ unset($__errorArgs, $__bag); ?>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                                <?php switch($report->currency):
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
                                                 case ('AFN'): ?> افغانی <?php break; ?>
                                                 <?php case ('USD'): ?> دالر <?php break; ?>
                                                 <?php default: ?> <?php echo e($report->currency); ?>
 
-                                                <?php endswitch; ?>
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -897,7 +887,7 @@ unset($__errorArgs, $__bag); ?>
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                            <?php if($report->person === 'مشتری' && $report->customer): ?>
+                                            <!--[if BLOCK]><![endif]--><?php if($report->person === 'مشتری' && $report->customer): ?>
                                             <?php echo e($report->customer->fullname); ?>
 
                                             <?php elseif($report->person === 'دوکاندار' && $report->shopkeeper): ?>
@@ -908,7 +898,7 @@ unset($__errorArgs, $__bag); ?>
 
                                             <?php else: ?>
                                             -
-                                            <?php endif; ?>
+                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="font-bold text-gray-900"><?php echo e(number_format($report->amount)); ?></span>
@@ -925,12 +915,12 @@ unset($__errorArgs, $__bag); ?>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                                <?php switch($report->currency):
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
                                                 case ('AFN'): ?> افغانی <?php break; ?>
                                                 <?php case ('USD'): ?> دالر <?php break; ?>
                                                 <?php default: ?> <?php echo e($report->currency); ?>
 
-                                                <?php endswitch; ?>
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -950,12 +940,12 @@ unset($__errorArgs, $__bag); ?>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                                <?php switch($report->currency):
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
                                                 case ('AFN'): ?> افغانی <?php break; ?>
                                                 <?php case ('USD'): ?> دالر <?php break; ?>
                                                 <?php default: ?> <?php echo e($report->currency); ?>
 
-                                                <?php endswitch; ?>
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -997,12 +987,12 @@ unset($__errorArgs, $__bag); ?>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                                <?php switch($report->currency):
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
                                                 case ('AFN'): ?> افغانی <?php break; ?>
                                                 <?php case ('USD'): ?> دالر <?php break; ?>
                                                 <?php default: ?> <?php echo e($report->currency); ?>
 
-                                                <?php endswitch; ?>
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -1073,12 +1063,12 @@ unset($__errorArgs, $__bag); ?>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                                <?php switch($report->currency):
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
                                                 case ('AFN'): ?> افغانی <?php break; ?>
                                                 <?php case ('USD'): ?> دالر <?php break; ?>
                                                 <?php default: ?> <?php echo e($report->currency); ?>
 
-                                                <?php endswitch; ?>
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
@@ -1093,7 +1083,7 @@ unset($__errorArgs, $__bag); ?>
                                         </td>
                                         <?php break; ?>
 
-                                        <?php endswitch; ?>
+                                        <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
                                     </tr>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                     <tr>
@@ -1108,20 +1098,20 @@ unset($__errorArgs, $__bag); ?>
                                                     </h4>
                                                     <p class="text-gray-500 text-sm">هیچ رکوردی با فیلترهای فعلی مطابقت
                                                         ندارد</p>
-                                                    <?php if(app()->environment('local')): ?>
+                                                    <!--[if BLOCK]><![endif]--><?php if(app()->environment('local')): ?>
                                                     <p class="text-xs text-yellow-600">نوع گزارش: <?php echo e($reportType); ?></p>
-                                                    <?php endif; ?>
+                                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
-                                    <?php endif; ?>
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </tbody>
                             </table>
                         </div>
 
                         <!-- Pagination -->
-                        <?php if($reports->hasPages()): ?>
+                        <!--[if BLOCK]><![endif]--><?php if($reports->hasPages()): ?>
                         <div class="bg-gray-50 border-t border-gray-200 px-6 py-4">
                             <div class="flex items-center justify-between">
                                 <div class="text-sm text-gray-700">
@@ -1134,7 +1124,7 @@ unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
                         </div>
-                        <?php endif; ?>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
                 </div>
 
@@ -1346,4 +1336,6 @@ unset($__errorArgs, $__bag); ?>
         }
     </style>
     <?php $__env->stopPush(); ?>
+
+
 </div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/market/general-reports.blade.php ENDPATH**/ ?>

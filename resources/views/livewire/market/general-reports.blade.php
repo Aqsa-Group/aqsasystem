@@ -459,14 +459,13 @@
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             باقی مانده</th>
 
-                                              <th>
-                                                نوع ارز
-                                            </th>
+                                        <th>
+                                            نوع ارز
+                                        </th>
                                         <th
-                                        
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             تاریخ</th>
-                                          
+
                                         @break
 
                                         @case('payment')
@@ -565,7 +564,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
                                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
-            {{ $report->record_type === 'withdraw' ? 'bg-purple-100 text-purple-800' : 'bg-orange-100 text-orange-800' }}">
+                                                    {{ $report->record_type === 'withdraw' ? 'bg-purple-100 text-purple-800' : 'bg-orange-100 text-orange-800' }}">
                                                 {{ $report->record_type === 'withdraw' ? 'برداشت' : 'معاش' }}
                                             </span>
                                         </td>
@@ -668,15 +667,7 @@
                                             <span class="font-bold text-gray-900">{{ number_format($report->price)
                                                 }}</span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                                @switch($report->currency)
-                                                @case('AFN') افغانی @break
-                                                @case('USD') دالر @break
-                                                @default {{ $report->currency }}
-                                                @endswitch
-                                            </span>
-                                        </td>
+                                      
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ $report->paid_date ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
@@ -703,9 +694,9 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
-            {{ $report->customer_id ? 'bg-purple-100 text-purple-800' : 
-               ($report->staff_id ? 'bg-orange-100 text-orange-800' : 
-               ($report->shopkeeper_id ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800')) }}">
+                                                {{ $report->customer_id ? 'bg-purple-100 text-purple-800' : 
+                                                ($report->staff_id ? 'bg-orange-100 text-orange-800' : 
+                                                ($report->shopkeeper_id ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800')) }}">
                                                 @if($report->customer_id)
                                                 مشتری
                                                 @elseif($report->staff_id)
@@ -1300,4 +1291,6 @@
         }
     </style>
     @endpush
+
+
 </div>

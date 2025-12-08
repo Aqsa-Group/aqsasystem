@@ -22,11 +22,9 @@
             font-style: normal;
         }
 
-
         .vazir {
             font-family: "vazir", sans-serif;
         }
-
 
         .header {
             text-align: center;
@@ -110,11 +108,9 @@
             color: white;
             padding: 14px 3px;
             border: 1px solid #444;
-            /* کمی ملایم‌تر از #555 */
             text-align: center;
             font-weight: bold;
         }
-
 
         td {
             padding: 13px 2px;
@@ -196,19 +192,20 @@
                 @switch($reportType)
                 @case('accounting')
                 <th>مارکت</th>
+                <th>نوع مصرف</th>
                 <th>نوع</th>
-                <th>دوکاندار</th>
-                <th>مصرف</th>
-                @if($report->expanses_type == 'پول برق')
+                <th>نمبر غرفه/دوکان</th>
+                <th>طبقه</th>
+                <th>مشتری</th>
                 <th>درجه فعلی</th>
                 <th>درجه قبلی</th>
                 <th>مقدار مصرف</th>
                 <th>قیمت فی کیلووات</th>
-                @endif
-                <th>مبلغ</th>
-                <th>واحد</th>
-                <th>تاریخ</th>
-                <th>وضعیت</th>
+                <th>مبلغ قابل تأدیه</th>
+                <th>باقیات</th>
+                <th>جمع کل</th>
+                <th>از تاریخ</th>
+                <th>تا تاریخ</th>
                 @break
 
                 @case('withdraw_salary')
@@ -230,6 +227,7 @@
                 <th>تاریخ</th>
                 <th>توضیحات</th>
                 @break
+
                 @case('deposit')
                 <th>مارکت</th>
                 <th>دوکاندار</th>
@@ -240,6 +238,7 @@
                 <th>واحد</th>
                 <th>تاریخ</th>
                 @break
+
                 @case('loan')
                 <th>مارکت</th>
                 <th>نوع</th>
@@ -250,6 +249,7 @@
                 <th>واحد</th>
                 <th>تاریخ</th>
                 @break
+
                 @case('payment')
                 <th>کد</th>
                 <th>مبلغ</th>
@@ -257,6 +257,7 @@
                 <th>تاریخ</th>
                 <th>توضیحات</th>
                 @break
+
                 @case('buy')
                 <th>مارکت</th>
                 <th>فروشنده</th>
@@ -265,6 +266,7 @@
                 <th>واحد</th>
                 <th>تاریخ</th>
                 @break
+
                 @case('sell')
                 <th>مارکت</th>
                 <th>مشتری</th>
@@ -274,6 +276,7 @@
                 <th>تاریخ</th>
                 <th>جزئیات</th>
                 @break
+
                 @case('withdraw_log')
                 <th>هزینه</th>
                 <th>دریافت کننده</th>
@@ -282,6 +285,7 @@
                 <th>توضیحات</th>
                 <th>تاریخ</th>
                 @break
+
                 @case('salary')
                 <th>مارکت</th>
                 <th>کارمند</th>
@@ -293,27 +297,37 @@
                 <th>تاریخ</th>
                 <th>وضعیت کسر</th>
                 @break
+
                 @endswitch
             </tr>
         </thead>
+
         <tbody>
+
+            @php
+            $totalPaid = 0;
+            $totalRemained = 0;
+            $totalAll = 0;
+            @endphp
+
             @foreach($data as $index => $report)
+
             <tr>
                 <td class="row-number">{{ $index + 1 }}</td>
                 @switch($reportType)
+
                 @case('accounting')
-                <!-- Data Section -->
                 <td>{{ $report->market->name ?? '-' }}</td>
-                <td>{{ $report->type }}</td>
-                <td>{{ $report->shopkeeper->fullname ?? '-' }}</td>
                 <td>{{ $report->expanses_type }}</td>
-                @if($re @case('accounting')
-                <!-- Data Section -->
-                <td>{{ $report->market->name ?? '-' }}</td>
+
                 <td>{{ $report->type }}</td>
+                <td>
+                    {{ $report->shop->number ?? $report->booth->number ?? '—' }}
+                </td>
+                <td>
+                    {{ $report->shop->floor ?? $report->booth->floor ?? '—' }}
+                </td>
                 <td>{{ $report->shopkeeper->fullname ?? '-' }}</td>
-                <td>{{ $report->expanses_type }}</td>
-                @if($report->expanses_type == 'پول برق')
                 <td>{{ $report->current_degree ?? '-' }}</td>
                 <td>{{ $report->past_degree ?? '-' }}</td>
                 @php
@@ -323,26 +337,28 @@
                 @endphp
                 <td>{{ $usage }}</td>
                 <td>{{ number_format($report->degree_price ?? 0) }}</td>
-                @endif
                 <td>{{ number_format($report->price) }}</td>
-                <td>
-                    @switch($report->currency)
-                    @case('AFN') افغانی @break
-                    @case('USD') دالر @break
-                    @default {{ $report->currency }}
-                    @endswitch
-                </td>
+                <td>{{ number_format($report->remained) }}</td>
+                <td>{{ number_format($report->remained + $report->price) }}</td>
+
+                @php
+                $totalPaid += $report->price;
+                $totalRemained += $report->remained;
+                $totalAll += ($report->price + $report->remained);
+                @endphp
+
+
                 <td>{{ $report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
                     : '-' }}</td>
-                <td>{{ $report->cleared ? '✅' : '⏳' }}</td>
+                <td>{{ $report->expiration_date ?
+                    \Morilog\Jalali\Jalalian::fromDateTime($report->expiration_date)->format('Y/m/d') : '-' }}</td>
+
                 @break
 
                 @case('withdraw_salary')
                 <td>
-
                     ({{ $report->record_type === 'withdraw' ? 'برداشت' : 'معاش' }})
                 </td>
-
                 <td>
                     @if($report->record_type == 'withdraw' || $report->record_type == 'withdraw_salary')
                     {{ $report->expanses_type ?? '-' }}
@@ -350,23 +366,16 @@
                     {{ $report->reduce_from ?? '-' }}
                     @endif
                 </td>
-
                 <td>
-                    {{ $report->staff->fullname
-                    ?? $report->customer->fullname
-                    ?? $report->shopkeeper->fullname
-                    ?? '-' }}
+                    {{ $report->staff->fullname ?? $report->customer->fullname ?? $report->shopkeeper->fullname ?? '-'
+                    }}
                 </td>
                 <td>
                     <span class="font-bold text-gray-900">
-                        {{ number_format(
-                        ($report->record_type === 'withdraw')
-                        ? ($report->amount ?? 0)
-                        : ($report->record_type === 'salary' ? ($report->paid ?? 0) : 0)
-                        ) }}
+                        {{ number_format(($report->record_type === 'withdraw') ? ($report->amount ?? 0) :
+                        ($report->record_type === 'salary' ? ($report->paid ?? 0) : 0)) }}
                     </span>
                 </td>
-
                 <td>
                     @switch($report->currency)
                     @case('AFN') افغانی @break
@@ -374,19 +383,14 @@
                     @default {{ $report->currency }}
                     @endswitch
                 </td>
-
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {{
-                    ($report->record_type == 'withdraw' || $report->record_type == 'withdraw_salary')
-                    ? (\Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') ?? '-')
-                    : (\Morilog\Jalali\Jalalian::fromDateTime($report->paid_date ??
-                    $report->created_at)->format('Y/m/d') ?? '-')
-                    }}
+                <td>
+                    {{ ($report->record_type == 'withdraw' || $report->record_type == 'withdraw_salary') ?
+                    (\Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') ?? '-') :
+                    (\Morilog\Jalali\Jalalian::fromDateTime($report->paid_date ?? $report->created_at)->format('Y/m/d')
+                    ?? '-') }}
                 </td>
-
                 <td>{{ $report->description ?? '-' }}</td>
                 @break
-
 
                 @case('deposit')
                 <td>{{ $report->accounting->market->name ?? '-' }}</td>
@@ -406,62 +410,33 @@
                     : '-' }}</td>
                 @break
 
-
-
                 @case('outside')
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                        </div>
-                        <span class="font-medium text-gray-900">{{ $report->market->name ?? '-'
-                            }}</span>
-                    </div>
+                <td>{{ $report->market->name ?? '-' }}</td>
+                <td>
+                    @if($report->customer_id)
+                    مشتری
+                    @elseif($report->staff_id)
+                    کارمند
+                    @elseif($report->shopkeeper_id)
+                    دوکاندار
+                    @else
+                    نامشخص
+                    @endif
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
-            {{ $report->customer_id ? 'bg-purple-100 text-purple-800' : 
-               ($report->staff_id ? 'bg-orange-100 text-orange-800' : 
-               ($report->shopkeeper_id ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800')) }}">
-                        @if($report->customer_id)
-                        مشتری
-                        @elseif($report->staff_id)
-                        کارمند
-                        @elseif($report->shopkeeper_id)
-                        دوکاندار
-                        @else
-                        نامشخص
-                        @endif
-                    </span>
+                <td>{{ $report->customer->fullname ?? $report->staff->fullname ?? $report->shopkeeper->fullname ?? '-'
+                    }}</td>
+                <td>{{ number_format($report->paid) }}</td>
+                <td>
+                    @switch($report->currency)
+                    @case('AFN') افغانی @break
+                    @case('USD') دالر @break
+                    @default {{ $report->currency }}
+                    @endswitch
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                    {{ $report->customer->fullname ?? $report->staff->fullname ??
-                    $report->shopkeeper->fullname ?? '-' }}
+                <td>{{ $report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-' }}
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center gap-2">
-                        <span class="font-bold text-gray-900">{{ number_format($report->paid)
-                            }}</span>
-                    </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                        @switch($report->currency)
-                        @case('AFN') افغانی @break
-                        @case('USD') دالر @break
-                        @default {{ $report->currency }}
-                        @endswitch
-                    </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {{ $report->date ?
-                    \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'
-                    }}
-                </td>
-                <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
-                    {{ $report->description ?? '-' }}
-                </td>
+                <td>{{ $report->description ?? '-' }}</td>
                 @break
-
 
                 @case('loan')
                 <td>{{ $report->market->name ?? '-' }}</td>
@@ -575,6 +550,16 @@
                 @endswitch
             </tr>
             @endforeach
+        <tfoot>
+            <tr style="font-weight: bold; background: #f0f0f0;">
+                <td colspan="10">مجموع</td>
+                <td>{{ number_format($totalPaid) }}</td> <!-- مجموع تادیه -->
+                <td>{{ number_format($totalRemained) }}</td> <!-- مجموع باقیات -->
+                <td>{{ number_format($totalAll) }}</td> <!-- مجموع کل -->
+                <td colspan="3"></td>
+            </tr>
+        </tfoot>
+
         </tbody>
     </table>
     @else
@@ -626,14 +611,14 @@
                 @endphp
                 <tr>
                     <td style="border:1px solid #262727; padding:4px;">{{ $row['type'] }}</td>
-                    <td style="border:1px solid #262727; padding:4px; text-align:center;">{{ number_format($row['af']) }}
-                    </td>
-                    <td style="border:1px solid #262727; padding:4px; text-align:center;">{{ number_format($row['us']) }}
-                    </td>
-                    <td style="border:1px solid #262727; padding:4px; text-align:center;">{{ number_format($row['er']) }}
-                    </td>
-                    <td style="border:1px solid #262727; padding:4px; text-align:center;">{{ number_format($row['ir']) }}
-                    </td>
+                    <td style="border:1px solid #262727; padding:4px; text-align:center;">{{ number_format($row['af'])
+                        }}</td>
+                    <td style="border:1px solid #262727; padding:4px; text-align:center;">{{ number_format($row['us'])
+                        }}</td>
+                    <td style="border:1px solid #262727; padding:4px; text-align:center;">{{ number_format($row['er'])
+                        }}</td>
+                    <td style="border:1px solid #262727; padding:4px; text-align:center;">{{ number_format($row['ir'])
+                        }}</td>
                 </tr>
                 @endforeach
                 <!-- جمع کل -->
@@ -642,7 +627,7 @@
                     <td style="border:1px solid #262727; text-align:center;">{{ number_format($total_af) }}</td>
                     <td style="border:1px solid #262727; text-align:center;">{{ number_format($total_us) }}</td>
                     <td style="border:1px solid #262727; text-align:center;">{{ number_format($total_er) }}</td>
-                    <td style="border:1px solid #262727 ; text-align:center;">{{ number_format($total_ir) }}</td>
+                    <td style="border:1px solid #262727; text-align:center;">{{ number_format($total_ir) }}</td>
                 </tr>
             </tbody>
         </table>

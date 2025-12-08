@@ -22,11 +22,9 @@
             font-style: normal;
         }
 
-
         .vazir {
             font-family: "vazir", sans-serif;
         }
-
 
         .header {
             text-align: center;
@@ -110,11 +108,9 @@
             color: white;
             padding: 14px 3px;
             border: 1px solid #444;
-            /* کمی ملایم‌تر از #555 */
             text-align: center;
             font-weight: bold;
         }
-
 
         td {
             padding: 13px 2px;
@@ -197,19 +193,20 @@
                 <?php switch($reportType):
                 case ('accounting'): ?>
                 <th>مارکت</th>
+                <th>نوع مصرف</th>
                 <th>نوع</th>
-                <th>دوکاندار</th>
-                <th>مصرف</th>
-                <?php if($report->expanses_type == 'پول برق'): ?>
+                <th>نمبر غرفه/دوکان</th>
+                <th>طبقه</th>
+                <th>مشتری</th>
                 <th>درجه فعلی</th>
                 <th>درجه قبلی</th>
                 <th>مقدار مصرف</th>
                 <th>قیمت فی کیلووات</th>
-                <?php endif; ?>
-                <th>مبلغ</th>
-                <th>واحد</th>
-                <th>تاریخ</th>
-                <th>وضعیت</th>
+                <th>مبلغ قابل تأدیه</th>
+                <th>باقیات</th>
+                <th>جمع کل</th>
+                <th>از تاریخ</th>
+                <th>تا تاریخ</th>
                 <?php break; ?>
 
                 <?php case ('withdraw_salary'): ?>
@@ -231,6 +228,7 @@
                 <th>تاریخ</th>
                 <th>توضیحات</th>
                 <?php break; ?>
+
                 <?php case ('deposit'): ?>
                 <th>مارکت</th>
                 <th>دوکاندار</th>
@@ -241,6 +239,7 @@
                 <th>واحد</th>
                 <th>تاریخ</th>
                 <?php break; ?>
+
                 <?php case ('loan'): ?>
                 <th>مارکت</th>
                 <th>نوع</th>
@@ -251,6 +250,7 @@
                 <th>واحد</th>
                 <th>تاریخ</th>
                 <?php break; ?>
+
                 <?php case ('payment'): ?>
                 <th>کد</th>
                 <th>مبلغ</th>
@@ -258,6 +258,7 @@
                 <th>تاریخ</th>
                 <th>توضیحات</th>
                 <?php break; ?>
+
                 <?php case ('buy'): ?>
                 <th>مارکت</th>
                 <th>فروشنده</th>
@@ -266,6 +267,7 @@
                 <th>واحد</th>
                 <th>تاریخ</th>
                 <?php break; ?>
+
                 <?php case ('sell'): ?>
                 <th>مارکت</th>
                 <th>مشتری</th>
@@ -275,6 +277,7 @@
                 <th>تاریخ</th>
                 <th>جزئیات</th>
                 <?php break; ?>
+
                 <?php case ('withdraw_log'): ?>
                 <th>هزینه</th>
                 <th>دریافت کننده</th>
@@ -283,6 +286,7 @@
                 <th>توضیحات</th>
                 <th>تاریخ</th>
                 <?php break; ?>
+
                 <?php case ('salary'): ?>
                 <th>مارکت</th>
                 <th>کارمند</th>
@@ -294,27 +298,39 @@
                 <th>تاریخ</th>
                 <th>وضعیت کسر</th>
                 <?php break; ?>
+
                 <?php endswitch; ?>
             </tr>
         </thead>
+        
         <tbody>
-            <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+
+<?php
+    $totalPaid = 0;
+    $totalRemained = 0;
+    $totalAll = 0;
+?>
+
+<?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+
             <tr>
                 <td class="row-number"><?php echo e($index + 1); ?></td>
                 <?php switch($reportType):
+
                 case ('accounting'): ?>
-                <!-- Data Section -->
                 <td><?php echo e($report->market->name ?? '-'); ?></td>
-                <td><?php echo e($report->type); ?></td>
-                <td><?php echo e($report->shopkeeper->fullname ?? '-'); ?></td>
                 <td><?php echo e($report->expanses_type); ?></td>
-                @if($re @case('accounting')
-                <!-- Data Section -->
-                <td><?php echo e($report->market->name ?? '-'); ?></td>
+
                 <td><?php echo e($report->type); ?></td>
+                <td>
+                    <?php echo e($report->shop->number ?? $report->booth->number ?? '—'); ?>
+
+                </td>
+                 <td>
+                    <?php echo e($report->shop->floor ?? $report->booth->floor ?? '—'); ?>
+
+                </td>
                 <td><?php echo e($report->shopkeeper->fullname ?? '-'); ?></td>
-                <td><?php echo e($report->expanses_type); ?></td>
-                @if($report->expanses_type == 'پول برق')
                 <td><?php echo e($report->current_degree ?? '-'); ?></td>
                 <td><?php echo e($report->past_degree ?? '-'); ?></td>
                 <?php
@@ -324,27 +340,28 @@
                 ?>
                 <td><?php echo e($usage); ?></td>
                 <td><?php echo e(number_format($report->degree_price ?? 0)); ?></td>
-                @endif
                 <td><?php echo e(number_format($report->price)); ?></td>
-                <td>
-                    @switch($report->currency)
-                    @case('AFN') افغانی @break
-                    @case('USD') دالر @break
-                    @default <?php echo e($report->currency); ?>
+                <td><?php echo e(number_format($report->remained)); ?></td>
+<td><?php echo e(number_format($report->remained + $report->price)); ?></td>
 
-                    @endswitch
-                </td>
+<?php
+    $totalPaid += $report->price;
+    $totalRemained += $report->remained;
+    $totalAll += ($report->price + $report->remained);
+?> 
+
+              
                 <td><?php echo e($report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
                     : '-'); ?></td>
-                <td><?php echo e($report->cleared ? '✅' : '⏳'); ?></td>
-                @break
+                <td><?php echo e($report->expiration_date ?
+                    \Morilog\Jalali\Jalalian::fromDateTime($report->expiration_date)->format('Y/m/d') : '-'); ?></td>
+               
+                <?php break; ?>
 
                 <?php case ('withdraw_salary'): ?>
                 <td>
-
                     (<?php echo e($report->record_type === 'withdraw' ? 'برداشت' : 'معاش'); ?>)
                 </td>
-
                 <td>
                     <?php if($report->record_type == 'withdraw' || $report->record_type == 'withdraw_salary'): ?>
                     <?php echo e($report->expanses_type ?? '-'); ?>
@@ -354,25 +371,17 @@
 
                     <?php endif; ?>
                 </td>
-
                 <td>
-                    <?php echo e($report->staff->fullname
-                    ?? $report->customer->fullname
-                    ?? $report->shopkeeper->fullname
-                    ?? '-'); ?>
+                    <?php echo e($report->staff->fullname ?? $report->customer->fullname ?? $report->shopkeeper->fullname ?? '-'); ?>
 
                 </td>
                 <td>
                     <span class="font-bold text-gray-900">
-                        <?php echo e(number_format(
-                        ($report->record_type === 'withdraw')
-                        ? ($report->amount ?? 0)
-                        : ($report->record_type === 'salary' ? ($report->paid ?? 0) : 0)
-                        )); ?>
+                        <?php echo e(number_format(($report->record_type === 'withdraw') ? ($report->amount ?? 0) :
+                        ($report->record_type === 'salary' ? ($report->paid ?? 0) : 0))); ?>
 
                     </span>
                 </td>
-
                 <td>
                     <?php switch($report->currency):
                     case ('AFN'): ?> افغانی <?php break; ?>
@@ -381,18 +390,15 @@
 
                     <?php endswitch; ?>
                 </td>
-
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <?php echo e(($report->record_type == 'withdraw' || $report->record_type == 'withdraw_salary')
-                    ? (\Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') ?? '-')
-                    : (\Morilog\Jalali\Jalalian::fromDateTime($report->paid_date ??
-                    $report->created_at)->format('Y/m/d') ?? '-')); ?>
+                <td>
+                    <?php echo e(($report->record_type == 'withdraw' || $report->record_type == 'withdraw_salary') ?
+                    (\Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') ?? '-') :
+                    (\Morilog\Jalali\Jalalian::fromDateTime($report->paid_date ?? $report->created_at)->format('Y/m/d')
+                    ?? '-')); ?>
 
                 </td>
-
                 <td><?php echo e($report->description ?? '-'); ?></td>
                 <?php break; ?>
-
 
                 <?php case ('deposit'): ?>
                 <td><?php echo e($report->accounting->market->name ?? '-'); ?></td>
@@ -413,63 +419,34 @@
                     : '-'); ?></td>
                 <?php break; ?>
 
-
-
                 <?php case ('outside'): ?>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                        </div>
-                        <span class="font-medium text-gray-900"><?php echo e($report->market->name ?? '-'); ?></span>
-                    </div>
+                <td><?php echo e($report->market->name ?? '-'); ?></td>
+                <td>
+                    <?php if($report->customer_id): ?>
+                    مشتری
+                    <?php elseif($report->staff_id): ?>
+                    کارمند
+                    <?php elseif($report->shopkeeper_id): ?>
+                    دوکاندار
+                    <?php else: ?>
+                    نامشخص
+                    <?php endif; ?>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
-            <?php echo e($report->customer_id ? 'bg-purple-100 text-purple-800' : 
-               ($report->staff_id ? 'bg-orange-100 text-orange-800' : 
-               ($report->shopkeeper_id ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'))); ?>">
-                        <?php if($report->customer_id): ?>
-                        مشتری
-                        <?php elseif($report->staff_id): ?>
-                        کارمند
-                        <?php elseif($report->shopkeeper_id): ?>
-                        دوکاندار
-                        <?php else: ?>
-                        نامشخص
-                        <?php endif; ?>
-                    </span>
+                <td><?php echo e($report->customer->fullname ?? $report->staff->fullname ?? $report->shopkeeper->fullname ?? '-'); ?></td>
+                <td><?php echo e(number_format($report->paid)); ?></td>
+                <td>
+                    <?php switch($report->currency):
+                    case ('AFN'): ?> افغانی <?php break; ?>
+                    <?php case ('USD'): ?> دالر <?php break; ?>
+                    <?php default: ?> <?php echo e($report->currency); ?>
+
+                    <?php endswitch; ?>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                    <?php echo e($report->customer->fullname ?? $report->staff->fullname ??
-                    $report->shopkeeper->fullname ?? '-'); ?>
+                <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
 
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center gap-2">
-                        <span class="font-bold text-gray-900"><?php echo e(number_format($report->paid)); ?></span>
-                    </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                        <?php switch($report->currency):
-                        case ('AFN'): ?> افغانی <?php break; ?>
-                        <?php case ('USD'): ?> دالر <?php break; ?>
-                        <?php default: ?> <?php echo e($report->currency); ?>
-
-                        <?php endswitch; ?>
-                    </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <?php echo e($report->date ?
-                    \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
-
-                </td>
-                <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
-                    <?php echo e($report->description ?? '-'); ?>
-
-                </td>
+                <td><?php echo e($report->description ?? '-'); ?></td>
                 <?php break; ?>
-
 
                 <?php case ('loan'): ?>
                 <td><?php echo e($report->market->name ?? '-'); ?></td>
@@ -595,6 +572,16 @@
                 <?php endswitch; ?>
             </tr>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <tfoot>
+    <tr style="font-weight: bold; background: #f0f0f0;">
+        <td colspan="10">مجموع</td>
+        <td><?php echo e(number_format($totalPaid)); ?></td>       <!-- مجموع تادیه -->
+        <td><?php echo e(number_format($totalRemained)); ?></td>   <!-- مجموع باقیات -->
+        <td><?php echo e(number_format($totalAll)); ?></td>        <!-- مجموع کل -->
+        <td colspan="3"></td>
+    </tr>
+</tfoot>
+
         </tbody>
     </table>
     <?php else: ?>
@@ -646,18 +633,10 @@
                 ?>
                 <tr>
                     <td style="border:1px solid #262727; padding:4px;"><?php echo e($row['type']); ?></td>
-                    <td style="border:1px solid #262727; padding:4px; text-align:center;"><?php echo e(number_format($row['af'])); ?>
-
-                    </td>
-                    <td style="border:1px solid #262727; padding:4px; text-align:center;"><?php echo e(number_format($row['us'])); ?>
-
-                    </td>
-                    <td style="border:1px solid #262727; padding:4px; text-align:center;"><?php echo e(number_format($row['er'])); ?>
-
-                    </td>
-                    <td style="border:1px solid #262727; padding:4px; text-align:center;"><?php echo e(number_format($row['ir'])); ?>
-
-                    </td>
+                    <td style="border:1px solid #262727; padding:4px; text-align:center;"><?php echo e(number_format($row['af'])); ?></td>
+                    <td style="border:1px solid #262727; padding:4px; text-align:center;"><?php echo e(number_format($row['us'])); ?></td>
+                    <td style="border:1px solid #262727; padding:4px; text-align:center;"><?php echo e(number_format($row['er'])); ?></td>
+                    <td style="border:1px solid #262727; padding:4px; text-align:center;"><?php echo e(number_format($row['ir'])); ?></td>
                 </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 <!-- جمع کل -->
@@ -666,7 +645,7 @@
                     <td style="border:1px solid #262727; text-align:center;"><?php echo e(number_format($total_af)); ?></td>
                     <td style="border:1px solid #262727; text-align:center;"><?php echo e(number_format($total_us)); ?></td>
                     <td style="border:1px solid #262727; text-align:center;"><?php echo e(number_format($total_er)); ?></td>
-                    <td style="border:1px solid #262727 ; text-align:center;"><?php echo e(number_format($total_ir)); ?></td>
+                    <td style="border:1px solid #262727; text-align:center;"><?php echo e(number_format($total_ir)); ?></td>
                 </tr>
             </tbody>
         </table>

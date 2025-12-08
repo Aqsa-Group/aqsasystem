@@ -7,12 +7,17 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, WithStyles, WithColumnWidths
+class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, WithStyles, WithColumnWidths, WithEvents
 {
     protected $data;
     protected $reportType;
+    protected $totalPaid = 0;
+    protected $totalRemained = 0;
+    protected $totalAll = 0;
 
     public function __construct($data, $reportType)
     {
@@ -27,7 +32,7 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
 
     public function headings(): array
     {
-        return match($this->reportType) {
+        return match ($this->reportType) {
             'withdraw_salary' => [
                 'نوع',
                 'برداشت از',
@@ -41,7 +46,7 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
                 'مارکت',
                 'کارمند',
                 'حقوق',
-                'پرداخت شده', 
+                'پرداخت شده',
                 'باقی مانده',
                 'قرضه',
                 'واحد پول',
@@ -50,24 +55,27 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
             ],
             'accounting' => [
                 'مارکت',
-                'نوع',
-                'دوکاندار', 
                 'نوع مصرف',
+                'نوع',
+                'نمبر غرفه/دوکان',
+                'طبقه',
+                'مشتری',
                 'درجه فعلی',
                 'درجه قبلی',
                 'مقدار مصرف',
                 'قیمت فی کیلووات',
-                'مبلغ',
-                'واحد پول',
-                'تاریخ پرداخت',
-                'وضعیت'
+                'مبلغ قابل تأدیه',
+                'باقیات',
+                'جمع کل',
+                'از تاریخ',
+                'تا تاریخ'
             ],
             'outside' => [
                 'مارکت',
                 'نوع شخص',
                 'نام شخص',
                 'مبلغ',
-                'واحد پول', 
+                'واحد پول',
                 'تاریخ',
                 'توضیحات'
             ],
@@ -82,7 +90,7 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
             ],
             'loan' => [
                 'مارکت',
-                'نوع شخص', 
+                'نوع شخص',
                 'نام شخص',
                 'مبلغ اصلی',
                 'پرداخت شده',
@@ -93,7 +101,7 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
                 'کد قرضه',
                 'مبلغ پرداخت',
                 'واحد پول',
-                'تاریخ رسید', 
+                'تاریخ رسید',
                 'توضیحات'
             ],
             'buy' => [
@@ -108,7 +116,7 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
                 'مارکت',
                 'مشتری',
                 'نوع ملک',
-                'قیمت فروش', 
+                'قیمت فروش',
                 'واحد پول',
                 'تاریخ',
                 'جزئیات'
@@ -128,24 +136,24 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
     public function map($report): array
     {
         // Translate currency
-        $currency = match($report->currency ?? null) {
+        $currency = match ($report->currency ?? null) {
             'AFN' => 'افغانی',
             'USD' => 'دالر',
             'EUR' => 'یورو',
             default => $report->currency ?? '-'
         };
 
-        return match($this->reportType) {
+        return match ($this->reportType) {
             'withdraw_salary' => [
                 $report->record_type === 'withdraw' ? 'برداشت' : 'معاش',
-                $report->record_type === 'withdraw' 
+                $report->record_type === 'withdraw'
                     ? ($report->expanses_type ?? '-')
                     : ($report->reduce_from ?? '-'),
-                $report->staff->fullname 
-                    ?? $report->customer->fullname 
-                    ?? $report->shopkeeper->fullname 
+                $report->staff->fullname
+                    ?? $report->customer->fullname
+                    ?? $report->shopkeeper->fullname
                     ?? '-',
-                $report->record_type === 'withdraw' 
+                $report->record_type === 'withdraw'
                     ? ($report->amount ?? 0)
                     : ($report->paid ?? 0),
                 $currency,
@@ -155,22 +163,52 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
                 $report->description ?? '-'
             ],
             'accounting' => [
+                // مارکت
                 $report->market->name ?? '-',
-                $report->type,
-                $report->shopkeeper->fullname ?? '-',
+
+                // نوع مصرف
                 $report->expanses_type,
-                // اطلاعات پول برق
-                $report->expanses_type == 'پول برق' ? ($report->current_degree ?? '-') : '-',
-                $report->expanses_type == 'پول برق' ? ($report->past_degree ?? '-') : '-',
-                $report->expanses_type == 'پول برق' ? 
-                    (($report->current_degree !== null && $report->past_degree !== null) ? 
-                     ($report->current_degree - $report->past_degree) : '-') : '-',
-                $report->expanses_type == 'پول برق' ? ($report->degree_price ?? 0) : '-',
-                // اطلاعات اصلی
-                $report->price,
-                $currency,
+
+                // نوع (دوکان یا غرفه)
+                $report->type,
+
+                // نمبر غرفه/دوکان
+                $report->shop->number ?? $report->booth->number ?? '—',
+
+                // طبقه
+                $report->shop->floor ?? $report->booth->floor ?? '—',
+
+                // مشتری
+                $report->shopkeeper->fullname ?? '-',
+
+                // درجه فعلی
+                $report->current_degree ?? '-',
+
+                // درجه قبلی
+                $report->past_degree ?? '-',
+
+                // مقدار مصرف
+                ($report->current_degree !== null && $report->past_degree !== null)
+                    ? ($report->current_degree - $report->past_degree)
+                    : '-',
+
+                // قیمت فی کیلووات
+                $report->degree_price ? number_format($report->degree_price) : '-',
+
+                // مبلغ قابل تأدیه (price)
+                $report->price ? number_format($report->price) : 0,
+
+                isset($report->remained) ? number_format($report->remained) : '0',
+
+                // جمع کل (price + remained) - اصلاح شده
+                (isset($report->price) || isset($report->remained))
+                    ? number_format((float)($report->price ?? 0) + (float)($report->remained ?? 0))
+                    : '0',
+                // از تاریخ (paid_date)
                 $report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d') : '-',
-                $report->cleared ? 'تسویه شده' : 'در انتظار'
+
+                // تا تاریخ (expiration_date)
+                $report->expiration_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->expiration_date)->format('Y/m/d') : '-'
             ],
             'salary' => [
                 $report->market->name ?? '-',
@@ -204,9 +242,7 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
             'loan' => [
                 $report->market->name ?? '-',
                 $report->person,
-                $report->person === 'مشتری' && $report->customer ? $report->customer->fullname : 
-                    ($report->person === 'دوکاندار' && $report->shopkeeper ? $report->shopkeeper->fullname :
-                    ($report->person === 'کارمند' && $report->staff ? $report->staff->fullname : '-')),
+                $report->person === 'مشتری' && $report->customer ? $report->customer->fullname : ($report->person === 'دوکاندار' && $report->shopkeeper ? $report->shopkeeper->fullname : ($report->person === 'کارمند' && $report->staff ? $report->staff->fullname : '-')),
                 $report->amount,
                 $report->totalPaid(),
                 $report->remainingAmount(),
@@ -250,7 +286,7 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
 
     public function styles(Worksheet $sheet)
     {
-        return [
+        $styles = [
             1 => [
                 'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
                 'fill' => ['fillType' => 'solid', 'startColor' => ['rgb' => '3B82F6']],
@@ -260,11 +296,23 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
                 'alignment' => ['horizontal' => 'center', 'vertical' => 'center']
             ]
         ];
+
+        // Add footer row style for accounting report
+        if ($this->reportType === 'accounting' && $this->data->count() > 0) {
+            $lastRow = $this->data->count() + 2; // +1 for header, +1 for footer
+
+            $styles["A{$lastRow}:N{$lastRow}"] = [
+                'font' => ['bold' => true],
+                'fill' => ['fillType' => 'solid', 'startColor' => ['rgb' => 'F0F0F0']],
+            ];
+        }
+
+        return $styles;
     }
 
     public function columnWidths(): array
     {
-        return match($this->reportType) {
+        return match ($this->reportType) {
             'withdraw_salary' => [
                 'A' => 10, // نوع
                 'B' => 15, // برداشت از
@@ -276,17 +324,20 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
             ],
             'accounting' => [
                 'A' => 15, // مارکت
-                'B' => 10, // نوع
-                'C' => 20, // دوکاندار
-                'D' => 15, // نوع مصرف
-                'E' => 12, // درجه فعلی
-                'F' => 12, // درجه قبلی
-                'G' => 12, // مقدار مصرف
-                'H' => 15, // قیمت فی کیلووات
-                'I' => 15, // مبلغ
-                'J' => 12, // واحد پول
-                'K' => 15, // تاریخ پرداخت
-                'L' => 12, // وضعیت
+                'B' => 15, // نوع مصرف
+                'C' => 10, // نوع (دوکان/غرفه)
+                'D' => 18, // نمبر غرفه/دوکان
+                'E' => 10, // طبقه
+                'F' => 20, // مشتری
+                'G' => 12, // درجه فعلی
+                'H' => 12, // درجه قبلی
+                'I' => 12, // مقدار مصرف
+                'J' => 15, // قیمت فی کیلووات
+                'K' => 18, // مبلغ قابل تأدیه
+                'L' => 12, // باقیات
+                'M' => 12, // جمع کل
+                'N' => 15, // از تاریخ
+                'O' => 15, // تا تاریخ
             ],
             'salary' => [
                 'A' => 15, // مارکت
@@ -359,9 +410,72 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
                 'F' => 15, // تاریخ ثبت
             ],
             default => [
-                'A' => 15, 'B' => 15, 'C' => 15, 'D' => 15, 
-                'E' => 15, 'F' => 15, 'G' => 15, 'H' => 15
+                'A' => 15,
+                'B' => 15,
+                'C' => 15,
+                'D' => 15,
+                'E' => 15,
+                'F' => 15,
+                'G' => 15,
+                'H' => 15
             ]
         };
+    }
+
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function (AfterSheet $event) {
+                if ($this->reportType === 'accounting') {
+                    $this->addAccountingFooter($event);
+                }
+            },
+        ];
+    }
+
+    private function addAccountingFooter(AfterSheet $event)
+    {
+        $totalPaid = 0;
+        $totalRemained = 0;
+        $totalAll = 0;
+
+        // محاسبه مجموع‌ها
+        foreach ($this->data as $report) {
+            $totalPaid += (float) ($report->price ?? 0);
+            $totalRemained += (float) ($report->remained ?? 0);
+            $totalAll += (float) ($report->price ?? 0) + (float) ($report->remained ?? 0);
+        }
+
+        $lastRow = $this->data->count() + 2; // +1 for header, +1 for footer
+
+        // اضافه کردن ردیف مجموع
+        $event->sheet->setCellValue("K{$lastRow}", number_format($totalPaid));
+        $event->sheet->setCellValue("L{$lastRow}", number_format($totalRemained));
+        $event->sheet->setCellValue("M{$lastRow}", number_format($totalAll));
+
+        // اضافه کردن برچسب "مجموع" در ستون J
+        $event->sheet->setCellValue("J{$lastRow}", "مجموع");
+
+        // ستون‌های دیگر را خالی می‌کنیم
+        $event->sheet->setCellValue("A{$lastRow}", "");
+        $event->sheet->setCellValue("B{$lastRow}", "");
+        $event->sheet->setCellValue("C{$lastRow}", "");
+        $event->sheet->setCellValue("D{$lastRow}", "");
+        $event->sheet->setCellValue("E{$lastRow}", "");
+        $event->sheet->setCellValue("F{$lastRow}", "");
+        $event->sheet->setCellValue("G{$lastRow}", "");
+        $event->sheet->setCellValue("H{$lastRow}", "");
+        $event->sheet->setCellValue("I{$lastRow}", "");
+        $event->sheet->setCellValue("N{$lastRow}", "");
+        $event->sheet->setCellValue("O{$lastRow}", "");
+
+        // اعمال استایل به ردیف مجموع
+        $event->sheet->getStyle("J{$lastRow}:M{$lastRow}")->applyFromArray([
+            'font' => ['bold' => true],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => ['rgb' => 'F0F0F0']
+            ]
+        ]);
     }
 }
