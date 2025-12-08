@@ -4,7 +4,6 @@ namespace App\Filament\Market\Resources\SalaryResource\Pages;
 
 use App\Filament\Market\Resources\SalaryResource;
 use App\Models\Market\Loan;
-use App\Models\Market\Salary;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Auth;
@@ -16,15 +15,10 @@ class CreateSalary extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $salaryAmount = $data['salary'] ?? 0;
+        $salary = $data['salary'] ?? 0;
         $paid = $data['paid'] ?? 0;
         $lastRemained = $data['last_remained'] ?? 0;
-        $monthlyRemaining = $data['monthly_remaining'] ?? 0;
-        $totalPaidThisMonth = $data['total_paid_this_month'] ?? 0;
 
-        // محاسبه باقیمانده ماه جاری بعد از این پرداخت
-        $newMonthlyRemaining = max(0, $monthlyRemaining - $paid);
-        
         if (!empty($data['is_reduce']) && !empty($data['loan_id']) && !empty($data['reduce_loan'])) {
             $loan = Loan::find($data['loan_id']);
 
@@ -32,16 +26,14 @@ class CreateSalary extends CreateRecord
                 $data['loan'] = $loan->remainingAmount();
                 $data['new_loan'] = $data['loan'] - $data['reduce_loan'];
                 $data['paid'] = $data['reduce_loan'];
+
+                // در حالت رسید قرض باقیمانده ماه ذخیره نمی‌شود
                 $data['remained'] = 0;
-                $data['monthly_remaining'] = $newMonthlyRemaining;
             }
         } else {
-            $data['remained'] = ($salaryAmount - $paid) + $lastRemained;
-            $data['monthly_remaining'] = $newMonthlyRemaining;
+            // جمع باقیمانده ماه قبل با معاش ماه جاری
+            $data['remained'] = max(($salary - $paid) + $lastRemained, 0);
         }
-
-        // ذخیره مجموع پرداختی این ماه
-        $data['total_paid_this_month'] = $totalPaidThisMonth + $paid;
 
         return $data;
     }
@@ -50,17 +42,13 @@ class CreateSalary extends CreateRecord
     {
         $salary = $this->record;
         $user = Auth::user();
-    
-        // تعیین admin_id مناسب بر اساس نقش
-        if ($user->role === 'superadmin' || $user->role === 'admin') {
-            $adminIdToSave = $user->id;
-        } else {
-            $adminIdToSave = $user->admin_id;
-        }
-    
+
+        $adminIdToSave = in_array($user->role, ['superadmin', 'admin']) ? $user->id : $user->admin_id;
+
+        // ثبت رسید قرض
         if ($salary->is_reduce && $salary->loan_id && $salary->reduce_loan > 0) {
             $loan = Loan::find($salary->loan_id);
-    
+
             if ($loan) {
                 $loan->payments()->create([
                     'amount' => $salary->reduce_loan,
@@ -69,29 +57,26 @@ class CreateSalary extends CreateRecord
                 ]);
             }
         }
-    
-        $amountToDeduct = $salary->is_reduce
-            ? ($salary->salary - $salary->reduce_loan)
-            : $salary->paid;
-    
+
+        // محاسبه مبلغ قابل برداشت از صندوق
+        $amountToDeduct = $salary->is_reduce ? ($salary->salary - $salary->reduce_loan) : $salary->paid;
+
         if ($salary->reduce_from && $amountToDeduct > 0) {
-    
             $currentBalance = DB::connection('market')->table('accountings')
                 ->where('expanses_type', $salary->reduce_from)
                 ->sum('paid');
-    
+
             if ($currentBalance < $amountToDeduct) {
                 Notification::make()
                     ->title('خطا')
                     ->body('موجودی حساب ' . $salary->reduce_from . ' کافی نیست.')
                     ->danger()
                     ->send();
-    
+
                 $salary->delete();
-    
                 return;
             }
-    
+
             DB::connection('market')->table('accountings')->insert([
                 'expanses_type' => $salary->reduce_from,
                 'currency' => $salary->currency,

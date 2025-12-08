@@ -22,13 +22,11 @@ class SalaryResource extends Resource
     protected static ?string $navigationGroup = 'بخش مالی';
     protected static ?string $navigationLabel = 'پرداخت معاش کارمندان';
     protected static ?string $modelLabel = 'پرداخت  ';
- 
+
     public static function canViewAny(): bool
     {
         return Auth::check() && in_array(Auth::user()?->role, ['superadmin' , 'Financial Manager' ,'admin']);
     }
-
-
 
     public static function form(Form $form): Form
     {
@@ -44,6 +42,7 @@ class SalaryResource extends Resource
                 ->afterStateUpdated(function ($state, callable $get, callable $set) {
                     $staffId = $get('staff_id');
                     if ($staffId) {
+                        // دریافت آخرین باقیمانده برای کارمند در این مارکت
                         $lastRemained = Salary::where('staff_id', $staffId)
                             ->where('market_id', $state)
                             ->where(function ($query) {
@@ -115,17 +114,17 @@ class SalaryResource extends Resource
                     $salary = $get('salary') ?? 0;
                     $set('new_loan', $loan - $state);
                     $set('paid', $state);
-                    $set('remained', 0); // باقی معاش در حالت قرضه ذخیره نمی‌شود
+                    $set('remained', 0); // در حالت رسید قرض باقی‌مانده معاش ذخیره نمی‌شود
                     $set('final_remained', $salary - $state); // فقط برای نمایش
                 }),
 
-                Forms\Components\TextInput::make('new_loan')
+            Forms\Components\TextInput::make('new_loan')
                 ->label('باقیمانده قرض')
                 ->numeric()
                 ->disabled()
                 ->dehydrated(false)
                 ->visible(fn(callable $get) => $get('is_reduce')),
-            
+
             Forms\Components\TextInput::make('paid')
                 ->label('مبلغ پرداختی')
                 ->numeric()
@@ -135,7 +134,7 @@ class SalaryResource extends Resource
                 ->afterStateUpdated(function ($state, callable $get, callable $set) {
                     $salary = $get('salary') ?? 0;
                     $lastRemained = $get('last_remained') ?? 0;
-                    $set('remained', ($salary - $state) + $lastRemained);
+                    $set('remained', max(($salary - $state) + $lastRemained, 0));
                 }),
 
             Forms\Components\TextInput::make('final_remained')
@@ -190,8 +189,8 @@ class SalaryResource extends Resource
                     ' - ' .
                     date('g:i A', strtotime($state))
                 ),
-        ]) ->defaultSort('id', 'desc')
-        ->actions([
+        ])->defaultSort('id', 'desc')
+          ->actions([
             Tables\Actions\ViewAction::make(),
             Tables\Actions\EditAction::make(),
             Tables\Actions\Action::make('print')
@@ -199,9 +198,7 @@ class SalaryResource extends Resource
                 ->icon('heroicon-o-printer')
                 ->url(fn ($record) => route('salary.print', $record))
                 ->openUrlInNewTab(),
-        ])
-        
-        ->bulkActions([
+        ])->bulkActions([
             Tables\Actions\DeleteBulkAction::make(),
         ]);
     }
