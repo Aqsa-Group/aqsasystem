@@ -302,16 +302,16 @@
                 <?php endswitch; ?>
             </tr>
         </thead>
-        
+
         <tbody>
 
-<?php
-    $totalPaid = 0;
-    $totalRemained = 0;
-    $totalAll = 0;
-?>
+            <?php
+            $totalPaid = 0;
+            $totalRemained = 0;
+            $totalAll = 0;
+            ?>
 
-<?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
             <tr>
                 <td class="row-number"><?php echo e($index + 1); ?></td>
@@ -326,7 +326,7 @@
                     <?php echo e($report->shop->number ?? $report->booth->number ?? '—'); ?>
 
                 </td>
-                 <td>
+                <td>
                     <?php echo e($report->shop->floor ?? $report->booth->floor ?? '—'); ?>
 
                 </td>
@@ -342,20 +342,20 @@
                 <td><?php echo e(number_format($report->degree_price ?? 0)); ?></td>
                 <td><?php echo e(number_format($report->price)); ?></td>
                 <td><?php echo e(number_format($report->remained)); ?></td>
-<td><?php echo e(number_format($report->remained + $report->price)); ?></td>
+                <td><?php echo e(number_format($report->remained + $report->price)); ?></td>
 
-<?php
-    $totalPaid += $report->price;
-    $totalRemained += $report->remained;
-    $totalAll += ($report->price + $report->remained);
-?> 
+                <?php
+                $totalPaid += $report->price;
+                $totalRemained += $report->remained;
+                $totalAll += ($report->price + $report->remained);
+                ?>
 
-              
+
                 <td><?php echo e($report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
                     : '-'); ?></td>
                 <td><?php echo e($report->expiration_date ?
                     \Morilog\Jalali\Jalalian::fromDateTime($report->expiration_date)->format('Y/m/d') : '-'); ?></td>
-               
+
                 <?php break; ?>
 
                 <?php case ('withdraw_salary'): ?>
@@ -572,15 +572,15 @@
                 <?php endswitch; ?>
             </tr>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            <tfoot>
-    <tr style="font-weight: bold; background: #f0f0f0;">
-        <td colspan="10">مجموع</td>
-        <td><?php echo e(number_format($totalPaid)); ?></td>       <!-- مجموع تادیه -->
-        <td><?php echo e(number_format($totalRemained)); ?></td>   <!-- مجموع باقیات -->
-        <td><?php echo e(number_format($totalAll)); ?></td>        <!-- مجموع کل -->
-        <td colspan="3"></td>
-    </tr>
-</tfoot>
+        <tfoot>
+            <tr style="font-weight: bold; background: #f0f0f0;">
+                <td colspan="10">مجموع</td>
+                <td><?php echo e(number_format($totalPaid)); ?></td> <!-- مجموع تادیه -->
+                <td><?php echo e(number_format($totalRemained)); ?></td> <!-- مجموع باقیات -->
+                <td><?php echo e(number_format($totalAll)); ?></td> <!-- مجموع کل -->
+                <td colspan="3"></td>
+            </tr>
+        </tfoot>
 
         </tbody>
     </table>

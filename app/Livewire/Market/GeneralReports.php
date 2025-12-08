@@ -468,11 +468,35 @@ public function getFloorsProperty()
         ->pluck('floor')
         ->toArray();
     
-    // ادغام و حذف موارد تکراری
-    $allFloors = array_unique(array_merge($shopFloors, $boothFloors));
-    sort($allFloors);
-    
-    return $allFloors;
+ // ادغام و حذف موارد تکراری
+$allFloors = array_unique(array_merge($shopFloors, $boothFloors));
+
+// تعریف ترتیب دلخواه
+$order = [
+    'یک',
+    'دو',
+    'سه',
+    'چهار',
+    'زیرزمینی یک',
+    'زیرزمینی دو',
+    'زیرزمینی سه',
+];
+
+// مرتب‌سازی بر اساس آرایه order
+usort($allFloors, function($a, $b) use ($order) {
+    $posA = array_search($a, $order);
+    $posB = array_search($b, $order);
+
+    // اگر یکی پیدا نشد، آخر لیست قرار می‌گیرد
+    $posA = $posA === false ? PHP_INT_MAX : $posA;
+    $posB = $posB === false ? PHP_INT_MAX : $posB;
+
+    return $posA <=> $posB;
+});
+
+return array_values($allFloors);
+
+
 }
 
 private function buildAccountingQuery()
@@ -490,35 +514,14 @@ private function buildAccountingQuery()
         ->when($this->amountMin, fn($q) => $q->where('price', '>=', $this->amountMin))
         ->when($this->amountMax, fn($q) => $q->where('price', '<=', $this->amountMax))
         
-        // 🔴 اضافه کردن فیلتر floor
-     ->when($this->floor, function ($q) {
-    $user = Auth::user();
-    $adminId = $user->role === 'superadmin'
-        ? null
-        : ($user->role === 'admin' ? $user->id : $user->admin_id);
-
-    $q->where(function ($query) use ($adminId) {
-
-        // فیلتر دوکان
-        $query->whereHas('shop', function ($q2) use ($adminId) {
-            $q2->where('floor', 'like', "%{$this->floor}%");
-
-            if ($adminId) {
-                $q2->where('admin_id', $adminId);
-            }
-        })
-
-        // فیلتر غرفه
-        ->orWhereHas('booth', function ($q2) use ($adminId) {
-            $q2->where('floor', 'like', "%{$this->floor}%");
-
-            if ($adminId) {
-                $q2->where('admin_id', $adminId);
-            } 
+->when($this->floor, function ($q) {
+    $q->where(function ($query) {
+        $query->whereHas('shop', function ($q2) {
+            $q2->where('floor', $this->floor); // دقیقاً برابر با حروف
+        })->orWhereHas('booth', function ($q2) {
+            $q2->where('floor', $this->floor); // دقیقاً برابر با حروف
         });
-
     });
-
 })
 
         
