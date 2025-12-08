@@ -135,44 +135,48 @@ class GeneralReportPdfExport
 
 
     protected function generateHtml()
-    {
-        // عنوان گزارش بر اساس نوع گزارش
-        $reportTypes = [
-            'withdraw_salary' => 'گزارش برداشت‌ها و معاش کارمندان',
-            'accounting' => 'گزارش حسابداری',
-            'outside' => 'گزارش عواید بیرونی',
-            'deposit' => 'گزارش تسویه نشده‌ها',
-            'salary' => 'گزارش معاش کارمندان',
-            'loan' => 'گزارش بردگی‌ها',
-            'payment' => 'گزارش رسیدها',
-            'buy' => 'گزارش خریدها',
-            'sell' => 'گزارش فروش‌ها',
-            'withdraw_log' => 'گزارش برداشت‌ها',
-        ];
+{
+    // عنوان گزارش بر اساس نوع گزارش
+    $reportTypes = [
+        'withdraw_salary' => 'گزارش برداشت‌ها و معاش کارمندان',
+        'accounting' => 'گزارش حسابداری',
+        'outside' => 'گزارش عواید بیرونی',
+        'deposit' => 'گزارش تسویه نشده‌ها',
+        'salary' => 'گزارش معاش کارمندان',
+        'loan' => 'گزارش بردگی‌ها',
+        'payment' => 'گزارش رسیدها',
+        'buy' => 'گزارش خریدها',
+        'sell' => 'گزارش فروش‌ها',
+        'withdraw_log' => 'گزارش برداشت‌ها',
+    ];
 
-        $reportTitle = $reportTypes[$this->reportType] ?? 'گزارش نامشخص';
+    $reportTitle = $reportTypes[$this->reportType] ?? 'گزارش نامشخص';
 
-        $safeRows = $this->getSafeSummaryRows();
+    $safeRows = $this->getSafeSummaryRows();
+    
+    // محاسبه summary
+    $summary = $this->calculateSummary();
 
-        return view('exports.general-report-pdf', [
-            'data' => $this->data,
-            'reportType' => $this->reportType,
-            'reportTitle' => $reportTitle,
-            'filters' => $this->filters,
-            'summary' => $this->calculateSummary(),
-            'safeRows' => $safeRows,
-        ])->render();
-    }
+    return view('exports.general-report-pdf', [
+        'data' => $this->data,
+        'reportType' => $this->reportType,
+        'reportTitle' => $reportTitle,
+        'filters' => $this->filters,
+        'summary' => $summary, // استفاده از summary محاسبه شده
+        'safeRows' => $safeRows,
+    ])->render();
+}
 
 
-   protected function calculateSummary()
+protected function calculateSummary()
 {
     $totalAmount = 0;
+    $accountingTotals = [];
     
     switch ($this->reportType) {
         case 'withdraw_salary':
             $totalAmount = $this->data->sum(function ($item) {
-                if ($item->record_type === 'withdraw') {
+                if (isset($item->record_type) && $item->record_type === 'withdraw') {
                     return (float)($item->amount ?? 0);
                 } else {
                     return (float)($item->paid ?? 0);
@@ -181,7 +185,21 @@ class GeneralReportPdfExport
             break;
             
         case 'accounting':
-            $totalAmount = $this->data->sum('price');
+            // محاسبه مجموع‌های حسابداری
+            $totalPrice = $this->data->sum('price');
+            $totalPaid = $this->data->sum('paid');
+            $totalRemained = $this->data->sum('remained');
+            $totalAll = $this->data->sum(function ($item) {
+                return ($item->price ?? 0) + ($item->remained ?? 0);
+            });
+            
+            $totalAmount = $totalPrice;
+            $accountingTotals = [
+                'total_price' => $totalPrice,
+                'total_paid' => $totalPaid,
+                'total_remained' => $totalRemained,
+                'total_all' => $totalAll,
+            ];
             break;
             
         case 'outside':
@@ -220,10 +238,69 @@ class GeneralReportPdfExport
             $totalAmount = 0;
     }
 
+    // محاسبه مجموع ارزها
+    $currencyTotals = $this->calculateCurrencyTotals($this->data);
+
     return [
         'total_count' => $this->data->count(),
         'total_amount' => $totalAmount,
+        'currency_totals' => $currencyTotals,
+        'accounting_totals' => $accountingTotals, // اضافه کردن این خط
+        'report_type' => $this->getReportTypeLabel(),
+        'current_date' => \Morilog\Jalali\Jalalian::now()->format('Y/m/d'),
     ];
 }
+
+
+protected function calculateCurrencyTotals($data)
+{
+    $currencyTotals = [];
+
+    foreach ($data as $item) {
+        $currency = $item->currency ?? 'نامشخص';
+        
+        $amount = match ($this->reportType) {
+            'withdraw_salary' => isset($item->record_type) && $item->record_type === 'withdraw' ? 
+                $item->amount : ($item->paid ?? 0),
+            'accounting' => $item->price ?? 0,
+            'outside' => $item->paid ?? 0,
+            'deposit' => $item->price ?? 0,
+            'salary' => $item->paid ?? 0,
+            'loan' => $item->amount ?? 0,
+            'payment' => $item->amount ?? 0,
+            'buy' => $item->price ?? 0,
+            'sell' => $item->price ?? 0,
+            'withdraw_log' => $item->amount ?? 0,
+            default => 0
+        };
+
+        if (!isset($currencyTotals[$currency])) {
+            $currencyTotals[$currency] = 0;
+        }
+
+        $currencyTotals[$currency] += $amount;
+    }
+
+    return $currencyTotals;
+}
+
+private function getReportTypeLabel()
+{
+    $types = [
+        'withdraw_salary' => 'برداشت‌ها و معاش کارمندان',
+        'accounting' => 'حسابداری',
+        'outside' => 'عواید بیرونی',
+        'salary' => 'معاش کارمندان',
+        'deposit' => 'تسویه نشده‌ها',
+        'loan' => 'بردگی‌ها',
+        'payment' => 'رسیدها',
+        'buy' => 'خریدها',
+        'sell' => 'فروش‌ها',
+        'withdraw_log' => 'برداشت‌ها',
+    ];
+
+    return $types[$this->reportType] ?? 'نامشخص';
+}
+
 
 }

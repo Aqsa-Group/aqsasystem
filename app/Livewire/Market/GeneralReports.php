@@ -734,43 +734,98 @@ private function buildAccountingQuery()
             ->pluck('fullname', 'id');
     }
 
-    public function getSummaryProperty()
-    {
-        
-        $data = $this->getReportData(true);
-
-        $currencyTotals = $this->calculateCurrencyTotals($data);
-
-        $totalAmount = $data->sum(function ($item) {
-            if ($item->record_type === 'withdraw') {
-                return $item->amount ?? 0;
-            }
-
-            if ($item->record_type === 'salary') {
-                return $item->paid ?? 0;
-            }
-
-            return 0;
-        });
-
-
-        return [
-            'total_count' => $data->count(),
-            'total_amount' => $totalAmount,
-            'currency_totals' => $currencyTotals,
-            'report_type' => $this->getReportTypeLabel(),
-            'current_date' => Jalalian::now()->format('Y/m/d'),
-            'accounting' => $data->sum('price'),
-            'outside' => $data->sum('paid'),
-            'salary' => $data->sum('paid'),
-            'deposit' => $data->sum('price'),
-            'loan' => $data->sum('amount'),
-            'payment' => $data->sum('amount'),
-            'buy' => $data->sum('price'),
-            'sell' => $data->sum('price'),
-            'withdraw_log' => $data->sum('amount'),
-        ];
+ private function calculateAccountingTotals($data)
+{
+    $totalPrice = 0;
+    $totalPaid = 0;
+    $totalRemained = 0;
+    $totalAll = 0;
+    
+    foreach ($data as $item) {
+        $totalPrice += $item->price ?? 0;
+        $totalPaid += $item->paid ?? 0;
+        $totalRemained += $item->remained ?? 0;
+        $totalAll += ($item->price ?? 0) + ($item->remained ?? 0);
     }
+    
+    return [
+        'total_price' => $totalPrice,
+        'total_paid' => $totalPaid,
+        'total_remained' => $totalRemained,
+        'total_all' => $totalAll,
+    ];
+}
+
+public function getSummaryProperty()
+{
+    $data = $this->getReportData(true);
+
+    $currencyTotals = $this->calculateCurrencyTotals($data);
+
+    $totalAmount = 0;
+    
+    // محاسبات برای گزارش حسابداری
+    $accountingTotals = [];
+    if ($this->reportType === 'accounting') {
+        $accountingTotals = $this->calculateAccountingTotals($data);
+        $totalAmount = $accountingTotals['total_price'] ?? 0;
+    } else {
+        switch ($this->reportType) {
+            case 'withdraw_salary':
+                $totalAmount = $data->sum(function ($item) {
+                    if ($item->record_type === 'withdraw') {
+                        return $item->amount ?? 0;
+                    }
+                    return $item->paid ?? 0;
+                });
+                break;
+                
+            case 'outside':
+                $totalAmount = $data->sum('paid');
+                break;
+                
+            case 'salary':
+                $totalAmount = $data->sum('paid');
+                break;
+                
+            case 'deposit':
+                $totalAmount = $data->sum('price');
+                break;
+                
+            case 'loan':
+                $totalAmount = $data->sum('amount');
+                break;
+                
+            case 'payment':
+                $totalAmount = $data->sum('amount');
+                break;
+                
+            case 'buy':
+                $totalAmount = $data->sum('price');
+                break;
+                
+            case 'sell':
+                $totalAmount = $data->sum('price');
+                break;
+                
+            case 'withdraw_log':
+                $totalAmount = $data->sum('amount');
+                break;
+                
+            default:
+                $totalAmount = 0;
+        }
+    }
+
+    return [
+        'total_count' => $data->count(),
+        'total_amount' => $totalAmount,
+        'currency_totals' => $currencyTotals,
+        'accounting_totals' => $accountingTotals, // اضافه کردن مجموع‌های حسابداری
+        'report_type' => $this->getReportTypeLabel(),
+        'current_date' => Jalalian::now()->format('Y/m/d'),
+    ];
+}
     
 
 

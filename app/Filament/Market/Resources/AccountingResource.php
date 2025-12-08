@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Filament\Market\Resources;
-
 use App\Filament\Market\Resources\AccountingResource\Pages;
 use App\Models\Market\Accounting;
 use App\Models\Market\Booth;
@@ -286,8 +285,14 @@ class AccountingResource extends Resource
 
     public static function table(Table $table): Table
     {
-
         $user = Auth::user();
+
+        /** دریافت مارکت‌های قابل مشاهده توسط کاربر */
+        $markets = $user->role === 'superadmin'
+            ? Market::pluck('id')
+            : Market::where('admin_id', $user->role === 'admin' ? $user->id : $user->admin_id)
+            ->pluck('id');
+
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('type')->label('نوع'),
@@ -298,40 +303,52 @@ class AccountingResource extends Resource
                 Tables\Columns\TextColumn::make('expanses_type')->label('نوع مصرف'),
                 Tables\Columns\TextColumn::make('price')->label('مبلغ')->suffix(' افغانی'),
                 Tables\Columns\TextColumn::make('currency')->label('واحد پول'),
+
                 Tables\Columns\TextColumn::make('paid')
                     ->label('پرداخت شده')
                     ->badge()
-                    ->color('success')
-                    ->extraAttributes(['class' => 'text-white']),
+                    ->color('success'),
 
                 Tables\Columns\TextColumn::make('remained')
                     ->label('باقی مانده')
                     ->badge()
-                    ->color('danger')
-                    ->extraAttributes(['class' => 'text-white']),
+                    ->color('danger'),
 
-                Tables\Columns\IconColumn::make('cleared')->boolean()->label('پرداخت کامل؟'),
+                Tables\Columns\IconColumn::make('cleared')
+                    ->boolean()
+                    ->label('پرداخت کامل؟'),
+
                 Tables\Columns\TextColumn::make('paid_date')
                     ->label('از تاریخ')
-                    ->formatStateUsing(fn($state) => $state ? Jalalian::fromDateTime($state)->format('Y/m/d') : '—'),
+                    ->formatStateUsing(
+                        fn($state) =>
+                        $state ? Jalalian::fromDateTime($state)->format('Y/m/d') : '—'
+                    ),
+
                 Tables\Columns\TextColumn::make('expiration_date')
                     ->label('تا تاریخ')
-                    ->formatStateUsing(fn($state) => $state ? Jalalian::fromDateTime($state)->format('Y/m/d') : '—'),
+                    ->formatStateUsing(
+                        fn($state) =>
+                        $state ? Jalalian::fromDateTime($state)->format('Y/m/d') : '—'
+                    ),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('زمان ثبت')
-                    ->formatStateUsing(fn($state) => Carbon::parse($state)->setTimezone('Asia/Kabul')->format('g:i A')),
+                    ->formatStateUsing(
+                        fn($state) =>
+                        Carbon::parse($state)->setTimezone('Asia/Kabul')->format('g:i A')
+                    ),
             ])
 
             ->filters([
+
+                /* ********************* فیلتر مارکت ********************* */
                 SelectFilter::make('market_id')
                     ->label('مارکت')
-                    ->options(function () {
-                        $user = Auth::user();
-                        return Market::when($user->role === 'admin', fn($q) => $q->where('admin_id', $user->id))
-                            ->when($user->role !== 'superadmin' && $user->role !== 'admin', fn($q) => $q->where('admin_id', $user->admin_id))
-                            ->pluck('name', 'id');
-                    }),
+                    ->options(fn() => Market::whereIn('id', $markets)->pluck('name', 'id'))
+                    ->searchable(),
 
+                /* ********************* فیلتر نوع ********************* */
                 SelectFilter::make('type')
                     ->label('نوع')
                     ->options([
@@ -339,26 +356,25 @@ class AccountingResource extends Resource
                         'غرفه' => 'غرفه',
                     ]),
 
+                /* ********************* فیلتر نمبر دوکان ********************* */
                 SelectFilter::make('shop_id')
                     ->label('نمبر دوکان')
-                    ->options(function () {
-                        $user = Auth::user();
-                        $markets = $user->role === 'superadmin'
-                            ? Market::pluck('id')
-                            : Market::where('admin_id', $user->role === 'admin' ? $user->id : $user->admin_id)->pluck('id');
-                        return Shop::whereIn('market_id', $markets)->pluck('number', 'id');
-                    }),
+                    ->options(
+                        fn() =>
+                        Shop::whereIn('market_id', $markets)->pluck('number', 'id')
+                    )
+                    ->searchable(),
 
+                /* ********************* فیلتر نمبر غرفه ********************* */
                 SelectFilter::make('booth_id')
                     ->label('نمبر غرفه')
-                    ->options(function () {
-                        $user = Auth::user();
-                        $markets = $user->role === 'superadmin'
-                            ? Market::pluck('id')
-                            : Market::where('admin_id', $user->role === 'admin' ? $user->id : $user->admin_id)->pluck('id');
-                        return Booth::whereIn('market_id', $markets)->pluck('number', 'id');
-                    }),
+                    ->options(
+                        fn() =>
+                        Booth::whereIn('market_id', $markets)->pluck('number', 'id')
+                    )
+                    ->searchable(),
 
+                /* ********************* فیلتر نوع مصرف ********************* */
                 SelectFilter::make('expanses_type')
                     ->label('نوع مصرف')
                     ->options([
@@ -369,48 +385,90 @@ class AccountingResource extends Resource
                         'صفایی' => 'صفایی',
                     ]),
 
+                SelectFilter::make('floor')
+                    ->label('طبقه')
+                    ->options(function () {
+                        $user = Auth::user();
+
+                        // دریافت مارکت‌های مجاز کاربر
+                        $markets = $user->role === 'superadmin'
+                            ? Market::pluck('id')
+                            : Market::where('admin_id', $user->role === 'admin' ? $user->id : $user->admin_id)
+                            ->pluck('id');
+
+                        // طبقات دوکان‌ها
+                        $shopFloors = Shop::whereIn('market_id', $markets)
+                            ->whereNotNull('floor')
+                            ->pluck('floor')
+                            ->toArray();
+
+                        // طبقات غرفه‌ها
+                        $boothFloors = Booth::whereIn('market_id', $markets)
+                            ->whereNotNull('floor')
+                            ->pluck('floor')
+                            ->toArray();
+
+                        // ترکیب و حذف تکراری
+                        $floors = array_unique(array_merge($shopFloors, $boothFloors));
+
+                        // تبدیل به لیست فیلتر (مثلاً: 1 => "طبقه 1")
+                        return collect($floors)->mapWithKeys(fn($f) => [$f => "طبقه $f"]);
+                    })
+
+                    ->query(function (Builder $query, $state) {
+
+                        // ✔ اگر هیچ طبقه‌ای انتخاب نشده = همه را نشان بده
+                        if ($state === null || $state === '') {
+                            return $query;
+                        }
+
+                        return $query->where(function ($q) use ($state) {
+                            $q->whereHas('shop', fn($s) => $s->where('floor', $state))
+                                ->orWhereHas('booth', fn($b) => $b->where('floor', $state));
+                        });
+                    }),
+
+
+
+
+
+                /* ********************* فیلتر تاریخ پرداخت ********************* */
                 Filter::make('paid_date')
                     ->label('تاریخ پرداخت')
                     ->form([
                         Forms\Components\DatePicker::make('from')->label('از تاریخ')->jalali(),
                         Forms\Components\DatePicker::make('until')->label('تا تاریخ')->jalali(),
                     ])
-                    ->query(function (Builder $query, array $data): Builder {
+                    ->query(function (Builder $query, array $data) {
                         return $query
-                            ->when($data['from'], function ($q, $date) {
-                                try {
-                                    $from = \Morilog\Jalali\Jalalian::fromFormat('Y-m-d H:i:s', $date)->toCarbon();
-                                    $q->whereDate('paid_date', '>=', $from);
-                                } catch (\Exception $e) {
-                                    //
-                                }
-                            })
-                            ->when($data['until'], function ($q, $date) {
-                                try {
-                                    $until = \Morilog\Jalali\Jalalian::fromFormat('Y-m-d H:i:s', $date)->toCarbon();
-                                    $q->whereDate('paid_date', '<=', $until);
-                                } catch (\Exception $e) {
-                                    //
-                                }
-                            });
+                            ->when(
+                                $data['from'],
+                                fn($q, $date) =>
+                                $q->whereDate('paid_date', '>=', Jalalian::fromFormat('Y-m-d H:i:s', $date)->toCarbon())
+                            )
+                            ->when(
+                                $data['until'],
+                                fn($q, $date) =>
+                                $q->whereDate('paid_date', '<=', Jalalian::fromFormat('Y-m-d H:i:s', $date)->toCarbon())
+                            );
                     }),
-
             ])
-
 
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-               Tables\Actions\Action::make('print')
-    ->label('چاپ')
-    ->icon('heroicon-o-printer')
-    ->url(fn($record) => route('accounting.print.view', $record))
-    ->openUrlInNewTab(),
+                Tables\Actions\Action::make('print')
+                    ->label('چاپ')
+                    ->icon('heroicon-o-printer')
+                    ->url(fn($record) => route('accounting.print.view', $record))
+                    ->openUrlInNewTab(),
             ])
+
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
+
     public static function getPages(): array
     {
         return [
@@ -424,12 +482,14 @@ class AccountingResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $user = Auth::user();
+
         $query = parent::getEloquentQuery();
 
-        if ($user->role !== 'superadmin') {
-            $query = $query->whereHas('market', fn($q) => $q->where('admin_id', $user->role === 'admin' ? $user->id : $user->admin_id));
+        if ($user->role === 'superadmin') {
+            return $query; // همه رکوردها
         }
 
-        return $query->orderBy('created_at', 'desc');
+        // فقط admin یا کارمند محدود
+        return $query->where('admin_id', $user->role === 'admin' ? $user->id : $user->admin_id);
     }
 }

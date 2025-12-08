@@ -202,6 +202,7 @@
                 <th>مقدار مصرف</th>
                 <th>قیمت فی کیلووات</th>
                 <th>مبلغ قابل تأدیه</th>
+                <th>پرداخت شده</th>
                 <th>باقیات</th>
                 <th>جمع کل</th>
                 <th>از تاریخ</th>
@@ -304,12 +305,7 @@
 
         <tbody>
 
-            @php
-            $totalPaid = 0;
-            $totalRemained = 0;
-            $totalAll = 0;
-            @endphp
-
+         
             @foreach($data as $index => $report)
 
             <tr>
@@ -338,15 +334,11 @@
                 <td>{{ $usage }}</td>
                 <td>{{ number_format($report->degree_price ?? 0) }}</td>
                 <td>{{ number_format($report->price) }}</td>
+                <td>{{ number_format($report->paid) }}</td>
                 <td>{{ number_format($report->remained) }}</td>
                 <td>{{ number_format($report->remained + $report->price) }}</td>
 
-                @php
-                $totalPaid += $report->price;
-                $totalRemained += $report->remained;
-                $totalAll += ($report->price + $report->remained);
-                @endphp
-
+             
 
                 <td>{{ $report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
                     : '-' }}</td>
@@ -471,7 +463,7 @@
                     @switch($report->currency)
                     @case('AFN') افغانی @break
                     @case('USD') دالر @break
-                    @default {{ $report->currency }}
+                    @default {{ $report->currency }}1404/08/17
                     @endswitch
                 </td>
                 <td>{{ $report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-' }}
@@ -550,19 +542,19 @@
                 @endswitch
             </tr>
             @endforeach
-            @switch($reportType)
-            @case('accounting')
-        <tfoot>
-            <tr style="font-weight: bold; background: #f0f0f0;">
-                <td colspan="10">مجموع</td>
-                <td>{{ number_format($totalPaid) }}</td> <!-- مجموع تادیه -->
-                <td>{{ number_format($totalRemained) }}</td> <!-- مجموع باقیات -->
-                <td>{{ number_format($totalAll) }}</td> <!-- مجموع کل -->
-                <td colspan="3"></td>
-            </tr>
-        </tfoot>
+  @if($reportType == 'accounting' && isset($summary['accounting_totals']))
+<tfoot>
+    <tr style="font-weight: bold; background: #f0f0f0;">
+        <td colspan="11">مجموع</td>
+        <td>{{ number_format($summary['accounting_totals']['total_price'] ?? 0) }}</td> <!-- مجموع تادیه -->
+        <td>{{ number_format($summary['accounting_totals']['total_paid'] ?? 0) }}</td> <!-- مجموع پرداخت شده -->
+        <td>{{ number_format($summary['accounting_totals']['total_remained'] ?? 0) }}</td> <!-- مجموع باقیات -->
+        <td>{{ number_format($summary['accounting_totals']['total_all'] ?? 0) }}</td> <!-- مجموع کل -->
+        <td colspan="3"></td>
+    </tr>
+</tfoot>
+@endif
 
-        @endswitch
 
         </tbody>
     </table>

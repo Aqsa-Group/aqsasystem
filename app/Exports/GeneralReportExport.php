@@ -65,6 +65,7 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
                 'مقدار مصرف',
                 'قیمت فی کیلووات',
                 'مبلغ قابل تأدیه',
+                'پرداخت شده',
                 'باقیات',
                 'جمع کل',
                 'از تاریخ',
@@ -197,6 +198,8 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
 
                 // مبلغ قابل تأدیه (price)
                 $report->price ? number_format($report->price) : 0,
+                $report->paid? number_format($report->paid) : 0,
+
 
                 isset($report->remained) ? number_format($report->remained) : '0',
 
@@ -433,49 +436,53 @@ class GeneralReportExport implements FromCollection, WithHeadings, WithMapping, 
         ];
     }
 
-    private function addAccountingFooter(AfterSheet $event)
-    {
-        $totalPaid = 0;
-        $totalRemained = 0;
-        $totalAll = 0;
+private function addAccountingFooter(AfterSheet $event)
+{
+    $totalPrice = 0;
+    $totalPaid = 0;
+    $totalRemained = 0;
+    $totalAll = 0;
 
-        // محاسبه مجموع‌ها
-        foreach ($this->data as $report) {
-            $totalPaid += (float) ($report->price ?? 0);
-            $totalRemained += (float) ($report->remained ?? 0);
-            $totalAll += (float) ($report->price ?? 0) + (float) ($report->remained ?? 0);
-        }
+    // محاسبه مجموع‌ها
+    foreach ($this->data as $report) {
+        $price = (float) ($report->price ?? 0);
+        $paid = (float) ($report->paid ?? 0);
+        $remained = (float) ($report->remained ?? 0);
 
-        $lastRow = $this->data->count() + 2; // +1 for header, +1 for footer
-
-        // اضافه کردن ردیف مجموع
-        $event->sheet->setCellValue("K{$lastRow}", number_format($totalPaid));
-        $event->sheet->setCellValue("L{$lastRow}", number_format($totalRemained));
-        $event->sheet->setCellValue("M{$lastRow}", number_format($totalAll));
-
-        // اضافه کردن برچسب "مجموع" در ستون J
-        $event->sheet->setCellValue("J{$lastRow}", "مجموع");
-
-        // ستون‌های دیگر را خالی می‌کنیم
-        $event->sheet->setCellValue("A{$lastRow}", "");
-        $event->sheet->setCellValue("B{$lastRow}", "");
-        $event->sheet->setCellValue("C{$lastRow}", "");
-        $event->sheet->setCellValue("D{$lastRow}", "");
-        $event->sheet->setCellValue("E{$lastRow}", "");
-        $event->sheet->setCellValue("F{$lastRow}", "");
-        $event->sheet->setCellValue("G{$lastRow}", "");
-        $event->sheet->setCellValue("H{$lastRow}", "");
-        $event->sheet->setCellValue("I{$lastRow}", "");
-        $event->sheet->setCellValue("N{$lastRow}", "");
-        $event->sheet->setCellValue("O{$lastRow}", "");
-
-        // اعمال استایل به ردیف مجموع
-        $event->sheet->getStyle("J{$lastRow}:M{$lastRow}")->applyFromArray([
-            'font' => ['bold' => true],
-            'fill' => [
-                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => ['rgb' => 'F0F0F0']
-            ]
-        ]);
+        $totalPrice += $price;
+        $totalPaid += $paid;
+        $totalRemained += $remained;
+        $totalAll += $price + $remained;
     }
+
+    // تعیین ردیف آخر (Header + Data + Footer)
+    $lastRow = $this->data->count() + 2;
+
+    // قرار دادن برچسب "مجموع" در ستون J
+    $event->sheet->setCellValue("J{$lastRow}", "مجموع");
+
+    // قرار دادن مجموع‌ها در ستون‌های K تا M
+    $event->sheet->setCellValue("K{$lastRow}", number_format($totalPrice));
+    $event->sheet->setCellValue("L{$lastRow}", number_format($totalPaid));
+    $event->sheet->setCellValue("M{$lastRow}", number_format($totalRemained));
+    $event->sheet->setCellValue("N{$lastRow}", number_format($totalAll));
+
+    // ستون‌های دیگر خالی
+    foreach (range('A', 'I') as $col) {
+        $event->sheet->setCellValue("{$col}{$lastRow}", "");
+    }
+    foreach (range('O', 'Z') as $col) { // اگر ستون‌های بیشتری دارید، این محدوده را اصلاح کنید
+        $event->sheet->setCellValue("{$col}{$lastRow}", "");
+    }
+
+    // اعمال استایل به ردیف مجموع
+    $event->sheet->getStyle("J{$lastRow}:N{$lastRow}")->applyFromArray([
+        'font' => ['bold' => true],
+        'fill' => [
+            'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+            'startColor' => ['rgb' => 'F0F0F0']
+        ]
+    ]);
+}
+
 }
