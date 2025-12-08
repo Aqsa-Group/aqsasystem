@@ -132,6 +132,22 @@
                                 </div>
                                 @endif
 
+
+                                @if(in_array($reportType, ['accounting', 'deposit']))
+                              
+                                <!-- 🔴 اضافه کردن فیلتر طبقه -->
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">طبقه</label>
+                                    <select wire:model.live="floor"
+                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
+                                        <option value="">همه طبقه‌ها</option>
+                                        @foreach($floors as $floorItem)
+                                        <option value="{{ $floorItem }}">{{ $floorItem }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @endif
+
                                 <!-- Expanses Type Filter for combined report -->
                                 @if(in_array($reportType, ['withdraw_salary']))
                                 <div class="space-y-2">
@@ -356,9 +372,7 @@
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             تاریخ</th>
-                                        <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
-                                            وضعیت</th>
+
                                         @break
 
                                         @case('outside')
@@ -667,18 +681,13 @@
                                             <span class="font-bold text-gray-900">{{ number_format($report->price)
                                                 }}</span>
                                         </td>
-                                      
+
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ $report->paid_date ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
                                             : '-' }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span
-                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ $report->cleared ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
-                                                {{ $report->cleared ? 'تسویه شده' : 'در انتظار' }}
-                                            </span>
-                                        </td>
+
                                         @break
 
                                         @case('outside')
@@ -693,7 +702,8 @@
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
                                                 {{ $report->customer_id ? 'bg-purple-100 text-purple-800' : 
                                                 ($report->staff_id ? 'bg-orange-100 text-orange-800' : 
                                                 ($report->shopkeeper_id ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800')) }}">

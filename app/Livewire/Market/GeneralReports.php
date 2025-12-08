@@ -51,6 +51,7 @@ class GeneralReports extends Component
     public $search = '';
     public $amountMin;
     public $amountMax;
+     public $floor; 
 
     protected $queryString = [
         'reportType' => ['except' => 'withdraw_salary'],
@@ -71,6 +72,7 @@ class GeneralReports extends Component
         'search' => ['except' => ''],
         'amountMin' => ['except' => ''],
         'amountMax' => ['except' => ''],
+         'floor' => ['except' => ''], 
     ];
 
     public function mount()
@@ -242,6 +244,7 @@ class GeneralReports extends Component
             'search' => $this->search,
             'amountMin' => $this->amountMin,
             'amountMax' => $this->amountMax,
+             'floor' => $this->floor,
         ];
     }
 
@@ -443,28 +446,90 @@ private function getCombinedDataForExport()
         ->values();
 }
 
-    private function buildAccountingQuery()
-    {
-        return Accounting::with(['market', 'shop', 'booth', 'shopkeeper'])
-            ->when($this->marketId, fn($q) => $q->where('market_id', $this->marketId))
-            ->when($this->shopId, fn($q) => $q->where('shop_id', $this->shopId))
-            ->when($this->boothId, fn($q) => $q->where('booth_id', $this->boothId))
-            ->when($this->shopkeeperId, fn($q) => $q->where('shopkeeper_id', $this->shopkeeperId))
-            ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
-            ->when($this->type, fn($q) => $q->where('type', $this->type))
-            ->when($this->expansesType, fn($q) => $q->where('expanses_type', $this->expansesType))
-            ->when($this->startDate, fn($q) => $q->whereDate('paid_date', '>=', $this->startDate))
-            ->when($this->endDate, fn($q) => $q->whereDate('paid_date', '<=', $this->endDate))
-            ->when($this->amountMin, fn($q) => $q->where('price', '>=', $this->amountMin))
-            ->when($this->amountMax, fn($q) => $q->where('price', '<=', $this->amountMax))
-            ->when($this->search, function ($q) {
-                $q->whereHas('shopkeeper', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
-                    ->orWhereHas('shop', fn($q2) => $q2->where('number', 'like', "%{$this->search}%"))
-                    ->orWhereHas('booth', fn($q2) => $q2->where('number', 'like', "%{$this->search}%"))
-                    ->orWhere('meter_serial', 'like', "%{$this->search}%");
-            })
-            ->orderBy('created_at', 'desc');
-    }
+public function getFloorsProperty()
+{
+    $user = Auth::user();
+    
+    // گرفتن floorهای منحصر به فرد از shops
+    $shopFloors = Shop::when($this->marketId, fn($q) => $q->where('market_id', $this->marketId))
+        ->when($user->role === 'admin', fn($q) => $q->where('admin_id', $user->id))
+        ->when($user->role !== 'superadmin' && $user->role !== 'admin', fn($q) => $q->where('admin_id', $user->admin_id))
+        ->whereNotNull('floor')
+        ->distinct()
+        ->pluck('floor')
+        ->toArray();
+    
+    // گرفتن floorهای منحصر به فرد از booths
+    $boothFloors = Booth::when($this->marketId, fn($q) => $q->where('market_id', $this->marketId))
+        ->when($user->role === 'admin', fn($q) => $q->where('admin_id', $user->id))
+        ->when($user->role !== 'superadmin' && $user->role !== 'admin', fn($q) => $q->where('admin_id', $user->admin_id))
+        ->whereNotNull('floor')
+        ->distinct()
+        ->pluck('floor')
+        ->toArray();
+    
+    // ادغام و حذف موارد تکراری
+    $allFloors = array_unique(array_merge($shopFloors, $boothFloors));
+    sort($allFloors);
+    
+    return $allFloors;
+}
+
+private function buildAccountingQuery()
+{
+    return Accounting::with(['market', 'shop', 'booth', 'shopkeeper'])
+        ->when($this->marketId, fn($q) => $q->where('market_id', $this->marketId))
+        ->when($this->shopId, fn($q) => $q->where('shop_id', $this->shopId))
+        ->when($this->boothId, fn($q) => $q->where('booth_id', $this->boothId))
+        ->when($this->shopkeeperId, fn($q) => $q->where('shopkeeper_id', $this->shopkeeperId))
+        ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
+        ->when($this->type, fn($q) => $q->where('type', $this->type))
+        ->when($this->expansesType, fn($q) => $q->where('expanses_type', $this->expansesType))
+        ->when($this->startDate, fn($q) => $q->whereDate('paid_date', '>=', $this->startDate))
+        ->when($this->endDate, fn($q) => $q->whereDate('paid_date', '<=', $this->endDate))
+        ->when($this->amountMin, fn($q) => $q->where('price', '>=', $this->amountMin))
+        ->when($this->amountMax, fn($q) => $q->where('price', '<=', $this->amountMax))
+        
+        // 🔴 اضافه کردن فیلتر floor
+     ->when($this->floor, function ($q) {
+    $user = Auth::user();
+    $adminId = $user->role === 'superadmin'
+        ? null
+        : ($user->role === 'admin' ? $user->id : $user->admin_id);
+
+    $q->where(function ($query) use ($adminId) {
+
+        // فیلتر دوکان
+        $query->whereHas('shop', function ($q2) use ($adminId) {
+            $q2->where('floor', 'like', "%{$this->floor}%");
+
+            if ($adminId) {
+                $q2->where('admin_id', $adminId);
+            }
+        })
+
+        // فیلتر غرفه
+        ->orWhereHas('booth', function ($q2) use ($adminId) {
+            $q2->where('floor', 'like', "%{$this->floor}%");
+
+            if ($adminId) {
+                $q2->where('admin_id', $adminId);
+            } 
+        });
+
+    });
+
+})
+
+        
+        ->when($this->search, function ($q) {
+            $q->whereHas('shopkeeper', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
+                ->orWhereHas('shop', fn($q2) => $q2->where('number', 'like', "%{$this->search}%"))
+                ->orWhereHas('booth', fn($q2) => $q2->where('number', 'like', "%{$this->search}%"))
+                ->orWhere('meter_serial', 'like', "%{$this->search}%");
+        })
+        ->orderBy('created_at', 'desc');
+}
 
     private function buildOutsideQuery()
     {
@@ -774,7 +839,8 @@ private function getCombinedDataForExport()
             'status',
             'search',
             'amountMin',
-            'amountMax'
+            'amountMax',
+              'floor',
         ]);
 
         $this->setDefaultJalaliDates();
@@ -797,6 +863,7 @@ private function getCombinedDataForExport()
             'customers' => $this->customers,
             'staffs' => $this->staffs,
             'summary' => $this->summary,
+                'floors' => $this->floors,
         ]);
     }
 

@@ -132,6 +132,22 @@
                                 </div>
                                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
+
+                                <!--[if BLOCK]><![endif]--><?php if(in_array($reportType, ['accounting', 'deposit'])): ?>
+                              
+                                <!-- 🔴 اضافه کردن فیلتر طبقه -->
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-semibold text-gray-700">طبقه</label>
+                                    <select wire:model.live="floor"
+                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
+                                        <option value="">همه طبقه‌ها</option>
+                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $floors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $floorItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($floorItem); ?>"><?php echo e($floorItem); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                    </select>
+                                </div>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
                                 <!-- Expanses Type Filter for combined report -->
                                 <!--[if BLOCK]><![endif]--><?php if(in_array($reportType, ['withdraw_salary'])): ?>
                                 <div class="space-y-2">
@@ -371,9 +387,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             تاریخ</th>
-                                        <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
-                                            وضعیت</th>
+
                                         <?php break; ?>
 
                                         <?php case ('outside'): ?>
@@ -695,20 +709,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="font-bold text-gray-900"><?php echo e(number_format($report->price)); ?></span>
                                         </td>
-                                      
+
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             <?php echo e($report->paid_date ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
                                             : '-'); ?>
 
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span
-                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium <?php echo e($report->cleared ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'); ?>">
-                                                <?php echo e($report->cleared ? 'تسویه شده' : 'در انتظار'); ?>
 
-                                            </span>
-                                        </td>
                                         <?php break; ?>
 
                                         <?php case ('outside'): ?>
@@ -722,7 +730,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
                                                 <?php echo e($report->customer_id ? 'bg-purple-100 text-purple-800' : 
                                                 ($report->staff_id ? 'bg-orange-100 text-orange-800' : 
                                                 ($report->shopkeeper_id ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'))); ?>">
