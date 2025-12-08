@@ -163,7 +163,7 @@
         </div>
     </div>
 
-    <!-- نمایش مجموع مبالغ هر ارز -->
+    {{-- <!-- نمایش مجموع مبالغ هر ارز -->
     @if(isset($summary['currency_totals']) && count($summary['currency_totals']) > 0)
     <div class="currency-summary">
         <h4>📊 مجموع مبالغ بر اساس ارز:</h4>
@@ -182,7 +182,7 @@
             @endforeach
         </div>
     </div>
-    @endif
+    @endif --}}
 
     @if($data && $data->count() > 0)
     <table>

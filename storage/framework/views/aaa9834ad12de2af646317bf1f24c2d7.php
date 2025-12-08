@@ -163,27 +163,7 @@
         </div>
     </div>
 
-    <!-- نمایش مجموع مبالغ هر ارز -->
-    <?php if(isset($summary['currency_totals']) && count($summary['currency_totals']) > 0): ?>
-    <div class="currency-summary">
-        <h4>📊 مجموع مبالغ بر اساس ارز:</h4>
-        <div class="currency-items">
-            <?php $__currentLoopData = $summary['currency_totals']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency => $total): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <div class="currency-item">
-                <strong>
-                    <?php switch($currency):
-                    case ('AFN'): ?> افغانی <?php break; ?>
-                    <?php case ('USD'): ?> دالر <?php break; ?>
-                    <?php default: ?> <?php echo e($currency); ?>
-
-                    <?php endswitch; ?>
-                </strong>:
-                <span class="currency-amount"><?php echo e(number_format($total)); ?></span>
-            </div>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        </div>
-    </div>
-    <?php endif; ?>
+    
 
     <?php if($data && $data->count() > 0): ?>
     <table>
