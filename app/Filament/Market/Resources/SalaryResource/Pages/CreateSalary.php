@@ -4,6 +4,7 @@ namespace App\Filament\Market\Resources\SalaryResource\Pages;
 
 use App\Filament\Market\Resources\SalaryResource;
 use App\Models\Market\Loan;
+use App\Models\Market\Salary;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Auth;
@@ -15,10 +16,15 @@ class CreateSalary extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $salary = $data['salary'] ?? 0;
+        $salaryAmount = $data['salary'] ?? 0;
         $paid = $data['paid'] ?? 0;
         $lastRemained = $data['last_remained'] ?? 0;
+        $monthlyRemaining = $data['monthly_remaining'] ?? 0;
+        $totalPaidThisMonth = $data['total_paid_this_month'] ?? 0;
 
+        // محاسبه باقیمانده ماه جاری بعد از این پرداخت
+        $newMonthlyRemaining = max(0, $monthlyRemaining - $paid);
+        
         if (!empty($data['is_reduce']) && !empty($data['loan_id']) && !empty($data['reduce_loan'])) {
             $loan = Loan::find($data['loan_id']);
 
@@ -26,13 +32,16 @@ class CreateSalary extends CreateRecord
                 $data['loan'] = $loan->remainingAmount();
                 $data['new_loan'] = $data['loan'] - $data['reduce_loan'];
                 $data['paid'] = $data['reduce_loan'];
-
-                // در حالت قرضه باقیمانده نباید ذخیره شود
                 $data['remained'] = 0;
+                $data['monthly_remaining'] = $newMonthlyRemaining;
             }
         } else {
-            $data['remained'] = ($salary - $paid) + $lastRemained;
+            $data['remained'] = ($salaryAmount - $paid) + $lastRemained;
+            $data['monthly_remaining'] = $newMonthlyRemaining;
         }
+
+        // ذخیره مجموع پرداختی این ماه
+        $data['total_paid_this_month'] = $totalPaidThisMonth + $paid;
 
         return $data;
     }
@@ -78,7 +87,6 @@ class CreateSalary extends CreateRecord
                     ->danger()
                     ->send();
     
-                
                 $salary->delete();
     
                 return;

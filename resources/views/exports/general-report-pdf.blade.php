@@ -550,6 +550,8 @@
                 @endswitch
             </tr>
             @endforeach
+            @switch($reportType)
+            @case('accounting')
         <tfoot>
             <tr style="font-weight: bold; background: #f0f0f0;">
                 <td colspan="10">مجموع</td>
@@ -559,6 +561,8 @@
                 <td colspan="3"></td>
             </tr>
         </tfoot>
+
+        @endswitch
 
         </tbody>
     </table>

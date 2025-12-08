@@ -572,7 +572,9 @@
                 <?php endswitch; ?>
             </tr>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        <tfoot>
+ <?php switch($reportType):
+                case ('accounting'): ?>
+            <tfoot>
             <tr style="font-weight: bold; background: #f0f0f0;">
                 <td colspan="10">مجموع</td>
                 <td><?php echo e(number_format($totalPaid)); ?></td> <!-- مجموع تادیه -->
@@ -581,6 +583,8 @@
                 <td colspan="3"></td>
             </tr>
         </tfoot>
+    
+                <?php endswitch; ?>
 
         </tbody>
     </table>
