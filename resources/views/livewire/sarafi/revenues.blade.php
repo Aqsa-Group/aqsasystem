@@ -204,17 +204,15 @@
                         </div>
                     </div>
 
-               <div class="lg:w-[190px]">
-    <label class="block text-[16px] font-medium text-black mb-1 vazir">نوع ارز</label>
-    <input type="text"
-        value="دالر"
-        readonly
-        class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
+                    <div class="lg:w-[190px]">
+                        <label class="block text-[16px] font-medium text-black mb-1 vazir">نوع ارز</label>
+                        <input type="text" value="دالر" readonly
+                            class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
 
-    @error('currency')
-    <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-    @enderror
-</div>
+                        @error('currency')
+                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                        @enderror
+                    </div>
 
                 </div>
 

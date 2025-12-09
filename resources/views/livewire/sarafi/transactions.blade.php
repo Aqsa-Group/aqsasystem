@@ -12,8 +12,59 @@
         @endif
 
 
+
         {{-- کارت‌های ارزها با اسکرول افقی --}}
         <div class="scroll-container overflow-x-auto whitespace-nowrap py-3 ">
+            {{-- کارت مشتری انتخاب شده --}}
+            @if($selectedCustomer)
+            <div class="inline-block align-top ml-4 h-auto">
+                <div
+                    class="flex flex-col h-[180px] w-[273px] pr-5 pl-5 pt-2 rounded-[12px] bg-gradient-to-b from-[#20559c] to-[#3065b5] text-white">
+
+                    {{-- عکس مشتری --}}
+                    @if($selectedCustomer->image)
+                    <div class="flex justify-center mb-2">
+                        <img src="{{ Storage::url($selectedCustomer->image) }}" alt="{{ $selectedCustomer->fullname }}"
+                            class="w-20 h-20 rounded-lg object-cover border-2 border-white">
+                    </div>
+
+                    @else
+                  <div class="flex justify-center mb-2">
+                        <img src="{{ asset('assets/web.jpg') }}" alt="{{ $selectedCustomer->fullname }}"
+                            class="w-20 h-20 rounded-lg object-cover border-2 border-white">
+                    </div>
+                    @endif
+
+                    {{-- نام مشتری --}}
+                    <h1 class="text-[20px] text-white text-center font-bold truncate"
+                        title="{{ $selectedCustomer->fullname }}">
+                        {{ $selectedCustomer->fullname }}
+                    </h1>
+
+                    {{-- شماره تماس --}}
+                    @if($selectedCustomer->phone)
+                    <div class="flex items-center justify-center gap-2 mt-1">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M20 15.5c-1.2 0-2.4-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.5-5.2-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.3-.5-3.5 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1zM5 6h1.5c.1 1.2.3 2.4.6 3.5L5.3 11.8c-.9-2-1.3-4.1-1.3-6.2V6zM19 19c-2.1 0-4.2-.4-6.2-1.3l2.3-2.3c1.1.3 2.3.5 3.5.6V19z" />
+                        </svg>
+                        <span class="text-white text-[14px] dir-ltr text-left">{{ $selectedCustomer->phone }}</span>
+                    </div>
+                    @endif
+
+                    {{-- شماره حساب --}}
+                    <div class="flex items-center justify-center gap-2 mt-1">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8h16v10zm-8-7c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-2.2 0-4 1.8-4 4h8c0-2.2-1.8-4-4-4z" />
+                        </svg>
+                        <span class="text-white text-[14px] dir-ltr text-left">{{ $selectedCustomer->account_number
+                            }}</span>
+                    </div>
+
+                </div>
+            </div>
+            @endif
             @foreach ($currencies as $currencyItem)
             @php
             $currencyName = $currencyItem['name_fa'];
@@ -61,43 +112,56 @@
             <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
                 <div
                     class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
-
                     @php
-                    $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
-                    $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
+                    $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
+                    $sourceCurrency = $latestProfitRate->currency_name ?? 'دالر';
                     @endphp
                     <h1 class="text-[24px] text-white">خلاصه بیلانس به {{$sourceCurrency }}</h1>
                     <div class="flex flex-col gap-1 mt-1 text-center">
                         @php
                         $totalCashUsd = 0;
                         $totalBankUsd = 0;
-                        $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
-                        $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
-                        $exchangeRates = [
-                        'افغانی' => $latestExchangeRate->afn_buy ?? 66.20,
-                        'دالر' => 1,
-                        'تومان' => $latestExchangeRate->irr_buy ?? 110000.00,
-                        'یورو' => $latestExchangeRate->eur_buy ?? 70.00,
-                        'کلدار' => $latestExchangeRate->pkr_buy ?? 32.00,
-                        'درهم' => $latestExchangeRate->aed_buy ?? 44.00,
-                        'لیره' => $latestExchangeRate->try_buy ?? 60.00,
-                        'یوان' => $latestExchangeRate->cny_buy ?? 43.00,
+                        $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
+                        $sourceCurrency = $latestProfitRate->source_currency ?? 'دالر';
+
+                        $exchangeRatesCash = [
+                        'افغانی' => $latestProfitRate->afn_buy_cash ?? 66.20,
+                        'دالر' => $latestProfitRate->usd_buy_cash ?? 1,
+                        'تومان' => $latestProfitRate->irr_buy_cash ?? 110000.00,
+                        'یورو' => $latestProfitRate->eur_buy_cash ?? 70.00,
+                        'کلدار' => $latestProfitRate->pkr_buy_cash ?? 32.00,
+                        'درهم' => $latestProfitRate->aed_buy_cash ?? 44.00,
+                        'لیره' => $latestProfitRate->try_buy_cash ?? 60.00,
+                        'یوان' => $latestProfitRate->cny_buy_cash ?? 43.00,
                         'روپیه' => 7.14,
                         ];
 
+                        $exchangeRatesBank = [
+                        'افغانی' => $latestProfitRate->afn_buy_bank ?? 66.20,
+                        'دالر' => $latestProfitRate->usd_buy_bank ?? 1,
+                        'تومان' => $latestProfitRate->irr_buy_bank ?? 110000.00,
+                        'یورو' => $latestProfitRate->eur_buy_bank ?? 70.00,
+                        'کلدار' => $latestProfitRate->pkr_buy_bank ?? 32.00,
+                        'درهم' => $latestProfitRate->aed_buy_bank ?? 44.00,
+                        'لیره' => $latestProfitRate->try_buy_bank ?? 60.00,
+                        'یوان' => $latestProfitRate->cny_buy_bank ?? 43.00,
+                        'روپیه' => 7.14,
+                        ];
+
+                        // محاسبه موجودی نقدی به دالر
                         foreach($customerCashBalances as $currency => $balance) {
-                        if(isset($exchangeRates[$currency]) && $exchangeRates[$currency] > 0) {
-
-                        $totalCashUsd += $balance / $exchangeRates[$currency];
+                        if(isset($exchangeRatesCash[$currency]) && $exchangeRatesCash[$currency] > 0) {
+                        $totalCashUsd += $balance / $exchangeRatesCash[$currency];
                         }
                         }
 
+                        // محاسبه موجودی بانکی به دالر
                         foreach($customerBankBalances as $currency => $balance) {
-                        if(isset($exchangeRates[$currency]) && $exchangeRates[$currency] > 0) {
+                        if(isset($exchangeRatesBank[$currency]) && $exchangeRatesBank[$currency] > 0) {
+                        $totalBankUsd += $balance / $exchangeRatesBank[$currency];
+                        }
+                        }
 
-                            $totalBankUsd += $balance / $exchangeRates[$currency];
-                        }
-                        }
                         $grandTotalUsd = $totalCashUsd + $totalBankUsd;
                         @endphp
 

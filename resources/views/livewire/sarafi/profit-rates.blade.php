@@ -23,8 +23,8 @@
     @endif
 
     <div class="space-y-4 mb-6">
-        <h1 class="text-[24px] font-medium vazir">درج نرخ ارز برای سنجش مفاد و ضرر</h1>
-        <h1 class="text-[#8C8C8C]">اضافه ویرایش ارزها برای سنجش مفاد و ضرر</h1>
+        <h1 class="text-[24px] font-medium vazir">ثبت نرخ ارز برای بیلانس گیری ، مفاد و ضرر</h1>
+        <h1 class="text-[#8C8C8C]">ثبت نرخ ارز برای بیلانس گیری ، مفاد و ضرر حسابات مشتریان</h1>
     </div>
     <hr class="my-6 border-t border-[#D9D9D9] w-full">
 

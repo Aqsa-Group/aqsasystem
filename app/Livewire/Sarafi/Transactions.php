@@ -17,6 +17,7 @@ use Morilog\Jalali\Jalalian;
 use Mpdf\Mpdf;
 use NumberFormatter;
 
+
 class Transactions extends Component
 {
     use WithFileUploads;
@@ -34,6 +35,7 @@ class Transactions extends Component
     public $accountType = 'نقدی';
     public $date;
     public $description;
+    public $selectedCustomer = null;    
     public $file;
 
     public $zone;
@@ -169,35 +171,36 @@ class Transactions extends Component
         }
     }
 
-    public function selectCustomer($customerId)
-    {
-        $this->selectedCustomerId = $customerId;
-        $this->selectedAccount = $customerId;
-        $this->filteredCustomers = [];
+ public function selectCustomer($customerId)
+{
+    $this->selectedCustomerId = $customerId;
+    $this->selectedAccount = $customerId;
+    $this->selectedCustomer = Customer::find($customerId); 
+    $this->filteredCustomers = [];
 
-        $customer = Customer::find($customerId);
-        if ($customer) {
-            $this->search = $customer->fullname;
+    $customer = Customer::find($customerId);
+    if ($customer) {
+        $this->search = $customer->fullname;
 
-            if (!$this->customers->contains('id', $customer->id)) {
-                $this->customers->push($customer);
-            }
-
-            $this->dispatch('account-selected', [
-                'id' => $customer->id,
-                'text' => $customer->account_number . ' - ' . $customer->fullname,
-            ]);
-
-            $this->updateTransactions();
-            $this->updateCustomerCurrencyBalance();
-
-            Log::debug("Customer selected", [
-                'customer_id' => $customerId,
-                'customer_name' => $customer->fullname,
-                'search_value' => $this->search
-            ]);
+        if (!$this->customers->contains('id', $customer->id)) {
+            $this->customers->push($customer);
         }
+
+        $this->dispatch('account-selected', [
+            'id' => $customer->id,
+            'text' => $customer->account_number . ' - ' . $customer->fullname,
+        ]);
+
+        $this->updateTransactions();
+        $this->updateCustomerCurrencyBalance();
+
+        Log::debug("Customer selected", [
+            'customer_id' => $customerId,
+            'customer_name' => $customer->fullname,
+            'search_value' => $this->search
+        ]);
     }
+}
 
     public function updatedSelectedAccount($value)
     {
@@ -381,6 +384,7 @@ class Transactions extends Component
         $this->selectedCustomerId = null;
         $this->selectedAccount = null;
         $this->search = '';
+        $this->selectedCustomer = null; 
         $this->filteredCustomers = [];
         $this->updateTransactions();
         $this->updateCustomerCurrencyBalance();

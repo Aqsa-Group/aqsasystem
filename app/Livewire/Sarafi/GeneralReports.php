@@ -3,7 +3,7 @@
 namespace App\Livewire\Sarafi;
 
 use App\Models\Sarafi\Customer;
-use App\Models\Sarafi\ExchangeRates;
+use App\Models\Sarafi\ProfitRate;
 use App\Models\Sarafi\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -40,7 +40,6 @@ class GeneralReports extends Component
     public $chartData = [];
     public $maxValue = 0;
     public $selectedCustomersData = [];
-
 
     public $subCategories = [
         'customers' => ['گزارش بیلانس مشتریان', 'گزارش خلاصه بیلانس مشتریان', 'طلب مشتری ها'],
@@ -200,26 +199,25 @@ class GeneralReports extends Component
 
     private function convertToUSD($amount, $currency)
     {
-
         if ($currency === 'usd') {
             return $amount;
         }
 
-        $latestExchangeRate = ExchangeRates::latest()->first();
-        if (!$latestExchangeRate) {
-            Log::warning('No exchange rate found');
+        $latestProfitRate = ProfitRate::latest()->first();
+        if (!$latestProfitRate) {
+            Log::warning('No profit rate found');
             return 0;
         }
 
-        // نرخ‌های تبدیل - توجه: این‌ها باید نرخ خرید باشند
+        // نرخ‌های تبدیل - استفاده از نرخ خرید نقدی (پیش‌فرض)
         $exchangeRates = [
-            'afn' => $latestExchangeRate->afn_buy ?? 0.011,
-            'irr' => $latestExchangeRate->irr_buy ?? 0.000024,
-            'eur' => $latestExchangeRate->eur_buy ?? 1.07,
-            'pkr' => $latestExchangeRate->pkr_buy ?? 0.0036,
-            'aed' => $latestExchangeRate->aed_buy ?? 0.27,
-            'try' => $latestExchangeRate->try_buy ?? 0.031,
-            'cny' => $latestExchangeRate->cny_buy ?? 0.14,
+            'afn' => $latestProfitRate->afn_buy_cash ?? 66.20,
+            'irr' => $latestProfitRate->irr_buy_cash ?? 110000.00,
+            'eur' => $latestProfitRate->eur_buy_cash ?? 0.93,
+            'pkr' => $latestProfitRate->pkr_buy_cash ?? 277.78,
+            'aed' => $latestProfitRate->aed_buy_cash ?? 3.67,
+            'try' => $latestProfitRate->try_buy_cash ?? 32.26,
+            'cny' => $latestProfitRate->cny_buy_cash ?? 7.24,
         ];
 
         $result = isset($exchangeRates[$currency]) ? $amount / $exchangeRates[$currency] : 0;
@@ -362,7 +360,6 @@ class GeneralReports extends Component
                 $total += $balance;
             }
 
-
             $this->totalBalances[$currencyCode] = [
                 'total' => $total,
                 'currency_name' => $currencyName
@@ -457,11 +454,9 @@ class GeneralReports extends Component
             }
         }
 
-
         $this->demands = [];
 
         foreach ($customers as $customer) {
-
             $demand = [
                 'id' => $customer->id,
                 'account_number' => $customer->account_number,
@@ -474,9 +469,7 @@ class GeneralReports extends Component
             ];
 
             foreach ($this->currencies as $currencyCode => $currencyName) {
-
                 $balance = $this->calculateBalance($customer->id, $currencyCode);
-
                 $balance = $balance > 0 ? $balance : 0;
 
                 $demand['balances'][$currencyCode] = $balance;
@@ -501,22 +494,21 @@ class GeneralReports extends Component
         $customer = Customer::find($relatedCustomerId);
         return $customer ? $customer->fullname : 'نامشخص';
     }
+
     private function calculateBalance($customerId, $currency)
     {
         return Transaction::where('customer_id', $customerId)
             ->where('currency', $currency)
             ->select(DB::raw('
-            SUM(
-                CASE 
-                    WHEN type = "رسید" THEN amount 
-                    ELSE -amount 
-                END
-            ) as balance
-        '))
+                SUM(
+                    CASE 
+                        WHEN type = "رسید" THEN amount 
+                        ELSE -amount 
+                    END
+                ) as balance
+            '))
             ->value('balance') ?? 0;
     }
-
-
 
     private function getLastTransactionDate($customerId, $currency)
     {
@@ -527,25 +519,26 @@ class GeneralReports extends Component
 
     private function calculateTotalBalance($balances)
     {
-        $latestExchangeRate = ExchangeRates::latest()->first();
-        if (!$latestExchangeRate) {
+        $latestProfitRate = ProfitRate::latest()->first();
+        if (!$latestProfitRate) {
             return 0;
         }
 
+        // استفاده از نرخ خرید نقدی (cash) به عنوان پیش‌فرض
         $exchangeRates = [
-            'afn' => $latestExchangeRate->afn_buy ?? 0.011,
+            'afn' => $latestProfitRate->afn_buy_cash ?? 66.20,
             'usd' => 1,
-            'irr' => $latestExchangeRate->irr_buy ?? 0.000024,
-            'eur' => $latestExchangeRate->eur_buy ?? 1.07,
-            'pkr' => $latestExchangeRate->pkr_buy ?? 0.0036,
-            'aed' => $latestExchangeRate->aed_buy ?? 0.27,
-            'try' => $latestExchangeRate->try_buy ?? 0.031,
-            'cny' => $latestExchangeRate->cny_buy ?? 0.14,
+            'irr' => $latestProfitRate->irr_buy_cash ?? 110000.00,
+            'eur' => $latestProfitRate->eur_buy_cash ?? 0.93,
+            'pkr' => $latestProfitRate->pkr_buy_cash ?? 277.78,
+            'aed' => $latestProfitRate->aed_buy_cash ?? 3.67,
+            'try' => $latestProfitRate->try_buy_cash ?? 32.26,
+            'cny' => $latestProfitRate->cny_buy_cash ?? 7.24,
         ];
 
         $total = 0;
         foreach ($balances as $currency => $balance) {
-            if (isset($exchangeRates[$currency]) && $balance != 0) {
+            if (isset($exchangeRates[$currency]) && $exchangeRates[$currency] > 0 && $balance != 0) {
                 $total += $balance / $exchangeRates[$currency];
             }
         }

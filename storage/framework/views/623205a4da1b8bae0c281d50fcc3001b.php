@@ -31,117 +31,153 @@
         </div>
         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-        
-        <div class="scroll-container overflow-x-auto whitespace-nowrap py-3 -mt-5">
-            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <?php
-            $currencyName = $currencyItem['name_fa'];
-            $cashBalance = $customerCashBalances[$currencyName] ?? 0;
-            $bankBalance = $customerBankBalances[$currencyName] ?? 0;
-            $totalBalance = $customerTotalBalances[$currencyName] ?? 0;
-            ?>
+      
+<div class="scroll-container overflow-x-auto whitespace-nowrap py-3 -mt-5">
+    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+    <?php
+    $currencyName = $currencyItem['name_fa'];
+    $cashBalance = $customerCashBalances[$currencyName] ?? 0;
+    $bankBalance = $customerBankBalances[$currencyName] ?? 0;
+    $totalBalance = $customerTotalBalances[$currencyName] ?? 0;
+    ?>
 
-            
-            <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
-                <div
-                    class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] bg-gradient-to-b from-[#2563EB] to-[#5474BB] text-white">
+    
+    <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
+        <div class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] bg-gradient-to-b from-[#2563EB] to-[#5474BB] text-white">
 
-                    <h1 class="text-[24px] text-white"><?php echo e($currencyName); ?></h1>
+            <h1 class="text-[24px] text-white"><?php echo e($currencyName); ?></h1>
 
-                    <div class="flex flex-col gap-1 mt-1 text-center">
-                        <div class="flex justify-between items-center text-[14px]">
-                            <span>نقدی:</span>
-                            <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($cashBalance)); ?></span>
-                        </div>
-                        <div class="flex justify-between items-center text-[14px]">
-                            <span>بانکی:</span>
-                            <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($bankBalance)); ?></span>
-                        </div>
-                        <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
-                            <span class="font-semibold">مجموعه:</span>
-                            <span class="font-bold text-[16px] text-left" dir="ltr"><?php echo e(number_format($totalBalance)); ?></span>
-                        </div>
-                    </div>
-
-                    <button wire:click="showReport" wire:loading.attr="disabled"
-                        class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
-                        <span wire:loading.remove>نمایش گزارش</span>
-                        <span wire:loading>
-                            در حال انتقال...
-                        </span>
-                    </button>
+            <div class="flex flex-col gap-1 mt-1 text-center">
+                <div class="flex justify-between items-center text-[14px]">
+                    <span>نقدی:</span>
+                    <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($cashBalance)); ?></span>
+                </div>
+                <div class="flex justify-between items-center text-[14px]">
+                    <span>بانکی:</span>
+                    <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($bankBalance)); ?></span>
+                </div>
+                <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
+                    <span class="font-semibold">مجموعه:</span>
+                    <span class="font-bold text-[16px] text-left" dir="ltr"><?php echo e(number_format($totalBalance)); ?></span>
                 </div>
             </div>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
 
-            
-            <!--[if BLOCK]><![endif]--><?php if($withdrawalCustomerId): ?>
-            <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
-                <div
-                    class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
-                    <?php
-                    $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
-                    $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
-                    ?>
-                    <h1 class="text-[24px] text-white">خلاصه بیلانس به <?php echo e($sourceCurrency); ?></h1>
-
-                    <div class="flex flex-col gap-1 mt-1 text-center">
-                        <?php
-                        $totalCashUsd = 0;
-                        $totalBankUsd = 0;
-                        $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
-
-                        $exchangeRates = [
-                        'افغانی' => $latestExchangeRate->afn_buy ?? 66.20,
-                        'دالر' => 1,
-                        'تومان' => $latestExchangeRate->irr_buy ?? 110000.00,
-                        'یورو' => $latestExchangeRate->eur_buy ?? 70.00,
-                        'کلدار' => $latestExchangeRate->pkr_buy ?? 32.00,
-                        'درهم' => $latestExchangeRate->aed_buy ?? 44.00,
-                        'لیره' => $latestExchangeRate->try_buy ?? 60.00,
-                        'یوان' => $latestExchangeRate->cny_buy ?? 43.00,
-                        'روپیه' => 7.14,
-                        ];
-
-                        foreach($customerCashBalances as $currency => $balance) {
-                        if(isset($exchangeRates[$currency]) && $exchangeRates[$currency] > 0) {
-
-                        $totalCashUsd += $balance / $exchangeRates[$currency];
-                        }
-                        }
-
-                        foreach($customerBankBalances as $currency => $balance) {
-                        if(isset($exchangeRates[$currency]) && $exchangeRates[$currency] > 0) {
-                        $totalBankUsd += $balance / $exchangeRates[$currency];
-                        }
-                        }
-                        $grandTotalUsd = $totalCashUsd + $totalBankUsd;
-                        ?>
-
-                        <div class="flex justify-between items-center text-[14px]">
-                            <span>نقدی:</span>
-                            <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($totalCashUsd, 2)); ?></span>
-                        </div>
-                        <div class="flex justify-between items-center text-[14px]">
-                            <span>بانکی:</span>
-                            <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($totalBankUsd, 2)); ?></span>
-                        </div>
-                        <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
-                            <span class="font-semibold">مجموعه:</span>
-                            <span class="font-bold text-[16px] text-left" dir="ltr"><?php echo e(number_format($grandTotalUsd, 2)); ?></span>
-                        </div>
-                    </div>
-                    <button wire:click="showReport" wire:loading.attr="disabled"
-                        class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
-                        <span wire:loading.remove>نمایش گزارش</span>
-                        <span wire:loading>
-                            در حال انتقال...
-                        </span>
-                    </button>
-                </div>
-            </div>
-            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            <button wire:click="showReport" wire:loading.attr="disabled"
+                class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
+                <span wire:loading.remove>نمایش گزارش</span>
+                <span wire:loading>
+                    در حال انتقال...
+                </span>
+            </button>
         </div>
+    </div>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+
+    
+    <!--[if BLOCK]><![endif]--><?php if($withdrawalCustomerId): ?>
+    <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
+        <div class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
+            <?php
+            // تابع تبدیل کد ارز به نام فارسی
+            function getPersianCurrencyNameProfit($currencyCode) {
+                $currencyMap = [
+                    'afn' => 'افغانی',
+                    'usd' => 'دالر',
+                    'irr' => 'تومان',
+                    'eur' => 'یورو',
+                    'pkr' => 'کلدار',
+                    'aed' => 'درهم',
+                    'try' => 'لیره',
+                    'cny' => 'یوان',
+                    'gbp' => 'پوند',
+                    'jpy' => 'ین',
+                    'sar' => 'ریال سعودی',
+                    'inr' => 'روپیه',
+                ];
+                
+                $currencyCode = strtolower($currencyCode ?? 'usd');
+                return $currencyMap[$currencyCode] ?? $currencyCode;
+            }
+            
+            $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
+            $sourceCurrency = getPersianCurrencyNameProfit($latestProfitRate->source_currency ?? 'usd');
+            ?>
+            
+            <h1 class="text-[24px] text-white">خلاصه بیلانس به <?php echo e($sourceCurrency); ?></h1>
+
+            <div class="flex flex-col gap-1 mt-1 text-center">
+                <?php
+                $totalCashUsd = 0;
+                $totalBankUsd = 0;
+                $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
+
+                // تعریف نرخ‌های خرید نقدی (برای موجودی نقدی)
+                $exchangeRatesCash = [
+                    'افغانی' => $latestProfitRate->afn_buy_cash ?? 66.20,
+                    'دالر' => $latestProfitRate->usd_buy_cash ?? 1,
+                    'تومان' => $latestProfitRate->irr_buy_cash ?? 110000.00,
+                    'یورو' => $latestProfitRate->eur_buy_cash ?? 70.00,
+                    'کلدار' => $latestProfitRate->pkr_buy_cash ?? 32.00,
+                    'درهم' => $latestProfitRate->aed_buy_cash ?? 44.00,
+                    'لیره' => $latestProfitRate->try_buy_cash ?? 60.00,
+                    'یوان' => $latestProfitRate->cny_buy_cash ?? 43.00,
+                    'روپیه' => $latestProfitRate->inr_buy_cash ?? 7.14,
+                ];
+
+                // تعریف نرخ‌های خرید بانکی (برای موجودی بانکی)
+                $exchangeRatesBank = [
+                    'افغانی' => $latestProfitRate->afn_buy_bank ?? 66.20,
+                    'دالر' => $latestProfitRate->usd_buy_bank ?? 1,
+                    'تومان' => $latestProfitRate->irr_buy_bank ?? 110000.00,
+                    'یورو' => $latestProfitRate->eur_buy_bank ?? 70.00,
+                    'کلدار' => $latestProfitRate->pkr_buy_bank ?? 32.00,
+                    'درهم' => $latestProfitRate->aed_buy_bank ?? 44.00,
+                    'لیره' => $latestProfitRate->try_buy_bank ?? 60.00,
+                    'یوان' => $latestProfitRate->cny_buy_bank ?? 43.00,
+                    'روپیه' => $latestProfitRate->inr_buy_bank ?? 7.14,
+                ];
+
+                // محاسبه موجودی نقدی به دالر با نرخ خرید نقدی
+                foreach($customerCashBalances as $currency => $balance) {
+                    if(isset($exchangeRatesCash[$currency]) && $exchangeRatesCash[$currency] > 0) {
+                        $totalCashUsd += $balance / $exchangeRatesCash[$currency];
+                    }
+                }
+
+                // محاسبه موجودی بانکی به دالر با نرخ خرید بانکی
+                foreach($customerBankBalances as $currency => $balance) {
+                    if(isset($exchangeRatesBank[$currency]) && $exchangeRatesBank[$currency] > 0) {
+                        $totalBankUsd += $balance / $exchangeRatesBank[$currency];
+                    }
+                }
+                $grandTotalUsd = $totalCashUsd + $totalBankUsd;
+                ?>
+
+                <div class="flex justify-between items-center text-[14px]">
+                    <span>نقدی:</span>
+                    <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($totalCashUsd, 2)); ?></span>
+                </div>
+                <div class="flex justify-between items-center text-[14px]">
+                    <span>بانکی:</span>
+                    <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($totalBankUsd, 2)); ?></span>
+                </div>
+                <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
+                    <span class="font-semibold">مجموعه:</span>
+                    <span class="font-bold text-[16px] text-left" dir="ltr"><?php echo e(number_format($grandTotalUsd, 2)); ?></span>
+                </div>
+            </div>
+            
+            <button wire:click="showReport" wire:loading.attr="disabled"
+                class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
+                <span wire:loading.remove>نمایش گزارش</span>
+                <span wire:loading>
+                    در حال انتقال...
+                </span>
+            </button>
+        </div>
+    </div>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+</div>
 
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
             

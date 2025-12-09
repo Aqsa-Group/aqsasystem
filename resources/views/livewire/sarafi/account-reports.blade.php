@@ -1,3 +1,26 @@
+@php
+// تابع تبدیل کد ارز به نام فارسی (برای استفاده در کل view)
+function getPersianCurrencyName($currencyCode) {
+    $currencyMap = [
+        'afn' => 'افغانی',
+        'usd' => 'دالر',
+        'irr' => 'تومان',
+        'eur' => 'یورو',
+        'pkr' => 'کلدار',
+        'aed' => 'درهم',
+        'try' => 'لیره',
+        'cny' => 'یوان',
+        'gbp' => 'پوند',
+        'jpy' => 'ین',
+        'sar' => 'ریال سعودی',
+        'inr' => 'روپیه',
+    ];
+    
+    $currencyCode = strtolower($currencyCode ?? 'usd');
+    return $currencyMap[$currencyCode] ?? $currencyCode;
+}
+@endphp
+
 <div>
     <div class="container mx-auto ">
         <!-- Session Message -->
@@ -149,8 +172,6 @@
                     </div>
                 </div>
 
-
-
                 <div class="overflow-x-auto w-full mt-4">
                     <div class="max-h-[600px] overflow-y-auto">
                         <table class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500">
@@ -172,9 +193,9 @@
                                     <th class="px-4 py-4 font-bold">لیره</th>
                                     <th class="px-4 py-4 font-bold">یوان</th>
                                     @php
-                                    $latestExchangeRate =
-                                    \App\Models\Sarafi\ExchangeRates::latest()->first();
-                                    $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
+                                    // دریافت نام ارز مبدا به فارسی
+                                    $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
+                                    $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
                                     @endphp
                                     <th class="px-4 py-4 font-bold">بیلانس به {{ $sourceCurrency }}</th>
                                 </tr>
@@ -183,8 +204,7 @@
                                 @forelse($reports as $index => $report)
                                 <tr class=" border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
                                     <td class="px-4 py-4">
-                                        <span class="border border-gray-300 px-2 py-1 rounded-lg">{{ $index + 1
-                                            }}</span>
+                                        <span class="border border-gray-300 px-2 py-1 rounded-lg">{{ $index + 1 }}</span>
                                     </td>
                                     <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
                                         {{ $report['account_number'] }}
@@ -194,26 +214,17 @@
                                         {{ $report['related_customer_name'] ?? '-' }}
                                     </td>
                                     <td class="px-4 py-4">
-                                        {{ $report['last_date'] ?
-                                        \Carbon\Carbon::parse($report['last_date'])->format('Y/m/d') : '-' }}
+                                        {{ $report['last_date'] ? \Carbon\Carbon::parse($report['last_date'])->format('Y/m/d') : '-' }}
                                     </td>
-                                    <td class="px-4 py-4 text-left">{{ number_format($report['balances']['usd'] ?? 0, 2)
-                                        }}</td>
-                                    <td class="px-4 py-4 text-left">{{ number_format($report['balances']['afn'] ?? 0, 2)
-                                        }}</td>
-                                    <td class="px-4 py-4 text-left">{{ number_format($report['balances']['irr'] ?? 0, 2)
-                                        }}</td>
-                                    <td class="px-4 py-4 text-left">{{ number_format($report['balances']['pkr'] ?? 0, 2)
-                                        }}</td>
-                                    <td class="px-4 py-4 text-left">{{ number_format($report['balances']['eur'] ?? 0, 2)
-                                        }}</td>
-                                    <td class="px-4 py-4 text-left">{{ number_format($report['balances']['aed'] ?? 0, 2)
-                                        }}</td>
-                                    <td class="px-4 py-4 text-left">{{ number_format($report['balances']['try'] ?? 0, 2)
-                                        }}</td>
-                                    <td class="px-4 py-4 text-left">{{ number_format($report['balances']['cny'] ?? 0, 2)
-                                        }}</td>
-                                    <td class="px-4 py-4 font-medium text-left ">
+                                    <td class="px-4 py-4 text-left">{{ number_format($report['balances']['usd'] ?? 0, 2) }}</td>
+                                    <td class="px-4 py-4 text-left">{{ number_format($report['balances']['afn'] ?? 0, 2) }}</td>
+                                    <td class="px-4 py-4 text-left">{{ number_format($report['balances']['irr'] ?? 0, 2) }}</td>
+                                    <td class="px-4 py-4 text-left">{{ number_format($report['balances']['pkr'] ?? 0, 2) }}</td>
+                                    <td class="px-4 py-4 text-left">{{ number_format($report['balances']['eur'] ?? 0, 2) }}</td>
+                                    <td class="px-4 py-4 text-left">{{ number_format($report['balances']['aed'] ?? 0, 2) }}</td>
+                                    <td class="px-4 py-4 text-left">{{ number_format($report['balances']['try'] ?? 0, 2) }}</td>
+                                    <td class="px-4 py-4 text-left">{{ number_format($report['balances']['cny'] ?? 0, 2) }}</td>
+                                    <td class="px-4 py-4 font-medium text-left">
                                         {{ number_format($report['total_balance'], 2) }}
                                     </td>
                                 </tr>
@@ -255,8 +266,7 @@
                                 <div class="border-2 border-dashed border-gray-300 p-4">
                                     <div class="text-center mb-4">
                                         <h2 class="text-xl font-bold vazir" x-text="printData?.title"></h2>
-                                        <p class="text-gray-600" x-text="'تاریخ چاپ: ' + (printData?.print_date || '')">
-                                        </p>
+                                        <p class="text-gray-600" x-text="'تاریخ چاپ: ' + (printData?.print_date || '')"></p>
                                     </div>
 
                                     <div class="mb-4" x-show="printData?.filters">
@@ -281,32 +291,23 @@
                                                 <th class="border border-gray-300 p-2">دالر</th>
                                                 <th class="border border-gray-300 p-2">افغانی</th>
                                                 @php
-                                                $latestExchangeRate =
-                                                \App\Models\Sarafi\ExchangeRates::latest()->first();
-                                                $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
+                                                // دریافت نام ارز مبدا به فارسی برای چاپ
+                                                $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
+                                                $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
                                                 @endphp
-                                                <th class="border border-gray-300 p-2">بیلانس به {{ $sourceCurrency }}
-                                                </th>
+                                                <th class="border border-gray-300 p-2">بیلانس به {{ $sourceCurrency }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <template x-for="(report, index) in printData?.reports || []"
-                                                :key="report.id">
+                                            <template x-for="(report, index) in printData?.reports || []" :key="report.id">
                                                 <tr>
-                                                    <td class="border border-gray-300 p-2 text-center"
-                                                        x-text="index + 1"></td>
-                                                    <td class="border border-gray-300 p-2"
-                                                        x-text="report.account_number"></td>
-                                                    <td class="border border-gray-300 p-2" x-text="report.fullname">
-                                                    </td>
-                                                    <td class="border border-gray-300 p-2"
-                                                        x-text="report.related_customer_name || '-'"></td>
-                                                    <td class="border border-gray-300 p-2 text-left"
-                                                        x-text="(report.balances?.usd || 0).toFixed(2)"></td>
-                                                    <td class="border border-gray-300 p-2 text-left"
-                                                        x-text="(report.balances?.afn || 0).toFixed(2)"></td>
-                                                    <td class="border border-gray-300 p-2 text-left font-bold"
-                                                        x-text="report.total_balance.toFixed(2)"></td>
+                                                    <td class="border border-gray-300 p-2 text-center" x-text="index + 1"></td>
+                                                    <td class="border border-gray-300 p-2" x-text="report.account_number"></td>
+                                                    <td class="border border-gray-300 p-2" x-text="report.fullname"></td>
+                                                    <td class="border border-gray-300 p-2" x-text="report.related_customer_name || '-'"></td>
+                                                    <td class="border border-gray-300 p-2 text-left" x-text="(report.balances?.usd || 0).toFixed(2)"></td>
+                                                    <td class="border border-gray-300 p-2 text-left" x-text="(report.balances?.afn || 0).toFixed(2)"></td>
+                                                    <td class="border border-gray-300 p-2 text-left font-bold" x-text="report.total_balance.toFixed(2)"></td>
                                                 </tr>
                                             </template>
                                         </tbody>
@@ -314,9 +315,7 @@
 
                                     <div class="mt-4 text-sm">
                                         <p x-text="'تعداد کل مشتریان: ' + (printData?.total_customers || 0)"></p>
-                                        <p
-                                            x-text="'مجموع بیلانس: ' + (printData?.total_balance?.toFixed(2) || '0.00') + ' دالر'">
-                                        </p>
+                                        <p x-text="'مجموع بیلانس: ' + (printData?.total_balance?.toFixed(2) || '0.00') + ' دالر'"></p>
                                     </div>
                                 </div>
                             </div>

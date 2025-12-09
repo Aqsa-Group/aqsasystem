@@ -30,8 +30,11 @@
         </div>
         @endif
 
+        
         {{-- کارت‌های ارزها با اسکرول افقی --}}
         <div class="scroll-container overflow-x-auto whitespace-nowrap py-3 -mt-5">
+
+            
             @foreach ($currencies as $currencyItem)
             @php
             $currencyName = $currencyItem['name_fa'];
@@ -81,40 +84,76 @@
                     class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
 
                     @php
-                    $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
-                    $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
+                    // تابع تبدیل کد ارز به نام فارسی
+                    function getPersianCurrencyName($currencyCode) {
+                    $currencyMap = [
+                    'afn' => 'افغانی',
+                    'usd' => 'دالر',
+                    'irr' => 'تومان',
+                    'eur' => 'یورو',
+                    'pkr' => 'کلدار',
+                    'aed' => 'درهم',
+                    'try' => 'لیره',
+                    'cny' => 'یوان',
+                    'gbp' => 'پوند',
+                    'jpy' => 'ین',
+                    'sar' => 'ریال سعودی',
+                    'inr' => 'روپیه',
+                    ];
+
+                    $currencyCode = strtolower($currencyCode ?? 'usd');
+                    return $currencyMap[$currencyCode] ?? $currencyCode;
+                    }
+
+                    $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
+                    $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
                     @endphp
-                    <h1 class="text-[24px] text-white">خلاصه بیلانس به {{$sourceCurrency }}</h1>
+
+                    <h1 class="text-[24px] text-white">خلاصه بیلانس به {{ $sourceCurrency }}</h1>
 
                     <div class="flex flex-col gap-1 mt-1 text-center">
                         @php
                         $totalCashUsd = 0;
                         $totalBankUsd = 0;
-                        $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
+                        $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
 
-                        $exchangeRates = [
-                        'افغانی' => $latestExchangeRate->afn_buy ?? 66.20,
-                        'دالر' => 1,
-                        'تومان' => $latestExchangeRate->irr_buy ?? 110000.00,
-                        'یورو' => $latestExchangeRate->eur_buy ?? 70.00,
-                        'کلدار' => $latestExchangeRate->pkr_buy ?? 32.00,
-                        'درهم' => $latestExchangeRate->aed_buy ?? 44.00,
-                        'لیره' => $latestExchangeRate->try_buy ?? 60.00,
-                        'یوان' => $latestExchangeRate->cny_buy ?? 43.00,
-                        'روپیه' => 7.14,
+                        // تعریف نرخ‌های خرید نقدی
+                        $exchangeRatesCash = [
+                        'افغانی' => $latestProfitRate->afn_buy_cash ?? 66.20,
+                        'دالر' => $latestProfitRate->usd_buy_cash ?? 1,
+                        'تومان' => $latestProfitRate->irr_buy_cash ?? 110000.00,
+                        'یورو' => $latestProfitRate->eur_buy_cash ?? 70.00,
+                        'کلدار' => $latestProfitRate->pkr_buy_cash ?? 32.00,
+                        'درهم' => $latestProfitRate->aed_buy_cash ?? 44.00,
+                        'لیره' => $latestProfitRate->try_buy_cash ?? 60.00,
+                        'یوان' => $latestProfitRate->cny_buy_cash ?? 43.00,
+                        'روپیه' => $latestProfitRate->inr_buy_cash ?? 7.14,
                         ];
 
+                        // تعریف نرخ‌های خرید بانکی
+                        $exchangeRatesBank = [
+                        'افغانی' => $latestProfitRate->afn_buy_bank ?? 66.20,
+                        'دالر' => $latestProfitRate->usd_buy_bank ?? 1,
+                        'تومان' => $latestProfitRate->irr_buy_bank ?? 110000.00,
+                        'یورو' => $latestProfitRate->eur_buy_bank ?? 70.00,
+                        'کلدار' => $latestProfitRate->pkr_buy_bank ?? 32.00,
+                        'درهم' => $latestProfitRate->aed_buy_bank ?? 44.00,
+                        'لیره' => $latestProfitRate->try_buy_bank ?? 60.00,
+                        'یوان' => $latestProfitRate->cny_buy_bank ?? 43.00,
+                        'روپیه' => $latestProfitRate->inr_buy_bank ?? 7.14,
+                        ];
+
+                        // محاسبه موجودی نقدی به دالر با استفاده از نرخ خرید نقدی
                         foreach($customerCashBalances as $currency => $balance) {
-                        if(isset($exchangeRates[$currency]) && $exchangeRates[$currency] > 0) {
-
-                        $totalCashUsd += $balance / $exchangeRates[$currency];
+                        if(isset($exchangeRatesCash[$currency]) && $exchangeRatesCash[$currency] > 0) {
+                        $totalCashUsd += $balance / $exchangeRatesCash[$currency];
                         }
                         }
 
+                        // محاسبه موجودی بانکی به دالر با استفاده از نرخ خرید بانکی
                         foreach($customerBankBalances as $currency => $balance) {
-                        if(isset($exchangeRates[$currency]) && $exchangeRates[$currency] > 0) {
-                        // تقسیم کردن نه ضرب کردن!
-                        $totalBankUsd += $balance / $exchangeRates[$currency];
+                        if(isset($exchangeRatesBank[$currency]) && $exchangeRatesBank[$currency] > 0) {
+                        $totalBankUsd += $balance / $exchangeRatesBank[$currency];
                         }
                         }
                         $grandTotalUsd = $totalCashUsd + $totalBankUsd;
@@ -146,7 +185,6 @@
             </div>
             @endif
         </div>
-
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
             <!-- فرم تبدیل ارز -->
             <div class="flex flex-col bg-[#F5F5F5] mx-auto w-[420px] lg:w-[534px] mb-6 p-[12px] h-fit rounded-[12px] space-y-2"
@@ -160,7 +198,7 @@
                         <span class="vazir font-semibold">فورم تبدیل ارز در حساب</span>
                     </p>
 
-                        <button wire:click="toggleTransactionType" class="rounded-[8px] p-[10px] text-white vazir px-12 font-semibold transition-colors duration-500 ease-in-out
+                    <button wire:click="toggleTransactionType" class="rounded-[8px] p-[10px] text-white vazir px-12 font-semibold transition-colors duration-500 ease-in-out
                         {{ $transactionType === 'خرید' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
                         {{ $transactionType === 'خرید' ? 'خرید' : 'فروش' }}
                     </button>
@@ -168,7 +206,7 @@
                         {{ $accountType === 'نقدی' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
                         {{ $accountType === 'نقدی' ? 'نقدی' : 'بانکی' }}
                     </button>
-                   
+
                 </div>
 
                 <!-- فرم اصلی -->
@@ -246,11 +284,11 @@
                             <!-- ارز مبدا -->
                             <div class="lg:w-[191px]">
                                 <label class="block text-[16px] font-medium text-black mb-1 vazir">
-                                 @if($transactionType === 'خرید')
-                                   ارز خرید  
-                                @else
-                                ارز فروش
-                                @endif   
+                                    @if($transactionType === 'خرید')
+                                    ارز خرید
+                                    @else
+                                    ارز فروش
+                                    @endif
                                 </label>
                                 <div class="relative w-full">
                                     <select wire:model="from_currency"
@@ -273,11 +311,11 @@
                             <!-- مبلغ خرید -->
                             <div class="flex-1">
                                 <label class="block text-[16px] font-medium text-black mb-1 vazir">
-                                        @if($transactionType === 'خرید')
-                                   مبلغ خرید  
-                                @else
-                                مبلغ فروش
-                                @endif  
+                                    @if($transactionType === 'خرید')
+                                    مبلغ خرید
+                                    @else
+                                    مبلغ فروش
+                                    @endif
                                 </label>
                                 <div class="relative w-full">
                                     <input type="text" wire:model.live="buy_amount" placeholder="0"
@@ -302,11 +340,11 @@
                             <!-- ارز مقصد -->
                             <div class="lg:w-[191px]">
                                 <label class="block text-[16px] font-medium text-black mb-1 vazir">
-                                        @if($transactionType === 'خرید')
-                                   ارز فروش  
-                                @else
-                                ارز خرید
-                                @endif  
+                                    @if($transactionType === 'خرید')
+                                    ارز فروش
+                                    @else
+                                    ارز خرید
+                                    @endif
                                 </label>
                                 <div class="relative w-full">
                                     <select wire:model="to_currency"
@@ -329,11 +367,11 @@
                             <!-- نرخ ارز -->
                             <div class="flex-1">
                                 <label class="block text-[16px] font-medium text-black mb-1 vazir">
-                                        @if($transactionType === 'خرید')
-                                   نرخ فروش  
-                                @else
-                                نرخ خرید
-                                @endif  
+                                    @if($transactionType === 'خرید')
+                                    نرخ فروش
+                                    @else
+                                    نرخ خرید
+                                    @endif
                                 </label>
                                 <div class="relative w-full">
                                     <input type="text" wire:model.live="currency_rate" placeholder="0.0000"
@@ -357,11 +395,11 @@
                         <!-- مبلغ فروش -->
                         <div class="flex-1">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">
-                                    @if($transactionType === 'خرید')
-                                   مبلغ فروش  
+                                @if($transactionType === 'خرید')
+                                مبلغ فروش
                                 @else
                                 مبلغ خرید
-                                @endif  
+                                @endif
                             </label>
                             <div class="relative w-full">
                                 <input type="text" wire:model="sell_amount" placeholder="0"

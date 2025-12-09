@@ -3,7 +3,7 @@
 namespace App\Livewire\Sarafi;
 
 use App\Models\Sarafi\Customer;
-use App\Models\Sarafi\ExchangeRates;
+use App\Models\Sarafi\ProfitRate;
 use App\Models\Sarafi\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,13 +16,11 @@ class AccountReports extends Component
     public $search = '';
     public $selectedCustomer = '';
     public $selectedCurrency = '';
-    public $selectedDate = '';
     public $accountType = '';
+    public $date;
 
     public $customers = [];
     public $reports = [];
-
-    public $date;
 
     protected $currencies = [
         'usd' => 'دالر',
@@ -81,6 +79,9 @@ class AccountReports extends Component
         $customers = $baseQuery->get();
         $this->reports = [];
 
+        // تعیین نوع حساب برای تبدیل
+        $accountTypeForConversion = $this->getAccountTypeForConversion();
+
         foreach ($customers as $customer) {
             $report = [
                 'id' => $customer->id,
@@ -94,7 +95,7 @@ class AccountReports extends Component
                 'has_balance' => false
             ];
 
-            // محاسبه موجودی برای هر ارز با فیلتر تاریخ
+            // محاسبه موجودی برای هر ارز
             foreach ($this->currencies as $currencyCode => $currencyName) {
                 $balance = $this->calculateBalance($customer->id, $currencyCode);
                 $report['balances'][$currencyCode] = $balance;
@@ -105,7 +106,8 @@ class AccountReports extends Component
                 }
             }
 
-            $report['total_balance'] = $this->calculateTotalBalance($report['balances']);
+            // محاسبه مجموع موجودی به دالر
+            $report['total_balance'] = $this->calculateTotalBalance($report['balances'], $accountTypeForConversion);
 
             // فقط مشتریانی که موجودی دارند نمایش داده شوند
             if ($report['has_balance']) {
@@ -124,80 +126,21 @@ class AccountReports extends Component
         if ($this->date) {
             $this->filterByDate();
         }
+
+        // مرتب سازی بر اساس مجموع موجودی (بزرگ به کوچک)
+        usort($this->reports, function ($a, $b) {
+            return $b['total_balance'] <=> $a['total_balance'];
+        });
     }
 
-    // فیلتر کردن گزارش بر اساس تاریخ
-    private function filterByDate()
+    private function getAccountTypeForConversion()
     {
-        $filteredReports = [];
-
-        foreach ($this->reports as $report) {
-            // محاسبه موجودی تا تاریخ مشخص شده
-            $balancesAtDate = [];
-            $hasBalanceAtDate = false;
-
-            foreach ($this->currencies as $currencyCode => $currencyName) {
-                $balance = $this->calculateBalanceAtDate($report['id'], $currencyCode, $this->date);
-                $balancesAtDate[$currencyCode] = $balance;
-
-                if ($balance != 0) {
-                    $hasBalanceAtDate = true;
-                }
-            }
-
-            // اگر تا تاریخ مشخص شده موجودی داشته باشد
-            if ($hasBalanceAtDate) {
-                $report['balances'] = $balancesAtDate;
-                $report['total_balance'] = $this->calculateTotalBalance($balancesAtDate);
-                $report['last_date'] = $this->getLastTransactionDateBefore($report['id'], $this->date);
-                
-                $filteredReports[] = $report;
-            }
+        if ($this->accountType == 'بانکی') {
+            return 'bank';
+        } elseif ($this->accountType == 'نقدی') {
+            return 'cash';
         }
-
-        $this->reports = $filteredReports;
-    }
-
-    // محاسبه موجودی تا تاریخ مشخص شده
-    private function calculateBalanceAtDate($customerId, $currency, $date)
-    {
-        try {
-            // تبدیل تاریخ شمسی به میلادی
-            $gregorianDate = Jalalian::fromFormat('Y/m/d', $date)->toCarbon()->format('Y-m-d');
-        } catch (\Exception $e) {
-            // اگر تاریخ معتبر نبود، از تاریخ امروز استفاده کن
-            $gregorianDate = now()->format('Y-m-d');
-        }
-
-        $query = Transaction::where('customer_id', $customerId)
-            ->where('currency', $currency)
-            ->where('date', '<=', $gregorianDate);
-
-        if ($this->accountType) {
-            $query->where('account_type', $this->accountType);
-        }
-
-        return $query->select(DB::raw('SUM(CASE WHEN type = "رسید" THEN amount ELSE -amount END) as balance'))
-            ->value('balance') ?? 0;
-    }
-
-    // تاریخ آخرین تراکنش قبل از تاریخ مشخص شده
-    private function getLastTransactionDateBefore($customerId, $date)
-    {
-        try {
-            $gregorianDate = Jalalian::fromFormat('Y/m/d', $date)->toCarbon()->format('Y-m-d');
-        } catch (\Exception $e) {
-            $gregorianDate = now()->format('Y-m-d');
-        }
-
-        $query = Transaction::where('customer_id', $customerId)
-            ->where('date', '<=', $gregorianDate);
-
-        if ($this->accountType) {
-            $query->where('account_type', $this->accountType);
-        }
-
-        return $query->max('date');
+        return 'cash'; // پیش‌فرض
     }
 
     private function getRelatedCustomerName($relatedCustomerId)
@@ -233,30 +176,135 @@ class AccountReports extends Component
         return $query->max('date');
     }
 
-    private function calculateTotalBalance($balances)
+    private function calculateTotalBalance($balances, $accountType = 'cash')
     {
-        $latestExchangeRate = ExchangeRates::latest()->first();
+        $latestProfitRate = ProfitRate::latest()->first();
 
-        $exchangeRates = [
-            'afn' => $latestExchangeRate->afn_buy ?? 0.011,
-            'usd' => 1,
-            'irr' => $latestExchangeRate->irr_buy ?? 0.000024,
-            'eur' => $latestExchangeRate->eur_buy ?? 1.07,
-            'pkr' => $latestExchangeRate->pkr_buy ?? 0.0036,
-            'aed' => $latestExchangeRate->aed_buy ?? 0.27,
-            'try' => $latestExchangeRate->try_buy ?? 0.031,
-            'cny' => $latestExchangeRate->cny_buy ?? 0.14,
-        ];
+        // اگر هیچ رکوردی در جدول profit_rate نبود، از مقادیر پیش‌فرض ثابت استفاده می‌کنیم.
+        if (!$latestProfitRate) {
+            // مقادیر پیش‌فرض برای نرخ خرید نقدی (بر اساس نرخ‌های واقعی)
+            $exchangeRates = [
+                'afn' => 66.20,     // 1 USD = 66.20 AFN (خرید نقدی)
+                'usd' => 1,         // 1 USD = 1 USD
+                'irr' => 110000.00, // 1 USD = 110,000 IRR (خرید نقدی)
+                'eur' => 0.93,      // 1 USD = 0.93 EUR (خرید نقدی)
+                'pkr' => 277.78,    // 1 USD = 277.78 PKR (خرید نقدی)
+                'aed' => 3.67,      // 1 USD = 3.67 AED (خرید نقدی)
+                'try' => 32.26,     // 1 USD = 32.26 TRY (خرید نقدی)
+                'cny' => 7.24,      // 1 USD = 7.24 CNY (خرید نقدی)
+            ];
+        } else {
+            if ($accountType == 'cash') {
+                // نرخ‌های خرید نقدی
+                $exchangeRates = [
+                    'afn' => $latestProfitRate->afn_buy_cash ?: 66.20,
+                    'usd' => $latestProfitRate->usd_buy_cash ?: 1,
+                    'irr' => $latestProfitRate->irr_buy_cash ?: 110000.00,
+                    'eur' => $latestProfitRate->eur_buy_cash ?: 0.93,
+                    'pkr' => $latestProfitRate->pkr_buy_cash ?: 277.78,
+                    'aed' => $latestProfitRate->aed_buy_cash ?: 3.67,
+                    'try' => $latestProfitRate->try_buy_cash ?: 32.26,
+                    'cny' => $latestProfitRate->cny_buy_cash ?: 7.24,
+                ];
+            } else {
+                // نرخ‌های خرید بانکی
+                $exchangeRates = [
+                    'afn' => $latestProfitRate->afn_buy_bank ?: 66.20,
+                    'usd' => $latestProfitRate->usd_buy_bank ?: 1,
+                    'irr' => $latestProfitRate->irr_buy_bank ?: 110000.00,
+                    'eur' => $latestProfitRate->eur_buy_bank ?: 0.93,
+                    'pkr' => $latestProfitRate->pkr_buy_bank ?: 277.78,
+                    'aed' => $latestProfitRate->aed_buy_bank ?: 3.67,
+                    'try' => $latestProfitRate->try_buy_bank ?: 32.26,
+                    'cny' => $latestProfitRate->cny_buy_bank ?: 7.24,
+                ];
+            }
+        }
 
         $total = 0;
 
         foreach ($balances as $currency => $balance) {
-            if (isset($exchangeRates[$currency]) && $balance != 0) {
+            if (isset($exchangeRates[$currency]) && $exchangeRates[$currency] > 0 && $balance != 0) {
+                // تبدیل به دالر: موجودی ارز تقسیم بر نرخ خرید
                 $total += $balance / $exchangeRates[$currency];
             }
         }
 
         return $total;
+    }
+
+    private function filterByDate()
+    {
+        $filteredReports = [];
+
+        // تعیین نوع حساب برای تبدیل
+        $accountTypeForConversion = $this->getAccountTypeForConversion();
+
+        foreach ($this->reports as $report) {
+            // محاسبه موجودی تا تاریخ مشخص شده
+            $balancesAtDate = [];
+            $hasBalanceAtDate = false;
+
+            foreach ($this->currencies as $currencyCode => $currencyName) {
+                $balance = $this->calculateBalanceAtDate($report['id'], $currencyCode, $this->date);
+                $balancesAtDate[$currencyCode] = $balance;
+
+                if ($balance != 0) {
+                    $hasBalanceAtDate = true;
+                }
+            }
+
+            // اگر تا تاریخ مشخص شده موجودی داشته باشد
+            if ($hasBalanceAtDate) {
+                $report['balances'] = $balancesAtDate;
+                $report['total_balance'] = $this->calculateTotalBalance($balancesAtDate, $accountTypeForConversion);
+                $report['last_date'] = $this->getLastTransactionDateBefore($report['id'], $this->date);
+                
+                $filteredReports[] = $report;
+            }
+        }
+
+        $this->reports = $filteredReports;
+    }
+
+    private function calculateBalanceAtDate($customerId, $currency, $date)
+    {
+        try {
+            // تبدیل تاریخ شمسی به میلادی
+            $gregorianDate = Jalalian::fromFormat('Y/m/d', $date)->toCarbon()->format('Y-m-d');
+        } catch (\Exception $e) {
+            // اگر تاریخ معتبر نبود، از تاریخ امروز استفاده کن
+            $gregorianDate = now()->format('Y-m-d');
+        }
+
+        $query = Transaction::where('customer_id', $customerId)
+            ->where('currency', $currency)
+            ->where('date', '<=', $gregorianDate);
+
+        if ($this->accountType) {
+            $query->where('account_type', $this->accountType);
+        }
+
+        return $query->select(DB::raw('SUM(CASE WHEN type = "رسید" THEN amount ELSE -amount END) as balance'))
+            ->value('balance') ?? 0;
+    }
+
+    private function getLastTransactionDateBefore($customerId, $date)
+    {
+        try {
+            $gregorianDate = Jalalian::fromFormat('Y/m/d', $date)->toCarbon()->format('Y-m-d');
+        } catch (\Exception $e) {
+            $gregorianDate = now()->format('Y-m-d');
+        }
+
+        $query = Transaction::where('customer_id', $customerId)
+            ->where('date', '<=', $gregorianDate);
+
+        if ($this->accountType) {
+            $query->where('account_type', $this->accountType);
+        }
+
+        return $query->max('date');
     }
 
     public function resetFilters()
@@ -271,9 +319,28 @@ class AccountReports extends Component
         session()->flash('message', 'تمام فیلترها بازنشانی شدند.');
     }
 
-    // چاپ با mPDF
     public function printReport()
     {
+        $latestProfitRate = ProfitRate::latest()->first();
+        $sourceCurrency = 'دالر';
+        
+        if ($latestProfitRate && $latestProfitRate->source_currency) {
+            // تابع تبدیل کد ارز به نام فارسی
+            $currencyMap = [
+                'afn' => 'افغانی',
+                'usd' => 'دالر',
+                'irr' => 'تومان',
+                'eur' => 'یورو',
+                'pkr' => 'کلدار',
+                'aed' => 'درهم',
+                'try' => 'لیره',
+                'cny' => 'یوان',
+            ];
+            
+            $currencyCode = strtolower($latestProfitRate->source_currency);
+            $sourceCurrency = $currencyMap[$currencyCode] ?? $latestProfitRate->source_currency;
+        }
+
         $printData = [
             'title' => 'گزارش بیلانس مشتریان',
             'filters' => [
@@ -287,7 +354,8 @@ class AccountReports extends Component
             'print_date' => now()->format('Y/m/d H:i'),
             'total_customers' => count($this->reports),
             'total_balance' => array_sum(array_column($this->reports, 'total_balance')),
-            'currencies' => $this->currencies
+            'currencies' => $this->currencies,
+            'source_currency' => $sourceCurrency
         ];
 
         $mpdf = new Mpdf([

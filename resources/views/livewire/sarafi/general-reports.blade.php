@@ -1,3 +1,30 @@
+@php
+// تابع تبدیل کد ارز به نام فارسی
+function getPersianCurrencyName($currencyCode) {
+    $currencyMap = [
+        'afn' => 'افغانی',
+        'usd' => 'دالر',
+        'irr' => 'تومان',
+        'eur' => 'یورو',
+        'pkr' => 'کلدار',
+        'aed' => 'درهم',
+        'try' => 'لیره',
+        'cny' => 'یوان',
+        'gbp' => 'پوند',
+        'jpy' => 'ین',
+        'sar' => 'ریال سعودی',
+        'inr' => 'روپیه',
+    ];
+    
+    $currencyCode = strtolower($currencyCode ?? 'usd');
+    return $currencyMap[$currencyCode] ?? $currencyCode;
+}
+
+// دریافت نام ارز مبدا به فارسی
+$latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
+$sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
+@endphp
+
 <div class="px-5">
     <div class="w-[1200px]">
         <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-3 mb-5">
@@ -63,10 +90,6 @@
                             <th class="px-4 py-4 font-bold">درهم</th>
                             <th class="px-4 py-4 font-bold">لیره</th>
                             <th class="px-4 py-4 font-bold">یوان</th>
-                            @php
-                            $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
-                            $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
-                            @endphp
                             <th class="px-4 py-4 font-bold">بیلانس به {{ $sourceCurrency }}</th>
                         </tr>
                     </thead>
@@ -81,8 +104,7 @@
                             </td>
                             <td class="px-4 py-4">{{ $report['fullname'] }}</td>
                             <td class="px-3 py-4">
-                                {{ $report['last_date'] ? \Carbon\Carbon::parse($report['last_date'])->format('Y/m/d') :
-                                '-' }}
+                                {{ $report['last_date'] ? \Carbon\Carbon::parse($report['last_date'])->format('Y/m/d') : '-' }}
                             </td>
                             <td class="px-4 py-4 text-left">{{ number_format($report['balances']['usd'] ?? 0, 2) }}</td>
                             <td class="px-4 py-4 text-left">{{ number_format($report['balances']['afn'] ?? 0, 2) }}</td>
@@ -92,8 +114,7 @@
                             <td class="px-4 py-4 text-left">{{ number_format($report['balances']['aed'] ?? 0, 2) }}</td>
                             <td class="px-4 py-4 text-left">{{ number_format($report['balances']['try'] ?? 0, 2) }}</td>
                             <td class="px-4 py-4 text-left">{{ number_format($report['balances']['cny'] ?? 0, 2) }}</td>
-                            <td class="px-4 py-4 font-medium text-left">{{ number_format($report['total_balance'], 2) }}
-                            </td>
+                            <td class="px-4 py-4 font-medium text-left">{{ number_format($report['total_balance'], 2) }}</td>
                         </tr>
                         @empty
                         <tr>
@@ -112,21 +133,21 @@
         <div class="w-full rounded-[16px] bg-[#2563EB] p-4 mb-6">
             <div class="flex-1">
                 <div class="relative w-full" x-data="{
-                                    searchValue: '',
-                                    searchQuery: '',
-                                    selectedIds: @entangle('selectedAccounts'),
-                                    customers: @js($customers->toArray()),
-                                    isOpen: false,
-                                    selectedCustomers: [],
-                                    get filteredCustomers() {
-                                        if (this.searchQuery === '') return this.customers;
-                                        const query = this.searchQuery.toLowerCase();
-                                        return this.customers.filter(customer =>
-                                            customer.fullname.toLowerCase().includes(query) ||
-                                            customer.account_number.toLowerCase().includes(query)
-                                        );
-                                    },
-                                    init() {
+                    searchValue: '',
+                    searchQuery: '',
+                    selectedIds: @entangle('selectedAccounts'),
+                    customers: @js($customers->toArray()),
+                    isOpen: false,
+                    selectedCustomers: [],
+                    get filteredCustomers() {
+                        if (this.searchQuery === '') return this.customers;
+                        const query = this.searchQuery.toLowerCase();
+                        return this.customers.filter(customer =>
+                            customer.fullname.toLowerCase().includes(query) ||
+                            customer.account_number.toLowerCase().includes(query)
+                        );
+                    },
+                    init() {
                                         this.selectedCustomers = this.customers.filter(customer => 
                                             this.selectedIds.includes(customer.id)
                                         );
@@ -371,10 +392,6 @@
                             <th class="px-4 py-4 font-bold">یوان</th>
 
                             {{-- تبدیل به ارز پایه --}}
-                            @php
-                            $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
-                            $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
-                            @endphp
                             <th class="px-4 py-4 font-bold">بیلانس به {{ $sourceCurrency }}</th>
                         </tr>
                     </thead>
@@ -401,8 +418,7 @@
 
                             {{-- آخرین تاریخ --}}
                             <td class="px-3 py-4">
-                                {{ $demand['last_date'] ? \Carbon\Carbon::parse($demand['last_date'])->format('Y/m/d') :
-                                '-' }}
+                                {{ $demand['last_date'] ? \Carbon\Carbon::parse($demand['last_date'])->format('Y/m/d') : '-' }}
                             </td>
 
                             {{-- ارزها: اگر نبود، صفر نمایش بده --}}
@@ -435,8 +451,6 @@
             </div>
         </div>
         @break
-
-
 
         @default
         <div class="border p-5 rounded bg-gray-50">

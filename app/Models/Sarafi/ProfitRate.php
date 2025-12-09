@@ -49,6 +49,28 @@ class ProfitRate extends Model
     ];
 
 
+public function getCurrencyNameAttribute()
+{
+    $currencyMap = [
+        'afn' => 'افغانی',
+        'usd' => 'دالر',
+        'irr' => 'تومان',
+        'eur' => 'یورو',
+        'pkr' => 'کلدار',
+        'aed' => 'درهم',
+        'try' => 'لیره',
+        'cny' => 'یوان',
+        'gbp' => 'پوند',
+        'jpy' => 'ین',
+        'sar' => 'ریال سعودی',
+        'inr' => 'روپیه',
+    ];
+
+    $currencyCode = strtolower($this->source_currency ?? 'usd');
+    
+    return $currencyMap[$currencyCode] ?? $this->source_currency ?? 'دالر';
+}
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

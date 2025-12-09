@@ -1,6 +1,6 @@
 <div>
     <div class="container mx-auto ">
-        <?php if(session()->has('message')): ?>
+        <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
             <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -10,7 +10,7 @@
                 </h2>
             </div>
         </div>
-        <?php endif; ?>
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
 
 
@@ -24,10 +24,11 @@
                 </h2>
             </div>
         </div>
-        <?php endif; ?>
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
         <div class="scroll-container overflow-x-auto whitespace-nowrap py-3">
-            <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            
+            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <?php
             $currencyName = $currencyItem['name_fa'];
             $cashBalance = $customerCashBalances[$currencyName] ?? 0;
@@ -66,76 +67,110 @@
                     </button>
                 </div>
             </div>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
 
+        
+<!--[if BLOCK]><![endif]--><?php if($withdrawalCustomerId): ?>
+<div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
+    <div class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
+        <?php
+        // تابع تبدیل کد ارز به نام فارسی
+        function getPersianCurrencyName($currencyCode) {
+            $currencyMap = [
+                'afn' => 'افغانی',
+                'usd' => 'دالر',
+                'irr' => 'تومان',
+                'eur' => 'یورو',
+                'pkr' => 'کلدار',
+                'aed' => 'درهم',
+                'try' => 'لیره',
+                'cny' => 'یوان',
+                'gbp' => 'پوند',
+                'jpy' => 'ین',
+                'sar' => 'ریال سعودی',
+                'inr' => 'روپیه',
+            ];
             
-            <?php if($withdrawalCustomerId): ?>
-            <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
-                <div
-                    class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
-                    <?php
-                    $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
-                    $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
-                    ?>
-                    <h1 class="text-[24px] text-white">خلاصه بیلانس به <?php echo e($sourceCurrency); ?></h1>
-                    <div class="flex flex-col gap-1 mt-1 text-center">
-                        <?php
-                        $totalCashUsd = 0;
-                        $totalBankUsd = 0;
-                        $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
+            $currencyCode = strtolower($currencyCode ?? 'usd');
+            return $currencyMap[$currencyCode] ?? $currencyCode;
+        }
+        
+        $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
+        $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
+        ?>
+        <h1 class="text-[24px] text-white">خلاصه بیلانس به <?php echo e($sourceCurrency); ?></h1>
+        <div class="flex flex-col gap-1 mt-1 text-center">
+            <?php
+            $totalCashUsd = 0;
+            $totalBankUsd = 0;
+            $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
 
-                        $exchangeRates = [
-                        'افغانی' => $latestExchangeRate->afn_buy ?? 66.20,
-                        'دالر' => 1,
-                        'تومان' => $latestExchangeRate->irr_buy ?? 110000.00,
-                        'یورو' => $latestExchangeRate->eur_buy ?? 70.00,
-                        'کلدار' => $latestExchangeRate->pkr_buy ?? 32.00,
-                        'درهم' => $latestExchangeRate->aed_buy ?? 44.00,
-                        'لیره' => $latestExchangeRate->try_buy ?? 60.00,
-                        'یوان' => $latestExchangeRate->cny_buy ?? 43.00,
-                        'روپیه' => 7.14,
-                        ];
+            // تعریف نرخ‌های خرید نقدی
+            $exchangeRatesCash = [
+                'افغانی' => $latestProfitRate->afn_buy_cash ?? 66.20,
+                'دالر' => $latestProfitRate->usd_buy_cash ?? 1,
+                'تومان' => $latestProfitRate->irr_buy_cash ?? 110000.00,
+                'یورو' => $latestProfitRate->eur_buy_cash ?? 70.00,
+                'کلدار' => $latestProfitRate->pkr_buy_cash ?? 32.00,
+                'درهم' => $latestProfitRate->aed_buy_cash ?? 44.00,
+                'لیره' => $latestProfitRate->try_buy_cash ?? 60.00,
+                'یوان' => $latestProfitRate->cny_buy_cash ?? 43.00,
+                'روپیه' => $latestProfitRate->inr_buy_cash ?? 7.14,
+            ];
 
-                        foreach($customerCashBalances as $currency => $balance) {
-                        if(isset($exchangeRates[$currency]) && $exchangeRates[$currency] > 0) {
+            // تعریف نرخ‌های خرید بانکی
+            $exchangeRatesBank = [
+                'افغانی' => $latestProfitRate->afn_buy_bank ?? 66.20,
+                'دالر' => $latestProfitRate->usd_buy_bank ?? 1,
+                'تومان' => $latestProfitRate->irr_buy_bank ?? 110000.00,
+                'یورو' => $latestProfitRate->eur_buy_bank ?? 70.00,
+                'کلدار' => $latestProfitRate->pkr_buy_bank ?? 32.00,
+                'درهم' => $latestProfitRate->aed_buy_bank ?? 44.00,
+                'لیره' => $latestProfitRate->try_buy_bank ?? 60.00,
+                'یوان' => $latestProfitRate->cny_buy_bank ?? 43.00,
+                'روپیه' => $latestProfitRate->inr_buy_bank ?? 7.14,
+            ];
 
-                        $totalCashUsd += $balance / $exchangeRates[$currency];
-                        }
-                        }
+            // محاسبه موجودی نقدی به دالر با استفاده از نرخ خرید نقدی
+            foreach($customerCashBalances as $currency => $balance) {
+                if(isset($exchangeRatesCash[$currency]) && $exchangeRatesCash[$currency] > 0) {
+                    $totalCashUsd += $balance / $exchangeRatesCash[$currency];
+                }
+            }
 
-                        foreach($customerBankBalances as $currency => $balance) {
-                        if(isset($exchangeRates[$currency]) && $exchangeRates[$currency] > 0) {
-                        // تقسیم کردن نه ضرب کردن!
-                        $totalBankUsd += $balance / $exchangeRates[$currency];
-                        }
-                        }
-                        $grandTotalUsd = $totalCashUsd + $totalBankUsd;
-                        ?>
+            // محاسبه موجودی بانکی به دالر با استفاده از نرخ خرید بانکی
+            foreach($customerBankBalances as $currency => $balance) {
+                if(isset($exchangeRatesBank[$currency]) && $exchangeRatesBank[$currency] > 0) {
+                    $totalBankUsd += $balance / $exchangeRatesBank[$currency];
+                }
+            }
+            $grandTotalUsd = $totalCashUsd + $totalBankUsd;
+            ?>
 
-                        <div class="flex justify-between items-center text-[14px]">
-                            <span>نقدی:</span>
-                            <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($totalCashUsd, 2)); ?></span>
-                        </div>
-                        <div class="flex justify-between items-center text-[14px]">
-                            <span>بانکی:</span>
-                            <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($totalBankUsd, 2)); ?></span>
-                        </div>
-                        <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
-                            <span class="font-semibold">مجموعه:</span>
-                            <span class="font-bold text-[16px] text-left" dir="ltr"><?php echo e(number_format($grandTotalUsd, 2)); ?></span>
-                        </div>
-                    </div>
-
-                    <button wire:click="showReport" wire:loading.attr="disabled"
-                        class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
-                        <span wire:loading.remove>نمایش گزارش</span>
-                        <span wire:loading>
-                            در حال انتقال...
-                        </span>
-                    </button>
-                </div>
+            <div class="flex justify-between items-center text-[14px]">
+                <span>نقدی:</span>
+                <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($totalCashUsd, 2)); ?></span>
             </div>
-            <?php endif; ?>
+            <div class="flex justify-between items-center text-[14px]">
+                <span>بانکی:</span>
+                <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($totalBankUsd, 2)); ?></span>
+            </div>
+            <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
+                <span class="font-semibold">مجموعه:</span>
+                <span class="font-bold text-[16px] text-left" dir="ltr"><?php echo e(number_format($grandTotalUsd, 2)); ?></span>
+            </div>
+        </div>
+
+        <button wire:click="showReport" wire:loading.attr="disabled"
+            class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
+            <span wire:loading.remove>نمایش گزارش</span>
+            <span wire:loading>
+                در حال انتقال...
+            </span>
+        </button>
+    </div>
+</div>
+<?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </div>
 
 
@@ -210,18 +245,18 @@
                                     class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
                                     autocomplete="off">
                                 <datalist id="withdrawalCustomersList">
-                                    <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </datalist>
-                                <?php if(empty($withdrawalAccount)): ?>
+                                <!--[if BLOCK]><![endif]--><?php if(empty($withdrawalAccount)): ?>
 
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                     <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
                                 </div>
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
-                            <?php $__errorArgs = ['withdrawalAccount'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['withdrawalAccount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -230,7 +265,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         
@@ -277,19 +312,19 @@ unset($__errorArgs, $__bag); ?>
                                     class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
                                     autocomplete="off">
                                 <datalist id="depositCustomersList">
-                                    <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </datalist>
-                                <?php if(empty($depositAccount)): ?>
+                                <!--[if BLOCK]><![endif]--><?php if(empty($depositAccount)): ?>
 
 
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                     <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
                                 </div>
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
-                            <?php $__errorArgs = ['depositAccount'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['depositAccount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -298,7 +333,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
 
@@ -311,7 +346,7 @@ unset($__errorArgs, $__bag); ?>
                                 <option value="نقدی">نقدی</option>
                                 <option value="بانکی">بانکی</option>
                             </select>
-                            <?php $__errorArgs = ['from_account'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['from_account'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -320,7 +355,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         <div>
@@ -330,7 +365,7 @@ unset($__errorArgs, $__bag); ?>
                                 <option value="نقدی">نقدی</option>
                                 <option value="بانکی">بانکی</option>
                             </select>
-                            <?php $__errorArgs = ['to_account'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['to_account'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -339,7 +374,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                     </div>
@@ -352,10 +387,10 @@ unset($__errorArgs, $__bag); ?>
                             <input type="text" wire:model.live="withdrawal_amount" placeholder="0"
                                 class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 bg-transparent"
                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
-                            <?php if($withdrawalAmountInWords): ?>
+                            <!--[if BLOCK]><![endif]--><?php if($withdrawalAmountInWords): ?>
                             <div class="mt-2 text-sm text-gray-600"><?php echo e($withdrawalAmountInWords); ?></div>
-                            <?php endif; ?>
-                            <?php $__errorArgs = ['withdrawal_amount'];
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['withdrawal_amount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -364,7 +399,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         
@@ -373,19 +408,19 @@ unset($__errorArgs, $__bag); ?>
                             </label>
                             <input type="text" wire:model.lazy="transferable_amount" placeholder=""
                                 class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-gray-100 focus:ring-2 focus:ring-blue-500" />
-                            <?php if($receivedAmountInWords): ?>
+                            <!--[if BLOCK]><![endif]--><?php if($receivedAmountInWords): ?>
                             <div class="mt-2 text-sm text-gray-600"><?php echo e($receivedAmountInWords); ?></div>
-                            <?php endif; ?>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         
-                        <?php if($transactionType === 'باتفاوت'): ?>
+                        <!--[if BLOCK]><![endif]--><?php if($transactionType === 'باتفاوت'): ?>
                         <div>
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">مبلغ کمیشن</label>
                             <input type="text" wire:model="commission_amount" placeholder="0" readonly dir="ltr"
                                 class="w-full h-[60px] p-3 text-left rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 bg-transparent"
                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
-                            <?php $__errorArgs = ['commission_amount'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['commission_amount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -394,7 +429,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
 
@@ -441,17 +476,17 @@ unset($__errorArgs, $__bag); ?>
                                     class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
                                     autocomplete="off">
                                 <datalist id="commissionCustomersList">
-                                    <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </datalist>
-                                <?php if(empty($commissionAccount)): ?>
+                                <!--[if BLOCK]><![endif]--><?php if(empty($commissionAccount)): ?>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                     <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
                                 </div>
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
-                            <?php $__errorArgs = ['commissionAccount'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['commissionAccount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -460,7 +495,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         <div>
@@ -468,7 +503,7 @@ unset($__errorArgs, $__bag); ?>
                             <input type="text" value="انتقال با کمیشن" readonly
                                 class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-gray-100 focus:ring-2 focus:ring-blue-500" />
                         </div>
-                        <?php endif; ?>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                         
                         <div>
@@ -476,11 +511,11 @@ unset($__errorArgs, $__bag); ?>
                             <select wire:model="currency"
                                 class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="">انتخاب ارز</option>
-                                <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($c['code']); ?>"><?php echo e($c['name_fa']); ?></option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                             </select>
-                            <?php $__errorArgs = ['from_currency'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['from_currency'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -489,7 +524,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
 
@@ -544,11 +579,11 @@ unset($__errorArgs, $__bag); ?>
                             <select wire:model="zone_sender"
                                 class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="">انتخاب زون</option>
-                                <?php $__currentLoopData = $zones; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $zone): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $zones; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $zone): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($zone); ?>"><?php echo e($zone); ?></option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                             </select>
-                            <?php $__errorArgs = ['zone_sender'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['zone_sender'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -557,7 +592,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         <div>
@@ -565,11 +600,11 @@ unset($__errorArgs, $__bag); ?>
                             <select wire:model="zone_receiver"
                                 class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="">انتخاب زون</option>
-                                <?php $__currentLoopData = $zones; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $zone): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $zones; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $zone): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($zone); ?>"><?php echo e($zone); ?></option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                             </select>
-                            <?php $__errorArgs = ['zone_receiver'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['zone_receiver'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -578,7 +613,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
 
@@ -600,19 +635,19 @@ unset($__errorArgs, $__bag); ?>
                     <div class="flex gap-4 p-4 justify-center items-center flex-wrap">
                         <button type="submit" wire:loading.attr="disabled"
                             class="bg-[#2563EB] text-[14px] vazir font-semibold rounded-[8px] px-[74px] py-4 text-white hover:bg-blue-700 transition disabled:opacity-50">
-                            <?php if($editingConversionId): ?>
+                            <!--[if BLOCK]><![endif]--><?php if($editingConversionId): ?>
                             ویرایش تبدیل ارز
                             <?php else: ?>
                             ثبت تبدیل ارز
-                            <?php endif; ?>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </button>
                         <button type="button" wire:click="resetForm" wire:loading.attr="disabled"
                             class="bg-[#DD2424] text-[14px] vazir font-semibold rounded-[8px] px-[74px] py-4 text-white hover:bg-red-700 transition">
-                            <?php if($editingConversionId): ?>
+                            <!--[if BLOCK]><![endif]--><?php if($editingConversionId): ?>
                             انصراف از ویرایش
                             <?php else: ?>
                             انصراف
-                            <?php endif; ?>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </button>
                     </div>
                 </form>
@@ -635,12 +670,12 @@ unset($__errorArgs, $__bag); ?>
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
                                 class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6">
 
-                            <?php if($search): ?>
+                            <!--[if BLOCK]><![endif]--><?php if($search): ?>
                             <button wire:click="$set('search', '')"
                                 class="absolute left-8 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
                                 ✕
                             </button>
-                            <?php endif; ?>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
                 </div>
@@ -665,7 +700,7 @@ unset($__errorArgs, $__bag); ?>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $__empty_1 = true; $__currentLoopData = $SendToAccount; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $conversion): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $SendToAccount; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $conversion): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                 <tr class="text-black border-b border-[#D9D9D9] bg-transparent">
                                     <td class="px-2 py-3 vazir text-[16px] md:text-[18px] font-medium text-center w-12">
                                         <?php echo e($key + 1); ?>
@@ -688,10 +723,10 @@ unset($__errorArgs, $__bag); ?>
                                             <span class=""><?php echo e(number_format($conversion->withdrawal_amount)); ?>
 
                                                 <?php echo e($this->getCurrencyName($conversion->from_currency)); ?></span>
-                                            <?php if($conversion->type === 'باتفاوت' && $conversion->tax_amount > 0): ?>
+                                            <!--[if BLOCK]><![endif]--><?php if($conversion->type === 'باتفاوت' && $conversion->tax_amount > 0): ?>
                                             <div class="text-xs text-red-600">
                                             </div>
-                                            <?php endif; ?>
+                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                         </div>
                                     </td>
                                     <td class="px-1 py-3 vazir text-[16px] md:text-[16px]  w-44">
@@ -702,11 +737,11 @@ unset($__errorArgs, $__bag); ?>
                                         </div>
                                     </td>
                                     <td class="px-1 py-3 vazir text-[13px] md:text-[18px]  w-44">
-                                        <?php if($conversion->type === 'باتفاوت'): ?>
+                                        <!--[if BLOCK]><![endif]--><?php if($conversion->type === 'باتفاوت'): ?>
                                         <span class="text-red-600">باتفاوت</span>
                                         <?php else: ?>
                                         <span class="text-green-600">بدون تفاوت</span>
-                                        <?php endif; ?>
+                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                     </td>
                                     <td class="px-1 py-3 vazir text-[13px] md:text-[18px] font-medium w-36">
                                         <div class="text-right truncate" title="<?php echo e($conversion->description_sender); ?>">
@@ -758,23 +793,23 @@ unset($__errorArgs, $__bag); ?>
                                         هیچ تراکنش تبدیلی یافت نشد.
                                     </td>
                                 </tr>
-                                <?php endif; ?>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </tbody>
                         </table>
                     </div>
                 </div>
 
                 
-                <?php if($SendToAccount->hasPages()): ?>
+                <!--[if BLOCK]><![endif]--><?php if($SendToAccount->hasPages()): ?>
                 <div class="mt-4 px-4">
                     <?php echo e($SendToAccount->links()); ?>
 
                 </div>
-                <?php endif; ?>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </div>
 
             <!-- مودال تأیید حذف -->
-            <?php if($confirmDeleteId): ?>
+            <!--[if BLOCK]><![endif]--><?php if($confirmDeleteId): ?>
             <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                 <div
                     class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px]  rounded-[12px] shadow-xl w-[653px] h-[219.7267608642578px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
@@ -800,7 +835,7 @@ unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
             </div>
-            <?php endif; ?>
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </div>
 
         <script>

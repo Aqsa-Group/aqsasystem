@@ -880,14 +880,7 @@
                             </svg>
                         </button>
                         <div x-show="openItems.accounts" x-transition class="mr-6 mt-1 space-y-1">
-                            <a href="<?php echo e(route('sarafi.exchange-rate')); ?>"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                                @click="setActive('register-accounts', 'accounts')"
-                                :class="active === 'register-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/add.svg')); ?>" class="w-4 h-4"
-                                    :class="active === 'register-accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
-                               ثبت نرخ بیلانس
-                            </a>
+                            
 
 
                               <a href="<?php echo e(route('sarafi.profit-rates')); ?>"
@@ -896,7 +889,7 @@
                                 :class="active === 'register-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/add.svg')); ?>" class="w-4 h-4"
                                     :class="active === 'register-accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
-                                تعیین نرخ سنجش مفاد و ضرر
+                                  ثبت نرخ ارزها
                             </a>
                         </div>
                     </div>
