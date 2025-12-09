@@ -21,9 +21,12 @@ class ConversionInAccount extends Component
 {
     use WithPagination;
 
+
+    public $selectedCustomer = null;
+    public $selectedAccount = null;
+    public $selectedCustomerId = null; 
     // متغیرهای فرم
-    public $selectedAccount;
-    public $selectedCustomerId;
+ 
     public $from_currency = '';
     public $buy_amount = '';
     public $to_currency = '';
@@ -188,12 +191,43 @@ class ConversionInAccount extends Component
     /**
      * انتخاب حساب مشتری
      */
-    public function selectAccount($customerId)
-    {
+  public function selectAccount($customerId)
+{
+    try {
         $this->selectedCustomerId = $customerId;
         $this->selectedAccount = $customerId;
+        
+        // پیدا کردن مشتری و ذخیره شیء
+        $this->selectedCustomer = Customer::find($customerId);
+        
+        if (!$this->selectedCustomer) {
+            session()->flash('error', 'مشتری یافت نشد!');
+            return;
+        }
+        
+        // به‌روزرسانی موجودی
         $this->updateCustomerCurrencyBalance($customerId);
+        
+        // لاگ برای دیباگ
+        Log::info("Account selected successfully", [
+            'id' => $customerId,
+            'name' => $this->selectedCustomer->fullname,
+            'image' => $this->selectedCustomer->image,
+            'phone' => $this->selectedCustomer->phone,
+            'account_number' => $this->selectedCustomer->account_number
+        ]);
+        
+        // dispatch event اگر نیاز دارید
+        $this->dispatch('account-selected', [
+            'customer_id' => $customerId,
+            'customer_name' => $this->selectedCustomer->fullname
+        ]);
+        
+    } catch (\Exception $e) {
+        Log::error("Error in selectAccount: " . $e->getMessage());
+        session()->flash('error', 'خطا در انتخاب حساب: ' . $e->getMessage());
     }
+}
 
     /**
      * تغییر نوع معامله (خرید/فروش)

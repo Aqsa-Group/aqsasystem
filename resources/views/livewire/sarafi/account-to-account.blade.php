@@ -25,7 +25,125 @@
         @endif
 
         <div class="scroll-container overflow-x-auto whitespace-nowrap py-3">
+            @if($withdrawalCustomer) 
+            <div class="inline-block align-top ml-4 h-auto">
+                <div
+                    class="flex flex-col h-[180px] w-[273px] pr-5 pl-5 pt-2 rounded-[12px] bg-gradient-to-b from-[#20559c] to-[#3065b5] text-white">
+
+                    {{-- عکس مشتری --}}
+                <div x-data="{ 
+    showLargeImage: false, 
+    largeImageSrc: '',
+    customerName: '{{ $withdrawalCustomer->fullname }}',
+    customerPhone: '{{ $withdrawalCustomer->phone ?? '' }}'
+}">
+    
+    {{-- عکس مشتری --}}
+    @if($withdrawalCustomer->image)
+    <div class="flex justify-center mb-2">
+        <img src="{{ Storage::url($withdrawalCustomer->image) }}"
+            alt="{{ $withdrawalCustomer->fullname }}"
+            class="w-20 h-20 rounded-lg object-cover border-2 border-white cursor-pointer hover:scale-105 transition-transform duration-200"
+            @click="showLargeImage = true; largeImageSrc = '{{ Storage::url($withdrawalCustomer->image) }}'"
+            onerror="this.onerror=null; this.src='{{ asset('assets/web.jpg') }}'">
+    </div>
+    @else
+    <div class="flex justify-center mb-2">
+        <img src="{{ asset('assets/web.jpg') }}" 
+            alt="{{ $withdrawalCustomer->fullname }}"
+            class="w-20 h-20 rounded-lg object-cover border-2 border-white cursor-pointer hover:scale-105 transition-transform duration-200"
+            @click="showLargeImage = true; largeImageSrc = '{{ asset('assets/web.jpg') }}'">
+    </div>
+    @endif
+
+    {{-- مودال نمایش عکس بزرگ --}}
+    <div x-show="showLargeImage" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 scale-95"
+         x-transition:enter-end="opacity-100 scale-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100 scale-100"
+         x-transition:leave-end="opacity-0 scale-95"
+         class="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4"
+         @click.away="showLargeImage = false"
+         @keydown.escape.window="showLargeImage = false"
+         style="display: none;">
+        
+        <div class="relative max-w-4xl max-h-[90vh] w-full">
             
+            {{-- دکمه بستن --}}
+            <button @click="showLargeImage = false"
+                    class="absolute -top-12 right-0 text-white hover:text-gray-300 text-3xl z-10 transition-colors duration-200">
+                ✕
+            </button>
+            
+            {{-- عکس بزرگ --}}
+            <div class="flex justify-center">
+                <img :src="largeImageSrc" 
+                     :alt="customerName"
+                     class="max-w-full max-h-[70vh] object-contain rounded-lg shadow-2xl">
+            </div>
+            
+            {{-- اطلاعات مشتری زیر عکس --}}
+            <div class="mt-6 text-center text-white">
+                <p class="text-2xl font-bold mb-2" x-text="customerName"></p>
+                <template x-if="customerPhone">
+                    <p class="text-lg text-gray-300" x-text="customerPhone"></p>
+                </template>
+                
+                {{-- دکمه دانلود --}}
+                <div class="mt-6 flex justify-center gap-4">
+                    <a :href="largeImageSrc" 
+                       :download="customerName + '_' + new Date().toISOString().split('T')[0] + '.jpg'"
+                       class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                        </svg>
+                        دانلود عکس
+                    </a>
+                    
+                    <button @click="showLargeImage = false"
+                            class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200">
+                        بستن
+                    </button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+</div>
+                    {{-- نام مشتری --}}
+                    <h1 class="text-[20px] text-white text-center font-bold truncate"
+                        title="{{ $withdrawalCustomer->fullname }}">
+                        {{ $withdrawalCustomer->fullname }}
+                    </h1>
+
+                    {{-- شماره تماس --}}
+                    @if($withdrawalCustomer->phone)
+                    <div class="flex items-center justify-center gap-2 mt-1">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M20 15.5c-1.2 0-2.4-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.5-5.2-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.3-.5-3.5 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1zM5 6h1.5c.1 1.2.3 2.4.6 3.5L5.3 11.8c-.9-2-1.3-4.1-1.3-6.2V6zM19 19c-2.1 0-4.2-.4-6.2-1.3l2.3-2.3c1.1.3 2.3.5 3.5.6V19z" />
+                        </svg>
+                        <span class="text-white text-[14px] dir-ltr text-left">{{ $withdrawalCustomer->phone }}</span>
+                    </div>
+                    @endif
+
+                    {{-- شماره حساب --}}
+                    <div class="flex items-center justify-center gap-2 mt-1">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8h16v10zm-8-7c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-2.2 0-4 1.8-4 4h8c0-2.2-1.8-4-4-4z" />
+                        </svg>
+                        <span class="text-white text-[14px] dir-ltr text-left">{{ $withdrawalCustomer->account_number
+                            }}</span>
+                    </div>
+
+                </div>
+            </div>
+            @endif
             @foreach ($currencies as $currencyItem)
             @php
             $currencyName = $currencyItem['name_fa'];
@@ -68,108 +186,110 @@
             </div>
             @endforeach
 
-        {{-- کارت خلاصه بیلانس به دالر --}}
-@if($withdrawalCustomerId)
-<div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
-    <div class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
-        @php
-        // تابع تبدیل کد ارز به نام فارسی
-        function getPersianCurrencyName($currencyCode) {
-            $currencyMap = [
-                'afn' => 'افغانی',
-                'usd' => 'دالر',
-                'irr' => 'تومان',
-                'eur' => 'یورو',
-                'pkr' => 'کلدار',
-                'aed' => 'درهم',
-                'try' => 'لیره',
-                'cny' => 'یوان',
-                'gbp' => 'پوند',
-                'jpy' => 'ین',
-                'sar' => 'ریال سعودی',
-                'inr' => 'روپیه',
-            ];
-            
-            $currencyCode = strtolower($currencyCode ?? 'usd');
-            return $currencyMap[$currencyCode] ?? $currencyCode;
-        }
-        
-        $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
-        $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
-        @endphp
-        <h1 class="text-[24px] text-white">خلاصه بیلانس به {{ $sourceCurrency }}</h1>
-        <div class="flex flex-col gap-1 mt-1 text-center">
-            @php
-            $totalCashUsd = 0;
-            $totalBankUsd = 0;
-            $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
+            {{-- کارت خلاصه بیلانس به دالر --}}
+            @if($withdrawalCustomerId)
+            <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
+                <div
+                    class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
+                    @php
+                    // تابع تبدیل کد ارز به نام فارسی
+                    function getPersianCurrencyName($currencyCode) {
+                    $currencyMap = [
+                    'afn' => 'افغانی',
+                    'usd' => 'دالر',
+                    'irr' => 'تومان',
+                    'eur' => 'یورو',
+                    'pkr' => 'کلدار',
+                    'aed' => 'درهم',
+                    'try' => 'لیره',
+                    'cny' => 'یوان',
+                    'gbp' => 'پوند',
+                    'jpy' => 'ین',
+                    'sar' => 'ریال سعودی',
+                    'inr' => 'روپیه',
+                    ];
 
-            // تعریف نرخ‌های خرید نقدی
-            $exchangeRatesCash = [
-                'افغانی' => $latestProfitRate->afn_buy_cash ?? 66.20,
-                'دالر' => $latestProfitRate->usd_buy_cash ?? 1,
-                'تومان' => $latestProfitRate->irr_buy_cash ?? 110000.00,
-                'یورو' => $latestProfitRate->eur_buy_cash ?? 70.00,
-                'کلدار' => $latestProfitRate->pkr_buy_cash ?? 32.00,
-                'درهم' => $latestProfitRate->aed_buy_cash ?? 44.00,
-                'لیره' => $latestProfitRate->try_buy_cash ?? 60.00,
-                'یوان' => $latestProfitRate->cny_buy_cash ?? 43.00,
-                'روپیه' => $latestProfitRate->inr_buy_cash ?? 7.14,
-            ];
+                    $currencyCode = strtolower($currencyCode ?? 'usd');
+                    return $currencyMap[$currencyCode] ?? $currencyCode;
+                    }
 
-            // تعریف نرخ‌های خرید بانکی
-            $exchangeRatesBank = [
-                'افغانی' => $latestProfitRate->afn_buy_bank ?? 66.20,
-                'دالر' => $latestProfitRate->usd_buy_bank ?? 1,
-                'تومان' => $latestProfitRate->irr_buy_bank ?? 110000.00,
-                'یورو' => $latestProfitRate->eur_buy_bank ?? 70.00,
-                'کلدار' => $latestProfitRate->pkr_buy_bank ?? 32.00,
-                'درهم' => $latestProfitRate->aed_buy_bank ?? 44.00,
-                'لیره' => $latestProfitRate->try_buy_bank ?? 60.00,
-                'یوان' => $latestProfitRate->cny_buy_bank ?? 43.00,
-                'روپیه' => $latestProfitRate->inr_buy_bank ?? 7.14,
-            ];
+                    $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
+                    $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
+                    @endphp
+                    <h1 class="text-[24px] text-white">خلاصه بیلانس به {{ $sourceCurrency }}</h1>
+                    <div class="flex flex-col gap-1 mt-1 text-center">
+                        @php
+                        $totalCashUsd = 0;
+                        $totalBankUsd = 0;
+                        $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
 
-            // محاسبه موجودی نقدی به دالر با استفاده از نرخ خرید نقدی
-            foreach($customerCashBalances as $currency => $balance) {
-                if(isset($exchangeRatesCash[$currency]) && $exchangeRatesCash[$currency] > 0) {
-                    $totalCashUsd += $balance / $exchangeRatesCash[$currency];
-                }
-            }
+                        // تعریف نرخ‌های خرید نقدی
+                        $exchangeRatesCash = [
+                        'افغانی' => $latestProfitRate->afn_buy_cash ?? 66.20,
+                        'دالر' => $latestProfitRate->usd_buy_cash ?? 1,
+                        'تومان' => $latestProfitRate->irr_buy_cash ?? 110000.00,
+                        'یورو' => $latestProfitRate->eur_buy_cash ?? 70.00,
+                        'کلدار' => $latestProfitRate->pkr_buy_cash ?? 32.00,
+                        'درهم' => $latestProfitRate->aed_buy_cash ?? 44.00,
+                        'لیره' => $latestProfitRate->try_buy_cash ?? 60.00,
+                        'یوان' => $latestProfitRate->cny_buy_cash ?? 43.00,
+                        'روپیه' => $latestProfitRate->inr_buy_cash ?? 7.14,
+                        ];
 
-            // محاسبه موجودی بانکی به دالر با استفاده از نرخ خرید بانکی
-            foreach($customerBankBalances as $currency => $balance) {
-                if(isset($exchangeRatesBank[$currency]) && $exchangeRatesBank[$currency] > 0) {
-                    $totalBankUsd += $balance / $exchangeRatesBank[$currency];
-                }
-            }
-            $grandTotalUsd = $totalCashUsd + $totalBankUsd;
-            @endphp
+                        // تعریف نرخ‌های خرید بانکی
+                        $exchangeRatesBank = [
+                        'افغانی' => $latestProfitRate->afn_buy_bank ?? 66.20,
+                        'دالر' => $latestProfitRate->usd_buy_bank ?? 1,
+                        'تومان' => $latestProfitRate->irr_buy_bank ?? 110000.00,
+                        'یورو' => $latestProfitRate->eur_buy_bank ?? 70.00,
+                        'کلدار' => $latestProfitRate->pkr_buy_bank ?? 32.00,
+                        'درهم' => $latestProfitRate->aed_buy_bank ?? 44.00,
+                        'لیره' => $latestProfitRate->try_buy_bank ?? 60.00,
+                        'یوان' => $latestProfitRate->cny_buy_bank ?? 43.00,
+                        'روپیه' => $latestProfitRate->inr_buy_bank ?? 7.14,
+                        ];
 
-            <div class="flex justify-between items-center text-[14px]">
-                <span>نقدی:</span>
-                <span class="font-bold text-left" dir="ltr">{{ number_format($totalCashUsd, 2) }}</span>
+                        // محاسبه موجودی نقدی به دالر با استفاده از نرخ خرید نقدی
+                        foreach($customerCashBalances as $currency => $balance) {
+                        if(isset($exchangeRatesCash[$currency]) && $exchangeRatesCash[$currency] > 0) {
+                        $totalCashUsd += $balance / $exchangeRatesCash[$currency];
+                        }
+                        }
+
+                        // محاسبه موجودی بانکی به دالر با استفاده از نرخ خرید بانکی
+                        foreach($customerBankBalances as $currency => $balance) {
+                        if(isset($exchangeRatesBank[$currency]) && $exchangeRatesBank[$currency] > 0) {
+                        $totalBankUsd += $balance / $exchangeRatesBank[$currency];
+                        }
+                        }
+                        $grandTotalUsd = $totalCashUsd + $totalBankUsd;
+                        @endphp
+
+                        <div class="flex justify-between items-center text-[14px]">
+                            <span>نقدی:</span>
+                            <span class="font-bold text-left" dir="ltr">{{ number_format($totalCashUsd, 2) }}</span>
+                        </div>
+                        <div class="flex justify-between items-center text-[14px]">
+                            <span>بانکی:</span>
+                            <span class="font-bold text-left" dir="ltr">{{ number_format($totalBankUsd, 2) }}</span>
+                        </div>
+                        <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
+                            <span class="font-semibold">مجموعه:</span>
+                            <span class="font-bold text-[16px] text-left" dir="ltr">{{ number_format($grandTotalUsd, 2)
+                                }}</span>
+                        </div>
+                    </div>
+
+                    <button wire:click="showReport" wire:loading.attr="disabled"
+                        class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
+                        <span wire:loading.remove>نمایش گزارش</span>
+                        <span wire:loading>
+                            در حال انتقال...
+                        </span>
+                    </button>
+                </div>
             </div>
-            <div class="flex justify-between items-center text-[14px]">
-                <span>بانکی:</span>
-                <span class="font-bold text-left" dir="ltr">{{ number_format($totalBankUsd, 2) }}</span>
-            </div>
-            <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
-                <span class="font-semibold">مجموعه:</span>
-                <span class="font-bold text-[16px] text-left" dir="ltr">{{ number_format($grandTotalUsd, 2) }}</span>
-            </div>
-        </div>
-
-        <button wire:click="showReport" wire:loading.attr="disabled"
-            class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
-            <span wire:loading.remove>نمایش گزارش</span>
-            <span wire:loading>
-                در حال انتقال...
-            </span>
-        </button>
-    </div>
-</div>
-@endif
+            @endif
         </div>
 
 

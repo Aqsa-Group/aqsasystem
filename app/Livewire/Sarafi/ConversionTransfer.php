@@ -23,8 +23,12 @@ class ConversionTransfer extends Component
     use WithPagination;
 
     // حساب برداشت
-    public $withdrawalAccount;
+  
+
+    public $withdrawalAccount = null;
     public $withdrawalCustomerId;
+    public $withdrawalCustomer = null;
+
 
     // حساب دریافت
     public $depositAccount;
@@ -1231,11 +1235,21 @@ class ConversionTransfer extends Component
     }
 
     // متد برای انتخاب حساب برداشت
-    public function selectWithdrawalAccount($customerId)
+     public function selectWithdrawalAccount($customerId)
     {
-        $this->withdrawalCustomerId = $customerId;
         $this->withdrawalAccount = $customerId;
+        $this->withdrawalCustomer = Customer::find($customerId);
+
+        $this->accountSearch = '';
+        $this->filteredCustomers = null;
+
         $this->updateCustomerCurrencyBalance($customerId);
+
+        Log::debug("Withdrawal account selected", [
+            'customer_id' => $customerId,
+            'customer_name' => $this->withdrawalCustomer ? $this->withdrawalCustomer->fullname : 'Not found',
+            'has_image' => $this->withdrawalCustomer && $this->withdrawalCustomer->image ? 'Yes' : 'No'
+        ]);
     }
 
     // متد برای انتخاب حساب دریافت

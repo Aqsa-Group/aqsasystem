@@ -427,6 +427,7 @@
                 position: static;
                 transform: none;
                 width: 18rem;
+                  z-index: 0;
                 height: auto;
                 box-shadow: none;
                 padding: 1.25rem;

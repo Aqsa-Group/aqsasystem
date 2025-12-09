@@ -23,18 +23,74 @@
                     class="flex flex-col h-[180px] w-[273px] pr-5 pl-5 pt-2 rounded-[12px] bg-gradient-to-b from-[#20559c] to-[#3065b5] text-white">
 
                     
-                    <!--[if BLOCK]><![endif]--><?php if($selectedCustomer->image): ?>
-                    <div class="flex justify-center mb-2">
-                        <img src="<?php echo e(Storage::url($selectedCustomer->image)); ?>" alt="<?php echo e($selectedCustomer->fullname); ?>"
-                            class="w-20 h-20 rounded-lg object-cover border-2 border-white">
-                    </div>
+                 <div x-data="{ showLargeImage: false, largeImageSrc: '' }">
+    <!--[if BLOCK]><![endif]--><?php if($selectedCustomer->image): ?>
+    <div class="flex justify-center mb-2">
+        <img src="<?php echo e(Storage::url($selectedCustomer->image)); ?>" 
+             alt="<?php echo e($selectedCustomer->fullname); ?>"
+             class="w-20 h-20 rounded-lg object-cover border-2 border-white cursor-pointer hover:scale-105 transition-transform"
+             @click="showLargeImage = true; largeImageSrc = '<?php echo e(Storage::url($selectedCustomer->image)); ?>'">
+    </div>
+    <?php else: ?>
+    <div class="flex justify-center mb-2">
+        <img src="<?php echo e(asset('assets/web.jpg')); ?>" 
+             alt="<?php echo e($selectedCustomer->fullname); ?>"
+             class="w-20 h-20 rounded-lg object-cover border-2 border-white cursor-pointer hover:scale-105 transition-transform"
+             @click="showLargeImage = true; largeImageSrc = '<?php echo e(asset('assets/web.jpg')); ?>'">
+    </div>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                    <?php else: ?>
-                  <div class="flex justify-center mb-2">
-                        <img src="<?php echo e(asset('assets/web.jpg')); ?>" alt="<?php echo e($selectedCustomer->fullname); ?>"
-                            class="w-20 h-20 rounded-lg object-cover border-2 border-white">
-                    </div>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    
+    <div x-show="showLargeImage" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 p-4"
+         @click.away="showLargeImage = false"
+         @keydown.escape.window="showLargeImage = false">
+        
+        <div class="relative max-w-4xl max-h-[90vh]">
+            
+            <button @click="showLargeImage = false"
+                    class="absolute -top-10 right-0 text-white hover:text-gray-300 text-2xl z-10">
+                ✕
+            </button>
+            
+            
+            <img :src="largeImageSrc" 
+                 alt="<?php echo e($selectedCustomer->fullname); ?>"
+                 class="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl">
+            
+            
+            <div class="mt-4 text-center text-white">
+                <p class="text-lg font-semibold"><?php echo e($selectedCustomer->fullname); ?></p>
+                <!--[if BLOCK]><![endif]--><?php if($selectedCustomer->phone): ?>
+                <p class="text-sm text-gray-300"><?php echo e($selectedCustomer->phone); ?></p>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            </div>
+
+                <div class="mt-6 flex justify-center gap-4">
+                    <a :href="largeImageSrc" 
+                       :download="customerName + '_' + new Date().toISOString().split('T')[0] + '.jpg'"
+                       class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                        </svg>
+                        دانلود عکس
+                    </a>
+                    
+                    <button @click="showLargeImage = false"
+                            class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200">
+                        بستن
+                    </button>
+                </div>
+        </div>
+    </div>
+</div>
 
                     
                     <h1 class="text-[20px] text-white text-center font-bold truncate"

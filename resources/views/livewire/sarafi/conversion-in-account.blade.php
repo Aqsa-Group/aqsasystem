@@ -30,11 +30,136 @@
         </div>
         @endif
 
-        
+
         {{-- کارت‌های ارزها با اسکرول افقی --}}
         <div class="scroll-container overflow-x-auto whitespace-nowrap py-3 -mt-5">
 
-            
+
+
+            @if($selectedCustomer)
+            <div class="inline-block align-top ml-4 h-auto">
+                <div
+                    class="flex flex-col h-[180px] w-[273px] pr-5 pl-5 pt-2 rounded-[12px] bg-gradient-to-b from-[#20559c] to-[#3065b5] text-white">
+
+                    {{-- عکس مشتری --}}
+                    <div x-data="{ 
+    showLargeImage: false, 
+    largeImageSrc: '',
+    customerName: '{{ addslashes($selectedCustomer->fullname) }}',
+    customerPhone: '{{ addslashes($selectedCustomer->phone ?? '') }}'
+}">
+
+                        {{-- عکس مشتری --}}
+                        @if($selectedCustomer->image)
+                        <div class="flex justify-center mb-2">
+                            <img src="{{ Storage::url($selectedCustomer->image) }}"
+                                alt="{{ $selectedCustomer->fullname }}" class="w-20 h-20 rounded-lg object-cover border-2 border-white cursor-pointer 
+                   hover:scale-105 transition-transform duration-200 hover:shadow-lg"
+                                @click="showLargeImage = true; largeImageSrc = '{{ Storage::url($selectedCustomer->image) }}'"
+                                onerror="this.onerror=null; this.src='{{ asset('assets/web.jpg') }}'"
+                                title="برای بزرگنمایی کلیک کنید">
+                        </div>
+                        @else
+                        <div class="flex justify-center mb-2">
+                            <img src="{{ asset('assets/web.jpg') }}" alt="{{ $selectedCustomer->fullname }}" class="w-20 h-20 rounded-lg object-cover border-2 border-white cursor-pointer 
+                   hover:scale-105 transition-transform duration-200 hover:shadow-lg"
+                                @click="showLargeImage = true; largeImageSrc = '{{ asset('assets/web.jpg') }}'"
+                                title="برای بزرگنمایی کلیک کنید">
+                        </div>
+                        @endif
+
+                        {{-- مودال نمایش عکس بزرگ --}}
+                        <div x-show="showLargeImage" x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                            x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
+                            x-transition:leave-end="opacity-0"
+                            class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 p-4"
+                            @click.away="showLargeImage = false" @keydown.escape.window="showLargeImage = false"
+                            style="display: none;">
+
+                            <div class="relative w-full max-w-5xl">
+
+                                {{-- دکمه بستن --}}
+                                <button @click="showLargeImage = false" class="absolute -top-12 right-0 text-white hover:text-gray-300 
+                           text-3xl z-10 transition-colors duration-200 p-2">
+                                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+
+                                {{-- عکس بزرگ --}}
+                                <div class="flex justify-center">
+                                    <img :src="largeImageSrc" :alt="customerName" class="max-w-full max-h-[75vh] object-contain rounded-xl shadow-2xl 
+                            border-4 border-white/20">
+                                </div>
+
+                                {{-- اطلاعات مشتری --}}
+                                <div class="mt-6 text-center text-white">
+                                    <p class="text-2xl font-bold mb-2" x-text="customerName"></p>
+
+                                    <template x-if="customerPhone">
+                                        <p class="text-lg text-gray-300" x-text="customerPhone"></p>
+                                    </template>
+
+                                    {{-- دکمه‌های عملیات --}}
+                                    <div class="mt-6 flex flex-wrap justify-center gap-3">
+                                        {{-- دکمه دانلود --}}
+                                        <a :href="largeImageSrc"
+                                            :download="customerName + '_' + new Date().toISOString().split('T')[0] + '.jpg'"
+                                            class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg 
+                              transition-colors duration-200 flex items-center gap-2">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                            </svg>
+                                            دانلود
+                                        </a>
+
+
+                                        {{-- دکمه بستن --}}
+                                        <button @click="showLargeImage = false" class="px-5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg 
+                                   transition-colors duration-200">
+                                            بستن
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    {{-- نام مشتری --}}
+                    <h1 class="text-[20px] text-white text-center font-bold truncate"
+                        title="{{ $selectedCustomer->fullname }}">
+                        {{ $selectedCustomer->fullname }}
+                    </h1>
+
+                    {{-- شماره تماس --}}
+                    @if($selectedCustomer->phone)
+                    <div class="flex items-center justify-center gap-2 mt-1">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M20 15.5c-1.2 0-2.4-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.5-5.2-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.3-.5-3.5 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1zM5 6h1.5c.1 1.2.3 2.4.6 3.5L5.3 11.8c-.9-2-1.3-4.1-1.3-6.2V6zM19 19c-2.1 0-4.2-.4-6.2-1.3l2.3-2.3c1.1.3 2.3.5 3.5.6V19z" />
+                        </svg>
+                        <span class="text-white text-[14px] dir-ltr text-left">{{ $selectedCustomer->phone }}</span>
+                    </div>
+                    @endif
+
+                    {{-- شماره حساب --}}
+                    <div class="flex items-center justify-center gap-2 mt-1">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8h16v10zm-8-7c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-2.2 0-4 1.8-4 4h8c0-2.2-1.8-4-4-4z" />
+                        </svg>
+                        <span class="text-white text-[14px] dir-ltr text-left">{{ $selectedCustomer->account_number
+                            }}</span>
+                    </div>
+
+                </div>
+            </div>
+            @endif
+
             @foreach ($currencies as $currencyItem)
             @php
             $currencyName = $currencyItem['name_fa'];
