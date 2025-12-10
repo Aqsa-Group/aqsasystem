@@ -1069,7 +1069,7 @@
 
                                     <div class="p-3 border-b space-y-5">
                                         <div class="flex flex-col justify-center items-center ">
-                                            <img src="{{ asset('assets/sarafi/avatar') }}" alt="" class="h-20 w-20">
+                                            <img src="{{ asset('assets/sarafi/avatar.svg') }}" alt="" class="h-20 w-20">
                                             <p class="font-vazir font-semibold text-gray-700 mt-5">{{
                                                 Auth::guard('sarafi')->user()->name }}</p>
 
