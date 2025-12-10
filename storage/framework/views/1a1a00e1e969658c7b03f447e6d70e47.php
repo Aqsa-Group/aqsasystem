@@ -92,13 +92,13 @@
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>" alt="Edit"
                                 class="w-[30px] h-[30px]">
                         </button>
-
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         <!-- دکمه دیلیت -->
                         <button wire:click="confirmDelete(<?php echo e($customer->id); ?>)" class="px-2 py-1">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>" alt="Edit"
                                 class="w-[30px] h-[30px]">
                         </button>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
 
                         <!-- دکمه چاپ -->
                         <button class="px-2 py-2" wire:click="print(<?php echo e($customer->id); ?>)">
