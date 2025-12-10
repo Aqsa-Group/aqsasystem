@@ -8,6 +8,7 @@ use App\Models\Sarafi\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 use Livewire\Component;
 use Morilog\Jalali\Jalalian;
 
@@ -409,12 +410,43 @@ class GeneralReports extends Component
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
 
-        $baseQuery = Customer::where('admin_id', $adminId);
+        // دریافت ID مشتریان لینک شده
+        try {
+            $hasTable = Schema::connection('sarafi')->hasTable('customer_admin');
 
+            if ($hasTable) {
+                $linkedCustomerIds = DB::connection('sarafi')
+                    ->table('customer_admin')
+                    ->where('admin_id', $adminId)
+                    ->pluck('customer_id')
+                    ->toArray();
+
+                // مشتریان قابل دسترس (مال ادمین + لینک شده‌ها)
+                $baseQuery = Customer::where(function ($query) use ($adminId, $linkedCustomerIds) {
+                    $query->where('admin_id', $adminId);
+
+                    if (!empty($linkedCustomerIds)) {
+                        $query->orWhereIn('id', $linkedCustomerIds);
+                    }
+                });
+            } else {
+                // اگر جدول وجود ندارد، فقط مشتریان مال ادمین
+                $baseQuery = Customer::where('admin_id', $adminId);
+                $linkedCustomerIds = [];
+            }
+        } catch (\Exception $e) {
+            // در صورت خطا، فقط مشتریان مال ادمین
+            Log::warning('Error accessing customer_admin table: ' . $e->getMessage());
+            $baseQuery = Customer::where('admin_id', $adminId);
+            $linkedCustomerIds = [];
+        }
+
+        // اعمال فیلتر مشتری خاص
         if ($this->selectedCustomer) {
             $baseQuery->where('related_customer_id', $this->selectedCustomer);
         }
 
+        // اعمال فیلتر جستجو
         if ($this->search) {
             $baseQuery->where(function ($query) {
                 $query->where('fullname', 'like', '%' . $this->search . '%')
@@ -422,6 +454,7 @@ class GeneralReports extends Component
             });
         }
 
+        $customers = $baseQuery->get();
         $customers = $baseQuery->get();
 
         $this->reports = [];

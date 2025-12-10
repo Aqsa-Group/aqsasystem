@@ -24,9 +24,9 @@ class ConversionInAccount extends Component
 
     public $selectedCustomer = null;
     public $selectedAccount = null;
-    public $selectedCustomerId = null; 
+    public $selectedCustomerId = null;
     // متغیرهای فرم
- 
+
     public $from_currency = '';
     public $buy_amount = '';
     public $to_currency = '';
@@ -121,16 +121,13 @@ class ConversionInAccount extends Component
 
         $adminId = $user->admin_id ?? $user->id;
 
-        // بارگذاری مشتریان اگر خالی باشد
         if (empty($this->customers)) {
             $this->loadCustomers($adminId);
         }
 
-        // کوئری برای تراکنش‌های تبدیل ارز
         $query = ConversionInAccounts::with(['customer'])
             ->where('admin_id', $adminId);
 
-        // اعمال جستجو
         if (!empty($this->search)) {
             $query->where(function ($q) {
                 $q->whereHas('customer', function ($customerQuery) {
@@ -175,59 +172,56 @@ class ConversionInAccount extends Component
             ->push($adminId)
             ->toArray();
 
-        $this->customers = Customer::select('id', 'account_number', 'fullname')
-            ->where(function ($query) use ($adminId, $relatedUserIds) {
-                $query->where('admin_id', $adminId)
-                    ->orWhereHas('transactions', function ($t) use ($relatedUserIds) {
-                        $t->whereIn('user_id', $relatedUserIds)
-                            ->orWhereIn('admin_id', $relatedUserIds);
-                    });
+        $this->customers = Customer::with('admins')
+            ->where('admin_id', $adminId)
+            ->orWhereHas('admins', function ($q) use ($adminId) {
+                $q->where('customer_admin.admin_id', $adminId);
             })
+
             ->orderBy('fullname')
-            ->get()
-            ->toArray();
+            ->get();
     }
 
     /**
      * انتخاب حساب مشتری
      */
-  public function selectAccount($customerId)
-{
-    try {
-        $this->selectedCustomerId = $customerId;
-        $this->selectedAccount = $customerId;
-        
-        // پیدا کردن مشتری و ذخیره شیء
-        $this->selectedCustomer = Customer::find($customerId);
-        
-        if (!$this->selectedCustomer) {
-            session()->flash('error', 'مشتری یافت نشد!');
-            return;
+
+    public function selectAccount($customerId)
+    {
+        try {
+            $this->selectedCustomerId = $customerId;
+            $this->selectedAccount = $customerId;
+
+            // پیدا کردن مشتری و ذخیره شیء
+            $this->selectedCustomer = Customer::find($customerId);
+
+            if (!$this->selectedCustomer) {
+                session()->flash('error', 'مشتری یافت نشد!');
+                return;
+            }
+
+            // به‌روزرسانی موجودی
+            $this->updateCustomerCurrencyBalance($customerId);
+
+            // لاگ برای دیباگ
+            Log::info("Account selected successfully", [
+                'id' => $customerId,
+                'name' => $this->selectedCustomer->fullname,
+                'image' => $this->selectedCustomer->image,
+                'phone' => $this->selectedCustomer->phone,
+                'account_number' => $this->selectedCustomer->account_number
+            ]);
+
+            // dispatch event اگر نیاز دارید
+            $this->dispatch('account-selected', [
+                'customer_id' => $customerId,
+                'customer_name' => $this->selectedCustomer->fullname
+            ]);
+        } catch (\Exception $e) {
+            Log::error("Error in selectAccount: " . $e->getMessage());
+            session()->flash('error', 'خطا در انتخاب حساب: ' . $e->getMessage());
         }
-        
-        // به‌روزرسانی موجودی
-        $this->updateCustomerCurrencyBalance($customerId);
-        
-        // لاگ برای دیباگ
-        Log::info("Account selected successfully", [
-            'id' => $customerId,
-            'name' => $this->selectedCustomer->fullname,
-            'image' => $this->selectedCustomer->image,
-            'phone' => $this->selectedCustomer->phone,
-            'account_number' => $this->selectedCustomer->account_number
-        ]);
-        
-        // dispatch event اگر نیاز دارید
-        $this->dispatch('account-selected', [
-            'customer_id' => $customerId,
-            'customer_name' => $this->selectedCustomer->fullname
-        ]);
-        
-    } catch (\Exception $e) {
-        Log::error("Error in selectAccount: " . $e->getMessage());
-        session()->flash('error', 'خطا در انتخاب حساب: ' . $e->getMessage());
     }
-}
 
     /**
      * تغییر نوع معامله (خرید/فروش)

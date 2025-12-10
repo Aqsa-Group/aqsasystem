@@ -5,6 +5,7 @@ use App\Http\Controllers\AccountingPrintController;
 use App\Http\Controllers\AmountController;
 use App\Http\Controllers\ContractPrintController;
 use App\Http\Controllers\DepositLogPrintController;
+use App\Http\Controllers\Gym\Auth\UserControllers;
 use App\Http\Controllers\InventoryPrintController;
 use App\Http\Controllers\OutsideController;
 use App\Http\Controllers\PrintBoothContract;
@@ -12,6 +13,7 @@ use App\Http\Controllers\PrintContract;
 use App\Http\Controllers\printLoan;
 use App\Http\Controllers\SalaryPrintController;
 use App\Http\Controllers\Sarafi\Auth\CustomController;
+use App\Http\Controllers\Sarafi\CustomerController;
 use App\Http\Controllers\ShopkeeperPrintController;
 use App\Http\Controllers\SignedImagePdfController;
 use App\Http\Controllers\StaffContractPrintController;
@@ -25,7 +27,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
-use App\Http\Controllers\Gym\Auth\UserControllers;
+
 
 
  
@@ -288,6 +290,19 @@ Route::get('/sarafi/profit-rates', function () {
     }
     return view('Sarafi.components.profit-rates');
 })->name('sarafi.profit-rates');
+
+
+
+Route::prefix('api')->middleware('auth:sarafi')->group(function () {
+    Route::get('/search-customers', [CustomerController::class, 'searchCustomers'])
+        ->name('api.search-customers');
+
+    Route::post('/link-customer', [CustomerController::class, 'linkCustomerToMe'])
+        ->name('api.link-customer');
+
+    Route::get('/linked-customers', [CustomerController::class, 'getLinkedCustomers'])
+        ->name('api.linked-customers');
+});
 
 
 

@@ -133,27 +133,29 @@ class CustomersTable extends Component
     $adminId = $user->admin_id ?? $user->id;
 
     $relatedUserIds = \App\Models\Sarafi\User::where('admin_id', $adminId)->pluck('id')->push($adminId);
+$customers = Customer::query()
+    ->where(function ($query) use ($adminId, $relatedUserIds) {
 
-    $customers = Customer::query()
-        ->where(function ($query) use ($adminId, $relatedUserIds) {
-        
-            $query->where('admin_id', $adminId)
-               
-                ->orWhereHas('transactions', function ($t) use ($relatedUserIds) {
-                    $t->whereIn('user_id', $relatedUserIds)
-                      ->orWhereIn('admin_id', $relatedUserIds);
-                });
-        })
-        ->when($this->search, function ($query) {
-            $query->where(function ($q) {
-                $q->where('fullname', 'like', '%' . $this->search . '%')
-                    ->orWhere('phone', 'like', '%' . $this->search . '%')
-                    ->orWhere('account_number', 'like', '%' . $this->search . '%')
-                    ->orWhere('city', 'like', '%' . $this->search . '%');
-            });
-        })
-        ->orderBy('created_at', 'desc')
-        ->paginate(10);
+        $query->where('admin_id', $adminId) // مشتری اصلی خود ادمین
+            ->orWhereHas('transactions', function ($t) use ($relatedUserIds) {
+                $t->whereIn('user_id', $relatedUserIds)
+                  ->orWhereIn('admin_id', $relatedUserIds);
+            })
+           ->orWhereHas('admins', function ($q) use ($adminId) {
+    $q->where('customer_admin.admin_id', $adminId); // مشخص کردن جدول
+});
+    })
+    ->when($this->search, function ($query) {
+        $query->where(function ($q) {
+            $q->where('fullname', 'like', '%' . $this->search . '%')
+                ->orWhere('phone', 'like', '%' . $this->search . '%')
+                ->orWhere('account_number', 'like', '%' . $this->search . '%')
+                ->orWhere('city', 'like', '%' . $this->search . '%');
+        });
+    })
+    ->orderBy('created_at', 'desc')
+    ->paginate(10);
+
 
     return view('livewire.sarafi.customers-table', compact('customers'));
 }

@@ -21,9 +21,9 @@ class AccountToAccount extends Component
     use WithPagination;
 
     // حساب برداشت
-    public $withdrawalAccount = null;
+public $withdrawalAccount = null; 
     public $withdrawalCustomerId;
-    public $withdrawalCustomer = null;
+    public $withdrawalCustomer = null; 
 
     // حساب دریافت
     public $depositAccount;
@@ -173,25 +173,48 @@ class AccountToAccount extends Component
         $this->resetPage();
     }
 
-    private function loadCustomers($adminId)
-    {
-        $relatedUserIds = \App\Models\Sarafi\User::where('admin_id', $adminId)
-            ->pluck('id')
-            ->push($adminId)
-            ->toArray();
+     private function loadCustomers($adminId)
+{
+    // دریافت IDهای کاربران مرتبط (اختیاری - برای backward compatibility)
+    $relatedUserIds = \App\Models\Sarafi\User::where('admin_id', $adminId)
+        ->pluck('id')
+        ->push($adminId)
+        ->toArray();
 
-        $this->customers = Customer::select('id', 'account_number', 'fullname')
-            ->where(function ($query) use ($adminId, $relatedUserIds) {
-                $query->where('admin_id', $adminId)
-                    ->orWhereHas('transactions', function ($t) use ($relatedUserIds) {
-                        $t->whereIn('user_id', $relatedUserIds)
-                            ->orWhereIn('admin_id', $relatedUserIds);
-                    });
-            })
-            ->orderBy('fullname')
-            ->get()
-            ->toArray();
-    }
+    // روش 1: استفاده از orWhereHas برای مشتریان لینک شده
+    $this->customers = Customer::select('id', 'account_number', 'fullname', 'admin_id')
+        ->with(['admins' => function($query) use ($adminId) {
+            $query->where('customer_admin.admin_id', $adminId);
+        }])
+        ->where(function ($query) use ($adminId, $relatedUserIds) {
+            // مشتریانی که مال این ادمین هستند
+            $query->where('admin_id', $adminId)
+                
+                // یا مشتریانی که به این ادمین لینک شده‌اند
+                ->orWhereHas('admins', function ($q) use ($adminId) {
+                    $q->where('customer_admin.admin_id', $adminId);
+                })
+                
+                // یا مشتریانی که تراکنش با این ادمین دارند (برای backward compatibility)
+                ->orWhereHas('transactions', function ($t) use ($relatedUserIds) {
+                    $t->whereIn('user_id', $relatedUserIds)
+                        ->orWhereIn('admin_id', $relatedUserIds);
+                });
+        })
+        ->orderBy('fullname')
+        ->get()
+        ->map(function($customer) use ($adminId) {
+            return [
+                'id' => $customer->id,
+                'account_number' => $customer->account_number,
+                'fullname' => $customer->fullname,
+                'admin_id' => $customer->admin_id,
+                'is_mine' => $customer->admin_id == $adminId,
+                'is_linked' => $customer->admins->isNotEmpty() && $customer->admin_id != $adminId
+            ];
+        })
+        ->toArray();
+}
 
     // متد تبدیل عدد به حروف
     private function convertAmountToWords($value, $property)
@@ -492,22 +515,27 @@ class AccountToAccount extends Component
         ];
     }
 
-    public function selectWithdrawalAccount($customerId)
-    {
-        $this->withdrawalAccount = $customerId;
-        $this->withdrawalCustomer = Customer::find($customerId);
+  public function selectWithdrawalAccount($customerId)
+{
+    Log::info('selectWithdrawalAccount called', ['customer_id' => $customerId]);
+    
+    $this->withdrawalAccount = $customerId;
+    $this->withdrawalCustomerId = $customerId; 
+    $this->withdrawalCustomer = Customer::find($customerId);
 
-        $this->accountSearch = '';
-        $this->filteredCustomers = null;
+    $this->accountSearch = '';
+    $this->filteredCustomers = null;
 
-        $this->updateCustomerCurrencyBalance($customerId);
+    // فراخوانی متد محاسبه بیلانس
+    $this->updateCustomerCurrencyBalance();
 
-        Log::debug("Withdrawal account selected", [
-            'customer_id' => $customerId,
-            'customer_name' => $this->withdrawalCustomer ? $this->withdrawalCustomer->fullname : 'Not found',
-            'has_image' => $this->withdrawalCustomer && $this->withdrawalCustomer->image ? 'Yes' : 'No'
-        ]);
-    }
+    Log::debug('After selecting withdrawal account', [
+        'customer_id' => $customerId,
+        'withdrawalCustomerId' => $this->withdrawalCustomerId,
+        'customer_name' => $this->withdrawalCustomer ? $this->withdrawalCustomer->fullname : 'Not found'
+    ]);
+}
+
     public function selectDepositAccount($customerId)
     {
         $this->depositCustomerId = $customerId;

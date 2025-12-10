@@ -20,6 +20,11 @@ use NumberFormatter;
 
 class Transactions extends Component
 {
+
+    public $searchedCustomer = null; // مشتری جستجو شده از کل سیستم
+    public $showCustomerModal = false; // نمایش مودال ثبت م 
+
+
     use WithFileUploads;
     public $confirmDeleteId = null;
 
@@ -35,7 +40,7 @@ class Transactions extends Component
     public $accountType = 'نقدی';
     public $date;
     public $description;
-    public $selectedCustomer = null;    
+    public $selectedCustomer = null;
     public $file;
 
     public $zone;
@@ -67,20 +72,20 @@ class Transactions extends Component
             ->push($adminId)
             ->toArray();
 
-        $this->filteredCustomers = Customer::where(function ($query) use ($adminId, $relatedUserIds) {
-            $query->where('admin_id', $adminId)
-                ->orWhereHas('transactions', function ($t) use ($relatedUserIds) {
-                    $t->whereIn('user_id', $relatedUserIds)
-                        ->orWhereIn('admin_id', $relatedUserIds);
-                });
-        })
-            ->where(function ($q) use ($value) {
-                $q->where('fullname', 'like', "%{$value}%")
-                    ->orWhere('account_number', 'like', "%{$value}%");
-            })
-            ->orderBy('fullname')
-            ->limit(15)
-            ->get();
+      $this->filteredCustomers = Customer::with('admins')
+    ->where(function ($query) use ($adminId) {
+        $query->where('admin_id', $adminId)
+              ->orWhereHas('admins', function($q) use ($adminId) {
+                  $q->where('customer_admin.admin_id', $adminId);
+              });
+    })
+    ->where(function ($query) use ($value) {
+        $query->where('fullname', 'like', "%{$value}%")
+              ->orWhere('account_number', 'like', "%{$value}%");
+    })
+    ->limit(15)
+    ->get();
+
     }
 
     public $currenciesdefault = [
@@ -130,14 +135,15 @@ class Transactions extends Component
             ->push($adminId)
             ->toArray();
 
-        $this->customers = Customer::select('id', 'account_number', 'fullname')
-            ->where(function ($query) use ($adminId, $relatedUserIds) {
-                $query->where('admin_id', $adminId)
-                    ->orWhereHas('transactions', function ($t) use ($relatedUserIds) {
-                        $t->whereIn('user_id', $relatedUserIds)
-                            ->orWhereIn('admin_id', $relatedUserIds);
-                    });
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        $this->customers = Customer::with('admins')
+            ->where('admin_id', $adminId) 
+            ->orWhereHas('admins', function ($q) use ($adminId) {
+                $q->where('customer_admin.admin_id', $adminId); 
             })
+
             ->orderBy('fullname')
             ->get();
 
@@ -149,21 +155,51 @@ class Transactions extends Component
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
 
+        // این خط را اضافه کنید: تعریف $relatedUserIds
+        $relatedUserIds = \App\Models\Sarafi\User::where('admin_id', $adminId)
+            ->pluck('id')
+            ->push($adminId)
+            ->toArray();
+
         if (empty($value)) {
             $this->selectedCustomerId = null;
             $this->filteredCustomers = [];
+            $this->searchedCustomer = null;
             $this->updateTransactions();
             return;
         }
 
-        $this->filteredCustomers = Customer::where(function ($query) use ($value) {
-            $query->where('fullname', 'like', "%{$value}%")
-                ->orWhere('account_number', 'like', "%{$value}%");
-        })
+        // جستجو در مشتریان ادمین و کاربران مرتبط
+        $this->filteredCustomers = Customer::with('admins')
+            ->where(function ($query) use ($adminId) {
+                $query->where('admin_id', $adminId)
+                    ->orWhereHas('admins', function ($q) use ($adminId) {
+                        $q->where('customer_admin.admin_id', $adminId);
+                    });
+            })
+            ->where(function ($query) use ($value) {
+                $query->where('fullname', 'like', "%{$value}%")
+                    ->orWhere('account_number', 'like', "%{$value}%");
+            })
             ->limit(15)
             ->get();
 
-        if ($this->filteredCustomers->count() === 1) {
+
+        // اگر مشتری در لیست ما نبود، در کل سیستم جستجو کن
+        if ($this->filteredCustomers->isEmpty()) {
+            $this->searchedCustomer = Customer::where(function ($query) use ($value) {
+                $query->where('fullname', 'like', "%{$value}%")
+                    ->orWhere('account_number', 'like', "%{$value}%");
+            })
+                ->first();
+
+            if ($this->searchedCustomer) {
+                // مشتری در کل سیستم پیدا شد اما مال ما نیست
+                $this->showCustomerModal = true;
+            }
+        }
+        // اگر فقط یک مشتری پیدا شد، خودکار انتخاب کن
+        elseif ($this->filteredCustomers->count() === 1) {
             $this->selectCustomer($this->filteredCustomers->first()->id);
         } else {
             $this->selectedCustomerId = null;
@@ -171,36 +207,86 @@ class Transactions extends Component
         }
     }
 
- public function selectCustomer($customerId)
-{
-    $this->selectedCustomerId = $customerId;
-    $this->selectedAccount = $customerId;
-    $this->selectedCustomer = Customer::find($customerId); 
-    $this->filteredCustomers = [];
+    public function addCustomerToAdmin($customerId)
+    {
+        try {
+            $user = Auth::guard('sarafi')->user();
+            $adminId = $user->admin_id ?? $user->id;
 
-    $customer = Customer::find($customerId);
-    if ($customer) {
-        $this->search = $customer->fullname;
+            $customer = Customer::find($customerId);
 
-        if (!$this->customers->contains('id', $customer->id)) {
-            $this->customers->push($customer);
+            if (!$customer) {
+                session()->flash('error', 'مشتری یافت نشد!');
+                return;
+            }
+
+            // اضافه کردن ادمین به مشتری
+            $customer->admin_id = $adminId;
+            $customer->save();
+
+            // اضافه کردن به لیست مشتریان
+            if (!$this->customers->contains('id', $customer->id)) {
+                $this->customers->push($customer);
+            }
+
+            // انتخاب مشتری
+            $this->selectCustomer($customerId);
+
+            // بستن مودال
+            $this->showCustomerModal = false;
+            $this->searchedCustomer = null;
+
+            session()->flash('message', 'مشتری با موفقیت به حساب شما اضافه شد.');
+
+            Log::info("Customer added to admin", [
+                'customer_id' => $customerId,
+                'admin_id' => $adminId,
+                'customer_name' => $customer->fullname
+            ]);
+        } catch (\Exception $e) {
+            Log::error("Error adding customer to admin: " . $e->getMessage());
+            session()->flash('error', 'خطا در ثبت مشتری: ' . $e->getMessage());
         }
-
-        $this->dispatch('account-selected', [
-            'id' => $customer->id,
-            'text' => $customer->account_number . ' - ' . $customer->fullname,
-        ]);
-
-        $this->updateTransactions();
-        $this->updateCustomerCurrencyBalance();
-
-        Log::debug("Customer selected", [
-            'customer_id' => $customerId,
-            'customer_name' => $customer->fullname,
-            'search_value' => $this->search
-        ]);
     }
-}
+
+    public function cancelAddCustomer()
+    {
+        $this->showCustomerModal = false;
+        $this->searchedCustomer = null;
+        $this->search = '';
+    }
+
+
+    public function selectCustomer($customerId)
+    {
+        $this->selectedCustomerId = $customerId;
+        $this->selectedAccount = $customerId;
+        $this->selectedCustomer = Customer::find($customerId);
+        $this->filteredCustomers = [];
+
+        $customer = Customer::find($customerId);
+        if ($customer) {
+            $this->search = $customer->fullname;
+
+            if (!$this->customers->contains('id', $customer->id)) {
+                $this->customers->push($customer);
+            }
+
+            $this->dispatch('account-selected', [
+                'id' => $customer->id,
+                'text' => $customer->account_number . ' - ' . $customer->fullname,
+            ]);
+
+            $this->updateTransactions();
+            $this->updateCustomerCurrencyBalance();
+
+            Log::debug("Customer selected", [
+                'customer_id' => $customerId,
+                'customer_name' => $customer->fullname,
+                'search_value' => $this->search
+            ]);
+        }
+    }
 
     public function updatedSelectedAccount($value)
     {
@@ -384,7 +470,7 @@ class Transactions extends Component
         $this->selectedCustomerId = null;
         $this->selectedAccount = null;
         $this->search = '';
-        $this->selectedCustomer = null; 
+        $this->selectedCustomer = null;
         $this->filteredCustomers = [];
         $this->updateTransactions();
         $this->updateCustomerCurrencyBalance();

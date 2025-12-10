@@ -62,20 +62,23 @@ class AccountReports extends Component
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
 
-        if ($this->selectedCustomer) {
-            $baseQuery = Customer::where('admin_id', $adminId)
-                ->where('related_customer_id', $this->selectedCustomer);
-        } else {
-            $baseQuery = Customer::where('admin_id', $adminId);
-        }
+        // دریافت ID مشتریان لینک شده با connection صحیح
+        $linkedCustomerIds = DB::connection('sarafi')
+            ->table('customer_admin')
+            ->where('admin_id', $adminId)
+            ->pluck('customer_id')
+            ->toArray();
 
-        if ($this->search) {
-            $baseQuery->where(function ($query) {
-                $query->where('fullname', 'like', '%' . $this->search . '%')
-                    ->orWhere('account_number', 'like', '%' . $this->search . '%');
-            });
-        }
+        // ساخت کوئری پایه برای مشتریان قابل دسترس
+        $baseQuery = Customer::where(function ($query) use ($adminId, $linkedCustomerIds) {
+            // مشتریانی که مال این ادمین هستند
+            $query->where('admin_id', $adminId);
 
+            // یا مشتریانی که به این ادمین لینک شده‌اند
+            if (!empty($linkedCustomerIds)) {
+                $query->orWhereIn('id', $linkedCustomerIds);
+            }
+        });
         $customers = $baseQuery->get();
         $this->reports = [];
 
@@ -259,7 +262,7 @@ class AccountReports extends Component
                 $report['balances'] = $balancesAtDate;
                 $report['total_balance'] = $this->calculateTotalBalance($balancesAtDate, $accountTypeForConversion);
                 $report['last_date'] = $this->getLastTransactionDateBefore($report['id'], $this->date);
-                
+
                 $filteredReports[] = $report;
             }
         }
@@ -323,7 +326,7 @@ class AccountReports extends Component
     {
         $latestProfitRate = ProfitRate::latest()->first();
         $sourceCurrency = 'دالر';
-        
+
         if ($latestProfitRate && $latestProfitRate->source_currency) {
             // تابع تبدیل کد ارز به نام فارسی
             $currencyMap = [
@@ -336,7 +339,7 @@ class AccountReports extends Component
                 'try' => 'لیره',
                 'cny' => 'یوان',
             ];
-            
+
             $currencyCode = strtolower($latestProfitRate->source_currency);
             $sourceCurrency = $currencyMap[$currencyCode] ?? $latestProfitRate->source_currency;
         }

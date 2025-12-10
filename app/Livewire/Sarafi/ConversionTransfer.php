@@ -165,24 +165,47 @@ class ConversionTransfer extends Component
         $this->resetPage();
     }
     private function loadCustomers($adminId)
-    {
-        $relatedUserIds = \App\Models\Sarafi\User::where('admin_id', $adminId)
-            ->pluck('id')
-            ->push($adminId)
-            ->toArray();
+{
+    // دریافت IDهای کاربران مرتبط (اختیاری - برای backward compatibility)
+    $relatedUserIds = \App\Models\Sarafi\User::where('admin_id', $adminId)
+        ->pluck('id')
+        ->push($adminId)
+        ->toArray();
 
-        $this->customers = Customer::select('id', 'account_number', 'fullname')
-            ->where(function ($query) use ($adminId, $relatedUserIds) {
-                $query->where('admin_id', $adminId)
-                    ->orWhereHas('transactions', function ($t) use ($relatedUserIds) {
-                        $t->whereIn('user_id', $relatedUserIds)
-                            ->orWhereIn('admin_id', $relatedUserIds);
-                    });
-            })
-            ->orderBy('fullname')
-            ->get()
-            ->toArray();
-    }
+    // روش 1: استفاده از orWhereHas برای مشتریان لینک شده
+    $this->customers = Customer::select('id', 'account_number', 'fullname', 'admin_id')
+        ->with(['admins' => function($query) use ($adminId) {
+            $query->where('customer_admin.admin_id', $adminId);
+        }])
+        ->where(function ($query) use ($adminId, $relatedUserIds) {
+            // مشتریانی که مال این ادمین هستند
+            $query->where('admin_id', $adminId)
+                
+                // یا مشتریانی که به این ادمین لینک شده‌اند
+                ->orWhereHas('admins', function ($q) use ($adminId) {
+                    $q->where('customer_admin.admin_id', $adminId);
+                })
+                
+                // یا مشتریانی که تراکنش با این ادمین دارند (برای backward compatibility)
+                ->orWhereHas('transactions', function ($t) use ($relatedUserIds) {
+                    $t->whereIn('user_id', $relatedUserIds)
+                        ->orWhereIn('admin_id', $relatedUserIds);
+                });
+        })
+        ->orderBy('fullname')
+        ->get()
+        ->map(function($customer) use ($adminId) {
+            return [
+                'id' => $customer->id,
+                'account_number' => $customer->account_number,
+                'fullname' => $customer->fullname,
+                'admin_id' => $customer->admin_id,
+                'is_mine' => $customer->admin_id == $adminId,
+                'is_linked' => $customer->admins->isNotEmpty() && $customer->admin_id != $adminId
+            ];
+        })
+        ->toArray();
+}
 
     // متد تبدیل عدد به حروف
     private function convertAmountToWords($value, $property)
@@ -1239,6 +1262,8 @@ class ConversionTransfer extends Component
     {
         $this->withdrawalAccount = $customerId;
         $this->withdrawalCustomer = Customer::find($customerId);
+            $this->withdrawalCustomerId = $customerId; 
+
 
         $this->accountSearch = '';
         $this->filteredCustomers = null;

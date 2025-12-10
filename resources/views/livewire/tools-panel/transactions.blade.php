@@ -238,6 +238,7 @@
 
                 </form>
             </div>
+
             {{-- جدول تراکنش‌ها --}}
             <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px] w-[440px] mb-5 md:w-[430px] lg:w-[200px]"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
@@ -261,37 +262,127 @@
                         </div>
                         @endif
 
-                        <div class="relative w-full md:w-[302px]">
-                            <!-- Input جستجوی زنده با wire:model.live -->
-                            <input type="text" wire:model.live="search"
-                                class="border border-[#8C8C8C] w-full h-12 md:h-[51px] bg-transparent rounded-[12px] p-2 md:p-3 text-sm md:text-base pr-10"
-                                placeholder="جستجو بر اساس نام یا نمبر حساب...">
+                       <div class="relative w-full md:w-[302px]">
+    <!-- Input جستجو -->
+    <input type="text" wire:model.live="search"
+        class="border border-[#8C8C8C] w-full h-12 md:h-[51px] bg-transparent rounded-[12px] p-2 md:p-3 text-sm md:text-base pr-10"
+        placeholder="جستجو بر اساس نام یا نمبر حساب...">
 
-                            <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
-                                class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6">
+    <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
+        class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6">
 
-                            <!-- دکمه پاک کردن جستجو -->
-                            @if($search)
-                            <button wire:click="clearSearchAndFilter"
-                                class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
-                                ✕
-                            </button>
-                            @endif
+    <!-- دکمه پاک کردن جستجو -->
+    @if($search)
+    <button wire:click="clearSearchAndFilter"
+        class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
+        ✕
+    </button>
+    @endif
 
-                            <!-- لیست پیشنهادات -->
-                            @if($search && count($filteredCustomers) > 0 && !$selectedCustomerId)
-                            <ul
-                                class="absolute z-50 w-full bg-white border border-gray-300 mt-1 rounded-md shadow-lg max-h-60 overflow-y-auto">
-                                @foreach($filteredCustomers as $customer)
-                                <li wire:click="selectCustomer({{ $customer->id }})"
-                                    class="px-3 py-2 hover:bg-blue-100 cursor-pointer flex justify-between items-center">
-                                    <span>{{ $customer->fullname }}</span>
-                                    <span class="text-gray-500 text-sm">{{ $customer->account_number }}</span>
-                                </li>
-                                @endforeach
-                            </ul>
-                            @endif
-                        </div>
+    <!-- لیست پیشنهادات (مشتریان موجود) -->
+    @if($search && count($filteredCustomers) > 0 && !$selectedCustomerId)
+    <ul class="absolute z-50 w-full bg-white border border-gray-300 mt-1 rounded-md shadow-lg max-h-60 overflow-y-auto">
+        @foreach($filteredCustomers as $customer)
+        <li wire:click="selectCustomer({{ $customer->id }})"
+            class="px-3 py-2 hover:bg-blue-100 cursor-pointer flex justify-between items-center">
+            <span>{{ $customer->fullname }}</span>
+            <span class="text-gray-500 text-sm">{{ $customer->account_number }}</span>
+        </li>
+        @endforeach
+    </ul>
+    @endif
+</div>
+
+<!-- مودال ثبت مشتری جدید -->
+@if($showCustomerModal && $searchedCustomer)
+<div class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 p-4" 
+     wire:key="customer-modal-{{ $searchedCustomer->id }}">
+    
+    <div class="bg-white rounded-xl shadow-2xl max-w-md w-full" @click.outside="$wire.cancelAddCustomer()">
+        
+        <!-- هدر مودال -->
+        <div class="flex justify-between items-center p-6 border-b">
+            <h3 class="text-xl font-bold text-gray-800">مشتری پیدا شد!</h3>
+            <button wire:click="cancelAddCustomer" class="text-gray-500 hover:text-gray-700 text-2xl">
+                ✕
+            </button>
+        </div>
+        
+        <!-- بدنه مودال -->
+        <div class="p-6">
+            <!-- اطلاعات مشتری -->
+            <div class="mb-6">
+                <div class="flex items-center gap-4 mb-4">
+                    @if($searchedCustomer->image)
+                    <img src="{{ Storage::url($searchedCustomer->image) }}" 
+                         alt="{{ $searchedCustomer->fullname }}"
+                         class="w-16 h-16 rounded-full object-cover border-2 border-gray-200">
+                    @else
+                    <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center border-2 border-gray-200">
+                        <span class="text-blue-600 text-xl font-bold">
+                            {{ substr($searchedCustomer->fullname, 0, 1) }}
+                        </span>
+                    </div>
+                    @endif
+                    
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-800">{{ $searchedCustomer->fullname }}</h4>
+                        @if($searchedCustomer->phone)
+                        <p class="text-gray-600">{{ $searchedCustomer->phone }}</p>
+                        @endif
+                    </div>
+                </div>
+                
+                <!-- جزئیات -->
+                <div class="space-y-2 text-sm text-gray-600">
+                    @if($searchedCustomer->account_number)
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8h16v10zm-8-7c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-2.2 0-4 1.8-4 4h8c0-2.2-1.8-4-4-4z"/>
+                        </svg>
+                        <span class="dir-ltr">{{ $searchedCustomer->account_number }}</span>
+                    </div>
+                    @endif
+                    
+                    @if($searchedCustomer->city)
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"/>
+                        </svg>
+                        <span>{{ $searchedCustomer->city }}</span>
+                    </div>
+                    @endif
+                </div>
+            </div>
+            
+            <!-- پیام -->
+            <div class="mb-6 p-4 bg-blue-50 rounded-lg">
+                <p class="text-blue-700 text-sm">
+                    این مشتری در لیست مشتریان شما نیست. آیا می‌خواهید این مشتری را به حساب خود اضافه کنید؟
+                </p>
+            </div>
+            
+            <!-- دکمه‌ها -->
+            <div class="flex gap-3">
+                <button wire:click="addCustomerToAdmin({{ $searchedCustomer->id }})"
+                        class="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    </svg>
+                    بله، ثبت کن
+                </button>
+                
+                <button wire:click="cancelAddCustomer"
+                        class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 py-3 rounded-lg font-medium transition-colors">
+                    خیر، انصراف
+                </button>
+            </div>
+        </div>
+        
+    </div>
+    
+</div>
+@endif
                     </div>
                 </div>
 

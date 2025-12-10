@@ -107,7 +107,7 @@
                                         </div>
                                     </template>
 
-           
+
                                     
                                     <div class="mt-6 flex justify-center gap-4">
                                         <a :href="largeImageSrc"

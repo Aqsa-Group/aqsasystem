@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="<?php echo e(session('locale', config('app.locale'))); ?>" dir="<?php echo e(session('locale') === 'en' ? 'ltr' : 'rtl'); ?>">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سیستم صرافی اقصی</title>
     <?php echo $__env->make('Sarafi.layouts.links', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     <style>
-           /* لودر تمام صفحه فوق العاده زیبا */
-            #loader {
+        /* لودر تمام صفحه فوق العاده زیبا */
+        #loader {
             position: fixed;
             top: 0;
             left: 0;
@@ -427,7 +428,7 @@
                 position: static;
                 transform: none;
                 width: 18rem;
-                  z-index: 0;
+                z-index: 0;
                 height: auto;
                 box-shadow: none;
                 padding: 1.25rem;
@@ -699,17 +700,304 @@
 
                         
                     </div>
- 
+
                     <!-- سرچ، اعلان، پروفایل -->
                     <div class="desktop-actions-section">
                         <div class="header-search-section">
-                            <div class="relative">
-                                <input type="text" placeholder="<?php echo e(__('messages.search_placeholder')); ?>"
-                                    class="border border-[#8C8C8C] placeholder:text-black vazir rounded-full px-3 py-2 pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
+                            <div class="relative" x-data="customerSearch()" x-init="init()">
+
+                                <input type="text" x-model="searchQuery" @input.debounce.500ms="performSearch"
+                                    placeholder="جستجو مشتری"
+                                    class="border border-[#8C8C8C] placeholder:text-black vazir rounded-[12px] px-3 py-2 pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
+
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
                                     class="h-5 w-5 absolute left-2 bottom-3">
+
+                                <!-- آیکون لودینگ -->
+                                <div x-show="isLoading" class="absolute left-10 bottom-3">
+                                    <div
+                                        class="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin">
+                                    </div>
+                                </div>
+
+                                <!-- نتایج جستجو -->
+                                <div x-show="showResults && results.length > 0" @click.outside="closeResults"
+                                    class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+
+                                    <div class="p-2">
+                                        <template x-for="customer in results" :key="customer.id">
+                                            <div class="px-3 py-2 hover:bg-blue-50 cursor-pointer border-b last:border-b-0"
+                                                @click="handleCustomerClick(customer)">
+
+                                                <div class="flex items-center justify-between">
+                                                    <div class="flex items-center gap-3">
+                                                        <!-- عکس مشتری -->
+                                                        <div
+                                                            class="w-8 h-8 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+                                                            <template x-if="customer.image">
+                                                                <img :src="getImageUrl(customer.image)"
+                                                                    :alt="customer.fullname"
+                                                                    class="w-full h-full object-cover">
+                                                            </template>
+                                                            <template x-if="!customer.image">
+                                                                <span class="text-gray-600 text-sm font-bold"
+                                                                    x-text="getFirstLetter(customer.fullname)"></span>
+                                                            </template>
+                                                        </div>
+
+                                                        <!-- اطلاعات مشتری -->
+                                                        <div>
+                                                            <div class="font-medium" x-text="customer.fullname"></div>
+                                                            <div class="text-xs text-gray-500">
+                                                                <span x-text="customer.phone"></span>
+                                                                <span class="mx-1">•</span>
+                                                                <span class="dir-ltr"
+                                                                    x-text="customer.account_number"></span>
+                                                                <span x-show="customer.city" class="mr-2">
+                                                                    • <span x-text="customer.city"></span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- وضعیت و دکمه عمل -->
+                                                    <div class="text-xs flex items-center gap-2">
+                                                        <template x-if="customer.is_mine">
+                                                            <span
+                                                                class="bg-green-100 text-green-800 px-2 py-1 rounded">مشتری
+                                                                من</span>
+                                                        </template>
+                                                        <template x-if="!customer.is_mine && customer.admin_id">
+                                                            <button @click.stop="linkCustomer(customer)"
+                                                                class="bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200 transition">
+                                                                لینک کن
+                                                            </button>
+                                                        </template>
+                                                        <template x-if="!customer.admin_id">
+                                                            <button @click.stop="linkCustomer(customer)"
+                                                                class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded hover:bg-yellow-200 transition">
+                                                                استفاده کن
+                                                            </button>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+
+                                <!-- مودال تایید -->
+                                <div x-show="showConfirmModal"
+                                    class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 p-4">
+
+                                    <div class="bg-white rounded-xl shadow-2xl max-w-md w-full">
+
+                                        <!-- هدر مودال -->
+                                        <div class="flex justify-between items-center p-6 border-b">
+                                            <h3 class="text-xl font-bold text-gray-800">لینک کردن مشتری</h3>
+                                            <button @click="showConfirmModal = false"
+                                                class="text-gray-500 hover:text-gray-700 text-2xl">
+                                                ✕
+                                            </button>
+                                        </div>
+
+                                        <!-- بدنه مودال -->
+                                        <div class="p-6" x-show="selectedCustomer">
+                                            <div class="mb-6">
+                                                <div class="flex items-center gap-4 mb-4">
+                                                    <template x-if="selectedCustomer.image">
+                                                        <img :src="getImageUrl(selectedCustomer.image)"
+                                                            :alt="selectedCustomer.fullname"
+                                                            class="w-16 h-16 rounded-full object-cover border-2 border-gray-200">
+                                                    </template>
+                                                    <template x-if="!selectedCustomer.image">
+                                                        <div
+                                                            class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center border-2 border-gray-200">
+                                                            <span class="text-blue-600 text-xl font-bold"
+                                                                x-text="getFirstLetter(selectedCustomer.fullname)"></span>
+                                                        </div>
+                                                    </template>
+
+                                                    <div>
+                                                        <h4 class="text-lg font-bold text-gray-800"
+                                                            x-text="selectedCustomer.fullname"></h4>
+                                                        <p class="text-gray-600" x-text="selectedCustomer.phone"></p>
+                                                        <p class="text-gray-500 text-sm dir-ltr"
+                                                            x-text="selectedCustomer.account_number"></p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="p-4 bg-blue-50 rounded-lg">
+                                                    <p class="text-blue-700 text-sm">
+                                                        آیا می‌خواهید این مشتری را به لیست مشتریان خود اضافه کنید؟
+                                                        <br>
+                                                     
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <!-- دکمه‌ها -->
+                                            <div class="flex gap-3">
+                                                <button @click="confirmLinkCustomer"
+                                                    class="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
+                                                    <svg x-show="!isLinking" class="w-5 h-5" fill="none"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                                    </svg>
+                                                    <div x-show="isLinking"
+                                                        class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin">
+                                                    </div>
+                                                    <span x-text="isLinking ? 'در حال لینک...' : 'بله، لینک کن'"></span>
+                                                </button>
+
+                                                <button @click="showConfirmModal = false" :disabled="isLinking"
+                                                    class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 py-3 rounded-lg font-medium transition-colors disabled:opacity-50">
+                                                    انصراف
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
                             </div>
                         </div>
+
+                        <script>
+                            function customerSearch() {
+    return {
+        searchQuery: '',
+        results: [],
+        showResults: false,
+        isLoading: false,
+        selectedCustomer: null,
+        showConfirmModal: false,
+        isLinking: false,
+        
+        init() {
+            console.log('Customer search initialized');
+        },
+        
+        async performSearch() {
+            if (this.searchQuery.length < 2) {
+                this.showResults = false;
+                this.results = [];
+                return;
+            }
+            
+            this.isLoading = true;
+            
+            try {
+                const response = await fetch(`<?php echo e(route('api.search-customers')); ?>?q=${encodeURIComponent(this.searchQuery)}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    console.error('Search error:', data.error);
+                    return;
+                }
+                
+                if (data.customers && data.customers.length > 0) {
+                    this.results = data.customers;
+                    this.showResults = true;
+                } else {
+                    this.results = [];
+                    this.showResults = false;
+                }
+                
+            } catch (error) {
+                console.error('Search error:', error);
+            } finally {
+                this.isLoading = false;
+            }
+        },
+        
+        closeResults() {
+            this.showResults = false;
+        },
+        
+        getImageUrl(imagePath) {
+            return imagePath ? `/storage/${imagePath}` : '';
+        },
+        
+        getFirstLetter(name) {
+            return name ? name.charAt(0).toUpperCase() : '?';
+        },
+        
+        handleCustomerClick(customer) {
+            if (customer.is_mine) {
+                // اگر مشتری مال خودتان است، به صفحه مشتری بروید
+                window.location.href = `<?php echo e(route('sarafi.customer-table')); ?>?customer=${customer.id}`;
+            } else {
+                // در غیر این صورت، مودال لینک را نشان دهید
+                this.selectedCustomer = customer;
+                this.showConfirmModal = true;
+                this.showResults = false;
+            }
+        },
+        
+        linkCustomer(customer) {
+            this.selectedCustomer = customer;
+            this.showConfirmModal = true;
+            this.showResults = false;
+        },
+        
+        async confirmLinkCustomer() {
+            if (!this.selectedCustomer) return;
+            
+            this.isLinking = true;
+            
+            try {
+                const response = await fetch('<?php echo e(route("api.link-customer")); ?>', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        customer_id: this.selectedCustomer.id 
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // نمایش پیام موفقیت
+                    alert(data.message);
+                    
+                    // بستن مودال و پاک کردن جستجو
+                    this.showConfirmModal = false;
+                    this.searchQuery = '';
+                    this.results = [];
+                    
+                    // ریدایرکت به صفحه مشتریان یا رفرش
+                    setTimeout(() => {
+                        window.location.href = '<?php echo e(route("sarafi.customer-table")); ?>';
+                    }, 1000);
+                    
+                } else {
+                    alert(data.message);
+                    this.showConfirmModal = false;
+                }
+                
+            } catch (error) {
+                console.error('Link error:', error);
+                alert('خطا در لینک کردن مشتری');
+            } finally {
+                this.isLinking = false;
+            }
+        }
+    };
+}
+                        </script>
 
                         <button
                             class="relative flex items-center justify-center w-[50px] h-[50px] rounded-[25px] bg-[#E5E5E5] hover:bg-gray-300 transition">
@@ -722,8 +1010,8 @@
                         <div class="header-profile-section">
                             <div class="relative">
                                 <div id="profileBtnDesktop"
-                                    class="w-[50px] h-[50px] md:w-[70px] md:h-[70px] rounded-full border overflow-hidden flex items-center justify-center cursor-pointer transition">
-                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/man.png')); ?>" alt="پروفایل"
+                                    class="w-[50px] h-[50px] md:w-[60px] md:h-[60px] rounded-full border overflow-hidden flex items-center justify-center cursor-pointer transition">
+                                    <img src="<?php echo e(asset('assets/sarafi/avatar.svg')); ?>" alt="پروفایل"
                                         class="w-full h-full object-cover">
                                 </div>
 
@@ -734,7 +1022,7 @@
 
                                     <div class="p-3 border-b space-y-5">
                                         <div class="flex flex-col justify-center items-center ">
-                                            <img src="<?php echo e(asset('assets/sarafi/all_icon/man.png')); ?>" alt=""
+                                            <img src="<?php echo e(asset('assets/sarafi/avatar')); ?>" alt=""
                                                 class="h-20 w-20">
                                             <p class="font-vazir font-semibold text-gray-700 mt-5"><?php echo e(Auth::guard('sarafi')->user()->name); ?></p>
 
@@ -884,13 +1172,13 @@
                             
 
 
-                              <a href="<?php echo e(route('sarafi.profit-rates')); ?>"
+                            <a href="<?php echo e(route('sarafi.profit-rates')); ?>"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('register-accounts', 'accounts')"
                                 :class="active === 'register-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/add.svg')); ?>" class="w-4 h-4"
                                     :class="active === 'register-accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
-                                  ثبت نرخ ارزها
+                                ثبت نرخ ارزها
                             </a>
                         </div>
                     </div>

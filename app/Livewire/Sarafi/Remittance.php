@@ -83,17 +83,31 @@ class Remittance extends Component
         }
 
         $adminId = $user->admin_id ?? $user->id;
-        $relatedUserIds = User::where('admin_id', $adminId)
-            ->pluck('id')
-            ->push($adminId)
-            ->toArray();
 
-        $this->customers = Customer::select('id', 'account_number', 'fullname')
-            ->where('admin_id', $adminId)
-            ->orderBy('fullname')
-            ->get();
+        // روش 1: استفاده از join مستقیم (پیشنهادی)
+        $this->customers = Customer::select('customers.id', 'customers.account_number', 'customers.fullname', 'customers.admin_id')
+            ->leftJoin('customer_admin', function ($join) use ($adminId) {
+                $join->on('customers.id', '=', 'customer_admin.customer_id')
+                    ->where('customer_admin.admin_id', '=', $adminId);
+            })
+            ->where(function ($query) use ($adminId) {
+                $query->where('customers.admin_id', '=', $adminId)
+                    ->orWhereNotNull('customer_admin.id');
+            })
+            ->orderBy('customers.fullname')
+            ->distinct()
+            ->get()
+            ->map(function ($customer) use ($adminId) {
+                return [
+                    'id' => $customer->id,
+                    'account_number' => $customer->account_number,
+                    'fullname' => $customer->fullname,
+                    'admin_id' => $customer->admin_id,
+                    'is_mine' => $customer->admin_id == $adminId,
+                    'is_linked' => $customer->admin_id != $adminId
+                ];
+            });
     }
-
     public function updatedSearch($value)
     {
         $user = Auth::guard('sarafi')->user();

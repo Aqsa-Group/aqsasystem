@@ -20,10 +20,8 @@
 
         <!-- 🔍 Search -->
         <div class="relative">
-           <input type="text" 
-       wire:model.live="search"
-       placeholder="{{ __('messages.search_customer') }}"
-       class="border border-[#8C8C8C] placeholder:text-[#8C8C8C] vazir rounded-xl w-[329px] h-[54px] pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <input type="text" wire:model.live="search" placeholder="{{ __('messages.search_customer') }}"
+                class="border border-[#8C8C8C] placeholder:text-[#8C8C8C] vazir rounded-xl w-[329px] h-[54px] pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500">
 
             <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
                 class="h-6 w-6 absolute left-2 bottom-4">
@@ -78,6 +76,14 @@
                     <td class="px-6 py-4 text-[16px] text-black vazir">{{ $customer->idcard_number ?? '-' }}</td>
                     <td class="px-6 py-4 text-[16px] text-black vazir">{{ $customer->whatsapp_number ?? '-' }}</td>
                     <td class="px-6 py-4 text-[16px] text-black vazir flex space-x-2 rtl:space-x-reverse">
+
+
+                        @php
+                        $currentUser=Auth::guard('sarafi')->user();
+                        @endphp
+
+                        @if ($currentUser && $currentUser->role==='superadmin')
+
                         <!-- دکمه ویرایش -->
                         <button wire:click="editCustomer({{ $customer->id }})" class="px-2 py-1">
                             <img src="{{ asset('assets/sarafi/all_icon/edit_table.svg') }}" alt="Edit"
@@ -89,6 +95,7 @@
                             <img src="{{ asset('assets/sarafi/all_icon/trash_table.svg') }}" alt="Edit"
                                 class="w-[30px] h-[30px]">
                         </button>
+                        @endif
 
                         <!-- دکمه چاپ -->
                         <button class="px-2 py-2" wire:click="print({{ $customer->id }})">

@@ -25,95 +25,89 @@
         @endif
 
         <div class="scroll-container overflow-x-auto whitespace-nowrap py-3">
-            @if($withdrawalCustomer) 
+            @if($withdrawalCustomer)
             <div class="inline-block align-top ml-4 h-auto">
                 <div
                     class="flex flex-col h-[180px] w-[273px] pr-5 pl-5 pt-2 rounded-[12px] bg-gradient-to-b from-[#20559c] to-[#3065b5] text-white">
 
                     {{-- عکس مشتری --}}
-                <div x-data="{ 
-    showLargeImage: false, 
-    largeImageSrc: '',
-    customerName: '{{ $withdrawalCustomer->fullname }}',
-    customerPhone: '{{ $withdrawalCustomer->phone ?? '' }}'
-}">
-    
-    {{-- عکس مشتری --}}
-    @if($withdrawalCustomer->image)
-    <div class="flex justify-center mb-2">
-        <img src="{{ Storage::url($withdrawalCustomer->image) }}"
-            alt="{{ $withdrawalCustomer->fullname }}"
-            class="w-20 h-20 rounded-lg object-cover border-2 border-white cursor-pointer hover:scale-105 transition-transform duration-200"
-            @click="showLargeImage = true; largeImageSrc = '{{ Storage::url($withdrawalCustomer->image) }}'"
-            onerror="this.onerror=null; this.src='{{ asset('assets/web.jpg') }}'">
-    </div>
-    @else
-    <div class="flex justify-center mb-2">
-        <img src="{{ asset('assets/web.jpg') }}" 
-            alt="{{ $withdrawalCustomer->fullname }}"
-            class="w-20 h-20 rounded-lg object-cover border-2 border-white cursor-pointer hover:scale-105 transition-transform duration-200"
-            @click="showLargeImage = true; largeImageSrc = '{{ asset('assets/web.jpg') }}'">
-    </div>
-    @endif
+                    <div x-data="{ 
+                            showLargeImage: false, 
+                            largeImageSrc: '',
+                            customerName: '{{ $withdrawalCustomer->fullname }}',
+                            customerPhone: '{{ $withdrawalCustomer->phone ?? '' }}'
+                        }">
 
-    {{-- مودال نمایش عکس بزرگ --}}
-    <div x-show="showLargeImage" 
-         x-transition:enter="transition ease-out duration-300"
-         x-transition:enter-start="opacity-0 scale-95"
-         x-transition:enter-end="opacity-100 scale-100"
-         x-transition:leave="transition ease-in duration-200"
-         x-transition:leave-start="opacity-100 scale-100"
-         x-transition:leave-end="opacity-0 scale-95"
-         class="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4"
-         @click.away="showLargeImage = false"
-         @keydown.escape.window="showLargeImage = false"
-         style="display: none;">
-        
-        <div class="relative max-w-4xl max-h-[90vh] w-full">
-            
-            {{-- دکمه بستن --}}
-            <button @click="showLargeImage = false"
-                    class="absolute -top-12 right-0 text-white hover:text-gray-300 text-3xl z-10 transition-colors duration-200">
-                ✕
-            </button>
-            
-            {{-- عکس بزرگ --}}
-            <div class="flex justify-center">
-                <img :src="largeImageSrc" 
-                     :alt="customerName"
-                     class="max-w-full max-h-[70vh] object-contain rounded-lg shadow-2xl">
-            </div>
-            
-            {{-- اطلاعات مشتری زیر عکس --}}
-            <div class="mt-6 text-center text-white">
-                <p class="text-2xl font-bold mb-2" x-text="customerName"></p>
-                <template x-if="customerPhone">
-                    <p class="text-lg text-gray-300" x-text="customerPhone"></p>
-                </template>
-                
-                {{-- دکمه دانلود --}}
-                <div class="mt-6 flex justify-center gap-4">
-                    <a :href="largeImageSrc" 
-                       :download="customerName + '_' + new Date().toISOString().split('T')[0] + '.jpg'"
-                       class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                        </svg>
-                        دانلود عکس
-                    </a>
-                    
-                    <button @click="showLargeImage = false"
-                            class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200">
-                        بستن
-                    </button>
-                </div>
-            </div>
-            
-        </div>
-    </div>
+                        {{-- عکس مشتری --}}
+                        @if($withdrawalCustomer->image)
+                        <div class="flex justify-center mb-2">
+                            <img src="{{ Storage::url($withdrawalCustomer->image) }}"
+                                alt="{{ $withdrawalCustomer->fullname }}"
+                                class="w-20 h-20 rounded-lg object-cover border-2 border-white cursor-pointer hover:scale-105 transition-transform duration-200"
+                                @click="showLargeImage = true; largeImageSrc = '{{ Storage::url($withdrawalCustomer->image) }}'"
+                                onerror="this.onerror=null; this.src='{{ asset('assets/web.jpg') }}'">
+                        </div>
+                        @else
+                        <div class="flex justify-center mb-2">
+                            <img src="{{ asset('assets/web.jpg') }}" alt="{{ $withdrawalCustomer->fullname }}"
+                                class="w-20 h-20 rounded-lg object-cover border-2 border-white cursor-pointer hover:scale-105 transition-transform duration-200"
+                                @click="showLargeImage = true; largeImageSrc = '{{ asset('assets/web.jpg') }}'">
+                        </div>
+                        @endif
 
-</div>
+                        {{-- مودال نمایش عکس بزرگ --}}
+                        <div x-show="showLargeImage" x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-200"
+                            x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+                            class="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4"
+                            @click.away="showLargeImage = false" @keydown.escape.window="showLargeImage = false"
+                            style="display: none;">
+
+                            <div class="relative max-w-4xl max-h-[90vh] w-full">
+
+                                {{-- دکمه بستن --}}
+                                <button @click="showLargeImage = false"
+                                    class="absolute -top-12 right-0 text-white hover:text-gray-300 text-3xl z-10 transition-colors duration-200">
+                                    ✕
+                                </button>
+
+                                {{-- عکس بزرگ --}}
+                                <div class="flex justify-center">
+                                    <img :src="largeImageSrc" :alt="customerName"
+                                        class="max-w-full max-h-[70vh] object-contain rounded-lg shadow-2xl">
+                                </div>
+
+                                {{-- اطلاعات مشتری زیر عکس --}}
+                                <div class="mt-6 text-center text-white">
+                                    <p class="text-2xl font-bold mb-2" x-text="customerName"></p>
+                                    <template x-if="customerPhone">
+                                        <p class="text-lg text-gray-300" x-text="customerPhone"></p>
+                                    </template>
+
+                                    {{-- دکمه دانلود --}}
+                                    <div class="mt-6 flex justify-center gap-4">
+                                        <a :href="largeImageSrc"
+                                            :download="customerName + '_' + new Date().toISOString().split('T')[0] + '.jpg'"
+                                            class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                            </svg>
+                                            دانلود عکس
+                                        </a>
+
+                                        <button @click="showLargeImage = false"
+                                            class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200">
+                                            بستن
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
                     {{-- نام مشتری --}}
                     <h1 class="text-[20px] text-white text-center font-bold truncate"
                         title="{{ $withdrawalCustomer->fullname }}">
@@ -323,41 +317,41 @@
                         <div>
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">حساب مبدا</label>
                             <div x-data="{
-                searchValue: '',
-                selectedId: @entangle('withdrawalAccount'),
-                customers: @js($customers),
-                init() {
-                    this.updateDisplay();
-                    $wire.on('edit-mode-activated', (data) => {
-                        this.selectedId = data.withdrawalAccount;
-                        this.searchValue = data.withdrawalCustomer;
-                        setTimeout(() => this.updateDisplay(), 100);
-                    });
-                    $wire.on('accountsSwapped', () => setTimeout(() => this.updateDisplay(), 100));
-                },
-                handleSelect(event) {
-                    const selected = this.customers.find(
-                        c => event.target.value === `${c.account_number} - ${c.fullname}`
-                    );
-                    if (selected) {
-                        this.selectedId = selected.id;
-                        this.searchValue = `${selected.account_number} - ${selected.fullname}`;
-                        $wire.selectWithdrawalAccount(selected.id);
-                    } else {
-                        this.selectedId = null;
-                        this.searchValue = '';
-                        $wire.set('withdrawalAccount', null);
-                    }
-                },
-                updateDisplay() {
-                    if (this.selectedId) {
-                        const selected = this.customers.find(c => c.id == this.selectedId);
-                        if (selected) {
-                            this.searchValue = `${selected.account_number} - ${selected.fullname}`;
-                        }
-                    }
-                }
-            }" x-init="init()" class="relative w-full">
+                                            searchValue: '',
+                                            selectedId: @entangle('withdrawalAccount'),
+                                            customers: @js($customers),
+                                            init() {
+                                                this.updateDisplay();
+                                                $wire.on('edit-mode-activated', (data) => {
+                                                    this.selectedId = data.withdrawalAccount;
+                                                    this.searchValue = data.withdrawalCustomer;
+                                                    setTimeout(() => this.updateDisplay(), 100);
+                                                });
+                                                $wire.on('accountsSwapped', () => setTimeout(() => this.updateDisplay(), 100));
+                                            },
+                                            handleSelect(event) {
+                                                const selected = this.customers.find(
+                                                    c => event.target.value === `${c.account_number} - ${c.fullname}`
+                                                );
+                                                if (selected) {
+                                                    this.selectedId = selected.id;
+                                                    this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                                                    $wire.selectWithdrawalAccount(selected.id);
+                                                } else {
+                                                    this.selectedId = null;
+                                                    this.searchValue = '';
+                                                    $wire.set('withdrawalAccount', null);
+                                                }
+                                            },
+                                            updateDisplay() {
+                                                if (this.selectedId) {
+                                                    const selected = this.customers.find(c => c.id == this.selectedId);
+                                                    if (selected) {
+                                                        this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                                                    }
+                                                }
+                                            }
+                                        }" x-init="init()" class="relative w-full">
                                 <input list="withdrawalCustomersList" x-model="searchValue" @change="handleSelect"
                                     placeholder="جستجو یا انتخاب حساب بردگی..."
                                     class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
@@ -383,41 +377,41 @@
                         <div>
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">حساب مقصد</label>
                             <div x-data="{
-                searchValue: '',
-                selectedId: @entangle('depositAccount'),
-                customers: @js($customers),
-                init() {
-                    this.updateDisplay();
-                    $wire.on('edit-mode-activated', (data) => {
-                        this.selectedId = data.depositAccount;
-                        this.searchValue = data.depositCustomer;
-                        setTimeout(() => this.updateDisplay(), 100);
-                    });
-                    $wire.on('accountsSwapped', () => setTimeout(() => this.updateDisplay(), 100));
-                },
-                handleSelect(event) {
-                    const selected = this.customers.find(
-                        c => event.target.value === `${c.account_number} - ${c.fullname}`
-                    );
-                    if (selected) {
-                        this.selectedId = selected.id;
-                        this.searchValue = `${selected.account_number} - ${selected.fullname}`;
-                        $wire.selectDepositAccount(selected.id);
-                    } else {
-                        this.selectedId = null;
-                        this.searchValue = '';
-                        $wire.set('depositAccount', null);
-                    }
-                },
-                updateDisplay() {
-                    if (this.selectedId) {
-                        const selected = this.customers.find(c => c.id == this.selectedId);
-                        if (selected) {
-                            this.searchValue = `${selected.account_number} - ${selected.fullname}`;
-                        }
-                    }
-                }
-            }" x-init="init()" class="relative w-full">
+                                            searchValue: '',
+                                            selectedId: @entangle('depositAccount'),
+                                            customers: @js($customers),
+                                            init() {
+                                                this.updateDisplay();
+                                                $wire.on('edit-mode-activated', (data) => {
+                                                    this.selectedId = data.depositAccount;
+                                                    this.searchValue = data.depositCustomer;
+                                                    setTimeout(() => this.updateDisplay(), 100);
+                                                });
+                                                $wire.on('accountsSwapped', () => setTimeout(() => this.updateDisplay(), 100));
+                                            },
+                                            handleSelect(event) {
+                                                const selected = this.customers.find(
+                                                    c => event.target.value === `${c.account_number} - ${c.fullname}`
+                                                );
+                                                if (selected) {
+                                                    this.selectedId = selected.id;
+                                                    this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                                                    $wire.selectDepositAccount(selected.id);
+                                                } else {
+                                                    this.selectedId = null;
+                                                    this.searchValue = '';
+                                                    $wire.set('depositAccount', null);
+                                                }
+                                            },
+                                            updateDisplay() {
+                                                if (this.selectedId) {
+                                                    const selected = this.customers.find(c => c.id == this.selectedId);
+                                                    if (selected) {
+                                                        this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                                                    }
+                                                }
+                                            }
+                                        }" x-init="init()" class="relative w-full">
                                 <input list="depositCustomersList" x-model="searchValue" @change="handleSelect"
                                     placeholder="جستجو یا انتخاب حساب رسیدگی..."
                                     class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
