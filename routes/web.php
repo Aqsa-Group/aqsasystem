@@ -292,7 +292,7 @@ Route::get('/sarafi/profit-rates', function () {
 })->name('sarafi.profit-rates');
 
 
-
+// copy customer
 Route::prefix('api')->middleware('auth:sarafi')->group(function () {
     Route::get('/search-customers', [CustomerController::class, 'searchCustomers'])
         ->name('api.search-customers');
@@ -303,6 +303,14 @@ Route::prefix('api')->middleware('auth:sarafi')->group(function () {
     Route::get('/linked-customers', [CustomerController::class, 'getLinkedCustomers'])
         ->name('api.linked-customers');
 });
+
+
+Route::get('/sarafi/changersdeal', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.Changersdeal');
+})->name('sarafi.changersdeal');
 
 
 

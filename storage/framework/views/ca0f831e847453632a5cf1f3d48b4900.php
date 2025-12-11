@@ -7,445 +7,194 @@
     <title>سیستم صرافی اقصی</title>
     <?php echo $__env->make('Sarafi.layouts.links', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     <style>
-        /* لودر بازار ارز و پول - حرفه‌ای */
-        #currency-loader {
+        /* لودر تمام صفحه فوق العاده زیبا */
+        #loader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             z-index: 9999;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .loader-container {
+            text-align: center;
+            animation: fadeInUp 1s ease;
+        }
+
+        .spinner-wrapper {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+        }
+
+        .spinner {
+            position: absolute;
+            border: 4px solid transparent;
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+        }
+
+        .spinner-1 {
+            width: 120px;
+            height: 120px;
+            border-top: 4px solid #122EE1;
+            border-bottom: 4px solid #122EE1;
+            animation-duration: 1.5s;
+        }
+
+        .spinner-2 {
+            width: 100px;
+            height: 100px;
+            top: 10px;
+            left: 10px;
+            border-left: 4px solid #FF6B6B;
+            border-right: 4px solid #FF6B6B;
+            animation-duration: 2s;
+            animation-direction: reverse;
+        }
+
+        .spinner-3 {
+            width: 80px;
+            height: 80px;
+            top: 20px;
+            left: 20px;
+            border-top: 4px solid #4ECDC4;
+            border-bottom: 4px solid #4ECDC4;
+            animation-duration: 2.5s;
+        }
+
+        .logo-loader {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            box-shadow: 0 0 20px rgba(18, 46, 225, 0.3);
+        }
+
+        .logo-loader span {
+            font-size: 24px;
+            font-weight: bold;
+            color: #122EE1;
+            font-family: 'Yekan', sans-serif;
+        }
+
+        .loader-text {
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            font-family: 'Vazir', sans-serif;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .loader-subtext {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            font-family: 'Vazir', sans-serif;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            margin: 20px auto 0;
             overflow: hidden;
         }
 
-        .currency-loader-container {
-            text-align: center;
-            animation: fadeInUp 1s ease;
-            position: relative;
-            z-index: 2;
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #122EE1, #4ECDC4);
+            border-radius: 2px;
+            animation: progress 3s ease-in-out infinite;
         }
 
-        /* انیمیشن جابجایی ارزها */
-        .currency-flow {
+        .floating-elements {
             position: absolute;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 1;
         }
 
-        .currency-item {
+        .floating-element {
             position: absolute;
-            border-radius: 50%;
-            animation: floatCurrency 15s linear infinite;
-            opacity: 0.7;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 14px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .currency-item:nth-child(1) {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, #ffd700, #daa520);
-            top: 10%;
-            left: 5%;
-            animation-delay: 0s;
-            animation-duration: 20s;
-        }
-
-        .currency-item:nth-child(1)::after {
-            content: '$';
-        }
-
-        .currency-item:nth-child(2) {
-            width: 35px;
-            height: 35px;
-            background: linear-gradient(135deg, #c0c0c0, #808080);
-            top: 70%;
-            left: 15%;
-            animation-delay: -3s;
-            animation-duration: 18s;
-        }
-
-        .currency-item:nth-child(2)::after {
-            content: '€';
-        }
-
-        .currency-item:nth-child(3) {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #d4af37, #b8860b);
-            top: 30%;
-            left: 85%;
-            animation-delay: -6s;
-            animation-duration: 22s;
-        }
-
-        .currency-item:nth-child(3)::after {
-            content: '£';
-        }
-
-        .currency-item:nth-child(4) {
-            width: 30px;
-            height: 30px;
-            background: linear-gradient(135deg, #e5e4e2, #b0b0b0);
-            top: 85%;
-            left: 75%;
-            animation-delay: -9s;
-            animation-duration: 16s;
-        }
-
-        .currency-item:nth-child(4)::after {
-            content: '¥';
-        }
-
-        .currency-item:nth-child(5) {
-            width: 38px;
-            height: 38px;
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            top: 50%;
-            left: 10%;
-            animation-delay: -12s;
-            animation-duration: 19s;
-        }
-
-        .currency-item:nth-child(5)::after {
-            content: '₿';
-            font-size: 18px;
-        }
-
-        /* نمودار انیمیشن */
-        .chart-animation {
-            width: 200px;
-            height: 100px;
-            margin: 30px auto;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .chart-line {
-            fill: none;
-            stroke: url(#chartGradient);
-            stroke-width: 3;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-dasharray: 300;
-            stroke-dashoffset: 300;
-            animation: drawChart 3s ease-in-out forwards;
-        }
-
-        /* اسپینر ارزی */
-        .exchange-spinner {
-            position: relative;
-            width: 140px;
-            height: 140px;
-            margin: 0 auto 30px;
-        }
-
-        .coin-spinner {
-            position: absolute;
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ffd700 0%, #fbb034 50%, #ffd700 100%);
-            animation: spinCoin 4s ease-in-out infinite;
-            box-shadow: 
-                0 0 40px rgba(255, 215, 0, 0.5),
-                inset 0 0 30px rgba(255, 255, 255, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .coin-spinner::before {
-            content: '';
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #daa520 0%, #b8860b 100%);
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
-        }
-
-        .coin-spinner::after {
-            content: 'صرافی';
-            position: absolute;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            font-family: 'Vazir', 'Yekan', sans-serif;
-            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
-            z-index: 2;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .coin-detail {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2), transparent 70%);
-        }
-
-        /* ارزهای در حال چرخش */
-        .rotating-currencies {
-            position: absolute;
-            width: 180px;
-            height: 180px;
-            top: -20px;
-            left: -20px;
-        }
-
-        .currency-symbol {
-            position: absolute;
-            font-size: 28px;
-            font-weight: bold;
-            color: #3b82f6;
-            text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
-            animation: rotateSymbol 8s linear infinite;
-        }
-
-        .currency-symbol:nth-child(1) { 
-            top: 0; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            animation-delay: 0s; 
-            color: #10b981;
-        }
-        .currency-symbol:nth-child(2) { 
-            top: 50%; 
-            right: 0; 
-            transform: translateY(-50%); 
-            animation-delay: -2s; 
-            color: #f59e0b;
-        }
-        .currency-symbol:nth-child(3) { 
-            bottom: 0; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            animation-delay: -4s; 
-            color: #ef4444;
-        }
-        .currency-symbol:nth-child(4) { 
-            top: 50%; 
-            left: 0; 
-            transform: translateY(-50%); 
-            animation-delay: -6s; 
-            color: #8b5cf6;
-        }
-
-        /* متن‌ها */
-        .currency-loader-text {
-            color: #ffffff;
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            font-family: 'Yekan', 'Vazir', sans-serif;
-            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);
-            background: linear-gradient(90deg, #ffd700, #3b82f6, #10b981, #f59e0b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            background-size: 300% 300%;
-            animation: gradientShift 4s ease infinite;
-        }
-
-        .currency-loader-subtext {
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 16px;
-            font-family: 'Vazir', sans-serif;
-            max-width: 350px;
-            line-height: 1.6;
-            margin: 0 auto 25px;
-            padding: 0 20px;
-        }
-
-        .currency-loader-name {
-            color: #ffd700;
-            font-weight: 600;
-            font-family: 'Yekan', 'Vazir', sans-serif;
-            margin-bottom: 5px;
-        }
-
-        /* نوار پیشرفت */
-        .currency-progress-container {
-            width: 320px;
-            height: 8px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            margin: 30px auto 0;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
         }
 
-        .currency-progress {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, 
-                #ffd700 0%, 
-                #3b82f6 25%, 
-                #10b981 50%, 
-                #f59e0b 75%, 
-                #ef4444 100%);
-            border-radius: 4px;
-            position: relative;
-            overflow: hidden;
-            transition: width 0.3s ease;
+        .element-1 {
+            width: 20px;
+            height: 20px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
         }
 
-        .currency-progress::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(255, 255, 255, 0.4), 
-                transparent);
-            animation: shimmer 1.5s infinite;
+        .element-2 {
+            width: 15px;
+            height: 15px;
+            top: 60%;
+            left: 80%;
+            animation-delay: 1s;
         }
 
-        .progress-text {
-            position: absolute;
-            top: -25px;
-            right: 0;
-            color: #94a3b8;
-            font-family: 'Vazir', sans-serif;
-            font-size: 12px;
+        .element-3 {
+            width: 25px;
+            height: 25px;
+            top: 80%;
+            left: 20%;
+            animation-delay: 2s;
         }
 
-        /* اعداد ارزی */
-        .currency-numbers {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin-top: 30px;
-            opacity: 0.9;
-        }
-
-        .currency-number {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #cbd5e1;
-            font-family: 'Vazir', sans-serif;
-            font-size: 13px;
-            min-width: 80px;
-        }
-
-        .currency-number-value {
-            font-size: 18px;
-            font-weight: 700;
-            color: #ffd700;
-            margin-bottom: 5px;
-            font-family: 'Arial', sans-serif;
-        }
-
-        .currency-number-label {
-            font-size: 12px;
-            opacity: 0.8;
-        }
-
-        /* انیمیشن‌های جدید */
-        @keyframes floatCurrency {
+        @keyframes spin {
             0% {
-                transform: translateY(100vh) translateX(-100px) rotate(0deg) scale(0.8);
-                opacity: 0;
+                transform: rotate(0deg);
             }
-            10% {
-                opacity: 0.8;
-            }
-            90% {
-                opacity: 0.8;
-            }
+
             100% {
-                transform: translateY(-150px) translateX(100px) rotate(360deg) scale(1.2);
-                opacity: 0;
+                transform: rotate(360deg);
             }
         }
 
-        @keyframes spinCoin {
+        @keyframes progress {
             0% {
-                transform: rotateY(0deg) rotateX(0deg) scale(1);
-                box-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+                width: 0%;
             }
-            25% {
-                transform: rotateY(90deg) rotateX(15deg) scale(1.05);
-                box-shadow: 0 0 50px rgba(59, 130, 246, 0.6);
-            }
+
             50% {
-                transform: rotateY(180deg) rotateX(0deg) scale(1.1);
-                box-shadow: 0 0 60px rgba(16, 185, 129, 0.7);
+                width: 70%;
             }
-            75% {
-                transform: rotateY(270deg) rotateX(-15deg) scale(1.05);
-                box-shadow: 0 0 50px rgba(245, 158, 11, 0.6);
-            }
+
             100% {
-                transform: rotateY(360deg) rotateX(0deg) scale(1);
-                box-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+                width: 100%;
             }
         }
 
-        @keyframes rotateSymbol {
-            0% {
-                transform: translateX(-50%) translateY(-50%) rotate(0deg);
-                opacity: 0.5;
-                filter: blur(0px);
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
             }
+
             50% {
-                opacity: 1;
-                filter: blur(0px);
-                text-shadow: 0 0 20px currentColor;
-            }
-            100% {
-                transform: translateX(-50%) translateY(-50%) rotate(360deg);
-                opacity: 0.5;
-                filter: blur(0px);
-            }
-        }
-
-        @keyframes shimmer {
-            0% {
-                transform: translateX(-100%);
-            }
-            100% {
-                transform: translateX(100%);
-            }
-        }
-
-        @keyframes drawChart {
-            to {
-                stroke-dashoffset: 0;
-            }
-        }
-
-        @keyframes gradientShift {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
+                transform: translateY(-20px) rotate(180deg);
             }
         }
 
@@ -454,6 +203,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -463,10 +213,28 @@
         .loader-complete {
             opacity: 0;
             visibility: hidden;
-            pointer-events: none;
         }
 
-        /* محتوای اصلی */
+        /* افکت‌های اضافی */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* محتوای اصلی - اصلاح شده */
         #mainContent {
             display: none;
             opacity: 1;
@@ -475,18 +243,6 @@
         .content-loaded {
             display: block;
             opacity: 1;
-            animation: contentFadeIn 0.8s ease;
-        }
-
-        @keyframes contentFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         /* استایل‌های دارک مود */
@@ -526,94 +282,9 @@
             border-color: #718096;
         }
 
-        /* استایل‌های ریسپانسیو */
-        @media (max-width: 768px) {
-            .currency-loader-text {
-                font-size: 22px;
-            }
-            
-            .currency-loader-subtext {
-                font-size: 14px;
-                max-width: 280px;
-            }
-            
-            .exchange-spinner {
-                width: 120px;
-                height: 120px;
-            }
-            
-            .coin-spinner {
-                width: 120px;
-                height: 120px;
-            }
-            
-            .coin-spinner::before {
-                width: 100px;
-                height: 100px;
-            }
-            
-            .currency-progress-container {
-                width: 280px;
-            }
-            
-            .currency-numbers {
-                gap: 15px;
-            }
-            
-            .currency-number {
-                min-width: 70px;
-            }
-            
-            .currency-number-value {
-                font-size: 16px;
-            }
-        }
+        /* استایل‌های ریسپانسیو جدید */
 
-        @media (max-width: 480px) {
-            .currency-loader-text {
-                font-size: 20px;
-            }
-            
-            .currency-loader-subtext {
-                font-size: 13px;
-                max-width: 250px;
-            }
-            
-            .exchange-spinner {
-                width: 100px;
-                height: 100px;
-                margin-bottom: 20px;
-            }
-            
-            .coin-spinner {
-                width: 100px;
-                height: 100px;
-            }
-            
-            .coin-spinner::before {
-                width: 85px;
-                height: 85px;
-            }
-            
-            .coin-spinner::after {
-                font-size: 14px;
-            }
-            
-            .currency-progress-container {
-                width: 250px;
-            }
-            
-            .currency-numbers {
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-            
-            .currency-number {
-                min-width: 60px;
-            }
-        }
-
-        /* استایل‌های باقیمانده اصلی */
+        /* هدر ریسپانسیو */
         .header-container {
             display: flex;
             flex-direction: column;
@@ -632,6 +303,7 @@
             }
         }
 
+        /* لایه موبایل */
         .mobile-header-layout {
             display: flex;
             flex-direction: column;
@@ -681,6 +353,7 @@
             }
         }
 
+        /* لایه دسکتاپ */
         .desktop-header-layout {
             display: none;
             width: 100%;
@@ -706,6 +379,7 @@
             gap: 1rem;
         }
 
+        /* منوی همبرگری برای موبایل */
         .mobile-menu-btn {
             display: block;
             position: fixed;
@@ -729,6 +403,7 @@
             }
         }
 
+        /* سایدبار ریسپانسیو */
         .sidebar-container {
             position: fixed;
             top: 0;
@@ -760,6 +435,7 @@
             }
         }
 
+        /* محتوای اصلی ریسپانسیو */
         .main-content-wrapper {
             margin-top: 1rem;
             padding: 0 1rem;
@@ -772,6 +448,7 @@
             }
         }
 
+        /* لایه overlay برای موبایل */
         .mobile-overlay {
             position: fixed;
             top: 0;
@@ -793,6 +470,7 @@
             }
         }
 
+        /* بهبود استایل‌های عمومی */
         .responsive-text {
             font-size: 1.5rem;
         }
@@ -803,6 +481,7 @@
             }
         }
 
+        /* استایل برای دکمه‌های موبایل */
         .btn-mobile-small {
             width: 40px;
             height: 40px;
@@ -818,6 +497,7 @@
             object-fit: cover;
         }
 
+        /* استایل برای dropdown موبایل */
         .dropdown-mobile {
             width: 120px;
         }
@@ -832,6 +512,7 @@
             height: 16px;
         }
 
+        /* دارک مود موبایل */
         .dark-mode-toggle-mobile {
             width: 40px;
             height: 20px;
@@ -856,79 +537,31 @@
 
 <body class="vazir dark:text-white overflow-x-hidden">
 
-    <!-- لودر جدید بازار ارز -->
-    <div id="currency-loader">
-        <div class="currency-flow">
-            <div class="currency-item"></div>
-            <div class="currency-item"></div>
-            <div class="currency-item"></div>
-            <div class="currency-item"></div>
-            <div class="currency-item"></div>
+    <!-- لودر فوق العاده زیبا -->
+    <div id="loader">
+        <div class="floating-elements">
+            <div class="floating-element element-1"></div>
+            <div class="floating-element element-2"></div>
+            <div class="floating-element element-3"></div>
         </div>
 
-        <div class="currency-loader-container">
-            <!-- اسپینر ارزی -->
-            <div class="exchange-spinner">
-                <div class="coin-spinner">
-                    <div class="coin-detail"></div>
-                </div>
-                <div class="rotating-currencies">
-                    <div class="currency-symbol">$</div>
-                    <div class="currency-symbol">€</div>
-                    <div class="currency-symbol">£</div>
-                    <div class="currency-symbol">¥</div>
+        <div class="loader-container pulse">
+            <div class="spinner-wrapper">
+                <div class="spinner spinner-1"></div>
+                <div class="spinner spinner-2"></div>
+                <div class="spinner spinner-3"></div>
+                <div class="logo-loader">
+                    <span><?php echo e(mb_substr(Auth::guard('sarafi')->user()->sarafi_name, 0, 1)); ?></span>
                 </div>
             </div>
 
-            <!-- متن لودر -->
-            <div class="currency-loader-text">سیستم صرافی اقصی</div>
-            <div class="currency-loader-name"><?php echo e(Auth::guard('sarafi')->user()->sarafi_name); ?></div>
-            
-            <div class="currency-loader-subtext">
-                در حال بارگذاری سیستم معاملات ارزی...
-                <br>
-                بازارهای جهانی در حال به‌روزرسانی
-            </div>
+            <div class="loader-text">صرافــی <?php echo e(Auth::guard('sarafi')->user()->sarafi_name); ?></div>
+            <div class="loader-subtext">در حال بارگذاری...</div>
 
-            <!-- اعداد ارزی -->
-            <div class="currency-numbers">
-                <div class="currency-number">
-                    <span class="currency-number-value">$1.25</span>
-                    <span class="currency-number-label">یورو/دلار</span>
-                </div>
-                <div class="currency-number">
-                    <span class="currency-number-value">£1.10</span>
-                    <span class="currency-number-label">پوند/دلار</span>
-                </div>
-                <div class="currency-number">
-                    <span class="currency-number-value">¥145</span>
-                    <span class="currency-number-label">ین/دلار</span>
-                </div>
-                <div class="currency-number">
-                    <span class="currency-number-value">₿45,200</span>
-                    <span class="currency-number-label">بیت‌کوین</span>
-                </div>
-            </div>
-
-            <!-- نوار پیشرفت -->
-            <div class="currency-progress-container">
-                <div class="progress-text">در حال بارگذاری...</div>
-                <div class="currency-progress"></div>
+            <div class="progress-bar">
+                <div class="progress"></div>
             </div>
         </div>
-
-        <!-- SVG برای گرادیانت نمودار -->
-        <svg style="position: absolute; width: 0; height: 0;">
-            <defs>
-                <linearGradient id="chartGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#ffd700" />
-                    <stop offset="25%" stop-color="#3b82f6" />
-                    <stop offset="50%" stop-color="#10b981" />
-                    <stop offset="75%" stop-color="#f59e0b" />
-                    <stop offset="100%" stop-color="#ef4444" />
-                </linearGradient>
-            </defs>
-        </svg>
     </div>
 
     <!-- محتوای اصلی -->
@@ -1020,6 +653,8 @@
                                                 class="w-4 h-4 ml-1" alt="en"> English</a></li>
                                 </ul>
                             </div>
+
+                            
                         </div>
                     </div>
                 </div>
@@ -1062,6 +697,8 @@
                                             alt="en"> English</a></li>
                             </ul>
                         </div>
+
+                        
                     </div>
 
                     <!-- سرچ، اعلان، پروفایل -->
@@ -1531,6 +1168,9 @@
                             </svg>
                         </button>
                         <div x-show="openItems.accounts" x-transition class="mr-6 mt-1 space-y-1">
+                            
+
+
                             <a href="<?php echo e(route('sarafi.profit-rates')); ?>"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('register-accounts', 'accounts')"
@@ -1883,11 +1523,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const loader = document.getElementById('currency-loader');
+            const loader = document.getElementById('loader');
             const mainContent = document.getElementById('mainContent');
-            const progressBar = document.querySelector('.currency-progress');
-            const progressText = document.querySelector('.progress-text');
-            const currencyValues = document.querySelectorAll('.currency-number-value');
+            const progressBar = document.querySelector('.progress');
 
             // مدیریت منوی موبایل
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -1927,49 +1565,18 @@
                 });
             }
 
-            // مخفی کردن محتوای اصلی در ابتدا
+            // محتوا را ابتدا مخفی کن
             mainContent.style.display = 'none';
 
             let progress = 0;
             let fakeProgressInterval;
 
-            // شبیه‌سازی نرخ ارز
-            function simulateExchangeRates() {
-                currencyValues.forEach(value => {
-                    const symbol = value.textContent.charAt(0);
-                    let number = parseFloat(value.textContent.substring(1));
-                    
-                    // تغییرات کوچک تصادفی
-                    const change = (Math.random() - 0.5) * 0.02;
-                    number = number * (1 + change);
-                    
-                    // فرمت کردن عدد
-                    if (symbol === '₿') {
-                        value.textContent = `${symbol}${Math.round(number).toLocaleString()}`;
-                    } else {
-                        value.textContent = `${symbol}${number.toFixed(2)}`;
-                    }
-                });
-            }
-
-            // شروع شبیه‌سازی
-            const rateInterval = setInterval(simulateExchangeRates, 2000);
-
             function startFakeProgress() {
                 fakeProgressInterval = setInterval(() => {
-                    progress += Math.random() * 20 + 5;
-                    if (progress > 95) progress = 95;
+                    progress += Math.random() * 30;
+                    if (progress > 90) progress = 90;
                     progressBar.style.width = progress + '%';
-                    
-                    // به‌روزرسانی متن پیشرفت
-                    if (progress < 30) {
-                        progressText.textContent = 'در حال بارگذاری ماژول‌ها...';
-                    } else if (progress < 60) {
-                        progressText.textContent = 'در حال بارگذاری داده‌های بازار...';
-                    } else if (progress < 90) {
-                        progressText.textContent = 'آماده‌سازی نهایی...';
-                    }
-                }, 200);
+                },10);
             }
 
             startFakeProgress();
@@ -1978,8 +1585,6 @@
                 clearInterval(fakeProgressInterval);
                 progress = 100;
                 progressBar.style.width = progress + '%';
-                progressText.textContent = 'بارگذاری کامل شد!';
-                clearInterval(rateInterval);
 
                 setTimeout(() => {
                     loader.classList.add('loader-complete');
@@ -1989,7 +1594,7 @@
                     setTimeout(() => {
                         loader.style.display = 'none';
                     }, 400);
-                }, 800);
+                }, 600);
             });
 
             // مدیریت کلیک روی لینک‌ها
