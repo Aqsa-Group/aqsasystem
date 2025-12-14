@@ -10,6 +10,7 @@ use App\Models\Sarafi\Remittances;
 use App\Models\Sarafi\Revenue;
 use App\Models\Sarafi\Transaction;
 use App\Models\Sarafi\User;
+use App\Models\Sarafi\ProfitRate;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -116,49 +117,80 @@ class Dashboard extends Component
         // جمع ارزهای صندوق و حساب بانکی
         $safe = CurrencySafe::where('admin_id', $adminId)
             ->select([
-                'usd', 'afn', 'eur', 'irr', 'aed', 'try', 'cny',
-                'pkr', 'gbp', 'jpy', 'sar', 'inr'
+                'usd',
+                'afn',
+                'eur',
+                'irr',
+                'aed',
+                'try',
+                'cny',
+                'pkr',
+                'gbp',
+                'jpy',
+                'sar',
+                'inr'
             ])->first();
 
         $bank = BankAccount::where('admin_id', $adminId)
             ->select([
-                'usd', 'afn', 'eur', 'irr', 'aed', 'try', 'cny',
-                'pkr', 'gbp', 'jpy', 'sar', 'inr'
+                'usd',
+                'afn',
+                'eur',
+                'irr',
+                'aed',
+                'try',
+                'cny',
+                'pkr',
+                'gbp',
+                'jpy',
+                'sar',
+                'inr'
             ])->first();
 
+
         // مجموع تمام ارزها
+        $currencies = ['usd', 'afn', 'eur', 'irr', 'aed', 'try', 'cny', 'pkr', 'gbp', 'jpy', 'sar', 'inr'];
+
         $totals = [];
-        foreach (['usd','afn','eur','irr','aed','try','cny','pkr','gbp','jpy','sar','inr'] as $c) {
+        foreach ($currencies as $c) {
             $totals[$c] = ($safe->$c ?? 0) + ($bank->$c ?? 0);
         }
 
-        // نرخ ارز
-        $rates = ExchangeRates::where('admin_id', $adminId)->first();
+        // دریافت نرخ‌ها (buy cash)
+        $rates = ProfitRate::where('admin_id', $adminId)->first();
 
         $totalInUsd = 0;
 
         // USD مستقیم
-        $totalInUsd += $totals['usd'];
+        $totalInUsd += $totals['usd'] ?? 0;
 
+        // مپ ارز → ستون buy_cash
         $map = [
-            'afn' => 'afn_sell',
-            'eur' => 'eur_sell',
-            'irr' => 'irr_sell',
-            'aed' => 'aed_sell',
-            'try' => 'try_sell',
-            'cny' => 'cny_sell',
-            'pkr' => 'pkr_sell',
-            'gbp' => 'gbp_sell',
-            'jpy' => 'jpy_sell',
-            'sar' => 'sar_sell',
-            'inr' => 'inr_sell',
+            'afn' => 'afn_buy_cash',
+            'eur' => 'eur_buy_cash',
+            'irr' => 'irr_buy_cash',
+            'aed' => 'aed_buy_cash',
+            'try' => 'try_buy_cash',
+            'cny' => 'cny_buy_cash',
+            'pkr' => 'pkr_buy_cash',
+            'gbp' => 'gbp_buy_cash',
+            'jpy' => 'jpy_buy_cash',
+            'sar' => 'sar_buy_cash',
+            'inr' => 'inr_buy_cash',
         ];
 
-        foreach ($map as $currency => $rateColumn) {
-            if ($totals[$currency] != 0 && $rates->$rateColumn != 0) {
-                $totalInUsd += $totals[$currency] / $rates->$rateColumn;
+        if ($rates) {
+            foreach ($map as $currency => $rateColumn) {
+                $amount = $totals[$currency] ?? 0;
+                $rate   = $rates->$rateColumn ?? 0;
+
+                if ($amount > 0 && $rate > 0) {
+                    $totalInUsd += $amount / $rate;
+                }
             }
         }
+
+        $this->total_balance_usd = round($totalInUsd, 2);
 
         $this->total_balance_usd = round($totalInUsd, 2);
 

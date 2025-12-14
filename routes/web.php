@@ -314,6 +314,18 @@ Route::get('/sarafi/changersdeal', function () {
 
 
 
+Route::get('/sarafi/changers_reciver', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.changer-recive');
+})->name('sarafi.changer_recive');
+
+
+
+
+
+
 
 
 

@@ -21,9 +21,8 @@ use NumberFormatter;
 class Transactions extends Component
 {
 
-    public $searchedCustomer = null; // مشتری جستجو شده از کل سیستم
-    public $showCustomerModal = false; // نمایش مودال ثبت م 
-
+    public $searchedCustomer = null; 
+    public $showCustomerModal = false; 
 
     use WithFileUploads;
     public $confirmDeleteId = null;

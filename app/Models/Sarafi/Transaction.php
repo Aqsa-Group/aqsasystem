@@ -30,7 +30,8 @@ class Transaction extends Model
         'conversion_transfer_id',
         'conversion_in_account_id',
         'account_to_id',
-        'remittance_id'
+        'remittance_id',
+        'changerdeal_id'
     ];
 
     protected $casts = [
@@ -56,6 +57,12 @@ class Transaction extends Model
     public function conversionTransfer()
     {
         return $this->belongsTo(ConversionTransfers::class, 'conversion_transfer_id');
+    }
+
+
+    public function changerdeal()
+    {
+        return $this->belongsTo(ChangerDeal::class, 'changerdeal_id');
     }
 
     public function accounttoid()

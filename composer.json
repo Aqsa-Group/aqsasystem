@@ -30,6 +30,7 @@
         "faisal50x/blade-ionicons": "^1.1",
         "filament/filament": "3.3",
         "filament/notifications": "^3.3",
+        "hekmatinasser/verta": "^8.5",
         "intervention/image": "^2.7",
         "joshembling/image-optimizer": "^1.6",
         "laravel/framework": "^12.0",

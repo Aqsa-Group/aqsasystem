@@ -1322,6 +1322,50 @@
                         </div>
 
                     </div>
+
+
+                        <!-- معاملات بین صرافی ها-->
+                    <div>
+                        <button @click="openItems.changersdeal = !openItems.changersdeal; active = 'changersdeal'"
+                            :class="(active === 'changersdeal' || active === 'edit-changersdeal') ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            <span class="flex items-center gap-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/edit.svg')); ?>" class="w-5 h-5"
+                                    :class="(active === 'changersdeal' || active === 'edit-accounts') ? 'filter invert brightness-0' : 'text-gray-500'">
+                                      ارسال و دریافت از صرافان
+                                </span>
+                            <svg :class="[openItems.changersdeal ? 'rotate-180' : '', (active === 'changersdeal' || active === 'edit-accounts') ? 'text-white' : 'text-gray-500']"
+                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="openItems.changersdeal" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="<?php echo e(route('sarafi.changersdeal')); ?>"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="setActive('edit-accounts', 'changersdeal')"
+                                :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/edit.svg')); ?>" class="w-4 h-4"
+                                    :class="active === 'edit-accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
+                              ارسال به صرافی
+                            </a>
+                        </div>
+
+                             <div x-show="openItems.changersdeal" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="<?php echo e(route('sarafi.changer_recive')); ?>"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="setActive('edit-accounts', 'changersdeal')"
+                                :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/edit.svg')); ?>" class="w-4 h-4"
+                                    :class="active === 'edit-accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
+                              دریافت از صرافی
+                            </a>
+                        </div>
+
+
+                    </div>
+
                     <!-- ویرایش حسابات و نرخ ارز -->
                     <div>
                         <button @click="openItems.editAccounts = !openItems.editAccounts; active = 'editAccounts'"

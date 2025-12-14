@@ -110,7 +110,9 @@ class ConversionInAccount extends Component
      */
     public function render()
     {
-        $user = Auth::guard('sarafi')->user();
+            $user = Auth::guard('sarafi')->user();
+            $adminId = $user->admin_id ?? $user->id;
+
 
         if (!$user) {
             return view('livewire.sarafi.conversion-in-account', [
@@ -119,7 +121,6 @@ class ConversionInAccount extends Component
             ]);
         }
 
-        $adminId = $user->admin_id ?? $user->id;
 
         if (empty($this->customers)) {
             $this->loadCustomers($adminId);
