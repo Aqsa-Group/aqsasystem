@@ -385,49 +385,7 @@ class AccountingResource extends Resource
                         'صفایی' => 'صفایی',
                     ]),
 
-                SelectFilter::make('floor')
-                    ->label('طبقه')
-                    ->options(function () {
-                        $user = Auth::user();
-
-                        // دریافت مارکت‌های مجاز کاربر
-                        $markets = $user->role === 'superadmin'
-                            ? Market::pluck('id')
-                            : Market::where('admin_id', $user->role === 'admin' ? $user->id : $user->admin_id)
-                            ->pluck('id');
-
-                        // طبقات دوکان‌ها
-                        $shopFloors = Shop::whereIn('market_id', $markets)
-                            ->whereNotNull('floor')
-                            ->pluck('floor')
-                            ->toArray();
-
-                        // طبقات غرفه‌ها
-                        $boothFloors = Booth::whereIn('market_id', $markets)
-                            ->whereNotNull('floor')
-                            ->pluck('floor')
-                            ->toArray();
-
-                        // ترکیب و حذف تکراری
-                        $floors = array_unique(array_merge($shopFloors, $boothFloors));
-
-                        // تبدیل به لیست فیلتر (مثلاً: 1 => "طبقه 1")
-                        return collect($floors)->mapWithKeys(fn($f) => [$f => "طبقه $f"]);
-                    })
-
-                    ->query(function (Builder $query, $state) {
-
-                        // ✔ اگر هیچ طبقه‌ای انتخاب نشده = همه را نشان بده
-                        if ($state === null || $state === '') {
-                            return $query;
-                        }
-
-                        return $query->where(function ($q) use ($state) {
-                            $q->whereHas('shop', fn($s) => $s->where('floor', $state))
-                                ->orWhereHas('booth', fn($b) => $b->where('floor', $state));
-                        });
-                    }),
-
+           
 
 
 

@@ -323,6 +323,16 @@ Route::get('/sarafi/changers_reciver', function () {
 
 
 
+Route::get('/sarafi/sarafi-reports', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.sarafi-reports');
+})->name('sarafi.sarafi_reports');
+
+
+
+
 
 
 

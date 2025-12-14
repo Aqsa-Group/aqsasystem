@@ -1225,8 +1225,12 @@
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('register-accounts', 'accounts')"
                                 :class="active === 'register-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                                <img src="{{ asset('assets/sarafi/all_icon/add.svg') }}" class="w-4 h-4"
-                                    :class="active === 'register-accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
+               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.5 12.6499V16.3499C18.5 19.4699 15.59 21.9999 12 21.9999C8.41 21.9999 5.5 19.4699 5.5 16.3499V12.6499C5.5 15.7699 8.41 17.9999 12 17.9999C15.59 17.9999 18.5 15.7699 18.5 12.6499Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18.5 7.65C18.5 8.56 18.25 9.4 17.81 10.12C16.74 11.88 14.54 13 12 13C9.46 13 7.26 11.88 6.19 10.12C5.75 9.4 5.5 8.56 5.5 7.65C5.5 6.09 6.22999 4.68 7.39999 3.66C8.57999 2.63 10.2 2 12 2C13.8 2 15.42 2.63 16.6 3.65C17.77 4.68 18.5 6.09 18.5 7.65Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18.5 7.65V12.65C18.5 15.77 15.59 18 12 18C8.41 18 5.5 15.77 5.5 12.65V7.65C5.5 4.53 8.41 2 12 2C13.8 2 15.42 2.63 16.6 3.65C17.77 4.68 18.5 6.09 18.5 7.65Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
                                 ثبت نرخ ارزها
                             </a>
                         </div>
@@ -1254,8 +1258,23 @@
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('upload-bank', 'bankFiles')"
                                 :class="active === 'upload-bank' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                                <img src="{{ asset('assets/sarafi/all_icon/upload.svg') }}" class="w-4 h-4"
-                                    :class="active === 'upload-bank' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5.54003 11.12C0.860029 11.45 0.860029 18.26 5.54003 18.59H7.46007"
+                                        stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path
+                                        d="M5.59003 11.12C2.38003 2.19002 15.92 -1.37998 17.47 8.00002C21.8 8.55002 23.55 14.32 20.27 17.19C19.27 18.1 17.98 18.6 16.63 18.59H16.54"
+                                        stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path
+                                        d="M17 16.53C17 17.27 16.84 17.97 16.54 18.59C16.46 18.77 16.37 18.94 16.27 19.1C15.41 20.55 13.82 21.53 12 21.53C10.18 21.53 8.58998 20.55 7.72998 19.1C7.62998 18.94 7.54002 18.77 7.46002 18.59C7.16002 17.97 7 17.27 7 16.53C7 13.77 9.24 11.53 12 11.53C14.76 11.53 17 13.77 17 16.53Z"
+                                        stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M10.4399 16.53L11.4299 17.5201L13.5599 15.55" stroke="#292D32"
+                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+
                                 ثبت احواله جات
                             </a>
                         </div>
@@ -1284,8 +1303,10 @@
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('control-transactions', 'transactions')"
                                 :class="active === 'control-transactions' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                                <img src="{{ asset('assets/sarafi/all_icon/eye.svg') }}" class="w-4 h-4"
-                                    :class="active === 'control-transactions' ? 'filter invert brightness-0' : 'text-gray-500'">
+                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M15.24 2H8.76004C5.00004 2 4.71004 5.38 6.74004 7.22L17.26 16.78C19.29 18.62 19 22 15.24 22H8.76004C5.00004 22 4.71004 18.62 6.74004 16.78L17.26 7.22C19.29 5.38 19 2 15.24 2Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
                                 احواله های تایید نشده
                             </a>
                         </div>
@@ -1314,8 +1335,13 @@
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('deleted-transactions', 'deletedTransactions')"
                                 :class="active === 'deleted-transactions' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                                <img src="{{ asset('assets/sarafi/all_icon/archive.svg') }}" class="w-4 h-4"
-                                    :class="active === 'deleted-transactions' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M17.9 9.04997C15.72 8.82997 13.52 8.71997 11.33 8.71997C10.03 8.71997 8.72997 8.78997 7.43997 8.91997L6.09998 9.04997" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.70996 8.38994L9.84996 7.52994C9.94996 6.90994 10.03 6.43994 11.14 6.43994H12.86C13.97 6.43994 14.0499 6.92994 14.1499 7.52994L14.2899 8.37994" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M16.49 9.12988L16.06 15.7299C15.99 16.7599 15.93 17.5599 14.1 17.5599H9.89C8.06 17.5599 7.99999 16.7599 7.92999 15.7299L7.5 9.12988" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
                                 معاملات حذف شده و ویرایش شده
                             </a>
                         </div>
@@ -1347,9 +1373,15 @@
                                 @click="setActive('view-reports', 'reports')"
                                 :class="active === 'view-reports' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
 
-                                <img src="{{ asset('assets/sarafi/all_icon/chart.svg') }}" class="w-4 h-4"
-                                    :class="active === 'view-reports' ? 'filter invert brightness-0' : 'text-gray-500'">
-
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17 21H7C3 21 2 20 2 16V8C2 4 3 3 7 3H17C21 3 22 4 22 8V16C22 20 21 21 17 21Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14 8H19" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15 12H19" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M17 16H19" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.49994 11.2899C9.49958 11.2899 10.3099 10.4796 10.3099 9.47992C10.3099 8.48029 9.49958 7.66992 8.49994 7.66992C7.50031 7.66992 6.68994 8.48029 6.68994 9.47992C6.68994 10.4796 7.50031 11.2899 8.49994 11.2899Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 16.33C11.86 14.88 10.71 13.74 9.26 13.61C8.76 13.56 8.25 13.56 7.74 13.61C6.29 13.75 5.14 14.88 5 16.33" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+    
                                 گزارش حسابات
                             </a>
 
@@ -1359,8 +1391,14 @@
                                 @click="setActive('view-revenue', 'reports')"
                                 :class="active === 'view-revenue' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
 
-                                <img src="{{ asset('assets/sarafi/all_icon/chart.svg') }}" class="w-4 h-4"
-                                    :class="active === 'view-revenue' ? 'filter invert brightness-0' : 'text-gray-500'">
+                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.87988 18.1501V16.0801" stroke="#292D32" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M12 18.15V14.01" stroke="#292D32" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M17.1201 18.1499V11.9299" stroke="#292D32" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M17.1199 5.8501L16.6599 6.3901C14.1099 9.3701 10.6899 11.4801 6.87988 12.4301" stroke="#292D32" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M14.1899 5.8501H17.1199V8.7701" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
 
                                 عواید معاملات
                             </a>
@@ -1370,7 +1408,7 @@
                     </div>
 
 
-                        <!-- معاملات بین صرافی ها-->
+                    <!-- معاملات بین صرافی ها-->
                     <div>
                         <button @click="openItems.changersdeal = !openItems.changersdeal; active = 'changersdeal'"
                             :class="(active === 'changersdeal' || active === 'edit-changersdeal') ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
@@ -1378,8 +1416,8 @@
                             <span class="flex items-center gap-2">
                                 <img src="{{ asset('assets/sarafi/all_icon/edit.svg') }}" class="w-5 h-5"
                                     :class="(active === 'changersdeal' || active === 'edit-accounts') ? 'filter invert brightness-0' : 'text-gray-500'">
-                                      ارسال و دریافت از صرافان
-                                </span>
+                                ارسال و دریافت از صرافان
+                            </span>
                             <svg :class="[openItems.changersdeal ? 'rotate-180' : '', (active === 'changersdeal' || active === 'edit-accounts') ? 'text-white' : 'text-gray-500']"
                                 class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -1392,22 +1430,68 @@
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('edit-accounts', 'changersdeal')"
                                 :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                                <img src="{{ asset('assets/sarafi/all_icon/edit.svg') }}" class="w-4 h-4"
-                                    :class="active === 'edit-accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
-                              ارسال به صرافی
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
+                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M10.5898 7.67993H14.8298V11.9299" stroke="#292D32" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M14.8299 7.67993L9.16992 13.3399" stroke="#292D32" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51" stroke="#292D32"
+                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                ارسال به صرافی
                             </a>
                         </div>
 
-                             <div x-show="openItems.changersdeal" x-transition class="mr-6 mt-1 space-y-1">
+                        <div x-show="openItems.changersdeal" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="{{ route('sarafi.changer_recive') }}"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('edit-accounts', 'changersdeal')"
                                 :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
-                                <img src="{{ asset('assets/sarafi/all_icon/edit.svg') }}" class="w-4 h-4"
-                                    :class="active === 'edit-accounts' ? 'filter invert brightness-0' : 'text-gray-500'">
-                              دریافت از صرافی
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
+                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M10.5898 13.3398H14.8298V9.09985" stroke="#292D32" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M14.8299 13.3399L9.16992 7.67993" stroke="#292D32" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51" stroke="#292D32"
+                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                دریافت از صرافی
                             </a>
                         </div>
+
+                        <div x-show="openItems.changersdeal" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="{{ route('sarafi.sarafi_reports') }}"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="setActive('edit-accounts', 'changersdeal')"
+                                :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 hover:bg-gray-100'">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M2 22H22" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M9.75 4V22H14.25V4C14.25 2.9 13.8 2 12.45 2H11.55C10.2 2 9.75 2.9 9.75 4Z"
+                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M3 10V22H7V10C7 8.9 6.6 8 5.4 8H4.6C3.4 8 3 8.9 3 10Z" stroke="#292D32"
+                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M17 15V22H21V15C21 13.9 20.6 13 19.4 13H18.6C17.4 13 17 13.9 17 15Z"
+                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+
+                                گزارش حسابات صرافی ها
+                            </a>
+                        </div>
+
 
 
                     </div>
