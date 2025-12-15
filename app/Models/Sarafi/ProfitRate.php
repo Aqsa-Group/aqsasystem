@@ -20,7 +20,7 @@ class ProfitRate extends Model
         'usd_sell_bank',
         'afn_buy_cash',
         'afn_buy_bank',
-        'afn_sell_cash',
+        'afn_sell_cash', 
         'afn_sell_bank',
         'irr_buy_cash',
         'irr_buy_bank',
@@ -80,6 +80,50 @@ public function getCurrencyNameAttribute()
     {
         return $this->belongsTo(User::class, 'admin_id');
     }
+
+    protected $casts = [
+
+    'usd_buy_cash'  => 'float',
+    'usd_buy_bank'  => 'float',
+    'usd_sell_cash' => 'float',
+    'usd_sell_bank' => 'float',
+
+    'afn_buy_cash'  => 'float',
+    'afn_buy_bank'  => 'float',
+    'afn_sell_cash' => 'float',
+    'afn_sell_bank' => 'float',
+
+    'irr_buy_cash'  => 'float',
+    'irr_buy_bank'  => 'float',
+    'irr_sell_cash' => 'float',
+    'irr_sell_bank' => 'float',
+
+    'eur_buy_cash'  => 'float',
+    'eur_buy_bank'  => 'float',
+    'eur_sell_cash' => 'float',
+    'eur_sell_bank' => 'float',
+
+    'pkr_buy_cash'  => 'float',
+    'pkr_buy_bank'  => 'float',
+    'pkr_sell_cash' => 'float',
+    'pkr_sell_bank' => 'float',
+
+    'aed_buy_cash'  => 'float',
+    'aed_buy_bank'  => 'float',
+    'aed_sell_cash' => 'float',
+    'aed_sell_bank' => 'float',
+
+    'cny_buy_cash'  => 'float',
+    'cny_buy_bank'  => 'float',
+    'cny_sell_cash' => 'float',
+    'cny_sell_bank' => 'float',
+
+    'try_buy_cash'  => 'float',
+    'try_buy_bank'  => 'float',
+    'try_sell_cash' => 'float',
+    'try_sell_bank' => 'float',
+];
+
 
 
 }

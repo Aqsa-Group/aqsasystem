@@ -93,7 +93,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         <?php
                         $allCurrencies = ['usd', 'afn', 'irr', 'eur', 'pkr', 'aed', 'try', 'cny'];
                         $formCurrencies = array_filter($allCurrencies, function($currency) {
-                            return $currency !== $this->source_currency;
+                        return $currency !== $this->source_currency;
                         });
                         ?>
 
@@ -106,7 +106,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <?php echo e($currencyName); ?>
 
                             </td>
-                            
+
                             <!-- خرید نقدی -->
                             <td class="px-2 py-2">
                                 <input type="text" wire:model="formData.<?php echo e($currencyCode); ?>.buy_cash"
@@ -123,7 +123,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </td>
-                            
+
                             <!-- خرید بانکی -->
                             <td class="px-2 py-2">
                                 <input type="text" wire:model="formData.<?php echo e($currencyCode); ?>.buy_bank"
@@ -140,7 +140,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </td>
-                            
+
                             <!-- فروش نقدی -->
                             <td class="px-2 py-2">
                                 <input type="text" wire:model="formData.<?php echo e($currencyCode); ?>.sell_cash"
@@ -157,7 +157,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </td>
-                            
+
                             <!-- فروش بانکی -->
                             <td class="px-2 py-2">
                                 <input type="text" wire:model="formData.<?php echo e($currencyCode); ?>.sell_bank"
@@ -180,7 +180,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 </table>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-6 mt-6 justify-center items-center text-center">
+            <div
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-6 mt-6 justify-center items-center text-center">
                 <button type="submit"
                     class="bg-[#2563EB] hover:bg-[#1E4FD6] transition-all duration-200 text-[16px] vazir font-semibold rounded-[10px] px-8 sm:px-20 py-3 text-white shadow-md w-full sm:w-auto">
                     <?php echo e($isEditing ? 'بروزرسانی' : 'ثبت'); ?>
@@ -195,130 +196,151 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
         </form>
     </div>
 
-  <!-- جدول زیر فرم -->
-<div class="w-full flex flex-col bg-[#F5F5F5] p-1 md:p-4 lg:p-6 rounded-[12px] overflow-x-auto mx-auto"
-    style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-    <div class="flex gap-2 border border-[#8C8C8C] rounded-[12px] p-6 mb-4">
-        <img src="<?php echo e(asset('assets/sarafi/all_icon/exchange-rate.svg')); ?>" alt="">
-        <p>جدول قیمت ارز</p>
-    </div>
+    <!-- جدول زیر فرم -->
+    <div class="w-full flex flex-col bg-[#F5F5F5] p-1 md:p-4 lg:p-6 rounded-[12px] overflow-x-auto mx-auto"
+        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+        <div class="flex gap-2 border border-[#8C8C8C] rounded-[12px] p-6 mb-4">
+            <img src="<?php echo e(asset('assets/sarafi/all_icon/exchange-rate.svg')); ?>" alt="">
+            <p>جدول قیمت ارز</p>
+        </div>
 
-    <!-- بدنه جدول با اسکرول -->
-    <div class="flex-1 overflow-x-auto">
-        <table class="w-full min-w-[1000px] text-sm md:text-base text-center text-gray-500 dark:text-gray-400 border-collapse">
-            <thead class="bg-[#2B65E5] text-white">
-                <tr>
-                    <th class="px-4 py-3 border-l border-white">ارز مبدأ</th>
-                    <?php
-                    $allCurrencies = ['usd', 'afn', 'irr', 'eur', 'pkr', 'aed', 'try', 'cny'];
-                    $tableCurrencies = $allCurrencies; // نمایش همه ارزها
-                    ?>
+        <!-- بدنه جدول با اسکرول -->
+        <div class="flex-1 overflow-x-auto">
+            <table
+                class="w-full min-w-[1000px] text-sm md:text-base text-center text-gray-500 dark:text-gray-400 border-collapse">
+                <thead class="bg-[#2B65E5] text-white">
+                    <tr>
+                        <th class="px-4 py-3 border-l border-white">ارز مبدأ</th>
+                        <?php
+                        $allCurrencies = ['usd', 'afn', 'irr', 'eur', 'pkr', 'aed', 'try', 'cny'];
+                        $tableCurrencies = $allCurrencies; // نمایش همه ارزها
+                        ?>
 
-                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $tableCurrencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <?php
-                    $currencyName = $this->getCurrencyName($currencyCode);
-                    ?>
-                    <th class="px-4 py-3 border-l border-white"><?php echo e($currencyName); ?></th>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
-                    <th class="px-4 py-3">تاریخ</th>
-                    <th class="px-4 py-3">عملیات</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $records; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $record): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                <tr class="bg-transparent dark:bg-gray-800 dark:hover:bg-gray-700 hover:bg-gray-50">
-                    <!-- ارز مبدأ -->
-                    <td class="px-3 py-2 font-medium border-l bg-blue-50">
-                        <span class="font-bold text-blue-700"><?php echo e($this->getCurrencyName($record->source_currency)); ?></span>
-                        <div class="text-xs text-gray-500 mt-1">نرخ‌ها نسبت به این ارز</div>
-                    </td>
+                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $tableCurrencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php
+                        $currencyName = $this->getCurrencyName($currencyCode);
+                        ?>
+                        <th class="px-4 py-3 border-l border-white"><?php echo e($currencyName); ?></th>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                        <th class="px-4 py-3">تاریخ</th>
+                        <th class="px-4 py-3">عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $records; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $record): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <tr class="bg-transparent dark:bg-gray-800 dark:hover:bg-gray-700 hover:bg-gray-50">
+                        <!-- ارز مبدأ -->
+                        <td class="px-3 py-2 font-medium border-l bg-blue-50">
+                            <span class="font-bold text-blue-700"><?php echo e($this->getCurrencyName($record->source_currency)); ?></span>
+                            <div class="text-xs text-gray-500 mt-1">نرخ‌ها نسبت به این ارز</div>
+                        </td>
 
-                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $tableCurrencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $tableCurrencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <td class="px-3 py-3 border-l">
                             <!--[if BLOCK]><![endif]--><?php if($currencyCode !== $record->source_currency): ?>
-                                <div class="space-y-2">
-                                    <!-- خرید نقدی -->
-                                    <div class="flex justify-between items-center text-sm">
-                                        <span class="text-gray-600">خرید نقدی:</span>
-                                        <span class="font-medium"><?php echo e($record->{$currencyCode . '_buy_cash'} ?? '-'); ?></span>
-                                    </div>
-                                    
-                                    <!-- خرید بانکی -->
-                                    <div class="flex justify-between items-center text-sm">
-                                        <span class="text-gray-600">خرید بانکی:</span>
-                                        <span class="font-medium"><?php echo e($record->{$currencyCode . '_buy_bank'} ?? '-'); ?></span>
-                                    </div>
-                                    
-                                    <!-- فروش نقدی -->
-                                    <div class="flex justify-between items-center text-sm">
-                                        <span class="text-gray-600">فروش نقدی:</span>
-                                        <span class="font-medium"><?php echo e($record->{$currencyCode . '_sell_cash'} ?? '-'); ?></span>
-                                    </div>
-                                    
-                                    <!-- فروش بانکی -->
-                                    <div class="flex justify-between items-center text-sm">
-                                        <span class="text-gray-600">فروش بانکی:</span>
-                                        <span class="font-medium"><?php echo e($record->{$currencyCode . '_sell_bank'} ?? '-'); ?></span>
-                                    </div>
+                            <div class="space-y-2">
+                                <!-- خرید نقدی -->
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-gray-600">خرید نقدی:</span>
+                                    <span class="font-medium">
+                                        <?php echo e($record->{$currencyCode . '_buy_cash'} !== null
+                                        ? number_format($record->{$currencyCode . '_buy_cash'}, 3)
+                                        : '-'); ?>
+
+                                    </span>
                                 </div>
+
+                                <!-- خرید بانکی -->
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-gray-600">خرید بانکی:</span>
+                                    <span class="font-medium">
+                                        <?php echo e($record->{$currencyCode . '_buy_bank'} !== null
+                                        ? number_format($record->{$currencyCode . '_buy_bank'}, 3)
+                                        : '-'); ?>
+
+                                    </span>
+                                </div>
+
+                                <!-- فروش نقدی -->
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-gray-600">فروش نقدی:</span>
+                                    <span class="font-medium">
+                                        <?php echo e($record->{$currencyCode . '_sell_cash'} !== null
+                                        ? number_format($record->{$currencyCode . '_sell_cash'}, 3)
+                                        : '-'); ?>
+
+                                    </span>
+                                </div>
+
+                                <!-- فروش بانکی -->
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-gray-600">فروش بانکی:</span>
+                                    <span class="font-medium">
+                                        <?php echo e($record->{$currencyCode . '_sell_bank'} !== null
+                                        ? number_format($record->{$currencyCode . '_sell_bank'}, 3)
+                                        : '-'); ?>
+
+                                    </span>
+                                </div
+                            </div>
                             <?php else: ?>
-                                <!-- اگر این ارز همان ارز مبدأ باشد، سلول خالی می‌ماند -->
-                                <div class="text-center text-gray-300 py-4">
-                                    <span class="text-sm">-</span>
-                                </div>
+                            <!-- اگر این ارز همان ارز مبدأ باشد، سلول خالی می‌ماند -->
+                            <div class="text-center text-gray-300 py-4">
+                                <span class="text-sm">-</span>
+                            </div>
                             <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </td>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
 
-                    <!-- تاریخ -->
-                    <td class="px-3 py-2 font-medium">
-                        <?php echo e(\Morilog\Jalali\Jalalian::fromDateTime($record->created_at)->format('Y/m/d')); ?>
+                        <!-- تاریخ -->
+                        <td class="px-3 py-2 font-medium">
+                            <?php echo e(\Morilog\Jalali\Jalalian::fromDateTime($record->created_at)->format('Y/m/d')); ?>
 
-                    </td>
+                        </td>
 
-                    <!-- عملیات -->
-                    <td class="py-4">
-                        <div class="flex justify-center gap-2">
-                            <!-- دکمه ویرایش -->
-                            <button wire:click="edit(<?php echo e($record->id); ?>)"
-                                class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-blue-100"
-                                title="ویرایش">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>" class="w-5 h-5"
-                                    alt="Edit">
-                            </button>
+                        <!-- عملیات -->
+                        <td class="py-4">
+                            <div class="flex justify-center gap-2">
+                                <!-- دکمه ویرایش -->
+                                <button wire:click="edit(<?php echo e($record->id); ?>)"
+                                    class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-blue-100"
+                                    title="ویرایش">
+                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>" class="w-5 h-5"
+                                        alt="Edit">
+                                </button>
 
-                            <!-- دکمه حذف -->
-                            <button wire:click="confirmDelete(<?php echo e($record->id); ?>)"
-                                class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-red-100"
-                                title="حذف">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>" class="w-6 h-6"
-                                    alt="Delete">
-                            </button>
+                                <!-- دکمه حذف -->
+                                <button wire:click="confirmDelete(<?php echo e($record->id); ?>)"
+                                    class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-red-100"
+                                    title="حذف">
+                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>" class="w-6 h-6"
+                                        alt="Delete">
+                                </button>
 
-                            <!-- دکمه پرینت -->
-                            <button wire:click="print(<?php echo e($record->id); ?>)"
-                                class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-green-100"
-                                title="پرینت">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>" class="w-7 h-7"
-                                    alt="Print">
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                <tr>
-                    <?php
-                    $colspan = count($tableCurrencies) + 3; // +3 برای ارز مبدأ، تاریخ و عملیات
-                    ?>
-                    <td colspan="<?php echo e($colspan); ?>" class="px-4 py-8 text-center text-gray-500">
-                        هیچ داده‌ای یافت نشد
-                    </td>
-                </tr>
-                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-            </tbody>
-        </table>
+                                <!-- دکمه پرینت -->
+                                <button wire:click="print(<?php echo e($record->id); ?>)"
+                                    class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-green-100"
+                                    title="پرینت">
+                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>" class="w-7 h-7"
+                                        alt="Print">
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                    <tr>
+                        <?php
+                        $colspan = count($tableCurrencies) + 3; // +3 برای ارز مبدأ، تاریخ و عملیات
+                        ?>
+                        <td colspan="<?php echo e($colspan); ?>" class="px-4 py-8 text-center text-gray-500">
+                            هیچ داده‌ای یافت نشد
+                        </td>
+                    </tr>
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 </div>
 
 <!-- مودال تأیید حذف -->

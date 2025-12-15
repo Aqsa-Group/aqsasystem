@@ -25,7 +25,7 @@
         "codeat3/blade-simple-line-icons": "^1.5",
         "codeat3/blade-vaadin-icons": "^1.6",
         "davidhsianturi/blade-bootstrap-icons": "^2.1",
-        "doctrine/dbal": "^4.3",
+        "doctrine/dbal": "^4.4",
         "eduard9969/blade-polaris-icons": "^2.8",
         "faisal50x/blade-ionicons": "^1.1",
         "filament/filament": "3.3",
