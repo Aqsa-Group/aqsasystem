@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Filament\Market\Resources;
+
 use App\Filament\Market\Resources\AccountingResource\Pages;
 use App\Models\Market\Accounting;
 use App\Models\Market\Booth;
@@ -183,22 +184,44 @@ class AccountingResource extends Resource
 
             Forms\Components\Select::make('shop_id')
                 ->label('نمبر دوکان')
-                ->options(fn($get) => $get('market_id') ? Shop::where('market_id', $get('market_id'))->pluck('number', 'id') : [])
+                ->options(
+                    fn($get) =>
+                    $get('market_id')
+                        ? Shop::where('market_id', $get('market_id'))->pluck('number', 'id')
+                        : []
+                )
                 ->visible(fn($get) => $get('type') === 'دوکان')
                 ->reactive()
                 ->afterStateUpdated(function ($state, callable $set, callable $get) use ($calculateDates) {
-                    $shop = Shop::find($state);
-                    $set('shopkeeper_id', $shop?->shopkeeper_id);
+
+                    $shop = Shop::with('shopkeeper')->find($state);
 
                     if ($shop) {
+                        // فقط برای نمایش
+                        $set('shopkeeper_name', $shop->shopkeeper?->fullname);
+
+                        // منطق قبلی تو
+                        $set('shopkeeper_id', $shop->shopkeeper_id);
                         $set('price', $get('expanses_type') === 'کرایه' ? $shop->price : $get('price'));
                         $set('meter_serial', $shop->metar_serial);
-                        $last = Deposit::where('shop_id', $shop->id)->where('expanses_type', 'پول برق')->latest()->first();
+
+                        $last = Deposit::where('shop_id', $shop->id)
+                            ->where('expanses_type', 'پول برق')
+                            ->latest()
+                            ->first();
+
                         $set('past_degree', $last?->current_degree ?? 0);
                     }
 
                     $calculateDates($get, $set);
                 }),
+
+            Forms\Components\TextInput::make('shopkeeper_name')
+                ->label('نام دوکاندار')
+                ->visible(fn($get) => filled($get('shop_id')))
+                ->disabled()
+                ->dehydrated(false),
+
 
             Forms\Components\Select::make('booth_id')
                 ->label('نمبر غرفه')
@@ -294,11 +317,21 @@ class AccountingResource extends Resource
             ->pluck('id');
 
         return $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('type')->label('نوع'),
                 Tables\Columns\TextColumn::make('market.name')->label('مارکت'),
                 Tables\Columns\TextColumn::make('shop.number')->label('نمبر دوکان')->toggleable(true),
                 Tables\Columns\TextColumn::make('booth.number')->label('نمبر غرفه')->toggleable(true),
+                Tables\Columns\TextColumn::make('shopkeeper_name')
+                    ->label('نام دوکاندار')
+                    ->getStateUsing(function ($record) {
+                        return
+                            $record->shop?->shopkeeper?->fullname
+                            ?? $record->booth?->shopkeeper?->fullname
+                            ?? '—';
+                    }),
+
                 Tables\Columns\TextColumn::make('shopkeeper.fullname')->label('نام دوکاندار'),
                 Tables\Columns\TextColumn::make('expanses_type')->label('نوع مصرف'),
                 Tables\Columns\TextColumn::make('price')->label('مبلغ')->suffix(' افغانی'),
@@ -385,7 +418,7 @@ class AccountingResource extends Resource
                         'صفایی' => 'صفایی',
                     ]),
 
-           
+
 
 
 

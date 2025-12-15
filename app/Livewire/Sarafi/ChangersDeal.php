@@ -21,7 +21,7 @@ class ChangersDeal extends Component
     // متغیرهای جستجو و انتخاب
     public $searchedCustomer = null;
     public $showCustomerModal = false;
-    
+
     // جستجو برای مشتری فرستنده
     public $search = '';
     public $selectedCustomerId = null;
@@ -29,13 +29,14 @@ class ChangersDeal extends Component
     public $filteredCustomers = [];
     public $selectedCustomer = null;
     public $accountType = 'نقدی';
-    
+    public $remittance_number;
+
     // جستجو برای مشتری گیرنده
     public $to_customer_search = '';
     public $to_customer_id = null;
     public $to_customer_filtered = [];
     public $to_customer_selected = null;
-    
+
     // متغیرهای فرم
     public $to_sarafi = null;
     public $currency;
@@ -45,18 +46,18 @@ class ChangersDeal extends Component
     public $zone;
     public $description;
     public $file;
-    
+
     // لیست‌ها
     public $currencies = [];
     public $sarafi_list = [];
     public $customers;
     public $transactions = [];
-    
+
     // موجودی‌ها
     public $customerCashBalances = [];
     public $customerBankBalances = [];
     public $customerTotalBalances = [];
-    
+
     // حالت‌ها
     public $confirmDeleteId = null;
     public $editId = null;
@@ -66,7 +67,7 @@ class ChangersDeal extends Component
     {
         $this->date = Jalalian::now()->format('Y/m/d');
         $this->zone = Auth::guard('sarafi')->user()->zone;
-        
+
         // لیست ارزها
         $this->currencies = [
             ['code' => 'usd', 'name_fa' => 'دالر'],
@@ -82,16 +83,24 @@ class ChangersDeal extends Component
             ['code' => 'sar', 'name_fa' => 'ریال سعودی'],
             ['code' => 'inr', 'name_fa' => 'روپیه'],
         ];
-        
+
         // لیست صرافی‌های دیگر
         $currentUser = Auth::guard('sarafi')->user();
         $this->sarafi_list = User::where('role', 'admin')
             ->where('id', '!=', $currentUser->id)
             ->get(['id', 'name', 'sarafi_name']);
-        
+
+
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        $this->remittance_number = $this->generateRemittanceNumber($adminId);
+
+
+
         // بارگذاری مشتریان
         $this->loadCustomers();
-        
+
         // بارگذاری تراکنش‌ها
         $this->updateTransactions();
     }
@@ -119,7 +128,7 @@ class ChangersDeal extends Component
 
 
 
-     public function toggleAccountType()
+    public function toggleAccountType()
     {
         $this->accountType = $this->accountType === 'نقدی' ? 'بانکی' : 'نقدی';
     }
@@ -182,12 +191,12 @@ class ChangersDeal extends Component
         $this->selectedCustomerId = $customerId;
         $this->selectedAccount = $customerId;
         $this->selectedCustomer = Customer::find($customerId);
-        
+
         if ($this->selectedCustomer) {
             $this->search = $this->selectedCustomer->fullname;
             $this->updateCustomerCurrencyBalance();
         }
-        
+
         $this->filteredCustomers = [];
         $this->updateTransactions();
     }
@@ -197,11 +206,11 @@ class ChangersDeal extends Component
     {
         $this->to_customer_id = $customerId;
         $this->to_customer_selected = Customer::find($customerId);
-        
+
         if ($this->to_customer_selected) {
             $this->to_customer_search = $this->to_customer_selected->fullname;
         }
-        
+
         $this->to_customer_filtered = [];
     }
 
@@ -227,8 +236,19 @@ class ChangersDeal extends Component
         }
     }
 
+    private function generateRemittanceNumber($adminId)
+    {
+        $lastNumber = ChangerDeal::where('admin_id', $adminId)
+            ->max('remittance_number');
+
+        return ($lastNumber ?? 0) + 1;
+    }
+
+
+
     public function submitRemittance()
     {
+
         $this->amount = str_replace(',', '', $this->amount);
 
         // اگر مشتری گیرنده انتخاب نشده، همان مشتری فرستنده را بگیر
@@ -241,7 +261,7 @@ class ChangersDeal extends Component
             'selectedAccount' => 'required|exists:sarafi.customers,id',
             'to_customer_id' => 'required|exists:sarafi.customers,id',
             'to_sarafi' => 'required|exists:sarafi.users,id',
-            'amount'=> 'required|numeric|min:1',
+            'amount' => 'required|numeric|min:1',
             'currency' => 'required',
             'date' => 'required',
             'zone' => 'required',
@@ -251,14 +271,17 @@ class ChangersDeal extends Component
             $user = Auth::guard('sarafi')->user();
             $adminId = $user->admin_id ?? $user->id;
             $toSarafi = User::find($this->to_sarafi);
-            
+
+            $remittanceNumber = $this->generateRemittanceNumber($adminId);
+
+
             // گرفتن نام فارسی ارز
             $currencyName = $this->getCurrencyName($this->currency);
-            
+
             // ایجاد توضیحات
             $fromCustomerName = $this->selectedCustomer->fullname;
             $toCustomerName = $this->to_customer_selected->fullname;
-            
+
             if (empty($this->description)) {
                 $withdrawalDescription = "برد از حساب {$fromCustomerName} برای ارسال به صرافی {$toSarafi->sarafi_name}";
                 $depositDescription = "دریافت از صرافی {$user->sarafi_name} به حساب {$toCustomerName}";
@@ -269,10 +292,11 @@ class ChangersDeal extends Component
 
             // ایجاد رکورد در جدول changerdeals
             $changerDeal = ChangerDeal::create([
-                'from_customer' => $this->selectedAccount, 
-                'to_customer' => $this->to_customer_id, 
-                'from_sarafi' => $user->id, 
-                'to_sarafi' => $this->to_sarafi, 
+                'remittance_number' => $remittanceNumber,
+                'from_customer' => $this->selectedAccount,
+                'to_customer' => $this->to_customer_id,
+                'from_sarafi' => $user->id,
+                'to_sarafi' => $this->to_sarafi,
                 'currency' => $this->currency,
                 'zone' => $this->zone,
                 'amount' => $this->amount,
@@ -326,10 +350,9 @@ class ChangersDeal extends Component
             }
 
             session()->flash('message', 'ارسال پول به صرافی با موفقیت ثبت شد.');
-            
+
             $this->resetForm();
             $this->updateTransactions();
-
         } catch (\Exception $e) {
             session()->flash('error', 'خطا در ثبت ارسال: ' . $e->getMessage());
             Log::error('Error in submitRemittance: ' . $e->getMessage());
@@ -339,9 +362,9 @@ class ChangersDeal extends Component
     private function resetForm()
     {
         $this->reset([
-            'amount', 
-            'currency', 
-            'description', 
+            'amount',
+            'currency',
+            'description',
             'to_sarafi',
             'to_customer_id',
             'to_customer_search',
@@ -362,28 +385,28 @@ class ChangersDeal extends Component
     public function edit($transactionId)
     {
         $transaction = Transaction::with('changerdeal')->find($transactionId);
-        
+
         if ($transaction && $transaction->changerdeal) {
             $this->editId = $transaction->changerdeal->id;
             $this->isEditMode = true;
-            
+
             // تنظیم مشتری فرستنده
             $this->selectedAccount = $transaction->changerdeal->from_customer;
             $this->selectedCustomerId = $transaction->changerdeal->from_customer;
             $this->selectedCustomer = Customer::find($this->selectedAccount);
-            
+
             // تنظیم مشتری گیرنده
             $this->to_customer_id = $transaction->changerdeal->to_customer;
             $this->to_customer_selected = Customer::find($this->to_customer_id);
             $this->to_customer_search = $this->to_customer_selected->fullname ?? '';
-            
+
             $this->to_sarafi = $transaction->changerdeal->to_sarafi;
             $this->amount = $transaction->changerdeal->amount;
             $this->currency = $transaction->changerdeal->currency;
             $this->date = $transaction->changerdeal->date;
             $this->zone = $transaction->changerdeal->zone;
             $this->description = $transaction->changerdeal->description;
-            
+
             $this->updatedAmount($this->amount);
         }
     }
@@ -398,30 +421,62 @@ class ChangersDeal extends Component
     {
         try {
             $transaction = Transaction::find($this->confirmDeleteId);
-            
+
             if ($transaction && $transaction->changerdeal) {
                 // حذف تراکنش‌های مرتبط
                 Transaction::where('changerdeal_id', $transaction->changerdeal_id)->delete();
-                
+
                 // حذف رکورد اصلی
                 $transaction->changerdeal->delete();
-                
+
                 session()->flash('message', 'تراکنش با موفقیت حذف شد.');
             }
-            
+
             $this->confirmDeleteId = null;
             $this->updateTransactions();
-            
         } catch (\Exception $e) {
             session()->flash('error', 'خطا در حذف تراکنش: ' . $e->getMessage());
         }
     }
 
-    public function print($transactionId)
-    {
-        // منطق پرینت
-        $this->dispatch('print-transaction', id: $transactionId);
-    }
+ public function print($transactionId)
+{
+    $transaction = Transaction::with(['customer', 'changerdeal.fromCustomer', 'changerdeal.toCustomer', 'changerdeal.fromSarafiUser', 'changerdeal.toSarafiUser'])
+        ->findOrFail($transactionId);
+
+    $mpdf = new \Mpdf\Mpdf([
+        'mode' => 'utf-8',
+        'format' => [80, 250],
+        'directionality' => 'rtl',
+        'margin_top' => 2,
+        'margin_bottom' => 2,
+        'margin_left' => 2,
+        'margin_right' => 2,
+        'fontDir' => array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'], [
+            public_path('fonts'),
+        ]),
+        'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+            'Shabnam' => [
+                'R' => 'Shabnam-FD.ttf',
+            ],
+        ],
+        'default_font' => 'Shabnam',
+    ]);
+
+    $mpdf->SetAutoPageBreak(false);
+
+    $html = view('pdf.Sarafi.changersdeal', compact('transaction'))->render();
+    $mpdf->WriteHTML($html);
+
+    $fileName = 'ترانزکشن_شماره_' . $transaction->id . '_به_اسم_' . $transaction->customer->fullname . '.pdf';
+
+    return response()->streamDownload(function () use ($mpdf) {
+        echo $mpdf->Output('', 'S');
+    }, $fileName);
+}
+
+
+
 
     public function submitAndPrint()
     {

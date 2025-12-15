@@ -112,7 +112,16 @@
                             <span class="font-bold text-[16px]" dir="ltr"><?php echo e(number_format($totalBalance)); ?></span>
                         </div>
                     </div>
+
+                         <button wire:click="showReport" wire:loading.attr="disabled"
+                        class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
+                        <span wire:loading.remove>نمایش گزارش</span>
+                        <span wire:loading>
+                            در حال انتقال...
+                        </span>
+                    </button>
                 </div>
+               
             </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
         </div>
@@ -125,18 +134,19 @@
             <div class="flex flex-col bg-[#F5F5F5] w-[420px] lg:w-[534px] mx-auto p-[12px] h-fit rounded-[12px] space-y-2"
                 style="box-shadow: 0px 4px 4px 0px #00000040;">
                 <!-- هدر فرم -->
-                <div class="flex flex-row gap-4 p-4 border border-[#8C8C8C] rounded-[12px] flex-wrap items-center justify-between">
+                <div
+                    class="flex flex-row gap-4 p-4 border border-[#8C8C8C] rounded-[12px] flex-wrap items-center justify-between">
                     <div class="flex">
-                          <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" alt="" class="h-6 w-6">
-                    <p class="text-center">
-                        <!--[if BLOCK]><![endif]--><?php if($isEditMode): ?>
-                        ویرایش ارسال
-                        <?php else: ?>
-                        فورم ثبت ارسال
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                    </p>
+                        <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" alt="" class="h-6 w-6">
+                        <p class="text-center">
+                            <!--[if BLOCK]><![endif]--><?php if($isEditMode): ?>
+                            ویرایش ارسال
+                            <?php else: ?>
+                            فورم ثبت ارسال
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        </p>
                     </div>
-                        <button wire:click="toggleAccountType" class="rounded-[8px] p-[10px] text-white vazir px-12 font-semibold transition-colors duration-500 ease-in-out
+                    <button wire:click="toggleAccountType" class="rounded-[8px] p-[10px] text-white vazir px-12 font-semibold transition-colors duration-500 ease-in-out
                         <?php echo e($accountType === 'نقدی' ? 'bg-[#2563EB]' : 'bg-[#DD2424]'); ?>">
                         <?php echo e($accountType === 'نقدی' ? 'نقدی' : 'بانکی'); ?>
 
@@ -242,34 +252,63 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
 
-                    <!-- صرافی مقصد -->
-                    <div class="mt-2">
-                        <label class="block text-[16px] font-medium text-black mb-1 vazir">به صرافی</label>
-                        <div class="relative w-full">
-                            <select wire:model="to_sarafi"
-                                class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 appearance-none">
-                                <option value="">انتخاب صرافی مقصد</option>
-                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $sarafi_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sarafi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <option value="<?php echo e($sarafi->id); ?>">
-                                    <?php echo e($sarafi->sarafi_name); ?>
 
-                                </option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
-                            </select>
-                            <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
+                    <div class="mt-2 flex flex-col lg:flex-row gap-3">
+
+                        <!--  نمبر حواله -->
+
+                        <div class="flex-1">
+                            <label class="block text-[16px] font-medium text-black mb-1 vazir">نمبرحواله</label>
+                            <div class="relative w-full">
+                                <input type="text" wire:model.live="remittance_number" wire:blur="formatAmount"
+                                    placeholder="0" readonly
+                                    class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500   dark:text-white"
+                                    oninput="this.value = this.value.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[^0-9]/g, '')" />
                             </div>
-                        </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['to_sarafi'];
+
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['remittance_number'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                        <?php unset($message);
+                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                            <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+                        </div>
+
+                        <!-- صرافی مقصد -->
+                        <div class="flex-1">
+                            <label class="block text-[16px] font-medium text-black mb-1 vazir">به صرافی</label>
+                            <div class="relative w-full">
+                                <select wire:model="to_sarafi"
+                                    class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 appearance-none">
+                                    <option value="">انتخاب صرافی مقصد</option>
+                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $sarafi_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sarafi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($sarafi->id); ?>">
+                                        <?php echo e($sarafi->sarafi_name); ?>
+
+                                    </option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                </select>
+                                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
+                                </div>
+                            </div>
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['to_sarafi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+                        </div>
+
+
                     </div>
 
                     <!-- مقدار و نوع ارز -->
@@ -477,6 +516,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <th class="px-4 py-4 font-bold">#</th>
                                 <th class="px-4 py-4 font-bold">مشتری</th>
                                 <th class="px-4 py-4 font-bold">صرافی</th>
+                                <th class="px-4 py-4 font-bold">نمبر احواله</th>
                                 <th class="px-4 py-4 font-bold">مبلغ</th>
                                 <th class="px-4 py-4 font-bold">واحد</th>
                                 <th class="px-4 py-4 font-bold text-center">توضیحات</th>
@@ -500,8 +540,11 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                                 </td>
                                 <td class="px-4 py-4 vazir text-[14px] font-medium">
-                                    <span
-                                        class="<?php echo e($transaction->type === 'برداشت' ? 'text-red-600' : 'text-black'); ?>">
+                                    <?php echo e(optional($transaction->changerdeal)->remittance_number ?? '-'); ?>
+
+                                </td>
+                                <td class="px-4 py-4 vazir text-[14px] font-medium">
+                                    <span class="<?php echo e($transaction->type === 'برداشت' ? 'text-red-600' : 'text-black'); ?>">
                                         <?php echo e(number_format($transaction->amount)); ?>
 
                                     </span>
@@ -522,7 +565,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                             برای: <?php echo e($this->getOtherCustomerName($transaction)); ?>
 
                                             <?php else: ?>
-                                           از حساب : <?php echo e($this->getOtherCustomerName($transaction)); ?>
+                                            از حساب : <?php echo e($this->getOtherCustomerName($transaction)); ?>
 
                                             <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                         </p>
@@ -542,25 +585,13 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 </td>
                                 <td class="px-4 py-4 text-center">
                                     <div class="flex justify-center gap-2">
-                                        <button wire:click="edit(<?php echo e($transaction->id); ?>)"
-                                            class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100 hover:bg-blue-200 transition-colors"
-                                            title="ویرایش">
-                                            <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>"
-                                                class="w-5 h-5" alt="Edit">
-                                        </button>
-
-                                        <button wire:click="confirmDelete(<?php echo e($transaction->id); ?>)"
-                                            class="w-10 h-10 flex items-center justify-center rounded-full bg-red-100 hover:bg-red-200 transition-colors"
-                                            title="حذف">
-                                            <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>"
-                                                class="w-5 h-5" alt="Delete">
-                                        </button>
+                                        
 
                                         <button wire:click="print(<?php echo e($transaction->id); ?>)"
-                                            class="w-10 h-10 flex items-center justify-center rounded-full bg-green-100 hover:bg-green-200 transition-colors"
+                                            class="w-10 h-10 flex items-center justify-center rounded-full transition-colors"
                                             title="پرینت">
                                             <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
-                                                class="w-5 h-5" alt="Print">
+                                                class="w-10 h-10" alt="Print">
                                         </button>
                                     </div>
                                 </td>

@@ -110,7 +110,16 @@
                             <span class="font-bold text-[16px]" dir="ltr">{{ number_format($totalBalance) }}</span>
                         </div>
                     </div>
+
+                         <button wire:click="showReport" wire:loading.attr="disabled"
+                        class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
+                        <span wire:loading.remove>نمایش گزارش</span>
+                        <span wire:loading>
+                            در حال انتقال...
+                        </span>
+                    </button>
                 </div>
+               
             </div>
             @endforeach
         </div>
@@ -123,18 +132,19 @@
             <div class="flex flex-col bg-[#F5F5F5] w-[420px] lg:w-[534px] mx-auto p-[12px] h-fit rounded-[12px] space-y-2"
                 style="box-shadow: 0px 4px 4px 0px #00000040;">
                 <!-- هدر فرم -->
-                <div class="flex flex-row gap-4 p-4 border border-[#8C8C8C] rounded-[12px] flex-wrap items-center justify-between">
+                <div
+                    class="flex flex-row gap-4 p-4 border border-[#8C8C8C] rounded-[12px] flex-wrap items-center justify-between">
                     <div class="flex">
-                          <img src="{{ asset('assets/sarafi/all_icon/edit-2.svg') }}" alt="" class="h-6 w-6">
-                    <p class="text-center">
-                        @if($isEditMode)
-                        ویرایش ارسال
-                        @else
-                        فورم ثبت ارسال
-                        @endif
-                    </p>
+                        <img src="{{ asset('assets/sarafi/all_icon/edit-2.svg') }}" alt="" class="h-6 w-6">
+                        <p class="text-center">
+                            @if($isEditMode)
+                            ویرایش ارسال
+                            @else
+                            فورم ثبت ارسال
+                            @endif
+                        </p>
                     </div>
-                        <button wire:click="toggleAccountType" class="rounded-[8px] p-[10px] text-white vazir px-12 font-semibold transition-colors duration-500 ease-in-out
+                    <button wire:click="toggleAccountType" class="rounded-[8px] p-[10px] text-white vazir px-12 font-semibold transition-colors duration-500 ease-in-out
                         {{ $accountType === 'نقدی' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
                         {{ $accountType === 'نقدی' ? 'نقدی' : 'بانکی' }}
                     </button>
@@ -225,26 +235,48 @@
                         </div>
                     </div>
 
-                    <!-- صرافی مقصد -->
-                    <div class="mt-2">
-                        <label class="block text-[16px] font-medium text-black mb-1 vazir">به صرافی</label>
-                        <div class="relative w-full">
-                            <select wire:model="to_sarafi"
-                                class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 appearance-none">
-                                <option value="">انتخاب صرافی مقصد</option>
-                                @foreach ($sarafi_list as $sarafi)
-                                <option value="{{ $sarafi->id }}">
-                                    {{ $sarafi->sarafi_name }}
-                                </option>
-                                @endforeach
-                            </select>
-                            <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
+
+                    <div class="mt-2 flex flex-col lg:flex-row gap-3">
+
+                        <!--  نمبر حواله -->
+
+                        <div class="flex-1">
+                            <label class="block text-[16px] font-medium text-black mb-1 vazir">نمبرحواله</label>
+                            <div class="relative w-full">
+                                <input type="text" wire:model.live="remittance_number" wire:blur="formatAmount"
+                                    placeholder="0" readonly
+                                    class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500   dark:text-white"
+                                    oninput="this.value = this.value.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[^0-9]/g, '')" />
                             </div>
+
+                            @error('remittance_number')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
                         </div>
-                        @error('to_sarafi')
-                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                        @enderror
+
+                        <!-- صرافی مقصد -->
+                        <div class="flex-1">
+                            <label class="block text-[16px] font-medium text-black mb-1 vazir">به صرافی</label>
+                            <div class="relative w-full">
+                                <select wire:model="to_sarafi"
+                                    class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 appearance-none">
+                                    <option value="">انتخاب صرافی مقصد</option>
+                                    @foreach ($sarafi_list as $sarafi)
+                                    <option value="{{ $sarafi->id }}">
+                                        {{ $sarafi->sarafi_name }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                    <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
+                                </div>
+                            </div>
+                            @error('to_sarafi')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+
                     </div>
 
                     <!-- مقدار و نوع ارز -->
@@ -416,6 +448,7 @@
                                 <th class="px-4 py-4 font-bold">#</th>
                                 <th class="px-4 py-4 font-bold">مشتری</th>
                                 <th class="px-4 py-4 font-bold">صرافی</th>
+                                <th class="px-4 py-4 font-bold">نمبر احواله</th>
                                 <th class="px-4 py-4 font-bold">مبلغ</th>
                                 <th class="px-4 py-4 font-bold">واحد</th>
                                 <th class="px-4 py-4 font-bold text-center">توضیحات</th>
@@ -436,8 +469,10 @@
                                     {{ $this->getSarafiName($transaction) }}
                                 </td>
                                 <td class="px-4 py-4 vazir text-[14px] font-medium">
-                                    <span
-                                        class="{{ $transaction->type === 'برداشت' ? 'text-red-600' : 'text-black' }}">
+                                    {{ optional($transaction->changerdeal)->remittance_number ?? '-' }}
+                                </td>
+                                <td class="px-4 py-4 vazir text-[14px] font-medium">
+                                    <span class="{{ $transaction->type === 'برداشت' ? 'text-red-600' : 'text-black' }}">
                                         {{ number_format($transaction->amount) }}
                                     </span>
                                 </td>
@@ -455,7 +490,7 @@
                                             @if($transaction->type === 'برداشت')
                                             برای: {{ $this->getOtherCustomerName($transaction) }}
                                             @else
-                                           از حساب : {{ $this->getOtherCustomerName($transaction) }}
+                                            از حساب : {{ $this->getOtherCustomerName($transaction) }}
                                             @endif
                                         </p>
                                     </div>
@@ -472,7 +507,7 @@
                                 </td>
                                 <td class="px-4 py-4 text-center">
                                     <div class="flex justify-center gap-2">
-                                        <button wire:click="edit({{ $transaction->id }})"
+                                        {{-- <button wire:click="edit({{ $transaction->id }})"
                                             class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100 hover:bg-blue-200 transition-colors"
                                             title="ویرایش">
                                             <img src="{{ asset('assets/sarafi/all_icon/edit_table.svg') }}"
@@ -484,13 +519,13 @@
                                             title="حذف">
                                             <img src="{{ asset('assets/sarafi/all_icon/trash_table.svg') }}"
                                                 class="w-5 h-5" alt="Delete">
-                                        </button>
+                                        </button> --}}
 
                                         <button wire:click="print({{ $transaction->id }})"
-                                            class="w-10 h-10 flex items-center justify-center rounded-full bg-green-100 hover:bg-green-200 transition-colors"
+                                            class="w-10 h-10 flex items-center justify-center rounded-full transition-colors"
                                             title="پرینت">
                                             <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"
-                                                class="w-5 h-5" alt="Print">
+                                                class="w-10 h-10" alt="Print">
                                         </button>
                                     </div>
                                 </td>

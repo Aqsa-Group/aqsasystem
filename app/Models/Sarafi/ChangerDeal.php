@@ -26,7 +26,8 @@ class ChangerDeal extends Model
         'description',
         'user_id',
         'admin_id',
-        'account_type'
+        'account_type',
+        'remittance_number'
     ];
 
     // رابطه با مشتری فرستنده
