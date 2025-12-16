@@ -8,6 +8,9 @@
     <title>ورود به پنل صرافی</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="{{ asset('assets/js/app.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('assets/css/sarafi.css')}}">
+
 
     <!-- تعریف فونت -->
 
