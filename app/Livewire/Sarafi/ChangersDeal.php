@@ -357,6 +357,7 @@ class ChangersDeal extends Component
             session()->flash('error', 'خطا در ثبت ارسال: ' . $e->getMessage());
             Log::error('Error in submitRemittance: ' . $e->getMessage());
         }
+        $this->updateCustomerCurrencyBalance();
     }
 
     private function resetForm()

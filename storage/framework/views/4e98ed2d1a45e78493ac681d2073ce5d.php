@@ -590,7 +590,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                         ?>
 
 
-                        <!--[if BLOCK]><![endif]--><?php if($currentuser && $currentuser->role==='superadmin'): ?>
+                                        <!--[if BLOCK]><![endif]--><?php if($currentuser && $currentuser->role==='superadmin'): ?>
                                         <button wire:click="edit(<?php echo e($transaction->id); ?>)"
                                             class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100 hover:bg-blue-200 transition-colors"
                                             title="ویرایش">
