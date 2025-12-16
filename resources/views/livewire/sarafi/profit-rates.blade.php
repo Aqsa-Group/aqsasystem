@@ -232,7 +232,7 @@
                                         ? number_format($record->{$currencyCode . '_sell_bank'}, 3)
                                         : '-' }}
                                     </span>
-                                </div
+                                </div>
                             </div>
                             @else
                             <!-- اگر این ارز همان ارز مبدأ باشد، سلول خالی می‌ماند -->

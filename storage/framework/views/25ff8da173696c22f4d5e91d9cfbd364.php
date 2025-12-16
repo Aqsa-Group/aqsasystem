@@ -1,16 +1,17 @@
 <div>
     <div class="container mx-auto">
         <!-- Session Message -->
-        @if (session()->has('message'))
+        <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
             <div class="h-[80px] w-full flex justify-start items-center px-4">
                 <h2 class="text-white vazir text-[18px]">
-                    {{ session('message') }}
+                    <?php echo e(session('message')); ?>
+
                 </h2>
             </div>
         </div>
-        @endif
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
         <!-- Page Header -->
         <div class="space-y-4 mb-6">
@@ -31,7 +32,7 @@
                     class="flex flex-col md:flex-row justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                     <h1 class="text-[16px] vazir">گزارش تراکنش‌های با سایر صرافی‌ها</h1>
                     <div class="relative w-[350px]">
-                        <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
+                        <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
                             class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5">
                         <input type="text" wire:model.live="search" placeholder="جستجو نام صرافی ..."
                             class="w-full border border-[#8C8C8C] bg-transparent rounded-2xl pl-10 pr-3 py-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm">
@@ -85,9 +86,9 @@
         <select wire:model="specificSarafiId"
             class="appearance-none w-full border border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
             <option value="">همه صرافی‌ها</option>
-            @foreach($sarafis as $sarafi)
-            <option value="{{ $sarafi['id'] }}">{{ $sarafi['sarafi_name'] }}</option>
-            @endforeach
+            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $sarafis; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sarafi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <option value="<?php echo e($sarafi['id']); ?>"><?php echo e($sarafi['sarafi_name']); ?></option>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
         </select>
         <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" width="20" height="20"
             viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -150,47 +151,56 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($reports as $index => $report)
+                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $reports; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr class="border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50" dir="ltr">
                     <td class="px-2 py-4 text-center">
-                        <span class="border border-gray-300 px-2 py-1 rounded-lg">{{ $index + 1 }}</span>
+                        <span class="border border-gray-300 px-2 py-1 rounded-lg"><?php echo e($index + 1); ?></span>
                     </td>
                     <td class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        {{ $report['sarafi_name'] }}
+                        <?php echo e($report['sarafi_name']); ?>
+
                     </td>
-                    <td class="px-2 py-4 text-right {{ ($report['balances']['usd'] ?? 0) < 0 ? 'text-red-600 font-bold' : (($report['balances']['usd'] ?? 0) > 0 ? 'text-green-600 font-bold' : 'text-gray-500') }}">
-                        {{ number_format($report['balances']['usd'] ?? 0, 2) }}
+                    <td class="px-2 py-4 text-right <?php echo e(($report['balances']['usd'] ?? 0) < 0 ? 'text-red-600 font-bold' : (($report['balances']['usd'] ?? 0) > 0 ? 'text-green-600 font-bold' : 'text-gray-500')); ?>">
+                        <?php echo e(number_format($report['balances']['usd'] ?? 0, 2)); ?>
+
                     </td>
-                    <td class="px-2 py-4 text-right {{ ($report['balances']['afn'] ?? 0) < 0 ? 'text-red-600 font-bold' : (($report['balances']['afn'] ?? 0) > 0 ? 'text-green-600 font-bold' : 'text-gray-500') }}">
-                        {{ number_format($report['balances']['afn'] ?? 0, 2) }}
+                    <td class="px-2 py-4 text-right <?php echo e(($report['balances']['afn'] ?? 0) < 0 ? 'text-red-600 font-bold' : (($report['balances']['afn'] ?? 0) > 0 ? 'text-green-600 font-bold' : 'text-gray-500')); ?>">
+                        <?php echo e(number_format($report['balances']['afn'] ?? 0, 2)); ?>
+
                     </td>
-                    <td class="px-2 py-4 text-right {{ ($report['balances']['irr'] ?? 0) < 0 ? 'text-red-600 font-bold' : (($report['balances']['irr'] ?? 0) > 0 ? 'text-green-600 font-bold' : 'text-gray-500') }}">
-                        {{ number_format($report['balances']['irr'] ?? 0, 2) }}
+                    <td class="px-2 py-4 text-right <?php echo e(($report['balances']['irr'] ?? 0) < 0 ? 'text-red-600 font-bold' : (($report['balances']['irr'] ?? 0) > 0 ? 'text-green-600 font-bold' : 'text-gray-500')); ?>">
+                        <?php echo e(number_format($report['balances']['irr'] ?? 0, 2)); ?>
+
                     </td>
-                    <td class="px-2 py-4 text-right {{ ($report['balances']['pkr'] ?? 0) < 0 ? 'text-red-600 font-bold' : (($report['balances']['pkr'] ?? 0) > 0 ? 'text-green-600 font-bold' : 'text-gray-500') }}">
-                        {{ number_format($report['balances']['pkr'] ?? 0, 2) }}
+                    <td class="px-2 py-4 text-right <?php echo e(($report['balances']['pkr'] ?? 0) < 0 ? 'text-red-600 font-bold' : (($report['balances']['pkr'] ?? 0) > 0 ? 'text-green-600 font-bold' : 'text-gray-500')); ?>">
+                        <?php echo e(number_format($report['balances']['pkr'] ?? 0, 2)); ?>
+
                     </td>
-                    <td class="px-2 py-4 text-right {{ ($report['balances']['eur'] ?? 0) < 0 ? 'text-red-600 font-bold' : (($report['balances']['eur'] ?? 0) > 0 ? 'text-green-600 font-bold' : 'text-gray-500') }}">
-                        {{ number_format($report['balances']['eur'] ?? 0, 2) }}
+                    <td class="px-2 py-4 text-right <?php echo e(($report['balances']['eur'] ?? 0) < 0 ? 'text-red-600 font-bold' : (($report['balances']['eur'] ?? 0) > 0 ? 'text-green-600 font-bold' : 'text-gray-500')); ?>">
+                        <?php echo e(number_format($report['balances']['eur'] ?? 0, 2)); ?>
+
                     </td>
-                    <td class="px-2 py-4 text-right {{ ($report['balances']['aed'] ?? 0) < 0 ? 'text-red-600 font-bold' : (($report['balances']['aed'] ?? 0) > 0 ? 'text-green-600 font-bold' : 'text-gray-500') }}">
-                        {{ number_format($report['balances']['aed'] ?? 0, 2) }}
+                    <td class="px-2 py-4 text-right <?php echo e(($report['balances']['aed'] ?? 0) < 0 ? 'text-red-600 font-bold' : (($report['balances']['aed'] ?? 0) > 0 ? 'text-green-600 font-bold' : 'text-gray-500')); ?>">
+                        <?php echo e(number_format($report['balances']['aed'] ?? 0, 2)); ?>
+
                     </td>
-                    <td class="px-2 py-4 text-right {{ ($report['balances']['try'] ?? 0) < 0 ? 'text-red-600 font-bold' : (($report['balances']['try'] ?? 0) > 0 ? 'text-green-600 font-bold' : 'text-gray-500') }}">
-                        {{ number_format($report['balances']['try'] ?? 0, 2) }}
+                    <td class="px-2 py-4 text-right <?php echo e(($report['balances']['try'] ?? 0) < 0 ? 'text-red-600 font-bold' : (($report['balances']['try'] ?? 0) > 0 ? 'text-green-600 font-bold' : 'text-gray-500')); ?>">
+                        <?php echo e(number_format($report['balances']['try'] ?? 0, 2)); ?>
+
                     </td>
-                    <td class="px-2 py-4 text-right {{ ($report['balances']['cny'] ?? 0) < 0 ? 'text-red-600 font-bold' : (($report['balances']['cny'] ?? 0) > 0 ? 'text-green-600 font-bold' : 'text-gray-500') }}">
-                        {{ number_format($report['balances']['cny'] ?? 0, 2) }}
+                    <td class="px-2 py-4 text-right <?php echo e(($report['balances']['cny'] ?? 0) < 0 ? 'text-red-600 font-bold' : (($report['balances']['cny'] ?? 0) > 0 ? 'text-green-600 font-bold' : 'text-gray-500')); ?>">
+                        <?php echo e(number_format($report['balances']['cny'] ?? 0, 2)); ?>
+
                     </td>
                   
                 </tr>
-                @empty
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                 <tr>
                     <td colspan="11" class="px-4 py-8 text-center text-gray-500">
                         هیچ تراکنشی با سایر صرافی‌ها یافت نشد
                     </td>
                 </tr>
-                @endforelse
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </tbody>
         </table>
     </div>
@@ -602,4 +612,4 @@
         }
     }
 </style>
-</div>
+</div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/sarafi-reports.blade.php ENDPATH**/ ?>

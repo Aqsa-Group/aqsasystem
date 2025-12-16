@@ -491,7 +491,6 @@ private function formatBalanceDisplay($balances)
         <div class="header">
             <h1>' . $printData['title'] . '</h1>
             <p>تاریخ چاپ: ' . $printData['print_date'] . '</p>
-            <p>صرافی جاری: ' . $printData['current_sarafi'] . '</p>
         </div>
         
        
@@ -566,18 +565,18 @@ private function formatBalanceDisplay($balances)
         if (!empty($printData['reports'])) {
             foreach ($printData['reports'] as $index => $report) {
                 $content .= '
-                <tr>
-                    <td class="col-no text-center">' . ($index + 1) . '</td>
-                    <td class="col-sarafi text-center">' . $report['sarafi_name'] . '</td>
-                    <td class="col-currency text-center ' . (($report['balances']['usd'] ?? 0) < 0 ? 'negative' : (($report['balances']['usd'] ?? 0) > 0 ? 'positive' : '')) . '">' . number_format($report['balances']['usd'] ?? 0, 2) . '</td>
-                    <td class="col-currency text-center ' . (($report['balances']['afn'] ?? 0) < 0 ? 'negative' : (($report['balances']['afn'] ?? 0) > 0 ? 'positive' : '')) . '">' . number_format($report['balances']['afn'] ?? 0, 2) . '</td>
-                    <td class="col-currency text-center ' . (($report['balances']['irr'] ?? 0) < 0 ? 'negative' : (($report['balances']['irr'] ?? 0) > 0 ? 'positive' : '')) . '">' . number_format($report['balances']['irr'] ?? 0, 2) . '</td>
-                    <td class="col-currency text-center ' . (($report['balances']['pkr'] ?? 0) < 0 ? 'negative' : (($report['balances']['pkr'] ?? 0) > 0 ? 'positive' : '')) . '">' . number_format($report['balances']['pkr'] ?? 0, 2) . '</td>
-                    <td class="col-currency text-center ' . (($report['balances']['eur'] ?? 0) < 0 ? 'negative' : (($report['balances']['eur'] ?? 0) > 0 ? 'positive' : '')) . '">' . number_format($report['balances']['eur'] ?? 0, 2) . '</td>
-                    <td class="col-currency text-center ' . (($report['balances']['aed'] ?? 0) < 0 ? 'negative' : (($report['balances']['aed'] ?? 0) > 0 ? 'positive' : '')) . '">' . number_format($report['balances']['aed'] ?? 0, 2) . '</td>
-                    <td class="col-currency text-center ' . (($report['balances']['try'] ?? 0) < 0 ? 'negative' : (($report['balances']['try'] ?? 0) > 0 ? 'positive' : '')) . '">' . number_format($report['balances']['try'] ?? 0, 2) . '</td>
-                    <td class="col-currency text-center ' . (($report['balances']['cny'] ?? 0) < 0 ? 'negative' : (($report['balances']['cny'] ?? 0) > 0 ? 'positive' : '')) . '">' . number_format($report['balances']['cny'] ?? 0, 2) . '</td>
-                    <td class="col-total text-center ' . ($report['total_balance'] < 0 ? 'negative' : ($report['total_balance'] > 0 ? 'positive' : '')) . '">' . number_format($report['total_balance'], 2) . '</td>
+                <tr  dir="ltr">
+                    <td dir="ltr" class="col-no text-center">' . ($index + 1) . '</td>
+                    <td dir="ltr" class="col-sarafi text-center">' . $report['sarafi_name'] . '</td>
+                    <td dir="ltr" class="col-currency text-center ' . (($report['balances']['usd'] ?? 0) < 0 ? 'negative' : (($report['balances']['usd'] ?? 0) > 0 ? 'positive' : '')) . '">' . number_format($report['balances']['usd'] ?? 0, 2) . '</td>
+                    <td dir="ltr" class="col-currency text-center ' . (($report['balances']['afn'] ?? 0) < 0 ? 'negative' : (($report['balances']['afn'] ?? 0) > 0 ? 'positive' : '')) . '">' . number_format($report['balances']['afn'] ?? 0, 2) . '</td>
+                    <td dir="ltr" class="col-currency text-center ' . (($report['balances']['irr'] ?? 0) < 0 ? 'negative' : (($report['balances']['irr'] ?? 0) > 0 ? 'positive' : '')) . '">' . number_format($report['balances']['irr'] ?? 0, 2) . '</td>
+                    <td dir="ltr" class="col-currency text-center ' . (($report['balances']['pkr'] ?? 0) < 0 ? 'negative' : (($report['balances']['pkr'] ?? 0) > 0 ? 'positive' : '')) . '">' . number_format($report['balances']['pkr'] ?? 0, 2) . '</td>
+                    <td dir="ltr" class="col-currency text-center ' . (($report['balances']['eur'] ?? 0) < 0 ? 'negative' : (($report['balances']['eur'] ?? 0) > 0 ? 'positive' : '')) . '">' . number_format($report['balances']['eur'] ?? 0, 2) . '</td>
+                    <td dir="ltr" class="col-currency text-center ' . (($report['balances']['aed'] ?? 0) < 0 ? 'negative' : (($report['balances']['aed'] ?? 0) > 0 ? 'positive' : '')) . '">' . number_format($report['balances']['aed'] ?? 0, 2) . '</td>
+                    <td dir="ltr" class="col-currency text-center ' . (($report['balances']['try'] ?? 0) < 0 ? 'negative' : (($report['balances']['try'] ?? 0) > 0 ? 'positive' : '')) . '">' . number_format($report['balances']['try'] ?? 0, 2) . '</td>
+                    <td dir="ltr" class="col-currency text-center ' . (($report['balances']['cny'] ?? 0) < 0 ? 'negative' : (($report['balances']['cny'] ?? 0) > 0 ? 'positive' : '')) . '">' . number_format($report['balances']['cny'] ?? 0, 2) . '</td>
+                    <td dir="ltr" class="col-total text-center ' . ($report['total_balance'] < 0 ? 'negative' : ($report['total_balance'] > 0 ? 'positive' : '')) . '">' . number_format($report['total_balance'], 2) . '</td>
                 </tr>';
             }
         } else {

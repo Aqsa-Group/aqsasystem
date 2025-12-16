@@ -1,75 +1,76 @@
 <div class="border-[#8C8C8C] min-h-screen" style="font-family: 'header';">
 
-    <h1 class="mb-8 text-3xl font-bold text-gray-700   dark:text-red-500">{{ __('messages.page_title') }}</h1>
+    <h1 class="mb-8 text-3xl font-bold text-gray-700   dark:text-red-500"><?php echo e(__('messages.page_title')); ?></h1>
 
     <div class="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-3">
 
         <!-- رسید/بردگی -->
-        <a href="{{ route('sarafi.transactions') }}" class="block">
+        <a href="<?php echo e(route('sarafi.transactions')); ?>" class="block">
             <div class="border bg-gradient-to-b from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 
                 text-white text-[16px] font-bold">
                 <i class="fa-solid fa-wallet text-white text-xl"></i>
                 <span class=" whitespace-nowrap overflow-hidden text-ellipsis font-bold">
-                    {{ __('messages.recipt/withdraw') }}
+                    <?php echo e(__('messages.recipt/withdraw')); ?>
+
                 </span>
             </div>
         </a>
 
         <!-- انتقال -->
-        <a href="{{ route('sarafi.account_to_account') }}" class="block">
+        <a href="<?php echo e(route('sarafi.account_to_account')); ?>" class="block">
             <div
                 class="border bg-gradient-to-b from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
                 <i class="fa-solid fa-arrow-right-arrow-left text-white text-xl"></i>
-                <span>{{ __('messages.transfer') }}</span>
+                <span><?php echo e(__('messages.transfer')); ?></span>
             </div>
         </a>
 
 
         <!-- خرید و فروش ارز و صندوق -->
-        <a href="{{ route('sarafi.buy-sell-currency') }}" class="block">
+        <a href="<?php echo e(route('sarafi.buy-sell-currency')); ?>" class="block">
             <div
                 class="border bg-gradient-to-b from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center gap-3 text-white text-[16px] font-bold">
-                <img src="{{ asset('assets/sarafi/all_icon/bitcoin-(btc).svg') }}" alt="">
-                <span>{{ __('messages.selling') }}</span>
+                <img src="<?php echo e(asset('assets/sarafi/all_icon/bitcoin-(btc).svg')); ?>" alt="">
+                <span><?php echo e(__('messages.selling')); ?></span>
             </div>
         </a>
 
         <!-- حساب تبدیل -->
-        <a href="{{ route('sarafi.conversion.in.account') }}" class="block">
+        <a href="<?php echo e(route('sarafi.conversion.in.account')); ?>" class="block">
             <div
                 class="border bg-gradient-to-b from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
                 <i class="fa-solid fa-exchange-alt text-white text-xl"></i>
-                <span>{{ __('messages.coversion_account') }}</span>
+                <span><?php echo e(__('messages.coversion_account')); ?></span>
             </div>
         </a>
 
         <!-- انتقال تبدیل -->
-        <a href="{{ route('sarafi.conversion-transfer') }}" class="block">
+        <a href="<?php echo e(route('sarafi.conversion-transfer')); ?>" class="block">
             <div
                 class="border bg-gradient-to-b from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
                 <i class="fa-solid fa-hand-holding-dollar text-white text-xl"></i>
-                <span>{{ __('messages.coversion_transfer') }}</span>
+                <span><?php echo e(__('messages.coversion_transfer')); ?></span>
             </div>
         </a>
 
 
         <!-- حساب‌های روزنامه -->
-        <a href="{{ route('sarafi.account-reports') }}" class="block">
+        <a href="<?php echo e(route('sarafi.account-reports')); ?>" class="block">
             <div
                 class="border bg-gradient-to-b from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
                 <i class="fa-solid fa-book-open text-white text-xl"></i>
-                <span>{{ __('messages.newspaper_accounts') }}</span>
+                <span><?php echo e(__('messages.newspaper_accounts')); ?></span>
             </div>
         </a>
 
 
 
         <!-- ژورنال عمومی -->
-        <a href="{{ route('sarafi.general-reports') }}" class="block">
+        <a href="<?php echo e(route('sarafi.general-reports')); ?>" class="block">
             <div
                 class="border bg-gradient-to-b from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
                 <i class="fa-solid fa-file-invoice-dollar text-white text-xl"></i>
-                <span>{{ __('messages.general_jornal') }}</span>
+                <span><?php echo e(__('messages.general_jornal')); ?></span>
             </div>
         </a>
 
@@ -77,21 +78,23 @@
     </div>
 
 
-    <div x-data="{ activeTab: @entangle('activeTab') }" class="mt-12">
+    <div x-data="{ activeTab: <?php if ((object) ('activeTab') instanceof \Livewire\WireDirective) : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('activeTab'->value()); ?>')<?php echo e('activeTab'->hasModifier('live') ? '.live' : ''); ?><?php else : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('activeTab'); ?>')<?php endif; ?> }" class="mt-12">
         <div class="flex justify-start gap-6 border-b border-[#2563EBB0]">
             <a href="#" @click.prevent="activeTab = 'general'" class="px-5 py-2 font-bold transition rounded-t-lg"
                 :class="activeTab === 'general'
                     ?
                     'bg-white border-x border-t border-[#2563EBB0] text-[#1E3A8A] shadow-sm' :
                     'text-gray-600 hover:text-[#1E3A8A] hover:border-b-2 hover:border-indigo-400'">
-                {{ __('messages.tab_general') }}
+                <?php echo e(__('messages.tab_general')); ?>
+
             </a>
 
             <a href="#" @click.prevent="activeTab = 'safes'" class="px-5 py-2 font-bold transition rounded-t-lg" :class="activeTab === 'safes'
                     ?
                     'bg-white border-x border-t border-[#2563EBB0] text-[#1E3A8A] shadow-sm' :
                     'text-gray-600 hover:text-[#1E3A8A] hover:border-b-2 hover:border-indigo-400'">
-                {{ __('messages.tab_safes') }}
+                <?php echo e(__('messages.tab_safes')); ?>
+
             </a>
 
             <a href="#" @click.prevent="activeTab = 'account_safe'" class="px-5 py-2 font-bold transition rounded-t-lg"
@@ -99,7 +102,8 @@
             ?
             'bg-white border-x border-t border-[#2563EBB0] text-[#1E3A8A] shadow-sm' :
             'text-gray-600 hover:text-[#1E3A8A] hover:border-b-2 hover:border-indigo-400'">
-                {{ __('messages.account_safes') }}
+                <?php echo e(__('messages.account_safes')); ?>
+
             </a>
         </div>
 
@@ -115,13 +119,14 @@
                       text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
-                            <img src="{{ asset('assets/sarafi/all_icon/  users.svg') }}" alt="" class="h-10 w-10">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/  users.svg')); ?>" alt="" class="h-10 w-10">
                         </div>
 
-                        <h1 class="text-lg font-semibold drop-shadow-md text-center">{{ __('messages.general_users') }}
+                        <h1 class="text-lg font-semibold drop-shadow-md text-center"><?php echo e(__('messages.general_users')); ?>
+
                         </h1>
 
-                        <p class="text-3xl font-extrabold drop-shadow-md">{{ $UserCount }}</p>
+                        <p class="text-3xl font-extrabold drop-shadow-md"><?php echo e($UserCount); ?></p>
                     </div>
 
                     <!-- تعداد مشتریان -->
@@ -129,14 +134,14 @@
                                      text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
-                            <img src="{{ asset('assets/sarafi/all_icon/customers.svg') }}" alt="" class="h-10 w-10">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/customers.svg')); ?>" alt="" class="h-10 w-10">
                         </div>
 
 
                         <h1 class="text-lg font-semibold drop-shadow-md text-center">
-                            {{ __('messages.general_customers') }}</h1>
+                            <?php echo e(__('messages.general_customers')); ?></h1>
 
-                        <p class="text-3xl font-extrabold drop-shadow-md">{{ $customerCount }}</p>
+                        <p class="text-3xl font-extrabold drop-shadow-md"><?php echo e($customerCount); ?></p>
                     </div>
 
                     <!-- تراکنش‌های امروز -->
@@ -144,14 +149,14 @@
                                      text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
-                            <img src="{{ asset('assets/sarafi/all_icon/exchange.svg') }}" alt="" class="h-10 w-10">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/exchange.svg')); ?>" alt="" class="h-10 w-10">
                         </div>
 
 
                         <h1 class="text-lg font-semibold drop-shadow-md text-center">
-                            {{ __('messages.general_today_transactions') }}</h1>
+                            <?php echo e(__('messages.general_today_transactions')); ?></h1>
 
-                        <p class="text-3xl font-extrabold drop-shadow-md">{{ $TransactionCount }}</p>
+                        <p class="text-3xl font-extrabold drop-shadow-md"><?php echo e($TransactionCount); ?></p>
                     </div>
 
                     <!-- حواله‌ها -->
@@ -159,38 +164,38 @@
                                      text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
-                            <img src="{{ asset('assets/sarafi/all_icon/send-2.svg') }}" alt="" class="h-10 w-10">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/send-2.svg')); ?>" alt="" class="h-10 w-10">
                         </div>
 
 
                         <h1 class="text-lg font-semibold drop-shadow-md text-center">
-                            {{ __('messages.general_remittances') }}</h1>
+                            <?php echo e(__('messages.general_remittances')); ?></h1>
 
-                        <p class="text-3xl font-extrabold drop-shadow-md">{{ $remittancecount }}</p>
+                        <p class="text-3xl font-extrabold drop-shadow-md"><?php echo e($remittancecount); ?></p>
                     </div>
 
-                    @if($waitting > 0)
-                    <a href="{{ route('sarafi.remittance-approval') }}">
-                        @endif
+                    <!--[if BLOCK]><![endif]--><?php if($waitting > 0): ?>
+                    <a href="<?php echo e(route('sarafi.remittance-approval')); ?>">
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         <!-- حواله های در انتظار -->
                         <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
                                      text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                             <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
-                                <img src="{{ asset('assets/sarafi/all_icon/timer.svg') }}" alt="" class="h-10 w-10">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/timer.svg')); ?>" alt="" class="h-10 w-10">
                             </div>
 
 
                             <h1 class="text-lg font-semibold drop-shadow-md text-center">
-                                {{ __('messages.general_pending_transactions') }}</h1>
+                                <?php echo e(__('messages.general_pending_transactions')); ?></h1>
 
-                            <p class="text-3xl font-extrabold drop-shadow-md">{{ $waitting }}</p>
+                            <p class="text-3xl font-extrabold drop-shadow-md"><?php echo e($waitting); ?></p>
 
                         </div>
 
-                        @if($waitting > 0)
+                        <!--[if BLOCK]><![endif]--><?php if($waitting > 0): ?>
                     </a>
-                    @endif
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
 
 
@@ -201,13 +206,13 @@
                                      text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
-                            <img src="{{ asset('assets/sarafi/all_icon/dollar-circle.svg') }}" alt="" class="h-10 w-10">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/dollar-circle.svg')); ?>" alt="" class="h-10 w-10">
                         </div>
 
                         <h1 class="text-lg font-semibold drop-shadow-md text-center">
-                            {{ __('messages.general_today_profit') }}</h1>
+                            <?php echo e(__('messages.general_today_profit')); ?></h1>
 
-                        <p class="text-3xl font-extrabold drop-shadow-md">{{ $todayprofit }}</p>
+                        <p class="text-3xl font-extrabold drop-shadow-md"><?php echo e($todayprofit); ?></p>
                     </div>
 
 
@@ -216,13 +221,13 @@
                                      text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
-                            <img src="{{ asset('assets/sarafi/all_icon/dollar-circle.svg') }}" alt="" class="h-10 w-10">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/dollar-circle.svg')); ?>" alt="" class="h-10 w-10">
                         </div>
 
                         <h1 class="text-lg font-semibold drop-shadow-md text-center">
-                            {{ __('messages.general_today_lost') }}</h1>
+                            <?php echo e(__('messages.general_today_lost')); ?></h1>
 
-                        <p class="text-3xl font-extrabold drop-shadow-md">{{ $todaylost }}</p>
+                        <p class="text-3xl font-extrabold drop-shadow-md"><?php echo e($todaylost); ?></p>
                     </div>
 
 
@@ -238,14 +243,14 @@
                                      text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
-                            <img src="{{ asset('assets/sarafi/all_icon/wallet-3.svg') }}" alt="" class="h-10 w-10">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/wallet-3.svg')); ?>" alt="" class="h-10 w-10">
                         </div>
 
 
                         <h1 class="text-lg font-semibold drop-shadow-md text-center">
-                            {{ __('messages.general_total_balance') }}</h1>
+                            <?php echo e(__('messages.general_total_balance')); ?></h1>
 
-                        <p class="text-3xl font-extrabold drop-shadow-md">{{ $total_balance_usd }}</p>
+                        <p class="text-3xl font-extrabold drop-shadow-md"><?php echo e($total_balance_usd); ?></p>
                     </div>
                 </div>
 
@@ -256,40 +261,42 @@
             <template x-if="activeTab === 'safes'">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 vazir">
 
-                    @foreach($currencies as $key => $label)
+                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
                         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
                         <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
-                            <img src="{{ asset('assets/sarafi/all_icon/coin.svg') }}" alt="" class="h-10 w-10">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
                         </div>
                         <div class="space-y-2">
-                            <h1 class="text-[16px] font-semibold text-gray-600">{{ $label }}</h1>
+                            <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e($label); ?></h1>
                             <p dir="ltr" class="  text-[25px] font-extrabold text-[#2563EB]">
-                                {{ number_format($safe->$key ?? 0) }}
+                                <?php echo e(number_format($safe->$key ?? 0)); ?>
+
                             </p>
                         </div>
                     </div>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
 
                 </div>
             </template>
 
             <template x-if="activeTab === 'account_safe'">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 vazir">
-                    @foreach($currencies as $key => $label)
+                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
                         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
                         <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
                             <i class="fa-solid fa-credit-card text-white text-2xl"></i>
                         </div>
                         <div class="space-y-2">
-                            <h1 class="text-[16px] font-semibold text-gray-600">{{ $label }}</h1>
+                            <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e($label); ?></h1>
                             <p dir="ltr" class="  text-[25px] font-extrabold text-[#2563EB]">
-                                {{ number_format($safe_account[$key] ?? 0) }}
+                                <?php echo e(number_format($safe_account[$key] ?? 0)); ?>
+
                             </p>
                         </div>
                     </div>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
             </template>
 
@@ -357,4 +364,4 @@
             }
         }
     });
-</script>
+</script><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/dashboard.blade.php ENDPATH**/ ?>
