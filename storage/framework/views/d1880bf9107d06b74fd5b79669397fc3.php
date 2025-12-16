@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ورود به پنل صرافی</title>
 
-    <?php echo $__env->make('Sarafi.layouts.links', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+  <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- تعریف فونت -->
 

@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ورود به پنل صرافی</title>
 
-    @include('Sarafi.layouts.links')
+  <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- تعریف فونت -->
 
