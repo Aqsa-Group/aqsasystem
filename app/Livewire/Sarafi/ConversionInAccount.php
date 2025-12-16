@@ -110,9 +110,7 @@ class ConversionInAccount extends Component
      */
     public function render()
     {
-            $user = Auth::guard('sarafi')->user();
-            $adminId = $user->admin_id ?? $user->id;
-
+        $user = Auth::guard('sarafi')->user();
 
         if (!$user) {
             return view('livewire.sarafi.conversion-in-account', [
@@ -121,6 +119,7 @@ class ConversionInAccount extends Component
             ]);
         }
 
+        $adminId = $user->admin_id ?? $user->id;
 
         if (empty($this->customers)) {
             $this->loadCustomers($adminId);
@@ -568,10 +567,10 @@ class ConversionInAccount extends Component
         // معکوس getRateType
         if ($this->transactionType === 'خرید') {
             // اگر getRateType برای خرید نرخ خرید برمی‌گرداند، ما نرخ فروش برگردانیم
-            return $this->accountType === 'نقدی' ? 'buy_cash' : 'buy_bank';
+            return $this->accountType === 'نقدی' ? 'sell_cash' : 'sell_bank';
         } else {
             // اگر getRateType برای فروش نرخ فروش برمی‌گرداند، ما نرخ خرید برگردانیم
-            return $this->accountType === 'نقدی' ? 'sell' : 'sell_bank';
+            return $this->accountType === 'نقدی' ? 'buy_cash' : 'buy_bank';
         }
     }
 
@@ -719,7 +718,7 @@ class ConversionInAccount extends Component
         if ($this->transactionType === 'خرید') {
             return $this->accountType === 'نقدی' ? 'buy_cash' : 'buy_bank';
         } else {
-            return $this->accountType === 'نقدی' ? 'buy_cash' : 'buy_bank';
+            return $this->accountType === 'نقدی' ? 'sell_cash' : 'sell_bank';
         }
     }
 
@@ -729,9 +728,9 @@ class ConversionInAccount extends Component
     private function getRateType()
     {
         if ($this->transactionType === 'خرید') {
-            return $this->accountType === 'نقدی' ? 'buy_cash' : 'buy_bank';
-        } else {
             return $this->accountType === 'نقدی' ? 'sell_cash' : 'sell_bank';
+        } else {
+            return $this->accountType === 'نقدی' ? 'buy_cash' : 'buy_bank';
         }
     }
 

@@ -1,5 +1,3 @@
-<!-- Tailwind CSS framework -->
-<script src="https://cdn.tailwindcss.com"></script>
 
 <!-- Material Icons for sidebar and buttons -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">

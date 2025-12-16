@@ -5,32 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سیستم صرافی اقصی</title>
-    
-    <!-- Tailwind CSS CDN با پیکربندی Dark Mode -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#122EE1',
-                        secondary: '#FF6B6B',
-                    },
-                    fontFamily: {
-                        'vazir': ['Vazir', 'sans-serif'],
-                        'yekan': ['Yekan', 'sans-serif'],
-                    },
-                }
-            }
+
+  <script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {}
         }
-    </script>
-    
+    }
+</script>
     <?php echo $__env->make('Sarafi.layouts.links', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-    
-    <!-- استایل‌های سفارسی -->
     <style>
-        /* لودر تمام صفحه */
+        /* لودر تمام صفحه فوق العاده زیبا */
         #loader {
             position: fixed;
             top: 0;
@@ -58,6 +45,9 @@
             margin: 0 auto 30px;
         }
 
+        .dark{
+            color: white;
+        }
         .spinner {
             position: absolute;
             border: 4px solid transparent;
@@ -189,6 +179,7 @@
             0% {
                 transform: rotate(0deg);
             }
+
             100% {
                 transform: rotate(360deg);
             }
@@ -198,18 +189,23 @@
             0% {
                 width: 0%;
             }
+
             50% {
                 width: 70%;
             }
+
             100% {
                 width: 100%;
             }
         }
 
         @keyframes float {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateY(0) rotate(0deg);
             }
+
             50% {
                 transform: translateY(-20px) rotate(180deg);
             }
@@ -220,6 +216,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -240,15 +237,17 @@
             0% {
                 transform: scale(1);
             }
+
             50% {
                 transform: scale(1.05);
             }
+
             100% {
                 transform: scale(1);
             }
         }
 
-        /* محتوای اصلی */
+        /* محتوای اصلی - اصلاح شده */
         #mainContent {
             display: none;
             opacity: 1;
@@ -259,7 +258,46 @@
             opacity: 1;
         }
 
-        /* استایل‌های ریسپانسیو */
+        /* استایل‌های دارک مود */
+        #toggleCircle {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        [dir="rtl"] #toggleCircle.move-dark {
+            transform: translateX(-2rem);
+        }
+
+        [dir="ltr"] #toggleCircle.move-dark {
+            transform: translateX(2rem);
+        }
+
+        .dark {
+            color-scheme: dark;
+        }
+
+        .dark body {
+            background-color: #1a202c;
+            color: #e2e8f0;
+        }
+
+        .dark header {
+            background-color: #2d3748;
+            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        .dark aside {
+            background-color: #2d3748;
+        }
+
+        .dark input {
+            background-color: #4a5568;
+            color: #e2e8f0;
+            border-color: #1a1b1e;
+        }
+
+        /* استایل‌های ریسپانسیو جدید */
+
+        /* هدر ریسپانسیو */
         .header-container {
             display: flex;
             flex-direction: column;
@@ -278,6 +316,7 @@
             }
         }
 
+        /* لایه موبایل */
         .mobile-header-layout {
             display: flex;
             flex-direction: column;
@@ -327,6 +366,7 @@
             }
         }
 
+        /* لایه دسکتاپ */
         .desktop-header-layout {
             display: none;
             width: 100%;
@@ -352,6 +392,7 @@
             gap: 1rem;
         }
 
+        /* منوی همبرگری برای موبایل */
         .mobile-menu-btn {
             display: block;
             position: fixed;
@@ -375,6 +416,7 @@
             }
         }
 
+        /* سایدبار ریسپانسیو */
         .sidebar-container {
             position: fixed;
             top: 0;
@@ -387,7 +429,6 @@
             transition: transform 0.3s ease;
             overflow-y: auto;
             padding: 1rem 0.5rem;
-            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
         }
 
         .sidebar-container.open {
@@ -406,6 +447,7 @@
             }
         }
 
+        /* محتوای اصلی ریسپانسیو */
         .main-content-wrapper {
             margin-top: 1rem;
             padding: 0 1rem;
@@ -418,6 +460,7 @@
             }
         }
 
+        /* لایه overlay برای موبایل */
         .mobile-overlay {
             position: fixed;
             top: 0;
@@ -439,6 +482,7 @@
             }
         }
 
+        /* بهبود استایل‌های عمومی */
         .responsive-text {
             font-size: 1.5rem;
         }
@@ -449,6 +493,7 @@
             }
         }
 
+        /* استایل برای دکمه‌های موبایل */
         .btn-mobile-small {
             width: 40px;
             height: 40px;
@@ -464,6 +509,7 @@
             object-fit: cover;
         }
 
+        /* استایل برای dropdown موبایل */
         .dropdown-mobile {
             width: 120px;
         }
@@ -478,6 +524,7 @@
             height: 16px;
         }
 
+        /* دارک مود موبایل */
         .dark-mode-toggle-mobile {
             width: 40px;
             height: 20px;
@@ -1042,8 +1089,8 @@
 
         <div class="flex flex-col md:flex-row mt-4 min-h-screen">
             <!-- سایدبار -->
-            <div class="sidebar-container" id="sidebar">
-                <nav class="mt-0 space-y-0" x-data="{
+            <div class="sidebar-container dark:bg-gray-800 shadow-none dark:text-white" id="sidebar">
+                <nav class="mt-0 space-y-0 dark:text-white" x-data="{
                     openItems: {
                         customers: false,
                         accounts: false,
@@ -1687,220 +1734,186 @@
         </div>
     </div>
 
- <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const loader = document.getElementById('loader');
-        const mainContent = document.getElementById('mainContent');
-        const progressBar = document.querySelector('.progress');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loader = document.getElementById('loader');
+            const mainContent = document.getElementById('mainContent');
+            const progressBar = document.querySelector('.progress');
 
-        // مدیریت منوی موبایل
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const sidebar = document.getElementById('sidebar');
-        const mobileOverlay = document.getElementById('mobileOverlay');
-        
-        mobileMenuBtn.addEventListener('click', function() {
-            sidebar.classList.toggle('open');
-            mobileOverlay.classList.toggle('open');
-        });
-        
-        mobileOverlay.addEventListener('click', function() {
-            sidebar.classList.remove('open');
-            mobileOverlay.classList.remove('open');
-        });
-
-        // مدیریت پروفایل در موبایل
-        const profileBtnMobile = document.getElementById('profileBtnMobile');
-        if (profileBtnMobile) {
-            profileBtnMobile.addEventListener('click', () => {
-                window.location.href = "<?php echo e(route('sarafi.users')); ?>";
+            // مدیریت منوی موبایل
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+                mobileOverlay.classList.toggle('open');
             });
-        }
-
-        // مدیریت پروفایل در دسکتاپ
-        const profileBtnDesktop = document.getElementById('profileBtnDesktop');
-        const profileDropdownDesktop = document.getElementById('profileDropdownDesktop');
-        if (profileBtnDesktop && profileDropdownDesktop) {
-            profileBtnDesktop.addEventListener('click', () => {
-                profileDropdownDesktop.classList.toggle('hidden');
+            
+            mobileOverlay.addEventListener('click', function() {
+                sidebar.classList.remove('open');
+                mobileOverlay.classList.remove('open');
             });
 
-            document.addEventListener('click', (event) => {
-                if (!profileBtnDesktop.contains(event.target) && !profileDropdownDesktop.contains(event.target)) {
-                    profileDropdownDesktop.classList.add('hidden');
-                }
-            });
-        }
+            // مدیریت پروفایل در موبایل
+            const profileBtnMobile = document.getElementById('profileBtnMobile');
+            if (profileBtnMobile) {
+                profileBtnMobile.addEventListener('click', () => {
+                    window.location.href = "<?php echo e(route('sarafi.users')); ?>";
+                });
+            }
 
-        // محتوا را ابتدا مخفی کن
-        mainContent.style.display = 'none';
+            // مدیریت پروفایل در دسکتاپ
+            const profileBtnDesktop = document.getElementById('profileBtnDesktop');
+            const profileDropdownDesktop = document.getElementById('profileDropdownDesktop');
+            if (profileBtnDesktop && profileDropdownDesktop) {
+                profileBtnDesktop.addEventListener('click', () => {
+                    profileDropdownDesktop.classList.toggle('hidden');
+                });
 
-        let progress = 0;
-        let fakeProgressInterval;
+                document.addEventListener('click', (event) => {
+                    if (!profileBtnDesktop.contains(event.target) && !profileDropdownDesktop.contains(event.target)) {
+                        profileDropdownDesktop.classList.add('hidden');
+                    }
+                });
+            }
 
-        function startFakeProgress() {
-            fakeProgressInterval = setInterval(() => {
-                progress += Math.random() * 30;
-                if (progress > 90) progress = 90;
+            // محتوا را ابتدا مخفی کن
+            mainContent.style.display = 'none';
+
+            let progress = 0;
+            let fakeProgressInterval;
+
+            function startFakeProgress() {
+                fakeProgressInterval = setInterval(() => {
+                    progress += Math.random() * 30;
+                    if (progress > 90) progress = 90;
+                    progressBar.style.width = progress + '%';
+                },10);
+            }
+
+            startFakeProgress();
+
+            window.addEventListener('load', function() {
+                clearInterval(fakeProgressInterval);
+                progress = 100;
                 progressBar.style.width = progress + '%';
-            },10);
-        }
-
-        startFakeProgress();
-
-        window.addEventListener('load', function() {
-            clearInterval(fakeProgressInterval);
-            progress = 100;
-            progressBar.style.width = progress + '%';
-
-            setTimeout(() => {
-                loader.classList.add('loader-complete');
-                mainContent.style.display = 'block';
-                mainContent.classList.add('content-loaded');
 
                 setTimeout(() => {
-                    loader.style.display = 'none';
-                }, 400);
-            }, 600);
+                    loader.classList.add('loader-complete');
+                    mainContent.style.display = 'block';
+                    mainContent.classList.add('content-loaded');
+
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                    }, 400);
+                }, 600);
+            });
+
+            // مدیریت کلیک روی لینک‌ها
+            const navLinks = document.querySelectorAll('.nav-link, .locale-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href && !href.startsWith('#')) {
+                        e.preventDefault();
+                        loader.style.display = 'flex';
+                        loader.classList.remove('loader-complete');
+                        setTimeout(() => window.location.href = href, 50);
+                    }
+                });
+            });
+
+            // مدیریت dropdown زبان برای دسکتاپ
+            const btn = document.getElementById('dropdownButton');
+            const menu = document.getElementById('dropdownMenu');
+            if (btn && menu) {
+                btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+                document.addEventListener('click', e => {
+                    if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                        menu.classList.add('hidden');
+                    }
+                });
+            }
+
+            // مدیریت dropdown زبان برای موبایل
+            const btnMobile = document.getElementById('dropdownButtonMobile');
+            const menuMobile = document.getElementById('dropdownMenuMobile');
+            if (btnMobile && menuMobile) {
+                btnMobile.addEventListener('click', () => menuMobile.classList.toggle('hidden'));
+                document.addEventListener('click', e => {
+                    if (!btnMobile.contains(e.target) && !menuMobile.contains(e.target)) {
+                        menuMobile.classList.add('hidden');
+                    }
+                });
+            }
         });
 
-        // مدیریت کلیک روی لینک‌ها
-        const navLinks = document.querySelectorAll('.nav-link, .locale-link');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                const href = this.getAttribute('href');
-                if (href && !href.startsWith('#')) {
-                    e.preventDefault();
-                    loader.style.display = 'flex';
-                    loader.classList.remove('loader-complete');
-                    setTimeout(() => window.location.href = href, 50);
-                }
-            });
-        });
+        // مدیریت دارک مود
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
+        const toggleCircle = document.getElementById('toggleCircle');
+        
+        const darkModeToggleMobile = document.getElementById('darkModeToggleMobile');
+        const sunIconMobile = document.getElementById('sunIconMobile');
+        const moonIconMobile = document.getElementById('moonIconMobile');
+        const toggleCircleMobile = document.getElementById('toggleCircleMobile');
+        
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        const html = document.documentElement;
 
-        // مدیریت dropdown زبان برای دسکتاپ
-        const btn = document.getElementById('dropdownButton');
-        const menu = document.getElementById('dropdownMenu');
-        if (btn && menu) {
-            btn.addEventListener('click', () => menu.classList.toggle('hidden'));
-            document.addEventListener('click', e => {
-                if (!btn.contains(e.target) && !menu.contains(e.target)) {
-                    menu.classList.add('hidden');
-                }
-            });
-        }
-
-        // مدیریت dropdown زبان برای موبایل
-        const btnMobile = document.getElementById('dropdownButtonMobile');
-        const menuMobile = document.getElementById('dropdownMenuMobile');
-        if (btnMobile && menuMobile) {
-            btnMobile.addEventListener('click', () => menuMobile.classList.toggle('hidden'));
-            document.addEventListener('click', e => {
-                if (!btnMobile.contains(e.target) && !menuMobile.contains(e.target)) {
-                    menuMobile.classList.add('hidden');
-                }
-            });
-        }
-    });
-
-    // مدیریت دارک مود - به روز شده
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    const sunIcon = document.getElementById('sunIcon');
-    const moonIcon = document.getElementById('moonIcon');
-    const toggleCircle = document.getElementById('toggleCircle');
-    
-    const darkModeToggleMobile = document.getElementById('darkModeToggleMobile');
-    const sunIconMobile = document.getElementById('sunIconMobile');
-    const moonIconMobile = document.getElementById('moonIconMobile');
-    const toggleCircleMobile = document.getElementById('toggleCircleMobile');
-    
-    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-    const html = document.documentElement;
-
-    // تابع اصلی برای اعمال دارک مود
-    function applyDarkMode(isDark) {
-        if (isDark) {
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
             html.classList.add('dark');
-            localStorage.setItem('theme', 'dark');
-            
-            // به‌روزرسانی آیکون‌ها
+            if (darkModeToggle) darkModeToggle.checked = true;
+            if (darkModeToggleMobile) darkModeToggleMobile.checked = true;
             if (sunIcon) sunIcon.classList.add('hidden');
             if (sunIconMobile) sunIconMobile.classList.add('hidden');
             if (moonIcon) moonIcon.classList.remove('hidden');
             if (moonIconMobile) moonIconMobile.classList.remove('hidden');
-            
-            // به‌روزرسانی دکمه toggle
             if (toggleCircle) toggleCircle.classList.add('move-dark');
             if (toggleCircleMobile) toggleCircleMobile.classList.add('move-dark');
-            
-            // به‌روزرسانی وضعیت checkbox
-            if (darkModeToggle) darkModeToggle.checked = true;
-            if (darkModeToggleMobile) darkModeToggleMobile.checked = true;
-            
-            // اعمال استایل‌های اضافی برای اطمینان
-            document.body.classList.add('dark-mode-active');
-            
-            // اعمال مجدد استایل‌ها برای اطمینان
-            setTimeout(() => {
-                document.querySelectorAll('*').forEach(el => {
-                    if (el.classList.contains('text-gray-700') || 
-                        el.classList.contains('text-gray-800') || 
-                        el.classList.contains('text-gray-900')) {
-                        el.style.color = '#e2e8f0 !important';
-                    }
-                });
-            }, 100);
-        } else {
-            html.classList.remove('dark');
-            localStorage.setItem('theme', 'light');
-            
-            // به‌روزرسانی آیکون‌ها
-            if (sunIcon) sunIcon.classList.remove('hidden');
-            if (sunIconMobile) sunIconMobile.classList.remove('hidden');
-            if (moonIcon) moonIcon.classList.add('hidden');
-            if (moonIconMobile) moonIconMobile.classList.add('hidden');
-            
-            // به‌روزرسانی دکمه toggle
-            if (toggleCircle) toggleCircle.classList.remove('move-dark');
-            if (toggleCircleMobile) toggleCircleMobile.classList.remove('move-dark');
-            
-            // به‌روزرسانی وضعیت checkbox
-            if (darkModeToggle) darkModeToggle.checked = false;
-            if (darkModeToggleMobile) darkModeToggleMobile.checked = false;
-            
-            // حذف استایل‌های اضافی
-            document.body.classList.remove('dark-mode-active');
         }
-    }
 
-    // بارگذاری اولیه تم
-    const currentTheme = localStorage.getItem('theme');
-    if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
-        applyDarkMode(true);
-    } else {
-        applyDarkMode(false);
-    }
-
-    // رویداد تغییر برای toggle دسکتاپ
-    if (darkModeToggle) {
-        darkModeToggle.addEventListener('change', function() {
-            applyDarkMode(this.checked);
-        });
-    }
-
-    // رویداد تغییر برای toggle موبایل
-    if (darkModeToggleMobile) {
-        darkModeToggleMobile.addEventListener('change', function() {
-            applyDarkMode(this.checked);
-        });
-    }
-
-    // نظارت بر تغییرات سیستم
-    prefersDarkScheme.addEventListener('change', (e) => {
-        if (!localStorage.getItem('theme')) {
-            applyDarkMode(e.matches);
+        if (darkModeToggle) {
+            darkModeToggle.addEventListener('change', function() {
+                updateDarkMode(this.checked);
+            });
         }
-    });
-</script>
+
+        if (darkModeToggleMobile) {
+            darkModeToggleMobile.addEventListener('change', function() {
+                updateDarkMode(this.checked);
+            });
+        }
+
+        function updateDarkMode(isDark) {
+            if (isDark) {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                if (sunIcon) sunIcon.classList.add('hidden');
+                if (sunIconMobile) sunIconMobile.classList.add('hidden');
+                if (moonIcon) moonIcon.classList.remove('hidden');
+                if (moonIconMobile) moonIconMobile.classList.remove('hidden');
+                if (toggleCircle) toggleCircle.classList.add('move-dark');
+                if (toggleCircleMobile) toggleCircleMobile.classList.add('move-dark');
+                if (darkModeToggle) darkModeToggle.checked = true;
+                if (darkModeToggleMobile) darkModeToggleMobile.checked = true;
+            } else {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                if (sunIcon) sunIcon.classList.remove('hidden');
+                if (sunIconMobile) sunIconMobile.classList.remove('hidden');
+                if (moonIcon) moonIcon.classList.add('hidden');
+                if (moonIconMobile) moonIconMobile.classList.add('hidden');
+                if (toggleCircle) toggleCircle.classList.remove('move-dark');
+                if (toggleCircleMobile) toggleCircleMobile.classList.remove('move-dark');
+                if (darkModeToggle) darkModeToggle.checked = false;
+                if (darkModeToggleMobile) darkModeToggleMobile.checked = false;
+            }
+        }
+    </script>
 
 </body>
 

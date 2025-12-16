@@ -281,7 +281,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                         : '-'); ?>
 
                                     </span>
-                                </div
+                                </div>
                             </div>
                             <?php else: ?>
                             <!-- اگر این ارز همان ارز مبدأ باشد، سلول خالی می‌ماند -->

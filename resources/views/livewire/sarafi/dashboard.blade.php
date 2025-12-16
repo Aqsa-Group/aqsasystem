@@ -1,12 +1,12 @@
 <div class="border-[#8C8C8C] min-h-screen" style="font-family: 'header';">
 
-    <h1 class="mb-8 text-3xl font-bold text-gray-700   dark:text-red-500">{{ __('messages.page_title') }}</h1>
+    <h1 class="mb-8 text-3xl font-bold text-gray-700  dark:text-white">{{ __('messages.page_title') }}</h1>
 
     <div class="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-3">
 
         <!-- رسید/بردگی -->
         <a href="{{ route('sarafi.transactions') }}" class="block">
-            <div class="border bg-gradient-to-b from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 
+            <div class="border bg-gradient-to-b  from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 
                 text-white text-[16px] font-bold">
                 <i class="fa-solid fa-wallet text-white text-xl"></i>
                 <span class=" whitespace-nowrap overflow-hidden text-ellipsis font-bold">
@@ -67,7 +67,7 @@
         <!-- ژورنال عمومی -->
         <a href="{{ route('sarafi.general-reports') }}" class="block">
             <div
-                class="border bg-gradient-to-b from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
+                class="border bg-gradient-to-b  from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
                 <i class="fa-solid fa-file-invoice-dollar text-white text-xl"></i>
                 <span>{{ __('messages.general_jornal') }}</span>
             </div>
@@ -103,7 +103,7 @@
             </a>
         </div>
 
-        <div class="p-6 bg-white rounded-b-xl shadow-sm mt-2" :class="(activeTab === 'general') 
+        <div class="p-6 bg-white dark:bg-slate-700 rounded-b-xl shadow-sm mt-2" :class="(activeTab === 'general') 
                       ? '' 
                       : 'bg-white'">
 
@@ -277,7 +277,7 @@
             <template x-if="activeTab === 'account_safe'">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 vazir">
                     @foreach($currencies as $key => $label)
-                    <div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
+                    <div class="border bg-[#F5F5F5] dark:bg-black dark:text-white rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
                         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
                         <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
                             <i class="fa-solid fa-credit-card text-white text-2xl"></i>
