@@ -8,67 +8,69 @@
 
     <div class="container mx-auto px-4">
         <!-- پیام‌های سیستم -->
-        @if (session()->has('message'))
+        <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
             <div class="h-[80px] w-full flex justify-start items-center px-4">
                 <h2 class="text-white vazir text-[18px]">
-                    {{ session('message') }}
+                    <?php echo e(session('message')); ?>
+
                 </h2>
             </div>
         </div>
-        @endif
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-        @if (session()->has('error'))
+        <?php if(session()->has('error')): ?>
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#DC2626] vazir">
             <div class="h-[80px] w-full flex justify-start items-center px-4">
                 <h2 class="text-white vazir text-[18px]">
-                    {{ session('error') }}
+                    <?php echo e(session('error')); ?>
+
                 </h2>
             </div>
         </div>
-        @endif
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
 
-        {{-- کارت‌های ارزها با اسکرول افقی --}}
+        
         <div class="scroll-container overflow-x-auto whitespace-nowrap py-3 -mt-5">
 
 
 
-            @if($selectedCustomer)
+            <!--[if BLOCK]><![endif]--><?php if($selectedCustomer): ?>
             <div class="inline-block align-top ml-4 h-auto">
                 <div
                     class="flex flex-col h-[180px] w-[273px] pr-5 pl-5 pt-2 rounded-[12px] bg-gradient-to-b from-[#20559c] to-[#3065b5] text-white">
 
-                    {{-- عکس مشتری --}}
+                    
                     <div x-data="{ 
     showLargeImage: false, 
     largeImageSrc: '',
-    customerName: '{{ addslashes($selectedCustomer->fullname) }}',
-    customerPhone: '{{ addslashes($selectedCustomer->phone ?? '') }}'
+    customerName: '<?php echo e(addslashes($selectedCustomer->fullname)); ?>',
+    customerPhone: '<?php echo e(addslashes($selectedCustomer->phone ?? '')); ?>'
 }">
 
-                        {{-- عکس مشتری --}}
-                        @if($selectedCustomer->image)
+                        
+                        <!--[if BLOCK]><![endif]--><?php if($selectedCustomer->image): ?>
                         <div class="flex justify-center mb-2">
-                            <img src="{{ Storage::url($selectedCustomer->image) }}"
-                                alt="{{ $selectedCustomer->fullname }}" class="w-20 h-20 rounded-lg object-cover border-2 border-white cursor-pointer 
+                            <img src="<?php echo e(Storage::url($selectedCustomer->image)); ?>"
+                                alt="<?php echo e($selectedCustomer->fullname); ?>" class="w-20 h-20 rounded-lg object-cover border-2 border-white cursor-pointer 
                    hover:scale-105 transition-transform duration-200 hover:shadow-lg"
-                                @click="showLargeImage = true; largeImageSrc = '{{ Storage::url($selectedCustomer->image) }}'"
-                                onerror="this.onerror=null; this.src='{{ asset('assets/web.jpg') }}'"
+                                @click="showLargeImage = true; largeImageSrc = '<?php echo e(Storage::url($selectedCustomer->image)); ?>'"
+                                onerror="this.onerror=null; this.src='<?php echo e(asset('assets/web.jpg')); ?>'"
                                 title="برای بزرگنمایی کلیک کنید">
                         </div>
-                        @else
+                        <?php else: ?>
                         <div class="flex justify-center mb-2">
-                            <img src="{{ asset('assets/web.jpg') }}" alt="{{ $selectedCustomer->fullname }}" class="w-20 h-20 rounded-lg object-cover border-2 border-white cursor-pointer 
+                            <img src="<?php echo e(asset('assets/web.jpg')); ?>" alt="<?php echo e($selectedCustomer->fullname); ?>" class="w-20 h-20 rounded-lg object-cover border-2 border-white cursor-pointer 
                    hover:scale-105 transition-transform duration-200 hover:shadow-lg"
-                                @click="showLargeImage = true; largeImageSrc = '{{ asset('assets/web.jpg') }}'"
+                                @click="showLargeImage = true; largeImageSrc = '<?php echo e(asset('assets/web.jpg')); ?>'"
                                 title="برای بزرگنمایی کلیک کنید">
                         </div>
-                        @endif
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                        {{-- مودال نمایش عکس بزرگ --}}
+                        
                         <div x-show="showLargeImage" x-transition:enter="transition ease-out duration-300"
                             x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
                             x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
@@ -79,7 +81,7 @@
 
                             <div class="relative w-full max-w-5xl">
 
-                                {{-- دکمه بستن --}}
+                                
                                 <button @click="showLargeImage = false" class="absolute -top-12 right-0 text-white hover:text-gray-300 
                            text-3xl z-10 transition-colors duration-200 p-2">
                                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -88,13 +90,13 @@
                                     </svg>
                                 </button>
 
-                                {{-- عکس بزرگ --}}
+                                
                                 <div class="flex justify-center">
                                     <img :src="largeImageSrc" :alt="customerName" class="max-w-full max-h-[75vh] object-contain rounded-xl shadow-2xl 
                             border-4 border-white/20">
                                 </div>
 
-                                {{-- اطلاعات مشتری --}}
+                                
                                 <div class="mt-6 text-center text-white">
                                     <p class="text-2xl font-bold mb-2" x-text="customerName"></p>
 
@@ -102,9 +104,9 @@
                                         <p class="text-lg text-gray-300" x-text="customerPhone"></p>
                                     </template>
 
-                                    {{-- دکمه‌های عملیات --}}
+                                    
                                     <div class="mt-6 flex flex-wrap justify-center gap-3">
-                                        {{-- دکمه دانلود --}}
+                                        
                                         <a :href="largeImageSrc"
                                             :download="customerName + '_' + new Date().toISOString().split('T')[0] + '.jpg'"
                                             class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg 
@@ -117,7 +119,7 @@
                                         </a>
 
 
-                                        {{-- دکمه بستن --}}
+                                        
                                         <button @click="showLargeImage = false" class="px-5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg 
                                    transition-colors duration-200">
                                             بستن
@@ -129,65 +131,64 @@
                         </div>
 
                     </div>
-                    {{-- نام مشتری --}}
+                    
                     <h1 class="text-[20px] text-white text-center font-bold truncate"
-                        title="{{ $selectedCustomer->fullname }}">
-                        {{ $selectedCustomer->fullname }}
+                        title="<?php echo e($selectedCustomer->fullname); ?>">
+                        <?php echo e($selectedCustomer->fullname); ?>
+
                     </h1>
 
-                    {{-- شماره تماس --}}
-                    @if($selectedCustomer->phone)
+                    
+                    <!--[if BLOCK]><![endif]--><?php if($selectedCustomer->phone): ?>
                     <div class="flex items-center justify-center gap-2 mt-1">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                             <path
                                 d="M20 15.5c-1.2 0-2.4-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.5-5.2-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.3-.5-3.5 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1zM5 6h1.5c.1 1.2.3 2.4.6 3.5L5.3 11.8c-.9-2-1.3-4.1-1.3-6.2V6zM19 19c-2.1 0-4.2-.4-6.2-1.3l2.3-2.3c1.1.3 2.3.5 3.5.6V19z" />
                         </svg>
-                        <span class="text-white text-[14px] dir-ltr text-left">{{ $selectedCustomer->phone }}</span>
+                        <span class="text-white text-[14px] dir-ltr text-left"><?php echo e($selectedCustomer->phone); ?></span>
                     </div>
-                    @endif
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                    {{-- شماره حساب --}}
+                    
                     <div class="flex items-center justify-center gap-2 mt-1">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                             <path
                                 d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8h16v10zm-8-7c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-2.2 0-4 1.8-4 4h8c0-2.2-1.8-4-4-4z" />
                         </svg>
-                        <span class="text-white text-[14px] dir-ltr text-left">{{ $selectedCustomer->account_number
-                            }}</span>
+                        <span class="text-white text-[14px] dir-ltr text-left"><?php echo e($selectedCustomer->account_number); ?></span>
                     </div>
 
                 </div>
             </div>
-            @endif
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-            @foreach ($currencies as $currencyItem)
-            @php
+            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php
             $currencyName = $currencyItem['name_fa'];
             $cashBalance = $customerCashBalances[$currencyName] ?? 0;
             $bankBalance = $customerBankBalances[$currencyName] ?? 0;
             $totalBalance = $customerTotalBalances[$currencyName] ?? 0;
-            @endphp
+            ?>
 
-            {{-- نمایش تمام کارت‌ها حتی با موجودی صفر --}}
+            
             <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
                 <div
                     class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] bg-gradient-to-b from-[#2563EB] to-[#5474BB] text-white">
 
-                    <h1 class="text-[24px] text-white">{{ $currencyName }}</h1>
+                    <h1 class="text-[24px] text-white"><?php echo e($currencyName); ?></h1>
 
                     <div class="flex flex-col gap-1 mt-1 text-center">
                         <div class="flex justify-between items-center text-[14px]">
                             <span>نقدی:</span>
-                            <span class="font-bold text-left" dir="ltr">{{ number_format($cashBalance) }}</span>
+                            <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($cashBalance)); ?></span>
                         </div>
                         <div class="flex justify-between items-center text-[14px]">
                             <span>بانکی:</span>
-                            <span class="font-bold text-left" dir="ltr">{{ number_format($bankBalance) }}</span>
+                            <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($bankBalance)); ?></span>
                         </div>
                         <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
                             <span class="font-semibold">مجموعه:</span>
-                            <span class="font-bold text-[16px] text-left" dir="ltr">{{ number_format($totalBalance)
-                                }}</span>
+                            <span class="font-bold text-[16px] text-left" dir="ltr"><?php echo e(number_format($totalBalance)); ?></span>
                         </div>
                     </div>
 
@@ -200,15 +201,15 @@
                     </button>
                 </div>
             </div>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
 
-            {{-- کارت خلاصه بیلانس به دالر --}}
-            @if($selectedCustomerId)
+            
+            <!--[if BLOCK]><![endif]--><?php if($selectedCustomerId): ?>
             <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
                 <div
                     class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
 
-                    @php
+                    <?php
                     // تابع تبدیل کد ارز به نام فارسی
                     function getPersianCurrencyName($currencyCode) {
                     $currencyMap = [
@@ -232,12 +233,12 @@
 
                     $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
                     $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
-                    @endphp
+                    ?>
 
-                    <h1 class="text-[24px] text-white">خلاصه بیلانس به {{ $sourceCurrency }}</h1>
+                    <h1 class="text-[24px] text-white">خلاصه بیلانس به <?php echo e($sourceCurrency); ?></h1>
 
                     <div class="flex flex-col gap-1 mt-1 text-center">
-                        @php
+                        <?php
                         $totalCashUsd = 0;
                         $totalBankUsd = 0;
                         $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
@@ -282,20 +283,19 @@
                         }
                         }
                         $grandTotalUsd = $totalCashUsd + $totalBankUsd;
-                        @endphp
+                        ?>
 
                         <div class="flex justify-between items-center text-[14px]">
                             <span>نقدی:</span>
-                            <span class="font-bold text-left" dir="ltr">{{ number_format($totalCashUsd, 2) }}</span>
+                            <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($totalCashUsd, 2)); ?></span>
                         </div>
                         <div class="flex justify-between items-center text-[14px]">
                             <span>بانکی:</span>
-                            <span class="font-bold text-left" dir="ltr">{{ number_format($totalBankUsd, 2) }}</span>
+                            <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($totalBankUsd, 2)); ?></span>
                         </div>
                         <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
                             <span class="font-semibold">مجموعه:</span>
-                            <span class="font-bold text-[16px] text-left" dir="ltr">{{ number_format($grandTotalUsd, 2)
-                                }}</span>
+                            <span class="font-bold text-[16px] text-left" dir="ltr"><?php echo e(number_format($grandTotalUsd, 2)); ?></span>
                         </div>
                     </div>
 
@@ -308,7 +308,7 @@
                     </button>
                 </div>
             </div>
-            @endif
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </div>
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
             <!-- فرم تبدیل ارز -->
@@ -319,17 +319,19 @@
                 <div
                     class="flex flex-row justify-between p-[20px] border border-[#8C8C8C] rounded-[12px] flex-wrap items-center">
                     <p class="flex justify-between items-center text-center gap-2">
-                        <img src="{{ asset('assets/sarafi/all_icon/pencil.svg') }}" alt="" class="h-6 w-6">
+                        <img src="<?php echo e(asset('assets/sarafi/all_icon/pencil.svg')); ?>" alt="" class="h-6 w-6">
                         <span class="vazir font-semibold">فورم تبدیل ارز در حساب</span>
                     </p>
 
                     <button wire:click="toggleTransactionType" class="rounded-[8px] p-[10px] text-white vazir px-12 font-semibold transition-colors duration-500 ease-in-out
-                        {{ $transactionType === 'خرید' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
-                        {{ $transactionType === 'خرید' ? 'خرید' : 'فروش' }}
+                        <?php echo e($transactionType === 'خرید' ? 'bg-[#2563EB]' : 'bg-[#DD2424]'); ?>">
+                        <?php echo e($transactionType === 'خرید' ? 'خرید' : 'فروش'); ?>
+
                     </button>
                     <button wire:click="toggleAccountType" class="rounded-[8px] p-[10px] text-white vazir px-12 font-semibold transition-colors duration-500 ease-in-out
-                        {{ $accountType === 'نقدی' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
-                        {{ $accountType === 'نقدی' ? 'نقدی' : 'بانکی' }}
+                        <?php echo e($accountType === 'نقدی' ? 'bg-[#2563EB]' : 'bg-[#DD2424]'); ?>">
+                        <?php echo e($accountType === 'نقدی' ? 'نقدی' : 'بانکی'); ?>
+
                     </button>
 
                 </div>
@@ -342,8 +344,8 @@
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">حساب مشتری</label>
                             <div x-data="{
                                 searchValue: '',
-                                selectedId: @entangle('selectedAccount'),
-                                customers: @js($customers),
+                                selectedId: <?php if ((object) ('selectedAccount') instanceof \Livewire\WireDirective) : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccount'->value()); ?>')<?php echo e('selectedAccount'->hasModifier('live') ? '.live' : ''); ?><?php else : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccount'); ?>')<?php endif; ?>,
+                                customers: <?php echo \Illuminate\Support\Js::from($customers)->toHtml() ?>,
                                 init() {
                                     this.updateDisplay();
                                     
@@ -389,17 +391,24 @@
                                     class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
                                     autocomplete="off">
                                 <datalist id="customersList">
-                                    @foreach ($customers as $customer)
-                                    <option value="{{ $customer['account_number'] }} - {{ $customer['fullname'] }}">
-                                        @endforeach
+                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </datalist>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
+                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
                                 </div>
                             </div>
-                            @error('selectedAccount')
-                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                            @enderror
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['selectedAccount'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
 
@@ -409,52 +418,67 @@
                             <!-- ارز مبدا -->
                             <div class="lg:w-[191px]">
                                 <label class="block text-[16px] font-medium text-black mb-1 vazir">
-                                    @if($transactionType === 'خرید')
+                                    <!--[if BLOCK]><![endif]--><?php if($transactionType === 'خرید'): ?>
                                     ارز خرید
-                                    @else
+                                    <?php else: ?>
                                     ارز  خرید
-                                    @endif
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </label>
                                 <div class="relative w-full">
                                     <select wire:model="from_currency"
                                         class="w-full h-[60px] p-3 rounded-[12px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
                                         <option value="">انتخاب ارز</option>
-                                        @foreach ($currencies as $c)
-                                        <option value="{{ $c['code'] }}">{{ $c['name_fa'] }}</option>
-                                        @endforeach
+                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($c['code']); ?>"><?php echo e($c['name_fa']); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                     </select>
                                     <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                        <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓"
+                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓"
                                             class="w-4 h-4">
                                     </div>
                                 </div>
-                                @error('from_currency')
-                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                                @enderror
+                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['from_currency'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
 
                             <!-- مبلغ خرید -->
                             <div class="flex-1">
                                 <label class="block text-[16px] font-medium text-black mb-1 vazir">
-                                    @if($transactionType === 'خرید')
+                                    <!--[if BLOCK]><![endif]--><?php if($transactionType === 'خرید'): ?>
                                     مبلغ خرید
-                                    @else
+                                    <?php else: ?>
                                     مبلغ خرید
-                                    @endif
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </label>
                                 <div class="relative w-full">
                                     <input type="text" wire:model.live="buy_amount" placeholder="0"
                                         class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500"
                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
                                 </div>
-                                @if($withdrawalAmountInWords)
+                                <!--[if BLOCK]><![endif]--><?php if($withdrawalAmountInWords): ?>
                                 <div class="mt-2 text-sm text-gray-600">
-                                    <strong></strong> {{ $withdrawalAmountInWords }}
+                                    <strong></strong> <?php echo e($withdrawalAmountInWords); ?>
+
                                 </div>
-                                @endif
-                                @error('buy_amount')
-                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                                @enderror
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['buy_amount'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
                         </div>
                     </div>
@@ -465,52 +489,67 @@
                             <!-- ارز مقصد -->
                             <div class="lg:w-[191px]">
                                 <label class="block text-[16px] font-medium text-black mb-1 vazir">
-                                    @if($transactionType === 'خرید')
+                                    <!--[if BLOCK]><![endif]--><?php if($transactionType === 'خرید'): ?>
                                     ارز فروش
-                                    @else
+                                    <?php else: ?>
                                     ارز فروش
-                                    @endif
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </label>
                                 <div class="relative w-full">
                                     <select wire:model="to_currency"
                                         class="w-full h-[60px] p-3 rounded-[12px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
                                         <option value="">انتخاب ارز</option>
-                                        @foreach ($currencies as $c)
-                                        <option value="{{ $c['code'] }}">{{ $c['name_fa'] }}</option>
-                                        @endforeach
+                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($c['code']); ?>"><?php echo e($c['name_fa']); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                     </select>
                                     <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                        <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓"
+                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓"
                                             class="w-4 h-4">
                                     </div>
                                 </div>
-                                @error('to_currency')
-                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                                @enderror
+                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['to_currency'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
 
                             <!-- نرخ ارز -->
                             <div class="flex-1">
                                 <label class="block text-[16px] font-medium text-black mb-1 vazir">
-                                    @if($transactionType === 'خرید')
+                                    <!--[if BLOCK]><![endif]--><?php if($transactionType === 'خرید'): ?>
                                     نرخ خرید
-                                    @else
+                                    <?php else: ?>
                                     نرخ فروش
-                                    @endif
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </label>
                                 <div class="relative w-full">
                                     <input type="text" wire:model.live="currency_rate" placeholder="0.0000"
                                         class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500"
                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
-                                    @error('currency_rate')
-                                    <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                                    @enderror
+                                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['currency_rate'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 </div>
-                                @if($currencyRateInWords)
+                                <!--[if BLOCK]><![endif]--><?php if($currencyRateInWords): ?>
                                 <div class="mt-2 text-sm text-gray-600">
-                                    <strong></strong> {{ $currencyRateInWords }}
+                                    <strong></strong> <?php echo e($currencyRateInWords); ?>
+
                                 </div>
-                                @endif
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
                         </div>
                     </div>
@@ -520,25 +559,33 @@
                         <!-- مبلغ فروش -->
                         <div class="flex-1">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">
-                                @if($transactionType === 'خرید')
+                                <!--[if BLOCK]><![endif]--><?php if($transactionType === 'خرید'): ?>
                                 مبلغ فروش
-                                @else
+                                <?php else: ?>
                                 مبلغ فروش
-                                @endif
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </label>
                             <div class="relative w-full">
                                 <input type="text" wire:model="sell_amount" placeholder="0"
                                     class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 bg-gray-100"
                                     readonly />
                             </div>
-                            @if($receivedAmountInWords)
+                            <!--[if BLOCK]><![endif]--><?php if($receivedAmountInWords): ?>
                             <div class="mt-2 text-sm text-gray-600">
-                                <strong></strong> {{ $receivedAmountInWords }}
+                                <strong></strong> <?php echo e($receivedAmountInWords); ?>
+
                             </div>
-                            @endif
-                            @error('sell_amount')
-                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                            @enderror
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['sell_amount'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         <!-- تاریخ -->
@@ -560,9 +607,16 @@
                                         stroke="#8C8C8C" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
-                                @error('transaction_date')
-                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                                @enderror
+                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['transaction_date'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
                         </div>
                     </div>
@@ -575,9 +629,16 @@
                             <div class="relative w-full">
                                 <input type="text" wire:model="by_sender" placeholder="نام مسئول برداشت"
                                     class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500" />
-                                @error('by_sender')
-                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                                @enderror
+                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['by_sender'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
                         </div>
 
@@ -587,28 +648,42 @@
                             <div class="relative w-full">
                                 <input type="text" wire:model="by_receiver" placeholder="نام مسئول دریافت"
                                     class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500" />
-                                @error('by_receiver')
-                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                                @enderror
+                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['by_receiver'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
                         </div>
                     </div>
 
                     <!-- زون‌ها -->
-                    {{-- زون برداشت و دریافت --}}
+                    
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
                         <div>
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">زون برداشت</label>
                             <select wire:model="zone_sender"
                                 class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="">انتخاب زون</option>
-                                @foreach($zones as $zone)
-                                <option value="{{ $zone }}">{{ $zone }}</option>
-                                @endforeach
+                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $zones; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $zone): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($zone); ?>"><?php echo e($zone); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                             </select>
-                            @error('zone_sender')
-                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                            @enderror
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['zone_sender'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         <div>
@@ -616,13 +691,20 @@
                             <select wire:model="zone_receiver"
                                 class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="">انتخاب زون</option>
-                                @foreach($zones as $zone)
-                                <option value="{{ $zone }}">{{ $zone }}</option>
-                                @endforeach
+                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $zones; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $zone): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($zone); ?>"><?php echo e($zone); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                             </select>
-                            @error('zone_receiver')
-                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                            @enderror
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['zone_receiver'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
 
@@ -633,9 +715,16 @@
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">شرح تراکنش</label>
                             <textarea wire:model="description" rows="3" placeholder="شرح کامل تبدیل ارز..."
                                 class="w-full p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 resize-none"></textarea>
-                            @error('description')
-                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                            @enderror
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
 
@@ -643,17 +732,17 @@
                     <div class="flex flex-wrap justify-center items-center gap-4 py-4 text-center">
                         <button type="submit" wire:loading.attr="disabled"
                             class="bg-[#2563EB] text-[14px] vazir font-semibold rounded-[8px] px-16 py-4 text-white hover:bg-blue-700 transition disabled:opacity-50">
-                            @if($editingConversionId)
+                            <!--[if BLOCK]><![endif]--><?php if($editingConversionId): ?>
                             <span wire:loading.remove>ویرایش تبدیل ارز</span>
-                            @else
+                            <?php else: ?>
                             <span wire:loading.remove>ثبت تبدیل ارز</span>
-                            @endif
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             <span wire:loading>در حال ثبت...</span>
                         </button>
 
                         <button type="button" wire:click="resetForm" wire:loading.attr="disabled"
                             class="bg-[#DD2424] text-[14px] vazir font-semibold rounded-[8px] px-16 py-4 text-white hover:bg-red-700 transition">
-                            @if($editingConversionId) انصراف از ویرایش @else انصراف @endif
+                            <!--[if BLOCK]><![endif]--><?php if($editingConversionId): ?> انصراف از ویرایش <?php else: ?> انصراف <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </button>
                     </div>
 
@@ -674,15 +763,15 @@
                                 class="border border-[#8C8C8C] w-full h-12 md:h-[51px] bg-transparent rounded-[12px] p-2 md:p-3 text-sm md:text-base pr-10"
                                 placeholder="جستجو بر اساس نام،...">
 
-                            <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
                                 class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6">
 
-                            @if($search)
+                            <!--[if BLOCK]><![endif]--><?php if($search): ?>
                             <button wire:click="$set('search', '')"
                                 class="absolute left-8 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
                                 ✕
                             </button>
-                            @endif
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
                 </div>
@@ -706,107 +795,113 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($conversionTransactions as $key => $conversion)
+                                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $conversionTransactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $conversion): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                 <tr class="text-black border-b border-[#D9D9D9] bg-transparent">
                                     <td class="px-2 py-3 vazir text-[16px] md:text-[18px] font-medium text-center w-12">
-                                        {{ $key + 1 }}
+                                        <?php echo e($key + 1); ?>
+
                                     </td>
                                     <td class="px-2 py-3 vazir text-[16px] md:text-[18px] font-medium w-32">
-                                        <div class="truncate" title="{{ $conversion->customer->fullname ?? '-' }}">
-                                            {{ $conversion->customer->fullname ?? '-' }}
+                                        <div class="truncate" title="<?php echo e($conversion->customer->fullname ?? '-'); ?>">
+                                            <?php echo e($conversion->customer->fullname ?? '-'); ?>
+
                                         </div>
                                         <div class="text-sm text-gray-500">
-                                            {{ $conversion->customer->account_number ?? '' }}
+                                            <?php echo e($conversion->customer->account_number ?? ''); ?>
+
                                         </div>
                                     </td>
                                     <td class="px-3 py-3 vazir text-[13px] md:text-[16px] font-medium w-52">
                                         <div class="text-left">
-                                            <span class="">{{ number_format($conversion->buy_amount) }} ({{
-                                                $this->getCurrencyName($conversion->from_currency) }})</span>
+                                            <span class=""><?php echo e(number_format($conversion->buy_amount)); ?> (<?php echo e($this->getCurrencyName($conversion->from_currency)); ?>)</span>
                                         </div>
                                     </td>
                                     <td class="px-2 py-3 vazir text-[16px] md:text-[16px] w-44">
                                         <div class="text-left">
-                                            <span class="">{{ number_format($conversion->sell_amount) }} ({{
-                                                $this->getCurrencyName($conversion->to_currency) }})</span>
+                                            <span class=""><?php echo e(number_format($conversion->sell_amount)); ?> (<?php echo e($this->getCurrencyName($conversion->to_currency)); ?>)</span>
                                         </div>
                                     </td>
                                     <td class="px-1 py-3 vazir text-[13px] md:text-[18px] w-44">
-                                        {{ number_format($conversion->currency_rate, 2) }}
+                                        <?php echo e(number_format($conversion->currency_rate, 2)); ?>
+
                                     </td>
                                     <td class="px-2 py-3 vazir text-[13px] md:text-[18px] font-medium w-36">
-                                        <div class="text-right truncate" title="{{ $conversion->description }}">
-                                            {{ Str::limit($conversion->description, 35) }}
+                                        <div class="text-right truncate" title="<?php echo e($conversion->description); ?>">
+                                            <?php echo e(Str::limit($conversion->description, 35)); ?>
+
                                         </div>
                                     </td>
                                     <td class="px-2 py-3 vazir text-[16px] md:text-[18px] text-center w-28">
                                         <div class="whitespace-nowrap">
                                             <div class="font-medium text-[16px]">
-                                                {{ explode(' ', $conversion->transaction_date)[0] }}
+                                                <?php echo e(explode(' ', $conversion->transaction_date)[0]); ?>
+
                                             </div>
                                             <div class="text-gray-500 text-[16px] mt-1">
-                                                {{ \Carbon\Carbon::parse($conversion->created_at)->format('h:i A') }}
+                                                <?php echo e(\Carbon\Carbon::parse($conversion->created_at)->format('h:i A')); ?>
+
                                             </div>
                                         </div>
                                     </td>
                                     <td class="py-3 text-center w-32">
                                         <div class="flex justify-center gap-2">
                                             <!-- دکمه ویرایش -->
-                                            <button wire:click="editConversion({{ $conversion->id }})"
+                                            <button wire:click="editConversion(<?php echo e($conversion->id); ?>)"
                                                 class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-blue-100"
                                                 title="ویرایش">
-                                                <img src="{{ asset('assets/sarafi/all_icon/edit_table.svg') }}"
+                                                <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>"
                                                     class="w-7 h-7" alt="Edit">
                                             </button>
 
                                             <!-- دکمه حذف -->
-                                            <button wire:click="confirmDelete({{ $conversion->id }})"
+                                            <button wire:click="confirmDelete(<?php echo e($conversion->id); ?>)"
                                                 class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-red-100"
                                                 title="حذف">
-                                                <img src="{{ asset('assets/sarafi/all_icon/trash_table.svg') }}"
+                                                <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>"
                                                     class="w-7 h-7" alt="Delete">
                                             </button>
 
-                                            <button wire:click="printTransaction({{ $conversion->id }})"
+                                            <button wire:click="printTransaction(<?php echo e($conversion->id); ?>)"
                                                 class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-green-100"
                                                 title="پرینت PDF">
-                                                <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"
+                                                <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
                                                     class="w-9 h-9" alt="Print">
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
-                                @empty
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                 <tr>
                                     <td colspan="8" class="px-4 py-4 text-center text-gray-500 vazir text-[14px]">
                                         هیچ تراکنش تبدیلی یافت نشد.
                                     </td>
                                 </tr>
-                                @endforelse
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </tbody>
                         </table>
                     </div>
                 </div>
 
                 <!-- صفحه‌بندی -->
-                @if($conversionTransactions->hasPages())
+                <!--[if BLOCK]><![endif]--><?php if($conversionTransactions->hasPages()): ?>
                 <div class="mt-4 px-4">
-                    {{ $conversionTransactions->links() }}
+                    <?php echo e($conversionTransactions->links()); ?>
+
                 </div>
-                @endif
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </div>
         </div>
     </div>
 
     <!-- مودال تأیید حذف -->
-    @if ($confirmDeleteId)
+    <!--[if BLOCK]><![endif]--><?php if($confirmDeleteId): ?>
     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
         <div
             class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px]  rounded-[12px] shadow-xl w-[653px] h-[219.7267608642578px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
             <!-- دکمه بستن -->
             <button wire:click="$set('confirmDeleteId', null)"
                 class="absolute left-0 right-4 top-4 h-6 w-6 flex items-center justify-center">
-                <img src="{{ asset('assets/sarafi/all_icon/close.svg') }}" alt="بستن" class="w-4 h-4">
+                <img src="<?php echo e(asset('assets/sarafi/all_icon/close.svg')); ?>" alt="بستن" class="w-4 h-4">
             </button>
 
             <h1 class="text-2xl text-black shabnam font-medium leading-[100%] mt-2">حذف تراکنش تبدیل ارز</h1>
@@ -824,7 +919,7 @@
             </div>
         </div>
     </div>
-    @endif
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
     <style>
         .scroll-container {
@@ -866,4 +961,4 @@
             display: none !important;
         }
     </style>
-</div>
+</div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/conversion-in-account.blade.php ENDPATH**/ ?>
