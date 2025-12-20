@@ -250,7 +250,7 @@
                         <h1 class="text-lg font-semibold drop-shadow-md text-center">
                             <?php echo e(__('messages.general_total_balance')); ?></h1>
 
-                        <p class="text-3xl font-extrabold drop-shadow-md"><?php echo e($total_balance_usd); ?></p>
+                        <p class="text-3xl font-extrabold drop-shadow-md">    <?php echo e(number_format($total_balance_usd, 2)); ?></p>
                     </div>
                 </div>
 

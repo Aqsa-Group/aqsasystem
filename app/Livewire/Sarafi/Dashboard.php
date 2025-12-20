@@ -5,7 +5,6 @@ namespace App\Livewire\Sarafi;
 use App\Models\Sarafi\BankAccount;
 use App\Models\Sarafi\CurrencySafe;
 use App\Models\Sarafi\Customer;
-use App\Models\Sarafi\ExchangeRates;
 use App\Models\Sarafi\Remittances;
 use App\Models\Sarafi\Revenue;
 use App\Models\Sarafi\Transaction;
@@ -13,7 +12,6 @@ use App\Models\Sarafi\User;
 use App\Models\Sarafi\ProfitRate;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Dashboard extends Component
@@ -29,32 +27,23 @@ class Dashboard extends Component
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
 
-        // صندوق اصلی
-        $this->safe = CurrencySafe::where('user_id', $adminId)->first();
+        // صندوق نقدی
+        $this->safe = CurrencySafe::where('admin_id', $adminId)->first();
 
         // حساب بانکی
-        $safeAccountData = BankAccount::where('user_id', $adminId)->first();
-        $this->safe_account = $safeAccountData ? $safeAccountData->toArray() : [];
+        $bank = BankAccount::where('admin_id', $adminId)->first();
+        $this->safe_account = $bank ? $bank->toArray() : [];
 
-        // اگر خالی بود صفر تنظیم کن
-        if (empty($this->safe_account)) {
-            $this->safe_account = [
-                'afn' => 0,
-                'usd' => 0,
-                'eur' => 0,
-                'irr' => 0,
-                'aed' => 0,
-                'try' => 0,
-                'cny' => 0,
-                'pkr' => 0,
-                'gbp' => 0,
-                'jpy' => 0,
-                'sar' => 0,
-                'inr' => 0,
-            ];
-        }
+        // مقدار پیش‌فرض ارزها
+        $defaults = [
+            'afn' => 0, 'usd' => 0, 'eur' => 0, 'irr' => 0,
+            'aed' => 0, 'try' => 0, 'cny' => 0, 'pkr' => 0,
+            'gbp' => 0, 'jpy' => 0, 'sar' => 0, 'inr' => 0,
+        ];
 
-        // ترجمه ارزها
+        $this->safe_account = array_merge($defaults, $this->safe_account ?? []);
+
+        // ترجمه نام ارزها
         $this->currencies = [
             'afn' => __('messages.safes_afn'),
             'usd' => __('messages.safes_usd'),
@@ -82,7 +71,7 @@ class Dashboard extends Component
 
         /*
         |--------------------------------------------------------------------------
-        | محاسبات امروز
+        | آمار امروز
         |--------------------------------------------------------------------------
         */
         $todayprofit = Revenue::where('admin_id', $adminId)
@@ -110,89 +99,54 @@ class Dashboard extends Component
 
         /*
         |--------------------------------------------------------------------------
-        | مجموع موجودی به دالر
+        | محاسبه مجموع موجودی (نقدی + بانکی) به دالر
         |--------------------------------------------------------------------------
         */
 
-        // جمع ارزهای صندوق و حساب بانکی
-        $safe = CurrencySafe::where('admin_id', $adminId)
-            ->select([
-                'usd',
-                'afn',
-                'eur',
-                'irr',
-                'aed',
-                'try',
-                'cny',
-                'pkr',
-                'gbp',
-                'jpy',
-                'sar',
-                'inr'
-            ])->first();
+        $safe = CurrencySafe::where('admin_id', $adminId)->first();
+        $bank = BankAccount::where('admin_id', $adminId)->first();
+        $rates = ProfitRate::where('admin_id', $adminId)->latest()->first();
 
-        $bank = BankAccount::where('admin_id', $adminId)
-            ->select([
-                'usd',
-                'afn',
-                'eur',
-                'irr',
-                'aed',
-                'try',
-                'cny',
-                'pkr',
-                'gbp',
-                'jpy',
-                'sar',
-                'inr'
-            ])->first();
+        $totalCashUsd = 0;
+        $totalBankUsd = 0;
 
-
-        // مجموع تمام ارزها
-        $currencies = ['usd', 'afn', 'eur', 'irr', 'aed', 'try', 'cny', 'pkr', 'gbp', 'jpy', 'sar', 'inr'];
-
-        $totals = [];
-        foreach ($currencies as $c) {
-            $totals[$c] = ($safe->$c ?? 0) + ($bank->$c ?? 0);
-        }
-
-        // دریافت نرخ‌ها (buy cash)
-        $rates = ProfitRate::where('admin_id', $adminId)->first();
-
-        $totalInUsd = 0;
-
-        // USD مستقیم
-        $totalInUsd += $totals['usd'] ?? 0;
-
-        // مپ ارز → ستون buy_cash
-        $map = [
-            'afn' => 'afn_buy_cash',
-            'eur' => 'eur_buy_cash',
-            'irr' => 'irr_buy_cash',
-            'aed' => 'aed_buy_cash',
-            'try' => 'try_buy_cash',
-            'cny' => 'cny_buy_cash',
-            'pkr' => 'pkr_buy_cash',
-            'gbp' => 'gbp_buy_cash',
-            'jpy' => 'jpy_buy_cash',
-            'sar' => 'sar_buy_cash',
-            'inr' => 'inr_buy_cash',
+        $currencyMap = [
+            'afn' => ['cash' => 'afn_buy_cash', 'bank' => 'afn_buy_bank'],
+            'usd' => ['cash' => 'usd_buy_cash', 'bank' => 'usd_buy_bank'],
+            'eur' => ['cash' => 'eur_buy_cash', 'bank' => 'eur_buy_bank'],
+            'irr' => ['cash' => 'irr_buy_cash', 'bank' => 'irr_buy_bank'],
+            'aed' => ['cash' => 'aed_buy_cash', 'bank' => 'aed_buy_bank'],
+            'try' => ['cash' => 'try_buy_cash', 'bank' => 'try_buy_bank'],
+            'cny' => ['cash' => 'cny_buy_cash', 'bank' => 'cny_buy_bank'],
+            'pkr' => ['cash' => 'pkr_buy_cash', 'bank' => 'pkr_buy_bank'],
+            'gbp' => ['cash' => 'gbp_buy_cash', 'bank' => 'gbp_buy_bank'],
+            'jpy' => ['cash' => 'jpy_buy_cash', 'bank' => 'jpy_buy_bank'],
+            'sar' => ['cash' => 'sar_buy_cash', 'bank' => 'sar_buy_bank'],
+            'inr' => ['cash' => 'inr_buy_cash', 'bank' => 'inr_buy_bank'],
         ];
 
         if ($rates) {
-            foreach ($map as $currency => $rateColumn) {
-                $amount = $totals[$currency] ?? 0;
-                $rate   = $rates->$rateColumn ?? 0;
+            foreach ($currencyMap as $currency => $cols) {
 
-                if ($amount > 0 && $rate > 0) {
-                    $totalInUsd += $amount / $rate;
+                // نقدی
+                $cashAmount = $safe->$currency ?? 0;
+                $cashRate   = $rates->{$cols['cash']} ?? 0;
+
+                if ($cashAmount > 0 && $cashRate > 0) {
+                    $totalCashUsd += $cashAmount / $cashRate;
+                }
+
+                // بانکی
+                $bankAmount = $bank->$currency ?? 0;
+                $bankRate   = $rates->{$cols['bank']} ?? 0;
+
+                if ($bankAmount > 0 && $bankRate > 0) {
+                    $totalBankUsd += $bankAmount / $bankRate;
                 }
             }
         }
 
-        $this->total_balance_usd = round($totalInUsd, 2);
-
-        $this->total_balance_usd = round($totalInUsd, 2);
+        $this->total_balance_usd = round($totalCashUsd + $totalBankUsd, 2);
 
         return view('livewire.sarafi.dashboard', [
             'UserCount' => $UserCount,

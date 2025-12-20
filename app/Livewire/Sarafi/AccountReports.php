@@ -205,62 +205,57 @@ class AccountReports extends Component
 
         return $query->max('date');
     }
+private function calculateTotalBalance(array $balances, string $accountType = 'cash'): float
+{
+    $latestProfitRate = ProfitRate::latest()->first();
 
-    private function calculateTotalBalance($balances, $accountType = 'cash')
-    {
-        $latestProfitRate = ProfitRate::latest()->first();
+    // نرخ‌های پیش‌فرض (Fallback)
+    $defaultRates = [
+        'afn' => 66.20,
+        'usd' => 1,
+        'irr' => 110000.00,
+        'eur' => 0.93,
+        'pkr' => 277.78,
+        'aed' => 3.67,
+        'try' => 32.26,
+        'cny' => 7.24,
+        'gbp' => 0.79,
+        'jpy' => 150,
+        'sar' => 3.75,
+        'inr' => 83,
+    ];
 
-        if (!$latestProfitRate) {
+    // اگر نرخ وجود داشت
+    if ($latestProfitRate) {
+        $exchangeRates = [];
 
-            $exchangeRates = [
-                'afn' => 66.20,
-                'usd' => 1,
-                'irr' => 110000.00,
-                'eur' => 0.93,
-                'pkr' => 277.78,
-                'aed' => 3.67,
-                'try' => 32.26,
-                'cny' => 7.24,
-            ];
-        } else {
-            if ($accountType == 'cash') {
-                // نرخ‌های خرید نقدی
-                $exchangeRates = [
-                    'afn' => $latestProfitRate->afn_buy_cash ?: 66.20,
-                    'usd' => $latestProfitRate->usd_buy_cash ?: 1,
-                    'irr' => $latestProfitRate->irr_buy_cash ?: 110000.00,
-                    'eur' => $latestProfitRate->eur_buy_cash ?: 0.93,
-                    'pkr' => $latestProfitRate->pkr_buy_cash ?: 277.78,
-                    'aed' => $latestProfitRate->aed_buy_cash ?: 3.67,
-                    'try' => $latestProfitRate->try_buy_cash ?: 32.26,
-                    'cny' => $latestProfitRate->cny_buy_cash ?: 7.24,
-                ];
-            } else {
-                // نرخ‌های خرید بانکی
-                $exchangeRates = [
-                    'afn' => $latestProfitRate->afn_buy_bank ?: 66.20,
-                    'usd' => $latestProfitRate->usd_buy_bank ?: 1,
-                    'irr' => $latestProfitRate->irr_buy_bank ?: 110000.00,
-                    'eur' => $latestProfitRate->eur_buy_bank ?: 0.93,
-                    'pkr' => $latestProfitRate->pkr_buy_bank ?: 277.78,
-                    'aed' => $latestProfitRate->aed_buy_bank ?: 3.67,
-                    'try' => $latestProfitRate->try_buy_bank ?: 32.26,
-                    'cny' => $latestProfitRate->cny_buy_bank ?: 7.24,
-                ];
-            }
+        foreach ($defaultRates as $currency => $fallback) {
+            $column = $currency . '_buy_' . ($accountType === 'bank' ? 'bank' : 'cash');
+
+            $exchangeRates[$currency] =
+                ($latestProfitRate->$column ?? 0) > 0
+                    ? $latestProfitRate->$column
+                    : $fallback;
         }
-
-        $total = 0;
-
-        foreach ($balances as $currency => $balance) {
-            if (isset($exchangeRates[$currency]) && $exchangeRates[$currency] > 0 && $balance != 0) {
-                // تبدیل به دالر: موجودی ارز تقسیم بر نرخ خرید
-                $total += $balance / $exchangeRates[$currency];
-            }
-        }
-
-        return $total;
+    } else {
+        $exchangeRates = $defaultRates;
     }
+
+    $totalUsd = 0;
+
+    foreach ($balances as $currency => $balance) {
+        if (
+            isset($exchangeRates[$currency]) &&
+            $exchangeRates[$currency] > 0 &&
+            $balance != 0
+        ) {
+            // تبدیل به USD
+            $totalUsd += $balance / $exchangeRates[$currency];
+        }
+    }
+ 
+    return round($totalUsd, 2);
+}
 
     private function filterByDate()
     {
