@@ -583,7 +583,7 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
 
             <!-- بخش نمودار SVG -->
             @if($selectedCustomerId && count($currencyPercentages) > 0)
-            <div class="lg:w-1/2 mt-6 lg:mt-0 flex justify-center">
+            <div class="lg:w-1/2 mt-6 lg:mt-0 flex justify-center" dir="ltr">
                 @php
                 $chartData = [
                 'series' => [],
