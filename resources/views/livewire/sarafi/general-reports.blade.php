@@ -657,7 +657,7 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                             <path d="{{ $path }}" fill="url(#radial-gradient-{{ $index }})" stroke="white"
                                 stroke-width="0.3"></path>
 
-                            <text x="{{ $textX }}" y="{{ $textY }}" font-size="2.7" fill="white" text-anchor="middle"
+                            <text dir="ltr" x="{{ $textX }}" y="{{ $textY }}" font-size="2.7" fill="white" text-anchor="middle"
                                 alignment-baseline="middle"
                                 style="font-weight: bold; text-shadow: 0px 0px 3px rgba(0,0,0,0.5);">
                                 {{ round($percentage, 1) }}%
@@ -671,13 +671,13 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                     </div>
 
                     <!-- لیبل‌ها کنار چارت -->
-                    <div class="absolute right-9 flex mt-4  gap-4">
+                    <div class="absolute right-9 flex mt-4  gap-4" dir="ltr">
                         @foreach($chartData['labels'] as $index => $label)
                         <div class="flex items-end gap-2">
                             <div class="w-4 h-4 rounded-full shadow-sm"
                                 style="background: linear-gradient(135deg, {{ $this->lightenColor($chartData['colors'][$index], 30) }}, {{ $this->darkenColor($chartData['colors'][$index], 20) }});">
                             </div>
-                            <span class="text-sm vazir text-gray-700">
+                            <span class="text-sm vazir text-gray-700" dir="ltr">
                                 {{ $label }} ({{ round($chartData['series'][$index], 1) }}%)
                             </span>
                         </div>
