@@ -179,8 +179,12 @@ class AccountReports extends Component
 
     private function calculateBalance($customerId, $currency)
     {
+
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
         $query = Transaction::where('customer_id', $customerId)
-            ->where('currency', $currency);
+            ->where('currency', $currency)
+            ->where('admin_id', $adminId);
 
         if ($this->accountType) {
             $query->where('account_type', $this->accountType);
