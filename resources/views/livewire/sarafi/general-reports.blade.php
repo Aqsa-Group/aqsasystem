@@ -106,14 +106,14 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                             <td class="px-3 py-4">
                                 {{ $report['last_date'] ? \Carbon\Carbon::parse($report['last_date'])->format('Y/m/d') : '-' }}
                             </td>
-                            <td class="px-4 py-4 text-left">{{ number_format($report['balances']['usd'] ?? 0, 2) }}</td>
-                            <td class="px-4 py-4 text-left">{{ number_format($report['balances']['afn'] ?? 0, 2) }}</td>
-                            <td class="px-4 py-4 text-left">{{ number_format($report['balances']['irr'] ?? 0, 2) }}</td>
-                            <td class="px-4 py-4 text-left">{{ number_format($report['balances']['pkr'] ?? 0, 2) }}</td>
-                            <td class="px-4 py-4 text-left">{{ number_format($report['balances']['eur'] ?? 0, 2) }}</td>
-                            <td class="px-4 py-4 text-left">{{ number_format($report['balances']['aed'] ?? 0, 2) }}</td>
-                            <td class="px-4 py-4 text-left">{{ number_format($report['balances']['try'] ?? 0, 2) }}</td>
-                            <td class="px-4 py-4 text-left">{{ number_format($report['balances']['cny'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['usd'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['afn'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['irr'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['pkr'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['eur'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['aed'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['try'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['cny'] ?? 0, 2) }}</td>
                             <td class="px-4 py-4 font-medium text-left">{{ number_format($report['total_balance'], 2) }}</td>
                         </tr>
                         @empty
@@ -267,7 +267,7 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
             <div
                 class="flex flex-col bg-white justify-center items-center gap-3 rounded-xl py-6 px-4 shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
                 <p class="text-gray-500 text-sm font-medium">{{ $data['currency_name'] }}</p>
-                <p class="text-2xl font-bold text-gray-800 times">
+                <p class="text-2xl font-bold text-gray-800 times" dir="ltr">
                     {{ number_format($data['total']) }}
                 </p>
                 <p class="text-gray-400 text-xs font-medium uppercase">
@@ -304,16 +304,16 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                 <line x1="100" y1="280" x2="950" y2="280" stroke="#94a3b8" stroke-width="2" />
 
                 <!-- مقادیر عمودی سمت چپ (چپ‌چین شده) -->
-                <text x="90" y="285" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">0</text>
-                <text x="90" y="235" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
+                <text dir="ltr" x="90" y="285" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">0</text>
+                <text dir="ltr" x="90" y="235" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
                     number_format($maxValue * 0.2, 0) }}</text>
-                <text x="90" y="185" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
+                <text dir="ltr" x="90" y="185" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
                     number_format($maxValue * 0.4, 0) }}</text>
-                <text x="90" y="135" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
+                <text dir="ltr" x="90" y="135" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
                     number_format($maxValue * 0.6, 0) }}</text>
-                <text x="90" y="85" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
+                <text dir="ltr" x="90" y="85" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
                     number_format($maxValue * 0.8, 0) }}</text>
-                <text x="90" y="35" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
+                <text dir="ltr" x="90" y="35" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
                     number_format($maxValue, 0) }}</text>
 
                 <!-- خطوط راهنمای افقی -->
@@ -422,14 +422,14 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                             </td>
 
                             {{-- ارزها: اگر نبود، صفر نمایش بده --}}
-                            <td class="px-4 py-4 text-left">{{ number_format($demand['balances']['usd'] ?? 0, 2) }}</td>
-                            <td class="px-4 py-4 text-left">{{ number_format($demand['balances']['afn'] ?? 0, 2) }}</td>
-                            <td class="px-4 py-4 text-left">{{ number_format($demand['balances']['irr'] ?? 0, 2) }}</td>
-                            <td class="px-4 py-4 text-left">{{ number_format($demand['balances']['pkr'] ?? 0, 2) }}</td>
-                            <td class="px-4 py-4 text-left">{{ number_format($demand['balances']['eur'] ?? 0, 2) }}</td>
-                            <td class="px-4 py-4 text-left">{{ number_format($demand['balances']['aed'] ?? 0, 2) }}</td>
-                            <td class="px-4 py-4 text-left">{{ number_format($demand['balances']['try'] ?? 0, 2) }}</td>
-                            <td class="px-4 py-4 text-left">{{ number_format($demand['balances']['cny'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($demand['balances']['usd'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($demand['balances']['afn'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($demand['balances']['irr'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($demand['balances']['pkr'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($demand['balances']['eur'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($demand['balances']['aed'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($demand['balances']['try'] ?? 0, 2) }}</td>
+                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($demand['balances']['cny'] ?? 0, 2) }}</td>
 
                             {{-- بیلانس به ارز پایه --}}
                             <td class="px-4 py-4 font-medium text-left">
@@ -532,7 +532,7 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                         <div
                             class="w-full h-[79px] flex flex-col md:flex-row items-center justify-between p-6 bg-[#2563EB] text-white text-[16px] rounded-[12px]">
                             <p class="vazir font-bold">ارزش کل موجودی</p>
-                            <p class="vazir font-bold">
+                            <p class="vazir font-bold" dir="ltr">
                                 @php
                                 $totalUSD = 0;
                                 foreach($selectedCustomerBalance as $balance) {
@@ -556,7 +556,7 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                                 </div>
                                 <span class="vazir font-bold">{{ $data['currency_name'] }}</span>
                             </div>
-                            <div class="text-left">
+                            <div class="text-left" dir="ltr">
                                 <p class="vazir font-bold">{{ number_format($data['balance'], 2) }}</p>
                             </div>
                         </div>
@@ -722,7 +722,7 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                     <div
                         class="w-full h-[60px] flex flex-col md:flex-row items-center justify-between p-4 bg-[#2563EB] text-white text-[14px] rounded-[12px]">
                         <p class="vazir font-bold truncate" title="{{ $customer['name'] }}">{{ $customer['name'] }}</p>
-                        <p class="vazir font-bold text-sm whitespace-nowrap">
+                        <p class="vazir font-bold text-sm whitespace-nowrap" dir="ltr">
                             {{ number_format($customerTotalUSD, 2) }} <span class="text-xs">دالر</span>
                         </p>
                     </div>
@@ -737,7 +737,7 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                             <span class="vazir font-bold text-sm">{{ $data['currency_name'] }}</span>
                         </div>
                         <div class="text-left">
-                            <p class="vazir font-bold text-sm">{{ number_format($data['balance'], 2) }}</p>
+                            <p class="vazir font-bold text-sm" dir="ltr">{{ number_format($data['balance'], 2) }}</p>
                         </div>
                     </div>
                     @endforeach
