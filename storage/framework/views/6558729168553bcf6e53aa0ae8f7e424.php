@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>{{ $title }}</title>
+    <title><?php echo e($title); ?></title>
     <style>
         body {
             font-family: DejaVu Sans, Shabnam, sans-serif;
@@ -115,12 +115,12 @@
 
 <body>
     <div class="header">
-        <h1>{{ $title }}</h1>
-        <p>تاریخ چاپ: {{ $print_date }}</p>
-        <p>تعداد مشتریان: {{ $total_customers }} نفر</p>
+        <h1><?php echo e($title); ?></h1>
+        <p>تاریخ چاپ: <?php echo e($print_date); ?></p>
+        <p>تعداد مشتریان: <?php echo e($total_customers); ?> نفر</p>
     </div>
 
-    @if(count($reports) > 0)
+    <?php if(count($reports) > 0): ?>
     <table>
         <thead>
             <tr>
@@ -129,46 +129,47 @@
                 <th width="120">نام حساب</th>
                 <th width="100">مشتری معرف</th>
                 <th width="70">آخرین تاریخ</th>
-                @foreach($currencies as $currencyCode => $currencyName)
-                <th width="60">{{ $currencyName }}</th>
-                @endforeach
-                   @php
+                <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $currencyName): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <th width="60"><?php echo e($currencyName); ?></th>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                   <?php
                     $latestExchangeRate = \App\Models\Sarafi\ExchangeRates::latest()->first();
                     $sourceCurrency = $latestExchangeRate->source_currency ?? 'دالر';
-                    @endphp
-                <th width="80">بیلانس به {{$sourceCurrency }}</th>
+                    ?>
+                <th width="80">بیلانس به <?php echo e($sourceCurrency); ?></th>
             </tr>
         </thead>
         <tbody>
-            @foreach($reports as $index => $report)
+            <?php $__currentLoopData = $reports; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>{{ $report['account_number'] }}</td>
-                <td>{{ $report['fullname'] }}</td>
-                <td>{{ $report['related_customer_name'] ?? '-' }}</td>
-                <td>{{ $report['last_date'] ? \Carbon\Carbon::parse($report['last_date'])->format('Y/m/d') : '-' }}</td>
-                @foreach($currencies as $currencyCode => $currencyName)
-                <td class="currency-number">{{ number_format($report['balances'][$currencyCode] ?? 0, 2) }}</td>
-                @endforeach
-                <td class="currency-number">{{ number_format($report['total_balance'], 2) }}</td>
+                <td><?php echo e($index + 1); ?></td>
+                <td><?php echo e($report['account_number']); ?></td>
+                <td><?php echo e($report['fullname']); ?></td>
+                <td><?php echo e($report['related_customer_name'] ?? '-'); ?></td>
+                <td><?php echo e($report['last_date'] ? \Carbon\Carbon::parse($report['last_date'])->format('Y/m/d') : '-'); ?></td>
+                <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $currencyName): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <td class="currency-number"><?php echo e(number_format($report['balances'][$currencyCode] ?? 0, 2)); ?></td>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <td class="currency-number"><?php echo e(number_format($report['total_balance'], 2)); ?></td>
             </tr>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 <tr class="total-row">
-    <td colspan="{{ count($currencies) + 5 }}">مجموع کل</td>
+    <td colspan="<?php echo e(count($currencies) + 5); ?>">مجموع کل</td>
     <td class="currency-number">
-        {{ number_format($total_balance, 2) }}
+        <?php echo e(number_format($total_balance, 2)); ?>
+
     </td>
 </tr>
 
         </tbody>
     </table>
-    @else
+    <?php else: ?>
     <div class="no-data">
         هیچ داده‌ای برای نمایش وجود ندارد
     </div>
-    @endif
+    <?php endif; ?>
 
 
 </body>
 
-</html>
+</html><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/pdf/Sarafi/customer-balance-report.blade.php ENDPATH**/ ?>

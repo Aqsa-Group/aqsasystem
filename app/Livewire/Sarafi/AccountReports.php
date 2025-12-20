@@ -205,57 +205,56 @@ class AccountReports extends Component
 
         return $query->max('date');
     }
-private function calculateTotalBalance(array $balances, string $accountType = 'cash'): float
-{
-    $latestProfitRate = ProfitRate::latest()->first();
+    private function calculateTotalBalance(array $balances, string $accountType = 'cash'): float
+    {
+        $latestProfitRate = ProfitRate::latest()->first();
 
-    // نرخ‌های پیش‌فرض (Fallback)
-    $defaultRates = [
-        'afn' => 66.20,
-        'usd' => 1,
-        'irr' => 110000.00,
-        'eur' => 0.93,
-        'pkr' => 277.78,
-        'aed' => 3.67,
-        'try' => 32.26,
-        'cny' => 7.24,
-        'gbp' => 0.79,
-        'jpy' => 150,
-        'sar' => 3.75,
-        'inr' => 83,
-    ];
+        $defaultRates = [
+            'afn' => 66.20,
+            'usd' => 1,
+            'irr' => 110000.00,
+            'eur' => 0.93,
+            'pkr' => 277.78,
+            'aed' => 3.67,
+            'try' => 32.26,
+            'cny' => 7.24,
+            'gbp' => 0.79,
+            'jpy' => 150,
+            'sar' => 3.75,
+            'inr' => 83,
+        ];
 
-    // اگر نرخ وجود داشت
-    if ($latestProfitRate) {
-        $exchangeRates = [];
+        // اگر نرخ وجود داشت
+        if ($latestProfitRate) {
+            $exchangeRates = [];
 
-        foreach ($defaultRates as $currency => $fallback) {
-            $column = $currency . '_buy_' . ($accountType === 'bank' ? 'bank' : 'cash');
+            foreach ($defaultRates as $currency => $fallback) {
+                $column = $currency . '_buy_' . ($accountType === 'bank' ? 'bank' : 'cash');
 
-            $exchangeRates[$currency] =
-                ($latestProfitRate->$column ?? 0) > 0
+                $exchangeRates[$currency] =
+                    ($latestProfitRate->$column ?? 0) > 0
                     ? $latestProfitRate->$column
                     : $fallback;
+            }
+        } else {
+            $exchangeRates = $defaultRates;
         }
-    } else {
-        $exchangeRates = $defaultRates;
-    }
 
-    $totalUsd = 0;
+        $totalUsd = 0;
 
-    foreach ($balances as $currency => $balance) {
-        if (
-            isset($exchangeRates[$currency]) &&
-            $exchangeRates[$currency] > 0 &&
-            $balance != 0
-        ) {
-            // تبدیل به USD
-            $totalUsd += $balance / $exchangeRates[$currency];
+        foreach ($balances as $currency => $balance) {
+            if (
+                isset($exchangeRates[$currency]) &&
+                $exchangeRates[$currency] > 0 &&
+                $balance != 0
+            ) {
+                // تبدیل به USD
+                $totalUsd += $balance / $exchangeRates[$currency];
+            }
         }
+
+        return round($totalUsd, 2);
     }
- 
-    return round($totalUsd, 2);
-}
 
     private function filterByDate()
     {
@@ -315,6 +314,10 @@ private function calculateTotalBalance(array $balances, string $accountType = 'c
 
     private function getLastTransactionDateBefore($customerId, $date)
     {
+
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
         try {
             $gregorianDate = Jalalian::fromFormat('Y/m/d', $date)->toCarbon()->format('Y-m-d');
         } catch (\Exception $e) {
@@ -322,7 +325,8 @@ private function calculateTotalBalance(array $balances, string $accountType = 'c
         }
 
         $query = Transaction::where('customer_id', $customerId)
-            ->where('date', '<=', $gregorianDate);
+            ->where('date', '<=', $gregorianDate)
+            ->where('admin_id', $adminId);
 
         if ($this->accountType) {
             $query->where('account_type', $this->accountType);
@@ -341,6 +345,7 @@ private function calculateTotalBalance(array $balances, string $accountType = 'c
         $this->generateReport();
         session()->flash('message', 'تمام فیلترها بازنشانی شدند.');
     }
+
     public function printReport()
     {
         $latestProfitRate = ProfitRate::latest()->first();
@@ -362,6 +367,7 @@ private function calculateTotalBalance(array $balances, string $accountType = 'c
             $currencyCode = strtolower($latestProfitRate->source_currency);
             $sourceCurrency = $currencyMap[$currencyCode] ?? $latestProfitRate->source_currency;
         }
+
 
         $printData = [
             'title' => 'گزارش بیلانس مشتریان',
