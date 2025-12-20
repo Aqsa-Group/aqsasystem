@@ -1,4 +1,4 @@
-@php
+<?php
 // تابع تبدیل کد ارز به نام فارسی (برای استفاده در کل view)
 function getPersianCurrencyName($currencyCode) {
     $currencyMap = [
@@ -19,21 +19,22 @@ function getPersianCurrencyName($currencyCode) {
     $currencyCode = strtolower($currencyCode ?? 'usd');
     return $currencyMap[$currencyCode] ?? $currencyCode;
 }
-@endphp
+?>
 
 <div>
     <div class="container mx-auto ">
         <!-- Session Message -->
-        @if (session()->has('message'))
+        <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
             <div class="h-[80px] w-full flex justify-start items-center px-4">
                 <h2 class="text-white vazir text-[18px]">
-                    {{ session('message') }}
+                    <?php echo e(session('message')); ?>
+
                 </h2>
             </div>
         </div>
-        @endif
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
         <!-- Page Header -->
         <div class="space-y-4 mb-6">
@@ -51,7 +52,7 @@ function getPersianCurrencyName($currencyCode) {
                     class="flex flex-col md:flex-row justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                     <h1 class="text-[16px] vazir">گزارش مشتریان بر اساس نوعیت / دسته</h1>
                     <div class="relative w-[350px]">
-                        <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
+                        <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
                             class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5">
                         <input type="text" wire:model.live="search" placeholder="جستجو ..."
                             class="w-full border border-[#8C8C8C] bg-transparent rounded-2xl pl-10 pr-3 py-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm">
@@ -105,9 +106,9 @@ function getPersianCurrencyName($currencyCode) {
                         <select wire:model.live="selectedCustomer"
                             class="appearance-none w-full border border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
                             <option value="">همه مشتریان</option>
-                            @foreach($customers as $customer)
-                            <option value="{{ $customer['id'] }}">{{ $customer['fullname'] }}</option>
-                            @endforeach
+                            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($customer['id']); ?>"><?php echo e($customer['fullname']); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                         </select>
                         <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" width="20" height="20"
                             viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -192,49 +193,53 @@ function getPersianCurrencyName($currencyCode) {
                                     <th class="px-4 py-4 font-bold">درهم</th>
                                     <th class="px-4 py-4 font-bold">لیره</th>
                                     <th class="px-4 py-4 font-bold">یوان</th>
-                                    @php
+                                    <?php
                                     // دریافت نام ارز مبدا به فارسی
                                     $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
                                     $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
-                                    @endphp
-                                    <th class="px-4 py-4 font-bold">بیلانس به {{ $sourceCurrency }}</th>
+                                    ?>
+                                    <th class="px-4 py-4 font-bold">بیلانس به <?php echo e($sourceCurrency); ?></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($reports as $index => $report)
+                                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $reports; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                 <tr class=" border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
                                     <td class="px-4 py-4">
-                                        <span class="border border-gray-300 px-2 py-1 rounded-lg">{{ $index + 1 }}</span>
+                                        <span class="border border-gray-300 px-2 py-1 rounded-lg"><?php echo e($index + 1); ?></span>
                                     </td>
                                     <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                        {{ $report['account_number'] }}
+                                        <?php echo e($report['account_number']); ?>
+
                                     </td>
-                                    <td class="px-4 py-4">{{ $report['fullname'] }}</td>
+                                    <td class="px-4 py-4"><?php echo e($report['fullname']); ?></td>
                                     <td class="px-4 py-4">
-                                        {{ $report['related_customer_name'] ?? '-' }}
+                                        <?php echo e($report['related_customer_name'] ?? '-'); ?>
+
                                     </td>
                                     <td class="px-4 py-4">
-                                        {{ $report['last_date'] ? \Carbon\Carbon::parse($report['last_date'])->format('Y/m/d') : '-' }}
+                                        <?php echo e($report['last_date'] ? \Carbon\Carbon::parse($report['last_date'])->format('Y/m/d') : '-'); ?>
+
                                     </td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['usd'] ?? 0, 2) }}</td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['afn'] ?? 0, 2) }}</td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['irr'] ?? 0, 2) }}</td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['pkr'] ?? 0, 2) }}</td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['eur'] ?? 0, 2) }}</td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['aed'] ?? 0, 2) }}</td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['try'] ?? 0, 2) }}</td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['cny'] ?? 0, 2) }}</td>
+                                    <td class="px-4 py-4 text-left"><?php echo e(number_format($report['balances']['usd'] ?? 0, 2)); ?></td>
+                                    <td class="px-4 py-4 text-left"><?php echo e(number_format($report['balances']['afn'] ?? 0, 2)); ?></td>
+                                    <td class="px-4 py-4 text-left"><?php echo e(number_format($report['balances']['irr'] ?? 0, 2)); ?></td>
+                                    <td class="px-4 py-4 text-left"><?php echo e(number_format($report['balances']['pkr'] ?? 0, 2)); ?></td>
+                                    <td class="px-4 py-4 text-left"><?php echo e(number_format($report['balances']['eur'] ?? 0, 2)); ?></td>
+                                    <td class="px-4 py-4 text-left"><?php echo e(number_format($report['balances']['aed'] ?? 0, 2)); ?></td>
+                                    <td class="px-4 py-4 text-left"><?php echo e(number_format($report['balances']['try'] ?? 0, 2)); ?></td>
+                                    <td class="px-4 py-4 text-left"><?php echo e(number_format($report['balances']['cny'] ?? 0, 2)); ?></td>
                                     <td class="px-4 py-4 font-medium text-left">
-                                        {{ number_format($report['total_balance'], 2) }}
+                                        <?php echo e(number_format($report['total_balance'], 2)); ?>
+
                                     </td>
                                 </tr>
-                                @empty
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                 <tr>
                                     <td colspan="14" class="px-4 py-8 text-center text-gray-500">
                                         هیچ داده‌ای یافت نشد
                                     </td>
                                 </tr>
-                                @endforelse
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </tbody>
                         </table>
                     </div>
@@ -290,12 +295,12 @@ function getPersianCurrencyName($currencyCode) {
                                                 <th class="border border-gray-300 p-2">مشتری معرف</th>
                                                 <th class="border border-gray-300 p-2">دالر</th>
                                                 <th class="border border-gray-300 p-2">افغانی</th>
-                                                @php
+                                                <?php
                                                 // دریافت نام ارز مبدا به فارسی برای چاپ
                                                 $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
                                                 $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
-                                                @endphp
-                                                <th class="border border-gray-300 p-2">بیلانس به {{ $sourceCurrency }}</th>
+                                                ?>
+                                                <th class="border border-gray-300 p-2">بیلانس به <?php echo e($sourceCurrency); ?></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -356,4 +361,4 @@ function getPersianCurrencyName($currencyCode) {
             }
         }
     </style>
-</div>
+</div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/account-reports.blade.php ENDPATH**/ ?>
