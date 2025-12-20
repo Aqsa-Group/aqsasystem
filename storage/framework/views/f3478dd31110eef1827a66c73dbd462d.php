@@ -120,7 +120,7 @@ function getPersianCurrencyName($currencyCode) {
 
                     <!-- سلکت ۲ - نوع ارز -->
                     <div class="relative">
-                        <select wire:model="selectedCurrency"
+                        <select wire:model.live="selectedCurrency"
                             class="appearance-none w-full border border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
                             <option value="">همه ارزها</option>
                             <option value="usd">دالر</option>
@@ -142,7 +142,7 @@ function getPersianCurrencyName($currencyCode) {
 
                     <!-- سلکت ۳ - نوع حساب (بانکی/نقدی) -->
                     <div class="relative">
-                        <select wire:model="accountType"
+                        <select wire:model.live="accountType"
                             class="appearance-none w-full border border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
                             <option value="">همه حساب‌ها</option>
                             <option value="بانکی">بانکی</option>
@@ -158,7 +158,7 @@ function getPersianCurrencyName($currencyCode) {
 
                     <!-- فیلد تاریخ -->
                     <div class="relative flex items-center justify-center text-center">
-                        <input type="text" wire:model="date" wire:change="generateReport" placeholder="1403/01/01"
+                        <input type="text" wire:model.live.debounce.300ms="date" wire:change="generateReport" placeholder="1403/01/01"
                             class="appearance-none w-full border border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800 text-center">
                         <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" width="20" height="20"
                             viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -220,14 +220,14 @@ function getPersianCurrencyName($currencyCode) {
                                         <?php echo e($report['last_date'] ? \Carbon\Carbon::parse($report['last_date'])->format('Y/m/d') : '-'); ?>
 
                                     </td>
-                                    <td class="px-4 py-4 text-left"><?php echo e(number_format($report['balances']['usd'] ?? 0, 2)); ?></td>
-                                    <td class="px-4 py-4 text-left"><?php echo e(number_format($report['balances']['afn'] ?? 0, 2)); ?></td>
-                                    <td class="px-4 py-4 text-left"><?php echo e(number_format($report['balances']['irr'] ?? 0, 2)); ?></td>
-                                    <td class="px-4 py-4 text-left"><?php echo e(number_format($report['balances']['pkr'] ?? 0, 2)); ?></td>
-                                    <td class="px-4 py-4 text-left"><?php echo e(number_format($report['balances']['eur'] ?? 0, 2)); ?></td>
-                                    <td class="px-4 py-4 text-left"><?php echo e(number_format($report['balances']['aed'] ?? 0, 2)); ?></td>
-                                    <td class="px-4 py-4 text-left"><?php echo e(number_format($report['balances']['try'] ?? 0, 2)); ?></td>
-                                    <td class="px-4 py-4 text-left"><?php echo e(number_format($report['balances']['cny'] ?? 0, 2)); ?></td>
+                                    <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['usd'] ?? 0, 2)); ?></td>
+                                    <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['afn'] ?? 0, 2)); ?></td>
+                                    <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['irr'] ?? 0, 2)); ?></td>
+                                    <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['pkr'] ?? 0, 2)); ?></td>
+                                    <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['eur'] ?? 0, 2)); ?></td>
+                                    <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['aed'] ?? 0, 2)); ?></td>
+                                    <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['try'] ?? 0, 2)); ?></td>
+                                    <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['cny'] ?? 0, 2)); ?></td>
                                     <td class="px-4 py-4 font-medium text-left">
                                         <?php echo e(number_format($report['total_balance'], 2)); ?>
 

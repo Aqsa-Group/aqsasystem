@@ -40,6 +40,16 @@ class AccountReports extends Component
         $this->date = Jalalian::now()->format('Y/m/d');
     }
 
+    public function updatedSearch()
+    {
+        $this->generateReport();
+    }
+
+    public function updatedDate()
+    {
+        $this->generateReport();
+    }
+
     private function loadCustomers()
     {
         $user = Auth::guard('sarafi')->user();
@@ -56,29 +66,40 @@ class AccountReports extends Component
             ->get(['id', 'fullname', 'account_number'])
             ->toArray();
     }
-
     public function generateReport()
     {
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
 
-        // دریافت ID مشتریان لینک شده با connection صحیح
+        // دریافت ID مشتریان لینک شده
         $linkedCustomerIds = DB::connection('sarafi')
             ->table('customer_admin')
             ->where('admin_id', $adminId)
             ->pluck('customer_id')
             ->toArray();
 
-        // ساخت کوئری پایه برای مشتریان قابل دسترس
+        // ساخت کوئری پایه برای مشتریان
         $baseQuery = Customer::where(function ($query) use ($adminId, $linkedCustomerIds) {
-            // مشتریانی که مال این ادمین هستند
             $query->where('admin_id', $adminId);
 
-            // یا مشتریانی که به این ادمین لینک شده‌اند
             if (!empty($linkedCustomerIds)) {
                 $query->orWhereIn('id', $linkedCustomerIds);
             }
         });
+
+        // اعمال فیلتر جستجو
+        if ($this->search) {
+            $baseQuery->where(function ($q) {
+                $q->where('fullname', 'like', '%' . $this->search . '%')
+                    ->orWhere('account_number', 'like', '%' . $this->search . '%');
+            });
+        }
+
+        // اعمال فیلتر مشتری معرف
+        if ($this->selectedCustomer) {
+            $baseQuery->where('related_customer_id', $this->selectedCustomer);
+        }
+
         $customers = $baseQuery->get();
         $this->reports = [];
 
@@ -103,8 +124,10 @@ class AccountReports extends Component
                 $balance = $this->calculateBalance($customer->id, $currencyCode);
                 $report['balances'][$currencyCode] = $balance;
 
-                if ($balance != 0 && !$report['last_date']) {
-                    $report['last_date'] = $this->getLastTransactionDate($customer->id, $currencyCode);
+                if ($balance != 0) {
+                    if (!$report['last_date']) {
+                        $report['last_date'] = $this->getLastTransactionDate($customer->id, $currencyCode);
+                    }
                     $report['has_balance'] = true;
                 }
             }
@@ -130,7 +153,7 @@ class AccountReports extends Component
             $this->filterByDate();
         }
 
-        // مرتب سازی بر اساس مجموع موجودی (بزرگ به کوچک)
+        // مرتب سازی بر اساس مجموع موجودی
         usort($this->reports, function ($a, $b) {
             return $b['total_balance'] <=> $a['total_balance'];
         });
@@ -183,18 +206,17 @@ class AccountReports extends Component
     {
         $latestProfitRate = ProfitRate::latest()->first();
 
-        // اگر هیچ رکوردی در جدول profit_rate نبود، از مقادیر پیش‌فرض ثابت استفاده می‌کنیم.
         if (!$latestProfitRate) {
-            // مقادیر پیش‌فرض برای نرخ خرید نقدی (بر اساس نرخ‌های واقعی)
+
             $exchangeRates = [
-                'afn' => 66.20,     // 1 USD = 66.20 AFN (خرید نقدی)
-                'usd' => 1,         // 1 USD = 1 USD
-                'irr' => 110000.00, // 1 USD = 110,000 IRR (خرید نقدی)
-                'eur' => 0.93,      // 1 USD = 0.93 EUR (خرید نقدی)
-                'pkr' => 277.78,    // 1 USD = 277.78 PKR (خرید نقدی)
-                'aed' => 3.67,      // 1 USD = 3.67 AED (خرید نقدی)
-                'try' => 32.26,     // 1 USD = 32.26 TRY (خرید نقدی)
-                'cny' => 7.24,      // 1 USD = 7.24 CNY (خرید نقدی)
+                'afn' => 66.20,
+                'usd' => 1,
+                'irr' => 110000.00,
+                'eur' => 0.93,
+                'pkr' => 277.78,
+                'aed' => 3.67,
+                'try' => 32.26,
+                'cny' => 7.24,
             ];
         } else {
             if ($accountType == 'cash') {
@@ -309,7 +331,6 @@ class AccountReports extends Component
 
         return $query->max('date');
     }
-
     public function resetFilters()
     {
         $this->search = '';
@@ -321,7 +342,6 @@ class AccountReports extends Component
         $this->generateReport();
         session()->flash('message', 'تمام فیلترها بازنشانی شدند.');
     }
-
     public function printReport()
     {
         $latestProfitRate = ProfitRate::latest()->first();
@@ -396,10 +416,7 @@ class AccountReports extends Component
         return $customer ? $customer->fullname : 'نامشخص';
     }
 
-    public function updatedSearch()
-    {
-        $this->generateReport();
-    }
+
 
     public function updatedSelectedCustomer()
     {
@@ -416,10 +433,6 @@ class AccountReports extends Component
         $this->generateReport();
     }
 
-    public function updatedDate()
-    {
-        $this->generateReport();
-    }
 
     public function refreshReport()
     {
