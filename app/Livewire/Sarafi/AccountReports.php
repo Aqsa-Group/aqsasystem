@@ -30,7 +30,11 @@ class AccountReports extends Component
         'pkr' => 'کلدار',
         'aed' => 'درهم',
         'try' => 'لیره',
-        'cny' => 'یوان'
+        'cny' => 'یوان',
+        'gbp' => 'پوند',
+        'jpy' => 'ین',
+        'sar' => 'ریال',
+        'inr' => 'روپیه هندی',
     ];
 
     public function mount()
@@ -66,6 +70,7 @@ class AccountReports extends Component
             ->get(['id', 'fullname', 'account_number'])
             ->toArray();
     }
+
     public function generateReport()
     {
         $user = Auth::guard('sarafi')->user();
@@ -103,8 +108,8 @@ class AccountReports extends Component
         $customers = $baseQuery->get();
         $this->reports = [];
 
-        // تعیین نوع حساب برای تبدیل
-        $accountTypeForConversion = $this->getAccountTypeForConversion();
+        // دریافت نرخ‌ها
+        $rates = ProfitRate::latest()->first();
 
         foreach ($customers as $customer) {
             $report = [
@@ -114,17 +119,21 @@ class AccountReports extends Component
                 'related_customer_id' => $customer->related_customer_id,
                 'related_customer_name' => $this->getRelatedCustomerName($customer->related_customer_id),
                 'last_date' => null,
-                'balances' => [],
+                'cash_balances' => [],
+                'bank_balances' => [],
                 'total_balance' => 0,
                 'has_balance' => false
             ];
 
-            // محاسبه موجودی برای هر ارز
+            // محاسبه موجودی نقدی و بانکی برای هر ارز
             foreach ($this->currencies as $currencyCode => $currencyName) {
-                $balance = $this->calculateBalance($customer->id, $currencyCode);
-                $report['balances'][$currencyCode] = $balance;
+                $cashBalance = $this->calculateCashBalance($customer->id, $currencyCode);
+                $bankBalance = $this->calculateBankBalance($customer->id, $currencyCode);
+                
+                $report['cash_balances'][$currencyCode] = $cashBalance;
+                $report['bank_balances'][$currencyCode] = $bankBalance;
 
-                if ($balance != 0) {
+                if ($cashBalance != 0 || $bankBalance != 0) {
                     if (!$report['last_date']) {
                         $report['last_date'] = $this->getLastTransactionDate($customer->id, $currencyCode);
                     }
@@ -132,8 +141,8 @@ class AccountReports extends Component
                 }
             }
 
-            // محاسبه مجموع موجودی به دالر
-            $report['total_balance'] = $this->calculateTotalBalance($report['balances'], $accountTypeForConversion);
+            // محاسبه مجموع موجودی به دالر با توجه به فیلتر نوع حساب
+            $report['total_balance'] = $this->calculateTotalBalance($report['cash_balances'], $report['bank_balances']);
 
             // فقط مشتریانی که موجودی دارند نمایش داده شوند
             if ($report['has_balance']) {
@@ -144,7 +153,8 @@ class AccountReports extends Component
         // فیلتر بر اساس ارز انتخاب شده
         if ($this->selectedCurrency) {
             $this->reports = array_filter($this->reports, function ($report) {
-                return ($report['balances'][$this->selectedCurrency] ?? 0) != 0;
+                return ($report['cash_balances'][$this->selectedCurrency] ?? 0) != 0 || 
+                       ($report['bank_balances'][$this->selectedCurrency] ?? 0) != 0;
             });
         }
 
@@ -153,20 +163,26 @@ class AccountReports extends Component
             $this->filterByDate();
         }
 
+        // فیلتر بر اساس نوع حساب
+        if ($this->accountType) {
+            $this->filterByAccountType();
+        }
+
         // مرتب سازی بر اساس مجموع موجودی
         usort($this->reports, function ($a, $b) {
             return $b['total_balance'] <=> $a['total_balance'];
         });
     }
 
-    private function getAccountTypeForConversion()
+    private function filterByAccountType()
     {
-        if ($this->accountType == 'بانکی') {
-            return 'bank';
-        } elseif ($this->accountType == 'نقدی') {
-            return 'cash';
+        foreach ($this->reports as &$report) {
+            if ($this->accountType == 'نقدی') {
+                $report['total_balance'] = $this->calculateTotalBalance($report['cash_balances'], []);
+            } elseif ($this->accountType == 'بانکی') {
+                $report['total_balance'] = $this->calculateTotalBalance([], $report['bank_balances']);
+            }
         }
-        return 'cash'; // پیش‌فرض
     }
 
     private function getRelatedCustomerName($relatedCustomerId)
@@ -177,18 +193,29 @@ class AccountReports extends Component
         return $relatedCustomer ? $relatedCustomer->fullname : 'نامشخص';
     }
 
-    private function calculateBalance($customerId, $currency)
+    private function calculateCashBalance($customerId, $currency)
     {
-
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
+        
         $query = Transaction::where('customer_id', $customerId)
             ->where('currency', $currency)
+            ->where('account_type', 'نقدی')
             ->where('admin_id', $adminId);
 
-        if ($this->accountType) {
-            $query->where('account_type', $this->accountType);
-        }
+        return $query->select(DB::raw('SUM(CASE WHEN type = "رسید" THEN amount ELSE -amount END) as balance'))
+            ->value('balance') ?? 0;
+    }
+
+    private function calculateBankBalance($customerId, $currency)
+    {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+        
+        $query = Transaction::where('customer_id', $customerId)
+            ->where('currency', $currency)
+            ->where('account_type', 'بانکی')
+            ->where('admin_id', $adminId);
 
         return $query->select(DB::raw('SUM(CASE WHEN type = "رسید" THEN amount ELSE -amount END) as balance'))
             ->value('balance') ?? 0;
@@ -205,83 +232,121 @@ class AccountReports extends Component
 
         return $query->max('date');
     }
-private function calculateTotalBalance(array $balances, string $accountType = 'cash'): float
-{
-    $latestProfitRate = ProfitRate::latest()->first();
 
-    // نرخ‌های پیش‌فرض (Fallback)
-    $defaultRates = [
-        'afn' => 66.20,
-        'usd' => 1,
-        'irr' => 110000.00,
-        'eur' => 0.93,
-        'pkr' => 277.78,
-        'aed' => 3.67,
-        'try' => 32.26,
-        'cny' => 7.24,
-        'gbp' => 0.79,
-        'jpy' => 150,
-        'sar' => 3.75,
-        'inr' => 83,
-    ];
+    private function calculateTotalBalance(array $cashBalances, array $bankBalances): float
+    {
+        $latestProfitRate = ProfitRate::latest()->first();
 
-    // اگر نرخ وجود داشت
-    if ($latestProfitRate) {
-        $exchangeRates = [];
+        // نرخ‌های پیش‌فرض نقدی
+        $defaultCashRates = [
+            'afn' => 66.20,
+            'usd' => 1,
+            'irr' => 110000.00,
+            'eur' => 70.00,
+            'pkr' => 32.00,
+            'aed' => 44.00,
+            'try' => 60.00,
+            'cny' => 43.00,
+            'gbp' => 88.00,
+            'jpy' => 0.67,
+            'sar' => 3.75,
+            'inr' => 7.14,
+        ];
 
-        foreach ($defaultRates as $currency => $fallback) {
-            $column = $currency . '_buy_' . ($accountType === 'bank' ? 'bank' : 'cash');
+        // نرخ‌های پیش‌فرض بانکی
+        $defaultBankRates = [
+            'afn' => 66.20,
+            'usd' => 1,
+            'irr' => 110000.00,
+            'eur' => 70.00,
+            'pkr' => 32.00,
+            'aed' => 44.00,
+            'try' => 60.00,
+            'cny' => 43.00,
+            'gbp' => 88.00,
+            'jpy' => 0.67,
+            'sar' => 3.75,
+            'inr' => 7.14,
+        ];
 
-            $exchangeRates[$currency] =
-                ($latestProfitRate->$column ?? 0) > 0
-                    ? $latestProfitRate->$column
-                    : $fallback;
+        // تعریف نرخ‌های نقدی
+        $exchangeRatesCash = [
+            'afn' => $latestProfitRate->afn_buy_cash ?? $defaultCashRates['afn'],
+            'usd' => $latestProfitRate->usd_buy_cash ?? $defaultCashRates['usd'],
+            'irr' => $latestProfitRate->irr_buy_cash ?? $defaultCashRates['irr'],
+            'eur' => $latestProfitRate->eur_buy_cash ?? $defaultCashRates['eur'],
+            'pkr' => $latestProfitRate->pkr_buy_cash ?? $defaultCashRates['pkr'],
+            'aed' => $latestProfitRate->aed_buy_cash ?? $defaultCashRates['aed'],
+            'try' => $latestProfitRate->try_buy_cash ?? $defaultCashRates['try'],
+            'cny' => $latestProfitRate->cny_buy_cash ?? $defaultCashRates['cny'],
+            'gbp' => $latestProfitRate->gbp_buy_cash ?? $defaultCashRates['gbp'],
+            'jpy' => $latestProfitRate->jpy_buy_cash ?? $defaultCashRates['jpy'],
+            'sar' => $latestProfitRate->sar_buy_cash ?? $defaultCashRates['sar'],
+            'inr' => $latestProfitRate->inr_buy_cash ?? $defaultCashRates['inr'],
+        ];
+
+        // تعریف نرخ‌های بانکی
+        $exchangeRatesBank = [
+            'afn' => $latestProfitRate->afn_buy_bank ?? $defaultBankRates['afn'],
+            'usd' => $latestProfitRate->usd_buy_bank ?? $defaultBankRates['usd'],
+            'irr' => $latestProfitRate->irr_buy_bank ?? $defaultBankRates['irr'],
+            'eur' => $latestProfitRate->eur_buy_bank ?? $defaultBankRates['eur'],
+            'pkr' => $latestProfitRate->pkr_buy_bank ?? $defaultBankRates['pkr'],
+            'aed' => $latestProfitRate->aed_buy_bank ?? $defaultBankRates['aed'],
+            'try' => $latestProfitRate->try_buy_bank ?? $defaultBankRates['try'],
+            'cny' => $latestProfitRate->cny_buy_bank ?? $defaultBankRates['cny'],
+            'gbp' => $latestProfitRate->gbp_buy_bank ?? $defaultBankRates['gbp'],
+            'jpy' => $latestProfitRate->jpy_buy_bank ?? $defaultBankRates['jpy'],
+            'sar' => $latestProfitRate->sar_buy_bank ?? $defaultBankRates['sar'],
+            'inr' => $latestProfitRate->inr_buy_bank ?? $defaultBankRates['inr'],
+        ];
+
+        $totalCashUsd = 0;
+        $totalBankUsd = 0;
+
+        // محاسبه موجودی نقدی به دالر
+        foreach($cashBalances as $currency => $balance) {
+            if(isset($exchangeRatesCash[$currency]) && $exchangeRatesCash[$currency] > 0) {
+                $totalCashUsd += $balance / $exchangeRatesCash[$currency];
+            }
         }
-    } else {
-        $exchangeRates = $defaultRates;
-    }
 
-    $totalUsd = 0;
-
-    foreach ($balances as $currency => $balance) {
-        if (
-            isset($exchangeRates[$currency]) &&
-            $exchangeRates[$currency] > 0 &&
-            $balance != 0
-        ) {
-            // تبدیل به USD
-            $totalUsd += $balance / $exchangeRates[$currency];
+        // محاسبه موجودی بانکی به دالر
+        foreach($bankBalances as $currency => $balance) {
+            if(isset($exchangeRatesBank[$currency]) && $exchangeRatesBank[$currency] > 0) {
+                $totalBankUsd += $balance / $exchangeRatesBank[$currency];
+            }
         }
+
+        $grandTotalUsd = $totalCashUsd + $totalBankUsd;
+        return round($grandTotalUsd, 2);
     }
- 
-    return round($totalUsd, 2);
-}
 
     private function filterByDate()
     {
         $filteredReports = [];
 
-        // تعیین نوع حساب برای تبدیل
-        $accountTypeForConversion = $this->getAccountTypeForConversion();
-
         foreach ($this->reports as $report) {
-            // محاسبه موجودی تا تاریخ مشخص شده
-            $balancesAtDate = [];
+            $cashBalancesAtDate = [];
+            $bankBalancesAtDate = [];
             $hasBalanceAtDate = false;
 
             foreach ($this->currencies as $currencyCode => $currencyName) {
-                $balance = $this->calculateBalanceAtDate($report['id'], $currencyCode, $this->date);
-                $balancesAtDate[$currencyCode] = $balance;
+                $cashBalance = $this->calculateCashBalanceAtDate($report['id'], $currencyCode, $this->date);
+                $bankBalance = $this->calculateBankBalanceAtDate($report['id'], $currencyCode, $this->date);
+                
+                $cashBalancesAtDate[$currencyCode] = $cashBalance;
+                $bankBalancesAtDate[$currencyCode] = $bankBalance;
 
-                if ($balance != 0) {
+                if ($cashBalance != 0 || $bankBalance != 0) {
                     $hasBalanceAtDate = true;
                 }
             }
 
-            // اگر تا تاریخ مشخص شده موجودی داشته باشد
             if ($hasBalanceAtDate) {
-                $report['balances'] = $balancesAtDate;
-                $report['total_balance'] = $this->calculateTotalBalance($balancesAtDate, $accountTypeForConversion);
+                $report['cash_balances'] = $cashBalancesAtDate;
+                $report['bank_balances'] = $bankBalancesAtDate;
+                $report['total_balance'] = $this->calculateTotalBalance($cashBalancesAtDate, $bankBalancesAtDate);
                 $report['last_date'] = $this->getLastTransactionDateBefore($report['id'], $this->date);
 
                 $filteredReports[] = $report;
@@ -291,23 +356,43 @@ private function calculateTotalBalance(array $balances, string $accountType = 'c
         $this->reports = $filteredReports;
     }
 
-    private function calculateBalanceAtDate($customerId, $currency, $date)
+    private function calculateCashBalanceAtDate($customerId, $currency, $date)
     {
         try {
-            // تبدیل تاریخ شمسی به میلادی
             $gregorianDate = Jalalian::fromFormat('Y/m/d', $date)->toCarbon()->format('Y-m-d');
         } catch (\Exception $e) {
-            // اگر تاریخ معتبر نبود، از تاریخ امروز استفاده کن
             $gregorianDate = now()->format('Y-m-d');
         }
 
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
         $query = Transaction::where('customer_id', $customerId)
             ->where('currency', $currency)
+            ->where('account_type', 'نقدی')
+            ->where('admin_id', $adminId)
             ->where('date', '<=', $gregorianDate);
 
-        if ($this->accountType) {
-            $query->where('account_type', $this->accountType);
+        return $query->select(DB::raw('SUM(CASE WHEN type = "رسید" THEN amount ELSE -amount END) as balance'))
+            ->value('balance') ?? 0;
+    }
+
+    private function calculateBankBalanceAtDate($customerId, $currency, $date)
+    {
+        try {
+            $gregorianDate = Jalalian::fromFormat('Y/m/d', $date)->toCarbon()->format('Y-m-d');
+        } catch (\Exception $e) {
+            $gregorianDate = now()->format('Y-m-d');
         }
+
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        $query = Transaction::where('customer_id', $customerId)
+            ->where('currency', $currency)
+            ->where('account_type', 'بانکی')
+            ->where('admin_id', $adminId)
+            ->where('date', '<=', $gregorianDate);
 
         return $query->select(DB::raw('SUM(CASE WHEN type = "رسید" THEN amount ELSE -amount END) as balance'))
             ->value('balance') ?? 0;
@@ -330,6 +415,7 @@ private function calculateTotalBalance(array $balances, string $accountType = 'c
 
         return $query->max('date');
     }
+
     public function resetFilters()
     {
         $this->search = '';
@@ -341,13 +427,13 @@ private function calculateTotalBalance(array $balances, string $accountType = 'c
         $this->generateReport();
         session()->flash('message', 'تمام فیلترها بازنشانی شدند.');
     }
+
     public function printReport()
     {
         $latestProfitRate = ProfitRate::latest()->first();
         $sourceCurrency = 'دالر';
 
         if ($latestProfitRate && $latestProfitRate->source_currency) {
-            // تابع تبدیل کد ارز به نام فارسی
             $currencyMap = [
                 'afn' => 'افغانی',
                 'usd' => 'دالر',
@@ -357,6 +443,10 @@ private function calculateTotalBalance(array $balances, string $accountType = 'c
                 'aed' => 'درهم',
                 'try' => 'لیره',
                 'cny' => 'یوان',
+                'gbp' => 'پوند',
+                'jpy' => 'ین',
+                'sar' => 'ریال',
+                'inr' => 'روپیه هندی',
             ];
 
             $currencyCode = strtolower($latestProfitRate->source_currency);
@@ -415,8 +505,6 @@ private function calculateTotalBalance(array $balances, string $accountType = 'c
         return $customer ? $customer->fullname : 'نامشخص';
     }
 
-
-
     public function updatedSelectedCustomer()
     {
         $this->generateReport();
@@ -431,7 +519,6 @@ private function calculateTotalBalance(array $balances, string $accountType = 'c
     {
         $this->generateReport();
     }
-
 
     public function refreshReport()
     {
