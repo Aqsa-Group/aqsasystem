@@ -6,7 +6,7 @@
 
         <!-- رسید/بردگی -->
         <a href="<?php echo e(route('sarafi.transactions')); ?>" class="block">
-            <div class="border bg-gradient-to-b  from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 
+            <div class="border bg-gradient-to-b dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 
                 text-white text-[16px] font-bold">
                 <i class="fa-solid fa-wallet text-white text-xl"></i>
                 <span class=" whitespace-nowrap overflow-hidden text-ellipsis font-bold">
@@ -19,7 +19,7 @@
         <!-- انتقال -->
         <a href="<?php echo e(route('sarafi.account_to_account')); ?>" class="block">
             <div
-                class="border bg-gradient-to-b from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
+                class="border bg-gradient-to-b dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
                 <i class="fa-solid fa-arrow-right-arrow-left text-white text-xl"></i>
                 <span><?php echo e(__('messages.transfer')); ?></span>
             </div>
@@ -29,7 +29,7 @@
         <!-- خرید و فروش ارز و صندوق -->
         <a href="<?php echo e(route('sarafi.buy-sell-currency')); ?>" class="block">
             <div
-                class="border bg-gradient-to-b from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center gap-3 text-white text-[16px] font-bold">
+                class="border bg-gradient-to-b dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center gap-3 text-white text-[16px] font-bold">
                 <img src="<?php echo e(asset('assets/sarafi/all_icon/bitcoin-(btc).svg')); ?>" alt="">
                 <span><?php echo e(__('messages.selling')); ?></span>
             </div>
@@ -38,7 +38,7 @@
         <!-- حساب تبدیل -->
         <a href="<?php echo e(route('sarafi.conversion.in.account')); ?>" class="block">
             <div
-                class="border bg-gradient-to-b from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
+                class="border bg-gradient-to-b dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
                 <i class="fa-solid fa-exchange-alt text-white text-xl"></i>
                 <span><?php echo e(__('messages.coversion_account')); ?></span>
             </div>
@@ -47,7 +47,7 @@
         <!-- انتقال تبدیل -->
         <a href="<?php echo e(route('sarafi.conversion-transfer')); ?>" class="block">
             <div
-                class="border bg-gradient-to-b from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
+                class="border bg-gradient-to-b dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
                 <i class="fa-solid fa-hand-holding-dollar text-white text-xl"></i>
                 <span><?php echo e(__('messages.coversion_transfer')); ?></span>
             </div>
@@ -57,7 +57,7 @@
         <!-- حساب‌های روزنامه -->
         <a href="<?php echo e(route('sarafi.account-reports')); ?>" class="block">
             <div
-                class="border bg-gradient-to-b from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
+                class="border bg-gradient-to-b dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
                 <i class="fa-solid fa-book-open text-white text-xl"></i>
                 <span><?php echo e(__('messages.newspaper_accounts')); ?></span>
             </div>
@@ -68,7 +68,7 @@
         <!-- ژورنال عمومی -->
         <a href="<?php echo e(route('sarafi.general-reports')); ?>" class="block">
             <div
-                class="border bg-gradient-to-b  from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
+                class="border bg-gradient-to-b dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900  from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
                 <i class="fa-solid fa-file-invoice-dollar text-white text-xl"></i>
                 <span><?php echo e(__('messages.general_jornal')); ?></span>
             </div>
@@ -79,19 +79,19 @@
 
 
     <div x-data="{ activeTab: <?php if ((object) ('activeTab') instanceof \Livewire\WireDirective) : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('activeTab'->value()); ?>')<?php echo e('activeTab'->hasModifier('live') ? '.live' : ''); ?><?php else : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('activeTab'); ?>')<?php endif; ?> }" class="mt-12">
-        <div class="flex justify-start gap-6 border-b border-[#2563EBB0]">
+        <div class="flex justify-start gap-6 border-b  dark:border-white border-[#2563EBB0]">
             <a href="#" @click.prevent="activeTab = 'general'" class="px-5 py-2 font-bold transition rounded-t-lg"
                 :class="activeTab === 'general'
                     ?
-                    'bg-white border-x border-t border-[#2563EBB0] text-[#1E3A8A] shadow-sm' :
-                    'text-gray-600 hover:text-[#1E3A8A] hover:border-b-2 hover:border-indigo-400'">
+                    'bg-white dark:bg-black border-x border-t dark:border-white dark:text-white  border-[#2563EBB0] text-[#1E3A8A] shadow-sm' :
+                    'text-gray-600 dark:text-white/30 hover:text-[#1E3A8A] hover:border-b-2 hover:border-indigo-400'">
                 <?php echo e(__('messages.tab_general')); ?>
 
             </a>
 
             <a href="#" @click.prevent="activeTab = 'safes'" class="px-5 py-2 font-bold transition rounded-t-lg" :class="activeTab === 'safes'
                     ?
-                    'bg-white border-x border-t border-[#2563EBB0] text-[#1E3A8A] shadow-sm' :
+                    'bg-white dark:bg-black border-x border-t d  dark:border-white dark:text-white border-[#2563EBB0] text-[#1E3A8A] shadow-sm' :
                     'text-gray-600 hover:text-[#1E3A8A] hover:border-b-2 hover:border-indigo-400'">
                 <?php echo e(__('messages.tab_safes')); ?>
 
@@ -100,14 +100,14 @@
             <a href="#" @click.prevent="activeTab = 'account_safe'" class="px-5 py-2 font-bold transition rounded-t-lg"
                 :class="activeTab === 'account_safe'
             ?
-            'bg-white border-x border-t border-[#2563EBB0] text-[#1E3A8A] shadow-sm' :
+            'bg-white dark:bg-black border-x border-t dark:border-white dark:text-white border-[#2563EBB0] text-[#1E3A8A] shadow-sm' :
             'text-gray-600 hover:text-[#1E3A8A] hover:border-b-2 hover:border-indigo-400'">
                 <?php echo e(__('messages.account_safes')); ?>
 
             </a>
         </div>
 
-        <div class="p-6 bg-white dark:bg-slate-700 rounded-b-xl shadow-sm mt-2" :class="(activeTab === 'general') 
+        <div class="p-6 bg-white dark:bg-black rounded-b-xl shadow-sm mt-2" :class="(activeTab === 'general') 
                       ? '' 
                       : 'bg-white'">
 
@@ -115,7 +115,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
                     <!-- تعداد کاربران -->
-                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
+                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 bg-gradient-to-b from-[#2563EB] to-[#1e325d]
                       text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
@@ -130,7 +130,7 @@
                     </div>
 
                     <!-- تعداد مشتریان -->
-                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
+                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 bg-gradient-to-b from-[#2563EB] to-[#1e325d]
                                      text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
@@ -145,7 +145,7 @@
                     </div>
 
                     <!-- تراکنش‌های امروز -->
-                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
+                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 bg-gradient-to-b from-[#2563EB] to-[#1e325d]
                                      text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
@@ -160,7 +160,7 @@
                     </div>
 
                     <!-- حواله‌ها -->
-                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
+                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 bg-gradient-to-b from-[#2563EB] to-[#1e325d]
                                      text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
@@ -178,7 +178,7 @@
                     <a href="<?php echo e(route('sarafi.remittance-approval')); ?>">
                         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         <!-- حواله های در انتظار -->
-                        <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
+                        <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 bg-gradient-to-b from-[#2563EB] to-[#1e325d]
                                      text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                             <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
@@ -202,7 +202,7 @@
 
 
                     <!-- امروز سود -->
-                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
+                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 bg-gradient-to-b from-[#2563EB] to-[#1e325d]
                                      text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
@@ -217,7 +217,7 @@
 
 
                     <!-- امروز سود -->
-                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
+                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 bg-gradient-to-b from-[#2563EB] to-[#1e325d]
                                      text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
@@ -239,7 +239,7 @@
 
 
                     <!-- مجموع موجودی حساب‌ها -->
-                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between bg-gradient-to-b from-[#2563EB] to-[#1e325d]
+                    <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 bg-gradient-to-b from-[#2563EB] to-[#1e325d]
                                      text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                         <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
@@ -262,14 +262,15 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 vazir">
 
                     <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <div class="border bg-[#F5F5F5] rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
+                    <div class="border bg-[#F5F5F5] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
                         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-                        <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10">
+                        <div class="rounded-full dark:bg-white/100 bg-[#2563EB] p-6 flex items-center justify-center">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10 dark:hidden">
+                            <i class="fa-solid fa-coins text-black text-2xl hidden  dark:block"></i>
                         </div>
                         <div class="space-y-2">
-                            <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e($label); ?></h1>
-                            <p dir="ltr" class="  text-[25px] font-extrabold text-[#2563EB]">
+                            <h1 class="text-[16px] font-semibold dark:text-white text-gray-600"><?php echo e($label); ?></h1>
+                            <p dir="ltr" class="  text-[25px] font-extrabold dark:text-white text-[#2563EB]">
                                 <?php echo e(number_format($safe->$key ?? 0)); ?>
 
                             </p>
@@ -283,14 +284,14 @@
             <template x-if="activeTab === 'account_safe'">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 vazir">
                     <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <div class="border bg-[#F5F5F5] dark:bg-black dark:text-white rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
+                    <div class="border bg-[#F5F5F5]  dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 dark:text-white rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
                         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-                        <div class="rounded-full bg-[#2563EB] p-6 flex items-center justify-center">
-                            <i class="fa-solid fa-credit-card text-white text-2xl"></i>
+                        <div class="rounded-full dark:bg-white bg-[#2563EB]  p-6 flex items-center justify-center">
+                            <i class="fa-solid fa-credit-card dark:text-black text-white text-2xl"></i>
                         </div>
                         <div class="space-y-2">
-                            <h1 class="text-[16px] font-semibold text-gray-600"><?php echo e($label); ?></h1>
-                            <p dir="ltr" class="  text-[25px] font-extrabold text-[#2563EB]">
+                            <h1 class="text-[16px] font-semibold dark:text-white text-gray-600"><?php echo e($label); ?></h1>
+                            <p dir="ltr" class="  text-[25px] font-extrabold dark:text-white text-[#2563EB]">
                                 <?php echo e(number_format($safe_account[$key] ?? 0)); ?>
 
                             </p>

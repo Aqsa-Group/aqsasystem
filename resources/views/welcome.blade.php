@@ -11,7 +11,7 @@
     <!-- فونت‌های فارسی -->
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&family=Mirza&display=swap"
         rel="stylesheet">
-      @include('Sarafi.layouts.links')
+    @include('Sarafi.layouts.links')
     <style>
         :root {
             --primary: #1e3a8a;
@@ -188,7 +188,8 @@
                 <h2 class="text-4xl md:text-5xl font-bold mb-2 yekan">
                     به <span class="logo-text ">اقصی گروپ</span> خوش آمدید
                 </h2>
-                <p class="text-xl text-blue-200 yekan"> <span class="times">Aqsasystem</span> - پلتفرم جامع مدیریت کسب و کار</p>
+                <p class="text-xl text-blue-200 yekan"> <span class="times">Aqsasystem</span> - پلتفرم جامع مدیریت کسب و
+                    کار</p>
             </div>
 
             <!-- متن خوش‌آمدگویی -->
@@ -202,76 +203,91 @@
                 </p>
             </div>
 
-           
+
         </div>
-         <!-- کارت‌های پنل‌ها -->
-            <div class="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-6 mt-8 mb-16">
-                <!-- پنل مدیریت مارکت -->
-                <a href="/market" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
-                    <div
-                        class="w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 flex items-center justify-center mb-4 group-hover:glow transition-all">
-                        <i class="fas fa-store text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">پنل مدیریت مارکت</h3>
-                    <p class="text-blue-200 text-sm">مدیریت کامل مارکت ها تجاری </p>
-                    <div class="mt-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <i class="fas fa-arrow-left ml-1"></i> ورود به پنل
-                    </div>
-                </a>
+        <!-- کارت‌های پنل‌ها -->
+        <div class="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-6 mt-8 mb-16">
+            <!-- پنل مدیریت مارکت -->
+            <a href="/market" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
+                <div
+                    class="w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 flex items-center justify-center mb-4 group-hover:glow transition-all">
+                    <i class="fas fa-store text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">پنل مدیریت مارکت</h3>
+                <p class="text-blue-200 text-sm">مدیریت کامل مارکت ها تجاری </p>
+                <div class="mt-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i class="fas fa-arrow-left ml-1"></i> ورود به پنل
+                </div>
+            </a>
 
-                <!-- پنل فروشات -->
-                <a href="/import" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
-                    <div
-                        class="w-16 h-16 rounded-full bg-gradient-to-r from-green-500 to-green-700 flex items-center justify-center mb-4 group-hover:glow transition-all">
-                        <i class="fas fa-cart-shopping text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">پنل فروشات</h3>
-                    <p class="text-blue-200 text-sm">مدیریت سفارشات و تراکنش‌ها</p>
-                    <div class="mt-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <i class="fas fa-arrow-left ml-1"></i> ورود به پنل
-                    </div>
-                </a>
+            <!-- پنل فروشات -->
+            <a href="/import" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
+                <div
+                    class="w-16 h-16 rounded-full bg-gradient-to-r from-green-500 to-green-700 flex items-center justify-center mb-4 group-hover:glow transition-all">
+                    <i class="fas fa-cart-shopping text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">پنل فروشات</h3>
+                <p class="text-blue-200 text-sm">مدیریت سفارشات و تراکنش‌ها</p>
+                <div class="mt-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i class="fas fa-arrow-left ml-1"></i> ورود به پنل
+                </div>
+            </a>
 
-                <!-- پنل صرافی -->
-                <a href="/sarafi" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
-                    <div
-                        class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 to-purple-700 flex items-center justify-center mb-4 group-hover:glow transition-all">
-                        <i class="fas fa-money-bill-transfer text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">پنل صرافی</h3>
-                    <p class="text-blue-200 text-sm">مدیریت ارز و تراکنش‌های مالی</p>
-                    <div class="mt-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <i class="fas fa-arrow-left ml-1"></i> ورود به پنل
-                    </div>
-                </a>
+            <!-- پنل صرافی -->
+            <a href="/sarafi" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
+                <div
+                    class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 to-purple-700 flex items-center justify-center mb-4 group-hover:glow transition-all">
+                    <i class="fas fa-money-bill-transfer text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">پنل صرافی</h3>
+                <p class="text-blue-200 text-sm">مدیریت ارز و تراکنش‌های مالی</p>
+                <div class="mt-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i class="fas fa-arrow-left ml-1"></i> ورود به پنل
+                </div>
+            </a>
 
-                <!-- پنل ابزارآلات -->
-                <a href="/tools" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
-                    <div
-                        class="w-16 h-16 rounded-full bg-gradient-to-r from-orange-500 to-orange-700 flex items-center justify-center mb-4 group-hover:glow transition-all">
-                        <i class="fas fa-screwdriver-wrench text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">پنل ابزارآلات</h3>
-                    <p class="text-blue-200 text-sm">ابزارهای تخصصی و کاربردی</p>
-                    <div class="mt-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <i class="fas fa-arrow-left ml-1"></i> ورود به پنل
-                    </div>
-                </a>
+            <!-- پنل ابزارآلات -->
+            <a href="/tools" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
+                <div
+                    class="w-16 h-16 rounded-full bg-gradient-to-r from-orange-500 to-orange-700 flex items-center justify-center mb-4 group-hover:glow transition-all">
+                    <i class="fas fa-screwdriver-wrench text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">پنل ابزارآلات</h3>
+                <p class="text-blue-200 text-sm">ابزارهای تخصصی و کاربردی</p>
+                <div class="mt-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i class="fas fa-arrow-left ml-1"></i> ورود به پنل
+                </div>
+            </a>
 
-                 <!-- پنل کلپ -->
+            <!-- پنل کلپ -->
 
-                    <a href="/gym" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
-                    <div
-                        class="w-16 h-16 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-700 flex items-center justify-center mb-4 group-hover:glow transition-all">
-                        <i class="fas fa-dumbbell text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">پنل کلپ های ورزشی</h3>
-                    <p class="text-blue-200 text-sm">مدیریت حسابداری و کانتین</p>
-                    <div class="mt-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <i class="fas fa-arrow-left ml-1"></i> ورود به پنل
-                    </div>
-                </a>
-            </div>
+            <a href="/gym" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
+                <div
+                    class="w-16 h-16 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-700 flex items-center justify-center mb-4 group-hover:glow transition-all">
+                    <i class="fas fa-dumbbell text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">پنل کلپ های ورزشی</h3>
+                <p class="text-blue-200 text-sm">مدیریت حسابداری و کانتین</p>
+                <div class="mt-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i class="fas fa-arrow-left ml-1"></i> ورود به پنل
+                </div>
+            </a>
+
+
+                  <!-- پنل کلپ -->
+
+            <a href="/update" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
+                <div
+                    class="w-16 h-16 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-700 flex items-center justify-center mb-4 group-hover:glow transition-all">
+                    <i class="fas fa-dumbbell text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">پنل مارکت آبدیت</h3>
+                <p class="text-blue-200 text-sm">مدیریت مارکت ها </p>
+                <div class="mt-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i class="fas fa-arrow-left ml-1"></i> ورود به پنل
+                </div>
+            </a>
+        </div>
     </main>
 
     <!-- فوتر -->

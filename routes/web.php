@@ -7,6 +7,7 @@ use App\Http\Controllers\ContractPrintController;
 use App\Http\Controllers\DepositLogPrintController;
 use App\Http\Controllers\Gym\Auth\UserControllers;
 use App\Http\Controllers\InventoryPrintController;
+use App\Http\Controllers\Market\Auth\AuthUser;
 use App\Http\Controllers\OutsideController;
 use App\Http\Controllers\PrintBoothContract;
 use App\Http\Controllers\PrintContract;
@@ -27,6 +28,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+
 
 
 
@@ -631,6 +633,36 @@ Route::get('/gym/clubaccounting', function () {
 
 
 
+
+// Updated Market
+
+Route::get('/update', [AuthUser::class, 'showLoginForm'])->name('market.login.form');
+
+Route::post('/update-market/login', [AuthUser::class, 'login'])->name('market.login');
+
+Route::post('/updated-market/logout', [AuthUser::class, 'logout'])->name('market.logout');
+
+
+
+Route::get('/set-locale/{locale}', function ($locale) {
+    $availableLocales = ['fa', 'ps', 'en'];
+
+    if (in_array($locale, $availableLocales)) {
+        Session::put('locale', $locale);
+        Cookie::queue('locale', $locale, 60 * 24 * 30); // 30 روز
+    }
+
+    return redirect()->back();
+})->name('set-locale');
+
+// Pages    
+
+Route::get('/updated-market/home', function () {
+    if (!Auth::guard('market')->check()) {
+        return redirect()->route('market.login.form');
+    }
+    return view('Market.components.dashboard');
+})->name('market.home');
 
 
 
