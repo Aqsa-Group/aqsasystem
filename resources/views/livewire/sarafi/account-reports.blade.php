@@ -53,7 +53,7 @@ function getPersianCurrencyName($currencyCode) {
                     <div class="relative w-[350px]">
                         <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
                             class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5">
-                        <input type="text" wire:model.debounce.500ms="search" placeholder="جستجو ..."
+                        <input type="text" wire:model.live="search" placeholder="جستجو ..."
                             class="w-full border border-[#8C8C8C] bg-transparent rounded-2xl pl-10 pr-3 py-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm">
                     </div>
                 </div>
