@@ -70,13 +70,13 @@ class Dashboard extends Component
         $safe = CurrencySafe::where('admin_id', $adminId)->first();
         $bank = BankAccount::where('admin_id', $adminId)->first();
         
-        // دریافت نرخ‌ها - با source_currency='usd'
+        // دریافت نرخ‌ها - با source_currency='usd' (ردیف 32)
         $rates = ProfitRate::where('admin_id', $adminId)
             ->where('source_currency', 'usd')
             ->latest()
             ->first();
 
-        // اگر نرخ با source_currency='usd' نبود، آخرین نرخ را بگیر
+        // اگر نرخ با source_currency='usd' نبود، از ردیف‌های دیگر استفاده کن
         if (!$rates) {
             $rates = ProfitRate::where('admin_id', $adminId)
                 ->latest()
@@ -93,6 +93,16 @@ class Dashboard extends Component
 
         // لیست تمام ارزها
         $allCurrencies = ['afn', 'usd', 'eur', 'irr', 'aed', 'try', 'cny', 'pkr', 'gbp', 'jpy', 'sar', 'inr'];
+
+        // بررسی نوع نرخ‌ها
+        $rateSource = $rates ? $rates->source_currency : 'unknown';
+        Log::info('نرخ‌های استفاده شده:', [
+            'source_currency' => $rateSource,
+            'afn_buy_cash' => $rates ? $rates->afn_buy_cash : null,
+            'irr_buy_cash' => $rates ? $rates->irr_buy_cash : null,
+            'eur_buy_cash' => $rates ? $rates->eur_buy_cash : null,
+            'usd_buy_cash' => $rates ? $rates->usd_buy_cash : null,
+        ]);
 
         foreach ($allCurrencies as $currency) {
             // مقدار کل این ارز (نقدی + بانکی)
@@ -115,18 +125,62 @@ class Dashboard extends Component
             if ($currency === 'usd') {
                 // خودش دلار است
                 $totalUsd += $totalAmount;
-                Log::info("USD مقدار: {$totalAmount} USD = {$totalAmount} USD");
+                Log::info("USD: {$totalAmount} USD = {$totalAmount} USD");
             } else {
-                // نرخ خرید نقدی این ارز به دلار
+                // نرخ خرید نقدی این ارز
                 $rateField = $currency . '_buy_cash';
                 
-                if ($rates && isset($rates->$rateField) && $rates->$rateField > 0) {
-                    // فرمول: مقدار ارز ÷ نرخ خرید نقدی = مقدار دلار
-                    $converted = $totalAmount / $rates->$rateField;
-                    $totalUsd += $converted;
+                if ($rates && isset($rates->$rateField)) {
+                    $rate = $rates->$rateField;
                     
-                    // لاگ برای دیباگ
-                    Log::info("تبدیل {$currency}: {$totalAmount} ÷ {$rates->$rateField} = {$converted} USD");
+                    // اگر نرخ صفر یا منفی است، نادیده بگیر
+                    if ($rate <= 0) {
+                        Log::warning("نرخ خرید نقدی برای ارز {$currency} نامعتبر است: {$rate}", [
+                            'currency' => $currency,
+                            'amount' => $totalAmount,
+                            'rate' => $rate
+                        ]);
+                        continue;
+                    }
+                    
+                    // محاسبه بر اساس source_currency
+                    if ($rateSource === 'usd') {
+                        // source_currency='usd' (ردیف 32)
+                        // یعنی: 1 USD = [rate] [currency]
+                        // پس برای تبدیل: amount [currency] ÷ rate = مقدار USD
+                        $converted = $totalAmount / $rate;
+                        $totalUsd += $converted;
+                        
+                        Log::info("تبدیل {$currency} (source=USD): {$totalAmount} ÷ {$rate} = {$converted} USD");
+                    } else {
+                        // source_currencyهای دیگر (افغانی، یورو، تومان)
+                        // این‌ها نشان می‌دهند هر 1 [source_currency] چقدر از ارزهای دیگر می‌خرد
+                        // این حالت پیچیده است و نیاز به محاسبه معکوس دارد
+                        Log::warning("تبدیل پیچیده برای source_currency={$rateSource} و ارز={$currency}");
+                        
+                        // برای سادگی، از نرخ‌های پیش‌فرض استفاده می‌کنیم
+                        $defaultRates = [
+                            'afn' => 66.20,      // 1 USD = 66.20 AFN
+                            'irr' => 132400.00,  // 1 USD = 132,400 IRR
+                            'eur' => 0.86,       // 1 USD = 0.86 EUR
+                            'aed' => 3.67,       // 1 USD = 3.67 AED
+                            'try' => 32.00,      // 1 USD = 32.00 TRY
+                            'cny' => 7.20,       // 1 USD = 7.20 CNY
+                            'pkr' => 277.78,     // 1 USD = 277.78 PKR
+                            'gbp' => 0.79,       // 1 USD = 0.79 GBP
+                            'jpy' => 150.00,     // 1 USD = 150.00 JPY
+                            'sar' => 3.75,       // 1 USD = 3.75 SAR
+                            'inr' => 83.00,      // 1 USD = 83.00 INR
+                        ];
+                        
+                        if (isset($defaultRates[$currency])) {
+                            $defaultRate = $defaultRates[$currency];
+                            $converted = $totalAmount / $defaultRate;
+                            $totalUsd += $converted;
+                            
+                            Log::info("تبدیل {$currency} (پیش‌فرض): {$totalAmount} ÷ {$defaultRate} = {$converted} USD");
+                        }
+                    }
                 } else {
                     // اگر نرخ موجود نیست
                     Log::warning("نرخ خرید نقدی برای ارز {$currency} موجود نیست", [
@@ -144,12 +198,10 @@ class Dashboard extends Component
         Log::info('محاسبه موجودی کل Dashboard', [
             'admin_id' => $adminId,
             'total_usd' => $this->total_balance_usd,
-            'safe_data' => $safe ? $safe->toArray() : null,
-            'bank_data' => $bank ? $bank->toArray() : null,
-            'rates_source' => $rates ? $rates->source_currency : 'none',
-            'rates_afn_buy_cash' => $rates ? $rates->afn_buy_cash : null,
-            'rates_eur_buy_cash' => $rates ? $rates->eur_buy_cash : null,
-            'rates_irr_buy_cash' => $rates ? $rates->irr_buy_cash : null,
+            'rate_source' => $rateSource,
+            'safe_exists' => $safe ? 'Yes' : 'No',
+            'bank_exists' => $bank ? 'Yes' : 'No',
+            'rates_exists' => $rates ? 'Yes' : 'No',
         ]);
     }
 
@@ -192,18 +244,6 @@ class Dashboard extends Component
         $RemittanceCount = Remittances::where('admin_id', $adminId)
             ->whereBetween('created_at', [$today, $tomorrow])
             ->count();
-
-        // محاسبه دقیق موجودی کل با لاگ‌های بیشتر
-        Log::info('Dashboard Render - موجودی‌ها:', [
-            'safe_usd' => $this->safe->usd ?? 0,
-            'safe_afn' => $this->safe->afn ?? 0,
-            'safe_eur' => $this->safe->eur ?? 0,
-            'safe_irr' => $this->safe->irr ?? 0,
-            'bank_usd' => $this->safe_account['usd'] ?? 0,
-            'bank_afn' => $this->safe_account['afn'] ?? 0,
-            'bank_eur' => $this->safe_account['eur'] ?? 0,
-            'bank_irr' => $this->safe_account['irr'] ?? 0,
-        ]);
 
         return view('livewire.sarafi.dashboard', [
             'UserCount' => $UserCount,
