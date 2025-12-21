@@ -51,7 +51,8 @@
                         </div>
                         <?php else: ?>
                         <div class="flex justify-center mb-2">
-                            <img src="<?php echo e(asset('assets/web.jpg')); ?>" alt="dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900<?php echo e($withdrawalCustomer->fullname); ?>"
+                            <img src="<?php echo e(asset('assets/web.jpg')); ?>"
+                                alt="dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900<?php echo e($withdrawalCustomer->fullname); ?>"
                                 class="w-20 h-20 rounded-full object-cover border-2 border-white cursor-pointer hover:scale-105 transition-transform duration-200"
                                 @click="showLargeImage = true; largeImageSrc = '<?php echo e(asset('assets/web.jpg')); ?>'">
                         </div>
@@ -181,20 +182,19 @@
             </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
 
-         
-<!--[if BLOCK]><![endif]--><?php if($withdrawalCustomerId): ?>
-<div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
-    <div
-        class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px]
+            
+            <!--[if BLOCK]><![endif]--><?php if($withdrawalCustomerId): ?>
+            <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
+                <div class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px]
         dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900
         bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
 
-        <?php
-            /* =========================
-               تبدیل کد ارز به نام فارسی
-            ========================== */
-            function getPersianCurrencyName($currencyCode) {
-                $currencyMap = [
+                    <?php
+                    /* =========================
+                    تبدیل کد ارز به نام فارسی
+                    ========================== */
+                    function getPersianCurrencyName($currencyCode) {
+                    $currencyMap = [
                     'afn' => 'افغانی',
                     'usd' => 'دالر',
                     'irr' => 'تومان',
@@ -207,116 +207,113 @@
                     'jpy' => 'ین',
                     'sar' => 'ریال سعودی',
                     'inr' => 'روپیه',
-                ];
+                    ];
 
-                $currencyCode = strtolower($currencyCode ?? 'usd');
-                return $currencyMap[$currencyCode] ?? $currencyCode;
-            }
+                    $currencyCode = strtolower($currencyCode ?? 'usd');
+                    return $currencyMap[$currencyCode] ?? $currencyCode;
+                    }
 
-            $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
-            $sourceCurrency  = getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
+                    $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
+                    $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
 
-            $totalCashUsd = 0;
-            $totalBankUsd = 0;
+                    $totalCashUsd = 0;
+                    $totalBankUsd = 0;
 
-            /* =========================
-               نرخ‌های خرید نقدی
-            ========================== */
-            $exchangeRatesCash = [
-                'افغانی' => $latestProfitRate->afn_buy_cash ?? 66.20,
-                'دالر'   => 1,
-                'تومان'  => $latestProfitRate->irr_buy_cash ?? 110000,
-                'یورو'   => $latestProfitRate->eur_buy_cash ?? 70,
-                'کلدار'  => $latestProfitRate->pkr_buy_cash ?? 32,
-                'درهم'   => $latestProfitRate->aed_buy_cash ?? 44,
-                'لیره'   => $latestProfitRate->try_buy_cash ?? 60,
-                'یوان'   => $latestProfitRate->cny_buy_cash ?? 43,
-                'روپیه'  => $latestProfitRate->inr_buy_cash ?? 7.14,
-            ];
+                    /* =========================
+                    نرخ‌های خرید نقدی
+                    ========================== */
+                    $exchangeRatesCash = [
+                    'افغانی' => $latestProfitRate->afn_buy_cash ?? 66.20,
+                    'دالر' => 1,
+                    'تومان' => $latestProfitRate->irr_buy_cash ?? 110000,
+                    'یورو' => $latestProfitRate->eur_buy_cash ?? 70,
+                    'کلدار' => $latestProfitRate->pkr_buy_cash ?? 32,
+                    'درهم' => $latestProfitRate->aed_buy_cash ?? 44,
+                    'لیره' => $latestProfitRate->try_buy_cash ?? 60,
+                    'یوان' => $latestProfitRate->cny_buy_cash ?? 43,
+                    'روپیه' => $latestProfitRate->inr_buy_cash ?? 7.14,
+                    ];
 
-            /* =========================
-               نرخ‌های خرید بانکی
-            ========================== */
-            $exchangeRatesBank = [
-                'افغانی' => $latestProfitRate->afn_buy_bank ?? 66.20,
-                'دالر'   => 1,
-                'تومان'  => $latestProfitRate->irr_buy_bank ?? 110000,
-                'یورو'   => $latestProfitRate->eur_buy_bank ?? 70,
-                'کلدار'  => $latestProfitRate->pkr_buy_bank ?? 32,
-                'درهم'   => $latestProfitRate->aed_buy_bank ?? 44,
-                'لیره'   => $latestProfitRate->try_buy_bank ?? 60,
-                'یوان'   => $latestProfitRate->cny_buy_bank ?? 43,
-                'روپیه'  => $latestProfitRate->inr_buy_bank ?? 7.14,
-            ];
+                    /* =========================
+                    نرخ‌های خرید بانکی
+                    ========================== */
+                    $exchangeRatesBank = [
+                    'افغانی' => $latestProfitRate->afn_buy_bank ?? 66.20,
+                    'دالر' => 1,
+                    'تومان' => $latestProfitRate->irr_buy_bank ?? 110000,
+                    'یورو' => $latestProfitRate->eur_buy_bank ?? 70,
+                    'کلدار' => $latestProfitRate->pkr_buy_bank ?? 32,
+                    'درهم' => $latestProfitRate->aed_buy_bank ?? 44,
+                    'لیره' => $latestProfitRate->try_buy_bank ?? 60,
+                    'یوان' => $latestProfitRate->cny_buy_bank ?? 43,
+                    'روپیه' => $latestProfitRate->inr_buy_bank ?? 7.14,
+                    ];
 
-            /* =========================
-               محاسبه موجودی نقدی
-            ========================== */
-            foreach ($customerCashBalances as $currency => $balance) {
-                if ($currency === 'دالر') {
+                    /* =========================
+                    محاسبه موجودی نقدی
+                    ========================== */
+                    foreach ($customerCashBalances as $currency => $balance) {
+                    if ($currency === 'دالر') {
                     $totalCashUsd += $balance; // دالر مستقیم
-                } elseif (isset($exchangeRatesCash[$currency]) && $exchangeRatesCash[$currency] > 0) {
+                    } elseif (isset($exchangeRatesCash[$currency]) && $exchangeRatesCash[$currency] > 0) {
                     $totalCashUsd += $balance / $exchangeRatesCash[$currency];
-                }
-            }
+                    }
+                    }
 
-            /* =========================
-               محاسبه موجودی بانکی
-            ========================== */
-            foreach ($customerBankBalances as $currency => $balance) {
-                if ($currency === 'دالر') {
+                    /* =========================
+                    محاسبه موجودی بانکی
+                    ========================== */
+                    foreach ($customerBankBalances as $currency => $balance) {
+                    if ($currency === 'دالر') {
                     $totalBankUsd += $balance; // دالر مستقیم
-                } elseif (isset($exchangeRatesBank[$currency]) && $exchangeRatesBank[$currency] > 0) {
+                    } elseif (isset($exchangeRatesBank[$currency]) && $exchangeRatesBank[$currency] > 0) {
                     $totalBankUsd += $balance / $exchangeRatesBank[$currency];
-                }
-            }
+                    }
+                    }
 
-            $grandTotalUsd = $totalCashUsd + $totalBankUsd;
-        ?>
+                    $grandTotalUsd = $totalCashUsd + $totalBankUsd;
+                    ?>
 
-        <h1 class="text-[24px] text-white">
-            خلاصه بیلانس به <?php echo e($sourceCurrency); ?>
+                    <h1 class="text-[24px] text-white">
+                        خلاصه بیلانس به <?php echo e($sourceCurrency); ?>
 
-        </h1>
+                    </h1>
 
-        <div class="flex flex-col gap-1 mt-1 text-center">
-            <div class="flex justify-between items-center text-[14px]">
-                <span>نقدی:</span>
-                <span class="font-bold text-left" dir="ltr">
-                    <?php echo e(number_format($totalCashUsd, 2)); ?>
+                    <div class="flex flex-col gap-1 mt-1 text-center">
+                        <div class="flex justify-between items-center text-[14px]">
+                            <span>نقدی:</span>
+                            <span class="font-bold text-left" dir="ltr">
+                                <?php echo e(number_format($totalCashUsd, 2)); ?>
 
-                </span>
-            </div>
+                            </span>
+                        </div>
 
-            <div class="flex justify-between items-center text-[14px]">
-                <span>بانکی:</span>
-                <span class="font-bold text-left" dir="ltr">
-                    <?php echo e(number_format($totalBankUsd, 2)); ?>
+                        <div class="flex justify-between items-center text-[14px]">
+                            <span>بانکی:</span>
+                            <span class="font-bold text-left" dir="ltr">
+                                <?php echo e(number_format($totalBankUsd, 2)); ?>
 
-                </span>
-            </div>
+                            </span>
+                        </div>
 
-            <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
-                <span class="font-semibold">مجموعه:</span>
-                <span class="font-bold text-[16px] text-left" dir="ltr">
-                    <?php echo e(number_format($grandTotalUsd, 2)); ?>
+                        <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
+                            <span class="font-semibold">مجموعه:</span>
+                            <span class="font-bold text-[16px] text-left" dir="ltr">
+                                <?php echo e(number_format($grandTotalUsd, 2)); ?>
 
-                </span>
-            </div>
-        </div>
+                            </span>
+                        </div>
+                    </div>
 
-        <button
-            wire:click="showReport"
-            wire:loading.attr="disabled"
-            class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800
+                    <button wire:click="showReport" wire:loading.attr="disabled" class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800
                    hover:shadow-md transition flex items-center justify-center gap-2">
-            <span wire:loading.remove>نمایش گزارش</span>
-            <span wire:loading>در حال انتقال...</span>
-        </button>
+                        <span wire:loading.remove>نمایش گزارش</span>
+                        <span wire:loading>در حال انتقال...</span>
+                    </button>
 
-    </div>
-</div>
-<?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                </div>
+            </div>
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
         </div>
 
@@ -350,7 +347,8 @@
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-2">
                         
                         <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">حساب مبدا</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">حساب
+                                مبدا</label>
                             <div x-data="{
                                             searchValue: '',
                                             selectedId: <?php if ((object) ('withdrawalAccount') instanceof \Livewire\WireDirective) : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('withdrawalAccount'->value()); ?>')<?php echo e('withdrawalAccount'->hasModifier('live') ? '.live' : ''); ?><?php else : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('withdrawalAccount'); ?>')<?php endif; ?>,
@@ -399,10 +397,15 @@
                                 <!--[if BLOCK]><![endif]--><?php if(empty($withdrawalAccount)): ?>
 
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓" class="dark:hidden">
-                                    <svg width="24" class="hidden dark:block" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓"
+                                        class="dark:hidden">
+                                    <svg width="24" class="hidden dark:block" height="24" viewBox="0 0 24 24"
+                                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                            stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
 
                                 </div>
                                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
@@ -421,7 +424,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                         
                         <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">حساب مقصد</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">حساب
+                                مقصد</label>
                             <div x-data="{
                                             searchValue: '',
                                             selectedId: <?php if ((object) ('depositAccount') instanceof \Livewire\WireDirective) : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('depositAccount'->value()); ?>')<?php echo e('depositAccount'->hasModifier('live') ? '.live' : ''); ?><?php else : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('depositAccount'); ?>')<?php endif; ?>,
@@ -471,10 +475,15 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
 
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓" class="dark:hidden">
-                                                       <svg width="24" class="hidden dark:block" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓"
+                                        class="dark:hidden">
+                                    <svg width="24" class="hidden dark:block" height="24" viewBox="0 0 24 24"
+                                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                            stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
 
                                 </div>
                                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
@@ -495,7 +504,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
                         <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">از حساب</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">از
+                                حساب</label>
                             <select wire:model="from_account"
                                 class="w-full dark:border-white dark:bg-black dark:text-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="نقدی">نقدی</option>
@@ -514,7 +524,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">به حساب</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">به
+                                حساب</label>
                             <select wire:model="to_account"
                                 class="w-full dark:border-white dark:text-white dark:bg-black  h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="نقدی">نقدی</option>
@@ -538,7 +549,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
                         
                         <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ پول</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ
+                                پول</label>
                             <input type="text" wire:model.live="withdrawal_amount" placeholder="0"
                                 class="w-full dark:text-white dark:bg-black dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 bg-transparent"
                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
@@ -559,7 +571,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                         
                         <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ قابل انتقال
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ قابل
+                                انتقال
                             </label>
                             <input type="text" wire:model.lazy="transferable_amount" placeholder=""
                                 class="w-full dark:text-white dark:bg-black dark:border-white  h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-gray-100 focus:ring-2 focus:ring-blue-500" />
@@ -571,7 +584,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         
                         <!--[if BLOCK]><![endif]--><?php if($transactionType === 'باتفاوت'): ?>
                         <div>
-                            <label class="block text-[16px] font-medium dark:text-white  text-black mb-1 vazir">مبلغ کمیشن</label>
+                            <label class="block text-[16px] font-medium dark:text-white  text-black mb-1 vazir">مبلغ
+                                کمیشن</label>
                             <input type="text" wire:model="commission_amount" placeholder="0" readonly dir="ltr"
                                 class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white  h-[60px] p-3 text-left rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 bg-transparent"
                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
@@ -590,7 +604,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
 
                         <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">حساب کمیشن</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">حساب
+                                کمیشن</label>
                             <div x-data="{
                                         searchValue: '',
                                         selectedId: <?php if ((object) ('commissionAccount') instanceof \Livewire\WireDirective) : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('commissionAccount'->value()); ?>')<?php echo e('commissionAccount'->hasModifier('live') ? '.live' : ''); ?><?php else : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('commissionAccount'); ?>')<?php endif; ?>,
@@ -654,7 +669,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">حالت انتقال</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">حالت
+                                انتقال</label>
                             <input type="text" value="انتقال با کمیشن" readonly
                                 class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-gray-100 focus:ring-2 focus:ring-blue-500" />
                         </div>
@@ -662,7 +678,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                         
                         <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">ارز</label>
+                            <label
+                                class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">ارز</label>
                             <select wire:model="currency"
                                 class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="">انتخاب ارز</option>
@@ -690,12 +707,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
                         <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">توسط (برداشت)</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">توسط
+                                (برداشت)</label>
                             <input type="text" wire:model="by_sender" placeholder="نام مسئول برداشت"
                                 class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 bg-transparent" />
                         </div>
                         <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">توسط (دریافت)</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">توسط
+                                (دریافت)</label>
                             <input type="text" wire:model="by_receiver" placeholder="نام مسئول دریافت"
                                 class="w-full dark:bg-black dark:border-white dark:text-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 bg-transparent" />
                         </div>
@@ -704,7 +723,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
                         <div class="relative">
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
+                            <label
+                                class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
                             <input type="text" wire:model="transaction_date" placeholder="1404/4/20"
                                 class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500" />
                             <svg class="absolute left-3 bottom-2 -translate-y-1/2 pointer-events-none" width="20"
@@ -721,7 +741,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </svg>
                         </div>
                         <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">نمبر سند</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">نمبر
+                                سند</label>
                             <input type="text" wire:model="documentNumber" readonly
                                 class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-gray-100 focus:ring-2 focus:ring-blue-500 cursor-not-allowed" />
                         </div>
@@ -730,7 +751,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
                         <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">زون برداشت</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">زون
+                                برداشت</label>
                             <select wire:model="zone_sender"
                                 class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="">انتخاب زون</option>
@@ -751,7 +773,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">زون دریافت</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">زون
+                                دریافت</label>
                             <select wire:model="zone_receiver"
                                 class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="">انتخاب زون</option>
@@ -774,14 +797,16 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                     
                     <div class="mt-3">
-                        <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">شرح بردگی</label>
+                        <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">شرح
+                            بردگی</label>
                         <textarea wire:model="description_sender" rows="3" placeholder="شرح بردگی..."
                             class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
                     </div>
 
                     
                     <div class="mt-3">
-                        <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">شرح رسیدگی</label>
+                        <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">شرح
+                            رسیدگی</label>
                         <textarea wire:model="description_receiver" rows="3" placeholder="شرح رسیدگی..."
                             class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
                     </div>
@@ -825,10 +850,15 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
                                 class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 dark:hidden">
 
-                                <svg width="24"  class="absolute hidden dark:block left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+                            <svg width="24"
+                                class="absolute hidden dark:block left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6"
+                                height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
 
 
                             <!--[if BLOCK]><![endif]--><?php if($search): ?>
@@ -926,7 +956,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                             <button wire:click="editConversion(<?php echo e($conversion->id); ?>)"
                                                 class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-blue-100"
                                                 title="ویرایش">
-                                                          <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>"
+                                                <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>"
                                                     class="w-7 h-7 dark:hidden" alt="Edit">
 
                                                 <svg width="22" height="22" class="hidden dark:block"
@@ -950,7 +980,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                             <button wire:click="confirmDelete(<?php echo e($conversion->id); ?>)"
                                                 class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-red-100"
                                                 title="حذف">
-                                                   <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>"
+                                                <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>"
                                                     class="w-8 h-8 dark:hidden" alt="Delete">
                                                 <svg width="24" height="24" class="hidden dark:block"
                                                     viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -978,7 +1008,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                             <button wire:click="printTransaction(<?php echo e($conversion->id); ?>)"
                                                 class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-green-100"
                                                 title="پرینت PDF">
-                                                             <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
+                                                <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
                                                     class="w-10 h-10 dark:hidden" alt="Print">
                                                 <svg width="30" class="hidden dark:block" height="30"
                                                     viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">

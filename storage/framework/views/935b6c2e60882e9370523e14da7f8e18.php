@@ -257,10 +257,10 @@
                 <?php $__currentLoopData = $balances; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $balance): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr>
                     <td><strong><?php echo e($balance['name_fa']); ?></strong></td>
-                    <td class="amount-cell"><?php echo e(number_format($balance['received'])); ?></td>
-                    <td class="amount-cell"><?php echo e(number_format($balance['spent'])); ?></td>
-                    <td class="amount-cell"><?php echo e(number_format($balance['balance'])); ?></td>
-                    <td class="amount-cell"><strong><?php echo e(number_format($balance['current_balance'])); ?></strong></td>
+                    <td class="amount-cell" dir="ltr"><?php echo e(number_format($balance['received'])); ?></td>
+                    <td class="amount-cell" dir="ltr"><?php echo e(number_format($balance['spent'])); ?></td>
+                    <td class="amount-cell" dir="ltr"><?php echo e(number_format($balance['balance'])); ?></td>
+                    <td class="amount-cell" dir="ltr"><strong><?php echo e(number_format($balance['current_balance'])); ?></strong></td>
                     <td>
                         <span class="<?php echo e($balance['status'] == 'طلبکار' ? 'status-confirmed' : 'status-pending'); ?>">
                             <?php echo e($balance['status']); ?>

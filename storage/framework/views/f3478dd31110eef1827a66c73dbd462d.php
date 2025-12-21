@@ -1,23 +1,23 @@
 <?php
 // تابع تبدیل کد ارز به نام فارسی (برای استفاده در کل view)
 function getPersianCurrencyName($currencyCode) {
-    $currencyMap = [
-        'afn' => 'افغانی',
-        'usd' => 'دالر',
-        'irr' => 'تومان',
-        'eur' => 'یورو',
-        'pkr' => 'کلدار',
-        'aed' => 'درهم',
-        'try' => 'لیره',
-        'cny' => 'یوان',
-        'gbp' => 'پوند',
-        'jpy' => 'ین',
-        'sar' => 'ریال سعودی',
-        'inr' => 'روپیه',
-    ];
-    
-    $currencyCode = strtolower($currencyCode ?? 'usd');
-    return $currencyMap[$currencyCode] ?? $currencyCode;
+$currencyMap = [
+'afn' => 'افغانی',
+'usd' => 'دالر',
+'irr' => 'تومان',
+'eur' => 'یورو',
+'pkr' => 'کلدار',
+'aed' => 'درهم',
+'try' => 'لیره',
+'cny' => 'یوان',
+'gbp' => 'پوند',
+'jpy' => 'ین',
+'sar' => 'ریال سعودی',
+'inr' => 'روپیه',
+];
+
+$currencyCode = strtolower($currencyCode ?? 'usd');
+return $currencyMap[$currencyCode] ?? $currencyCode;
 }
 ?>
 
@@ -52,17 +52,17 @@ function getPersianCurrencyName($currencyCode) {
                     class="flex flex-col md:flex-row justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                     <h1 class="text-[16px] vazir">گزارش مشتریان بر اساس نوعیت / دسته</h1>
                     <div class="relative w-[350px]">
-                           <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
-                                class="absolute  dark:hidden left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6">
-                            <svg width="24" height="24"
-                                class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 hidden dark:block"
-                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
-                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
+                        <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
+                            class="absolute  dark:hidden left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6">
+                        <svg width="24" height="24"
+                            class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 hidden dark:block"
+                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+                                stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
 
                         <input type="text" wire:model.live="search" placeholder="جستجو ..."
                             class="w-full dark:bg-black dark:text-white dark:border dark:border-white dark:placeholder:text-white border border-[#8C8C8C] bg-transparent rounded-2xl pl-10 pr-3 py-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm">
@@ -120,21 +120,22 @@ function getPersianCurrencyName($currencyCode) {
                             <option value="<?php echo e($customer['id']); ?>"><?php echo e($customer['fullname']); ?></option>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                         </select>
-                           <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none dark:hidden" width="20" height="20"
-                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none dark:hidden" width="20"
+                            height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
                                 stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
 
 
-                           <svg width="24" height="24" class=" absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none hidden dark:block" viewBox="0 0 24 24"
-                                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
-                                                stroke="white" stroke-width="1.5" stroke-miterlimit="10"
-                                                stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
+                        <svg width="24" height="24"
+                            class=" absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none hidden dark:block"
+                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
                     </div>
 
                     <!-- سلکت ۲ - نوع ارز -->
@@ -151,21 +152,22 @@ function getPersianCurrencyName($currencyCode) {
                             <option value="try">لیره</option>
                             <option value="cny">یوان</option>
                         </select>
-                           <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none dark:hidden" width="20" height="20"
-                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none dark:hidden" width="20"
+                            height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
                                 stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
 
 
-                           <svg width="24" height="24" class=" absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none hidden dark:block" viewBox="0 0 24 24"
-                                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
-                                                stroke="white" stroke-width="1.5" stroke-miterlimit="10"
-                                                stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
+                        <svg width="24" height="24"
+                            class=" absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none hidden dark:block"
+                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
                     </div>
 
                     <!-- سلکت ۳ - نوع حساب (بانکی/نقدی) -->
@@ -176,26 +178,28 @@ function getPersianCurrencyName($currencyCode) {
                             <option value="بانکی">بانکی</option>
                             <option value="نقدی">نقدی</option>
                         </select>
-                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none dark:hidden" width="20" height="20"
-                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none dark:hidden" width="20"
+                            height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
                                 stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
 
 
-                           <svg width="24" height="24" class=" absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none hidden dark:block" viewBox="0 0 24 24"
-                                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
-                                                stroke="white" stroke-width="1.5" stroke-miterlimit="10"
-                                                stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
+                        <svg width="24" height="24"
+                            class=" absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none hidden dark:block"
+                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
                     </div>
 
                     <!-- فیلد تاریخ -->
                     <div class="relative flex items-center justify-center text-center">
-                        <input type="text" wire:model.live.debounce.300ms="date" wire:change="generateReport" placeholder="1403/01/01"
+                        <input type="text" wire:model.live.debounce.300ms="date" wire:change="generateReport"
+                            placeholder="1403/01/01"
                             class="appearance-none w-full border dark:bg-black dark:border-white  border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800 text-center">
                         <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" width="20" height="20"
                             viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -233,7 +237,8 @@ function getPersianCurrencyName($currencyCode) {
                                     <?php
                                     // دریافت نام ارز مبدا به فارسی
                                     $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
-                                    $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
+                                    $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ??
+                                    'usd');
                                     ?>
                                     <th class="px-4 py-4 font-bold">بیلانس به <?php echo e($sourceCurrency); ?></th>
                                 </tr>
@@ -254,7 +259,8 @@ function getPersianCurrencyName($currencyCode) {
 
                                     </td>
                                     <td class="px-4 py-4">
-                                        <?php echo e($report['last_date'] ? \Carbon\Carbon::parse($report['last_date'])->format('Y/m/d') : '-'); ?>
+                                        <?php echo e($report['last_date'] ?
+                                        \Carbon\Carbon::parse($report['last_date'])->format('Y/m/d') : '-'); ?>
 
                                     </td>
                                     <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['usd'] ?? 0, 2)); ?></td>
@@ -308,7 +314,8 @@ function getPersianCurrencyName($currencyCode) {
                                 <div class="border-2 border-dashed border-gray-300 p-4">
                                     <div class="text-center mb-4">
                                         <h2 class="text-xl font-bold vazir" x-text="printData?.title"></h2>
-                                        <p class="text-gray-600" x-text="'تاریخ چاپ: ' + (printData?.print_date || '')"></p>
+                                        <p class="text-gray-600" x-text="'تاریخ چاپ: ' + (printData?.print_date || '')">
+                                        </p>
                                     </div>
 
                                     <div class="mb-4" x-show="printData?.filters">
@@ -335,21 +342,32 @@ function getPersianCurrencyName($currencyCode) {
                                                 <?php
                                                 // دریافت نام ارز مبدا به فارسی برای چاپ
                                                 $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
-                                                $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
+                                                $sourceCurrency =
+                                                getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
                                                 ?>
-                                                <th class="border border-gray-300 p-2">بیلانس به <?php echo e($sourceCurrency); ?></th>
+                                                <th class="border border-gray-300 p-2">بیلانس به <?php echo e($sourceCurrency); ?>
+
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <template x-for="(report, index) in printData?.reports || []" :key="report.id">
+                                            <template x-for="(report, index) in printData?.reports || []"
+                                                :key="report.id">
                                                 <tr>
-                                                    <td class="border border-gray-300 p-2 text-center" x-text="index + 1"></td>
-                                                    <td class="border border-gray-300 p-2" x-text="report.account_number"></td>
-                                                    <td class="border border-gray-300 p-2" x-text="report.fullname"></td>
-                                                    <td class="border border-gray-300 p-2" x-text="report.related_customer_name || '-'"></td>
-                                                    <td class="border border-gray-300 p-2 text-left" x-text="(report.balances?.usd || 0).toFixed(2)"></td>
-                                                    <td class="border border-gray-300 p-2 text-left" x-text="(report.balances?.afn || 0).toFixed(2)"></td>
-                                                    <td class="border border-gray-300 p-2 text-left font-bold" x-text="report.total_balance.toFixed(2)"></td>
+                                                    <td class="border border-gray-300 p-2 text-center"
+                                                        x-text="index + 1"></td>
+                                                    <td class="border border-gray-300 p-2"
+                                                        x-text="report.account_number"></td>
+                                                    <td class="border border-gray-300 p-2" x-text="report.fullname">
+                                                    </td>
+                                                    <td class="border border-gray-300 p-2"
+                                                        x-text="report.related_customer_name || '-'"></td>
+                                                    <td class="border border-gray-300 p-2 text-left"
+                                                        x-text="(report.balances?.usd || 0).toFixed(2)"></td>
+                                                    <td class="border border-gray-300 p-2 text-left"
+                                                        x-text="(report.balances?.afn || 0).toFixed(2)"></td>
+                                                    <td class="border border-gray-300 p-2 text-left font-bold"
+                                                        x-text="report.total_balance.toFixed(2)"></td>
                                                 </tr>
                                             </template>
                                         </tbody>
@@ -357,7 +375,9 @@ function getPersianCurrencyName($currencyCode) {
 
                                     <div class="mt-4 text-sm">
                                         <p x-text="'تعداد کل مشتریان: ' + (printData?.total_customers || 0)"></p>
-                                        <p x-text="'مجموع بیلانس: ' + (printData?.total_balance?.toFixed(2) || '0.00') + ' دالر'"></p>
+                                        <p
+                                            x-text="'مجموع بیلانس: ' + (printData?.total_balance?.toFixed(2) || '0.00') + ' دالر'">
+                                        </p>
                                     </div>
                                 </div>
                             </div>

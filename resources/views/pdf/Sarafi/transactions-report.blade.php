@@ -256,10 +256,10 @@
                 @foreach($balances as $balance)
                 <tr>
                     <td><strong>{{ $balance['name_fa'] }}</strong></td>
-                    <td class="amount-cell">{{ number_format($balance['received']) }}</td>
-                    <td class="amount-cell">{{ number_format($balance['spent']) }}</td>
-                    <td class="amount-cell">{{ number_format($balance['balance']) }}</td>
-                    <td class="amount-cell"><strong>{{ number_format($balance['current_balance']) }}</strong></td>
+                    <td class="amount-cell" dir="ltr">{{ number_format($balance['received']) }}</td>
+                    <td class="amount-cell" dir="ltr">{{ number_format($balance['spent']) }}</td>
+                    <td class="amount-cell" dir="ltr">{{ number_format($balance['balance']) }}</td>
+                    <td class="amount-cell" dir="ltr"><strong>{{ number_format($balance['current_balance']) }}</strong></td>
                     <td>
                         <span class="{{ $balance['status'] == 'طلبکار' ? 'status-confirmed' : 'status-pending' }}">
                             {{ $balance['status'] }}

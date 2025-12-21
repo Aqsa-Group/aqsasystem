@@ -153,21 +153,86 @@
                 <td class="currency-number"><?php echo e(number_format($report['total_balance'], 2)); ?></td>
             </tr>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-<tr class="total-row">
-    <td colspan="<?php echo e(count($currencies) + 5); ?>">مجموع کل</td>
-    <td class="currency-number">
-        <?php echo e(number_format($total_balance, 2)); ?>
 
-    </td>
-</tr>
+
+
 
         </tbody>
     </table>
+
+
+    <?php if(isset($totals) && count($totals) > 0): ?>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+        <thead>
+            <tr class="total-row" style="background-color: #2B65E5; color: white; text-align: center;">
+                <th style="padding:5px;">نام ارز</th>
+                <th style="padding:5px;">نقدی</th>
+                <th style="padding:5px;">بانکی</th>
+                <th style="padding:5px;">مجموع</th>
+                <th style="padding:5px;">بیلانس به دالر</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+                $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
+                $accountTypeForConversion = 'cash';
+                $defaultRates = [
+                    'afn' => 66.20,
+                    'usd' => 1,
+                    'irr' => 110000.00,
+                    'eur' => 0.93,
+                    'pkr' => 277.78,
+                    'aed' => 3.67,
+                    'try' => 32.26,
+                    'cny' => 7.24,
+                ];
+                $exchangeRates = [];
+                foreach ($defaultRates as $currency => $fallback) {
+                    $column = $currency.'_buy_'.($accountTypeForConversion === 'bank' ? 'bank' : 'cash');
+                    $exchangeRates[$currency] = ($latestProfitRate->$column ?? 0) > 0 ? $latestProfitRate->$column : $fallback;
+                }
+
+                $grandTotalUsd = 0; // جمع کل دلاری
+            ?>
+
+            <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $currencyName): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php
+                    $cash = $totals[$currencyCode]['cash'] ?? 0;
+                    $bank = $totals[$currencyCode]['bank'] ?? 0;
+                    $total = $totals[$currencyCode]['total'] ?? 0;
+
+                    // فقط ارزهایی که موجودی دارند
+                    if ($total == 0) continue;
+
+                    $totalUsd = isset($exchangeRates[$currencyCode]) && $exchangeRates[$currencyCode] > 0
+                                ? $total / $exchangeRates[$currencyCode]
+                                : 0;
+
+                    $grandTotalUsd += $totalUsd;
+                ?>
+                <tr class="total-row" style="text-align:center;" style="background-color: white">
+                    <td style="padding:5px;"><?php echo e($currencyName); ?></td>
+                    <td style="padding:5px; text-align:right;"><?php echo e(number_format($cash, 2)); ?></td>
+                    <td style="padding:5px; text-align:right;"><?php echo e(number_format($bank, 2)); ?></td>
+                    <td style="padding:5px; text-align:right;"><?php echo e(number_format($total, 2)); ?></td>
+                    <td style="padding:5px; text-align:right;"><?php echo e(number_format($totalUsd, 2)); ?></td>
+                </tr>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+            <tr class="total-row" style="font-weight:bold; background:#d0e9d0; text-align:center;">
+                <td colspan="4" style="padding:5px;">جمع کل بیلانس به دالر</td>
+                <td style="padding:5px; text-align:right;"><?php echo e(number_format($grandTotalUsd, 2)); ?> دالر</td>
+            </tr>
+        </tbody>
+    </table>
+<?php endif; ?>
+
     <?php else: ?>
     <div class="no-data">
         هیچ داده‌ای برای نمایش وجود ندارد
     </div>
     <?php endif; ?>
+
 
 
 </body>

@@ -1012,8 +1012,7 @@ private function getDefaultProfitLossResult()
 
   
 
-    // ... بقیه متدها بدون تغییر باقی می‌مانند
-
+ 
     /**
      * ویرایش تبدیل ارز
      */
