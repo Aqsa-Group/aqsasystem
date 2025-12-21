@@ -198,40 +198,62 @@ class GeneralReports extends Component
         ]);
     }
 
-    private function convertToUSD($amount, $currency)
-    {
-        if ($currency === 'usd') {
-            return $amount;
-        }
+  private function convertToUSD(float $amount, string $currency): float
+{
+    $currency = strtolower($currency);
 
-        $latestProfitRate = ProfitRate::latest()->first();
-        if (!$latestProfitRate) {
-            Log::warning('No profit rate found');
-            return 0;
-        }
-
-        // نرخ‌های تبدیل - استفاده از نرخ خرید نقدی (پیش‌فرض)
-        $exchangeRates = [
-            'afn' => $latestProfitRate->afn_buy_cash ?? 66.20,
-            'irr' => $latestProfitRate->irr_buy_cash ?? 110000.00,
-            'eur' => $latestProfitRate->eur_buy_cash ?? 0.93,
-            'pkr' => $latestProfitRate->pkr_buy_cash ?? 277.78,
-            'aed' => $latestProfitRate->aed_buy_cash ?? 3.67,
-            'try' => $latestProfitRate->try_buy_cash ?? 32.26,
-            'cny' => $latestProfitRate->cny_buy_cash ?? 7.24,
-        ];
-
-        $result = isset($exchangeRates[$currency]) ? $amount / $exchangeRates[$currency] : 0;
-
-        Log::debug("Currency conversion", [
-            'amount' => $amount,
-            'currency' => $currency,
-            'rate' => $exchangeRates[$currency] ?? 'N/A',
-            'result' => $result
-        ]);
-
-        return $result;
+    // اگر مبلغ صفر است
+    if ($amount == 0) {
+        return 0;
     }
+ 
+    // اگر خودش دلار است
+    if ($currency === 'usd') {
+        return round($amount, 4);
+    }
+
+    // آخرین نرخ
+    $latestProfitRate = ProfitRate::latest()->first();
+
+    if (!$latestProfitRate) {
+        Log::warning('ProfitRate یافت نشد');
+        return 0;
+    }
+
+    // نرخ‌ها (خرید نقدی)
+    $exchangeRates = [
+        'afn' => $latestProfitRate->afn_buy_cash ?: 66.20,
+        'irr' => $latestProfitRate->irr_buy_cash ?: 110000.00,
+        'eur' => $latestProfitRate->eur_buy_cash ?: 0.93,
+        'pkr' => $latestProfitRate->pkr_buy_cash ?: 277.78,
+        'aed' => $latestProfitRate->aed_buy_cash ?: 3.67,
+        'try' => $latestProfitRate->try_buy_cash ?: 32.26,
+        'cny' => $latestProfitRate->cny_buy_cash ?: 7.24,
+    ];
+
+    // اگر ارز پشتیبانی نمی‌شود
+    if (!isset($exchangeRates[$currency]) || $exchangeRates[$currency] <= 0) {
+        Log::warning('نرخ معتبر برای تبدیل یافت نشد', [
+            'currency' => $currency
+        ]);
+        return 0;
+    }
+
+    // تبدیل به دلار
+    $rate = $exchangeRates[$currency];
+    $result = $amount / $rate;
+
+    Log::debug('تبدیل ارز به USD', [
+        'amount'   => $amount,
+        'currency' => $currency,
+        'rate'     => $rate,
+        'formula'  => "{$amount} ÷ {$rate}",
+        'result'   => $result,
+    ]);
+
+    return round($result, 4);
+}
+
 
     public function getCurrencyColor($currency)
     {
