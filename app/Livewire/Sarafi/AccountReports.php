@@ -196,8 +196,11 @@ class AccountReports extends Component
 
     private function getLastTransactionDate($customerId, $currency)
     {
+              $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
         $query = Transaction::where('customer_id', $customerId)
-            ->where('currency', $currency);
+            ->where('currency', $currency)
+            ->where('admin_id', $adminId);;
 
         if ($this->accountType) {
             $query->where('account_type', $this->accountType);
@@ -300,9 +303,13 @@ class AccountReports extends Component
             $gregorianDate = now()->format('Y-m-d');
         }
 
+           $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
         $query = Transaction::where('customer_id', $customerId)
             ->where('currency', $currency)
-            ->where('date', '<=', $gregorianDate);
+            ->where('date', '<=', $gregorianDate)
+            ->where('admin_id' , $adminId);
+
 
         if ($this->accountType) {
             $query->where('account_type', $this->accountType);
@@ -415,6 +422,10 @@ class AccountReports extends Component
         }, $fileName);
     }
 
+
+
+
+    
     private function getCustomerName($customerId)
     {
         $customer = Customer::find($customerId);

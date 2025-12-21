@@ -82,19 +82,21 @@
                         $currentUser=Auth::guard('sarafi')->user();
                         @endphp
 
-                        @if ($currentUser && $currentUser->role==='superadmin')
-
+                      
                         <!-- دکمه ویرایش -->
                         <button wire:click="editCustomer({{ $customer->id }})" class="px-2 py-1">
                             <img src="{{ asset('assets/sarafi/all_icon/edit_table.svg') }}" alt="Edit"
                                 class="w-[30px] h-[30px]">
                         </button>
-                        @endif
+
+                          @if ($currentUser && $currentUser->role==='superadmin')
+
                         <!-- دکمه دیلیت -->
                         <button wire:click="confirmDelete({{ $customer->id }})" class="px-2 py-1">
                             <img src="{{ asset('assets/sarafi/all_icon/trash_table.svg') }}" alt="Edit"
                                 class="w-[30px] h-[30px]">
                         </button>
+                        @endif
 
 
                         <!-- دکمه چاپ -->

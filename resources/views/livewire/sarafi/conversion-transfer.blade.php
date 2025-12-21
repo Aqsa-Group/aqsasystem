@@ -205,10 +205,14 @@
             {{-- کارت خلاصه بیلانس به دالر --}}
             @if($withdrawalCustomerId)
             <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
-                <div
-                    class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
+                <div class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px]
+        dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900
+        bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
+
                     @php
-                    // تابع تبدیل کد ارز به نام فارسی
+                    /* =========================
+                    تبدیل کد ارز به نام فارسی
+                    ========================== */
                     function getPersianCurrencyNameProfit($currencyCode) {
                     $currencyMap = [
                     'afn' => 'افغانی',
@@ -231,83 +235,102 @@
 
                     $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
                     $sourceCurrency = getPersianCurrencyNameProfit($latestProfitRate->source_currency ?? 'usd');
+
+                    $totalCashUsd = 0;
+                    $totalBankUsd = 0;
+
+                    /* =========================
+                    نرخ‌های خرید نقدی
+                    ========================== */
+                    $exchangeRatesCash = [
+                    'افغانی' => $latestProfitRate->afn_buy_cash ?? 66.20,
+                    'دالر' => 1,
+                    'تومان' => $latestProfitRate->irr_buy_cash ?? 110000,
+                    'یورو' => $latestProfitRate->eur_buy_cash ?? 70,
+                    'کلدار' => $latestProfitRate->pkr_buy_cash ?? 32,
+                    'درهم' => $latestProfitRate->aed_buy_cash ?? 44,
+                    'لیره' => $latestProfitRate->try_buy_cash ?? 60,
+                    'یوان' => $latestProfitRate->cny_buy_cash ?? 43,
+                    'روپیه' => $latestProfitRate->inr_buy_cash ?? 7.14,
+                    ];
+
+                    /* =========================
+                    نرخ‌های خرید بانکی
+                    ========================== */
+                    $exchangeRatesBank = [
+                    'افغانی' => $latestProfitRate->afn_buy_bank ?? 66.20,
+                    'دالر' => 1,
+                    'تومان' => $latestProfitRate->irr_buy_bank ?? 110000,
+                    'یورو' => $latestProfitRate->eur_buy_bank ?? 70,
+                    'کلدار' => $latestProfitRate->pkr_buy_bank ?? 32,
+                    'درهم' => $latestProfitRate->aed_buy_bank ?? 44,
+                    'لیره' => $latestProfitRate->try_buy_bank ?? 60,
+                    'یوان' => $latestProfitRate->cny_buy_bank ?? 43,
+                    'روپیه' => $latestProfitRate->inr_buy_bank ?? 7.14,
+                    ];
+
+                    /* =========================
+                    محاسبه موجودی نقدی
+                    ========================== */
+                    foreach ($customerCashBalances as $currency => $balance) {
+                    if ($currency === 'دالر') {
+                    $totalCashUsd += $balance; // دالر مستقیم
+                    } elseif (isset($exchangeRatesCash[$currency]) && $exchangeRatesCash[$currency] > 0) {
+                    $totalCashUsd += $balance / $exchangeRatesCash[$currency];
+                    }
+                    }
+
+                    /* =========================
+                    محاسبه موجودی بانکی
+                    ========================== */
+                    foreach ($customerBankBalances as $currency => $balance) {
+                    if ($currency === 'دالر') {
+                    $totalBankUsd += $balance; // دالر مستقیم
+                    } elseif (isset($exchangeRatesBank[$currency]) && $exchangeRatesBank[$currency] > 0) {
+                    $totalBankUsd += $balance / $exchangeRatesBank[$currency];
+                    }
+                    }
+
+                    $grandTotalUsd = $totalCashUsd + $totalBankUsd;
                     @endphp
 
-                    <h1 class="text-[24px] text-white">خلاصه بیلانس به {{ $sourceCurrency }}</h1>
+                    <h1 class="text-[24px] text-white">
+                        خلاصه بیلانس به {{ $sourceCurrency }}
+                    </h1>
 
                     <div class="flex flex-col gap-1 mt-1 text-center">
-                        @php
-                        $totalCashUsd = 0;
-                        $totalBankUsd = 0;
-                        $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
-
-                        // تعریف نرخ‌های خرید نقدی (برای موجودی نقدی)
-                        $exchangeRatesCash = [
-                        'افغانی' => $latestProfitRate->afn_buy_cash ?? 66.20,
-                        'دالر' => $latestProfitRate->usd_buy_cash ?? 1,
-                        'تومان' => $latestProfitRate->irr_buy_cash ?? 110000.00,
-                        'یورو' => $latestProfitRate->eur_buy_cash ?? 70.00,
-                        'کلدار' => $latestProfitRate->pkr_buy_cash ?? 32.00,
-                        'درهم' => $latestProfitRate->aed_buy_cash ?? 44.00,
-                        'لیره' => $latestProfitRate->try_buy_cash ?? 60.00,
-                        'یوان' => $latestProfitRate->cny_buy_cash ?? 43.00,
-                        'روپیه' => $latestProfitRate->inr_buy_cash ?? 7.14,
-                        ];
-
-                        // تعریف نرخ‌های خرید بانکی (برای موجودی بانکی)
-                        $exchangeRatesBank = [
-                        'افغانی' => $latestProfitRate->afn_buy_bank ?? 66.20,
-                        'دالر' => $latestProfitRate->usd_buy_bank ?? 1,
-                        'تومان' => $latestProfitRate->irr_buy_bank ?? 110000.00,
-                        'یورو' => $latestProfitRate->eur_buy_bank ?? 70.00,
-                        'کلدار' => $latestProfitRate->pkr_buy_bank ?? 32.00,
-                        'درهم' => $latestProfitRate->aed_buy_bank ?? 44.00,
-                        'لیره' => $latestProfitRate->try_buy_bank ?? 60.00,
-                        'یوان' => $latestProfitRate->cny_buy_bank ?? 43.00,
-                        'روپیه' => $latestProfitRate->inr_buy_bank ?? 7.14,
-                        ];
-
-                        // محاسبه موجودی نقدی به دالر با نرخ خرید نقدی
-                        foreach($customerCashBalances as $currency => $balance) {
-                        if(isset($exchangeRatesCash[$currency]) && $exchangeRatesCash[$currency] > 0) {
-                        $totalCashUsd += $balance / $exchangeRatesCash[$currency];
-                        }
-                        }
-
-                        // محاسبه موجودی بانکی به دالر با نرخ خرید بانکی
-                        foreach($customerBankBalances as $currency => $balance) {
-                        if(isset($exchangeRatesBank[$currency]) && $exchangeRatesBank[$currency] > 0) {
-                        $totalBankUsd += $balance / $exchangeRatesBank[$currency];
-                        }
-                        }
-                        $grandTotalUsd = $totalCashUsd + $totalBankUsd;
-                        @endphp
-
                         <div class="flex justify-between items-center text-[14px]">
                             <span>نقدی:</span>
-                            <span class="font-bold text-left" dir="ltr">{{ number_format($totalCashUsd, 2) }}</span>
+                            <span class="font-bold text-left" dir="ltr">
+                                {{ number_format($totalCashUsd, 2) }}
+                            </span>
                         </div>
+
                         <div class="flex justify-between items-center text-[14px]">
                             <span>بانکی:</span>
-                            <span class="font-bold text-left" dir="ltr">{{ number_format($totalBankUsd, 2) }}</span>
+                            <span class="font-bold text-left" dir="ltr">
+                                {{ number_format($totalBankUsd, 2) }}
+                            </span>
                         </div>
+
                         <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
                             <span class="font-semibold">مجموعه:</span>
-                            <span class="font-bold text-[16px] text-left" dir="ltr">{{ number_format($grandTotalUsd, 2)
-                                }}</span>
+                            <span class="font-bold text-[16px] text-left" dir="ltr">
+                                {{ number_format($grandTotalUsd, 2) }}
+                            </span>
                         </div>
                     </div>
 
-                    <button wire:click="showReport" wire:loading.attr="disabled"
-                        class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
+                    <button wire:click="showReport" wire:loading.attr="disabled" class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800
+                   hover:shadow-md transition flex items-center justify-center gap-2">
                         <span wire:loading.remove>نمایش گزارش</span>
-                        <span wire:loading>
-                            در حال انتقال...
-                        </span>
+                        <span wire:loading>در حال انتقال...</span>
                     </button>
+
                 </div>
             </div>
             @endif
+
         </div>
 
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
@@ -338,7 +361,8 @@
                         {{-- حساب برداشت --}}
                         <div class="flex-1">
                             <div class="relative w-full">
-                                <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">حساب برداشت</label>
+                                <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">حساب
+                                    برداشت</label>
                                 <div x-data="{
             searchValue: '',
             selectedId: @entangle('withdrawalAccount'),
@@ -398,10 +422,15 @@
                                     @if(empty($withdrawalAccount))
 
                                     <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                        <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓" class="dark:hidden">
-                                        <svg width="24" class="hidden dark:block" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+                                        <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓"
+                                            class="dark:hidden">
+                                        <svg width="24" class="hidden dark:block" height="24" viewBox="0 0 24 24"
+                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                                stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
 
                                     </div>
                                     @endif
@@ -416,7 +445,8 @@
                         {{-- حساب دریافت --}}
                         <div class="flex-1">
                             <div class="relative w-full">
-                                <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">حساب دریافت</label>
+                                <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">حساب
+                                    دریافت</label>
                                 <div x-data="{
             searchValue: '',
             selectedId: @entangle('depositAccount'),
@@ -477,10 +507,15 @@
 
 
                                     <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                        <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓" class="dark:hidden">
-                                  <svg width="24" class="hidden dark:block" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+                                        <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓"
+                                            class="dark:hidden">
+                                        <svg width="24" class="hidden dark:block" height="24" viewBox="0 0 24 24"
+                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                                stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
 
                                     </div>
                                     @endif
@@ -494,7 +529,8 @@
 
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
                         <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">از حساب</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">از
+                                حساب</label>
                             <select wire:model="from_account"
                                 class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="نقدی">نقدی</option>
@@ -506,7 +542,8 @@
                         </div>
 
                         <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">به حساب</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">به
+                                حساب</label>
                             <select wire:model="to_account"
                                 class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="نقدی">نقدی</option>
@@ -526,7 +563,8 @@
                         <div class="mt-2 flex flex-col lg:flex-row gap-3">
                             {{-- نوع ارز برداشت --}}
                             <div class="lg:w-[191px]">
-                                <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">ارز برداشت</label>
+                                <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">ارز
+                                    برداشت</label>
                                 <div class="relative w-full">
                                     <select wire:model="from_currency"
                                         class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500  appearance-none">
@@ -538,9 +576,13 @@
                                     <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                         <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓"
                                             class="w-4 h-4 dark:hidden">
-                                            <svg width="24" class="dark:block hidden" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+                                        <svg width="24" class="dark:block hidden" height="24" viewBox="0 0 24 24"
+                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                                stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
 
                                     </div>
                                 </div>
@@ -551,7 +593,8 @@
 
                             {{-- مقدار برداشت --}}
                             <div class="flex-1">
-                                <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ برداشت</label>
+                                <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ
+                                    برداشت</label>
                                 <div class="relative w-full">
                                     <input type="text" wire:model.live="withdrawal_amount" placeholder="0"
                                         class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 "
@@ -574,7 +617,8 @@
                         <div class="mt-2 flex flex-col lg:flex-row gap-3">
                             {{-- نوع ارز دریافت --}}
                             <div class="lg:w-[191px]">
-                                <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">ارز دریافت</label>
+                                <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">ارز
+                                    دریافت</label>
                                 <div class="relative w-full">
                                     <select wire:model="to_currency"
                                         class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500  appearance-none">
@@ -586,9 +630,13 @@
                                     <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                         <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓"
                                             class="w-4 h-4 dark:hidden">
-                                                             <svg width="24" class="dark:block hidden" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+                                        <svg width="24" class="dark:block hidden" height="24" viewBox="0 0 24 24"
+                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                                stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
 
                                     </div>
                                 </div>
@@ -632,7 +680,8 @@
 
                         {{-- مقدار دریافت --}}
                         <div class="flex-1">
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ دریافت</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ
+                                دریافت</label>
                             <div class="relative w-full">
                                 <input type="text" wire:model="received_amount" placeholder="0"
                                     class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500  bg-gray-100"
@@ -650,11 +699,12 @@
                         </div>
                         {{-- تاریخ --}}
                         <div class="flex- relative">
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
+                            <label
+                                class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
                             <div class="relative w-full">
                                 <input type="text" wire:model="transaction_date" placeholder="1404/4/20"
                                     class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 " />
-                           
+
                                 @error('transaction_date')
                                 <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                                 @enderror
@@ -667,7 +717,8 @@
                     <div class="mt-2 flex flex-col lg:flex-row gap-3">
                         {{-- توسط --}}
                         <div class="flex-1">
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">توسط (برداشت)</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">توسط
+                                (برداشت)</label>
                             <div class="relative w-full">
                                 <input type="text" wire:model="by_sender" placeholder="نام مسئول برداشت"
                                     class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 " />
@@ -679,7 +730,8 @@
 
                         {{-- توسط دریافت --}}
                         <div class="flex-1">
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">توسط (دریافت)</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">توسط
+                                (دریافت)</label>
                             <div class="relative w-full">
                                 <input type="text" wire:model="by_receiver" placeholder="نام مسئول دریافت"
                                     class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 " />
@@ -694,7 +746,8 @@
                     {{-- زون برداشت و دریافت --}}
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
                         <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">زون برداشت</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">زون
+                                برداشت</label>
                             <select wire:model="zone_sender"
                                 class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="">انتخاب زون</option>
@@ -708,7 +761,8 @@
                         </div>
 
                         <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">زون دریافت</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">زون
+                                دریافت</label>
                             <select wire:model="zone_receiver"
                                 class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="">انتخاب زون</option>
@@ -726,7 +780,8 @@
                     {{-- شرح --}}
                     <div class="mt-3 flex gap-3">
                         <div class="w-full">
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">شرح تراکنش</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">شرح
+                                تراکنش</label>
                             <textarea wire:model="description" rows="3" placeholder="شرح کامل تبدیل ارز..."
                                 class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500  resize-none"></textarea>
                             @error('description')
@@ -771,10 +826,15 @@
 
                             <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
                                 class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 dark:hidden">
-<svg width="24" height="24" viewBox="0 0 24 24"   class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 hidden dark:block" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+                            <svg width="24" height="24" viewBox="0 0 24 24"
+                                class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 hidden dark:block"
+                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
 
                             @if($search)
                             <button wire:click="$set('search', '')"
@@ -857,7 +917,7 @@
                                             <button wire:click="editConversion({{ $conversion->id }})"
                                                 class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-blue-100"
                                                 title="ویرایش">
-                                                   <img src="{{ asset('assets/sarafi/all_icon/edit_table.svg') }}"
+                                                <img src="{{ asset('assets/sarafi/all_icon/edit_table.svg') }}"
                                                     class="w-7 h-7 dark:hidden" alt="Edit">
 
                                                 <svg width="22" height="22" class="hidden dark:block"
@@ -882,7 +942,7 @@
                                             <button wire:click="confirmDelete({{ $conversion->id }})"
                                                 class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-red-100"
                                                 title="حذف">
-                                               <img src="{{ asset('assets/sarafi/all_icon/trash_table.svg') }}"
+                                                <img src="{{ asset('assets/sarafi/all_icon/trash_table.svg') }}"
                                                     class="w-8 h-8 dark:hidden" alt="Delete">
                                                 <svg width="24" height="24" class="hidden dark:block"
                                                     viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -909,7 +969,7 @@
                                             <button wire:click="printTransaction({{ $conversion->id }})"
                                                 class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-green-100"
                                                 title="پرینت PDF">
-                                                    <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"
+                                                <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"
                                                     class="w-10 h-10 dark:hidden" alt="Print">
                                                 <svg width="30" class="hidden dark:block" height="30"
                                                     viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">

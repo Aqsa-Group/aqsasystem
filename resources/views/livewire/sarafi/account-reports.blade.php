@@ -1,23 +1,23 @@
 @php
 // تابع تبدیل کد ارز به نام فارسی (برای استفاده در کل view)
 function getPersianCurrencyName($currencyCode) {
-    $currencyMap = [
-        'afn' => 'افغانی',
-        'usd' => 'دالر',
-        'irr' => 'تومان',
-        'eur' => 'یورو',
-        'pkr' => 'کلدار',
-        'aed' => 'درهم',
-        'try' => 'لیره',
-        'cny' => 'یوان',
-        'gbp' => 'پوند',
-        'jpy' => 'ین',
-        'sar' => 'ریال سعودی',
-        'inr' => 'روپیه',
-    ];
-    
-    $currencyCode = strtolower($currencyCode ?? 'usd');
-    return $currencyMap[$currencyCode] ?? $currencyCode;
+$currencyMap = [
+'afn' => 'افغانی',
+'usd' => 'دالر',
+'irr' => 'تومان',
+'eur' => 'یورو',
+'pkr' => 'کلدار',
+'aed' => 'درهم',
+'try' => 'لیره',
+'cny' => 'یوان',
+'gbp' => 'پوند',
+'jpy' => 'ین',
+'sar' => 'ریال سعودی',
+'inr' => 'روپیه',
+];
+
+$currencyCode = strtolower($currencyCode ?? 'usd');
+return $currencyMap[$currencyCode] ?? $currencyCode;
 }
 @endphp
 
@@ -38,13 +38,13 @@ function getPersianCurrencyName($currencyCode) {
         <!-- Page Header -->
         <div class="space-y-4 mb-6">
             <h1 class="text-[24px] font-medium vazir">گزارش بیلانس مشتریان براساس نوعیت</h1>
-            <h1 class="text-[#8C8C8C]">لیست بیلانس تمام مشتریانی که نوعیت حسابشان انتخاب شده</h1>
+            <h1 class="text-[#8C8C8C] dark:text-white">لیست بیلانس تمام مشتریانی که نوعیت حسابشان انتخاب شده</h1>
         </div>
 
         <hr class="my-6 border-t border-[#D9D9D9] w-full">
 
         <div class="w-full">
-            <div class="bg-[#F5F5F5] p-6 rounded-[12px] mx-auto"
+            <div class="bg-[#F5F5F5] dark:bg-black dark:border dark:border-white p-6 rounded-[12px] mx-auto"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 <div
@@ -52,9 +52,19 @@ function getPersianCurrencyName($currencyCode) {
                     <h1 class="text-[16px] vazir">گزارش مشتریان بر اساس نوعیت / دسته</h1>
                     <div class="relative w-[350px]">
                         <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
-                            class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5">
+                            class="absolute  dark:hidden left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6">
+                        <svg width="24" height="24"
+                            class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 hidden dark:block"
+                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+                                stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+
                         <input type="text" wire:model.live="search" placeholder="جستجو ..."
-                            class="w-full border border-[#8C8C8C] bg-transparent rounded-2xl pl-10 pr-3 py-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm">
+                            class="w-full dark:bg-black dark:text-white dark:border dark:border-white dark:placeholder:text-white border border-[#8C8C8C] bg-transparent rounded-2xl pl-10 pr-3 py-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm">
                     </div>
                 </div>
 
@@ -103,24 +113,34 @@ function getPersianCurrencyName($currencyCode) {
                     <!-- سلکت ۱ - انتخاب مشتری -->
                     <div class="relative">
                         <select wire:model.live="selectedCustomer"
-                            class="appearance-none w-full border border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
+                            class="appearance-none w-full dark:bg-black dark:border-white dark:text-white border border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
                             <option value="">همه مشتریان</option>
                             @foreach($customers as $customer)
                             <option value="{{ $customer['id'] }}">{{ $customer['fullname'] }}</option>
                             @endforeach
                         </select>
-                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" width="20" height="20"
-                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none dark:hidden" width="20"
+                            height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
                                 stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+
+
+                        <svg width="24" height="24"
+                            class=" absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none hidden dark:block"
+                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                stroke-linejoin="round" />
                         </svg>
                     </div>
 
                     <!-- سلکت ۲ - نوع ارز -->
                     <div class="relative">
                         <select wire:model.live="selectedCurrency"
-                            class="appearance-none w-full border border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
+                            class="appearance-none w-full border dark:text-white dark:bg-black dark:border-white border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
                             <option value="">همه ارزها</option>
                             <option value="usd">دالر</option>
                             <option value="afn">افغانی</option>
@@ -131,34 +151,55 @@ function getPersianCurrencyName($currencyCode) {
                             <option value="try">لیره</option>
                             <option value="cny">یوان</option>
                         </select>
-                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" width="20" height="20"
-                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none dark:hidden" width="20"
+                            height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
                                 stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+
+
+                        <svg width="24" height="24"
+                            class=" absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none hidden dark:block"
+                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                stroke-linejoin="round" />
                         </svg>
                     </div>
 
                     <!-- سلکت ۳ - نوع حساب (بانکی/نقدی) -->
                     <div class="relative">
                         <select wire:model.live="accountType"
-                            class="appearance-none w-full border border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
+                            class="appearance-none w-full border dark:bg-black dark:border-white dark:text-white border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
                             <option value="">همه حساب‌ها</option>
                             <option value="بانکی">بانکی</option>
                             <option value="نقدی">نقدی</option>
                         </select>
-                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" width="20" height="20"
-                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none dark:hidden" width="20"
+                            height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
                                 stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+
+
+                        <svg width="24" height="24"
+                            class=" absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none hidden dark:block"
+                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                stroke-linejoin="round" />
                         </svg>
                     </div>
 
                     <!-- فیلد تاریخ -->
                     <div class="relative flex items-center justify-center text-center">
-                        <input type="text" wire:model.live.debounce.300ms="date" wire:change="generateReport" placeholder="1403/01/01"
-                            class="appearance-none w-full border border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800 text-center">
+                        <input type="text" wire:model.live.debounce.300ms="date" wire:change="generateReport"
+                            placeholder="1403/01/01"
+                            class="appearance-none w-full border dark:bg-black dark:border-white  border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800 text-center">
                         <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" width="20" height="20"
                             viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -195,18 +236,20 @@ function getPersianCurrencyName($currencyCode) {
                                     @php
                                     // دریافت نام ارز مبدا به فارسی
                                     $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
-                                    $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
+                                    $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ??
+                                    'usd');
                                     @endphp
                                     <th class="px-4 py-4 font-bold">بیلانس به {{ $sourceCurrency }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse($reports as $index => $report)
-                                <tr class=" border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
+                                <tr class=" border-b  dark:bg-black dark:text-white dark:border-white hover:bg-gray-50">
                                     <td class="px-4 py-4">
-                                        <span class="border border-gray-300 px-2 py-1 rounded-lg">{{ $index + 1 }}</span>
+                                        <span class="border border-gray-300 px-2 py-1 rounded-lg">{{ $index + 1
+                                            }}</span>
                                     </td>
-                                    <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                    <td class="px-4 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                         {{ $report['account_number'] }}
                                     </td>
                                     <td class="px-4 py-4">{{ $report['fullname'] }}</td>
@@ -214,17 +257,26 @@ function getPersianCurrencyName($currencyCode) {
                                         {{ $report['related_customer_name'] ?? '-' }}
                                     </td>
                                     <td class="px-4 py-4">
-                                        {{ $report['last_date'] ? \Carbon\Carbon::parse($report['last_date'])->format('Y/m/d') : '-' }}
+                                        {{ $report['last_date'] ?
+                                        \Carbon\Carbon::parse($report['last_date'])->format('Y/m/d') : '-' }}
                                     </td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['usd'] ?? 0, 2) }}</td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['afn'] ?? 0, 2) }}</td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['irr'] ?? 0, 2) }}</td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['pkr'] ?? 0, 2) }}</td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['eur'] ?? 0, 2) }}</td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['aed'] ?? 0, 2) }}</td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['try'] ?? 0, 2) }}</td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['cny'] ?? 0, 2) }}</td>
-                                    <td class="px-4 py-4 font-medium text-left">
+                                    <td class="px-4 py-4 text-left" dir="ltr">{{
+                                        number_format($report['balances']['usd'] ?? 0, 2) }}</td>
+                                    <td class="px-4 py-4 text-left" dir="ltr">{{
+                                        number_format($report['balances']['afn'] ?? 0, 2) }}</td>
+                                    <td class="px-4 py-4 text-left" dir="ltr">{{
+                                        number_format($report['balances']['irr'] ?? 0, 2) }}</td>
+                                    <td class="px-4 py-4 text-left" dir="ltr">{{
+                                        number_format($report['balances']['pkr'] ?? 0, 2) }}</td>
+                                    <td class="px-4 py-4 text-left" dir="ltr">{{
+                                        number_format($report['balances']['eur'] ?? 0, 2) }}</td>
+                                    <td class="px-4 py-4 text-left" dir="ltr">{{
+                                        number_format($report['balances']['aed'] ?? 0, 2) }}</td>
+                                    <td class="px-4 py-4 text-left" dir="ltr">{{
+                                        number_format($report['balances']['try'] ?? 0, 2) }}</td>
+                                    <td class="px-4 py-4 text-left" dir="ltr">{{
+                                        number_format($report['balances']['cny'] ?? 0, 2) }}</td>
+                                    <td class="px-4 py-4 font-medium text-left" dir="ltr">
                                         {{ number_format($report['total_balance'], 2) }}
                                     </td>
                                 </tr>
@@ -266,7 +318,8 @@ function getPersianCurrencyName($currencyCode) {
                                 <div class="border-2 border-dashed border-gray-300 p-4">
                                     <div class="text-center mb-4">
                                         <h2 class="text-xl font-bold vazir" x-text="printData?.title"></h2>
-                                        <p class="text-gray-600" x-text="'تاریخ چاپ: ' + (printData?.print_date || '')"></p>
+                                        <p class="text-gray-600" x-text="'تاریخ چاپ: ' + (printData?.print_date || '')">
+                                        </p>
                                     </div>
 
                                     <div class="mb-4" x-show="printData?.filters">
@@ -293,21 +346,31 @@ function getPersianCurrencyName($currencyCode) {
                                                 @php
                                                 // دریافت نام ارز مبدا به فارسی برای چاپ
                                                 $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
-                                                $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
+                                                $sourceCurrency =
+                                                getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
                                                 @endphp
-                                                <th class="border border-gray-300 p-2">بیلانس به {{ $sourceCurrency }}</th>
+                                                <th class="border border-gray-300 p-2">بیلانس به {{ $sourceCurrency }}
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <template x-for="(report, index) in printData?.reports || []" :key="report.id">
+                                            <template x-for="(report, index) in printData?.reports || []"
+                                                :key="report.id">
                                                 <tr>
-                                                    <td class="border border-gray-300 p-2 text-center" x-text="index + 1"></td>
-                                                    <td class="border border-gray-300 p-2" x-text="report.account_number"></td>
-                                                    <td class="border border-gray-300 p-2" x-text="report.fullname"></td>
-                                                    <td class="border border-gray-300 p-2" x-text="report.related_customer_name || '-'"></td>
-                                                    <td class="border border-gray-300 p-2 text-left" x-text="(report.balances?.usd || 0).toFixed(2)"></td>
-                                                    <td class="border border-gray-300 p-2 text-left" x-text="(report.balances?.afn || 0).toFixed(2)"></td>
-                                                    <td class="border border-gray-300 p-2 text-left font-bold" x-text="report.total_balance.toFixed(2)"></td>
+                                                    <td class="border border-gray-300 p-2 text-center"
+                                                        x-text="index + 1"></td>
+                                                    <td class="border border-gray-300 p-2"
+                                                        x-text="report.account_number"></td>
+                                                    <td class="border border-gray-300 p-2" x-text="report.fullname">
+                                                    </td>
+                                                    <td class="border border-gray-300 p-2"
+                                                        x-text="report.related_customer_name || '-'"></td>
+                                                    <td class="border border-gray-300 p-2 text-left"
+                                                        x-text="(report.balances?.usd || 0).toFixed(2)"></td>
+                                                    <td class="border border-gray-300 p-2 text-left"
+                                                        x-text="(report.balances?.afn || 0).toFixed(2)"></td>
+                                                    <td class="border border-gray-300 p-2 text-left font-bold"
+                                                        x-text="report.total_balance.toFixed(2)"></td>
                                                 </tr>
                                             </template>
                                         </tbody>
@@ -315,7 +378,9 @@ function getPersianCurrencyName($currencyCode) {
 
                                     <div class="mt-4 text-sm">
                                         <p x-text="'تعداد کل مشتریان: ' + (printData?.total_customers || 0)"></p>
-                                        <p x-text="'مجموع بیلانس: ' + (printData?.total_balance?.toFixed(2) || '0.00') + ' دالر'"></p>
+                                        <p
+                                            x-text="'مجموع بیلانس: ' + (printData?.total_balance?.toFixed(2) || '0.00') + ' دالر'">
+                                        </p>
                                     </div>
                                 </div>
                             </div>

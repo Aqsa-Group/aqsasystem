@@ -39,23 +39,33 @@ function getPersianCurrencyName($currencyCode) {
         <!-- Page Header -->
         <div class="space-y-4 mb-6">
             <h1 class="text-[24px] font-medium vazir">گزارش بیلانس مشتریان براساس نوعیت</h1>
-            <h1 class="text-[#8C8C8C]">لیست بیلانس تمام مشتریانی که نوعیت حسابشان انتخاب شده</h1>
+            <h1 class="text-[#8C8C8C] dark:text-white">لیست بیلانس تمام مشتریانی که نوعیت حسابشان انتخاب شده</h1>
         </div>
 
         <hr class="my-6 border-t border-[#D9D9D9] w-full">
 
         <div class="w-full">
-            <div class="bg-[#F5F5F5] p-6 rounded-[12px] mx-auto"
+            <div class="bg-[#F5F5F5] dark:bg-black dark:border dark:border-white p-6 rounded-[12px] mx-auto"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 <div
                     class="flex flex-col md:flex-row justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                     <h1 class="text-[16px] vazir">گزارش مشتریان بر اساس نوعیت / دسته</h1>
                     <div class="relative w-[350px]">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
-                            class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5">
+                           <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
+                                class="absolute  dark:hidden left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6">
+                            <svg width="24" height="24"
+                                class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 hidden dark:block"
+                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+
                         <input type="text" wire:model.live="search" placeholder="جستجو ..."
-                            class="w-full border border-[#8C8C8C] bg-transparent rounded-2xl pl-10 pr-3 py-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm">
+                            class="w-full dark:bg-black dark:text-white dark:border dark:border-white dark:placeholder:text-white border border-[#8C8C8C] bg-transparent rounded-2xl pl-10 pr-3 py-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm">
                     </div>
                 </div>
 
@@ -104,24 +114,33 @@ function getPersianCurrencyName($currencyCode) {
                     <!-- سلکت ۱ - انتخاب مشتری -->
                     <div class="relative">
                         <select wire:model.live="selectedCustomer"
-                            class="appearance-none w-full border border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
+                            class="appearance-none w-full dark:bg-black dark:border-white dark:text-white border border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
                             <option value="">همه مشتریان</option>
                             <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <option value="<?php echo e($customer['id']); ?>"><?php echo e($customer['fullname']); ?></option>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                         </select>
-                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" width="20" height="20"
+                           <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none dark:hidden" width="20" height="20"
                             viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
                                 stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
+
+
+                           <svg width="24" height="24" class=" absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none hidden dark:block" viewBox="0 0 24 24"
+                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                                stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
                     </div>
 
                     <!-- سلکت ۲ - نوع ارز -->
                     <div class="relative">
                         <select wire:model.live="selectedCurrency"
-                            class="appearance-none w-full border border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
+                            class="appearance-none w-full border dark:text-white dark:bg-black dark:border-white border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
                             <option value="">همه ارزها</option>
                             <option value="usd">دالر</option>
                             <option value="afn">افغانی</option>
@@ -132,34 +151,52 @@ function getPersianCurrencyName($currencyCode) {
                             <option value="try">لیره</option>
                             <option value="cny">یوان</option>
                         </select>
-                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" width="20" height="20"
+                           <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none dark:hidden" width="20" height="20"
                             viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
                                 stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
+
+
+                           <svg width="24" height="24" class=" absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none hidden dark:block" viewBox="0 0 24 24"
+                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                                stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
                     </div>
 
                     <!-- سلکت ۳ - نوع حساب (بانکی/نقدی) -->
                     <div class="relative">
                         <select wire:model.live="accountType"
-                            class="appearance-none w-full border border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
+                            class="appearance-none w-full border dark:bg-black dark:border-white dark:text-white border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
                             <option value="">همه حساب‌ها</option>
                             <option value="بانکی">بانکی</option>
                             <option value="نقدی">نقدی</option>
                         </select>
-                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" width="20" height="20"
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none dark:hidden" width="20" height="20"
                             viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
                                 stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
+
+
+                           <svg width="24" height="24" class=" absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none hidden dark:block" viewBox="0 0 24 24"
+                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                                stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
                     </div>
 
                     <!-- فیلد تاریخ -->
                     <div class="relative flex items-center justify-center text-center">
                         <input type="text" wire:model.live.debounce.300ms="date" wire:change="generateReport" placeholder="1403/01/01"
-                            class="appearance-none w-full border border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800 text-center">
+                            class="appearance-none w-full border dark:bg-black dark:border-white  border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800 text-center">
                         <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" width="20" height="20"
                             viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -203,11 +240,11 @@ function getPersianCurrencyName($currencyCode) {
                             </thead>
                             <tbody>
                                 <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $reports; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                                <tr class=" border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
+                                <tr class=" border-b  dark:bg-black dark:text-white dark:border-white hover:bg-gray-50">
                                     <td class="px-4 py-4">
                                         <span class="border border-gray-300 px-2 py-1 rounded-lg"><?php echo e($index + 1); ?></span>
                                     </td>
-                                    <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                    <td class="px-4 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                         <?php echo e($report['account_number']); ?>
 
                                     </td>
@@ -228,7 +265,7 @@ function getPersianCurrencyName($currencyCode) {
                                     <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['aed'] ?? 0, 2)); ?></td>
                                     <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['try'] ?? 0, 2)); ?></td>
                                     <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['cny'] ?? 0, 2)); ?></td>
-                                    <td class="px-4 py-4 font-medium text-left">
+                                    <td class="px-4 py-4 font-medium text-left" dir="ltr">
                                         <?php echo e(number_format($report['total_balance'], 2)); ?>
 
                                     </td>

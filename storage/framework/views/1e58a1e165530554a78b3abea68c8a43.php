@@ -1,29 +1,29 @@
-@php
+<?php
 // تابع تبدیل کد ارز به نام فارسی
 function getPersianCurrencyName($currencyCode) {
-$currencyMap = [
-'afn' => 'افغانی',
-'usd' => 'دالر',
-'irr' => 'تومان',
-'eur' => 'یورو',
-'pkr' => 'کلدار',
-'aed' => 'درهم',
-'try' => 'لیره',
-'cny' => 'یوان',
-'gbp' => 'پوند',
-'jpy' => 'ین',
-'sar' => 'ریال سعودی',
-'inr' => 'روپیه',
-];
-
-$currencyCode = strtolower($currencyCode ?? 'usd');
-return $currencyMap[$currencyCode] ?? $currencyCode;
+    $currencyMap = [
+        'afn' => 'افغانی',
+        'usd' => 'دالر',
+        'irr' => 'تومان',
+        'eur' => 'یورو',
+        'pkr' => 'کلدار',
+        'aed' => 'درهم',
+        'try' => 'لیره',
+        'cny' => 'یوان',
+        'gbp' => 'پوند',
+        'jpy' => 'ین',
+        'sar' => 'ریال سعودی',
+        'inr' => 'روپیه',
+    ];
+    
+    $currencyCode = strtolower($currencyCode ?? 'usd');
+    return $currencyMap[$currencyCode] ?? $currencyCode;
 }
 
 // دریافت نام ارز مبدا به فارسی
 $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
 $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
-@endphp
+?>
 
 <div class="px-5">
     <div class="w-[1200px]">
@@ -50,27 +50,27 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
     <div class="flex-1 flex flex-col dark:bg-black dark:border-white dark:border dark:text-white  bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px] w-full mb-5"
         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
-        @if($selectedCategory)
+        <!--[if BLOCK]><![endif]--><?php if($selectedCategory): ?>
         <div class="mb-5 relative w-full">
             <select wire:model.live="selectedSubCategory"
                 class="border bg-transparent dark:bg-black dark:text-white border-[#8C8C8C] rounded-[12px] px-4 py-2 pt-[13px] pr-[9px] pl-[9px] pb-[13px] w-full appearance-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 <option value="">انتخاب زیرشاخه</option>
-                @foreach($subCategories[$selectedCategory] as $sub)
-                <option value="{{ $sub }}">{{ $sub }}</option>
-                @endforeach
+                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $subCategories[$selectedCategory]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sub): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <option value="<?php echo e($sub); ?>"><?php echo e($sub); ?></option>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
             </select>
 
             <!-- آیکون سفارشی -->
             <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓" class="w-4 h-4">
+                <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓" class="w-4 h-4">
             </div>
         </div>
-        @endif
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
         <!-- نمایش محتوای زیرشاخه -->
-        @if($selectedSubCategory)
-        @switch($selectedSubCategory)
-        @case('گزارش بیلانس مشتریان')
+        <!--[if BLOCK]><![endif]--><?php if($selectedSubCategory): ?>
+        <!--[if BLOCK]><![endif]--><?php switch($selectedSubCategory):
+        case ('گزارش بیلانس مشتریان'): ?>
         <div class="overflow-x-auto w-full mt-4 mb-8">
             <div class="flex flex-col max-h-[600px] overflow-y-auto">
                 <table class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500">
@@ -90,66 +90,55 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                             <th class="px-4 py-4 font-bold">درهم</th>
                             <th class="px-4 py-4 font-bold">لیره</th>
                             <th class="px-4 py-4 font-bold">یوان</th>
-                            <th class="px-4 py-4 font-bold">بیلانس به {{ $sourceCurrency }}</th>
+                            <th class="px-4 py-4 font-bold">بیلانس به <?php echo e($sourceCurrency); ?></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($reports as $index => $report)
+                        <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $reports; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                         <tr class="border-b dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
                             <td class="px-4 py-4">
-                                <span
-                                    class="px-2 py-1 rounded-lg bg-gray-100 dark:bg-black dark:text-white dark:border-white dark:border">{{
-                                    $index + 1 }}</span>
+                                <span class="px-2 py-1 rounded-lg bg-gray-100 dark:bg-black dark:text-white dark:border-white dark:border"><?php echo e($index + 1); ?></span>
                             </td>
                             <td class="px-4 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                {{ $report['account_number'] }}
+                                <?php echo e($report['account_number']); ?>
+
                             </td>
-                            <td class="px-4 py-4">{{ $report['fullname'] }}</td>
+                            <td class="px-4 py-4"><?php echo e($report['fullname']); ?></td>
                             <td class="px-3 py-4">
-                                {{ $report['last_date'] ? \Carbon\Carbon::parse($report['last_date'])->format('Y/m/d') :
-                                '-' }}
+                                <?php echo e($report['last_date'] ? \Carbon\Carbon::parse($report['last_date'])->format('Y/m/d') : '-'); ?>
+
                             </td>
-                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['usd'] ?? 0,
-                                2) }}</td>
-                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['afn'] ?? 0,
-                                2) }}</td>
-                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['irr'] ?? 0,
-                                2) }}</td>
-                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['pkr'] ?? 0,
-                                2) }}</td>
-                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['eur'] ?? 0,
-                                2) }}</td>
-                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['aed'] ?? 0,
-                                2) }}</td>
-                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['try'] ?? 0,
-                                2) }}</td>
-                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['cny'] ?? 0,
-                                2) }}</td>
-                            <td class="px-4 py-4 font-medium text-left">{{ number_format($report['total_balance'], 2) }}
-                            </td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['usd'] ?? 0, 2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['afn'] ?? 0, 2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['irr'] ?? 0, 2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['pkr'] ?? 0, 2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['eur'] ?? 0, 2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['aed'] ?? 0, 2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['try'] ?? 0, 2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['cny'] ?? 0, 2)); ?></td>
+                            <td class="px-4 py-4 font-medium text-left"><?php echo e(number_format($report['total_balance'], 2)); ?></td>
                         </tr>
-                        @empty
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                         <tr>
                             <td colspan="14" class="px-4 py-8 text-center text-gray-500">
                                 هیچ داده‌ای یافت نشد
                             </td>
                         </tr>
-                        @endforelse
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                     </tbody>
                 </table>
             </div>
         </div>
-        @break
+        <?php break; ?>
 
-        @case('گزارش خلاصه بیلانس مشتریان')
-        <div
-            class="w-full dark:bg-black dark:text-white dark:border dark:border-white rounded-[16px] bg-[#2563EB] p-4 mb-6">
+        <?php case ('گزارش خلاصه بیلانس مشتریان'): ?>
+        <div class="w-full dark:bg-black dark:text-white dark:border dark:border-white rounded-[16px] bg-[#2563EB] p-4 mb-6">
             <div class="flex-1">
                 <div class="relative w-full" x-data="{
                     searchValue: '',
                     searchQuery: '',
-                    selectedIds: @entangle('selectedAccounts'),
-                    customers: @js($customers->toArray()),
+                    selectedIds: <?php if ((object) ('selectedAccounts') instanceof \Livewire\WireDirective) : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccounts'->value()); ?>')<?php echo e('selectedAccounts'->hasModifier('live') ? '.live' : ''); ?><?php else : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccounts'); ?>')<?php endif; ?>,
+                    customers: <?php echo \Illuminate\Support\Js::from($customers->toArray())->toHtml() ?>,
                     isOpen: false,
                     selectedCustomers: [],
                     get filteredCustomers() {
@@ -266,9 +255,16 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                         </div>
                     </div>
 
-                    @error('selectedAccounts')
-                    <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                    @enderror
+                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['selectedAccounts'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
             </div>
         </div>
@@ -276,28 +272,30 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
         <h1 class="mt-5 mr-4 text-xl font-bold text-gray-800">گزارش خلاصه بیلانس مشتریان انتخاب شده</h1>
 
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 p-4 mb-8">
-            @foreach($totalBalances as $currencyCode => $data)
+            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $totalBalances; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div
                 class="flex flex-col bg-white justify-center items-center gap-3 rounded-xl py-6 px-4 shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
-                <p class="text-gray-500 text-sm font-medium">{{ $data['currency_name'] }}</p>
+                <p class="text-gray-500 text-sm font-medium"><?php echo e($data['currency_name']); ?></p>
                 <p class="text-2xl font-bold text-gray-800 times" dir="ltr">
-                    {{ number_format($data['total']) }}
+                    <?php echo e(number_format($data['total'])); ?>
+
                 </p>
                 <p class="text-gray-400 text-xs font-medium uppercase">
-                    @switch($currencyCode)
-                    @case('usd') USD @break
-                    @case('afn') AFN @break
-                    @case('irr') IRR @break
-                    @case('eur') EUR @break
-                    @case('pkr') PKR @break
-                    @case('aed') AED @break
-                    @case('try') TRY @break
-                    @case('cny') CNY @break
-                    @default {{ $currencyCode }}
-                    @endswitch
+                    <!--[if BLOCK]><![endif]--><?php switch($currencyCode):
+                    case ('usd'): ?> USD <?php break; ?>
+                    <?php case ('afn'): ?> AFN <?php break; ?>
+                    <?php case ('irr'): ?> IRR <?php break; ?>
+                    <?php case ('eur'): ?> EUR <?php break; ?>
+                    <?php case ('pkr'): ?> PKR <?php break; ?>
+                    <?php case ('aed'): ?> AED <?php break; ?>
+                    <?php case ('try'): ?> TRY <?php break; ?>
+                    <?php case ('cny'): ?> CNY <?php break; ?>
+                    <?php default: ?> <?php echo e($currencyCode); ?>
+
+                    <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
                 </p>
             </div>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
         </div>
 
         <!-- نمودار میله‌ای -->
@@ -317,18 +315,12 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                 <line x1="100" y1="280" x2="950" y2="280" stroke="#94a3b8" stroke-width="2" />
 
                 <!-- مقادیر عمودی سمت چپ (چپ‌چین شده) -->
-                <text dir="ltr" x="90" y="285" font-family="Arial" font-size="12" text-anchor="end"
-                    fill="#64748b">0</text>
-                <text dir="ltr" x="90" y="235" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
-                    number_format($maxValue * 0.2, 0) }}</text>
-                <text dir="ltr" x="90" y="185" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
-                    number_format($maxValue * 0.4, 0) }}</text>
-                <text dir="ltr" x="90" y="135" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
-                    number_format($maxValue * 0.6, 0) }}</text>
-                <text dir="ltr" x="90" y="85" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
-                    number_format($maxValue * 0.8, 0) }}</text>
-                <text dir="ltr" x="90" y="35" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
-                    number_format($maxValue, 0) }}</text>
+                <text dir="ltr" x="90" y="285" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">0</text>
+                <text dir="ltr" x="90" y="235" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b"><?php echo e(number_format($maxValue * 0.2, 0)); ?></text>
+                <text dir="ltr" x="90" y="185" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b"><?php echo e(number_format($maxValue * 0.4, 0)); ?></text>
+                <text dir="ltr" x="90" y="135" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b"><?php echo e(number_format($maxValue * 0.6, 0)); ?></text>
+                <text dir="ltr" x="90" y="85" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b"><?php echo e(number_format($maxValue * 0.8, 0)); ?></text>
+                <text dir="ltr" x="90" y="35" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b"><?php echo e(number_format($maxValue, 0)); ?></text>
 
                 <!-- خطوط راهنمای افقی -->
                 <line x1="100" y1="280" x2="950" y2="280" stroke="#e2e8f0" stroke-width="1" />
@@ -339,15 +331,15 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                 <line x1="100" y1="30" x2="950" y2="30" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
 
                 <!-- میله‌های نمودار -->
-                @php
+                <?php
                 $chartHeight = 250; // 280 - 30
                 $barWidth = 50;
                 $spacing = 30;
                 $startX = 140; // افزایش یافته تا از خط جداکننده فاصله بگیرد
-                @endphp
+                ?>
 
-                @foreach($chartData as $index => $item)
-                @php
+                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $chartData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php
                 $barHeight = $maxValue > 0 ? ($item['value'] / $maxValue) * $chartHeight : 0;
                 $x = $startX + ($index * ($barWidth + $spacing));
                 $y = 280 - $barHeight;
@@ -358,34 +350,36 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                 : ($item['value'] >= 1000
                 ? number_format($item['value'] / 1000, 1) . 'K'
                 : number_format($item['value'], 0));
-                @endphp
+                ?>
 
                 <!-- میله -->
-                <rect x="{{ $x }}" y="{{ $y }}" width="{{ $barWidth }}" height="{{ $barHeight }}"
+                <rect x="<?php echo e($x); ?>" y="<?php echo e($y); ?>" width="<?php echo e($barWidth); ?>" height="<?php echo e($barHeight); ?>"
                     fill="url(#barGradient)" rx="2" />
 
                 <!-- مقدار بالای میله -->
-                <text x="{{ $x + $barWidth / 2 }}" y="{{ $y - 10 }}" font-family="Arial" font-size="12"
+                <text x="<?php echo e($x + $barWidth / 2); ?>" y="<?php echo e($y - 10); ?>" font-family="Arial" font-size="12"
                     text-anchor="middle" fill="#374151">
-                    {{ $displayValue }}
+                    <?php echo e($displayValue); ?>
+
                 </text>
 
                 <!-- نام ارز زیر میله -->
-                <text x="{{ $x + $barWidth / 2 }}" y="300" font-family="Arial" font-size="16" text-anchor="middle"
+                <text x="<?php echo e($x + $barWidth / 2); ?>" y="300" font-family="Arial" font-size="16" text-anchor="middle"
                     fill="#374151">
-                    {{ $item['currency'] }}
+                    <?php echo e($item['currency']); ?>
+
                 </text>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
             </svg>
         </div>
-        @break
-        @case('طلب مشتری ها')
+        <?php break; ?>
+        <?php case ('طلب مشتری ها'): ?>
         <div class="overflow-x-auto w-full mt-4 mb-8">
             <div class="flex flex-col max-h-[600px] overflow-y-auto">
 
                 <table class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500">
 
-                    {{-- هدر جدول --}}
+                    
                     <thead class="bg-[#2B65E5] text-white text-[16px] vazir h-16 sticky top-0">
                         <tr>
                             <th class="px-4 py-4 font-bold w-16">
@@ -395,7 +389,7 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                             <th class="px-4 py-4 font-bold">نام حساب</th>
                             <th class="px-4 py-4 font-bold">آخرین تاریخ</th>
 
-                            {{-- ارزها --}}
+                            
                             <th class="px-4 py-4 font-bold">دالر</th>
                             <th class="px-4 py-4 font-bold">افغانی</th>
                             <th class="px-4 py-4 font-bold">تومان</th>
@@ -405,87 +399,82 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                             <th class="px-4 py-4 font-bold">لیره</th>
                             <th class="px-4 py-4 font-bold">یوان</th>
 
-                            {{-- تبدیل به ارز پایه --}}
-                            <th class="px-4 py-4 font-bold">بیلانس به {{ $sourceCurrency }}</th>
+                            
+                            <th class="px-4 py-4 font-bold">بیلانس به <?php echo e($sourceCurrency); ?></th>
                         </tr>
                     </thead>
 
-                    {{-- بدنه جدول --}}
+                    
                     <tbody>
-                        @forelse($demands as $index => $demand)
+                        <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $demands; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $demand): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                         <tr class="border-b hover:bg-gray-50 transition-colors">
 
-                            {{-- شماره --}}
+                            
                             <td class="px-4 py-4">
-                                <span class="px-2 py-1 rounded-lg bg-gray-100">{{ $index + 1 }}</span>
+                                <span class="px-2 py-1 rounded-lg bg-gray-100"><?php echo e($index + 1); ?></span>
                             </td>
 
-                            {{-- شماره حساب --}}
+                            
                             <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                {{ $demand['account_number'] }}
+                                <?php echo e($demand['account_number']); ?>
+
                             </td>
 
-                            {{-- نام مشتری --}}
+                            
                             <td class="px-4 py-4">
-                                {{ $demand['fullname'] }}
+                                <?php echo e($demand['fullname']); ?>
+
                             </td>
 
-                            {{-- آخرین تاریخ --}}
+                            
                             <td class="px-3 py-4">
-                                {{ $demand['last_date'] ? \Carbon\Carbon::parse($demand['last_date'])->format('Y/m/d') :
-                                '-' }}
+                                <?php echo e($demand['last_date'] ? \Carbon\Carbon::parse($demand['last_date'])->format('Y/m/d') : '-'); ?>
+
                             </td>
 
-                            {{-- ارزها: اگر نبود، صفر نمایش بده --}}
-                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($demand['balances']['usd'] ?? 0,
-                                2) }}</td>
-                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($demand['balances']['afn'] ?? 0,
-                                2) }}</td>
-                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($demand['balances']['irr'] ?? 0,
-                                2) }}</td>
-                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($demand['balances']['pkr'] ?? 0,
-                                2) }}</td>
-                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($demand['balances']['eur'] ?? 0,
-                                2) }}</td>
-                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($demand['balances']['aed'] ?? 0,
-                                2) }}</td>
-                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($demand['balances']['try'] ?? 0,
-                                2) }}</td>
-                            <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($demand['balances']['cny'] ?? 0,
-                                2) }}</td>
+                            
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['usd'] ?? 0, 2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['afn'] ?? 0, 2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['irr'] ?? 0, 2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['pkr'] ?? 0, 2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['eur'] ?? 0, 2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['aed'] ?? 0, 2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['try'] ?? 0, 2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['cny'] ?? 0, 2)); ?></td>
 
-                            {{-- بیلانس به ارز پایه --}}
+                            
                             <td class="px-4 py-4 font-medium text-left">
-                                {{ number_format($demand['total_balance'], 2) }}
+                                <?php echo e(number_format($demand['total_balance'], 2)); ?>
+
                             </td>
                         </tr>
 
-                        @empty
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                         <tr>
                             <td colspan="14" class="px-4 py-8 text-center text-gray-500">
                                 هیچ داده‌ای یافت نشد
                             </td>
                         </tr>
-                        @endforelse
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                     </tbody>
 
                 </table>
 
             </div>
         </div>
-        @break
+        <?php break; ?>
 
-        @default
+        <?php default: ?>
         <div class="border p-5 rounded bg-gray-50">
-            <h3 class="font-bold text-lg mb-3">{{ $selectedSubCategory }}</h3>
+            <h3 class="font-bold text-lg mb-3"><?php echo e($selectedSubCategory); ?></h3>
             <p>این گزارش در حال توسعه می‌باشد</p>
         </div>
-        @endswitch
-        @endif
+        <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
     </div>
 
     <!-- بخش گزارش بیلانس مشتریان (کارت‌ها و نمودار دایره‌ای) -->
-    @if($selectedSubCategory == 'گزارش بیلانس مشتریان')
+    <!--[if BLOCK]><![endif]--><?php if($selectedSubCategory == 'گزارش بیلانس مشتریان'): ?>
     <div class="flex-1 flex flex-col bg-[#F5F5F5] h-fit p-3 md:p-4 lg:p-6 rounded-[12px] w-full mb-5"
         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
         <div class="flex w-full flex-col lg:flex-row">
@@ -494,8 +483,8 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                     <div class="relative w-full lg:w-[589px]">
                         <div x-data="{
                                 searchValue: '',
-                                selectedId: @entangle('selectedAccount'),
-                                customers: @js($customers->toArray()),
+                                selectedId: <?php if ((object) ('selectedAccount') instanceof \Livewire\WireDirective) : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccount'->value()); ?>')<?php echo e('selectedAccount'->hasModifier('live') ? '.live' : ''); ?><?php else : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccount'); ?>')<?php endif; ?>,
+                                customers: <?php echo \Illuminate\Support\Js::from($customers->toArray())->toHtml() ?>,
                                 handleSelect(event) {
                                     const selected = this.customers.find(
                                         c => event.target.value === `${c.account_number} - ${c.fullname}`
@@ -523,23 +512,30 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                                 class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
                                 autocomplete="off">
                             <datalist id="customersList">
-                                @foreach ($customers as $customer)
-                                <option value="{{ $customer->account_number }} - {{ $customer->fullname }}">
-                                    @endforeach
+                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($customer->account_number); ?> - <?php echo e($customer->fullname); ?>">
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                             </datalist>
                             <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
                             </div>
                         </div>
-                        @error('selectedAccount')
-                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                        @enderror
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['selectedAccount'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
                 </div>
 
                 <!-- نمایش موجودی‌ها -->
-                @if($selectedCustomerId)
-                @php
+                <!--[if BLOCK]><![endif]--><?php if($selectedCustomerId): ?>
+                <?php
                 $hasNonZeroBalance = false;
                 foreach($selectedCustomerBalance as $balance) {
                 if (abs($balance['balance']) > 0.001) {
@@ -547,67 +543,68 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                 break;
                 }
                 }
-                @endphp
+                ?>
 
-                @if($hasNonZeroBalance)
+                <!--[if BLOCK]><![endif]--><?php if($hasNonZeroBalance): ?>
                 <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6 mt-6 w-full lg:w-[589px]">
                     <div class="space-y-4">
                         <div
                             class="w-full h-[79px] flex flex-col md:flex-row items-center justify-between p-6 bg-[#2563EB] text-white text-[16px] rounded-[12px]">
                             <p class="vazir font-bold">ارزش کل موجودی</p>
                             <p class="vazir font-bold" dir="ltr">
-                                @php
+                                <?php
                                 $totalUSD = 0;
                                 foreach($selectedCustomerBalance as $balance) {
                                 if (abs($balance['balance']) > 0.001) {
                                 $totalUSD += $balance['balance_usd'];
                                 }
                                 }
-                                @endphp
-                                {{ number_format($totalUSD, 2) }}
+                                ?>
+                                <?php echo e(number_format($totalUSD, 2)); ?>
+
                                 <span>دالر</span>
                             </p>
                         </div>
 
-                        @foreach($selectedCustomerBalance as $currencyCode => $data)
-                        @if(abs($data['balance']) > 0.001)
+                        <?php $__currentLoopData = $selectedCustomerBalance; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <!--[if BLOCK]><![endif]--><?php if(abs($data['balance']) > 0.001): ?>
                         <div
                             class="w-full h-[79px] flex flex-col md:flex-row items-center justify-between p-6 bg-transparent border border-[#2563EB] text-black text-[16px] rounded-[12px] hover:bg-blue-50 transition-colors">
                             <div class="flex items-center gap-3">
                                 <div class="w-4 h-4 rounded-full"
-                                    style="background-color: {{ $this->getCurrencyColor($currencyCode) }}">
+                                    style="background-color: <?php echo e($this->getCurrencyColor($currencyCode)); ?>">
                                 </div>
-                                <span class="vazir font-bold">{{ $data['currency_name'] }}</span>
+                                <span class="vazir font-bold"><?php echo e($data['currency_name']); ?></span>
                             </div>
                             <div class="text-left" dir="ltr">
-                                <p class="vazir font-bold">{{ number_format($data['balance'], 2) }}</p>
+                                <p class="vazir font-bold"><?php echo e(number_format($data['balance'], 2)); ?></p>
                             </div>
                         </div>
-                        @endif
-                        @endforeach
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
                 </div>
-                @else
+                <?php else: ?>
                 <div class="text-center py-8">
                     <p class="text-gray-500 vazir">این مشتری موجودی ندارد</p>
                     <!-- اطلاعات دیباگ -->
                     <div class="mt-4 p-3 bg-gray-100 rounded text-xs text-gray-600">
-                        <p>Customer ID: {{ $selectedCustomerId }}</p>
-                        <p>Balances Count: {{ count($selectedCustomerBalance) }}</p>
+                        <p>Customer ID: <?php echo e($selectedCustomerId); ?></p>
+                        <p>Balances Count: <?php echo e(count($selectedCustomerBalance)); ?></p>
                     </div>
                 </div>
-                @endif
-                @else
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                <?php else: ?>
                 <div class="text-center py-8">
                     <p class="text-gray-500 vazir">لطفاً یک مشتری انتخاب کنید</p>
                 </div>
-                @endif
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </div>
 
             <!-- بخش نمودار SVG -->
-            @if($selectedCustomerId && count($currencyPercentages) > 0)
+            <!--[if BLOCK]><![endif]--><?php if($selectedCustomerId && count($currencyPercentages) > 0): ?>
             <div class="lg:w-1/2 mt-6 lg:mt-0 flex justify-center" dir="ltr">
-                @php
+                <?php
                 $chartData = [
                 'series' => [],
                 'labels' => [],
@@ -625,40 +622,40 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                 $radius = 80;
                 $circumference = 2 * 3.1416 * $radius;
                 $currentOffset = 0;
-                @endphp
+                ?>
 
                 <div class="p-6 relative">
                     <div class="relative w-full max-w-[400px] h-[350px] mx-auto">
                         <svg width="100%" height="100%" viewBox="0 0 40 40">
                             <!-- تعریف گرادینت‌ها -->
                             <defs>
-                                @foreach($chartData['colors'] as $index => $color)
-                                @php
+                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $chartData['colors']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $color): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php
                                 $lighterColor = $this->lightenColor($color, 30);
                                 $darkerColor = $this->darkenColor($color, 20);
-                                @endphp
-                                <linearGradient id="gradient-{{ $index }}" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="{{ $lighterColor }}" />
-                                    <stop offset="100%" stop-color="{{ $darkerColor }}" />
+                                ?>
+                                <linearGradient id="gradient-<?php echo e($index); ?>" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="<?php echo e($lighterColor); ?>" />
+                                    <stop offset="100%" stop-color="<?php echo e($darkerColor); ?>" />
                                 </linearGradient>
 
-                                <radialGradient id="radial-gradient-{{ $index }}" cx="50%" cy="50%" r="50%" fx="50%"
+                                <radialGradient id="radial-gradient-<?php echo e($index); ?>" cx="50%" cy="50%" r="50%" fx="50%"
                                     fy="50%">
-                                    <stop offset="0%" stop-color="{{ $lighterColor }}" />
-                                    <stop offset="70%" stop-color="{{ $color }}" />
-                                    <stop offset="100%" stop-color="{{ $darkerColor }}" />
+                                    <stop offset="0%" stop-color="<?php echo e($lighterColor); ?>" />
+                                    <stop offset="70%" stop-color="<?php echo e($color); ?>" />
+                                    <stop offset="100%" stop-color="<?php echo e($darkerColor); ?>" />
                                 </radialGradient>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                             </defs>
 
-                            @php
+                            <?php
                             $total = array_sum($chartData['series']);
                             $startAngle = 0;
                             $radius = 20;
-                            @endphp
+                            ?>
 
-                            @foreach ($chartData['series'] as $index => $value)
-                            @php
+                            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $chartData['series']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php
                             $percentage = ($value / $total) * 100;
                             $angle = ($value / $total) * 360;
 
@@ -675,52 +672,52 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                             $midAngle = $startAngle + $angle / 2;
                             $textX = 20 + ($radius * 0.55) * cos(deg2rad($midAngle));
                             $textY = 20 + ($radius * 0.55) * sin(deg2rad($midAngle));
-                            @endphp
+                            ?>
 
-                            <path d="{{ $path }}" fill="url(#radial-gradient-{{ $index }})" stroke="white"
+                            <path d="<?php echo e($path); ?>" fill="url(#radial-gradient-<?php echo e($index); ?>)" stroke="white"
                                 stroke-width="0.3"></path>
 
-                            <text dir="ltr" x="{{ $textX }}" y="{{ $textY }}" font-size="2.7" fill="white"
-                                text-anchor="middle" alignment-baseline="middle"
+                            <text dir="ltr" x="<?php echo e($textX); ?>" y="<?php echo e($textY); ?>" font-size="2.7" fill="white" text-anchor="middle"
+                                alignment-baseline="middle"
                                 style="font-weight: bold; text-shadow: 0px 0px 3px rgba(0,0,0,0.5);">
-                                {{ round($percentage, 1) }}%
+                                <?php echo e(round($percentage, 1)); ?>%
                             </text>
 
-                            @php
+                            <?php
                             $startAngle += $angle;
-                            @endphp
-                            @endforeach
+                            ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                         </svg>
                     </div>
 
                     <!-- لیبل‌ها کنار چارت -->
                     <div class="absolute right-9 flex mt-4  gap-4" dir="ltr">
-                        @foreach($chartData['labels'] as $index => $label)
+                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $chartData['labels']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="flex items-end gap-2">
                             <div class="w-4 h-4 rounded-full shadow-sm"
-                                style="background: linear-gradient(135deg, {{ $this->lightenColor($chartData['colors'][$index], 30) }}, {{ $this->darkenColor($chartData['colors'][$index], 20) }});">
+                                style="background: linear-gradient(135deg, <?php echo e($this->lightenColor($chartData['colors'][$index], 30)); ?>, <?php echo e($this->darkenColor($chartData['colors'][$index], 20)); ?>);">
                             </div>
                             <span class="text-sm vazir text-gray-700" dir="ltr">
-                                {{ $label }} ({{ round($chartData['series'][$index], 1) }}%)
+                                <?php echo e($label); ?> (<?php echo e(round($chartData['series'][$index], 1)); ?>%)
                             </span>
                         </div>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
                 </div>
             </div>
-            @endif
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </div>
     </div>
-    @endif
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
     <!-- بخش کارت‌های مشتریان برای گزارش خلاصه -->
-    @if($selectedSubCategory == 'گزارش خلاصه بیلانس مشتریان' && !empty($selectedCustomersData))
+    <!--[if BLOCK]><![endif]--><?php if($selectedSubCategory == 'گزارش خلاصه بیلانس مشتریان' && !empty($selectedCustomersData)): ?>
     <div class="mt-8 bg-[#F5F5F5] p-5 rounded-[16px] mb-5"
         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
         <h2 class="text-xl font-bold text-gray-800 mb-6">کارت‌های موجودی مشتریان انتخاب شده</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            @foreach($selectedCustomersData as $customer)
-            @php
+            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $selectedCustomersData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php
             // محاسبه کل موجودی و فیلتر ارزهای دارای موجودی
             $customerTotalUSD = 0;
             $customerCurrenciesWithBalance = [];
@@ -736,7 +733,7 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
             ];
             }
             }
-            @endphp
+            ?>
 
             <!-- کارت مشتری -->
             <div class="w-full">
@@ -744,36 +741,36 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                     <!-- هدر کارت -->
                     <div
                         class="w-full h-[60px] flex flex-col md:flex-row items-center justify-between p-4 bg-[#2563EB] text-white text-[14px] rounded-[12px]">
-                        <p class="vazir font-bold truncate" title="{{ $customer['name'] }}">{{ $customer['name'] }}</p>
+                        <p class="vazir font-bold truncate" title="<?php echo e($customer['name']); ?>"><?php echo e($customer['name']); ?></p>
                         <p class="vazir font-bold text-sm whitespace-nowrap" dir="ltr">
-                            {{ number_format($customerTotalUSD, 2) }} <span class="text-xs">دالر</span>
+                            <?php echo e(number_format($customerTotalUSD, 2)); ?> <span class="text-xs">دالر</span>
                         </p>
                     </div>
 
                     <!-- موجودی‌های ارزی -->
-                    @if(count($customerCurrenciesWithBalance) > 0)
-                    @foreach($customerCurrenciesWithBalance as $currencyCode => $data)
+                    <!--[if BLOCK]><![endif]--><?php if(count($customerCurrenciesWithBalance) > 0): ?>
+                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customerCurrenciesWithBalance; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div
                         class="w-full h-[50px] flex flex-col md:flex-row items-center justify-between p-4 bg-transparent border border-[#2563EB] text-black text-[14px] rounded-[12px] hover:bg-blue-50 transition-colors">
                         <div class="flex items-center gap-3">
-                            <div class="w-3 h-3 rounded-full" style="background-color: {{ $data['color'] }}"></div>
-                            <span class="vazir font-bold text-sm">{{ $data['currency_name'] }}</span>
+                            <div class="w-3 h-3 rounded-full" style="background-color: <?php echo e($data['color']); ?>"></div>
+                            <span class="vazir font-bold text-sm"><?php echo e($data['currency_name']); ?></span>
                         </div>
                         <div class="text-left">
-                            <p class="vazir font-bold text-sm" dir="ltr">{{ number_format($data['balance'], 2) }}</p>
+                            <p class="vazir font-bold text-sm" dir="ltr"><?php echo e(number_format($data['balance'], 2)); ?></p>
                         </div>
                     </div>
-                    @endforeach
-                    @else
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php else: ?>
                     <div
                         class="w-full h-[50px] flex items-center justify-center p-4 bg-transparent border border-gray-300 text-gray-500 text-[14px] rounded-[12px]">
                         <span class="vazir text-sm">بدون موجودی</span>
                     </div>
-                    @endif
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
             </div>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
         </div>
     </div>
-    @endif
-</div>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+</div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/general-reports.blade.php ENDPATH**/ ?>

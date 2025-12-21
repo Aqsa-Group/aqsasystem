@@ -160,84 +160,112 @@
             
             <!--[if BLOCK]><![endif]--><?php if($selectedCustomerId): ?>
             <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
-                <div
-                    class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
+                <div class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px]
+        dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900
+        bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
+
                     <?php
                     $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
                     $sourceCurrency = $latestProfitRate->currency_name ?? 'دالر';
+
+                    $totalCashUsd = 0;
+                    $totalBankUsd = 0;
+
+                    // نرخ‌های نقدی
+                    $exchangeRatesCash = [
+                    'افغانی' => $latestProfitRate->afn_buy_cash ?? 66.20,
+                    'دالر' => 1,
+                    'تومان' => $latestProfitRate->irr_buy_cash ?? 110000,
+                    'یورو' => $latestProfitRate->eur_buy_cash ?? 70,
+                    'کلدار' => $latestProfitRate->pkr_buy_cash ?? 32,
+                    'درهم' => $latestProfitRate->aed_buy_cash ?? 44,
+                    'لیره' => $latestProfitRate->try_buy_cash ?? 60,
+                    'یوان' => $latestProfitRate->cny_buy_cash ?? 43,
+                    'روپیه' => 7.14,
+                    ];
+
+                    // نرخ‌های بانکی
+                    $exchangeRatesBank = [
+                    'افغانی' => $latestProfitRate->afn_buy_bank ?? 66.20,
+                    'دالر' => 1,
+                    'تومان' => $latestProfitRate->irr_buy_bank ?? 110000,
+                    'یورو' => $latestProfitRate->eur_buy_bank ?? 70,
+                    'کلدار' => $latestProfitRate->pkr_buy_bank ?? 32,
+                    'درهم' => $latestProfitRate->aed_buy_bank ?? 44,
+                    'لیره' => $latestProfitRate->try_buy_bank ?? 60,
+                    'یوان' => $latestProfitRate->cny_buy_bank ?? 43,
+                    'روپیه' => 7.14,
+                    ];
+
+                    /* =====================
+                    محاسبه موجودی نقدی
+                    ====================== */
+                    foreach ($customerCashBalances as $currency => $balance) {
+                    if ($currency === 'دالر') {
+                    $totalCashUsd += $balance; // دالر مستقیم
+                    } elseif (isset($exchangeRatesCash[$currency]) && $exchangeRatesCash[$currency] > 0) {
+                    $totalCashUsd += $balance / $exchangeRatesCash[$currency];
+                    }
+                    }
+
+                    /* =====================
+                    محاسبه موجودی بانکی
+                    ====================== */
+                    foreach ($customerBankBalances as $currency => $balance) {
+                    if ($currency === 'دالر') {
+                    $totalBankUsd += $balance; // دالر مستقیم
+                    } elseif (isset($exchangeRatesBank[$currency]) && $exchangeRatesBank[$currency] > 0) {
+                    $totalBankUsd += $balance / $exchangeRatesBank[$currency];
+                    }
+                    }
+
+                    $grandTotalUsd = $totalCashUsd + $totalBankUsd;
                     ?>
-                    <h1 class="text-[24px] text-white">خلاصه بیلانس به <?php echo e($sourceCurrency); ?></h1>
+
+                    <h1 class="text-[24px] text-white">
+                        خلاصه بیلانس به <?php echo e($sourceCurrency); ?>
+
+                    </h1>
+
                     <div class="flex flex-col gap-1 mt-1 text-center">
-                        <?php
-                        $totalCashUsd = 0;
-                        $totalBankUsd = 0;
-                        $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
-                        $sourceCurrency = $latestProfitRate->source_currency ?? 'دالر';
-
-                        $exchangeRatesCash = [
-                        'افغانی' => $latestProfitRate->afn_buy_cash ?? 66.20,
-                        'دالر' => $latestProfitRate->usd_buy_cash ?? 1,
-                        'تومان' => $latestProfitRate->irr_buy_cash ?? 110000.00,
-                        'یورو' => $latestProfitRate->eur_buy_cash ?? 70.00,
-                        'کلدار' => $latestProfitRate->pkr_buy_cash ?? 32.00,
-                        'درهم' => $latestProfitRate->aed_buy_cash ?? 44.00,
-                        'لیره' => $latestProfitRate->try_buy_cash ?? 60.00,
-                        'یوان' => $latestProfitRate->cny_buy_cash ?? 43.00,
-                        'روپیه' => 7.14,
-                        ];
-
-                        $exchangeRatesBank = [
-                        'افغانی' => $latestProfitRate->afn_buy_bank ?? 66.20,
-                        'دالر' => $latestProfitRate->usd_buy_bank ?? 1,
-                        'تومان' => $latestProfitRate->irr_buy_bank ?? 110000.00,
-                        'یورو' => $latestProfitRate->eur_buy_bank ?? 70.00,
-                        'کلدار' => $latestProfitRate->pkr_buy_bank ?? 32.00,
-                        'درهم' => $latestProfitRate->aed_buy_bank ?? 44.00,
-                        'لیره' => $latestProfitRate->try_buy_bank ?? 60.00,
-                        'یوان' => $latestProfitRate->cny_buy_bank ?? 43.00,
-                        'روپیه' => 7.14,
-                        ];
-
-                        // محاسبه موجودی نقدی به دالر
-                        foreach($customerCashBalances as $currency => $balance) {
-                        if(isset($exchangeRatesCash[$currency]) && $exchangeRatesCash[$currency] > 0) {
-                        $totalCashUsd += $balance / $exchangeRatesCash[$currency];
-                        }
-                        }
-
-                        // محاسبه موجودی بانکی به دالر
-                        foreach($customerBankBalances as $currency => $balance) {
-                        if(isset($exchangeRatesBank[$currency]) && $exchangeRatesBank[$currency] > 0) {
-                        $totalBankUsd += $balance / $exchangeRatesBank[$currency];
-                        }
-                        }
-
-                        $grandTotalUsd = $totalCashUsd + $totalBankUsd;
-                        ?>
 
                         <div class="flex justify-between items-center text-[14px]">
                             <span>نقدی:</span>
-                            <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($totalCashUsd, 2)); ?></span>
+                            <span class="font-bold text-left" dir="ltr">
+                                <?php echo e(number_format($totalCashUsd, 2)); ?>
+
+                            </span>
                         </div>
+
                         <div class="flex justify-between items-center text-[14px]">
                             <span>بانکی:</span>
-                            <span class="font-bold text-left" dir="ltr"><?php echo e(number_format($totalBankUsd, 2)); ?></span>
+                            <span class="font-bold text-left" dir="ltr">
+                                <?php echo e(number_format($totalBankUsd, 2)); ?>
+
+                            </span>
                         </div>
+
                         <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
                             <span class="font-semibold">مجموعه:</span>
-                            <span class="font-bold text-[16px] text-left" dir="ltr"><?php echo e(number_format($grandTotalUsd, 2)); ?></span>
+                            <span class="font-bold text-[16px] text-left" dir="ltr">
+                                <?php echo e(number_format($grandTotalUsd, 2)); ?>
+
+                            </span>
                         </div>
+
                     </div>
-                    <button wire:click="showReport" wire:loading.attr="disabled"
-                        class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
+
+                    <button wire:click="showReport" wire:loading.attr="disabled" class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800
+                   hover:shadow-md transition flex items-center justify-center gap-2">
+
                         <span wire:loading.remove>نمایش گزارش</span>
-                        <span wire:loading>
-                            در حال انتقال...
-                        </span>
+                        <span wire:loading>در حال انتقال...</span>
                     </button>
+
                 </div>
             </div>
             <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
         </div>
         
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
