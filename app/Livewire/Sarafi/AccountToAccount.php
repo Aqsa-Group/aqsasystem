@@ -21,9 +21,9 @@ class AccountToAccount extends Component
     use WithPagination;
 
     // حساب برداشت
-public $withdrawalAccount = null; 
+    public $withdrawalAccount = null;
     public $withdrawalCustomerId;
-    public $withdrawalCustomer = null; 
+    public $withdrawalCustomer = null;
 
     // حساب دریافت
     public $depositAccount;
@@ -42,7 +42,6 @@ public $withdrawalAccount = null;
     public $transferable_amount = '';
     public $received_amount = '';
     public $transaction_date;
-
 
     public $description_sender = '';
     public $description_receiver = '';
@@ -66,11 +65,7 @@ public $withdrawalAccount = null;
     public $editingConversionId = null;
 
     public $documentNumber;
-
     public $zones = [];
-
-
-
 
     // اضافه کردن متغیرهای جدید برای نمایش موجودی‌ها
     public $customerCashBalances = [];
@@ -173,48 +168,46 @@ public $withdrawalAccount = null;
         $this->resetPage();
     }
 
-     private function loadCustomers($adminId)
-{
-    // دریافت IDهای کاربران مرتبط (اختیاری - برای backward compatibility)
-    $relatedUserIds = \App\Models\Sarafi\User::where('admin_id', $adminId)
-        ->pluck('id')
-        ->push($adminId)
-        ->toArray();
+    private function loadCustomers($adminId)
+    {
+        // دریافت IDهای کاربران مرتبط (اختیاری - برای backward compatibility)
+        $relatedUserIds = \App\Models\Sarafi\User::where('admin_id', $adminId)
+            ->pluck('id')
+            ->push($adminId)
+            ->toArray();
 
-    // روش 1: استفاده از orWhereHas برای مشتریان لینک شده
-    $this->customers = Customer::select('id', 'account_number', 'fullname', 'admin_id')
-        ->with(['admins' => function($query) use ($adminId) {
-            $query->where('customer_admin.admin_id', $adminId);
-        }])
-        ->where(function ($query) use ($adminId, $relatedUserIds) {
-            // مشتریانی که مال این ادمین هستند
-            $query->where('admin_id', $adminId)
-                
-                // یا مشتریانی که به این ادمین لینک شده‌اند
-                ->orWhereHas('admins', function ($q) use ($adminId) {
-                    $q->where('customer_admin.admin_id', $adminId);
-                })
-                
-                // یا مشتریانی که تراکنش با این ادمین دارند (برای backward compatibility)
-                ->orWhereHas('transactions', function ($t) use ($relatedUserIds) {
-                    $t->whereIn('user_id', $relatedUserIds)
-                        ->orWhereIn('admin_id', $relatedUserIds);
-                });
-        })
-        ->orderBy('fullname')
-        ->get()
-        ->map(function($customer) use ($adminId) {
-            return [
-                'id' => $customer->id,
-                'account_number' => $customer->account_number,
-                'fullname' => $customer->fullname,
-                'admin_id' => $customer->admin_id,
-                'is_mine' => $customer->admin_id == $adminId,
-                'is_linked' => $customer->admins->isNotEmpty() && $customer->admin_id != $adminId
-            ];
-        })
-        ->toArray();
-}
+        // روش 1: استفاده از orWhereHas برای مشتریان لینک شده
+        $this->customers = Customer::select('id', 'account_number', 'fullname', 'admin_id')
+            ->with(['admins' => function ($query) use ($adminId) {
+                $query->where('customer_admin.admin_id', $adminId);
+            }])
+            ->where(function ($query) use ($adminId, $relatedUserIds) {
+                // مشتریانی که مال این ادمین هستند
+                $query->where('admin_id', $adminId)
+                    // یا مشتریانی که به این ادمین لینک شده‌اند
+                    ->orWhereHas('admins', function ($q) use ($adminId) {
+                        $q->where('customer_admin.admin_id', $adminId);
+                    })
+                    // یا مشتریانی که تراکنش با این ادمین دارند (برای backward compatibility)
+                    ->orWhereHas('transactions', function ($t) use ($relatedUserIds) {
+                        $t->whereIn('user_id', $relatedUserIds)
+                            ->orWhereIn('admin_id', $relatedUserIds);
+                    });
+            })
+            ->orderBy('fullname')
+            ->get()
+            ->map(function ($customer) use ($adminId) {
+                return [
+                    'id' => $customer->id,
+                    'account_number' => $customer->account_number,
+                    'fullname' => $customer->fullname,
+                    'admin_id' => $customer->admin_id,
+                    'is_mine' => $customer->admin_id == $adminId,
+                    'is_linked' => $customer->admins->isNotEmpty() && $customer->admin_id != $adminId
+                ];
+            })
+            ->toArray();
+    }
 
     // متد تبدیل عدد به حروف
     private function convertAmountToWords($value, $property)
@@ -233,6 +226,7 @@ public $withdrawalAccount = null;
             $this->$property = '';
         }
     }
+
     public function toggleTransactionType()
     {
         $this->transactionType = $this->transactionType === 'باتفاوت'
@@ -259,7 +253,6 @@ public $withdrawalAccount = null;
 
             $this->received_amount = $this->transferable_amount;
         } elseif ($this->withdrawal_amount && $this->commission_amount !== '') {
-
             $withdrawal = floatval($this->withdrawal_amount);
             $commission = floatval($this->commission_amount);
 
@@ -275,7 +268,6 @@ public $withdrawalAccount = null;
         $this->convertAmountToWords($this->withdrawal_amount, 'withdrawalAmountInWords');
         $this->convertAmountToWords($this->received_amount, 'receivedAmountInWords');
     }
-
 
     // Event Listeners برای محاسبه خودکار
     public function updated($property)
@@ -301,8 +293,6 @@ public $withdrawalAccount = null;
             $this->filterCustomers();
         }
     }
-
-
 
     public function filterCustomers()
     {
@@ -515,26 +505,26 @@ public $withdrawalAccount = null;
         ];
     }
 
-  public function selectWithdrawalAccount($customerId)
-{
-    Log::info('selectWithdrawalAccount called', ['customer_id' => $customerId]);
-    
-    $this->withdrawalAccount = $customerId;
-    $this->withdrawalCustomerId = $customerId; 
-    $this->withdrawalCustomer = Customer::find($customerId);
+    public function selectWithdrawalAccount($customerId)
+    {
+        Log::info('selectWithdrawalAccount called', ['customer_id' => $customerId]);
 
-    $this->accountSearch = '';
-    $this->filteredCustomers = null;
+        $this->withdrawalAccount = $customerId;
+        $this->withdrawalCustomerId = $customerId;
+        $this->withdrawalCustomer = Customer::find($customerId);
 
-    // فراخوانی متد محاسبه بیلانس
-    $this->updateCustomerCurrencyBalance();
+        $this->accountSearch = '';
+        $this->filteredCustomers = null;
 
-    Log::debug('After selecting withdrawal account', [
-        'customer_id' => $customerId,
-        'withdrawalCustomerId' => $this->withdrawalCustomerId,
-        'customer_name' => $this->withdrawalCustomer ? $this->withdrawalCustomer->fullname : 'Not found'
-    ]);
-}
+        // فراخوانی متد محاسبه بیلانس
+        $this->updateCustomerCurrencyBalance();
+
+        Log::debug('After selecting withdrawal account', [
+            'customer_id' => $customerId,
+            'withdrawalCustomerId' => $this->withdrawalCustomerId,
+            'customer_name' => $this->withdrawalCustomer ? $this->withdrawalCustomer->fullname : 'Not found'
+        ]);
+    }
 
     public function selectDepositAccount($customerId)
     {
@@ -550,6 +540,118 @@ public $withdrawalAccount = null;
         $this->commissionAccount = $customerId;
         $this->accountSearch = '';
         $this->filteredCustomers = null;
+    }
+
+    /**
+     * برگرداندن تغییرات صندوق
+     */
+    private function reverseSafeChanges(SendToAccount $conversion)
+    {
+        $adminId = $conversion->admin_id;
+        $currencyColumn = strtolower($conversion->currency);
+
+        // اگر از نقدی به بانکی بوده، برگرداندن: به نقدی اضافه، از بانکی کم
+        if ($conversion->from_account === 'نقدی' && $conversion->to_account === 'بانکی') {
+            $amount = $conversion->received_amount;
+
+            // اضافه کردن به صندوق نقدی
+            $safe = CurrencySafe::where('admin_id', $adminId)->first();
+            if ($safe) {
+                $safe->increment($currencyColumn, $amount);
+                Log::info("Reverse نقدی→بانکی: اضافه کردن {$amount} {$currencyColumn} به صندوق نقدی");
+            }
+
+            // کم کردن از صندوق بانکی
+            $bank = BankAccount::where('admin_id', $adminId)->first();
+            if ($bank) {
+                $bank->decrement($currencyColumn, $amount);
+                Log::info("Reverse نقدی→بانکی: کم کردن {$amount} {$currencyColumn} از صندوق بانکی");
+            }
+        }
+
+        // اگر از بانکی به نقدی بوده، برگرداندن: به بانکی اضافه، از نقدی کم
+        if ($conversion->from_account === 'بانکی' && $conversion->to_account === 'نقدی') {
+            $amount = $conversion->withdrawal_amount;
+
+            // اضافه کردن به صندوق بانکی
+            $bank = BankAccount::where('admin_id', $adminId)->first();
+            if ($bank) {
+                $bank->increment($currencyColumn, $amount);
+                Log::info("Reverse بانکی→نقدی: اضافه کردن {$amount} {$currencyColumn} به صندوق بانکی");
+            }
+
+            // کم کردن از صندوق نقدی
+            $safe = CurrencySafe::where('admin_id', $adminId)->first();
+            if ($safe) {
+                $safe->decrement($currencyColumn, $amount);
+                Log::info("Reverse بانکی→نقدی: کم کردن {$amount} {$currencyColumn} از صندوق نقدی");
+            }
+        }
+
+        Log::info("تغییرات صندوق برای انتقال ID {$conversion->id} برگردانده شد");
+    }
+
+    /**
+     * اعمال تغییرات صندوق
+     */
+    private function applySafeChanges()
+    {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+        $currencyColumn = strtolower($this->currency);
+
+        // ===== نقدی → بانکی =====
+        if ($this->from_account === 'نقدی' && $this->to_account === 'بانکی') {
+            $amount = $this->transactionType === 'باتفاوت'
+                ? floatval($this->withdrawal_amount) - floatval($this->commission_amount)
+                : floatval($this->withdrawal_amount);
+
+            // کم کردن از صندوق نقدی
+            $safe = CurrencySafe::firstOrCreate([
+                'admin_id' => $adminId,
+            ], [
+                'user_id' => $user->id,
+            ]);
+            $safe->decrement($currencyColumn, $amount);
+            Log::info("نقدی→بانکی: کم کردن {$amount} {$currencyColumn} از صندوق نقدی");
+
+            // اضافه کردن به صندوق بانکی
+            $bank = BankAccount::firstOrCreate([
+                'admin_id' => $adminId,
+            ], [
+                'user_id' => $user->id,
+            ]);
+            $bank->increment($currencyColumn, $amount);
+            Log::info("نقدی→بانکی: اضافه کردن {$amount} {$currencyColumn} به صندوق بانکی");
+        }
+
+        // ===== بانکی → نقدی =====
+        if ($this->from_account === 'بانکی' && $this->to_account === 'نقدی') {
+            $amount = floatval($this->withdrawal_amount);
+
+            // کم کردن از صندوق بانکی
+            $bank = BankAccount::where('admin_id', $adminId)->first();
+            if ($bank) {
+                $bank->decrement($currencyColumn, $amount);
+                Log::info("بانکی→نقدی: کم کردن {$amount} {$currencyColumn} از صندوق بانکی");
+            }
+
+            // اضافه کردن به صندوق نقدی
+            $safe = CurrencySafe::firstOrCreate([
+                'admin_id' => $adminId,
+            ], [
+                'user_id' => $user->id,
+            ]);
+            $safe->increment($currencyColumn, $amount);
+            Log::info("بانکی→نقدی: اضافه کردن {$amount} {$currencyColumn} به صندوق نقدی");
+        }
+
+        // ===== نقدی → نقدی یا بانکی → بانکی =====
+        // در این حالت‌ها نیازی به تغییر صندوق نیست
+        if (($this->from_account === 'نقدی' && $this->to_account === 'نقدی') ||
+            ($this->from_account === 'بانکی' && $this->to_account === 'بانکی')) {
+            Log::info("{$this->from_account}→{$this->to_account}: نیازی به تغییر صندوق نیست");
+        }
     }
 
     public function submitConversion()
@@ -576,7 +678,6 @@ public $withdrawalAccount = null;
             $validationRules['commissionAccount'] = 'required|integer|exists:sarafi.customers,id';
         }
 
-
         $this->validate($validationRules);
 
         $user = Auth::guard('sarafi')->user();
@@ -589,6 +690,15 @@ public $withdrawalAccount = null;
             $receivedAmount = $this->transactionType === 'باتفاوت'
                 ? floatval($this->withdrawal_amount) - floatval($this->commission_amount)
                 : floatval($this->withdrawal_amount);
+
+            // اگر در حال ویرایش هستیم، ابتدا تغییرات قبلی را برگردانیم
+            if ($this->editingConversionId) {
+                $oldConversion = SendToAccount::find($this->editingConversionId);
+                if ($oldConversion) {
+                    // برگرداندن تغییرات صندوق قبلی
+                    $this->reverseSafeChanges($oldConversion);
+                }
+            }
 
             // داده‌های اصلی
             $conversionData = [
@@ -628,11 +738,15 @@ public $withdrawalAccount = null;
                     // آپدیت رکورد
                     $conversion->update($conversionData);
                     $conversionId = $conversion->id;
+
+                    Log::info("انتقال ID {$conversionId} ویرایش شد");
                 }
             } else {
                 // ایجاد رکورد جدید
                 $conversion = SendToAccount::create($conversionData);
                 $conversionId = $conversion->id;
+
+                Log::info("انتقال جدید با ID {$conversionId} ایجاد شد");
             }
 
             // ایجاد تراکنش‌ها
@@ -714,44 +828,9 @@ public $withdrawalAccount = null;
                     'account_to_id' => $conversionId,
                 ]);
             }
-            // ===== نقدی → بانکی =====
-            if ($this->from_account === 'نقدی' && $this->to_account === 'بانکی') {
 
-                // کم کردن از صندوق نقدی
-                $safe = CurrencySafe::firstOrCreate([
-                    'admin_id' => $adminId,
-                ], [
-                    'user_id' => $user->id,
-                ]);
-                $safe->decrement(strtolower($this->currency), $receivedAmount);
-
-                // اضافه کردن به صندوق بانکی
-                $bank = BankAccount::firstOrCreate([
-                    'admin_id' => $adminId,
-                ], [
-                    'user_id' => $user->id,
-                ]);
-                $bank->increment(strtolower($this->currency), $receivedAmount);
-            }
-
-
-            // ===== بانکی → نقدی =====
-            if ($this->from_account === 'بانکی' && $this->to_account === 'نقدی') {
-
-                // کم کردن از صندوق بانکی
-                $bank = BankAccount::where('admin_id', $adminId)->first();
-                if ($bank) {
-                    $bank->decrement(strtolower($this->currency), $this->withdrawal_amount);
-                }
-
-                // اضافه کردن به صندوق نقدی
-                $safe = CurrencySafe::firstOrCreate([
-                    'admin_id' => $adminId,
-                ], [
-                    'user_id' => $user->id,
-                ]);
-                $safe->increment(strtolower($this->currency), $this->withdrawal_amount);
-            }
+            // اعمال تغییرات صندوق (نقدی/بانکی)
+            $this->applySafeChanges();
 
             DB::connection('sarafi')->commit();
 
@@ -768,48 +847,10 @@ public $withdrawalAccount = null;
                 'depositAccount' => $this->depositAccount,
                 'transactionType' => $this->transactionType,
                 'editing' => $this->editingConversionId ? 'yes' : 'no',
+                'trace' => $e->getTraceAsString()
             ]);
         }
     }
-
-    /**
-     * متد ایمن برای به‌روزرسانی صندوق نقدی
-     */
-    private function updateCurrencySafe($adminId, $userId, $currency, $amount, $operation = 'increment')
-    {
-        $currencyColumn = strtolower($currency);
-
-        $safe = CurrencySafe::firstOrCreate([
-            'admin_id' => $adminId,
-        ], [
-            'user_id' => $userId,
-            'usd' => 0,
-            'afn' => 0,
-            'eur' => 0,
-            'irr' => 0,
-            'aed' => 0,
-            'try' => 0,
-            'cny' => 0,
-            'pkr' => 0,
-            'inr' => 0
-        ]);
-
-        // اگر مقدار NULL باشد، آن را صفر کنیم
-        if (is_null($safe->{$currencyColumn})) {
-            $safe->update([$currencyColumn => 0]);
-            $safe->refresh(); // رفرش کردن مدل پس از آپدیت
-        }
-
-        if ($operation === 'increment') {
-            $safe->increment($currencyColumn, $amount);
-        } else {
-            $safe->decrement($currencyColumn, $amount);
-        }
-
-        return $safe;
-    }
-
-
 
     public function resetForm()
     {
@@ -841,6 +882,49 @@ public $withdrawalAccount = null;
         $this->generateDocumentNumber();
         $this->accountSearch = '';
         $this->filteredCustomers = null;
+    }
+
+    public function confirmDelete($conversionId)
+    {
+        $this->confirmDeleteId = $conversionId;
+    }
+
+    public function deleteConversion()
+    {
+        if (!$this->confirmDeleteId) {
+            return;
+        }
+
+        DB::connection('sarafi')->beginTransaction();
+
+        try {
+            $conversion = SendToAccount::find($this->confirmDeleteId);
+
+            if ($conversion) {
+                // برگرداندن تغییرات صندوق
+                $this->reverseSafeChanges($conversion);
+
+                // حذف تراکنش‌های مرتبط
+                Transaction::where('account_to_id', $conversion->id)->delete();
+
+                // حذف رکورد انتقال
+                $conversion->delete();
+
+                DB::connection('sarafi')->commit();
+                session()->flash('message', 'انتقال با موفقیت حذف شد.');
+                $this->confirmDeleteId = null;
+
+                Log::info("انتقال ID {$conversion->id} حذف شد و تغییرات صندوق برگردانده شد");
+            }
+        } catch (\Exception $e) {
+            DB::connection('sarafi')->rollBack();
+            session()->flash('error', 'خطا در حذف انتقال: ' . $e->getMessage());
+            Log::error('Delete transfer error: ' . $e->getMessage(), [
+                'conversion_id' => $this->confirmDeleteId,
+                'trace' => $e->getTraceAsString()
+            ]);
+            $this->confirmDeleteId = null;
+        }
     }
 
     public function editConversion($conversionId)
@@ -879,8 +963,7 @@ public $withdrawalAccount = null;
             $this->convertAmountToWords($this->withdrawal_amount, 'withdrawalAmountInWords');
             $this->convertAmountToWords($this->received_amount, 'receivedAmountInWords');
 
-
-            $this->updateCustomerCurrencyBalance($conversion->form_customer);
+            $this->updateCustomerCurrencyBalance();
 
             $this->dispatch('edit-mode-activated', [
                 'withdrawalAccount' => $this->withdrawalAccount,
@@ -890,38 +973,8 @@ public $withdrawalAccount = null;
                 'depositCustomer' => $conversion->toCustomer ? $conversion->toCustomer->account_number . ' - ' . $conversion->toCustomer->fullname : '',
                 'commissionCustomer' => $conversion->tax_id ? ($conversion->tax ? $conversion->tax->account_number . ' - ' . $conversion->tax->fullname : '') : ''
             ]);
-        }
-    }
 
-    public function confirmDelete($conversionId)
-    {
-        $this->confirmDeleteId = $conversionId;
-    }
-
-    public function deleteConversion()
-    {
-        if (!$this->confirmDeleteId) {
-            return;
-        }
-
-        DB::connection('sarafi')->beginTransaction();
-
-        try {
-            $conversion = SendToAccount::find($this->confirmDeleteId);
-
-            if ($conversion) {
-                Transaction::where('account_to_id', $conversion->id)->delete();
-                $conversion->delete();
-
-                DB::connection('sarafi')->commit();
-                session()->flash('message', 'انتقال با موفقیت حذف شد.');
-                $this->confirmDeleteId = null;
-            }
-        } catch (\Exception $e) {
-            DB::connection('sarafi')->rollBack();
-            session()->flash('error', 'خطا در حذف انتقال: ' . $e->getMessage());
-            Log::error('Delete transfer error: ' . $e->getMessage());
-            $this->confirmDeleteId = null;
+            Log::info("ویرایش انتقال ID {$conversionId} آغاز شد");
         }
     }
 
@@ -929,11 +982,13 @@ public $withdrawalAccount = null;
     {
         $this->resetForm();
         $this->editingConversionId = null;
+        session()->flash('message', 'ویرایش لغو شد.');
     }
 
     public function cancelDelete()
     {
         $this->confirmDeleteId = null;
+        session()->flash('message', 'حذف لغو شد.');
     }
 
     private function getCurrencyName($currencyCode)
@@ -952,7 +1007,6 @@ public $withdrawalAccount = null;
 
         return $currencyMap[$currencyCode] ?? $currencyCode;
     }
-
 
     /**
      * Generate PDF for conversion transaction
@@ -1054,13 +1108,11 @@ public $withdrawalAccount = null;
         }
     }
 
-
     private function generateDocumentNumber()
     {
         $latestDocument = SendToAccount::latest('id')->first();
         $this->documentNumber = $latestDocument ? $latestDocument->id + 1 : 1;
     }
-
 
     private function loadZones($adminId)
     {
@@ -1074,7 +1126,6 @@ public $withdrawalAccount = null;
             ->unique()
             ->values()
             ->toArray();
-
 
         if (empty($this->zones)) {
             $this->zones = ['غرب', 'مرکز', 'شمال', 'جنوب', 'شرق'];

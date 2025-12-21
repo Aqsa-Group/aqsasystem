@@ -1,23 +1,23 @@
 <?php
 // تابع تبدیل کد ارز به نام فارسی
 function getPersianCurrencyName($currencyCode) {
-    $currencyMap = [
-        'afn' => 'افغانی',
-        'usd' => 'دالر',
-        'irr' => 'تومان',
-        'eur' => 'یورو',
-        'pkr' => 'کلدار',
-        'aed' => 'درهم',
-        'try' => 'لیره',
-        'cny' => 'یوان',
-        'gbp' => 'پوند',
-        'jpy' => 'ین',
-        'sar' => 'ریال سعودی',
-        'inr' => 'روپیه',
-    ];
-    
-    $currencyCode = strtolower($currencyCode ?? 'usd');
-    return $currencyMap[$currencyCode] ?? $currencyCode;
+$currencyMap = [
+'afn' => 'افغانی',
+'usd' => 'دالر',
+'irr' => 'تومان',
+'eur' => 'یورو',
+'pkr' => 'کلدار',
+'aed' => 'درهم',
+'try' => 'لیره',
+'cny' => 'یوان',
+'gbp' => 'پوند',
+'jpy' => 'ین',
+'sar' => 'ریال سعودی',
+'inr' => 'روپیه',
+];
+
+$currencyCode = strtolower($currencyCode ?? 'usd');
+return $currencyMap[$currencyCode] ?? $currencyCode;
 }
 
 // دریافت نام ارز مبدا به فارسی
@@ -97,7 +97,8 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                         <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $reports; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                         <tr class="border-b dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
                             <td class="px-4 py-4">
-                                <span class="px-2 py-1 rounded-lg bg-gray-100 dark:bg-black dark:text-white dark:border-white dark:border"><?php echo e($index + 1); ?></span>
+                                <span
+                                    class="px-2 py-1 rounded-lg bg-gray-100 dark:bg-black dark:text-white dark:border-white dark:border"><?php echo e($index + 1); ?></span>
                             </td>
                             <td class="px-4 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                 <?php echo e($report['account_number']); ?>
@@ -105,18 +106,29 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                             </td>
                             <td class="px-4 py-4"><?php echo e($report['fullname']); ?></td>
                             <td class="px-3 py-4">
-                                <?php echo e($report['last_date'] ? \Carbon\Carbon::parse($report['last_date'])->format('Y/m/d') : '-'); ?>
+                                <?php echo e($report['last_date'] ? \Carbon\Carbon::parse($report['last_date'])->format('Y/m/d') :
+                                '-'); ?>
 
                             </td>
-                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['usd'] ?? 0, 2)); ?></td>
-                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['afn'] ?? 0, 2)); ?></td>
-                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['irr'] ?? 0, 2)); ?></td>
-                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['pkr'] ?? 0, 2)); ?></td>
-                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['eur'] ?? 0, 2)); ?></td>
-                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['aed'] ?? 0, 2)); ?></td>
-                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['try'] ?? 0, 2)); ?></td>
-                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['cny'] ?? 0, 2)); ?></td>
-                            <td class="px-4 py-4 font-medium text-left"><?php echo e(number_format($report['total_balance'], 2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['usd'] ?? 0,
+                                2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['afn'] ?? 0,
+                                2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['irr'] ?? 0,
+                                2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['pkr'] ?? 0,
+                                2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['eur'] ?? 0,
+                                2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['aed'] ?? 0,
+                                2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['try'] ?? 0,
+                                2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['cny'] ?? 0,
+                                2)); ?></td>
+                            <td class="px-4 py-4 font-medium text-left"><?php echo e(number_format($report['total_balance'], 2)); ?>
+
+                            </td>
                         </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                         <tr>
@@ -132,7 +144,8 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
         <?php break; ?>
 
         <?php case ('گزارش خلاصه بیلانس مشتریان'): ?>
-        <div class="w-full dark:bg-black dark:text-white dark:border dark:border-white rounded-[16px] bg-[#2563EB] p-4 mb-6">
+        <div
+            class="w-full dark:bg-black dark:text-white dark:border dark:border-white rounded-[16px] bg-[#2563EB] p-4 mb-6">
             <div class="flex-1">
                 <div class="relative w-full" x-data="{
                     searchValue: '',
@@ -315,7 +328,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 <line x1="100" y1="280" x2="950" y2="280" stroke="#94a3b8" stroke-width="2" />
 
                 <!-- مقادیر عمودی سمت چپ (چپ‌چین شده) -->
-                <text dir="ltr" x="90" y="285" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">0</text>
+                <text dir="ltr" x="90" y="285" font-family="Arial" font-size="12" text-anchor="end"
+                    fill="#64748b">0</text>
                 <text dir="ltr" x="90" y="235" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b"><?php echo e(number_format($maxValue * 0.2, 0)); ?></text>
                 <text dir="ltr" x="90" y="185" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b"><?php echo e(number_format($maxValue * 0.4, 0)); ?></text>
                 <text dir="ltr" x="90" y="135" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b"><?php echo e(number_format($maxValue * 0.6, 0)); ?></text>
@@ -428,19 +442,28 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                             
                             <td class="px-3 py-4">
-                                <?php echo e($demand['last_date'] ? \Carbon\Carbon::parse($demand['last_date'])->format('Y/m/d') : '-'); ?>
+                                <?php echo e($demand['last_date'] ? \Carbon\Carbon::parse($demand['last_date'])->format('Y/m/d') :
+                                '-'); ?>
 
                             </td>
 
                             
-                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['usd'] ?? 0, 2)); ?></td>
-                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['afn'] ?? 0, 2)); ?></td>
-                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['irr'] ?? 0, 2)); ?></td>
-                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['pkr'] ?? 0, 2)); ?></td>
-                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['eur'] ?? 0, 2)); ?></td>
-                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['aed'] ?? 0, 2)); ?></td>
-                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['try'] ?? 0, 2)); ?></td>
-                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['cny'] ?? 0, 2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['usd'] ?? 0,
+                                2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['afn'] ?? 0,
+                                2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['irr'] ?? 0,
+                                2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['pkr'] ?? 0,
+                                2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['eur'] ?? 0,
+                                2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['aed'] ?? 0,
+                                2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['try'] ?? 0,
+                                2)); ?></td>
+                            <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($demand['balances']['cny'] ?? 0,
+                                2)); ?></td>
 
                             
                             <td class="px-4 py-4 font-medium text-left">
@@ -677,8 +700,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <path d="<?php echo e($path); ?>" fill="url(#radial-gradient-<?php echo e($index); ?>)" stroke="white"
                                 stroke-width="0.3"></path>
 
-                            <text dir="ltr" x="<?php echo e($textX); ?>" y="<?php echo e($textY); ?>" font-size="2.7" fill="white" text-anchor="middle"
-                                alignment-baseline="middle"
+                            <text dir="ltr" x="<?php echo e($textX); ?>" y="<?php echo e($textY); ?>" font-size="2.7" fill="white"
+                                text-anchor="middle" alignment-baseline="middle"
                                 style="font-weight: bold; text-shadow: 0px 0px 3px rgba(0,0,0,0.5);">
                                 <?php echo e(round($percentage, 1)); ?>%
                             </text>

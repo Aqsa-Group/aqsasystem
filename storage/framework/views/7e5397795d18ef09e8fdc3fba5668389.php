@@ -238,25 +238,24 @@
 
 
 
-                  <!-- مجموع موجودی حساب‌ها -->
-<div class="border rounded-2xl p-6 shadow-md hover:shadow-xl transition transform h-56 flex flex-col items-center justify-between dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 bg-gradient-to-b from-[#2563EB] to-[#1e325d] text-white">
-    <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
-        <img src="<?php echo e(asset('assets/sarafi/all_icon/wallet-3.svg')); ?>" alt="" class="h-10 w-10">
-    </div>
+                    <!-- مجموع موجودی حساب‌ها -->
+                    <div
+                        class="border rounded-2xl p-6 shadow-md hover:shadow-xl transition transform h-56 flex flex-col items-center justify-between dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 bg-gradient-to-b from-[#2563EB] to-[#1e325d] text-white">
+                        <div class="flex items-center justify-center bg-white rounded-full h-20 w-20 shadow-lg">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/wallet-3.svg')); ?>" alt="" class="h-10 w-10">
+                        </div>
 
-    <h1 class="text-lg font-semibold drop-shadow-md text-center">
-        <?php echo e(__('messages.general_total_balance')); ?>
+                        <h1 class="text-lg font-semibold drop-shadow-md text-center">
+                            <?php echo e(__('messages.general_total_balance')); ?>
 
-    </h1>
+                        </h1>
 
-    <p class="text-3xl font-extrabold drop-shadow-md">
-        $<?php echo e(number_format($total_balance_usd, 2)); ?>
+                        <p class="text-3xl font-extrabold drop-shadow-md">
+                            <?php echo e(number_format($total_balance_usd, 2)); ?>
 
-    </p>
-    
-    
-    
-</div>
+                        </p>
+
+                    </div>
                 </div>
 
             </template>
@@ -270,7 +269,8 @@
                     <div class="border bg-[#F5F5F5] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
                         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
                         <div class="rounded-full dark:bg-white/100 bg-[#2563EB] p-6 flex items-center justify-center">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt="" class="h-10 w-10 dark:hidden">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/coin.svg')); ?>" alt=""
+                                class="h-10 w-10 dark:hidden">
                             <i class="fa-solid fa-coins text-black text-2xl hidden  dark:block"></i>
                         </div>
                         <div class="space-y-2">
