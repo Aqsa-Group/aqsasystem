@@ -212,16 +212,16 @@
                 @endphp
                 <tr class="total-row" style="text-align:center;" style="background-color: white">
                     <td style="padding:5px;">{{ $currencyName }}</td>
-                    <td style="padding:5px; text-align:right;">{{ number_format($cash, 2) }}</td>
-                    <td style="padding:5px; text-align:right;">{{ number_format($bank, 2) }}</td>
-                    <td style="padding:5px; text-align:right;">{{ number_format($total, 2) }}</td>
-                    <td style="padding:5px; text-align:right;">{{ number_format($totalUsd, 2) }}</td>
+                    <td style="padding:5px; text-align:right;" dir="ltr">{{ number_format($cash, 2) }}</td>
+                    <td style="padding:5px; text-align:right;" dir="ltr">{{ number_format($bank, 2) }}</td>
+                    <td style="padding:5px; text-align:right;" dir="ltr">{{ number_format($total, 2) }}</td>
+                    <td style="padding:5px; text-align:right;" dir="ltr">{{ number_format($totalUsd, 2) }}</td>
                 </tr>
             @endforeach
 
             <tr class="total-row" style="font-weight:bold; background:#d0e9d0; text-align:center;">
                 <td colspan="4" style="padding:5px;">جمع کل بیلانس به دالر</td>
-                <td style="padding:5px; text-align:right;">{{ number_format($grandTotalUsd, 2) }} دالر</td>
+                <td style="padding:5px; text-align:right;" dir="ltr">{{ number_format($grandTotalUsd, 2) }} دالر</td>
             </tr>
         </tbody>
     </table>
