@@ -918,6 +918,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                                             </button>
 
+
+                                             <?php
+                        $currentUser=Auth::guard('sarafi')->user();
+                        ?>
+
+
+<!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role==='admin' || $currentUser->role==='superadmin'): ?>
+    
                                             <!-- دکمه حذف -->
                                             <button wire:click="confirmDelete(<?php echo e($transaction->id); ?>)"
                                                 class="w-12 h-12 flex items-center justify-center rounded-full transition-colors"
@@ -945,6 +953,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                                 </svg>
 
                                             </button>
+<?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
 
                                             <!-- مودال تأیید حذف -->
                                             <!--[if BLOCK]><![endif]--><?php if($confirmDeleteId): ?>

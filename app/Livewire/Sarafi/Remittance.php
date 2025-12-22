@@ -17,7 +17,6 @@ use Livewire\WithFileUploads;
 use Morilog\Jalali\Jalalian;
 use NumberFormatter;
 
-
 class Remittance extends Component
 {
     use WithFileUploads;
@@ -108,6 +107,7 @@ class Remittance extends Component
                 ];
             });
     }
+
     public function updatedSearch($value)
     {
         $user = Auth::guard('sarafi')->user();
@@ -177,6 +177,7 @@ class Remittance extends Component
             $this->giver_name = $customer->fullname;
         }
     }
+
     public function clearFilter()
     {
         $this->selectedCustomerId = null;
@@ -216,6 +217,7 @@ class Remittance extends Component
 
         $this->remittances = $query->latest()->get();
     }
+
     public function submitRemittance()
     {
         $this->amount = str_replace(',', '', $this->amount);
@@ -264,29 +266,82 @@ class Remittance extends Component
             'state' => 0,
         ];
 
-        if ($this->remittanceId) {
-            $remittance = Remittances::findOrFail($this->remittanceId);
+        DB::beginTransaction();
+        try {
+            if ($this->remittanceId) {
+                $remittance = Remittances::findOrFail($this->remittanceId);
 
-            if ($imagePath && $remittance->remittance_image) {
-                Storage::disk('public')->delete($remittance->remittance_image);
+                if ($imagePath && $remittance->remittance_image) {
+                    Storage::disk('public')->delete($remittance->remittance_image);
+                }
+
+                $remittance->update($data);
+                
+                // **اینجا مهم است: به‌روزرسانی رکورد در RemittanceApproval**
+                $this->updateOrCreateRemittanceApproval($remittance);
+                
+                session()->flash('message', 'حواله با موفقیت بروزرسانی شد.');
+            } else {
+                $remittance = Remittances::create($data);
+                $this->createRemittanceApproval($remittance);
+                session()->flash('message', 'حواله با موفقیت ثبت شد و برای تایید ارسال گردید.');
             }
 
-            $remittance->update($data);
-            $this->updateRemittanceApproval($remittance);
-            session()->flash('message', 'حواله با موفقیت بروزرسانی شد.');
-        } else {
-            $remittance = Remittances::create($data);
-
-            $this->createRemittanceApproval($remittance);
-
-            session()->flash('message', 'حواله با موفقیت ثبت شد و برای تایید ارسال گردید.');
+            DB::commit();
+            
+            $this->updateRemittances();
+            $this->resetForm();
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+            session()->flash('error', 'خطا در ثبت حواله: ' . $e->getMessage());
+            Log::error('Remittance submission error: ' . $e->getMessage(), [
+                'remittance_id' => $this->remittanceId,
+                'admin_id' => $adminId,
+                'user_id' => $user->id
+            ]);
         }
-
-        $this->updateRemittances();
-        $this->resetForm();
     }
 
+    /**
+     * ایجاد یا به‌روزرسانی رکورد در جدول تایید حواله
+     */
+    private function updateOrCreateRemittanceApproval(Remittances $remittance)
+    {
+        $approvalData = [
+            'customer_id' => $remittance->customer_id,
+            'to_account' => $remittance->to_account,
+            'user_id' => $remittance->user_id,
+            'admin_id' => $remittance->admin_id,
+            'source_account' => $remittance->source_account,
+            'currency' => $remittance->currency,
+            'amount' => $remittance->amount,
+            'date' => $remittance->date,
+            'clock' => $remittance->clock,
+            'tracking_code' => $remittance->tracking_code,
+            'from_bank' => $remittance->from_bank,
+            'to_bank' => $remittance->to_bank,
+            'zone' => $remittance->zone,
+            'giver_name' => $remittance->giver_name,
+            'description' => $remittance->description,
+            'remittance_image' => $remittance->remittance_image,
+            'approved' => 0, // هنوز تایید نشده
+        ];
 
+        // بررسی وجود رکورد قبلی
+        $existingApproval = RemittanceApproval::where('remittance_id', $remittance->id)->first();
+        
+        if ($existingApproval) {
+            // اگر رکورد وجود دارد، به‌روزرسانی کن
+            $existingApproval->update($approvalData);
+            Log::info("رکورد تایید حواله ID {$remittance->id} به‌روزرسانی شد");
+        } else {
+            // اگر رکورد وجود ندارد، ایجاد کن
+            $approvalData['remittance_id'] = $remittance->id;
+            RemittanceApproval::create($approvalData);
+            Log::info("رکورد تایید حواله جدید برای ID {$remittance->id} ایجاد شد");
+        }
+    }
 
     private function createRemittanceApproval($remittance)
     {
@@ -312,8 +367,6 @@ class Remittance extends Component
         ]);
     }
 
-
-
     public function edit($id)
     {
         $remittance = Remittances::with(['customer', 'recipient'])->findOrFail($id);
@@ -338,33 +391,10 @@ class Remittance extends Component
 
         $this->search = $remittance->customer->fullname ?? '';
 
-        $this->updateRemittanceApproval($remittance);
+        // **اینجا مهم است: وقتی ویرایش می‌کنیم، مطمئن شویم رکورد تایید هم به‌روزرسانی می‌شود**
+        // فعلاً کاری نمی‌کنیم چون در submitRemittance انجام می‌شود
     }
 
-    private function updateRemittanceApproval(Remittances $remittance)
-    {
-        $approval = RemittanceApproval::where('remittance_id', $remittance->id)->first();
-
-        if ($approval) {
-            $approval->update([
-                'customer_id' => $remittance->customer_id,
-                'to_account' => $remittance->to_account,
-                'source_account' => $remittance->source_account,
-                'currency' => $remittance->currency,
-                'amount' => $remittance->amount,
-                'date' => $remittance->date,
-                'clock' => $remittance->clock,
-                'tracking_code' => $remittance->tracking_code,
-                'from_bank' => $remittance->from_bank,
-                'to_bank' => $remittance->to_bank,
-                'zone' => $remittance->zone,
-                'giver_name' => $remittance->giver_name,
-                'description' => $remittance->description,
-                'remittance_image' => $remittance->remittance_image,
-
-            ]);
-        }
-    }
     public function confirmDelete($id)
     {
         $this->confirmDeleteId = $id;
@@ -389,8 +419,6 @@ class Remittance extends Component
         $this->updateRemittances();
         $this->confirmDeleteId = null;
     }
-
-
 
     /**
      * برگشت دادن حواله تایید شده
@@ -424,9 +452,6 @@ class Remittance extends Component
         // 5. حذف حواله اصلی
         $remittance->delete();
     }
-
-
-
 
     /**
      * حذف حواله در انتظار تایید
@@ -534,14 +559,10 @@ class Remittance extends Component
         }
     }
 
-
-
-
     public function cancel()
     {
         $this->resetForm();
     }
-
 
     private function resetForm()
     {
@@ -567,6 +588,7 @@ class Remittance extends Component
         $this->zone = Auth::guard('sarafi')->user()->zone;
         $this->search = '';
     }
+
     // Add this method for amount formatting
     public function formatAmount()
     {

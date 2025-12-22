@@ -855,6 +855,15 @@
 
                                             </button>
 
+
+                                            @php
+                                            $currentUser=Auth::guard('sarafi')->user();
+                                            @endphp
+
+
+                                            @if ($currentUser && $currentUser->role==='admin' ||
+                                            $currentUser->role==='superadmin')
+
                                             <!-- دکمه حذف -->
                                             <button wire:click="confirmDelete({{ $transaction->id }})"
                                                 class="w-12 h-12 flex items-center justify-center rounded-full transition-colors"
@@ -882,6 +891,8 @@
                                                 </svg>
 
                                             </button>
+                                            @endif
+
 
                                             <!-- مودال تأیید حذف -->
                                             @if ($confirmDeleteId)
