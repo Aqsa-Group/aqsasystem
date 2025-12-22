@@ -253,8 +253,8 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
 
                                 <!-- Customer Info -->
                                 <div class="flex-1 text-right mr-3">
-                                    <div class="font-medium text-gray-900" x-text="customer.fullname"></div>
-                                    <div class="text-sm text-gray-500"
+                                    <div class="font-medium dark:text-white text-gray-900" x-text="customer.fullname"></div>
+                                    <div class="text-sm text-gray-500 dark:text-white"
                                         x-text="'شماره حساب: ' + customer.account_number"></div>
                                 </div>
                             </label>
@@ -279,11 +279,11 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
             @foreach($totalBalances as $currencyCode => $data)
             <div
                 class="flex flex-col bg-white justify-center items-center gap-3 rounded-xl py-6 px-4 shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
-                <p class="text-gray-500 text-sm font-medium">{{ $data['currency_name'] }}</p>
+                <p class="text-gray-500 dark: text-white text-sm font-medium">{{ $data['currency_name'] }}</p>
                 <p class="text-2xl font-bold text-gray-800 times" dir="ltr">
                     {{ number_format($data['total']) }}
                 </p>
-                <p class="text-gray-400 text-xs font-medium uppercase">
+                <p class=" dark:text-white text-gray-400 text-xs font-medium uppercase">
                     @switch($currencyCode)
                     @case('usd') USD @break
                     @case('afn') AFN @break
@@ -300,84 +300,103 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
             @endforeach
         </div>
 
-        <!-- نمودار میله‌ای -->
-        <div class=" p-6  mb-8">
-            <svg width="100%" height="350" viewBox="0 0 1000 350" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="#153885" />
-                        <stop offset="100%" stop-color="#2563EB" />
-                    </linearGradient>
-                </defs>
+   <!-- نمودار میله‌ای -->
+<div class="p-6 mb-8 bg-white dark:bg-gray-900 rounded-xl shadow">
+    <svg width="100%" height="350" viewBox="0 0 1000 350" xmlns="http://www.w3.org/2000/svg">
 
-                <!-- محور عمودی سمت چپ برای جدا کردن مقادیر -->
-                <line x1="129" y1="30" x2="129" y2="280" stroke="#94a3b8" stroke-width="2" />
+        <!-- استایل دارک مود مخصوص SVG -->
+       <style>
+    /* حالت لایت */
+    .axis { stroke: #94a3b8; }
+    .grid { stroke: #e2e8f0; }
+    .label { fill: #374151; font-size: 12px; }
+    .currency { fill: #1f2937; font-size: 16px; font-weight: 600; }
+    .value { fill: #1f2937; font-size: 12px; font-weight: 600; }
 
-                <!-- محور افقی -->
-                <line x1="100" y1="280" x2="950" y2="280" stroke="#94a3b8" stroke-width="2" />
+    /* دارک مود */
+    @media (prefers-color-scheme: dark) {
+        .axis { stroke: #64748b; }
+        .grid { stroke: #334155; }
 
-                <!-- مقادیر عمودی سمت چپ (چپ‌چین شده) -->
-                <text dir="ltr" x="90" y="285" font-family="Arial" font-size="12" text-anchor="end"
-                    fill="#64748b">0</text>
-                <text dir="ltr" x="90" y="235" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
-                    number_format($maxValue * 0.2, 0) }}</text>
-                <text dir="ltr" x="90" y="185" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
-                    number_format($maxValue * 0.4, 0) }}</text>
-                <text dir="ltr" x="90" y="135" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
-                    number_format($maxValue * 0.6, 0) }}</text>
-                <text dir="ltr" x="90" y="85" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
-                    number_format($maxValue * 0.8, 0) }}</text>
-                <text dir="ltr" x="90" y="35" font-family="Arial" font-size="12" text-anchor="end" fill="#64748b">{{
-                    number_format($maxValue, 0) }}</text>
+        /* 👇 همه متن‌ها سفید */
+        .label,
+        .currency,
+        .value {
+            fill: #ffffff;
+        }
+    }
+</style>
 
-                <!-- خطوط راهنمای افقی -->
-                <line x1="100" y1="280" x2="950" y2="280" stroke="#e2e8f0" stroke-width="1" />
-                <line x1="100" y1="230" x2="950" y2="230" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
-                <line x1="100" y1="180" x2="950" y2="180" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
-                <line x1="100" y1="130" x2="950" y2="130" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
-                <line x1="100" y1="80" x2="950" y2="80" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
-                <line x1="100" y1="30" x2="950" y2="30" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4" />
 
-                <!-- میله‌های نمودار -->
-                @php
-                $chartHeight = 250; // 280 - 30
-                $barWidth = 50;
-                $spacing = 30;
-                $startX = 140; // افزایش یافته تا از خط جداکننده فاصله بگیرد
-                @endphp
+        <defs>
+            <!-- گرادیانت میله‌ها -->
+            <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#60A5FA" />
+                <stop offset="100%" stop-color="#2563EB" />
+            </linearGradient>
+        </defs>
 
-                @foreach($chartData as $index => $item)
-                @php
+        <!-- محور عمودی -->
+        <line x1="129" y1="30" x2="129" y2="280" class="axis" stroke-width="2" />
+
+        <!-- محور افقی -->
+        <line x1="100" y1="280" x2="950" y2="280" class="axis" stroke-width="2" />
+
+        <!-- مقادیر محور عمودی -->
+        <text x="90" y="285" text-anchor="end" class="label">0</text>
+        <text x="90" y="235" text-anchor="end" class="label">{{ number_format($maxValue * 0.2, 0) }}</text>
+        <text x="90" y="185" text-anchor="end" class="label">{{ number_format($maxValue * 0.4, 0) }}</text>
+        <text x="90" y="135" text-anchor="end" class="label">{{ number_format($maxValue * 0.6, 0) }}</text>
+        <text x="90" y="85"  text-anchor="end" class="label">{{ number_format($maxValue * 0.8, 0) }}</text>
+        <text x="90" y="35"  text-anchor="end" class="label">{{ number_format($maxValue, 0) }}</text>
+
+        <!-- خطوط راهنما -->
+        <line x1="100" y1="280" x2="950" y2="280" class="grid" />
+        <line x1="100" y1="230" x2="950" y2="230" class="grid" stroke-dasharray="4" />
+        <line x1="100" y1="180" x2="950" y2="180" class="grid" stroke-dasharray="4" />
+        <line x1="100" y1="130" x2="950" y2="130" class="grid" stroke-dasharray="4" />
+        <line x1="100" y1="80"  x2="950" y2="80"  class="grid" stroke-dasharray="4" />
+        <line x1="100" y1="30"  x2="950" y2="30"  class="grid" stroke-dasharray="4" />
+
+        @php
+            $chartHeight = 250;
+            $barWidth = 50;
+            $spacing = 30;
+            $startX = 140;
+        @endphp
+
+        @foreach($chartData as $index => $item)
+            @php
                 $barHeight = $maxValue > 0 ? ($item['value'] / $maxValue) * $chartHeight : 0;
                 $x = $startX + ($index * ($barWidth + $spacing));
                 $y = 280 - $barHeight;
 
-                // فرمت مقدار برای نمایش
                 $displayValue = $item['value'] >= 1000000
-                ? number_format($item['value'] / 1000000, 1) . 'M'
-                : ($item['value'] >= 1000
-                ? number_format($item['value'] / 1000, 1) . 'K'
-                : number_format($item['value'], 0));
-                @endphp
+                    ? number_format($item['value'] / 1000000, 1) . 'M'
+                    : ($item['value'] >= 1000
+                        ? number_format($item['value'] / 1000, 1) . 'K'
+                        : number_format($item['value'], 0));
+            @endphp
 
-                <!-- میله -->
-                <rect x="{{ $x }}" y="{{ $y }}" width="{{ $barWidth }}" height="{{ $barHeight }}"
-                    fill="url(#barGradient)" rx="2" />
+            <!-- میله -->
+            <rect x="{{ $x }}" y="{{ $y }}" width="{{ $barWidth }}" height="{{ $barHeight }}"
+                  fill="url(#barGradient)" rx="4" />
 
-                <!-- مقدار بالای میله -->
-                <text x="{{ $x + $barWidth / 2 }}" y="{{ $y - 10 }}" font-family="Arial" font-size="12"
-                    text-anchor="middle" fill="#374151">
-                    {{ $displayValue }}
-                </text>
+            <!-- مقدار -->
+            <text x="{{ $x + $barWidth / 2 }}" y="{{ $y - 8 }}"
+                  text-anchor="middle" class="value">
+                {{ $displayValue }}
+            </text>
 
-                <!-- نام ارز زیر میله -->
-                <text x="{{ $x + $barWidth / 2 }}" y="300" font-family="Arial" font-size="16" text-anchor="middle"
-                    fill="#374151">
-                    {{ $item['currency'] }}
-                </text>
-                @endforeach
-            </svg>
-        </div>
+            <!-- نام ارز -->
+            <text x="{{ $x + $barWidth / 2 }}" y="305"
+                  text-anchor="middle" class="currency">
+                {{ $item['currency'] }}
+            </text>
+        @endforeach
+    </svg>
+</div>
+
         @break
         @case('طلب مشتری ها')
         <div class="overflow-x-auto w-full mt-4 mb-8">

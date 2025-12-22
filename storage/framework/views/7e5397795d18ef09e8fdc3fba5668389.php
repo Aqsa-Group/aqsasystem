@@ -250,7 +250,7 @@
 
                         </h1>
 
-                        <p class="text-3xl font-extrabold drop-shadow-md">
+                        <p class="text-3xl font-extrabold drop-shadow-md" dir="ltr">
                             <?php echo e(number_format($total_balance_usd, 2)); ?>
 
                         </p>
