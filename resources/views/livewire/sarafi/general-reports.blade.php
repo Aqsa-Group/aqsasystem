@@ -125,7 +125,7 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                                 2) }}</td>
                             <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['cny'] ?? 0,
                                 2) }}</td>
-                            <td class="px-4 py-4 font-medium text-left">{{ number_format($report['total_balance'], 2) }}
+                            <td class="px-4 py-4 font-medium text-left" dir="ltr">{{ number_format($report['total_balance'], 2) }}
                             </td>
                         </tr>
                         @empty
