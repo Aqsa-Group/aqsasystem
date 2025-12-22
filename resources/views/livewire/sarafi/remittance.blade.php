@@ -578,7 +578,7 @@
                                                         <div class="font-medium">
                                                             {{ explode(' ',$remittance->date)[0] }}
                                                         </div>
-                                                        <div class="text-gray-500 text-sm mt-1">
+                                                        <div class="text-gray-500 dark:text-white  text-sm mt-1">
                                                             {{ $remittance->clock }}
                                                         </div>
                                                     </div>

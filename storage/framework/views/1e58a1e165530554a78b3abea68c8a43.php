@@ -200,7 +200,7 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                     <!-- Input Field -->
                     <div @click="isOpen = true" class="relative">
                         <input type="text" x-model="searchValue" placeholder="انتخاب مشتری"
-                            class="w-full h-[30px] p-3 pr-10 rounded-[12px]  bg-transparent  cursor-pointer text-white placeholder-white"
+                            class="w-full dark:text-white dark:bg-black dark h-[30px] p-3 pr-10 rounded-[12px]  bg-transparent  cursor-pointer text-white placeholder-white"
                             readonly>
 
                         <!-- Dropdown Arrow -->
@@ -235,11 +235,11 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                         x-transition:leave="transition ease-in duration-200"
                         x-transition:leave-start="opacity-100 transform scale-100"
                         x-transition:leave-end="opacity-0 transform scale-95"
-                        class="absolute z-50 w-full mt-1 bg-white  rounded-md shadow-lg max-h-60 overflow-auto"
+                        class="absolute z-50 w-full mt-1 dark:bg-black  dark:border-white dark:text-white bg-white  rounded-md shadow-lg max-h-60 overflow-auto"
                         @click.stop>
 
                         <!-- Search Box inside Dropdown -->
-                        <div class="sticky top-0 bg-white p-2 border-b">
+                        <div class="sticky top-0 dark:bg-black dark:text-white dark:border-white bg-white p-2 border-b">
                             <input type="text" x-model="searchQuery" placeholder="جستجوی مشتری..."
                                 class="w-full p-2   rounded-md focus:ring-2 focus:ring-blue-500">
                         </div>
@@ -247,10 +247,10 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                         <!-- Customers List -->
                         <template x-for="customer in filteredCustomers" :key="customer.id">
                             <label
-                                class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer border-b transition-colors">
+                                class="flex items-center px-3 py-2 dark:text-white dark:hover:bg-gray-600 hover:bg-gray-100 cursor-pointer border-b transition-colors">
                                 <!-- Checkbox سمت چپ -->
                                 <input type="checkbox" :checked="isSelected(customer.id)"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                                    class="w-4 h-4 text-blue-600 dark:bg-black dark:text-white bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                                     @click.stop="toggleCustomer(customer)">
 
                                 <!-- Customer Info -->
@@ -282,7 +282,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             </div>
         </div>
 
-        <h1 class="mt-5 mr-4 text-xl font-bold text-gray-800">گزارش خلاصه بیلانس مشتریان انتخاب شده</h1>
+        <h1 class="mt-5 mr-4 text-xl font-bold text-gray-800 dark:text-white">گزارش خلاصه بیلانس مشتریان انتخاب شده</h1>
 
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 p-4 mb-8">
             <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $totalBalances; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
