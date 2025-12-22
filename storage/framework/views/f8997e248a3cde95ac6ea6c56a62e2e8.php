@@ -203,20 +203,19 @@
             </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
 
-    
-<!--[if BLOCK]><![endif]--><?php if($selectedCustomerId): ?>
-<div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
-    <div
-        class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px]
+            
+            <!--[if BLOCK]><![endif]--><?php if($selectedCustomerId): ?>
+            <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
+                <div class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px]
         dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900
         bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
 
-        <?php
-            /* =========================
-               تبدیل کد ارز به نام فارسی
-            ========================== */
-            function getPersianCurrencyName($currencyCode) {
-                $currencyMap = [
+                    <?php
+                    /* =========================
+                    تبدیل کد ارز به نام فارسی
+                    ========================== */
+                    function getPersianCurrencyName($currencyCode) {
+                    $currencyMap = [
                     'afn' => 'افغانی',
                     'usd' => 'دالر',
                     'irr' => 'تومان',
@@ -229,116 +228,113 @@
                     'jpy' => 'ین',
                     'sar' => 'ریال سعودی',
                     'inr' => 'روپیه',
-                ];
+                    ];
 
-                $currencyCode = strtolower($currencyCode ?? 'usd');
-                return $currencyMap[$currencyCode] ?? $currencyCode;
-            }
+                    $currencyCode = strtolower($currencyCode ?? 'usd');
+                    return $currencyMap[$currencyCode] ?? $currencyCode;
+                    }
 
-            $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
-            $sourceCurrency   = getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
+                    $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
+                    $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
 
-            $totalCashUsd = 0;
-            $totalBankUsd = 0;
+                    $totalCashUsd = 0;
+                    $totalBankUsd = 0;
 
-            /* =========================
-               نرخ‌های خرید نقدی
-            ========================== */
-            $exchangeRatesCash = [
-                'افغانی' => $latestProfitRate->afn_buy_cash ?? 66.20,
-                'دالر'   => 1,
-                'تومان'  => $latestProfitRate->irr_buy_cash ?? 110000,
-                'یورو'   => $latestProfitRate->eur_buy_cash ?? 70,
-                'کلدار'  => $latestProfitRate->pkr_buy_cash ?? 32,
-                'درهم'   => $latestProfitRate->aed_buy_cash ?? 44,
-                'لیره'   => $latestProfitRate->try_buy_cash ?? 60,
-                'یوان'   => $latestProfitRate->cny_buy_cash ?? 43,
-                'روپیه'  => $latestProfitRate->inr_buy_cash ?? 7.14,
-            ];
+                    /* =========================
+                    نرخ‌های خرید نقدی
+                    ========================== */
+                    $exchangeRatesCash = [
+                    'افغانی' => $latestProfitRate->afn_buy_cash ?? 66.20,
+                    'دالر' => 1,
+                    'تومان' => $latestProfitRate->irr_buy_cash ?? 110000,
+                    'یورو' => $latestProfitRate->eur_buy_cash ?? 70,
+                    'کلدار' => $latestProfitRate->pkr_buy_cash ?? 32,
+                    'درهم' => $latestProfitRate->aed_buy_cash ?? 44,
+                    'لیره' => $latestProfitRate->try_buy_cash ?? 60,
+                    'یوان' => $latestProfitRate->cny_buy_cash ?? 43,
+                    'روپیه' => $latestProfitRate->inr_buy_cash ?? 7.14,
+                    ];
 
-            /* =========================
-               نرخ‌های خرید بانکی
-            ========================== */
-            $exchangeRatesBank = [
-                'افغانی' => $latestProfitRate->afn_buy_bank ?? 66.20,
-                'دالر'   => 1,
-                'تومان'  => $latestProfitRate->irr_buy_bank ?? 110000,
-                'یورو'   => $latestProfitRate->eur_buy_bank ?? 70,
-                'کلدار'  => $latestProfitRate->pkr_buy_bank ?? 32,
-                'درهم'   => $latestProfitRate->aed_buy_bank ?? 44,
-                'لیره'   => $latestProfitRate->try_buy_bank ?? 60,
-                'یوان'   => $latestProfitRate->cny_buy_bank ?? 43,
-                'روپیه'  => $latestProfitRate->inr_buy_bank ?? 7.14,
-            ];
+                    /* =========================
+                    نرخ‌های خرید بانکی
+                    ========================== */
+                    $exchangeRatesBank = [
+                    'افغانی' => $latestProfitRate->afn_buy_bank ?? 66.20,
+                    'دالر' => 1,
+                    'تومان' => $latestProfitRate->irr_buy_bank ?? 110000,
+                    'یورو' => $latestProfitRate->eur_buy_bank ?? 70,
+                    'کلدار' => $latestProfitRate->pkr_buy_bank ?? 32,
+                    'درهم' => $latestProfitRate->aed_buy_bank ?? 44,
+                    'لیره' => $latestProfitRate->try_buy_bank ?? 60,
+                    'یوان' => $latestProfitRate->cny_buy_bank ?? 43,
+                    'روپیه' => $latestProfitRate->inr_buy_bank ?? 7.14,
+                    ];
 
-            /* =========================
-               محاسبه موجودی نقدی
-            ========================== */
-            foreach ($customerCashBalances as $currency => $balance) {
-                if ($currency === 'دالر') {
+                    /* =========================
+                    محاسبه موجودی نقدی
+                    ========================== */
+                    foreach ($customerCashBalances as $currency => $balance) {
+                    if ($currency === 'دالر') {
                     $totalCashUsd += $balance; // دالر مستقیم
-                } elseif (isset($exchangeRatesCash[$currency]) && $exchangeRatesCash[$currency] > 0) {
+                    } elseif (isset($exchangeRatesCash[$currency]) && $exchangeRatesCash[$currency] > 0) {
                     $totalCashUsd += $balance / $exchangeRatesCash[$currency];
-                }
-            }
+                    }
+                    }
 
-            /* =========================
-               محاسبه موجودی بانکی
-            ========================== */
-            foreach ($customerBankBalances as $currency => $balance) {
-                if ($currency === 'دالر') {
+                    /* =========================
+                    محاسبه موجودی بانکی
+                    ========================== */
+                    foreach ($customerBankBalances as $currency => $balance) {
+                    if ($currency === 'دالر') {
                     $totalBankUsd += $balance; // دالر مستقیم
-                } elseif (isset($exchangeRatesBank[$currency]) && $exchangeRatesBank[$currency] > 0) {
+                    } elseif (isset($exchangeRatesBank[$currency]) && $exchangeRatesBank[$currency] > 0) {
                     $totalBankUsd += $balance / $exchangeRatesBank[$currency];
-                }
-            }
+                    }
+                    }
 
-            $grandTotalUsd = $totalCashUsd + $totalBankUsd;
-        ?>
+                    $grandTotalUsd = $totalCashUsd + $totalBankUsd;
+                    ?>
 
-        <h1 class="text-[24px] text-white">
-            خلاصه بیلانس به <?php echo e($sourceCurrency); ?>
+                    <h1 class="text-[24px] text-white">
+                        خلاصه بیلانس به <?php echo e($sourceCurrency); ?>
 
-        </h1>
+                    </h1>
 
-        <div class="flex flex-col gap-1 mt-1 text-center">
-            <div class="flex justify-between items-center text-[14px]">
-                <span>نقدی:</span>
-                <span class="font-bold text-left" dir="ltr">
-                    <?php echo e(number_format($totalCashUsd, 2)); ?>
+                    <div class="flex flex-col gap-1 mt-1 text-center">
+                        <div class="flex justify-between items-center text-[14px]">
+                            <span>نقدی:</span>
+                            <span class="font-bold text-left" dir="ltr">
+                                <?php echo e(number_format($totalCashUsd, 2)); ?>
 
-                </span>
-            </div>
+                            </span>
+                        </div>
 
-            <div class="flex justify-between items-center text-[14px]">
-                <span>بانکی:</span>
-                <span class="font-bold text-left" dir="ltr">
-                    <?php echo e(number_format($totalBankUsd, 2)); ?>
+                        <div class="flex justify-between items-center text-[14px]">
+                            <span>بانکی:</span>
+                            <span class="font-bold text-left" dir="ltr">
+                                <?php echo e(number_format($totalBankUsd, 2)); ?>
 
-                </span>
-            </div>
+                            </span>
+                        </div>
 
-            <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
-                <span class="font-semibold">مجموعه:</span>
-                <span class="font-bold text-[16px] text-left" dir="ltr">
-                    <?php echo e(number_format($grandTotalUsd, 2)); ?>
+                        <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
+                            <span class="font-semibold">مجموعه:</span>
+                            <span class="font-bold text-[16px] text-left" dir="ltr">
+                                <?php echo e(number_format($grandTotalUsd, 2)); ?>
 
-                </span>
-            </div>
-        </div>
+                            </span>
+                        </div>
+                    </div>
 
-        <button
-            wire:click="showReport"
-            wire:loading.attr="disabled"
-            class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800
+                    <button wire:click="showReport" wire:loading.attr="disabled" class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800
                    hover:shadow-md transition flex items-center justify-center gap-2">
-            <span wire:loading.remove>نمایش گزارش</span>
-            <span wire:loading>در حال انتقال...</span>
-        </button>
+                        <span wire:loading.remove>نمایش گزارش</span>
+                        <span wire:loading>در حال انتقال...</span>
+                    </button>
 
-    </div>
-</div>
-<?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                </div>
+            </div>
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
         </div>
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
@@ -372,7 +368,8 @@
                     <!-- انتخاب حساب -->
                     <div class="mt-2">
                         <div class="relative w-full">
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">حساب مشتری</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">حساب
+                                مشتری</label>
                             <div x-data="{
                                 searchValue: '',
                                 selectedId: <?php if ((object) ('selectedAccount') instanceof \Livewire\WireDirective) : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccount'->value()); ?>')<?php echo e('selectedAccount'->hasModifier('live') ? '.live' : ''); ?><?php else : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccount'); ?>')<?php endif; ?>,
@@ -452,7 +449,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     <!--[if BLOCK]><![endif]--><?php if($transactionType === 'خرید'): ?>
                                     ارز خرید
                                     <?php else: ?>
-                                    ارز  خرید
+                                    ارز خرید
                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </label>
                                 <div class="relative w-full">
@@ -621,7 +618,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                         <!-- تاریخ -->
                         <div class="flex-1 relative">
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
+                            <label
+                                class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
                             <div class="relative w-full">
                                 <input type="text" wire:model="transaction_date" placeholder="1404/4/20"
                                     class="w-full dark:bg-black dark:border dark:border-white dark:text-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500" />
@@ -656,7 +654,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     <div class="mt-2 flex flex-col lg:flex-row gap-3">
                         <!-- توسط برداشت -->
                         <div class="flex-1">
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">توسط (برداشت)</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">توسط
+                                (برداشت)</label>
                             <div class="relative w-full">
                                 <input type="text" wire:model="by_sender" placeholder="نام مسئول برداشت"
                                     class="w-full dark:bg-black dark:border dark:border-white dark:text-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500" />
@@ -675,7 +674,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                         <!-- توسط دریافت -->
                         <div class="flex-1">
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">توسط (دریافت)</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">توسط
+                                (دریافت)</label>
                             <div class="relative w-full">
                                 <input type="text" wire:model="by_receiver" placeholder="نام مسئول دریافت"
                                     class="w-full dark:bg-black dark:border dark:border-white dark:text-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500" />
@@ -697,7 +697,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
                         <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">زون برداشت</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">زون
+                                برداشت</label>
                             <select wire:model="zone_sender"
                                 class="w-full dark:bg-black dark:border dark:border-white dark:text-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="">انتخاب زون</option>
@@ -718,7 +719,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
 
                         <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">زون دریافت</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">زون
+                                دریافت</label>
                             <select wire:model="zone_receiver"
                                 class="w-full dark:bg-black dark:border dark:border-white dark:text-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="">انتخاب زون</option>
@@ -743,7 +745,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     <!-- شرح تراکنش -->
                     <div class="mt-3">
                         <div class="w-full">
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">شرح تراکنش</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">شرح
+                                تراکنش</label>
                             <textarea wire:model="description" rows="3" placeholder="شرح کامل تبدیل ارز..."
                                 class="w-full dark:bg-black dark:border dark:border-white dark:text-white dark:placeholder:text-white p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 resize-none"></textarea>
                             <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['description'];
@@ -796,10 +799,15 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
                                 class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 dark:hidden">
-<svg width="24" height="24" viewBox="0 0 24 24"     class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 hidden dark:block" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+                            <svg width="24" height="24" viewBox="0 0 24 24"
+                                class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 hidden dark:block"
+                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
 
                             <!--[if BLOCK]><![endif]--><?php if($search): ?>
                             <button wire:click="$set('search', '')"
@@ -884,7 +892,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                             <button wire:click="editConversion(<?php echo e($conversion->id); ?>)"
                                                 class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-blue-100"
                                                 title="ویرایش">
-                                                   <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>"
+                                                <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>"
                                                     class="w-7 h-7 dark:hidden" alt="Edit">
 
                                                 <svg width="22" height="22" class="hidden dark:block"
@@ -909,7 +917,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                             <button wire:click="confirmDelete(<?php echo e($conversion->id); ?>)"
                                                 class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-red-100"
                                                 title="حذف">
-                                                  <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>"
+                                                <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>"
                                                     class="w-8 h-8 dark:hidden" alt="Delete">
                                                 <svg width="24" height="24" class="hidden dark:block"
                                                     viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -935,7 +943,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                             <button wire:click="printTransaction(<?php echo e($conversion->id); ?>)"
                                                 class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-green-100"
                                                 title="پرینت PDF">
-                                                       <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
+                                                <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
                                                     class="w-10 h-10 dark:hidden" alt="Print">
                                                 <svg width="30" class="hidden dark:block" height="30"
                                                     viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">

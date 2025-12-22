@@ -598,10 +598,10 @@ private function getRateType()
 {
     if ($this->transactionType === 'خرید') {
         // برای خرید: نرخ خرید
-        return $this->accountType === 'نقدی' ? 'buy_cash' : 'buy_bank';
+        return $this->accountType === 'نقدی' ? 'sell_cash' : 'sell_bank';
     } else {
         // برای فروش: نرخ فروش
-        return $this->accountType === 'نقدی' ? 'sell_cash' : 'sell_bank';
+        return $this->accountType === 'نقدی' ? 'buy_cash' : 'buy_bank';
     }
 }
 

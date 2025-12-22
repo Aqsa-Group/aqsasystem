@@ -23,12 +23,9 @@ class ConversionTransfer extends Component
     use WithPagination;
 
     // حساب برداشت
-  
-
     public $withdrawalAccount = null;
     public $withdrawalCustomerId;
     public $withdrawalCustomer = null;
-
 
     // حساب دریافت
     public $depositAccount;
@@ -52,31 +49,46 @@ class ConversionTransfer extends Component
     public $receivedAmountInWords = '';
     public $currencyRateInWords = '';
 
+    // تنظیمات فرم
     public $transactionType = 'خرید';
     public $from_account = 'نقدی';
     public $to_account = 'نقدی';
     public $currencies = [];
     public $customers = [];
     public $search = '';
-
     public $filteredCustomers;
     public $accountSearch = '';
     public $confirmDeleteId = null;
     public $editingConversionId = null;
 
-    // اضافه کردن متغیرهای جدید برای نمایش موجودی‌ها
+    // متغیرهای موجودی‌ها
     public $customerCashBalances = [];
     public $customerBankBalances = [];
     public $customerTotalBalances = [];
     public $zones = [];
 
-    // اضافه کردن متغیرهای سود/ضرر
+    // متغیرهای سود/ضرر
     public $profit_display = '';
     public $loss_display = '';
     public $profit_loss_display = [];
     public $deleting = false;
 
+    // موجودی‌های پیش‌فرض
+    public $currenciesdefault = [
+        ['name' => 'افغانی', 'value' => 0],
+        ['name' => 'دالر', 'value' => 0],
+        ['name' => 'تومان', 'value' => 0],
+        ['name' => 'یورو', 'value' => 0],
+        ['name' => 'کلدار', 'value' => 0],
+        ['name' => 'درهم', 'value' => 0],
+        ['name' => 'لیره', 'value' => 0],
+        ['name' => 'یوان', 'value' => 0],
+        ['name' => 'خلاصه بیلانس به دالر', 'value' => 0],
+    ];
 
+    /**
+     * رندر صفحه
+     */
     public function render()
     {
         $user = Auth::guard('sarafi')->user();
@@ -134,6 +146,9 @@ class ConversionTransfer extends Component
         ]);
     }
 
+    /**
+     * نمایش گزارش مشتری
+     */
     public function showReport()
     {
         if (!$this->withdrawalCustomerId) {
@@ -141,73 +156,71 @@ class ConversionTransfer extends Component
             return redirect()->back();
         }
 
-        // پیدا کردن مشتری برای اطمینان از وجود
         $customer = Customer::find($this->withdrawalCustomerId);
         if (!$customer) {
             session()->flash('error', 'مشتری انتخاب شده یافت نشد');
             return redirect()->back();
         }
 
-        // ذخیره اطلاعات مشتری در سشن
         session([
             'selected_customer_id' => $this->withdrawalCustomerId,
             'selected_customer_name' => $customer->fullname,
             'selected_customer_account' => $customer->account_number
         ]);
 
-        // انتقال به صفحه گزارشات
         return redirect()->route('sarafi.transaction-reports');
     }
 
-
+    /**
+     * جستجوی تراکنش‌ها
+     */
     public function search()
     {
         $this->resetPage();
     }
+
+    /**
+     * بارگذاری مشتریان
+     */
     private function loadCustomers($adminId)
-{
-    // دریافت IDهای کاربران مرتبط (اختیاری - برای backward compatibility)
-    $relatedUserIds = \App\Models\Sarafi\User::where('admin_id', $adminId)
-        ->pluck('id')
-        ->push($adminId)
-        ->toArray();
+    {
+        $relatedUserIds = \App\Models\Sarafi\User::where('admin_id', $adminId)
+            ->pluck('id')
+            ->push($adminId)
+            ->toArray();
 
-    // روش 1: استفاده از orWhereHas برای مشتریان لینک شده
-    $this->customers = Customer::select('id', 'account_number', 'fullname', 'admin_id')
-        ->with(['admins' => function($query) use ($adminId) {
-            $query->where('customer_admin.admin_id', $adminId);
-        }])
-        ->where(function ($query) use ($adminId, $relatedUserIds) {
-            // مشتریانی که مال این ادمین هستند
-            $query->where('admin_id', $adminId)
-                
-                // یا مشتریانی که به این ادمین لینک شده‌اند
-                ->orWhereHas('admins', function ($q) use ($adminId) {
-                    $q->where('customer_admin.admin_id', $adminId);
-                })
-                
-                // یا مشتریانی که تراکنش با این ادمین دارند (برای backward compatibility)
-                ->orWhereHas('transactions', function ($t) use ($relatedUserIds) {
-                    $t->whereIn('user_id', $relatedUserIds)
-                        ->orWhereIn('admin_id', $relatedUserIds);
-                });
-        })
-        ->orderBy('fullname')
-        ->get()
-        ->map(function($customer) use ($adminId) {
-            return [
-                'id' => $customer->id,
-                'account_number' => $customer->account_number,
-                'fullname' => $customer->fullname,
-                'admin_id' => $customer->admin_id,
-                'is_mine' => $customer->admin_id == $adminId,
-                'is_linked' => $customer->admins->isNotEmpty() && $customer->admin_id != $adminId
-            ];
-        })
-        ->toArray();
-}
+        $this->customers = Customer::select('id', 'account_number', 'fullname', 'admin_id')
+            ->with(['admins' => function ($query) use ($adminId) {
+                $query->where('customer_admin.admin_id', $adminId);
+            }])
+            ->where(function ($query) use ($adminId, $relatedUserIds) {
+                $query->where('admin_id', $adminId)
+                    ->orWhereHas('admins', function ($q) use ($adminId) {
+                        $q->where('customer_admin.admin_id', $adminId);
+                    })
+                    ->orWhereHas('transactions', function ($t) use ($relatedUserIds) {
+                        $t->whereIn('user_id', $relatedUserIds)
+                            ->orWhereIn('admin_id', $relatedUserIds);
+                    });
+            })
+            ->orderBy('fullname')
+            ->get()
+            ->map(function ($customer) use ($adminId) {
+                return [
+                    'id' => $customer->id,
+                    'account_number' => $customer->account_number,
+                    'fullname' => $customer->fullname,
+                    'admin_id' => $customer->admin_id,
+                    'is_mine' => $customer->admin_id == $adminId,
+                    'is_linked' => $customer->admins->isNotEmpty() && $customer->admin_id != $adminId
+                ];
+            })
+            ->toArray();
+    }
 
-    // متد تبدیل عدد به حروف
+    /**
+     * تبدیل عدد به حروف
+     */
     private function convertAmountToWords($value, $property)
     {
         if ($value && is_numeric($value)) {
@@ -225,6 +238,9 @@ class ConversionTransfer extends Component
         }
     }
 
+    /**
+     * تغییر نوع تراکنش (خرید/فروش)
+     */
     public function toggleTransactionType()
     {
         $this->transactionType = $this->transactionType === 'خرید' ? 'فروش' : 'خرید';
@@ -248,22 +264,18 @@ class ConversionTransfer extends Component
         $this->dispatch('transactionTypeToggled');
     }
 
-
     /**
      * محاسبه خودکار مبلغ دریافت بر اساس نرخ ارز
      */
     public function calculateReceivedAmount()
     {
         if ($this->withdrawal_amount && $this->currency_rate && $this->from_currency && $this->to_currency) {
-
             $fromCurrency = $this->from_currency;
             $toCurrency = $this->to_currency;
 
-            // تبدیل مقادیر به عدد
             $amount = floatval(str_replace(',', '', $this->withdrawal_amount));
             $rate = floatval(str_replace(',', '', $this->currency_rate));
 
-            // بررسی اینکه نرخ ارز صفر نباشد
             if ($rate == 0) {
                 $this->received_amount = '';
                 $this->receivedAmountInWords = '';
@@ -272,37 +284,24 @@ class ConversionTransfer extends Component
 
             $calculatedAmount = 0;
 
-            // -----------------------------
-            // *** حالت‌های خاص AFN ↔ IRR ***
-            // -----------------------------
+            // حالت‌های خاص AFN ↔ IRR
             if ($fromCurrency === 'afn' && $toCurrency === 'irr') {
-                // افغانی → تومان: (مبلغ × 1000) ÷ نرخ معکوس
                 $calculatedAmount = ($amount * 1000) / $rate;
             } elseif ($fromCurrency === 'irr' && $toCurrency === 'afn') {
-                // تومان → افغانی: (مبلغ × نرخ معکوس) ÷ 1000
                 $calculatedAmount = ($amount * $rate) / 1000;
             }
-            // -----------------------------
-            //     حالت‌های USD ↔ AFN
-            // -----------------------------
+            // حالت‌های USD ↔ AFN
             elseif ($fromCurrency === 'afn' && $toCurrency === 'usd') {
-                // افغانی → دالر: مبلغ ÷ نرخ مستقیم
                 $calculatedAmount = $amount / $rate;
             } elseif ($fromCurrency === 'usd' && $toCurrency === 'afn') {
-                // دالر → افغانی: مبلغ × نرخ مستقیم
                 $calculatedAmount = $amount * $rate;
             }
-            // -----------------------------
-            //   سایر تبدیل‌های عمومی
-            // -----------------------------
+            // سایر تبدیل‌های عمومی
             else {
                 $calculatedAmount = $amount * $rate;
             }
 
-            // محدود کردن به 2 رقم اعشار
             $calculatedAmount = round($calculatedAmount, 2);
-
-            // ذخیره
             $this->received_amount = $calculatedAmount;
 
             // تبدیل به حروف
@@ -321,7 +320,9 @@ class ConversionTransfer extends Component
         }
     }
 
-    // Event Listeners برای محاسبه خودکار
+    /**
+     * Event Listeners برای محاسبه خودکار
+     */
     public function updated($property)
     {
         $calculationProperties = [
@@ -338,7 +339,6 @@ class ConversionTransfer extends Component
             $this->calculateReceivedAmount();
         }
 
-        // تبدیل مستقیم برای فیلدهای خاص
         if ($property === 'withdrawal_amount') {
             $this->convertAmountToWords($this->withdrawal_amount, 'withdrawalAmountInWords');
         }
@@ -371,10 +371,10 @@ class ConversionTransfer extends Component
                 'predefined_rate' => $profitLoss['predefined_rate'],
                 'amount_with_predefined_rate' => $profitLoss['amount_with_predefined_rate'],
                 'amount_with_entered_rate' => $profitLoss['amount_with_entered_rate'],
-                'difference' => $profitLoss['difference']
+                'difference' => $profitLoss['difference'],
+                'rate_type_used' => $profitLoss['rate_type_used']
             ];
 
-            // به‌روزرسانی نمایش در فرم
             $this->updateProfitLossDisplay();
         } catch (\Exception $e) {
             Log::error('خطا در محاسبه سود/ضرر زمان واقعی: ' . $e->getMessage());
@@ -383,19 +383,20 @@ class ConversionTransfer extends Component
     }
 
     /**
-     * به‌روزرسانی نمایش سود/ضرر در فرم
+     * به‌روزرسانی نمایش سود/ضرر
      */
     private function updateProfitLossDisplay()
     {
         $profit = $this->profit_loss_display['profit'] ?? 0;
         $loss = $this->profit_loss_display['loss'] ?? 0;
+        $rateType = $this->profit_loss_display['rate_type_used'] ?? 'sell';
 
         if ($profit > 0) {
-            $this->profit_display = 'سود: ' . number_format($profit, 4) . ' دالر';
+            $this->profit_display = 'سود: ' . number_format($profit, 4) . ' دالر (با نرخ ' . ($rateType === 'sell' ? 'فروش' : 'خرید') . ')';
             $this->loss_display = '';
         } elseif ($loss > 0) {
             $this->profit_display = '';
-            $this->loss_display = 'ضرر: ' . number_format($loss, 4) . ' دالر';
+            $this->loss_display = 'ضرر: ' . number_format($loss, 4) . ' دالر (با نرخ ' . ($rateType === 'sell' ? 'فروش' : 'خرید') . ')';
         } else {
             $this->profit_display = 'بدون سود/ضرر';
             $this->loss_display = '';
@@ -420,8 +421,8 @@ class ConversionTransfer extends Component
         $this->loss_display = '';
     }
 
-    /** 
-     * محاسبه سود/ضرر تبدیل ارز - برای انتقال بین حساب‌ها
+    /**
+     * محاسبه سود/ضرر تبدیل ارز
      */
     private function calculateProfitOrLoss()
     {
@@ -432,10 +433,10 @@ class ConversionTransfer extends Component
                 'withdrawal_amount' => $this->withdrawal_amount,
                 'received_amount' => $this->received_amount,
                 'currency_rate' => $this->currency_rate,
-                'transaction_type' => $this->transactionType
+                'transaction_type' => $this->transactionType,
+                'rate_type_used' => $this->getTransferRateType()
             ]);
 
-            // دریافت نرخ از پیش تعیین شده
             $predefinedRate = $this->getTransferPredefinedRate();
 
             if ($predefinedRate === null || $predefinedRate == 0) {
@@ -443,51 +444,32 @@ class ConversionTransfer extends Component
                 return $this->getDefaultProfitLossResult();
             }
 
-            // محاسبه مبلغ با نرخ از پیش تعیین شده
             $amountWithPredefinedRate = $this->calculateTransferWithPredefinedRate($predefinedRate);
             $amountWithEnteredRate = floatval($this->received_amount);
 
             Log::info('مقادیر محاسبه شده', [
+                'transaction_type' => $this->transactionType,
+                'rate_type' => $this->getTransferRateType(),
                 'predefined_rate' => $predefinedRate,
                 'amount_with_predefined_rate' => $amountWithPredefinedRate,
                 'amount_with_entered_rate' => $amountWithEnteredRate
             ]);
 
-            // محاسبه تفاوت بر اساس نوع تراکنش
             $difference = $amountWithPredefinedRate - $amountWithEnteredRate;
 
-            Log::info('محاسبه تفاوت', [
-                'difference' => $difference,
-                'formula' => "{$amountWithPredefinedRate} - {$amountWithEnteredRate} = {$difference}",
-                'note' => 'مثبت = سود صراف (کمتر پرداخت کرده)'
-            ]);
-
-            // سود/ضرر از دیدگاه صراف
             $profit = $difference > 0 ? $difference : 0;
             $loss = $difference < 0 ? abs($difference) : 0;
-
-            Log::info('سود/ضرر در ارز مقصد', [
-                'profit' => $profit,
-                'loss' => $loss
-            ]);
 
             // تبدیل سود/ضرر به USD
             if ($profit > 0) {
                 $profitUsd = $this->convertTransferToUsd($profit, $this->to_currency);
-                Log::info('سود تبدیل به USD', ['profit_usd' => $profitUsd]);
                 $profit = $profitUsd;
             }
 
             if ($loss > 0) {
                 $lossUsd = $this->convertTransferToUsd($loss, $this->to_currency);
-                Log::info('ضرر تبدیل به USD', ['loss_usd' => $lossUsd]);
                 $loss = $lossUsd;
             }
-
-            Log::info('نتیجه نهایی در USD', [
-                'profit' => $profit,
-                'loss' => $loss
-            ]);
 
             return [
                 'profit' => round($profit, 4),
@@ -495,7 +477,8 @@ class ConversionTransfer extends Component
                 'predefined_rate' => round($predefinedRate, 4),
                 'amount_with_predefined_rate' => round($amountWithPredefinedRate, 4),
                 'amount_with_entered_rate' => round($amountWithEnteredRate, 4),
-                'difference' => round($difference, 4)
+                'difference' => round($difference, 4),
+                'rate_type_used' => $this->getTransferRateType()
             ];
         } catch (\Exception $e) {
             Log::error('❌ خطا در محاسبه سود/ضرر: ' . $e->getMessage());
@@ -508,36 +491,27 @@ class ConversionTransfer extends Component
      */
     private function getTransferPredefinedRate()
     {
-        $rateType = $this->getTransferRateType(); // 'sell_cash' یا 'sell_bank'
+        $rateType = $this->getTransferRateType();
+        $accountType = $this->from_account === 'نقدی' ? 'cash' : 'bank';
 
-        Log::info("جستجوی نرخ برای انتقال: {$this->from_currency} → {$this->to_currency} با نوع: {$rateType}");
+        Log::info("جستجوی نرخ برای انتقال: {$this->from_currency} → {$this->to_currency} با نوع: {$rateType} و حساب: {$accountType}");
 
         // حالت خاص: تبدیل AFN ↔ IRR
         if (($this->from_currency === 'afn' && $this->to_currency === 'irr') ||
             ($this->from_currency === 'irr' && $this->to_currency === 'afn')
         ) {
-
-            Log::info("🔍 حالت خاص: تبدیل {$this->from_currency} ↔ {$this->to_currency}");
-
             $afnProfitRate = ProfitRate::where('source_currency', 'afn')->first();
 
             if ($afnProfitRate) {
-                // تعیین فیلد بر اساس نوع نرخ
-                $field = $rateType === 'sell_cash' ? 'irr_sell_cash' : 'irr_sell_bank';
-                $inverseRate = $afnProfitRate->{$field} ?? 0;
+                $field = 'irr_' . $rateType . '_' . $accountType;
+                $rate = $afnProfitRate->{$field} ?? 0;
 
-                Log::info("نرخ معکوس یافت شد از رکورد AFN", [
-                    'inverse_rate' => $inverseRate,
-                    'rate_field' => $field,
-                    'note' => 'هر 1000 تومان = ' . $inverseRate . ' افغانی'
-                ]);
-
-                if ($inverseRate > 0) {
-                    return $inverseRate;
+                if ($rate > 0) {
+                    return $rate;
                 }
             }
 
-            Log::warning("❌ نرخ معکوس برای تبدیل {$this->from_currency} ↔ {$this->to_currency} یافت نشد");
+            Log::warning("❌ نرخ برای تبدیل {$this->from_currency} ↔ {$this->to_currency} یافت نشد");
             return null;
         }
 
@@ -545,40 +519,11 @@ class ConversionTransfer extends Component
         if (($this->from_currency === 'usd' && $this->to_currency === 'afn') ||
             ($this->from_currency === 'afn' && $this->to_currency === 'usd')
         ) {
-
-            Log::info("🔍 حالت خاص: تبدیل {$this->from_currency} ↔ {$this->to_currency}");
-
             $usdProfitRate = ProfitRate::where('source_currency', 'usd')->first();
 
             if ($usdProfitRate) {
-                // برای فروش: همیشه از نرخ فروش استفاده کن
-                if ($this->from_currency === 'usd') {
-                    // دلار به افغانی (فروش دلار): از نرخ فروش دلار استفاده کن
-                    $field = 'afn_' . $rateType; // 'afn_sell_cash' یا 'afn_sell_bank'
-                    $rate = $usdProfitRate->{$field} ?? 0;
-
-                    Log::info("نرخ فروش دلار به افغانی", [
-                        'rate' => $rate,
-                        'rate_field' => $field,
-                        'note' => 'هر 1 دلار = ' . $rate . ' افغانی (فروش)'
-                    ]);
-                } else {
-                    // افغانی به دلار (فروش افغانی): معکوس نرخ خرید دلار
-                    $field = 'afn_' . str_replace('sell', 'buy', $rateType); // 'afn_buy_cash' یا 'afn_buy_bank'
-                    $buyRate = $usdProfitRate->{$field} ?? 0;
-
-                    if ($buyRate > 0) {
-                        $rate = 1 / $buyRate; // معکوس نرخ خرید
-                        Log::info("معکوس نرخ خرید دلار برای فروش افغانی", [
-                            'buy_rate' => $buyRate,
-                            'rate' => $rate,
-                            'rate_field' => $field,
-                            'note' => 'هر 1 افغانی = ' . $rate . ' دلار (بر اساس معکوس نرخ خرید)'
-                        ]);
-                    } else {
-                        $rate = 0;
-                    }
-                }
+                $field = 'afn_' . $rateType . '_' . $accountType;
+                $rate = $usdProfitRate->{$field} ?? 0;
 
                 if ($rate > 0) {
                     return $rate;
@@ -593,39 +538,29 @@ class ConversionTransfer extends Component
         $usdProfitRate = ProfitRate::where('source_currency', 'usd')->first();
 
         if ($usdProfitRate) {
-            // اگر مبدا USD باشد، نرخ مستقیم فروش
             if ($this->from_currency === 'usd') {
-                $field = $this->to_currency . '_' . $rateType;
+                $field = $this->to_currency . '_' . $rateType . '_' . $accountType;
                 $rate = $usdProfitRate->{$field} ?? null;
 
                 if ($rate && $rate > 0) {
-                    Log::info("✅ نرخ فروش مستقیم از USD: {$this->from_currency} → {$this->to_currency} = {$rate} (نوع: {$rateType})");
                     return $rate;
                 }
-            }
-            // اگر مقصد USD باشد، معکوس نرخ خرید (چون ما داریم ارز دیگر را می‌فروشیم)
-            else if ($this->to_currency === 'usd') {
-                $buyField = $this->from_currency . '_' . str_replace('sell', 'buy', $rateType);
-                $buyRate = $usdProfitRate->{$buyField} ?? null;
+            } else if ($this->to_currency === 'usd') {
+                $field = $this->from_currency . '_' . $rateType . '_' . $accountType;
+                $rate = $usdProfitRate->{$field} ?? null;
 
-                if ($buyRate && $buyRate > 0) {
-                    $sellRate = 1 / $buyRate; // معکوس نرخ خرید
-                    Log::info("✅ معکوس نرخ خرید به فروش: {$this->from_currency} → {$this->to_currency} = 1/{$buyRate} = {$sellRate} (نوع: {$rateType})");
-                    return $sellRate;
+                if ($rate && $rate > 0) {
+                    return 1 / $rate;
                 }
-            }
-            // اگر هیچکدام USD نباشد، محاسبه متقاطع بر اساس نرخ فروش
-            else {
-                $fromField = $this->from_currency . '_' . $rateType;
-                $toField = $this->to_currency . '_' . $rateType;
+            } else {
+                $fromField = $this->from_currency . '_' . $rateType . '_' . $accountType;
+                $toField = $this->to_currency . '_' . $rateType . '_' . $accountType;
 
                 $fromRate = $usdProfitRate->{$fromField} ?? null;
                 $toRate = $usdProfitRate->{$toField} ?? null;
 
                 if ($fromRate && $toRate && $fromRate > 0 && $toRate > 0) {
-                    $crossRate = $toRate / $fromRate;
-                    Log::info("✅ نرخ متقاطع فروش: {$this->from_currency} → {$this->to_currency} = {$toRate} ÷ {$fromRate} = {$crossRate} (نوع: {$rateType})");
-                    return $crossRate;
+                    return $toRate / $fromRate;
                 }
             }
         }
@@ -639,12 +574,11 @@ class ConversionTransfer extends Component
      */
     private function getTransferRateType()
     {
-        // همیشه از نرخ فروش نقدی استفاده می‌کنیم
-        return $this->from_account === 'نقدی' ? 'sell_cash' : 'sell_bank';
+        return $this->transactionType === 'خرید' ? 'sell' : 'buy';
     }
 
     /**
-     * محاسبه با نرخ از پیش تعیین شده برای انتقال
+     * محاسبه با نرخ از پیش تعیین شده
      */
     private function calculateTransferWithPredefinedRate($predefinedRate)
     {
@@ -655,60 +589,32 @@ class ConversionTransfer extends Component
             'from_currency' => $this->from_currency,
             'to_currency' => $this->to_currency,
             'predefined_rate' => $predefinedRate,
-            'transaction_type' => $this->transactionType
+            'transaction_type' => $this->transactionType,
+            'rate_type' => $this->getTransferRateType()
         ]);
 
         $result = 0;
 
-        // برای تبدیل IRR → AFN
         if ($this->from_currency === 'irr' && $this->to_currency === 'afn') {
-            // با فرمول: (مبلغ × نرخ معکوس) ÷ 1000
             $result = ($amount * $predefinedRate) / 1000;
-            Log::info("فرمول IRR → AFN: ({$amount} × {$predefinedRate}) ÷ 1000 = {$result}");
-        }
-        // برای تبدیل AFN → IRR
-        elseif ($this->from_currency === 'afn' && $this->to_currency === 'irr') {
-            // با فرمول: (مبلغ × 1000) ÷ نرخ معکوس
+        } elseif ($this->from_currency === 'afn' && $this->to_currency === 'irr') {
             $result = ($amount * 1000) / $predefinedRate;
-            Log::info("فرمول AFN → IRR: ({$amount} × 1000) ÷ {$predefinedRate} = {$result}");
-        }
-        // برای تبدیل AFN → USD (فروش افغانی به دلار)
-        elseif ($this->from_currency === 'afn' && $this->to_currency === 'usd') {
-            // نرخ پیش‌فرض: هر 1 افغانی = X دلار
-            // پس: مبلغ افغانی × نرخ = مبلغ دلاری
+        } else {
             $result = $amount * $predefinedRate;
-            Log::info("فرمول AFN → USD: {$amount} × {$predefinedRate} = {$result}");
         }
-        // برای تبدیل USD → AFN (فروش دلار به افغانی)
-        elseif ($this->from_currency === 'usd' && $this->to_currency === 'afn') {
-            // نرخ پیش‌فرض: هر 1 دلار = X افغانی
-            // پس: مبلغ دلاری × نرخ = مبلغ افغانی
-            $result = $amount * $predefinedRate;
-            Log::info("فرمول USD → AFN: {$amount} × {$predefinedRate} = {$result}");
-        }
-        // برای سایر تبدیل‌ها
-        else {
-            $result = $amount * $predefinedRate;
-            Log::info("فرمول عمومی: {$amount} × {$predefinedRate} = {$result}");
-        }
-
-        Log::info("نتیجه محاسبه", ['result' => $result]);
 
         return $result;
     }
 
     /**
-     * تبدیل به دالر - همیشه از نرخ خرید نقدی استفاده کن
+     * تبدیل به دالر
      */
     private function convertTransferToUsd($amount, $currency)
     {
-        Log::info("تبدیل {$currency} به USD", ['amount' => $amount]);
-
         if ($currency === 'usd') {
             return $amount;
         }
 
-        // همیشه از رکورد USD استفاده کن
         $usdProfitRate = ProfitRate::where('source_currency', 'usd')->first();
 
         if (!$usdProfitRate) {
@@ -716,60 +622,19 @@ class ConversionTransfer extends Component
             return 0;
         }
 
-        // برای تبدیل IRR به USD - از نرخ خرید نقدی تومان استفاده کن
-        if ($currency === 'irr') {
-            $rate = $usdProfitRate->irr_buy_cash ?? 0;
-            Log::info("نرخ خرید نقدی IRR → USD یافت شد", ['rate' => $rate]);
+        $rateType = $this->getTransferRateType();
+        $accountType = $this->from_account === 'نقدی' ? 'cash' : 'bank';
 
-            if ($rate > 0) {
-                $result = $amount / $rate;
-                Log::info("نتیجه تبدیل", [
-                    'result' => $result,
-                    'formula' => "{$amount} ÷ {$rate} = {$result}"
-                ]);
-                return $result;
-            }
-        }
-
-        // برای تبدیل AFN به USD - از نرخ خرید نقدی افغانی استفاده کن
-        if ($currency === 'afn') {
-            // نرخ خرید دلار: هر دلار = چند افغانی؟
-            $rate = $usdProfitRate->afn_buy_cash ?? 0;
-            Log::info("نرخ خرید نقدی AFN → USD یافت شد", [
-                'rate' => $rate,
-                'rate_field' => 'afn_buy_cash',
-                'note' => 'هر دلار = ' . $rate . ' افغانی'
-            ]);
-
-            if ($rate > 0) {
-                $result = $amount / $rate;
-                Log::info("نتیجه تبدیل", [
-                    'result' => $result,
-                    'formula' => "{$amount} ÷ {$rate} = {$result}"
-                ]);
-                return $result;
-            }
-        }
-
-        // برای سایر ارزها - از نرخ خرید نقدی استفاده کن
-        $rateField = $currency . '_buy_cash';
-        $rate = $usdProfitRate->{$rateField} ?? 0;
+        $buyField = $currency . '_buy_' . $accountType;
+        $rate = $usdProfitRate->{$buyField} ?? 0;
 
         if ($rate <= 0) {
-            $rateField = $currency . '_buy_bank';
-            $rate = $usdProfitRate->{$rateField} ?? 0;
+            $sellField = $currency . '_sell_' . $accountType;
+            $rate = $usdProfitRate->{$sellField} ?? 0;
         }
 
-        Log::info("نرخ یافت شده", [
-            'rate_field' => $rateField,
-            'rate' => $rate,
-            'formula' => "{$amount} ÷ {$rate}"
-        ]);
-
         if ($rate > 0) {
-            $result = $amount / $rate;
-            Log::info("نتیجه تبدیل", ['result' => $result]);
-            return $result;
+            return $amount / $rate;
         }
 
         Log::warning("نرخ تبدیل برای {$currency} یافت نشد");
@@ -792,7 +657,7 @@ class ConversionTransfer extends Component
     }
 
     /**
-     * ثبت سود/ضرر در جدول revenues برای انتقال
+     * ثبت سود/ضرر
      */
     private function recordTransferProfitLoss($conversionId, $profitLoss)
     {
@@ -801,12 +666,6 @@ class ConversionTransfer extends Component
             $adminId = $user->admin_id ?? $user->id;
 
             if ($profitLoss['profit'] > 0 || $profitLoss['loss'] > 0) {
-                Log::info('📊 در حال ثبت سود/ضرر انتقال در جدول revenue...', [
-                    'profit' => $profitLoss['profit'],
-                    'loss' => $profitLoss['loss'],
-                    'conversion_id' => $conversionId
-                ]);
-
                 $revenueData = [
                     'currency' => 'usd',
                     'profit' => $profitLoss['profit'],
@@ -821,13 +680,9 @@ class ConversionTransfer extends Component
                 ];
 
                 $revenue = Revenue::create($revenueData);
-
-                Log::info("✅ سود/ضرر انتقال در جدول revenue ثبت شد - ID: {$revenue->id}");
-
                 return $revenue;
             }
 
-            Log::info('ℹ️ هیچ سود یا ضرری برای ثبت در revenue وجود ندارد');
             return null;
         } catch (\Exception $e) {
             Log::error('❌ خطا در ثبت سود/ضرر انتقال: ' . $e->getMessage());
@@ -836,7 +691,7 @@ class ConversionTransfer extends Component
     }
 
     /**
-     * تولید توضیحات برای سود/ضرر انتقال
+     * تولید توضیحات برای سود/ضرر
      */
     private function generateTransferProfitLossDescription($profitLoss)
     {
@@ -859,7 +714,198 @@ class ConversionTransfer extends Component
         return $description;
     }
 
+    /**
+     * اعمال تغییرات صندوق برای تبدیل ارز
+     */
+    private function applySafeChanges($conversion, $adminId, $user)
+    {
+        try {
+            Log::info("🔄 در حال اعمال تغییرات صندوق برای تبدیل ارز");
 
+            $fromCurrencyColumn = strtolower($conversion->from_currency);
+            $toCurrencyColumn = strtolower($conversion->to_currency);
+
+            Log::info("پارامترهای صندوق", [
+                'from_account' => $conversion->from_account,
+                'to_account' => $conversion->to_account,
+                'from_currency' => $fromCurrencyColumn,
+                'to_currency' => $toCurrencyColumn,
+                'withdrawal_amount' => $conversion->withdrawal_amount,
+                'received_amount' => $conversion->received_amount
+            ]);
+
+            // ===== نقدی → بانکی =====
+            if ($conversion->from_account === 'نقدی' && $conversion->to_account === 'بانکی') {
+                Log::info("💵→🏦 حالت نقدی → بانکی");
+
+                // کم کردن از صندوق نقدی (ارز مبدا)
+                $safe = CurrencySafe::firstOrCreate([
+                    'admin_id' => $adminId,
+                ], [
+                    'user_id' => $user->id,
+                    'afn' => 0,
+                    'usd' => 0,
+                    'irr' => 0,
+                    'eur' => 0,
+                    'pkr' => 0,
+                    'aed' => 0,
+                    'try' => 0,
+                    'cny' => 0,
+                ]);
+
+                $safe->decrement($fromCurrencyColumn, $conversion->withdrawal_amount);
+                Log::info("✅ کم کردن {$conversion->withdrawal_amount} {$fromCurrencyColumn} از صندوق نقدی");
+
+                // اضافه کردن به حساب بانکی (ارز مقصد)
+                $bank = BankAccount::firstOrCreate([
+                    'admin_id' => $adminId,
+                ], [
+                    'user_id' => $user->id,
+                    'afn' => 0,
+                    'usd' => 0,
+                    'irr' => 0,
+                    'eur' => 0,
+                    'pkr' => 0,
+                    'aed' => 0,
+                    'try' => 0,
+                    'cny' => 0,
+                ]);
+
+                $bank->increment($toCurrencyColumn, $conversion->received_amount);
+                Log::info("✅ اضافه کردن {$conversion->received_amount} {$toCurrencyColumn} به حساب بانکی");
+            }
+            // ===== بانکی → نقدی =====
+            elseif ($conversion->from_account === 'بانکی' && $conversion->to_account === 'نقدی') {
+                Log::info("🏦→💵 حالت بانکی → نقدی");
+
+                // کم کردن از حساب بانکی (ارز مبدا)
+                $bank = BankAccount::where('admin_id', $adminId)->first();
+                if ($bank) {
+                    $bank->decrement($fromCurrencyColumn, $conversion->withdrawal_amount);
+                    Log::info("✅ کم کردن {$conversion->withdrawal_amount} {$fromCurrencyColumn} از حساب بانکی");
+                } else {
+                    Log::warning("حساب بانکی برای ادمین {$adminId} یافت نشد. ایجاد رکورد جدید...");
+                    $bank = BankAccount::create([
+                        'admin_id' => $adminId,
+                        'user_id' => $user->id,
+                        $fromCurrencyColumn => -$conversion->withdrawal_amount,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+
+                // اضافه کردن به صندوق نقدی (ارز مقصد)
+                $safe = CurrencySafe::firstOrCreate([
+                    'admin_id' => $adminId,
+                ], [
+                    'user_id' => $user->id,
+                    $toCurrencyColumn => $conversion->received_amount,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                $safe->increment($toCurrencyColumn, $conversion->received_amount);
+                Log::info("✅ اضافه کردن {$conversion->received_amount} {$toCurrencyColumn} به صندوق نقدی");
+            }
+            // ===== حالت‌های دیگر =====
+            elseif (($conversion->from_account === 'نقدی' && $conversion->to_account === 'نقدی') ||
+                ($conversion->from_account === 'بانکی' && $conversion->to_account === 'بانکی')) {
+                Log::info("ℹ️ {$conversion->from_account}→{$conversion->to_account}: نیازی به تغییر صندوق نیست");
+            } else {
+                Log::warning("⚠️ حالت نامشخص: {$conversion->from_account}→{$conversion->to_account}");
+            }
+
+            Log::info("✅ تغییرات صندوق با موفقیت اعمال شد");
+
+        } catch (\Exception $e) {
+            Log::error('❌ خطا در اعمال تغییرات صندوق: ' . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    /**
+     * برگرداندن تغییرات صندوق هنگام حذف یا ویرایش
+     */
+    private function reverseSafeChanges($conversion, $adminId, $user)
+    {
+        try {
+            Log::info("🔁 در حال برگرداندن تغییرات صندوق برای تبدیل ارز ID: {$conversion->id}");
+
+            $fromCurrencyColumn = strtolower($conversion->from_currency);
+            $toCurrencyColumn = strtolower($conversion->to_currency);
+
+            Log::info("پارامترهای برگرداندن صندوق", [
+                'from_account' => $conversion->from_account,
+                'to_account' => $conversion->to_account,
+                'from_currency' => $conversion->from_currency,
+                'to_currency' => $conversion->to_currency,
+                'withdrawal_amount' => $conversion->withdrawal_amount,
+                'received_amount' => $conversion->received_amount
+            ]);
+
+            // ===== حالت ۱: نقدی → بانکی =====
+            if ($conversion->from_account === 'نقدی' && $conversion->to_account === 'بانکی') {
+                Log::info("⏪ برگرداندن حالت نقدی → بانکی");
+
+                // معکوس: اضافه کردن به صندوق نقدی (ارز مبدا)
+                $safe = CurrencySafe::where('admin_id', $adminId)->first();
+                if ($safe) {
+                    $safe->increment($fromCurrencyColumn, $conversion->withdrawal_amount);
+                    Log::info("✅ اضافه کردن {$conversion->withdrawal_amount} {$fromCurrencyColumn} به صندوق نقدی");
+                } else {
+                    Log::warning("صندوق نقدی برای ادمین {$adminId} یافت نشد");
+                }
+
+                // معکوس: کم کردن از حساب بانکی (ارز مقصد)
+                $bank = BankAccount::where('admin_id', $adminId)->first();
+                if ($bank) {
+                    $bank->decrement($toCurrencyColumn, $conversion->received_amount);
+                    Log::info("✅ کم کردن {$conversion->received_amount} {$toCurrencyColumn} از حساب بانکی");
+                } else {
+                    Log::warning("حساب بانکی برای ادمین {$adminId} یافت نشد");
+                }
+            }
+            // ===== حالت ۲: بانکی → نقدی =====
+            elseif ($conversion->from_account === 'بانکی' && $conversion->to_account === 'نقدی') {
+                Log::info("⏪ برگرداندن حالت بانکی → نقدی");
+
+                // معکوس: اضافه کردن به حساب بانکی (ارز مبدا)
+                $bank = BankAccount::where('admin_id', $adminId)->first();
+                if ($bank) {
+                    $bank->increment($fromCurrencyColumn, $conversion->withdrawal_amount);
+                    Log::info("✅ اضافه کردن {$conversion->withdrawal_amount} {$fromCurrencyColumn} به حساب بانکی");
+                } else {
+                    Log::warning("حساب بانکی برای ادمین {$adminId} یافت نشد");
+                }
+
+                // معکوس: کم کردن از صندوق نقدی (ارز مقصد)
+                $safe = CurrencySafe::where('admin_id', $adminId)->first();
+                if ($safe) {
+                    $safe->decrement($toCurrencyColumn, $conversion->received_amount);
+                    Log::info("✅ کم کردن {$conversion->received_amount} {$toCurrencyColumn} از صندوق نقدی");
+                } else {
+                    Log::warning("صندوق نقدی برای ادمین {$adminId} یافت نشد");
+                }
+            }
+            // ===== حالت‌های دیگر =====
+            elseif (($conversion->from_account === 'نقدی' && $conversion->to_account === 'نقدی') ||
+                ($conversion->from_account === 'بانکی' && $conversion->to_account === 'بانکی')) {
+                Log::info("ℹ️ {$conversion->from_account}→{$conversion->to_account}: نیازی به برگرداندن تغییرات صندوق نیست");
+            } else {
+                Log::warning("⚠️ حالت نامشخص: {$conversion->from_account}→{$conversion->to_account}");
+            }
+
+            Log::info("✅ تغییرات صندوق با موفقیت برگردانده شد");
+
+        } catch (\Exception $e) {
+            Log::error('❌ خطا در برگرداندن تغییرات صندوق: ' . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    /**
+     * ثبت تبدیل ارز
+     */
     public function submitConversion()
     {
         $this->validate([
@@ -883,7 +929,6 @@ class ConversionTransfer extends Component
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
 
-        // شروع تراکنش دیتابیس
         DB::connection('sarafi')->beginTransaction();
 
         try {
@@ -891,38 +936,47 @@ class ConversionTransfer extends Component
             Log::info('در حال محاسبه سود/ضرر برای انتقال...');
             $profitLoss = $this->calculateProfitOrLoss();
 
+            // ذخیره رکورد قدیمی برای ویرایش
+            $oldConversion = null;
             if ($this->editingConversionId) {
-                // حالت ویرایش
-                $conversion = ConversionTransfers::find($this->editingConversionId);
-
-                if ($conversion) {
-                    // حذف تراکنش‌های قبلی با استفاده از رابطه
-                    Transaction::where('conversion_transfer_id', $conversion->id)->delete();
-                    // حذف سود/ضرر قبلی
-                    Revenue::where('conversion_transfer_in_account_id', $conversion->id)->delete();
-
-                    // آپدیت رکورد تبدیل ارز
-                    $conversion->update([
-                        'form_customer' => $this->withdrawalAccount,
-                        'from_currency' => $this->from_currency,
-                        'withdrawal_amount' => $this->withdrawal_amount,
-                        'to_customer' => $this->depositAccount,
-                        'to_currency' => $this->to_currency,
-                        'from_account' => $this->from_account,
-                        'to_account' => $this->to_account,
-                        'received_amount' => $this->received_amount,
-                        'currency_rate' => $this->currency_rate,
-                        'transaction_date' => $this->transaction_date,
-                        'description' => $this->description,
-                        'zone_sender' => $this->zone_sender,
-                        'zone_receiver' => $this->zone_receiver,
-                        'by_sender' => $this->by_sender,
-                        'by_receiver' => $this->by_receiver,
-                        'type' => $this->transactionType,
-                    ]);
-
-                    $conversionId = $conversion->id;
+                $oldConversion = ConversionTransfers::find($this->editingConversionId);
+                
+                // برگرداندن تغییرات صندوق قدیمی
+                if ($oldConversion) {
+                    $this->reverseSafeChanges($oldConversion, $adminId, $user);
                 }
+            }
+
+            if ($this->editingConversionId && $oldConversion) {
+                // حالت ویرایش
+                $conversion = $oldConversion;
+                
+                // آپدیت رکورد تبدیل ارز
+                $conversion->update([
+                    'form_customer' => $this->withdrawalAccount,
+                    'from_currency' => $this->from_currency,
+                    'withdrawal_amount' => $this->withdrawal_amount,
+                    'to_customer' => $this->depositAccount,
+                    'to_currency' => $this->to_currency,
+                    'from_account' => $this->from_account,
+                    'to_account' => $this->to_account,
+                    'received_amount' => $this->received_amount,
+                    'currency_rate' => $this->currency_rate,
+                    'transaction_date' => $this->transaction_date,
+                    'description' => $this->description,
+                    'zone_sender' => $this->zone_sender,
+                    'zone_receiver' => $this->zone_receiver,
+                    'by_sender' => $this->by_sender,
+                    'by_receiver' => $this->by_receiver,
+                    'type' => $this->transactionType,
+                ]);
+
+                $conversionId = $conversion->id;
+                
+                // حذف تراکنش‌های قبلی
+                Transaction::where('conversion_transfer_id', $conversion->id)->delete();
+                // حذف سود/ضرر قبلی
+                Revenue::where('conversion_transfer_in_account_id', $conversion->id)->delete();
             } else {
                 // حالت ایجاد جدید
                 $conversion = ConversionTransfers::create([
@@ -981,43 +1035,8 @@ class ConversionTransfer extends Component
                 'conversion_transfer_id' => $conversionId,
             ]);
 
-            // ===== نقدی → بانکی =====
-            if ($this->from_account === 'نقدی' && $this->to_account === 'بانکی') {
-
-                // کم کردن از صندوق نقدی (ارز مبدا)
-                $safe = CurrencySafe::firstOrCreate([
-                    'admin_id' => $adminId,
-                ], [
-                    'user_id' => $user->id,
-                ]);
-                $safe->decrement(strtolower($this->from_currency), $this->withdrawal_amount);
-
-                // اضافه کردن به حساب بانکی (ارز مقصد)
-                $bank = BankAccount::firstOrCreate([
-                    'admin_id' => $adminId,
-                ], [
-                    'user_id' => $user->id,
-                ]);
-                $bank->increment(strtolower($this->to_currency), $this->received_amount);
-            }
-
-            // ===== بانکی → نقدی =====
-            if ($this->from_account === 'بانکی' && $this->to_account === 'نقدی') {
-
-                // کم کردن از حساب بانکی (ارز مبدا)
-                $bank = BankAccount::where('admin_id', $adminId)->first();
-                if ($bank) {
-                    $bank->decrement(strtolower($this->from_currency), $this->withdrawal_amount);
-                }
-
-                // اضافه کردن به صندوق نقدی (ارز مقصد)
-                $safe = CurrencySafe::firstOrCreate([
-                    'admin_id' => $adminId,
-                ], [
-                    'user_id' => $user->id,
-                ]);
-                $safe->increment(strtolower($this->to_currency), $this->received_amount);
-            }
+            // اعمال تغییرات صندوق جدید
+            $this->applySafeChanges($conversion, $adminId, $user);
 
             // ثبت سود/ضرر
             $this->recordTransferProfitLoss($conversionId, $profitLoss);
@@ -1033,7 +1052,6 @@ class ConversionTransfer extends Component
             }
 
             session()->flash('message', $message);
-
             $this->resetForm();
         } catch (\Exception $e) {
             DB::connection('sarafi')->rollBack();
@@ -1048,36 +1066,13 @@ class ConversionTransfer extends Component
         }
     }
 
-
-    public $currenciesdefault = [
-        ['name' => 'افغانی', 'value' => 0],
-        ['name' => 'دالر', 'value' => 0],
-        ['name' => 'تومان', 'value' => 0],
-        ['name' => 'یورو', 'value' => 0],
-        ['name' => 'کلدار', 'value' => 0],
-        ['name' => 'درهم', 'value' => 0],
-        ['name' => 'لیره', 'value' => 0],
-        ['name' => 'یوان', 'value' => 0],
-        ['name' => 'خلاصه بیلانس به دالر', 'value' => 0],
-    ];
-
+    /**
+     * به‌روزرسانی موجودی‌های ارزی مشتری
+     */
     public function updateCustomerCurrencyBalance()
     {
         if (!$this->withdrawalCustomerId) {
-            $this->currenciesdefault = [
-                ['name' => 'افغانی', 'value' => 0],
-                ['name' => 'دالر', 'value' => 0],
-                ['name' => 'تومان', 'value' => 0],
-                ['name' => 'یورو', 'value' => 0],
-                ['name' => 'کلدار', 'value' => 0],
-                ['name' => 'درهم', 'value' => 0],
-                ['name' => 'لیره', 'value' => 0],
-                ['name' => 'یوان', 'value' => 0],
-                ['name' => 'روپیه', 'value' => 0],
-                ['name' => 'خلاصه بیلانس به دالر', 'value' => 0],
-            ];
-
-            // ریست کردن موجودی‌های تفکیک شده
+            $this->resetCurrenciesDefault();
             $this->customerCashBalances = [];
             $this->customerBankBalances = [];
             $this->customerTotalBalances = [];
@@ -1091,7 +1086,6 @@ class ConversionTransfer extends Component
             ->where('admin_id', $adminId)
             ->get();
 
-        // محاسبه موجودی‌های نقدی و بانکی جداگانه
         $cashBalances = [
             'افغانی' => 0,
             'دالر' => 0,
@@ -1169,12 +1163,14 @@ class ConversionTransfer extends Component
             ['name' => 'خلاصه بیلانس به دالر', 'value' => $totalInUsd],
         ];
 
-        // ذخیره موجودی‌های تفکیک شده برای نمایش در کارت‌های جدید
         $this->customerCashBalances = $cashBalances;
         $this->customerBankBalances = $bankBalances;
         $this->customerTotalBalances = $totalBalances;
     }
 
+    /**
+     * ریست کردن موجودی‌های پیش‌فرض
+     */
     private function resetCurrenciesDefault()
     {
         $this->currenciesdefault = [
@@ -1191,100 +1187,31 @@ class ConversionTransfer extends Component
         ];
     }
 
-    private function calculateBalances($transactions)
-    {
-        $balances = [
-            'افغانی' => 0,
-            'دالر' => 0,
-            'تومان' => 0,
-            'یورو' => 0,
-            'کلدار' => 0,
-            'درهم' => 0,
-            'لیره' => 0,
-            'یوان' => 0,
-            'روپیه' => 0,
-        ];
-
-        foreach ($transactions as $transaction) {
-            $currencyName = $this->getCurrencyName($transaction->currency);
-            $amount = $transaction->type === 'رسید' ? $transaction->amount : -$transaction->amount;
-
-            if (array_key_exists($currencyName, $balances)) {
-                $balances[$currencyName] += $amount;
-            }
-        }
-
-        return $balances;
-    }
-
-    private function calculateTotalInUsd($balances)
-    {
-        $exchangeRates = [
-            'افغانی' => 0.011,
-            'دالر' => 1,
-            'تومان' => 0.000024,
-            'یورو' => 1.07,
-            'کلدار' => 0.0036,
-            'درهم' => 0.27,
-            'لیره' => 0.031,
-            'یوان' => 0.14,
-            'روپیه' => 0.14,
-        ];
-
-        $totalInUsd = 0;
-        foreach ($balances as $currency => $balance) {
-            if (isset($exchangeRates[$currency])) {
-                $totalInUsd += $balance * $exchangeRates[$currency];
-            }
-        }
-
-        return $totalInUsd;
-    }
-
-    private function updateCurrenciesDefault($balances, $totalInUsd)
-    {
-        $this->currenciesdefault = [
-            ['name' => 'افغانی', 'value' => $balances['افغانی']],
-            ['name' => 'دالر', 'value' => $balances['دالر']],
-            ['name' => 'تومان', 'value' => $balances['تومان']],
-            ['name' => 'یورو', 'value' => $balances['یورو']],
-            ['name' => 'کلدار', 'value' => $balances['کلدار']],
-            ['name' => 'درهم', 'value' => $balances['درهم']],
-            ['name' => 'لیره', 'value' => $balances['لیره']],
-            ['name' => 'یوان', 'value' => $balances['یوان']],
-            ['name' => 'روپیه', 'value' => $balances['روپیه']],
-            ['name' => 'خلاصه بیلانس به دالر', 'value' => $totalInUsd],
-        ];
-    }
-
-    // متد برای انتخاب حساب برداشت
-     public function selectWithdrawalAccount($customerId)
+    /**
+     * انتخاب حساب برداشت
+     */
+    public function selectWithdrawalAccount($customerId)
     {
         $this->withdrawalAccount = $customerId;
         $this->withdrawalCustomer = Customer::find($customerId);
-            $this->withdrawalCustomerId = $customerId; 
-
-
+        $this->withdrawalCustomerId = $customerId;
         $this->accountSearch = '';
         $this->filteredCustomers = null;
-
         $this->updateCustomerCurrencyBalance($customerId);
-
-        Log::debug("Withdrawal account selected", [
-            'customer_id' => $customerId,
-            'customer_name' => $this->withdrawalCustomer ? $this->withdrawalCustomer->fullname : 'Not found',
-            'has_image' => $this->withdrawalCustomer && $this->withdrawalCustomer->image ? 'Yes' : 'No'
-        ]);
     }
 
-    // متد برای انتخاب حساب دریافت
+    /**
+     * انتخاب حساب دریافت
+     */
     public function selectDepositAccount($customerId)
     {
         $this->depositCustomerId = $customerId;
         $this->depositAccount = $customerId;
     }
 
-
+    /**
+     * ریست فرم
+     */
     public function resetForm()
     {
         $this->reset([
@@ -1315,15 +1242,16 @@ class ConversionTransfer extends Component
         $this->resetProfitLossDisplay();
     }
 
+    /**
+     * ویرایش تبدیل ارز
+     */
     public function editConversion($conversionId)
     {
         $conversion = ConversionTransfers::with(['fromCustomer', 'toCustomer'])->find($conversionId);
 
         if ($conversion) {
-            // تنظیم ID تبدیل برای ویرایش
             $this->editingConversionId = $conversionId;
 
-            // تنظیم مقادیر برای ویرایش
             $this->withdrawalAccount = $conversion->form_customer;
             $this->depositAccount = $conversion->to_customer;
             $this->from_currency = $conversion->from_currency;
@@ -1341,22 +1269,16 @@ class ConversionTransfer extends Component
             $this->by_receiver = $conversion->by_receiver;
             $this->transactionType = $conversion->type;
 
-            // تنظیم customer IDs برای Alpine.js
             $this->withdrawalCustomerId = $conversion->form_customer;
             $this->depositCustomerId = $conversion->to_customer;
 
-            // تبدیل مقادیر به حروف
             $this->convertAmountToWords($this->withdrawal_amount, 'withdrawalAmountInWords');
             $this->convertAmountToWords($this->received_amount, 'receivedAmountInWords');
             $this->convertAmountToWords($this->currency_rate, 'currencyRateInWords');
 
-            // به‌روزرسانی موجودی‌ها
             $this->updateCustomerCurrencyBalance($conversion->form_customer);
-
-            // محاسبه سود/ضرر
             $this->calculateRealTimeProfitLoss();
 
-            // dispatch events برای به‌روزرسانی Alpine.js
             $this->dispatch('edit-mode-activated', [
                 'withdrawalAccount' => $this->withdrawalAccount,
                 'depositAccount' => $this->depositAccount,
@@ -1366,12 +1288,18 @@ class ConversionTransfer extends Component
         }
     }
 
+    /**
+     * تأیید حذف
+     */
     public function confirmDelete($conversionId)
     {
         $this->confirmDeleteId = $conversionId;
         Log::info("تأیید حذف تبدیل ارز با ID: {$conversionId}");
     }
 
+    /**
+     * لغو حذف
+     */
     public function cancelDelete()
     {
         $this->confirmDeleteId = null;
@@ -1389,20 +1317,30 @@ class ConversionTransfer extends Component
         }
 
         $this->deleting = true;
-
         DB::connection('sarafi')->beginTransaction();
 
         try {
             Log::info("در حال حذف تبدیل ارز با ID: {$this->confirmDeleteId}");
 
-            // پیدا کردن رکورد تبدیل ارز
             $conversion = ConversionTransfers::find($this->confirmDeleteId);
 
             if (!$conversion) {
                 throw new \Exception('رکورد تبدیل ارز یافت نشد.');
             }
 
-            Log::info("رکورد تبدیل ارز پیدا شد: {$conversion->id}");
+            Log::info("رکورد تبدیل ارز پیدا شد: {$conversion->id}", [
+                'from_currency' => $conversion->from_currency,
+                'to_currency' => $conversion->to_currency,
+                'from_account' => $conversion->from_account,
+                'to_account' => $conversion->to_account,
+                'withdrawal_amount' => $conversion->withdrawal_amount,
+                'received_amount' => $conversion->received_amount
+            ]);
+
+            // برگرداندن تغییرات صندوق
+            $user = Auth::guard('sarafi')->user();
+            $adminId = $user->admin_id ?? $user->id;
+            $this->reverseSafeChanges($conversion, $adminId, $user);
 
             // حذف تراکنش‌های مرتبط
             $transactionsDeleted = Transaction::where('conversion_transfer_id', $conversion->id)->delete();
@@ -1418,15 +1356,11 @@ class ConversionTransfer extends Component
 
             DB::connection('sarafi')->commit();
 
-            session()->flash('message', 'تبدیل ارز با موفقیت حذف شد.');
-
-            // رفرش داده‌ها
+            session()->flash('message', 'تبدیل ارز با موفقیت حذف شد و موجودی صندوق‌ها به حالت اول برگردانده شد.');
             $this->dispatch('refreshComponent');
         } catch (\Exception $e) {
             DB::connection('sarafi')->rollBack();
-
-            $errorMessage = 'خطا در حذف تبدیل ارز: ' . $e->getMessage();
-            session()->flash('error', $errorMessage);
+            session()->flash('error', 'خطا در حذف تبدیل ارز: ' . $e->getMessage());
 
             Log::error('Delete conversion error: ' . $e->getMessage(), [
                 'conversion_id' => $this->confirmDeleteId,
@@ -1438,6 +1372,9 @@ class ConversionTransfer extends Component
         }
     }
 
+    /**
+     * دریافت نام فارسی ارز
+     */
     private function getCurrencyName($currencyCode)
     {
         $currencyMap = [
@@ -1458,16 +1395,36 @@ class ConversionTransfer extends Component
         return $currencyMap[$currencyCode] ?? $currencyCode;
     }
 
+    /**
+     * چاپ تراکنش
+     */
+    public function printTransaction($conversionId)
+    {
+        try {
+            $conversion = ConversionTransfers::findOrFail($conversionId);
+
+            $user = Auth::guard('sarafi')->user();
+            if ($conversion->user_id !== $user->id && $conversion->admin_id !== $user->id) {
+                session()->flash('error', 'دسترسی به این تراکنش مجاز نیست.');
+                return redirect()->back();
+            }
+
+            return $this->generateConversionPdf($conversion->id);
+        } catch (\Exception $e) {
+            Log::error('Print conversion error: ' . $e->getMessage());
+            session()->flash('error', 'خطا در چاپ تراکنش: ' . $e->getMessage());
+            return redirect()->back();
+        }
+    }
 
     /**
-     * Generate PDF for conversion transaction
+     * ایجاد PDF برای تراکنش
      */
     private function generateConversionPdf($conversionId)
     {
         try {
             $conversion = ConversionTransfers::with(['fromCustomer', 'toCustomer', 'user'])->findOrFail($conversionId);
 
-            // Check user access
             $user = Auth::guard('sarafi')->user();
             if ($conversion->user_id !== $user->id && $conversion->admin_id !== $user->id) {
                 session()->flash('error', 'دسترسی به این تراکنش مجاز نیست.');
@@ -1511,28 +1468,8 @@ class ConversionTransfer extends Component
     }
 
     /**
-     * Print conversion transaction as PDF
+     * مقداردهی اولیه
      */
-    public function printTransaction($conversionId)
-    {
-        try {
-            $conversion = ConversionTransfers::findOrFail($conversionId);
-
-            // Check user access
-            $user = Auth::guard('sarafi')->user();
-            if ($conversion->user_id !== $user->id && $conversion->admin_id !== $user->id) {
-                session()->flash('error', 'دسترسی به این تراکنش مجاز نیست.');
-                return redirect()->back();
-            }
-
-            return $this->generateConversionPdf($conversion->id);
-        } catch (\Exception $e) {
-            Log::error('Print conversion error: ' . $e->getMessage());
-            session()->flash('error', 'خطا در چاپ تراکنش: ' . $e->getMessage());
-            return redirect()->back();
-        }
-    }
-
     public function mount()
     {
         $this->transaction_date = Jalalian::now()->format('Y/m/d');
@@ -1560,6 +1497,10 @@ class ConversionTransfer extends Component
             $this->loadZones($adminId);
         }
     }
+
+    /**
+     * بارگذاری زون‌ها
+     */
     private function loadZones($adminId)
     {
         $this->zones = \App\Models\Sarafi\User::where(function ($query) use ($adminId) {
@@ -1572,7 +1513,6 @@ class ConversionTransfer extends Component
             ->unique()
             ->values()
             ->toArray();
-
 
         if (empty($this->zones)) {
             $this->zones = ['غرب', 'مرکز', 'شمال', 'جنوب', 'شرق'];
