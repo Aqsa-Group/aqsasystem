@@ -21,8 +21,8 @@ use NumberFormatter;
 class Transactions extends Component
 {
 
-    public $searchedCustomer = null; 
-    public $showCustomerModal = false; 
+    public $searchedCustomer = null;
+    public $showCustomerModal = false;
 
     use WithFileUploads;
     public $confirmDeleteId = null;
@@ -71,20 +71,19 @@ class Transactions extends Component
             ->push($adminId)
             ->toArray();
 
-      $this->filteredCustomers = Customer::with('admins')
-    ->where(function ($query) use ($adminId) {
-        $query->where('admin_id', $adminId)
-              ->orWhereHas('admins', function($q) use ($adminId) {
-                  $q->where('customer_admin.admin_id', $adminId);
-              });
-    })
-    ->where(function ($query) use ($value) {
-        $query->where('fullname', 'like', "%{$value}%")
-              ->orWhere('account_number', 'like', "%{$value}%");
-    })
-    ->limit(15)
-    ->get();
-
+        $this->filteredCustomers = Customer::with('admins')
+            ->where(function ($query) use ($adminId) {
+                $query->where('admin_id', $adminId)
+                    ->orWhereHas('admins', function ($q) use ($adminId) {
+                        $q->where('customer_admin.admin_id', $adminId);
+                    });
+            })
+            ->where(function ($query) use ($value) {
+                $query->where('fullname', 'like', "%{$value}%")
+                    ->orWhere('account_number', 'like', "%{$value}%");
+            })
+            ->limit(15)
+            ->get();
     }
 
     public $currenciesdefault = [
@@ -138,9 +137,9 @@ class Transactions extends Component
         $adminId = $user->admin_id ?? $user->id;
 
         $this->customers = Customer::with('admins')
-            ->where('admin_id', $adminId) 
+            ->where('admin_id', $adminId)
             ->orWhereHas('admins', function ($q) use ($adminId) {
-                $q->where('customer_admin.admin_id', $adminId); 
+                $q->where('customer_admin.admin_id', $adminId);
             })
 
             ->orderBy('fullname')
@@ -366,10 +365,15 @@ class Transactions extends Component
             'یوان',
             'روپیه'
         ], 0);
-
         $transactions = Transaction::where('customer_id', $this->selectedCustomerId)
             ->where('admin_id', $adminId)
+            ->whereNull('conversion_transfer_id')
+            ->whereNull('conversion_in_account_id')
+            ->whereNull('account_to_id')
+            ->whereNull('remittance_id')
+            ->whereNull('changerdeal_id')
             ->get();
+
 
         foreach ($transactions as $transaction) {
             $currencyName = $this->getCurrencyName($transaction->currency);
@@ -504,7 +508,12 @@ class Transactions extends Component
 
         $query = Transaction::with('customer')
             ->where('admin_id', $adminId)
-            ->whereIn('type', ['برد', 'رسید']);
+            ->whereIn('type', ['برد', 'رسید'])
+            ->whereNull('conversion_transfer_id')
+            ->whereNull('conversion_in_account_id')
+            ->whereNull('account_to_id')
+            ->whereNull('remittance_id')
+            ->whereNull('changerdeal_id');
 
         if ($this->selectedCustomerId) {
             $query->where('customer_id', $this->selectedCustomerId);
