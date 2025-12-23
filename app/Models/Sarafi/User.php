@@ -23,6 +23,12 @@ class User extends Authenticatable
         'status',
         'admin_id',
         'zone',
+        'address2',
+        'address3',
+        'phone2',
+        'phone3',
+
+
     ];
 
     protected $hidden = ['password', 'remember_token'];

@@ -22,7 +22,7 @@ class Users extends Component
 
 
     // Form fields
-    public $name, $lastname, $username, $password, $role, $sarafi_name, $address, $phone, $user_limition, $zone;
+    public $name, $lastname, $username, $password, $role, $sarafi_name, $address,  $address2,  $address3, $phone, $phone2, $phone3, $user_limition, $zone;
 
     // Alerts and delete confirmation
     public $alert = null;
@@ -146,7 +146,12 @@ class Users extends Component
         $this->role = $user->role;
         $this->sarafi_name = $user->sarafi_name ?? '';
         $this->address = $user->address ?? '';
+        $this->address2 = $user->address2 ?? '';
+        $this->address2 = $user->address2 ?? '';
+
         $this->phone = $user->phone ?? '';
+        $this->phone2 = $user->phone2 ?? '';
+        $this->phone3 = $user->phone3 ?? '';
         $this->user_limition = $user->user_limition ?? null;
         $this->modalOpen = true;
         $this->zone = $user->zone;
@@ -189,7 +194,13 @@ class Users extends Component
             'role' => $this->role,
             'sarafi_name' => $this->sarafi_name,
             'address' => $this->address,
+            'address2' => $this->address2,
+            'address3' => $this->address3,
+
             'phone' => $this->phone,
+            'phone2' => $this->phone2,
+            'phone3' => $this->phone3,
+
             'status' => $this->editId ? User::find($this->editId)->status : 0,
             'zone' => $this->zone,
 

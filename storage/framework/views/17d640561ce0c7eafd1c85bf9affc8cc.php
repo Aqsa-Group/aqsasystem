@@ -52,361 +52,487 @@
 
 
     <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role === 'admin' || $currentUser->role === 'superadmin' ): ?>
-     <div class="pl-5">
-           <!-- فرم ثبت کاربر -->
-    <div class="w-[460px] md-w-[100px] lg:w-[1200px] p-4 mx-auto bg-[#F5F5F5] dark:bg-black dark:border dark:border-white rounded-2xl mx-auto space-y-2"
-        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+    <div class="pl-5">
+        <!-- فرم ثبت کاربر -->
+        <div class="w-[460px] md-w-[100px] lg:w-[1200px] p-4 mx-auto bg-[#F5F5F5] dark:bg-black dark:border dark:border-white rounded-2xl mx-auto space-y-2"
+            style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
-        <!-- عنوان و آیکون -->
-        <div class="text-center space-y-2">
-            <h2 class="text-2xl font-bold text-gray-900 vazir dark:text-white tracking-widest">
-                <?php echo e(__('messages.title_add_user')); ?>
+            <!-- عنوان و آیکون -->
+            <div class="text-center space-y-2">
+                <h2 class="text-2xl font-bold text-gray-900 vazir dark:text-white tracking-widest">
+                    <?php echo e(__('messages.title_add_user')); ?>
 
-            </h2>
-            <p class="text-lg text-gray-600 dark:text-white vazir">
-                <?php echo e(__('messages.subtitle_user')); ?>
+                </h2>
+                <p class="text-lg text-gray-600 dark:text-white vazir">
+                    <?php echo e(__('messages.subtitle_user')); ?>
 
-            </p>
-            <div class="bg-[#545964] rounded-full h-20 w-20 mx-auto flex items-center justify-center">
-<img
-    src="<?php echo e(asset('assets/sarafi/all_icon/light.user.svg')); ?>"
-    alt=""
-    class="mt-2 dark:invert"
-/>
+                </p>
+                <div class="bg-[#545964] rounded-full h-20 w-20 mx-auto flex items-center justify-center">
+                    <img src="<?php echo e(asset('assets/sarafi/all_icon/light.user.svg')); ?>" alt="" class="mt-2 dark:invert" />
+                </div>
             </div>
-        </div>
 
-        <?php
-        $currentUser = Auth::guard('sarafi')->user();
-        ?>
+            <?php
+            $currentUser = Auth::guard('sarafi')->user();
+            ?>
 
-        <!-- فرم اطلاعات -->
-        <form wire:submit.prevent="save" class="space-y-4">
-            <div class="grid grid-cols-2 gap-3">
+            <!-- فرم اطلاعات -->
+            <form wire:submit.prevent="save" class="space-y-4">
+                <div class="grid grid-cols-2 gap-3">
 
-                <!-- Name -->
-                <div>
-                    <label class="block text-sm font-medium text-black dark:text-white vazir mb-1">
-                        <?php echo e(__('messages.name')); ?>
+                    <!-- Name -->
+                    <div>
+                        <label class="block text-sm font-medium text-black dark:text-white vazir mb-1">
+                            <?php echo e(__('messages.name')); ?>
 
-                    </label>
-                    <div class="relative">
-                        <input type="text" wire:model="name" placeholder="<?php echo e(__('messages.placeholder_name')); ?>" class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                        </label>
+                        <div class="relative">
+                            <input type="text" wire:model="name" placeholder="<?php echo e(__('messages.placeholder_name')); ?>"
+                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                          focus:ring-blue-500 dark:bg-black dark:placeholder:text-white dark:border-white dark:text-white">
-                        <div class="absolute left-2 top-2">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/profile.svg')); ?>" alt="">
+                            <div class="absolute left-2 top-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/profile.svg')); ?>" alt="">
+                            </div>
                         </div>
-                    </div>
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['name'];
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                    <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                    <?php unset($message);
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-                </div>
+                    </div>
 
-                <!-- Lastname -->
-                <div>
-                    <label class="block text-sm font-medium text-black dark:text-white mb-1">
-                        <?php echo e(__('messages.lastname')); ?>
+                    <!-- Lastname -->
+                    <div>
+                        <label class="block text-sm font-medium text-black dark:text-white mb-1">
+                            <?php echo e(__('messages.lastname')); ?>
 
-                    </label>
-                    <div class="relative">
-                        <input type="text" wire:model="lastname" placeholder="<?php echo e(__('messages.placeholder_lastname')); ?>"
-                            class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                        </label>
+                        <div class="relative">
+                            <input type="text" wire:model="lastname"
+                                placeholder="<?php echo e(__('messages.placeholder_lastname')); ?>"
+                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
-                        <div class="absolute left-2 top-2">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/profile.svg')); ?>" alt="">
+                            <div class="absolute left-2 top-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/profile.svg')); ?>" alt="">
+                            </div>
                         </div>
-                    </div>
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['lastname'];
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['lastname'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                    <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                    <?php unset($message);
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-                </div>
-
-                <!-- Sarafi Name -->
-                <!-- در فایل Blade -->
-                <div>
-                    <label class="block text-sm font-medium text-black dark:text-white mb-1">
-                        <?php echo e(__('messages.sarafi_name')); ?>
-
-                    </label>
-                    <div class="relative">
-                        <input type="text" wire:model="sarafi_name"
-                            placeholder="<?php echo e(__('messages.placeholder_sarafi_name')); ?>" <?php echo e(Auth::guard('sarafi')->user()->role === 'admin' ? : ''); ?>
-
-                        class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C]
-                        focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white
-                        <?php echo e(Auth::guard('sarafi')->user()->role === 'admin' ? 'bg-gray-100' : ''); ?>">
-                        <div class="absolute left-2 top-2">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/buildings-2.svg')); ?>" alt="">
-                        </div>
                     </div>
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['sarafi_name'];
+
+                    <!-- Sarafi Name -->
+                    <!-- در فایل Blade -->
+                    <div>
+                        <label class="block text-sm font-medium text-black dark:text-white mb-1">
+                            <?php echo e(__('messages.sarafi_name')); ?>
+
+                        </label>
+                        <div class="relative">
+                            <input type="text" wire:model="sarafi_name"
+                                placeholder="<?php echo e(__('messages.placeholder_sarafi_name')); ?>" <?php echo e(Auth::guard('sarafi')->user()->role === 'admin' ? : ''); ?>
+
+                            class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C]
+                            focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white
+                            dark:text-white
+                            <?php echo e(Auth::guard('sarafi')->user()->role === 'admin' ? 'bg-gray-100' : ''); ?>">
+                            <div class="absolute left-2 top-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/buildings-2.svg')); ?>" alt="">
+                            </div>
+                        </div>
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['sarafi_name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                    <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                    <?php unset($message);
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-                </div>
-
-                <!-- Address -->
-                <div>
-                    <label class="block text-sm font-medium text-black dark:text-white mb-1">
-                        <?php echo e(__('messages.address')); ?>
-
-                    </label>
-                    <div class="relative">
-                        <input type="text" wire:model="address" placeholder="<?php echo e(__('messages.placeholder_address')); ?>"
-                            <?php echo e(Auth::guard('sarafi')->user()->role === 'admin' ? : ''); ?>
-
-                        class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C]
-                        focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white
-                        <?php echo e(Auth::guard('sarafi')->user()->role === 'admin' ? 'bg-gray-100' : ''); ?>">
-                        <div class="absolute left-2 top-2">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/location.svg')); ?>" alt="">
-                        </div>
                     </div>
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['address'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                    <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                    <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-                </div>
 
-                <!-- Phone -->
-                <div>
-                    <label class="block text-sm font-medium text-black dark:text-white mb-1">
-                        <?php echo e(__('messages.phone_user')); ?>
 
-                    </label>
-                    <div class="relative">
-                        <input type="text" wire:model.lazy="phone"
-                            placeholder="<?php echo e(__('messages.placeholder_phone_user')); ?>" class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                    <!-- Username -->
+                    <div>
+                        <label class="block text-sm font-medium text-black dark:text-white mb-1 vazir">
+                            <?php echo e(__('messages.username')); ?>
+
+                        </label>
+                        <div class="relative">
+                            <input type="text" wire:model="username"
+                                placeholder="<?php echo e(__('messages.placeholder_username')); ?>"
+                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
-                        <div class="absolute left-2 top-2">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/call.svg')); ?>" alt="">
+                            <div class="absolute left-2 top-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/profile.svg')); ?>" alt="">
+                            </div>
                         </div>
-                    </div>
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['phone'];
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['username'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                    <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                    <?php unset($message);
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-                </div>
+                    </div>
 
-                <!-- Username -->
-                <div>
-                    <label class="block text-sm font-medium text-black dark:text-white mb-1 vazir">
-                        <?php echo e(__('messages.username')); ?>
+                    <!-- Password -->
+                    <div>
+                        <label class="block text-sm font-medium text-black dark:text-white mb-1">
+                            <?php echo e(__('messages.password')); ?>
 
-                    </label>
-                    <div class="relative">
-                        <input type="text" wire:model="username" placeholder="<?php echo e(__('messages.placeholder_username')); ?>"
-                            class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                        </label>
+                        <div class="relative">
+                            <input type="password" wire:model.lazy="password"
+                                placeholder="<?php echo e(__('messages.placeholder_userpassword')); ?>"
+                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
-                        <div class="absolute left-2 top-2">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/profile.svg')); ?>" alt="">
+                            <div class="absolute left-2 top-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/lock.svg')); ?>" alt="">
+                            </div>
                         </div>
-                    </div>
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['username'];
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['password'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                    <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                    <?php unset($message);
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-                </div>
-
-                <!-- Password -->
-                <div>
-                    <label class="block text-sm font-medium text-black dark:text-white mb-1">
-                        <?php echo e(__('messages.password')); ?>
-
-                    </label>
-                    <div class="relative">
-                        <input type="password" wire:model.lazy="password"
-                            placeholder="<?php echo e(__('messages.placeholder_userpassword')); ?>" class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
-                                      focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
-                        <div class="absolute left-2 top-2">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/lock.svg')); ?>" alt="">
-                        </div>
                     </div>
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['password'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                    <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                    <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-                </div>
 
-                <!-- Role -->
-                <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role === 'superadmin'): ?>
-                <div>
-                    <label class="block text-sm font-medium text-black dark:text-white mb-1 vazir">
-                        <?php echo e(__('messages.category_user')); ?>
+                    <!-- Role -->
+                    <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role === 'superadmin'): ?>
+                    <div>
+                        <label class="block text-sm font-medium text-black dark:text-white mb-1 vazir">
+                            <?php echo e(__('messages.category_user')); ?>
 
-                    </label>
-                    <div class="relative">
-                        <select wire:model="role"
-                            class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                        </label>
+                        <div class="relative">
+                            <select wire:model="role"
+                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                            focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white appearance-none">
-                            <option value=""><?php echo e(__('messages.select_role')); ?></option>
-                            <option value="admin"><?php echo e(__('messages.admin')); ?></option>
+                                <option value=""><?php echo e(__('messages.select_role')); ?></option>
+                                <option value="admin"><?php echo e(__('messages.admin')); ?></option>
 
-                        </select>
-                        <div class="absolute left-2 top-2">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/clipboard.svg')); ?>" alt="">
+                            </select>
+                            <div class="absolute left-2 top-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/clipboard.svg')); ?>" alt="">
+                            </div>
                         </div>
-                    </div>
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['role'];
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['role'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                    <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                    <?php unset($message);
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-                </div>
-                <?php elseif($currentUser && $currentUser->role === 'admin'): ?>
-                <div>
-                    <label class="block text-sm font-medium text-black dark:text-white mb-1 vazir">
-                        <?php echo e(__('messages.category_user')); ?>
+                    </div>
+                    <?php elseif($currentUser && $currentUser->role === 'admin'): ?>
+                    <div>
+                        <label class="block text-sm font-medium text-black dark:text-white mb-1 vazir">
+                            <?php echo e(__('messages.category_user')); ?>
 
-                    </label>
-                    <div class="relative">
-                        <select wire:model="role"
-                            class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                        </label>
+                        <div class="relative">
+                            <select wire:model="role"
+                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                            focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white appearance-none">
-                            <option value=""><?php echo e(__('messages.select_role')); ?></option>
-                            <option value="warehouse_manager"><?php echo e(__('messages.warehouse_manager')); ?></option>
-                            <option value="internal_officer"><?php echo e(__('messages.internal_officer')); ?></option>
-                            <option value="external_officer"><?php echo e(__('messages.external_officer')); ?></option>
-                        </select>
-                        <div class="absolute left-2 top-2">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/clipboard.svg')); ?>" alt="">
+                                <option value=""><?php echo e(__('messages.select_role')); ?></option>
+                                <option value="warehouse_manager"><?php echo e(__('messages.warehouse_manager')); ?></option>
+                                <option value="internal_officer"><?php echo e(__('messages.internal_officer')); ?></option>
+                                <option value="external_officer"><?php echo e(__('messages.external_officer')); ?></option>
+                            </select>
+                            <div class="absolute left-2 top-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/clipboard.svg')); ?>" alt="">
+                            </div>
                         </div>
-                    </div>
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['role'];
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['role'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                    <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                    <?php unset($message);
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-                </div>
-                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    </div>
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                <!-- User Limition -->
-                <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role === 'superadmin'): ?>
-                <div>
-                    <label class="block text-sm font-medium text-black dark:text-white mb-1 vazir">
-                        <?php echo e(__('messages.user_limit')); ?>
+                    <!-- User Limition -->
+                    <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role === 'superadmin'): ?>
+                    <div>
+                        <label class="block text-sm font-medium text-black dark:text-white mb-1 vazir">
+                            <?php echo e(__('messages.user_limit')); ?>
 
-                    </label>
-                    <div class="relative">
-                        <input type="text" wire:model="user_limition"
-                            placeholder="<?php echo e(__('messages.placeholder_user_limit')); ?>" class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                        </label>
+                        <div class="relative">
+                            <input type="text" wire:model="user_limition"
+                                placeholder="<?php echo e(__('messages.placeholder_user_limit')); ?>"
+                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
-                        <div class="absolute left-2 top-2">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/customers.svg')); ?>" alt="" class="h-8 w-8">
+                            <div class="absolute left-2 top-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/customers.svg')); ?>" alt="" class="h-8 w-8">
+                            </div>
                         </div>
-                    </div>
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['user_limition'];
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['user_limition'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                    <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                    <?php unset($message);
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-                </div>
-                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    </div>
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
 
 
-                <div>
-                    <label class="block text-sm font-medium text-black dark:text-white mb-1 vazir">
-                        <?php echo e(__('messages.zone')); ?>
+                    <div>
+                        <label class="block text-sm font-medium text-black dark:text-white mb-1 vazir">
+                            <?php echo e(__('messages.zone')); ?>
 
-                    </label>
-                    <div class="relative">
-                        <input type="text" wire:model="zone" placeholder="<?php echo e(__('messages.placeholder_zone')); ?>" class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                        </label>
+                        <div class="relative">
+                            <input type="text" wire:model="zone" placeholder="<?php echo e(__('messages.placeholder_zone')); ?>"
+                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
-                        <div class="absolute left-2 top-2">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/location.svg')); ?>" alt="">
+                            <div class="absolute left-2 top-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/location.svg')); ?>" alt="">
+                            </div>
                         </div>
-                    </div>
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['zone'];
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['zone'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                    <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                    <?php unset($message);
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+                    </div>
+
+
+
+
+                    <!-- Address1 -->
+                    <div>
+                        <label class="block text-sm font-medium text-black dark:text-white mb-1">
+                            آدرس شبعه اول
+                        </label>
+                        <div class="relative">
+                            <input type="text" wire:model="address"
+                                placeholder="<?php echo e(__('messages.placeholder_address')); ?>" <?php echo e(Auth::guard('sarafi')->user()->role === 'admin' ? : ''); ?>
+
+                            class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C]
+                            focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white
+                            dark:text-white
+                            <?php echo e(Auth::guard('sarafi')->user()->role === 'admin' ? 'bg-gray-100' : ''); ?>">
+                            <div class="absolute left-2 top-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/location.svg')); ?>" alt="">
+                            </div>
+                        </div>
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['address'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+                    </div>
+
+
+
+
+                    <!-- Address2 -->
+                    <div>
+                        <label class="block text-sm font-medium text-black dark:text-white mb-1">
+                            آدرس شبعه دوم
+                        </label>
+                        <div class="relative">
+                            <input type="text" wire:model="address2"
+                                placeholder="<?php echo e(__('messages.placeholder_address')); ?>" <?php echo e(Auth::guard('sarafi')->user()->role === 'admin' ? : ''); ?>
+
+                            class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C]
+                            focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white
+                            dark:text-white
+                            <?php echo e(Auth::guard('sarafi')->user()->role === 'admin' ? 'bg-gray-100' : ''); ?>">
+                            <div class="absolute left-2 top-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/location.svg')); ?>" alt="">
+                            </div>
+                        </div>
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['address'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+                    </div>
+
+
+                    <!-- Address3 -->
+                    <div>
+                        <label class="block text-sm font-medium text-black dark:text-white mb-1">
+                            آدرس شبعه سوم
+                        </label>
+                        <div class="relative">
+                            <input type="text" wire:model="address3"
+                                placeholder="<?php echo e(__('messages.placeholder_address')); ?>" <?php echo e(Auth::guard('sarafi')->user()->role === 'admin' ? : ''); ?>
+
+                            class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C]
+                            focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white
+                            dark:text-white
+                            <?php echo e(Auth::guard('sarafi')->user()->role === 'admin' ? 'bg-gray-100' : ''); ?>">
+                            <div class="absolute left-2 top-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/location.svg')); ?>" alt="">
+                            </div>
+                        </div>
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['address'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+                    </div>
+
+                    <!-- Phone1 -->
+                    <div>
+                        <label class="block text-sm font-medium text-black dark:text-white mb-1">
+                                 شماره تماس اول
+                        </label>
+                        <div class="relative">
+                            <input type="text" wire:model.lazy="phone"
+                                placeholder="<?php echo e(__('messages.placeholder_phone_user')); ?>"
+                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                                      focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
+                            <div class="absolute left-2 top-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/call.svg')); ?>" alt="">
+                            </div>
+                        </div>
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+                    </div>
+
+
+
+
+                      <!-- Phone2 -->
+                    <div>
+                        <label class="block text-sm font-medium text-black dark:text-white mb-1">
+                                 شماره تماس دوم
+                        </label>
+                        <div class="relative">
+                            <input type="text" wire:model.lazy="phone2"
+                                placeholder="<?php echo e(__('messages.placeholder_phone_user')); ?>"
+                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                                      focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
+                            <div class="absolute left-2 top-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/call.svg')); ?>" alt="">
+                            </div>
+                        </div>
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+                    </div>
+
+
+
+                      <!-- Phone3 -->
+                    <div>
+                        <label class="block text-sm font-medium text-black dark:text-white mb-1">
+                                 شماره تماس سوم
+                        </label>
+                        <div class="relative">
+                            <input type="text" wire:model.lazy="phone3"
+                                placeholder="<?php echo e(__('messages.placeholder_phone_user')); ?>"
+                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                                      focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
+                            <div class="absolute left-2 top-2">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/call.svg')); ?>" alt="">
+                            </div>
+                        </div>
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+                    </div>
+
+
                 </div>
 
+                <!-- دکمه‌ها -->
+                <div class="flex justify-center gap-4 mt-3 pt-2">
+                    <button type="button" wire:click="resetForm"
+                        class="flex-1 py-4 bg-[#B10909] text-white rounded-xl hover:bg-gray-700 transition">
+                        <?php echo e(__('messages.cancel')); ?>
 
-            </div>
+                    </button>
+                    <button type="submit"
+                        class="flex-1 py-4 bg-[#2563EB] text-white rounded-xl hover:bg-blue-700 transition">
+                        <?php echo e(__('messages.save')); ?>
 
-            <!-- دکمه‌ها -->
-            <div class="flex justify-center gap-4 mt-3 pt-2">
-                <button type="button" wire:click="resetForm"
-                    class="flex-1 py-4 bg-[#B10909] text-white rounded-xl hover:bg-gray-700 transition">
-                    <?php echo e(__('messages.cancel')); ?>
-
-                </button>
-                <button type="submit"
-                    class="flex-1 py-4 bg-[#2563EB] text-white rounded-xl hover:bg-blue-700 transition">
-                    <?php echo e(__('messages.save')); ?>
-
-                </button>
-            </div>
-        </form>
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-     </div>
 
     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
@@ -422,7 +548,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             </button>
 
             <!--[if BLOCK]><![endif]--><?php if($filterOpen): ?>
-            <div class="absolute top-full mt-2 dark:bg-black bg-white border rounded-xl shadow-lg p-4 w-72 z-50 flex flex-col gap-3">
+            <div
+                class="absolute top-full mt-2 dark:bg-black bg-white border rounded-xl shadow-lg p-4 w-72 z-50 flex flex-col gap-3">
                 <select wire:model="filterRole" class="border rounded px-3 py-2 w-full dark:bg-black dark:text-white">
                     <option value=""><?php echo e(__('messages.all_roles')); ?></option>
                     <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -450,10 +577,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
         <div class="relative w-80">
             <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
                 class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 dark:hidden">
-                <svg width="24"   class=" hidden dark:block absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+            <svg width="24" class=" hidden dark:block absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5"
+                height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
 
             <input type="text" wire:model.debounce.500ms="search" wire:keydown.enter="searchUser"
                 placeholder="<?php echo e(__('messages.search_placeholder')); ?>"
@@ -507,57 +638,52 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </td>
                     <td class="px-6 py-4 flex justify-center gap-2">
                         <button wire:click="edit(<?php echo e($user->id); ?>)" class="px-2 py-1">
-  <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>"
-                                                    class="w-7 h-7 dark:hidden" alt="Edit">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>" class="w-7 h-7 dark:hidden"
+                                alt="Edit">
 
-                                                <svg width="22" height="22" class="hidden dark:block"
-                                                    viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M10.082 1.83325H8.2487C3.66536 1.83325 1.83203 3.66659 1.83203 8.24992V13.7499C1.83203 18.3333 3.66536 20.1666 8.2487 20.1666H13.7487C18.332 20.1666 20.1654 18.3333 20.1654 13.7499V11.9166"
-                                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path
-                                                        d="M14.7027 2.76832L7.4794 9.99165C7.2044 10.2667 6.9294 10.8075 6.8744 11.2017L6.48023 13.9608C6.33357 14.96 7.0394 15.6567 8.03857 15.5192L10.7977 15.125C11.1827 15.07 11.7236 14.795 12.0077 14.52L19.2311 7.29665C20.4777 6.04999 21.0644 4.60165 19.2311 2.76832C17.3977 0.934987 15.9494 1.52165 14.7027 2.76832Z"
-                                                        stroke="white" stroke-width="1.5" stroke-miterlimit="10"
-                                                        stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path
-                                                        d="M13.668 3.8042C14.2821 5.99503 15.9963 7.7092 18.1963 8.33253"
-                                                        stroke="white" stroke-width="1.5" stroke-miterlimit="10"
-                                                        stroke-linecap="round" stroke-linejoin="round" />
-                                                </svg>                        </button>
+                            <svg width="22" height="22" class="hidden dark:block" viewBox="0 0 22 22" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M10.082 1.83325H8.2487C3.66536 1.83325 1.83203 3.66659 1.83203 8.24992V13.7499C1.83203 18.3333 3.66536 20.1666 8.2487 20.1666H13.7487C18.332 20.1666 20.1654 18.3333 20.1654 13.7499V11.9166"
+                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M14.7027 2.76832L7.4794 9.99165C7.2044 10.2667 6.9294 10.8075 6.8744 11.2017L6.48023 13.9608C6.33357 14.96 7.0394 15.6567 8.03857 15.5192L10.7977 15.125C11.1827 15.07 11.7236 14.795 12.0077 14.52L19.2311 7.29665C20.4777 6.04999 21.0644 4.60165 19.2311 2.76832C17.3977 0.934987 15.9494 1.52165 14.7027 2.76832Z"
+                                    stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M13.668 3.8042C14.2821 5.99503 15.9963 7.7092 18.1963 8.33253" stroke="white"
+                                    stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg> </button>
                         <button wire:click="confirmDelete(<?php echo e($user->id); ?>)" class="px-2 py-1">
-                           <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>"
-                                                    class="w-8 h-8 dark:hidden" alt="Delete">
-                                                <svg width="24" height="24" class="hidden dark:block"
-                                                    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M21 5.97998C17.67 5.64998 14.32 5.47998 10.98 5.47998C9 5.47998 7.02 5.57998 5.04 5.77998L3 5.97998"
-                                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path
-                                                        d="M8.5 4.97L8.72 3.66C8.88 2.71 9 2 10.69 2H13.31C15 2 15.13 2.75 15.28 3.67L15.5 4.97"
-                                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path
-                                                        d="M18.8484 9.13989L18.1984 19.2099C18.0884 20.7799 17.9984 21.9999 15.2084 21.9999H8.78844C5.99844 21.9999 5.90844 20.7799 5.79844 19.2099L5.14844 9.13989"
-                                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path d="M10.3281 16.5H13.6581" stroke="white" stroke-width="1.5"
-                                                        stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path d="M9.5 12.5H14.5" stroke="white" stroke-width="1.5"
-                                                        stroke-linecap="round" stroke-linejoin="round" />
-                                                </svg>
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>" class="w-8 h-8 dark:hidden"
+                                alt="Delete">
+                            <svg width="24" height="24" class="hidden dark:block" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M21 5.97998C17.67 5.64998 14.32 5.47998 10.98 5.47998C9 5.47998 7.02 5.57998 5.04 5.77998L3 5.97998"
+                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M8.5 4.97L8.72 3.66C8.88 2.71 9 2 10.69 2H13.31C15 2 15.13 2.75 15.28 3.67L15.5 4.97"
+                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M18.8484 9.13989L18.1984 19.2099C18.0884 20.7799 17.9984 21.9999 15.2084 21.9999H8.78844C5.99844 21.9999 5.90844 20.7799 5.79844 19.2099L5.14844 9.13989"
+                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M10.3281 16.5H13.6581" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M9.5 12.5H14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
 
                         </button>
                         <button class="px-2 py-1" wire:click="print(<?php echo e($user->id); ?>)">
-                              <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
-                                                    class="w-10 h-10 dark:hidden" alt="Print">
-                                                <svg width="30" class="hidden dark:block" height="30"
-                                                    viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M10.7714 25.0001C10.2156 25.0001 9.74016 24.8022 9.34516 24.4063C8.95016 24.0105 8.75224 23.5359 8.75141 22.9826V20.0001H6.49141C5.93641 20.0001 5.46141 19.8022 5.06641 19.4063C4.67141 19.0105 4.47349 18.5355 4.47266 17.9813V13.2688C4.47266 12.5605 4.71307 11.9672 5.19391 11.4888C5.67474 11.0088 6.26766 10.7688 6.97266 10.7688H23.0302C23.7385 10.7688 24.3322 11.0088 24.8114 11.4888C25.2906 11.9688 25.5302 12.5622 25.5302 13.2688V17.9813C25.5302 18.5363 25.3327 19.0113 24.9377 19.4063C24.5427 19.8013 24.0672 19.9992 23.5114 20.0001H21.2514V22.9813C21.2514 23.5363 21.0535 24.0113 20.6577 24.4063C20.2618 24.8013 19.7868 24.9992 19.2327 25.0001H10.7714ZM6.49141 18.7501H8.75141C8.78391 18.2226 8.99307 17.7701 9.37891 17.3926C9.76474 17.0159 10.2289 16.8276 10.7714 16.8276H19.2327C19.7743 16.8276 20.2381 17.0163 20.6239 17.3938C21.0097 17.7705 21.2189 18.2226 21.2514 18.7501H23.5114C23.7356 18.7501 23.9197 18.678 24.0639 18.5338C24.2081 18.3897 24.2802 18.2055 24.2802 17.9813V13.2688C24.2802 12.9155 24.1606 12.6188 23.9214 12.3788C23.6822 12.1388 23.3852 12.0188 23.0302 12.0188H6.97266C6.61849 12.0188 6.32182 12.1388 6.08266 12.3788C5.84349 12.6188 5.72349 12.9159 5.72266 13.2701V17.9813C5.72266 18.2055 5.79474 18.3897 5.93891 18.5338C6.08307 18.678 6.26724 18.7501 6.49141 18.7501ZM20.0014 10.7701V7.78758C20.0014 7.56258 19.9293 7.37841 19.7852 7.23508C19.641 7.09091 19.4568 7.01883 19.2327 7.01883H10.7702C10.546 7.01883 10.3618 7.09091 10.2177 7.23508C10.0735 7.37925 10.0014 7.56341 10.0014 7.78758V10.7688H8.75141V7.78758C8.75141 7.23258 8.94932 6.75716 9.34516 6.36133C9.74016 5.9655 10.2152 5.76758 10.7702 5.76758H19.2327C19.7877 5.76758 20.2627 5.9655 20.6577 6.36133C21.0535 6.75716 21.2514 7.23216 21.2514 7.78633V10.7688L20.0014 10.7701ZM22.0214 15.1451C22.3756 15.1451 22.6722 15.0251 22.9114 14.7851C23.1506 14.5451 23.2706 14.2484 23.2714 13.8951C23.2722 13.5417 23.1522 13.2447 22.9114 13.0038C22.6706 12.763 22.3739 12.643 22.0214 12.6438C21.6689 12.6447 21.3718 12.7647 21.1302 13.0038C20.8885 13.243 20.7689 13.5401 20.7714 13.8951C20.7739 14.2501 20.8935 14.5467 21.1302 14.7851C21.3668 15.0234 21.6639 15.1434 22.0214 15.1451ZM20.0014 22.9801V18.8463C20.0014 18.6213 19.9293 18.4367 19.7852 18.2926C19.641 18.1484 19.4568 18.0763 19.2327 18.0763H10.7702C10.546 18.0763 10.3618 18.1484 10.2177 18.2926C10.0735 18.4376 10.0014 18.6222 10.0014 18.8463V22.9813C10.0014 23.2055 10.0735 23.3897 10.2177 23.5338C10.3618 23.678 10.5464 23.7501 10.7714 23.7501H19.2327C19.4568 23.7501 19.641 23.678 19.7852 23.5338C19.9293 23.3897 20.0014 23.2051 20.0014 22.9801ZM6.49141 12.0201H5.72266H24.2802H6.49141Z"
-                                                        fill="white" />
-                                                </svg>
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
+                                class="w-10 h-10 dark:hidden" alt="Print">
+                            <svg width="30" class="hidden dark:block" height="30" viewBox="0 0 30 30" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M10.7714 25.0001C10.2156 25.0001 9.74016 24.8022 9.34516 24.4063C8.95016 24.0105 8.75224 23.5359 8.75141 22.9826V20.0001H6.49141C5.93641 20.0001 5.46141 19.8022 5.06641 19.4063C4.67141 19.0105 4.47349 18.5355 4.47266 17.9813V13.2688C4.47266 12.5605 4.71307 11.9672 5.19391 11.4888C5.67474 11.0088 6.26766 10.7688 6.97266 10.7688H23.0302C23.7385 10.7688 24.3322 11.0088 24.8114 11.4888C25.2906 11.9688 25.5302 12.5622 25.5302 13.2688V17.9813C25.5302 18.5363 25.3327 19.0113 24.9377 19.4063C24.5427 19.8013 24.0672 19.9992 23.5114 20.0001H21.2514V22.9813C21.2514 23.5363 21.0535 24.0113 20.6577 24.4063C20.2618 24.8013 19.7868 24.9992 19.2327 25.0001H10.7714ZM6.49141 18.7501H8.75141C8.78391 18.2226 8.99307 17.7701 9.37891 17.3926C9.76474 17.0159 10.2289 16.8276 10.7714 16.8276H19.2327C19.7743 16.8276 20.2381 17.0163 20.6239 17.3938C21.0097 17.7705 21.2189 18.2226 21.2514 18.7501H23.5114C23.7356 18.7501 23.9197 18.678 24.0639 18.5338C24.2081 18.3897 24.2802 18.2055 24.2802 17.9813V13.2688C24.2802 12.9155 24.1606 12.6188 23.9214 12.3788C23.6822 12.1388 23.3852 12.0188 23.0302 12.0188H6.97266C6.61849 12.0188 6.32182 12.1388 6.08266 12.3788C5.84349 12.6188 5.72349 12.9159 5.72266 13.2701V17.9813C5.72266 18.2055 5.79474 18.3897 5.93891 18.5338C6.08307 18.678 6.26724 18.7501 6.49141 18.7501ZM20.0014 10.7701V7.78758C20.0014 7.56258 19.9293 7.37841 19.7852 7.23508C19.641 7.09091 19.4568 7.01883 19.2327 7.01883H10.7702C10.546 7.01883 10.3618 7.09091 10.2177 7.23508C10.0735 7.37925 10.0014 7.56341 10.0014 7.78758V10.7688H8.75141V7.78758C8.75141 7.23258 8.94932 6.75716 9.34516 6.36133C9.74016 5.9655 10.2152 5.76758 10.7702 5.76758H19.2327C19.7877 5.76758 20.2627 5.9655 20.6577 6.36133C21.0535 6.75716 21.2514 7.23216 21.2514 7.78633V10.7688L20.0014 10.7701ZM22.0214 15.1451C22.3756 15.1451 22.6722 15.0251 22.9114 14.7851C23.1506 14.5451 23.2706 14.2484 23.2714 13.8951C23.2722 13.5417 23.1522 13.2447 22.9114 13.0038C22.6706 12.763 22.3739 12.643 22.0214 12.6438C21.6689 12.6447 21.3718 12.7647 21.1302 13.0038C20.8885 13.243 20.7689 13.5401 20.7714 13.8951C20.7739 14.2501 20.8935 14.5467 21.1302 14.7851C21.3668 15.0234 21.6639 15.1434 22.0214 15.1451ZM20.0014 22.9801V18.8463C20.0014 18.6213 19.9293 18.4367 19.7852 18.2926C19.641 18.1484 19.4568 18.0763 19.2327 18.0763H10.7702C10.546 18.0763 10.3618 18.1484 10.2177 18.2926C10.0735 18.4376 10.0014 18.6222 10.0014 18.8463V22.9813C10.0014 23.2055 10.0735 23.3897 10.2177 23.5338C10.3618 23.678 10.5464 23.7501 10.7714 23.7501H19.2327C19.4568 23.7501 19.641 23.678 19.7852 23.5338C19.9293 23.3897 20.0014 23.2051 20.0014 22.9801ZM6.49141 12.0201H5.72266H24.2802H6.49141Z"
+                                    fill="white" />
+                            </svg>
                         </button>
                     </td>
                 </tr>
