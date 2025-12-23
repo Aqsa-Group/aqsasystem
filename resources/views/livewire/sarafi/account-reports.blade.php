@@ -70,9 +70,10 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
 
                 <div class="grid grid-cols-1 lg:grid-cols-7 gap-4 items-stretch">
                     <div>
-                        <button wire:click="printReport"
+                        <button wire:click="printReport" wire:loading.attr='disabled' wire:target='printReport'
                             class="w-full flex items-center justify-center gap-2 bg-[#2563EB] text-white px-4 py-4 rounded-xl hover:bg-blue-700 transition">
-                            <span>چاپ گزارش</span>
+                            <span wire:loading.remove wire:target='printReport'>چاپ گزارش</span>
+                            <span wire:loading wire:target='printReport'> در حال ثبت گزارش.....</span>
                             <svg width="30" height="30" viewBox="0 0 30 30" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path

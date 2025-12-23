@@ -2,31 +2,33 @@
     <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-3">
 
         <!-- Flash Messages -->
-        @if (session()->has('message'))
+        <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2563EB] azir">
             <div class="h-[80px] w-full flex justify-start items-center px-4">
                 <h2 class="text-white vazir text-[18px]">
-                    {{ session('message') }}
+                    <?php echo e(session('message')); ?>
+
                 </h2>
             </div>
         </div>
-        @endif
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-        @if (session()->has('error'))
+        <?php if(session()->has('error')): ?>
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[9999] bg-red-700 vazir">
             <div class="h-[80px] w-full flex justify-start items-center px-4">
                 <h2 class="text-white vazir text-[18px]">
-                    {{ session('error') }}
+                    <?php echo e(session('error')); ?>
+
                 </h2>
             </div>
         </div>
-        @endif
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
 
 
-        {{-- امروز --}}
+        
         <div class="bg-[#2B65E5] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 bg-gradient-to-b rounded-xl text-white vazir p-3 shadow-md space-y-3"
             style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
             <div class="flex justify-between items-center border-b border-white/30 pb-1">
@@ -36,24 +38,24 @@
 
             <div class="flex justify-between items-center  px-3 py-1.5 rounded-lg">
                 <h2 class="text-sm">فایده</h2>
-                <span class="text-base font-bold">{{ $todayprofit }}</span>
+                <span class="text-base font-bold"><?php echo e($todayprofit); ?></span>
             </div>
 
             <div class="flex justify-between items-center  px-3 py-1.5 rounded-lg">
                 <h2 class="text-sm">ضرر</h2>
-                <span class="text-base font-bold">{{ $todaylost }}</span>
+                <span class="text-base font-bold"><?php echo e($todaylost); ?></span>
             </div>
 
             <hr class="border-white/30">
 
             <div class="flex justify-between items-center  px-3 py-1.5 rounded-lg">
                 <h2 class="text-sm">سود خالص</h2>
-                <span class="text-base font-bold">{{ $todayplus }}</span>
+                <span class="text-base font-bold"><?php echo e($todayplus); ?></span>
             </div>
         </div>
 
 
-        {{-- این هفته --}}
+        
         <div class="bg-[#2B65E5] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 bg-gradient-to-b rounded-xl text-white vazir p-3  space-y-3"
             style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
             <div class="flex justify-between items-center border-b border-white/30 pb-1">
@@ -63,24 +65,24 @@
 
             <div class="flex justify-between items-center px-3 py-1.5 rounded-lg">
                 <h2 class="text-sm">فایده</h2>
-                <span class="text-base font-bold">{{ $weekprofit }}</span>
+                <span class="text-base font-bold"><?php echo e($weekprofit); ?></span>
             </div>
 
             <div class="flex justify-between items-center  px-3 py-1.5 rounded-lg">
                 <h2 class="text-sm">ضرر</h2>
-                <span class="text-base font-bold">{{ $weeklost }}</span>
+                <span class="text-base font-bold"><?php echo e($weeklost); ?></span>
             </div>
 
             <hr class="border-white/30">
 
             <div class="flex justify-between items-center  px-3 py-1.5 rounded-lg">
                 <h2 class="text-sm">سود خالص</h2>
-                <span class="text-base font-bold">{{ $weekplus }}</span>
+                <span class="text-base font-bold"><?php echo e($weekplus); ?></span>
             </div>
         </div>
 
 
-        {{-- این ماه --}}
+        
         <div class="bg-[#2B65E5] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 bg-gradient-to-b rounded-xl text-white vazir p-3 shadow-md space-y-3"
             style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
             <div class="flex justify-between items-center border-b border-white/30 pb-1">
@@ -90,24 +92,24 @@
 
             <div class="flex justify-between items-center  px-3 py-1.5 rounded-lg">
                 <h2 class="text-sm">فایده</h2>
-                <span class="text-base font-bold">{{ $monthprofit }}</span>
+                <span class="text-base font-bold"><?php echo e($monthprofit); ?></span>
             </div>
 
             <div class="flex justify-between items-center  px-3 py-1.5 rounded-lg">
                 <h2 class="text-sm">ضرر</h2>
-                <span class="text-base font-bold">{{ $monthlost }}</span>
+                <span class="text-base font-bold"><?php echo e($monthlost); ?></span>
             </div>
 
             <hr class="border-white/30">
 
             <div class="flex justify-between items-center  px-3 py-1.5 rounded-lg">
                 <h2 class="text-sm">سود خالص</h2>
-                <span class="text-base font-bold">{{ $monthplus }}</span>
+                <span class="text-base font-bold"><?php echo e($monthplus); ?></span>
             </div>
         </div>
 
 
-        {{-- کلی --}}
+        
         <div class="bg-[#2B65E5] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 bg-gradient-to-b rounded-xl text-white vazir p-3 shadow-md space-y-3"
             style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
             <div class="flex justify-between items-center border-b border-white/30 pb-1">
@@ -117,19 +119,19 @@
 
             <div class="flex justify-between items-center  px-3 py-1.5 rounded-lg">
                 <h2 class="text-sm">فایده</h2>
-                <span class="text-base font-bold">{{ $totalprofit }}</span>
+                <span class="text-base font-bold"><?php echo e($totalprofit); ?></span>
             </div>
 
             <div class="flex justify-between items-center  px-3 py-1.5 rounded-lg">
                 <h2 class="text-sm">ضرر</h2>
-                <span class="text-base font-bold">{{ $totallost }}</span>
+                <span class="text-base font-bold"><?php echo e($totallost); ?></span>
             </div>
 
             <hr class="border-white/30">
 
             <div class="flex justify-between  items-center  px-3 py-1.5 rounded-lg">
                 <h2 class="text-sm">سود خالص</h2>
-                <span class="text-base font-bold">{{ $totalplus }}</span>
+                <span class="text-base font-bold"><?php echo e($totalplus); ?></span>
             </div>
         </div>
 
@@ -141,7 +143,7 @@
         <div class="flex flex-col dark:bg-black dark:text-white dark:border-white  dark:border bg-[#F5F5F5] w-[420px] lg:w-[534px] mx-auto p-[12px] h-fit rounded-[12px] space-y-8"
             style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
             <div class="flex flex-row gap-4  p-[10px] border border-[#8C8C8C] rounded-[12px] flex-wrap">
-                <img src="{{ asset('assets/sarafi/all_icon/edit-2.svg') }}" alt="" class="h-6 w-6">
+                <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" alt="" class="h-6 w-6">
 
                 <p class="flex justify-center items-center text-center">
                     فورم برداشت مفاد
@@ -159,8 +161,8 @@
                                 اضافه به حساب</label>
                             <div x-data="{
                                     searchValue: '',
-                                    selectedId: @entangle('selectedAccount'),
-                                    customers: @js($customers),
+                                    selectedId: <?php if ((object) ('selectedAccount') instanceof \Livewire\WireDirective) : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccount'->value()); ?>')<?php echo e('selectedAccount'->hasModifier('live') ? '.live' : ''); ?><?php else : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccount'); ?>')<?php endif; ?>,
+                                    customers: <?php echo \Illuminate\Support\Js::from($customers)->toHtml() ?>,
                                     handleSelect(event) {
                                         const selected = this.customers.find(
                                             c => event.target.value === `${c.account_number} - ${c.fullname}`
@@ -188,19 +190,26 @@
                                     class="w-full dark:bg-black dark:text-white dark:border dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
                                     autocomplete="off">
                                 <datalist id="customersList">
-                                    @foreach ($customers as $customer)
-                                    <option value="{{ $customer['account_number'] }} - {{ $customer['fullname'] }}">
-                                        @endforeach
+                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </datalist>
-                                @if(empty($selectedAccount))
+                                <!--[if BLOCK]><![endif]--><?php if(empty($selectedAccount)): ?>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
+                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
                                 </div>
-                                @endif
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
-                            @error('selectedAccount')
-                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                            @enderror
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['selectedAccount'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
 
@@ -209,9 +218,16 @@
                         <input type="text" value="دالر" readonly
                             class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-black dark:placeholder:text-white dark:border-white dark:text-white cursor-pointer" />
 
-                        @error('currency')
-                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                        @enderror
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['currency'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
                 </div>
@@ -222,9 +238,16 @@
                         <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ</label>
                         <input type="text" wire:model="amount" value="4000"
                             class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-black dark:border dark:border-white dark:placeholder:text-white dark:text-white cursor-pointer" />
-                        @error('giver_name')
-                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                        @enderror
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['giver_name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
                     <!--  date -->
@@ -232,9 +255,16 @@
                         <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
                         <input type="text" wire:model="date"
                             class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-black dark:placeholder:text-white dark:border-white dark:text-white cursor-pointer" />
-                        @error('giver_name')
-                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                        @enderror
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['giver_name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
                 </div>
 
@@ -243,9 +273,16 @@
                     <div class="w-full">
                         <textarea wire:model="description" rows="3" placeholder="شرح برداشت..."
                             class="w-full  p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-black dark:placeholder:text-white dark:border-white dark:text-white resize-none"></textarea>
-                        @error('description')
-                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                        @enderror
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
                 </div>
 
@@ -273,24 +310,24 @@
         <div class="flex-1 flex flex-col dark:bg-black dark:border-white dark:border bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px] w-[440px] mb-5 md:w-[410px] lg:w-[150px] mx-auto"
             style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
-            {{-- بالای جدول: عنوان و جستجو --}}
+            
             <div
                 class="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                 <h1 class="text-lg md:text-xl lg:text-2xl vazir">ترانزکشن های ثبت شده</h1>
 
                 <div class="flex items-center gap-3">
-                    {{-- نمایش نام مشتری انتخاب شده --}}
-                    @if($selectedCustomerId)
-                    @php
+                    
+                    <!--[if BLOCK]><![endif]--><?php if($selectedCustomerId): ?>
+                    <?php
                     $selectedCustomer = \App\Models\Sarafi\Customer::find($selectedCustomerId);
-                    @endphp
+                    ?>
                     <div class="bg-blue-100 px-3 py-2 rounded-lg flex items-center gap-2">
-                        <span class="text-blue-700 vazir">فیلتر: {{ $selectedCustomer->fullname ?? '' }}</span>
+                        <span class="text-blue-700 vazir">فیلتر: <?php echo e($selectedCustomer->fullname ?? ''); ?></span>
                         <button wire:click="clearFilter" class="text-red-500 hover:text-red-700 text-lg">
                             ✕
                         </button>
                     </div>
-                    @endif
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                     <div class="relative w-[340px] md:w-[500px]">
                         <!-- Input جستجوی زنده با wire:model.live -->
@@ -298,7 +335,7 @@
                             class="border dark:bg-black dark:border-white dark:text-white dark:placeholder:text-white border-[#8C8C8C] w-full h-12 md:h-[51px] bg-transparent rounded-[12px] p-2 md:p-3 text-sm md:text-base pr-10"
                             placeholder="جستجو بر اساس نام یا نمبر حساب...">
 
-                         <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
+                         <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
                                 class="absolute  dark:hidden left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6">
                             <svg width="24" height="24"
                                 class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 hidden dark:block"
@@ -310,31 +347,31 @@
                                     stroke-linejoin="round" />
                             </svg>
                         <!-- دکمه پاک کردن جستجو -->
-                        @if($search)
+                        <!--[if BLOCK]><![endif]--><?php if($search): ?>
                         <button wire:click="clearSearchAndFilter"
                             class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
                             ✕
                         </button>
-                        @endif
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                         <!-- لیست پیشنهادات -->
-                        @if($search && count($filteredCustomers) > 0 && !$selectedCustomerId)
+                        <!--[if BLOCK]><![endif]--><?php if($search && count($filteredCustomers) > 0 && !$selectedCustomerId): ?>
                         <ul
                             class="absolute z-50 w-full bg-white border border-gray-300 mt-1 rounded-md shadow-lg max-h-60 overflow-y-auto">
-                            @foreach($filteredCustomers as $customer)
-                            <li wire:click="selectCustomer({{ $customer->id }})"
+                            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $filteredCustomers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <li wire:click="selectCustomer(<?php echo e($customer->id); ?>)"
                                 class="px-3 py-2 hover:bg-blue-100 cursor-pointer flex justify-between items-center">
-                                <span>{{ $customer->fullname }}</span>
-                                <span class="text-gray-500 text-sm">{{ $customer->account_number }}</span>
+                                <span><?php echo e($customer->fullname); ?></span>
+                                <span class="text-gray-500 text-sm"><?php echo e($customer->account_number); ?></span>
                             </li>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                         </ul>
-                        @endif
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
                 </div>
             </div>
 
-            {{-- جدول --}}
+            
             <div class="overflow-x-auto w-full ">
                 <div class="max-h-[680px] overflow-y-auto min-w-[890px]">
                     <table
@@ -349,59 +386,55 @@
                                 <th class="px-4 py-4 font-bold w-32">واحد</th>
                                 <th class="px-4 py-4 font-bold w-80 text-center">توضیحات</th>
                                 <th class="px-4 py-4 font-bold w-40">تاریخ</th>
-                                {{-- <th class="px-4 py-4 font-bold w-48 text-center">عملیات</th> --}}
+                                
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($withdraws as $index => $withdraw)
+                            <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $withdraws; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $withdraw): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                             <tr class="text-black dark:text-white border-b border-[#D9D9D9] bg-transparent">
                                 <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">
-                                    {{ $index + 1 }}
+                                    <?php echo e($index + 1); ?>
+
                                 </td>
                                 <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium w-48">
-                                    {{ $withdraw->customer->fullname ?? 'نامشخص' }}
+                                    <?php echo e($withdraw->customer->fullname ?? 'نامشخص'); ?>
+
                                 </td>
                                 <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium w-32">
-                                    {{ number_format($withdraw->amount, 2) }}
+                                    <?php echo e(number_format($withdraw->amount, 2)); ?>
+
                                 </td>
                                 <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium w-32">
-                                    {{ $withdraw->currency_fa }}
+                                    <?php echo e($withdraw->currency_fa); ?>
+
                                 </td>
                                 <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-80">
                                     <div class="space-y-1 text-right">
-                                        {{ $withdraw->description }}
+                                        <?php echo e($withdraw->description); ?>
+
                                     </div>
                                 </td>
                                 <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-40">
                                     <div class="whitespace-nowrap">
                                         <div class="font-medium">
-                                            {{ $withdraw->date }}
+                                            <?php echo e($withdraw->date); ?>
+
                                         </div>
                                     </div>
                                 </td>
-                                {{-- <td class="py-4 text-center w-[68]">
-                                    <div class="flex justify-center gap-3">
-                                        <!-- دکمه حذف -->
-                                        <button wire:click="confirmDelete({{ $withdraw->id }})"
-                                            class="w-12 h-12 flex items-center justify-center rounded-full transition-colors hover:bg-red-100"
-                                            title="حذف">
-                                            <img src="{{ asset('assets/sarafi/all_icon/trash_table.svg') }}"
-                                                class="w-8 h-8" alt="Delete">
-                                        </button>
-                                    </div>
-                                </td> --}}
+                                
                             </tr>
-                            @empty
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                             <tr>
                                 <td colspan="7" class="text-center text-gray-500 py-8 text-lg">
-                                    @if($selectedCustomerId)
+                                    <!--[if BLOCK]><![endif]--><?php if($selectedCustomerId): ?>
                                     هیچ برداشتی برای این مشتری یافت نشد
-                                    @else
+                                    <?php else: ?>
                                     هیچ برداشتی ثبت نشده است
-                                    @endif
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </td>
                             </tr>
-                            @endforelse
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </tbody>
                     </table>
                 </div>
@@ -409,4 +442,4 @@
         </div>
 
     </div>
-</div>
+</div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/revenues.blade.php ENDPATH**/ ?>

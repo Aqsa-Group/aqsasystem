@@ -131,7 +131,8 @@
                     <!-- مقدار و نوع ارز -->
                     <div class="flex flex-col lg:flex-row gap-3">
                         <div class="lg:w-[160px]">
-                            <label class="block text-[15px] font-medium dark:text-white text-black mb-1 vazir">واحد ارز</label>
+                            <label class="block text-[15px] font-medium dark:text-white text-black mb-1 vazir">واحد
+                                ارز</label>
                             <div class="relative">
                                 <select wire:model="currency"
                                     class="w-full dark:bg-black dark:border-white dark:text-white dark:placeholder:text-white h-[55px] p-3 rounded-[10px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
@@ -140,19 +141,24 @@
                                     @endforeach
                                 </select>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" class="w-4 h-4 dark:hidden"
-                                        alt="">
+                                    <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}"
+                                        class="w-4 h-4 dark:hidden" alt="">
 
-                                        <svg width="24" class="hidden dark:block" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+                                    <svg width="24" class="hidden dark:block" height="24" viewBox="0 0 24 24"
+                                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                            stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
 
                                 </div>
                             </div>
                         </div>
 
                         <div class="flex-1">
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ</label>
+                            <label
+                                class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ</label>
                             <div class="relative w-full">
                                 <input type="text" wire:model.live="amount" placeholder="0"
                                     class="w-full dark:bg-black dark:border-white  h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:text-white"
@@ -171,7 +177,8 @@
                     <!-- واحد تبدیل ارز و مبلغ معادل -->
                     <div class="flex flex-col lg:flex-row gap-3">
                         <div class="lg:w-[160px]">
-                            <label class="block text-[15px] font-medium  dark:text-white text-black mb-1 vazir">واحد تبدیل ارز</label>
+                            <label class="block text-[15px] font-medium  dark:text-white text-black mb-1 vazir">واحد
+                                تبدیل ارز</label>
                             <div class="relative">
                                 <select wire:model="to_currency"
                                     class="w-full dark:bg-black dark:text-white dark:border-white h-[55px] p-3 rounded-[10px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
@@ -180,18 +187,23 @@
                                     @endforeach
                                 </select>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" class="w-4 h-4 dark:hidden"
-                                        alt="">
-                                        <svg width="24" class="hidden dark:block " height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+                                    <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}"
+                                        class="w-4 h-4 dark:hidden" alt="">
+                                    <svg width="24" class="hidden dark:block " height="24" viewBox="0 0 24 24"
+                                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                            stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
 
                                 </div>
                             </div>
                         </div>
 
                         <div class="flex-1">
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ معادل</label>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ
+                                معادل</label>
                             <div class="relative w-full">
                                 <input type="text" wire:model="eq_amount" placeholder="0" readonly
                                     class="w-full dark:bg-black dark:border-white dark:text-white  h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 bg-gray-100 cursor-not-allowed dark:text-white" />
@@ -212,9 +224,9 @@
                         <div class="flex-1">
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
                                 @if ($transactionType==='خرید')
-                                    نرخ خرید ارز
-                                    @else
-                                    نرخ فروش ارز
+                                نرخ خرید ارز
+                                @else
+                                نرخ فروش ارز
                                 @endif
                             </label>
                             <div class="relative w-full">
@@ -231,10 +243,11 @@
                         </div>
 
                         <div class="flex-1 relative">
-                            <label class="block text-[15px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
+                            <label
+                                class="block text-[15px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
                             <input type="text" id="datePicker" wire:model="date" wire:ignore placeholder="YYYY/MM/DD"
                                 class="w-full  h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-black dark:border-white dark:text-white cursor-pointer" />
-                        
+
                         </div>
                     </div>
 
@@ -242,7 +255,8 @@
 
                     <!-- شرح -->
                     <div>
-                        <label class="block text-[15px] font-medium dark:text-white text-black mb-1 vazir">شرح تراکنش</label>
+                        <label class="block text-[15px] font-medium dark:text-white text-black mb-1 vazir">شرح
+                            تراکنش</label>
                         <textarea rows="3" wire:model="description" placeholder="شرح تراکنش..."
                             class="w-full dark:border-white dark:placeholder:text-white p-3 rounded-[10px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
                     </div>
@@ -250,7 +264,8 @@
 
                     <!-- آپلود فایل -->
                     <div>
-                        <label class="block text-[15px] font-medium dark:text-white text-black mb-1 vazir">فایل تراکنش</label>
+                        <label class="block text-[15px] font-medium dark:text-white text-black mb-1 vazir">فایل
+                            تراکنش</label>
                         <div x-data="{ isDragging: false }"
                             @drop.prevent="isDragging = false; $wire.upload('transaction_file', $event.dataTransfer.files[0])"
                             @dragover.prevent="isDragging = true" @dragleave.prevent="isDragging = false"
@@ -264,7 +279,8 @@
                                     <div class="flex flex-col items-center">
                                         <img src="{{ asset('assets/sarafi/all_icon/upload.svg') }}"
                                             class="w-10 h-10 mb-1" alt="">
-                                        <h1 class="font-vazir dark:text-white text-gray-600 mt-2 text-[15px] vazir">فایل را اینجا وارد
+                                        <h1 class="font-vazir dark:text-white text-gray-600 mt-2 text-[15px] vazir">فایل
+                                            را اینجا وارد
                                             کنید یا بکشید</h1>
 
                                     </div>
@@ -291,15 +307,47 @@
                     <!-- دکمه‌های نهایی -->
                     <div
                         class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-3 gap-3 justify-center items-center text-center flex-wrap">
-                        <button type="submit"
+                        <button type="submit" wire:loading.attr='disabled' wire:target='submitTransaction'
                             class="bg-[#61B138] text-[15px] vazir font-semibold rounded-[8px] px-10 py-3 text-white hover:bg-green-700 transition">
-                            {{ $isEditing ? 'بروزرسانی' : 'ثبت' }}
+                            <span wire:loading.remove wire:target='submitTransaction'>
+                                {{ $isEditing ? 'بروزرسانی' : 'ثبت' }}
+                            </span>
+
+
+                            <span wire:loading wire:target="submitTransaction"
+                                class="flex items-center justify-center gap-2">
+                                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                    </path>
+                                </svg>
+                                در حال ثبت
+                            </span>
                         </button>
 
                         @if(!$isEditing)
-                        <button type="button" wire:click="submitAndPrint"
+                        <button type="button" wire:click="submitAndPrint" wire:loading.attr='disabled' wire:target='submitAndPrint'
                             class="bg-[#2563EB] text-[15px] vazir font-semibold rounded-[8px] px-10 py-3 text-white hover:bg-blue-700 transition">
-                            ثبت و چاپ
+                            <span wire:load.remove wire:target='submitAndPrint'>
+                                ثبت و چاپ
+                            </span>
+
+
+                            <span wire:loading wire:target="submitAndPrint"
+                                class="flex items-center justify-center gap-2">
+                                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                    </path>
+                                </svg>
+                                در حال ثبت و چاپ
+                            </span>
                         </button>
                         @endif
 
@@ -324,14 +372,18 @@
                     <div class="relative w-full">
                         <input type="text" wire:model.live="search"
                             class="border border-[#8C8C8C] dark:bg-black dark:text-white dark:placeholder:text-white dark:border-white dark:border w-full h-[46px] bg-transparent rounded-[10px] p-2 pr-10 text-sm"
-                            placeholder="جستجو ...">  
+                            placeholder="جستجو ...">
                         <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
                             class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 dark:hidden">
 
-                            <svg width="24"  class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 hidden dark:block" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+                        <svg width="24" class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 hidden dark:block"
+                            height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+                                stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
 
                     </div>
                 </div>
@@ -355,7 +407,8 @@
                             </thead>
                             <tbody>
                                 @foreach($transactions as $transaction)
-                                <tr class="text-black dark:text-white border-b border-[#D9D9D9] bg-transparent text-center">
+                                <tr
+                                    class="text-black dark:text-white border-b border-[#D9D9D9] bg-transparent text-center">
                                     <td class="px-2 py-3 vazir text-[18px] font-medium">{{ $loop->iteration }}</td>
                                     <td
                                         class="px-2 py-3 vazir text-[18px] font-medium {{ $transaction->type === 'خرید' ? 'text-green-600 dark:text-white' : 'text-red-600 dark:text-white' }}">
@@ -382,7 +435,7 @@
                                         <div class="flex justify-center gap-2">
                                             <button wire:click="editTransaction({{ $transaction->id }})"
                                                 class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-gray-200 transition">
-                                                 <img src="{{ asset('assets/sarafi/all_icon/edit_table.svg') }}"
+                                                <img src="{{ asset('assets/sarafi/all_icon/edit_table.svg') }}"
                                                     class="w-7 h-7 dark:hidden" alt="Edit">
 
                                                 <svg width="22" height="22" class="hidden dark:block"
@@ -403,7 +456,7 @@
                                             </button>
                                             <button wire:click="deleteTransaction({{ $transaction->id }})"
                                                 class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-gray-200 transition">
-                                              <img src="{{ asset('assets/sarafi/all_icon/trash_table.svg') }}"
+                                                <img src="{{ asset('assets/sarafi/all_icon/trash_table.svg') }}"
                                                     class="w-8 h-8 dark:hidden" alt="Delete">
                                                 <svg width="24" height="24" class="hidden dark:block"
                                                     viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -427,7 +480,7 @@
                                             </button>
                                             <button wire:click="printTransaction({{ $transaction->id }})"
                                                 class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-200 transition">
-                                                 <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"
+                                                <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"
                                                     class="w-10 h-10 dark:hidden" alt="Print">
                                                 <svg width="30" class="hidden dark:block" height="30"
                                                     viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">

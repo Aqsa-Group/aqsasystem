@@ -23,13 +23,13 @@
     @endif
 
     <div class="space-y-4 mb-6">
-        <h1 class="text-[24px] font-medium vazir">ثبت نرخ ارز برای بیلانس گیری ، مفاد و ضرر</h1>
-        <h1 class="text-[#8C8C8C]">ثبت نرخ ارز برای بیلانس گیری ، مفاد و ضرر حسابات مشتریان</h1>
+        <h1 class="text-[24px] font-medium vazir dark:text-white">ثبت نرخ ارز برای بیلانس گیری ، مفاد و ضرر</h1>
+        <h1 class="text-[#8C8C8C] dark:text-white">ثبت نرخ ارز برای بیلانس گیری ، مفاد و ضرر حسابات مشتریان</h1>
     </div>
     <hr class="my-6 border-t border-[#D9D9D9] w-full">
 
     <!-- فرم کامل عرض -->
-    <div class="w-full bg-[#F5F5F5] p-[12px] rounded-[12px] h-fit mb-6"
+    <div class="w-full dark:bg-black dark:border-white dark:border dark:text-white bg-[#F5F5F5] p-[12px] rounded-[12px] h-fit mb-6"
         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
         <div class="flex gap-2 border border-[#8C8C8C] rounded-[12px] p-6 mb-4">
             <img src="{{ asset('assets/sarafi/all_icon/exchange-rate.svg') }}" alt="">
@@ -86,7 +86,7 @@
                         $currencyName = $this->getCurrencyName($currencyCode);
                         @endphp
                         <tr class="border-b">
-                            <td class="px-4 py-3 font-bold text-gray-700 bg-gray-50">
+                            <td class="px-4 py-3 font-bold text-gray-700 dark:bg-black dark:border-white dark:border dark:text-white bg-gray-50">
                                 {{ $currencyName }}
                             </td>
 
@@ -151,7 +151,7 @@
     </div>
 
     <!-- جدول زیر فرم -->
-    <div class="w-full flex flex-col bg-[#F5F5F5] p-1 md:p-4 lg:p-6 rounded-[12px] overflow-x-auto mx-auto"
+    <div class="w-full flex flex-col dark:bg-black dark:border dark:border-white bg-[#F5F5F5] p-1 md:p-4 lg:p-6 rounded-[12px] overflow-x-auto mx-auto"
         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
         <div class="flex gap-2 border border-[#8C8C8C] rounded-[12px] p-6 mb-4">
             <img src="{{ asset('assets/sarafi/all_icon/exchange-rate.svg') }}" alt="">
@@ -182,12 +182,12 @@
                 </thead>
                 <tbody>
                     @forelse($records as $record)
-                    <tr class="bg-transparent dark:bg-gray-800 dark:hover:bg-gray-700 hover:bg-gray-50">
+                    <tr class="bg-transparent dark:text-white dark:bg-black dark:hover:bg-gray-700 hover:bg-gray-50">
                         <!-- ارز مبدأ -->
-                        <td class="px-3 py-2 font-medium border-l bg-blue-50">
-                            <span class="font-bold text-blue-700">{{ $this->getCurrencyName($record->source_currency)
+                        <td class="px-3 py-2 font-medium border-l dark:bg-black dark:border dark:border-white bg-blue-50">
+                            <span class="font-bold text-blue-700 dark:text-white">{{ $this->getCurrencyName($record->source_currency)
                                 }}</span>
-                            <div class="text-xs text-gray-500 mt-1">نرخ‌ها نسبت به این ارز</div>
+                            <div class="text-xs dark:text-white text-gray-500 mt-1">نرخ‌ها نسبت به این ارز</div>
                         </td>
 
                         @foreach($tableCurrencies as $currencyCode)
@@ -196,7 +196,7 @@
                             <div class="space-y-2">
                                 <!-- خرید نقدی -->
                                 <div class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-600">خرید نقدی:</span>
+                                    <span class="text-gray-600 dark:text-white">خرید نقدی:</span>
                                     <span class="font-medium">
                                         {{ $record->{$currencyCode . '_buy_cash'} !== null
                                         ? number_format($record->{$currencyCode . '_buy_cash'}, 3)
@@ -206,7 +206,7 @@
 
                                 <!-- خرید بانکی -->
                                 <div class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-600">خرید بانکی:</span>
+                                    <span class="text-gray-600 dark:text-white">خرید بانکی:</span>
                                     <span class="font-medium">
                                         {{ $record->{$currencyCode . '_buy_bank'} !== null
                                         ? number_format($record->{$currencyCode . '_buy_bank'}, 3)
@@ -216,7 +216,7 @@
 
                                 <!-- فروش نقدی -->
                                 <div class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-600">فروش نقدی:</span>
+                                    <span class="text-gray-600 dark:text-white">فروش نقدی:</span>
                                     <span class="font-medium">
                                         {{ $record->{$currencyCode . '_sell_cash'} !== null
                                         ? number_format($record->{$currencyCode . '_sell_cash'}, 3)
@@ -226,7 +226,7 @@
 
                                 <!-- فروش بانکی -->
                                 <div class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-600">فروش بانکی:</span>
+                                    <span class="text-gray-600 dark:text-white">فروش بانکی:</span>
                                     <span class="font-medium">
                                         {{ $record->{$currencyCode . '_sell_bank'} !== null
                                         ? number_format($record->{$currencyCode . '_sell_bank'}, 3)
@@ -236,7 +236,7 @@
                             </div>
                             @else
                             <!-- اگر این ارز همان ارز مبدأ باشد، سلول خالی می‌ماند -->
-                            <div class="text-center text-gray-300 py-4">
+                            <div class="text-center text-gray-300 dark:text-white py-4">
                                 <span class="text-sm">-</span>
                             </div>
                             @endif

@@ -22,13 +22,13 @@
 
         <!-- جدول تایید حواله‌ها -->
         <div class="w-full">
-            <div class="bg-[#F5F5F5] p-6 rounded-[12px]"
+            <div class="bg-[#F5F5F5] dark:bg-black dark:border dark:border-white dark:text-white p-6 rounded-[12px]"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 <div
                     class="flex flex-col md:flex-row justify-between items-center border border-[#8C8C8C] p-4 rounded-[12px] mb-4 gap-3">
-                    <h1 class="text-xl md:text-2xl vazir">حواله‌های در انتظار تایید</h1>
-                    <div class="text-gray-600 vazir">
+                    <h1 class="text-xl md:text-2xl vazir dark:text-white">حواله‌های در انتظار تایید</h1>
+                    <div class="text-gray-600 vazir dark:text-white">
                         تعداد: {{ count($pendingApprovals) }} حواله
                     </div>
                 </div>
@@ -37,7 +37,8 @@
                     <div class="max-h-[600px] overflow-y-auto">
                         <table
                             class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead class="bg-[#2B65E5] dark:bg-gray-700 text-white text-[16px] vazir h-16 sticky top-0">
+                            <thead
+                                class="bg-[#2B65E5] dark:bg-[#2B65E5] text-white text-[16px] vazir h-16 sticky top-0">
                                 <tr>
                                     <th class="px-4 py-4 font-bold w-16">
                                         <span class="border border-white px-2 py-1 rounded-lg">#</span>
@@ -53,22 +54,26 @@
                             </thead>
                             <tbody>
                                 @forelse($pendingApprovals as $key => $approval)
-                                <tr class="text-black border-b border-[#D9D9D9] bg-transparent hover:bg-gray-50">
+                                <tr
+                                    class="text-black border-b dark:text-white border-[#D9D9D9] bg-transparent hover:bg-gray-50 dark:hover:bg-gray-800">
                                     <td class="px-4 py-4 vazir text-[16px] font-medium text-center">
                                         {{ $key + 1 }}
                                     </td>
                                     <td class="px-4 py-4 vazir text-[16px] font-medium">
                                         <div class="space-y-1">
                                             <p class="font-semibold">{{ $approval->customer->fullname ?? '-' }}</p>
-                                            <p class="text-sm text-gray-500">{{ $approval->source_account }}</p>
-                                            <p class="text-xs text-gray-400">{{ $approval->from_bank }}</p>
+                                            <p class="text-sm text-gray-500 dark:text-white">{{
+                                                $approval->source_account }}</p>
+                                            <p class="text-xs text-gray-400 dark:text-white">{{ $approval->from_bank }}
+                                            </p>
                                         </div>
                                     </td>
                                     <td class="px-4 py-4 vazir text-[16px] font-medium">
                                         <div class="space-y-1">
                                             <p class="font-semibold">{{ $approval->recipient->fullname ??
                                                 $approval->giver_name }}</p>
-                                            <p class="text-sm text-gray-500">{{ $approval->to_bank }}</p>
+                                            <p class="text-sm text-gray-500 dark:text-white">{{ $approval->to_bank }}
+                                            </p>
                                         </div>
                                     </td>
                                     <td class="px-4 py-4 vazir text-[16px] font-medium">
@@ -97,7 +102,7 @@
                                     </td>
                                     <td class="px-4 py-4 vazir text-[16px] font-medium">
                                         <code
-                                            class="bg-gray-100 px-2 py-1 rounded">{{ $approval->tracking_code }}</code>
+                                            class="bg-gray-100 dark:bg-slate-600 px-2 py-1 rounded">{{ $approval->tracking_code }}</code>
                                     </td>
                                     <td class="px-4 py-4 vazir text-[16px] font-medium">
                                         <div class="whitespace-nowrap">
@@ -110,7 +115,7 @@
                                         <div class="flex justify-center gap-2">
                                             <button wire:click="confirmApprove({{ $approval->id }})"
                                                 class="bg-blue-600 hover:bg-blue-500 text-white px-10 py-2 rounded-lg text-sm vazir transition-colors flex items-center gap-1">
-                                              
+
                                                 تایید
                                             </button>
 
@@ -139,19 +144,20 @@
     <!-- Modal تایید -->
     @if ($confirmApproveId)
     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-        <div class="bg-[#F5F5F5] p-6 rounded-[12px] shadow-xl w-[600px] max-h-[90vh] overflow-y-auto"
+        <div class="bg-[#F5F5F5] dark:bg-black dark:border dark:border-white dark:text-white p-6 rounded-[12px] shadow-xl w-[600px] max-h-[90vh] overflow-y-auto"
             style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-            <h2 class="text-xl vazir font-bold mb-4">تایید حواله</h2>
-            <p class="vazir mb-4">آیا از تایید این حواله اطمینان دارید؟</p>
+            <h2 class="text-xl vazir font-bold mb-4 text-center">تایید حواله</h2>
+            <p class="vazir mb-4 text-center">آیا از تایید این حواله اطمینان دارید؟</p>
 
             <textarea wire:model="approvalNotes" placeholder="یادداشت تایید (اختیاری)"
                 class="w-full p-3 border border-gray-300 rounded-lg mb-4 vazir" rows="3"></textarea>
 
             <!-- بخش کمیشن -->
-            <div class="mb-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
+            <div
+                class="mb-4 p-4 border border-gray-200 rounded-lg dark:bg-black dark:border-white dark:border  bg-gray-50">
                 <div class="flex items-center justify-between mb-3">
                     <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
-                        <input type="checkbox" wire:model.live="withCommission" class="rounded border-gray-300">
+                        <input type="checkbox" wire:model.live="withCommission" class="rounded border-gray-300 w-5 h-5">
                         <span class="vazir font-medium">ثبت کمیشن</span>
                     </label>
                 </div>
@@ -163,7 +169,7 @@
                     <div>
                         <label class="block text-sm font-medium text-black mb-1 vazir">حساب کمیشن</label>
                         <select wire:model="commissionAccount"
-                            class="w-full h-[50px] p-3 rounded-[8px] border border-[#8C8C8C] bg-white focus:ring-2 focus:ring-blue-500 vazir">
+                            class="w-full h-[50px] p-3 rounded-[8px] border border-[#8C8C8C] dark:bg-black dark:border dark:border-white bg-white focus:ring-2 focus:ring-blue-500 vazir">
                             <option value="">انتخاب حساب کمیشن</option>
                             @foreach($customers as $customer)
                             <option value="{{ $customer['id'] }}">
@@ -180,7 +186,7 @@
                     <div>
                         <label class="block text-sm font-medium text-black mb-1 vazir">ارز کمیشن</label>
                         <select wire:model="commissionCurrency"
-                            class="w-full h-[50px] p-3 rounded-[8px] border border-[#8C8C8C] bg-white focus:ring-2 focus:ring-blue-500 vazir">
+                            class="w-full h-[50px] p-3 rounded-[8px] border dark:bg-black dark:border dark:border-white  border-[#8C8C8C] bg-white focus:ring-2 focus:ring-blue-500 vazir">
                             <option value="">انتخاب ارز</option>
                             <option value="usd">دالر</option>
                             <option value="afn">افغانی</option>
@@ -210,15 +216,28 @@
                 @endif
             </div>
 
-            <div class="flex justify-center  gap-3">
+            <div class="flex justify-center  text-center gap-3">
                 <button wire:click="cancelAction"
-                    class="px-16 py-3 bg-red-500 text-white rounded-lg vazir hover:bg-red-600 transition">
+                    class="w-full text-center py-3 bg-red-500 text-white rounded-lg vazir hover:bg-red-600 transition">
                     انصراف
                 </button>
-                <button wire:click="approveRemittance"
-                    class="px-16 py-3 bg-blue-500 text-white rounded-lg vazir hover:bg-blue-700 transition flex items-center gap-2">
+                <button wire:click="approveRemittance" wire:loading.attr='disabled' wire:target='approveRemittance'
+                    class="w-full  py-3 bg-blue-500 text-white rounded-lg vazir hover:bg-blue-700 transition flex text-center justify-center gap-2">
+                    <span wire:loading.remove wire:target='approveRemittance'>
+                        تایید {{ $withCommission ? 'با کمیشن' : '' }}
+                    </span>
 
-                    تایید {{ $withCommission ? 'با کمیشن' : '' }}
+                    <span wire:loading wire:target="approveRemittance" class="flex items-center justify-center gap-2">
+                        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>
+                        در حال تایید
+                    </span>
                 </button>
             </div>
         </div>
@@ -227,19 +246,20 @@
     <!-- Modal رد -->
     @if ($confirmRejectId)
     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-        <div class="bg-white p-6 rounded-[12px] shadow-xl w-96">
-            <h2 class="text-xl vazir font-bold mb-4">رد حواله</h2>
-            <p class="vazir mb-4">آیا از رد این حواله اطمینان دارید؟</p>
+        <div
+            class="bg-white dark:bg-black dark:text-white dark:border dark:border-white p-6 rounded-[12px] shadow-xl w-[600px]">
+            <h2 class="text-xl vazir font-bold mb-4 text-center">رد حواله</h2>
+            <p class="vazir mb-4 text-center">آیا از رد این حواله اطمینان دارید؟</p>
 
             <textarea wire:model="approvalNotes" placeholder="دلیل رد (اختیاری)"
                 class="w-full p-3 border border-gray-300 rounded-lg mb-4 vazir" rows="3"></textarea>
 
-            <div class="flex justify-end gap-3">
-                <button wire:click="cancelAction" class="px-4 py-2 bg-gray-500 text-white rounded-lg vazir">
-                    انصراف
+            <div class="flex justify-center gap-3">
+                <button wire:click="cancelAction" class="w-full py-2 bg-gray-500 text-white rounded-lg vazir">
+                    در انتظار بماند
                 </button>
-                <button wire:click="rejectRemittance" class="px-4 py-2 bg-red-500 text-white rounded-lg vazir">
-                    رد
+                <button wire:click="rejectRemittance" class="w-full py-2 bg-red-500 text-white rounded-lg vazir">
+                    بله رد شود
                 </button>
             </div>
         </div>

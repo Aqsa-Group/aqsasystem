@@ -212,16 +212,16 @@
                 ?>
                 <tr class="total-row" style="text-align:center;" style="background-color: white">
                     <td style="padding:5px;"><?php echo e($currencyName); ?></td>
-                    <td style="padding:5px; text-align:right;"><?php echo e(number_format($cash, 2)); ?></td>
-                    <td style="padding:5px; text-align:right;"><?php echo e(number_format($bank, 2)); ?></td>
-                    <td style="padding:5px; text-align:right;"><?php echo e(number_format($total, 2)); ?></td>
-                    <td style="padding:5px; text-align:right;"><?php echo e(number_format($totalUsd, 2)); ?></td>
+                    <td style="padding:5px; text-align:right;" dir="ltr"><?php echo e(number_format($cash, 2)); ?></td>
+                    <td style="padding:5px; text-align:right;" dir="ltr"><?php echo e(number_format($bank, 2)); ?></td>
+                    <td style="padding:5px; text-align:right;" dir="ltr"><?php echo e(number_format($total, 2)); ?></td>
+                    <td style="padding:5px; text-align:right;" dir="ltr"><?php echo e(number_format($totalUsd, 2)); ?></td>
                 </tr>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
             <tr class="total-row" style="font-weight:bold; background:#d0e9d0; text-align:center;">
                 <td colspan="4" style="padding:5px;">جمع کل بیلانس به دالر</td>
-                <td style="padding:5px; text-align:right;"><?php echo e(number_format($grandTotalUsd, 2)); ?> دالر</td>
+                <td style="padding:5px; text-align:right;" dir="ltr"><?php echo e(number_format($grandTotalUsd, 2)); ?> دالر</td>
             </tr>
         </tbody>
     </table>

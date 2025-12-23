@@ -721,19 +721,54 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
 
+
+
+
                     <!-- دکمه‌های نهایی -->
                     <div
                         class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 py-4 justify-center items-center text-center ">
-                        <button type="submit"
+                        <button type="submit" wire:loading.attr="disabled" wire:target="submitTransaction"
                             class="bg-[#61B138] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
-                            <?php echo e($transactionId ? 'بروزرسانی' : 'ثبت'); ?>
+                            <span wire:loading.remove wire:target="submitTransaction">
+                                <?php echo e($transactionId ? 'بروزرسانی' : 'ثبت'); ?>
 
+                            </span>
+
+                            <span wire:loading wire:target="submitTransaction"
+                                class="flex items-center justify-center gap-2">
+                                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                    </path>
+                                </svg>
+                                در حال ثبت
+                            </span>
                         </button>
 
                         <!--[if BLOCK]><![endif]--><?php if(!$transactionId): ?>
-                        <button type="button" wire:click="submitAndPrint"
+                        <button type="button" wire:click="submitAndPrint" wire:loading.attr='disabled'
+                            wire:target='submitAndPrint'
                             class="bg-[#2563EB] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
-                            ثبت و چاپ
+                            <span wire:loading.remove wire:target='submitAndPrint'>
+                                ثبت و چاپ
+
+                            </span>
+
+                            <span wire:loading wire:target="submitAndPrint"
+                                class="flex items-center justify-center gap-2">
+                                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                    </path>
+                                </svg>
+                                در حال ثبت و چاپ
+                            </span>
                         </button>
                         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
@@ -919,13 +954,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                             </button>
 
 
-                                             <?php
-                        $currentUser=Auth::guard('sarafi')->user();
-                        ?>
+                                            <?php
+                                            $currentUser=Auth::guard('sarafi')->user();
+                                            ?>
 
 
-<!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role==='admin' || $currentUser->role==='superadmin'): ?>
-    
+                                            <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role==='admin' ||
+                                            $currentUser->role==='superadmin'): ?>
+
                                             <!-- دکمه حذف -->
                                             <button wire:click="confirmDelete(<?php echo e($transaction->id); ?>)"
                                                 class="w-12 h-12 flex items-center justify-center rounded-full transition-colors"
@@ -953,7 +989,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                                 </svg>
 
                                             </button>
-<?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
 
                                             <!-- مودال تأیید حذف -->
