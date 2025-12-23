@@ -43,6 +43,7 @@ class AccountToAccount extends Component
     public $received_amount = '';
     public $transaction_date;
 
+
     public $description_sender = '';
     public $description_receiver = '';
     public $zone_sender = '';
@@ -649,7 +650,8 @@ class AccountToAccount extends Component
         // ===== نقدی → نقدی یا بانکی → بانکی =====
         // در این حالت‌ها نیازی به تغییر صندوق نیست
         if (($this->from_account === 'نقدی' && $this->to_account === 'نقدی') ||
-            ($this->from_account === 'بانکی' && $this->to_account === 'بانکی')) {
+            ($this->from_account === 'بانکی' && $this->to_account === 'بانکی')
+        ) {
             Log::info("{$this->from_account}→{$this->to_account}: نیازی به تغییر صندوق نیست");
         }
     }
@@ -830,7 +832,6 @@ class AccountToAccount extends Component
             }
 
             // اعمال تغییرات صندوق (نقدی/بانکی)
-            $this->applySafeChanges();
 
             DB::connection('sarafi')->commit();
 
@@ -901,8 +902,6 @@ class AccountToAccount extends Component
             $conversion = SendToAccount::find($this->confirmDeleteId);
 
             if ($conversion) {
-                // برگرداندن تغییرات صندوق
-                $this->reverseSafeChanges($conversion);
 
                 // حذف تراکنش‌های مرتبط
                 Transaction::where('account_to_id', $conversion->id)->delete();
@@ -942,6 +941,9 @@ class AccountToAccount extends Component
             $this->from_account = $conversion->from_account;
             $this->to_account = $conversion->to_account;
             $this->transaction_date = $conversion->transaction_date;
+            $this->transferable_amount = $conversion->received_amount;
+            $this->documentNumber = $conversion->document_number;
+
 
             $this->description_sender = $conversion->description_sender;
             $this->description_receiver = $conversion->description_receiver;

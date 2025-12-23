@@ -1035,9 +1035,7 @@ class ConversionTransfer extends Component
                 'conversion_transfer_id' => $conversionId,
             ]);
 
-            // اعمال تغییرات صندوق جدید
-            $this->applySafeChanges($conversion, $adminId, $user);
-
+          
             // ثبت سود/ضرر
             $this->recordTransferProfitLoss($conversionId, $profitLoss);
 
@@ -1340,7 +1338,6 @@ class ConversionTransfer extends Component
             // برگرداندن تغییرات صندوق
             $user = Auth::guard('sarafi')->user();
             $adminId = $user->admin_id ?? $user->id;
-            $this->reverseSafeChanges($conversion, $adminId, $user);
 
             // حذف تراکنش‌های مرتبط
             $transactionsDeleted = Transaction::where('conversion_transfer_id', $conversion->id)->delete();

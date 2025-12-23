@@ -533,7 +533,7 @@
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ قابل
                                 انتقال
                             </label>
-                            <input type="text" wire:model.lazy="transferable_amount" placeholder=""
+                            <input type="text" wire:model="transferable_amount" placeholder=""
                                 class="w-full dark:text-white dark:bg-black dark:border-white  h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-gray-100 focus:ring-2 focus:ring-blue-500" />
                             @if ($receivedAmountInWords)
                             <div class="mt-2 text-sm dark:text-white text-gray-600">{{ $receivedAmountInWords }}</div>
