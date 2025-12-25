@@ -213,7 +213,7 @@
             @foreach($transactions as $index => $transaction)
             <tr>
                 <td>{{ $index + 1 }}</td>
-                <td>{{ $transaction->date }}</td>
+<td>{{ explode(' ', $transaction->date)[0] }}</td>
                 <td>{{ $transaction->account_type }}</td>
                 <td>{{ $transaction->document_number ?? 'SN-' . str_pad($transaction->id, 3, '0', STR_PAD_LEFT) }}</td>
                 <td>{{ Str::limit($transaction->description, 20) }}</td>
