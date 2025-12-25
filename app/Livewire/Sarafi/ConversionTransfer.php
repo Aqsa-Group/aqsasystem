@@ -37,7 +37,7 @@ class ConversionTransfer extends Component
     public $to_currency = '';
     public $received_amount = '';
     public $currency_rate = '';
-    public $transaction_date;
+    public $date;
     public $description = '';
     public $zone_sender = '';
     public $zone_receiver = '';
@@ -918,7 +918,7 @@ class ConversionTransfer extends Component
             'withdrawal_amount' => 'required|numeric|min:0.01',
             'received_amount' => 'required|numeric|min:0.01',
             'currency_rate' => 'required|numeric|min:0.0001',
-            'transaction_date' => 'required|date',
+            'date' => 'required|date',
             'description' => 'nullable|string|max:500',
             'zone_sender' => 'required|string',
             'zone_receiver' => 'required|string',
@@ -962,7 +962,7 @@ class ConversionTransfer extends Component
                     'to_account' => $this->to_account,
                     'received_amount' => $this->received_amount,
                     'currency_rate' => $this->currency_rate,
-                    'transaction_date' => $this->transaction_date,
+                    'transaction_date' => $this->date,
                     'description' => $this->description,
                     'zone_sender' => $this->zone_sender,
                     'zone_receiver' => $this->zone_receiver,
@@ -989,7 +989,7 @@ class ConversionTransfer extends Component
                     'to_account' => $this->to_account,
                     'received_amount' => $this->received_amount,
                     'currency_rate' => $this->currency_rate,
-                    'transaction_date' => $this->transaction_date,
+                    'transaction_date' => $this->date,
                     'description' => $this->description,
                     'zone_sender' => $this->zone_sender,
                     'zone_receiver' => $this->zone_receiver,
@@ -1011,8 +1011,8 @@ class ConversionTransfer extends Component
                 'account_type' => $this->from_account,
                 'currency' => $this->from_currency,
                 'amount' => $this->withdrawal_amount,
-                'type' => 'برداشت',
-                'date' => $this->transaction_date,
+                'type' => 'برد',
+                'date' => $this->date,
                 'description' => $this->description . ' - تبدیل به ' . $this->getCurrencyName($this->to_currency) . ' (' . $this->transactionType . ')',
                 'zone' => $this->zone_sender,
                 'by' => $this->by_sender,
@@ -1028,7 +1028,7 @@ class ConversionTransfer extends Component
                 'amount' => $this->received_amount,
                 'account_type' => $this->to_account,
                 'type' => 'رسید',
-                'date' => $this->transaction_date,
+                'date' => $this->date,
                 'description' => $this->description . ' - تبدیل از ' . $this->getCurrencyName($this->from_currency) . ' (' . $this->transactionType . ')',
                 'zone' => $this->zone_receiver,
                 'by' => $this->by_receiver,
@@ -1236,7 +1236,7 @@ class ConversionTransfer extends Component
         ]);
 
         $this->transactionType = 'خرید';
-        $this->transaction_date = Jalalian::now()->format('Y/m/d');
+        $this->date = Jalalian::now()->format('Y/m/d');
         $this->resetProfitLossDisplay();
     }
 
@@ -1259,7 +1259,7 @@ class ConversionTransfer extends Component
             $this->to_account = $conversion->to_account;
             $this->received_amount = $conversion->received_amount;
             $this->currency_rate = $conversion->currency_rate;
-            $this->transaction_date = $conversion->transaction_date;
+            $this->date = $conversion->transaction_date;
             $this->description = $conversion->description;
             $this->zone_sender = $conversion->zone_sender;
             $this->zone_receiver = $conversion->zone_receiver;
@@ -1469,7 +1469,7 @@ class ConversionTransfer extends Component
      */
     public function mount()
     {
-        $this->transaction_date = Jalalian::now()->format('Y/m/d');
+        $this->date = Jalalian::now()->format('Y/m/d');
         $this->transactionType = 'خرید';
 
         $this->currencies = [

@@ -200,7 +200,7 @@
                 @foreach($active_currencies as $code => $currency)
                 <th colspan="2" class="currency-header">{{ $currency['name_fa'] }}</th>
                 @endforeach
-                <th rowspan="2">وضعیت</th>
+               
             </tr>
             <tr>
                 @foreach($active_currencies as $code => $currency)
@@ -222,11 +222,7 @@
                 <td class="amount-cell">{{ $transaction->currency == $code && $transaction->type == 'رسید' ? number_format($transaction->amount) : '' }}</td>
                 <td class="amount-cell">{{ $transaction->currency == $code && $transaction->type == 'برد' ? number_format($transaction->amount) : '' }}</td>
                 @endforeach
-                <td>
-                    <span class="{{ $transaction->status == 'تأیید شده' ? 'status-confirmed' : 'status-pending' }}">
-                        {{ $transaction->status ?? 'در انتظار' }}
-                    </span>
-                </td>
+             
             </tr>
             @endforeach
         </tbody>

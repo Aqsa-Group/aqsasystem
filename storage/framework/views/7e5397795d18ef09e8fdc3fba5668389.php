@@ -54,23 +54,23 @@
         </a>
 
 
-        <!-- حساب‌های روزنامه -->
-        <a href="<?php echo e(route('sarafi.account-reports')); ?>" class="block">
+        <!-- رسید بانکی -->
+        <a href="<?php echo e(route('sarafi.remittance')); ?>" class="block">
             <div
                 class="border bg-gradient-to-b dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
                 <i class="fa-solid fa-book-open text-white text-xl"></i>
-                <span><?php echo e(__('messages.newspaper_accounts')); ?></span>
+                <span>رسید بانکی</span>
             </div>
         </a>
 
 
 
         <!-- ژورنال عمومی -->
-        <a href="<?php echo e(route('sarafi.general-reports')); ?>" class="block">
+        <a href="<?php echo e(route('sarafi.withdrawbank')); ?>" class="block">
             <div
                 class="border bg-gradient-to-b dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900  from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
                 <i class="fa-solid fa-file-invoice-dollar text-white text-xl"></i>
-                <span><?php echo e(__('messages.general_jornal')); ?></span>
+                <span>برد بانکی</span>
             </div>
         </a>
 

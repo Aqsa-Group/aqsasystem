@@ -41,7 +41,7 @@ class AccountToAccount extends Component
     public $commission_amount = '';
     public $transferable_amount = '';
     public $received_amount = '';
-    public $transaction_date;
+    public $date;
 
 
     public $description_sender = '';
@@ -666,7 +666,7 @@ class AccountToAccount extends Component
             'withdrawal_amount' => 'required|numeric',
             'from_account' => 'required|string',
             'to_account' => 'required|string',
-            'transaction_date' => 'required|date',
+            'date' => 'required|date',
             'description_sender' => 'nullable|string|max:500',
             'description_receiver' => 'nullable|string|max:500',
             'zone_sender' => 'required|string',
@@ -710,7 +710,7 @@ class AccountToAccount extends Component
                 'withdrawal_amount' => $this->withdrawal_amount,
                 'to_customer' => $this->depositAccount,
                 'received_amount' => $receivedAmount,
-                'transaction_date' => $this->transaction_date,
+                'transaction_date' => $this->date,
                 'from_account' => $this->from_account,
                 'to_account' => $this->to_account,
                 'description_sender' => $this->description_sender,
@@ -760,8 +760,8 @@ class AccountToAccount extends Component
                     'admin_id' => $adminId,
                     'currency' => $this->currency,
                     'amount' => $this->withdrawal_amount,
-                    'type' => 'برداشت',
-                    'date' => $this->transaction_date,
+                    'type' => 'برد',
+                    'date' => $this->date,
                     'account_type' => $this->from_account,
                     'description' => $this->description_sender . ' - انتقال به حساب دیگر (' . $this->transactionType . ')',
                     'zone' => $this->zone_sender,
@@ -776,7 +776,7 @@ class AccountToAccount extends Component
                     'currency' => $this->currency,
                     'amount' => $receivedAmount,
                     'type' => 'رسید',
-                    'date' => $this->transaction_date,
+                    'date' => $this->date,
                     'account_type' => $this->to_account,
                     'description' => $this->description_receiver . ' - دریافت از حساب دیگر (' . $this->transactionType . ')',
                     'zone' => $this->zone_receiver,
@@ -791,8 +791,8 @@ class AccountToAccount extends Component
                     'admin_id' => $adminId,
                     'currency' => $this->currency,
                     'amount' => $this->withdrawal_amount,
-                    'type' => 'برداشت',
-                    'date' => $this->transaction_date,
+                    'type' => 'برد',
+                    'date' => $this->date,
                     'account_type' => $this->from_account,
                     'description' => $this->description_sender . ' - انتقال با کمیشن',
                     'zone' => $this->zone_sender,
@@ -807,7 +807,7 @@ class AccountToAccount extends Component
                     'currency' => $this->currency,
                     'amount' => $receivedAmount,
                     'type' => 'رسید',
-                    'date' => $this->transaction_date,
+                    'date' => $this->date,
                     'account_type' => $this->to_account,
                     'description' => $this->description_receiver . ' - دریافت با کمیشن',
                     'zone' => $this->zone_receiver,
@@ -822,7 +822,7 @@ class AccountToAccount extends Component
                     'currency' => $this->currency,
                     'amount' => $this->commission_amount,
                     'type' => 'رسید',
-                    'date' => $this->transaction_date,
+                    'date' => $this->date,
                     'account_type' => $this->from_account,
                     'description' => 'کمیشن انتقال از حساب دیگر',
                     'zone' => $this->zone_sender,
@@ -879,7 +879,7 @@ class AccountToAccount extends Component
         ]);
 
         $this->transactionType = 'بدون تفاوت';
-        $this->transaction_date = Jalalian::now()->format('Y/m/d');
+        $this->date = Jalalian::now()->format('Y/m/d');
         $this->generateDocumentNumber();
         $this->accountSearch = '';
         $this->filteredCustomers = null;
@@ -940,7 +940,7 @@ class AccountToAccount extends Component
             $this->received_amount = $conversion->received_amount;
             $this->from_account = $conversion->from_account;
             $this->to_account = $conversion->to_account;
-            $this->transaction_date = $conversion->transaction_date;
+            $this->date = $conversion->transaction_date;
             $this->transferable_amount = $conversion->received_amount;
             $this->documentNumber = $conversion->document_number;
 
@@ -1085,7 +1085,7 @@ class AccountToAccount extends Component
 
     public function mount()
     {
-        $this->transaction_date = Jalalian::now()->format('Y/m/d');
+        $this->date = Jalalian::now()->format('Y/m/d');
         $this->transactionType = 'باتفاوت';
 
         $this->generateDocumentNumber();

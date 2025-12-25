@@ -4,6 +4,7 @@ namespace App\Livewire\Sarafi;
 
 use App\Models\Sarafi\BankAccount;
 use App\Models\Sarafi\Customer;
+use App\Models\Sarafi\ExchangeRates;
 use App\Models\Sarafi\RemittanceApproval;
 use App\Models\Sarafi\Remittances;
 use App\Models\Sarafi\Transaction;
@@ -30,7 +31,7 @@ class Remittance extends Component
     public $currency;
     public $amount;
     public $date;
-    public $clock;
+    public $clock = '';
     public $tracking_code;
     public $from_bank;
     public $to_bank;
@@ -44,9 +45,235 @@ class Remittance extends Component
     public $currencies = [];
     public $customers = [];
     public $remittances = [];
+
+    public $customerCashBalances = [];
+    public $customerBankBalances = [];
+    public $customerTotalBalances = [];
+
     public $search = '';
+    public $selectedCustomer = null;
     public $selectedCustomerId = null;
-    public $filteredCustomers = [];
+    public $filteredCustomers = []; // مقداردهی اولیه به آرایه خالی
+
+    public function updatedAccountSearch($value)
+    {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        $relatedUserIds = \App\Models\Sarafi\User::where('admin_id', $adminId)
+            ->pluck('id')
+            ->push($adminId)
+            ->toArray();
+
+        $this->filteredCustomers = Customer::with('admins')
+            ->where(function ($query) use ($adminId) {
+                $query->where('admin_id', $adminId)
+                    ->orWhereHas('admins', function ($q) use ($adminId) {
+                        $q->where('customer_admin.admin_id', $adminId);
+                    });
+            })
+            ->where(function ($query) use ($value) {
+                $query->where('fullname', 'like', "%{$value}%")
+                    ->orWhere('account_number', 'like', "%{$value}%");
+            })
+            ->limit(15)
+            ->get();
+    }
+
+    public $currenciesdefault = [
+        ['name' => 'افغانی', 'value' => 0],
+        ['name' => 'دالر', 'value' => 0],
+        ['name' => 'تومان', 'value' => 0],
+        ['name' => 'یورو', 'value' => 0],
+        ['name' => 'کلدار', 'value' => 0],
+        ['name' => 'درهم', 'value' => 0],
+        ['name' => 'لیره', 'value' => 0],
+        ['name' => 'یوان', 'value' => 0],
+        ['name' => 'خلاصه بیلانس به دالر', 'value' => 0],
+    ];
+
+    public function updateCustomerCurrencyBalance()
+    {
+        if (!$this->selectedCustomerId) {
+            $this->resetBalances();
+            return;
+        }
+
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        // محاسبه موجودی‌ها
+        list($cashBalances, $bankBalances) = $this->calculateBalances($adminId);
+        $totalBalances = $this->calculateTotalBalances($cashBalances, $bankBalances);
+        $totalInUsd = $this->convertToUsd($totalBalances);
+
+        // تنظیم مقادیر
+        $this->setCurrencyDefaults($totalBalances, $totalInUsd);
+        $this->setCustomerBalances($cashBalances, $bankBalances, $totalBalances);
+    }
+
+    private function resetBalances()
+    {
+        $this->currenciesdefault = array_map(function ($currency) {
+            return ['name' => $currency, 'value' => 0];
+        }, [
+            'افغانی',
+            'دالر',
+            'تومان',
+            'یورو',
+            'کلدار',
+            'درهم',
+            'لیره',
+            'یوان',
+            'روپیه',
+            'خلاصه بیلانس به دالر'
+        ]);
+
+        $this->customerCashBalances = [];
+        $this->customerBankBalances = [];
+        $this->customerTotalBalances = [];
+    }
+
+    private function calculateBalances($adminId)
+    {
+        $cashBalances = array_fill_keys([
+            'افغانی',
+            'دالر',
+            'تومان',
+            'یورو',
+            'کلدار',
+            'درهم',
+            'لیره',
+            'یوان',
+            'روپیه'
+        ], 0);
+
+        $bankBalances = array_fill_keys([
+            'افغانی',
+            'دالر',
+            'تومان',
+            'یورو',
+            'کلدار',
+            'درهم',
+            'لیره',
+            'یوان',
+            'روپیه'
+        ], 0);
+        $transactions = Transaction::where('customer_id', $this->selectedCustomerId)
+            ->where('admin_id', $adminId)
+            ->whereIn('type', ['برد', 'رسید'])
+            ->get();
+
+        foreach ($transactions as $transaction) {
+            $currencyName = $this->getCurrencyName($transaction->currency);
+            $amount = $transaction->type === 'رسید' ? $transaction->amount : -$transaction->amount;
+
+            if (isset($cashBalances[$currencyName]) || isset($bankBalances[$currencyName])) {
+                if ($transaction->account_type === 'نقدی') {
+                    $cashBalances[$currencyName] += $amount;
+                } else {
+                    $bankBalances[$currencyName] += $amount;
+                }
+            }
+        }
+
+        return [$cashBalances, $bankBalances];
+    }
+
+    private function calculateTotalBalances($cashBalances, $bankBalances)
+    {
+        $totalBalances = [];
+        foreach ($cashBalances as $currency => $balance) {
+            $totalBalances[$currency] = $balance + $bankBalances[$currency];
+        }
+        return $totalBalances;
+    }
+
+    private function convertToUsd($totalBalances)
+    {
+        $latestExchangeRate = ExchangeRates::latest()->first();
+        $exchangeRates = [
+            'افغانی' => $latestExchangeRate->afn_buy ?? 66.20,
+            'دالر' => 1,
+            'تومان' => $latestExchangeRate->irr_buy ?? 110000.00,
+            'یورو' => $latestExchangeRate->eur_buy ?? 70.00,
+            'کلدار' => $latestExchangeRate->pkr_buy ?? 32.00,
+            'درهم' => $latestExchangeRate->aed_buy ?? 44.00,
+            'لیره' => $latestExchangeRate->try_buy ?? 60.00,
+            'یوان' => $latestExchangeRate->cny_buy ?? 43.00,
+            'روپیه' => 7.14,
+        ];
+
+        $totalInUsd = 0;
+        foreach ($totalBalances as $currency => $balance) {
+            if (isset($exchangeRates[$currency]) && $exchangeRates[$currency] > 0) {
+                $totalInUsd += $balance / $exchangeRates[$currency];
+            }
+        }
+
+        return $totalInUsd;
+    }
+
+    private function setCurrencyDefaults($totalBalances, $totalInUsd)
+    {
+        $this->currenciesdefault = [
+            ['name' => 'افغانی', 'value' => $totalBalances['افغانی'] ?? 0],
+            ['name' => 'دالر', 'value' => $totalBalances['دالر'] ?? 0],
+            ['name' => 'تومان', 'value' => $totalBalances['تومان'] ?? 0],
+            ['name' => 'یورو', 'value' => $totalBalances['یورو'] ?? 0],
+            ['name' => 'کلدار', 'value' => $totalBalances['کلدار'] ?? 0],
+            ['name' => 'درهم', 'value' => $totalBalances['درهم'] ?? 0],
+            ['name' => 'لیره', 'value' => $totalBalances['لیره'] ?? 0],
+            ['name' => 'یوان', 'value' => $totalBalances['یوان'] ?? 0],
+            ['name' => 'روپیه', 'value' => $totalBalances['روپیه'] ?? 0],
+            ['name' => 'خلاصه بیلانس به دالر', 'value' => $totalInUsd],
+        ];
+    }
+
+    private function setCustomerBalances($cashBalances, $bankBalances, $totalBalances)
+    {
+        $this->customerCashBalances = $cashBalances;
+        $this->customerBankBalances = $bankBalances;
+        $this->customerTotalBalances = $totalBalances;
+    }
+
+    private function getCurrencyName($currencyCode)
+    {
+        $currencyMap = [
+            'afn' => 'افغانی',
+            'usd' => 'دالر',
+            'irr' => 'تومان',
+            'eur' => 'یورو',
+            'pkr' => 'کلدار',
+            'aed' => 'درهم',
+            'try' => 'لیره',
+            'cny' => 'یوان',
+            'gbp' => 'پوند',
+            'jpy' => 'ین',
+            'sar' => 'ریال سعودی',
+            'inr' => 'روپیه',
+        ];
+
+        return $currencyMap[$currencyCode] ?? $currencyCode;
+    }
+
+    public function updatedSelectedAccount($value)
+    {
+        if ($value) {
+            $this->selectCustomer($value);
+        }
+    }
+
+    public function showReport()
+    {
+        if (!$this->selectedCustomerId) {
+            session()->flash('error', 'لطفاً ابتدا یک مشتری را انتخاب کنید');
+            return;
+        }
+
+        session(['selected_customer_id' => $this->selectedCustomerId]);
+        return redirect()->route('sarafi.transaction-reports');
+    }
 
     public function mount()
     {
@@ -71,6 +298,7 @@ class Remittance extends Component
 
         $this->loadCustomers();
         $this->updateRemittances();
+        $this->filteredCustomers = []; // مقداردهی اولیه در mount
     }
 
     private function loadCustomers()
@@ -83,7 +311,6 @@ class Remittance extends Component
 
         $adminId = $user->admin_id ?? $user->id;
 
-        // روش 1: استفاده از join مستقیم (پیشنهادی)
         $this->customers = Customer::select('customers.id', 'customers.account_number', 'customers.fullname', 'customers.admin_id')
             ->leftJoin('customer_admin', function ($join) use ($adminId) {
                 $join->on('customers.id', '=', 'customer_admin.customer_id')
@@ -140,12 +367,29 @@ class Remittance extends Component
     {
         $this->selectedCustomerId = $customerId;
         $this->selectedAccount = $customerId;
+        $this->selectedCustomer = Customer::find($customerId);
+        $this->filteredCustomers = [];
 
         $customer = Customer::find($customerId);
         if ($customer) {
-            $this->source_account = $customer->account_number;
             $this->search = $customer->fullname;
-            $this->updateRemittances();
+
+            if (!$this->customers->contains('id', $customer->id)) {
+                $this->customers->push($customer);
+            }
+
+            $this->dispatch('account-selected', [
+                'id' => $customer->id,
+                'text' => $customer->account_number . ' - ' . $customer->fullname,
+            ]);
+
+            $this->updateCustomerCurrencyBalance();
+
+            Log::debug("Customer selected", [
+                'customer_id' => $customerId,
+                'customer_name' => $customer->fullname,
+                'search_value' => $this->search
+            ]);
         }
     }
 
@@ -390,9 +634,13 @@ class Remittance extends Component
         $this->description = $remittance->description;
 
         $this->search = $remittance->customer->fullname ?? '';
+        $this->filteredCustomers = []; // اضافه کردن این خط - مقداردهی به آرایه خالی
 
-        // **اینجا مهم است: وقتی ویرایش می‌کنیم، مطمئن شویم رکورد تایید هم به‌روزرسانی می‌شود**
-        // فعلاً کاری نمی‌کنیم چون در submitRemittance انجام می‌شود
+        // Dispatch event برای Alpine.js
+        $this->dispatch('bank-values-updated', [
+            'from_bank' => $this->from_bank,
+            'to_bank' => $this->to_bank
+        ]);
     }
 
     public function confirmDelete($id)
@@ -587,6 +835,7 @@ class Remittance extends Component
         $this->clock = now()->format('H:i:s');
         $this->zone = Auth::guard('sarafi')->user()->zone;
         $this->search = '';
+        $this->filteredCustomers = []; // اضافه کردن این خط
     }
 
     // Add this method for amount formatting
@@ -625,6 +874,7 @@ class Remittance extends Component
             return view('livewire.sarafi.remittance', [
                 'customers' => collect(),
                 'remittances' => collect(),
+                'filteredCustomers' => [], // اضافه کردن این خط
             ]);
         }
 
@@ -636,6 +886,7 @@ class Remittance extends Component
         return view('livewire.sarafi.remittance', [
             'customers' => $this->customers,
             'remittances' => $this->remittances,
+            'filteredCustomers' => $this->filteredCustomers ?? [], // اضافه کردن این خط
         ]);
     }
 }

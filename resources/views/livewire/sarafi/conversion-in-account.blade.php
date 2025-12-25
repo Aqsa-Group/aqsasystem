@@ -565,30 +565,605 @@
                         </div>
 
                         <!-- تاریخ -->
-                        <div class="flex-1 relative">
-                            <label
-                                class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
-                            <div class="relative w-full">
-                                <input type="text" wire:model="transaction_date" placeholder="1404/4/20"
-                                    class="w-full dark:bg-black dark:border dark:border-white dark:text-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500" />
-                                <svg class="absolute left-3 bottom-2 -translate-y-1/2 pointer-events-none" width="20"
-                                    height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-                                    <path
-                                        d="M8 2V5M16 2V5M3.5 9.09H20.5M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z"
-                                        stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-
-                                    <path
-                                        d="M15.6947 13.7H15.7037M15.6947 16.7H15.7037M11.9955 13.7H12.0045M11.9955 16.7H12.0045M8.29431 13.7H8.30329M8.29431 16.7H8.30329"
-                                        stroke="#8C8C8C" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" />
+                    <div class="lg:w-[290px] relative" x-data="persianDatePicker()" x-init="init()">
+    <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
+    
+    <!-- Input field -->
+    <input 
+        type="text" 
+        x-ref="dateInput"
+        x-model="displayDate"
+        @click="togglePicker()"
+        placeholder="YYYY/MM/DD"
+        class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 cursor-pointer"
+        readonly
+    />
+    
+    <!-- Custom Date Picker Modal -->
+    <div x-show="isOpen" 
+         x-transition.opacity.duration.300ms
+         x-cloak
+         @keydown.escape.window="closePicker()"
+         @click.away="closePicker()"
+         class="fixed z-50 inset-0 overflow-y-auto"
+         aria-labelledby="modal-title" 
+         role="dialog" 
+         aria-modal="true"
+         style="display: none;"
+         :style="isOpen ? 'display: block;' : ''">
+        
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Background overlay -->
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            
+            <!-- Modal panel -->
+            <div class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6">
+                    <!-- Header -->
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center space-x-2">
+                            <button @click="prevYear()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path>
                                 </svg>
-                                @error('transaction_date')
-                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                                @enderror
+                            </button>
+                            <button @click="prevMonth()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <div class="flex items-center space-x-2">
+                            <button @click="toggleMonthSelector()" type="button" class="text-lg font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                <span x-text="monthsAfghan[currentMonth]"></span>
+                            </button>
+                            <button @click="toggleYearSelector()" type="button" class="text-lg font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                <span x-text="currentYear"></span>
+                            </button>
+                        </div>
+                        
+                        <div class="flex items-center space-x-2">
+                            <button @click="nextMonth()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                            <button @click="nextYear()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                            <button @click="closePicker()" type="button" class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Month Selector -->
+                    <div x-show="showMonthSelector" x-transition>
+                        <div class="grid grid-cols-3 gap-2 mb-4">
+                            <template x-for="(month, index) in monthsAfghan" :key="index">
+                                <button
+                                    @click="selectMonth(index)"
+                                    :class="{
+                                        'bg-blue-500 text-white': currentMonth === index,
+                                        'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentMonth !== index
+                                    }"
+                                    class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                                    type="button"
+                                >
+                                    <span x-text="month"></span>
+                                </button>
+                            </template>
+                        </div>
+                    </div>
+                    
+                    <!-- Year Selector -->
+                    <div x-show="showYearSelector" x-transition>
+                        <div class="flex items-center justify-between mb-4">
+                            <button @click="prevYearRange()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                            <span class="text-lg font-bold text-gray-800 dark:text-white">
+                                <span x-text="yearRange.start"></span> - <span x-text="yearRange.end"></span>
+                            </span>
+                            <button @click="nextYearRange()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-4 gap-2 mb-4">
+                            <template x-for="year in yearRange.years" :key="year">
+                                <button
+                                    @click="selectYear(year)"
+                                    :class="{
+                                        'bg-blue-500 text-white': currentYear === year,
+                                        'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentYear !== year
+                                    }"
+                                    class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                                    type="button"
+                                >
+                                    <span x-text="year"></span>
+                                </button>
+                            </template>
+                        </div>
+                    </div>
+                    
+                    <!-- Calendar View -->
+                    <div x-show="!showMonthSelector && !showYearSelector" x-transition>
+                        <!-- Week Days -->
+                        <div class="grid grid-cols-7 gap-1 mb-2">
+                            <template x-for="day in weekDaysAfghan" :key="day">
+                                <div class="text-center text-sm font-medium text-gray-500 dark:text-gray-400 py-1">
+                                    <span x-text="day"></span>
+                                </div>
+                            </template>
+                        </div>
+                        
+                        <!-- Days Grid -->
+                        <div class="grid grid-cols-7 gap-1">
+                            <template x-for="day in calendarDays" :key="day.key">
+                                <button
+                                    @click="selectDate(day.day)"
+                                    :class="{
+                                        'bg-blue-500 text-white hover:bg-blue-600': day.isSelected,
+                                        'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300': day.isToday && !day.isSelected,
+                                        'text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700': !day.isToday && !day.isSelected && !day.isOtherMonth,
+                                        'text-gray-400 dark:text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800': day.isOtherMonth,
+                                        'cursor-not-allowed opacity-50': day.isDisabled
+                                    }"
+                                    class="w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors"
+                                    :disabled="day.isDisabled"
+                                    type="button"
+                                >
+                                    <span x-text="day.day"></span>
+                                </button>
+                            </template>
+                        </div>
+                    </div>
+                    
+                    <!-- Footer -->
+                    <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <div class="flex justify-between items-center">
+                            <div class="text-sm text-gray-600 dark:text-gray-300">
+                                <span x-text="selectedDate ? formatDate(selectedDate) : 'تاریخ انتخاب نشده'"></span>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button @click="setToday()" type="button" class="px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors">
+                                    امروز
+                                </button>
+                                <button @click="clearDate()" type="button" class="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors">
+                                    پاک کردن
+                                </button>
+                                <button @click="applyDate()" type="button" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                    تأیید
+                                </button>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    @error('date')
+    <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+    @enderror
+</div>
+
+<script>
+function persianDatePicker() {
+    return {
+        isOpen: false,
+        showMonthSelector: false,
+        showYearSelector: false,
+        displayDate: '',
+        currentYear: 1403,
+        currentMonth: 0,
+        selectedDate: null,
+        yearRange: {
+            start: 1400,
+            end: 1410,
+            years: []
+        },
+        
+        // ماه‌های افغانی
+        monthsAfghan: [
+            'حمل', 'ثور', 'جوزا', 'سرطان', 'اسد', 'سنبله',
+            'میزان', 'عقرب', 'قوس', 'جدی', 'دلو', 'حوت'
+        ],
+        
+        // روزهای هفته (شنبه شروع می‌شود)
+        weekDaysAfghan: ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'],
+        
+        // روزهای کامل هفته
+        weekDaysFull: ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه'],
+        
+        // تعداد روزهای ماه‌های شمسی در سال عادی
+        daysInMonthNormal: [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29],
+        
+        init() {
+            this.updateYearRange();
+            
+            // Initialize with current date
+            const today = this.getTodayPersian();
+            this.currentYear = today.year;
+            this.currentMonth = today.month - 1;
+            
+            // اگر تاریخ از قبل انتخاب شده بود
+            if (@this.get('date')) {
+                const dateParts = @this.get('date').split('/');
+                if (dateParts.length === 3) {
+                    const year = parseInt(dateParts[0]);
+                    const month = parseInt(dateParts[1]);
+                    const day = parseInt(dateParts[2]);
+                    
+                    if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+                        this.selectedDate = { year, month, day };
+                        this.displayDate = @this.get('date');
+                        this.currentYear = year;
+                        this.currentMonth = month - 1;
+                    }
+                }
+            }
+        },
+        
+        // به‌روزرسانی محدوده سال‌ها
+        updateYearRange() {
+            this.yearRange.years = [];
+            for (let year = this.yearRange.start; year <= this.yearRange.end; year++) {
+                this.yearRange.years.push(year);
+            }
+        },
+        
+        // بررسی سال کبیسه
+        isLeapYear(year) {
+            // سال کبیسه شمسی: سال‌هایی که باقیمانده تقسیم به 33 برابر با 1, 5, 9, 13, 17, 22, 26, 30 باشد
+            const remainders = [1, 5, 9, 13, 17, 22, 26, 30];
+            return remainders.includes(year % 33);
+        },
+        
+        // تعداد روزهای ماه
+        getDaysInMonth(year, month) {
+            const days = [...this.daysInMonthNormal];
+            // اگر سال کبیسه باشد، اسفند 30 روز است
+            if (month === 11 && this.isLeapYear(year)) {
+                return 30;
+            }
+            return days[month];
+        },
+        
+        // محاسبه روز هفته برای روز اول ماه
+        getFirstDayOfWeek(year, month) {
+            // الگوریتم محاسبه روز هفته برای تقویم هجری شمسی
+            // روز اول فروردین سال 1403 = چهارشنبه (index = 4)
+            const baseYear = 1403;
+            const baseDay = 4; // چهارشنبه (شنبه=0)
+            
+            // محاسبه تعداد روزهای گذشته از سال پایه
+            let days = 0;
+            
+            // محاسبه روزهای سال‌های کامل
+            for (let y = baseYear; y < year; y++) {
+                days += this.isLeapYear(y) ? 366 : 365;
+            }
+            
+            // محاسبه روزهای ماه‌های گذشته از سال جاری
+            for (let m = 0; m < month; m++) {
+                days += this.getDaysInMonth(year, m);
+            }
+            
+            // محاسبه روز هفته (0 = شنبه)
+            return (baseDay + days) % 7;
+        },
+        
+        // دریافت تاریخ امروز به شمسی
+        getTodayPersian() {
+            const today = new Date();
+            
+            // الگوریتم تبدیل میلادی به شمسی (ساده شده)
+            const gregorianYear = today.getFullYear();
+            const gregorianMonth = today.getMonth() + 1;
+            const gregorianDay = today.getDate();
+            
+            // تبدیل میلادی به شمسی
+            return this.gregorianToPersian(gregorianYear, gregorianMonth, gregorianDay);
+        },
+        
+        // تبدیل میلادی به شمسی
+        gregorianToPersian(gy, gm, gd) {
+            // الگوریتم تبدیل میلادی به شمسی
+            const gDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+            
+            // بررسی کبیسه میلادی
+            const isGregorianLeap = (gy % 4 === 0 && gy % 100 !== 0) || (gy % 400 === 0);
+            
+            if (isGregorianLeap) {
+                gDaysInMonth[1] = 29;
+            }
+            
+            // محاسبه روز از ابتدای سال میلادی
+            let dayOfYear = gd;
+            for (let i = 0; i < gm - 1; i++) {
+                dayOfYear += gDaysInMonth[i];
+            }
+            
+            // نوروز سال جاری
+            const marchDay = 79; // 20 مارس
+            
+            let persianYear, persianMonth, persianDay;
+            
+            if (dayOfYear > marchDay) {
+                persianYear = gy - 621;
+                let remainingDays = dayOfYear - marchDay;
+                
+                const pDaysInMonth = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
+                if (this.isLeapYear(persianYear)) {
+                    pDaysInMonth[11] = 30;
+                }
+                
+                for (persianMonth = 0; persianMonth < 12; persianMonth++) {
+                    if (remainingDays <= pDaysInMonth[persianMonth]) {
+                        persianDay = remainingDays;
+                        break;
+                    }
+                    remainingDays -= pDaysInMonth[persianMonth];
+                }
+                persianMonth++; // تبدیل به 1-based
+            } else {
+                persianYear = gy - 622;
+                let remainingDays = dayOfYear + 286;
+                
+                const pDaysInMonth = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
+                if (this.isLeapYear(persianYear)) {
+                    pDaysInMonth[11] = 30;
+                }
+                
+                for (persianMonth = 0; persianMonth < 12; persianMonth++) {
+                    if (remainingDays <= pDaysInMonth[persianMonth]) {
+                        persianDay = remainingDays;
+                        break;
+                    }
+                    remainingDays -= pDaysInMonth[persianMonth];
+                }
+                persianMonth++; // تبدیل به 1-based
+            }
+            
+            return {
+                year: persianYear,
+                month: persianMonth,
+                day: persianDay
+            };
+        },
+        
+        // محاسبه روزهای تقویم برای نمایش
+        get calendarDays() {
+            const days = [];
+            const daysInMonth = this.getDaysInMonth(this.currentYear, this.currentMonth);
+            const firstDayOfWeek = this.getFirstDayOfWeek(this.currentYear, this.currentMonth);
+            const today = this.getTodayPersian();
+            
+            // روزهای ماه قبل
+            const prevMonthDays = this.currentMonth === 0 ? 
+                this.getDaysInMonth(this.currentYear - 1, 11) : 
+                this.getDaysInMonth(this.currentYear, this.currentMonth - 1);
+            
+            for (let i = 0; i < firstDayOfWeek; i++) {
+                const day = prevMonthDays - firstDayOfWeek + i + 1;
+                days.push({
+                    key: `prev-${day}`,
+                    day: day,
+                    isSelected: false,
+                    isToday: false,
+                    isOtherMonth: true,
+                    isDisabled: true
+                });
+            }
+            
+            // روزهای ماه جاری
+            for (let day = 1; day <= daysInMonth; day++) {
+                const isSelected = this.selectedDate && 
+                    this.selectedDate.year === this.currentYear && 
+                    this.selectedDate.month === this.currentMonth + 1 && 
+                    this.selectedDate.day === day;
+                
+                const isToday = today.year === this.currentYear && 
+                    today.month === this.currentMonth + 1 && 
+                    today.day === day;
+                
+                days.push({
+                    key: `current-${day}`,
+                    day: day,
+                    isSelected: isSelected,
+                    isToday: isToday,
+                    isOtherMonth: false,
+                    isDisabled: false
+                });
+            }
+            
+            // روزهای ماه بعد
+            const remainingCells = 42 - days.length; // 6 ردیف × 7 ستون
+            for (let day = 1; day <= remainingCells; day++) {
+                days.push({
+                    key: `next-${day}`,
+                    day: day,
+                    isSelected: false,
+                    isToday: false,
+                    isOtherMonth: true,
+                    isDisabled: true
+                });
+            }
+            
+            return days;
+        },
+        
+        togglePicker() {
+            this.isOpen = !this.isOpen;
+            this.showMonthSelector = false;
+            this.showYearSelector = false;
+        },
+        
+        closePicker() {
+            this.isOpen = false;
+            this.showMonthSelector = false;
+            this.showYearSelector = false;
+        },
+        
+        toggleMonthSelector() {
+            this.showMonthSelector = !this.showMonthSelector;
+            this.showYearSelector = false;
+        },
+        
+        toggleYearSelector() {
+            this.showYearSelector = !this.showYearSelector;
+            this.showMonthSelector = false;
+        },
+        
+        prevYear() {
+            this.currentYear--;
+            this.updateYearRange();
+        },
+        
+        nextYear() {
+            this.currentYear++;
+            this.updateYearRange();
+        },
+        
+        prevMonth() {
+            if (this.currentMonth === 0) {
+                this.currentMonth = 11;
+                this.currentYear--;
+            } else {
+                this.currentMonth--;
+            }
+        },
+        
+        nextMonth() {
+            if (this.currentMonth === 11) {
+                this.currentMonth = 0;
+                this.currentYear++;
+            } else {
+                this.currentMonth++;
+            }
+        },
+        
+        prevYearRange() {
+            this.yearRange.start -= 12;
+            this.yearRange.end -= 12;
+            this.updateYearRange();
+        },
+        
+        nextYearRange() {
+            this.yearRange.start += 12;
+            this.yearRange.end += 12;
+            this.updateYearRange();
+        },
+        
+        selectMonth(monthIndex) {
+            this.currentMonth = monthIndex;
+            this.showMonthSelector = false;
+        },
+        
+        selectYear(year) {
+            this.currentYear = year;
+            this.showYearSelector = false;
+        },
+        
+        selectDate(day) {
+            this.selectedDate = {
+                year: this.currentYear,
+                month: this.currentMonth + 1,
+                day: day
+            };
+            
+            this.displayDate = `${this.currentYear}/${String(this.currentMonth + 1).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
+        },
+        
+        formatDate(date) {
+            if (!date) return '';
+            return `${date.year}/${String(date.month).padStart(2, '0')}/${String(date.day).padStart(2, '0')}`;
+        },
+        
+        setToday() {
+            const today = this.getTodayPersian();
+            this.currentYear = today.year;
+            this.currentMonth = today.month - 1;
+            this.selectedDate = today;
+            this.displayDate = this.formatDate(today);
+        },
+        
+        clearDate() {
+            this.selectedDate = null;
+            this.displayDate = '';
+            @this.set('date', '');
+            this.closePicker();
+        },
+        
+        applyDate() {
+            if (this.selectedDate) {
+                const formattedDate = this.formatDate(this.selectedDate);
+                this.displayDate = formattedDate;
+                @this.set('date', formattedDate);
+                this.closePicker();
+            }
+        }
+    }
+}
+</script>
+
+<style>
+/* Hide scrollbar for number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Persian datepicker custom styles */
+.persian-datepicker {
+    font-family: 'Vazir', sans-serif;
+    direction: rtl;
+}
+
+/* Animation for modal */
+[x-cloak] {
+    display: none !important;
+}
+
+/* Smooth transitions */
+.transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+</style>
                     </div>
 
                     <!-- اطلاعات مسئولین -->

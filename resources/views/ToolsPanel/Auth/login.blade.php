@@ -7,7 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ورود به پنل ابزارآلات</title>
 
-    @include('Sarafi.layouts.links')
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="{{ asset('assets/js/app.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('assets/css/sarafi.css')}}">
+
 
 
 </head>

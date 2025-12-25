@@ -11,6 +11,8 @@ use App\Models\Sarafi\Customer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Morilog\Jalali\Jalalian;
+
 
 class RemittanceApproval extends Component
 {
@@ -139,6 +141,7 @@ class RemittanceApproval extends Component
     private function createTransactions(ApprovalModel $approval, $user)
     {
         $adminId = $user->admin_id ?? $user->id;
+        $jalaliDate = Jalalian::now()->format('Y/m/d');
 
 
         Transaction::create([
@@ -146,7 +149,7 @@ class RemittanceApproval extends Component
             'remittance_id' => $approval->id,
             'user_id' => $user->id,
             'admin_id' => $adminId,
-            'date' => now(),
+            'date'           => $jalaliDate,
             'type' => 'رسید',
             'amount' => $approval->amount,
             'currency' => $approval->currency,
@@ -165,7 +168,7 @@ class RemittanceApproval extends Component
             'remittance_id' => $approval->id,
             'user_id' => $user->id,
             'admin_id' => $adminId,
-            'date' => now(),
+            'date'           => $jalaliDate,
             'type' => 'رسید',
             'amount' => $approval->amount,
             'currency' => $approval->currency,
@@ -187,13 +190,14 @@ class RemittanceApproval extends Component
     {
         $adminId = $user->admin_id ?? $user->id;
 
+        $jalaliDate = Jalalian::now()->format('Y/m/d');
 
         Transaction::create([
             'customer_id' => $approval->customer_id,
             'remittance_id' => $approval->id,
             'user_id' => $user->id,
             'admin_id' => $adminId,
-            'date' => now(),
+            'date'           => $jalaliDate,
             'type' => 'برد',
             'amount' => $this->commissionAmount,
             'currency' => $this->commissionCurrency,
@@ -212,7 +216,7 @@ class RemittanceApproval extends Component
             'remittance_id' => $approval->id,
             'user_id' => $user->id,
             'admin_id' => $adminId,
-            'date' => now(),
+            'date'           => $jalaliDate,
             'type' => 'رسید',
             'amount' => $this->commissionAmount,
             'currency' => $this->commissionCurrency,

@@ -39,7 +39,6 @@ class Transactions extends Component
     public $accountType = 'نقدی';
     public $date;
     public $description;
-    public $selectedCustomer = null;
     public $file;
 
     public $zone;
@@ -47,7 +46,7 @@ class Transactions extends Component
     public $transactionId;
 
     public $search = '';
-
+    public $selectedCustomer = null;
     public $selectedCustomerId = null;
     public $filteredCustomers;
 
@@ -367,11 +366,7 @@ class Transactions extends Component
         ], 0);
         $transactions = Transaction::where('customer_id', $this->selectedCustomerId)
             ->where('admin_id', $adminId)
-            ->whereNull('conversion_transfer_id')
-            ->whereNull('conversion_in_account_id')
-            ->whereNull('account_to_id')
-            ->whereNull('remittance_id')
-            ->whereNull('changerdeal_id')
+            ->whereIn('type', ['برد', 'رسید'])
             ->get();
 
 
@@ -513,7 +508,9 @@ class Transactions extends Component
             ->whereNull('conversion_in_account_id')
             ->whereNull('account_to_id')
             ->whereNull('remittance_id')
+            ->whereNull('withdrawbank_id')
             ->whereNull('changerdeal_id');
+
 
         if ($this->selectedCustomerId) {
             $query->where('customer_id', $this->selectedCustomerId);

@@ -206,66 +206,97 @@ class TransactionsReports extends Component
     /**
      * Load transactions with applied filters
      */
-    public function loadTransactions()
-    {
-        if (!$this->selectedCustomer) {
-            Log::debug("loadTransactions: No customer selected");
-            return;
-        }
-
-        $user = Auth::guard('sarafi')->user();
-        if (!$user) {
-            $this->transactions = collect();
-            return;
-        }
-
-        $adminId = $user->admin_id ?? $user->id;
-        $relatedUserIds = $this->getRelatedUserIds($adminId);
-
-        Log::debug("loadTransactions: Starting", [
-            'customer_id' => $this->selectedCustomer,
-            'start_date' => $this->startDate,
-            'end_date' => $this->endDate
-        ]);
-
-        $baseQuery = Transaction::query()
-            ->where('customer_id', $this->selectedCustomer)
-            ->where(function ($query) use ($adminId, $relatedUserIds) {
-                $query->where('admin_id', $adminId)
-                    ->orWhereIn('user_id', $relatedUserIds);
-            });
-
-        // Apply non-date filters
-        $this->applyNonDateFilters($baseQuery);
-
-        // Apply date filter if specified
-        if ($this->startDate && $this->endDate) {
-            $this->applyDateFilter($baseQuery);
-        }
-
-        Log::debug("loadTransactions: Before calculating previous balances");
-
-        // First calculate previous balances, then get transactions
-        $this->calculatePreviousBalances();
-
-        Log::debug("loadTransactions: After calculating previous balances", [
-            'previous_balances' => $this->previousBalances
-        ]);
-
-        $this->transactions = $baseQuery->orderBy('date')->get();
-
-        Log::debug("loadTransactions: Transactions loaded", [
-            'transactions_count' => count($this->transactions)
-        ]);
-
-
-        $this->calculateTotalBalances();
-
-        Log::debug("loadTransactions: Completed", [
-            'total_balances' => $this->totalBalances
-        ]);
+  public function loadTransactions()
+{
+    if (!$this->selectedCustomer) {
+        Log::debug("loadTransactions: No customer selected");
+        return;
     }
 
+    $user = Auth::guard('sarafi')->user();
+    if (!$user) {
+        $this->transactions = collect();
+        return;
+    }
+
+    $adminId = $user->admin_id ?? $user->id;
+    $relatedUserIds = $this->getRelatedUserIds($adminId);
+
+    Log::debug("loadTransactions: Starting", [
+        'customer_id' => $this->selectedCustomer,
+        'start_date' => $this->startDate,
+        'end_date' => $this->endDate
+    ]);
+
+    $baseQuery = Transaction::query()
+        ->where('customer_id', $this->selectedCustomer)
+        ->where(function ($query) use ($adminId, $relatedUserIds) {
+            $query->where('admin_id', $adminId)
+                ->orWhereIn('user_id', $relatedUserIds);
+        })
+        ->where(function ($query) {
+            // شامل تمام تراکنش‌ها - هم حواله‌های معمولی و هم حواله‌های بانکی
+            $query->whereNotNull('amount')
+                ->where('amount', '>', 0);
+        });
+
+    // لاگ کردن قبل از اعمال فیلتر
+    Log::debug("loadTransactions: Base query count", [
+        'count' => $baseQuery->count(),
+        'customer_id' => $this->selectedCustomer
+    ]);
+
+    // Apply non-date filters
+    $this->applyNonDateFilters($baseQuery);
+
+    // Apply date filter if specified
+    if ($this->startDate && $this->endDate) {
+        $this->applyDateFilter($baseQuery);
+    }
+
+    Log::debug("loadTransactions: After filters", [
+        'filter_count' => $baseQuery->count(),
+        'filters' => [
+            'typeTransaction' => $this->typeTransaction,
+            'typeTransaction2' => $this->typeTransaction2,
+            'accountType' => $this->accountType,
+            'selectedCurrencies' => $this->selectedCurrencies
+        ]
+    ]);
+
+    // First calculate previous balances, then get transactions
+    $this->calculatePreviousBalances();
+
+    Log::debug("loadTransactions: After calculating previous balances", [
+        'previous_balances' => $this->previousBalances
+    ]);
+
+    $this->transactions = $baseQuery->orderBy('date')->get();
+
+    // لاگ تمام تراکنش‌های بازیابی شده
+    Log::debug("loadTransactions: All retrieved transactions", [
+        'count' => $this->transactions->count(),
+        'transactions' => $this->transactions->map(function ($t) {
+            return [
+                'id' => $t->id,
+                'type' => $t->type,
+                'amount' => $t->amount,
+                'currency' => $t->currency,
+                'date' => $t->date,
+                'remittance_id' => $t->remittance_id,
+                'withdrawbank_id' => $t->withdrawbank_id,
+                'description' => $t->description
+            ];
+        })->values()
+    ]);
+
+    $this->calculateTotalBalances();
+
+    Log::debug("loadTransactions: Completed", [
+        'total_balances' => $this->totalBalances,
+        'transactions_count' => $this->transactions->count()
+    ]);
+}
 
     public function testPreviousBalance()
     {
@@ -681,66 +712,77 @@ class TransactionsReports extends Component
     /**
      * Calculate total balances for current period
      */
-    private function calculateTotalBalances()
-    {
-        $transactions = collect($this->transactions);
+  private function calculateTotalBalances()
+{
+    $transactions = collect($this->transactions);
 
-        // دریافت ارزهای فعال برای این مشتری
-        $user = Auth::guard('sarafi')->user();
-        $adminId = $user->admin_id ?? $user->id;
-        $relatedUserIds = $this->getRelatedUserIds($adminId);
+    // دریافت تمام ارزهای موجود در تراکنش‌ها
+    $activeCurrencies = $transactions->pluck('currency')->unique()->toArray();
+    
+    Log::debug("calculateTotalBalances: Active currencies", [
+        'currencies' => $activeCurrencies
+    ]);
 
-        $customerCurrencies = Transaction::where('customer_id', $this->selectedCustomer)
-            ->where(function ($q) use ($adminId, $relatedUserIds) {
-                $q->where('admin_id', $adminId)
-                    ->orWhereIn('user_id', $relatedUserIds);
-            })
-            ->distinct()
-            ->pluck('currency')
-            ->toArray();
+    // پاک کردن totalBalances قبلی
+    $this->totalBalances = [];
 
-        foreach ($this->currencies as $currency) {
-            $code = $currency['code'];
+    foreach ($activeCurrencies as $code) {
+        // پیدا کردن نام فارسی ارز
+        $currencyInfo = collect($this->currencies)->firstWhere('code', $code);
+        $name_fa = $currencyInfo ? $currencyInfo['name_fa'] : $code;
 
-            // فقط ارزهایی که برای این مشتری تراکنش دارند را محاسبه کن
-            if (!in_array($code, $customerCurrencies)) {
-                continue;
-            }
+        // محاسبه رسیدها و بردها
+        $received = $transactions->where('currency', $code)
+            ->where('type', 'رسید')
+            ->sum('amount');
 
-            $received = $transactions->where('currency', $code)
-                ->where('type', 'رسید')
-                ->sum('amount');
+        $spent = $transactions->where('currency', $code)
+            ->where('type', 'برد')
+            ->sum('amount');
 
-            $spent = $transactions->where('currency', $code)
-                ->where('type', 'برد')
-                ->sum('amount');
+        $balance = $received - $spent;
 
+        // استفاده از موجودی قبلی که محاسبه شده
+        $previousBalance = $this->previousBalances[$code] ?? 0;
+        $currentBalance = $previousBalance + $balance;
 
+        $this->totalBalances[$code] = [
+            'name_fa' => $name_fa,
+            'received' => $received,
+            'spent' => $spent,
+            'balance' => $balance,
+            'previous_balance' => $previousBalance,
+            'current_balance' => $currentBalance,
+            'status' => $currentBalance >= 0 ? 'طلبکار' : 'بدهکار'
+        ];
 
-            $balance = $received - $spent;
-
-            // موجودی فعلی = موجودی قبلی + (دریافت‌های دوره - برداشت‌های دوره)
-            $currentBalance = ($this->previousBalances[$code] ?? 0) + $balance;
-
-            $this->totalBalances[$code] = [
-                'received' => $received,
-                'spent' => $spent,
-                'balance' => $balance,
-                'current_balance' => $currentBalance,
-                'status' => $currentBalance >= 0 ? 'طلبکار' : 'بدهکار'
-            ];
-
-            Log::debug("Total balance calculated", [
-                'currency' => $code,
-                'received' => $received,
-                'spent' => $spent,
-                'balance' => $balance,
-                'previous_balance' => $this->previousBalances[$code] ?? 0,
-                'current_balance' => $currentBalance
-            ]);
-        }
+        Log::debug("Total balance for $code", [
+            'received' => $received,
+            'spent' => $spent,
+            'balance' => $balance,
+            'previous_balance' => $previousBalance,
+            'current_balance' => $currentBalance
+        ]);
     }
 
+    // برای ارزهایی که در previousBalances هستند اما در تراکنش‌های فعلی نیستند
+    foreach ($this->previousBalances as $code => $prevBalance) {
+        if (!isset($this->totalBalances[$code])) {
+            $currencyInfo = collect($this->currencies)->firstWhere('code', $code);
+            $name_fa = $currencyInfo ? $currencyInfo['name_fa'] : $code;
+            
+            $this->totalBalances[$code] = [
+                'name_fa' => $name_fa,
+                'received' => 0,
+                'spent' => 0,
+                'balance' => 0,
+                'previous_balance' => $prevBalance,
+                'current_balance' => $prevBalance,
+                'status' => $prevBalance >= 0 ? 'طلبکار' : 'بدهکار'
+            ];
+        }
+    }
+}
     /**
      * Get customer's currencies from transactions
      */

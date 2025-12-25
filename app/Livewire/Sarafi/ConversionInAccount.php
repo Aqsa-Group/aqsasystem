@@ -32,7 +32,7 @@ class ConversionInAccount extends Component
     public $to_currency = '';
     public $sell_amount = '';
     public $currency_rate = '';
-    public $transaction_date;
+    public $date;
     public $description = '';
     public $zone_sender = '';
     public $zone_receiver = '';
@@ -79,7 +79,7 @@ class ConversionInAccount extends Component
      */
     public function mount()
     {
-        $this->transaction_date = Jalalian::now()->format('Y/m/d');
+        $this->date = Jalalian::now()->format('Y/m/d');
         $this->transactionType = 'خرید';
 
         $this->currencies = [
@@ -811,7 +811,7 @@ private function getDefaultProfitLossResult()
             'buy_amount' => 'required|numeric|min:0.01',
             'sell_amount' => 'required|numeric|min:0.01',
             'currency_rate' => 'required|numeric|min:0.0001',
-            'transaction_date' => 'required|date',
+            'date' => 'required|date',
             'description' => 'nullable|string|max:500',
             'zone_sender' => 'required|string',
             'zone_receiver' => 'required|string',
@@ -867,7 +867,7 @@ private function getDefaultProfitLossResult()
                     'sell_amount' => $this->sell_amount,
                     'currency_rate' => $this->currency_rate,
                     'account_type' => $this->accountType,
-                    'transaction_date' => $this->transaction_date,
+                    'transaction_date' => $this->date,
                     'description' => $this->description,
                     'zone_sender' => $this->zone_sender,
                     'zone_receiver' => $this->zone_receiver,
@@ -888,7 +888,7 @@ private function getDefaultProfitLossResult()
                     'to_currency' => $this->to_currency,
                     'sell_amount' => $this->sell_amount,
                     'currency_rate' => $this->currency_rate,
-                    'transaction_date' => $this->transaction_date,
+                    'transaction_date' => $this->date,
                     'description' => $this->description,
                     'zone_sender' => $this->zone_sender,
                     'zone_receiver' => $this->zone_receiver,
@@ -910,8 +910,8 @@ private function getDefaultProfitLossResult()
                 'admin_id' => $adminId,
                 'currency' => $this->from_currency,
                 'amount' => $this->buy_amount,
-                'type' => 'برداشت',
-                'date' => $this->transaction_date,
+                'type' => 'برد',
+                'date' => $this->date,
                 'description' => $this->generateWithdrawalDescription(),
                 'zone' => $this->zone_sender,
                 'by' => $this->by_sender,
@@ -930,7 +930,7 @@ private function getDefaultProfitLossResult()
                 'amount' => $this->sell_amount,
                 'type' => 'رسید',
                 'account_type' => $this->accountType,
-                'date' => $this->transaction_date,
+                'date' => $this->date,
                 'description' => $this->generateDepositDescription(),
                 'zone' => $this->zone_receiver,
                 'by' => $this->by_receiver,
@@ -1029,9 +1029,11 @@ private function getDefaultProfitLossResult()
             $this->from_currency = $conversion->from_currency;
             $this->to_currency = $conversion->to_currency;
             $this->buy_amount = $conversion->buy_amount;
+            $this->accountType = $conversion->accountType;
             $this->sell_amount = $conversion->sell_amount;
+            $this->date = $conversion->transaction_date;
             $this->currency_rate = $conversion->currency_rate;
-            $this->transaction_date = $conversion->transaction_date;
+            $this->date = $conversion->transaction_date;
             $this->description = $conversion->description;
             $this->zone_sender = $conversion->zone_sender;
             $this->zone_receiver = $conversion->zone_receiver;
@@ -1125,7 +1127,7 @@ private function getDefaultProfitLossResult()
 
         $this->transactionType = 'خرید';
         $this->accountType = 'نقدی';
-        $this->transaction_date = Jalalian::now()->format('Y/m/d');
+        $this->date = Jalalian::now()->format('Y/m/d');
     }
 
     // ==================== متدهای PDF ====================
