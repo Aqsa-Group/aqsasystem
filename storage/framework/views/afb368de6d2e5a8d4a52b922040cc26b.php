@@ -617,7 +617,7 @@
             <!-- سایدبار -->
 <div
     id="sidebar"
-    class="sidebar-container rounded-tl-[50px] bg-[#F9FEFF]"
+    class="sidebar-container rounded-tl-[50px] bg-[#1C274C]"
     style="box-shadow: -4px 0px 4px 0px rgba(0,0,0,0.25);"
 >
 

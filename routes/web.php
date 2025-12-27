@@ -3,6 +3,7 @@
 use App\Filament\Import\Pages\SaleReportGeneral;
 use App\Http\Controllers\AccountingPrintController;
 use App\Http\Controllers\AmountController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ContractPrintController;
 use App\Http\Controllers\DepositLogPrintController;
 use App\Http\Controllers\Gym\Auth\UserControllers;
@@ -28,6 +29,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+
 
 
 
@@ -347,7 +349,16 @@ Route::get('/sarafi/withdraws-from-bank', function () {
 
 
 
-
+// Chat Routes
+Route::middleware(['auth:sarafi'])->prefix('chat')->group(function () {
+    Route::post('/send', [ChatController::class, 'sendMessage']);
+    Route::get('/messages/{userId}', [ChatController::class, 'getMessages']);
+    Route::get('/conversations', [ChatController::class, 'getConversations']);
+    Route::get('/users', [ChatController::class, 'getChatUsers']);
+    Route::get('/unread-count', [ChatController::class, 'getUnreadCount']);
+    Route::post('/search', [ChatController::class, 'searchUsers']);
+    Route::post('/mark-all-read', [ChatController::class, 'markAllAsRead']);
+});
 
 
 
