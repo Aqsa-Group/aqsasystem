@@ -79,6 +79,8 @@ Route::get('/outside/print/{id}', [OutsideController::class, 'generate'])->name(
 Route::get('/accounting/print/{id}', [AccountingPrintController::class, 'printView'])
     ->name('accounting.print.view');
 
+    
+
 
 // Import system route 
 

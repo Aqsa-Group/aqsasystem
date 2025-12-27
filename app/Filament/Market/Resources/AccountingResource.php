@@ -249,6 +249,7 @@ class AccountingResource extends Resource
             Forms\Components\TextInput::make('meter_serial')
                 ->label('سریال میتر')
                 ->disabled()
+                ->dehydrated(true)
                 ->visible(fn($get) => $get('expanses_type') === 'پول برق'),
 
             Forms\Components\TextInput::make('past_degree')
@@ -282,7 +283,7 @@ class AccountingResource extends Resource
                     $calculateDates($get, $set);
                     $updateCalculatedPrice($get, $set);
                 }),
-
+   
             Forms\Components\Select::make('currency')
                 ->label('واحد پول')
                 ->options(['AFN' => 'افغانی', 'USD' => 'دالر', 'TOMAN' => 'تومان', 'EUR' => 'یورو'])
@@ -305,6 +306,17 @@ class AccountingResource extends Resource
                 ->required(),
         ]);
     }
+
+private static function getLastElectricityRemained($shopId = null, $boothId = null)
+{
+    return Accounting::where('expanses_type', 'پول برق')
+        ->when($shopId, fn ($q) => $q->where('shop_id', $shopId))
+        ->when($boothId, fn ($q) => $q->where('booth_id', $boothId))
+        ->latest('id')
+        ->value('remained') ?? 0;
+}
+
+
 
     public static function table(Table $table): Table
     {
@@ -419,6 +431,26 @@ class AccountingResource extends Resource
                     ]),
 
 
+                SelectFilter::make('floor')
+                    ->label('طبق')
+                    ->options(function () use ($markets) {
+                        $shopFloors = Shop::whereIn('market_id', $markets)->pluck('floor')->unique()->filter()->toArray();
+                        $boothFloors = Booth::whereIn('market_id', $markets)->pluck('floor')->unique()->filter()->toArray();
+                        $floors = array_unique(array_merge($shopFloors, $boothFloors));
+                        sort($floors);
+
+                        return array_combine($floors, $floors);
+                    })
+                    ->query(function (Builder $query, array $data) {
+                        $floor = $data['value'] ?? null; 
+                        if ($floor) {
+                            $query->whereHas('shop', fn($q) => $q->where('floor', $floor))
+                                ->orWhereHas('booth', fn($q) => $q->where('floor', $floor));
+                        }
+                    }),
+
+
+
 
 
 
@@ -457,6 +489,7 @@ class AccountingResource extends Resource
 
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
+                
             ]);
     }
 

@@ -249,10 +249,8 @@
 
         <div class="description">
             <h3>شرح تراکنش:</h3>
-            {{ $conversion->description_sender ?? 'تبدیل ارز - بدون توضیحات بیشتر' }} <br>
+            {{ $conversion->description_sender ?? 'تبدیل ارز - بدون توضیحات بیشتر' }}<br>
             {{ $conversion->description_receiver ?? 'تبدیل ارز - بدون توضیحات بیشتر' }} 
-
-
         </div>
 
         <div class="signature">

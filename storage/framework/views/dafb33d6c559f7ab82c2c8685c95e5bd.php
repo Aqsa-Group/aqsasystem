@@ -20,7 +20,7 @@
                         نوع گزارش
                     </h3>
 
-                    @php
+                    <?php
                     $reportTypes = [
                     'withdraw_salary' => ['icon' => 'fa-solid fa-users', 'label' => 'برداشت‌ها و معاش کارمندان', 'color'
                     => 'purple'],
@@ -34,27 +34,27 @@
                     ];
 
                     $userRole = Auth::guard('market')->user()->role ?? null;
-                    @endphp
+                    ?>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        @foreach($reportTypes as $type => $info)
-                        @if(($userRole === 'warehouse_manager' && $type === 'accounting') || ($userRole !==
-                        'warehouse_manager'))
-                        <button wire:click="$set('reportType', '{{ $type }}')" class="flex items-center gap-3 p-4 rounded-2xl border text-sm font-medium transition-all duration-300 shadow-sm hover:scale-105
-                            @if($reportType === $type)
-                                bg-gradient-to-r from-{{ $info['color'] }}-500 to-{{ $info['color'] }}-600 text-white border-{{ $info['color'] }}-500 shadow-md
-                            @else
-                                bg-white text-gray-700 border-gray-200 hover:bg-{{ $info['color'] }}-50 hover:border-{{ $info['color'] }}-300
-                            @endif
+                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $reportTypes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $type => $info): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <!--[if BLOCK]><![endif]--><?php if(($userRole === 'warehouse_manager' && $type === 'accounting') || ($userRole !==
+                        'warehouse_manager')): ?>
+                        <button wire:click="$set('reportType', '<?php echo e($type); ?>')" class="flex items-center gap-3 p-4 rounded-2xl border text-sm font-medium transition-all duration-300 shadow-sm hover:scale-105
+                            <?php if($reportType === $type): ?>
+                                bg-gradient-to-r from-<?php echo e($info['color']); ?>-500 to-<?php echo e($info['color']); ?>-600 text-white border-<?php echo e($info['color']); ?>-500 shadow-md
+                            <?php else: ?>
+                                bg-white text-gray-700 border-gray-200 hover:bg-<?php echo e($info['color']); ?>-50 hover:border-<?php echo e($info['color']); ?>-300
+                            <?php endif; ?>
                         ">
-                            <i class="{{ $info['icon'] }} text-lg"></i>
-                            <span class="flex-1 text-xl font-medium">{{ $info['label'] }}</span>
-                            @if($reportType === $type)
+                            <i class="<?php echo e($info['icon']); ?> text-lg"></i>
+                            <span class="flex-1 text-xl font-medium"><?php echo e($info['label']); ?></span>
+                            <!--[if BLOCK]><![endif]--><?php if($reportType === $type): ?>
                             <span class="ml-auto text-white font-bold">✓</span>
-                            @endif
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </button>
-                        @endif
-                        @endforeach
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
                 </div>
 
@@ -82,9 +82,9 @@
                                     <select wire:model.live="marketId"
                                         class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
                                         <option value="">همه مارکت‌ها</option>
-                                        @foreach($markets as $id => $name)
-                                        <option value="{{ $id }}">{{ $name }}</option>
-                                        @endforeach
+                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $markets; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($id); ?>"><?php echo e($name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                     </select>
                                 </div>
 
@@ -110,7 +110,7 @@
                                         <input type="text" wire:model.live="search" placeholder="جستجو بر اساس نام شخص"
                                             class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
                                         <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                                            <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt="">
+                                            <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt="">
                                         </div>
                                     </div>
                                 </div>
@@ -119,21 +119,21 @@
                             <!-- Dynamic Filters Based on Report Type -->
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 <!-- Staff Filter for combined report -->
-                                @if(in_array($reportType, ['withdraw_salary']))
+                                <!--[if BLOCK]><![endif]--><?php if(in_array($reportType, ['withdraw_salary'])): ?>
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">کارمند</label>
                                     <select wire:model.live="staffId"
                                         class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
                                         <option value="">همه کارمندان</option>
-                                        @foreach($staffs as $id => $name)
-                                        <option value="{{ $id }}">{{ $name }}</option>
-                                        @endforeach
+                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $staffs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($id); ?>"><?php echo e($name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                     </select>
                                 </div>
-                                @endif
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
 
-                                @if(in_array($reportType, ['accounting', 'deposit']))
+                                <!--[if BLOCK]><![endif]--><?php if(in_array($reportType, ['accounting', 'deposit'])): ?>
                               
                                 <!-- 🔴 اضافه کردن فیلتر طبقه -->
                                 <div class="space-y-2">
@@ -141,15 +141,15 @@
                                     <select wire:model.live="floor"
                                         class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
                                         <option value="">همه طبقه‌ها</option>
-                                        @foreach($floors as $floorItem)
-                                        <option value="{{ $floorItem }}">{{ $floorItem }}</option>
-                                        @endforeach
+                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $floors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $floorItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($floorItem); ?>"><?php echo e($floorItem); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                     </select>
                                 </div>
-                                @endif
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                 <!-- Expanses Type Filter for combined report -->
-                                @if(in_array($reportType, ['withdraw_salary']))
+                                <!--[if BLOCK]><![endif]--><?php if(in_array($reportType, ['withdraw_salary'])): ?>
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">نوع هزینه</label>
                                     <select wire:model.live="expansesType"
@@ -163,80 +163,80 @@
                                         <option value="صفایی">صفایی</option>
                                     </select>
                                 </div>
-                                @endif
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                 <!-- Shop Filter -->
-                                @if(in_array($reportType, ['accounting', 'deposit']))
+                                <!--[if BLOCK]><![endif]--><?php if(in_array($reportType, ['accounting', 'deposit'])): ?>
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">شماره دوکان</label>
                                     <select wire:model.live="shopId"
                                         class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
                                         <option value="">همه دوکان‌ها</option>
-                                        @foreach($shops as $id => $number)
-                                        <option value="{{ $id }}">{{ $number }}</option>
-                                        @endforeach
+                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $shops; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $number): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($id); ?>"><?php echo e($number); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                     </select>
                                 </div>
-                                @endif
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                 <!-- Booth Filter -->
-                                @if(in_array($reportType, ['accounting', 'deposit', 'sell']))
+                                <!--[if BLOCK]><![endif]--><?php if(in_array($reportType, ['accounting', 'deposit', 'sell'])): ?>
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">شماره غرفه</label>
                                     <select wire:model.live="boothId"
                                         class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
                                         <option value="">همه غرفه‌ها</option>
-                                        @foreach($booths as $id => $number)
-                                        <option value="{{ $id }}">{{ $number }}</option>
-                                        @endforeach
+                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $booths; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $number): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($id); ?>"><?php echo e($number); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                     </select>
                                 </div>
-                                @endif
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                 <!-- Shopkeeper Filter -->
-                                @if(in_array($reportType, ['accounting', 'deposit', 'outside', 'loan', 'payment']))
+                                <!--[if BLOCK]><![endif]--><?php if(in_array($reportType, ['accounting', 'deposit', 'outside', 'loan', 'payment'])): ?>
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">دوکاندار</label>
                                     <select wire:model.live="shopkeeperId"
                                         class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
                                         <option value="">همه دوکانداران</option>
-                                        @foreach($shopkeepers as $id => $name)
-                                        <option value="{{ $id }}">{{ $name }}</option>
-                                        @endforeach
+                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $shopkeepers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($id); ?>"><?php echo e($name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                     </select>
                                 </div>
-                                @endif
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                 <!-- Customer Filter -->
-                                @if(in_array($reportType, ['outside', 'loan', 'payment', 'buy', 'sell']))
+                                <!--[if BLOCK]><![endif]--><?php if(in_array($reportType, ['outside', 'loan', 'payment', 'buy', 'sell'])): ?>
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">مشتری</label>
                                     <select wire:model.live="customerId"
                                         class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
                                         <option value="">همه مشتریان</option>
-                                        @foreach($customers as $id => $name)
-                                        <option value="{{ $id }}">{{ $name }}</option>
-                                        @endforeach
+                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($id); ?>"><?php echo e($name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                     </select>
                                 </div>
-                                @endif
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                 <!-- Staff Filter -->
-                                @if(in_array($reportType, ['outside', 'loan', 'payment']))
+                                <!--[if BLOCK]><![endif]--><?php if(in_array($reportType, ['outside', 'loan', 'payment'])): ?>
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">کارمند</label>
                                     <select wire:model.live="staffId"
                                         class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
                                         <option value="">همه کارمندان</option>
-                                        @foreach($staffs as $id => $name)
-                                        <option value="{{ $id }}">{{ $name }}</option>
-                                        @endforeach
+                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $staffs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($id); ?>"><?php echo e($name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                     </select>
                                 </div>
-                                @endif
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                 <!-- Type Filter -->
-                                @if(in_array($reportType, ['accounting', 'deposit', 'outside', 'loan']))
+                                <!--[if BLOCK]><![endif]--><?php if(in_array($reportType, ['accounting', 'deposit', 'outside', 'loan'])): ?>
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">نوع</label>
                                     <select wire:model.live="type"
@@ -246,10 +246,10 @@
                                         <option value="غرفه">غرفه</option>
                                     </select>
                                 </div>
-                                @endif
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                 <!-- Expanses Type Filter -->
-                                @if(in_array($reportType, ['accounting', 'deposit', 'withdraw_log']))
+                                <!--[if BLOCK]><![endif]--><?php if(in_array($reportType, ['accounting', 'deposit', 'withdraw_log'])): ?>
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">نوع هزینه</label>
                                     <select wire:model.live="expansesType"
@@ -262,7 +262,7 @@
                                         <option value="صفایی">صفایی</option>
                                     </select>
                                 </div>
-                                @endif
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                                 <!-- Start Date -->
                                 <div class="space-y-2">
@@ -275,9 +275,16 @@
                                             📅
                                         </div>
                                     </div>
-                                    @error('startDateJalali')
-                                    <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
-                                    @enderror
+                                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['startDateJalali'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-red-500 text-xs mt-1"><?php echo e($message); ?></span>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 </div>
 
                                 <!-- End Date -->
@@ -291,9 +298,16 @@
                                             📅
                                         </div>
                                     </div>
-                                    @error('endDateJalali')
-                                    <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
-                                    @enderror
+                                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['endDateJalali'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="text-red-500 text-xs mt-1"><?php echo e($message); ?></span>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 </div>
                             </div>
                         </div>
@@ -307,19 +321,20 @@
                             <div class="flex items-center justify-between">
                                 <h3 class="text-lg font-bold text-white flex items-center gap-2">
                                     <span class="text-xl">📈</span>
-                                    نتایج گزارش - {{ $reportTypes[$reportType]['label'] ?? 'نامشخص' }}
+                                    نتایج گزارش - <?php echo e($reportTypes[$reportType]['label'] ?? 'نامشخص'); ?>
+
                                     <span class="bg-primary-500 text-white text-sm px-3 py-1 rounded-full">
-                                        {{ number_format($reports->total()) }} مورد
+                                        <?php echo e(number_format($reports->total())); ?> مورد
                                     </span>
                                 </h3>
                                 <div class="flex items-center gap-2 text-sm text-white">
                                     <span>📊</span>
-                                    @if($reports->total() > 0)
-                                    نمایش {{ $reports->firstItem() }} - {{ $reports->lastItem() }} از {{
-                                    $reports->total() }}
-                                    @else
+                                    <!--[if BLOCK]><![endif]--><?php if($reports->total() > 0): ?>
+                                    نمایش <?php echo e($reports->firstItem()); ?> - <?php echo e($reports->lastItem()); ?> از <?php echo e($reports->total()); ?>
+
+                                    <?php else: ?>
                                     هیچ داده‌ای یافت نشد
-                                    @endif
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </div>
                             </div>
                         </div>
@@ -329,8 +344,8 @@
                             <table class="w-full">
                                 <thead class="bg-gradient-to-r from-primary-50 to-primary-100">
                                     <tr>
-                                        @switch($reportType)
-                                        @case('withdraw_salary')
+                                        <!--[if BLOCK]><![endif]--><?php switch($reportType):
+                                        case ('withdraw_salary'): ?>
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             نوع</th>
@@ -352,9 +367,9 @@
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             توضیحات</th>
-                                        @break
+                                        <?php break; ?>
 
-                                        @case('accounting')
+                                        <?php case ('accounting'): ?>
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             مارکت</th>
@@ -374,9 +389,9 @@
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             تاریخ</th>
 
-                                        @break
+                                        <?php break; ?>
 
-                                        @case('outside')
+                                        <?php case ('outside'): ?>
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             مارکت</th>
@@ -398,9 +413,9 @@
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             توضیحات</th>
-                                        @break
+                                        <?php break; ?>
 
-                                        @case('salary')
+                                        <?php case ('salary'): ?>
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             مارکت</th>
@@ -428,9 +443,9 @@
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             وضعیت کسر</th>
-                                        @break
+                                        <?php break; ?>
 
-                                        @case('deposit')
+                                        <?php case ('deposit'): ?>
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             مارکت</th>
@@ -452,9 +467,9 @@
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             تاریخ پرداخت</th>
-                                        @break
+                                        <?php break; ?>
 
-                                        @case('loan')
+                                        <?php case ('loan'): ?>
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             مارکت</th>
@@ -481,9 +496,9 @@
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             تاریخ</th>
 
-                                        @break
+                                        <?php break; ?>
 
-                                        @case('payment')
+                                        <?php case ('payment'): ?>
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             کد قرضه</th>
@@ -499,9 +514,9 @@
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             توضیحات</th>
-                                        @break
+                                        <?php break; ?>
 
-                                        @case('buy')
+                                        <?php case ('buy'): ?>
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             مارکت</th>
@@ -520,9 +535,9 @@
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             تاریخ ثبت</th>
-                                        @break
+                                        <?php break; ?>
 
-                                        @case('sell')
+                                        <?php case ('sell'): ?>
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             مارکت</th>
@@ -544,9 +559,9 @@
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             جزئیات</th>
-                                        @break
+                                        <?php break; ?>
 
-                                        @case('withdraw_log')
+                                        <?php case ('withdraw_log'): ?>
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             نوع هزینه</th>
@@ -565,495 +580,522 @@
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             تاریخ ثبت</th>
-                                        @break
+                                        <?php break; ?>
 
-                                        @endswitch
+                                        <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
-                                    @forelse($reports as $report)
+                                    <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $reports; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                     <tr
                                         class="hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-25 transition-all duration-200 group">
-                                        @switch($reportType)
-                                        @case('withdraw_salary')
+                                        <!--[if BLOCK]><![endif]--><?php switch($reportType):
+                                        case ('withdraw_salary'): ?>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
                                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
-                                                    {{ $report->record_type === 'withdraw' ? 'bg-purple-100 text-purple-800' : 'bg-orange-100 text-orange-800' }}">
-                                                {{ $report->record_type === 'withdraw' ? 'برداشت' : 'معاش' }}
+                                                    <?php echo e($report->record_type === 'withdraw' ? 'bg-purple-100 text-purple-800' : 'bg-orange-100 text-orange-800'); ?>">
+                                                <?php echo e($report->record_type === 'withdraw' ? 'برداشت' : 'معاش'); ?>
+
                                             </span>
                                         </td>
 
-                                        {{-- ستون "برداشت از" --}}
+                                        
                                         <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                            @if($report->record_type === 'withdraw')
-                                            {{ $report->expanses_type ?? '-' }}
-                                            @else
-                                            {{ $report->reduce_from ?? '-' }}
-                                            @endif
+                                            <!--[if BLOCK]><![endif]--><?php if($report->record_type === 'withdraw'): ?>
+                                            <?php echo e($report->expanses_type ?? '-'); ?>
+
+                                            <?php else: ?>
+                                            <?php echo e($report->reduce_from ?? '-'); ?>
+
+                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                         </td>
 
-                                        {{-- ستون "شخص" --}}
+                                        
                                         <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                            @if($report->record_type === 'withdraw')
+                                            <!--[if BLOCK]><![endif]--><?php if($report->record_type === 'withdraw'): ?>
 
-                                            @if($report->staff_id)
-                                            {{ $report->staff->fullname ?? '-' }}
-                                            @elseif($report->customer_id)
-                                            {{ $report->customer->name ?? '-' }}
-                                            @else
+                                            <!--[if BLOCK]><![endif]--><?php if($report->staff_id): ?>
+                                            <?php echo e($report->staff->fullname ?? '-'); ?>
+
+                                            <?php elseif($report->customer_id): ?>
+                                            <?php echo e($report->customer->name ?? '-'); ?>
+
+                                            <?php else: ?>
                                             -
-                                            @endif
-                                            @else
-                                            {{-- برای معاش: نام کارمند --}}
-                                            {{ $report->staff->fullname ?? '-' }}
-                                            @endif
+                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                            <?php else: ?>
+                                            
+                                            <?php echo e($report->staff->fullname ?? '-'); ?>
+
+                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                         </td>
 
-                                        {{-- ستون "مبلغ" --}}
+                                        
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="font-bold text-gray-900">
-                                                {{ number_format($report->record_type === 'withdraw' ? $report->amount :
-                                                $report->paid) }}
+                                                <?php echo e(number_format($report->record_type === 'withdraw' ? $report->amount :
+                                                $report->paid)); ?>
+
                                             </span>
                                         </td>
 
-                                        {{-- ستون "واحد پول" --}}
+                                        
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                                @switch($report->currency)
-                                                @case('AFN') افغانی @break
-                                                @case('USD') دالر @break
-                                                @default {{ $report->currency }}
-                                                @endswitch
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
+                                                case ('AFN'): ?> افغانی <?php break; ?>
+                                                <?php case ('USD'): ?> دالر <?php break; ?>
+                                                <?php default: ?> <?php echo e($report->currency); ?>
+
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
                                             </span>
                                         </td>
 
-                                        {{-- ستون "تاریخ" --}}
+                                        
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            @if($report->record_type === 'withdraw')
-                                            {{ $report->created_at ?
+                                            <!--[if BLOCK]><![endif]--><?php if($report->record_type === 'withdraw'): ?>
+                                            <?php echo e($report->created_at ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d')
-                                            : '-' }}
-                                            @else
-                                            {{ $report->paid_date ?
+                                            : '-'); ?>
+
+                                            <?php else: ?>
+                                            <?php echo e($report->paid_date ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
-                                            : '-' }}
-                                            @endif
+                                            : '-'); ?>
+
+                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                         </td>
 
-                                        {{-- ستون "توضیحات" --}}
+                                        
                                         <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
-                                            @if($report->record_type === 'withdraw')
-                                            {{ $report->description ?? '-' }}
-                                            @else
-                                            وضعیت: {{ $report->is_reduce ? 'کسر شده' : 'کسر نشده' }}
-                                            @endif
-                                        </td>
-                                        @break
+                                            <!--[if BLOCK]><![endif]--><?php if($report->record_type === 'withdraw'): ?>
+                                            <?php echo e($report->description ?? '-'); ?>
 
-                                        @case('accounting')
+                                            <?php else: ?>
+                                            وضعیت: <?php echo e($report->is_reduce ? 'کسر شده' : 'کسر نشده'); ?>
+
+                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                        </td>
+                                        <?php break; ?>
+
+                                        <?php case ('accounting'): ?>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center gap-3">
                                                 <div
                                                     class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
                                                     <span class="text-blue-600 text-sm">🏪</span>
                                                 </div>
-                                                <span class="font-medium text-gray-900">{{ $report->market->name ?? '-'
-                                                    }}</span>
+                                                <span class="font-medium text-gray-900"><?php echo e($report->market->name ?? '-'); ?></span>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
                                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                                {{ $report->type }}
+                                                <?php echo e($report->type); ?>
+
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                            {{ $report->shopkeeper->fullname ?? '-' }}
+                                            <?php echo e($report->shopkeeper->fullname ?? '-'); ?>
+
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
                                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                {{ $report->expanses_type }}
+                                                <?php echo e($report->expanses_type); ?>
+
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-gray-900">{{ number_format($report->price)
-                                                }}</span>
+                                            <span class="font-bold text-gray-900"><?php echo e(number_format($report->price)); ?></span>
                                         </td>
 
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $report->paid_date ?
+                                            <?php echo e($report->paid_date ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
-                                            : '-' }}
+                                            : '-'); ?>
+
                                         </td>
 
-                                        @break
+                                        <?php break; ?>
 
-                                        @case('outside')
+                                        <?php case ('outside'): ?>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center gap-3">
                                                 <div
                                                     class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
                                                     <span class="text-green-600 text-sm">🏪</span>
                                                 </div>
-                                                <span class="font-medium text-gray-900">{{ $report->market->name ?? '-'
-                                                    }}</span>
+                                                <span class="font-medium text-gray-900"><?php echo e($report->market->name ?? '-'); ?></span>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
                                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
-                                                {{ $report->customer_id ? 'bg-purple-100 text-purple-800' : 
+                                                <?php echo e($report->customer_id ? 'bg-purple-100 text-purple-800' : 
                                                 ($report->staff_id ? 'bg-orange-100 text-orange-800' : 
-                                                ($report->shopkeeper_id ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800')) }}">
-                                                @if($report->customer_id)
+                                                ($report->shopkeeper_id ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'))); ?>">
+                                                <!--[if BLOCK]><![endif]--><?php if($report->customer_id): ?>
                                                 مشتری
-                                                @elseif($report->staff_id)
+                                                <?php elseif($report->staff_id): ?>
                                                 کارمند
-                                                @elseif($report->shopkeeper_id)
+                                                <?php elseif($report->shopkeeper_id): ?>
                                                 دوکاندار
-                                                @else
+                                                <?php else: ?>
                                                 نامشخص
-                                                @endif
+                                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                            {{ $report->customer->fullname ?? $report->staff->fullname ??
-                                            $report->shopkeeper->fullname ?? '-' }}
+                                            <?php echo e($report->customer->fullname ?? $report->staff->fullname ??
+                                            $report->shopkeeper->fullname ?? '-'); ?>
+
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center gap-2">
-                                                <span class="font-bold text-gray-900">{{ number_format($report->paid)
-                                                    }}</span>
+                                                <span class="font-bold text-gray-900"><?php echo e(number_format($report->paid)); ?></span>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                                @switch($report->currency)
-                                                @case('AFN') افغانی @break
-                                                @case('USD') دالر @break
-                                                @default {{ $report->currency }}
-                                                @endswitch
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
+                                                case ('AFN'): ?> افغانی <?php break; ?>
+                                                <?php case ('USD'): ?> دالر <?php break; ?>
+                                                <?php default: ?> <?php echo e($report->currency); ?>
+
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $report->date ?
-                                            \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'
-                                            }}
+                                            <?php echo e($report->date ?
+                                            \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
+
                                         </td>
                                         <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
-                                            {{ $report->description ?? '-' }}
-                                        </td>
-                                        @break
+                                            <?php echo e($report->description ?? '-'); ?>
 
-                                        @case('salary')
+                                        </td>
+                                        <?php break; ?>
+
+                                        <?php case ('salary'): ?>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center gap-3">
                                                 <div
                                                     class="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
                                                     <span class="text-amber-600 text-sm">🏪</span>
                                                 </div>
-                                                <span class="font-medium text-gray-900">{{ $report->market->name ?? '-'
-                                                    }}</span>
+                                                <span class="font-medium text-gray-900"><?php echo e($report->market->name ?? '-'); ?></span>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                            {{ $report->staff->fullname ?? '-' }}
+                                            <?php echo e($report->staff->fullname ?? '-'); ?>
+
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-gray-900">{{ number_format($report->salary)
-                                                }}</span>
+                                            <span class="font-bold text-gray-900"><?php echo e(number_format($report->salary)); ?></span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-green-600">{{ number_format($report->paid)
-                                                }}</span>
+                                            <span class="font-bold text-green-600"><?php echo e(number_format($report->paid)); ?></span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-red-600">{{ number_format($report->remained)
-                                                }}</span>
+                                            <span class="font-bold text-red-600"><?php echo e(number_format($report->remained)); ?></span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-purple-600">{{ number_format($report->loan)
-                                                }}</span>
+                                            <span class="font-bold text-purple-600"><?php echo e(number_format($report->loan)); ?></span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                                @switch($report->currency)
-                                                @case('AFN') افغانی @break
-                                                @case('USD') دالر @break
-                                                @default {{ $report->currency }}
-                                                @endswitch
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
+                                                case ('AFN'): ?> افغانی <?php break; ?>
+                                                <?php case ('USD'): ?> دالر <?php break; ?>
+                                                <?php default: ?> <?php echo e($report->currency); ?>
+
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $report->paid_date ?
+                                            <?php echo e($report->paid_date ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
-                                            : '-' }}
+                                            : '-'); ?>
+
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
-                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ $report->is_reduce ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
-                                                {{ $report->is_reduce ? 'فعال' : 'غیرفعال' }}
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium <?php echo e($report->is_reduce ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'); ?>">
+                                                <?php echo e($report->is_reduce ? 'فعال' : 'غیرفعال'); ?>
+
                                             </span>
                                         </td>
-                                        @break
+                                        <?php break; ?>
 
-                                        @case('deposit')
+                                        <?php case ('deposit'): ?>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center gap-3">
                                                 <div
                                                     class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
                                                     <span class="text-orange-600 text-sm">🏪</span>
                                                 </div>
-                                                <span class="font-medium text-gray-900">{{
-                                                    $report->accounting->market->name ?? '-' }}</span>
+                                                <span class="font-medium text-gray-900"><?php echo e($report->accounting->market->name ?? '-'); ?></span>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                            {{ $report->accounting->shopkeeper->fullname ?? '-' }}
+                                            <?php echo e($report->accounting->shopkeeper->fullname ?? '-'); ?>
+
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
                                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                {{ $report->expanses_type }}
+                                                <?php echo e($report->expanses_type); ?>
+
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-gray-900">{{ number_format($report->price)
-                                                }}</span>
+                                            <span class="font-bold text-gray-900"><?php echo e(number_format($report->price)); ?></span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-green-600">{{ number_format($report->paid)
-                                                }}</span>
+                                            <span class="font-bold text-green-600"><?php echo e(number_format($report->paid)); ?></span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-red-600">{{ number_format($report->remained)
-                                                }}</span>
+                                            <span class="font-bold text-red-600"><?php echo e(number_format($report->remained)); ?></span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                                @switch($report->currency)
-                                                @case('AFN') افغانی @break
-                                                @case('USD') دالر @break
-                                                @default {{ $report->currency }}
-                                                @endswitch
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
+                                                case ('AFN'): ?> افغانی <?php break; ?>
+                                                <?php case ('USD'): ?> دالر <?php break; ?>
+                                                <?php default: ?> <?php echo e($report->currency); ?>
+
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $report->paid_date ?
+                                            <?php echo e($report->paid_date ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
-                                            : '-' }}
-                                        </td>
-                                        @break
+                                            : '-'); ?>
 
-                                        @case('loan')
+                                        </td>
+                                        <?php break; ?>
+
+                                        <?php case ('loan'): ?>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center gap-3">
                                                 <div
                                                     class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
                                                     <span class="text-red-600 text-sm">🏪</span>
                                                 </div>
-                                                <span class="font-medium text-gray-900">{{ $report->market->name ?? '-'
-                                                    }}</span>
+                                                <span class="font-medium text-gray-900"><?php echo e($report->market->name ?? '-'); ?></span>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
-            {{ $report->person === 'مشتری' ? 'bg-purple-100 text-purple-800' : 
+            <?php echo e($report->person === 'مشتری' ? 'bg-purple-100 text-purple-800' : 
                ($report->person === 'دوکاندار' ? 'bg-blue-100 text-blue-800' : 
-               'bg-orange-100 text-orange-800') }}">
-                                                {{ $report->person }}
+               'bg-orange-100 text-orange-800')); ?>">
+                                                <?php echo e($report->person); ?>
+
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                            @if($report->person === 'مشتری' && $report->customer)
-                                            {{ $report->customer->fullname }}
-                                            @elseif($report->person === 'دوکاندار' && $report->shopkeeper)
-                                            {{ $report->shopkeeper->fullname }}
-                                            @elseif($report->person === 'کارمند' && $report->staff)
-                                            {{ $report->staff->fullname }}
-                                            @else
+                                            <!--[if BLOCK]><![endif]--><?php if($report->person === 'مشتری' && $report->customer): ?>
+                                            <?php echo e($report->customer->fullname); ?>
+
+                                            <?php elseif($report->person === 'دوکاندار' && $report->shopkeeper): ?>
+                                            <?php echo e($report->shopkeeper->fullname); ?>
+
+                                            <?php elseif($report->person === 'کارمند' && $report->staff): ?>
+                                            <?php echo e($report->staff->fullname); ?>
+
+                                            <?php else: ?>
                                             -
-                                            @endif
+                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-gray-900">{{ number_format($report->amount)
-                                                }}</span>
+                                            <span class="font-bold text-gray-900"><?php echo e(number_format($report->amount)); ?></span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-green-600">{{
-                                                number_format($report->totalPaid()) }}</span>
+                                            <span class="font-bold text-green-600"><?php echo e(number_format($report->totalPaid())); ?></span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
-                                                class="font-bold {{ $report->remainingAmount() > 0 ? 'text-red-600' : 'text-green-600' }}">
-                                                {{ number_format($report->remainingAmount()) }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                                @switch($report->currency)
-                                                @case('AFN') افغانی @break
-                                                @case('USD') دالر @break
-                                                @default {{ $report->currency }}
-                                                @endswitch
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $report->date ?
-                                            \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'
-                                            }}
-                                        </td>
-                                        @break
+                                                class="font-bold <?php echo e($report->remainingAmount() > 0 ? 'text-red-600' : 'text-green-600'); ?>">
+                                                <?php echo e(number_format($report->remainingAmount())); ?>
 
-                                        @case('payment')
-                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                            #{{ $report->loan_id }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-gray-900">{{ number_format($report->amount)
-                                                }}</span>
+                                            </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                                @switch($report->currency)
-                                                @case('AFN') افغانی @break
-                                                @case('USD') دالر @break
-                                                @default {{ $report->currency }}
-                                                @endswitch
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
+                                                case ('AFN'): ?> افغانی <?php break; ?>
+                                                <?php case ('USD'): ?> دالر <?php break; ?>
+                                                <?php default: ?> <?php echo e($report->currency); ?>
+
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $report->date ?
-                                            \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'
-                                            }}
+                                            <?php echo e($report->date ?
+                                            \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
+
+                                        </td>
+                                        <?php break; ?>
+
+                                        <?php case ('payment'): ?>
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                            #<?php echo e($report->loan_id); ?>
+
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="font-bold text-gray-900"><?php echo e(number_format($report->amount)); ?></span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
+                                                case ('AFN'): ?> افغانی <?php break; ?>
+                                                <?php case ('USD'): ?> دالر <?php break; ?>
+                                                <?php default: ?> <?php echo e($report->currency); ?>
+
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <?php echo e($report->date ?
+                                            \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
+
                                         </td>
                                         <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
-                                            {{ $report->description ?? '-' }}
-                                        </td>
-                                        @break
+                                            <?php echo e($report->description ?? '-'); ?>
 
-                                        @case('buy')
+                                        </td>
+                                        <?php break; ?>
+
+                                        <?php case ('buy'): ?>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center gap-3">
                                                 <div
                                                     class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
                                                     <span class="text-indigo-600 text-sm">🏪</span>
                                                 </div>
-                                                <span class="font-medium text-gray-900">{{ $report->market->name ?? '-'
-                                                    }}</span>
+                                                <span class="font-medium text-gray-900"><?php echo e($report->market->name ?? '-'); ?></span>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                            {{ $report->customer->fullname ?? '-' }}
+                                            <?php echo e($report->customer->fullname ?? '-'); ?>
+
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
                                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                                                {{ $report->property }}
+                                                <?php echo e($report->property); ?>
+
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center gap-2">
-                                                <span class="font-bold text-gray-900">{{ number_format($report->price)
-                                                    }}</span>
+                                                <span class="font-bold text-gray-900"><?php echo e(number_format($report->price)); ?></span>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                                @switch($report->currency)
-                                                @case('AFN') افغانی @break
-                                                @case('USD') دالر @break
-                                                @default {{ $report->currency }}
-                                                @endswitch
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
+                                                case ('AFN'): ?> افغانی <?php break; ?>
+                                                <?php case ('USD'): ?> دالر <?php break; ?>
+                                                <?php default: ?> <?php echo e($report->currency); ?>
+
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $report->created_at ?
+                                            <?php echo e($report->created_at ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d')
-                                            : '-' }}
-                                        </td>
-                                        @break
+                                            : '-'); ?>
 
-                                        @case('sell')
+                                        </td>
+                                        <?php break; ?>
+
+                                        <?php case ('sell'): ?>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center gap-3">
                                                 <div
                                                     class="w-8 h-8 bg-teal-100 rounded-lg flex items-center justify-center">
                                                     <span class="text-teal-600 text-sm">🏪</span>
                                                 </div>
-                                                <span class="font-medium text-gray-900">{{ $report->market->name ?? '-'
-                                                    }}</span>
+                                                <span class="font-medium text-gray-900"><?php echo e($report->market->name ?? '-'); ?></span>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                            {{ $report->customer->fullname ?? '-' }}
+                                            <?php echo e($report->customer->fullname ?? '-'); ?>
+
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
                                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
-                                                {{ $report->property }}
+                                                <?php echo e($report->property); ?>
+
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center gap-2">
-                                                <span class="font-bold text-gray-900">{{ number_format($report->price)
-                                                    }}</span>
+                                                <span class="font-bold text-gray-900"><?php echo e(number_format($report->price)); ?></span>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                                {{ $report->currency }}
+                                                <?php echo e($report->currency); ?>
+
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $report->date ?
-                                            \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'
-                                            }}
+                                            <?php echo e($report->date ?
+                                            \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
+
                                         </td>
                                         <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
-                                            {{ $report->details ?? '-' }}
-                                        </td>
-                                        @break
+                                            <?php echo e($report->details ?? '-'); ?>
 
-                                        @case('withdraw_log')
+                                        </td>
+                                        <?php break; ?>
+
+                                        <?php case ('withdraw_log'): ?>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
                                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-800">
-                                                {{ $report->expanses_type }}
+                                                <?php echo e($report->expanses_type); ?>
+
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                            {{ $report->recipient_name }}
+                                            <?php echo e($report->recipient_name); ?>
+
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-gray-900">{{ number_format($report->amount)
-                                                }}</span>
+                                            <span class="font-bold text-gray-900"><?php echo e(number_format($report->amount)); ?></span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                                @switch($report->currency)
-                                                @case('AFN') افغانی @break
-                                                @case('USD') دالر @break
-                                                @default {{ $report->currency }}
-                                                @endswitch
+                                                <!--[if BLOCK]><![endif]--><?php switch($report->currency):
+                                                case ('AFN'): ?> افغانی <?php break; ?>
+                                                <?php case ('USD'): ?> دالر <?php break; ?>
+                                                <?php default: ?> <?php echo e($report->currency); ?>
+
+                                                <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
-                                            {{ $report->description ?? '-' }}
+                                            <?php echo e($report->description ?? '-'); ?>
+
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $report->created_at ?
+                                            <?php echo e($report->created_at ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d')
-                                            : '-' }}
-                                        </td>
-                                        @break
+                                            : '-'); ?>
 
-                                        @endswitch
+                                        </td>
+                                        <?php break; ?>
+
+                                        <?php endswitch; ?><!--[if ENDBLOCK]><![endif]-->
                                     </tr>
-                                    @empty
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                     <tr>
                                         <td colspan="10" class="px-6 py-12 text-center">
                                             <div class="flex flex-col items-center justify-center space-y-4">
@@ -1066,31 +1108,33 @@
                                                     </h4>
                                                     <p class="text-gray-500 text-sm">هیچ رکوردی با فیلترهای فعلی مطابقت
                                                         ندارد</p>
-                                                    @if(app()->environment('local'))
-                                                    <p class="text-xs text-yellow-600">نوع گزارش: {{ $reportType }}</p>
-                                                    @endif
+                                                    <!--[if BLOCK]><![endif]--><?php if(app()->environment('local')): ?>
+                                                    <p class="text-xs text-yellow-600">نوع گزارش: <?php echo e($reportType); ?></p>
+                                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
-                                    @endforelse
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </tbody>
                             </table>
                         </div>
 
                         <!-- Pagination -->
-                        @if($reports->hasPages())
+                        <!--[if BLOCK]><![endif]--><?php if($reports->hasPages()): ?>
                         <div class="bg-gray-50 border-t border-gray-200 px-6 py-4">
                             <div class="flex items-center justify-between">
                                 <div class="text-sm text-gray-700">
-                                    صفحه {{ $reports->currentPage() }} از {{ $reports->lastPage() }}
+                                    صفحه <?php echo e($reports->currentPage()); ?> از <?php echo e($reports->lastPage()); ?>
+
                                 </div>
                                 <div class="flex gap-2">
-                                    {{ $reports->links() }}
+                                    <?php echo e($reports->links()); ?>
+
                                 </div>
                             </div>
                         </div>
-                        @endif
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
                 </div>
 
@@ -1098,7 +1142,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 justify-center pr-7">
                     <button wire:click="exportToExcel"
                         class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-900 to-green-900 text-white p-3 py-3 rounded-xl font-medium hover:from-green-900 hover:to-green-900 transition-all duration-200 shadow-lg hover:shadow-xl">
-                        <img src="{{ asset('assets/sarafi/all_icon/excel.png') }}" class="h-10 w-10" alt="">
+                        <img src="<?php echo e(asset('assets/sarafi/all_icon/excel.png')); ?>" class="h-10 w-10" alt="">
                         خروجی اکسیل
                     </button>
 
@@ -1106,7 +1150,7 @@
                         class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-red-900 via-red-900 to-red-900 text-white py-3 px-4 rounded-2xl font-semibold shadow-md hover:shadow-lg transition-all duration-300"
                         wire:loading.attr="disabled" wire:target="printReport">
                         <span wire:loading.remove wire:target="printReport">
-                            <img src="{{ asset('assets/sarafi/all_icon/pdf.png') }}" class="h-10 w-10" alt="">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/pdf.png')); ?>" class="h-10 w-10" alt="">
                         </span>
                         <span wire:loading wire:target="printReport">
                             <svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1127,7 +1171,7 @@
         </div>
     </div>
 
-    @push('scripts')
+    <?php $__env->startPush('scripts'); ?>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // ساده‌ترین راه‌حل - تقویم ساده
@@ -1193,9 +1237,9 @@
                 document.getElementById(inputId).value = dateString;
                 
                 if (inputId === 'startDatePicker') {
-                    @this.set('startDateJalali', dateString);
+                    window.Livewire.find('<?php echo e($_instance->getId()); ?>').set('startDateJalali', dateString);
                 } else if (inputId === 'endDatePicker') {
-                    @this.set('endDateJalali', dateString);
+                    window.Livewire.find('<?php echo e($_instance->getId()); ?>').set('endDateJalali', dateString);
                 }
                 
                 // حذف تقویم
@@ -1210,9 +1254,9 @@
             createSimpleDatePicker('endDatePicker');
         });
     </script>
-    @endpush
+    <?php $__env->stopPush(); ?>
 
-    @push('styles')
+    <?php $__env->startPush('styles'); ?>
     <!-- ✅ Tailwind از CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet"
@@ -1301,7 +1345,7 @@
             font-family: "times", serif;
         }
     </style>
-    @endpush
+    <?php $__env->stopPush(); ?>
 
 
-</div>
+</div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/market/general-reports.blade.php ENDPATH**/ ?>

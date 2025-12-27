@@ -1993,8 +1993,9 @@
                 <button id="chatToggle"
                     class="bg-[#122EE1] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 1C7.03 1 3 5.03 3 10V17C3 18.66 4.34 20 6 20H9V12H5V10C5 6.13 8.13 3 12 3C15.87 3 19 6.13 19 10V12H15V20H18C19.66 20 21 18.66 21 17V10C21 5.03 16.97 1 12 1Z" />
-</svg>
+                        <path
+                            d="M12 1C7.03 1 3 5.03 3 10V17C3 18.66 4.34 20 6 20H9V12H5V10C5 6.13 8.13 3 12 3C15.87 3 19 6.13 19 10V12H15V20H18C19.66 20 21 18.66 21 17V10C21 5.03 16.97 1 12 1Z" />
+                    </svg>
                     <span id="unreadBadge"
                         class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center hidden shadow">0</span>
                 </button>
@@ -2132,7 +2133,8 @@
                                     <div class="flex space-x-2 rtl:space-x-reverse">
                                         <button id="sendMessageBtn"
                                             class=" bg-white border border-blue-400 text-white px-6 py-2 rounded-lg  transition flex items-center space-x-2 rtl:space-x-reverse">
-                                           <img src="<?php echo e(asset('assets/sarafi/paper-plane.png')); ?>" class="h-5 w-5" alt="">
+                                            <img src="<?php echo e(asset('assets/sarafi/paper-plane.png')); ?>" class="h-5 w-5"
+                                                alt="">
                                         </button>
                                         <input type="text" id="messageInput" placeholder="پیام خود را بنویسید..."
                                             class="flex-1 px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#122EE1]">

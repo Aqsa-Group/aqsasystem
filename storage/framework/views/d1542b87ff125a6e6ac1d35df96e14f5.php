@@ -339,7 +339,7 @@
                         <!-- لوگو همان‌جاست -->
                         <div class="logo" aria-hidden="true"
                             style="position: absolute; left: 0; top: 50%; transform: translateY(-50%);">
-                            <img src="{{ asset('assets/logo.png') }}" alt="لوگو"
+                            <img src="<?php echo e(asset('assets/logo.png')); ?>" alt="لوگو"
                                 style="filter: sepia(1) saturate(5) hue-rotate(10deg) brightness(0.6) contrast(1.2); max-width: 80px;">
                         </div>
 
@@ -355,11 +355,11 @@
                                 <th style="font-weight:600;">مشتری</th>
                                 <th style="font-weight:600;">مارکت</th>
                                 <th style="font-weight:600;">
-                                    @if (!empty($accounting->shop->number) )
+                                    <?php if(!empty($accounting->shop->number) ): ?>
                                     شماره دوکان
-                                    @else
+                                    <?php else: ?>
                                     شماره غرفه
-                                    @endif
+                                    <?php endif; ?>
                                 </th>
                                 <th style="font-weight:600;">شماره مسلسل</th>
                                 <th style="font-weight:600;">از تاریخ</th>
@@ -369,30 +369,30 @@
                         <tbody>
                             <tr>
                               <td style="white-space: normal; word-break: break-word;">
-    {{ $accounting->shopkeeper->fullname ?? $accounting->shopkeeper->name ?? '---' }}
+    <?php echo e($accounting->shopkeeper->fullname ?? $accounting->shopkeeper->name ?? '---'); ?>
+
 </td>
 
                 </td>
-                <td>{{ $accounting->market->name ?? '---' }}</td>
-                <td>{{ $accounting->shop->number ?? $accounting->booth->number ?? '---' }}</td>
-                <td>{{ $rowNumber }}</td>
+                <td><?php echo e($accounting->market->name ?? '---'); ?></td>
+                <td><?php echo e($accounting->shop->number ?? $accounting->booth->number ?? '---'); ?></td>
+                <td><?php echo e($rowNumber); ?></td>
 
                 <td>
-                    @if($accounting->paid_date)
-                    {{ \Morilog\Jalali\Jalalian::fromDateTime($accounting->paid_date)->format('Y/m/d')
-                    }}
-                    @else
+                    <?php if($accounting->paid_date): ?>
+                    <?php echo e(\Morilog\Jalali\Jalalian::fromDateTime($accounting->paid_date)->format('Y/m/d')); ?>
+
+                    <?php else: ?>
                     ---
-                    @endif
+                    <?php endif; ?>
                 </td>
                 <td>
-                    @if($accounting->expiration_date)
-                    {{
-                    \Morilog\Jalali\Jalalian::fromDateTime($accounting->expiration_date)->format('Y/m/d')
-                    }}
-                    @else
+                    <?php if($accounting->expiration_date): ?>
+                    <?php echo e(\Morilog\Jalali\Jalalian::fromDateTime($accounting->expiration_date)->format('Y/m/d')); ?>
+
+                    <?php else: ?>
                     ---
-                    @endif
+                    <?php endif; ?>
                 </td>
 
             </tr>
@@ -408,54 +408,54 @@
                         <tbody>
                             <tr>
                                 <td>درجه فعلی</td>
-                                <td style="text-align:center;">{{ $accounting->current_degree ??
-                                    $accounting->current_reading ?? '---' }}</td>
+                                <td style="text-align:center;"><?php echo e($accounting->current_degree ??
+                                    $accounting->current_reading ?? '---'); ?></td>
                             </tr>
                             <tr>
                                 <td>درجه قبلی</td>
-                                <td style="text-align:center;">{{ $accounting->past_degree ??
-                                    $accounting->previous_reading ?? '---' }}</td>
+                                <td style="text-align:center;"><?php echo e($accounting->past_degree ??
+                                    $accounting->previous_reading ?? '---'); ?></td>
                             </tr>
                             <tr>
                                 <td>مقدار مصرف</td>
                                 <td style="text-align:center;">
-                                    @php
+                                    <?php
                                     $current = $accounting->current_degree ?? $accounting->current_reading
                                     ?? null;
                                     $past = $accounting->past_degree ?? $accounting->previous_reading ??
                                     null;
                                     $usage = ($current !== null && $past !== null && is_numeric($current) &&
                                     is_numeric($past)) ? ($current - $past) : null;
-                                    @endphp
-                                    {{ $usage !== null ? $usage : '---' }} کیلووات
+                                    ?>
+                                    <?php echo e($usage !== null ? $usage : '---'); ?> کیلووات
                                 </td>
                             </tr>
                             <tr>
                                 <td>قیمت فی کیلووات</td>
-                                <td style="text-align:center;">{{ number_format($accounting->degree_price ??
-                                    $accounting->rate_per_kwh ?? 0) }} افغانی</td>
+                                <td style="text-align:center;"><?php echo e(number_format($accounting->degree_price ??
+                                    $accounting->rate_per_kwh ?? 0)); ?> افغانی</td>
                             </tr>
                             <tr>
                                 <td>مبلغ قابل تادیه</td>
-                                <td style="text-align:center;">{{ number_format($accounting->price ??
-                                    $accounting->payable_amount ?? 0) }} افغانی</td>
+                                <td style="text-align:center;"><?php echo e(number_format($accounting->price ??
+                                    $accounting->payable_amount ?? 0)); ?> افغانی</td>
                             </tr>
                             <tr>
                                 <td>باقیات</td>
-                                <td style="text-align:center;">{{ number_format($accounting->remained ??
-                                    $accounting->balance ?? 0) }} افغانی</td>
+                                <td style="text-align:center;"><?php echo e(number_format($accounting->remained ??
+                                    $accounting->balance ?? 0)); ?> افغانی</td>
                             </tr>
-                            @php
+                            <?php
                             $total= $accounting->remained + $accounting->price;
-                            @endphp
+                            ?>
                             <tr>
                                 <td>جمع کل</td>
-                                <td style="text-align:center;">{{ number_format($total) }} افغانی</td>
+                                <td style="text-align:center;"><?php echo e(number_format($total)); ?> افغانی</td>
                             </tr>
                             <tr>
                                 <td>مبلغ پرداخت شده</td>
-                                <td style="text-align:center;">{{ number_format($accounting->paid ??
-                                    $accounting->paid_amount ?? 0) }} افغانی</td>
+                                <td style="text-align:center;"><?php echo e(number_format($accounting->paid ??
+                                    $accounting->paid_amount ?? 0)); ?> افغانی</td>
                             </tr>
 
                         </tbody>
@@ -525,7 +525,7 @@
                 <!-- لوگو همان‌جاست -->
                 <div class="logo" aria-hidden="true"
                     style="position: absolute; left: 0; top: 50%; transform: translateY(-50%);">
-                    <img src="{{ asset('assets/logo.png') }}" alt="لوگو"
+                    <img src="<?php echo e(asset('assets/logo.png')); ?>" alt="لوگو"
                         style="filter: sepia(1) saturate(5) hue-rotate(10deg) brightness(0.6) contrast(1.2); max-width: 80px;">
                 </div>
 
@@ -539,11 +539,11 @@
                         <th>مشتری</th>
                         <th>مارکت</th>
                         <th style="font-weight:600;">
-                            @if (!empty($accounting->shop->number) )
+                            <?php if(!empty($accounting->shop->number) ): ?>
                             شماره دوکان
-                            @else
+                            <?php else: ?>
                             شماره غرفه
-                            @endif
+                            <?php endif; ?>
                         </th>
                         <th>شماره مسلسل</th>
 
@@ -551,14 +551,15 @@
                     </tr>
                     <tr>
                      <td style="white-space: normal; word-break: break-word;">
-    {{ $accounting->shopkeeper->fullname ?? $accounting->shopkeeper->name ?? '---' }}
+    <?php echo e($accounting->shopkeeper->fullname ?? $accounting->shopkeeper->name ?? '---'); ?>
+
 </td>
 
         </td>
-        <td>{{ $accounting->market->name ?? '---' }}</td>
+        <td><?php echo e($accounting->market->name ?? '---'); ?></td>
 
-        <td>{{ $accounting->shop->number ?? $accounting->booth->number ?? '---' }}</td>
-        <td>{{ $rowNumber }}</td>
+        <td><?php echo e($accounting->shop->number ?? $accounting->booth->number ?? '---'); ?></td>
+        <td><?php echo e($rowNumber); ?></td>
 
 
         </tr>
@@ -569,54 +570,54 @@
             <tbody>
                 <tr>
                     <td>درجه فعلی</td>
-                    <td style="text-align:center;">{{ $accounting->current_degree ??
-                        $accounting->current_reading ?? '---' }}</td>
+                    <td style="text-align:center;"><?php echo e($accounting->current_degree ??
+                        $accounting->current_reading ?? '---'); ?></td>
                 </tr>
                 <tr>
                     <td>درجه قبلی</td>
-                    <td style="text-align:center;">{{ $accounting->past_degree ??
-                        $accounting->previous_reading ?? '---' }}</td>
+                    <td style="text-align:center;"><?php echo e($accounting->past_degree ??
+                        $accounting->previous_reading ?? '---'); ?></td>
                 </tr>
                 <tr>
                     <td>مقدار مصرف</td>
                     <td style="text-align:center;">
-                        @php
+                        <?php
                         $current = $accounting->current_degree ?? $accounting->current_reading
                         ?? null;
                         $past = $accounting->past_degree ?? $accounting->previous_reading ??
                         null;
                         $usage = ($current !== null && $past !== null && is_numeric($current) &&
                         is_numeric($past)) ? ($current - $past) : null;
-                        @endphp
-                        {{ $usage !== null ? $usage : '---' }} کیلووات
+                        ?>
+                        <?php echo e($usage !== null ? $usage : '---'); ?> کیلووات
                     </td>
                 </tr>
                 <tr>
                     <td>قیمت فی کیلووات</td>
-                    <td style="text-align:center;">{{ number_format($accounting->degree_price ??
-                        $accounting->rate_per_kwh ?? 0) }} افغانی</td>
+                    <td style="text-align:center;"><?php echo e(number_format($accounting->degree_price ??
+                        $accounting->rate_per_kwh ?? 0)); ?> افغانی</td>
                 </tr>
                 <tr>
                     <td>مبلغ قابل تادیه</td>
-                    <td style="text-align:center;">{{ number_format($accounting->price ??
-                        $accounting->payable_amount ?? 0) }} افغانی</td>
+                    <td style="text-align:center;"><?php echo e(number_format($accounting->price ??
+                        $accounting->payable_amount ?? 0)); ?> افغانی</td>
                 </tr>
                 <tr>
                     <td>باقیات</td>
-                    <td style="text-align:center;">{{ number_format($accounting->remained ??
-                        $accounting->balance ?? 0) }} افغانی</td>
+                    <td style="text-align:center;"><?php echo e(number_format($accounting->remained ??
+                        $accounting->balance ?? 0)); ?> افغانی</td>
                 </tr>
-                @php
+                <?php
                 $total= $accounting->remained + $accounting->price;
-                @endphp
+                ?>
                 <tr>
                     <td>جمع کل</td>
-                    <td style="text-align:center;">{{ number_format($total) }} افغانی</td>
+                    <td style="text-align:center;"><?php echo e(number_format($total)); ?> افغانی</td>
                 </tr>
                 <tr>
                     <td>مبلغ پرداخت شده</td>
-                    <td style="text-align:center;">{{ number_format($accounting->paid ??
-                        $accounting->paid_amount ?? 0) }} افغانی</td>
+                    <td style="text-align:center;"><?php echo e(number_format($accounting->paid ??
+                        $accounting->paid_amount ?? 0)); ?> افغانی</td>
                 </tr>
             </tbody>
         </table>
@@ -657,4 +658,4 @@
 
 </body>
 
-</html>
+</html><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/print/electricity.blade.php ENDPATH**/ ?>
