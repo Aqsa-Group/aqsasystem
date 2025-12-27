@@ -2002,8 +2002,24 @@
                 </button>
 
                 <!-- Chat Window -->
-                <div id="chatWindow"
-                    class="absolute bottom-20 right-0 w-96 h-[500px] bg-white dark:bg-gray-800 rounded-lg shadow-2xl hidden flex-col border border-gray-200 dark:border-gray-700">
+                <div id="chatWindow" class="
+                            fixed sm:absolute
+                            bottom-0 sm:bottom-20
+                            right-0 sm:right-0
+                            left-0 sm:left-auto
+                            w-full sm:w-96
+                            h-fit sm:h-[500px]
+                            bg-white dark:bg-gray-800
+                            rounded-none sm:rounded-lg
+                            shadow-2xl
+                            hidden
+                            flex
+                            flex-col
+                            border border-gray-200 dark:border-gray-700
+                            transform translate-y-full sm:translate-y-0
+                            transition-transform duration-300 ease-in-out
+                            ">
+
                     <!-- Chat Header -->
                     <div class="bg-[#122EE1] text-white p-4 rounded-t-lg flex justify-between items-center">
                         <div class="flex items-center space-x-3 rtl:space-x-reverse rtl:space-x-3">
@@ -2031,7 +2047,7 @@
                     </div>
 
                     <!-- Chat Body -->
-                    <div class="flex-1 flex flex-col">
+                    <div class="flex-1 flex flex-col overflow-hidden">
                         <!-- Search Bar -->
                         <div class="p-3 border-b dark:border-gray-700">
                             <div class="relative">
@@ -2046,7 +2062,7 @@
                         </div>
 
                         <!-- Tabs -->
-                        <div class="flex border-b dark:border-gray-700">
+                        <div class="flex border-b dark:border-gray-700 shrink-0">
                             <button id="conversationsTab"
                                 class="flex-1 py-3 text-center font-medium border-b-2 border-[#122EE1] text-[#122EE1]">
                                 مکالمات
@@ -2060,7 +2076,7 @@
                         <!-- Content Area -->
                         <div class="flex-1 overflow-hidden">
                             <!-- Conversations Panel -->
-                            <div id="conversationsPanel" class="h-fit overflow-y-auto">
+                            <div id="conversationsPanel" class="h-full overflow-y-auto">
                                 <div id="conversationsList" class="p-3">
                                     <!-- Conversations will be loaded here -->
                                 </div>
@@ -2076,7 +2092,7 @@
                             </div>
 
                             <!-- Users Panel -->
-                            <div id="usersPanel" class="h-fit overflow-y-auto hidden">
+                            <div id="usersPanel" class="h-full overflow-y-auto hidden">
                                 <div id="usersList" class="p-3">
                                     <!-- Users will be loaded here -->
                                 </div>
@@ -2095,7 +2111,7 @@
                             <div id="messagesPanel" class="h-full flex flex-col hidden">
                                 <!-- Messages Header -->
                                 <div
-                                    class="p-3 border-b dark:border-gray-700 flex items-center bg-gray-50 dark:bg-gray-900">
+                                    class="p-3 border-b dark:border-gray-700 flex items-center bg-gray-50 dark:bg-gray-900 shrink-0">
                                     <button id="backToChat" class="ml-3 text-[#122EE1] hover:text-blue-700">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -2108,24 +2124,28 @@
                                 </div>
 
                                 <!-- Messages Container -->
-                                <div id="messagesContainer" class="flex-1 overflow-y-auto p-4 space-y-4">
+                                <div id="messagesContainer"
+                                    class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-4 overscroll-contain">
                                     <!-- Messages will be loaded here -->
                                 </div>
 
                                 <!-- Message Input -->
-                                <div class="p-3 border-t dark:border-gray-700">
+                                <div class="p-3 border-t dark:border-gray-700 shrink-0">
                                     <div class="flex space-x-2 rtl:space-x-reverse">
-                                           <button id="sendMessageBtn"
+                                        <button id="sendMessageBtn"
                                             class="bg-[#122EE1] text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition flex items-center space-x-2 rtl:space-x-reverse">
-                                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M7.39999 6.32003L15.89 3.49003C19.7 2.22003 21.77 4.30003 20.51 8.11003L17.68 16.6C15.78 22.31 12.66 22.31 10.76 16.6L9.91999 14.08L7.39999 13.24C1.68999 11.34 1.68999 8.23003 7.39999 6.32003Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M10.11 13.6501L13.69 10.0601" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M7.39999 6.32003L15.89 3.49003C19.7 2.22003 21.77 4.30003 20.51 8.11003L17.68 16.6C15.78 22.31 12.66 22.31 10.76 16.6L9.91999 14.08L7.39999 13.24C1.68999 11.34 1.68999 8.23003 7.39999 6.32003Z"
+                                                    stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path d="M10.11 13.6501L13.69 10.0601" stroke="#292D32"
+                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
                                         </button>
                                         <input type="text" id="messageInput" placeholder="پیام خود را بنویسید..."
                                             class="flex-1 px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#122EE1]">
-                                     
                                     </div>
                                 </div>
                             </div>
@@ -2135,7 +2155,7 @@
             </div>
 
             <style>
-                /* Chat Styles */
+                /* Chat Styles - با قابلیت ریسپانسیو کامل */
                 .chat-message {
                     max-width: 85%;
                     padding: 10px 14px;
@@ -2143,6 +2163,7 @@
                     margin-bottom: 8px;
                     word-wrap: break-word;
                     position: relative;
+                    word-break: break-word;
                 }
 
                 .chat-message.sent {
@@ -2234,6 +2255,7 @@
                     font-weight: bold;
                     color: white;
                     font-size: 16px;
+                    flex-shrink: 0;
                 }
 
                 .avatar-blue {
@@ -2295,6 +2317,7 @@
                     justify-content: center;
                     align-items: center;
                     height: 100%;
+                    flex-direction: column;
                 }
 
                 .chat-loading-spinner {
@@ -2364,633 +2387,985 @@
                         transform: translateY(-10px);
                     }
                 }
+
+                /* Mobile First - شروع از موبایل */
+                #chatWidget {
+                    position: fixed;
+                    bottom: 16px;
+                    right: 16px;
+                    z-index: 9999;
+                }
+
+                #chatToggle {
+                    width: 56px;
+                    height: 56px;
+                }
+
+                /* Safe area برای دستگاه‌های ناچ دار */
+                @supports (padding: max(0px)) {
+                    #chatWidget {
+                        bottom: max(16px, env(safe-area-inset-bottom));
+                        right: max(16px, env(safe-area-inset-right));
+                    }
+
+                    #chatWindow {
+                        padding-bottom: env(safe-area-inset-bottom);
+                    }
+                }
+
+                /* بهبود تجربه موبایل */
+                @media (max-width: 768px) {
+                    #chatWindow {
+                        border-radius: 16px 16px 0 0;
+                        height: 85vh !important;
+                    }
+
+                    #chatWindow:not(.hidden) {
+                        transform: translateY(0) !important;
+                    }
+
+                    /* جلوگیری از اسکرول body وقتی چت باز است */
+                    body.chat-open {
+                        overflow: hidden !important;
+                        position: fixed;
+                        width: 100%;
+                        height: 100%;
+                    }
+
+                    /* بهبود سایز عناصر در موبایل */
+                    .user-avatar {
+                        width: 36px;
+                        height: 36px;
+                        font-size: 14px;
+                    }
+
+                    .conversation-item {
+                        padding: 10px;
+                    }
+
+                    .chat-message {
+                        max-width: 90%;
+                        padding: 8px 12px;
+                        font-size: 14px;
+                    }
+
+                    #messageInput,
+                    #chatSearchInput {
+                        font-size: 16px !important;
+                        /* جلوگیری از زوم در iOS */
+                        padding: 12px;
+                    }
+
+                    #sendMessageBtn {
+                        padding: 12px 16px;
+                        font-size: 14px;
+                    }
+
+                    /* بهبود ارتفاع در حالت لنداسکیپ */
+                    @media (orientation: landscape) {
+                        #chatWindow {
+                            height: 90vh !important;
+                        }
+                    }
+                }
+
+                /* تبلت */
+                @media (min-width: 768px) and (max-width: 1024px) {
+                    #chatWindow {
+                        width: 380px;
+                        height: 500px;
+                    }
+                }
+
+                /* دسکتاپ */
+                @media (min-width: 1024px) {
+                    #chatWindow {
+                        width: 420px;
+                        height: 550px;
+                    }
+                }
+
+                /* انیمیشن‌ها */
+                @keyframes slideUp {
+                    from {
+                        transform: translateY(100%);
+                        opacity: 0;
+                    }
+
+                    to {
+                        transform: translateY(0);
+                        opacity: 1;
+                    }
+                }
+
+                @keyframes slideDown {
+                    from {
+                        transform: translateY(0);
+                        opacity: 1;
+                    }
+
+                    to {
+                        transform: translateY(100%);
+                        opacity: 0;
+                    }
+                }
+
+                .animate-slide-up {
+                    animation: slideUp 0.3s ease-out;
+                }
+
+                .animate-slide-down {
+                    animation: slideDown 0.3s ease-out;
+                }
+
+                /* Toast Animation */
+                @keyframes slideInRight {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+
+                .animate-slide-in {
+                    animation: slideInRight 0.3s ease-out;
+                }
+
+                /* Pulse Animation */
+                @keyframes pulse {
+
+                    0%,
+                    100% {
+                        transform: scale(1);
+                    }
+
+                    50% {
+                        transform: scale(1.05);
+                    }
+                }
+
+                .animate-pulse {
+                    animation: pulse 2s infinite;
+                }
             </style>
 
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
-                            // DOM Elements
-                            const chatWidget = document.getElementById('chatWidget');
-                            const chatToggle = document.getElementById('chatToggle');
-                            const chatWindow = document.getElementById('chatWindow');
-                            const closeChatBtn = document.getElementById('closeChatBtn');
-                            const unreadBadge = document.getElementById('unreadBadge');
-                            const refreshChatBtn = document.getElementById('refreshChatBtn');
-                            const markAllReadBtn = document.getElementById('markAllReadBtn');
-                            
-                            // Panels
-                            const conversationsPanel = document.getElementById('conversationsPanel');
-                            const usersPanel = document.getElementById('usersPanel');
-                            const messagesPanel = document.getElementById('messagesPanel');
-                            
-                            // Lists
-                            const conversationsList = document.getElementById('conversationsList');
-                            const usersList = document.getElementById('usersList');
-                            const messagesContainer = document.getElementById('messagesContainer');
-                            
-                            // Inputs and buttons
-                            const messageInput = document.getElementById('messageInput');
-                            const sendMessageBtn = document.getElementById('sendMessageBtn');
-                            const chatSearchInput = document.getElementById('chatSearchInput');
-                            
-                            // Tabs
-                            const conversationsTab = document.getElementById('conversationsTab');
-                            const usersTab = document.getElementById('usersTab');
-                            
-                            // Back buttons
-                            const backToChat = document.getElementById('backToChat');
-                            
-                            // State variables
-                            let currentChatUserId = null;
-                            let currentChatUserName = null;
-                            let pollingInterval = null;
-                            let conversations = [];
-                            let users = [];
-                            let isChatOpen = false;
-                            let currentTab = 'conversations';
+                    // DOM Elements
+                    const chatWidget = document.getElementById('chatWidget');
+                    const chatToggle = document.getElementById('chatToggle');
+                    const chatWindow = document.getElementById('chatWindow');
+                    const closeChatBtn = document.getElementById('closeChatBtn');
+                    const unreadBadge = document.getElementById('unreadBadge');
+                    const refreshChatBtn = document.getElementById('refreshChatBtn');
+                    const markAllReadBtn = document.getElementById('markAllReadBtn');
+                    
+                    // Panels
+                    const conversationsPanel = document.getElementById('conversationsPanel');
+                    const usersPanel = document.getElementById('usersPanel');
+                    const messagesPanel = document.getElementById('messagesPanel');
+                    
+                    // Lists
+                    const conversationsList = document.getElementById('conversationsList');
+                    const usersList = document.getElementById('usersList');
+                    const messagesContainer = document.getElementById('messagesContainer');
+                    
+                    // Inputs and buttons
+                    const messageInput = document.getElementById('messageInput');
+                    const sendMessageBtn = document.getElementById('sendMessageBtn');
+                    const chatSearchInput = document.getElementById('chatSearchInput');
+                    
+                    // Tabs
+                    const conversationsTab = document.getElementById('conversationsTab');
+                    const usersTab = document.getElementById('usersTab');
+                    
+                    // Back buttons
+                    const backToChat = document.getElementById('backToChat');
+                    
+                    // State variables
+                    let currentChatUserId = null;
+                    let currentChatUserName = null;
+                    let pollingInterval = null;
+                    let conversations = [];
+                    let users = [];
+                    let isChatOpen = false;
+                    let currentTab = 'conversations';
+                    let touchStartY = 0;
+                    let isMobile = window.innerWidth <= 768;
+                    let keyboardVisible = false;
+                    let initialViewportHeight = window.innerHeight;
 
-                            // Show chat widget
-                            chatWidget.classList.remove('hidden');
+                    // Show chat widget
+                    chatWidget.classList.remove('hidden');
 
-                            // Event Listeners
-                            chatToggle.addEventListener('click', toggleChatWindow);
-                            closeChatBtn.addEventListener('click', closeChatWindow);
-                            refreshChatBtn.addEventListener('click', refreshChatData);
-                            markAllReadBtn.addEventListener('click', markAllAsRead);
-                            sendMessageBtn.addEventListener('click', sendMessage);
-                            backToChat.addEventListener('click', showChatView);
+                    // Update mobile detection on resize
+                    window.addEventListener('resize', handleResize);
+
+                    // Event Listeners
+                    chatToggle.addEventListener('click', toggleChatWindow);
+                    closeChatBtn.addEventListener('click', closeChatWindow);
+                    refreshChatBtn.addEventListener('click', refreshChatData);
+                    markAllReadBtn.addEventListener('click', markAllAsRead);
+                    sendMessageBtn.addEventListener('click', sendMessage);
+                    backToChat.addEventListener('click', showChatView);
+                    
+                    // Tab switching
+                    conversationsTab.addEventListener('click', () => switchTab('conversations'));
+                    usersTab.addEventListener('click', () => switchTab('users'));
+                    
+                    // Message input enter key
+                    messageInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            sendMessage();
+                        }
+                    });
+                    
+                    // Search input
+                    chatSearchInput.addEventListener('input', debounce(searchUsers, 300));
+
+                    // Touch events for mobile
+                    setupTouchEvents();
+
+                    // Functions
+                    function handleResize() {
+                        isMobile = window.innerWidth <= 768;
+                        
+                        // Detect keyboard visibility on mobile
+                        if (isMobile) {
+                            const newHeight = window.innerHeight;
+                            if (Math.abs(newHeight - initialViewportHeight) > 100) {
+                                keyboardVisible = newHeight < initialViewportHeight;
+                                if (keyboardVisible && isChatOpen && messagesPanel.classList.contains('hidden') === false) {
+                                    // Keyboard opened, scroll to bottom
+                                    setTimeout(scrollToBottom, 300);
+                                }
+                            }
+                            initialViewportHeight = newHeight;
+                        }
+                    }
+
+                    function setupTouchEvents() {
+                        // Swipe to close on mobile
+                        chatWindow.addEventListener('touchstart', handleTouchStart, { passive: true });
+                        chatWindow.addEventListener('touchmove', handleTouchMove, { passive: true });
+                        chatWindow.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+                        // Close when tapping outside on mobile
+                        if (isMobile) {
+                            document.addEventListener('touchstart', handleOutsideTap, { passive: true });
+                        }
+                    }
+
+                    function handleTouchStart(e) {
+                        if (!isMobile || !isChatOpen) return;
+                        
+                        const header = chatWindow.querySelector('.bg-\\[\\#122EE1\\]');
+                        if (header && header.contains(e.target)) {
+                            touchStartY = e.touches[0].clientY;
+                        }
+                    }
+
+                    function handleTouchMove(e) {
+                        if (!isMobile || !isChatOpen || touchStartY === 0) return;
+                        
+                        const currentY = e.touches[0].clientY;
+                        const diff = currentY - touchStartY;
+                        
+                        // فقط اگر به پایین کشیده شود
+                        if (diff > 0) {
+                            e.preventDefault();
+                            chatWindow.style.transform = `translateY(${diff}px)`;
+                        }
+                    }
+
+                    function handleTouchEnd(e) {
+                        if (!isMobile || !isChatOpen || touchStartY === 0) return;
+                        
+                        const touchEndY = e.changedTouches[0].clientY;
+                        const diff = touchEndY - touchStartY;
+                        
+                        if (diff > 100) { // کشیدن بیش از 100 پیکسل
+                            closeChatWindow();
+                        } else {
+                            // بازگشت به حالت عادی
+                            chatWindow.style.transform = 'translateY(0)';
+                        }
+                        
+                        touchStartY = 0;
+                        chatWindow.style.transform = '';
+                    }
+
+                    function handleOutsideTap(e) {
+                        if (!isMobile || !isChatOpen) return;
+                        
+                        if (!chatWindow.contains(e.target) && !chatToggle.contains(e.target)) {
+                            closeChatWindow();
+                        }
+                    }
+
+                    function toggleChatWindow() {
+                        isChatOpen = !isChatOpen;
+                        
+                        if (isMobile) {
+                            if (isChatOpen) {
+                                // باز کردن چت در موبایل
+                                chatWindow.classList.remove('hidden');
+                                setTimeout(() => {
+                                    chatWindow.style.transform = 'translateY(0)';
+                                }, 10);
+                                
+                                // جلوگیری از اسکرول body
+                                document.body.classList.add('chat-open');
+                                document.body.style.overflow = 'hidden';
+                            } else {
+                                // بستن چت در موبایل
+                                chatWindow.style.transform = 'translateY(100%)';
+                                setTimeout(() => {
+                                    chatWindow.classList.add('hidden');
+                                    chatWindow.style.transform = '';
+                                    
+                                    // فعال کردن اسکرول body
+                                    document.body.classList.remove('chat-open');
+                                    document.body.style.overflow = '';
+                                }, 300);
+                            }
+                        } else {
+                            // رفتار عادی برای دسکتاپ
+                            chatWindow.classList.toggle('hidden');
+                        }
+                        
+                        if (isChatOpen) {
+                            loadConversations();
+                            updateUnreadCount();
+                            startPolling();
+                            switchTab('conversations');
+                        } else {
+                            stopPolling();
+                        }
+                    }
+
+                    function closeChatWindow() {
+                        if (isMobile) {
+                            chatWindow.style.transform = 'translateY(100%)';
+                            setTimeout(() => {
+                                chatWindow.classList.add('hidden');
+                                chatWindow.style.transform = '';
+                                isChatOpen = false;
+                                
+                                // فعال کردن اسکرول body
+                                document.body.classList.remove('chat-open');
+                                document.body.style.overflow = '';
+                            }, 300);
+                        } else {
+                            isChatOpen = false;
+                            chatWindow.classList.add('hidden');
+                        }
+                        stopPolling();
+                    }
+
+                    function switchTab(tabName) {
+                        currentTab = tabName;
+                        
+                        // Update tab styles
+                        conversationsTab.classList.remove('border-[#122EE1]', 'text-[#122EE1]');
+                        conversationsTab.classList.add('text-gray-500', 'hover:text-gray-700');
+                        usersTab.classList.remove('border-[#122EE1]', 'text-[#122EE1]');
+                        usersTab.classList.add('text-gray-500', 'hover:text-gray-700');
+                        
+                        if (tabName === 'conversations') {
+                            conversationsTab.classList.add('border-[#122EE1]', 'text-[#122EE1]');
+                            conversationsPanel.classList.remove('hidden');
+                            usersPanel.classList.add('hidden');
+                            loadConversations();
+                        } else {
+                            usersTab.classList.add('border-[#122EE1]', 'text-[#122EE1]');
+                            conversationsPanel.classList.add('hidden');
+                            usersPanel.classList.remove('hidden');
+                            loadChatUsers();
+                        }
+                        
+                        messagesPanel.classList.add('hidden');
+                    }
+
+                    function showChatView() {
+                        conversationsPanel.classList.remove('hidden');
+                        usersPanel.classList.remove('hidden');
+                        messagesPanel.classList.add('hidden');
+                        switchTab(currentTab);
+                    }
+
+                    // API Functions
+                    async function loadConversations() {
+                        try {
+                            showLoading(conversationsList, 'در حال بارگذاری مکالمات...');
                             
-                            // Tab switching
-                            conversationsTab.addEventListener('click', () => switchTab('conversations'));
-                            usersTab.addEventListener('click', () => switchTab('users'));
-                            
-                            // Message input enter key
-                            messageInput.addEventListener('keypress', (e) => {
-                                if (e.key === 'Enter') {
-                                    sendMessage();
+                            const response = await fetch('/chat/conversations', {
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'Accept': 'application/json'
                                 }
                             });
                             
-                            // Search input
-                            chatSearchInput.addEventListener('input', debounce(searchUsers, 300));
-
-                            // Functions
-                            function toggleChatWindow() {
-                                isChatOpen = !isChatOpen;
-                                chatWindow.classList.toggle('hidden');
+                            const data = await response.json();
+                            
+                            if (data.success) {
+                                conversations = data.conversations;
+                                renderConversations(conversations);
                                 
-                                if (isChatOpen) {
-                                    loadConversations();
-                                    updateUnreadCount();
-                                    startPolling();
-                                    switchTab('conversations');
+                                if (conversations.length === 0) {
+                                    document.getElementById('noConversations').classList.remove('hidden');
                                 } else {
-                                    stopPolling();
+                                    document.getElementById('noConversations').classList.add('hidden');
                                 }
                             }
+                        } catch (error) {
+                            console.error('Error loading conversations:', error);
+                            showError(conversationsList, 'خطا در بارگذاری مکالمات');
+                        }
+                    }
 
-                            function closeChatWindow() {
-                                isChatOpen = false;
-                                chatWindow.classList.add('hidden');
-                                stopPolling();
-                            }
-
-                            function switchTab(tabName) {
-                                currentTab = tabName;
+                    async function loadChatUsers() {
+                        try {
+                            showLoading(usersList, 'در حال بارگذاری کاربران...');
+                            
+                            const response = await fetch('/chat/users', {
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'Accept': 'application/json'
+                                }
+                            });
+                            
+                            const data = await response.json();
+                            
+                            if (data.success) {
+                                users = data.users;
+                                renderUsers(users);
                                 
-                                // Update tab styles
-                                conversationsTab.classList.remove('border-[#122EE1]', 'text-[#122EE1]');
-                                conversationsTab.classList.add('text-gray-500', 'hover:text-gray-700');
-                                usersTab.classList.remove('border-[#122EE1]', 'text-[#122EE1]');
-                                usersTab.classList.add('text-gray-500', 'hover:text-gray-700');
-                                
-                                if (tabName === 'conversations') {
-                                    conversationsTab.classList.add('border-[#122EE1]', 'text-[#122EE1]');
-                                    conversationsPanel.classList.remove('hidden');
-                                    usersPanel.classList.add('hidden');
-                                    loadConversations();
+                                if (users.length === 0) {
+                                    document.getElementById('noUsers').classList.remove('hidden');
                                 } else {
-                                    usersTab.classList.add('border-[#122EE1]', 'text-[#122EE1]');
-                                    conversationsPanel.classList.add('hidden');
-                                    usersPanel.classList.remove('hidden');
-                                    loadChatUsers();
-                                }
-                                
-                                messagesPanel.classList.add('hidden');
-                            }
-
-                            function showChatView() {
-                                conversationsPanel.classList.remove('hidden');
-                                usersPanel.classList.remove('hidden');
-                                messagesPanel.classList.add('hidden');
-                                switchTab(currentTab);
-                            }
-
-                            // API Functions
-                            async function loadConversations() {
-                                try {
-                                    showLoading(conversationsList, 'در حال بارگذاری مکالمات...');
-                                    
-                                    const response = await fetch('/chat/conversations', {
-                                        headers: {
-                                            'X-Requested-With': 'XMLHttpRequest',
-                                            'Accept': 'application/json'
-                                        }
-                                    });
-                                    
-                                    const data = await response.json();
-                                    
-                                    if (data.success) {
-                                        conversations = data.conversations;
-                                        renderConversations(conversations);
-                                        
-                                        if (conversations.length === 0) {
-                                            document.getElementById('noConversations').classList.remove('hidden');
-                                        } else {
-                                            document.getElementById('noConversations').classList.add('hidden');
-                                        }
-                                    }
-                                } catch (error) {
-                                    console.error('Error loading conversations:', error);
-                                    showError(conversationsList, 'خطا در بارگذاری مکالمات');
+                                    document.getElementById('noUsers').classList.add('hidden');
                                 }
                             }
+                        } catch (error) {
+                            console.error('Error loading users:', error);
+                            showError(usersList, 'خطا در بارگذاری کاربران');
+                        }
+                    }
 
-                            async function loadChatUsers() {
-                                try {
-                                    showLoading(usersList, 'در حال بارگذاری کاربران...');
-                                    
-                                    const response = await fetch('/chat/users', {
-                                        headers: {
-                                            'X-Requested-With': 'XMLHttpRequest',
-                                            'Accept': 'application/json'
-                                        }
-                                    });
-                                    
-                                    const data = await response.json();
-                                    
-                                    if (data.success) {
-                                        users = data.users;
-                                        renderUsers(users);
-                                        
-                                        if (users.length === 0) {
-                                            document.getElementById('noUsers').classList.remove('hidden');
-                                        } else {
-                                            document.getElementById('noUsers').classList.add('hidden');
-                                        }
-                                    }
-                                } catch (error) {
-                                    console.error('Error loading users:', error);
-                                    showError(usersList, 'خطا در بارگذاری کاربران');
-                                }
+                    async function openChat(userId, userName) {
+                        currentChatUserId = userId;
+                        currentChatUserName = userName;
+                        
+                        // Show messages panel
+                        conversationsPanel.classList.add('hidden');
+                        usersPanel.classList.add('hidden');
+                        messagesPanel.classList.remove('hidden');
+                        
+                        // Update header
+                        const avatarColors = ['avatar-blue', 'avatar-green', 'avatar-purple', 'avatar-pink', 'avatar-orange'];
+                        const colorIndex = userName.length % avatarColors.length;
+                        
+                        document.getElementById('currentChatUser').innerHTML = `
+                            <div class="user-avatar ${avatarColors[colorIndex]}">
+                                ${userName.charAt(0)}
+                            </div>
+                            <div class="mr-3">
+                                <h4 class="font-semibold">${userName}</h4>
+                                <small class="text-gray-500 dark:text-gray-400 text-sm">آنلاین</small>
+                            </div>
+                        `;
+                        
+                        // Load messages
+                        await loadMessages();
+                        
+                        // Focus on input بعد از بارگذاری پیام‌ها
+                        setTimeout(() => {
+                            messageInput.focus();
+                            
+                            // در موبایل، اسکرول به پایین
+                            if (isMobile) {
+                                setTimeout(scrollToBottom, 100);
                             }
+                        }, 200);
+                    }
 
-                            async function openChat(userId, userName) {
-                                currentChatUserId = userId;
-                                currentChatUserName = userName;
-                                
-                                // Show messages panel
-                                conversationsPanel.classList.add('hidden');
-                                usersPanel.classList.add('hidden');
-                                messagesPanel.classList.remove('hidden');
-                                
-                                // Update header
-                                const avatarColors = ['avatar-blue', 'avatar-green', 'avatar-purple', 'avatar-pink', 'avatar-orange'];
-                                const colorIndex = userName.length % avatarColors.length;
-                                
-                                document.getElementById('currentChatUser').innerHTML = `
-                                    <div class="user-avatar ${avatarColors[colorIndex]}">
-                                        ${userName.charAt(0)}
-                                    </div>
-                                    <div class="mr-3">
-                                        <h4 class="font-semibold">${userName}</h4>
-                                        <small class="text-gray-500 dark:text-gray-400 text-sm">آنلاین</small>
-                                    </div>
-                                `;
-                                
-                                // Load messages
-                                await loadMessages();
-                                
-                                // Focus on input
-                                setTimeout(() => {
-                                    messageInput.focus();
-                                }, 100);
-                            }
-
-                            async function loadMessages() {
-                                if (!currentChatUserId) return;
-                                
-                                try {
-                                    showLoading(messagesContainer, 'در حال بارگذاری پیام‌ها...');
-                                    
-                                    const response = await fetch(`/chat/messages/${currentChatUserId}`, {
-                                        headers: {
-                                            'X-Requested-With': 'XMLHttpRequest',
-                                            'Accept': 'application/json'
-                                        }
-                                    });
-                                    
-                                    const data = await response.json();
-                                    
-                                    if (data.success) {
-                                        renderMessages(data.messages);
-                                        updateUnreadCount();
-                                    }
-                                } catch (error) {
-                                    console.error('Error loading messages:', error);
-                                    showError(messagesContainer, 'خطا در بارگذاری پیام‌ها');
+                    async function loadMessages() {
+                        if (!currentChatUserId) return;
+                        
+                        try {
+                            showLoading(messagesContainer, 'در حال بارگذاری پیام‌ها...');
+                            
+                            const response = await fetch(`/chat/messages/${currentChatUserId}`, {
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'Accept': 'application/json'
                                 }
-                            }
-
-                            async function sendMessage() {
-                                const message = messageInput.value.trim();
-                                if (!message || !currentChatUserId) return;
-                                
-                                // Add message to UI immediately
-                                const tempMessage = {
-                                    id: Date.now(),
-                                    sender_id: <?php echo e(Auth::guard('sarafi')->id()); ?>,
-                                    message: message,
-                                    created_at: new Date().toISOString(),
-                                    sender: {
-                                        name: '<?php echo e(Auth::guard("sarafi")->user()->name); ?>',
-                                        lastname: '<?php echo e(Auth::guard("sarafi")->user()->lastname); ?>'
-                                    }
-                                };
-                                
-                                renderMessage(tempMessage, true);
-                                messageInput.value = '';
-                                scrollToBottom();
-                                
-                                // Send to server
-                                try {
-                                    const response = await fetch('/chat/send', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                            'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
-                                            'X-Requested-With': 'XMLHttpRequest'
-                                        },
-                                        body: JSON.stringify({
-                                            receiver_id: currentChatUserId,
-                                            message: message
-                                        })
-                                    });
-                                    
-                                    const data = await response.json();
-                                    
-                                    if (data.success) {
-                                        // Remove temp message and add real one
-                                        messagesContainer.lastChild.remove();
-                                        renderMessage(data.message, true);
-                                        loadConversations(); // Refresh conversations list
-                                    } else {
-                                        showToast(data.error || 'خطا در ارسال پیام', 'error');
-                                    }
-                                } catch (error) {
-                                    console.error('Error sending message:', error);
-                                    showToast('خطا در ارسال پیام', 'error');
-                                }
-                            }
-
-                            async function searchUsers() {
-                                const query = chatSearchInput.value.trim();
-                                if (query.length < 2) {
-                                    if (currentTab === 'conversations') {
-                                        renderConversations(conversations);
-                                    } else {
-                                        renderUsers(users);
-                                    }
-                                    return;
-                                }
-                                
-                                try {
-                                    const response = await fetch('/chat/search', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                            'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
-                                            'X-Requested-With': 'XMLHttpRequest'
-                                        },
-                                        body: JSON.stringify({ query: query })
-                                    });
-                                    
-                                    const data = await response.json();
-                                    
-                                    if (data.success) {
-                                        if (currentTab === 'conversations') {
-                                            renderUsers(data.users);
-                                        } else {
-                                            renderUsers(data.users);
-                                        }
-                                    }
-                                } catch (error) {
-                                    console.error('Error searching users:', error);
-                                }
-                            }
-
-                            async function updateUnreadCount() {
-                                try {
-                                    const response = await fetch('/chat/unread-count', {
-                                        headers: {
-                                            'X-Requested-With': 'XMLHttpRequest'
-                                        }
-                                    });
-                                    
-                                    const data = await response.json();
-                                    
-                                    if (data.success) {
-                                        if (data.count > 0) {
-                                            unreadBadge.textContent = data.count > 99 ? '99+' : data.count;
-                                            unreadBadge.classList.remove('hidden');
-                                            chatToggle.classList.add('animate-pulse');
-                                        } else {
-                                            unreadBadge.classList.add('hidden');
-                                            chatToggle.classList.remove('animate-pulse');
-                                        }
-                                    }
-                                } catch (error) {
-                                    console.error('Error updating unread count:', error);
-                                }
-                            }
-
-                            async function markAllAsRead() {
-                                try {
-                                    const response = await fetch('/chat/mark-all-read', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                            'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
-                                            'X-Requested-With': 'XMLHttpRequest'
-                                        }
-                                    });
-                                    
-                                    const data = await response.json();
-                                    
-                                    if (data.success) {
-                                        updateUnreadCount();
-                                        loadConversations();
-                                        showToast('همه پیام‌ها خوانده شدند', 'success');
-                                    }
-                                } catch (error) {
-                                    console.error('Error marking all as read:', error);
-                                    showToast('خطا در خواندن پیام‌ها', 'error');
-                                }
-                            }
-
-                            function refreshChatData() {
-                                if (currentTab === 'conversations') {
-                                    loadConversations();
-                                } else {
-                                    loadChatUsers();
-                                }
-                                
-                                if (currentChatUserId) {
-                                    loadMessages();
-                                }
-                                
+                            });
+                            
+                            const data = await response.json();
+                            
+                            if (data.success) {
+                                renderMessages(data.messages);
                                 updateUnreadCount();
-                                showToast('اطلاعات بروزرسانی شد', 'success');
+                                
+                                // اسکرول به پایین بعد از بارگذاری
+                                setTimeout(scrollToBottom, 100);
                             }
+                        } catch (error) {
+                            console.error('Error loading messages:', error);
+                            showError(messagesContainer, 'خطا در بارگذاری پیام‌ها');
+                        }
+                    }
 
-                            // Rendering Functions
-                            function renderConversations(conversations) {
-                                conversationsList.innerHTML = '';
-                                
-                                conversations.forEach(conv => {
-                                    const conversationItem = document.createElement('div');
-                                    conversationItem.className = 'conversation-item';
-                                    
-                                    const avatarColors = ['avatar-blue', 'avatar-green', 'avatar-purple', 'avatar-pink', 'avatar-orange'];
-                                    const colorIndex = conv.other_user.name.length % avatarColors.length;
-                                    const displayName = `${conv.other_user.name} ${conv.other_user.lastname}`;
-                                    
-                                    conversationItem.innerHTML = `
-                                        <div class="flex items-center">
-                                            <div class="user-avatar ${avatarColors[colorIndex]}">
-                                                ${conv.other_user.name.charAt(0)}
-                                            </div>
-                                            <div class="mr-3 flex-1">
-                                                <div class="flex justify-between items-center">
-                                                    <h4 class="font-semibold">${displayName}</h4>
-                                                    ${conv.unread_count > 0 ? `<span class="unread-badge">${conv.unread_count}</span>` : ''}
-                                                </div>
-                                                <p class="text-sm text-gray-600 dark:text-gray-400 truncate">${conv.last_message || ''}</p>
-                                                <small class="text-xs text-gray-500">${conv.last_message_at ? formatDate(conv.last_message_at) : ''}</small>
-                                            </div>
-                                        </div>
-                                    `;
-                                    
-                                    conversationItem.addEventListener('click', () => openChat(conv.other_user.id, displayName));
-                                    conversationsList.appendChild(conversationItem);
-                                });
+                    async function sendMessage() {
+                        const message = messageInput.value.trim();
+                        if (!message || !currentChatUserId) return;
+                        
+                        // Save current scroll position
+                        const scrollPosBefore = messagesContainer.scrollTop;
+                        const isAtBottom = messagesContainer.scrollHeight - messagesContainer.scrollTop === messagesContainer.clientHeight;
+                        
+                        // Add message to UI immediately
+                        const tempMessage = {
+                            id: Date.now(),
+                            sender_id: <?php echo e(Auth::guard('sarafi')->id()); ?>,
+                            message: message,
+                            created_at: new Date().toISOString(),
+                            sender: {
+                                name: '<?php echo e(Auth::guard("sarafi")->user()->name); ?>',
+                                lastname: '<?php echo e(Auth::guard("sarafi")->user()->lastname); ?>'
                             }
-
-                            function renderUsers(users) {
-                                usersList.innerHTML = '';
-                                
-                                users.forEach(user => {
-                                    const userItem = document.createElement('div');
-                                    userItem.className = 'conversation-item';
-                                    
-                                    const avatarColors = ['avatar-blue', 'avatar-green', 'avatar-purple', 'avatar-pink', 'avatar-orange'];
-                                    const colorIndex = user.name.length % avatarColors.length;
-                                    const displayName = `${user.name} ${user.lastname}`;
-                                    const roleText = user.role === 'superadmin' ? 'سوپر ادمین' : 
-                                                    user.role === 'admin' ? 'ادمین' : 'انباردار';
-                                    
-                                    userItem.innerHTML = `
-                                        <div class="flex items-center">
-                                            <div class="user-avatar ${avatarColors[colorIndex]}">
-                                                ${user.name.charAt(0)}
-                                            </div>
-                                            <div class="mr-3 flex-1">
-                                                <h4 class="font-semibold">${displayName}</h4>
-                                                <p class="text-sm text-gray-600 dark:text-gray-400">${roleText} - ${user.sarafi_name}</p>
-                                            </div>
-                                            <button class="text-[#122EE1] hover:text-blue-700">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    `;
-                                    
-                                    userItem.addEventListener('click', () => openChat(user.id, displayName));
-                                    usersList.appendChild(userItem);
-                                });
-                            }
-
-                            function renderMessages(messages) {
-                                messagesContainer.innerHTML = '';
-                                
-                                const currentUserId = <?php echo e(Auth::guard('sarafi')->id()); ?>;
-                                
-                                if (messages.length === 0) {
-                                    messagesContainer.innerHTML = `
-                                        <div class="text-center text-gray-500 py-8">
-                                            <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
-                                            </svg>
-                                            <p>هیچ پیامی وجود ندارد</p>
-                                            <p class="text-sm mt-2">پیام خود را ارسال کنید</p>
-                                        </div>
-                                    `;
-                                    return;
+                        };
+                        
+                        renderMessage(tempMessage, true);
+                        messageInput.value = '';
+                        
+                        // اگر کاربر در پایین بود یا در موبایل هستیم، اسکرول به پایین
+                        if (isAtBottom || isMobile) {
+                            setTimeout(scrollToBottom, 50);
+                        } else {
+                            // در غیر این صورت، موقعیت اسکرول را حفظ کن
+                            messagesContainer.scrollTop = scrollPosBefore;
+                        }
+                        
+                        // Send to server
+                        try {
+                            const response = await fetch('/chat/send', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                },
+                                body: JSON.stringify({
+                                    receiver_id: currentChatUserId,
+                                    message: message
+                                })
+                            });
+                            
+                            const data = await response.json();
+                            
+                            if (data.success) {
+                                // Remove temp message and add real one
+                                const lastMsg = messagesContainer.lastChild;
+                                if (lastMsg && lastMsg.dataset.messageId == tempMessage.id) {
+                                    lastMsg.remove();
                                 }
+                                renderMessage(data.message, true);
+                                loadConversations(); // Refresh conversations list
                                 
-                                messages.forEach(msg => {
-                                    renderMessage(msg, msg.sender_id === currentUserId);
-                                });
-                                
-                                scrollToBottom();
-                            }
-
-                            function renderMessage(msg, isSent) {
-                                const messageDiv = document.createElement('div');
-                                messageDiv.className = `flex ${isSent ? 'justify-end' : 'justify-start'}`;
-                                messageDiv.dataset.messageId = msg.id;
-                                
-                                const time = new Date(msg.created_at).toLocaleTimeString('fa-IR', {
-                                    hour: '2-digit',
-                                    minute: '2-digit'
-                                });
-                                
-                                messageDiv.innerHTML = `
-                                    <div class="chat-message ${isSent ? 'sent' : 'received'}">
-                                        <p>${msg.message}</p>
-                                        <span class="time">${time}</span>
-                                    </div>
-                                `;
-                                
-                                messagesContainer.appendChild(messageDiv);
-                            }
-
-                            // Utility Functions
-                            function showLoading(container, text) {
-                                container.innerHTML = `
-                                    <div class="chat-loading">
-                                        <div class="chat-loading-spinner"></div>
-                                        <p class="mt-3 text-gray-500">${text}</p>
-                                    </div>
-                                `;
-                            }
-
-                            function showError(container, text) {
-                                container.innerHTML = `
-                                    <div class="text-center text-red-500 py-8">
-                                        <svg class="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                        <p>${text}</p>
-                                    </div>
-                                `;
-                            }
-
-                            function showToast(message, type = 'info') {
-                                // Create toast if it doesn't exist
-                                let toastContainer = document.getElementById('chatToastContainer');
-                                if (!toastContainer) {
-                                    toastContainer = document.createElement('div');
-                                    toastContainer.id = 'chatToastContainer';
-                                    toastContainer.className = 'fixed top-4 right-4 z-[99999]';
-                                    document.body.appendChild(toastContainer);
+                                // اگر کاربر در پایین بود یا در موبایل هستیم، اسکرول به پایین
+                                if (isAtBottom || isMobile) {
+                                    setTimeout(scrollToBottom, 50);
                                 }
-                                
-                                const toastId = 'toast-' + Date.now();
-                                const bgColor = type === 'success' ? 'bg-green-500' : 
-                                            type === 'error' ? 'bg-red-500' : 'bg-blue-500';
-                                
-                                const toast = document.createElement('div');
-                                toast.id = toastId;
-                                toast.className = `${bgColor} text-white px-6 py-3 rounded-lg shadow-lg mb-2 flex items-center justify-between min-w-[300px] animate-slide-in`;
-                                
-                                toast.innerHTML = `
-                                    <span>${message}</span>
-                                    <button onclick="document.getElementById('${toastId}').remove()" class="text-white hover:text-gray-200">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            } else {
+                                showToast(data.error || 'خطا در ارسال پیام', 'error');
+                            }
+                        } catch (error) {
+                            console.error('Error sending message:', error);
+                            showToast('خطا در ارسال پیام', 'error');
+                        }
+                    }
+
+                    async function searchUsers() {
+                        const query = chatSearchInput.value.trim();
+                        if (query.length < 2) {
+                            if (currentTab === 'conversations') {
+                                renderConversations(conversations);
+                            } else {
+                                renderUsers(users);
+                            }
+                            return;
+                        }
+                        
+                        try {
+                            const response = await fetch('/chat/search', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                },
+                                body: JSON.stringify({ query: query })
+                            });
+                            
+                            const data = await response.json();
+                            
+                            if (data.success) {
+                                if (currentTab === 'conversations') {
+                                    renderUsers(data.users);
+                                } else {
+                                    renderUsers(data.users);
+                                }
+                            }
+                        } catch (error) {
+                            console.error('Error searching users:', error);
+                        }
+                    }
+
+                    async function updateUnreadCount() {
+                        try {
+                            const response = await fetch('/chat/unread-count', {
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                }
+                            });
+                            
+                            const data = await response.json();
+                            
+                            if (data.success) {
+                                if (data.count > 0) {
+                                    unreadBadge.textContent = data.count > 99 ? '99+' : data.count;
+                                    unreadBadge.classList.remove('hidden');
+                                    chatToggle.classList.add('animate-pulse');
+                                } else {
+                                    unreadBadge.classList.add('hidden');
+                                    chatToggle.classList.remove('animate-pulse');
+                                }
+                            }
+                        } catch (error) {
+                            console.error('Error updating unread count:', error);
+                        }
+                    }
+
+                    async function markAllAsRead() {
+                        try {
+                            const response = await fetch('/chat/mark-all-read', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                }
+                            });
+                            
+                            const data = await response.json();
+                            
+                            if (data.success) {
+                                updateUnreadCount();
+                                loadConversations();
+                                showToast('همه پیام‌ها خوانده شدند', 'success');
+                            }
+                        } catch (error) {
+                            console.error('Error marking all as read:', error);
+                            showToast('خطا در خواندن پیام‌ها', 'error');
+                        }
+                    }
+
+                    function refreshChatData() {
+                        if (currentTab === 'conversations') {
+                            loadConversations();
+                        } else {
+                            loadChatUsers();
+                        }
+                        
+                        if (currentChatUserId) {
+                            loadMessages();
+                        }
+                        
+                        updateUnreadCount();
+                        showToast('اطلاعات بروزرسانی شد', 'success');
+                    }
+
+                    // Rendering Functions
+                    function renderConversations(conversations) {
+                        conversationsList.innerHTML = '';
+                        
+                        if (!conversations || conversations.length === 0) {
+                            document.getElementById('noConversations').classList.remove('hidden');
+                            return;
+                        }
+                        
+                        conversations.forEach(conv => {
+                            const conversationItem = document.createElement('div');
+                            conversationItem.className = 'conversation-item';
+                            
+                            const avatarColors = ['avatar-blue', 'avatar-green', 'avatar-purple', 'avatar-pink', 'avatar-orange'];
+                            const colorIndex = conv.other_user.name.length % avatarColors.length;
+                            const displayName = `${conv.other_user.name} ${conv.other_user.lastname}`;
+                            
+                            conversationItem.innerHTML = `
+                                <div class="flex items-center">
+                                    <div class="user-avatar ${avatarColors[colorIndex]}">
+                                        ${conv.other_user.name.charAt(0)}
+                                    </div>
+                                    <div class="mr-3 flex-1 min-w-0">
+                                        <div class="flex justify-between items-center">
+                                            <h4 class="font-semibold truncate">${displayName}</h4>
+                                            ${conv.unread_count > 0 ? `<span class="unread-badge flex-shrink-0">${conv.unread_count}</span>` : ''}
+                                        </div>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400 truncate">${conv.last_message || ''}</p>
+                                        <small class="text-xs text-gray-500">${conv.last_message_at ? formatDate(conv.last_message_at) : ''}</small>
+                                    </div>
+                                </div>
+                            `;
+                            
+                            conversationItem.addEventListener('click', () => openChat(conv.other_user.id, displayName));
+                            conversationsList.appendChild(conversationItem);
+                        });
+                        
+                        document.getElementById('noConversations').classList.add('hidden');
+                    }
+
+                    function renderUsers(users) {
+                        usersList.innerHTML = '';
+                        
+                        if (!users || users.length === 0) {
+                            document.getElementById('noUsers').classList.remove('hidden');
+                            return;
+                        }
+                        
+                        users.forEach(user => {
+                            const userItem = document.createElement('div');
+                            userItem.className = 'conversation-item';
+                            
+                            const avatarColors = ['avatar-blue', 'avatar-green', 'avatar-purple', 'avatar-pink', 'avatar-orange'];
+                            const colorIndex = user.name.length % avatarColors.length;
+                            const displayName = `${user.name} ${user.lastname}`;
+                            const roleText = user.role === 'superadmin' ? 'سوپر ادمین' : 
+                                            user.role === 'admin' ? 'ادمین' : 'انباردار';
+                            
+                            userItem.innerHTML = `
+                                <div class="flex items-center">
+                                    <div class="user-avatar ${avatarColors[colorIndex]}">
+                                        ${user.name.charAt(0)}
+                                    </div>
+                                    <div class="mr-3 flex-1 min-w-0">
+                                        <h4 class="font-semibold truncate">${displayName}</h4>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400 truncate">${roleText} - ${user.sarafi_name}</p>
+                                    </div>
+                                    <button class="text-[#122EE1] hover:text-blue-700 flex-shrink-0">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
                                         </svg>
                                     </button>
-                                `;
-                                
-                                toastContainer.appendChild(toast);
-                                
-                                // Auto remove after 3 seconds
-                                setTimeout(() => {
-                                    if (document.getElementById(toastId)) {
-                                        toast.remove();
-                                    }
-                                }, 3000);
-                            }
+                                </div>
+                            `;
+                            
+                            userItem.addEventListener('click', () => openChat(user.id, displayName));
+                            usersList.appendChild(userItem);
+                        });
+                        
+                        document.getElementById('noUsers').classList.add('hidden');
+                    }
 
-                            function formatDate(dateString) {
-                                const date = new Date(dateString);
-                                const now = new Date();
-                                const diffMs = now - date;
-                                const diffMins = Math.floor(diffMs / 60000);
-                                const diffHours = Math.floor(diffMs / 3600000);
-                                const diffDays = Math.floor(diffMs / 86400000);
-                                
-                                if (diffMins < 1) return 'همین الآن';
-                                if (diffMins < 60) return `${diffMins} دقیقه پیش`;
-                                if (diffHours < 24) return `${diffHours} ساعت پیش`;
-                                if (diffDays < 7) return `${diffDays} روز پیش`;
-                                
-                                return date.toLocaleDateString('fa-IR');
-                            }
+                    function renderMessages(messages) {
+                        messagesContainer.innerHTML = '';
+                        
+                        const currentUserId = <?php echo e(Auth::guard('sarafi')->id()); ?>;
+                        
+                        if (!messages || messages.length === 0) {
+                            messagesContainer.innerHTML = `
+                                <div class="text-center text-gray-500 py-8">
+                                    <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                                    </svg>
+                                    <p>هیچ پیامی وجود ندارد</p>
+                                    <p class="text-sm mt-2">پیام خود را ارسال کنید</p>
+                                </div>
+                            `;
+                            return;
+                        }
+                        
+                        messages.forEach(msg => {
+                            renderMessage(msg, msg.sender_id === currentUserId);
+                        });
+                    }
 
-                            function scrollToBottom() {
-                                setTimeout(() => {
-                                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                                }, 100);
-                            }
+                    function renderMessage(msg, isSent) {
+                        const messageDiv = document.createElement('div');
+                        messageDiv.className = `flex ${isSent ? 'justify-end' : 'justify-start'}`;
+                        messageDiv.dataset.messageId = msg.id;
+                        
+                        const time = new Date(msg.created_at).toLocaleTimeString('fa-IR', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                        
+                        messageDiv.innerHTML = `
+                            <div class="chat-message ${isSent ? 'sent' : 'received'}">
+                                <p>${msg.message}</p>
+                                <span class="time">${time}</span>
+                            </div>
+                        `;
+                        
+                        messagesContainer.appendChild(messageDiv);
+                    }
 
-                            function debounce(func, wait) {
-                                let timeout;
-                                return function executedFunction(...args) {
-                                    const later = () => {
-                                        clearTimeout(timeout);
-                                        func(...args);
-                                    };
-                                    clearTimeout(timeout);
-                                    timeout = setTimeout(later, wait);
-                                };
-                            }
+                    // Utility Functions
+                    function showLoading(container, text) {
+                        container.innerHTML = `
+                            <div class="chat-loading">
+                                <div class="chat-loading-spinner"></div>
+                                <p class="mt-3 text-gray-500 text-center px-4">${text}</p>
+                            </div>
+                        `;
+                    }
 
-                            // Polling for new messages
-                            function startPolling() {
-                                stopPolling();
-                                pollingInterval = setInterval(() => {
-                                    updateUnreadCount();
-                                    
-                                    if (currentChatUserId) {
-                                        loadMessages();
-                                    } else if (isChatOpen) {
-                                        loadConversations();
-                                    }
-                                }, 10000); // Poll every 10 seconds
-                            }
+                    function showError(container, text) {
+                        container.innerHTML = `
+                            <div class="text-center text-red-500 py-8 px-4">
+                                <svg class="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <p>${text}</p>
+                                <button onclick="refreshChatData()" class="mt-4 text-[#122EE1] hover:text-blue-700 text-sm">
+                                    تلاش مجدد
+                                </button>
+                            </div>
+                        `;
+                    }
 
-                            function stopPolling() {
-                                if (pollingInterval) {
-                                    clearInterval(pollingInterval);
-                                    pollingInterval = null;
-                                }
+                    function showToast(message, type = 'info') {
+                        // Create toast if it doesn't exist
+                        let toastContainer = document.getElementById('chatToastContainer');
+                        if (!toastContainer) {
+                            toastContainer = document.createElement('div');
+                            toastContainer.id = 'chatToastContainer';
+                            toastContainer.className = 'fixed top-4 right-4 z-[99999]';
+                            document.body.appendChild(toastContainer);
+                        }
+                        
+                        const toastId = 'toast-' + Date.now();
+                        const bgColor = type === 'success' ? 'bg-green-500' : 
+                                    type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+                        
+                        // موقعیت متفاوت برای موبایل
+                        if (isMobile) {
+                            toastContainer.className = 'fixed top-4 right-4 left-4 z-[99999]';
+                        }
+                        
+                        const toast = document.createElement('div');
+                        toast.id = toastId;
+                        toast.className = `${bgColor} text-white px-6 py-3 rounded-lg shadow-lg mb-2 flex items-center justify-between ${isMobile ? 'w-full' : 'min-w-[300px]'} animate-slide-in`;
+                        
+                        toast.innerHTML = `
+                            <span class="flex-1">${message}</span>
+                            <button onclick="document.getElementById('${toastId}').remove()" class="text-white hover:text-gray-200 mr-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        `;
+                        
+                        toastContainer.appendChild(toast);
+                        
+                        // Auto remove after 3 seconds
+                        setTimeout(() => {
+                            if (document.getElementById(toastId)) {
+                                toast.remove();
                             }
+                        }, 3000);
+                    }
 
-                            // Initial setup
+                    function formatDate(dateString) {
+                        const date = new Date(dateString);
+                        const now = new Date();
+                        const diffMs = now - date;
+                        const diffMins = Math.floor(diffMs / 60000);
+                        const diffHours = Math.floor(diffMs / 3600000);
+                        const diffDays = Math.floor(diffMs / 86400000);
+                        
+                        if (diffMins < 1) return 'همین الآن';
+                        if (diffMins < 60) return `${diffMins} دقیقه پیش`;
+                        if (diffHours < 24) return `${diffHours} ساعت پیش`;
+                        if (diffDays < 7) return `${diffDays} روز پیش`;
+                        
+                        return date.toLocaleDateString('fa-IR');
+                    }
+
+                    function scrollToBottom() {
+                        setTimeout(() => {
+                            messagesContainer.scrollTo({
+                                top: messagesContainer.scrollHeight,
+                                behavior: 'smooth'
+                            });
+                        }, 100);
+                    }
+
+                    function debounce(func, wait) {
+                        let timeout;
+                        return function executedFunction(...args) {
+                            const later = () => {
+                                clearTimeout(timeout);
+                                func(...args);
+                            };
+                            clearTimeout(timeout);
+                            timeout = setTimeout(later, wait);
+                        };
+                    }
+
+                    // Polling for new messages
+                    function startPolling() {
+                        stopPolling();
+                        pollingInterval = setInterval(() => {
                             updateUnreadCount();
                             
-                            // Auto open chat if there are unread messages
-                            setTimeout(() => {
-                                if (parseInt(unreadBadge.textContent) > 0) {
-                                    chatToggle.classList.add('animate-pulse');
-                                }
-                            }, 1000);
+                            if (currentChatUserId) {
+                                loadMessages();
+                            } else if (isChatOpen) {
+                                loadConversations();
+                            }
+                        }, 10000); // Poll every 10 seconds
+                    }
+
+                    function stopPolling() {
+                        if (pollingInterval) {
+                            clearInterval(pollingInterval);
+                            pollingInterval = null;
+                        }
+                    }
+
+                    // Initial setup
+                    updateUnreadCount();
+                    
+                    // Auto open chat if there are unread messages
+                    setTimeout(() => {
+                        if (parseInt(unreadBadge.textContent || 0) > 0) {
+                            chatToggle.classList.add('animate-pulse');
+                        }
+                    }, 1000);
+
+                    // Handle virtual keyboard on mobile
+                    if (isMobile) {
+                        // Listen for focus on message input
+                        messageInput.addEventListener('focus', function() {
+                            keyboardVisible = true;
+                            // Scroll to bottom when keyboard opens
+                            setTimeout(scrollToBottom, 300);
                         });
+
+                        messageInput.addEventListener('blur', function() {
+                            keyboardVisible = false;
+                        });
+                    }
+                });
             </script>
-
-
         </div>
     </div>
 
