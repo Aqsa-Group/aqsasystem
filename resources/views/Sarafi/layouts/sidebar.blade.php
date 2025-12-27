@@ -2008,10 +2008,9 @@
                 <!-- Chat Button -->
                 <button id="chatToggle"
                     class="bg-[#122EE1] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
-                        </path>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12 1C7.03 1 3 5.03 3 10V17C3 18.66 4.34 20 6 20H9V12H5V10C5 6.13 8.13 3 12 3C15.87 3 19 6.13 19 10V12H15V20H18C19.66 20 21 18.66 21 17V10C21 5.03 16.97 1 12 1Z" />
                     </svg>
                     <span id="unreadBadge"
                         class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center hidden shadow">0</span>
@@ -2024,7 +2023,7 @@
                             right-0 sm:right-0
                             left-0 sm:left-auto
                             w-full sm:w-96
-                            h-fit sm:h-[500px]
+                            h-fit sm:h-fit
                             bg-white dark:bg-gray-800
                             rounded-none sm:rounded-lg
                             shadow-2xl
@@ -2149,16 +2148,9 @@
                                 <div class="p-3 border-t dark:border-gray-700 shrink-0">
                                     <div class="flex space-x-2 rtl:space-x-reverse">
                                         <button id="sendMessageBtn"
-                                            class="bg-[#122EE1] text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition flex items-center space-x-2 rtl:space-x-reverse">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M7.39999 6.32003L15.89 3.49003C19.7 2.22003 21.77 4.30003 20.51 8.11003L17.68 16.6C15.78 22.31 12.66 22.31 10.76 16.6L9.91999 14.08L7.39999 13.24C1.68999 11.34 1.68999 8.23003 7.39999 6.32003Z"
-                                                    stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                                <path d="M10.11 13.6501L13.69 10.0601" stroke="#292D32"
-                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
+                                            class=" bg-white border border-blue-400 text-white px-6 py-2 rounded-lg  transition flex items-center space-x-2 rtl:space-x-reverse">
+                                            <img src="{{ asset('assets/sarafi/paper-plane.png') }}" class="h-5 w-5"
+                                                alt="">
                                         </button>
                                         <input type="text" id="messageInput" placeholder="پیام خود را بنویسید..."
                                             class="flex-1 px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#122EE1]">
