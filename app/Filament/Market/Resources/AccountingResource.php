@@ -283,7 +283,8 @@ class AccountingResource extends Resource
                     $calculateDates($get, $set);
                     $updateCalculatedPrice($get, $set);
                 }),
-   
+                
+
             Forms\Components\Select::make('currency')
                 ->label('واحد پول')
                 ->options(['AFN' => 'افغانی', 'USD' => 'دالر', 'TOMAN' => 'تومان', 'EUR' => 'یورو'])
@@ -306,17 +307,6 @@ class AccountingResource extends Resource
                 ->required(),
         ]);
     }
-
-private static function getLastElectricityRemained($shopId = null, $boothId = null)
-{
-    return Accounting::where('expanses_type', 'پول برق')
-        ->when($shopId, fn ($q) => $q->where('shop_id', $shopId))
-        ->when($boothId, fn ($q) => $q->where('booth_id', $boothId))
-        ->latest('id')
-        ->value('remained') ?? 0;
-}
-
-
 
     public static function table(Table $table): Table
     {
