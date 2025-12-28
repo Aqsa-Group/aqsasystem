@@ -26,6 +26,8 @@ class ConversionInAccount extends Component
     public $selectedAccount = null;
     public $selectedCustomerId = null;
     // متغیرهای فرم
+    public $calculatingField = 'buy';
+    public $calculating = false;
 
     public $from_currency = '';
     public $buy_amount = '';
@@ -255,42 +257,112 @@ class ConversionInAccount extends Component
     }
 
     /**
-     * Event listeners برای محاسبه خودکار
+     * Event listener برای تغییر فیلدها
      */
     public function updated($property)
     {
-        // فقط زمانی محاسبه کن که همه فیلدها پر باشند
-        if (in_array($property, [
-            'buy_amount',
-            'currency_rate',
-            'from_currency',
-            'to_currency',
-            'transactionType'
-        ])) {
-            // بررسی که نرخ ارز صفر نباشد
-            if ($this->currency_rate && floatval(str_replace(',', '', $this->currency_rate)) != 0) {
-                $this->calculateReceivedAmount();
-            } else {
-                $this->sell_amount = '';
-                $this->receivedAmountInWords = '';
-            }
+        // اگر در حال محاسبه هستیم، از حلقه جلوگیری کن
+        if ($this->calculating) {
+            return;
         }
 
+        $this->calculating = true;
+
+        try {
+            // تشخیص اینکه کدام فیلد تغییر کرده
+            if ($property === 'buy_amount') {
+                $this->calculatingField = 'buy';
+                $this->calculateReceivedAmount();
+            } elseif ($property === 'sell_amount') {
+                $this->calculatingField = 'sell';
+                $this->calculateBuyAmount();
+            } elseif ($property === 'currency_rate') {
+                // اگر نرخ تغییر کرد، بر اساس آخرین فیلد ویرایش شده محاسبه کن
+                if ($this->calculatingField === 'buy' && $this->buy_amount) {
+                    $this->calculateReceivedAmount();
+                } elseif ($this->calculatingField === 'sell' && $this->sell_amount) {
+                    $this->calculateBuyAmount();
+                }
+            } elseif (in_array($property, ['from_currency', 'to_currency', 'transactionType'])) {
+                // اگر ارزها یا نوع معامله تغییر کرد، بر اساس آخرین فیلد محاسبه کن
+                if ($this->calculatingField === 'buy' && $this->buy_amount && $this->currency_rate) {
+                    $this->calculateReceivedAmount();
+                } elseif ($this->calculatingField === 'sell' && $this->sell_amount && $this->currency_rate) {
+                    $this->calculateBuyAmount();
+                }
+            }
+        } finally {
+            $this->calculating = false;
+        }
+
+        // تبدیل به حروف
         if ($property === 'buy_amount') {
             $this->convertAmountToWords($this->buy_amount, 'withdrawalAmountInWords', 2);
-        }
-
-        if ($property === 'currency_rate') {
-            $this->convertAmountToWords($this->currency_rate, 'currencyRateInWords', 4);
         }
 
         if ($property === 'sell_amount') {
             $this->convertAmountToWords($this->sell_amount, 'receivedAmountInWords', 2);
         }
+
+        if ($property === 'currency_rate') {
+            $this->convertAmountToWords($this->currency_rate, 'currencyRateInWords', 4);
+        }
     }
 
     /**
-     * محاسبه خودکار مبلغ دریافت بر اساس نرخ ارز
+     * محاسبه مبلغ خرید بر اساس مبلغ فروش و نرخ ارز
+     */
+    public function calculateBuyAmount()
+    {
+        if ($this->sell_amount && $this->currency_rate && $this->from_currency && $this->to_currency) {
+            $fromCurrency = $this->from_currency;
+            $toCurrency = $this->to_currency;
+
+            // تبدیل مقادیر به عدد
+            $amount = floatval(str_replace(',', '', $this->sell_amount));
+            $rate = floatval(str_replace(',', '', $this->currency_rate));
+
+            // بررسی اینکه نرخ ارز صفر نباشد
+            if ($rate == 0) {
+                $this->buy_amount = '';
+                $this->withdrawalAmountInWords = '';
+                return;
+            }
+
+            // محاسبه معکوس بر اساس فرمول
+            if ($fromCurrency === 'afn' && $toCurrency === 'irr') {
+                // تبدیل افغانی به تومان: مبلغ فروش × نرخ ارز ÷ 1000
+                $calculatedAmount = ($amount * $rate) / 1000;
+            } elseif ($fromCurrency === 'irr' && $toCurrency === 'afn') {
+                // تبدیل تومان به افغانی: مبلغ فروش × 1000 ÷ نرخ ارز
+                $calculatedAmount = ($amount * 1000) / $rate;
+            } else {
+                // برای سایر ارزها، معکوس منطق قبلی
+                $shouldDivide = $this->shouldUseDivision($fromCurrency, $toCurrency);
+                if ($shouldDivide) {
+                    // اگر در حالت عادی تقسیم می‌کردیم، حالا ضرب می‌کنیم
+                    $calculatedAmount = $amount * $rate;
+                } else {
+                    // اگر در حالت عادی ضرب می‌کردیم، حالا تقسیم می‌کنیم
+                    $calculatedAmount = $amount / $rate;
+                }
+            }
+
+            // محدود کردن به 2 رقم اعشار
+            $calculatedAmount = round($calculatedAmount, 2);
+
+            // ذخیره به صورت عددی با 2 رقم اعشار
+            $this->buy_amount = $calculatedAmount;
+        } else {
+            $this->buy_amount = '';
+            $this->withdrawalAmountInWords = '';
+            $this->receivedAmountInWords = '';
+            $this->currencyRateInWords = '';
+        }
+    }
+
+    /**
+     * محاسبه مبلغ فروش بر اساس مبلغ خرید و نرخ ارز
      */
     public function calculateReceivedAmount()
     {
@@ -331,11 +403,6 @@ class ConversionInAccount extends Component
 
             // ذخیره به صورت عددی با 2 رقم اعشار
             $this->sell_amount = $calculatedAmount;
-
-            // تبدیل به حروف با تعداد اعشار مشخص
-            $this->convertAmountToWords($this->buy_amount, 'withdrawalAmountInWords', 2);
-            $this->convertAmountToWords($calculatedAmount, 'receivedAmountInWords', 2);
-            $this->convertAmountToWords($this->currency_rate, 'currencyRateInWords', 4);
         } else {
             $this->sell_amount = '';
             $this->withdrawalAmountInWords = '';
@@ -344,6 +411,13 @@ class ConversionInAccount extends Component
         }
     }
 
+    /**
+     * تنظیم دستی فیلد محاسبه (برای استفاده در view)
+     */
+    public function setCalculatingField($field)
+    {
+        $this->calculatingField = $field;
+    }
     /**
      * تعیین منطق محاسبه (تقسیم یا ضرب) برای سایر ارزها
      */
@@ -367,418 +441,418 @@ class ConversionInAccount extends Component
     }
 
 
-/**
- * محاسبه سود/ضرر تبدیل ارز - نسخه جهانی برای تمام ارزها
- */
-private function calculateProfitOrLoss()
-{
-    try {
-        Log::info('=== شروع محاسبه سود/ضرر برای تمام ارزها ===', [
-            'from_currency' => $this->from_currency,
-            'to_currency' => $this->to_currency,
-            'buy_amount' => $this->buy_amount,
-            'sell_amount' => $this->sell_amount,
-            'currency_rate' => $this->currency_rate,
+    /**
+     * محاسبه سود/ضرر تبدیل ارز - نسخه جهانی برای تمام ارزها
+     */
+    private function calculateProfitOrLoss()
+    {
+        try {
+            Log::info('=== شروع محاسبه سود/ضرر برای تمام ارزها ===', [
+                'from_currency' => $this->from_currency,
+                'to_currency' => $this->to_currency,
+                'buy_amount' => $this->buy_amount,
+                'sell_amount' => $this->sell_amount,
+                'currency_rate' => $this->currency_rate,
+                'transaction_type' => $this->transactionType,
+                'account_type' => $this->accountType
+            ]);
+
+            // دریافت نرخ از پیش تعیین شده
+            $predefinedRate = $this->getUniversalPredefinedRate();
+
+            if ($predefinedRate === null || $predefinedRate == 0) {
+                Log::warning("❌ نرخ از پیش تعیین شده برای {$this->from_currency} به {$this->to_currency} یافت نشد");
+                return $this->getDefaultProfitLossResult();
+            }
+
+            // محاسبه مبلغ با نرخ از پیش تعیین شده
+            $amountWithPredefinedRate = $this->calculateUniversalWithPredefinedRate($predefinedRate);
+            $amountWithEnteredRate = floatval(str_replace(',', '', $this->sell_amount));
+
+            // محاسبه تفاوت
+            $difference = $amountWithPredefinedRate - $amountWithEnteredRate;
+
+            Log::info('محاسبات جهانی', [
+                'predefined_rate' => $predefinedRate,
+                'amount_with_predefined_rate' => $amountWithPredefinedRate,
+                'amount_with_entered_rate' => $amountWithEnteredRate,
+                'difference' => $difference
+            ]);
+
+            // تبدیل تفاوت به دالر - همیشه با نرخ خرید دلار
+            $differenceInUsd = 0;
+            if ($difference != 0) {
+                $differenceInUsd = $this->convertToUsdUniversal(abs($difference), $this->to_currency);
+            }
+
+            $profit = $difference > 0 ? $differenceInUsd : 0;
+            $loss = $difference < 0 ? $differenceInUsd : 0;
+
+            Log::info('نتیجه نهایی جهانی', [
+                'profit_usd' => $profit,
+                'loss_usd' => $loss,
+                'transaction_type' => $this->transactionType,
+                'used_rate_type' => $this->getRateType()
+            ]);
+
+            return [
+                'profit' => round($profit, 4),
+                'loss' => round($loss, 4),
+                'predefined_rate' => $predefinedRate,
+                'amount_with_predefined_rate' => $amountWithPredefinedRate,
+                'amount_with_entered_rate' => $amountWithEnteredRate,
+                'difference' => $difference
+            ];
+        } catch (\Exception $e) {
+            Log::error('❌ خطا در محاسبه سود/ضرر جهانی: ' . $e->getMessage());
+            return $this->getDefaultProfitLossResult();
+        }
+    }
+
+    /**
+     * دریافت نرخ از پیش تعیین شده برای تمام ارزها - منطق اصلاح شده
+     */
+    private function getUniversalPredefinedRate()
+    {
+        $rateType = $this->getRateType();
+
+        Log::info("جستجوی نرخ برای: {$this->from_currency} → {$this->to_currency} با نوع: {$rateType}", [
             'transaction_type' => $this->transactionType,
             'account_type' => $this->accountType
         ]);
 
-        // دریافت نرخ از پیش تعیین شده
-        $predefinedRate = $this->getUniversalPredefinedRate();
+        // استراتژی‌های مختلف برای یافتن نرخ - با اولویت‌بندی صحیح
+        $strategies = [
+            'direct_from_currency' => function () use ($rateType) {
+                // استراتژی 1: از رکورد ارز مبدا استفاده کن - برای تبدیل‌های مستقیم
+                if ($this->isStandardConversion()) {
+                    $profitRate = ProfitRate::where('source_currency', $this->from_currency)->first();
+                    if ($profitRate) {
+                        $field = $this->to_currency . '_' . $rateType;
+                        if (isset($profitRate->{$field}) && $profitRate->{$field} > 0) {
+                            Log::info("✅ استراتژی 1: نرخ از رکورد {$this->from_currency} - فیلد {$field} = {$profitRate->{$field}}", [
+                                'rate_type' => $rateType,
+                                'transaction_type' => $this->transactionType
+                            ]);
+                            return $profitRate->{$field};
+                        }
+                    }
+                }
+                return null;
+            },
 
-        if ($predefinedRate === null || $predefinedRate == 0) {
-            Log::warning("❌ نرخ از پیش تعیین شده برای {$this->from_currency} به {$this->to_currency} یافت نشد");
-            return $this->getDefaultProfitLossResult();
-        }
+            'usd_as_base' => function () use ($rateType) {
+                // استراتژی 2: از رکورد USD استفاده کن - برای تبدیل‌هایی که شامل USD هستند
+                if ($this->from_currency === 'usd' || $this->to_currency === 'usd') {
+                    $profitRate = ProfitRate::where('source_currency', 'usd')->first();
+                    if ($profitRate) {
+                        if ($this->from_currency === 'usd') {
+                            $field = $this->to_currency . '_' . $rateType;
+                        } else {
+                            // برای تبدیل به USD از منطق معکوس استفاده می‌کنیم
+                            $reverseRateType = $this->getReverseRateType();
+                            $field = $this->from_currency . '_' . $reverseRateType;
+                        }
 
-        // محاسبه مبلغ با نرخ از پیش تعیین شده
-        $amountWithPredefinedRate = $this->calculateUniversalWithPredefinedRate($predefinedRate);
-        $amountWithEnteredRate = floatval(str_replace(',', '', $this->sell_amount));
+                        if (isset($profitRate->{$field}) && $profitRate->{$field} > 0) {
+                            Log::info("✅ استراتژی 2: نرخ از رکورد USD - فیلد {$field} = {$profitRate->{$field}}", [
+                                'rate_type' => $rateType,
+                                'reverse_rate_type' => $reverseRateType ?? 'N/A'
+                            ]);
+                            return $profitRate->{$field};
+                        }
+                    }
+                }
+                return null;
+            },
 
-        // محاسبه تفاوت
-        $difference = $amountWithPredefinedRate - $amountWithEnteredRate;
-
-        Log::info('محاسبات جهانی', [
-            'predefined_rate' => $predefinedRate,
-            'amount_with_predefined_rate' => $amountWithPredefinedRate,
-            'amount_with_entered_rate' => $amountWithEnteredRate,
-            'difference' => $difference
-        ]);
-
-        // تبدیل تفاوت به دالر - همیشه با نرخ خرید دلار
-        $differenceInUsd = 0;
-        if ($difference != 0) {
-            $differenceInUsd = $this->convertToUsdUniversal(abs($difference), $this->to_currency);
-        }
-
-        $profit = $difference > 0 ? $differenceInUsd : 0;
-        $loss = $difference < 0 ? $differenceInUsd : 0;
-
-        Log::info('نتیجه نهایی جهانی', [
-            'profit_usd' => $profit,
-            'loss_usd' => $loss,
-            'transaction_type' => $this->transactionType,
-            'used_rate_type' => $this->getRateType()
-        ]);
-
-        return [
-            'profit' => round($profit, 4),
-            'loss' => round($loss, 4),
-            'predefined_rate' => $predefinedRate,
-            'amount_with_predefined_rate' => $amountWithPredefinedRate,
-            'amount_with_entered_rate' => $amountWithEnteredRate,
-            'difference' => $difference
-        ];
-    } catch (\Exception $e) {
-        Log::error('❌ خطا در محاسبه سود/ضرر جهانی: ' . $e->getMessage());
-        return $this->getDefaultProfitLossResult();
-    }
-}
-
-/**
- * دریافت نرخ از پیش تعیین شده برای تمام ارزها - منطق اصلاح شده
- */
-private function getUniversalPredefinedRate()
-{
-    $rateType = $this->getRateType();
-
-    Log::info("جستجوی نرخ برای: {$this->from_currency} → {$this->to_currency} با نوع: {$rateType}", [
-        'transaction_type' => $this->transactionType,
-        'account_type' => $this->accountType
-    ]);
-
-    // استراتژی‌های مختلف برای یافتن نرخ - با اولویت‌بندی صحیح
-    $strategies = [
-        'direct_from_currency' => function () use ($rateType) {
-            // استراتژی 1: از رکورد ارز مبدا استفاده کن - برای تبدیل‌های مستقیم
-            if ($this->isStandardConversion()) {
-                $profitRate = ProfitRate::where('source_currency', $this->from_currency)->first();
+            'reverse_to_currency' => function () use ($rateType) {
+                // استراتژی 3: از رکورد ارز مقصد استفاده کن (منطق معکوس)
+                $profitRate = ProfitRate::where('source_currency', $this->to_currency)->first();
                 if ($profitRate) {
+                    $reverseRateType = $this->getReverseRateType();
+                    $field = $this->from_currency . '_' . $reverseRateType;
+                    if (isset($profitRate->{$field}) && $profitRate->{$field} > 0) {
+                        Log::info("✅ استراتژی 3: نرخ از رکورد {$this->to_currency} - فیلد {$field} = {$profitRate->{$field}}", [
+                            'rate_type' => $rateType,
+                            'reverse_rate_type' => $reverseRateType
+                        ]);
+                        return $profitRate->{$field};
+                    }
+                }
+                return null;
+            },
+
+            'fallback_any_rate' => function () use ($rateType) {
+                // استراتژی 4: از هر رکوردی که نرخ دارد استفاده کن
+                $profitRates = ProfitRate::all();
+
+                // اولویت 1: جستجوی مستقیم با همان نوع نرخ
+                foreach ($profitRates as $profitRate) {
                     $field = $this->to_currency . '_' . $rateType;
                     if (isset($profitRate->{$field}) && $profitRate->{$field} > 0) {
-                        Log::info("✅ استراتژی 1: نرخ از رکورد {$this->from_currency} - فیلد {$field} = {$profitRate->{$field}}", [
-                            'rate_type' => $rateType,
-                            'transaction_type' => $this->transactionType
-                        ]);
+                        Log::info("✅ استراتژی 4-1: نرخ از رکورد {$profitRate->source_currency} - فیلد {$field} = {$profitRate->{$field}}");
                         return $profitRate->{$field};
                     }
                 }
-            }
-            return null;
-        },
 
-        'usd_as_base' => function () use ($rateType) {
-            // استراتژی 2: از رکورد USD استفاده کن - برای تبدیل‌هایی که شامل USD هستند
-            if ($this->from_currency === 'usd' || $this->to_currency === 'usd') {
-                $profitRate = ProfitRate::where('source_currency', 'usd')->first();
-                if ($profitRate) {
-                    if ($this->from_currency === 'usd') {
-                        $field = $this->to_currency . '_' . $rateType;
+                // اولویت 2: جستجوی فیلدهای جایگزین با توجه به نوع تراکنش
+                foreach ($profitRates as $profitRate) {
+                    // بسته به نوع تراکنش، فیلدهای جایگزین متفاوت هستند
+                    $alternativeFields = [];
+
+                    if ($this->transactionType === 'خرید') {
+                        // برای خرید: اولویت با نرخ‌های خرید
+                        $alternativeFields = [
+                            $this->to_currency . '_buy_cash',
+                            $this->to_currency . '_buy_bank',
+                            $this->to_currency . '_sell_cash',  // جایگزین
+                            $this->to_currency . '_sell_bank',   // جایگزین
+                        ];
                     } else {
-                        // برای تبدیل به USD از منطق معکوس استفاده می‌کنیم
-                        $reverseRateType = $this->getReverseRateType();
-                        $field = $this->from_currency . '_' . $reverseRateType;
+                        // برای فروش: اولویت با نرخ‌های فروش
+                        $alternativeFields = [
+                            $this->to_currency . '_sell_cash',
+                            $this->to_currency . '_sell_bank',
+                            $this->to_currency . '_buy_cash',   // جایگزین
+                            $this->to_currency . '_buy_bank',    // جایگزین
+                        ];
                     }
 
-                    if (isset($profitRate->{$field}) && $profitRate->{$field} > 0) {
-                        Log::info("✅ استراتژی 2: نرخ از رکورد USD - فیلد {$field} = {$profitRate->{$field}}", [
-                            'rate_type' => $rateType,
-                            'reverse_rate_type' => $reverseRateType ?? 'N/A'
-                        ]);
-                        return $profitRate->{$field};
+                    foreach ($alternativeFields as $altField) {
+                        if (isset($profitRate->{$altField}) && $profitRate->{$altField} > 0) {
+                            Log::info("✅ استراتژی 4-2: نرخ از رکورد {$profitRate->source_currency} - فیلد جایگزین {$altField} = {$profitRate->{$altField}}");
+                            return $profitRate->{$altField};
+                        }
                     }
                 }
+                return null;
             }
-            return null;
-        },
+        ];
 
-        'reverse_to_currency' => function () use ($rateType) {
-            // استراتژی 3: از رکورد ارز مقصد استفاده کن (منطق معکوس)
-            $profitRate = ProfitRate::where('source_currency', $this->to_currency)->first();
-            if ($profitRate) {
-                $reverseRateType = $this->getReverseRateType();
-                $field = $this->from_currency . '_' . $reverseRateType;
-                if (isset($profitRate->{$field}) && $profitRate->{$field} > 0) {
-                    Log::info("✅ استراتژی 3: نرخ از رکورد {$this->to_currency} - فیلد {$field} = {$profitRate->{$field}}", [
-                        'rate_type' => $rateType,
-                        'reverse_rate_type' => $reverseRateType
-                    ]);
-                    return $profitRate->{$field};
-                }
+        // اجرای استراتژی‌ها به ترتیب
+        foreach ($strategies as $strategyName => $strategy) {
+            $rate = $strategy();
+            if ($rate !== null) {
+                return $rate;
             }
-            return null;
-        },
-
-        'fallback_any_rate' => function () use ($rateType) {
-            // استراتژی 4: از هر رکوردی که نرخ دارد استفاده کن
-            $profitRates = ProfitRate::all();
-
-            // اولویت 1: جستجوی مستقیم با همان نوع نرخ
-            foreach ($profitRates as $profitRate) {
-                $field = $this->to_currency . '_' . $rateType;
-                if (isset($profitRate->{$field}) && $profitRate->{$field} > 0) {
-                    Log::info("✅ استراتژی 4-1: نرخ از رکورد {$profitRate->source_currency} - فیلد {$field} = {$profitRate->{$field}}");
-                    return $profitRate->{$field};
-                }
-            }
-
-            // اولویت 2: جستجوی فیلدهای جایگزین با توجه به نوع تراکنش
-            foreach ($profitRates as $profitRate) {
-                // بسته به نوع تراکنش، فیلدهای جایگزین متفاوت هستند
-                $alternativeFields = [];
-                
-                if ($this->transactionType === 'خرید') {
-                    // برای خرید: اولویت با نرخ‌های خرید
-                    $alternativeFields = [
-                        $this->to_currency . '_buy_cash',
-                        $this->to_currency . '_buy_bank',
-                        $this->to_currency . '_sell_cash',  // جایگزین
-                        $this->to_currency . '_sell_bank',   // جایگزین
-                    ];
-                } else {
-                    // برای فروش: اولویت با نرخ‌های فروش
-                    $alternativeFields = [
-                        $this->to_currency . '_sell_cash',
-                        $this->to_currency . '_sell_bank',
-                        $this->to_currency . '_buy_cash',   // جایگزین
-                        $this->to_currency . '_buy_bank',    // جایگزین
-                    ];
-                }
-
-                foreach ($alternativeFields as $altField) {
-                    if (isset($profitRate->{$altField}) && $profitRate->{$altField} > 0) {
-                        Log::info("✅ استراتژی 4-2: نرخ از رکورد {$profitRate->source_currency} - فیلد جایگزین {$altField} = {$profitRate->{$altField}}");
-                        return $profitRate->{$altField};
-                    }
-                }
-            }
-            return null;
         }
-    ];
 
-    // اجرای استراتژی‌ها به ترتیب
-    foreach ($strategies as $strategyName => $strategy) {
-        $rate = $strategy();
-        if ($rate !== null) {
-            return $rate;
+        Log::warning("❌ هیچ نرخ مناسبی برای {$this->from_currency} به {$this->to_currency} یافت نشد", [
+            'transaction_type' => $this->transactionType,
+            'rate_type' => $rateType
+        ]);
+        return null;
+    }
+
+    /**
+     * بررسی آیا تبدیل استاندارد است
+     */
+    private function isStandardConversion()
+    {
+        // تبدیل‌های استاندارد که از رکورد ارز مبدا استفاده می‌کنند
+        $standardConversions = [
+            'afn_irr',
+            'irr_afn',  // افغانی و تومان
+            'afn_pkr',
+            'pkr_afn',  // افغانی و کلدار
+            'irr_pkr',
+            'pkr_irr',  // تومان و کلدار
+        ];
+
+        $conversionKey = $this->from_currency . '_' . $this->to_currency;
+        return in_array($conversionKey, $standardConversions);
+    }
+
+    /**
+     * تعیین نوع نرخ مورد نیاز
+     * اصلاح شده: برای خرید نرخ خرید، برای فروش نرخ فروش
+     */
+    private function getRateType()
+    {
+        if ($this->transactionType === 'خرید') {
+            // برای خرید: نرخ خرید
+            return $this->accountType === 'نقدی' ? 'sell_cash' : 'sell_bank';
+        } else {
+            // برای فروش: نرخ فروش
+            return $this->accountType === 'نقدی' ? 'buy_cash' : 'buy_bank';
         }
     }
 
-    Log::warning("❌ هیچ نرخ مناسبی برای {$this->from_currency} به {$this->to_currency} یافت نشد", [
-        'transaction_type' => $this->transactionType,
-        'rate_type' => $rateType
-    ]);
-    return null;
-}
-
-/**
- * بررسی آیا تبدیل استاندارد است
- */
-private function isStandardConversion()
-{
-    // تبدیل‌های استاندارد که از رکورد ارز مبدا استفاده می‌کنند
-    $standardConversions = [
-        'afn_irr',
-        'irr_afn',  // افغانی و تومان
-        'afn_pkr',
-        'pkr_afn',  // افغانی و کلدار
-        'irr_pkr',
-        'pkr_irr',  // تومان و کلدار
-    ];
-
-    $conversionKey = $this->from_currency . '_' . $this->to_currency;
-    return in_array($conversionKey, $standardConversions);
-}
-
-/**
- * تعیین نوع نرخ مورد نیاز
- * اصلاح شده: برای خرید نرخ خرید، برای فروش نرخ فروش
- */
-private function getRateType()
-{
-    if ($this->transactionType === 'خرید') {
-        // برای خرید: نرخ خرید
-        return $this->accountType === 'نقدی' ? 'sell_cash' : 'sell_bank';
-    } else {
-        // برای فروش: نرخ فروش
-        return $this->accountType === 'نقدی' ? 'buy_cash' : 'buy_bank';
+    /**
+     * تعیین نوع نرخ معکوس
+     */
+    private function getReverseRateType()
+    {
+        // معکوس getRateType
+        if ($this->transactionType === 'خرید') {
+            // اگر getRateType برای خرید نرخ خرید برمی‌گرداند، ما نرخ فروش برگردانیم
+            return $this->accountType === 'نقدی' ? 'sell_cash' : 'sell_bank';
+        } else {
+            // اگر getRateType برای فروش نرخ فروش برمی‌گرداند، ما نرخ خرید برگردانیم
+            return $this->accountType === 'نقدی' ? 'buy_cash' : 'buy_bank';
+        }
     }
-}
 
-/**
- * تعیین نوع نرخ معکوس
- */
-private function getReverseRateType()
-{
-    // معکوس getRateType
-    if ($this->transactionType === 'خرید') {
-        // اگر getRateType برای خرید نرخ خرید برمی‌گرداند، ما نرخ فروش برگردانیم
-        return $this->accountType === 'نقدی' ? 'sell_cash' : 'sell_bank';
-    } else {
-        // اگر getRateType برای فروش نرخ فروش برمی‌گرداند، ما نرخ خرید برگردانیم
-        return $this->accountType === 'نقدی' ? 'buy_cash' : 'buy_bank';
-    }
-}
+    /**
+     * محاسبه جهانی با نرخ از پیش تعیین شده - منطق بهبود یافته
+     */
+    private function calculateUniversalWithPredefinedRate($predefinedRate)
+    {
+        $amount = floatval(str_replace(',', '', $this->buy_amount));
 
-/**
- * محاسبه جهانی با نرخ از پیش تعیین شده - منطق بهبود یافته
- */
-private function calculateUniversalWithPredefinedRate($predefinedRate)
-{
-    $amount = floatval(str_replace(',', '', $this->buy_amount));
+        Log::info("محاسبه با نرخ پیش‌فرض: {$amount} {$this->from_currency} → {$this->to_currency} با نرخ: {$predefinedRate}", [
+            'transaction_type' => $this->transactionType,
+            'rate_type' => $this->getRateType()
+        ]);
 
-    Log::info("محاسبه با نرخ پیش‌فرض: {$amount} {$this->from_currency} → {$this->to_currency} با نرخ: {$predefinedRate}", [
-        'transaction_type' => $this->transactionType,
-        'rate_type' => $this->getRateType()
-    ]);
+        // موارد خاص برای تبدیل‌های شناخته شده
+        if ($this->from_currency === 'afn' && $this->to_currency === 'irr') {
+            $result = ($amount * 1000) / $predefinedRate;
+            Log::info("محاسبه AFN→IRR: ({$amount} × 1000) ÷ {$predefinedRate} = {$result}");
+            return $result;
+        }
 
-    // موارد خاص برای تبدیل‌های شناخته شده
-    if ($this->from_currency === 'afn' && $this->to_currency === 'irr') {
-        $result = ($amount * 1000) / $predefinedRate;
-        Log::info("محاسبه AFN→IRR: ({$amount} × 1000) ÷ {$predefinedRate} = {$result}");
+        if ($this->from_currency === 'irr' && $this->to_currency === 'afn') {
+            $result = ($amount * $predefinedRate) / 1000;
+            Log::info("محاسبه IRR→AFN: ({$amount} × {$predefinedRate}) ÷ 1000 = {$result}");
+            return $result;
+        }
+
+        // برای تبدیل به USD یا از USD
+        if ($this->to_currency === 'usd') {
+            $result = $amount / $predefinedRate;
+            Log::info("محاسبه {$this->from_currency}→USD: {$amount} ÷ {$predefinedRate} = {$result}");
+            return $result;
+        }
+
+        if ($this->from_currency === 'usd') {
+            $result = $amount * $predefinedRate;
+            Log::info("محاسبه USD→{$this->to_currency}: {$amount} × {$predefinedRate} = {$result}");
+            return $result;
+        }
+
+        // برای سایر ارزها از منطق استاندارد استفاده می‌کنیم
+        $shouldDivide = $this->shouldUseDivisionUniversal($this->from_currency, $this->to_currency);
+        if ($shouldDivide) {
+            $result = $amount / $predefinedRate;
+            Log::info("محاسبه جهانی (تقسیم): {$amount} ÷ {$predefinedRate} = {$result}");
+        } else {
+            $result = $amount * $predefinedRate;
+            Log::info("محاسبه جهانی (ضرب): {$amount} × {$predefinedRate} = {$result}");
+        }
+
         return $result;
     }
 
-    if ($this->from_currency === 'irr' && $this->to_currency === 'afn') {
-        $result = ($amount * $predefinedRate) / 1000;
-        Log::info("محاسبه IRR→AFN: ({$amount} × {$predefinedRate}) ÷ 1000 = {$result}");
-        return $result;
-    }
+    /**
+     * تعیین منطق محاسبه برای تمام ارزها
+     */
+    private function shouldUseDivisionUniversal($fromCurrency, $toCurrency): bool
+    {
+        // ارزهای پایه (معمولاً ارزهای اصلی جهانی)
+        $baseCurrencies = ['usd', 'eur', 'gbp', 'jpy', 'chf', 'cad', 'aud'];
 
-    // برای تبدیل به USD یا از USD
-    if ($this->to_currency === 'usd') {
-        $result = $amount / $predefinedRate;
-        Log::info("محاسبه {$this->from_currency}→USD: {$amount} ÷ {$predefinedRate} = {$result}");
-        return $result;
-    }
+        // ارزهای محلی (معمولاً ارزهای کشورهای خاص)
+        $localCurrencies = ['afn', 'irr', 'pkr', 'aed', 'try', 'cny', 'inr', 'sar', 'qar', 'omr'];
 
-    if ($this->from_currency === 'usd') {
-        $result = $amount * $predefinedRate;
-        Log::info("محاسبه USD→{$this->to_currency}: {$amount} × {$predefinedRate} = {$result}");
-        return $result;
-    }
+        // اگر از ارز پایه به ارز محلی تبدیل می‌کنیم: ضرب
+        if (in_array($fromCurrency, $baseCurrencies) && in_array($toCurrency, $localCurrencies)) {
+            return false;
+        }
 
-    // برای سایر ارزها از منطق استاندارد استفاده می‌کنیم
-    $shouldDivide = $this->shouldUseDivisionUniversal($this->from_currency, $this->to_currency);
-    if ($shouldDivide) {
-        $result = $amount / $predefinedRate;
-        Log::info("محاسبه جهانی (تقسیم): {$amount} ÷ {$predefinedRate} = {$result}");
-    } else {
-        $result = $amount * $predefinedRate;
-        Log::info("محاسبه جهانی (ضرب): {$amount} × {$predefinedRate} = {$result}");
-    }
+        // اگر از ارز محلی به ارز پایه تبدیل می‌کنیم: تقسیم
+        if (in_array($fromCurrency, $localCurrencies) && in_array($toCurrency, $baseCurrencies)) {
+            return true;
+        }
 
-    return $result;
-}
-
-/**
- * تعیین منطق محاسبه برای تمام ارزها
- */
-private function shouldUseDivisionUniversal($fromCurrency, $toCurrency): bool
-{
-    // ارزهای پایه (معمولاً ارزهای اصلی جهانی)
-    $baseCurrencies = ['usd', 'eur', 'gbp', 'jpy', 'chf', 'cad', 'aud'];
-
-    // ارزهای محلی (معمولاً ارزهای کشورهای خاص)
-    $localCurrencies = ['afn', 'irr', 'pkr', 'aed', 'try', 'cny', 'inr', 'sar', 'qar', 'omr'];
-
-    // اگر از ارز پایه به ارز محلی تبدیل می‌کنیم: ضرب
-    if (in_array($fromCurrency, $baseCurrencies) && in_array($toCurrency, $localCurrencies)) {
-        return false;
-    }
-
-    // اگر از ارز محلی به ارز پایه تبدیل می‌کنیم: تقسیم
-    if (in_array($fromCurrency, $localCurrencies) && in_array($toCurrency, $baseCurrencies)) {
+        // اگر هر دو ارز پایه هستند یا هر دو ارز محلی هستند: تقسیم
         return true;
     }
 
-    // اگر هر دو ارز پایه هستند یا هر دو ارز محلی هستند: تقسیم
-    return true;
-}
+    /**
+     * تبدیل جهانی به دالر - نسخه اصلاح شده با منطق یکسان
+     * همیشه از نرخ خرید دلار استفاده می‌کند
+     */
+    private function convertToUsdUniversal($amount, $currency)
+    {
+        if ($currency === 'usd') {
+            return $amount;
+        }
 
-/**
- * تبدیل جهانی به دالر - نسخه اصلاح شده با منطق یکسان
- * همیشه از نرخ خرید دلار استفاده می‌کند
- */
-private function convertToUsdUniversal($amount, $currency)
-{
-    if ($currency === 'usd') {
-        return $amount;
-    }
+        $usdProfitRate = ProfitRate::where('source_currency', 'usd')->first();
 
-    $usdProfitRate = ProfitRate::where('source_currency', 'usd')->first();
+        if (!$usdProfitRate) {
+            Log::warning('❌ هیچ رکورد USD در جدول profit_rate برای تبدیل به دالر یافت نشد');
+            return 0;
+        }
 
-    if (!$usdProfitRate) {
-        Log::warning('❌ هیچ رکورد USD در جدول profit_rate برای تبدیل به دالر یافت نشد');
-        return 0;
-    }
+        // همیشه از نرخ خرید دلار استفاده می‌کنیم
+        $rateType = $this->accountType === 'نقدی' ? 'buy_cash' : 'buy_bank';
+        $usdRateField = $currency . '_' . $rateType;
+        $usdRate = $usdProfitRate->{$usdRateField} ?? null;
 
-    // همیشه از نرخ خرید دلار استفاده می‌کنیم
-    $rateType = $this->accountType === 'نقدی' ? 'buy_cash' : 'buy_bank';
-    $usdRateField = $currency . '_' . $rateType;
-    $usdRate = $usdProfitRate->{$usdRateField} ?? null;
+        Log::info("تبدیل {$currency} به دالر (همیشه با نرخ خرید)", [
+            'amount' => $amount,
+            'currency' => $currency,
+            'rate_field' => $usdRateField,
+            'rate_value' => $usdRate,
+            'rate_type' => $rateType,
+            'transaction_type' => $this->transactionType
+        ]);
 
-    Log::info("تبدیل {$currency} به دالر (همیشه با نرخ خرید)", [
-        'amount' => $amount,
-        'currency' => $currency,
-        'rate_field' => $usdRateField,
-        'rate_value' => $usdRate,
-        'rate_type' => $rateType,
-        'transaction_type' => $this->transactionType
-    ]);
+        if (!$usdRate || $usdRate == 0) {
+            Log::warning("❌ نرخ خرید {$currency} به دالر یافت نشد");
 
-    if (!$usdRate || $usdRate == 0) {
-        Log::warning("❌ نرخ خرید {$currency} به دالر یافت نشد");
+            // جستجوی فیلدهای جایگزین خرید
+            $fallbackFields = [
+                $currency . '_buy_cash',
+                $currency . '_buy_bank',
+                $currency . '_sell_cash',  // اگر نرخ خرید پیدا نشد
+                $currency . '_sell_bank'   // از نرخ فروش استفاده می‌کنیم
+            ];
 
-        // جستجوی فیلدهای جایگزین خرید
-        $fallbackFields = [
-            $currency . '_buy_cash',
-            $currency . '_buy_bank',
-            $currency . '_sell_cash',  // اگر نرخ خرید پیدا نشد
-            $currency . '_sell_bank'   // از نرخ فروش استفاده می‌کنیم
-        ];
+            foreach ($fallbackFields as $field) {
+                if (isset($usdProfitRate->{$field}) && $usdProfitRate->{$field} > 0) {
+                    $usdRate = $usdProfitRate->{$field};
+                    Log::info("🔀 استفاده از فیلد جایگزین برای تبدیل به دالر: {$field} = {$usdRate}");
+                    break;
+                }
+            }
 
-        foreach ($fallbackFields as $field) {
-            if (isset($usdProfitRate->{$field}) && $usdProfitRate->{$field} > 0) {
-                $usdRate = $usdProfitRate->{$field};
-                Log::info("🔀 استفاده از فیلد جایگزین برای تبدیل به دالر: {$field} = {$usdRate}");
-                break;
+            if (!$usdRate || $usdRate == 0) {
+                Log::warning("❌ هیچ نرخ تبدیلی برای {$currency} به دالر یافت نشد");
+                return 0;
             }
         }
 
-        if (!$usdRate || $usdRate == 0) {
-            Log::warning("❌ هیچ نرخ تبدیلی برای {$currency} به دالر یافت نشد");
-            return 0;
-        }
+        // برای تمام ارزها از تقسیم استفاده می‌کنیم
+        $convertedAmount = $amount / $usdRate;
+
+        Log::info("نتیجه تبدیل به دالر", [
+            'original_amount' => $amount,
+            'rate' => $usdRate,
+            'converted_amount' => $convertedAmount,
+            'formula' => "{$amount} ÷ {$usdRate} = {$convertedAmount}"
+        ]);
+
+        return $convertedAmount;
     }
 
-    // برای تمام ارزها از تقسیم استفاده می‌کنیم
-    $convertedAmount = $amount / $usdRate;
-
-    Log::info("نتیجه تبدیل به دالر", [
-        'original_amount' => $amount,
-        'rate' => $usdRate,
-        'converted_amount' => $convertedAmount,
-        'formula' => "{$amount} ÷ {$usdRate} = {$convertedAmount}"
-    ]);
-
-    return $convertedAmount;
-}
-
-/**
- * نتیجه پیش‌فرض برای سود/ضرر
- */
-private function getDefaultProfitLossResult()
-{
-    return [
-        'profit' => 0,
-        'loss' => 0,
-        'predefined_rate' => 0,
-        'amount_with_predefined_rate' => 0,
-        'amount_with_entered_rate' => 0,
-        'difference' => 0
-    ];
-}
+    /**
+     * نتیجه پیش‌فرض برای سود/ضرر
+     */
+    private function getDefaultProfitLossResult()
+    {
+        return [
+            'profit' => 0,
+            'loss' => 0,
+            'predefined_rate' => 0,
+            'amount_with_predefined_rate' => 0,
+            'amount_with_entered_rate' => 0,
+            'difference' => 0
+        ];
+    }
     /**
      * تولید توضیحات برای سود/ضرر
      */
@@ -1010,9 +1084,9 @@ private function getDefaultProfitLossResult()
         }
     }
 
-  
 
- 
+
+
     /**
      * ویرایش تبدیل ارز
      */
@@ -1564,11 +1638,12 @@ private function getDefaultProfitLossResult()
         return $currencyMap[$currencyCode] ?? $currencyCode;
     }
 
+
     private function loadZones($adminId)
     {
-        $this->zones = \App\Models\Sarafi\User::where(function ($query) use ($adminId) {
-            $query->where('admin_id', $adminId)
-                ->orWhere('id', $adminId);
+        $zones = \App\Models\Sarafi\User::where(function ($query) use ($adminId) {
+            $query->where('id', $adminId)
+                ->orWhere('admin_id', $adminId);
         })
             ->whereNotNull('zone')
             ->where('zone', '!=', '')
@@ -1577,8 +1652,18 @@ private function getDefaultProfitLossResult()
             ->values()
             ->toArray();
 
-        if (empty($this->zones)) {
-            $this->zones = ['غرب', 'مرکز', 'شمال', 'جنوب', 'شرق'];
+        if (empty($zones)) {
+            $zones = ['غرب', 'مرکز', 'شمال', 'جنوب', 'شرق'];
+        }
+
+        $this->zones = $zones;
+
+        if (!$this->zone_sender) {
+            $this->zone_sender = $zones[0];
+        }
+
+        if (!$this->zone_receiver) {
+            $this->zone_receiver = $zones[0];
         }
     }
 }

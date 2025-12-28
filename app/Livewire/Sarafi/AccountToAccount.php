@@ -6,6 +6,7 @@ use App\Models\Sarafi\BankAccount;
 use App\Models\Sarafi\CurrencySafe;
 use App\Models\Sarafi\Customer;
 use App\Models\Sarafi\ExchangeRates;
+use App\Models\Sarafi\User;
 use App\Models\Sarafi\SendToAccount;
 use App\Models\Sarafi\Transaction;
 use Illuminate\Support\Facades\Auth;
@@ -1082,33 +1083,35 @@ class AccountToAccount extends Component
             return redirect()->back();
         }
     }
+public function mount()
+{
+    $this->date = Jalalian::now()->format('Y/m/d');
+    $this->transactionType = 'باتفاوت';
 
-    public function mount()
-    {
-        $this->date = Jalalian::now()->format('Y/m/d');
-        $this->transactionType = 'باتفاوت';
+    $this->generateDocumentNumber();
 
-        $this->generateDocumentNumber();
+    $this->currencies = [
+        ['code' => 'usd', 'name_fa' => 'دالر'],
+        ['code' => 'afn', 'name_fa' => 'افغانی'],
+        ['code' => 'eur', 'name_fa' => 'یورو'],
+        ['code' => 'irr', 'name_fa' => 'تومان'],
+        ['code' => 'aed', 'name_fa' => 'درهم'],
+        ['code' => 'try', 'name_fa' => 'لیره'],
+        ['code' => 'cny', 'name_fa' => 'یوان'],
+        ['code' => 'pkr', 'name_fa' => 'کلدار'],
+        ['code' => 'inr', 'name_fa' => 'روپیه'],
+    ];
 
-        $this->currencies = [
-            ['code' => 'usd', 'name_fa' => 'دالر'],
-            ['code' => 'afn', 'name_fa' => 'افغانی'],
-            ['code' => 'eur', 'name_fa' => 'یورو'],
-            ['code' => 'irr', 'name_fa' => 'تومان'],
-            ['code' => 'aed', 'name_fa' => 'درهم'],
-            ['code' => 'try', 'name_fa' => 'لیره'],
-            ['code' => 'cny', 'name_fa' => 'یوان'],
-            ['code' => 'pkr', 'name_fa' => 'کلدار'],
-            ['code' => 'inr', 'name_fa' => 'روپیه'],
-        ];
+    $user = Auth::guard('sarafi')->user();
 
-        $user = Auth::guard('sarafi')->user();
-        if ($user) {
-            $adminId = $user->admin_id ?? $user->id;
-            $this->loadCustomers($adminId);
-            $this->loadZones($adminId);
-        }
+    if ($user) {
+        $adminId = $user->admin_id ?? $user->id;
+
+        $this->loadCustomers($adminId);
+        $this->loadZones($adminId);
     }
+}
+
 
     private function generateDocumentNumber()
     {
@@ -1116,21 +1119,33 @@ class AccountToAccount extends Component
         $this->documentNumber = $latestDocument ? $latestDocument->id + 1 : 1;
     }
 
-    private function loadZones($adminId)
-    {
-        $this->zones = \App\Models\Sarafi\User::where(function ($query) use ($adminId) {
-            $query->where('admin_id', $adminId)
-                ->orWhere('id', $adminId);
+private function loadZones($adminId)
+{
+    $zones = \App\Models\Sarafi\User::where(function ($query) use ($adminId) {
+            $query->where('id', $adminId)
+                  ->orWhere('admin_id', $adminId);
         })
-            ->whereNotNull('zone')
-            ->where('zone', '!=', '')
-            ->pluck('zone')
-            ->unique()
-            ->values()
-            ->toArray();
+        ->whereNotNull('zone')
+        ->where('zone', '!=', '')
+        ->pluck('zone')
+        ->unique()
+        ->values()
+        ->toArray();
 
-        if (empty($this->zones)) {
-            $this->zones = ['غرب', 'مرکز', 'شمال', 'جنوب', 'شرق'];
-        }
+    if (empty($zones)) {
+        $zones = ['غرب', 'مرکز', 'شمال', 'جنوب', 'شرق'];
     }
+
+    $this->zones = $zones;
+
+    if (!$this->zone_sender) {
+        $this->zone_sender = $zones[0];
+    }
+
+    if (!$this->zone_receiver) {
+        $this->zone_receiver = $zones[0];
+    }
+}
+
+
 }

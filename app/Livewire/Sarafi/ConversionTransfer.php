@@ -22,6 +22,10 @@ class ConversionTransfer extends Component
 {
     use WithPagination;
 
+
+    public $calculating = false; 
+    public $calculatingField = 'withdrawal'; 
+
     // حساب برداشت
     public $withdrawalAccount = null;
     public $withdrawalCustomerId;
@@ -265,7 +269,7 @@ class ConversionTransfer extends Component
     }
 
     /**
-     * محاسبه خودکار مبلغ دریافت بر اساس نرخ ارز
+     * محاسبه مبلغ دریافت بر اساس مبلغ برداشت (منطق اصلی)
      */
     public function calculateReceivedAmount()
     {
@@ -320,25 +324,42 @@ class ConversionTransfer extends Component
         }
     }
 
-    /**
-     * Event Listeners برای محاسبه خودکار
+   /**
+     * Event Listeners برای محاسبه خودکار دوطرفه
      */
     public function updated($property)
     {
-        $calculationProperties = [
-            'withdrawal_amount',
-            'currency_rate',
-            'from_currency',
-            'to_currency',
-            'transactionType',
-            'from_account',
-            'to_account'
-        ];
-
-        if (in_array($property, $calculationProperties)) {
-            $this->calculateReceivedAmount();
+        // جلوگیری از حلقه بی‌نهایت
+        if ($this->calculating) {
+            return;
         }
 
+        $this->calculating = true;
+
+        try {
+            // تشخیص اینکه کدام فیلد تغییر کرده است
+            if ($property === 'withdrawal_amount') {
+                $this->calculatingField = 'withdrawal';
+                $this->calculateReceivedAmount();
+            } 
+            elseif ($property === 'received_amount') {
+                $this->calculatingField = 'received';
+                $this->calculateWithdrawalAmount();
+            }
+            elseif (in_array($property, ['currency_rate', 'from_currency', 'to_currency', 'transactionType', 'from_account', 'to_account'])) {
+                // اگر فیلدهای دیگر تغییر کردند، بر اساس آخرین فیلد محاسبه کنیم
+                if ($this->calculatingField === 'withdrawal' && $this->withdrawal_amount) {
+                    $this->calculateReceivedAmount();
+                } 
+                elseif ($this->calculatingField === 'received' && $this->received_amount) {
+                    $this->calculateWithdrawalAmount();
+                }
+            }
+        } finally {
+            $this->calculating = false;
+        }
+
+        // تبدیل به حروف
         if ($property === 'withdrawal_amount') {
             $this->convertAmountToWords($this->withdrawal_amount, 'withdrawalAmountInWords');
         }
@@ -351,6 +372,74 @@ class ConversionTransfer extends Component
             $this->convertAmountToWords($this->received_amount, 'receivedAmountInWords');
         }
     }
+
+
+     /**
+     * محاسبه مبلغ برداشت بر اساس مبلغ دریافت (منطق معکوس)
+     */
+    public function calculateWithdrawalAmount()
+    {
+        if ($this->received_amount && $this->currency_rate && $this->from_currency && $this->to_currency) {
+            $fromCurrency = $this->from_currency;
+            $toCurrency = $this->to_currency;
+
+            $amount = floatval(str_replace(',', '', $this->received_amount));
+            $rate = floatval(str_replace(',', '', $this->currency_rate));
+
+            if ($rate == 0) {
+                $this->withdrawal_amount = '';
+                $this->withdrawalAmountInWords = '';
+                return;
+            }
+
+            $calculatedAmount = 0;
+
+            // حالت‌های خاص AFN ↔ IRR (معکوس)
+            if ($fromCurrency === 'afn' && $toCurrency === 'irr') {
+                $calculatedAmount = ($amount * $rate) / 1000;
+            } elseif ($fromCurrency === 'irr' && $toCurrency === 'afn') {
+                $calculatedAmount = ($amount * 1000) / $rate;
+            }
+            // حالت‌های USD ↔ AFN (معکوس)
+            elseif ($fromCurrency === 'afn' && $toCurrency === 'usd') {
+                $calculatedAmount = $amount * $rate;
+            } elseif ($fromCurrency === 'usd' && $toCurrency === 'afn') {
+                $calculatedAmount = $amount / $rate;
+            }
+            // سایر تبدیل‌های عمومی (معکوس)
+            else {
+                $calculatedAmount = $amount / $rate;
+            }
+
+            $calculatedAmount = round($calculatedAmount, 2);
+            $this->withdrawal_amount = $calculatedAmount;
+
+            // تبدیل به حروف
+            $this->convertAmountToWords($calculatedAmount, 'withdrawalAmountInWords');
+            $this->convertAmountToWords($this->received_amount, 'receivedAmountInWords');
+            $this->convertAmountToWords($this->currency_rate, 'currencyRateInWords');
+
+            // محاسبه سود/ضرر
+            $this->calculateRealTimeProfitLoss();
+        } else {
+            $this->withdrawal_amount = '';
+            $this->withdrawalAmountInWords = '';
+            $this->receivedAmountInWords = '';
+            $this->currencyRateInWords = '';
+            $this->resetProfitLossDisplay();
+        }
+    }
+
+
+
+       /**
+     * تنظیم فیلد محاسبه هنگام کلیک روی input
+     */
+    public function setCalculatingField($field)
+    {
+        $this->calculatingField = $field;
+    }
+    
 
     /**
      * محاسبه و نمایش سود/ضرر در زمان واقعی
@@ -1498,21 +1587,32 @@ class ConversionTransfer extends Component
     /**
      * بارگذاری زون‌ها
      */
-    private function loadZones($adminId)
-    {
-        $this->zones = \App\Models\Sarafi\User::where(function ($query) use ($adminId) {
-            $query->where('admin_id', $adminId)
-                ->orWhere('id', $adminId);
+  
+private function loadZones($adminId)
+{
+    $zones = \App\Models\Sarafi\User::where(function ($query) use ($adminId) {
+            $query->where('id', $adminId)
+                  ->orWhere('admin_id', $adminId);
         })
-            ->whereNotNull('zone')
-            ->where('zone', '!=', '')
-            ->pluck('zone')
-            ->unique()
-            ->values()
-            ->toArray();
+        ->whereNotNull('zone')
+        ->where('zone', '!=', '')
+        ->pluck('zone')
+        ->unique()
+        ->values()
+        ->toArray();
 
-        if (empty($this->zones)) {
-            $this->zones = ['غرب', 'مرکز', 'شمال', 'جنوب', 'شرق'];
-        }
+    if (empty($zones)) {
+        $zones = ['غرب', 'مرکز', 'شمال', 'جنوب', 'شرق'];
     }
+
+    $this->zones = $zones;
+
+    if (!$this->zone_sender) {
+        $this->zone_sender = $zones[0];
+    }
+
+    if (!$this->zone_receiver) {
+        $this->zone_receiver = $zones[0];
+    }
+}
 }

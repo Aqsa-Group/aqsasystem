@@ -591,24 +591,28 @@
                                 @enderror
                             </div>
 
-                            {{-- مقدار برداشت --}}
-                            <div class="flex-1">
-                                <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ
-                                    برداشت</label>
-                                <div class="relative w-full">
-                                    <input type="text" wire:model.live="withdrawal_amount" placeholder="0"
-                                        class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 "
-                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
-                                </div>
-                                @if($withdrawalAmountInWords)
-                                <div class="mt-2 text-sm text-gray-600">
-                                    <strong></strong> {{ $withdrawalAmountInWords }}
-                                </div>
-                                @endif
-                                @error('withdrawal_amount')
-                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                                @enderror
-                            </div>
+                        {{-- مقدار برداشت --}}
+<div class="flex-1">
+    <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ
+        برداشت</label>
+    <div class="relative w-full">
+        <input type="text" 
+               wire:model.live="withdrawal_amount" 
+               wire:click="setCalculatingField('withdrawal')"
+               placeholder="0"
+               class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500"
+               oninput="this.value = this.value.replace(/[^0-9.]/g, '')" 
+               autocomplete="off" />
+    </div>
+    @if($withdrawalAmountInWords)
+    <div class="mt-2 text-sm text-gray-600 dark:text-white">
+        <strong></strong> {{ $withdrawalAmountInWords }}
+    </div>
+    @endif
+    @error('withdrawal_amount')
+    <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+    @enderror
+</div>
                         </div>
                     </div>
                     {{-- بخش دریافت --}}
@@ -678,25 +682,27 @@
                     {{-- نرخ ارز و تاریخ --}}
                     <div class="mt-2 flex flex-col lg:flex-row gap-3">
 
-                        {{-- مقدار دریافت --}}
-                        <div class="flex-1">
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ
-                                دریافت</label>
-                            <div class="relative w-full">
-                                <input type="text" wire:model="received_amount" placeholder="0"
-                                    class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500  bg-gray-100"
-                                    readonly />
-                            </div>
-                            @if($receivedAmountInWords)
-                            <div class="mt-2 text-sm text-gray-600">
-                                <strong></strong> {{ $receivedAmountInWords }}
-                            </div>
-                            @endif
-
-                            @error('received_amount')
-                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                            @enderror
-                        </div>
+                      {{-- مقدار دریافت --}}
+<div class="flex-1">
+    <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ
+        دریافت</label>
+    <div class="relative w-full">
+        <input type="text" 
+               wire:model.live="received_amount" 
+               wire:click="setCalculatingField('received')"
+               placeholder="0"
+               class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500" 
+               autocomplete="off" />
+    </div>
+    @if($receivedAmountInWords)
+    <div class="mt-2 text-sm text-gray-600 dark:text-white">
+        <strong></strong> {{ $receivedAmountInWords }}
+    </div>
+    @endif
+    @error('received_amount')
+    <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+    @enderror
+</div>
                         {{-- تاریخ --}}
                      <div class="lg:w-[290px] relative" x-data="persianDatePicker()" x-init="init()">
     <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>

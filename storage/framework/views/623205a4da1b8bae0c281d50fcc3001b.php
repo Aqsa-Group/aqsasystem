@@ -632,32 +632,36 @@ endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
 
-                            
-                            <div class="flex-1">
-                                <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ
-                                    برداشت</label>
-                                <div class="relative w-full">
-                                    <input type="text" wire:model.live="withdrawal_amount" placeholder="0"
-                                        class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 "
-                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
-                                </div>
-                                <!--[if BLOCK]><![endif]--><?php if($withdrawalAmountInWords): ?>
-                                <div class="mt-2 text-sm text-gray-600">
-                                    <strong></strong> <?php echo e($withdrawalAmountInWords); ?>
+                        
+<div class="flex-1">
+    <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ
+        برداشت</label>
+    <div class="relative w-full">
+        <input type="text" 
+               wire:model.live="withdrawal_amount" 
+               wire:click="setCalculatingField('withdrawal')"
+               placeholder="0"
+               class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500"
+               oninput="this.value = this.value.replace(/[^0-9.]/g, '')" 
+               autocomplete="off" />
+    </div>
+    <!--[if BLOCK]><![endif]--><?php if($withdrawalAmountInWords): ?>
+    <div class="mt-2 text-sm text-gray-600 dark:text-white">
+        <strong></strong> <?php echo e($withdrawalAmountInWords); ?>
 
-                                </div>
-                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['withdrawal_amount'];
+    </div>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['withdrawal_amount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                                <?php unset($message);
+    <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+    <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-                            </div>
+</div>
                         </div>
                     </div>
                     
@@ -742,33 +746,35 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     
                     <div class="mt-2 flex flex-col lg:flex-row gap-3">
 
-                        
-                        <div class="flex-1">
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ
-                                دریافت</label>
-                            <div class="relative w-full">
-                                <input type="text" wire:model="received_amount" placeholder="0"
-                                    class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500  bg-gray-100"
-                                    readonly />
-                            </div>
-                            <!--[if BLOCK]><![endif]--><?php if($receivedAmountInWords): ?>
-                            <div class="mt-2 text-sm text-gray-600">
-                                <strong></strong> <?php echo e($receivedAmountInWords); ?>
+                      
+<div class="flex-1">
+    <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ
+        دریافت</label>
+    <div class="relative w-full">
+        <input type="text" 
+               wire:model.live="received_amount" 
+               wire:click="setCalculatingField('received')"
+               placeholder="0"
+               class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500" 
+               autocomplete="off" />
+    </div>
+    <!--[if BLOCK]><![endif]--><?php if($receivedAmountInWords): ?>
+    <div class="mt-2 text-sm text-gray-600 dark:text-white">
+        <strong></strong> <?php echo e($receivedAmountInWords); ?>
 
-                            </div>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-
-                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['received_amount'];
+    </div>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['received_amount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                            <?php unset($message);
+    <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+    <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-                        </div>
+</div>
                         
                      <div class="lg:w-[290px] relative" x-data="persianDatePicker()" x-init="init()">
     <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
