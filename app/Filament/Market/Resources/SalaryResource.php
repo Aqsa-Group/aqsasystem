@@ -154,8 +154,7 @@ class SalaryResource extends Resource
                 ])
                 ->required(),
 
-            Forms\Components\DatePicker::make('paid_date')
-                ->jalali()
+            Forms\Components\Hidden::make('paid_date')
                 ->label('تاریخ پرداخت')
                 ->default(now())
                 ->reactive()
@@ -180,7 +179,7 @@ class SalaryResource extends Resource
         if (!$staff) {
             return;
         }
-        
+
         // تنظیم حقوق ماهانه و روزانه
         $set('salary', $staff->salary);
         $dailySalary = $staff->salary / 30;
