@@ -107,19 +107,21 @@ class Users extends Component
     // -------------------------
     // Reset form fields
     // -------------------------
-    public function resetInputFields()
-    {
-        $this->name = '';
-        $this->lastname = '';
-        $this->username = '';
-        $this->password = '';
-        $this->role = '';
-        $this->phone = '';
-        $this->user_limition = '';
-        $this->modalOpen = false;
-        $this->editId = null;
-        $this->zone = '';
-    }
+  public function resetInputFields()
+{
+    $this->name = '';
+    $this->lastname = '';
+    $this->username = '';
+    $this->password = '';
+    $this->role = '';
+    $this->phone = null;
+    $this->phone2 = null;
+    $this->phone3 = null;
+    $this->user_limition = null;
+    $this->zone = '';
+    $this->editId = null;
+    $this->modalOpen = false;
+}
 
     // -------------------------
     // Open modal for creating user
@@ -145,13 +147,13 @@ class Users extends Component
         $this->username = $user->username;
         $this->role = $user->role;
         $this->sarafi_name = $user->sarafi_name ?? '';
-        $this->address = $user->address ?? '';
-        $this->address2 = $user->address2 ?? '';
-        $this->address2 = $user->address2 ?? '';
+        $this->address = $user->address ??  null;
+        $this->address2 = $user->address2 ?? null;
+        $this->address3 = $user->address3 ?? null;
 
-        $this->phone = $user->phone ?? '';
-        $this->phone2 = $user->phone2 ?? '';
-        $this->phone3 = $user->phone3 ?? '';
+        $this->phone = $user->phone ??  null;
+        $this->phone2 = $user->phone2 ?? null;
+        $this->phone3 = $user->phone3 ?? null;
         $this->user_limition = $user->user_limition ?? null;
         $this->modalOpen = true;
         $this->zone = $user->zone;
@@ -197,9 +199,10 @@ class Users extends Component
             'address2' => $this->address2,
             'address3' => $this->address3,
 
-            'phone' => $this->phone,
-            'phone2' => $this->phone2,
-            'phone3' => $this->phone3,
+            'phone'  => $this->phone  ?: null,
+            'phone2' => $this->phone2 ?: null,
+            'phone3' => $this->phone3 ?: null,
+
 
             'status' => $this->editId ? User::find($this->editId)->status : 0,
             'zone' => $this->zone,
@@ -362,6 +365,17 @@ class Users extends Component
     {
         return User::select('role')->distinct()->pluck('role')->toArray();
     }
+
+    public function updatedPhone2($value)
+{
+    $this->phone2 = $this->convertToEnglishNumbers($value);
+}
+
+public function updatedPhone3($value)
+{
+    $this->phone3 = $this->convertToEnglishNumbers($value);
+}
+
 
     // -------------------------
     // Get unique sarafis for filter
