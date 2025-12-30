@@ -2589,6 +2589,7 @@
         let currentChatUserId = null;
         let currentChatUserName = null;
         let pollingInterval = null;
+        let backgroundPollingInterval = null; // Polling همیشگی در پس‌زمینه
         let conversations = [];
         let users = [];
         let isChatOpen = false;
@@ -3411,7 +3412,7 @@
             };
         }
 
-        // Polling for new messages
+        // Polling for new messages - فقط وقتی چت باز است
         function startPolling() {
             stopPolling();
             pollingInterval = setInterval(() => {
@@ -3422,7 +3423,7 @@
                 } else if (isChatOpen) {
                     loadConversations();
                 }
-            }, 10000); // Poll every 10 seconds
+            }, 5000); // Poll every 5 seconds when chat is open
         }
 
         function stopPolling() {
@@ -3432,8 +3433,25 @@
             }
         }
 
+        // Background Polling - همیشه فعال
+        function startBackgroundPolling() {
+            stopBackgroundPolling();
+            backgroundPollingInterval = setInterval(() => {
+                updateUnreadCount();
+                // فقط تعداد پیام‌های نخوانده را بررسی کن
+            }, 15000); // Poll every 15 seconds in background
+        }
+
+        function stopBackgroundPolling() {
+            if (backgroundPollingInterval) {
+                clearInterval(backgroundPollingInterval);
+                backgroundPollingInterval = null;
+            }
+        }
+
         // Initial setup
         updateUnreadCount();
+        startBackgroundPolling(); // شروع Polling همیشگی
         
         // Auto open chat if there are unread messages
         setTimeout(() => {
@@ -3461,6 +3479,27 @@
             activateAudio();
             document.removeEventListener('click', initAudio);
         }, { once: true });
+
+        // وقتی تب غیرفعال می‌شود، polling را کاهش بده
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                // Tab غیرفعال شده
+                if (backgroundPollingInterval) {
+                    clearInterval(backgroundPollingInterval);
+                    backgroundPollingInterval = setInterval(() => {
+                        updateUnreadCount();
+                    }, 30000); // هر 30 ثانیه وقتی تب غیرفعال است
+                }
+            } else {
+                // Tab فعال شده
+                if (backgroundPollingInterval) {
+                    clearInterval(backgroundPollingInterval);
+                    backgroundPollingInterval = setInterval(() => {
+                        updateUnreadCount();
+                    }, 15000); // برگشت به 15 ثانیه
+                }
+            }
+        });
     });
 </script>
             
