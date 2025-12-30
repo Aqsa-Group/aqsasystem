@@ -3446,4 +3446,4 @@
     <?php echo $__env->yieldContent('scripts'); ?>
 </body>
 
-</html><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/Sarafi/layouts/sidebar.blade.php ENDPATH**/ ?>
+</html> <?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/Sarafi/layouts/sidebar.blade.php ENDPATH**/ ?>
