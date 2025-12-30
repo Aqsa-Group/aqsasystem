@@ -1362,8 +1362,7 @@
                 ? 'bg-[#122EE1] text-white'
                 : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
            class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm vazir">
-            <img src="<?php echo e(asset('assets/sarafi/all_icon/bitcoin-(btc).svg')); ?>" class="w-4 h-4">
-            <span>خرید و فروش ارز</span>
+<i class="fa-brands fa-bitcoin" class="w-4 h-4"></i>            <span>خرید و فروش ارز</span>
         </a>
 
         <a href="<?php echo e(route('sarafi.conversion.in.account')); ?>"
