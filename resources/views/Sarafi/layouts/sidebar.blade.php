@@ -1249,35 +1249,12 @@
                         </span>
                     </a>
 
-                    <!-- کاربران -->
-                    <a href="{{ route('sarafi.users') }}"
-                        class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir dark:text-white"
-                        @click="active = 'users'"
-                        :class="active === 'users' ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white dark:hover:bg-gray-800 hover:bg-gray-100'">
-                        <span class="flex items-center gap-2">
-                            <img src="{{ asset('assets/sarafi/all_icon/profile-2user.svg') }}"
-                                class="w-5 h-5 dark:hidden"
-                                :class="active === 'users' ? 'filter invert brightness-0' : 'text-gray-500' ">
-                            <svg width="25" class="hidden dark:block" height="25" viewBox="0 0 30 30" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M11.4531 13.5875C11.3281 13.575 11.1781 13.575 11.0406 13.5875C8.06562 13.4875 5.70312 11.05 5.70312 8.05C5.70312 4.9875 8.17813 2.5 11.2531 2.5C14.3156 2.5 16.8031 4.9875 16.8031 8.05C16.7906 11.05 14.4281 13.4875 11.4531 13.5875Z"
-                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                <path
-                                    d="M20.5141 5C22.9391 5 24.8891 6.9625 24.8891 9.375C24.8891 11.7375 23.0141 13.6625 20.6766 13.75C20.5766 13.7375 20.4641 13.7375 20.3516 13.75"
-                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                <path
-                                    d="M5.19844 18.2C2.17344 20.225 2.17344 23.525 5.19844 25.5375C8.63594 27.8375 14.2734 27.8375 17.7109 25.5375C20.7359 23.5125 20.7359 20.2125 17.7109 18.2C14.2859 15.9125 8.64844 15.9125 5.19844 18.2Z"
-                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                <path
-                                    d="M22.9219 25C23.8219 24.8125 24.6719 24.45 25.3719 23.9125C27.3219 22.45 27.3219 20.0375 25.3719 18.575C24.6844 18.05 23.8469 17.7 22.9594 17.5"
-                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
 
-                            <span class="dark:text-white"> {{ __('messages.users') }}</span>
-                        </span>
-                    </a>
 
+
+
+
+                  
                     <!-- مشتریان -->
                     <div>
                         <button @click="openItems.customers = !openItems.customers; active = 'customers'"
@@ -1343,6 +1320,119 @@
                             </a>
                         </div>
                     </div>
+
+
+              <!-- ثبت و مدیریت معاملات -->
+<div
+    x-data="{
+        openItems: {
+            transaction: false,
+        },
+        active: ''
+    }">
+
+    <!-- دکمه اصلی -->
+    <button
+        @click="openItems.transaction = !openItems.transaction; active = 'transaction'"
+        :class="active === 'transaction'
+            ? 'bg-[#122EE1] text-white'
+            : 'text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
+        class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+
+        <span class="flex items-center gap-2">
+            <img src="{{ asset('assets/sarafi/all_icon/edit.svg') }}"
+                 class="w-5 h-5 dark:hidden"
+                 :class="active === 'transaction' ? 'filter invert brightness-0' : ''">
+
+            <span>ثبت و مدیریت معاملات</span>
+        </span>
+
+        <svg
+            :class="openItems.transaction ? 'rotate-180 text-white' : 'text-gray-500'"
+            class="w-4 h-4 transition-transform"
+            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 9l-7 7-7-7" />
+        </svg>
+    </button>
+
+    <!-- زیرمنو -->
+    <div x-show="openItems.transaction" x-transition class="mr-6 mt-2 space-y-1">
+
+        <a href="{{ route('sarafi.transactions') }}"
+           @click="active = 'transactions'"
+           :class="active === 'transactions'
+                ? 'bg-[#122EE1] text-white'
+                : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
+           class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm vazir">
+            <i class="fa-solid fa-wallet"></i>
+            <span>رسید / برداشت</span>
+        </a>
+
+        <a href="{{ route('sarafi.account_to_account') }}"
+           @click="active = 'account_to_account'"
+           :class="active === 'account_to_account'
+                ? 'bg-[#122EE1] text-white'
+                : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
+           class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm vazir">
+            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+            <span>انتقال حساب به حساب</span>
+        </a>
+
+        <a href="{{ route('sarafi.buy-sell-currency') }}"
+           @click="active = 'buy_sell'"
+           :class="active === 'buy_sell'
+                ? 'bg-[#122EE1] text-white'
+                : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
+           class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm vazir">
+            <img src="{{ asset('assets/sarafi/all_icon/bitcoin-(btc).svg') }}" class="w-4 h-4">
+            <span>خرید و فروش ارز</span>
+        </a>
+
+        <a href="{{ route('sarafi.conversion.in.account') }}"
+           @click="active = 'conversion_account'"
+           :class="active === 'conversion_account'
+                ? 'bg-[#122EE1] text-white'
+                : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
+           class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm vazir">
+            <i class="fa-solid fa-exchange-alt"></i>
+            <span>حساب تبدیل</span>
+        </a>
+
+        <a href="{{ route('sarafi.conversion-transfer') }}"
+           @click="active = 'conversion_transfer'"
+           :class="active === 'conversion_transfer'
+                ? 'bg-[#122EE1] text-white'
+                : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
+           class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm vazir">
+            <i class="fa-solid fa-hand-holding-dollar"></i>
+            <span>انتقال تبدیل</span>
+        </a>
+
+        <a href="{{ route('sarafi.remittance') }}"
+           @click="active = 'remittance'"
+           :class="active === 'remittance'
+                ? 'bg-[#122EE1] text-white'
+                : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
+           class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm vazir">
+            <i class="fa-solid fa-book-open"></i>
+            <span>رسید بانکی</span>
+        </a>
+
+        <a href="{{ route('sarafi.withdrawbank') }}"
+           @click="active = 'withdrawbank'"
+           :class="active === 'withdrawbank'
+                ? 'bg-[#122EE1] text-white'
+                : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
+           class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm vazir">
+            <i class="fa-solid fa-file-invoice-dollar"></i>
+            <span>برد بانکی</span>
+        </a>
+
+    </div>
+</div>
+
+
 
                     <!-- ثبت حسابات و نرخ ارز -->
                     <div>
@@ -1802,12 +1892,28 @@
                             </svg>
                         </button>
                         <div x-show="openItems.management" x-transition class="mr-6 mt-1 space-y-1">
-                            <a href="#"
+                            <a href="{{ route('sarafi.users') }}"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('user-management', 'management')"
                                 :class="active === 'user-management' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
-                                <img src="{{ asset('assets/sarafi/all_icon/user.svg') }}" class="w-4 h-4"
-                                    :class="active === 'user-management' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                <img src="{{ asset('assets/sarafi/all_icon/profile-2user.svg') }}"
+                                class="w-5 h-5 dark:hidden"
+                                :class="active === 'users' ? 'filter invert brightness-0' : 'text-gray-500' ">
+                            <svg width="25" class="hidden dark:block" height="25" viewBox="0 0 30 30" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M11.4531 13.5875C11.3281 13.575 11.1781 13.575 11.0406 13.5875C8.06562 13.4875 5.70312 11.05 5.70312 8.05C5.70312 4.9875 8.17813 2.5 11.2531 2.5C14.3156 2.5 16.8031 4.9875 16.8031 8.05C16.7906 11.05 14.4281 13.4875 11.4531 13.5875Z"
+                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M20.5141 5C22.9391 5 24.8891 6.9625 24.8891 9.375C24.8891 11.7375 23.0141 13.6625 20.6766 13.75C20.5766 13.7375 20.4641 13.7375 20.3516 13.75"
+                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M5.19844 18.2C2.17344 20.225 2.17344 23.525 5.19844 25.5375C8.63594 27.8375 14.2734 27.8375 17.7109 25.5375C20.7359 23.5125 20.7359 20.2125 17.7109 18.2C14.2859 15.9125 8.64844 15.9125 5.19844 18.2Z"
+                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M22.9219 25C23.8219 24.8125 24.6719 24.45 25.3719 23.9125C27.3219 22.45 27.3219 20.0375 25.3719 18.575C24.6844 18.05 23.8469 17.7 22.9594 17.5"
+                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
                                 {{ __('messages.user_management') }}
                             </a>
                         </div>

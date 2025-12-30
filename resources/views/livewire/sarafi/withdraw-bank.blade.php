@@ -1360,59 +1360,53 @@
                         </div>
                     </div>
 
-               <!-- Source and Destination Banks -->
-<div class="mt-2 flex flex-col lg:flex-row gap-3">
-    <div class="lg:w-[290px]">
-        <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
-            بانک مبدا
-        </label>
+                    <!-- Source and Destination Banks -->
+                    <div class="mt-2 flex flex-col lg:flex-row gap-3">
+                        <div class="lg:w-[290px]">
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
+                                بانک مبدا
+                            </label>
 
-        <input type="text" 
-               wire:model="from_bank"
-               list="banks-list"
-               placeholder="بانک مبدا" 
-               class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent dark:bg-black dark:border-white dark:text-white">
+                            <input type="text" wire:model="from_bank" list="banks-list" placeholder="بانک مبدا"
+                                class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent dark:bg-black dark:border-white dark:text-white">
 
-        <datalist id="banks-list">
-            <option value="بانک ملی ایران">
-            <option value="بانک ملت">
-            <option value="بانک صادرات">
-            <option value="بانک سپه">
-            <option value="بانک تجارت">
-            <option value="بانک پاسارگاد">
-            <option value="بانک سامان">
-            <option value="بانک پارسیان">
-            <option value="HSBC">
-            <option value="Standard Chartered">
-            <option value="Citi Bank">
-            <option value="Deutsche Bank">
-            <option value="Bank of China">
-            <option value="Emirates NBD">
-            <option value="QNB">
-            <option value="Al Rajhi Bank">
-        </datalist>
+                            <datalist id="banks-list">
+                                <option value="بانک ملی ایران">
+                                <option value="بانک ملت">
+                                <option value="بانک صادرات">
+                                <option value="بانک سپه">
+                                <option value="بانک تجارت">
+                                <option value="بانک پاسارگاد">
+                                <option value="بانک سامان">
+                                <option value="بانک پارسیان">
+                                <option value="HSBC">
+                                <option value="Standard Chartered">
+                                <option value="Citi Bank">
+                                <option value="Deutsche Bank">
+                                <option value="Bank of China">
+                                <option value="Emirates NBD">
+                                <option value="QNB">
+                                <option value="Al Rajhi Bank">
+                            </datalist>
 
-        @error('from_bank')
-        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-        @enderror
-    </div>
+                            @error('from_bank')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
+                        </div>
 
-    <div class="lg:w-[290px]">
-        <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
-            بانک مقصد
-        </label>
+                        <div class="lg:w-[290px]">
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
+                                بانک مقصد
+                            </label>
 
-        <input type="text" 
-               wire:model="to_bank"
-               list="banks-list"
-               placeholder="بانک مقصد" 
-               class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent dark:bg-black dark:border-white dark:text-white">
+                            <input type="text" wire:model="to_bank" list="banks-list" placeholder="بانک مقصد"
+                                class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent dark:bg-black dark:border-white dark:text-white">
 
-        @error('to_bank')
-        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-        @enderror
-    </div>
-</div>
+                            @error('to_bank')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
                     <!-- Source and Destination Account Numbers -->
                     <div class="flex-1 flex gap-2 mt-2">
                         <!-- Source Account Number (Display only) -->
