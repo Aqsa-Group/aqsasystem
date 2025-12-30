@@ -200,7 +200,7 @@
                 <?php $__currentLoopData = $active_currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code => $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <th colspan="2" class="currency-header"><?php echo e($currency['name_fa']); ?></th>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                <th rowspan="2">وضعیت</th>
+               
             </tr>
             <tr>
                 <?php $__currentLoopData = $active_currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code => $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -213,7 +213,7 @@
             <?php $__currentLoopData = $transactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $transaction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <tr>
                 <td><?php echo e($index + 1); ?></td>
-                <td><?php echo e($transaction->date); ?></td>
+<td><?php echo e(explode(' ', $transaction->date)[0]); ?></td>
                 <td><?php echo e($transaction->account_type); ?></td>
                 <td><?php echo e($transaction->document_number ?? 'SN-' . str_pad($transaction->id, 3, '0', STR_PAD_LEFT)); ?></td>
                 <td><?php echo e(Str::limit($transaction->description, 20)); ?></td>
@@ -222,12 +222,7 @@
                 <td class="amount-cell"><?php echo e($transaction->currency == $code && $transaction->type == 'رسید' ? number_format($transaction->amount) : ''); ?></td>
                 <td class="amount-cell"><?php echo e($transaction->currency == $code && $transaction->type == 'برد' ? number_format($transaction->amount) : ''); ?></td>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                <td>
-                    <span class="<?php echo e($transaction->status == 'تأیید شده' ? 'status-confirmed' : 'status-pending'); ?>">
-                        <?php echo e($transaction->status ?? 'در انتظار'); ?>
-
-                    </span>
-                </td>
+             
             </tr>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </tbody>

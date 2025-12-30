@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Sarafi\Trash;
 use Illuminate\Support\Facades\Auth;
+use App\Services\WhatsAppService;
+use Morilog\Jalali\Jalalian;
+
 
 class Transaction extends Model
 {
@@ -67,7 +70,7 @@ class Transaction extends Model
         return $this->belongsTo(ChangerDeal::class, 'changerdeal_id');
     }
 
-      public function withdrawbank()
+    public function withdrawbank()
     {
         return $this->belongsTo(WithdrawsBanks::class, 'withdrawbank_id');
     }
@@ -144,10 +147,10 @@ class Transaction extends Model
                 'document_type' => 'رسید /برد صندوق',
                 'record_id' => $model->id,
                 'action' => 'ویرایش',
-                'document_discription'=>  $model->description,
+                'document_discription' =>  $model->description,
                 'old_data' => $model->getOriginal(),
                 'new_data' => $model->getAttributes(),
-                'registered_user'=> $model->user_id,
+                'registered_user' => $model->user_id,
                 'user_id'  => $user->id,
                 'admin_id' => $adminId,
             ]);
@@ -160,12 +163,34 @@ class Transaction extends Model
                 'document_type' => 'رسید /برد صندوق',
                 'record_id' => $model->id,
                 'action' => 'حذف',
-                'document_discription'=>  $model->description,
+                'document_discription' =>  $model->description,
                 'old_data' => $model->getAttributes(),
-                'registered_user'=> $model->user_id,
+                'registered_user' => $model->user_id,
                 'user_id'     => $user->id,
                 'admin_id'         => $adminId,
             ]);
+        });
+
+
+
+        static::created(function ($transaction) {
+
+            $customer = $transaction->customer;
+
+            if (!$customer || !$customer->whatsapp_number) {
+                return;
+            }
+
+            WhatsAppService::sendTransaction(
+                $customer->whatsapp_number,
+                [
+                    'name'     => $customer->fullname,
+                    'amount'   => $transaction->amount,
+                    'currency' => $transaction->currency,
+                    'type'     => $transaction->type,
+                    'date'     => $transaction->date->format('Y-m-d'),
+                ]
+            );
         });
     }
 }

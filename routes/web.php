@@ -696,3 +696,5 @@ Route::get('/updated-market/home', function () {
 
 
 
+
+

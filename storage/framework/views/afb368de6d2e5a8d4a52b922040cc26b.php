@@ -615,11 +615,8 @@
 
         <div class="flex flex-col md:flex-row  min-h-screen bg-[#F9FEFF]">
             <!-- سایدبار -->
-<div
-    id="sidebar"
-    class="sidebar-container rounded-tl-[50px] bg-[#1C274C]"
-    style="box-shadow: -4px 0px 4px 0px rgba(0,0,0,0.25);"
->
+            <div id="sidebar" class="sidebar-container rounded-tl-[50px] bg-[#1C274C]"
+                style="box-shadow: -4px 0px 4px 0px rgba(0,0,0,0.25);">
 
                 <nav class="mt-0 space-y-0" x-data="{
                     openItems: {
@@ -864,14 +861,14 @@
                         </div>
                     </div>
 
-                      <!--  گزارشات -->
+                    <!--  گزارشات -->
                     <div>
                         <button @click="openItems.customers = !openItems.customers; active = 'customers'"
                             :class="(active === 'customers' || active === 'customer-create' || active === 'customer-table') ? 'bg-[#122EE1] text-white' : 'text-gray-700 hover:bg-gray-100'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2">
 
-                                گزارشات 
+                                گزارشات
                             </span>
                             <svg :class="[openItems.customers ? 'rotate-180' : '', (active === 'customers' || active === 'customer-create' || active === 'customer-table') ? 'text-white' : 'text-gray-500']"
                                 class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
@@ -905,14 +902,14 @@
 
 
 
-                    
+
 
 
                 </nav>
             </div>
 
             <!-- محتوای اصلی -->
-           <main class="flex-1 mx-auto main-content-wrapper px-6  w-[500px] overflow-x-hidden">
+            <main class="flex-1 mx-auto main-content-wrapper px-6  w-[500px] overflow-x-hidden">
                 <?php echo $__env->yieldContent('content'); ?>
             </main>
         </div>
