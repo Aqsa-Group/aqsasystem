@@ -225,8 +225,9 @@ class ConversionInAccount extends Component
         }
     }
 
+
     /**
-     * تغییر نوع معامله (خرید/فروش)
+     * تغییر نوع معامله (خرید/فروش) - نسخه بهبود یافته
      */
     public function toggleTransactionType()
     {
@@ -247,7 +248,24 @@ class ConversionInAccount extends Component
         $this->by_sender = $this->by_receiver;
         $this->by_receiver = $tempBy;
 
-        $this->calculateReceivedAmount();
+        // محاسبه مجدد
+        if ($this->calculatingField === 'buy' && $this->buy_amount && $this->currency_rate) {
+            $this->calculateReceivedAmount();
+        } elseif ($this->calculatingField === 'sell' && $this->sell_amount && $this->currency_rate) {
+            $this->calculateBuyAmount();
+        }
+
+        // به‌روزرسانی حروف‌نویسی
+        if ($this->buy_amount) {
+            $this->convertAmountToWords($this->buy_amount, 'withdrawalAmountInWords', 2);
+        }
+        if ($this->sell_amount) {
+            $this->convertAmountToWords($this->sell_amount, 'receivedAmountInWords', 2);
+        }
+        if ($this->currency_rate) {
+            $this->convertAmountToWords($this->currency_rate, 'currencyRateInWords', 4);
+        }
+
         $this->dispatch('transactionTypeToggled');
     }
 
@@ -258,6 +276,9 @@ class ConversionInAccount extends Component
 
     /**
      * Event listener برای تغییر فیلدها
+     */
+    /**
+     * Event listener برای تغییر فیلدها - نسخه بهبود یافته
      */
     public function updated($property)
     {
@@ -273,9 +294,15 @@ class ConversionInAccount extends Component
             if ($property === 'buy_amount') {
                 $this->calculatingField = 'buy';
                 $this->calculateReceivedAmount();
+
+                // همیشه تبدیل به حروف
+                $this->convertAmountToWords($this->buy_amount, 'withdrawalAmountInWords', 2);
             } elseif ($property === 'sell_amount') {
                 $this->calculatingField = 'sell';
                 $this->calculateBuyAmount();
+
+                // همیشه تبدیل به حروف
+                $this->convertAmountToWords($this->sell_amount, 'receivedAmountInWords', 2);
             } elseif ($property === 'currency_rate') {
                 // اگر نرخ تغییر کرد، بر اساس آخرین فیلد ویرایش شده محاسبه کن
                 if ($this->calculatingField === 'buy' && $this->buy_amount) {
@@ -283,6 +310,9 @@ class ConversionInAccount extends Component
                 } elseif ($this->calculatingField === 'sell' && $this->sell_amount) {
                     $this->calculateBuyAmount();
                 }
+
+                // همیشه تبدیل به حروف
+                $this->convertAmountToWords($this->currency_rate, 'currencyRateInWords', 4);
             } elseif (in_array($property, ['from_currency', 'to_currency', 'transactionType'])) {
                 // اگر ارزها یا نوع معامله تغییر کرد، بر اساس آخرین فیلد محاسبه کن
                 if ($this->calculatingField === 'buy' && $this->buy_amount && $this->currency_rate) {
@@ -290,27 +320,38 @@ class ConversionInAccount extends Component
                 } elseif ($this->calculatingField === 'sell' && $this->sell_amount && $this->currency_rate) {
                     $this->calculateBuyAmount();
                 }
+
+                // وقتی ارزها تغییر کردند، اگر مقداری وجود دارد، به حروف تبدیل کن
+                if ($this->buy_amount) {
+                    $this->convertAmountToWords($this->buy_amount, 'withdrawalAmountInWords', 2);
+                }
+                if ($this->sell_amount) {
+                    $this->convertAmountToWords($this->sell_amount, 'receivedAmountInWords', 2);
+                }
+                if ($this->currency_rate) {
+                    $this->convertAmountToWords($this->currency_rate, 'currencyRateInWords', 4);
+                }
+            }
+
+            // تبدیل به حروف برای هر تغییری که روی این فیلدها تأثیر می‌گذارد
+            if (in_array($property, ['transactionType', 'accountType'])) {
+                if ($this->buy_amount) {
+                    $this->convertAmountToWords($this->buy_amount, 'withdrawalAmountInWords', 2);
+                }
+                if ($this->sell_amount) {
+                    $this->convertAmountToWords($this->sell_amount, 'receivedAmountInWords', 2);
+                }
+                if ($this->currency_rate) {
+                    $this->convertAmountToWords($this->currency_rate, 'currencyRateInWords', 4);
+                }
             }
         } finally {
             $this->calculating = false;
         }
-
-        // تبدیل به حروف
-        if ($property === 'buy_amount') {
-            $this->convertAmountToWords($this->buy_amount, 'withdrawalAmountInWords', 2);
-        }
-
-        if ($property === 'sell_amount') {
-            $this->convertAmountToWords($this->sell_amount, 'receivedAmountInWords', 2);
-        }
-
-        if ($property === 'currency_rate') {
-            $this->convertAmountToWords($this->currency_rate, 'currencyRateInWords', 4);
-        }
     }
 
     /**
-     * محاسبه مبلغ خرید بر اساس مبلغ فروش و نرخ ارز
+     * محاسبه مبلغ خرید بر اساس مبلغ فروش و نرخ ارز - نسخه بهبود یافته
      */
     public function calculateBuyAmount()
     {
@@ -352,17 +393,18 @@ class ConversionInAccount extends Component
             $calculatedAmount = round($calculatedAmount, 2);
 
             // ذخیره به صورت عددی با 2 رقم اعشار
-            $this->buy_amount = $calculatedAmount;
+            $this->buy_amount = number_format($calculatedAmount, 2, '.', '');
+
+            // تبدیل به حروف
+            $this->convertAmountToWords($this->buy_amount, 'withdrawalAmountInWords', 2);
         } else {
             $this->buy_amount = '';
             $this->withdrawalAmountInWords = '';
-            $this->receivedAmountInWords = '';
-            $this->currencyRateInWords = '';
         }
     }
 
     /**
-     * محاسبه مبلغ فروش بر اساس مبلغ خرید و نرخ ارز
+     * محاسبه مبلغ فروش بر اساس مبلغ خرید و نرخ ارز - نسخه بهبود یافته
      */
     public function calculateReceivedAmount()
     {
@@ -402,12 +444,13 @@ class ConversionInAccount extends Component
             $calculatedAmount = round($calculatedAmount, 2);
 
             // ذخیره به صورت عددی با 2 رقم اعشار
-            $this->sell_amount = $calculatedAmount;
+            $this->sell_amount = number_format($calculatedAmount, 2, '.', '');
+
+            // تبدیل به حروف
+            $this->convertAmountToWords($this->sell_amount, 'receivedAmountInWords', 2);
         } else {
             $this->sell_amount = '';
-            $this->withdrawalAmountInWords = '';
             $this->receivedAmountInWords = '';
-            $this->currencyRateInWords = '';
         }
     }
 
@@ -907,12 +950,6 @@ class ConversionInAccount extends Component
         try {
             Log::info('=== شروع ثبت تبدیل ارز ===');
 
-            // بررسی موجودی کافی در ارز مبدا
-            $fromCurrencyBalance = $this->getCustomerCurrencyBalance($this->selectedAccount, $this->from_currency);
-
-            if ($fromCurrencyBalance < floatval($this->buy_amount)) {
-                throw new \Exception('موجودی کافی در ارز مبدا وجود ندارد. موجودی فعلی: ' . number_format($fromCurrencyBalance));
-            }
 
             // محاسبه سود/ضرر
             Log::info('در حال محاسبه سود/ضرر...');
@@ -1329,9 +1366,6 @@ class ConversionInAccount extends Component
         return $baseDescription . 'تبدیل از ' . $this->getCurrencyName($this->from_currency) . ' (' . $conversionType . ')';
     }
 
-    /**
-     * دریافت موجودی یک ارز خاص برای مشتری
-     */
     private function getCustomerCurrencyBalance($customerId, $currencyCode): float
     {
         $user = Auth::guard('sarafi')->user();
@@ -1344,16 +1378,18 @@ class ConversionInAccount extends Component
             ->get();
 
         $balance = 0;
+
         foreach ($transactions as $transaction) {
             if ($transaction->type === 'رسید') {
-                $balance += floatval($transaction->amount);
+                $balance += (float) $transaction->amount;
             } else {
-                $balance -= floatval($transaction->amount);
+                $balance -= (float) $transaction->amount;
             }
         }
 
-        return max($balance, 0);
+        return $balance;
     }
+
 
     /**
      * به‌روزرسانی موجودی ارزهای مشتری
@@ -1570,51 +1606,97 @@ class ConversionInAccount extends Component
     /**
      * تبدیل عدد به حروف فارسی
      */
+    /**
+     * تبدیل عدد به حروف فارسی - نسخه بهبود یافته
+     */
     private function convertAmountToWords($value, $property, $decimals = 2)
     {
-        if ($value && is_numeric($value)) {
+        if ($value && $value !== '' && is_numeric(str_replace(',', '', $value))) {
             try {
-                // گرد کردن به تعداد اعشار مورد نظر و تبدیل به رشته
-                $roundedValue = number_format(floatval($value), $decimals, '.', '');
+                // حذف کاماها و تبدیل به عدد
+                $numericValue = floatval(str_replace(',', '', $value));
 
-                // جدا کردن قسمت صحیح و اعشار
-                $parts = explode('.', $roundedValue);
-                $integerPart = intval($parts[0]);
-                $fractionPart = isset($parts[1]) ? $parts[1] : '00';
-
-                // اگر قسمت اعشار فقط صفر است، آن را نمایش نده
-                if (intval($fractionPart) == 0) {
-                    $fractionPart = '';
+                // اگر عدد صفر باشد، حروف صفر نمایش داده شود
+                if ($numericValue == 0) {
+                    $this->$property = 'صفر';
+                    return;
                 }
 
+                // گرد کردن به تعداد اعشار مورد نظر
+                $roundedValue = round($numericValue, $decimals);
+
+                // جدا کردن قسمت صحیح و اعشار
+                $parts = explode('.', (string)$roundedValue);
+                $integerPart = intval($parts[0]);
+
+                // قسمت اعشار
+                $fractionPart = '';
+                if (isset($parts[1])) {
+                    // حذف صفرهای اضافی در سمت راست
+                    $fractionPart = rtrim($parts[1], '0');
+                }
+
+                // استفاده از NumberFormatter فارسی
                 $formatter = new NumberFormatter("fa", NumberFormatter::SPELLOUT);
 
                 // تبدیل قسمت صحیح به حروف
                 $integerWords = $formatter->format($integerPart);
 
-                // تبدیل قسمت اعشار به حروف (هر رقم جداگانه)
+                // تبدیل قسمت اعشار به حروف
                 $fractionWords = '';
-                if ($fractionPart !== '') {
-                    $fractionDigits = str_split($fractionPart);
-                    $digitWords = [];
-                    foreach ($fractionDigits as $digit) {
-                        $digitWords[] = $formatter->format($digit);
-                    }
-                    $fractionWords = ' ممیز ' . implode(' ', $digitWords);
+                if ($fractionPart !== '' && intval($fractionPart) > 0) {
+                    // اضافه کردن صفرهای سمت چپ اگر نیاز باشد
+                    $fractionPart = str_pad($fractionPart, $decimals, '0', STR_PAD_RIGHT);
+                    $fractionWords = $formatter->format(intval($fractionPart));
                 }
 
-                $words = $integerWords . $fractionWords;
-                $words = str_replace(['دویست', 'سیصد', 'پانصد'], ['دوصد', 'سه صد', 'پنجصد'], $words);
+                // ترکیب کلمات
+                $words = $integerWords;
+                if ($fractionWords !== '') {
+                    $words .= ' ممیز ' . $fractionWords;
+                }
+
+                // تصحیح برخی کلمات
+                $replacements = [
+                    'دویست' => 'دوصد',
+                    'سیصد' => 'سه‌صد',
+                    'پانصد' => 'پانصد',
+                    'هشتصد' => 'هشتصد',
+                    'نهصد' => 'نه‌صد',
+                    'و ممیز' => ' ممیز', // حذف "و" قبل از ممیز
+                    '  ' => ' ', // حذف فاصله‌های اضافی
+                ];
+
+                $words = str_replace(array_keys($replacements), array_values($replacements), $words);
+
+                // اضافه کردن واحد اگر لازم است
+                if ($property === 'withdrawalAmountInWords' || $property === 'receivedAmountInWords') {
+                    $currency = $property === 'withdrawalAmountInWords' ?
+                        $this->getCurrencyName($this->from_currency) :
+                        $this->getCurrencyName($this->to_currency);
+                    $words .= ' ' . $currency;
+                }
+
                 $this->$property = $words;
+
+                // لاگ برای دیباگ
+                Log::debug("مقدار {$value} به حروف تبدیل شد: {$words}", [
+                    'property' => $property,
+                    'numeric_value' => $numericValue,
+                    'integer_part' => $integerPart,
+                    'fraction_part' => $fractionPart
+                ]);
             } catch (\Exception $e) {
+                Log::error('خطا در تبدیل مقدار به حروف: ' . $e->getMessage(), [
+                    'value' => $value,
+                    'property' => $property
+                ]);
                 $this->$property = '';
-                Log::error('Error converting amount to words: ' . $e->getMessage());
             }
         } else {
             $this->$property = '';
         }
     }
-
     /**
      * دریافت نام ارز
      */

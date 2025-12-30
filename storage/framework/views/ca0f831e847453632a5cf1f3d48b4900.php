@@ -1361,7 +1361,7 @@
                 : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm vazir">
                                 <i class="fa-solid fa-exchange-alt"></i>
-                                <span>حساب تبدیل</span>
+                                <span>تبدیل  ارز در حساب</span>
                             </a>
 
                             <a href="<?php echo e(route('sarafi.conversion-transfer')); ?>" @click="active = 'conversion_transfer'"
@@ -1370,9 +1370,9 @@
                 : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm vazir">
                                 <i class="fa-solid fa-hand-holding-dollar"></i>
-                                <span>انتقال تبدیل</span>
+                                <span> تبدیل ارز و انتقال از حساب</span>
                             </a>
-
+ 
                             <a href="<?php echo e(route('sarafi.remittance')); ?>" @click="active = 'remittance'" :class="active === 'remittance'
                 ? 'bg-[#122EE1] text-white'
                 : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
