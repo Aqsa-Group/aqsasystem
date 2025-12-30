@@ -3,57 +3,66 @@
 
 <head>
     <meta charset="UTF-8" name="csrf-token" content="<?php echo e(csrf_token()); ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" name="csrf-token"
-        content="<?php echo e(csrf_token()); ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     <title>سیستم صرافی اقصی</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script>
         tailwind.config = {
-        darkMode: 'class',
-        theme: {
-            extend: {}
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    screens: {
+                        'xs': '475px',
+                        'sm': '640px',
+                        'md': '768px',
+                        'lg': '1024px',
+                        'xl': '1280px',
+                        '2xl': '1536px',
+                    }
+                }
+            }
         }
-    }
     </script>
-    <?php echo $__env->make('Sarafi.layouts.links', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    
     <style>
-        /* Chat box */
-
-
-        .animate-pulse {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        /* Variables for mobile optimization */
+        :root {
+            --vh: 1vh;
+            --safe-area-inset-top: env(safe-area-inset-top);
+            --safe-area-inset-bottom: env(safe-area-inset-bottom);
+            --safe-area-inset-left: env(safe-area-inset-left);
+            --safe-area-inset-right: env(safe-area-inset-right);
         }
 
-        @keyframes pulse {
+        /* Base styles */
+        * {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+        }
 
-            0%,
-            100% {
-                opacity: 1;
-            }
+        html {
+            font-size: 16px;
+        }
 
-            50% {
-                opacity: 0.5;
+        body {
+            min-height: 100vh;
+            min-height: calc(var(--vh, 1vh) * 100);
+            overflow-x: hidden;
+        }
+
+        /* Prevent zoom on input focus in iOS */
+        @media screen and (max-width: 767px) {
+            input,
+            select,
+            textarea {
+                font-size: 16px !important;
             }
         }
 
-        .animate-slide-in {
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
+        /* Enhanced Loader */
         #loader {
             position: fixed;
             top: 0;
@@ -81,8 +90,12 @@
             margin: 0 auto 30px;
         }
 
-        .dark {
-            color: white;
+        @media (max-width: 767px) {
+            .spinner-wrapper {
+                width: 90px;
+                height: 90px;
+                margin-bottom: 20px;
+            }
         }
 
         .spinner {
@@ -93,16 +106,16 @@
         }
 
         .spinner-1 {
-            width: 120px;
-            height: 120px;
+            width: 100%;
+            height: 100%;
             border-top: 4px solid #122EE1;
             border-bottom: 4px solid #122EE1;
             animation-duration: 1.5s;
         }
 
         .spinner-2 {
-            width: 100px;
-            height: 100px;
+            width: calc(100% - 20px);
+            height: calc(100% - 20px);
             top: 10px;
             left: 10px;
             border-left: 4px solid #FF6B6B;
@@ -112,8 +125,8 @@
         }
 
         .spinner-3 {
-            width: 80px;
-            height: 80px;
+            width: calc(100% - 40px);
+            height: calc(100% - 40px);
             top: 20px;
             left: 20px;
             border-top: 4px solid #4ECDC4;
@@ -130,9 +143,17 @@
             align-items: center;
             justify-content: center;
             position: absolute;
-            top: 30px;
-            left: 30px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             box-shadow: 0 0 20px rgba(18, 46, 225, 0.3);
+        }
+
+        @media (max-width: 767px) {
+            .logo-loader {
+                width: 45px;
+                height: 45px;
+            }
         }
 
         .logo-loader span {
@@ -140,6 +161,12 @@
             font-weight: bold;
             color: #122EE1;
             font-family: 'Yekan', sans-serif;
+        }
+
+        @media (max-width: 767px) {
+            .logo-loader span {
+                font-size: 18px;
+            }
         }
 
         .loader-text {
@@ -151,10 +178,23 @@
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
+        @media (max-width: 767px) {
+            .loader-text {
+                font-size: 16px;
+                margin-bottom: 8px;
+            }
+        }
+
         .loader-subtext {
             color: rgba(255, 255, 255, 0.8);
             font-size: 14px;
             font-family: 'Vazir', sans-serif;
+        }
+
+        @media (max-width: 767px) {
+            .loader-subtext {
+                font-size: 12px;
+            }
         }
 
         .progress-bar {
@@ -166,8 +206,12 @@
             overflow: hidden;
         }
 
-
-
+        @media (max-width: 767px) {
+            .progress-bar {
+                width: 150px;
+                margin-top: 15px;
+            }
+        }
 
         .progress {
             width: 0%;
@@ -216,39 +260,19 @@
         }
 
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         @keyframes progress {
-            0% {
-                width: 0%;
-            }
-
-            50% {
-                width: 70%;
-            }
-
-            100% {
-                width: 100%;
-            }
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
         }
 
         @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0) rotate(0deg);
-            }
-
-            50% {
-                transform: translateY(-20px) rotate(180deg);
-            }
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
         }
 
         @keyframes fadeInUp {
@@ -256,7 +280,6 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -268,91 +291,7 @@
             visibility: hidden;
         }
 
-        /* افکت‌های اضافی */
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.05);
-            }
-
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        /* محتوای اصلی - اصلاح شده */
-        #mainContent {
-            display: none;
-            opacity: 1;
-        }
-
-        .content-loaded {
-            display: block;
-            opacity: 1;
-        }
-
-        /* استایل‌های دارک مود */
-        #toggleCircle {
-            transition: transform 0.3s ease-in-out;
-        }
-
-        [dir="rtl"] #toggleCircle.move-dark {
-            transform: translateX(-2rem);
-        }
-
-        [dir="ltr"] #toggleCircle.move-dark {
-            transform: translateX(2rem);
-        }
-
-        .dark {
-            color-scheme: dark;
-        }
-
-        .dark body {
-            background-color: black;
-            color: #e2e8f0;
-        }
-
-        .dark header {
-            background-color: black;
-            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4);
-        }
-
-        .dark #loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
-
-        .dark aside {
-            background-color: #2d3748;
-        }
-
-        .dark input {
-            background-color: #4a5568;
-            color: #e2e8f0;
-            border-color: #1a1b1e;
-        }
-
-        /* استایل‌های ریسپانسیو جدید */
-
-        /* هدر ریسپانسیو */
+        /* Responsive Header Styles */
         .header-container {
             display: flex;
             flex-direction: column;
@@ -371,7 +310,7 @@
             }
         }
 
-        /* لایه موبایل */
+        /* Mobile Header Layout */
         .mobile-header-layout {
             display: flex;
             flex-direction: column;
@@ -379,11 +318,18 @@
             gap: 1rem;
         }
 
+        @media (min-width: 768px) {
+            .mobile-header-layout {
+                display: none;
+            }
+        }
+
         .mobile-header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
             width: 100%;
+            gap: 0.5rem;
         }
 
         .mobile-header-bottom {
@@ -393,16 +339,45 @@
             gap: 0.5rem;
         }
 
+        @media (max-width: 475px) {
+            .mobile-header-bottom {
+                flex-wrap: wrap;
+            }
+            
+            .mobile-search-full {
+                order: 2;
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+            
+            .mobile-tools {
+                order: 1;
+                flex: 1;
+            }
+        }
+
         .mobile-brand {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: bold;
             color: #122EE1;
+            flex: 1;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 475px) {
+            .mobile-brand {
+                font-size: 1.1rem;
+            }
         }
 
         .mobile-actions {
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            flex-shrink: 0;
         }
 
         .mobile-search-full {
@@ -415,13 +390,7 @@
             gap: 0.5rem;
         }
 
-        @media (min-width: 768px) {
-            .mobile-header-layout {
-                display: none;
-            }
-        }
-
-        /* لایه دسکتاپ */
+        /* Desktop Header Layout */
         .desktop-header-layout {
             display: none;
             width: 100%;
@@ -447,22 +416,23 @@
             gap: 1rem;
         }
 
-        /* منوی همبرگری برای موبایل */
+        /* Mobile Menu Button */
         .mobile-menu-btn {
-            display: block;
             position: fixed;
             top: 1rem;
             right: 1rem;
-            z-index: 100;
+            z-index: 1000;
             background: #122EE1;
             color: white;
-            width: 50px;
-            height: 50px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: none;
+            cursor: pointer;
         }
 
         @media (min-width: 768px) {
@@ -471,23 +441,31 @@
             }
         }
 
-        /* سایدبار ریسپانسیو */
+        @media (max-width: 475px) {
+            .mobile-menu-btn {
+                top: 0.75rem;
+                right: 0.75rem;
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        /* Sidebar Responsive */
         .sidebar-container {
             position: fixed;
             top: 0;
             right: 0;
             height: 100vh;
-            width: 280px;
+            width: 85vw;
+            max-width: 300px;
             background: white;
-            z-index: 90;
+            z-index: 900;
             transform: translateX(100%);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             overflow-y: auto;
-            padding: 1rem 0.5rem;
-        }
-
-        .sidebar-container.open {
-            transform: translateX(0);
+            padding: 1rem;
+            padding-top: 70px;
+            box-shadow: -2px 0 20px rgba(0, 0, 0, 0.1);
         }
 
         @media (min-width: 768px) {
@@ -499,23 +477,16 @@
                 height: auto;
                 box-shadow: none;
                 padding: 1.25rem;
+                padding-top: 0;
+                max-width: none;
             }
         }
 
-        /* محتوای اصلی ریسپانسیو */
-        .main-content-wrapper {
-            margin-top: 1rem;
-            padding: 0 1rem;
+        .sidebar-container.open {
+            transform: translateX(0);
         }
 
-        @media (min-width: 768px) {
-            .main-content-wrapper {
-                margin-top: 2.5rem;
-                padding: 0;
-            }
-        }
-
-        /* لایه overlay برای موبایل */
+        /* Mobile Overlay */
         .mobile-overlay {
             position: fixed;
             top: 0;
@@ -523,8 +494,9 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            z-index: 80;
+            z-index: 800;
             display: none;
+            backdrop-filter: blur(2px);
         }
 
         .mobile-overlay.open {
@@ -537,9 +509,44 @@
             }
         }
 
-        /* بهبود استایل‌های عمومی */
+        /* Main Content Responsive */
+        .main-content-wrapper {
+            margin-top: 1rem;
+            padding: 0 1rem;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        @media (max-width: 475px) {
+            .main-content-wrapper {
+                padding: 0 0.5rem;
+                margin-top: 0.5rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .main-content-wrapper {
+                margin-top: 2.5rem;
+                padding: 0;
+            }
+        }
+
+        main {
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow-x: hidden;
+        }
+
+        /* Responsive Typography */
         .responsive-text {
             font-size: 1.5rem;
+        }
+
+        @media (max-width: 767px) {
+            .responsive-text {
+                font-size: 1.25rem;
+            }
         }
 
         @media (min-width: 768px) {
@@ -548,13 +555,24 @@
             }
         }
 
-        /* استایل برای دکمه‌های موبایل */
+        /* Mobile Button Styles */
         .btn-mobile-small {
             width: 40px;
             height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 475px) {
+            .btn-mobile-small {
+                width: 36px;
+                height: 36px;
+            }
         }
 
         .profile-img-mobile {
@@ -562,9 +580,17 @@
             height: 40px;
             border-radius: 50%;
             object-fit: cover;
+            flex-shrink: 0;
         }
 
-        /* استایل برای dropdown موبایل */
+        @media (max-width: 475px) {
+            .profile-img-mobile {
+                width: 36px;
+                height: 36px;
+            }
+        }
+
+        /* Mobile Dropdown */
         .dropdown-mobile {
             width: 120px;
         }
@@ -572,6 +598,7 @@
         .dropdown-mobile button {
             padding: 0.5rem;
             font-size: 0.8rem;
+            min-height: 36px;
         }
 
         .dropdown-mobile img {
@@ -579,7 +606,7 @@
             height: 16px;
         }
 
-        /* دارک مود موبایل */
+        /* Dark Mode Toggle Mobile */
         .dark-mode-toggle-mobile {
             width: 40px;
             height: 20px;
@@ -599,10 +626,804 @@
             width: 12px;
             height: 12px;
         }
+
+        /* Chat Widget Responsive */
+        #chatWidget {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            z-index: 999;
+        }
+
+        @media (max-width: 767px) {
+            #chatWidget {
+                bottom: 5rem;
+                right: 1rem;
+            }
+        }
+
+        #chatToggle {
+            width: 56px;
+            height: 56px;
+        }
+
+        @media (max-width: 767px) {
+            #chatToggle {
+                width: 50px;
+                height: 50px;
+            }
+        }
+
+        #chatWindow {
+            width: 96vw;
+            max-width: 400px;
+            height: 85vh;
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            border-radius: 16px 16px 0 0;
+            transform: translateY(100%);
+        }
+
+        @media (min-width: 768px) {
+            #chatWindow {
+                position: absolute;
+                bottom: 5rem;
+                right: 0;
+                width: 380px;
+                height: 500px;
+                border-radius: 12px;
+                transform: none;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            #chatWindow {
+                width: 420px;
+                height: 550px;
+            }
+        }
+
+        .chat-message {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 18px;
+            margin-bottom: 8px;
+            word-wrap: break-word;
+            position: relative;
+            word-break: break-word;
+        }
+
+        @media (max-width: 475px) {
+            .chat-message {
+                max-width: 90%;
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+        }
+
+        /* Table Responsive */
+        @media (max-width: 767px) {
+            .table-responsive {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                white-space: nowrap;
+            }
+            
+            .table-responsive table {
+                min-width: 600px;
+            }
+        }
+
+        /* Form Responsive */
+        @media (max-width: 767px) {
+            .form-group {
+                margin-bottom: 1rem;
+            }
+            
+            .form-control {
+                width: 100%;
+                padding: 0.75rem;
+            }
+        }
+
+        /* Card Responsive */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 767px) {
+            .card {
+                padding: 1rem;
+                border-radius: 8px;
+                margin-bottom: 0.75rem;
+            }
+        }
+
+        /* Grid System for Mobile */
+        .grid-mobile {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1rem;
+        }
+
+        @media (min-width: 475px) {
+            .grid-mobile {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 768px) {
+            .grid-mobile {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .grid-mobile {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* Safe Area Support */
+        @supports (padding: max(0px)) {
+            .safe-padding {
+                padding-left: max(1rem, var(--safe-area-inset-left));
+                padding-right: max(1rem, var(--safe-area-inset-right));
+            }
+            
+            .safe-bottom {
+                padding-bottom: max(1rem, var(--safe-area-inset-bottom));
+            }
+            
+            .safe-top {
+                padding-top: max(1rem, var(--safe-area-inset-top));
+            }
+        }
+
+        /* Touch-friendly buttons */
+        .touch-button {
+            min-height: 44px;
+            min-width: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Scrollbar Styling for Mobile */
+        @media (max-width: 767px) {
+            ::-webkit-scrollbar {
+                width: 4px;
+                height: 4px;
+            }
+            
+            ::-webkit-scrollbar-track {
+                background: transparent;
+            }
+            
+            ::-webkit-scrollbar-thumb {
+                background: rgba(0, 0, 0, 0.2);
+                border-radius: 2px;
+            }
+            
+            .dark ::-webkit-scrollbar-thumb {
+                background: rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        /* Loading States */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 4px;
+        }
+
+        .dark .skeleton {
+            background: linear-gradient(90deg, #2d3748 25%, #4a5568 50%, #2d3748 75%);
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Pull to refresh */
+        .pull-to-refresh {
+            position: fixed;
+            top: -60px;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        /* Bottom Sheet for Mobile */
+        .bottom-sheet {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 1.5rem;
+            padding-bottom: max(1.5rem, var(--safe-area-inset-bottom));
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .bottom-sheet.open {
+            transform: translateY(0);
+        }
+
+        /* Toast Notification for Mobile */
+        .toast-mobile {
+            position: fixed;
+            bottom: 5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            z-index: 1100;
+            max-width: 90vw;
+            text-align: center;
+            animation: slideUpToast 0.3s ease;
+        }
+
+        @keyframes slideUpToast {
+            from { transform: translate(-50%, 100%); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+
+        /* Modal for Mobile */
+        .modal-mobile {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            z-index: 1100;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content-mobile {
+            background: white;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+            animation: scaleIn 0.3s ease;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* Badge for Mobile */
+        .badge-mobile {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            border-radius: 9999px;
+            min-width: 20px;
+            min-height: 20px;
+        }
+
+        /* Swipe Actions for Mobile */
+        .swipe-action {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .swipe-action-content {
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .swipe-action-actions {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            pointer-events: none;
+        }
+
+        .swipe-action-button {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            pointer-events: auto;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: #c1c1c1 transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #4a5568;
+        }
+
+        /* Responsive Images */
+        .img-responsive {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Mobile First Utilities */
+        .mobile-block {
+            display: block;
+        }
+
+        .mobile-hidden {
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .mobile-block {
+                display: none;
+            }
+            
+            .mobile-hidden {
+                display: block;
+            }
+        }
+
+        /* Animation for Mobile Interactions */
+        @keyframes ripple {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        .ripple-effect {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ripple-effect::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.6);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        .ripple-effect:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+
+        /* Dark Mode Styles */
+        .dark {
+            color-scheme: dark;
+        }
+
+        .dark body {
+            background-color: #0f172a;
+            color: #e2e8f0;
+        }
+
+        .dark .card {
+            background-color: #1e293b;
+        }
+
+        .dark input {
+            background-color: #334155;
+            color: #e2e8f0;
+            border-color: #475569;
+        }
+
+        /* Print Styles */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            
+            .print-only {
+                display: block !important;
+            }
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Focus Styles */
+        .focus-visible {
+            outline: 2px solid #122EE1;
+            outline-offset: 2px;
+        }
+
+        /* Disabled State */
+        .disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            cursor: not-allowed;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            border-radius: inherit;
+        }
+
+        .dark .loading-overlay {
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #6b7280;
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1rem;
+            color: #9ca3af;
+        }
+
+        /* Tooltip for Mobile */
+        .tooltip-mobile {
+            position: relative;
+        }
+
+        .tooltip-mobile::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 10;
+            margin-bottom: 0.5rem;
+        }
+
+        .tooltip-mobile:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Custom Checkbox & Radio for Mobile */
+        .custom-checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid #d1d5db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .custom-checkbox.checked {
+            background: #122EE1;
+            border-color: #122EE1;
+        }
+
+        .custom-checkbox.checked::after {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+        }
+
+        /* Responsive Spacing */
+        .space-responsive > * + * {
+            margin-top: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .space-responsive > * + * {
+                margin-top: 1.5rem;
+            }
+        }
+
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #122EE1, #4ECDC4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Blur Effect for Mobile */
+        .backdrop-blur {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        /* Responsive Container */
+        .container-responsive {
+            width: 100%;
+            padding-right: 1rem;
+            padding-left: 1rem;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        @media (min-width: 475px) {
+            .container-responsive {
+                max-width: 475px;
+            }
+        }
+
+        @media (min-width: 640px) {
+            .container-responsive {
+                max-width: 640px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container-responsive {
+                max-width: 768px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container-responsive {
+                max-width: 1024px;
+            }
+        }
+
+        @media (min-width: 1280px) {
+            .container-responsive {
+                max-width: 1280px;
+            }
+        }
+
+        /* Last-child utilities */
+        .last\:mb-0:last-child {
+            margin-bottom: 0;
+        }
+
+        .last\:border-0:last-child {
+            border-width: 0;
+        }
+
+        /* Hover effects for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .hover\:scale-105:hover {
+                transform: scale(1.05);
+            }
+        }
+
+        /* Active state for mobile */
+        .active\:scale-95:active {
+            transform: scale(0.95);
+        }
+
+        /* Custom transitions */
+        .transition-all {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Text truncation */
+        .truncate-2-lines {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Aspect ratio containers */
+        .aspect-square {
+            aspect-ratio: 1 / 1;
+        }
+
+        .aspect-video {
+            aspect-ratio: 16 / 9;
+        }
+
+        /* Glass effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .dark .glass {
+            background: rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive border radius */
+        .rounded-responsive {
+            border-radius: 0.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .rounded-responsive {
+                border-radius: 0.75rem;
+            }
+        }
+
+        /* Responsive shadows */
+        .shadow-responsive {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (min-width: 768px) {
+            .shadow-responsive {
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        /* Grid gap responsive */
+        .gap-responsive {
+            gap: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .gap-responsive {
+                gap: 1.5rem;
+            }
+        }
+
+        /* Font size responsive */
+        .text-responsive {
+            font-size: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .text-responsive {
+                font-size: 1.125rem;
+            }
+        }
+
+        /* Line height responsive */
+        .leading-responsive {
+            line-height: 1.5;
+        }
+
+        @media (min-width: 768px) {
+            .leading-responsive {
+                line-height: 1.625;
+            }
+        }
+
+        /* Z-index layers */
+        .z-dropdown {
+            z-index: 1000;
+        }
+
+        .z-modal {
+            z-index: 2000;
+        }
+
+        .z-tooltip {
+            z-index: 3000;
+        }
+
+        .z-toast {
+            z-index: 4000;
+        }
+
+        /* Responsive max-width */
+        .max-w-responsive {
+            max-width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .max-w-responsive {
+                max-width: 42rem;
+            }
+        }
+
+        /* Responsive min-height */
+        .min-h-responsive {
+            min-height: auto;
+        }
+
+        @media (min-width: 768px) {
+            .min-h-responsive {
+                min-height: 32rem;
+            }
+        }
+
+        /* Custom breakpoints */
+        @media (max-width: 320px) {
+            .xs\:text-sm {
+                font-size: 0.875rem;
+            }
+        }
+
+        /* Reduce motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 
-<body class="vazir dark:text-white overflow-x-hidden">
+<body class="vazir dark:text-white overflow-x-hidden relative">
 
     <!-- لودر فوق العاده زیبا -->
     <div id="loader" class="loading">
@@ -632,10 +1453,10 @@
     </div>
 
     <!-- محتوای اصلی -->
-    <div id="mainContent">
+    <div id="mainContent" class="relative">
         <!-- دکمه منوی موبایل -->
-        <button class="mobile-menu-btn" id="mobileMenuBtn">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="باز کردن منو">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
@@ -645,31 +1466,41 @@
         <div class="mobile-overlay" id="mobileOverlay"></div>
 
         <header
-            class="bg-white w-full py-4 md:py-0 md:h-[80px] flex items-center dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)] shadow-[0_4px_4px_rgba(17,41,199,0.4)]">
+            class="bg-white w-full py-3 md:py-0 md:h-[80px] flex items-center dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)] shadow-[0_4px_4px_rgba(17,41,199,0.4)] sticky top-0 z-50 safe-padding">
             <div class="header-container">
                 <!-- لایه موبایل -->
                 <div class="mobile-header-layout">
                     <div class="mobile-header-top">
+                        <!-- دکمه منو -->
+                        <button class="mobile-menu-btn md:hidden" id="mobileMenuBtn2" aria-label="باز کردن منو">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+
                         <!-- برند -->
                         <div class="mobile-brand yekan"><?php echo e(Auth::guard('sarafi')->user()->sarafi_name); ?></div>
 
                         <!-- اعلان و پروفایل -->
                         <div class="mobile-actions">
                             <button
-                                class="btn-mobile-small relative rounded-full bg-[#E5E5E5] hover:bg-gray-300 transition">
+                                class="btn-mobile-small relative rounded-full bg-[#E5E5E5] hover:bg-gray-300 transition"
+                                aria-label="اعلان‌ها">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/bill-header.svg')); ?>" alt="اعلان"
-                                    class="w-6 h-6">
+                                    class="w-5 h-5">
                                 <span
-                                    class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
+                                    class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center text-[10px]">3</span>
                             </button>
 
                             <div class="header-profile-section">
                                 <div class="relative">
-                                    <div id="profileBtnMobile"
-                                        class="profile-img-mobile border overflow-hidden flex items-center justify-center cursor-pointer transition">
+                                    <button id="profileBtnMobile"
+                                        class="profile-img-mobile border overflow-hidden flex items-center justify-center cursor-pointer transition bg-gray-100"
+                                        aria-label="پروفایل کاربر">
                                         <img src="<?php echo e(asset('assets/sarafi/all_icon/man.png')); ?>" alt="پروفایل"
                                             class="w-full h-full object-cover">
-                                    </div>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -680,9 +1511,9 @@
                         <div class="mobile-search-full">
                             <div class="relative">
                                 <input type="text" placeholder="<?php echo e(__('messages.search_placeholder')); ?>"
-                                    class="border border-[#8C8C8C] placeholder:text-black vazir rounded-full px-3 py-2 pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500 w-full text-sm">
+                                    class="border border-[#8C8C8C] placeholder:text-gray-500 vazir rounded-full px-3 py-2 pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500 w-full text-sm bg-white">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
-                                    class="h-4 w-4 absolute left-2 bottom-3">
+                                    class="h-4 w-4 absolute left-3 bottom-3">
                             </div>
                         </div>
 
@@ -691,37 +1522,74 @@
                             <?php $locale = session('locale', config('app.locale')); ?>
                             <div class="relative dropdown-mobile vazir">
                                 <button id="dropdownButtonMobile"
-                                    class="border border-[#1129C766] bg-white rounded-lg px-2 py-1 w-full flex items-center justify-between font-vazir text-xs text-[#1129C7]">
+                                    class="border border-[#1129C766] bg-white rounded-lg px-2 py-1 w-full flex items-center justify-between font-vazir text-xs text-[#1129C7] min-h-[36px]"
+                                    aria-label="تغییر زبان">
                                     <img src="<?php echo e($locale === 'en' ? asset('assets/sarafi/all_icon/united.png') : asset('assets/sarafi/all_icon/Flags.png')); ?>"
                                         class="w-4 h-4 ml-1" alt="Lang">
-                                    <span>
+                                    <span class="truncate max-w-[60px]">
                                         <?php if($locale === 'fa'): ?> فارسی
                                         <?php elseif($locale === 'ps'): ?> پشتو
                                         <?php else: ?> EN
                                         <?php endif; ?>
                                     </span>
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
                                 </button>
 
                                 <ul id="dropdownMenuMobile"
-                                    class="absolute left-5 mt-1 w-full bg-white border border-gray-200 rounded-lg hidden z-10">
-                                    <li><a href="<?php echo e(route('set-locale', 'fa')); ?>"
-                                            class="locale-link flex items-center px-2 py-1 hover:bg-gray-100 cursor-pointer text-xs"><img
-                                                src="<?php echo e(asset('assets/sarafi/all_icon/Flags.png')); ?>"
-                                                class="w-4 h-4 ml-1" alt="fa">
-                                            فارسی</a></li>
-                                    <li><a href="<?php echo e(route('set-locale', 'ps')); ?>"
-                                            class="locale-link flex items-center px-2 py-1 hover:bg-gray-100 cursor-pointer text-xs"><img
-                                                src="<?php echo e(asset('assets/sarafi/all_icon/Flags.png')); ?>"
-                                                class="w-4 h-4 ml-1" alt="ps">
-                                            پشتو</a></li>
-                                    <li><a href="<?php echo e(route('set-locale', 'en')); ?>"
-                                            class="locale-link flex items-center px-2 py-1 hover:bg-gray-100 cursor-pointer text-xs"><img
-                                                src="<?php echo e(asset('assets/sarafi/all_icon/united.png')); ?>"
-                                                class="w-4 h-4 ml-1" alt="en"> English</a></li>
+                                    class="absolute left-0 mt-1 w-full bg-white border border-gray-200 rounded-lg hidden z-10 shadow-lg">
+                                    <li>
+                                        <a href="<?php echo e(route('set-locale', 'fa')); ?>"
+                                            class="locale-link flex items-center px-2 py-2 hover:bg-gray-100 cursor-pointer text-xs">
+                                            <img src="<?php echo e(asset('assets/sarafi/all_icon/Flags.png')); ?>"
+                                                class="w-4 h-4 ml-2" alt="fa">
+                                            <span>فارسی</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="<?php echo e(route('set-locale', 'ps')); ?>"
+                                            class="locale-link flex items-center px-2 py-2 hover:bg-gray-100 cursor-pointer text-xs">
+                                            <img src="<?php echo e(asset('assets/sarafi/all_icon/Flags.png')); ?>"
+                                                class="w-4 h-4 ml-2" alt="ps">
+                                            <span>پشتو</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="<?php echo e(route('set-locale', 'en')); ?>"
+                                            class="locale-link flex items-center px-2 py-2 hover:bg-gray-100 cursor-pointer text-xs">
+                                            <img src="<?php echo e(asset('assets/sarafi/all_icon/united.png')); ?>"
+                                                class="w-4 h-4 ml-2" alt="en">
+                                            <span>English</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
 
-                            
+                            <!-- سوییچ دارک مود -->
+                            <div class="relative dark-mode-toggle-mobile">
+                                <input type="checkbox" id="darkModeToggleMobile" class="sr-only">
+                                <label for="darkModeToggleMobile"
+                                    class="flex items-center w-full h-full bg-gray-300 rounded-full cursor-pointer transition-colors duration-300 ease-in-out dark:bg-gray-700 px-1"
+                                    aria-label="تغییر حالت شب">
+                                    <span id="toggleCircleMobile"
+                                        class="flex items-center justify-center bg-white rounded-full shadow-md transform transition-transform duration-300 ease-in-out">
+                                        <!-- آیکون خورشید -->
+                                        <svg id="sunIconMobile" class="text-yellow-500 w-3 h-3" fill="currentColor"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        <!-- آیکون ماه -->
+                                        <svg id="moonIconMobile" class="text-blue-300 hidden w-3 h-3" fill="currentColor"
+                                            viewBox="0 0 20 20">
+                                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -735,7 +1603,8 @@
                         <?php $locale = session('locale', config('app.locale')); ?>
                         <div class="relative inline-block w-[145px] h-[56px] p-2 vazir">
                             <button id="dropdownButton"
-                                class="border border-[#1129C766] dark:text-white dark:bg-black dark:border-[#FFFFFF] bg-white rounded-lg px-3 py-2 w-full flex items-center justify-between font-vazir text-sm text-[#1129C7]">
+                                class="border border-[#1129C766] dark:text-white dark:bg-black dark:border-[#FFFFFF] bg-white rounded-lg px-3 py-2 w-full flex items-center justify-between font-vazir text-sm text-[#1129C7] min-h-[44px]"
+                                aria-label="تغییر زبان">
                                 <img src="<?php echo e($locale === 'en' ? asset('assets/sarafi/all_icon/united.png') : asset('assets/sarafi/all_icon/Flags.png')); ?>"
                                     class="w-5 h-5 ml-2" alt="Lang">
                                 <span>
@@ -744,33 +1613,46 @@
                                     <?php else: ?> English
                                     <?php endif; ?>
                                 </span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
                             </button>
 
                             <ul id="dropdownMenu"
-                                class="absolute left-0 mt-1 w-ful dark:text-white dark:bg-black bg-white border border-gray-200 dark:hover:bg-gray-800 rounded-lg hidden z-10">
-                                <li><a href="<?php echo e(route('set-locale', 'fa')); ?>"
-                                        class="locale-link flex items-center px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"><img
-                                            src="<?php echo e(asset('assets/sarafi/all_icon/Flags.png')); ?>" class="w-5 h-5 ml-2"
+                                class="absolute left-0 mt-1 w-full dark:text-white dark:bg-black bg-white border border-gray-200 dark:hover:bg-gray-800 rounded-lg hidden z-10 shadow-lg">
+                                <li>
+                                    <a href="<?php echo e(route('set-locale', 'fa')); ?>"
+                                        class="locale-link flex items-center px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">
+                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/Flags.png')); ?>" class="w-5 h-5 ml-2"
                                             alt="fa">
-                                        فارسی</a></li>
-                                <li><a href="<?php echo e(route('set-locale', 'ps')); ?>"
-                                        class="locale-link flex items-center px-3 py-2 dark:text-white dark:bg-black dark:hover:bg-gray-800   hover:bg-gray-100 cursor-pointer"><img
-                                            src="<?php echo e(asset('assets/sarafi/all_icon/Flags.png')); ?>" class="w-5 h-5 ml-2"
+                                        فارسی
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo e(route('set-locale', 'ps')); ?>"
+                                        class="locale-link flex items-center px-3 py-2 dark:text-white dark:bg-black dark:hover:bg-gray-800 hover:bg-gray-100 cursor-pointer">
+                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/Flags.png')); ?>" class="w-5 h-5 ml-2"
                                             alt="ps">
-                                        پشتو</a></li>
-                                <li><a href="<?php echo e(route('set-locale', 'en')); ?>"
-                                        class="locale-link flex items-center px-3 py-2 dark:text-white dark:bg-black hover:bg-gray-100  dark:hover:bg-gray-800 cursor-pointer"><img
-                                            src="<?php echo e(asset('assets/sarafi/all_icon/united.png')); ?>" class="w-5 h-5 ml-2"
-                                            alt="en"> English</a></li>
+                                        پشتو
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo e(route('set-locale', 'en')); ?>"
+                                        class="locale-link flex items-center px-3 py-2 dark:text-white dark:bg-black hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">
+                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/united.png')); ?>" class="w-5 h-5 ml-2"
+                                            alt="en">
+                                        English
+                                    </a>
+                                </li>
                             </ul>
                         </div>
-
 
                         <!-- سوییچ دارک مود -->
                         <div class="relative inline-block w-16 h-8 mx-4">
                             <input type="checkbox" id="darkModeToggle" class="sr-only">
                             <label for="darkModeToggle"
-                                class="flex items-center w-full h-8 bg-gray-300 rounded-full cursor-pointer transition-colors duration-300 ease-in-out dark:bg-gray-700 px-1">
+                                class="flex items-center w-full h-8 bg-gray-300 rounded-full cursor-pointer transition-colors duration-300 ease-in-out dark:bg-gray-700 px-1"
+                                aria-label="تغییر حالت شب">
                                 <span id="toggleCircle"
                                     class="flex items-center justify-center w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 ease-in-out">
                                     <!-- آیکون خورشید -->
@@ -795,21 +1677,19 @@
                     <div class="desktop-actions-section">
                         <div class="header-search-section">
                             <div class="relative" x-data="customerSearch()" x-init="init()">
-
                                 <input type="text" x-model="searchQuery" @input.debounce.500ms="performSearch"
                                     placeholder="جستجو مشتری"
-                                    class="border border-[#8C8C8C] dark:border-[#FFFFFF] dark:bg-black dark:placeholder:text-white placeholder:text-black vazir rounded-[12px] px-3 py-2 pr-10 text-right font-vazir outline-none w-full">
+                                    class="border border-[#8C8C8C] dark:border-[#FFFFFF] dark:bg-black dark:placeholder:text-white placeholder:text-black vazir rounded-[12px] px-3 py-2 pr-10 text-right font-vazir outline-none w-full min-w-[250px]">
 
                                 <svg width="24" class="h-5 w-5 absolute left-2 bottom-3" height="24" viewBox="0 0 24 24"
                                     fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                    <path d="M22 22L20 20" stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
-
 
                                 <!-- آیکون لودینگ -->
                                 <div x-show="isLoading" class="absolute left-10 bottom-3">
@@ -826,7 +1706,6 @@
                                         <template x-for="customer in results" :key="customer.id">
                                             <div class="px-3 py-2 hover:bg-blue-50 cursor-pointer border-b last:border-b-0"
                                                 @click="handleCustomerClick(customer)">
-
                                                 <div class="flex items-center justify-between">
                                                     <div class="flex items-center gap-3">
                                                         <!-- عکس مشتری -->
@@ -965,140 +1844,141 @@
 
                         <script>
                             function customerSearch() {
-                                        return {
-                                            searchQuery: '',
-                                            results: [],
-                                            showResults: false,
-                                            isLoading: false,
-                                            selectedCustomer: null,
-                                            showConfirmModal: false,
-                                            isLinking: false,
-                                            
-                                            init() {
-                                                console.log('Customer search initialized');
-                                            },
-                                            
-                                            async performSearch() {
-                                                if (this.searchQuery.length < 2) {
-                                                    this.showResults = false;
-                                                    this.results = [];
-                                                    return;
+                                return {
+                                    searchQuery: '',
+                                    results: [],
+                                    showResults: false,
+                                    isLoading: false,
+                                    selectedCustomer: null,
+                                    showConfirmModal: false,
+                                    isLinking: false,
+                                    
+                                    init() {
+                                        console.log('Customer search initialized');
+                                    },
+                                    
+                                    async performSearch() {
+                                        if (this.searchQuery.length < 2) {
+                                            this.showResults = false;
+                                            this.results = [];
+                                            return;
+                                        }
+                                        
+                                        this.isLoading = true;
+                                        
+                                        try {
+                                            const response = await fetch(`<?php echo e(route('api.search-customers')); ?>?q=${encodeURIComponent(this.searchQuery)}`, {
+                                                headers: {
+                                                    'X-Requested-With': 'XMLHttpRequest',
+                                                    'Accept': 'application/json'
                                                 }
-                                                
-                                                this.isLoading = true;
-                                                
-                                                try {
-                                                    const response = await fetch(`<?php echo e(route('api.search-customers')); ?>?q=${encodeURIComponent(this.searchQuery)}`, {
-                                                        headers: {
-                                                            'X-Requested-With': 'XMLHttpRequest',
-                                                            'Accept': 'application/json'
-                                                        }
-                                                    });
-                                                    
-                                                    const data = await response.json();
-                                                    
-                                                    if (data.error) {
-                                                        console.error('Search error:', data.error);
-                                                        return;
-                                                    }
-                                                    
-                                                    if (data.customers && data.customers.length > 0) {
-                                                        this.results = data.customers;
-                                                        this.showResults = true;
-                                                    } else {
-                                                        this.results = [];
-                                                        this.showResults = false;
-                                                    }
-                                                    
-                                                } catch (error) {
-                                                    console.error('Search error:', error);
-                                                } finally {
-                                                    this.isLoading = false;
-                                                }
-                                            },
+                                            });
                                             
-                                            closeResults() {
-                                                this.showResults = false;
-                                            },
+                                            const data = await response.json();
                                             
-                                            getImageUrl(imagePath) {
-                                                return imagePath ? `/storage/${imagePath}` : '';
-                                            },
-                                            
-                                            getFirstLetter(name) {
-                                                return name ? name.charAt(0).toUpperCase() : '?';
-                                            },
-                                            
-                                            handleCustomerClick(customer) {
-                                                if (customer.is_mine) {
-                                                    // اگر مشتری مال خودتان است، به صفحه مشتری بروید
-                                                    window.location.href = `<?php echo e(route('sarafi.customer-table')); ?>?customer=${customer.id}`;
-                                                } else {
-                                                    // در غیر این صورت، مودال لینک را نشان دهید
-                                                    this.selectedCustomer = customer;
-                                                    this.showConfirmModal = true;
-                                                    this.showResults = false;
-                                                }
-                                            },
-                                            
-                                            linkCustomer(customer) {
-                                                this.selectedCustomer = customer;
-                                                this.showConfirmModal = true;
-                                                this.showResults = false;
-                                            },
-                                            
-                                            async confirmLinkCustomer() {
-                                                if (!this.selectedCustomer) return;
-                                                
-                                                this.isLinking = true;
-                                                
-                                                try {
-                                                    const response = await fetch('<?php echo e(route("api.link-customer")); ?>', {
-                                                        method: 'POST',
-                                                        headers: {
-                                                            'Content-Type': 'application/json',
-                                                            'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
-                                                            'Accept': 'application/json'
-                                                        },
-                                                        body: JSON.stringify({ 
-                                                            customer_id: this.selectedCustomer.id 
-                                                        })
-                                                    });
-                                                    
-                                                    const data = await response.json();
-                                                    
-                                                    if (data.success) {
-                                                        // نمایش پیام موفقیت
-                                                        alert(data.message);
-                                                        
-                                                        // بستن مودال و پاک کردن جستجو
-                                                        this.showConfirmModal = false;
-                                                        this.searchQuery = '';
-                                                        this.results = [];
-                                                        
-                                                        // ریدایرکت به صفحه مشتریان یا رفرش
-                                                        setTimeout(() => {
-                                                            window.location.href = '<?php echo e(route("sarafi.customer-table")); ?>';
-                                                        }, 1000);
-                                                        
-                                                    } else {
-                                                        alert(data.message);
-                                                        this.showConfirmModal = false;
-                                                    }
-                                                    
-                                                } catch (error) {
-                                                    console.error('Link error:', error);
-                                                    alert('خطا در لینک کردن مشتری');
-                                                } finally {
-                                                    this.isLinking = false;
-                                                }
+                                            if (data.error) {
+                                                console.error('Search error:', data.error);
+                                                return;
                                             }
-                                        };
+                                            
+                                            if (data.customers && data.customers.length > 0) {
+                                                this.results = data.customers;
+                                                this.showResults = true;
+                                            } else {
+                                                this.results = [];
+                                                this.showResults = false;
+                                            }
+                                            
+                                        } catch (error) {
+                                            console.error('Search error:', error);
+                                        } finally {
+                                            this.isLoading = false;
+                                        }
+                                    },
+                                    
+                                    closeResults() {
+                                        this.showResults = false;
+                                    },
+                                    
+                                    getImageUrl(imagePath) {
+                                        return imagePath ? `/storage/${imagePath}` : '';
+                                    },
+                                    
+                                    getFirstLetter(name) {
+                                        return name ? name.charAt(0).toUpperCase() : '?';
+                                    },
+                                    
+                                    handleCustomerClick(customer) {
+                                        if (customer.is_mine) {
+                                            // اگر مشتری مال خودتان است، به صفحه مشتری بروید
+                                            window.location.href = `<?php echo e(route('sarafi.customer-table')); ?>?customer=${customer.id}`;
+                                        } else {
+                                            // در غیر این صورت، مودال لینک را نشان دهید
+                                            this.selectedCustomer = customer;
+                                            this.showConfirmModal = true;
+                                            this.showResults = false;
+                                        }
+                                    },
+                                    
+                                    linkCustomer(customer) {
+                                        this.selectedCustomer = customer;
+                                        this.showConfirmModal = true;
+                                        this.showResults = false;
+                                    },
+                                    
+                                    async confirmLinkCustomer() {
+                                        if (!this.selectedCustomer) return;
+                                        
+                                        this.isLinking = true;
+                                        
+                                        try {
+                                            const response = await fetch('<?php echo e(route("api.link-customer")); ?>', {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
+                                                    'Accept': 'application/json'
+                                                },
+                                                body: JSON.stringify({ 
+                                                    customer_id: this.selectedCustomer.id 
+                                                })
+                                            });
+                                            
+                                            const data = await response.json();
+                                            
+                                            if (data.success) {
+                                                // نمایش پیام موفقیت
+                                                showToast('مشتری با موفقیت لینک شد', 'success');
+                                                
+                                                // بستن مودال و پاک کردن جستجو
+                                                this.showConfirmModal = false;
+                                                this.searchQuery = '';
+                                                this.results = [];
+                                                
+                                                // ریدایرکت به صفحه مشتریان یا رفرش
+                                                setTimeout(() => {
+                                                    window.location.href = '<?php echo e(route("sarafi.customer-table")); ?>';
+                                                }, 1000);
+                                                
+                                            } else {
+                                                showToast(data.message || 'خطا در لینک کردن مشتری', 'error');
+                                                this.showConfirmModal = false;
+                                            }
+                                            
+                                        } catch (error) {
+                                            console.error('Link error:', error);
+                                            showToast('خطا در لینک کردن مشتری', 'error');
+                                        } finally {
+                                            this.isLinking = false;
+                                        }
                                     }
+                                };
+                            }
                         </script>
 
                         <button
-                            class="relative flex items-center justify-center w-[50px] h-[50px] rounded-[25px] bg-[#E5E5E5] hover:bg-gray-300 transition">
+                            class="relative flex items-center justify-center w-[50px] h-[50px] rounded-[25px] bg-[#E5E5E5] hover:bg-gray-300 transition"
+                            aria-label="اعلان‌ها">
                             <svg width="30" height="30" viewBox="0 0 30 30" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -1112,18 +1992,16 @@
                                     d="M18.7734 23.825C18.7734 25.8875 17.0859 27.575 15.0234 27.575C13.9984 27.575 13.0484 27.15 12.3734 26.475C11.6984 25.8 11.2734 24.85 11.2734 23.825"
                                     stroke="#404040" stroke-width="1.5" stroke-miterlimit="10" />
                             </svg>
-
-
-                            
                         </button>
 
                         <div class="header-profile-section">
                             <div class="relative">
-                                <div id="profileBtnDesktop"
-                                    class="w-[50px] h-[50px] md:w-[60px] md:h-[60px] rounded-full  overflow-hidden flex items-center justify-center cursor-pointer transition">
+                                <button id="profileBtnDesktop"
+                                    class="w-[50px] h-[50px] md:w-[60px] md:h-[60px] rounded-full overflow-hidden flex items-center justify-center cursor-pointer transition bg-gray-100"
+                                    aria-label="پروفایل کاربر">
                                     <img src="<?php echo e(asset('assets/sarafi/avatar.svg')); ?>" alt="پروفایل"
                                         class="w-full h-full object-cover">
-                                </div>
+                                </button>
 
                                 <!-- منو dropdown -->
                                 <div id="profileDropdownDesktop"
@@ -1164,7 +2042,7 @@
 
         <div class="flex flex-col md:flex-row mt-4 min-h-screen dark:text-white dark:bg-black">
             <!-- سایدبار -->
-            <div class="sidebar-container dark:bg-black  dark:text-white" id="sidebar">
+            <div class="sidebar-container dark:bg-black dark:text-white" id="sidebar">
                 <nav class="mt-0 space-y-0 dark:text-white" x-data="{
                     openItems: {
                         customers: false,
@@ -1195,7 +2073,7 @@
                 }">
                     <!-- داشبورد -->
                     <a href="<?php echo e(route('sarafi.home')); ?>"
-                        class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir"
+                        class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir touch-button"
                         @click="active = 'dashboard'"
                         :class="active === 'dashboard' ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white dark:hover:bg-gray-800 hover:bg-gray-100'">
                         <span class="flex items-center gap-2">
@@ -1217,7 +2095,6 @@
                                     stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
 
-
                             <?php echo e(__('messages.dashboard')); ?>
 
                         </span>
@@ -1225,7 +2102,7 @@
 
                     <!-- کاربران -->
                     <a href="<?php echo e(route('sarafi.users')); ?>"
-                        class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir dark:text-white"
+                        class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir dark:text-white touch-button"
                         @click="active = 'users'"
                         :class="active === 'users' ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white dark:hover:bg-gray-800 hover:bg-gray-100'">
                         <span class="flex items-center gap-2">
@@ -1256,7 +2133,7 @@
                     <div>
                         <button @click="openItems.customers = !openItems.customers; active = 'customers'"
                             :class="(active === 'customers' || active === 'customer-create' || active === 'customer-table') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:hover:bg-gray-800 dark:text-white hover:bg-gray-100'"
-                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir touch-button">
                             <span class="flex items-center gap-2">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/people.svg')); ?>" class="w-5 h-5 dark:hidden"
                                     :class="(active === 'customers' || active === 'customer-create' || active === 'customer-table') ? 'filter invert brightness-0' : 'text-gray-500 dark:text-white dark:hover:bg-gray-800 '">
@@ -1300,7 +2177,7 @@
                         </button>
                         <div x-show="openItems.customers" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="<?php echo e(route('sarafi.customer-create')); ?>"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir touch-button"
                                 @click="setActive('customer-create', 'customers')"
                                 :class="active === 'customer-create' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:hover:bg-gray-800 dark:text-white hover:bg-gray-100'">
                                 <i class="fa-solid fa-user-pen w-4 h-4"
@@ -1310,7 +2187,7 @@
                             </a>
 
                             <a href="<?php echo e(route('sarafi.customer-table')); ?>"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir touch-button"
                                 @click="setActive('customer-table', 'customers')"
                                 :class="active === 'customer-table' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:hover:bg-gray-800 dark:text-white hover:bg-gray-100'">
                                 <i class="fa-solid fa-users-gear h-4 w-4"
@@ -1324,8 +2201,8 @@
                     <!-- ثبت حسابات و نرخ ارز -->
                     <div>
                         <button @click="openItems.accounts = !openItems.accounts; active = 'accounts'"
-                            :class="(active === 'accounts' || active === 'register-accounts') ? 'bg-[#122EE1] text-white' : 'text-gray-700  dark:hover:bg-gray-800 dark:text-white hover:bg-gray-100'"
-                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            :class="(active === 'accounts' || active === 'register-accounts') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:hover:bg-gray-800 dark:text-white hover:bg-gray-100'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir touch-button">
                             <span class="flex items-center gap-2 ">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" class="w-5 h-5 dark:hidden"
                                     :class="(active === 'accounts' || active === 'register-accounts') ? 'filter invert brightness-0' : 'text-gray-500 dark:text-white'">
@@ -1345,7 +2222,7 @@
                                 <?php echo e(__('messages.accounts')); ?>
 
                             </span>
-                            <svg :class="[openItems.accounts ? 'rotate-180' : '', (active === 'accounts' || active === 'register-accounts') ? 'text-white' : 'text-gray-500  dark:hover:bg-gray-800 dark:text-white']"
+                            <svg :class="[openItems.accounts ? 'rotate-180' : '', (active === 'accounts' || active === 'register-accounts') ? 'text-white' : 'text-gray-500 dark:hover:bg-gray-800 dark:text-white']"
                                 class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -1353,40 +2230,35 @@
                             </svg>
                         </button>
                         <div x-show="openItems.accounts" x-transition class="mr-6 mt-1 space-y-1">
-                            
-
-
                             <a href="<?php echo e(route('sarafi.profit-rates')); ?>"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir touch-button"
                                 @click="setActive('register-accounts', 'accounts')"
-                                :class="active === 'register-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                :class="active === 'register-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M18.5 12.6499V16.3499C18.5 19.4699 15.59 21.9999 12 21.9999C8.41 21.9999 5.5 19.4699 5.5 16.3499V12.6499C5.5 15.7699 8.41 17.9999 12 17.9999C15.59 17.9999 18.5 15.7699 18.5 12.6499Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M18.5 7.65C18.5 8.56 18.25 9.4 17.81 10.12C16.74 11.88 14.54 13 12 13C9.46 13 7.26 11.88 6.19 10.12C5.75 9.4 5.5 8.56 5.5 7.65C5.5 6.09 6.22999 4.68 7.39999 3.66C8.57999 2.63 10.2 2 12 2C13.8 2 15.42 2.63 16.6 3.65C17.77 4.68 18.5 6.09 18.5 7.65Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M18.5 7.65V12.65C18.5 15.77 15.59 18 12 18C8.41 18 5.5 15.77 5.5 12.65V7.65C5.5 4.53 8.41 2 12 2C13.8 2 15.42 2.63 16.6 3.65C17.77 4.68 18.5 6.09 18.5 7.65Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
-
                                 ثبت نرخ ارزها
                             </a>
                         </div>
                     </div>
 
-
                     <!-- کنترول و بررسی معاملات -->
                     <div>
                         <button @click="openItems.transactions = !openItems.transactions; active = 'transactions'"
-                            :class="(active === 'transactions' || active === 'control-transactions') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
-                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            :class="(active === 'transactions' || active === 'control-transactions') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir touch-button">
                             <span class="flex items-center gap-2">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/health.svg')); ?>" class="w-5 h-5 dark:hidden"
                                     :class="(active === 'transactions' || active === 'control-transactions') ? 'filter invert brightness-0' : 'text-gray-500 dark:text-white'">
@@ -1402,7 +2274,6 @@
                                         stroke-linejoin="round" />
                                 </svg>
 
-
                                 <?php echo e(__('messages.transactions')); ?>
 
                             </span>
@@ -1415,17 +2286,16 @@
                         </button>
                         <div x-show="openItems.transactions" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="<?php echo e(route('sarafi.remittance-approval')); ?>"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir touch-button"
                                 @click="setActive('control-transactions', 'transactions')"
-                                :class="active === 'control-transactions' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                :class="active === 'control-transactions' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M15.24 2H8.76004C5.00004 2 4.71004 5.38 6.74004 7.22L17.26 16.78C19.29 18.62 19 22 15.24 22H8.76004C5.00004 22 4.71004 18.62 6.74004 16.78L17.26 7.22C19.29 5.38 19 2 15.24 2Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
-
                                 احواله های تایید نشده
                             </a>
                         </div>
@@ -1435,8 +2305,8 @@
                     <div>
                         <button
                             @click="openItems.deletedTransactions = !openItems.deletedTransactions; active = 'deletedTransactions'"
-                            :class="(active === 'deletedTransactions' || active === 'deleted-transactions') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
-                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            :class="(active === 'deletedTransactions' || active === 'deleted-transactions') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir touch-button">
                             <span class="flex items-center gap-2">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/trash.svg')); ?>" class="w-5 h-5 dark:hidden"
                                     :class="(active === 'deletedTransactions' || active === 'deleted-transactions') ? 'filter invert brightness-0' : 'text-gray-500 dark:text-white'">
@@ -1472,40 +2342,38 @@
                         </button>
                         <div x-show="openItems.deletedTransactions" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="<?php echo e(route('sarafi.trash-edit')); ?>"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir touch-button"
                                 @click="setActive('deleted-transactions', 'deletedTransactions')"
-                                :class="active === 'deleted-transactions' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                :class="active === 'deleted-transactions' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'">
                                 <svg width="30" height="30" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M17.9 9.04997C15.72 8.82997 13.52 8.71997 11.33 8.71997C10.03 8.71997 8.72997 8.78997 7.43997 8.91997L6.09998 9.04997"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M9.70996 8.38994L9.84996 7.52994C9.94996 6.90994 10.03 6.43994 11.14 6.43994H12.86C13.97 6.43994 14.0499 6.92994 14.1499 7.52994L14.2899 8.37994"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M16.49 9.12988L16.06 15.7299C15.99 16.7599 15.93 17.5599 14.1 17.5599H9.89C8.06 17.5599 7.99999 16.7599 7.92999 15.7299L7.5 9.12988"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
-
                                 معاملات حذف شده و ویرایش شده
                             </a>
                         </div>
                     </div>
 
-
                     <!-- گزارش و آمار حسابات -->
                     <div>
                         <button @click="openItems.reports = !openItems.reports; active = 'reports'"
-                            :class="(active === 'reports' || active === 'view-reports') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white dark:hover:bg-gray-800 hover:bg-gray-100  dark:hover:bg-gray-800'"
-                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            :class="(active === 'reports' || active === 'view-reports') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white dark:hover:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir touch-button">
                             <span class="flex items-center gap-2">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/graph.svg')); ?>" class="w-5 h-5 dark:hidden"
                                     :class="(active === 'reports' || active === 'view-reports') ? 'filter invert brightness-0' : 'text-gray-500'">
@@ -1532,100 +2400,85 @@
                             </svg>
                         </button>
                         <div x-show="openItems.reports" x-transition class="mr-6 mt-1 space-y-1">
-
                             
                             <a href="<?php echo e(route('sarafi.account-reports')); ?>"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir touch-button"
                                 @click="setActive('view-reports', 'reports')"
-                                :class="active === 'view-reports' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
-
+                                :class="active === 'view-reports' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M17 21H7C3 21 2 20 2 16V8C2 4 3 3 7 3H17C21 3 22 4 22 8V16C22 20 21 21 17 21Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M14 8H19" stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                    <path d="M14 8H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M15 12H19" stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                    <path d="M15 12H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M17 16H19" stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                    <path d="M17 16H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M8.49994 11.2899C9.49958 11.2899 10.3099 10.4796 10.3099 9.47992C10.3099 8.48029 9.49958 7.66992 8.49994 7.66992C7.50031 7.66992 6.68994 8.48029 6.68994 9.47992C6.68994 10.4796 7.50031 11.2899 8.49994 11.2899Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M12 16.33C11.86 14.88 10.71 13.74 9.26 13.61C8.76 13.56 8.25 13.56 7.74 13.61C6.29 13.75 5.14 14.88 5 16.33"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
-
                                 گزارش حسابات
                             </a>
 
-
-
                             
                             <a href="<?php echo e(route('sarafi.general-reports')); ?>"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir touch-button"
                                 @click="setActive('view-reports', 'reports')"
-                                :class="active === 'view-reports' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
-
+                                :class="active === 'view-reports' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M2 2V19C2 20.66 3.34 22 5 22H22" stroke="#292D32" stroke-width="1.5"
+                                    <path d="M2 2V19C2 20.66 3.34 22 5 22H22" stroke="currentColor" stroke-width="1.5"
                                         stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
                                     <path
                                         d="M5 17L9.59 11.64C10.35 10.76 11.7 10.7 12.52 11.53L13.47 12.48C14.29 13.3 15.64 13.25 16.4 12.37L21 7"
-                                        stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10"
+                                        stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"
                                         stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
-
-
                                 گزارش عمومی
                             </a>
 
-
-
                             
                             <a href="<?php echo e(route('sarafi.revenue')); ?>"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir touch-button"
                                 @click="setActive('view-revenue', 'reports')"
-                                :class="active === 'view-revenue' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
-
+                                :class="active === 'view-revenue' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M6.87988 18.1501V16.0801" stroke="#292D32" stroke-width="1.5"
+                                    <path d="M6.87988 18.1501V16.0801" stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" />
-                                    <path d="M12 18.15V14.01" stroke="#292D32" stroke-width="1.5"
+                                    <path d="M12 18.15V14.01" stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" />
-                                    <path d="M17.1201 18.1499V11.9299" stroke="#292D32" stroke-width="1.5"
+                                    <path d="M17.1201 18.1499V11.9299" stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" />
                                     <path
                                         d="M17.1199 5.8501L16.6599 6.3901C14.1099 9.3701 10.6899 11.4801 6.87988 12.4301"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round" />
-                                    <path d="M14.1899 5.8501H17.1199V8.7701" stroke="#292D32" stroke-width="1.5"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M14.1899 5.8501H17.1199V8.7701" stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
                                     <path
                                         d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
-
                                 عواید معاملات
                             </a>
-
                         </div>
-
                     </div>
-
 
                     <!-- معاملات بین صرافی ها-->
                     <div>
                         <button @click="openItems.changersdeal = !openItems.changersdeal; active = 'changersdeal'"
-                            :class="(active === 'changersdeal' || active === 'edit-changersdeal') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
-                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            :class="(active === 'changersdeal' || active === 'edit-changersdeal') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir touch-button">
                             <span class="flex items-center gap-2">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/edit.svg')); ?>" class="w-5 h-5 dark:hidden"
                                     :class="(active === 'changersdeal' || active === 'edit-accounts') ? 'filter invert brightness-0' : 'text-gray-500 dark:text-white'">
@@ -1656,20 +2509,20 @@
                         </button>
                         <div x-show="openItems.changersdeal" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="<?php echo e(route('sarafi.changersdeal')); ?>"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir touch-button"
                                 @click="setActive('edit-accounts', 'changersdeal')"
-                                :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M10.5898 7.67993H14.8298V11.9299" stroke="#292D32" stroke-width="1.5"
+                                    <path d="M10.5898 7.67993H14.8298V11.9299" stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M14.8299 7.67993L9.16992 13.3399" stroke="#292D32" stroke-width="1.5"
+                                    <path d="M14.8299 7.67993L9.16992 13.3399" stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51" stroke="#292D32"
+                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51" stroke="currentColor"
                                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 ارسال به صرافی
@@ -1678,20 +2531,20 @@
 
                         <div x-show="openItems.changersdeal" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="<?php echo e(route('sarafi.changer_recive')); ?>"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir touch-button"
                                 @click="setActive('edit-accounts', 'changersdeal')"
-                                :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M10.5898 13.3398H14.8298V9.09985" stroke="#292D32" stroke-width="1.5"
+                                    <path d="M10.5898 13.3398H14.8298V9.09985" stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M14.8299 13.3399L9.16992 7.67993" stroke="#292D32" stroke-width="1.5"
+                                    <path d="M14.8299 13.3399L9.16992 7.67993" stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51" stroke="#292D32"
+                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51" stroke="currentColor"
                                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 دریافت از صرافی
@@ -1700,40 +2553,32 @@
 
                         <div x-show="openItems.changersdeal" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="<?php echo e(route('sarafi.sarafi_reports')); ?>"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir touch-button"
                                 @click="setActive('edit-accounts', 'changersdeal')"
-                                :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M2 22H22" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10"
+                                    <path d="M2 22H22" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"
                                         stroke-linecap="round" stroke-linejoin="round" />
                                     <path d="M9.75 4V22H14.25V4C14.25 2.9 13.8 2 12.45 2H11.55C10.2 2 9.75 2.9 9.75 4Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M3 10V22H7V10C7 8.9 6.6 8 5.4 8H4.6C3.4 8 3 8.9 3 10Z" stroke="#292D32"
+                                    <path d="M3 10V22H7V10C7 8.9 6.6 8 5.4 8H4.6C3.4 8 3 8.9 3 10Z" stroke="currentColor"
                                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                     <path d="M17 15V22H21V15C21 13.9 20.6 13 19.4 13H18.6C17.4 13 17 13.9 17 15Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
-
                                 گزارش حسابات صرافی ها
                             </a>
                         </div>
-
-
-
                     </div>
-
-
-
-
 
                     <!-- مدیریت و دسترسی -->
                     <div>
                         <button @click="openItems.management = !openItems.management; active = 'management'"
-                            :class="(active === 'management' || active === 'user-management') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
-                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            :class="(active === 'management' || active === 'user-management') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir touch-button">
                             <span class="flex items-center gap-2">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/Group 1325.svg')); ?>"
                                     class="w-5 h-5 dark:hidden"
@@ -1760,11 +2605,10 @@
                                         stroke="white" stroke-width="1.3" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
-                                        d="M22.0977 23.5227C22.0274 23.6821 22.0064 23.8589 22.0375 24.0303C22.0686 24.2017 22.1503 24.3599 22.2721 24.4844L22.3038 24.5161C22.4021 24.6143 22.48 24.7308 22.5332 24.8591C22.5864 24.9874 22.6138 25.125 22.6138 25.2638C22.6138 25.4027 22.5864 25.5402 22.5332 25.6685C22.48 25.7968 22.4021 25.9134 22.3038 26.0115C22.2057 26.1098 22.0891 26.1877 21.9608 26.2409C21.8325 26.2941 21.695 26.3215 21.5561 26.3215C21.4172 26.3215 21.2797 26.2941 21.1514 26.2409C21.0231 26.1877 20.9066 26.1098 20.8084 26.0115L20.7767 25.9798C20.6522 25.858 20.494 25.7763 20.3226 25.7452C20.1512 25.7141 19.9744 25.7351 19.815 25.8055C19.6587 25.8724 19.5254 25.9837 19.4315 26.1254C19.3377 26.2672 19.2873 26.4333 19.2866 26.6034V26.6932C19.2866 26.9735 19.1752 27.2423 18.9771 27.4405C18.7789 27.6387 18.5101 27.75 18.2298 27.75C17.9495 27.75 17.6807 27.6387 17.4825 27.4405C17.2843 27.2423 17.173 26.9735 17.173 26.6932V26.6456C17.1689 26.4707 17.1122 26.3011 17.0105 26.1588C16.9087 26.0165 16.7665 25.9081 16.6023 25.8477C16.4429 25.7774 16.2661 25.7564 16.0947 25.7875C15.9233 25.8186 15.7651 25.9003 15.6406 26.0221L15.6089 26.0538C15.5107 26.1521 15.3942 26.23 15.2659 26.2832C15.1376 26.3364 15 26.3638 14.8612 26.3638C14.7223 26.3638 14.5848 26.3364 14.4565 26.2832C14.3282 26.23 14.2116 26.1521 14.1135 26.0538C14.0152 25.9557 13.9373 25.8391 13.8841 25.7108C13.8309 25.5825 13.8035 25.445 13.8035 25.3061C13.8035 25.1672 13.8309 25.0297 13.8841 24.9014C13.9373 24.7731 14.0152 24.6566 14.1135 24.5584L14.1452 24.5267C14.267 24.4022 14.3487 24.244 14.3798 24.0726C14.4109 23.9012 14.3899 23.7244 14.3195 23.565C14.2526 23.4087 14.1413 23.2754 13.9996 23.1815C13.8578 23.0877 13.6917 23.0373 13.5216 23.0366H13.4318C13.1515 23.0366 12.8827 22.9252 12.6845 22.7271C12.4863 22.5289 12.375 22.2601 12.375 21.9798C12.375 21.6995 12.4863 21.4307 12.6845 21.2325C12.8827 21.0343 13.1515 20.923 13.4318 20.923H13.4794C13.6543 20.9189 13.8239 20.8622 13.9662 20.7605C14.1085 20.6587 14.2169 20.5165 14.2773 20.3523C14.3476 20.1929 14.3686 20.0161 14.3375 19.8447C14.3064 19.6733 14.2247 19.5151 14.1029 19.3906L14.0712 19.3589C13.9729 19.2607 13.895 19.1442 13.8418 19.0159C13.7886 18.8876 13.7612 18.75 13.7612 18.6112C13.7612 18.4723 13.7886 18.3348 13.8418 18.2065C13.895 18.0782 13.9729 17.9616 14.0712 17.8635C14.1693 17.7652 14.2859 17.6873 14.4142 17.6341C14.5425 17.5809 14.68 17.5535 14.8189 17.5535C14.9578 17.5535 15.0953 17.5809 15.2236 17.6341C15.3519 17.6873 15.4684 17.7652 15.5666 17.8635L15.5983 17.8952C15.7228 18.017 15.881 18.0987 16.0524 18.1298C16.2238 18.1609 16.4006 18.1399 16.56 18.0695H16.6023C16.7586 18.0026 16.8918 17.8913 16.9857 17.7496C17.0796 17.6078 17.13 17.4417 17.1307 17.2716V17.1818C17.1307 16.9015 17.242 16.6327 17.4402 16.4345C17.6384 16.2363 17.9072 16.125 18.1875 16.125C18.4678 16.125 18.7366 16.2363 18.9348 16.4345C19.133 16.6327 19.2443 16.9015 19.2443 17.1818V17.2294C19.245 17.3994 19.2954 17.5655 19.3893 17.7073C19.4831 17.8491 19.6164 17.9603 19.7727 18.0273C19.9321 18.0976 20.1089 18.1186 20.2803 18.0875C20.4517 18.0564 20.6099 17.9747 20.7344 17.8529L20.7661 17.8212C20.8643 17.7229 20.9808 17.645 21.1091 17.5918C21.2374 17.5386 21.375 17.5112 21.5138 17.5112C21.6527 17.5112 21.7902 17.5386 21.9185 17.5918C22.0468 17.645 22.1634 17.7229 22.2615 17.8212C22.3598 17.9193 22.4377 18.0359 22.4909 18.1642C22.5441 18.2925 22.5715 18.43 22.5715 18.5689C22.5715 18.7078 22.5441 18.8453 22.4909 18.9736C22.4377 19.1019 22.3598 19.2184 22.2615 19.3166L22.2298 19.3483C22.108 19.4728 22.0263 19.631 21.9952 19.8024C21.9641 19.9738 21.9851 20.1506 22.0555 20.31V20.3523C22.1224 20.5086 22.2337 20.6418 22.3754 20.7357C22.5172 20.8296 22.6833 20.88 22.8534 20.8807H22.9432C23.2235 20.8807 23.4923 20.992 23.6905 21.1902C23.8887 21.3884 24 21.6572 24 21.9375C24 22.2178 23.8887 22.4866 23.6905 22.6848C23.4923 22.883 23.2235 22.9943 22.9432 22.9943H22.8956C22.7256 22.995 22.5595 23.0454 22.4177 23.1393C22.2759 23.2331 22.1647 23.3664 22.0977 23.5227Z"
+                                        d="M22.0977 23.5227C22.0274 23.6821 22.0064 23.8589 22.0375 24.0303C22.0686 24.2017 22.1503 24.3599 22.2721 24.4844L22.3038 24.5161C22.4021 24.6143 22.48 24.7308 22.5332 24.8591C22.5864 24.9874 22.6138 25.125 22.6138 25.2638C22.6138 25.4027 22.5864 25.5402 22.5332 25.6685C22.48 25.7968 22.4021 25.9134 22.3038 26.0115C22.2057 26.1098 22.0891 26.1877 21.9608 26.2409C21.8325 26.2941 21.695 26.3215 21.5561 26.3215C21.4172 26.3215 21.2797 26.2941 21.1514 26.2409C21.0231 26.1877 20.9066 26.1098 20.8084 26.0115L20.7767 25.9798C20.6522 25.858 20.494 25.7763 20.3226 25.7452C20.1512 25.7141 19.9744 25.7351 19.815 25.8055C19.6587 25.8724 19.5254 25.9837 19.4315 26.1254C19.3377 26.2672 19.2873 26.4333 19.2866 26.6034V26.6932C19.2866 26.9735 19.1752 27.2423 18.9771 27.4405C18.7789 27.6387 18.5101 27.75 18.2298 27.75C17.9495 27.75 17.6807 27.6387 17.4825 27.4405C17.2843 27.2423 17.173 26.9735 17.173 26.6932V26.6456C17.1689 26.4707 17.1122 26.3011 17.0105 26.1588C16.9087 26.0165 16.7665 25.9081 16.6023 25.8477C16.4429 25.7774 16.2661 25.7564 16.0947 25.7875C15.9233 25.8186 15.7651 25.9003 15.6406 26.0221L15.6089 26.0538C15.5107 26.1521 15.3942 26.23 15.2659 26.2832C15.1376 26.3364 15 26.3638 14.8612 26.3638C14.7223 26.3638 14.5848 26.3364 14.4565 26.2832C14.3282 26.23 14.2116 26.1521 14.1135 26.0538C14.0152 25.9557 13.9373 25.8391 13.8841 25.7108C13.8309 25.5825 13.8035 25.445 13.8035 25.3061C13.8035 25.1672 13.8309 25.0297 13.8841 24.9014C13.9373 24.7731 14.0152 24.6566 14.1135 24.5584L14.1452 24.5267C14.267 24.4022 14.3487 24.244 14.3798 24.0726C14.4109 23.9012 14.3899 23.7244 14.3195 23.565C14.2526 23.4087 14.1413 23.2754 13.9996 23.1815C13.8578 23.0877 13.6917 23.0373 13.5216 23.0366H13.4318C13.1515 23.0366 12.8827 22.9252 12.6845 22.7271C12.4863 22.5289 12.375 22.2601 12.375 21.9798C12.375 21.6995 12.4863 21.4307 12.6845 21.2325C12.8827 21.0343 13.1515 20.923 13.4318 20.923H13.4794C13.6543 20.9189 13.8239 20.8622 13.9662 20.7605C14.1085 20.6587 14.2169 20.5165 14.2773 20.3523C14.3476 20.1929 14.3686 20.0161 14.3375 19.8447C14.3064 19.6733 14.2247 19.5151 14.1029 19.3906L14.0712 19.3589C13.9729 19.2607 13.895 19.1442 13.8418 19.0159C13.7886 18.8876 13.7612 18.75 13.7612 18.6112C13.7612 18.4723 13.7886 18.3348 13.8418 18.2065C13.895 18.0782 13.9729 17.9616 14.1135 17.8635C14.1693 17.7652 14.2859 17.6873 14.4142 17.6341C14.5425 17.5809 14.68 17.5535 14.8189 17.5535C14.9578 17.5535 15.0953 17.5809 15.2236 17.6341C15.3519 17.6873 15.4684 17.7652 15.5666 17.8635L15.5983 17.8952C15.7228 18.017 15.881 18.0987 16.0524 18.1298C16.2238 18.1609 16.4006 18.1399 16.56 18.0695H16.6023C16.7586 18.0026 16.8918 17.8913 16.9857 17.7496C17.0796 17.6078 17.13 17.4417 17.1307 17.2716V17.1818C17.1307 16.9015 17.242 16.6327 17.4402 16.4345C17.6384 16.2363 17.9072 16.125 18.1875 16.125C18.4678 16.125 18.7366 16.2363 18.9348 16.4345C19.133 16.6327 19.2443 16.9015 19.2443 17.1818V17.2294C19.245 17.3994 19.2954 17.5655 19.3893 17.7073C19.4831 17.8491 19.6164 17.9603 19.7727 18.0273C19.9321 18.0976 20.1089 18.1186 20.2803 18.0875C20.4517 18.0564 20.6099 17.9747 20.7344 17.8529L20.7661 17.8212C20.8643 17.7229 20.9808 17.645 21.1091 17.5918C21.2374 17.5386 21.375 17.5112 21.5138 17.5112C21.6527 17.5112 21.7902 17.5386 21.9185 17.5918C22.0468 17.645 22.1634 17.7229 22.2615 17.8212C22.3598 17.9193 22.4377 18.0359 22.4909 18.1642C22.5441 18.2925 22.5715 18.43 22.5715 18.5689C22.5715 18.7078 22.5441 18.8453 22.4909 18.9736C22.4377 19.1019 22.3598 19.2184 22.2615 19.3166L22.2298 19.3483C22.108 19.4728 22.0263 19.631 21.9952 19.8024C21.9641 19.9738 21.9851 20.1506 22.0555 20.31V20.3523C22.1224 20.5086 22.2337 20.6418 22.3754 20.7357C22.5172 20.8296 22.6833 20.88 22.8534 20.8807H22.9432C23.2235 20.8807 23.4923 20.992 23.6905 21.1902C23.8887 21.3884 24 21.6572 24 21.9375C24 22.2178 23.8887 22.4866 23.6905 22.6848C23.4923 22.883 23.2235 22.9943 22.9432 22.9943H22.8956C22.7256 22.995 22.5595 23.0454 22.4177 23.1393C22.2759 23.2331 22.1647 23.3664 22.0977 23.5227Z"
                                         stroke="white" stroke-width="1.3" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
-
 
                                 <?php echo e(__('messages.management')); ?>
 
@@ -1778,9 +2622,9 @@
                         </button>
                         <div x-show="openItems.management" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="#"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir touch-button"
                                 @click="setActive('user-management', 'management')"
-                                :class="active === 'user-management' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                :class="active === 'user-management' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/user.svg')); ?>" class="w-4 h-4"
                                     :class="active === 'user-management' ? 'filter invert brightness-0' : 'text-gray-500'">
                                 <?php echo e(__('messages.user_management')); ?>
@@ -1792,8 +2636,8 @@
                     <!-- مدیریت پیامک ها -->
                     <div>
                         <button @click="openItems.sms = !openItems.sms; active = 'sms'"
-                            :class="(active === 'sms' || active === 'sms-management') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
-                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            :class="(active === 'sms' || active === 'sms-management') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir touch-button">
                             <span class="flex items-center gap-2">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/sms.svg')); ?>" class="w-5 h-5 dark:hidden"
                                     :class="(active === 'sms' || active === 'sms-management') ? 'filter invert brightness-0' : 'text-gray-500 dark:text-white'">
@@ -1809,11 +2653,10 @@
                                         stroke-linejoin="round" />
                                 </svg>
 
-
                                 <?php echo e(__('messages.sms')); ?>
 
                             </span>
-                            <svg :class="[openItems.sms ? 'rotate-180' : '', (active === 'sms' || active === 'sms-management') ? 'text-white' : 'text-gray-500 dark:text-white  dark:hover:bg-gray-800']"
+                            <svg :class="[openItems.sms ? 'rotate-180' : '', (active === 'sms' || active === 'sms-management') ? 'text-white' : 'text-gray-500 dark:text-white dark:hover:bg-gray-800']"
                                 class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -1822,9 +2665,9 @@
                         </button>
                         <div x-show="openItems.sms" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="#"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir touch-button"
                                 @click="setActive('sms-management', 'sms')"
-                                :class="active === 'sms-management' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                :class="active === 'sms-management' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/message.svg')); ?>" class="w-4 h-4"
                                     :class="active === 'sms-management' ? 'filter invert brightness-0' : 'text-gray-500'">
                                 <?php echo e(__('messages.sms_management')); ?>
@@ -1836,8 +2679,8 @@
                     <!-- اطلاعیه های آنلاین -->
                     <div>
                         <button @click="openItems.notifications = !openItems.notifications; active = 'notifications'"
-                            :class="(active === 'notifications' || active === 'online-notifications') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
-                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            :class="(active === 'notifications' || active === 'online-notifications') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir touch-button">
                             <span class="flex items-center gap-2">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/wifi.svg')); ?>" class="w-5 h-5 dark:hidden"
                                     :class="(active === 'notifications' || active === 'online-notifications') ? 'filter invert brightness-0' : 'text-gray-500 dark:text-white'">
@@ -1862,7 +2705,7 @@
 
                             </span>
                             <svg :class="[openItems.notifications ? 'rotate-180' : '', (active === 'notifications' || active === 'online-notifications') ? 'text-white' : 'text-gray-500']"
-                                class="w-4 h-4 transition-transform  dark:text-white" fill="none" stroke="currentColor"
+                                class="w-4 h-4 transition-transform dark:text-white" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M19 9l-7 7-7-7" />
@@ -1870,9 +2713,9 @@
                         </button>
                         <div x-show="openItems.notifications" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="#"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir touch-button"
                                 @click="setActive('online-notifications', 'notifications')"
-                                :class="active === 'online-notifications' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                :class="active === 'online-notifications' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/notification.svg')); ?>" class="w-4 h-4"
                                     :class="active === 'online-notifications' ? 'filter invert brightness-0' : 'text-gray-500'">
                                 <?php echo e(__('messages.online_notifications')); ?>
@@ -1884,8 +2727,8 @@
                     <!-- پشتیبانی سیستم -->
                     <div>
                         <button @click="openItems.support = !openItems.support; active = 'support'"
-                            :class="(active === 'support' || active === 'system-support') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
-                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            :class="(active === 'support' || active === 'system-support') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir touch-button">
                             <span class="flex items-center gap-2">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/document-copy.svg')); ?>"
                                     class="w-5 h-5 dark:hidden"
@@ -1914,7 +2757,7 @@
                                 <?php echo e(__('messages.support')); ?>
 
                             </span>
-                            <svg :class="[openItems.support ? 'rotate-180' : '', (active === 'support' || active === 'system-support') ? 'text-white' : 'text-gray-500 dark:text-white  dark:hover:bg-gray-800']"
+                            <svg :class="[openItems.support ? 'rotate-180' : '', (active === 'support' || active === 'system-support') ? 'text-white' : 'text-gray-500 dark:text-white dark:hover:bg-gray-800']"
                                 class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -1923,9 +2766,9 @@
                         </button>
                         <div x-show="openItems.support" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="#"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir touch-button"
                                 @click="setActive('system-support', 'support')"
-                                :class="active === 'system-support' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                :class="active === 'system-support' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/support.svg')); ?>" class="w-4 h-4"
                                     :class="active === 'system-support' ? 'filter invert brightness-0' : 'text-gray-500'">
                                 <?php echo e(__('messages.system_support')); ?>
@@ -1937,8 +2780,8 @@
                     <!-- تنظیمات -->
                     <div>
                         <button @click="openItems.settings = !openItems.settings; active = 'settings'"
-                            :class="(active === 'settings' || active === 'system-settings') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
-                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            :class="(active === 'settings' || active === 'system-settings') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir touch-button">
                             <span class="flex items-center gap-2">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/setting-2.svg')); ?>"
                                     class="w-5 h-5 dark:hidden"
@@ -1955,7 +2798,6 @@
                                         stroke-linejoin="round" />
                                 </svg>
 
-
                                 <?php echo e(__('messages.settings')); ?>
 
                             </span>
@@ -1968,9 +2810,9 @@
                         </button>
                         <div x-show="openItems.settings" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="#"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir touch-button"
                                 @click="setActive('system-settings', 'settings')"
-                                :class="active === 'system-settings' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                :class="active === 'system-settings' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/settings.svg')); ?>" class="w-4 h-4"
                                     :class="active === 'system-settings' ? 'filter invert brightness-0' : 'text-gray-500'">
                                 <?php echo e(__('messages.system_settings')); ?>
@@ -1982,49 +2824,234 @@
             </div>
 
             <!-- محتوای اصلی -->
-            <main class="flex-1 mx-auto main-content-wrapper px-3  w-[500px] overflow-x-hidden">
+            <main class="flex-1 mx-auto main-content-wrapper px-3 safe-padding">
                 <?php echo $__env->yieldContent('content'); ?>
             </main>
+        </div>
 
+        <!-- Chat Widget -->
+        <div id="chatWidget" class="hidden md:block">
+            <button id="chatToggle"
+                class="bg-[#122EE1] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105"
+                aria-label="باز کردن چت">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M12 1C7.03 1 3 5.03 3 10V17C3 18.66 4.34 20 6 20H9V12H5V10C5 6.13 8.13 3 12 3C15.87 3 19 6.13 19 10V12H15V20H18C19.66 20 21 18.66 21 17V10C21 5.03 16.97 1 12 1Z" />
+                </svg>
+                <span id="unreadBadge"
+                    class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center hidden shadow">0</span>
+            </button>
 
-    
+            <div id="chatWindow"
+                class="fixed bottom-0 right-0 left-0 md:absolute md:bottom-20 md:right-0 md:left-auto w-full md:w-96 h-fit md:h-fit bg-white dark:bg-gray-800 rounded-none md:rounded-lg shadow-2xl hidden flex flex-col border border-gray-200 dark:border-gray-700 transform translate-y-full md:translate-y-0 transition-transform duration-300 ease-in-out">
+                <div class="bg-[#122EE1] text-white p-4 rounded-t-lg flex justify-between items-center">
+                    <div class="flex items-center space-x-3 rtl:space-x-reverse">
+                        <h3 class="font-semibold text-lg">پیام‌رسانی</h3>
+                        <button id="markAllReadBtn"
+                            class="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded transition">
+                            خواندن همه
+                        </button>
+                    </div>
+                    <div class="flex items-center space-x-3 rtl:space-x-reverse">
+                        <button id="refreshChatBtn" class="text-white hover:text-gray-200 transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                                </path>
+                            </svg>
+                        </button>
+                        <button id="closeChatBtn" class="text-white hover:text-gray-200 transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex-1 flex flex-col overflow-hidden">
+                    <div class="p-3 border-b dark:border-gray-700">
+                        <div class="relative">
+                            <input type="text" id="chatSearchInput" placeholder="جستجوی کاربر..."
+                                class="w-full px-4 py-2 pr-10 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#122EE1]">
+                            <svg class="w-5 h-5 absolute left-3 top-2.5 text-gray-400" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="flex border-b dark:border-gray-700 shrink-0">
+                        <button id="conversationsTab"
+                            class="flex-1 py-3 text-center font-medium border-b-2 border-[#122EE1] text-[#122EE1]">
+                            مکالمات
+                        </button>
+                        <button id="usersTab"
+                            class="flex-1 py-3 text-center font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+                            کاربران
+                        </button>
+                    </div>
+
+                    <div class="flex-1 overflow-hidden">
+                        <div id="conversationsPanel" class="h-full overflow-y-auto">
+                            <div id="conversationsList" class="p-3"></div>
+                            <div id="noConversations" class="hidden p-6 text-center text-gray-500">
+                                <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                                    </path>
+                                </svg>
+                                <p>هیچ مکالمه‌ای وجود ندارد</p>
+                            </div>
+                        </div>
+
+                        <div id="usersPanel" class="h-full overflow-y-auto hidden">
+                            <div id="usersList" class="p-3"></div>
+                            <div id="noUsers" class="hidden p-6 text-center text-gray-500">
+                                <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-8A8.5 8.5 0 0012 3.5 8.5 8.5 0 003.5 12 8.5 8.5 0 0012 20.5a8.5 8.5 0 008.5-8.5z">
+                                    </path>
+                                </svg>
+                                <p>کاربری برای چت پیدا نشد</p>
+                            </div>
+                        </div>
+
+                        <div id="messagesPanel" class="h-full flex flex-col hidden">
+                            <div
+                                class="p-3 border-b dark:border-gray-700 flex items-center bg-gray-50 dark:bg-gray-900 shrink-0">
+                                <button id="backToChat" class="ml-3 text-[#122EE1] hover:text-blue-700">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 19l-7-7 7-7"></path>
+                                    </svg>
+                                </button>
+                                <div id="currentChatUser" class="flex items-center flex-1"></div>
+                            </div>
+
+                            <div id="messagesContainer"
+                                class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-4 overscroll-contain"></div>
+
+                            <div class="p-3 border-t dark:border-gray-700 shrink-0">
+                                <div class="flex space-x-2 rtl:space-x-reverse">
+                                    <button id="sendMessageBtn"
+                                        class="bg-white border border-blue-400 text-white px-6 py-2 rounded-lg transition flex items-center space-x-2 rtl:space-x-reverse">
+                                        <img src="<?php echo e(asset('assets/sarafi/paper-plane.png')); ?>" class="h-5 w-5"
+                                            alt="">
+                                    </button>
+                                    <input type="text" id="messageInput" placeholder="پیام خود را بنویسید..."
+                                        class="flex-1 px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#122EE1]">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Mobile detection
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth <= 768;
+            
+            if (isMobile) {
+                document.body.classList.add('is-mobile');
+            }
+
+            // Set viewport height for mobile
+            function setViewportHeight() {
+                const vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
+            }
+            
+            setViewportHeight();
+            window.addEventListener('resize', setViewportHeight);
+            window.addEventListener('orientationchange', setViewportHeight);
+
+            // Loader
             const loader = document.getElementById('loader');
             const mainContent = document.getElementById('mainContent');
             const progressBar = document.querySelector('.progress');
 
-            // مدیریت منوی موبایل
-            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-            const sidebar = document.getElementById('sidebar');
-            const mobileOverlay = document.getElementById('mobileOverlay');
-            
-            mobileMenuBtn.addEventListener('click', function() {
-                sidebar.classList.toggle('open');
-                mobileOverlay.classList.toggle('open');
-            });
-            
-            mobileOverlay.addEventListener('click', function() {
-                sidebar.classList.remove('open');
-                mobileOverlay.classList.remove('open');
-            });
+            if (loader && mainContent && progressBar) {
+                mainContent.style.display = 'none';
 
-            // مدیریت پروفایل در موبایل
-            const profileBtnMobile = document.getElementById('profileBtnMobile');
-            if (profileBtnMobile) {
-                profileBtnMobile.addEventListener('click', () => {
-                    window.location.href = "<?php echo e(route('sarafi.users')); ?>";
+                let progress = 0;
+                let fakeProgressInterval;
+
+                function startFakeProgress() {
+                    fakeProgressInterval = setInterval(() => {
+                        progress += Math.random() * 30;
+                        if (progress > 90) progress = 90;
+                        progressBar.style.width = progress + '%';
+                    }, 10);
+                }
+
+                startFakeProgress();
+
+                window.addEventListener('load', function() {
+                    clearInterval(fakeProgressInterval);
+                    progress = 100;
+                    progressBar.style.width = progress + '%';
+
+                    setTimeout(() => {
+                        loader.classList.add('loader-complete');
+                        mainContent.style.display = 'block';
+                        mainContent.classList.add('content-loaded');
+
+                        setTimeout(() => {
+                            loader.style.display = 'none';
+                        }, 400);
+                    }, 600);
                 });
             }
 
-            // مدیریت پروفایل در دسکتاپ
+            // Mobile menu functionality
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenuBtn2 = document.getElementById('mobileMenuBtn2');
+            const sidebar = document.getElementById('sidebar');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            
+            function toggleMobileMenu() {
+                sidebar.classList.toggle('open');
+                mobileOverlay.classList.toggle('open');
+                document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+            }
+            
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+            }
+            
+            if (mobileMenuBtn2) {
+                mobileMenuBtn2.addEventListener('click', toggleMobileMenu);
+            }
+            
+            if (mobileOverlay) {
+                mobileOverlay.addEventListener('click', toggleMobileMenu);
+            }
+
+            // Profile dropdown for mobile
+            const profileBtnMobile = document.getElementById('profileBtnMobile');
+            if (profileBtnMobile) {
+                profileBtnMobile.addEventListener('click', () => {
+                    if (isMobile) {
+                        showBottomSheet();
+                    } else {
+                        window.location.href = "<?php echo e(route('sarafi.users')); ?>";
+                    }
+                });
+            }
+
+            // Profile dropdown for desktop
             const profileBtnDesktop = document.getElementById('profileBtnDesktop');
             const profileDropdownDesktop = document.getElementById('profileDropdownDesktop');
             if (profileBtnDesktop && profileDropdownDesktop) {
-                profileBtnDesktop.addEventListener('click', () => {
+                profileBtnDesktop.addEventListener('click', (e) => {
+                    e.stopPropagation();
                     profileDropdownDesktop.classList.toggle('hidden');
                 });
 
@@ -2035,143 +3062,388 @@
                 });
             }
 
-            // محتوا را ابتدا مخفی کن
-            mainContent.style.display = 'none';
-
-            let progress = 0;
-            let fakeProgressInterval;
-
-            function startFakeProgress() {
-                fakeProgressInterval = setInterval(() => {
-                    progress += Math.random() * 30;
-                    if (progress > 90) progress = 90;
-                    progressBar.style.width = progress + '%';
-                },10);
-            }
-
-            startFakeProgress();
-
-            window.addEventListener('load', function() {
-                clearInterval(fakeProgressInterval);
-                progress = 100;
-                progressBar.style.width = progress + '%';
-
-                setTimeout(() => {
-                    loader.classList.add('loader-complete');
-                    mainContent.style.display = 'block';
-                    mainContent.classList.add('content-loaded');
-
-                    setTimeout(() => {
-                        loader.style.display = 'none';
-                    }, 400);
-                }, 600);
-            });
-
-            // مدیریت کلیک روی لینک‌ها
-            const navLinks = document.querySelectorAll('.nav-link, .locale-link');
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    const href = this.getAttribute('href');
-                    if (href && !href.startsWith('#')) {
-                        e.preventDefault();
-                        loader.style.display = 'flex';
-                        loader.classList.remove('loader-complete');
-                        setTimeout(() => window.location.href = href, 50);
-                    }
+            // Language dropdown for desktop
+            const dropdownButton = document.getElementById('dropdownButton');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            if (dropdownButton && dropdownMenu) {
+                dropdownButton.addEventListener('click', () => {
+                    dropdownMenu.classList.toggle('hidden');
                 });
-            });
 
-            // مدیریت dropdown زبان برای دسکتاپ
-            const btn = document.getElementById('dropdownButton');
-            const menu = document.getElementById('dropdownMenu');
-            if (btn && menu) {
-                btn.addEventListener('click', () => menu.classList.toggle('hidden'));
-                document.addEventListener('click', e => {
-                    if (!btn.contains(e.target) && !menu.contains(e.target)) {
-                        menu.classList.add('hidden');
+                document.addEventListener('click', (e) => {
+                    if (!dropdownButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                        dropdownMenu.classList.add('hidden');
                     }
                 });
             }
 
-            // مدیریت dropdown زبان برای موبایل
-            const btnMobile = document.getElementById('dropdownButtonMobile');
-            const menuMobile = document.getElementById('dropdownMenuMobile');
-            if (btnMobile && menuMobile) {
-                btnMobile.addEventListener('click', () => menuMobile.classList.toggle('hidden'));
-                document.addEventListener('click', e => {
-                    if (!btnMobile.contains(e.target) && !menuMobile.contains(e.target)) {
-                        menuMobile.classList.add('hidden');
+            // Language dropdown for mobile
+            const dropdownButtonMobile = document.getElementById('dropdownButtonMobile');
+            const dropdownMenuMobile = document.getElementById('dropdownMenuMobile');
+            if (dropdownButtonMobile && dropdownMenuMobile) {
+                dropdownButtonMobile.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dropdownMenuMobile.classList.toggle('hidden');
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!dropdownButtonMobile.contains(e.target) && !dropdownMenuMobile.contains(e.target)) {
+                        dropdownMenuMobile.classList.add('hidden');
                     }
                 });
             }
-        });
 
-        // مدیریت دارک مود
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const sunIcon = document.getElementById('sunIcon');
-        const moonIcon = document.getElementById('moonIcon');
-        const toggleCircle = document.getElementById('toggleCircle');
-        
-        const darkModeToggleMobile = document.getElementById('darkModeToggleMobile');
-        const sunIconMobile = document.getElementById('sunIconMobile');
-        const moonIconMobile = document.getElementById('moonIconMobile');
-        const toggleCircleMobile = document.getElementById('toggleCircleMobile');
-        
-        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-        const html = document.documentElement;
+            // Dark mode toggle
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const darkModeToggleMobile = document.getElementById('darkModeToggleMobile');
+            const sunIcon = document.getElementById('sunIcon');
+            const moonIcon = document.getElementById('moonIcon');
+            const sunIconMobile = document.getElementById('sunIconMobile');
+            const moonIconMobile = document.getElementById('moonIconMobile');
+            const toggleCircle = document.getElementById('toggleCircle');
+            const toggleCircleMobile = document.getElementById('toggleCircleMobile');
+            
+            const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+            const html = document.documentElement;
 
-        const currentTheme = localStorage.getItem('theme');
-        if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
-            html.classList.add('dark');
-            if (darkModeToggle) darkModeToggle.checked = true;
-            if (darkModeToggleMobile) darkModeToggleMobile.checked = true;
-            if (sunIcon) sunIcon.classList.add('hidden');
-            if (sunIconMobile) sunIconMobile.classList.add('hidden');
-            if (moonIcon) moonIcon.classList.remove('hidden');
-            if (moonIconMobile) moonIconMobile.classList.remove('hidden');
-            if (toggleCircle) toggleCircle.classList.add('move-dark');
-            if (toggleCircleMobile) toggleCircleMobile.classList.add('move-dark');
-        }
-
-        if (darkModeToggle) {
-            darkModeToggle.addEventListener('change', function() {
-                updateDarkMode(this.checked);
-            });
-        }
-
-        if (darkModeToggleMobile) {
-            darkModeToggleMobile.addEventListener('change', function() {
-                updateDarkMode(this.checked);
-            });
-        }
-
-        function updateDarkMode(isDark) {
-            if (isDark) {
+            const currentTheme = localStorage.getItem('theme');
+            if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
                 html.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
+                if (darkModeToggle) darkModeToggle.checked = true;
+                if (darkModeToggleMobile) darkModeToggleMobile.checked = true;
                 if (sunIcon) sunIcon.classList.add('hidden');
                 if (sunIconMobile) sunIconMobile.classList.add('hidden');
                 if (moonIcon) moonIcon.classList.remove('hidden');
                 if (moonIconMobile) moonIconMobile.classList.remove('hidden');
                 if (toggleCircle) toggleCircle.classList.add('move-dark');
                 if (toggleCircleMobile) toggleCircleMobile.classList.add('move-dark');
-                if (darkModeToggle) darkModeToggle.checked = true;
-                if (darkModeToggleMobile) darkModeToggleMobile.checked = true;
-            } else {
-                html.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-                if (sunIcon) sunIcon.classList.remove('hidden');
-                if (sunIconMobile) sunIconMobile.classList.remove('hidden');
-                if (moonIcon) moonIcon.classList.add('hidden');
-                if (moonIconMobile) moonIconMobile.classList.add('hidden');
-                if (toggleCircle) toggleCircle.classList.remove('move-dark');
-                if (toggleCircleMobile) toggleCircleMobile.classList.remove('move-dark');
-                if (darkModeToggle) darkModeToggle.checked = false;
-                if (darkModeToggleMobile) darkModeToggleMobile.checked = false;
             }
-        }
+
+            function updateDarkMode(isDark) {
+                if (isDark) {
+                    html.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                    if (sunIcon) sunIcon.classList.add('hidden');
+                    if (sunIconMobile) sunIconMobile.classList.add('hidden');
+                    if (moonIcon) moonIcon.classList.remove('hidden');
+                    if (moonIconMobile) moonIconMobile.classList.remove('hidden');
+                    if (toggleCircle) toggleCircle.classList.add('move-dark');
+                    if (toggleCircleMobile) toggleCircleMobile.classList.add('move-dark');
+                    if (darkModeToggle) darkModeToggle.checked = true;
+                    if (darkModeToggleMobile) darkModeToggleMobile.checked = true;
+                } else {
+                    html.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                    if (sunIcon) sunIcon.classList.remove('hidden');
+                    if (sunIconMobile) sunIconMobile.classList.remove('hidden');
+                    if (moonIcon) moonIcon.classList.add('hidden');
+                    if (moonIconMobile) moonIconMobile.classList.add('hidden');
+                    if (toggleCircle) toggleCircle.classList.remove('move-dark');
+                    if (toggleCircleMobile) toggleCircleMobile.classList.remove('move-dark');
+                    if (darkModeToggle) darkModeToggle.checked = false;
+                    if (darkModeToggleMobile) darkModeToggleMobile.checked = false;
+                }
+            }
+
+            if (darkModeToggle) {
+                darkModeToggle.addEventListener('change', function() {
+                    updateDarkMode(this.checked);
+                });
+            }
+
+            if (darkModeToggleMobile) {
+                darkModeToggleMobile.addEventListener('change', function() {
+                    updateDarkMode(this.checked);
+                });
+            }
+
+            // Nav links click handler
+            const navLinks = document.querySelectorAll('.nav-link, .locale-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href && !href.startsWith('#')) {
+                        e.preventDefault();
+                        if (loader) {
+                            loader.style.display = 'flex';
+                            loader.classList.remove('loader-complete');
+                        }
+                        setTimeout(() => window.location.href = href, 50);
+                    }
+                });
+            });
+
+            // Chat widget functionality
+            const chatWidget = document.getElementById('chatWidget');
+            if (chatWidget) {
+                // Show chat widget on desktop
+                if (!isMobile) {
+                    chatWidget.classList.remove('hidden');
+                }
+
+                // Chat functionality would go here...
+            }
+
+            // Bottom sheet for mobile actions
+            function showBottomSheet() {
+                const bottomSheet = document.createElement('div');
+                bottomSheet.className = 'bottom-sheet';
+                bottomSheet.innerHTML = `
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold">عملیات پروفایل</h3>
+                        <button class="text-gray-500" onclick="this.parentElement.parentElement.remove()">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <a href="<?php echo e(route('sarafi.users')); ?>" class="block py-3 px-4 hover:bg-gray-100 rounded-lg transition">
+                        تنظیمات پروفایل
+                    </a>
+                    <form action="<?php echo e(route('sarafi.logout')); ?>" method="POST" class="mt-2">
+                        <?php echo csrf_field(); ?>
+                        <button type="submit" class="block w-full text-right py-3 px-4 hover:bg-gray-100 rounded-lg transition text-red-600">
+                            خروج از حساب
+                        </button>
+                    </form>
+                `;
+                
+                document.body.appendChild(bottomSheet);
+                
+                setTimeout(() => {
+                    bottomSheet.classList.add('open');
+                }, 10);
+                
+                bottomSheet.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.remove('open');
+                        setTimeout(() => {
+                            this.remove();
+                        }, 300);
+                    }
+                });
+            }
+
+            // Toast notification function
+            window.showToast = function(message, type = 'info') {
+                const toast = document.createElement('div');
+                toast.className = `toast-mobile ${type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-blue-600'}`;
+                toast.textContent = message;
+                
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.remove();
+                }, 3000);
+            };
+
+            // Prevent zoom on input focus in iOS
+            if (isMobile) {
+                document.addEventListener('touchstart', function(e) {
+                    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
+                        e.target.style.fontSize = '16px';
+                    }
+                }, { passive: true });
+            }
+
+            // Handle keyboard visibility on mobile
+            let viewportHeight = window.innerHeight;
+            window.addEventListener('resize', function() {
+                if (isMobile) {
+                    const newHeight = window.innerHeight;
+                    if (Math.abs(newHeight - viewportHeight) > 100) {
+                        // Keyboard opened or closed
+                        viewportHeight = newHeight;
+                    }
+                }
+            });
+
+            // Swipe to close sidebar on mobile
+            let startX = 0;
+            let startY = 0;
+            let isSwiping = false;
+
+            if (sidebar) {
+                sidebar.addEventListener('touchstart', function(e) {
+                    startX = e.touches[0].clientX;
+                    startY = e.touches[0].clientY;
+                    isSwiping = true;
+                }, { passive: true });
+
+                sidebar.addEventListener('touchmove', function(e) {
+                    if (!isSwiping) return;
+                    
+                    const currentX = e.touches[0].clientX;
+                    const currentY = e.touches[0].clientY;
+                    const diffX = startX - currentX;
+                    const diffY = startY - currentY;
+                    
+                    // Only handle horizontal swipes
+                    if (Math.abs(diffX) > Math.abs(diffY) && diffX > 0) {
+                        e.preventDefault();
+                        const translateX = Math.min(0, -diffX);
+                        sidebar.style.transform = `translateX(${translateX}px)`;
+                    }
+                }, { passive: false });
+
+                sidebar.addEventListener('touchend', function() {
+                    if (!isSwiping) return;
+                    
+                    isSwiping = false;
+                    const diffX = startX - currentX;
+                    
+                    if (diffX > 100) {
+                        toggleMobileMenu();
+                    } else {
+                        sidebar.style.transform = 'translateX(0)';
+                    }
+                    
+                    setTimeout(() => {
+                        sidebar.style.transform = '';
+                    }, 300);
+                }, { passive: true });
+            }
+
+            // Handle back button on mobile
+            if (isMobile) {
+                window.addEventListener('popstate', function() {
+                    if (sidebar && sidebar.classList.contains('open')) {
+                        toggleMobileMenu();
+                    }
+                });
+            }
+        });
+
+        // Alpine.js components
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('customerSearch', () => ({
+                searchQuery: '',
+                results: [],
+                showResults: false,
+                isLoading: false,
+                selectedCustomer: null,
+                showConfirmModal: false,
+                isLinking: false,
+                
+                init() {
+                    console.log('Customer search initialized');
+                },
+                
+                async performSearch() {
+                    if (this.searchQuery.length < 2) {
+                        this.showResults = false;
+                        this.results = [];
+                        return;
+                    }
+                    
+                    this.isLoading = true;
+                    
+                    try {
+                        const response = await fetch(`<?php echo e(route('api.search-customers')); ?>?q=${encodeURIComponent(this.searchQuery)}`, {
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Accept': 'application/json'
+                            }
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (data.error) {
+                            console.error('Search error:', data.error);
+                            return;
+                        }
+                        
+                        if (data.customers && data.customers.length > 0) {
+                            this.results = data.customers;
+                            this.showResults = true;
+                        } else {
+                            this.results = [];
+                            this.showResults = false;
+                        }
+                        
+                    } catch (error) {
+                        console.error('Search error:', error);
+                    } finally {
+                        this.isLoading = false;
+                    }
+                },
+                
+                closeResults() {
+                    this.showResults = false;
+                },
+                
+                getImageUrl(imagePath) {
+                    return imagePath ? `/storage/${imagePath}` : '';
+                },
+                
+                getFirstLetter(name) {
+                    return name ? name.charAt(0).toUpperCase() : '?';
+                },
+                
+                handleCustomerClick(customer) {
+                    if (customer.is_mine) {
+                        window.location.href = `<?php echo e(route('sarafi.customer-table')); ?>?customer=${customer.id}`;
+                    } else {
+                        this.selectedCustomer = customer;
+                        this.showConfirmModal = true;
+                        this.showResults = false;
+                    }
+                },
+                
+                linkCustomer(customer) {
+                    this.selectedCustomer = customer;
+                    this.showConfirmModal = true;
+                    this.showResults = false;
+                },
+                
+                async confirmLinkCustomer() {
+                    if (!this.selectedCustomer) return;
+                    
+                    this.isLinking = true;
+                    
+                    try {
+                        const response = await fetch('<?php echo e(route("api.link-customer")); ?>', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({ 
+                                customer_id: this.selectedCustomer.id 
+                            })
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (data.success) {
+                            showToast('مشتری با موفقیت لینک شد', 'success');
+                            
+                            this.showConfirmModal = false;
+                            this.searchQuery = '';
+                            this.results = [];
+                            
+                            setTimeout(() => {
+                                window.location.href = '<?php echo e(route("sarafi.customer-table")); ?>';
+                            }, 1000);
+                            
+                        } else {
+                            showToast(data.message || 'خطا در لینک کردن مشتری', 'error');
+                            this.showConfirmModal = false;
+                        }
+                        
+                    } catch (error) {
+                        console.error('Link error:', error);
+                        showToast('خطا در لینک کردن مشتری', 'error');
+                    } finally {
+                        this.isLinking = false;
+                    }
+                }
+            }));
+        });
     </script>
 
+    <?php echo $__env->yieldContent('scripts'); ?>
 </body>
 
 </html><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/Sarafi/layouts/sidebar.blade.php ENDPATH**/ ?>
