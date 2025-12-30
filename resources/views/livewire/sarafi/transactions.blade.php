@@ -423,20 +423,7 @@
                         </div>
                     </div>
 
-                    {{-- توسط --}}
-                    <div class="mt-2 flex gap-3">
-                        <div class="w-full">
-                            <label
-                                class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">توسط</label>
-                            <div class="relative w-full">
-                                <input list="customerList" wire:model="byUser" placeholder="توسط کی...."
-                                    class="w-full h-[60px]  p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-black dark:border-white dark:placeholder:text-white dark:text-white" />
-                            </div>
-                            @error('byUser')
-                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
+                  
 
                     {{-- درج زون ها و تاریخ --}}
                     <div class="mt-2 flex flex-col lg:flex-row gap-3">
@@ -1423,7 +1410,6 @@ input[type="number"]::-webkit-outer-spin-button {
                                     </td>
                                     <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-80">
                                         <div class="space-y-1 text-right">
-                                            <p class="text-sm">توسط: {{ $transaction->by }}</p>
                                             <p class="text-sm">زون: {{ $transaction->zone }}</p>
                                             <p class="text-sm">تفصیلات: {{ $transaction->description }}</p>
                                         </div>

@@ -447,27 +447,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
 
-                    
-                    <div class="mt-2 flex gap-3">
-                        <div class="w-full">
-                            <label
-                                class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">توسط</label>
-                            <div class="relative w-full">
-                                <input list="customerList" wire:model="byUser" placeholder="توسط کی...."
-                                    class="w-full h-[60px]  p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-black dark:border-white dark:placeholder:text-white dark:text-white" />
-                            </div>
-                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['byUser'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-                        </div>
-                    </div>
+                  
 
                     
                     <div class="mt-2 flex flex-col lg:flex-row gap-3">
