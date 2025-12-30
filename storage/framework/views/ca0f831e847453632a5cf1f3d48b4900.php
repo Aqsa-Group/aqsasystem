@@ -2599,6 +2599,7 @@
         let initialViewportHeight = window.innerHeight;
         let lastPlayedTime = 0;
         const SOUND_COOLDOWN = 1000; // 1 ثانیه تأخیر بین پخش صداها
+        let previousUnreadCount = 0; // تعداد پیام‌های نخوانده قبلی
 
         // Show chat widget
         chatWidget.classList.remove('hidden');
@@ -2876,22 +2877,6 @@
             }
         }
 
-        function shouldPlaySound(senderId) {
-            const currentUserId = <?php echo e(Auth::guard('sarafi')->id()); ?>;
-            
-            // اگر پیام از خود کاربر باشد، صدا پخش نشود
-            if (senderId === currentUserId) {
-                return false;
-            }
-            
-            // اگر چت باز است و با همان کاربر در حال مکالمه هستیم، صدا پخش نشود
-            if (isChatOpen && currentChatUserId && currentChatUserId === senderId) {
-                return false;
-            }
-            
-            return true;
-        }
-
         // API Functions
         async function loadConversations() {
             try {
@@ -3004,24 +2989,8 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    // ذخیره تعداد پیام‌های قبلی
-                    const previousMessageCount = messagesContainer.children.length;
-                    
                     renderMessages(data.messages);
                     updateUnreadCount();
-                    
-                    // بررسی پیام‌های جدید
-                    if (data.messages.length > 0) {
-                        const newMessages = data.messages.slice(previousMessageCount);
-                        
-                        // پخش صدا برای پیام‌های جدید از طرف دیگر
-                        newMessages.forEach(msg => {
-                            if (shouldPlaySound(msg.sender_id)) {
-                                playMessageSound();
-                                vibrateIfSupported();
-                            }
-                        });
-                    }
                     
                     setTimeout(scrollToBottom, 100);
                 }
@@ -3148,17 +3117,21 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    const previousCount = parseInt(unreadBadge.textContent || 0);
-                    const newCount = data.count;
+                    const currentCount = data.count;
+                    const badgeContent = unreadBadge.textContent || '0';
+                    const currentBadgeCount = parseInt(badgeContent) || 0;
                     
-                    // اگر تعداد پیام‌های خوانده نشده افزایش یافت
-                    if (newCount > previousCount && shouldPlaySound(null)) {
+                    // فقط اگر پنجره چت بسته است، صدا پخش کن
+                    if (currentCount > 0 && currentCount > previousUnreadCount && !isChatOpen) {
                         playMessageSound();
                         vibrateIfSupported();
                     }
                     
-                    if (newCount > 0) {
-                        unreadBadge.textContent = newCount > 99 ? '99+' : newCount;
+                    // ذخیره تعداد فعلی برای مقایسه دفعه بعد
+                    previousUnreadCount = currentCount;
+                    
+                    if (currentCount > 0) {
+                        unreadBadge.textContent = currentCount > 99 ? '99+' : currentCount;
                         unreadBadge.classList.remove('hidden');
                         chatToggle.classList.add('animate-pulse');
                     } else {
@@ -3490,7 +3463,7 @@
         }, { once: true });
     });
 </script>
-
+            
         </div>
     </div>
 
