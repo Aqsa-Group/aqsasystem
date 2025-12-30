@@ -1185,6 +1185,8 @@ class ConversionInAccount extends Component
             return;
         }
 
+                    $this->updateCustomerCurrencyBalance($this->selectedAccount);
+
         DB::connection('sarafi')->beginTransaction();
 
         try {
