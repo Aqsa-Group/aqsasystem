@@ -105,7 +105,7 @@
         </div>
         <div class="flex flex-col lg:flex-row gap-5 mt-7 mx-auto">
             <!-- فرم تراکنش -->
-            <div class="flex flex-col dark:bg-black dark:border-white dark:border bg-[#F5F5F5] w-[420px] lg:w-[534px] p-[12px] h-auto rounded-[12px] space-y-2  mx-auto"
+            <div class="flex flex-col dark:bg-black dark:border-white dark:border bg-[#F5F5F5] w-[420px] lg:w-[504px] p-[12px] h-auto rounded-[12px] space-y-2  mx-auto"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 <div
@@ -129,8 +129,8 @@
 
                 <form wire:submit.prevent="submitTransaction" class="space-y-3">
                     <!-- مقدار و نوع ارز -->
-                    <div class="flex flex-col lg:flex-row gap-3">
-                        <div class="lg:w-[160px]">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                        <div class="lg:w-full">
                             <label class="block text-[15px] font-medium dark:text-white text-black mb-1 vazir">واحد
                                 ارز</label>
                             <div class="relative">
@@ -175,8 +175,8 @@
                     </div>
 
                     <!-- واحد تبدیل ارز و مبلغ معادل -->
-                    <div class="flex flex-col lg:flex-row gap-3">
-                        <div class="lg:w-[160px]">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                        <div class="lg:w-full">
                             <label class="block text-[15px] font-medium  dark:text-white text-black mb-1 vazir">واحد
                                 تبدیل ارز</label>
                             <div class="relative">
@@ -227,7 +227,7 @@
 
 
                     <!-- نرخ و تاریخ -->
-                    <div class="flex flex-col lg:flex-row gap-3">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
 
                         <!-- مبلغ معادل -->
                         <div class="flex-1">
@@ -247,7 +247,7 @@
                             @enderror
                         </div>
 
-                        <div class="lg:w-[290px] relative" x-data="persianDatePicker()" x-init="init()">
+                        <div class="lg:w-full relative" x-data="persianDatePicker()" x-init="init()">
                             <label
                                 class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
 

@@ -613,12 +613,7 @@
                             @enderror
                         </div>
 
-                        <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">حالت
-                                انتقال</label>
-                            <input type="text" value="انتقال با کمیشن" readonly
-                                class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-gray-100 focus:ring-2 focus:ring-blue-500" />
-                        </div>
+                        
                         @endif
 
                         {{-- ارز --}}
@@ -638,29 +633,7 @@
                         </div>
 
 
-                    </div>
-
-
-
-                    {{-- توسط و زون‌ها --}}
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
-                        <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">توسط
-                                (برداشت)</label>
-                            <input type="text" wire:model="by_sender" placeholder="نام مسئول برداشت"
-                                class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 bg-transparent" />
-                        </div>
-                        <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">توسط
-                                (دریافت)</label>
-                            <input type="text" wire:model="by_receiver" placeholder="نام مسئول دریافت"
-                                class="w-full dark:bg-black dark:border-white dark:text-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 bg-transparent" />
-                        </div>
-                    </div>
-
-                    {{-- تاریخ و شماره سند --}}
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
-                        <div class="relative" x-data="persianDatePicker()" x-init="init()">
+                              <div class="relative" x-data="persianDatePicker()" x-init="init()">
                             <label
                                 class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
 
@@ -1269,13 +1242,14 @@
                                 background: #555;
                             }
                         </style>
-                        <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">نمبر
-                                سند</label>
-                            <input type="text" wire:model="documentNumber" readonly
-                                class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-gray-100 focus:ring-2 focus:ring-blue-500 cursor-not-allowed" />
-                        </div>
+
+
                     </div>
+
+
+
+
+                  
 
                     {{-- زون برداشت و دریافت --}}
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">

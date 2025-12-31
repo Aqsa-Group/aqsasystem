@@ -299,7 +299,7 @@
                 <form wire:submit.prevent="submitTransaction" class="dark:text-white">
 
                     {{-- شماره حساب و افزودن مشتری --}}
-                    <div class="mt-2 flex flex-col lg:flex-row gap-3">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- در بخش نمبر حساب -->
                         <div class="flex-1">
                             <div class="relative w-full">
@@ -364,7 +364,7 @@
                             </div>
                         </div>
                         {{-- افزودن مشتری --}}
-                        <div class="flex items-end lg:w-[191px]">
+                        <div class="flex items-end lg:w-full">
                             <button type="button" wire:click.prevent="goToCustomers"
                                 class="flex items-center dark:bg-black dark:border-white dark:text-white  justify-center gap-2 w-full h-[60px] rounded-[12px] bg-transparent border-[#8C8C8C] border text-black font-vazir text-[16px] font-medium transition">
                                 افزودن مشتری
@@ -375,7 +375,7 @@
                     </div>
 
                     {{-- مقدار و نوع ارز --}}
-                    <div class="mt-2 flex flex-col lg:flex-row gap-3">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         {{-- مقدار --}}
                         <div class="flex-1">
                             <label
@@ -394,7 +394,7 @@
                         </div>
 
                         {{-- نوع ارز --}}
-                        <div class="lg:w-[191px]">
+                        <div class="lg:w-full">
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">نوع
                                 ارز</label>
                             <div class="relative w-full">
@@ -426,9 +426,9 @@
                   
 
                     {{-- درج زون ها و تاریخ --}}
-                    <div class="mt-2 flex flex-col lg:flex-row gap-3">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         {{-- درج زون ها --}}
-                        <div class="lg:w-[250px]">
+                        <div class="lg:w-full">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir dark:text-white">درج زون
                                 ها</label>
                             <div class="relative">
@@ -446,7 +446,7 @@
                             @enderror
                         </div>
 
-                      <div class="lg:w-[290px] relative" x-data="persianDatePicker()" x-init="init()">
+                      <div class="lg:w-full relative" x-data="persianDatePicker()" x-init="init()">
     <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
     
     <!-- Input field -->

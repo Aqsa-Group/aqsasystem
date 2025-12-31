@@ -207,8 +207,8 @@
             <!--[if BLOCK]><![endif]--><?php if($selectedCustomerId): ?>
             <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
                 <div class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px]
-        dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900
-        bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
+                    dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900
+                    bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
 
                     <?php
                     /* =========================
@@ -442,9 +442,9 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                     <!-- بخش تبدیل ارز -->
                     <div class="mt-4 rounded-[12px]">
-                        <div class="mt-2 flex flex-col lg:flex-row gap-3">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                             <!-- ارز مبدا -->
-                            <div class="lg:w-[191px]">
+                            <div class="lg:w-full">
                                 <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
                                     <!--[if BLOCK]><![endif]--><?php if($transactionType === 'خرید'): ?>
                                     ارز خرید
@@ -515,9 +515,9 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                     <!-- بخش دریافت -->
                     <div class="mt-4 rounded-[12px]">
-                        <div class="mt-2 flex flex-col lg:flex-row gap-3">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                             <!-- ارز مقصد -->
-                            <div class="lg:w-[191px]">
+                            <div class="lg:w-full">
                                 <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
                                     <!--[if BLOCK]><![endif]--><?php if($transactionType === 'خرید'): ?>
                                     ارز فروش
@@ -585,7 +585,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
                     <!-- مبلغ فروش و تاریخ -->
-                    <div class="mt-2 flex flex-col lg:flex-row gap-3">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- مبلغ فروش -->
                         <div class="flex-1">
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
@@ -618,7 +618,7 @@ endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                         <!-- تاریخ -->
-                        <div class="lg:w-[290px] relative" x-data="persianDatePicker()" x-init="init()">
+                        <div class="lg:w-full relative" x-data="persianDatePicker()" x-init="init()">
                             <label
                                 class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
 
@@ -1240,7 +1240,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                     <!-- زون‌ها -->
                     
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <div>
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">زون
                                 برداشت</label>

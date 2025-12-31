@@ -222,15 +222,7 @@
                 <td>{{ $conversion->zone_receiver }}</td>
             </tr>
 
-            <tr>
-                <td>مسئول برداشت:</td>
-                <td>{{ $conversion->by_sender ?? 'نامشخص' }}</td>
-            </tr>
-
-            <tr>
-                <td>مسئول دریافت:</td>
-                <td>{{ $conversion->by_receiver ?? 'نامشخص' }}</td>
-            </tr>
+          
 
             <tr>
                 <td>زمان ثبت:</td>

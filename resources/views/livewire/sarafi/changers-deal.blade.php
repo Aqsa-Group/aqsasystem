@@ -153,7 +153,7 @@
                 <!-- فرم -->
                 <form wire:submit.prevent="submitRemittance">
                     <!-- حساب مشتری و صرافی مقصد -->
-                    <div class="mt-2 flex flex-col lg:flex-row gap-3">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- حساب مشتری فرستنده -->
                         <div class="flex-1">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">از حساب مشتری</label>
@@ -236,7 +236,7 @@
                     </div>
 
 
-                    <div class="mt-2 flex flex-col lg:flex-row gap-3">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
 
                         <!--  نمبر حواله -->
 
@@ -280,7 +280,7 @@
                     </div>
 
                     <!-- مقدار و نوع ارز -->
-                    <div class="mt-2 flex flex-col lg:flex-row gap-3">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- مقدار -->
                         <div class="flex-1">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">مقدار</label>
@@ -299,7 +299,7 @@
 
 
                         <!-- نوع ارز -->
-                        <div class="lg:w-[191px]">
+                        <div class="lg:w-full">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">نوع ارز</label>
                             <div class="relative w-full">
                                 <select wire:model="currency"
@@ -321,9 +321,9 @@
                     </div>
 
                     <!-- تاریخ و زون -->
-                    <div class="mt-2 flex flex-col lg:flex-row gap-3">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- تاریخ -->
-                       <div class="lg:w-[290px] relative" x-data="persianDatePicker()" x-init="init()">
+                       <div class="lg:w-full relative" x-data="persianDatePicker()" x-init="init()">
     <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
     
     <!-- Input field -->

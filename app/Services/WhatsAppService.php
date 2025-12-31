@@ -35,14 +35,16 @@ class WhatsAppService
                     [
                         "type" => "body",
                         "parameters" => [
-                            ["type" => "text", "text" => (string) ($data['name'] ?? '-')],
-                            ["type" => "text", "text" => (string) ($data['amount'] ?? '-')],
-                            ["type" => "text", "text" => (string) ($data['currency'] ?? '-')],
-                            ["type" => "text", "text" => (string) ($data['type'] ?? '-')],
-                            ["type" => "text", "text" => (string) ($data['date'] ?? '-')],
+                            ["type" => "text", "text" => $data['name'] ?? '-'],            
+                            ["type" => "text", "text" => $data['amount'] ?? '-'],          
+                            ["type" => "text", "text" => $data['currency'] ?? '-'],       
+                            ["type" => "text", "text" => $data['transaction_type'] ?? '-'],
+                            ["type" => "text", "text" => $data['date'] ?? '-'],           
+                            ["type" => "text", "text" => '-'],                             
                         ]
                     ]
                 ]
+
             ]
         ];
 
@@ -51,11 +53,17 @@ class WhatsAppService
                 ->timeout(10)
                 ->post(
                     "https://graph.facebook.com/v18.0/" .
-                    config('services.whatsapp.phone_id') .
-                    "/messages",
+                        config('services.whatsapp.phone_id') .
+                        "/messages",
                     $payload
                 );
 
+            dd([
+                'status' => $response->status(),
+                'body'   => $response->body(),
+                'json'   => $response->json(),
+                'payload' => $payload,
+            ]);
             // اگر موفق نبود
             if (!$response->successful()) {
                 Log::error('WhatsApp API error', [
@@ -73,7 +81,6 @@ class WhatsAppService
             ]);
 
             return true;
-
         } catch (\Throwable $e) {
             Log::critical('WhatsApp exception', [
                 'message' => $e->getMessage(),

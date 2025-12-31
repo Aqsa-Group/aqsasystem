@@ -196,7 +196,6 @@
                 <th rowspan="2">نوع حساب</th>
                 <th rowspan="2">شماره سند</th>
                 <th rowspan="2">توضیحات</th>
-                <th rowspan="2">توسط</th>
                 @foreach($active_currencies as $code => $currency)
                 <th colspan="2" class="currency-header">{{ $currency['name_fa'] }}</th>
                 @endforeach
@@ -217,7 +216,6 @@
                 <td>{{ $transaction->account_type }}</td>
                 <td>{{ $transaction->document_number ?? 'SN-' . str_pad($transaction->id, 3, '0', STR_PAD_LEFT) }}</td>
                 <td>{{ Str::limit($transaction->description, 20) }}</td>
-                <td>{{ Str::limit($transaction->by, 15) }}</td>
                 @foreach($active_currencies as $code => $currency)
                 <td class="amount-cell">{{ $transaction->currency == $code && $transaction->type == 'رسید' ? number_format($transaction->amount) : '' }}</td>
                 <td class="amount-cell">{{ $transaction->currency == $code && $transaction->type == 'برد' ? number_format($transaction->amount) : '' }}</td>

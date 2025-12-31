@@ -285,7 +285,7 @@
                 <!-- Form -->
                 <form wire:submit.prevent="submitRemittance">
                     <!-- Account Number and Currency -->
-                    <div class="mt-2 flex flex-col lg:flex-row gap-3">
+                     <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- Source Account Number -->
                         <div class="flex-1">
                             <div class="relative w-full">
@@ -340,7 +340,7 @@
                         </div>
 
                         <!-- Currency Type -->
-                        <div class="lg:w-[191px]">
+                        <div class="lg:w-full">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">نوع ارز</label>
                             <div class="relative w-full">
                                 <select wire:model="currency"
@@ -362,7 +362,7 @@
                     </div>
 
                     <!-- Amount and Date -->
-                    <div class="mt-2 flex flex-col lg:flex-row gap-3">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- Amount -->
                         <div class="flex-1">
                             <label
@@ -381,7 +381,7 @@
                         </div>
 
                         <!-- Date -->
-                        <div class="lg:w-[290px] relative" x-data="persianDatePicker()" x-init="init()">
+                        <div class="lg:w-full relative" x-data="persianDatePicker()" x-init="init()">
                             <label
                                 class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
 
@@ -993,9 +993,9 @@
                     </div>
 
                     <!-- Time and Tracking Code -->
-                    <div class="mt-2 flex flex-col lg:flex-row gap-3">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- Time -->
-                        <div class="lg:w-[290px]" x-data="timePicker()" x-init="init()">
+                        <div class="lg:w-full" x-data="timePicker()" x-init="init()">
                             <label
                                 class="block text-[16px] dark:text-white font-medium text-black mb-1 vazir">ساعت</label>
 
@@ -1335,7 +1335,7 @@
                         </style>
 
                         <!-- Tracking Code -->
-                        <div class="lg:w-[290px]">
+                        <div class="lg:w-full">
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">کد
                                 رهگیری</label>
                             <input type="text" wire:model="tracking_code" placeholder="5155221034568"
@@ -1347,8 +1347,8 @@
                     </div>
 
                             <!-- Source and Destination Banks -->
-<div class="mt-2 flex flex-col lg:flex-row gap-3">
-    <div class="lg:w-[290px]">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+    <div class="lg:w-full">
         <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
             بانک مبدا
         </label>
@@ -1383,7 +1383,7 @@
         @enderror
     </div>
 
-    <div class="lg:w-[290px]">
+    <div class="lg:w-full">
         <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
             بانک مقصد
         </label>
@@ -1400,9 +1400,9 @@
     </div>
 </div>
                     <!-- Source and Destination Account Numbers -->
-                    <div class="flex-1 flex gap-2 mt-2">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- Source Account Number (Display only) -->
-                        <div class="lg:w-[440px]">
+                        <div class="lg:w-full">
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">شماره
                                 حساب مبدا</label>
                             <div class="relative">
@@ -1469,9 +1469,9 @@
 
 
                     <!-- Zone and Beneficiary -->
-                    <div class="mt-2 flex flex-col lg:flex-row gap-3">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- Zone -->
-                        <div class="lg:w-[250px]">
+                        <div class="lg:w-full">
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">درج زون
                                 ها</label>
                             <div class="relative">
@@ -1490,7 +1490,7 @@
                         </div>
 
                         <!-- Beneficiary Name -->
-                        <div class="lg:w-[290px]">
+                        <div class="lg:w-full">
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir"> نام کارت
                                 گیرنده</label>
                             <input type="text" wire:model="giver_name" placeholder="مجید مرتضی"
