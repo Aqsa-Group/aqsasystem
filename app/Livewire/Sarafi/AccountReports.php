@@ -196,7 +196,7 @@ class AccountReports extends Component
 
     private function getLastTransactionDate($customerId, $currency)
     {
-              $user = Auth::guard('sarafi')->user();
+        $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
         $query = Transaction::where('customer_id', $customerId)
             ->where('currency', $currency)
@@ -303,12 +303,12 @@ class AccountReports extends Component
             $gregorianDate = now()->format('Y-m-d');
         }
 
-           $user = Auth::guard('sarafi')->user();
+        $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
         $query = Transaction::where('customer_id', $customerId)
             ->where('currency', $currency)
             ->where('date', '<=', $gregorianDate)
-            ->where('admin_id' , $adminId);
+            ->where('admin_id', $adminId);
 
 
         if ($this->accountType) {
@@ -376,27 +376,27 @@ class AccountReports extends Component
         }
 
 
-       // محاسبه مجموع هر ارز نقدی و بانکی
-$totalsData = $this->calculateTotalsByCurrency();
+        // محاسبه مجموع هر ارز نقدی و بانکی
+        $totalsData = $this->calculateTotalsByCurrency();
 
-$printData = [
-    'title' => 'گزارش بیلانس مشتریان',
-    'filters' => [
-        'جستجو' => $this->search ?: 'همه',
-        'مشتری معرف' => $this->selectedCustomer ? $this->getCustomerName($this->selectedCustomer) : 'همه',
-        'ارز' => $this->selectedCurrency ? $this->currencies[$this->selectedCurrency] : 'همه',
-        'نوع حساب' => $this->accountType ?: 'همه',
-        'تاریخ' => $this->date ?: 'همه'
-    ],
-    'reports' => $this->reports,
-    'print_date' => now()->format('Y/m/d H:i'),
-    'total_customers' => count($this->reports),
-    'total_balance' => array_sum(array_column($this->reports, 'total_balance')),
-    'currencies' => $this->currencies,
-    'source_currency' => $sourceCurrency,
-    'totals' => $totalsData['currencies'],
-    'total_usd' => $totalsData['total_usd'],
-];
+        $printData = [
+            'title' => 'گزارش بیلانس مشتریان',
+            'filters' => [
+                'جستجو' => $this->search ?: 'همه',
+                'مشتری معرف' => $this->selectedCustomer ? $this->getCustomerName($this->selectedCustomer) : 'همه',
+                'ارز' => $this->selectedCurrency ? $this->currencies[$this->selectedCurrency] : 'همه',
+                'نوع حساب' => $this->accountType ?: 'همه',
+                'تاریخ' => $this->date ?: 'همه'
+            ],
+            'reports' => $this->reports,
+            'print_date' => now()->format('Y/m/d H:i'),
+            'total_customers' => count($this->reports),
+            'total_balance' => array_sum(array_column($this->reports, 'total_balance')),
+            'currencies' => $this->currencies,
+            'source_currency' => $sourceCurrency,
+            'totals' => $totalsData['currencies'],
+            'total_usd' => $totalsData['total_usd'],
+        ];
 
 
         $mpdf = new Mpdf([
@@ -438,57 +438,59 @@ $printData = [
 
 
     private function calculateTotalsByCurrency()
-{
-    $totals = [];
+    {
+        $totals = [];
 
-    foreach ($this->currencies as $currencyCode => $currencyName) {
-        $totals[$currencyCode] = [
-            'cash' => 0,
-            'bank' => 0,
-            'total' => 0,
+        foreach ($this->currencies as $currencyCode => $currencyName) {
+            $totals[$currencyCode] = [
+                'cash' => 0,
+                'bank' => 0,
+                'total' => 0,
+            ];
+        }
+
+        foreach ($this->reports as $report) {
+            foreach ($this->currencies as $currencyCode => $currencyName) {
+                if (isset($report['balances'][$currencyCode])) {
+                    $totals[$currencyCode]['total'] += $report['balances'][$currencyCode];
+
+                    // تفکیک بر اساس نوع حساب
+                    $transactionsCash = $this->calculateBalanceByType($report['id'], $currencyCode, 'نقدی');
+                    $transactionsBank = $this->calculateBalanceByType($report['id'], $currencyCode, 'بانکی');
+
+                    $totals[$currencyCode]['cash'] += $transactionsCash;
+                    $totals[$currencyCode]['bank'] += $transactionsBank;
+                }
+            }
+        }
+
+        // محاسبه مجموع به دالر
+        $accountTypeForConversion = 'cash'; // پیش‌فرض
+        $totalBalanceUsd = $this->calculateTotalBalance(
+            array_map(fn($v) => $v['total'], $totals),
+            $accountTypeForConversion
+        );
+
+
+        
+        return [
+            'currencies' => $totals,
+            'total_usd' => $totalBalanceUsd
         ];
     }
 
-    foreach ($this->reports as $report) {
-        foreach ($this->currencies as $currencyCode => $currencyName) {
-            if (isset($report['balances'][$currencyCode])) {
-                $totals[$currencyCode]['total'] += $report['balances'][$currencyCode];
+    private function calculateBalanceByType($customerId, $currency, $accountType)
+    {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
 
-                // تفکیک بر اساس نوع حساب
-                $transactionsCash = $this->calculateBalanceByType($report['id'], $currencyCode, 'نقدی');
-                $transactionsBank = $this->calculateBalanceByType($report['id'], $currencyCode, 'بانکی');
-
-                $totals[$currencyCode]['cash'] += $transactionsCash;
-                $totals[$currencyCode]['bank'] += $transactionsBank;
-            }
-        }
+        return Transaction::where('customer_id', $customerId)
+            ->where('currency', $currency)
+            ->where('account_type', $accountType)
+            ->where('admin_id', $adminId)
+            ->select(DB::raw('SUM(CASE WHEN type = "رسید" THEN amount ELSE -amount END) as balance'))
+            ->value('balance') ?? 0;
     }
-
-    // محاسبه مجموع به دالر
-    $accountTypeForConversion = 'cash'; // پیش‌فرض
-    $totalBalanceUsd = $this->calculateTotalBalance(
-        array_map(fn($v) => $v['total'], $totals),
-        $accountTypeForConversion
-    );
-
-    return [
-        'currencies' => $totals,
-        'total_usd' => $totalBalanceUsd
-    ];
-}
-
-private function calculateBalanceByType($customerId, $currency, $accountType)
-{
-    $user = Auth::guard('sarafi')->user();
-    $adminId = $user->admin_id ?? $user->id;
-
-    return Transaction::where('customer_id', $customerId)
-        ->where('currency', $currency)
-        ->where('account_type', $accountType)
-        ->where('admin_id', $adminId)
-        ->select(DB::raw('SUM(CASE WHEN type = "رسید" THEN amount ELSE -amount END) as balance'))
-        ->value('balance') ?? 0;
-}
 
 
     public function updatedSelectedCustomer()

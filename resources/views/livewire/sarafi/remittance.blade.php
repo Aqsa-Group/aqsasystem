@@ -285,7 +285,7 @@
                 <!-- Form -->
                 <form wire:submit.prevent="submitRemittance">
                     <!-- Account Number and Currency -->
-                     <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- Source Account Number -->
                         <div class="flex-1">
                             <div class="relative w-full">
@@ -362,7 +362,7 @@
                     </div>
 
                     <!-- Amount and Date -->
-                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- Amount -->
                         <div class="flex-1">
                             <label
@@ -993,7 +993,7 @@
                     </div>
 
                     <!-- Time and Tracking Code -->
-                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- Time -->
                         <div class="lg:w-full" x-data="timePicker()" x-init="init()">
                             <label
@@ -1346,61 +1346,55 @@
                         </div>
                     </div>
 
-                            <!-- Source and Destination Banks -->
-                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
-    <div class="lg:w-full">
-        <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
-            بانک مبدا
-        </label>
+                    <!-- Source and Destination Banks -->
+                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                        <div class="lg:w-full">
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
+                                بانک مبدا
+                            </label>
 
-        <input type="text" 
-               wire:model="from_bank"
-               list="banks-list"
-               placeholder="بانک مبدا" 
-               class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent dark:bg-black dark:border-white dark:text-white">
+                            <input type="text" wire:model="from_bank" list="banks-list" placeholder="بانک مبدا"
+                                class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent dark:bg-black dark:border-white dark:text-white">
 
-        <datalist id="banks-list">
-            <option value="بانک ملی ایران">
-            <option value="بانک ملت">
-            <option value="بانک صادرات">
-            <option value="بانک سپه">
-            <option value="بانک تجارت">
-            <option value="بانک پاسارگاد">
-            <option value="بانک سامان">
-            <option value="بانک پارسیان">
-            <option value="HSBC">
-            <option value="Standard Chartered">
-            <option value="Citi Bank">
-            <option value="Deutsche Bank">
-            <option value="Bank of China">
-            <option value="Emirates NBD">
-            <option value="QNB">
-            <option value="Al Rajhi Bank">
-        </datalist>
+                            <datalist id="banks-list">
+                                <option value="بانک ملی ایران">
+                                <option value="بانک ملت">
+                                <option value="بانک صادرات">
+                                <option value="بانک سپه">
+                                <option value="بانک تجارت">
+                                <option value="بانک پاسارگاد">
+                                <option value="بانک سامان">
+                                <option value="بانک پارسیان">
+                                <option value="HSBC">
+                                <option value="Standard Chartered">
+                                <option value="Citi Bank">
+                                <option value="Deutsche Bank">
+                                <option value="Bank of China">
+                                <option value="Emirates NBD">
+                                <option value="QNB">
+                                <option value="Al Rajhi Bank">
+                            </datalist>
 
-        @error('from_bank')
-        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-        @enderror
-    </div>
+                            @error('from_bank')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
+                        </div>
 
-    <div class="lg:w-full">
-        <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
-            بانک مقصد
-        </label>
+                        <div class="lg:w-full">
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
+                                بانک مقصد
+                            </label>
 
-        <input type="text" 
-               wire:model="to_bank"
-               list="banks-list"
-               placeholder="بانک مقصد" 
-               class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent dark:bg-black dark:border-white dark:text-white">
+                            <input type="text" wire:model="to_bank" list="banks-list" placeholder="بانک مقصد"
+                                class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent dark:bg-black dark:border-white dark:text-white">
 
-        @error('to_bank')
-        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-        @enderror
-    </div>
-</div>
+                            @error('to_bank')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
                     <!-- Source and Destination Account Numbers -->
-                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- Source Account Number (Display only) -->
                         <div class="lg:w-full">
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">شماره
@@ -1469,7 +1463,7 @@
 
 
                     <!-- Zone and Beneficiary -->
-                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- Zone -->
                         <div class="lg:w-full">
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">درج زون

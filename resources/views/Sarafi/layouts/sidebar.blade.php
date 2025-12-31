@@ -871,13 +871,10 @@
                                                         <div>
                                                             <div class="font-medium" x-text="customer.fullname"></div>
                                                             <div class="text-xs text-gray-500">
-                                                                <span x-text="customer.phone"></span>
-                                                                <span class="mx-1">•</span>
+                                                                <span class="mx-1"></span>
                                                                 <span class="dir-ltr"
                                                                     x-text="customer.account_number"></span>
-                                                                <span x-show="customer.city" class="mr-2">
-                                                                    • <span x-text="customer.city"></span>
-                                                                </span>
+                                                               
                                                             </div>
                                                         </div>
                                                     </div>
@@ -886,19 +883,19 @@
                                                     <div class="text-xs flex items-center gap-2">
                                                         <template x-if="customer.is_mine">
                                                             <span
-                                                                class="bg-green-100 text-green-800 px-2 py-1 rounded">مشتری
-                                                                من</span>
+                                                                class="bg-green-100 text-green-800 px-2 py-1 rounded">دیدن مشتری
+                                                                </span>
                                                         </template>
                                                         <template x-if="!customer.is_mine && customer.admin_id">
                                                             <button @click.stop="linkCustomer(customer)"
                                                                 class="bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200 transition">
-                                                                لینک کن
+                                                                افزدون به مشتریان
                                                             </button>
                                                         </template>
                                                         <template x-if="!customer.admin_id">
                                                             <button @click.stop="linkCustomer(customer)"
                                                                 class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded hover:bg-yellow-200 transition">
-                                                                استفاده کن
+                                                                استفاده مشتری
                                                             </button>
                                                         </template>
                                                     </div>
@@ -1384,7 +1381,7 @@
                 : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm vazir">
                                 <i class="fa-solid fa-exchange-alt"></i>
-                                <span>تبدیل  ارز در حساب</span>
+                                <span>تبدیل ارز در حساب</span>
                             </a>
 
                             <a href="{{ route('sarafi.conversion-transfer') }}" @click="active = 'conversion_transfer'"
@@ -1395,7 +1392,7 @@
                                 <i class="fa-solid fa-hand-holding-dollar"></i>
                                 <span> تبدیل ارز و انتقال از حساب</span>
                             </a>
- 
+
                             <a href="{{ route('sarafi.remittance') }}" @click="active = 'remittance'" :class="active === 'remittance'
                 ? 'bg-[#122EE1] text-white'
                 : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"

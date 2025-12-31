@@ -85,6 +85,7 @@ class Accounting extends Model
             // ساخت Deposit دقیقاً برابر Accounting
             $accounting->deposit()->create([
                 'accounting_id'  => $accounting->id,
+                'admin_id'       => $accounting->admin_id, 
                 'shop_id'        => $accounting->shop_id,
                 'booth_id'       => $accounting->booth_id,
                 'market_id'      => $accounting->market_id,
@@ -102,4 +103,6 @@ class Accounting extends Model
             ]);
         });
     }
+
+    
 }

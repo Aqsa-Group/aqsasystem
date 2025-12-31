@@ -198,75 +198,74 @@ class GeneralReports extends Component
         ]);
     }
 
-  private function convertToUSD($amount, $currency)
-{
-    try {
-        if ($currency === 'usd') {
-            return $amount;
-        }
-
-        $user = Auth::guard('sarafi')->user();
-        $adminId = $user->admin_id ?? $user->id;
-        
-        // اول نرخ دلاری را بگیر
-        $usdRates = ProfitRate::where('admin_id', $adminId)
-            ->where('source_currency', 'usd')
-            ->latest()
-            ->first();
-
-        $rate = null;
-        
-        if ($usdRates) {
-            $rateField = $currency . '_buy_cash';
-            $rate = $usdRates->$rateField ?? null;
-            
-            if ($rate && $rate > 0) {
-                $result = $amount / $rate;
-                Log::debug("تبدیل با نرخ دلاری", [
-                    'currency' => $currency,
-                    'amount' => $amount,
-                    'rate' => $rate,
-                    'result' => $result
-                ]);
-                return $result;
+    private function convertToUSD($amount, $currency)
+    {
+        try {
+            if ($currency === 'usd') {
+                return $amount;
             }
-        }
-        
-        // اگر نرخ دلاری نبود، از نرخ‌های پیش‌فرض استفاده کن
-        Log::warning("استفاده از نرخ پیش‌فرض برای ارز {$currency}", [
-            'admin_id' => $adminId,
-            'found_usd_rates' => $usdRates ? 'بله' : 'خیر',
-            'rate_value' => $rate
-        ]);
-        
-        $defaultRates = [
-            'afn' => 66.20,
-            'irr' => 132400.00,
-            'eur' => 0.86,
-            'pkr' => 277.78,
-            'aed' => 3.67,
-            'try' => 32.26,
-            'cny' => 7.24,
-        ];
-        
-        $defaultRate = $defaultRates[$currency] ?? 0;
-        
-        if ($defaultRate <= 0) {
-            Log::error("نرخ پیش‌فرض برای ارز {$currency} صفر است");
+
+            $user = Auth::guard('sarafi')->user();
+            $adminId = $user->admin_id ?? $user->id;
+
+            // اول نرخ دلاری را بگیر
+            $usdRates = ProfitRate::where('admin_id', $adminId)
+                ->where('source_currency', 'usd')
+                ->latest()
+                ->first();
+
+            $rate = null;
+
+            if ($usdRates) {
+                $rateField = $currency . '_buy_cash';
+                $rate = $usdRates->$rateField ?? null;
+
+                if ($rate && $rate > 0) {
+                    $result = $amount / $rate;
+                    Log::debug("تبدیل با نرخ دلاری", [
+                        'currency' => $currency,
+                        'amount' => $amount,
+                        'rate' => $rate,
+                        'result' => $result
+                    ]);
+                    return $result;
+                }
+            }
+
+            // اگر نرخ دلاری نبود، از نرخ‌های پیش‌فرض استفاده کن
+            Log::warning("استفاده از نرخ پیش‌فرض برای ارز {$currency}", [
+                'admin_id' => $adminId,
+                'found_usd_rates' => $usdRates ? 'بله' : 'خیر',
+                'rate_value' => $rate
+            ]);
+
+            $defaultRates = [
+                'afn' => 66.20,
+                'irr' => 132400.00,
+                'eur' => 0.86,
+                'pkr' => 277.78,
+                'aed' => 3.67,
+                'try' => 32.26,
+                'cny' => 7.24,
+            ];
+
+            $defaultRate = $defaultRates[$currency] ?? 0;
+
+            if ($defaultRate <= 0) {
+                Log::error("نرخ پیش‌فرض برای ارز {$currency} صفر است");
+                return 0;
+            }
+
+            return $amount / $defaultRate;
+        } catch (\Exception $e) {
+            Log::error("خطا در تبدیل ارز به USD: " . $e->getMessage(), [
+                'amount' => $amount,
+                'currency' => $currency,
+                'trace' => $e->getTraceAsString()
+            ]);
             return 0;
         }
-        
-        return $amount / $defaultRate;
-        
-    } catch (\Exception $e) {
-        Log::error("خطا در تبدیل ارز به USD: " . $e->getMessage(), [
-            'amount' => $amount,
-            'currency' => $currency,
-            'trace' => $e->getTraceAsString()
-        ]);
-        return 0;
     }
-}
 
     public function getCurrencyColor($currency)
     {
@@ -565,25 +564,40 @@ class GeneralReports extends Component
 
     private function calculateBalance($customerId, $currency)
     {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
         return Transaction::where('customer_id', $customerId)
             ->where('currency', $currency)
+            ->where(function ($query) use ($adminId) {
+                $query->where('admin_id', $adminId)
+                    ->orWhere('user_id', $adminId); // اگر میخوای شامل زیرکاربران هم باشه
+            })
             ->select(DB::raw('
-                SUM(
-                    CASE 
-                        WHEN type = "رسید" THEN amount 
-                        ELSE -amount 
-                    END
-                ) as balance
-            '))
+            SUM(
+                CASE 
+                    WHEN type = "رسید" THEN amount 
+                    ELSE -amount 
+                END
+            ) as balance
+        '))
             ->value('balance') ?? 0;
     }
 
     private function getLastTransactionDate($customerId, $currency)
     {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
         return Transaction::where('customer_id', $customerId)
             ->where('currency', $currency)
+            ->where(function ($query) use ($adminId) {
+                $query->where('admin_id', $adminId)
+                    ->orWhere('user_id', $adminId);
+            })
             ->max('date');
     }
+
 
     private function calculateTotalBalance($balances)
     {

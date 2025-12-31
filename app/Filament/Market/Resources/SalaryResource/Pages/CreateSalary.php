@@ -16,19 +16,19 @@ class CreateSalary extends CreateRecord
 {
     protected static string $resource = SalaryResource::class;
 
-protected function mutateFormDataBeforeCreate(array $data): array
-{
-    $user = Auth::user();
-    $data['admin_id'] = in_array($user->role, ['superadmin', 'admin'])
-        ? $user->id
-        : $user->admin_id;
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $user = Auth::user();
+        $data['admin_id'] = in_array($user->role, ['superadmin', 'admin'])
+            ? $user->id
+            : $user->admin_id;
 
-    // ⚠️ remained همان مقداری است که از فرم آمده
-    // فقط اطمینان از منفی نبودن
-    $data['remained'] = max($data['remained'] ?? 0, 0);
+        // ⚠️ remained همان مقداری است که از فرم آمده
+        // فقط اطمینان از منفی نبودن
+        $data['remained'] = max($data['remained'] ?? 0, 0);
 
-    return $data;
-}
+        return $data;
+    }
 
 
     protected function afterCreate(): void
@@ -50,7 +50,7 @@ protected function mutateFormDataBeforeCreate(array $data): array
                     'currency' => $salary->currency,
                     'description' => 'کسر از معاش',
                 ]);
-                
+
                 // آپدیت موجودی قرض - اگر ستون remaining_amount وجود دارد
                 try {
                     if (isset($loan->remaining_amount)) {
@@ -75,15 +75,18 @@ protected function mutateFormDataBeforeCreate(array $data): array
             // محاسبه موجودی فعلی صندوق
             $currentBalance = DB::connection('market')->table('accountings')
                 ->where('expanses_type', $salary->reduce_from)
-                ->sum('paid');
+                ->where('currency', $salary->currency)
+                ->selectRaw('COALESCE(SUM(paid),0) as balance')
+                ->value('balance');
+
 
             // اگر موجودی کافی نیست
             if ($currentBalance < $amountToDeduct) {
                 Notification::make()
                     ->title('خطا')
-                    ->body('موجودی حساب ' . $salary->reduce_from . ' کافی نیست. موجودی: ' . 
-                           number_format($currentBalance) . ' ' . $salary->currency . 
-                           ' - مبلغ مورد نیاز: ' . number_format($amountToDeduct) . ' ' . $salary->currency)
+                    ->body('موجودی حساب ' . $salary->reduce_from . ' کافی نیست. موجودی: ' .
+                        number_format($currentBalance) . ' ' . $salary->currency .
+                        ' - مبلغ مورد نیاز: ' . number_format($amountToDeduct) . ' ' . $salary->currency)
                     ->danger()
                     ->send();
 
@@ -108,11 +111,11 @@ protected function mutateFormDataBeforeCreate(array $data): array
         // نمایش پیام موفقیت‌آمیز
         Notification::make()
             ->title('پرداخت معاش با موفقیت ثبت شد')
-            ->body('معاش ' . $salary->staff->fullname . ' به مبلغ ' . 
-                   number_format($salary->paid) . ' ' . $salary->currency . 
-                   ' پرداخت شد.' . 
-                   ($salary->remained > 0 ? ' باقیمانده: ' . number_format($salary->remained) . ' ' . $salary->currency : '') .
-                   ' روزهای پرداخت نشده: ' . $salary->unpaid_days)
+            ->body('معاش ' . $salary->staff->fullname . ' به مبلغ ' .
+                number_format($salary->paid) . ' ' . $salary->currency .
+                ' پرداخت شد.' .
+                ($salary->remained > 0 ? ' باقیمانده: ' . number_format($salary->remained) . ' ' . $salary->currency : '') .
+                ' روزهای پرداخت نشده: ' . $salary->unpaid_days)
             ->success()
             ->send();
     }

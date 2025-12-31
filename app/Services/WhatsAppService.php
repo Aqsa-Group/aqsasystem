@@ -58,12 +58,7 @@ class WhatsAppService
                     $payload
                 );
 
-            dd([
-                'status' => $response->status(),
-                'body'   => $response->body(),
-                'json'   => $response->json(),
-                'payload' => $payload,
-            ]);
+         
             // اگر موفق نبود
             if (!$response->successful()) {
                 Log::error('WhatsApp API error', [
