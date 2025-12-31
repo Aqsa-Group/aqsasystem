@@ -223,42 +223,47 @@ class ChatController extends Controller
     }
 
     // Get users available for chat
-    public function getChatUsers()
-    {
-        $currentUser = Auth::guard('sarafi')->user();
-        Log::info('Getting chat users for: ' . $currentUser->id . ' - ' . $currentUser->role);
-        
-        $users = collect();
-        
-        if ($currentUser->role === 'superadmin') {
-            $users = User::where('id', '!=', $currentUser->id)
-                ->whereIn('role', ['admin', 'warehouse_manager'])
-                ->select('id', 'name', 'lastname', 'sarafi_name', 'role', 'admin_id', 'phone')
-                ->get();
-        } elseif ($currentUser->role === 'admin') {
-            $users = User::where(function($query) use ($currentUser) {
-                $query->where('role', 'superadmin')
-                    ->orWhere(function($q) use ($currentUser) {
-                        $q->where('admin_id', $currentUser->id)
-                          ->where('role', 'warehouse_manager');
-                    });
-            })
-            ->select('id', 'name', 'lastname', 'sarafi_name', 'role', 'admin_id', 'phone')
-            ->get();
-        } else {
-            $users = User::where('role', 'superadmin')
-                ->orWhere('id', $currentUser->admin_id)
-                ->select('id', 'name', 'lastname', 'sarafi_name', 'role', 'admin_id', 'phone')
-                ->get();
-        }
-        
-        Log::info('Found users:', ['count' => $users->count()]);
+  public function getChatUsers()
+{
+    $currentUser = Auth::guard('sarafi')->user();
 
-        return response()->json([
-            'success' => true,
-            'users' => $users
-        ]);
-    }
+    $users = User::where('id', '!=', $currentUser->id)
+        ->where(function ($query) use ($currentUser) {
+
+            // ✅ همه بتوانند سوپر ادمین را ببینند
+            $query->where('role', 'superadmin');
+
+            // ✅ سوپر ادمین همه را ببیند
+            if ($currentUser->role === 'superadmin') {
+                $query->orWhereIn('role', [
+                    'admin',
+                    'warehouse_manager',
+                    'internal_officer',
+                    'external_officer'
+                ]);
+            }
+
+            // ✅ ادمین فقط خزانه‌دارهای خودش
+            if ($currentUser->role === 'admin') {
+                $query->orWhere(function ($q) use ($currentUser) {
+                    $q->where('role', 'warehouse_manager')
+                      ->where('admin_id', $currentUser->id);
+                });
+            }
+
+            // ✅ خزانه‌دار فقط ادمین خودش
+            if ($currentUser->role === 'warehouse_manager') {
+                $query->orWhere('id', $currentUser->admin_id);
+            }
+        })
+        ->select('id', 'name', 'lastname', 'sarafi_name', 'role', 'admin_id', 'phone')
+        ->get();
+
+    return response()->json([
+        'success' => true,
+        'users' => $users
+    ]);
+}
 
     // Get unread message count
     public function getUnreadCount()
@@ -345,52 +350,35 @@ class ChatController extends Controller
         ]);
     }
 
-    // Private helper methods
-    private function canMessage($sender, $receiver)
-    {
-        Log::info('Checking if user can message:', [
-            'sender_id' => $sender->id,
-            'sender_role' => $sender->role,
-            'receiver_id' => $receiver->id,
-            'receiver_role' => $receiver->role,
-            'receiver_admin_id' => $receiver->admin_id
-        ]);
 
-        // Can't message yourself
-        if ($sender->id == $receiver->id) {
-            Log::info('Cannot message yourself');
-            return false;
-        }
 
-        // Super admin can message all admins and warehouse managers
-        if ($sender->role === 'superadmin') {
-            $allowed = in_array($receiver->role, ['admin', 'warehouse_manager']);
-            Log::info('Super admin check result:', ['allowed' => $allowed]);
-            return $allowed;
-        }
 
-        // Admin can message super admin and their own warehouse managers
-        if ($sender->role === 'admin') {
-            $allowed = $receiver->role === 'superadmin' || 
-                       ($receiver->admin_id == $sender->id && $receiver->role === 'warehouse_manager');
-            Log::info('Admin check result:', [
-                'allowed' => $allowed,
-                'receiver_admin_id' => $receiver->admin_id,
-                'sender_id' => $sender->id
-            ]);
-            return $allowed;
-        }
-
-        // Warehouse managers can message their admin and super admin
-        if ($sender->role === 'warehouse_manager') {
-            $allowed = $receiver->role === 'superadmin' || $receiver->id == $sender->admin_id;
-            Log::info('Warehouse manager check result:', ['allowed' => $allowed]);
-            return $allowed;
-        }
-
-        Log::info('Default case: not allowed');
+   private function canMessage($sender, $receiver)
+{
+    // جلوگیری از پیام به خود
+    if ($sender->id === $receiver->id) {
         return false;
     }
+
+    // ✅ سوپر ادمین ↔ همه
+    if ($sender->role === 'superadmin' || $receiver->role === 'superadmin') {
+        return true;
+    }
+
+    // ✅ ادمین ↔ خزانه‌دارهای خودش
+    if ($sender->role === 'admin') {
+        return $receiver->role === 'warehouse_manager'
+            && $receiver->admin_id === $sender->id;
+    }
+
+    if ($sender->role === 'warehouse_manager') {
+        return $receiver->role === 'admin'
+            && $sender->admin_id === $receiver->id;
+    }
+
+    // سایر نقش‌ها (internal / external) فقط با سوپر ادمین
+    return false;
+}
 
     private function getOrCreateConversation($userId1, $userId2)
     {

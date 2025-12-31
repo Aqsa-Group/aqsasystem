@@ -350,7 +350,6 @@ Route::get('/sarafi/withdraws-from-bank', function () {
 
 
 
-
 // Chat Routes
 Route::middleware(['auth:sarafi'])->prefix('chat')->group(function () {
     Route::post('/send', [ChatController::class, 'sendMessage']);
@@ -360,10 +359,9 @@ Route::middleware(['auth:sarafi'])->prefix('chat')->group(function () {
     Route::get('/unread-count', [ChatController::class, 'getUnreadCount']);
     Route::post('/search', [ChatController::class, 'searchUsers']);
     Route::post('/mark-all-read', [ChatController::class, 'markAllAsRead']);
+    Route::delete('/message/{messageId}', [ChatController::class, 'deleteMessage']);
+    Route::get('/test', [ChatController::class, 'test']);
 });
-
-
-
 
 
 
