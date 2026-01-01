@@ -64,6 +64,11 @@ return [
                 'driver' => 'session',
                 'provider' => 'gyms',
             ],
+  'sarafi_impersonate' => [
+        'driver' => 'session',
+        'provider' => 'sarafi_users',
+        'cookie' => 'laravel_impersonate_session',
+    ],
         ],
 
         /*

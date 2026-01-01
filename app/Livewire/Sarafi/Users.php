@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Mpdf\Mpdf;
+use App\Models\Sarafi\ImpersonationToken;
+use Illuminate\Support\Str;
+
 
 class Users extends Component
 {
@@ -52,6 +55,9 @@ class Users extends Component
         'internal_officer' => 'مسوول احواله جات داخلی',
         'external_officer' => 'مسوول احواله جات خارجی',
     ];
+
+
+
 
 
 
@@ -384,6 +390,30 @@ public function updatedPhone3($value)
     {
         return User::select('sarafi_name')->whereNotNull('sarafi_name')->distinct()->pluck('sarafi_name')->toArray();
     }
+    
+
+    public function loginAsInNewWindow($userId)
+{
+    $currentUser = Auth::guard('sarafi')->user();
+
+    if ($currentUser->role !== 'superadmin') {
+        abort(403);
+    }
+
+    $token = Str::random(64);
+
+    ImpersonationToken::create([
+        'super_admin_id' => $currentUser->id,
+        'user_id'        => $userId,
+        'token'          => hash('sha256', $token),
+        'expires_at'     => now()->addMinutes(5),
+    ]);
+
+    $url = route('impersonate.login', ['token' => $token]);
+
+  $this->dispatch('open-new-window', url: $url);
+
+}
 
 
     public function render()

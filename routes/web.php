@@ -16,6 +16,7 @@ use App\Http\Controllers\printLoan;
 use App\Http\Controllers\SalaryPrintController;
 use App\Http\Controllers\Sarafi\Auth\CustomController;
 use App\Http\Controllers\Sarafi\CustomerController;
+use App\Http\Controllers\Sarafi\ImpersonateController;
 use App\Http\Controllers\ShopkeeperPrintController;
 use App\Http\Controllers\SignedImagePdfController;
 use App\Http\Controllers\StaffContractPrintController;
@@ -362,6 +363,18 @@ Route::middleware(['auth:sarafi'])->prefix('chat')->group(function () {
     Route::delete('/message/{messageId}', [ChatController::class, 'deleteMessage']);
     Route::get('/test', [ChatController::class, 'test']);
 });
+
+
+Route::middleware(['auth:impersonate'])->group(function () {
+    Route::get('/impersonate/dashboard', function() {
+        return view('Sarafi.components.dashboard');
+    })->name('sarafi.impersonate.dashboard');
+});
+
+
+
+Route::get('/impersonate/login', [ImpersonateController::class, 'login'])
+    ->name('impersonate.login');
 
 
 

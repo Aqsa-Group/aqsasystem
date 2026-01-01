@@ -3781,6 +3781,12 @@
         <source src="<?php echo e(asset('assets/sarafi/message.mp3')); ?>" type="audio/mpeg">
     </audio>
 
+        <script>
+    window.addEventListener('open-new-window', event => {
+        window.open(event.detail.url, '_blank');
+    });
+</script>
+
 </body>
 
 </html><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/Sarafi/layouts/sidebar.blade.php ENDPATH**/ ?>

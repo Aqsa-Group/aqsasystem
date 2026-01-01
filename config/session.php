@@ -212,6 +212,16 @@ return [
     |
     */
 
+'impersonate' => [
+    'driver' => 'cookie',
+    'lifetime' => 120,
+    'expire_on_close' => false,
+    'encrypt' => true,
+    'cookie' => 'laravel_impersonate_session',
+    'path' => '/',
+    'domain' => env('SESSION_DOMAIN', null),
+    'secure' => env('SESSION_SECURE_COOKIE', true),
+],
     'partitioned' => env('SESSION_PARTITIONED_COOKIE', false),
 
 ];

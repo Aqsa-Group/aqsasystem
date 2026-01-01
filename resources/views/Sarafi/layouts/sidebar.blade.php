@@ -874,7 +874,7 @@
                                                                 <span class="mx-1"></span>
                                                                 <span class="dir-ltr"
                                                                     x-text="customer.account_number"></span>
-                                                               
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -883,8 +883,9 @@
                                                     <div class="text-xs flex items-center gap-2">
                                                         <template x-if="customer.is_mine">
                                                             <span
-                                                                class="bg-green-100 text-green-800 px-2 py-1 rounded">دیدن مشتری
-                                                                </span>
+                                                                class="bg-green-100 text-green-800 px-2 py-1 rounded">دیدن
+                                                                مشتری
+                                                            </span>
                                                         </template>
                                                         <template x-if="!customer.is_mine && customer.admin_id">
                                                             <button @click.stop="linkCustomer(customer)"
@@ -3796,6 +3797,12 @@
     <audio id="messageSound" preload="auto">
         <source src="{{ asset('assets/sarafi/message.mp3') }}" type="audio/mpeg">
     </audio>
+
+    <script>
+        window.addEventListener('open-new-window', event => {
+        window.open(event.detail.url, '_blank');
+    });
+    </script>
 
 </body>
 
