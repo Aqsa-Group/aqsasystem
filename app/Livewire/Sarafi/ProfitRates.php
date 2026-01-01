@@ -366,15 +366,25 @@ class ProfitRates extends Component
         $this->confirmDeleteId = null;
     }
 
-    public function render()
-    {
-        $records = ProfitRate::with(['user', 'admin'])
-            ->latest()
-            ->take(10)
-            ->get();
+ public function render()
+{
+    $user = Auth::guard('sarafi')->user();
 
-        return view('livewire.sarafi.profit-rates', [
-            'records' => $records
-        ]);
+    $query = ProfitRate::with(['user', 'admin'])
+        ->orderBy('created_at', 'desc');
+
+    if ($user->admin_id === null) {
+        $query->where(function ($q) use ($user) {
+            $q->where('admin_id', $user->id)
+              ->orWhere('user_id', $user->id);
+        });
+    } else {
+        $query->where('user_id', $user->id);
     }
+
+    $records = $query->take(10)->get();
+
+    return view('livewire.sarafi.profit-rates', compact('records'));
+}
+
 }

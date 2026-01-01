@@ -163,32 +163,44 @@ class TrashEdit extends Component
     }
 
 
-    public function render()
-    {
-        $query = Trash::with(['user', 'admin', 'registeredUser'])
-            ->orderBy('created_at', 'desc');
+ public function render()
+{
+    $user = Auth::guard('sarafi')->user();
 
-        // اعمال فیلترها
-        if ($this->filterAction) {
-            $query->where('action', $this->filterAction);
-        }
+    $query = Trash::with(['user', 'admin', 'registeredUser'])
+        ->orderBy('created_at', 'desc');
 
-        if ($this->filterDocumentType) {
-            $query->where('document_type', $this->filterDocumentType);
-        }
-
-        if ($this->search) {
-            $query->where(function($q) {
-                $q->where('document_discription', 'like', '%' . $this->search . '%')
-                  ->orWhere('action', 'like', '%' . $this->search . '%')
-                  ->orWhere('document_type', 'like', '%' . $this->search . '%');
-            });
-        }
-
-        $trashRecords = $query->paginate(10);
-
-        return view('livewire.sarafi.trash-edit', [
-            'trashRecords' => $trashRecords
-        ]);
+    if ($user->admin_id === null) {
+        // 🔹 ادمین: خودش + یوزرهای زیرمجموعه
+        $query->where(function ($q) use ($user) {
+            $q->where('admin_id', $user->id)
+              ->orWhere('user_id', $user->id);
+        });
+    } else {
+        // 🔹 یوزر: فقط داده‌های خودش
+        $query->where('user_id', $user->id);
     }
+
+    // ===== فیلترها =====
+    if ($this->filterAction) {
+        $query->where('action', $this->filterAction);
+    }
+
+    if ($this->filterDocumentType) {
+        $query->where('document_type', $this->filterDocumentType);
+    }
+
+    if ($this->search) {
+        $query->where(function ($q) {
+            $q->where('document_discription', 'like', '%' . $this->search . '%')
+              ->orWhere('action', 'like', '%' . $this->search . '%')
+              ->orWhere('document_type', 'like', '%' . $this->search . '%');
+        });
+    }
+
+    $trashRecords = $query->paginate(10);
+
+    return view('livewire.sarafi.trash-edit', compact('trashRecords'));
+}
+
 }
