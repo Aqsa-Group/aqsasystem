@@ -181,16 +181,18 @@ class Transaction extends Model
                 return;
             }
 
-            WhatsAppService::sendTransaction(
-                $customer->whatsapp_number,
-                [
-                    'name'     => $customer->fullname,
-                    'amount'   => $transaction->amount,
-                    'currency' => $transaction->currency,
-                    'type'     => $transaction->type,
-                    'date'     => $transaction->date->format('Y-m-d'),
-                ]
-            );
+  
+        WhatsAppService::sendTransaction(
+    $customer->whatsapp_number,
+    [
+        'account_number' => $customer->account_number,
+        'amount' => (string) $transaction->amount,
+        'currency' => $transaction->currency,
+        'transaction_type' => $transaction->type,
+        'transaction_date' => $transaction->date->format('Y-m-d'), // اضافه کن
+    ]
+);
+
         });
     }
 }

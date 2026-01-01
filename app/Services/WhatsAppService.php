@@ -35,12 +35,11 @@ class WhatsAppService
                     [
                         "type" => "body",
                         "parameters" => [
-                            ["type" => "text", "text" => $data['name'] ?? '-'],            
-                            ["type" => "text", "text" => $data['amount'] ?? '-'],          
-                            ["type" => "text", "text" => $data['currency'] ?? '-'],       
+                            ["type" => "text", "text" => $data['account_number'] ?? '-'],
+                            ["type" => "text", "text" => $data['amount'] ?? '-'],
+                            ["type" => "text", "text" => $data['currency'] ?? '-'],
                             ["type" => "text", "text" => $data['transaction_type'] ?? '-'],
-                            ["type" => "text", "text" => $data['date'] ?? '-'],           
-                            ["type" => "text", "text" => '-'],                             
+                            ["type" => "text", "text" => $data['transaction_date'] ?? '-'],
                         ]
                     ]
                 ]
@@ -58,7 +57,14 @@ class WhatsAppService
                     $payload
                 );
 
-         
+            dd([
+                'status' => $response->status(),
+                'body'   => $response->body(),
+                'json'   => $response->json(),
+                'payload' => $payload,
+            ]);
+
+
             // اگر موفق نبود
             if (!$response->successful()) {
                 Log::error('WhatsApp API error', [

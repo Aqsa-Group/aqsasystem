@@ -789,11 +789,12 @@ class Transactions extends Component
         }, $fileName);
     }
 
+    
     public function print($transactionId)
     {
         $transaction = Transaction::with(['customer', 'user'])->findOrFail($transactionId);
 
-        $mpdf = new Mpdf([
+        $mpdf = new \Mpdf\Mpdf([
             'mode' => 'utf-8',
             'format' => [80, 250],
             'directionality' => 'rtl',
@@ -801,13 +802,12 @@ class Transactions extends Component
             'margin_bottom' => 2,
             'margin_left' => 2,
             'margin_right' => 2,
-            'fontDir' => array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'], [
-                public_path('fonts'),
-            ]),
+            'fontDir' => array_merge(
+                (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+                [public_path('fonts')]
+            ),
             'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
-                'Shabnam' => [
-                    'R' => 'Shabnam-FD.ttf',
-                ],
+                'Shabnam' => ['R' => 'Shabnam-FD.ttf'],
             ],
             'default_font' => 'Shabnam',
         ]);
@@ -817,12 +817,16 @@ class Transactions extends Component
         $html = view('pdf.Sarafi.transaction', compact('transaction'))->render();
         $mpdf->WriteHTML($html);
 
-        $fileName = 'ترانزکشن_شماره_' . $transaction->id . '_به_اسم_' . $transaction->customer->fullname . '.pdf';
+        $fileName = 'transaction_' . $transaction->id . '.pdf';
+        $path = storage_path('app/public/' . $fileName);
 
-        return response()->streamDownload(function () use ($mpdf) {
-            echo $mpdf->Output('', 'S');
-        }, $fileName);
+        // ذخیره PDF
+        $mpdf->Output($path, 'F');
+
+        // ارسال event به JS (Livewire v3)
+        $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
     }
+
 
     private function applyCurrencyChange($user, $currency, $amount, $transactionType, $accountType, $reverse = false)
     {

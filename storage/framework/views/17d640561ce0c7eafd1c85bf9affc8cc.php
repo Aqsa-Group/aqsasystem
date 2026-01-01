@@ -1,8 +1,8 @@
 <div>
 
     <div>
-        {{-- Livewire alert (موفقیت/خطا) --}}
-        @if ($alert)
+        
+        <!--[if BLOCK]><![endif]--><?php if($alert): ?>
         <div x-data="{
             show: true,
             init() {
@@ -25,31 +25,33 @@
                 }, 4000);
             }
         }" x-show="show" x-transition
-            class="fixed top-0 left-0 right-0 w-full z-[9999] {{ $alert['title'] === 'Error' ? 'bg-red-500' : 'bg-[#2B65E5]' }} vazir">
+            class="fixed top-0 left-0 right-0 w-full z-[9999] <?php echo e($alert['title'] === 'Error' ? 'bg-red-500' : 'bg-[#2B65E5]'); ?> vazir">
             <div class="h-[80px] w-full flex justify-start items-center px-4">
                 <h2 class="text-white vazir text-[18px]">
-                    {{ $alert['message'] }}
+                    <?php echo e($alert['message']); ?>
+
                 </h2>
             </div>
         </div>
-        @endif
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-        {{-- پیام Session --}}
-        @if (session()->has('message'))
+        
+        <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
             <div class="h-[80px] w-full flex justify-start items-center px-4">
                 <h2 class="text-white vazir text-[18px]">
-                    {{ session('message') }}
+                    <?php echo e(session('message')); ?>
+
                 </h2>
             </div>
         </div>
-        @endif
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
     </div>
 
 
 
-    @if($currentUser && $currentUser->role === 'admin' || $currentUser->role === 'superadmin' )
+    <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role === 'admin' || $currentUser->role === 'superadmin' ): ?>
     <div class="pl-5">
         <!-- فرم ثبت کاربر -->
         <div class="w-[460px] md-w-[100px] lg:w-[1200px] p-4 mx-auto bg-[#F5F5F5] dark:bg-black dark:border dark:border-white rounded-2xl mx-auto space-y-2"
@@ -58,19 +60,21 @@
             <!-- عنوان و آیکون -->
             <div class="text-center space-y-2">
                 <h2 class="text-2xl font-bold text-gray-900 vazir dark:text-white tracking-widest">
-                    {{ __('messages.title_add_user') }}
+                    <?php echo e(__('messages.title_add_user')); ?>
+
                 </h2>
                 <p class="text-lg text-gray-600 dark:text-white vazir">
-                    {{ __('messages.subtitle_user') }}
+                    <?php echo e(__('messages.subtitle_user')); ?>
+
                 </p>
                 <div class="bg-[#545964] rounded-full h-20 w-20 mx-auto flex items-center justify-center">
-                    <img src="{{ asset('assets/sarafi/all_icon/light.user.svg') }}" alt="" class="mt-2 dark:invert" />
+                    <img src="<?php echo e(asset('assets/sarafi/all_icon/light.user.svg')); ?>" alt="" class="mt-2 dark:invert" />
                 </div>
             </div>
 
-            @php
+            <?php
             $currentUser = Auth::guard('sarafi')->user();
-            @endphp
+            ?>
 
             <!-- فرم اطلاعات -->
             <form wire:submit.prevent="save" class="space-y-4">
@@ -79,186 +83,258 @@
                     <!-- Name -->
                     <div>
                         <label class="block text-sm font-medium text-black dark:text-white vazir mb-1">
-                            {{ __('messages.name') }}
+                            <?php echo e(__('messages.name')); ?>
+
                         </label>
                         <div class="relative">
-                            <input type="text" wire:model="name" placeholder="{{ __('messages.placeholder_name') }}"
+                            <input type="text" wire:model="name" placeholder="<?php echo e(__('messages.placeholder_name')); ?>"
                                 class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                          focus:ring-blue-500 dark:bg-black dark:placeholder:text-white dark:border-white dark:text-white">
                             <div class="absolute left-2 top-2">
-                                <img src="{{ asset('assets/sarafi/all_icon/profile.svg') }}" alt="">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/profile.svg')); ?>" alt="">
                             </div>
                         </div>
-                        @error('name')
-                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                        @enderror
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
                     <!-- Lastname -->
                     <div>
                         <label class="block text-sm font-medium text-black dark:text-white mb-1">
-                            {{ __('messages.lastname') }}
+                            <?php echo e(__('messages.lastname')); ?>
+
                         </label>
                         <div class="relative">
                             <input type="text" wire:model="lastname"
-                                placeholder="{{ __('messages.placeholder_lastname') }}"
+                                placeholder="<?php echo e(__('messages.placeholder_lastname')); ?>"
                                 class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                             <div class="absolute left-2 top-2">
-                                <img src="{{ asset('assets/sarafi/all_icon/profile.svg') }}" alt="">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/profile.svg')); ?>" alt="">
                             </div>
                         </div>
-                        @error('lastname')
-                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                        @enderror
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['lastname'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
                     <!-- Sarafi Name -->
                     <!-- در فایل Blade -->
                     <div>
                         <label class="block text-sm font-medium text-black dark:text-white mb-1">
-                            {{ __('messages.sarafi_name') }}
+                            <?php echo e(__('messages.sarafi_name')); ?>
+
                         </label>
                         <div class="relative">
                             <input type="text" wire:model="sarafi_name"
-                                placeholder="{{ __('messages.placeholder_sarafi_name') }}" {{
-                                Auth::guard('sarafi')->user()->role === 'admin' ? : '' }}
+                                placeholder="<?php echo e(__('messages.placeholder_sarafi_name')); ?>" <?php echo e(Auth::guard('sarafi')->user()->role === 'admin' ? : ''); ?>
+
                             class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C]
                             focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white
                             dark:text-white
-                            {{ Auth::guard('sarafi')->user()->role === 'admin' ? 'bg-gray-100' : '' }}">
+                            <?php echo e(Auth::guard('sarafi')->user()->role === 'admin' ? 'bg-gray-100' : ''); ?>">
                             <div class="absolute left-2 top-2">
-                                <img src="{{ asset('assets/sarafi/all_icon/buildings-2.svg') }}" alt="">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/buildings-2.svg')); ?>" alt="">
                             </div>
                         </div>
-                        @error('sarafi_name')
-                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                        @enderror
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['sarafi_name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
 
                     <!-- Username -->
                     <div>
                         <label class="block text-sm font-medium text-black dark:text-white mb-1 vazir">
-                            {{ __('messages.username') }}
+                            <?php echo e(__('messages.username')); ?>
+
                         </label>
                         <div class="relative">
                             <input type="text" wire:model="username"
-                                placeholder="{{ __('messages.placeholder_username') }}"
+                                placeholder="<?php echo e(__('messages.placeholder_username')); ?>"
                                 class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                             <div class="absolute left-2 top-2">
-                                <img src="{{ asset('assets/sarafi/all_icon/profile.svg') }}" alt="">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/profile.svg')); ?>" alt="">
                             </div>
                         </div>
-                        @error('username')
-                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                        @enderror
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['username'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
                     <!-- Password -->
                     <div>
                         <label class="block text-sm font-medium text-black dark:text-white mb-1">
-                            {{ __('messages.password') }}
+                            <?php echo e(__('messages.password')); ?>
+
                         </label>
                         <div class="relative">
                             <input type="password" wire:model.lazy="password"
-                                placeholder="{{ __('messages.placeholder_userpassword') }}"
+                                placeholder="<?php echo e(__('messages.placeholder_userpassword')); ?>"
                                 class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                             <div class="absolute left-2 top-2">
-                                <img src="{{ asset('assets/sarafi/all_icon/lock.svg') }}" alt="">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/lock.svg')); ?>" alt="">
                             </div>
                         </div>
-                        @error('password')
-                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                        @enderror
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
                     <!-- Role -->
-                    @if ($currentUser && $currentUser->role === 'superadmin')
+                    <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role === 'superadmin'): ?>
                     <div>
                         <label class="block text-sm font-medium text-black dark:text-white mb-1 vazir">
-                            {{ __('messages.category_user') }}
+                            <?php echo e(__('messages.category_user')); ?>
+
                         </label>
                         <div class="relative">
                             <select wire:model="role"
                                 class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                            focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white appearance-none">
-                                <option value="">{{ __('messages.select_role') }}</option>
-                                <option value="admin">{{ __('messages.admin') }}</option>
+                                <option value=""><?php echo e(__('messages.select_role')); ?></option>
+                                <option value="admin"><?php echo e(__('messages.admin')); ?></option>
 
                             </select>
                             <div class="absolute left-2 top-2">
-                                <img src="{{ asset('assets/sarafi/all_icon/clipboard.svg') }}" alt="">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/clipboard.svg')); ?>" alt="">
                             </div>
                         </div>
-                        @error('role')
-                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                        @enderror
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['role'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
-                    @elseif ($currentUser && $currentUser->role === 'admin')
+                    <?php elseif($currentUser && $currentUser->role === 'admin'): ?>
                     <div>
                         <label class="block text-sm font-medium text-black dark:text-white mb-1 vazir">
-                            {{ __('messages.category_user') }}
+                            <?php echo e(__('messages.category_user')); ?>
+
                         </label>
                         <div class="relative">
                             <select wire:model="role"
                                 class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                            focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white appearance-none">
-                                <option value="">{{ __('messages.select_role') }}</option>
-                                <option value="warehouse_manager">{{ __('messages.warehouse_manager') }}</option>
-                                <option value="internal_officer">{{ __('messages.internal_officer') }}</option>
-                                <option value="external_officer">{{ __('messages.external_officer') }}</option>
+                                <option value=""><?php echo e(__('messages.select_role')); ?></option>
+                                <option value="warehouse_manager"><?php echo e(__('messages.warehouse_manager')); ?></option>
+                                <option value="internal_officer"><?php echo e(__('messages.internal_officer')); ?></option>
+                                <option value="external_officer"><?php echo e(__('messages.external_officer')); ?></option>
                             </select>
                             <div class="absolute left-2 top-2">
-                                <img src="{{ asset('assets/sarafi/all_icon/clipboard.svg') }}" alt="">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/clipboard.svg')); ?>" alt="">
                             </div>
                         </div>
-                        @error('role')
-                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                        @enderror
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['role'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
-                    @endif
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                     <!-- User Limition -->
-                    @if ($currentUser && $currentUser->role === 'superadmin')
+                    <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role === 'superadmin'): ?>
                     <div>
                         <label class="block text-sm font-medium text-black dark:text-white mb-1 vazir">
-                            {{ __('messages.user_limit') }}
+                            <?php echo e(__('messages.user_limit')); ?>
+
                         </label>
                         <div class="relative">
                             <input type="text" wire:model="user_limition"
-                                placeholder="{{ __('messages.placeholder_user_limit') }}"
+                                placeholder="<?php echo e(__('messages.placeholder_user_limit')); ?>"
                                 class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                             <div class="absolute left-2 top-2">
-                                <img src="{{ asset('assets/sarafi/all_icon/customers.svg') }}" alt="" class="h-8 w-8">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/customers.svg')); ?>" alt="" class="h-8 w-8">
                             </div>
                         </div>
-                        @error('user_limition')
-                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                        @enderror
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['user_limition'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
-                    @endif
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
 
 
                     <div>
                         <label class="block text-sm font-medium text-black dark:text-white mb-1 vazir">
-                            {{ __('messages.zone') }}
+                            <?php echo e(__('messages.zone')); ?>
+
                         </label>
                         <div class="relative">
-                            <input type="text" wire:model="zone" placeholder="{{ __('messages.placeholder_zone') }}"
+                            <input type="text" wire:model="zone" placeholder="<?php echo e(__('messages.placeholder_zone')); ?>"
                                 class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                             <div class="absolute left-2 top-2">
-                                <img src="{{ asset('assets/sarafi/all_icon/location.svg') }}" alt="">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/location.svg')); ?>" alt="">
                             </div>
                         </div>
-                        @error('zone')
-                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                        @enderror
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['zone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
 
@@ -271,19 +347,26 @@
                         </label>
                         <div class="relative">
                             <input type="text" wire:model="address"
-                                placeholder="{{ __('messages.placeholder_address') }}" {{
-                                Auth::guard('sarafi')->user()->role === 'admin' ? : '' }}
+                                placeholder="<?php echo e(__('messages.placeholder_address')); ?>" <?php echo e(Auth::guard('sarafi')->user()->role === 'admin' ? : ''); ?>
+
                             class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C]
                             focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white
                             dark:text-white
-                            {{ Auth::guard('sarafi')->user()->role === 'admin' ? 'bg-gray-100' : '' }}">
+                            <?php echo e(Auth::guard('sarafi')->user()->role === 'admin' ? 'bg-gray-100' : ''); ?>">
                             <div class="absolute left-2 top-2">
-                                <img src="{{ asset('assets/sarafi/all_icon/location.svg') }}" alt="">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/location.svg')); ?>" alt="">
                             </div>
                         </div>
-                        @error('address')
-                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                        @enderror
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['address'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
 
@@ -296,19 +379,26 @@
                         </label>
                         <div class="relative">
                             <input type="text" wire:model="address2"
-                                placeholder="{{ __('messages.placeholder_address') }}" {{
-                                Auth::guard('sarafi')->user()->role === 'admin' ? : '' }}
+                                placeholder="<?php echo e(__('messages.placeholder_address')); ?>" <?php echo e(Auth::guard('sarafi')->user()->role === 'admin' ? : ''); ?>
+
                             class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C]
                             focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white
                             dark:text-white
-                            {{ Auth::guard('sarafi')->user()->role === 'admin' ? 'bg-gray-100' : '' }}">
+                            <?php echo e(Auth::guard('sarafi')->user()->role === 'admin' ? 'bg-gray-100' : ''); ?>">
                             <div class="absolute left-2 top-2">
-                                <img src="{{ asset('assets/sarafi/all_icon/location.svg') }}" alt="">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/location.svg')); ?>" alt="">
                             </div>
                         </div>
-                        @error('address')
-                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                        @enderror
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['address'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
 
@@ -319,19 +409,26 @@
                         </label>
                         <div class="relative">
                             <input type="text" wire:model="address3"
-                                placeholder="{{ __('messages.placeholder_address') }}" {{
-                                Auth::guard('sarafi')->user()->role === 'admin' ? : '' }}
+                                placeholder="<?php echo e(__('messages.placeholder_address')); ?>" <?php echo e(Auth::guard('sarafi')->user()->role === 'admin' ? : ''); ?>
+
                             class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C]
                             focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white
                             dark:text-white
-                            {{ Auth::guard('sarafi')->user()->role === 'admin' ? 'bg-gray-100' : '' }}">
+                            <?php echo e(Auth::guard('sarafi')->user()->role === 'admin' ? 'bg-gray-100' : ''); ?>">
                             <div class="absolute left-2 top-2">
-                                <img src="{{ asset('assets/sarafi/all_icon/location.svg') }}" alt="">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/location.svg')); ?>" alt="">
                             </div>
                         </div>
-                        @error('address')
-                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                        @enderror
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['address'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
                     <!-- Phone1 -->
@@ -341,16 +438,23 @@
                         </label>
                         <div class="relative">
                             <input type="text" wire:model.lazy="phone"
-                                placeholder="{{ __('messages.placeholder_phone_user') }}"
+                                placeholder="<?php echo e(__('messages.placeholder_phone_user')); ?>"
                                 class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                             <div class="absolute left-2 top-2">
-                                <img src="{{ asset('assets/sarafi/all_icon/call.svg') }}" alt="">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/call.svg')); ?>" alt="">
                             </div>
                         </div>
-                        @error('phone')
-                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                        @enderror
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
 
@@ -363,16 +467,23 @@
                         </label>
                         <div class="relative">
                             <input type="text" wire:model.lazy="phone2"
-                                placeholder="{{ __('messages.placeholder_phone_user') }}"
+                                placeholder="<?php echo e(__('messages.placeholder_phone_user')); ?>"
                                 class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                             <div class="absolute left-2 top-2">
-                                <img src="{{ asset('assets/sarafi/all_icon/call.svg') }}" alt="">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/call.svg')); ?>" alt="">
                             </div>
                         </div>
-                        @error('phone')
-                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                        @enderror
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
 
@@ -384,16 +495,23 @@
                         </label>
                         <div class="relative">
                             <input type="text" wire:model.lazy="phone3"
-                                placeholder="{{ __('messages.placeholder_phone_user') }}"
+                                placeholder="<?php echo e(__('messages.placeholder_phone_user')); ?>"
                                 class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                             <div class="absolute left-2 top-2">
-                                <img src="{{ asset('assets/sarafi/all_icon/call.svg') }}" alt="">
+                                <img src="<?php echo e(asset('assets/sarafi/all_icon/call.svg')); ?>" alt="">
                             </div>
                         </div>
-                        @error('phone')
-                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                        @enderror
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
 
@@ -403,18 +521,20 @@
                 <div class="flex justify-center gap-4 mt-3 pt-2">
                     <button type="button" wire:click="resetForm"
                         class="flex-1 py-4 bg-[#B10909] text-white rounded-xl hover:bg-gray-700 transition">
-                        {{ __('messages.cancel') }}
+                        <?php echo e(__('messages.cancel')); ?>
+
                     </button>
                     <button type="submit"
                         class="flex-1 py-4 bg-[#2563EB] text-white rounded-xl hover:bg-blue-700 transition">
-                        {{ __('messages.save') }}
+                        <?php echo e(__('messages.save')); ?>
+
                     </button>
                 </div>
             </form>
         </div>
     </div>
 
-    @endif
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
     <!-- فیلتر و سرچ -->
     <div class="flex w-[460px] md-w-[800px] lg:w-[1200px] items-center mt-5 gap-3 mx-auto">
@@ -423,38 +543,39 @@
         <div class="relative">
             <button wire:click="$toggle('filterOpen')"
                 class="px-3 py-2 border rounded-lg dark:bg-black bg-[#2563EB] transition flex items-center gap-2 text-white">
-                <img src="{{ asset('assets/sarafi/all_icon/filter.svg') }}" alt="">
-                <span class="text-white">{{ __('messages.filter') }}</span>
+                <img src="<?php echo e(asset('assets/sarafi/all_icon/filter.svg')); ?>" alt="">
+                <span class="text-white"><?php echo e(__('messages.filter')); ?></span>
             </button>
 
-            @if ($filterOpen)
+            <!--[if BLOCK]><![endif]--><?php if($filterOpen): ?>
             <div
                 class="absolute top-full mt-2 dark:bg-black bg-white border rounded-xl shadow-lg p-4 w-72 z-50 flex flex-col gap-3">
                 <select wire:model="filterRole" class="border rounded px-3 py-2 w-full dark:bg-black dark:text-white">
-                    <option value="">{{ __('messages.all_roles') }}</option>
-                    @foreach ($roles as $key => $label)
-                    <option value="{{ $key }}">{{ $label }}</option>
-                    @endforeach
+                    <option value=""><?php echo e(__('messages.all_roles')); ?></option>
+                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <option value="<?php echo e($key); ?>"><?php echo e($label); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                 </select>
 
                 <select wire:model="filterSarafi" class="border rounded px-3 py-2 w-full dark:bg-black dark:text-white">
-                    <option value="">{{ __('messages.all_sarafis') }}</option>
-                    @foreach ($this->sarafis as $sarafi)
-                    <option value="{{ $sarafi }}">{{ $sarafi }}</option>
-                    @endforeach
+                    <option value=""><?php echo e(__('messages.all_sarafis')); ?></option>
+                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $this->sarafis; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sarafi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <option value="<?php echo e($sarafi); ?>"><?php echo e($sarafi); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                 </select>
 
                 <button wire:click="applyFilter"
                     class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 w-full">
-                    {{ __('messages.apply_filter') }}
+                    <?php echo e(__('messages.apply_filter')); ?>
+
                 </button>
             </div>
-            @endif
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </div>
 
         <!-- جستجو -->
         <div class="relative w-80">
-            <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
+            <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
                 class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 dark:hidden">
             <svg width="24" class=" hidden dark:block absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5"
                 height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -466,7 +587,7 @@
             </svg>
 
             <input type="text" wire:model.debounce.500ms="search" wire:keydown.enter="searchUser"
-                placeholder="{{ __('messages.search_placeholder') }}"
+                placeholder="<?php echo e(__('messages.search_placeholder')); ?>"
                 class="w-full dark:placeholder:text-white dark:bg-black dark:border-white border border-gray-300 rounded-2xl pl-10 pr-3 py-3 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm">
         </div>
     </div>
@@ -482,45 +603,42 @@
                     <th class="px-6 py-6 font-bold">
                         <span class="border border-white h-2 w-5 px-3 rounded-lg">#</span>
                     </th>
-                    <th class="px-6 py-6 font-bold">{{ __('messages.fullname') }}</th>
-                    <th class="px-6 py-6 font-bold">{{ __('messages.sarafi_name') }}</th>
-                    <th class="px-6 py-6 font-bold">{{ __('messages.username') }}</th>
-                    <th class="px-6 py-6 font-bold">{{ __('messages.category_user') }}</th>
-                    <th class="px-6 py-6 font-bold">{{ __('messages.status') }}</th>
-                    <th class="px-6 py-6 font-bold text-center">{{ __('messages.actions') }}</th>
+                    <th class="px-6 py-6 font-bold"><?php echo e(__('messages.fullname')); ?></th>
+                    <th class="px-6 py-6 font-bold"><?php echo e(__('messages.sarafi_name')); ?></th>
+                    <th class="px-6 py-6 font-bold"><?php echo e(__('messages.username')); ?></th>
+                    <th class="px-6 py-6 font-bold"><?php echo e(__('messages.category_user')); ?></th>
+                    <th class="px-6 py-6 font-bold"><?php echo e(__('messages.status')); ?></th>
+                    <th class="px-6 py-6 font-bold text-center"><?php echo e(__('messages.actions')); ?></th>
                 </tr>
             </thead>
 
 
             <!-- بدنه جدول -->
             <tbody>
-                @forelse ($users as $index => $user)
+                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr class="border-b dark:bg-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td class="px-3 py-2 vazir text-[16px] font-medium dark:text-white">{{ $users->firstItem() + $index
-                        }}</td>
-                    <td class="px-6 py-4 vazir text-[16px] font-medium dark:text-white text-black vazir">{{ $user->name
-                        }}</td>
-                    <td class="px-6 py-4 vazir text-[16px] font-medium dark:text-white text-black vazir">{{
-                        $user->sarafi_name }}</td>
-                    <td class="px-6 py-4 vazir text-[16px] font-medium dark:text-white text-black vazir">{{
-                        $user->username }}</td>
-                    <td class="px-6 py-4 vazir text-[16px] font-medium dark:text-white text-black vazir">{{
-                        $roles[$user->role] ??
-                        $user->role }}</td>
+                    <td class="px-3 py-2 vazir text-[16px] font-medium dark:text-white"><?php echo e($users->firstItem() + $index); ?></td>
+                    <td class="px-6 py-4 vazir text-[16px] font-medium dark:text-white text-black vazir"><?php echo e($user->name); ?></td>
+                    <td class="px-6 py-4 vazir text-[16px] font-medium dark:text-white text-black vazir"><?php echo e($user->sarafi_name); ?></td>
+                    <td class="px-6 py-4 vazir text-[16px] font-medium dark:text-white text-black vazir"><?php echo e($user->username); ?></td>
+                    <td class="px-6 py-4 vazir text-[16px] font-medium dark:text-white text-black vazir"><?php echo e($roles[$user->role] ??
+                        $user->role); ?></td>
                     <td class="px-6 py-4 vazir text-[16px] font-medium  text-black vazir">
-                        @if ($user->status)
+                        <!--[if BLOCK]><![endif]--><?php if($user->status): ?>
                         <span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">
-                            {{ __('messages.active') }}
+                            <?php echo e(__('messages.active')); ?>
+
                         </span>
-                        @else
+                        <?php else: ?>
                         <span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs">
-                            {{ __('messages.inactive') }}
+                            <?php echo e(__('messages.inactive')); ?>
+
                         </span>
-                        @endif
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                     </td>
                     <td class="px-6 py-4 flex justify-center gap-2">
-                        <button wire:click="edit({{ $user->id }})" class="px-2 py-1">
-                            <img src="{{ asset('assets/sarafi/all_icon/edit_table.svg') }}" class="w-7 h-7 dark:hidden"
+                        <button wire:click="edit(<?php echo e($user->id); ?>)" class="px-2 py-1">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>" class="w-7 h-7 dark:hidden"
                                 alt="Edit">
 
                             <svg width="22" height="22" class="hidden dark:block" viewBox="0 0 22 22" fill="none"
@@ -536,8 +654,8 @@
                                     stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
                                     stroke-linejoin="round" />
                             </svg> </button>
-                        <button wire:click="confirmDelete({{ $user->id }})" class="px-2 py-1">
-                            <img src="{{ asset('assets/sarafi/all_icon/trash_table.svg') }}" class="w-8 h-8 dark:hidden"
+                        <button wire:click="confirmDelete(<?php echo e($user->id); ?>)" class="px-2 py-1">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>" class="w-8 h-8 dark:hidden"
                                 alt="Delete">
                             <svg width="24" height="24" class="hidden dark:block" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -557,8 +675,8 @@
                             </svg>
 
                         </button>
-                        <button class="px-2 py-1" wire:click="print({{ $user->id }})">
-                            <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"
+                        <button class="px-2 py-1" wire:click="print(<?php echo e($user->id); ?>)">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
                                 class="w-10 h-10 dark:hidden" alt="Print">
                             <svg width="30" class="hidden dark:block" height="30" viewBox="0 0 30 30" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -569,23 +687,23 @@
                         </button>
                     </td>
                 </tr>
-                @empty
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                 <tr>
                     <td colspan="7" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
                         هیچ مشتری یافت نشد.
                     </td>
                 </tr>
-                @endforelse
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </tbody>
         </table>
     </div>
 
 
 
-    @if($currentUser && $currentUser->role === 'admin' ||  $currentUser->role === 'superadmin' )
+    <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role === 'admin' ||  $currentUser->role === 'superadmin' ): ?>
 
-    {{-- مودال تأیید حذف --}}
-    @if ($confirmDeleteId)
+    
+    <!--[if BLOCK]><![endif]--><?php if($confirmDeleteId): ?>
     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
         <div
             class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px] rounded-[12px] shadow-xl w-[653px] h-[219.7267608642578px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
@@ -593,12 +711,13 @@
             <!-- دکمه بستن -->
             <button wire:click="$set('confirmDeleteId', null)"
                 class="absolute left-0 right-4 top-4 h-6 w-6 flex items-center justify-center">
-                <img src="{{ asset('assets/sarafi/all_icon/close.svg') }}" alt="بستن" class="w-4 h-4">
+                <img src="<?php echo e(asset('assets/sarafi/all_icon/close.svg')); ?>" alt="بستن" class="w-4 h-4">
             </button>
 
             <!-- عنوان -->
             <h1 class="text-2xl text-black shabnam font-medium leading-[100%] mt-2">
-                {{ __('messages.confirm_delete_title') }}
+                <?php echo e(__('messages.confirm_delete_title')); ?>
+
             </h1>
 
             <!-- خط جداکننده -->
@@ -606,30 +725,33 @@
 
             <!-- پیام تأیید -->
             <p class="mb-6 text-xl shabnam mt-5">
-                {{ __('messages.confirm_delete_message') }}
+                <?php echo e(__('messages.confirm_delete_message')); ?>
+
             </p>
 
             <!-- دکمه‌ها -->
             <div class="flex justify-center gap-4">
                 <button wire:click="$set('confirmDeleteId', null)"
                     class="px-12 text-white text-lg shabnam-fd py-3 bg-[#DD2424] rounded-xl transition hover:bg-red-700">
-                    {{ __('messages.no') }}
+                    <?php echo e(__('messages.no')); ?>
+
                 </button>
                 <button wire:click="delete"
                     class="px-12 py-3 bg-[#2563EB] text-lg shabnam-fd text-white rounded-xl transition hover:bg-blue-700 flex items-center gap-2">
-                    {{ __('messages.yes') }}
+                    <?php echo e(__('messages.yes')); ?>
+
                 </button>
             </div>
         </div>
     </div>
-    @endif
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-    @endif
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
 
 </div>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-@endpush
-</div>
+<?php $__env->stopPush(); ?>
+</div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/users.blade.php ENDPATH**/ ?>
