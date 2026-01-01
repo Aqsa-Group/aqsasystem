@@ -1165,7 +1165,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <td class="px-4 py-4 vazir text-[14px] text-center">
                                     <div>
                                         <div class="font-medium">
-                                            <?php echo e($transaction->date); ?>
+                                                <?php echo e(explode(' ', $transaction->date)[0]); ?>
 
                                         </div>
                                         <div class="text-gray-500 text-sm mt-1">

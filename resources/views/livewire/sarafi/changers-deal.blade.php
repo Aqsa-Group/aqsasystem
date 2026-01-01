@@ -1089,7 +1089,7 @@ input[type="number"]::-webkit-outer-spin-button {
                                 <td class="px-4 py-4 vazir text-[14px] text-center">
                                     <div>
                                         <div class="font-medium">
-                                            {{ $transaction->date }}
+                                                {{ explode(' ', $transaction->date)[0] }}
                                         </div>
                                         <div class="text-gray-500 text-sm mt-1">
                                             {{ \Carbon\Carbon::parse($transaction->created_at)->format('H:i') }}
