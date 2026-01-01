@@ -1545,10 +1545,13 @@ public function updatedTransactionType()
             $mpdf->WriteHTML($html);
 
             $fileName = 'تراکنش_صرافی_' . $transaction->id . '_' . $transaction->type . '.pdf';
+      $path = storage_path('app/public/' . $fileName);
 
-            return response()->streamDownload(function () use ($mpdf) {
-                echo $mpdf->Output('', 'S');
-            }, $fileName);
+        // ذخیره PDF
+        $mpdf->Output($path, 'F');
+
+        // ارسال event به JS (Livewire v3)
+        $this->dispatch('print-pdf', url: asset('storage/' . $fileName));   
         } catch (\Exception $e) {
             session()->flash('message', 'خطا در ایجاد PDF: ' . $e->getMessage());
         }

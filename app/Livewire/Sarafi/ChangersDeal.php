@@ -440,41 +440,45 @@ class ChangersDeal extends Component
         }
     }
 
- public function print($transactionId)
-{
-    $transaction = Transaction::with(['customer', 'changerdeal.fromCustomer', 'changerdeal.toCustomer', 'changerdeal.fromSarafiUser', 'changerdeal.toSarafiUser'])
-        ->findOrFail($transactionId);
+    public function print($transactionId)
+    {
+        $transaction = Transaction::with(['customer', 'changerdeal.fromCustomer', 'changerdeal.toCustomer', 'changerdeal.fromSarafiUser', 'changerdeal.toSarafiUser'])
+            ->findOrFail($transactionId);
 
-    $mpdf = new \Mpdf\Mpdf([
-        'mode' => 'utf-8',
-        'format' => [80, 250],
-        'directionality' => 'rtl',
-        'margin_top' => 2,
-        'margin_bottom' => 2,
-        'margin_left' => 2,
-        'margin_right' => 2,
-        'fontDir' => array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'], [
-            public_path('fonts'),
-        ]),
-        'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
-            'Shabnam' => [
-                'R' => 'Shabnam-FD.ttf',
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'utf-8',
+            'format' => [80, 250],
+            'directionality' => 'rtl',
+            'margin_top' => 2,
+            'margin_bottom' => 2,
+            'margin_left' => 2,
+            'margin_right' => 2,
+            'fontDir' => array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'], [
+                public_path('fonts'),
+            ]),
+            'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+                'Shabnam' => [
+                    'R' => 'Shabnam-FD.ttf',
+                ],
             ],
-        ],
-        'default_font' => 'Shabnam',
-    ]);
+            'default_font' => 'Shabnam', 
+        ]);
 
-    $mpdf->SetAutoPageBreak(false);
+        $mpdf->SetAutoPageBreak(false);
 
-    $html = view('pdf.Sarafi.changersdeal', compact('transaction'))->render();
-    $mpdf->WriteHTML($html);
+        $html = view('pdf.Sarafi.changersdeal', compact('transaction'))->render();
+        $mpdf->WriteHTML($html);
 
-    $fileName = 'ترانزکشن_شماره_' . $transaction->id . '_به_اسم_' . $transaction->customer->fullname . '.pdf';
+        $fileName = 'ترانزکشن_شماره_' . $transaction->id . '_به_اسم_' . $transaction->customer->fullname . '.pdf';
 
-    return response()->streamDownload(function () use ($mpdf) {
-        echo $mpdf->Output('', 'S');
-    }, $fileName);
-}
+        $path = storage_path('app/public/' . $fileName);
+
+        // ذخیره PDF
+        $mpdf->Output($path, 'F');
+
+        // ارسال event به JS (Livewire v3)
+        $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
+    }
 
 
 

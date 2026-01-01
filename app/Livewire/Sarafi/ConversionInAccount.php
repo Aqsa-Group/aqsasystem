@@ -1286,9 +1286,13 @@ class ConversionInAccount extends Component
 
             $fileName = 'تبدیل_ارز_در_حساب_' . $conversion->id . '_' . $conversion->type . '.pdf';
 
-            return response()->streamDownload(function () use ($mpdf) {
-                echo $mpdf->Output('', 'S');
-            }, $fileName);
+                     $path = storage_path('app/public/' . $fileName);
+
+        // ذخیره PDF
+        $mpdf->Output($path, 'F');
+
+        // ارسال event به JS (Livewire v3)
+        $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
         } catch (\Exception $e) {
             Log::error('PDF generation error: ' . $e->getMessage());
             session()->flash('error', 'خطا در ایجاد PDF: ' . $e->getMessage());
