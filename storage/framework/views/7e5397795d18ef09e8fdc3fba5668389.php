@@ -251,24 +251,38 @@
                         </h1>
 
                         <p class="text-3xl font-extrabold drop-shadow-md" dir="ltr">
+
+                              <?php
+            $currentUser = Auth::guard('sarafi')->user();
+            ?>
+
+            <!--[if BLOCK]><![endif]--><?php if(
+            $currentUser &&
+            in_array($currentUser->role, ['superadmin', 'admin', 'cashier'])
+            ): ?>
                             <?php echo e(number_format($total_balance_usd, 2)); ?>
 
+                            <?php else: ?>
+                            0
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </p>
 
                     </div>
+
+                    
                 </div>
 
             </template>
 
 
- <?php
-    $currentUser = Auth::guard('sarafi')->user();
-?>
+            <?php
+            $currentUser = Auth::guard('sarafi')->user();
+            ?>
 
-<!--[if BLOCK]><![endif]--><?php if(
-    $currentUser &&
-    in_array($currentUser->role, ['superadmin', 'admin', 'cashier'])
-): ?>
+            <!--[if BLOCK]><![endif]--><?php if(
+            $currentUser &&
+            in_array($currentUser->role, ['superadmin', 'admin', 'cashier'])
+            ): ?>
             <template x-if="activeTab === 'safes'">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 vazir">
 
@@ -313,7 +327,7 @@
                 </div>
             </template>
 
-<?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
         </div>
     </div>

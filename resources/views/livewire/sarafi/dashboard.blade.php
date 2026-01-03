@@ -245,10 +245,24 @@
                         </h1>
 
                         <p class="text-3xl font-extrabold drop-shadow-md" dir="ltr">
+
+                            @php
+                            $currentUser = Auth::guard('sarafi')->user();
+                            @endphp
+
+                            @if (
+                            $currentUser &&
+                            in_array($currentUser->role, ['superadmin', 'admin', 'cashier'])
+                            )
                             {{ number_format($total_balance_usd, 2) }}
+                            @else
+                            0
+                            @endif
                         </p>
 
                     </div>
+
+
                 </div>
 
             </template>
