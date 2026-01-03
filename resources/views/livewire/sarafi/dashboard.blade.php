@@ -254,7 +254,14 @@
             </template>
 
 
+            @php
+            $currentUser = Auth::guard('sarafi')->user();
+            @endphp
 
+            @if (
+            $currentUser &&
+            in_array($currentUser->role, ['superadmin', 'admin', 'cashier'])
+            )
             <template x-if="activeTab === 'safes'">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 vazir">
 
@@ -297,7 +304,7 @@
                 </div>
             </template>
 
-
+            @endif
 
         </div>
     </div>

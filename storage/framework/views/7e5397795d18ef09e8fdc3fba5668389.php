@@ -174,9 +174,9 @@
                         <p class="text-3xl font-extrabold drop-shadow-md"><?php echo e($remittancecount); ?></p>
                     </div>
 
-                    <?php if($waitting > 0): ?>
+                    <!--[if BLOCK]><![endif]--><?php if($waitting > 0): ?>
                     <a href="<?php echo e(route('sarafi.remittance-approval')); ?>">
-                        <?php endif; ?>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         <!-- حواله های در انتظار -->
                         <div class="border rounded-2xl p-6  shadow-md hover:shadow-xl transition transform  h-56 flex flex-col items-center justify-between dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 bg-gradient-to-b from-[#2563EB] to-[#1e325d]
                                      text-white" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
@@ -193,9 +193,9 @@
 
                         </div>
 
-                        <?php if($waitting > 0): ?>
+                        <!--[if BLOCK]><![endif]--><?php if($waitting > 0): ?>
                     </a>
-                    <?php endif; ?>
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
 
 
@@ -261,11 +261,18 @@
             </template>
 
 
+ <?php
+    $currentUser = Auth::guard('sarafi')->user();
+?>
 
+<!--[if BLOCK]><![endif]--><?php if(
+    $currentUser &&
+    in_array($currentUser->role, ['superadmin', 'admin', 'cashier'])
+): ?>
             <template x-if="activeTab === 'safes'">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 vazir">
 
-                    <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="border bg-[#F5F5F5] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
                         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
                         <div class="rounded-full dark:bg-white/100 bg-[#2563EB] p-6 flex items-center justify-center">
@@ -281,14 +288,14 @@
                             </p>
                         </div>
                     </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
 
                 </div>
             </template>
 
             <template x-if="activeTab === 'account_safe'">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 vazir">
-                    <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="border bg-[#F5F5F5]  dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 dark:text-white rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
                         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
                         <div class="rounded-full dark:bg-white bg-[#2563EB]  p-6 flex items-center justify-center">
@@ -302,11 +309,11 @@
                             </p>
                         </div>
                     </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
             </template>
 
-
+<?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
         </div>
     </div>
