@@ -2690,6 +2690,23 @@
                 .animate-pulse {
                     animation: pulse 2s infinite;
                 }
+
+                .user-avatar-image {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    flex-shrink: 0;
+                    overflow: hidden;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .user-avatar-image img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
             </style>
 
             <script>
@@ -3382,14 +3399,14 @@ function renderConversations(conversations) {
         conversationItem.className = 'conversation-item';
         
         const displayName = `${conv.other_user.name} ${conv.other_user.lastname}`;
-        const userImage = conv.other_user.user_image || conv.other_user.image_url;
+        const userImage = conv.other_user.image_url;
         
-        // ✅ نمایش تصویر کاربر
+        // ✅ استفاده از تصویر واقعی کاربر
         let avatarHtml = '';
         if (userImage) {
             avatarHtml = `
                 <div class="user-avatar-image">
-                    <img src="${userImage.startsWith('http') ? userImage : '/storage/' + userImage}" 
+                    <img src="${userImage}" 
                          alt="${displayName}" 
                          class="w-10 h-10 rounded-full object-cover border border-gray-200">
                 </div>
@@ -3418,13 +3435,13 @@ function renderConversations(conversations) {
             </div>
         `;
         
+        // ✅ ارسال image_url به تابع openChat
         conversationItem.addEventListener('click', () => openChat(conv.other_user.id, displayName, userImage));
         conversationsList.appendChild(conversationItem);
     });
     
     document.getElementById('noConversations').classList.add('hidden');
 }
-
 // در قسمت renderUsers:
 function renderUsers(users) {
     usersList.innerHTML = '';
@@ -3441,14 +3458,13 @@ function renderUsers(users) {
         const displayName = `${user.name} ${user.lastname}`;
         const roleText = user.role === 'superadmin' ? 'سوپر ادمین' : 
                         user.role === 'admin' ? 'ادمین' : 'انباردار';
-        const userImage = user.user_image || user.image_url;
         
-        // ✅ نمایش تصویر کاربر
+        // ✅ استفاده از تصویر واقعی کاربر اگر موجود باشد
         let avatarHtml = '';
-        if (userImage) {
+        if (user.image_url) {
             avatarHtml = `
                 <div class="user-avatar-image">
-                    <img src="${userImage.startsWith('http') ? userImage : '/storage/' + userImage}" 
+                    <img src="${user.image_url}" 
                          alt="${displayName}" 
                          class="w-10 h-10 rounded-full object-cover border border-gray-200">
                 </div>
@@ -3478,14 +3494,14 @@ function renderUsers(users) {
             </div>
         `;
         
-        userItem.addEventListener('click', () => openChat(user.id, displayName, userImage));
+        // ✅ ارسال image_url به تابع openChat
+        userItem.addEventListener('click', () => openChat(user.id, displayName, user.image_url));
         usersList.appendChild(userItem);
     });
     
     document.getElementById('noUsers').classList.add('hidden');
 }
 
-// ✅ تغییر تابع openChat برای دریافت userImage
 async function openChat(userId, userName, userImage = null) {
     currentChatUserId = userId;
     currentChatUserName = userName;
@@ -3499,7 +3515,7 @@ async function openChat(userId, userName, userImage = null) {
     let avatarHtml = '';
     if (userImage) {
         avatarHtml = `
-            <img src="${userImage.startsWith('http') ? userImage : '/storage/' + userImage}" 
+            <img src="${userImage}" 
                  alt="${userName}" 
                  class="w-10 h-10 rounded-full object-cover border border-gray-200">
         `;
@@ -3532,7 +3548,6 @@ async function openChat(userId, userName, userImage = null) {
         }
     }, 200);
 }
-
 // در تابع renderMessage، اگر می‌خواهید عکس کاربر را در کنار پیام هم نمایش دهید:
 function renderMessage(msg, isSent) {
     const messageDiv = document.createElement('div');
