@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" name="csrf-token"
         content="{{ csrf_token() }}">
     <title>سیستم صرافی اقصی</title>
-
+<link rel="icon" type="image/jpeg" href="{{ asset('assets/aqsa.jpg') }}">
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
