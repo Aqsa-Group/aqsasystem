@@ -72,7 +72,7 @@ class ProfitRates extends Component
 
     private function initializeFormData()
     {
-        // reset formData to all currencies except source
+        // بازنشانی فرم‌دیتا به تمام ارزها به جز ارز مبدأ
         $this->formData = [];
         foreach ($this->currencyCodes as $code) {
             if ($code === $this->source_currency) continue;
@@ -120,14 +120,14 @@ class ProfitRates extends Component
                 $data[$code . '_sell_bank'] = $rates['sell_bank'] !== '' ? floatval($rates['sell_bank']) : 0;
             }
 
-            // EDIT MODE
+            // حالت ویرایش
             if ($this->isEditing && $this->editingId) {
                 $profitRate = ProfitRate::find($this->editingId);
 
                 if ($profitRate) {
                     $profitRate->update($data);
 
-                    // ✳ فقط اگر USD ویرایش شد → کل سیستم را بازسازی کن
+                    // اگر USD ویرایش شد → کل سیستم را بازسازی کن
                     if ($this->source_currency === 'usd') {
                         $this->generateAllReverseRates($data);
                     }
@@ -136,12 +136,12 @@ class ProfitRates extends Component
                 }
             }
 
-            // CREATE NEW
+            // ایجاد جدید
             else {
                 $created = ProfitRate::create($data);
                 session()->flash('message', 'نرخ ارز با موفقیت ثبت شد.');
 
-                // ✳ فقط اگر USD ساخته شد → بقیه ارزها تولید شود
+                // اگر USD ساخته شد → بقیه ارزها تولید شود
                 if ($this->source_currency === 'usd') {
                     $this->generateAllReverseRates($data);
                 }
@@ -156,131 +156,154 @@ class ProfitRates extends Component
 
     /**
      * تولید رکوردهای معکوس و تکمیل جدول نرخ‌ها
-     * این تابع از رکورد پایه (مثلاً source_currency = usd) استفاده می‌کند
-     * و برای هر ارز دیگر رکوردی می‌سازد که نرخ‌ها نسبت به آن ارز نوشته شده باشد.
      */
- private function generateAllReverseRates(array $baseRecord)
-{
-    $baseSource = $baseRecord['source_currency'];
-    $baseCurrencyCode = strtolower($baseSource);
+     private function generateAllReverseRates(array $baseRecord)
+    {
+        $baseSource = $baseRecord['source_currency'];
+        $baseCurrencyCode = strtolower($baseSource);
 
-    foreach ($this->currencyCodes as $targetCurrency) {
-        if ($targetCurrency === $baseSource) continue;
+        foreach ($this->currencyCodes as $targetCurrency) {
+            if ($targetCurrency === $baseSource) continue;
 
-        $reverse = [
-            'user_id' => $baseRecord['user_id'],
-            'admin_id' => $baseRecord['admin_id'],
-            'source_currency' => $targetCurrency,
-        ];
+            $reverse = [
+                'user_id' => $baseRecord['user_id'],
+                'admin_id' => $baseRecord['admin_id'],
+                'source_currency' => $targetCurrency,
+            ];
 
-        // Initialize all rates to 0
-        foreach ($this->currencyCodes as $other) {
-            $reverse[$other . '_buy_cash'] = 0;
-            $reverse[$other . '_buy_bank'] = 0;
-            $reverse[$other . '_sell_cash'] = 0;
-            $reverse[$other . '_sell_bank'] = 0;
-        }
-
-        // Set self rate to 0 for same currency
-        $reverse[$targetCurrency . '_buy_cash'] = 0;
-        $reverse[$targetCurrency . '_buy_bank'] = 0;
-        $reverse[$targetCurrency . '_sell_cash'] = 0;
-        $reverse[$targetCurrency . '_sell_bank'] = 0;
-
-        foreach ($this->currencyCodes as $other) {
-            if ($other === $targetCurrency) continue;
-
-            // حالت خاص AFN ↔ IRR - نرخ یکسان در هر دو جهت
-            if (($targetCurrency === 'afn' && $other === 'irr') ||
-                ($targetCurrency === 'irr' && $other === 'afn')
-            ) {
-                // محاسبه نرخ تومان به افغانی از baseRecord
-                $afnRateBuyCash = $baseRecord['afn_buy_cash'] ?? 0;
-                $irrRateBuyCash = $baseRecord['irr_buy_cash'] ?? 0;
-                
-                // نرخ تومان به افغانی = (نرخ دلار به افغانی) / (نرخ دلار به تومان)
-                $rate = 0;
-                if ($afnRateBuyCash > 0 && $irrRateBuyCash > 0) {
-                    $rate = $afnRateBuyCash / $irrRateBuyCash;
-                }
-                
-                // اعمال ضریب 1000
-                $rate = $rate > 0 ? 1000 * $rate : 0;
-                
-                // برای تمام فیلدها نرخ یکسان
-                $reverse[$other . '_buy_cash'] = $rate;
-                $reverse[$other . '_sell_cash'] = $rate;
-                $reverse[$other . '_buy_bank'] = $rate;
-                $reverse[$other . '_sell_bank'] = $rate;
-                
-                continue;
+            // مقداردهی اولیه تمام نرخ‌ها به صفر
+            foreach ($this->currencyCodes as $other) {
+                $reverse[$other . '_buy_cash'] = 0;
+                $reverse[$other . '_buy_bank'] = 0;
+                $reverse[$other . '_sell_cash'] = 0;
+                $reverse[$other . '_sell_bank'] = 0;
             }
 
-            // محاسبه نرمال برای سایر جفت ارزها
-            if ($other === $baseCurrencyCode) {
-                // اگر other همان ارز پایه است (USD)
-                $targetRateBuyCash = $baseRecord[$targetCurrency . '_buy_cash'] ?? 0;
-                $targetRateSellCash = $baseRecord[$targetCurrency . '_sell_cash'] ?? 0;
-                $targetRateBuyBank = $baseRecord[$targetCurrency . '_buy_bank'] ?? 0;
-                $targetRateSellBank = $baseRecord[$targetCurrency . '_sell_bank'] ?? 0;
+            // تنظیم نرخ خود ارز به صفر
+            $reverse[$targetCurrency . '_buy_cash'] = 0;
+            $reverse[$targetCurrency . '_buy_bank'] = 0;
+            $reverse[$targetCurrency . '_sell_cash'] = 0;
+            $reverse[$targetCurrency . '_sell_bank'] = 0;
 
-                if ($targetRateBuyCash > 0) {
-                    $reverse[$other . '_buy_cash'] = 1 / $targetRateBuyCash;
-                }
-                if ($targetRateSellCash > 0) {
-                    $reverse[$other . '_sell_cash'] = 1 / $targetRateSellCash;
-                }
-                if ($targetRateBuyBank > 0) {
-                    $reverse[$other . '_buy_bank'] = 1 / $targetRateBuyBank;
-                }
-                if ($targetRateSellBank > 0) {
-                    $reverse[$other . '_sell_bank'] = 1 / $targetRateSellBank;
-                }
-            } else {
-                // محاسبه نرخ other به target از طریق base
-                // فرمول: (نرخ other به USD) ÷ (نرخ target به USD)
-                $otherRateBuyCash = $baseRecord[$other . '_buy_cash'] ?? 0;
-                $otherRateSellCash = $baseRecord[$other . '_sell_cash'] ?? 0;
-                $otherRateBuyBank = $baseRecord[$other . '_buy_bank'] ?? 0;
-                $otherRateSellBank = $baseRecord[$other . '_sell_bank'] ?? 0;
-                
-                $targetRateBuyCash = $baseRecord[$targetCurrency . '_buy_cash'] ?? 0;
-                $targetRateSellCash = $baseRecord[$targetCurrency . '_sell_cash'] ?? 0;
-                $targetRateBuyBank = $baseRecord[$targetCurrency . '_buy_bank'] ?? 0;
-                $targetRateSellBank = $baseRecord[$targetCurrency . '_sell_bank'] ?? 0;
+            foreach ($this->currencyCodes as $other) {
+                if ($other === $targetCurrency) continue;
 
-                if ($otherRateBuyCash > 0 && $targetRateBuyCash > 0) {
-                    $reverse[$other . '_buy_cash'] = $otherRateBuyCash / $targetRateBuyCash;
+                // استثنا برای جفت تومان-افغانی و افغانی-تومان
+                // در این حالت نرخ در هر دو جهت یکسان است
+                if (($targetCurrency === 'afn' && $other === 'irr') ||
+                    ($targetCurrency === 'irr' && $other === 'afn')) {
+                    
+                    // محاسبه نرخ تومان به افغانی از طریق دلار
+                    $afnBuyCash = $baseRecord['afn_buy_cash'] ?? 0;
+                    $afnBuyBank = $baseRecord['afn_buy_bank'] ?? 0;
+                    $afnSellCash = $baseRecord['afn_sell_cash'] ?? 0;
+                    $afnSellBank = $baseRecord['afn_sell_bank'] ?? 0;
+                    
+                    $irrBuyCash = $baseRecord['irr_buy_cash'] ?? 0;
+                    $irrBuyBank = $baseRecord['irr_buy_bank'] ?? 0;
+                    $irrSellCash = $baseRecord['irr_sell_cash'] ?? 0;
+                    $irrSellBank = $baseRecord['irr_sell_bank'] ?? 0;
+
+                    // محاسبه نرخ تومان به افغانی برای هر نوع معامله
+                    // خرید نقدی: (نرخ دلار به افغانی) ÷ (نرخ دلار به تومان) × 1000
+                    if ($irrBuyCash > 0 && $afnBuyCash > 0) {
+                        $rateBuyCash = ($afnBuyCash / $irrBuyCash) * 1000;
+                    } else {
+                        $rateBuyCash = 0;
+                    }
+                    
+                    if ($irrBuyBank > 0 && $afnBuyBank > 0) {
+                        $rateBuyBank = ($afnBuyBank / $irrBuyBank) * 1000;
+                    } else {
+                        $rateBuyBank = 0;
+                    }
+                    
+                    if ($irrSellCash > 0 && $afnSellCash > 0) {
+                        $rateSellCash = ($afnSellCash / $irrSellCash) * 1000;
+                    } else {
+                        $rateSellCash = 0;
+                    }
+                    
+                    if ($irrSellBank > 0 && $afnSellBank > 0) {
+                        $rateSellBank = ($afnSellBank / $irrSellBank) * 1000;
+                    } else {
+                        $rateSellBank = 0;
+                    }
+                    
+                    // برای هر دو جهت (افغانی به تومان و تومان به افغانی) نرخ یکسان است
+                    $reverse[$other . '_buy_cash'] = $rateBuyCash;
+                    $reverse[$other . '_buy_bank'] = $rateBuyBank;
+                    $reverse[$other . '_sell_cash'] = $rateSellCash;
+                    $reverse[$other . '_sell_bank'] = $rateSellBank;
+                    
+                    continue;
                 }
-                if ($otherRateSellCash > 0 && $targetRateSellCash > 0) {
-                    $reverse[$other . '_sell_cash'] = $otherRateSellCash / $targetRateSellCash;
-                }
-                if ($otherRateBuyBank > 0 && $targetRateBuyBank > 0) {
-                    $reverse[$other . '_buy_bank'] = $otherRateBuyBank / $targetRateBuyBank;
-                }
-                if ($otherRateSellBank > 0 && $targetRateSellBank > 0) {
-                    $reverse[$other . '_sell_bank'] = $otherRateSellBank / $targetRateSellBank;
+
+                // محاسبه نرخ‌های عادی برای سایر ارزها
+                if ($other === $baseCurrencyCode) {
+                    // اگر other همان ارز پایه (USD) است
+                    $targetRateBuyCash = $baseRecord[$targetCurrency . '_buy_cash'] ?? 0;
+                    $targetRateSellCash = $baseRecord[$targetCurrency . '_sell_cash'] ?? 0;
+                    $targetRateBuyBank = $baseRecord[$targetCurrency . '_buy_bank'] ?? 0;
+                    $targetRateSellBank = $baseRecord[$targetCurrency . '_sell_bank'] ?? 0;
+
+                    // محاسبه معکوس نرخ USD به target برای به دست آوردن target به USD
+                    if ($targetRateBuyCash > 0) {
+                        $reverse[$other . '_buy_cash'] = 1 / $targetRateBuyCash;
+                    }
+                    if ($targetRateSellCash > 0) {
+                        $reverse[$other . '_sell_cash'] = 1 / $targetRateSellCash;
+                    }
+                    if ($targetRateBuyBank > 0) {
+                        $reverse[$other . '_buy_bank'] = 1 / $targetRateBuyBank;
+                    }
+                    if ($targetRateSellBank > 0) {
+                        $reverse[$other . '_sell_bank'] = 1 / $targetRateSellBank;
+                    }
+                } else {
+                    // محاسبه نرخ ارز target به other از طریق دلار
+                    // فرمول: (نرخ دلار به other) ÷ (نرخ دلار به target)
+                    $otherRateBuyCash = $baseRecord[$other . '_buy_cash'] ?? 0;
+                    $otherRateSellCash = $baseRecord[$other . '_sell_cash'] ?? 0;
+                    $otherRateBuyBank = $baseRecord[$other . '_buy_bank'] ?? 0;
+                    $otherRateSellBank = $baseRecord[$other . '_sell_bank'] ?? 0;
+                    
+                    $targetRateBuyCash = $baseRecord[$targetCurrency . '_buy_cash'] ?? 0;
+                    $targetRateSellCash = $baseRecord[$targetCurrency . '_sell_cash'] ?? 0;
+                    $targetRateBuyBank = $baseRecord[$targetCurrency . '_buy_bank'] ?? 0;
+                    $targetRateSellBank = $baseRecord[$targetCurrency . '_sell_bank'] ?? 0;
+
+                    // محاسبه برای هر نوع نرخ به صورت جداگانه
+                    if ($otherRateBuyCash > 0 && $targetRateBuyCash > 0) {
+                        $reverse[$other . '_buy_cash'] = $otherRateBuyCash / $targetRateBuyCash;
+                    }
+                    if ($otherRateSellCash > 0 && $targetRateSellCash > 0) {
+                        $reverse[$other . '_sell_cash'] = $otherRateSellCash / $targetRateSellCash;
+                    }
+                    if ($otherRateBuyBank > 0 && $targetRateBuyBank > 0) {
+                        $reverse[$other . '_buy_bank'] = $otherRateBuyBank / $targetRateBuyBank;
+                    }
+                    if ($otherRateSellBank > 0 && $targetRateSellBank > 0) {
+                        $reverse[$other . '_sell_bank'] = $otherRateSellBank / $targetRateSellBank;
+                    }
                 }
             }
-        }
 
-        // ذخیره یا بروزرسانی
-        try {
-            ProfitRate::updateOrCreate(
-                [
-                    'source_currency' => $targetCurrency,
-                    'admin_id' => $baseRecord['admin_id'],
-                    'created_at' => now()->format('Y-m-d')
-                ],
-                $reverse
-            );
-        } catch (\Exception $e) {
-            Log::error("خطا در تولید نرخ معکوس برای {$targetCurrency}: {$e->getMessage()}");
+            // ذخیره یا بروزرسانی رکورد
+            try {
+                ProfitRate::updateOrCreate(
+                    [
+                        'source_currency' => $targetCurrency,
+                        'admin_id' => $baseRecord['admin_id'],
+                        'created_at' => now()->format('Y-m-d')
+                    ],
+                    $reverse
+                );
+            } catch (\Exception $e) {
+                Log::error("خطا در تولید نرخ معکوس برای {$targetCurrency}: {$e->getMessage()}");
+            }
         }
     }
-}
-
-
 
     public function edit($id)
     {
@@ -366,25 +389,24 @@ class ProfitRates extends Component
         $this->confirmDeleteId = null;
     }
 
- public function render()
-{
-    $user = Auth::guard('sarafi')->user();
+    public function render()
+    {
+        $user = Auth::guard('sarafi')->user();
 
-    $query = ProfitRate::with(['user', 'admin'])
-        ->orderBy('created_at', 'desc');
+        $query = ProfitRate::with(['user', 'admin'])
+            ->orderBy('created_at', 'desc');
 
-    if ($user->admin_id === null) {
-        $query->where(function ($q) use ($user) {
-            $q->where('admin_id', $user->id)
-              ->orWhere('user_id', $user->id);
-        });
-    } else {
-        $query->where('user_id', $user->id);
+        if ($user->admin_id === null) {
+            $query->where(function ($q) use ($user) {
+                $q->where('admin_id', $user->id)
+                  ->orWhere('user_id', $user->id);
+            });
+        } else {
+            $query->where('user_id', $user->id);
+        }
+
+        $records = $query->take(10)->get();
+
+        return view('livewire.sarafi.profit-rates', compact('records'));
     }
-
-    $records = $query->take(10)->get();
-
-    return view('livewire.sarafi.profit-rates', compact('records'));
-}
-
 }
