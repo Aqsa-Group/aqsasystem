@@ -27,9 +27,9 @@ class WhatsAppService
             "to" => $phone,
             "type" => "template",
             "template" => [
-                "name" => "aqsasystem",
+                "name" => "aqsasystem_en",
                 "language" => [
-                    "code" => "fa"
+                    "code" => "en"
                 ],
                 "components" => [
                     [
