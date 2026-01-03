@@ -1115,46 +1115,82 @@
                             
                         </button>
 
-                        <div class="header-profile-section">
-                            <div class="relative">
-                                <div id="profileBtnDesktop"
-                                    class="w-[50px] h-[50px] md:w-[60px] md:h-[60px] rounded-full  overflow-hidden flex items-center justify-center cursor-pointer transition">
-                                    <img src="<?php echo e(asset('assets/sarafi/avatar.svg')); ?>" alt="پروفایل"
-                                        class="w-full h-full object-cover">
-                                </div>
+                      <div class="header-profile-section">
+    <div class="relative">
+        <?php
+            $currentUser = Auth::guard('sarafi')->user();
+        ?>
+        
+        <div id="profileBtnDesktop"
+            class="w-[50px] h-[50px] md:w-[60px] md:h-[60px] rounded-full overflow-hidden flex items-center justify-center cursor-pointer transition border-2 border-gray-200 hover:border-blue-500">
+            <?php if($currentUser->user_image): ?>
+                <img src="<?php echo e(asset('storage/' . $currentUser->user_image)); ?>" 
+                     alt="<?php echo e($currentUser->name); ?>"
+                     class="w-full h-full object-cover">
+            <?php else: ?>
+                <img src="<?php echo e(asset('assets/sarafi/avatar.svg')); ?>" alt="پروفایل"
+                    class="w-full h-full object-cover">
+            <?php endif; ?>
+        </div>
 
-                                <!-- منو dropdown -->
-                                <div id="profileDropdownDesktop"
-                                    style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;"
-                                    class="absolute top-full left-0 space-y-3 text-2xl w-72 h-76 bg-white rounded-lg shadow-lg border hidden z-50 p-4">
+        <!-- منو dropdown -->
+        <div id="profileDropdownDesktop"
+            style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;"
+            class="absolute top-full left-0 space-y-3 text-2xl w-72 h-76 bg-white rounded-lg shadow-lg border hidden z-50 p-4">
 
-                                    <div class="p-3 border-b space-y-5">
-                                        <div class="flex flex-col justify-center items-center ">
-                                            <img src="<?php echo e(asset('assets/sarafi/avatar.svg')); ?>" alt="" class="h-20 w-20">
-                                            <p class="font-vazir font-semibold text-gray-700 mt-5"><?php echo e(Auth::guard('sarafi')->user()->name); ?></p>
+            <div class="p-3 border-b space-y-5">
+                <div class="flex flex-col justify-center items-center">
+                    <?php if($currentUser->user_image): ?>
+                        <img src="<?php echo e(asset('storage/' . $currentUser->user_image)); ?>" 
+                             alt="<?php echo e($currentUser->name); ?>" 
+                             class="h-20 w-20 rounded-full object-cover border-2 border-gray-200">
+                    <?php else: ?>
+                        <img src="<?php echo e(asset('assets/sarafi/avatar.svg')); ?>" 
+                             alt="<?php echo e($currentUser->name); ?>" 
+                             class="h-20 w-20 rounded-full">
+                    <?php endif; ?>
+                    <p class="font-vazir font-semibold text-gray-700 mt-3"><?php echo e($currentUser->name); ?></p>
+                    <p class="font-vazir text-sm text-gray-500">
+                        <?php
+                            $roles = [
+                                'superadmin' => 'سوپر ادمین',
+                                'admin' => 'ادمین',
+                                'warehouse_manager' => 'خزانه دار',
+                                'internal_officer' => 'مسوول احواله جات داخلی',
+                                'external_officer' => 'مسوول احواله جات خارجی',
+                            ];
+                        ?>
+                        <?php echo e($roles[$currentUser->role] ?? $currentUser->role); ?>
 
-                                        </div>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="space-y-2">
+                <a href="<?php echo e(route('sarafi.users')); ?>" 
+                   class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition vazir">
+                    <img src="<?php echo e(asset('assets/sarafi/all_icon/account_profile.svg')); ?>" alt="تنظیمات" class="ml-2">
+                    <span>تنظیمات پروفایل</span>
+                </a>
+                
+                <a href="<?php echo e(route('sarafi.users') . '#edit=' . $currentUser->id); ?>" 
+                   class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition vazir">
+                    <img src="<?php echo e(asset('assets/sarafi/all_icon/edit.svg')); ?>" alt="ویرایش" class="ml-2">
+                    <span>ویرایش اطلاعات</span>
+                </a>
+            </div>
 
-                                    </div>
-                                    <div class="flex justify-start items-center  ">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/account_profile.svg')); ?>" alt="">
-
-                                        <a href="<?php echo e(route('sarafi.users')); ?>"
-                                            class="block px-4 py-2 text-gray-700 vazir">تنظیمات</a>
-                                    </div>
-
-                                    <form action="<?php echo e(route('sarafi.logout')); ?>" method="POST">
-                                        <?php echo csrf_field(); ?>
-                                        <div class="flex justify-start items-center">
-                                            <img src="<?php echo e(asset('assets/sarafi/all_icon/logout.svg')); ?>" alt="">
-                                            <button type="submit" class="px-4 py-2 text-gray-700 vazir">
-                                                خروج از حساب
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+            <form action="<?php echo e(route('sarafi.logout')); ?>" method="POST" class="pt-2 border-t">
+                <?php echo csrf_field(); ?>
+                <button type="submit" 
+                        class="flex items-center w-full px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition vazir">
+                    <img src="<?php echo e(asset('assets/sarafi/all_icon/logout.svg')); ?>" alt="خروج" class="ml-2">
+                    <span>خروج از حساب</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
                     </div>
                 </div>
             </div>

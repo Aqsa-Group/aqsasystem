@@ -252,14 +252,14 @@
 
                         <p class="text-3xl font-extrabold drop-shadow-md" dir="ltr">
 
-                              <?php
-            $currentUser = Auth::guard('sarafi')->user();
-            ?>
+                            <?php
+                            $currentUser = Auth::guard('sarafi')->user();
+                            ?>
 
-            <!--[if BLOCK]><![endif]--><?php if(
-            $currentUser &&
-            in_array($currentUser->role, ['superadmin', 'admin', 'cashier'])
-            ): ?>
+                            <!--[if BLOCK]><![endif]--><?php if(
+                            $currentUser &&
+                            in_array($currentUser->role, ['superadmin', 'admin', 'cashier'])
+                            ): ?>
                             <?php echo e(number_format($total_balance_usd, 2)); ?>
 
                             <?php else: ?>
@@ -269,7 +269,7 @@
 
                     </div>
 
-                    
+
                 </div>
 
             </template>

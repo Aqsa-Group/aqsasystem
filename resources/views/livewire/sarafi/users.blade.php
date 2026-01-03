@@ -1,24 +1,20 @@
 <div>
-
     <div>
         {{-- Livewire alert (موفقیت/خطا) --}}
         @if ($alert)
         <div x-data="{
             show: true,
             init() {
-                // مشاهده تغییرات $alert در Livewire
                 $wire.watch('alert', (value) => {
                     if (value) {
                         this.show = true;
                         setTimeout(() => {
                             this.show = false;
-                            // پاک کردن alert بعد از ۴ ثانیه
                             setTimeout(() => $wire.clearAlert(), 300);
                         }, 4000);
                     }
                 });
                 
-                // تایمر برای هشدار فعلی
                 setTimeout(() => {
                     this.show = false;
                     setTimeout(() => $wire.clearAlert(), 300);
@@ -47,14 +43,13 @@
         @endif
     </div>
 
-
-
     @if($currentUser && $currentUser->role === 'admin' || $currentUser->role === 'superadmin' )
     <div class="pl-5">
         <!-- فرم ثبت کاربر -->
         <div class="w-[460px] md-w-[100px] lg:w-[1200px] p-4 mx-auto bg-[#F5F5F5] dark:bg-black dark:border dark:border-white rounded-2xl mx-auto space-y-2"
             style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
+            <!-- عنوان و آیکون -->
             <!-- عنوان و آیکون -->
             <div class="text-center space-y-2">
                 <h2 class="text-2xl font-bold text-gray-900 vazir dark:text-white tracking-widest">
@@ -63,9 +58,49 @@
                 <p class="text-lg text-gray-600 dark:text-white vazir">
                     {{ __('messages.subtitle_user') }}
                 </p>
-                <div class="bg-[#545964] rounded-full h-20 w-20 mx-auto flex items-center justify-center">
-                    <img src="{{ asset('assets/sarafi/all_icon/light.user.svg') }}" alt="" class="mt-2 dark:invert" />
+
+                <!-- دکمه آپلود تصویر - قابل کلیک -->
+                <div class="relative inline-block">
+                    <input type="file" wire:model="user_image" accept="image/*" id="avatarUploadInput" class="hidden">
+
+                    <label for="avatarUploadInput" class="cursor-pointer">
+                        <div
+                            class="bg-[#545964] rounded-full h-20 w-20 mx-auto flex items-center justify-center overflow-hidden relative group">
+                            @if ($temp_image_url || ($editId && $current_user_image))
+                            <img src="{{ $temp_image_url ?: ($current_user_image ? asset('storage/' . $current_user_image) : '') }}"
+                                alt="پیش‌نمایش" class="w-full h-full object-cover">
+                            @else
+                            <img src="{{ asset('assets/sarafi/all_icon/light.user.svg') }}" alt="آیکون کاربر"
+                                class="mt-2 dark:invert w-10 h-10 group-hover:opacity-50 transition-opacity">
+                            @endif
+
+                            <!-- آیکون آپلود روی تصویر -->
+                            <div
+                                class="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-full">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </label>
+
+                    @if ($temp_image_url || $user_image)
+                    <button type="button" wire:click="removeImage"
+                        class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600 transition z-10"
+                        title="حذف تصویر">
+                        ×
+                    </button>
+                    @endif
                 </div>
+
+                <p class="text-xs text-gray-500 mt-2">
+                    برای تغییر تصویر، روی دایره کلیک کنید
+                </p>
+
+                @error('user_image')
+                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                @enderror
             </div>
 
             @php
@@ -114,7 +149,6 @@
                     </div>
 
                     <!-- Sarafi Name -->
-                    <!-- در فایل Blade -->
                     <div>
                         <label class="block text-sm font-medium text-black dark:text-white mb-1">
                             {{ __('messages.sarafi_name') }}
@@ -135,7 +169,6 @@
                         <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                         @enderror
                     </div>
-
 
                     <!-- Username -->
                     <div>
@@ -187,7 +220,6 @@
                                            focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white appearance-none">
                                 <option value="">{{ __('messages.select_role') }}</option>
                                 <option value="admin">{{ __('messages.admin') }}</option>
-
                             </select>
                             <div class="absolute left-2 top-2">
                                 <img src="{{ asset('assets/sarafi/all_icon/clipboard.svg') }}" alt="">
@@ -242,8 +274,7 @@
                     </div>
                     @endif
 
-
-
+                    <!-- Zone -->
                     <div>
                         <label class="block text-sm font-medium text-black dark:text-white mb-1 vazir">
                             {{ __('messages.zone') }}
@@ -262,12 +293,10 @@
                     </div>
 
 
-
-
                     <!-- Address1 -->
                     <div>
                         <label class="block text-sm font-medium text-black dark:text-white mb-1">
-                            آدرس شبعه اول
+                            آدرس شعبه اول
                         </label>
                         <div class="relative">
                             <input type="text" wire:model="address"
@@ -286,13 +315,10 @@
                         @enderror
                     </div>
 
-
-
-
                     <!-- Address2 -->
                     <div>
                         <label class="block text-sm font-medium text-black dark:text-white mb-1">
-                            آدرس شبعه دوم
+                            آدرس شعبه دوم
                         </label>
                         <div class="relative">
                             <input type="text" wire:model="address2"
@@ -311,11 +337,10 @@
                         @enderror
                     </div>
 
-
                     <!-- Address3 -->
                     <div>
                         <label class="block text-sm font-medium text-black dark:text-white mb-1">
-                            آدرس شبعه سوم
+                            آدرس شعبه سوم
                         </label>
                         <div class="relative">
                             <input type="text" wire:model="address3"
@@ -337,7 +362,7 @@
                     <!-- Phone1 -->
                     <div>
                         <label class="block text-sm font-medium text-black dark:text-white mb-1">
-                                 شماره تماس اول
+                            شماره تماس اول
                         </label>
                         <div class="relative">
                             <input type="text" wire:model.lazy="phone"
@@ -353,13 +378,10 @@
                         @enderror
                     </div>
 
-
-
-
-                      <!-- Phone2 -->
+                    <!-- Phone2 -->
                     <div>
                         <label class="block text-sm font-medium text-black dark:text-white mb-1">
-                                 شماره تماس دوم
+                            شماره تماس دوم
                         </label>
                         <div class="relative">
                             <input type="text" wire:model.lazy="phone2"
@@ -375,12 +397,10 @@
                         @enderror
                     </div>
 
-
-
-                      <!-- Phone3 -->
+                    <!-- Phone3 -->
                     <div>
                         <label class="block text-sm font-medium text-black dark:text-white mb-1">
-                                 شماره تماس سوم
+                            شماره تماس سوم
                         </label>
                         <div class="relative">
                             <input type="text" wire:model.lazy="phone3"
@@ -396,24 +416,57 @@
                         @enderror
                     </div>
 
+                    @if($currentUser && $currentUser->role === 'superadmin' )
+
+                    <!-- ✅ نوتیفیکیشن واتساپ -->
+                    <div>
+                        <label class="block text-sm font-medium text-black dark:text-white mb-1">
+                            پیام های واتساپ
+                        </label>
+                        <div class="flex items-center mt-2">
+                            <label class="inline-flex items-center cursor-pointer">
+                                <input type="checkbox" wire:model="whatsapp_notification" value="1"
+                                    class="sr-only peer">
+                                <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 
+                                          peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full 
+                                          peer dark:bg-gray-700 peer-checked:after:translate-x-full 
+                                          peer-checked:after:border-white after:content-[''] after:absolute 
+                                          after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 
+                                          after:border after:rounded-full after:h-5 after:w-5 after:transition-all 
+                                          dark:border-gray-600 peer-checked:bg-blue-600">
+                                </div>
+                                <span class="mr-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                    {{ $whatsapp_notification ? 'فعال' : 'غیرفعال' }}
+                                </span>
+                            </label>
+                        </div>
+
+                        @error('whatsapp_notification')
+                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+
+                    @endif
+
+
 
                 </div>
 
                 <!-- دکمه‌ها -->
                 <div class="flex justify-center gap-4 mt-3 pt-2">
-                    <button type="button" wire:click="resetForm"
+                    <button type="button" wire:click="resetInputFields"
                         class="flex-1 py-4 bg-[#B10909] text-white rounded-xl hover:bg-gray-700 transition">
                         {{ __('messages.cancel') }}
                     </button>
                     <button type="submit"
                         class="flex-1 py-4 bg-[#2563EB] text-white rounded-xl hover:bg-blue-700 transition">
-                        {{ __('messages.save') }}
+                        {{ $editId ? __('messages.update') : __('messages.save') }}
                     </button>
                 </div>
             </form>
         </div>
     </div>
-
     @endif
 
     <!-- فیلتر و سرچ -->
@@ -486,11 +539,11 @@
                     <th class="px-6 py-6 font-bold">{{ __('messages.sarafi_name') }}</th>
                     <th class="px-6 py-6 font-bold">{{ __('messages.username') }}</th>
                     <th class="px-6 py-6 font-bold">{{ __('messages.category_user') }}</th>
+                    <th class="px-6 py-6 font-bold">واتساپ</th>
                     <th class="px-6 py-6 font-bold">{{ __('messages.status') }}</th>
                     <th class="px-6 py-6 font-bold text-center">{{ __('messages.actions') }}</th>
                 </tr>
             </thead>
-
 
             <!-- بدنه جدول -->
             <tbody>
@@ -498,15 +551,37 @@
                 <tr class="border-b dark:bg-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td class="px-3 py-2 vazir text-[16px] font-medium dark:text-white">{{ $users->firstItem() + $index
                         }}</td>
-                    <td class="px-6 py-4 vazir text-[16px] font-medium dark:text-white text-black vazir">{{ $user->name
-                        }}</td>
+                    <td class="px-6 py-4 vazir text-[16px] font-medium dark:text-white text-black vazir">
+                        <div class="flex items-center">
+                            @if($user->user_image)
+                            <img src="{{ asset('storage/' . $user->user_image) }}" alt="{{ $user->name }}"
+                                class="w-10 h-10 rounded-full object-cover mr-3">
+                            @else
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                <span class="text-blue-600 font-bold">{{ substr($user->name, 0, 1) }}</span>
+                            </div>
+                            @endif
+                            <span>{{ $user->name }}</span>
+                        </div>
+                    </td>
                     <td class="px-6 py-4 vazir text-[16px] font-medium dark:text-white text-black vazir">{{
                         $user->sarafi_name }}</td>
                     <td class="px-6 py-4 vazir text-[16px] font-medium dark:text-white text-black vazir">{{
                         $user->username }}</td>
                     <td class="px-6 py-4 vazir text-[16px] font-medium dark:text-white text-black vazir">{{
-                        $roles[$user->role] ??
-                        $user->role }}</td>
+                        $roles[$user->role] ?? $user->role }}</td>
+                 
+                    <td class="px-6 py-4 vazir text-[16px] font-medium dark:text-white text-black vazir">
+                        @if($user->whatsapp_notification)
+                        <span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">
+                            فعال
+                        </span>
+                        @else
+                        <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs">
+                            غیرفعال
+                        </span>
+                        @endif
+                    </td>
                     <td class="px-6 py-4 vazir text-[16px] font-medium  text-black vazir">
                         @if ($user->status)
                         <span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">
@@ -522,7 +597,6 @@
                         <button wire:click="edit({{ $user->id }})" class="px-2 py-1">
                             <img src="{{ asset('assets/sarafi/all_icon/edit_table.svg') }}" class="w-7 h-7 dark:hidden"
                                 alt="Edit">
-
                             <svg width="22" height="22" class="hidden dark:block" viewBox="0 0 22 22" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -535,7 +609,8 @@
                                 <path d="M13.668 3.8042C14.2821 5.99503 15.9963 7.7092 18.1963 8.33253" stroke="white"
                                     stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
                                     stroke-linejoin="round" />
-                            </svg> </button>
+                            </svg>
+                        </button>
                         <button wire:click="confirmDelete({{ $user->id }})" class="px-2 py-1">
                             <img src="{{ asset('assets/sarafi/all_icon/trash_table.svg') }}" class="w-8 h-8 dark:hidden"
                                 alt="Delete">
@@ -555,7 +630,6 @@
                                 <path d="M9.5 12.5H14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"
                                     stroke-linejoin="round" />
                             </svg>
-
                         </button>
                         <button class="px-2 py-1" wire:click="print({{ $user->id }})">
                             <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"
@@ -569,29 +643,30 @@
                         </button>
 
                         @if($currentUser->role === 'superadmin')
-<button
-    wire:click="loginAsInNewWindow({{ $user->id }})"
-    title="ورود به پنل"
-    class="p-1">
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M10.02 17.52C10.48 18.11 11.2 18.5 12 18.5C13.38 18.5 14.5 17.38 14.5 16C14.5 15.43 14.31 14.9 13.99 14.48" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M2.82 20.8C2.21 20.04 2 18.83 2 17V15C2 11 3 10 7 10H17C17.36 10 17.69 10.01 18 10.03C21.17 10.21 22 11.36 22 15V17C22 21 21 22 17 22H7C6.64 22 6.31 21.99 6 21.97" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M6 10V8C6 4.69 7 2 12 2C16.15 2 17.54 3.38 17.9 5.56" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M22 2L2 22" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg></button>
-@endif
-
-
-
-
-
-
+                        <button wire:click="loginAsInNewWindow({{ $user->id }})" title="ورود به پنل" class="p-1">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M10.02 17.52C10.48 18.11 11.2 18.5 12 18.5C13.38 18.5 14.5 17.38 14.5 16C14.5 15.43 14.31 14.9 13.99 14.48"
+                                    stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path
+                                    d="M2.82 20.8C2.21 20.04 2 18.83 2 17V15C2 11 3 10 7 10H17C17.36 10 17.69 10.01 18 10.03C21.17 10.21 22 11.36 22 15V17C22 21 21 22 17 22H7C6.64 22 6.31 21.99 6 21.97"
+                                    stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M6 10V8C6 4.69 7 2 12 2C16.15 2 17.54 3.38 17.9 5.56" stroke="#292D32"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M22 2L2 22" stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        @endif
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
-                        هیچ مشتری یافت نشد.
+                    <td colspan="9" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                        هیچ کاربری یافت نشد.
                     </td>
                 </tr>
                 @endforelse
@@ -599,10 +674,7 @@
         </table>
     </div>
 
-
-
-    @if($currentUser && $currentUser->role === 'admin' ||  $currentUser->role === 'superadmin' )
-
+    @if($currentUser && $currentUser->role === 'admin' || $currentUser->role === 'superadmin' )
     {{-- مودال تأیید حذف --}}
     @if ($confirmDeleteId)
     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -638,19 +710,13 @@
                     class="px-12 py-3 bg-[#2563EB] text-lg shabnam-fd text-white rounded-xl transition hover:bg-blue-700 flex items-center gap-2">
                     {{ __('messages.yes') }}
                 </button>
-
-                
             </div>
         </div>
     </div>
     @endif
-
     @endif
 
-
-</div>
-
-@push('scripts')
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-@endpush
+    @push('scripts')
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    @endpush
 </div>

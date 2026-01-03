@@ -6,16 +6,15 @@ use App\Models\Sarafi\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
 use Mpdf\Mpdf;
 use App\Models\Sarafi\ImpersonationToken;
 use Illuminate\Support\Str;
-
+use Intervention\Image\Facades\Image;
 
 class Users extends Component
 {
-
-
-    use WithPagination;
+    use WithPagination, WithFileUploads;
 
     // Search, modal and edit state
     public $search = '';
@@ -23,9 +22,14 @@ class Users extends Component
     public $editId = null;
     public $filterOpen = false;
 
-
     // Form fields
-    public $name, $lastname, $username, $password, $role, $sarafi_name, $address,  $address2,  $address3, $phone, $phone2, $phone3, $user_limition, $zone;
+    public $name, $lastname, $username, $password, $role, $sarafi_name, $address, $address2, $address3, $phone, $phone2, $phone3, $user_limition, $zone;
+    public $user_image; // فیلد جدید برای آپلود تصویر
+    public $whatsapp_notification = 0; // فیلد جدید برای نوتیفیکیشن واتساپ
+    public $temp_image_url = null; // برای نمایش تصویر موقت
+    
+    // ✅ متغیر جدید برای ذخیره تصویر فعلی کاربر
+    public $current_user_image = null;
 
     // Alerts and delete confirmation
     public $alert = null;
@@ -44,9 +48,9 @@ class Users extends Component
         'role' => 'required',
         'user_limition' => 'nullable|integer|min:0',
         'zone' => 'required|string|max:255',
-
+        'user_image' => 'nullable|image|max:2048', // حداکثر 2MB
+        'whatsapp_notification' => 'boolean',
     ];
-
 
     public $roles = [
         'superadmin' => 'سوپر ادمین',
@@ -56,20 +60,11 @@ class Users extends Component
         'external_officer' => 'مسوول احواله جات خارجی',
     ];
 
-
-
-
-
-
-
-
-
     // -------------------------
     // Component initialization
     // -------------------------
     public function mount()
     {
-
         $this->setDefaultValues();
     }
 
@@ -109,25 +104,28 @@ class Users extends Component
         $this->password = $this->convertToEnglishNumbers($value);
     }
 
-
     // -------------------------
     // Reset form fields
     // -------------------------
-  public function resetInputFields()
-{
-    $this->name = '';
-    $this->lastname = '';
-    $this->username = '';
-    $this->password = '';
-    $this->role = '';
-    $this->phone = null;
-    $this->phone2 = null;
-    $this->phone3 = null;
-    $this->user_limition = null;
-    $this->zone = '';
-    $this->editId = null;
-    $this->modalOpen = false;
-}
+    public function resetInputFields()
+    {
+        $this->name = '';
+        $this->lastname = '';
+        $this->username = '';
+        $this->password = '';
+        $this->role = '';
+        $this->phone = null;
+        $this->phone2 = null;
+        $this->phone3 = null;
+        $this->user_limition = null;
+        $this->zone = '';
+        $this->user_image = null;
+        $this->whatsapp_notification = 0;
+        $this->temp_image_url = null;
+        $this->current_user_image = null; // ✅ پاک کردن تصویر فعلی
+        $this->editId = null;
+        $this->modalOpen = false;
+    }
 
     // -------------------------
     // Open modal for creating user
@@ -153,16 +151,40 @@ class Users extends Component
         $this->username = $user->username;
         $this->role = $user->role;
         $this->sarafi_name = $user->sarafi_name ?? '';
-        $this->address = $user->address ??  null;
+        $this->address = $user->address ?? null;
         $this->address2 = $user->address2 ?? null;
         $this->address3 = $user->address3 ?? null;
-
-        $this->phone = $user->phone ??  null;
+        $this->phone = $user->phone ?? null;
         $this->phone2 = $user->phone2 ?? null;
         $this->phone3 = $user->phone3 ?? null;
         $this->user_limition = $user->user_limition ?? null;
-        $this->modalOpen = true;
+        $this->whatsapp_notification = $user->whatsapp_notification ?? 0;
         $this->zone = $user->zone;
+        $this->current_user_image = $user->user_image; // ✅ ذخیره تصویر فعلی کاربر
+        $this->modalOpen = true;
+    }
+
+    // -------------------------
+    // Preview image before upload
+    // -------------------------
+    public function updatedUserImage()
+    {
+        $this->validate([
+            'user_image' => 'image|max:2048',
+        ]);
+        
+        $this->temp_image_url = $this->user_image->temporaryUrl();
+        $this->current_user_image = null; // وقتی تصویر جدید آپلود شد، تصویر قبلی را پاک کن
+    }
+
+    // -------------------------
+    // Remove image preview
+    // -------------------------
+    public function removeImage()
+    {
+        $this->user_image = null;
+        $this->temp_image_url = null;
+        $this->current_user_image = null; // تصویر فعلی را هم پاک کن
     }
 
     // -------------------------
@@ -191,6 +213,7 @@ class Users extends Component
 
         if ($this->editId) {
             $rules['username'] = 'required|string|max:255|unique:sarafi.users,username,' . $this->editId;
+            $rules['user_image'] = 'nullable|image|max:2048';
         }
 
         $this->validate($rules);
@@ -204,19 +227,36 @@ class Users extends Component
             'address' => $this->address,
             'address2' => $this->address2,
             'address3' => $this->address3,
-
             'phone'  => $this->phone  ?: null,
             'phone2' => $this->phone2 ?: null,
             'phone3' => $this->phone3 ?: null,
-
-
             'status' => $this->editId ? User::find($this->editId)->status : 0,
             'zone' => $this->zone,
-
+            'whatsapp_notification' => $this->whatsapp_notification ? 1 : 0,
         ];
 
         if ($this->password) {
             $data['password'] = bcrypt($this->password);
+        }
+
+        // Handle image upload and compression
+        if ($this->user_image) {
+            // Delete old image if exists
+            if ($this->editId) {
+                $oldUser = User::find($this->editId);
+                if ($oldUser && $oldUser->user_image) {
+                    $oldUser->deleteOldImage();
+                }
+            }
+            
+            // Compress and save new image
+            $imagePath = User::compressAndSaveImage($this->user_image, $this->editId);
+            if ($imagePath) {
+                $data['user_image'] = $imagePath;
+            }
+        } elseif ($this->editId && $this->current_user_image) {
+            // اگر در حالت ویرایش هستیم و تصویر جدیدی آپلود نشده، تصویر قبلی را نگه دار
+            $data['user_image'] = $this->current_user_image;
         }
 
         // Superadmin rules
@@ -249,7 +289,7 @@ class Users extends Component
             User::find($this->editId)->update($data);
             $this->alert = [
                 'title' => __('messages.Success'),
-                'message' => $this->editId ? __('messages.user_updated') : __('messages.user_created')
+                'message' => __('messages.user_updated')
             ];
         } else {
             User::create($data);
@@ -268,7 +308,6 @@ class Users extends Component
         $this->confirmDeleteId = $id;
     }
 
-
     public function clearAlert()
     {
         $this->alert = null;
@@ -280,7 +319,15 @@ class Users extends Component
     public function delete()
     {
         if ($this->confirmDeleteId) {
-            User::findOrFail($this->confirmDeleteId)->delete();
+            $user = User::findOrFail($this->confirmDeleteId);
+            
+            // Delete user image if exists
+            if ($user->user_image) {
+                $user->deleteOldImage();
+            }
+            
+            $user->delete();
+            
             $this->alert = [
                 'title' => __('messages.Success'),
                 'message' => __('messages.user_deleted')
@@ -288,7 +335,6 @@ class Users extends Component
             $this->confirmDeleteId = null;
         }
     }
-
 
     public function print($id)
     {
@@ -325,7 +371,6 @@ class Users extends Component
         }, $fileName);
     }
 
-
     // -------------------------
     // Get paginated users
     // -------------------------
@@ -334,7 +379,7 @@ class Users extends Component
         $currentUser = Auth::guard('sarafi')->user();
         $query = User::query();
 
-        // Role-based filtering (برای محدود کردن دسترسی کاربر جاری)
+        // Role-based filtering
         if ($currentUser->role === 'admin') {
             $query->where('admin_id', $currentUser->id)
                 ->orWhere('id', $currentUser->id);
@@ -363,7 +408,6 @@ class Users extends Component
         return $query->orderBy('id', 'desc')->paginate(10);
     }
 
-
     // -------------------------
     // Get unique roles for filter
     // -------------------------
@@ -373,15 +417,14 @@ class Users extends Component
     }
 
     public function updatedPhone2($value)
-{
-    $this->phone2 = $this->convertToEnglishNumbers($value);
-}
+    {
+        $this->phone2 = $this->convertToEnglishNumbers($value);
+    }
 
-public function updatedPhone3($value)
-{
-    $this->phone3 = $this->convertToEnglishNumbers($value);
-}
-
+    public function updatedPhone3($value)
+    {
+        $this->phone3 = $this->convertToEnglishNumbers($value);
+    }
 
     // -------------------------
     // Get unique sarafis for filter
@@ -390,31 +433,28 @@ public function updatedPhone3($value)
     {
         return User::select('sarafi_name')->whereNotNull('sarafi_name')->distinct()->pluck('sarafi_name')->toArray();
     }
-    
 
     public function loginAsInNewWindow($userId)
-{
-    $currentUser = Auth::guard('sarafi')->user();
+    {
+        $currentUser = Auth::guard('sarafi')->user();
 
-    if ($currentUser->role !== 'superadmin') {
-        abort(403);
+        if ($currentUser->role !== 'superadmin') {
+            abort(403);
+        }
+
+        $token = Str::random(64);
+
+        ImpersonationToken::create([
+            'super_admin_id' => $currentUser->id,
+            'user_id'        => $userId,
+            'token'          => hash('sha256', $token),
+            'expires_at'     => now()->addMinutes(5),
+        ]);
+
+        $url = route('impersonate.login', ['token' => $token]);
+
+        $this->dispatch('open-new-window', url: $url);
     }
-
-    $token = Str::random(64);
-
-    ImpersonationToken::create([
-        'super_admin_id' => $currentUser->id,
-        'user_id'        => $userId,
-        'token'          => hash('sha256', $token),
-        'expires_at'     => now()->addMinutes(5),
-    ]);
-
-    $url = route('impersonate.login', ['token' => $token]);
-
-  $this->dispatch('open-new-window', url: $url);
-
-}
-
 
     public function render()
     {
