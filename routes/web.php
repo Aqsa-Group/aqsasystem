@@ -355,7 +355,7 @@ Route::get('/sarafi/withdraws-from-bank', function () {
 Route::middleware(['auth:sarafi'])->prefix('chat')->group(function () {
     Route::post('/send', [ChatController::class, 'sendMessage']);
     Route::get('/messages/{userId}', [ChatController::class, 'getMessages']);
-    
+    Route::get('/new-messages/{userId}', [ChatController::class, 'getNewMessages']); 
     Route::get('/conversations', [ChatController::class, 'getConversations']);
     Route::get('/users', [ChatController::class, 'getChatUsers']);
     Route::get('/unread-count', [ChatController::class, 'getUnreadCount']);
@@ -364,9 +364,6 @@ Route::middleware(['auth:sarafi'])->prefix('chat')->group(function () {
     Route::delete('/message/{messageId}', [ChatController::class, 'deleteMessage']);
     Route::get('/test', [ChatController::class, 'test']);
 });
-
-Route::get('/chat/new-messages/{userId}', [ChatController::class, 'getNewMessages'])
-    ->middleware('auth:sarafi');
 
 Route::middleware(['auth:impersonate'])->group(function () {
     Route::get('/impersonate/dashboard', function() {

@@ -2642,82 +2642,82 @@
 
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
-                        // DOM Elements
-                        const chatWidget = document.getElementById('chatWidget');
-                        const chatToggle = document.getElementById('chatToggle');
-                        const chatWindow = document.getElementById('chatWindow');
-                        const closeChatBtn = document.getElementById('closeChatBtn');
-                        const unreadBadge = document.getElementById('unreadBadge');
-                        const refreshChatBtn = document.getElementById('refreshChatBtn');
-                        const markAllReadBtn = document.getElementById('markAllReadBtn');
-                        
-                        // Panels
-                        const conversationsPanel = document.getElementById('conversationsPanel');
-                        const usersPanel = document.getElementById('usersPanel');
-                        const messagesPanel = document.getElementById('messagesPanel');
-                        
-                        // Lists
-                        const conversationsList = document.getElementById('conversationsList');
-                        const usersList = document.getElementById('usersList');
-                        const messagesContainer = document.getElementById('messagesContainer');
-                        
-                        // Inputs and buttons
-                        const messageInput = document.getElementById('messageInput');
-                        const sendMessageBtn = document.getElementById('sendMessageBtn');
-                        const chatSearchInput = document.getElementById('chatSearchInput');
-                        
-                        // Tabs
-                        const conversationsTab = document.getElementById('conversationsTab');
-                        const usersTab = document.getElementById('usersTab');
-                        
-                        // Back buttons
-                        const backToChat = document.getElementById('backToChat');
-                        
-                        // Audio element
-                        const messageSound = document.getElementById('messageSound');
-                        
-                        // State variables
-                        let currentChatUserId = null;
-                        let currentChatUserName = null;
-                        let pollingInterval = null;
-                        let backgroundPollingInterval = null; // Polling همیشگی در پس‌زمینه
-                        let conversations = [];
-                        let users = [];
-                        let isChatOpen = false;
-                        let currentTab = 'conversations';
-                        let touchStartY = 0;
-                        let isMobile = window.innerWidth <= 768;
-                        let keyboardVisible = false;
-                        let initialViewportHeight = window.innerHeight;
-                        let lastPlayedTime = 0;
-                        const SOUND_COOLDOWN = 1000; // 1 ثانیه تأخیر بین پخش صداها
-                        let previousUnreadCount = 0; // تعداد پیام‌های نخوانده قبلی
+        // DOM Elements
+        const chatWidget = document.getElementById('chatWidget');
+        const chatToggle = document.getElementById('chatToggle');
+        const chatWindow = document.getElementById('chatWindow');
+        const closeChatBtn = document.getElementById('closeChatBtn');
+        const unreadBadge = document.getElementById('unreadBadge');
+        const refreshChatBtn = document.getElementById('refreshChatBtn');
+        const markAllReadBtn = document.getElementById('markAllReadBtn');
+        
+        // Panels
+        const conversationsPanel = document.getElementById('conversationsPanel');
+        const usersPanel = document.getElementById('usersPanel');
+        const messagesPanel = document.getElementById('messagesPanel');
+        
+        // Lists
+        const conversationsList = document.getElementById('conversationsList');
+        const usersList = document.getElementById('usersList');
+        const messagesContainer = document.getElementById('messagesContainer');
+        
+        // Inputs and buttons
+        const messageInput = document.getElementById('messageInput');
+        const sendMessageBtn = document.getElementById('sendMessageBtn');
+        const chatSearchInput = document.getElementById('chatSearchInput');
+        
+        // Tabs
+        const conversationsTab = document.getElementById('conversationsTab');
+        const usersTab = document.getElementById('usersTab');
+        
+        // Back buttons
+        const backToChat = document.getElementById('backToChat');
+        
+        // Audio element
+        const messageSound = document.getElementById('messageSound');
+        
+        // State variables
+        let currentChatUserId = null;
+        let currentChatUserName = null;
+        let pollingInterval = null;
+        let backgroundPollingInterval = null; // Polling همیشگی در پس‌زمینه
+        let conversations = [];
+        let users = [];
+        let isChatOpen = false;
+        let currentTab = 'conversations';
+        let touchStartY = 0;
+        let isMobile = window.innerWidth <= 768;
+        let keyboardVisible = false;
+        let initialViewportHeight = window.innerHeight;
+        let lastPlayedTime = 0;
+        const SOUND_COOLDOWN = 1000; // 1 ثانیه تأخیر بین پخش صداها
+        let previousUnreadCount = 0; // تعداد پیام‌های نخوانده قبلی
 
-                        // Show chat widget
-                        chatWidget.classList.remove('hidden');
+        // Show chat widget
+        chatWidget.classList.remove('hidden');
 
-                        // Update mobile detection on resize
-                        window.addEventListener('resize', handleResize);
+        // Update mobile detection on resize
+        window.addEventListener('resize', handleResize);
 
-                        // Event Listeners
-                        chatToggle.addEventListener('click', toggleChatWindow);
-                        closeChatBtn.addEventListener('click', closeChatWindow);
-                        refreshChatBtn.addEventListener('click', refreshChatData);
-                        markAllReadBtn.addEventListener('click', markAllAsRead);
-                        sendMessageBtn.addEventListener('click', sendMessage);
-                        backToChat.addEventListener('click', showChatView);
-                        
-                        // Tab switching
-                        conversationsTab.addEventListener('click', () => switchTab('conversations'));
-                        usersTab.addEventListener('click', () => switchTab('users'));
-                        
-                        // Message input enter key
-                        messageInput.addEventListener('keypress', (e) => {
-                            if (e.key === 'Enter') {
-                                sendMessage();
-                            }
-                        });
-                        
+        // Event Listeners
+        chatToggle.addEventListener('click', toggleChatWindow);
+        closeChatBtn.addEventListener('click', closeChatWindow);
+        refreshChatBtn.addEventListener('click', refreshChatData);
+        markAllReadBtn.addEventListener('click', markAllAsRead);
+        sendMessageBtn.addEventListener('click', sendMessage);
+        backToChat.addEventListener('click', showChatView);
+        
+        // Tab switching
+        conversationsTab.addEventListener('click', () => switchTab('conversations'));
+        usersTab.addEventListener('click', () => switchTab('users'));
+        
+        // Message input enter key
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
         // Search input
         chatSearchInput.addEventListener('input', debounce(searchUsers, 300));
 
@@ -3064,58 +3064,34 @@
                 }
             }, 200);
         }
-async function loadMessages(shouldScrollToBottom = false) {
-    if (!currentChatUserId) return;
-    
-    try {
-        // ذخیره موقعیت اسکرول قبل از بارگذاری
-        const previousScrollTop = messagesContainer.scrollTop;
-        const previousScrollHeight = messagesContainer.scrollHeight;
-        const wasAtBottom = Math.abs(
-            messagesContainer.scrollHeight - 
-            messagesContainer.scrollTop - 
-            messagesContainer.clientHeight
-        ) < 10; // 10px tolerance
-        
-        const response = await fetch(`/chat/messages/${currentChatUserId}`, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json'
-            },
-            // اضافه کردن timestamp برای جلوگیری از کش
-            cache: 'no-cache'
-        });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-            // بررسی کنید آیا پیام جدیدی وجود دارد یا خیر
-            const hasNewMessages = checkForNewMessages(data.messages);
+
+        async function loadMessages() {
+            if (!currentChatUserId) return;
             
-            if (hasNewMessages) {
-                // فقط پیام‌های جدید را اضافه کنید، نه همه را دوباره رندر کنید
-                addNewMessagesOnly(data.messages);
-            }
-            
-            updateUnreadCount();
-            
-            // تنظیم مجدد موقعیت اسکرول
-            setTimeout(() => {
-                if (shouldScrollToBottom || wasAtBottom) {
-                    // اگر کاربر در پایین بود یا باید به پایین اسکرول کنیم
-                    scrollToBottom();
-                } else {
-                    // حفظ موقعیت اسکرول قبلی
-                    const newScrollHeight = messagesContainer.scrollHeight;
-                    const heightDiff = newScrollHeight - previousScrollHeight;
-                    messagesContainer.scrollTop = previousScrollTop + heightDiff;
+            try {
+                showLoading(messagesContainer, 'در حال بارگذاری پیام‌ها...');
+                
+                const response = await fetch(`/chat/messages/${currentChatUserId}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    renderMessages(data.messages);
+                    updateUnreadCount();
+                    
+                    setTimeout(scrollToBottom, 100);
                 }
-            }, 50);
+            } catch (error) {
+                console.error('Error loading messages:', error);
+                showError(messagesContainer, 'خطا در بارگذاری پیام‌ها');
+            }
         }
-    } catch (error) {
-        console.error('Error loading messages:', error);
-    }
-}
+
         async function sendMessage() {
             const message = messageInput.value.trim();
             if (!message || !currentChatUserId) return;
@@ -3380,24 +3356,30 @@ async function loadMessages(shouldScrollToBottom = false) {
             
             document.getElementById('noUsers').classList.add('hidden');
         }
-function renderMessages(messages, shouldClear = true) {
-    if (shouldClear) {
-        messagesContainer.innerHTML = '';
-    }
-    
-    const currentUserId = <?php echo e(Auth::guard('sarafi')->id()); ?>;
-    
-    if (!messages || messages.length === 0) {
-        if (shouldClear) {
-            showNoMessages();
+
+        function renderMessages(messages) {
+            messagesContainer.innerHTML = '';
+            
+            const currentUserId = <?php echo e(Auth::guard('sarafi')->id()); ?>;
+            
+            if (!messages || messages.length === 0) {
+                messagesContainer.innerHTML = `
+                    <div class="text-center text-gray-500 py-8">
+                        <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                        </svg>
+                        <p>هیچ پیامی وجود ندارد</p>
+                        <p class="text-sm mt-2">پیام خود را ارسال کنید</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            messages.forEach(msg => {
+                renderMessage(msg, msg.sender_id === currentUserId);
+            });
         }
-        return;
-    }
-    
-    messages.forEach(msg => {
-        renderMessage(msg, msg.sender_id === currentUserId, false);
-    });
-}
+
         function renderMessage(msg, isSent) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `flex ${isSent ? 'justify-end' : 'justify-start'}`;
@@ -3521,55 +3503,20 @@ function renderMessages(messages, shouldClear = true) {
             };
         }
 
-       // Polling for new messages - فقط وقتی چت باز است
-function startPolling() {
-    stopPolling();
-    pollingInterval = setInterval(() => {
-        updateUnreadCount();
-        
-        if (currentChatUserId) {
-            // فقط پیام‌های جدید را بررسی کن
-            loadNewMessagesOnly();
-        } else if (isChatOpen) {
-            loadConversations();
+        // Polling for new messages - فقط وقتی چت باز است
+        function startPolling() {
+            stopPolling();
+            pollingInterval = setInterval(() => {
+                updateUnreadCount();
+                
+                if (currentChatUserId) {
+                    loadMessages();
+                } else if (isChatOpen) {
+                    loadConversations();
+                }
+            }, 5000); // Poll every 5 seconds when chat is open
         }
-    }, 5000); // Poll every 5 seconds when chat is open
-}
 
-// تابع جدید برای بارگذاری فقط پیام‌های جدید
-async function loadNewMessagesOnly() {
-    if (!currentChatUserId) return;
-    
-    try {
-        const response = await fetch(`/chat/new-messages/${currentChatUserId}`, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json'
-            }
-        });
-        
-        const data = await response.json();
-        
-        if (data.success && data.messages.length > 0) {
-            // فقط پیام‌های جدید را اضافه کن
-            addNewMessagesOnly(data.messages);
-            updateUnreadCount();
-            
-            // اگر کاربر در پایین صفحه بود، به پایین اسکرول کن
-            const isAtBottom = Math.abs(
-                messagesContainer.scrollHeight - 
-                messagesContainer.scrollTop - 
-                messagesContainer.clientHeight
-            ) < 10;
-            
-            if (isAtBottom) {
-                setTimeout(scrollToBottom, 50);
-            }
-        }
-    } catch (error) {
-        console.error('Error loading new messages:', error);
-    }
-}
         function stopPolling() {
             if (pollingInterval) {
                 clearInterval(pollingInterval);

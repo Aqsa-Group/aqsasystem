@@ -190,6 +190,65 @@ class ChatController extends Controller
         ]);
     }
 
+    // ✅ تابع جدید برای دریافت فقط پیام‌های جدید
+    public function getNewMessages($userId)
+    {
+        Log::info('Getting NEW messages for user: ' . $userId);
+        
+        $currentUser = Auth::guard('sarafi')->user();
+        $otherUser = User::find($userId);
+        
+        if (!$otherUser) {
+            return response()->json([
+                'success' => false,
+                'error' => 'کاربر یافت نشد'
+            ], 404);
+        }
+
+        // دریافت last_message_id از query string
+        $lastMessageId = request()->input('last_message_id', 0);
+        
+        Log::info('Last message ID from client: ' . $lastMessageId);
+
+        // دریافت فقط پیام‌های جدیدتر از last_message_id
+        $messages = Message::where(function($query) use ($currentUser, $otherUser) {
+                $query->where('sender_id', $currentUser->id)
+                      ->where('receiver_id', $otherUser->id);
+            })
+            ->orWhere(function($query) use ($currentUser, $otherUser) {
+                $query->where('sender_id', $otherUser->id)
+                      ->where('receiver_id', $currentUser->id);
+            })
+            ->where('id', '>', $lastMessageId)
+            ->orderBy('created_at', 'asc')
+            ->with(['sender', 'receiver'])
+            ->get();
+
+        Log::info('Found ' . $messages->count() . ' new messages');
+
+        // Mark messages as read (only new ones from the other user)
+        if ($messages->count() > 0) {
+            Message::where('sender_id', $otherUser->id)
+                   ->where('receiver_id', $currentUser->id)
+                   ->where('is_read', false)
+                   ->where('id', '>', $lastMessageId)
+                   ->update(['is_read' => true]);
+
+            // Update conversation unread count
+            $conversation = $this->getOrCreateConversation($currentUser->id, $otherUser->id);
+            if ($conversation->user1_id == $currentUser->id) {
+                $conversation->update(['unread_count_user1' => 0]);
+            } else {
+                $conversation->update(['unread_count_user2' => 0]);
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'messages' => $messages
+        ]);
+    }
+
     // Get conversations list
     public function getConversations()
     {
@@ -223,47 +282,46 @@ class ChatController extends Controller
     }
 
     // Get users available for chat
-  public function getChatUsers()
-{
-    $currentUser = Auth::guard('sarafi')->user();
+    public function getChatUsers()
+    {
+        $currentUser = Auth::guard('sarafi')->user();
 
-    $users = User::where('id', '!=', $currentUser->id)
-        ->where(function ($query) use ($currentUser) {
+        $users = User::where('id', '!=', $currentUser->id)
+            ->where(function ($query) use ($currentUser) {
+                // ✅ همه بتوانند سوپر ادمین را ببینند
+                $query->where('role', 'superadmin');
 
-            // ✅ همه بتوانند سوپر ادمین را ببینند
-            $query->where('role', 'superadmin');
+                // ✅ سوپر ادمین همه را ببیند
+                if ($currentUser->role === 'superadmin') {
+                    $query->orWhereIn('role', [
+                        'admin',
+                        'warehouse_manager',
+                        'internal_officer',
+                        'external_officer'
+                    ]);
+                }
 
-            // ✅ سوپر ادمین همه را ببیند
-            if ($currentUser->role === 'superadmin') {
-                $query->orWhereIn('role', [
-                    'admin',
-                    'warehouse_manager',
-                    'internal_officer',
-                    'external_officer'
-                ]);
-            }
+                // ✅ ادمین فقط خزانه‌دارهای خودش
+                if ($currentUser->role === 'admin') {
+                    $query->orWhere(function ($q) use ($currentUser) {
+                        $q->where('role', 'warehouse_manager')
+                          ->where('admin_id', $currentUser->id);
+                    });
+                }
 
-            // ✅ ادمین فقط خزانه‌دارهای خودش
-            if ($currentUser->role === 'admin') {
-                $query->orWhere(function ($q) use ($currentUser) {
-                    $q->where('role', 'warehouse_manager')
-                      ->where('admin_id', $currentUser->id);
-                });
-            }
+                // ✅ خزانه‌دار فقط ادمین خودش
+                if ($currentUser->role === 'warehouse_manager') {
+                    $query->orWhere('id', $currentUser->admin_id);
+                }
+            })
+            ->select('id', 'name', 'lastname', 'sarafi_name', 'role', 'admin_id', 'phone')
+            ->get();
 
-            // ✅ خزانه‌دار فقط ادمین خودش
-            if ($currentUser->role === 'warehouse_manager') {
-                $query->orWhere('id', $currentUser->admin_id);
-            }
-        })
-        ->select('id', 'name', 'lastname', 'sarafi_name', 'role', 'admin_id', 'phone')
-        ->get();
-
-    return response()->json([
-        'success' => true,
-        'users' => $users
-    ]);
-}
+        return response()->json([
+            'success' => true,
+            'users' => $users
+        ]);
+    }
 
     // Get unread message count
     public function getUnreadCount()
@@ -350,35 +408,32 @@ class ChatController extends Controller
         ]);
     }
 
+    private function canMessage($sender, $receiver)
+    {
+        // جلوگیری از پیام به خود
+        if ($sender->id === $receiver->id) {
+            return false;
+        }
 
+        // ✅ سوپر ادمین ↔ همه
+        if ($sender->role === 'superadmin' || $receiver->role === 'superadmin') {
+            return true;
+        }
 
+        // ✅ ادمین ↔ خزانه‌دارهای خودش
+        if ($sender->role === 'admin') {
+            return $receiver->role === 'warehouse_manager'
+                && $receiver->admin_id === $sender->id;
+        }
 
-   private function canMessage($sender, $receiver)
-{
-    // جلوگیری از پیام به خود
-    if ($sender->id === $receiver->id) {
+        if ($sender->role === 'warehouse_manager') {
+            return $receiver->role === 'admin'
+                && $sender->admin_id === $receiver->id;
+        }
+
+        // سایر نقش‌ها (internal / external) فقط با سوپر ادمین
         return false;
     }
-
-    // ✅ سوپر ادمین ↔ همه
-    if ($sender->role === 'superadmin' || $receiver->role === 'superadmin') {
-        return true;
-    }
-
-    // ✅ ادمین ↔ خزانه‌دارهای خودش
-    if ($sender->role === 'admin') {
-        return $receiver->role === 'warehouse_manager'
-            && $receiver->admin_id === $sender->id;
-    }
-
-    if ($sender->role === 'warehouse_manager') {
-        return $receiver->role === 'admin'
-            && $sender->admin_id === $receiver->id;
-    }
-
-    // سایر نقش‌ها (internal / external) فقط با سوپر ادمین
-    return false;
-}
 
     private function getOrCreateConversation($userId1, $userId2)
     {
