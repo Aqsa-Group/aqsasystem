@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" name="csrf-token"
         content="<?php echo e(csrf_token()); ?>">
     <title>سیستم صرافی اقصی</title>
-<link rel="icon" type="image/jpeg" href="<?php echo e(asset('assets/aqsa.jpg')); ?>">
+    <link rel="icon" type="image/jpeg" href="<?php echo e(asset('assets/aqsa.jpg')); ?>">
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
@@ -21,8 +21,12 @@
     <style>
         /* Chat box */
 
-
-        .animate-pulse {
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+     .animate-pulse {
             animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
 
@@ -449,21 +453,29 @@
 
         /* منوی همبرگری برای موبایل */
         .mobile-menu-btn {
-            display: block;
+            display: flex;
             position: fixed;
             top: 1rem;
             right: 1rem;
-            z-index: 100;
+            z-index: 9997;
             background: #122EE1;
             color: white;
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
+
+        .mobile-menu-btn:hover {
+            background: #0e22b5;
+            transform: scale(1.05);
+        }
+
 
         @media (min-width: 768px) {
             .mobile-menu-btn {
@@ -472,24 +484,23 @@
         }
 
         /* سایدبار ریسپانسیو */
-        .sidebar-container {
-            position: fixed;
-            top: 0;
-            right: 0;
-            height: 100vh;
-            width: 280px;
-            background: white;
-            z-index: 90;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            overflow-y: auto;
-            padding: 1rem 0.5rem;
-        }
+.sidebar-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 280px;
+    max-width: 80vw;
+    background: white;
+    z-index: 9999;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+}
 
-        .sidebar-container.open {
-            transform: translateX(0);
-        }
-
+.sidebar-container.open {
+    transform: translateX(0);
+}
         @media (min-width: 768px) {
             .sidebar-container {
                 position: static;
@@ -523,12 +534,25 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            z-index: 80;
+            z-index: 9998;
+            /* کمتر از سایدبار */
             display: none;
+            backdrop-filter: blur(2px);
         }
 
         .mobile-overlay.open {
             display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         @media (min-width: 768px) {
@@ -2110,9 +2134,12 @@
             </div>
 
             <!-- محتوای اصلی -->
-            <main class="flex-1 mx-auto main-content-wrapper px-3  w-[500px] overflow-x-hidden">
-                <?php echo $__env->yieldContent('content'); ?>
-            </main>
+<main class="flex-1 main-content-wrapper px-3">
+    <div class="mx-auto w-full max-w-5xl">
+        <?php echo $__env->yieldContent('content'); ?>
+    </div>
+</main>
+
 
 
             <!-- Chat Widget -->
