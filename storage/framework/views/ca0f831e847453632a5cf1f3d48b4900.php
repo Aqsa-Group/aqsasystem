@@ -1115,82 +1115,83 @@
                             
                         </button>
 
-                      <div class="header-profile-section">
-    <div class="relative">
-        <?php
-            $currentUser = Auth::guard('sarafi')->user();
-        ?>
-        
-        <div id="profileBtnDesktop"
-            class="w-[50px] h-[50px] md:w-[60px] md:h-[60px] rounded-full overflow-hidden flex items-center justify-center cursor-pointer transition border-2 border-gray-200 hover:border-blue-500">
-            <?php if($currentUser->user_image): ?>
-                <img src="<?php echo e(asset('storage/' . $currentUser->user_image)); ?>" 
-                     alt="<?php echo e($currentUser->name); ?>"
-                     class="w-full h-full object-cover">
-            <?php else: ?>
-                <img src="<?php echo e(asset('assets/sarafi/avatar.svg')); ?>" alt="پروفایل"
-                    class="w-full h-full object-cover">
-            <?php endif; ?>
-        </div>
+                        <div class="header-profile-section">
+                            <div class="relative">
+                                <?php
+                                $currentUser = Auth::guard('sarafi')->user();
+                                ?>
 
-        <!-- منو dropdown -->
-        <div id="profileDropdownDesktop"
-            style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;"
-            class="absolute top-full left-0 space-y-3 text-2xl w-72 h-76 bg-white rounded-lg shadow-lg border hidden z-50 p-4">
+                                <div id="profileBtnDesktop"
+                                    class="w-[50px] h-[50px] md:w-[60px] md:h-[60px] rounded-full overflow-hidden flex items-center justify-center cursor-pointer transition border-2 border-gray-200 hover:border-blue-500">
+                                    <?php if($currentUser->user_image): ?>
+                                    <img src="<?php echo e(asset('storage/' . $currentUser->user_image)); ?>"
+                                        alt="<?php echo e($currentUser->name); ?>" class="w-full h-full object-cover">
+                                    <?php else: ?>
+                                    <img src="<?php echo e(asset('assets/sarafi/avatar.svg')); ?>" alt="پروفایل"
+                                        class="w-full h-full object-cover">
+                                    <?php endif; ?>
+                                </div>
 
-            <div class="p-3 border-b space-y-5">
-                <div class="flex flex-col justify-center items-center">
-                    <?php if($currentUser->user_image): ?>
-                        <img src="<?php echo e(asset('storage/' . $currentUser->user_image)); ?>" 
-                             alt="<?php echo e($currentUser->name); ?>" 
-                             class="h-20 w-20 rounded-full object-cover border-2 border-gray-200">
-                    <?php else: ?>
-                        <img src="<?php echo e(asset('assets/sarafi/avatar.svg')); ?>" 
-                             alt="<?php echo e($currentUser->name); ?>" 
-                             class="h-20 w-20 rounded-full">
-                    <?php endif; ?>
-                    <p class="font-vazir font-semibold text-gray-700 mt-3"><?php echo e($currentUser->name); ?></p>
-                    <p class="font-vazir text-sm text-gray-500">
-                        <?php
-                            $roles = [
-                                'superadmin' => 'سوپر ادمین',
-                                'admin' => 'ادمین',
-                                'warehouse_manager' => 'خزانه دار',
-                                'internal_officer' => 'مسوول احواله جات داخلی',
-                                'external_officer' => 'مسوول احواله جات خارجی',
-                            ];
-                        ?>
-                        <?php echo e($roles[$currentUser->role] ?? $currentUser->role); ?>
+                                <!-- منو dropdown -->
+                                <div id="profileDropdownDesktop"
+                                    style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;"
+                                    class="absolute top-full left-0 space-y-3 text-2xl w-72 h-76 bg-white rounded-lg shadow-lg border hidden z-50 p-4">
 
-                    </p>
-                </div>
-            </div>
-            
-            <div class="space-y-2">
-                <a href="<?php echo e(route('sarafi.users')); ?>" 
-                   class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition vazir">
-                    <img src="<?php echo e(asset('assets/sarafi/all_icon/account_profile.svg')); ?>" alt="تنظیمات" class="ml-2">
-                    <span>تنظیمات پروفایل</span>
-                </a>
-                
-                <a href="<?php echo e(route('sarafi.users') . '#edit=' . $currentUser->id); ?>" 
-                   class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition vazir">
-                    <img src="<?php echo e(asset('assets/sarafi/all_icon/edit.svg')); ?>" alt="ویرایش" class="ml-2">
-                    <span>ویرایش اطلاعات</span>
-                </a>
-            </div>
+                                    <div class="p-3 border-b space-y-5">
+                                        <div class="flex flex-col justify-center items-center">
+                                            <?php if($currentUser->user_image): ?>
+                                            <img src="<?php echo e(asset('storage/' . $currentUser->user_image)); ?>"
+                                                alt="<?php echo e($currentUser->name); ?>"
+                                                class="h-20 w-20 rounded-full object-cover border-2 border-gray-200">
+                                            <?php else: ?>
+                                            <img src="<?php echo e(asset('assets/sarafi/avatar.svg')); ?>"
+                                                alt="<?php echo e($currentUser->name); ?>" class="h-20 w-20 rounded-full">
+                                            <?php endif; ?>
+                                            <p class="font-vazir font-semibold text-gray-700 mt-3"><?php echo e($currentUser->name); ?></p>
+                                            <p class="font-vazir text-sm text-gray-500">
+                                                <?php
+                                                $roles = [
+                                                'superadmin' => 'سوپر ادمین',
+                                                'admin' => 'ادمین',
+                                                'warehouse_manager' => 'خزانه دار',
+                                                'internal_officer' => 'مسوول احواله جات داخلی',
+                                                'external_officer' => 'مسوول احواله جات خارجی',
+                                                ];
+                                                ?>
+                                                <?php echo e($roles[$currentUser->role] ?? $currentUser->role); ?>
 
-            <form action="<?php echo e(route('sarafi.logout')); ?>" method="POST" class="pt-2 border-t">
-                <?php echo csrf_field(); ?>
-                <button type="submit" 
-                        class="flex items-center w-full px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition vazir">
-                    <img src="<?php echo e(asset('assets/sarafi/all_icon/logout.svg')); ?>" alt="خروج" class="ml-2">
-                    <span>خروج از حساب</span>
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-y-2">
+                                        <a href="<?php echo e(route('sarafi.users')); ?>"
+                                            class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition vazir">
+                                            <img src="<?php echo e(asset('assets/sarafi/all_icon/account_profile.svg')); ?>"
+                                                alt="تنظیمات" class="ml-2">
+                                            <span>تنظیمات پروفایل</span>
+                                        </a>
+
+                                        <a href="<?php echo e(route('sarafi.users') . '#edit=' . $currentUser->id); ?>"
+                                            class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition vazir">
+                                            <img src="<?php echo e(asset('assets/sarafi/all_icon/edit.svg')); ?>" alt="ویرایش"
+                                                class="ml-2">
+                                            <span>ویرایش اطلاعات</span>
+                                        </a>
+                                    </div>
+
+                                    <form action="<?php echo e(route('sarafi.logout')); ?>" method="POST" class="pt-2 border-t">
+                                        <?php echo csrf_field(); ?>
+                                        <button type="submit"
+                                            class="flex items-center w-full px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition vazir">
+                                            <img src="<?php echo e(asset('assets/sarafi/all_icon/logout.svg')); ?>" alt="خروج"
+                                                class="ml-2">
+                                            <span>خروج از حساب</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2114,21 +2115,21 @@
             </main>
 
 
-  <!-- Chat Widget -->
-<div id="chatWidget" class="fixed bottom-4 right-4 z-[9999] hidden">
-    <!-- Chat Button -->
-    <button id="chatToggle"
-        class="bg-[#122EE1] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-            <path
-                d="M12 1C7.03 1 3 5.03 3 10V17C3 18.66 4.34 20 6 20H9V12H5V10C5 6.13 8.13 3 12 3C15.87 3 19 6.13 19 10V12H15V20H18C19.66 20 21 18.66 21 17V10C21 5.03 16.97 1 12 1Z" />
-        </svg>
-        <span id="unreadBadge"
-            class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center hidden shadow">0</span>
-    </button>
+            <!-- Chat Widget -->
+            <div id="chatWidget" class="fixed bottom-4 right-4 z-[9999] hidden">
+                <!-- Chat Button -->
+                <button id="chatToggle"
+                    class="bg-[#122EE1] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12 1C7.03 1 3 5.03 3 10V17C3 18.66 4.34 20 6 20H9V12H5V10C5 6.13 8.13 3 12 3C15.87 3 19 6.13 19 10V12H15V20H18C19.66 20 21 18.66 21 17V10C21 5.03 16.97 1 12 1Z" />
+                    </svg>
+                    <span id="unreadBadge"
+                        class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center hidden shadow">0</span>
+                </button>
 
-    <!-- Chat Window -->
-    <div id="chatWindow" class="
+                <!-- Chat Window -->
+                <div id="chatWindow" class="
             fixed sm:absolute
             bottom-0 sm:bottom-20
             right-0 sm:right-0
@@ -2146,538 +2147,538 @@
             transition-transform duration-300 ease-in-out
             ">
 
-        <!-- Chat Header -->
-        <div class="bg-[#122EE1] text-white p-4 rounded-t-lg flex justify-between items-center">
-            <div class="flex items-center space-x-3 rtl:space-x-reverse rtl:space-x-3">
-                <h3 class="font-semibold text-lg">پیام‌رسانی</h3>
-                <button id="markAllReadBtn"
-                    class="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded transition">
-                    خواندن همه
-                </button>
-            </div>
-            <div class="flex items-center space-x-3 rtl:space-x-reverse rtl:space-x-3">
-                <button id="refreshChatBtn" class="text-white hover:text-gray-200 transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
-                        </path>
-                    </svg>
-                </button>
-                <button id="closeChatBtn" class="text-white hover:text-gray-200 transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
-
-        <!-- Chat Body -->
-        <div class="flex-1 flex flex-col overflow-hidden">
-            <!-- Search Bar -->
-            <div class="p-3 border-b dark:border-gray-700">
-                <div class="relative">
-                    <input type="text" id="chatSearchInput" placeholder="جستجوی کاربر..."
-                        class="w-full px-4 py-2 pr-10 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#122EE1]">
-                    <svg class="w-5 h-5 absolute left-3 top-2.5 text-gray-400" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                </div>
-            </div>
-
-            <!-- Tabs -->
-            <div class="flex border-b dark:border-gray-700 shrink-0">
-                <button id="conversationsTab"
-                    class="flex-1 py-3 text-center font-medium border-b-2 border-[#122EE1] text-[#122EE1]">
-                    مکالمات
-                </button>
-                <button id="usersTab"
-                    class="flex-1 py-3 text-center font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
-                    کاربران
-                </button>
-            </div>
-
-            <!-- Content Area -->
-            <div class="flex-1 overflow-hidden">
-                <!-- Conversations Panel -->
-                <div id="conversationsPanel" class="h-full overflow-y-auto">
-                    <div id="conversationsList" class="p-3">
-                        <!-- Conversations will be loaded here -->
-                    </div>
-                    <div id="noConversations" class="hidden p-6 text-center text-gray-500">
-                        <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
-                            </path>
-                        </svg>
-                        <p>هیچ مکالمه‌ای وجود ندارد</p>
-                    </div>
-                </div>
-
-                <!-- Users Panel -->
-                <div id="usersPanel" class="h-full overflow-y-auto hidden">
-                    <div id="usersList" class="p-3">
-                        <!-- Users will be loaded here -->
-                    </div>
-                    <div id="noUsers" class="hidden p-6 text-center text-gray-500">
-                        <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-8A8.5 8.5 0 0012 3.5 8.5 8.5 0 003.5 12 8.5 8.5 0 0012 20.5a8.5 8.5 0 008.5-8.5z">
-                            </path>
-                        </svg>
-                        <p>کاربری برای چت پیدا نشد</p>
-                    </div>
-                </div>
-
-                <!-- Messages Panel -->
-                <div id="messagesPanel" class="h-full flex flex-col hidden">
-                    <!-- Messages Header -->
-                    <div
-                        class="p-3 border-b dark:border-gray-700 flex items-center bg-gray-50 dark:bg-gray-900 shrink-0">
-                        <button id="backToChat" class="ml-3 text-[#122EE1] hover:text-blue-700">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 19l-7-7 7-7"></path>
-                            </svg>
-                        </button>
-                        <div id="currentChatUser" class="flex items-center flex-1">
-                            <!-- User info will be loaded here -->
-                        </div>
-                    </div>
-
-                    <!-- Messages Container -->
-                    <div id="messagesContainer"
-                        class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-4 overscroll-contain">
-                        <!-- Messages will be loaded here -->
-                    </div>
-
-                    <!-- Message Input -->
-                    <div class="p-3 border-t dark:border-gray-700 shrink-0">
-                        <div class="flex space-x-2 rtl:space-x-reverse">
-                            <button id="sendMessageBtn"
-                                class="bg-white border border-blue-400 text-white px-6 py-2 rounded-lg transition flex items-center space-x-2 rtl:space-x-reverse">
-                                <img src="<?php echo e(asset('assets/sarafi/paper-plane.png')); ?>" class="h-5 w-5"
-                                    alt="">
+                    <!-- Chat Header -->
+                    <div class="bg-[#122EE1] text-white p-4 rounded-t-lg flex justify-between items-center">
+                        <div class="flex items-center space-x-3 rtl:space-x-reverse rtl:space-x-3">
+                            <h3 class="font-semibold text-lg">پیام‌رسانی</h3>
+                            <button id="markAllReadBtn"
+                                class="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded transition">
+                                خواندن همه
                             </button>
-                            <input type="text" id="messageInput" placeholder="پیام خود را بنویسید..."
-                                class="flex-1 px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#122EE1]">
+                        </div>
+                        <div class="flex items-center space-x-3 rtl:space-x-reverse rtl:space-x-3">
+                            <button id="refreshChatBtn" class="text-white hover:text-gray-200 transition">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                                    </path>
+                                </svg>
+                            </button>
+                            <button id="closeChatBtn" class="text-white hover:text-gray-200 transition">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Chat Body -->
+                    <div class="flex-1 flex flex-col overflow-hidden">
+                        <!-- Search Bar -->
+                        <div class="p-3 border-b dark:border-gray-700">
+                            <div class="relative">
+                                <input type="text" id="chatSearchInput" placeholder="جستجوی کاربر..."
+                                    class="w-full px-4 py-2 pr-10 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#122EE1]">
+                                <svg class="w-5 h-5 absolute left-3 top-2.5 text-gray-400" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Tabs -->
+                        <div class="flex border-b dark:border-gray-700 shrink-0">
+                            <button id="conversationsTab"
+                                class="flex-1 py-3 text-center font-medium border-b-2 border-[#122EE1] text-[#122EE1]">
+                                مکالمات
+                            </button>
+                            <button id="usersTab"
+                                class="flex-1 py-3 text-center font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+                                کاربران
+                            </button>
+                        </div>
+
+                        <!-- Content Area -->
+                        <div class="flex-1 overflow-hidden">
+                            <!-- Conversations Panel -->
+                            <div id="conversationsPanel" class="h-full overflow-y-auto">
+                                <div id="conversationsList" class="p-3">
+                                    <!-- Conversations will be loaded here -->
+                                </div>
+                                <div id="noConversations" class="hidden p-6 text-center text-gray-500">
+                                    <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                                        </path>
+                                    </svg>
+                                    <p>هیچ مکالمه‌ای وجود ندارد</p>
+                                </div>
+                            </div>
+
+                            <!-- Users Panel -->
+                            <div id="usersPanel" class="h-full overflow-y-auto hidden">
+                                <div id="usersList" class="p-3">
+                                    <!-- Users will be loaded here -->
+                                </div>
+                                <div id="noUsers" class="hidden p-6 text-center text-gray-500">
+                                    <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-8A8.5 8.5 0 0012 3.5 8.5 8.5 0 003.5 12 8.5 8.5 0 0012 20.5a8.5 8.5 0 008.5-8.5z">
+                                        </path>
+                                    </svg>
+                                    <p>کاربری برای چت پیدا نشد</p>
+                                </div>
+                            </div>
+
+                            <!-- Messages Panel -->
+                            <div id="messagesPanel" class="h-full flex flex-col hidden">
+                                <!-- Messages Header -->
+                                <div
+                                    class="p-3 border-b dark:border-gray-700 flex items-center bg-gray-50 dark:bg-gray-900 shrink-0">
+                                    <button id="backToChat" class="ml-3 text-[#122EE1] hover:text-blue-700">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 19l-7-7 7-7"></path>
+                                        </svg>
+                                    </button>
+                                    <div id="currentChatUser" class="flex items-center flex-1">
+                                        <!-- User info will be loaded here -->
+                                    </div>
+                                </div>
+
+                                <!-- Messages Container -->
+                                <div id="messagesContainer"
+                                    class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-4 overscroll-contain">
+                                    <!-- Messages will be loaded here -->
+                                </div>
+
+                                <!-- Message Input -->
+                                <div class="p-3 border-t dark:border-gray-700 shrink-0">
+                                    <div class="flex space-x-2 rtl:space-x-reverse">
+                                        <button id="sendMessageBtn"
+                                            class="bg-white border border-blue-400 text-white px-6 py-2 rounded-lg transition flex items-center space-x-2 rtl:space-x-reverse">
+                                            <img src="<?php echo e(asset('assets/sarafi/paper-plane.png')); ?>" class="h-5 w-5"
+                                                alt="">
+                                        </button>
+                                        <input type="text" id="messageInput" placeholder="پیام خود را بنویسید..."
+                                            class="flex-1 px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#122EE1]">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-
-<audio id="messageSound" preload="auto" style="display: none;">
-    <source src="<?php echo e(asset('assets/sarafi/message.mp3')); ?>" type="audio/mpeg">
-</audio>
-
-<style>
-    /* Chat Styles - با قابلیت ریسپانسیو کامل */
-    .chat-message {
-        max-width: 85%;
-        padding: 10px 14px;
-        border-radius: 18px;
-        margin-bottom: 8px;
-        word-wrap: break-word;
-        position: relative;
-        word-break: break-word;
-    }
-
-    .chat-message.sent {
-        background: linear-gradient(135deg, #122EE1, #4ECDC4);
-        color: white;
-        margin-right: auto;
-        margin-left: 0;
-        border-bottom-right-radius: 4px;
-    }
-
-    .chat-message.received {
-        background-color: #f1f1f1;
-        color: #333;
-        margin-left: auto;
-        margin-right: 0;
-        border-bottom-left-radius: 4px;
-    }
-
-    .dark .chat-message.received {
-        background-color: #374151;
-        color: #e5e7eb;
-    }
-
-    .chat-message .time {
-        font-size: 11px;
-        opacity: 0.8;
-        margin-top: 4px;
-        text-align: left;
-        display: block;
-    }
-
-    .chat-message.sent .time {
-        color: rgba(255, 255, 255, 0.9);
-    }
-
-    .chat-message.received .time {
-        color: #6b7280;
-    }
-
-    .conversation-item {
-        transition: all 0.2s ease;
-        cursor: pointer;
-        border-radius: 10px;
-        padding: 12px;
-        margin-bottom: 8px;
-        border: 1px solid transparent;
-    }
-
-    .conversation-item:hover {
-        background-color: #f9fafb;
-        border-color: #e5e7eb;
-    }
-
-    .dark .conversation-item:hover {
-        background-color: #374151;
-        border-color: #4b5563;
-    }
-
-    .conversation-item.active {
-        background-color: #eff6ff;
-        border-color: #3b82f6;
-    }
-
-    .dark .conversation-item.active {
-        background-color: #1e3a8a;
-        border-color: #3b82f6;
-    }
-
-    .unread-badge {
-        background-color: #ef4444;
-        color: white;
-        font-size: 12px;
-        min-width: 20px;
-        height: 20px;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0 6px;
-    }
-
-    .user-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        color: white;
-        font-size: 16px;
-        flex-shrink: 0;
-    }
-
-    .avatar-blue {
-        background-color: #3b82f6;
-    }
-
-    .avatar-green {
-        background-color: #10b981;
-    }
-
-    .avatar-purple {
-        background-color: #8b5cf6;
-    }
-
-    .avatar-pink {
-        background-color: #ec4899;
-    }
-
-    .avatar-orange {
-        background-color: #f59e0b;
-    }
-
-    /* Scrollbar Styling */
-    #messagesContainer::-webkit-scrollbar,
-    #conversationsPanel::-webkit-scrollbar,
-    #usersPanel::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    #messagesContainer::-webkit-scrollbar-track,
-    #conversationsPanel::-webkit-scrollbar-track,
-    #usersPanel::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 3px;
-    }
-
-    .dark #messagesContainer::-webkit-scrollbar-track,
-    .dark #conversationsPanel::-webkit-scrollbar-track,
-    .dark #usersPanel::-webkit-scrollbar-track {
-        background: #374151;
-    }
-
-    #messagesContainer::-webkit-scrollbar-thumb,
-    #conversationsPanel::-webkit-scrollbar-thumb,
-    #usersPanel::-webkit-scrollbar-thumb {
-        background: #c1c1c1;
-        border-radius: 3px;
-    }
-
-    .dark #messagesContainer::-webkit-scrollbar-thumb,
-    .dark #conversationsPanel::-webkit-scrollbar-thumb,
-    .dark #usersPanel::-webkit-scrollbar-thumb {
-        background: #6b7280;
-    }
-
-    /* Loading Animation */
-    .chat-loading {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        flex-direction: column;
-    }
-
-    .chat-loading-spinner {
-        width: 40px;
-        height: 40px;
-        border: 3px solid #f3f3f3;
-        border-top: 3px solid #122EE1;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-
-    /* Typing Indicator */
-    .typing-indicator {
-        display: flex;
-        align-items: center;
-        padding: 10px;
-        background-color: #f1f1f1;
-        border-radius: 18px;
-        width: fit-content;
-        margin-bottom: 8px;
-    }
-
-    .dark .typing-indicator {
-        background-color: #374151;
-    }
-
-    .typing-indicator span {
-        height: 8px;
-        width: 8px;
-        border-radius: 50%;
-        background-color: #9ca3af;
-        margin: 0 2px;
-        animation: typing 1.4s infinite ease-in-out;
-    }
-
-    .typing-indicator span:nth-child(1) {
-        animation-delay: 0s;
-    }
-
-    .typing-indicator span:nth-child(2) {
-        animation-delay: 0.2s;
-    }
-
-    .typing-indicator span:nth-child(3) {
-        animation-delay: 0.4s;
-    }
-
-    @keyframes typing {
-
-        0%,
-        60%,
-        100% {
-            transform: translateY(0);
-        }
-
-        30% {
-            transform: translateY(-10px);
-        }
-    }
-
-    /* Mobile First - شروع از موبایل */
-    #chatWidget {
-        position: fixed;
-        bottom: 16px;
-        right: 16px;
-        z-index: 9999;
-    }
-
-    #chatToggle {
-        width: 56px;
-        height: 56px;
-    }
-
-    /* Safe area برای دستگاه‌های ناچ دار */
-    @supports (padding: max(0px)) {
-        #chatWidget {
-            bottom: max(16px, env(safe-area-inset-bottom));
-            right: max(16px, env(safe-area-inset-right));
-        }
-
-        #chatWindow {
-            padding-bottom: env(safe-area-inset-bottom);
-        }
-    }
-
-    /* بهبود تجربه موبایل */
-    @media (max-width: 768px) {
-        #chatWindow {
-            border-radius: 16px 16px 0 0;
-            height: 85vh !important;
-        }
-
-        #chatWindow:not(.hidden) {
-            transform: translateY(0) !important;
-        }
-
-        /* جلوگیری از اسکرول body وقتی چت باز است */
-        body.chat-open {
-            overflow: hidden !important;
-            position: fixed;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* بهبود سایز عناصر در موبایل */
-        .user-avatar {
-            width: 36px;
-            height: 36px;
-            font-size: 14px;
-        }
-
-        .conversation-item {
-            padding: 10px;
-        }
-
-        .chat-message {
-            max-width: 90%;
-            padding: 8px 12px;
-            font-size: 14px;
-        }
-
-        #messageInput,
-        #chatSearchInput {
-            font-size: 16px !important;
-            /* جلوگیری از زوم در iOS */
-            padding: 12px;
-        }
-
-        #sendMessageBtn {
-            padding: 12px 16px;
-            font-size: 14px;
-        }
-
-        /* بهبود ارتفاع در حالت لنداسکیپ */
-        @media (orientation: landscape) {
-            #chatWindow {
-                height: 90vh !important;
-            }
-        }
-    }
-
-    /* تبلت */
-    @media (min-width: 768px) and (max-width: 1024px) {
-        #chatWindow {
-            width: 380px;
-            height: 500px;
-        }
-    }
-
-    /* دسکتاپ */
-    @media (min-width: 1024px) {
-        #chatWindow {
-            width: 420px;
-            height: 550px;
-        }
-    }
-
-    /* انیمیشن‌ها */
-    @keyframes slideUp {
-        from {
-            transform: translateY(100%);
-            opacity: 0;
-        }
-
-        to {
-            transform: translateY(0);
-            opacity: 1;
-        }
-    }
-
-    @keyframes slideDown {
-        from {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        to {
-            transform: translateY(100%);
-            opacity: 0;
-        }
-    }
-
-    .animate-slide-up {
-        animation: slideUp 0.3s ease-out;
-    }
-
-    .animate-slide-down {
-        animation: slideDown 0.3s ease-out;
-    }
-
-    /* Toast Animation */
-    @keyframes slideInRight {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-
-    .animate-slide-in {
-        animation: slideInRight 0.3s ease-out;
-    }
-
-    /* Pulse Animation */
-    @keyframes pulse {
-
-        0%,
-        100% {
-            transform: scale(1);
-        }
-
-        50% {
-            transform: scale(1.05);
-        }
-    }
-
-    .animate-pulse {
-        animation: pulse 2s infinite;
-    }
-</style>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
+
+            <audio id="messageSound" preload="auto" style="display: none;">
+                <source src="<?php echo e(asset('assets/sarafi/message.mp3')); ?>" type="audio/mpeg">
+            </audio>
+
+            <style>
+                /* Chat Styles - با قابلیت ریسپانسیو کامل */
+                .chat-message {
+                    max-width: 85%;
+                    padding: 10px 14px;
+                    border-radius: 18px;
+                    margin-bottom: 8px;
+                    word-wrap: break-word;
+                    position: relative;
+                    word-break: break-word;
+                }
+
+                .chat-message.sent {
+                    background: linear-gradient(135deg, #122EE1, #4ECDC4);
+                    color: white;
+                    margin-right: auto;
+                    margin-left: 0;
+                    border-bottom-right-radius: 4px;
+                }
+
+                .chat-message.received {
+                    background-color: #f1f1f1;
+                    color: #333;
+                    margin-left: auto;
+                    margin-right: 0;
+                    border-bottom-left-radius: 4px;
+                }
+
+                .dark .chat-message.received {
+                    background-color: #374151;
+                    color: #e5e7eb;
+                }
+
+                .chat-message .time {
+                    font-size: 11px;
+                    opacity: 0.8;
+                    margin-top: 4px;
+                    text-align: left;
+                    display: block;
+                }
+
+                .chat-message.sent .time {
+                    color: rgba(255, 255, 255, 0.9);
+                }
+
+                .chat-message.received .time {
+                    color: #6b7280;
+                }
+
+                .conversation-item {
+                    transition: all 0.2s ease;
+                    cursor: pointer;
+                    border-radius: 10px;
+                    padding: 12px;
+                    margin-bottom: 8px;
+                    border: 1px solid transparent;
+                }
+
+                .conversation-item:hover {
+                    background-color: #f9fafb;
+                    border-color: #e5e7eb;
+                }
+
+                .dark .conversation-item:hover {
+                    background-color: #374151;
+                    border-color: #4b5563;
+                }
+
+                .conversation-item.active {
+                    background-color: #eff6ff;
+                    border-color: #3b82f6;
+                }
+
+                .dark .conversation-item.active {
+                    background-color: #1e3a8a;
+                    border-color: #3b82f6;
+                }
+
+                .unread-badge {
+                    background-color: #ef4444;
+                    color: white;
+                    font-size: 12px;
+                    min-width: 20px;
+                    height: 20px;
+                    border-radius: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0 6px;
+                }
+
+                .user-avatar {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: bold;
+                    color: white;
+                    font-size: 16px;
+                    flex-shrink: 0;
+                }
+
+                .avatar-blue {
+                    background-color: #3b82f6;
+                }
+
+                .avatar-green {
+                    background-color: #10b981;
+                }
+
+                .avatar-purple {
+                    background-color: #8b5cf6;
+                }
+
+                .avatar-pink {
+                    background-color: #ec4899;
+                }
+
+                .avatar-orange {
+                    background-color: #f59e0b;
+                }
+
+                /* Scrollbar Styling */
+                #messagesContainer::-webkit-scrollbar,
+                #conversationsPanel::-webkit-scrollbar,
+                #usersPanel::-webkit-scrollbar {
+                    width: 6px;
+                }
+
+                #messagesContainer::-webkit-scrollbar-track,
+                #conversationsPanel::-webkit-scrollbar-track,
+                #usersPanel::-webkit-scrollbar-track {
+                    background: #f1f1f1;
+                    border-radius: 3px;
+                }
+
+                .dark #messagesContainer::-webkit-scrollbar-track,
+                .dark #conversationsPanel::-webkit-scrollbar-track,
+                .dark #usersPanel::-webkit-scrollbar-track {
+                    background: #374151;
+                }
+
+                #messagesContainer::-webkit-scrollbar-thumb,
+                #conversationsPanel::-webkit-scrollbar-thumb,
+                #usersPanel::-webkit-scrollbar-thumb {
+                    background: #c1c1c1;
+                    border-radius: 3px;
+                }
+
+                .dark #messagesContainer::-webkit-scrollbar-thumb,
+                .dark #conversationsPanel::-webkit-scrollbar-thumb,
+                .dark #usersPanel::-webkit-scrollbar-thumb {
+                    background: #6b7280;
+                }
+
+                /* Loading Animation */
+                .chat-loading {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100%;
+                    flex-direction: column;
+                }
+
+                .chat-loading-spinner {
+                    width: 40px;
+                    height: 40px;
+                    border: 3px solid #f3f3f3;
+                    border-top: 3px solid #122EE1;
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                }
+
+                @keyframes spin {
+                    0% {
+                        transform: rotate(0deg);
+                    }
+
+                    100% {
+                        transform: rotate(360deg);
+                    }
+                }
+
+                /* Typing Indicator */
+                .typing-indicator {
+                    display: flex;
+                    align-items: center;
+                    padding: 10px;
+                    background-color: #f1f1f1;
+                    border-radius: 18px;
+                    width: fit-content;
+                    margin-bottom: 8px;
+                }
+
+                .dark .typing-indicator {
+                    background-color: #374151;
+                }
+
+                .typing-indicator span {
+                    height: 8px;
+                    width: 8px;
+                    border-radius: 50%;
+                    background-color: #9ca3af;
+                    margin: 0 2px;
+                    animation: typing 1.4s infinite ease-in-out;
+                }
+
+                .typing-indicator span:nth-child(1) {
+                    animation-delay: 0s;
+                }
+
+                .typing-indicator span:nth-child(2) {
+                    animation-delay: 0.2s;
+                }
+
+                .typing-indicator span:nth-child(3) {
+                    animation-delay: 0.4s;
+                }
+
+                @keyframes typing {
+
+                    0%,
+                    60%,
+                    100% {
+                        transform: translateY(0);
+                    }
+
+                    30% {
+                        transform: translateY(-10px);
+                    }
+                }
+
+                /* Mobile First - شروع از موبایل */
+                #chatWidget {
+                    position: fixed;
+                    bottom: 16px;
+                    right: 16px;
+                    z-index: 9999;
+                }
+
+                #chatToggle {
+                    width: 56px;
+                    height: 56px;
+                }
+
+                /* Safe area برای دستگاه‌های ناچ دار */
+                @supports (padding: max(0px)) {
+                    #chatWidget {
+                        bottom: max(16px, env(safe-area-inset-bottom));
+                        right: max(16px, env(safe-area-inset-right));
+                    }
+
+                    #chatWindow {
+                        padding-bottom: env(safe-area-inset-bottom);
+                    }
+                }
+
+                /* بهبود تجربه موبایل */
+                @media (max-width: 768px) {
+                    #chatWindow {
+                        border-radius: 16px 16px 0 0;
+                        height: 85vh !important;
+                    }
+
+                    #chatWindow:not(.hidden) {
+                        transform: translateY(0) !important;
+                    }
+
+                    /* جلوگیری از اسکرول body وقتی چت باز است */
+                    body.chat-open {
+                        overflow: hidden !important;
+                        position: fixed;
+                        width: 100%;
+                        height: 100%;
+                    }
+
+                    /* بهبود سایز عناصر در موبایل */
+                    .user-avatar {
+                        width: 36px;
+                        height: 36px;
+                        font-size: 14px;
+                    }
+
+                    .conversation-item {
+                        padding: 10px;
+                    }
+
+                    .chat-message {
+                        max-width: 90%;
+                        padding: 8px 12px;
+                        font-size: 14px;
+                    }
+
+                    #messageInput,
+                    #chatSearchInput {
+                        font-size: 16px !important;
+                        /* جلوگیری از زوم در iOS */
+                        padding: 12px;
+                    }
+
+                    #sendMessageBtn {
+                        padding: 12px 16px;
+                        font-size: 14px;
+                    }
+
+                    /* بهبود ارتفاع در حالت لنداسکیپ */
+                    @media (orientation: landscape) {
+                        #chatWindow {
+                            height: 90vh !important;
+                        }
+                    }
+                }
+
+                /* تبلت */
+                @media (min-width: 768px) and (max-width: 1024px) {
+                    #chatWindow {
+                        width: 380px;
+                        height: 500px;
+                    }
+                }
+
+                /* دسکتاپ */
+                @media (min-width: 1024px) {
+                    #chatWindow {
+                        width: 420px;
+                        height: 550px;
+                    }
+                }
+
+                /* انیمیشن‌ها */
+                @keyframes slideUp {
+                    from {
+                        transform: translateY(100%);
+                        opacity: 0;
+                    }
+
+                    to {
+                        transform: translateY(0);
+                        opacity: 1;
+                    }
+                }
+
+                @keyframes slideDown {
+                    from {
+                        transform: translateY(0);
+                        opacity: 1;
+                    }
+
+                    to {
+                        transform: translateY(100%);
+                        opacity: 0;
+                    }
+                }
+
+                .animate-slide-up {
+                    animation: slideUp 0.3s ease-out;
+                }
+
+                .animate-slide-down {
+                    animation: slideDown 0.3s ease-out;
+                }
+
+                /* Toast Animation */
+                @keyframes slideInRight {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+
+                .animate-slide-in {
+                    animation: slideInRight 0.3s ease-out;
+                }
+
+                /* Pulse Animation */
+                @keyframes pulse {
+
+                    0%,
+                    100% {
+                        transform: scale(1);
+                    }
+
+                    50% {
+                        transform: scale(1.05);
+                    }
+                }
+
+                .animate-pulse {
+                    animation: pulse 2s infinite;
+                }
+            </style>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
         // DOM Elements
         const chatWidget = document.getElementById('chatWidget');
         const chatToggle = document.getElementById('chatToggle');
@@ -3352,45 +3353,205 @@
         }
 
         // Rendering Functions
-        function renderConversations(conversations) {
-            conversationsList.innerHTML = '';
-            
-            if (!conversations || conversations.length === 0) {
-                document.getElementById('noConversations').classList.remove('hidden');
-                return;
-            }
-            
-            conversations.forEach(conv => {
-                const conversationItem = document.createElement('div');
-                conversationItem.className = 'conversation-item';
-                
-                const avatarColors = ['avatar-blue', 'avatar-green', 'avatar-purple', 'avatar-pink', 'avatar-orange'];
-                const colorIndex = conv.other_user.name.length % avatarColors.length;
-                const displayName = `${conv.other_user.name} ${conv.other_user.lastname}`;
-                
-                conversationItem.innerHTML = `
-                    <div class="flex items-center">
-                        <div class="user-avatar ${avatarColors[colorIndex]}">
-                            ${conv.other_user.name.charAt(0)}
-                        </div>
-                        <div class="mr-3 flex-1 min-w-0">
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-semibold truncate">${displayName}</h4>
-                                ${conv.unread_count > 0 ? `<span class="unread-badge flex-shrink-0">${conv.unread_count}</span>` : ''}
-                            </div>
-                            <p class="text-sm text-gray-600 dark:text-gray-400 truncate">${conv.last_message || ''}</p>
-                            <small class="text-xs text-gray-500">${conv.last_message_at ? formatDate(conv.last_message_at) : ''}</small>
-                        </div>
-                    </div>
-                `;
-                
-                conversationItem.addEventListener('click', () => openChat(conv.other_user.id, displayName));
-                conversationsList.appendChild(conversationItem);
-            });
-            
-            document.getElementById('noConversations').classList.add('hidden');
+        // در قسمت renderConversations:
+function renderConversations(conversations) {
+    conversationsList.innerHTML = '';
+    
+    if (!conversations || conversations.length === 0) {
+        document.getElementById('noConversations').classList.remove('hidden');
+        return;
+    }
+    
+    conversations.forEach(conv => {
+        const conversationItem = document.createElement('div');
+        conversationItem.className = 'conversation-item';
+        
+        const displayName = `${conv.other_user.name} ${conv.other_user.lastname}`;
+        const userImage = conv.other_user.user_image || conv.other_user.image_url;
+        
+        // ✅ نمایش تصویر کاربر
+        let avatarHtml = '';
+        if (userImage) {
+            avatarHtml = `
+                <div class="user-avatar-image">
+                    <img src="${userImage.startsWith('http') ? userImage : '/storage/' + userImage}" 
+                         alt="${displayName}" 
+                         class="w-10 h-10 rounded-full object-cover border border-gray-200">
+                </div>
+            `;
+        } else {
+            const avatarColors = ['avatar-blue', 'avatar-green', 'avatar-purple', 'avatar-pink', 'avatar-orange'];
+            const colorIndex = conv.other_user.name.length % avatarColors.length;
+            avatarHtml = `
+                <div class="user-avatar ${avatarColors[colorIndex]}">
+                    ${conv.other_user.name.charAt(0)}
+                </div>
+            `;
         }
+        
+        conversationItem.innerHTML = `
+            <div class="flex items-center">
+                ${avatarHtml}
+                <div class="mr-3 flex-1 min-w-0">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-semibold truncate">${displayName}</h4>
+                        ${conv.unread_count > 0 ? `<span class="unread-badge flex-shrink-0">${conv.unread_count}</span>` : ''}
+                    </div>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 truncate">${conv.last_message || ''}</p>
+                    <small class="text-xs text-gray-500">${conv.last_message_at ? formatDate(conv.last_message_at) : ''}</small>
+                </div>
+            </div>
+        `;
+        
+        conversationItem.addEventListener('click', () => openChat(conv.other_user.id, displayName, userImage));
+        conversationsList.appendChild(conversationItem);
+    });
+    
+    document.getElementById('noConversations').classList.add('hidden');
+}
 
+// در قسمت renderUsers:
+function renderUsers(users) {
+    usersList.innerHTML = '';
+    
+    if (!users || users.length === 0) {
+        document.getElementById('noUsers').classList.remove('hidden');
+        return;
+    }
+    
+    users.forEach(user => {
+        const userItem = document.createElement('div');
+        userItem.className = 'conversation-item';
+        
+        const displayName = `${user.name} ${user.lastname}`;
+        const roleText = user.role === 'superadmin' ? 'سوپر ادمین' : 
+                        user.role === 'admin' ? 'ادمین' : 'انباردار';
+        const userImage = user.user_image || user.image_url;
+        
+        // ✅ نمایش تصویر کاربر
+        let avatarHtml = '';
+        if (userImage) {
+            avatarHtml = `
+                <div class="user-avatar-image">
+                    <img src="${userImage.startsWith('http') ? userImage : '/storage/' + userImage}" 
+                         alt="${displayName}" 
+                         class="w-10 h-10 rounded-full object-cover border border-gray-200">
+                </div>
+            `;
+        } else {
+            const avatarColors = ['avatar-blue', 'avatar-green', 'avatar-purple', 'avatar-pink', 'avatar-orange'];
+            const colorIndex = user.name.length % avatarColors.length;
+            avatarHtml = `
+                <div class="user-avatar ${avatarColors[colorIndex]}">
+                    ${user.name.charAt(0)}
+                </div>
+            `;
+        }
+        
+        userItem.innerHTML = `
+            <div class="flex items-center">
+                ${avatarHtml}
+                <div class="mr-3 flex-1 min-w-0">
+                    <h4 class="font-semibold truncate">${displayName}</h4>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 truncate">${roleText} - ${user.sarafi_name}</p>
+                </div>
+                <button class="text-[#122EE1] hover:text-blue-700 flex-shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                    </svg>
+                </button>
+            </div>
+        `;
+        
+        userItem.addEventListener('click', () => openChat(user.id, displayName, userImage));
+        usersList.appendChild(userItem);
+    });
+    
+    document.getElementById('noUsers').classList.add('hidden');
+}
+
+// ✅ تغییر تابع openChat برای دریافت userImage
+async function openChat(userId, userName, userImage = null) {
+    currentChatUserId = userId;
+    currentChatUserName = userName;
+    
+    // Show messages panel
+    conversationsPanel.classList.add('hidden');
+    usersPanel.classList.add('hidden');
+    messagesPanel.classList.remove('hidden');
+    
+    // ✅ Update header with user image
+    let avatarHtml = '';
+    if (userImage) {
+        avatarHtml = `
+            <img src="${userImage.startsWith('http') ? userImage : '/storage/' + userImage}" 
+                 alt="${userName}" 
+                 class="w-10 h-10 rounded-full object-cover border border-gray-200">
+        `;
+    } else {
+        const avatarColors = ['avatar-blue', 'avatar-green', 'avatar-purple', 'avatar-pink', 'avatar-orange'];
+        const colorIndex = userName.length % avatarColors.length;
+        avatarHtml = `
+            <div class="user-avatar ${avatarColors[colorIndex]}">
+                ${userName.charAt(0)}
+            </div>
+        `;
+    }
+    
+    document.getElementById('currentChatUser').innerHTML = `
+        ${avatarHtml}
+        <div class="mr-3">
+            <h4 class="font-semibold">${userName}</h4>
+            <small class="text-gray-500 dark:text-gray-400 text-sm">آنلاین</small>
+        </div>
+    `;
+    
+    // Load messages (بارگذاری اولیه)
+    await loadMessages();
+    
+    setTimeout(() => {
+        messageInput.focus();
+        
+        if (isMobile) {
+            setTimeout(scrollToBottom, 100);
+        }
+    }, 200);
+}
+
+// در تابع renderMessage، اگر می‌خواهید عکس کاربر را در کنار پیام هم نمایش دهید:
+function renderMessage(msg, isSent) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `flex items-end gap-2 ${isSent ? 'justify-end' : 'justify-start'}`;
+    messageDiv.dataset.messageId = msg.id;
+    
+    const time = new Date(msg.created_at).toLocaleTimeString('fa-IR', {
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+    
+    // ✅ اگر می‌خواهید عکس کاربر در کنار پیام باشد:
+    const userImage = msg.sender?.user_image || msg.sender?.image_url;
+    let avatarHtml = '';
+    
+    if (!isSent && userImage) {
+        avatarHtml = `
+            <img src="${userImage.startsWith('http') ? userImage : '/storage/' + userImage}" 
+                 alt="${msg.sender.name}" 
+                 class="w-8 h-8 rounded-full object-cover flex-shrink-0">
+        `;
+    }
+    
+    messageDiv.innerHTML = `
+        ${!isSent ? avatarHtml : ''}
+        <div class="chat-message ${isSent ? 'sent' : 'received'}">
+            <p>${msg.message}</p>
+            <span class="time">${time}</span>
+        </div>
+        ${isSent ? avatarHtml : ''}
+    `;
+    
+    messagesContainer.appendChild(messageDiv);
+}
         function renderUsers(users) {
             usersList.innerHTML = '';
             
@@ -3660,7 +3821,7 @@
             }
         });
     });
-</script>
+            </script>
 
         </div>
     </div>

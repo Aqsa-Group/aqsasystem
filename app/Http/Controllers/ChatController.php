@@ -168,7 +168,27 @@ class ChatController extends Controller
                   ->where('receiver_id', $currentUser->id);
         })->orderBy('created_at', 'asc')
           ->with(['sender', 'receiver'])
-          ->get();
+          ->get()
+          ->map(function ($message) {
+              // ✅ اضافه کردن image_url به sender و receiver
+              $messageArray = $message->toArray();
+              
+              // اضافه کردن تصویر sender
+              if ($message->sender && $message->sender->user_image) {
+                  $messageArray['sender']['image_url'] = asset('storage/' . $message->sender->user_image);
+              } else {
+                  $messageArray['sender']['image_url'] = asset('assets/sarafi/avatar.svg');
+              }
+              
+              // اضافه کردن تصویر receiver
+              if ($message->receiver && $message->receiver->user_image) {
+                  $messageArray['receiver']['image_url'] = asset('storage/' . $message->receiver->user_image);
+              } else {
+                  $messageArray['receiver']['image_url'] = asset('assets/sarafi/avatar.svg');
+              }
+              
+              return $messageArray;
+          });
 
         // Mark messages as read
         Message::where('sender_id', $otherUser->id)
@@ -222,7 +242,27 @@ class ChatController extends Controller
             ->where('id', '>', $lastMessageId)
             ->orderBy('created_at', 'asc')
             ->with(['sender', 'receiver'])
-            ->get();
+            ->get()
+            ->map(function ($message) {
+                // ✅ اضافه کردن image_url به sender و receiver
+                $messageArray = $message->toArray();
+                
+                // اضافه کردن تصویر sender
+                if ($message->sender && $message->sender->user_image) {
+                    $messageArray['sender']['image_url'] = asset('storage/' . $message->sender->user_image);
+                } else {
+                    $messageArray['sender']['image_url'] = asset('assets/sarafi/avatar.svg');
+                }
+                
+                // اضافه کردن تصویر receiver
+                if ($message->receiver && $message->receiver->user_image) {
+                    $messageArray['receiver']['image_url'] = asset('storage/' . $message->receiver->user_image);
+                } else {
+                    $messageArray['receiver']['image_url'] = asset('assets/sarafi/avatar.svg');
+                }
+                
+                return $messageArray;
+            });
 
         Log::info('Found ' . $messages->count() . ' new messages');
 
@@ -265,9 +305,16 @@ class ChatController extends Controller
                 $unreadCount = $conversation->user1_id == $user->id ? 
                     $conversation->unread_count_user1 : $conversation->unread_count_user2;
                 
+                // ✅ اضافه کردن user_image به other_user
                 return [
                     'id' => $conversation->id,
-                    'other_user' => $otherUser,
+                    'other_user' => [
+                        'id' => $otherUser->id,
+                        'name' => $otherUser->name,
+                        'lastname' => $otherUser->lastname,
+                        'user_image' => $otherUser->user_image,
+                        'image_url' => $otherUser->user_image ? asset('storage/' . $otherUser->user_image) : asset('assets/sarafi/avatar.svg'),
+                    ],
                     'last_message' => $conversation->last_message,
                     'last_message_at' => $conversation->last_message_at,
                     'unread_count' => $unreadCount,
@@ -314,8 +361,14 @@ class ChatController extends Controller
                     $query->orWhere('id', $currentUser->admin_id);
                 }
             })
-            ->select('id', 'name', 'lastname', 'sarafi_name', 'role', 'admin_id', 'phone')
-            ->get();
+            ->select('id', 'name', 'lastname', 'sarafi_name', 'role', 'admin_id', 'phone', 'user_image')
+            ->get()
+            ->map(function ($user) {
+                // ✅ اضافه کردن image_url
+                $userArray = $user->toArray();
+                $userArray['image_url'] = $user->user_image ? asset('storage/' . $user->user_image) : asset('assets/sarafi/avatar.svg');
+                return $userArray;
+            });
 
         return response()->json([
             'success' => true,
@@ -355,9 +408,15 @@ class ChatController extends Controller
                   ->orWhere('sarafi_name', 'like', "%{$query}%")
                   ->orWhere('phone', 'like', "%{$query}%");
             })
-            ->select('id', 'name', 'lastname', 'sarafi_name', 'role', 'admin_id', 'phone')
+            ->select('id', 'name', 'lastname', 'sarafi_name', 'role', 'admin_id', 'phone', 'user_image')
             ->limit(20)
-            ->get();
+            ->get()
+            ->map(function ($user) {
+                // ✅ اضافه کردن image_url
+                $userArray = $user->toArray();
+                $userArray['image_url'] = $user->user_image ? asset('storage/' . $user->user_image) : asset('assets/sarafi/avatar.svg');
+                return $userArray;
+            });
 
         return response()->json([
             'success' => true,
@@ -397,7 +456,9 @@ class ChatController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'role' => $user->role,
-                'admin_id' => $user->admin_id
+                'admin_id' => $user->admin_id,
+                'user_image' => $user->user_image,
+                'image_url' => $user->user_image ? asset('storage/' . $user->user_image) : asset('assets/sarafi/avatar.svg'),
             ],
             'session' => session()->all(),
             'auth' => auth()->check(),
