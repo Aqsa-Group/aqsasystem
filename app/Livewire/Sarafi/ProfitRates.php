@@ -157,7 +157,7 @@ class ProfitRates extends Component
     /**
      * تولید رکوردهای معکوس و تکمیل جدول نرخ‌ها
      */
-     private function generateAllReverseRates(array $baseRecord)
+    private function generateAllReverseRates(array $baseRecord)
     {
         $baseSource = $baseRecord['source_currency'];
         $baseCurrencyCode = strtolower($baseSource);
@@ -193,7 +193,8 @@ class ProfitRates extends Component
                 if (($targetCurrency === 'afn' && $other === 'irr') ||
                     ($targetCurrency === 'irr' && $other === 'afn')) {
                     
-                    // محاسبه نرخ تومان به افغانی از طریق دلار
+                    // محاسبه نرخ تومان به افغانی
+                    // فرمول: (نرخ دلار به افغانی) × 1000 ÷ (نرخ دلار به تومان)
                     $afnBuyCash = $baseRecord['afn_buy_cash'] ?? 0;
                     $afnBuyBank = $baseRecord['afn_buy_bank'] ?? 0;
                     $afnSellCash = $baseRecord['afn_sell_cash'] ?? 0;
@@ -205,27 +206,30 @@ class ProfitRates extends Component
                     $irrSellBank = $baseRecord['irr_sell_bank'] ?? 0;
 
                     // محاسبه نرخ تومان به افغانی برای هر نوع معامله
-                    // خرید نقدی: (نرخ دلار به افغانی) ÷ (نرخ دلار به تومان) × 1000
+                    // خرید نقدی
                     if ($irrBuyCash > 0 && $afnBuyCash > 0) {
-                        $rateBuyCash = ($afnBuyCash / $irrBuyCash) * 1000;
+                        $rateBuyCash = ($afnBuyCash * 1000) / $irrBuyCash;
                     } else {
                         $rateBuyCash = 0;
                     }
                     
+                    // خرید بانکی
                     if ($irrBuyBank > 0 && $afnBuyBank > 0) {
-                        $rateBuyBank = ($afnBuyBank / $irrBuyBank) * 1000;
+                        $rateBuyBank = ($afnBuyBank * 1000) / $irrBuyBank;
                     } else {
                         $rateBuyBank = 0;
                     }
                     
+                    // فروش نقدی
                     if ($irrSellCash > 0 && $afnSellCash > 0) {
-                        $rateSellCash = ($afnSellCash / $irrSellCash) * 1000;
+                        $rateSellCash = ($afnSellCash * 1000) / $irrSellCash;
                     } else {
                         $rateSellCash = 0;
                     }
                     
+                    // فروش بانکی
                     if ($irrSellBank > 0 && $afnSellBank > 0) {
-                        $rateSellBank = ($afnSellBank / $irrSellBank) * 1000;
+                        $rateSellBank = ($afnSellBank * 1000) / $irrSellBank;
                     } else {
                         $rateSellBank = 0;
                     }
@@ -304,6 +308,7 @@ class ProfitRates extends Component
             }
         }
     }
+
 
     public function edit($id)
     {

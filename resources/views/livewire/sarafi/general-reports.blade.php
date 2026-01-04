@@ -26,46 +26,70 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
 @endphp
 
 <div class="px-5">
-    <div class="w-[1200px]">
-        <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-3 mb-5">
-            <button wire:click="selectCategory('customers')"
-                class="bg-[#2563EB] text-white text-[16px] w-full py-3 font-bold rounded-[12px] hover:bg-blue-700 transition-colors">
+    <div class="w-full max-w-[1200px] mx-auto px-3">
+        <div class="flex flex-col md:flex-row md:flex-wrap
+            items-start justify-start gap-3 mb-5">
+            <button wire:click="selectCategory('customers')" class="bg-[#2563EB] text-white text-[16px] w-full md:flex-1 py-3 font-bold rounded-[12px]
+                   hover:bg-blue-700 transition-colors">
                 گزارشات مالی مشتریان
             </button>
-            <button wire:click="selectCategory('accounts')"
-                class="bg-[#2563EB] text-white text-[16px] w-full py-3 font-bold rounded-[12px] hover:bg-blue-700 transition-colors">
+
+            <button wire:click="selectCategory('accounts')" class="bg-[#2563EB] text-white text-[16px] w-full md:flex-1 py-3 font-bold rounded-[12px]
+                   hover:bg-blue-700 transition-colors">
                 گزارش حسابات و صندوق
             </button>
-            <button wire:click="selectCategory('transactions')"
-                class="bg-[#2563EB] text-white text-[16px] w-full py-3 font-bold rounded-[12px] hover:bg-blue-700 transition-colors">
+
+            <button wire:click="selectCategory('transactions')" class="bg-[#2563EB] text-white text-[16px] w-full md:flex-1 py-3 font-bold rounded-[12px]
+                   hover:bg-blue-700 transition-colors">
                 گزارشات تراکنش های معاملات
             </button>
-            <button wire:click="selectCategory('management')"
-                class="bg-[#2563EB] text-white text-[16px] w-full py-3 font-bold rounded-[12px] hover:bg-blue-700 transition-colors">
+
+            <button wire:click="selectCategory('management')" class="bg-[#2563EB] text-white text-[16px] w-full md:flex-1 py-3 font-bold rounded-[12px]
+                   hover:bg-blue-700 transition-colors">
                 گزارشات مدیریتی و تحلیلی
             </button>
         </div>
     </div>
 
+
     <div class="flex-1 flex flex-col dark:bg-black dark:border-white dark:border dark:text-white  bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px] w-full mb-5"
         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-
         @if($selectedCategory)
-        <div class="mb-5 relative w-full">
-            <select wire:model.live="selectedSubCategory"
-                class="border bg-transparent dark:bg-black dark:text-white dark:border-white border-[#8C8C8C] rounded-[12px] px-4 py-2 pt-[13px] pr-[9px] pl-[9px] pb-[13px] w-full appearance-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                <option value="">انتخاب زیرشاخه</option>
-                @foreach($subCategories[$selectedCategory] as $sub)
-                <option value="{{ $sub }}">{{ $sub }}</option>
-                @endforeach
-            </select>
+     <div x-data="{ open:false, value:'' }" class="relative w-full ">
+    <!-- Input -->
+    <button @click="open = !open"
+        class="w-full flex justify-between items-center
+               border border-[#8C8C8C]
+               rounded-[12px]
+               px-3 py-3
+               bg-transparent dark:bg-black dark:text-white">
+        <span x-text="value || 'انتخاب زیرشاخه'"></span>
+        <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" class="w-4 h-4">
+    </button>
 
-            <!-- آیکون سفارشی -->
-            <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓" class="w-4 h-4">
-            </div>
+    <!-- Dropdown -->
+    <div x-show="open" @click.outside="open=false"
+        class="absolute z-50 mt-2 w-full
+               bg-white dark:bg-black
+               border dark:border-white
+               rounded-xl shadow-lg max-h-60 overflow-y-auto">
+
+        @foreach($subCategories[$selectedCategory] as $sub)
+        <div
+            @click="
+                value='{{ $sub }}';
+                open=false;
+                $wire.set('selectedSubCategory','{{ $sub }}')
+            "
+            class="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+            {{ $sub }}
         </div>
+        @endforeach
+    </div>
+</div>
+
         @endif
+
 
         <!-- نمایش محتوای زیرشاخه -->
         @if($selectedSubCategory)
@@ -125,7 +149,8 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                                 2) }}</td>
                             <td class="px-4 py-4 text-left" dir="ltr">{{ number_format($report['balances']['cny'] ?? 0,
                                 2) }}</td>
-                            <td class="px-4 py-4 font-medium text-left" dir="ltr">{{ number_format($report['total_balance'], 2) }}
+                            <td class="px-4 py-4 font-medium text-left" dir="ltr">{{
+                                number_format($report['total_balance'], 2) }}
                             </td>
                         </tr>
                         @empty
@@ -253,7 +278,8 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
 
                                 <!-- Customer Info -->
                                 <div class="flex-1 text-right mr-3">
-                                    <div class="font-medium dark:text-white text-gray-900" x-text="customer.fullname"></div>
+                                    <div class="font-medium dark:text-white text-gray-900" x-text="customer.fullname">
+                                    </div>
                                     <div class="text-sm text-gray-500 dark:text-white"
                                         x-text="'شماره حساب: ' + customer.account_number"></div>
                                 </div>
@@ -300,102 +326,124 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
             @endforeach
         </div>
 
-   <!-- نمودار میله‌ای -->
-<div class="p-6 mb-8 bg-white dark:bg-gray-900 rounded-xl shadow">
-    <svg width="100%" height="350" viewBox="0 0 1000 350" xmlns="http://www.w3.org/2000/svg">
+        <!-- نمودار میله‌ای -->
+        <div class="p-6 mb-8 bg-white dark:bg-gray-900 rounded-xl shadow">
+            <svg width="100%" height="350" viewBox="0 0 1000 350" xmlns="http://www.w3.org/2000/svg">
 
-        <!-- استایل دارک مود مخصوص SVG -->
-       <style>
-    /* حالت لایت */
-    .axis { stroke: #94a3b8; }
-    .grid { stroke: #e2e8f0; }
-    .label { fill: #374151; font-size: 12px; }
-    .currency { fill: #1f2937; font-size: 16px; font-weight: 600; }
-    .value { fill: #1f2937; font-size: 12px; font-weight: 600; }
+                <!-- استایل دارک مود مخصوص SVG -->
+                <style>
+                    /* حالت لایت */
+                    .axis {
+                        stroke: #94a3b8;
+                    }
 
-    /* دارک مود */
-    @media (prefers-color-scheme: dark) {
-        .axis { stroke: #64748b; }
-        .grid { stroke: #334155; }
+                    .grid {
+                        stroke: #e2e8f0;
+                    }
 
-        /* 👇 همه متن‌ها سفید */
-        .label,
-        .currency,
-        .value {
-            fill: #ffffff;
-        }
-    }
-</style>
+                    .label {
+                        fill: #374151;
+                        font-size: 12px;
+                    }
+
+                    .currency {
+                        fill: #1f2937;
+                        font-size: 16px;
+                        font-weight: 600;
+                    }
+
+                    .value {
+                        fill: #1f2937;
+                        font-size: 12px;
+                        font-weight: 600;
+                    }
+
+                    /* دارک مود */
+                    @media (prefers-color-scheme: dark) {
+                        .axis {
+                            stroke: #64748b;
+                        }
+
+                        .grid {
+                            stroke: #334155;
+                        }
+
+                        /* 👇 همه متن‌ها سفید */
+                        .label,
+                        .currency,
+                        .value {
+                            fill: #ffffff;
+                        }
+                    }
+                </style>
 
 
-        <defs>
-            <!-- گرادیانت میله‌ها -->
-            <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#60A5FA" />
-                <stop offset="100%" stop-color="#2563EB" />
-            </linearGradient>
-        </defs>
+                <defs>
+                    <!-- گرادیانت میله‌ها -->
+                    <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#60A5FA" />
+                        <stop offset="100%" stop-color="#2563EB" />
+                    </linearGradient>
+                </defs>
 
-        <!-- محور عمودی -->
-        <line x1="129" y1="30" x2="129" y2="280" class="axis" stroke-width="2" />
+                <!-- محور عمودی -->
+                <line x1="129" y1="30" x2="129" y2="280" class="axis" stroke-width="2" />
 
-        <!-- محور افقی -->
-        <line x1="100" y1="280" x2="950" y2="280" class="axis" stroke-width="2" />
+                <!-- محور افقی -->
+                <line x1="100" y1="280" x2="950" y2="280" class="axis" stroke-width="2" />
 
-        <!-- مقادیر محور عمودی -->
-        <text x="90" y="285" text-anchor="end" class="label">0</text>
-        <text x="90" y="235" text-anchor="end" class="label">{{ number_format($maxValue * 0.2, 0) }}</text>
-        <text x="90" y="185" text-anchor="end" class="label">{{ number_format($maxValue * 0.4, 0) }}</text>
-        <text x="90" y="135" text-anchor="end" class="label">{{ number_format($maxValue * 0.6, 0) }}</text>
-        <text x="90" y="85"  text-anchor="end" class="label">{{ number_format($maxValue * 0.8, 0) }}</text>
-        <text x="90" y="35"  text-anchor="end" class="label">{{ number_format($maxValue, 0) }}</text>
+                <!-- مقادیر محور عمودی -->
+                <text x="90" y="285" text-anchor="end" class="label">0</text>
+                <text x="90" y="235" text-anchor="end" class="label">{{ number_format($maxValue * 0.2, 0) }}</text>
+                <text x="90" y="185" text-anchor="end" class="label">{{ number_format($maxValue * 0.4, 0) }}</text>
+                <text x="90" y="135" text-anchor="end" class="label">{{ number_format($maxValue * 0.6, 0) }}</text>
+                <text x="90" y="85" text-anchor="end" class="label">{{ number_format($maxValue * 0.8, 0) }}</text>
+                <text x="90" y="35" text-anchor="end" class="label">{{ number_format($maxValue, 0) }}</text>
 
-        <!-- خطوط راهنما -->
-        <line x1="100" y1="280" x2="950" y2="280" class="grid" />
-        <line x1="100" y1="230" x2="950" y2="230" class="grid" stroke-dasharray="4" />
-        <line x1="100" y1="180" x2="950" y2="180" class="grid" stroke-dasharray="4" />
-        <line x1="100" y1="130" x2="950" y2="130" class="grid" stroke-dasharray="4" />
-        <line x1="100" y1="80"  x2="950" y2="80"  class="grid" stroke-dasharray="4" />
-        <line x1="100" y1="30"  x2="950" y2="30"  class="grid" stroke-dasharray="4" />
+                <!-- خطوط راهنما -->
+                <line x1="100" y1="280" x2="950" y2="280" class="grid" />
+                <line x1="100" y1="230" x2="950" y2="230" class="grid" stroke-dasharray="4" />
+                <line x1="100" y1="180" x2="950" y2="180" class="grid" stroke-dasharray="4" />
+                <line x1="100" y1="130" x2="950" y2="130" class="grid" stroke-dasharray="4" />
+                <line x1="100" y1="80" x2="950" y2="80" class="grid" stroke-dasharray="4" />
+                <line x1="100" y1="30" x2="950" y2="30" class="grid" stroke-dasharray="4" />
 
-        @php
-            $chartHeight = 250;
-            $barWidth = 50;
-            $spacing = 30;
-            $startX = 140;
-        @endphp
+                @php
+                $chartHeight = 250;
+                $barWidth = 50;
+                $spacing = 30;
+                $startX = 140;
+                @endphp
 
-        @foreach($chartData as $index => $item)
-            @php
+                @foreach($chartData as $index => $item)
+                @php
                 $barHeight = $maxValue > 0 ? ($item['value'] / $maxValue) * $chartHeight : 0;
                 $x = $startX + ($index * ($barWidth + $spacing));
                 $y = 280 - $barHeight;
 
                 $displayValue = $item['value'] >= 1000000
-                    ? number_format($item['value'] / 1000000, 1) . 'M'
-                    : ($item['value'] >= 1000
-                        ? number_format($item['value'] / 1000, 1) . 'K'
-                        : number_format($item['value'], 0));
-            @endphp
+                ? number_format($item['value'] / 1000000, 1) . 'M'
+                : ($item['value'] >= 1000
+                ? number_format($item['value'] / 1000, 1) . 'K'
+                : number_format($item['value'], 0));
+                @endphp
 
-            <!-- میله -->
-            <rect x="{{ $x }}" y="{{ $y }}" width="{{ $barWidth }}" height="{{ $barHeight }}"
-                  fill="url(#barGradient)" rx="4" />
+                <!-- میله -->
+                <rect x="{{ $x }}" y="{{ $y }}" width="{{ $barWidth }}" height="{{ $barHeight }}"
+                    fill="url(#barGradient)" rx="4" />
 
-            <!-- مقدار -->
-            <text x="{{ $x + $barWidth / 2 }}" y="{{ $y - 8 }}"
-                  text-anchor="middle" class="value">
-                {{ $displayValue }}
-            </text>
+                <!-- مقدار -->
+                <text x="{{ $x + $barWidth / 2 }}" y="{{ $y - 8 }}" text-anchor="middle" class="value">
+                    {{ $displayValue }}
+                </text>
 
-            <!-- نام ارز -->
-            <text x="{{ $x + $barWidth / 2 }}" y="305"
-                  text-anchor="middle" class="currency">
-                {{ $item['currency'] }}
-            </text>
-        @endforeach
-    </svg>
-</div>
+                <!-- نام ارز -->
+                <text x="{{ $x + $barWidth / 2 }}" y="305" text-anchor="middle" class="currency">
+                    {{ $item['currency'] }}
+                </text>
+                @endforeach
+            </svg>
+        </div>
 
         @break
         @case('طلب مشتری ها')

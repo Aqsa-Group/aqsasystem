@@ -334,8 +334,15 @@
         </div>
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
             <!-- فرم تبدیل ارز -->
-            <div class="flex flex-col dark:bg-black dark:border-white dark:border bg-[#F5F5F5] mx-auto w-[420px] lg:w-[534px] mb-6 p-[12px] h-fit rounded-[12px] space-y-2"
-                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+            <div class="flex flex-col
+         dark:bg-black dark:text-white dark:border dark:border-white
+         bg-[#F5F5F5]
+         mx-auto
+         w-full max-w-[420px] lg:max-w-[474px]
+         p-[10px]
+         h-auto
+         rounded-[12px]
+         space-y-2" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 <!-- هدر فرم -->
                 <div
@@ -541,7 +548,7 @@
                     </div>
 
                     <!-- مبلغ فروش و تاریخ -->
-                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- مبلغ فروش -->
                         <div class="flex-1">
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
@@ -1177,11 +1184,11 @@
                         </style>
                     </div>
 
-              
+
 
                     <!-- زون‌ها -->
                     {{-- زون برداشت و دریافت --}}
-                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <div>
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">زون
                                 برداشت</label>
@@ -1262,8 +1269,15 @@
             </div>
 
             <!-- جدول تراکنش‌های تبدیل ارز -->
-            <div class="flex-1 flex flex-col dark:bg-black dark:border dark:border-white  bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px]  w-[440px] mb-5 md:w-[930px] lg:w-[150px]"
-                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+            <div class="flex-1 flex flex-col
+         dark:border dark:border-white
+         dark:bg-black dark:text-white
+         bg-[#F5F5F5]
+         p-3 md:p-4 lg:p-6
+         rounded-[12px]
+         w-full max-w-[440px] md:max-w-[410px] lg:max-w-full
+         mb-5 mx-auto
+         overflow-x-auto" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 <div
                     class="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
@@ -1427,7 +1441,7 @@
 
                                             </button>
 
-                                                                                        <script>
+                                            <script>
                                                 let printListenerRegistered = false;
 
     document.addEventListener('livewire:init', () => {

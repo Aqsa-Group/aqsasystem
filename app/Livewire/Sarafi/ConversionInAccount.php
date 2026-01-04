@@ -426,7 +426,7 @@ class ConversionInAccount extends Component
             // محاسبه بر اساس فرمول جدید
             if ($fromCurrency === 'afn' && $toCurrency === 'irr') {
                 // تبدیل افغانی به تومان: (مبلغ خرید × 1,000) ÷ نرخ ارز
-                $calculatedAmount = ($amount * 1000) / $rate;
+                    $calculatedAmount = ($amount * 1000) / $rate;
             } elseif ($fromCurrency === 'irr' && $toCurrency === 'afn') {
                 // تبدیل تومان به افغانی: (مبلغ خرید × نرخ ارز) ÷ 1,000
                 $calculatedAmount = ($amount * $rate) / 1000;

@@ -21,12 +21,13 @@
     <style>
         /* Chat box */
 
-html,
-body {
-    max-width: 100%;
-    overflow-x: hidden;
-}
-     .animate-pulse {
+        html,
+        body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        .animate-pulse {
             animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
 
@@ -484,23 +485,24 @@ body {
         }
 
         /* سایدبار ریسپانسیو */
-.sidebar-container {
-    position: fixed;
-    top: 0;
-    right: 0;
-    height: 100vh;
-    width: 280px;
-    max-width: 80vw;
-    background: white;
-    z-index: 9999;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    overflow-y: auto;
-}
+        .sidebar-container {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 280px;
+            max-width: 80vw;
+            background: white;
+            z-index: 9999;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+        }
 
-.sidebar-container.open {
-    transform: translateX(0);
-}
+        .sidebar-container.open {
+            transform: translateX(0);
+        }
+
         @media (min-width: 768px) {
             .sidebar-container {
                 position: static;
@@ -2134,12 +2136,9 @@ body {
             </div>
 
             <!-- محتوای اصلی -->
-<main class="flex-1 main-content-wrapper px-3">
-    <div class="mx-auto w-full max-w-5xl">
-        <?php echo $__env->yieldContent('content'); ?>
-    </div>
-</main>
-
+            <main class="flex-1 mx-auto main-content-wrapper px-3 w-full min-w-0">
+                <?php echo $__env->yieldContent('content'); ?>
+            </main>
 
 
             <!-- Chat Widget -->

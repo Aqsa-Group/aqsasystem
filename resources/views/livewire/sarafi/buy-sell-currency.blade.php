@@ -105,9 +105,17 @@
         </div>
         <div class="flex flex-col lg:flex-row gap-5 mt-7 mx-auto">
             <!-- فرم تراکنش -->
-            <div class="flex flex-col dark:bg-black dark:border-white dark:border bg-[#F5F5F5] w-[420px] lg:w-[504px] p-[12px] h-auto rounded-[12px] space-y-2  mx-auto"
-                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-
+                     <div
+  class="flex flex-col
+         dark:bg-black dark:text-white dark:border dark:border-white
+         bg-[#F5F5F5]
+         mx-auto
+         w-full max-w-[420px] lg:max-w-[474px]
+         p-[10px]
+         h-auto
+         rounded-[12px]
+         space-y-2"
+  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
                 <div
                     class="flex flex-row justify-between pt-[20px] pb-[20px] border border-[#8C8C8C] rounded-[12px] items-center">
                     <p class="flex items-center text-center pr-3">
@@ -971,9 +979,17 @@
             </div>
 
             <!-- جدول تراکنش‌ها -->
-            <div class="flex-1 flex flex-col bg-[#F5F5F5] dark:bg-black dark:border-white dark:border p-4 rounded-[12px] w-[440px] mb-5 md:w-[410px] lg:w-[300px] mx-auto"
-                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-
+              <div
+  class="flex-1 flex flex-col
+         dark:border dark:border-white
+         dark:bg-black dark:text-white
+         bg-[#F5F5F5]
+         p-3 md:p-4 lg:p-6
+         rounded-[12px]
+         w-full max-w-[440px] md:max-w-[410px] lg:max-w-full
+         mb-5 mx-auto
+         overflow-x-auto"
+  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
                 <div
                     class="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                     <h1 class="text-lg md:text-[16px] vazir">ترانزکشن های ثبت شده</h1>

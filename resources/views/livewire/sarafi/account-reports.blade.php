@@ -50,7 +50,7 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
                 <div
                     class="flex flex-col md:flex-row justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                     <h1 class="text-[16px] vazir">گزارش مشتریان بر اساس نوعیت / دسته</h1>
-                    <div class="relative w-[350px]">
+                    <div class="relative w-[250px] md:w-[350]">
                         <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
                             class="absolute  dark:hidden left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6">
                         <svg width="24" height="24"

@@ -2,7 +2,7 @@
 
     <h1 class="mb-8 text-3xl font-bold text-gray-700  dark:text-white">{{ __('messages.page_title') }}</h1>
 
-    <div class="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-3">
+    <div class="grid grid-cols-2 md:grid-cols-7 gap-3">
 
         <!-- رسید/بردگی -->
         <a href="{{ route('sarafi.transactions') }}" class="block">
@@ -28,7 +28,7 @@
         <!-- خرید و فروش ارز و صندوق -->
         <a href="{{ route('sarafi.buy-sell-currency') }}" class="block">
             <div
-                class="border bg-gradient-to-b dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center gap-3 text-white text-[16px] font-bold">
+                class="border bg-gradient-to-b dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center gap-3 text-white justify-center  text-[16px] font-bold">
                 <img src="{{ asset('assets/sarafi/all_icon/bitcoin-(btc).svg') }}" alt="">
                 <span>{{ __('messages.selling') }}</span>
             </div>
