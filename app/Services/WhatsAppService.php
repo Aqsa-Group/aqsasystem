@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class WhatsAppService
 {
@@ -21,66 +22,75 @@ class WhatsAppService
             return false;
         }
 
-        // آماده‌سازی payload
+        // پارامترهای قالب (همه string)
+        $parameters = [
+            ["type" => "text", "text" => (string) ($data['exchange_name'] ?? '-')],        // {{1}}
+            ["type" => "text", "text" => (string) ($data['account_number'] ?? '-')],       // {{2}}
+            ["type" => "text", "text" => (string) ($data['amount'] ?? '-')],               // {{3}}
+            ["type" => "text", "text" => (string) ($data['currency'] ?? '-')],             // {{4}}
+            ["type" => "text", "text" => (string) ($data['transaction_type'] ?? '-')],     // {{5}}
+            ["type" => "text", "text" => (string) ($data['transaction_date'] ?? '-')],     // {{6}}
+            ["type" => "text", "text" => (string) ($data['balance'] ?? '-')],              // {{7}}
+            ["type" => "text", "text" => (string) ($data['exchange_contact'] ?? '-')],     // {{8}}
+        ];
+
+        // Payload نهایی
         $payload = [
             "messaging_product" => "whatsapp",
             "to" => $phone,
             "type" => "template",
             "template" => [
-                "name" => "aqsasystem_en",
+                "name" => "transactions_fa",
                 "language" => [
-                    "code" => "en"
+                    "code" => "fa"
                 ],
                 "components" => [
                     [
                         "type" => "body",
-                        "parameters" => [
-                            ["type" => "text", "text" => $data['account_number'] ?? '-'],
-                            ["type" => "text", "text" => $data['amount'] ?? '-'],
-                            ["type" => "text", "text" => $data['currency'] ?? '-'],
-                            ["type" => "text", "text" => $data['transaction_type'] ?? '-'],
-                            ["type" => "text", "text" => $data['transaction_date'] ?? '-'],
-                        ]
+                        "parameters" => $parameters
                     ]
                 ]
-
             ]
         ];
 
         try {
             $response = Http::withToken(config('services.whatsapp.token'))
-                ->timeout(10)
+                ->timeout(15)
                 ->post(
-                    "https://graph.facebook.com/v18.0/" .
-                        config('services.whatsapp.phone_id') .
-                        "/messages",
+                    "https://graph.facebook.com/v22.0/" .
+                    config('services.whatsapp.phone_id') .
+                    "/messages",
                     $payload
                 );
 
-           
-
+            // لاگ پاسخ کامل واتساپ
+            Log::info('WhatsApp response', [
+                'status' => $response->status(),
+                'body'   => $response->body(),
+            ]);
 
             // اگر موفق نبود
             if (!$response->successful()) {
                 Log::error('WhatsApp API error', [
-                    'status' => $response->status(),
-                    'response' => $response->body(),
+                    'status'  => $response->status(),
+                    'body'    => $response->body(),
                     'payload' => $payload,
                 ]);
                 return false;
             }
 
             // موفق
-            Log::info('WhatsApp message sent', [
-                'phone' => $phone,
-                'response' => $response->json(),
+            Log::info('WhatsApp message sent successfully', [
+                'phone'    => $phone,
+                'message_id' => data_get($response->json(), 'messages.0.id'),
             ]);
 
             return true;
+
         } catch (\Throwable $e) {
             Log::critical('WhatsApp exception', [
                 'message' => $e->getMessage(),
-                'phone' => $phone,
+                'phone'   => $phone,
             ]);
             return false;
         }

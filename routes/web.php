@@ -378,23 +378,6 @@ Route::get('/impersonate/login', [ImpersonateController::class, 'login'])
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // ToolsPanel Route
 Route::get('/tools', [UserController::class, 'showLoginForm'])->name('tools.login.form');
 

@@ -1,7 +1,7 @@
 <div>
     <div class="container mx-auto ">
         <!-- Session Message -->
-        <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
+        <?php if(session()->has('message')): ?>
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
             <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -11,7 +11,7 @@
                 </h2>
             </div>
         </div>
-        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+        <?php endif; ?>
 
         <!-- Page Header -->
         <div class="space-y-4 mb-6">
@@ -79,12 +79,12 @@
                                 <select wire:model.live="fromCustomer" id="fromCustomerSelect"
                                     class="js-choices appearance-none w-full border border-[#8C8C8C] bg-white rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
                                     <option value="">همه مشتریان ارسال کننده</option>
-                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($customer->id); ?>">
                                         <?php echo e($customer->fullname); ?> - <?php echo e($customer->phone); ?>
 
                                     </option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
                                 <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none z-10"
                                     width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -101,12 +101,12 @@
                                 <select wire:model.live="toCustomer" id="toCustomerSelect"
                                     class="js-choices appearance-none w-full border border-[#8C8C8C] bg-white rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
                                     <option value="">همه مشتریان دریافت کننده</option>
-                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($customer->id); ?>">
                                         <?php echo e($customer->fullname); ?> - <?php echo e($customer->phone); ?>
 
                                     </option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
                                 <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none z-10"
                                     width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -123,11 +123,11 @@
                                 <select wire:model.live="selectedSenderSarafi" id="senderSarafiSelect"
                                     class="js-choices appearance-none w-full border border-[#8C8C8C] bg-white rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
                                     <option value="">صرافی فرستنده</option>
-                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $sarafis; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sarafi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php $__currentLoopData = $sarafis; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sarafi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($sarafi->id); ?>"><?php echo e($sarafi->sarafi_name ?? $sarafi->name); ?>
 
                                     </option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
                                 <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none z-10"
                                     width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -144,9 +144,9 @@
                                 <select wire:model.live="selectedCurrency" id="currencySelect"
                                     class="js-choices appearance-none w-full border border-[#8C8C8C] bg-white rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
                                     <option value="">همه ارزها</option>
-                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($key); ?>"><?php echo e($value); ?></option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
                                 <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none z-10"
                                     width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -178,7 +178,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $deals; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $deal): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                <?php $__empty_1 = true; $__currentLoopData = $deals; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $deal): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                 <tr class="text-black border-b border-[#D9D9D9] bg-transparent">
 
                                     <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium w-48">
@@ -257,7 +257,7 @@
                                         دیتایی وجود ندارد
                                     </td>
                                 </tr>
-                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                <?php endif; ?>
 
 
 

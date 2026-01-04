@@ -1,7 +1,7 @@
 <div>
     <div>
         
-        <!--[if BLOCK]><![endif]--><?php if($alert): ?>
+        <?php if($alert): ?>
         <div x-data="{
             show: true,
             init() {
@@ -29,10 +29,10 @@
                 </h2>
             </div>
         </div>
-        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+        <?php endif; ?>
 
         
-        <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
+        <?php if(session()->has('message')): ?>
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
             <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -42,10 +42,10 @@
                 </h2>
             </div>
         </div>
-        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+        <?php endif; ?>
     </div>
 
-    <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role === 'admin' || $currentUser->role === 'superadmin' ): ?>
+    <?php if($currentUser && $currentUser->role === 'admin' || $currentUser->role === 'superadmin' ): ?>
     <div class="pl-5">
         <!-- فرم ثبت کاربر -->
 <div
@@ -71,13 +71,13 @@
                     <label for="avatarUploadInput" class="cursor-pointer">
                         <div
                             class="bg-[#545964] rounded-full h-20 w-20 mx-auto flex items-center justify-center overflow-hidden relative group">
-                            <!--[if BLOCK]><![endif]--><?php if($temp_image_url || ($editId && $current_user_image)): ?>
+                            <?php if($temp_image_url || ($editId && $current_user_image)): ?>
                             <img src="<?php echo e($temp_image_url ?: ($current_user_image ? asset('storage/' . $current_user_image) : '')); ?>"
                                 alt="پیش‌نمایش" class="w-full h-full object-cover">
                             <?php else: ?>
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/light.user.svg')); ?>" alt="آیکون کاربر"
                                 class="mt-2 dark:invert w-10 h-10 group-hover:opacity-50 transition-opacity">
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                            <?php endif; ?>
 
                             <!-- آیکون آپلود روی تصویر -->
                             <div
@@ -90,20 +90,20 @@
                         </div>
                     </label>
 
-                    <!--[if BLOCK]><![endif]--><?php if($temp_image_url || $user_image): ?>
+                    <?php if($temp_image_url || $user_image): ?>
                     <button type="button" wire:click="removeImage"
                         class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600 transition z-10"
                         title="حذف تصویر">
                         ×
                     </button>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?>
                 </div>
 
                 <p class="text-xs text-gray-500 mt-2">
                     برای تغییر تصویر، روی دایره کلیک کنید
                 </p>
 
-                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['user_image'];
+                <?php $__errorArgs = ['user_image'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -112,7 +112,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
             </div>
 
             <?php
@@ -137,7 +137,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/profile.svg')); ?>" alt="">
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['name'];
+                        <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -146,7 +146,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <!-- Lastname -->
@@ -164,7 +164,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/profile.svg')); ?>" alt="">
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['lastname'];
+                        <?php $__errorArgs = ['lastname'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -173,7 +173,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <!-- Sarafi Name -->
@@ -194,7 +194,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/buildings-2.svg')); ?>" alt="">
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['sarafi_name'];
+                        <?php $__errorArgs = ['sarafi_name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -203,7 +203,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <!-- Username -->
@@ -221,7 +221,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/profile.svg')); ?>" alt="">
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['username'];
+                        <?php $__errorArgs = ['username'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -230,7 +230,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <!-- Password -->
@@ -248,7 +248,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/lock.svg')); ?>" alt="">
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['password'];
+                        <?php $__errorArgs = ['password'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -257,11 +257,11 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <!-- Role -->
-                    <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role === 'superadmin'): ?>
+                    <?php if($currentUser && $currentUser->role === 'superadmin'): ?>
                     <div>
                         <label class="block text-sm font-medium text-black dark:text-white mb-1 vazir">
                             <?php echo e(__('messages.category_user')); ?>
@@ -278,7 +278,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/clipboard.svg')); ?>" alt="">
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['role'];
+                        <?php $__errorArgs = ['role'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -287,7 +287,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
                     <?php elseif($currentUser && $currentUser->role === 'admin'): ?>
                     <div>
@@ -308,7 +308,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/clipboard.svg')); ?>" alt="">
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['role'];
+                        <?php $__errorArgs = ['role'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -317,12 +317,12 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?>
 
                     <!-- User Limition -->
-                    <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role === 'superadmin'): ?>
+                    <?php if($currentUser && $currentUser->role === 'superadmin'): ?>
                     <div>
                         <label class="block text-sm font-medium text-black dark:text-white mb-1 vazir">
                             <?php echo e(__('messages.user_limit')); ?>
@@ -337,7 +337,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/customers.svg')); ?>" alt="" class="h-8 w-8">
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['user_limition'];
+                        <?php $__errorArgs = ['user_limition'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -346,9 +346,9 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?>
 
                     <!-- Zone -->
                     <div>
@@ -364,7 +364,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/location.svg')); ?>" alt="">
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['zone'];
+                        <?php $__errorArgs = ['zone'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -373,7 +373,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
 
 
@@ -394,7 +394,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/location.svg')); ?>" alt="">
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['address'];
+                        <?php $__errorArgs = ['address'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -403,7 +403,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <!-- Address2 -->
@@ -423,7 +423,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/location.svg')); ?>" alt="">
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['address'];
+                        <?php $__errorArgs = ['address'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -432,7 +432,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <!-- Address3 -->
@@ -452,7 +452,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/location.svg')); ?>" alt="">
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['address'];
+                        <?php $__errorArgs = ['address'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -461,7 +461,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <!-- Phone1 -->
@@ -478,7 +478,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/call.svg')); ?>" alt="">
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['phone'];
+                        <?php $__errorArgs = ['phone'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -487,7 +487,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <!-- Phone2 -->
@@ -504,7 +504,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/call.svg')); ?>" alt="">
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['phone'];
+                        <?php $__errorArgs = ['phone'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -513,7 +513,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <!-- Phone3 -->
@@ -530,7 +530,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/call.svg')); ?>" alt="">
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['phone'];
+                        <?php $__errorArgs = ['phone'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -539,10 +539,10 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
 
-                    <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role === 'superadmin' ): ?>
+                    <?php if($currentUser && $currentUser->role === 'superadmin' ): ?>
 
                     <!-- ✅ نوتیفیکیشن واتساپ -->
                     <div>
@@ -568,7 +568,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </label>
                         </div>
 
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['whatsapp_notification'];
+                        <?php $__errorArgs = ['whatsapp_notification'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -577,11 +577,11 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
 
 
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?>
 
 
 
@@ -603,7 +603,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             </form>
         </div>
     </div>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?>
 
     <!-- فیلتر و سرچ -->
 <div class="flex w-full max-w-[460px] md:max-w-[800px] lg:max-w-[1200px] items-center mt-5 gap-3 mx-auto">
@@ -616,21 +616,21 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 <span class="text-white"><?php echo e(__('messages.filter')); ?></span>
             </button>
 
-            <!--[if BLOCK]><![endif]--><?php if($filterOpen): ?>
+            <?php if($filterOpen): ?>
             <div
                 class="absolute top-full mt-2 dark:bg-black bg-white border rounded-xl shadow-lg p-4 w-72 z-50 flex flex-col gap-3">
                 <select wire:model="filterRole" class="border rounded px-3 py-2 w-full dark:bg-black dark:text-white">
                     <option value=""><?php echo e(__('messages.all_roles')); ?></option>
-                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php $__currentLoopData = $roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <option value="<?php echo e($key); ?>"><?php echo e($label); ?></option>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </select>
 
                 <select wire:model="filterSarafi" class="border rounded px-3 py-2 w-full dark:bg-black dark:text-white">
                     <option value=""><?php echo e(__('messages.all_sarafis')); ?></option>
-                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $this->sarafis; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sarafi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php $__currentLoopData = $this->sarafis; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sarafi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <option value="<?php echo e($sarafi); ?>"><?php echo e($sarafi); ?></option>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </select>
 
                 <button wire:click="applyFilter"
@@ -639,7 +639,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                 </button>
             </div>
-            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            <?php endif; ?>
         </div>
 
         <!-- جستجو -->
@@ -685,19 +685,19 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
             <!-- بدنه جدول -->
             <tbody>
-                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <?php $__empty_1 = true; $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr class="border-b dark:bg-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td class="px-3 py-2 vazir text-[16px] font-medium dark:text-white"><?php echo e($users->firstItem() + $index); ?></td>
                     <td class="px-6 py-4 vazir text-[16px] font-medium dark:text-white text-black vazir">
                         <div class="flex items-center">
-                            <!--[if BLOCK]><![endif]--><?php if($user->user_image): ?>
+                            <?php if($user->user_image): ?>
                             <img src="<?php echo e(asset('storage/' . $user->user_image)); ?>" alt="<?php echo e($user->name); ?>"
                                 class="w-10 h-10 rounded-full object-cover mr-3">
                             <?php else: ?>
                             <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
                                 <span class="text-blue-600 font-bold"><?php echo e(substr($user->name, 0, 1)); ?></span>
                             </div>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                            <?php endif; ?>
                             <span><?php echo e($user->name); ?></span>
                         </div>
                     </td>
@@ -706,7 +706,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     <td class="px-6 py-4 vazir text-[16px] font-medium dark:text-white text-black vazir"><?php echo e($roles[$user->role] ?? $user->role); ?></td>
                  
                     <td class="px-6 py-4 vazir text-[16px] font-medium dark:text-white text-black vazir">
-                        <!--[if BLOCK]><![endif]--><?php if($user->whatsapp_notification): ?>
+                        <?php if($user->whatsapp_notification): ?>
                         <span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">
                             فعال
                         </span>
@@ -714,10 +714,10 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs">
                             غیرفعال
                         </span>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endif; ?>
                     </td>
                     <td class="px-6 py-4 vazir text-[16px] font-medium  text-black vazir">
-                        <!--[if BLOCK]><![endif]--><?php if($user->status): ?>
+                        <?php if($user->status): ?>
                         <span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">
                             <?php echo e(__('messages.active')); ?>
 
@@ -727,7 +727,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <?php echo e(__('messages.inactive')); ?>
 
                         </span>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endif; ?>
                     </td>
                     <td class="px-6 py-4 flex justify-center gap-2">
                         <button wire:click="edit(<?php echo e($user->id); ?>)" class="px-2 py-1">
@@ -778,7 +778,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </svg>
                         </button>
 
-                        <!--[if BLOCK]><![endif]--><?php if($currentUser->role === 'superadmin'): ?>
+                        <?php if($currentUser->role === 'superadmin'): ?>
                         <button wire:click="loginAsInNewWindow(<?php echo e($user->id); ?>)" title="ورود به پنل" class="p-1">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -796,7 +796,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     stroke-linejoin="round" />
                             </svg>
                         </button>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endif; ?>
                     </td>
                 </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
@@ -805,14 +805,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         هیچ کاربری یافت نشد.
                     </td>
                 </tr>
-                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
 
-    <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role === 'admin' || $currentUser->role === 'superadmin' ): ?>
+    <?php if($currentUser && $currentUser->role === 'admin' || $currentUser->role === 'superadmin' ): ?>
     
-    <!--[if BLOCK]><![endif]--><?php if($confirmDeleteId): ?>
+    <?php if($confirmDeleteId): ?>
     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
         <div
             class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px] rounded-[12px] shadow-xl w-[653px] h-[219.7267608642578px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
@@ -853,8 +853,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             </div>
         </div>
     </div>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?>
+    <?php endif; ?>
 
     <?php $__env->startPush('scripts'); ?>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

@@ -177,7 +177,7 @@
                         <th class="px-4 py-3 border-l border-white">{{ $currencyName }}</th>
                         @endforeach
                         <th class="px-4 py-3">تاریخ</th>
-                        <th class="px-4 py-3">عملیات</th>
+                        {{-- <th class="px-4 py-3">عملیات</th> --}}
                     </tr>
                 </thead>
                 <tbody>
@@ -251,15 +251,15 @@
                         <!-- عملیات -->
                         <td class="py-4">
                             <div class="flex justify-center gap-2">
-                                <!-- دکمه ویرایش -->
+                                {{-- <!-- دکمه ویرایش -->
                                 <button wire:click="edit({{ $record->id }})"
                                     class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-blue-100"
                                     title="ویرایش">
                                     <img src="{{ asset('assets/sarafi/all_icon/edit_table.svg') }}" class="w-5 h-5"
                                         alt="Edit">
-                                </button>
+                                </button> --}}
 
-                                <!-- دکمه حذف -->
+                                {{-- <!-- دکمه حذف -->
                                 <button wire:click="confirmDelete({{ $record->id }})"
                                     class="w-10 h-10 flex items-center justify-center rounded-full transition-colors hover:bg-red-100"
                                     title="حذف">
@@ -273,7 +273,7 @@
                                     title="پرینت">
                                     <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}" class="w-7 h-7"
                                         alt="Print">
-                                </button>
+                                </button> --}}
                             </div>
                         </td>
                     </tr>

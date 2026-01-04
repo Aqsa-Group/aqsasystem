@@ -173,25 +173,32 @@ class Transaction extends Model
 
 
 
-        static::created(function ($transaction) {
+      static::created(function ($transaction) {
 
-            $customer = $transaction->customer;
+    $customer = $transaction->customer;
 
-            if (!$customer || !$customer->whatsapp_number) {
-                return;
-            }
+    if (!$customer || !$customer->whatsapp_number) {
+        return;
+    }
 
+    $phone = preg_replace('/[^0-9]/', '', $customer->whatsapp_number);
 
-            WhatsAppService::sendTransaction(
-                $customer->whatsapp_number,
-                [
-                    'account_number' => $customer->fullname,
-                    'amount' => (string) $transaction->amount,
-                    'currency' => $transaction->currency,
-                    'transaction_type' => $transaction->type,
-                    'transaction_date' => $transaction->date->format('Y-m-d'),
-                ]
-            );
-        });
+    WhatsAppService::sendTransaction(
+        $phone,
+        [
+            'exchange_name'      => $transaction->user->sarafi_name ?? '-',
+            'account_number'     => $customer->fullname ?? '-',
+            'amount'             => (string) ($transaction->amount ?? '-'),
+            'currency'           => $transaction->currency ?? '-',
+            'transaction_type'   => $transaction->type ?? '-',
+            'transaction_date'   => $transaction->date
+                                        ? $transaction->date->format('Y-m-d H:i')
+                                        : '-',
+            'balance'            => (string) ($transaction->amount ?? '-'),
+            'exchange_contact'   => (string) ($transaction->user->phone ?? '-'),
+        ]
+    );
+});
+
     }
 }
