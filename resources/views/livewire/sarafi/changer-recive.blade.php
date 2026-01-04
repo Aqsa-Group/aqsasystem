@@ -28,7 +28,7 @@
                 {{-- جدول --}}
                 <div class="overflow-x-auto w-full">
                     <div class="max-h-[680px] overflow-y-auto min-w-[890px]">
-                        <div class="grid grid-cols-1 lg:grid-cols-7 mb-4 gap-4 items-stretch">
+<div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7 mb-4 gap-4 items-stretch">
                             <!-- دکمه ۱ - چاپ گزارش -->
                             <div>
                                 <button wire:click="printReport"

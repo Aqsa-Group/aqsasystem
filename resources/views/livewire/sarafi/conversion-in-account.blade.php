@@ -346,7 +346,7 @@
 
                 <!-- هدر فرم -->
                 <div
-                    class="flex flex-row justify-between p-[20px] border border-[#8C8C8C] rounded-[12px] flex-wrap items-center">
+                    class="flex flex-row justify-between p-[20px] border border-[#8C8C8C] rounded-[12px] flex-wrap items-center gap-2 space-y-2">
                     <p class="flex justify-between items-center text-center gap-2">
                         <img src="{{ asset('assets/sarafi/all_icon/pencil.svg') }}" alt="" class="h-6 w-6">
                         <span class="vazir font-semibold">فورم تبدیل ارز در حساب</span>

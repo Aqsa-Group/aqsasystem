@@ -339,8 +339,7 @@
         </div>
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
             <!-- فرم تبدیل ارز -->
-                      <div
-  class="flex flex-col
+            <div class="flex flex-col
          dark:bg-black dark:text-white dark:border dark:border-white
          bg-[#F5F5F5]
          mx-auto
@@ -348,12 +347,11 @@
          p-[10px]
          h-auto
          rounded-[12px]
-         space-y-2"
-  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+         space-y-2" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 <!-- هدر فرم -->
                 <div
-                    class="flex flex-row justify-between p-[20px] border border-[#8C8C8C] rounded-[12px] flex-wrap items-center">
+                    class="flex flex-row justify-between p-[20px] border border-[#8C8C8C] rounded-[12px] flex-wrap items-center gap-2 space-y-2">
                     <p class="flex justify-between items-center text-center gap-2">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/pencil.svg')); ?>" alt="" class="h-6 w-6">
                         <span class="vazir font-semibold">فورم تبدیل ارز در حساب</span>
@@ -594,7 +592,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
                     <!-- مبلغ فروش و تاریخ -->
-                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- مبلغ فروش -->
                         <div class="flex-1">
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
@@ -1245,11 +1243,11 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </style>
                     </div>
 
-              
+
 
                     <!-- زون‌ها -->
                     
-                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <div>
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">زون
                                 برداشت</label>
@@ -1351,8 +1349,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             </div>
 
             <!-- جدول تراکنش‌های تبدیل ارز -->
-                     <div
-  class="flex-1 flex flex-col
+            <div class="flex-1 flex flex-col
          dark:border dark:border-white
          dark:bg-black dark:text-white
          bg-[#F5F5F5]
@@ -1360,8 +1357,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
          rounded-[12px]
          w-full max-w-[440px] md:max-w-[410px] lg:max-w-full
          mb-5 mx-auto
-         overflow-x-auto"
-  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+         overflow-x-auto" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
                 <div
                     class="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
@@ -1530,7 +1526,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                                             </button>
 
-                                                                                        <script>
+                                            <script>
                                                 let printListenerRegistered = false;
 
     document.addEventListener('livewire:init', () => {

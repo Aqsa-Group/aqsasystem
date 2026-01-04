@@ -1,7 +1,7 @@
 <div>
     <div class="container mx-auto">
         <!-- Session Message -->
-        <?php if(session()->has('message')): ?>
+        <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
             <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -11,7 +11,7 @@
                 </h2>
             </div>
         </div>
-        <?php endif; ?>
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
         <!-- Page Header -->
         <div class="space-y-4 mb-6">
@@ -31,7 +31,7 @@
                 <div
                     class="flex flex-col md:flex-row justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                     <h1 class="text-[16px] vazir">گزارش تراکنش‌های با سایر صرافی‌ها</h1>
-                    <div class="relative w-[350px]">
+                    <div class="relative w-[250px] md:w-[250px]">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
                             class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5">
                         <input type="text" wire:model.live="search" placeholder="جستجو نام صرافی ..."
@@ -86,9 +86,9 @@
         <select wire:model="specificSarafiId"
             class="appearance-none w-full border border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
             <option value="">همه صرافی‌ها</option>
-            <?php $__currentLoopData = $sarafis; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sarafi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $sarafis; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sarafi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <option value="<?php echo e($sarafi['id']); ?>"><?php echo e($sarafi['sarafi_name']); ?></option>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
         </select>
         <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" width="20" height="20"
             viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -151,7 +151,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php $__empty_1 = true; $__currentLoopData = $reports; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $reports; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr class="border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50" dir="ltr">
                     <td class="px-2 py-4 text-center">
                         <span class="border border-gray-300 px-2 py-1 rounded-lg"><?php echo e($index + 1); ?></span>
@@ -200,7 +200,7 @@
                         هیچ تراکنشی با سایر صرافی‌ها یافت نشد
                     </td>
                 </tr>
-                <?php endif; ?>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </tbody>
         </table>
     </div>

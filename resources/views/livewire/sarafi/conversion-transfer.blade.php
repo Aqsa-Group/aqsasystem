@@ -348,12 +348,12 @@
   style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
                 {{-- بالای فرم: فورم و دکمه‌ها --}}
                 <div
-                    class="flex flex-row justify-between p-[20px] border border-[#8C8C8C] rounded-[12px] flex-wrap items-center">
+                    class="flex flex-row justify-between space-y-4 p-[20px] border border-[#8C8C8C] rounded-[12px] flex-wrap items-center">
                     <p class="flex justify-between items-center text-center gap-2">
                         <img src="{{ asset('assets/sarafi/all_icon/pencil.svg') }}" alt="" class="h-6 w-6">
                         <span class="vazir font-semibold">فورم تبدیل ارز و انتقال</span>
                     </p>
-                    <button wire:click="toggleTransactionType" class="rounded-[8px] p-[10px] text-white vazir px-12 font-semibold transition-colors duration-500 ease-in-out
+                    <button wire:click="toggleTransactionType" class=" rounded-[8px] p-[10px] text-white vazir px-12 font-semibold transition-colors duration-500 ease-in-out
                         {{ $transactionType === 'خرید' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
                         {{ $transactionType === 'خرید' ? 'خرید' : 'فروش' }}
                     </button>

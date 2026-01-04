@@ -29,9 +29,9 @@
 
     </div>
 
-
-    <div class=" overflow-x-auto shadow-md sm:rounded-lg  w-[420px]   md-w-[800px] lg:w-[1268px] mx-auto dark:border-white dark:border dark:text-white bg-[#F5F5F5] dark:bg-black"
-        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+<div
+  class="overflow-x-auto shadow-md sm:rounded-lg w-full max-w-[420px] md:max-w-[800px] lg:max-w-[1268px] mx-auto dark:border dark:border-white dark:text-white bg-[#F5F5F5] dark:bg-black"
+  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
 
 

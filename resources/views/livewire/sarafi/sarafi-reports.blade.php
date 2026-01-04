@@ -30,7 +30,7 @@
                 <div
                     class="flex flex-col md:flex-row justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                     <h1 class="text-[16px] vazir">گزارش تراکنش‌های با سایر صرافی‌ها</h1>
-                    <div class="relative w-[350px]">
+                    <div class="relative w-[250px] md:w-[250px]">
                         <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
                             class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5">
                         <input type="text" wire:model.live="search" placeholder="جستجو نام صرافی ..."

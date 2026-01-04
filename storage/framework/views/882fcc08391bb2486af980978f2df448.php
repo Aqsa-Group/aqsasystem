@@ -334,12 +334,15 @@
 
                 
                 <div
-                    class="flex flex-row justify-between p-[20px] border border-[#8C8C8C] rounded-[12px] flex-wrap items-center">
-                    <p class="flex justify-between items-center text-center gap-1">
+                    class="flex flex-col md:flex-row space-y-4 justify-between p-[20px] border border-[#8C8C8C] rounded-[12px] flex-wrap items-center">
+                     <div class="flex">
+                        <p class="flex justify-between items-center text-center gap-1">
                         <img src="<?php echo e(asset('assets/sarafi/all_icon/pencil.svg')); ?>" alt="" class="h-6 w-6">
                         <span class="vazir font-semibold">فورم انتفال بین حسابات</span>
                     </p>
-                    <button class="bg-[#DD2424] rounded-[8px] p-[10px] text-white vazir font-semibold">توقف
+                     </div>
+                    <div class="flex justify-center gap-2">
+                            <button class="bg-[#DD2424] rounded-[8px] p-[10px] text-white vazir font-semibold">توقف
                         پیامک</button>
                     <button wire:click="toggleTransactionType" class="rounded-[8px] p-[10px] text-white vazir font-semibold transition-colors duration-500 ease-in-out
                          <?php echo e($transactionType === 'باتفاوت' ? 'bg-[#2563EB]' : 'bg-[#DD2424]'); ?>">
@@ -347,6 +350,7 @@
 
                     </button>
 
+                    </div>
                 </div>
 
                 

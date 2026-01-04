@@ -1,5 +1,5 @@
 <div>
-    <?php if(session()->has('message')): ?>
+    <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
         class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
         <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -9,7 +9,7 @@
             </h2>
         </div>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
     <div class="flex flex-col  md:flex-row items-center md:pr-[90px]   gap-4 mb-6 mx-auto">
         <!-- دکمه افزودن مشتری جدید -->
@@ -31,9 +31,9 @@
 
     </div>
 
-
-    <div class=" overflow-x-auto shadow-md sm:rounded-lg  w-[420px]   md-w-[800px] lg:w-[1268px] mx-auto dark:border-white dark:border dark:text-white bg-[#F5F5F5] dark:bg-black"
-        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+<div
+  class="overflow-x-auto shadow-md sm:rounded-lg w-full max-w-[420px] md:max-w-[800px] lg:max-w-[1268px] mx-auto dark:border dark:border-white dark:text-white bg-[#F5F5F5] dark:bg-black"
+  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
 
 
@@ -62,7 +62,7 @@
 
 
             <tbody>
-                <?php $__empty_1 = true; $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr class="border-b dark:bg-black dark:text-white ">
                     <th scope="row" class="flex items-center px-6 py-4 text-gray-900 dark:text-white">
                         <img class="w-10 h-10 rounded-full"
@@ -109,7 +109,7 @@
 
                         </button>
 
-                          <?php if($currentUser && $currentUser->role==='superadmin'): ?>
+                          <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role==='superadmin'): ?>
 
                         <!-- دکمه دیلیت -->
                         <button wire:click="confirmDelete(<?php echo e($customer->id); ?>)" class="px-2 py-1">
@@ -136,7 +136,7 @@
                                                 </svg>
 
                         </button>
-                        <?php endif; ?>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
 
                         <!-- دکمه چاپ -->
@@ -160,7 +160,7 @@
                         هیچ مشتری یافت نشد.
                     </td>
                 </tr>
-                <?php endif; ?>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </tbody>
         </table>
 
@@ -183,9 +183,9 @@
     $currentUser=Auth::guard('sarafi')->user();
     ?>
 
-    <?php if($currentUser && $currentUser->role==='admin'): ?>
+    <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role==='admin'): ?>
     <!-- مودال تأیید حذف مشتری -->
-    <?php if($confirmingDelete): ?>
+    <!--[if BLOCK]><![endif]--><?php if($confirmingDelete): ?>
     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-10 z-50">
         <div
             class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px] rounded-[12px] shadow-xl w-[653px] h-[240px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
@@ -225,8 +225,8 @@
             </div>
         </div>
     </div>
-    <?php endif; ?>
-    <?php endif; ?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
 
 

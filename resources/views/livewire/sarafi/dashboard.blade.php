@@ -2,7 +2,7 @@
 
     <h1 class="mb-8 text-3xl font-bold text-gray-700  dark:text-white">{{ __('messages.page_title') }}</h1>
 
-    <div class="grid grid-cols-2 md:grid-cols-7 gap-3">
+<div class="grid grid-cols-2 md:grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-3">
 
         <!-- رسید/بردگی -->
         <a href="{{ route('sarafi.transactions') }}" class="block">

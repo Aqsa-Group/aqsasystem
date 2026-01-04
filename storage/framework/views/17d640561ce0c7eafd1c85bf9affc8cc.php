@@ -48,8 +48,9 @@
     <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role === 'admin' || $currentUser->role === 'superadmin' ): ?>
     <div class="pl-5">
         <!-- فرم ثبت کاربر -->
-        <div class="w-[460px] md-w-[100px] lg:w-[1200px] p-4 mx-auto bg-[#F5F5F5] dark:bg-black dark:border dark:border-white rounded-2xl mx-auto space-y-2"
-            style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+<div
+  class="w-full max-w-[460px] md:max-w-[800px] lg:max-w-[1200px] p-4 mx-auto bg-[#F5F5F5] dark:bg-black dark:border dark:border-white rounded-2xl space-y-2"
+  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
             <!-- عنوان و آیکون -->
             <!-- عنوان و آیکون -->
@@ -605,7 +606,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
     <!-- فیلتر و سرچ -->
-    <div class="flex w-[460px] md-w-[800px] lg:w-[1200px] items-center mt-5 gap-3 mx-auto">
+<div class="flex w-full max-w-[460px] md:max-w-[800px] lg:max-w-[1200px] items-center mt-5 gap-3 mx-auto">
 
         <!-- دکمه فیلتر -->
         <div class="relative">
@@ -661,8 +662,9 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
     </div>
 
     <!-- جدول کاربران -->
-    <div class="w-[420px] md-w-[1700px] lg:w-[1200px] p-6 mt-4  relative overflow-x-auto shadow-md sm:rounded-lg mb-4 mx-auto dark:bg-black dark:border dark:border-white  bg-[#F5F5F5]"
-        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+  <div
+  class="w-full max-w-[420px] md:max-w-[800px] lg:max-w-[1200px] p-6 mt-4 relative overflow-x-auto shadow-md sm:rounded-lg mb-4 mx-auto dark:bg-black dark:border dark:border-white bg-[#F5F5F5]"
+  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
         <table class="min-w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mb-5">
 
             <!-- هدر جدول -->

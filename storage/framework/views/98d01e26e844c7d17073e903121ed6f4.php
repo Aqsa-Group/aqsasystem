@@ -19,17 +19,8 @@
             <h1 class="text-[#8C8C8C]">صفحه دریافتی ها حساب مشتریان از صرافی های دیگر</h1>
         </div>
 
-         <div
-  class="flex-1 flex flex-col
-         dark:border dark:border-white
-         dark:bg-black dark:text-white
-         bg-[#F5F5F5]
-         p-3 md:p-4 lg:p-6
-         rounded-[12px]
-         w-full max-w-[440px] md:max-w-[410px] lg:max-w-full
-         mb-5 mx-auto
-         overflow-x-auto"
-  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+        <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px] w-full mb-5  mx-auto"
+            style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
 
             <div class="flex items-center gap-3">
@@ -38,7 +29,7 @@
                 
                 <div class="overflow-x-auto w-full">
                     <div class="max-h-[680px] overflow-y-auto min-w-[890px]">
-                        <div class="grid grid-cols-1 lg:grid-cols-7 mb-4 gap-4 items-stretch">
+<div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7 mb-4 gap-4 items-stretch">
                             <!-- دکمه ۱ - چاپ گزارش -->
                             <div>
                                 <button wire:click="printReport"
