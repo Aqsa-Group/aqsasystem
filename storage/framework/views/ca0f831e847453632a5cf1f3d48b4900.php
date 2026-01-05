@@ -2585,7 +2585,7 @@
                         </div>
                     </div>
 
-                   
+
                     <!-- اطلاعیه های آنلاین -->
                     <div>
                         <button @click="openItems.notifications = !openItems.notifications; active = 'notifications'"
@@ -2740,465 +2740,495 @@
             </main>
 
 
-<style>
-    /* Chat Styles */
-    .chat-message {
-        max-width: 85%;
-        padding: 10px 14px;
-        border-radius: 18px;
-        margin-bottom: 8px;
-        word-wrap: break-word;
-        position: relative;
-        word-break: break-word;
-    }
+            <style>
+                /* Chat Styles */
+                .chat-message {
+                    max-width: 85%;
+                    padding: 10px 14px;
+                    border-radius: 18px;
+                    margin-bottom: 8px;
+                    word-wrap: break-word;
+                    position: relative;
+                    word-break: break-word;
+                }
 
-    .chat-message.sent {
-        background: linear-gradient(135deg, #122EE1, #4ECDC4);
-        color: white;
-        margin-left: auto;
-        margin-right: 0;
-        border-bottom-left-radius: 4px;
-    }
+                .chat-message.sent {
+                    background: linear-gradient(135deg, #122EE1, #4ECDC4);
+                    color: white;
+                    margin-left: auto;
+                    margin-right: 0;
+                    border-bottom-left-radius: 4px;
+                }
 
-    .chat-message.received {
-        background-color: #f1f1f1;
-        color: #333;
-        margin-right: auto;
-        margin-left: 0;
-        border-bottom-right-radius: 4px;
-    }
+                .chat-message.received {
+                    background-color: #f1f1f1;
+                    color: #333;
+                    margin-right: auto;
+                    margin-left: 0;
+                    border-bottom-right-radius: 4px;
+                }
 
-    .dark .chat-message.received {
-        background-color: #374151;
-        color: #e5e7eb;
-    }
+                .dark .chat-message.received {
+                    background-color: #374151;
+                    color: #e5e7eb;
+                }
 
-    .chat-message .time {
-        font-size: 11px;
-        opacity: 0.8;
-        margin-top: 4px;
-        text-align: left;
-        display: block;
-    }
+                .chat-message .time {
+                    font-size: 11px;
+                    opacity: 0.8;
+                    margin-top: 4px;
+                    text-align: left;
+                    display: block;
+                }
 
-    .chat-message.sent .time {
-        color: rgba(255, 255, 255, 0.9);
-    }
+                .chat-message.sent .time {
+                    color: rgba(255, 255, 255, 0.9);
+                }
 
-    .chat-message.received .time {
-        color: #6b7280;
-    }
+                .chat-message.received .time {
+                    color: #6b7280;
+                }
 
-    .conversation-item {
-        transition: all 0.2s ease;
-        cursor: pointer;
-        border-radius: 10px;
-        padding: 12px;
-        margin-bottom: 8px;
-        border: 1px solid transparent;
-    }
+                .conversation-item {
+                    transition: all 0.2s ease;
+                    cursor: pointer;
+                    border-radius: 10px;
+                    padding: 12px;
+                    margin-bottom: 8px;
+                    border: 1px solid transparent;
+                }
 
-    .conversation-item:hover {
-        background-color: #f9fafb;
-        border-color: #e5e7eb;
-    }
+                .conversation-item:hover {
+                    background-color: #f9fafb;
+                    border-color: #e5e7eb;
+                }
 
-    .dark .conversation-item:hover {
-        background-color: #374151;
-        border-color: #4b5563;
-    }
+                .dark .conversation-item:hover {
+                    background-color: #374151;
+                    border-color: #4b5563;
+                }
 
-    .conversation-item.active {
-        background-color: #eff6ff;
-        border-color: #3b82f6;
-    }
+                .conversation-item.active {
+                    background-color: #eff6ff;
+                    border-color: #3b82f6;
+                }
 
-    .dark .conversation-item.active {
-        background-color: #1e3a8a;
-        border-color: #3b82f6;
-    }
+                .dark .conversation-item.active {
+                    background-color: #1e3a8a;
+                    border-color: #3b82f6;
+                }
 
-    .unread-badge {
-        background-color: #ef4444;
-        color: white;
-        font-size: 12px;
-        min-width: 20px;
-        height: 20px;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0 6px;
-    }
+                .unread-badge {
+                    background-color: #ef4444;
+                    color: white;
+                    font-size: 12px;
+                    min-width: 20px;
+                    height: 20px;
+                    border-radius: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0 6px;
+                }
 
-    .user-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        color: white;
-        font-size: 16px;
-        flex-shrink: 0;
-    }
+                .user-avatar {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: bold;
+                    color: white;
+                    font-size: 16px;
+                    flex-shrink: 0;
+                }
 
-    .avatar-blue { background-color: #3b82f6; }
-    .avatar-green { background-color: #10b981; }
-    .avatar-purple { background-color: #8b5cf6; }
-    .avatar-pink { background-color: #ec4899; }
-    .avatar-orange { background-color: #f59e0b; }
+                .avatar-blue {
+                    background-color: #3b82f6;
+                }
 
-    /* Scrollbar Styling */
-    #messagesContainer::-webkit-scrollbar,
-    #conversationsPanel::-webkit-scrollbar,
-    #usersPanel::-webkit-scrollbar {
-        width: 6px;
-    }
+                .avatar-green {
+                    background-color: #10b981;
+                }
 
-    #messagesContainer::-webkit-scrollbar-track,
-    #conversationsPanel::-webkit-scrollbar-track,
-    #usersPanel::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 3px;
-    }
+                .avatar-purple {
+                    background-color: #8b5cf6;
+                }
 
-    .dark #messagesContainer::-webkit-scrollbar-track,
-    .dark #conversationsPanel::-webkit-scrollbar-track,
-    .dark #usersPanel::-webkit-scrollbar-track {
-        background: #374151;
-    }
+                .avatar-pink {
+                    background-color: #ec4899;
+                }
 
-    #messagesContainer::-webkit-scrollbar-thumb,
-    #conversationsPanel::-webkit-scrollbar-thumb,
-    #usersPanel::-webkit-scrollbar-thumb {
-        background: #c1c1c1;
-        border-radius: 3px;
-    }
+                .avatar-orange {
+                    background-color: #f59e0b;
+                }
 
-    .dark #messagesContainer::-webkit-scrollbar-thumb,
-    .dark #conversationsPanel::-webkit-scrollbar-thumb,
-    .dark #usersPanel::-webkit-scrollbar-thumb {
-        background: #6b7280;
-    }
+                /* Scrollbar Styling */
+                #messagesContainer::-webkit-scrollbar,
+                #conversationsPanel::-webkit-scrollbar,
+                #usersPanel::-webkit-scrollbar {
+                    width: 6px;
+                }
 
-    /* Loading Animation */
-    .chat-loading {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        flex-direction: column;
-    }
+                #messagesContainer::-webkit-scrollbar-track,
+                #conversationsPanel::-webkit-scrollbar-track,
+                #usersPanel::-webkit-scrollbar-track {
+                    background: #f1f1f1;
+                    border-radius: 3px;
+                }
 
-    .chat-loading-spinner {
-        width: 40px;
-        height: 40px;
-        border: 3px solid #f3f3f3;
-        border-top: 3px solid #122EE1;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-    }
+                .dark #messagesContainer::-webkit-scrollbar-track,
+                .dark #conversationsPanel::-webkit-scrollbar-track,
+                .dark #usersPanel::-webkit-scrollbar-track {
+                    background: #374151;
+                }
 
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
+                #messagesContainer::-webkit-scrollbar-thumb,
+                #conversationsPanel::-webkit-scrollbar-thumb,
+                #usersPanel::-webkit-scrollbar-thumb {
+                    background: #c1c1c1;
+                    border-radius: 3px;
+                }
 
-    /* Media Message Styles */
-    .media-message {
-        max-width: 250px;
-        overflow: hidden;
-    }
+                .dark #messagesContainer::-webkit-scrollbar-thumb,
+                .dark #conversationsPanel::-webkit-scrollbar-thumb,
+                .dark #usersPanel::-webkit-scrollbar-thumb {
+                    background: #6b7280;
+                }
 
-    .media-message img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: transform 0.3s ease;
-    }
+                /* Loading Animation */
+                .chat-loading {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100%;
+                    flex-direction: column;
+                }
 
-    .media-message img:hover {
-        transform: scale(1.02);
-    }
+                .chat-loading-spinner {
+                    width: 40px;
+                    height: 40px;
+                    border: 3px solid #f3f3f3;
+                    border-top: 3px solid #122EE1;
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                }
 
-    .audio-message {
-        min-width: 200px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
+                @keyframes spin {
+                    0% {
+                        transform: rotate(0deg);
+                    }
 
-    .audio-player {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 8px 12px;
-        border-radius: 20px;
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-    }
+                    100% {
+                        transform: rotate(360deg);
+                    }
+                }
 
-    .audio-controls {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        flex: 1;
-    }
+                /* Media Message Styles */
+                .media-message {
+                    max-width: 250px;
+                    overflow: hidden;
+                }
 
-    .play-pause-btn {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        background: white;
-        border: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #122EE1;
-        transition: all 0.3s ease;
-    }
+                .media-message img {
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: 12px;
+                    cursor: pointer;
+                    transition: transform 0.3s ease;
+                }
 
-    .play-pause-btn:hover {
-        transform: scale(1.1);
-    }
+                .media-message img:hover {
+                    transform: scale(1.02);
+                }
 
-    .progress-bar {
-        flex: 1;
-        height: 4px;
-        background: rgba(255, 255, 255, 0.3);
-        border-radius: 2px;
-        overflow: hidden;
-        cursor: pointer;
-    }
+                .audio-message {
+                    min-width: 200px;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                }
 
-    .progress {
-        height: 100%;
-        background: white;
-        width: 0%;
-        transition: width 0.1s linear;
-    }
+                .audio-player {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 8px 12px;
+                    border-radius: 20px;
+                    background: rgba(255, 255, 255, 0.1);
+                    backdrop-filter: blur(10px);
+                }
 
-    .audio-time {
-        font-size: 12px;
-        color: white;
-        min-width: 40px;
-        text-align: center;
-    }
+                .audio-controls {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    flex: 1;
+                }
 
-    .audio-duration {
-        font-size: 10px;
-        color: rgba(255, 255, 255, 0.7);
-        margin-top: 4px;
-        display: block;
-        text-align: center;
-    }
+                .play-pause-btn {
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%;
+                    background: white;
+                    border: none;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: #122EE1;
+                    transition: all 0.3s ease;
+                }
 
-    /* Recording Animation */
-    @keyframes recording-pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.5; }
-    }
+                .play-pause-btn:hover {
+                    transform: scale(1.1);
+                }
 
-    .recording {
-        animation: recording-pulse 1s infinite;
-    }
+                .progress-bar {
+                    flex: 1;
+                    height: 4px;
+                    background: rgba(255, 255, 255, 0.3);
+                    border-radius: 2px;
+                    overflow: hidden;
+                    cursor: pointer;
+                }
 
-    /* Mobile Styles */
-    @media (max-width: 768px) {
-        #chatWindow {
-            border-radius: 16px 16px 0 0;
-            height: 85vh !important;
-        }
+                .progress {
+                    height: 100%;
+                    background: white;
+                    width: 0%;
+                    transition: width 0.1s linear;
+                }
 
-        .media-message {
-            max-width: 200px;
-        }
+                .audio-time {
+                    font-size: 12px;
+                    color: white;
+                    min-width: 40px;
+                    text-align: center;
+                }
 
-        .chat-message {
-            max-width: 90%;
-            padding: 8px 12px;
-            font-size: 14px;
-        }
-        
-        .input-group {
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .input-group .flex {
-            width: 100%;
-        }
-        
-        #messageInput {
-            width: 100% !important;
-        }
-    }
+                .audio-duration {
+                    font-size: 10px;
+                    color: rgba(255, 255, 255, 0.7);
+                    margin-top: 4px;
+                    display: block;
+                    text-align: center;
+                }
 
-    @media (min-width: 769px) {
-        #chatWindow {
-            min-width: 400px;
-        }
-    }
+                /* Recording Animation */
+                @keyframes recording-pulse {
 
-    /* Modal for Image Preview */
-    .image-modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.9);
-        z-index: 10000;
-        align-items: center;
-        justify-content: center;
-    }
+                    0%,
+                    100% {
+                        opacity: 1;
+                    }
 
-    .image-modal img {
-        max-width: 90%;
-        max-height: 90%;
-        object-fit: contain;
-    }
+                    50% {
+                        opacity: 0.5;
+                    }
+                }
 
-    .close-modal {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        color: white;
-        font-size: 30px;
-        cursor: pointer;
-        background: rgba(0, 0, 0, 0.5);
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+                .recording {
+                    animation: recording-pulse 1s infinite;
+                }
 
-    /* Delete Message Button */
-    .delete-message-btn {
-        display: none;
-        position: absolute;
-        top: 5px;
-        left: 5px;
-        background: rgba(239, 68, 68, 0.9);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 24px;
-        height: 24px;
-        cursor: pointer;
-        align-items: center;
-        justify-content: center;
-        font-size: 12px;
-        z-index: 10;
-    }
+                /* Mobile Styles */
+                @media (max-width: 768px) {
+                    #chatWindow {
+                        border-radius: 16px 16px 0 0;
+                        height: 85vh !important;
+                    }
 
-    .chat-message:hover .delete-message-btn {
-        display: flex;
-    }
+                    .media-message {
+                        max-width: 200px;
+                    }
 
-    /* Input Group */
-    .input-group {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        width: 100%;
-    }
+                    .chat-message {
+                        max-width: 90%;
+                        padding: 8px 12px;
+                        font-size: 14px;
+                    }
 
-    /* Voice Button */
-    .voice-btn {
-        padding: 10px;
-        background: #f3f4f6;
-        border-radius: 10px;
-        border: none;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+                    .input-group {
+                        flex-direction: column;
+                        gap: 8px;
+                    }
 
-    .voice-btn:hover {
-        background: #e5e7eb;
-    }
+                    .input-group .flex {
+                        width: 100%;
+                    }
 
-    .voice-btn.recording {
-        background: #fee2e2;
-        color: #dc2626;
-        animation: pulse 1.5s infinite;
-    }
+                    #messageInput {
+                        width: 100% !important;
+                    }
+                }
 
-    @keyframes pulse {
-        0% {
-            transform: scale(1);
-        }
-        50% {
-            transform: scale(1.05);
-        }
-        100% {
-            transform: scale(1);
-        }
-    }
+                @media (min-width: 769px) {
+                    #chatWindow {
+                        min-width: 400px;
+                    }
+                }
 
-    /* Toast Notification */
-    .toast {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #059669;
-        color: white;
-        padding: 12px 20px;
-        border-radius: 8px;
-        z-index: 10000;
-        animation: slideIn 0.3s ease;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
+                /* Modal for Image Preview */
+                .image-modal {
+                    display: none;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.9);
+                    z-index: 10000;
+                    align-items: center;
+                    justify-content: center;
+                }
 
-    @keyframes slideIn {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
+                .image-modal img {
+                    max-width: 90%;
+                    max-height: 90%;
+                    object-fit: contain;
+                }
 
-    /* Message Status */
-    .message-status {
-        font-size: 10px;
-        margin-top: 2px;
-        text-align: left;
-    }
+                .close-modal {
+                    position: absolute;
+                    top: 20px;
+                    right: 20px;
+                    color: white;
+                    font-size: 30px;
+                    cursor: pointer;
+                    background: rgba(0, 0, 0, 0.5);
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
 
-    .message-status.sent {
-        color: rgba(255, 255, 255, 0.7);
-    }
+                /* Delete Message Button */
+                .delete-message-btn {
+                    display: none;
+                    position: absolute;
+                    top: 5px;
+                    left: 5px;
+                    background: rgba(239, 68, 68, 0.9);
+                    color: white;
+                    border: none;
+                    border-radius: 50%;
+                    width: 24px;
+                    height: 24px;
+                    cursor: pointer;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 12px;
+                    z-index: 10;
+                }
 
-    .message-status.received {
-        color: #6b7280;
-    }
-</style>
+                .chat-message:hover .delete-message-btn {
+                    display: flex;
+                }
 
-<!-- Chat Widget -->
-<div id="chatWidget" class="fixed bottom-4 right-4 z-[9999]">
-    <!-- Chat Button -->
-    <button id="chatToggle"
-        class="bg-[#122EE1] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 1C7.03 1 3 5.03 3 10V17C3 18.66 4.34 20 6 20H9V12H5V10C5 6.13 8.13 3 12 3C15.87 3 19 6.13 19 10V12H15V20H18C19.66 20 21 18.66 21 17V10C21 5.03 16.97 1 12 1Z" />
-        </svg>
-        <span id="unreadBadge"
-            class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center hidden shadow">0</span>
-    </button>
+                /* Input Group */
+                .input-group {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    width: 100%;
+                }
 
-    <!-- Chat Window -->
-   <div id="chatWindow" class="
+                /* Voice Button */
+                .voice-btn {
+                    padding: 10px;
+                    background: #f3f4f6;
+                    border-radius: 10px;
+                    border: none;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .voice-btn:hover {
+                    background: #e5e7eb;
+                }
+
+                .voice-btn.recording {
+                    background: #fee2e2;
+                    color: #dc2626;
+                    animation: pulse 1.5s infinite;
+                }
+
+                @keyframes pulse {
+                    0% {
+                        transform: scale(1);
+                    }
+
+                    50% {
+                        transform: scale(1.05);
+                    }
+
+                    100% {
+                        transform: scale(1);
+                    }
+                }
+
+                /* Toast Notification */
+                .toast {
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    background: #059669;
+                    color: white;
+                    padding: 12px 20px;
+                    border-radius: 8px;
+                    z-index: 10000;
+                    animation: slideIn 0.3s ease;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                }
+
+                @keyframes slideIn {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+
+                /* Message Status */
+                .message-status {
+                    font-size: 10px;
+                    margin-top: 2px;
+                    text-align: left;
+                }
+
+                .message-status.sent {
+                    color: rgba(255, 255, 255, 0.7);
+                }
+
+                .message-status.received {
+                    color: #6b7280;
+                }
+            </style>
+
+            <!-- Chat Widget -->
+            <div id="chatWidget" class="fixed bottom-4 right-4 z-[9999]">
+                <!-- Chat Button -->
+                <button id="chatToggle"
+                    class="bg-[#122EE1] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12 1C7.03 1 3 5.03 3 10V17C3 18.66 4.34 20 6 20H9V12H5V10C5 6.13 8.13 3 12 3C15.87 3 19 6.13 19 10V12H15V20H18C19.66 20 21 18.66 21 17V10C21 5.03 16.97 1 12 1Z" />
+                    </svg>
+                    <span id="unreadBadge"
+                        class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center hidden shadow">0</span>
+                </button>
+
+                <!-- Chat Window -->
+                <div id="chatWindow" class="
     fixed sm:absolute
     bottom-0 sm:bottom-20
     right-0
@@ -3215,263 +3245,285 @@
     transition-transform duration-300 ease-in-out
 ">
 
-        <!-- Chat Header -->
-        <div class="bg-[#122EE1] text-white p-4 rounded-t-lg flex justify-between items-center">
-            <div class="flex items-center space-x-3 rtl:space-x-reverse">
-                <h3 class="font-semibold text-lg">پیام‌رسانی</h3>
-                <button id="markAllReadBtn"
-                    class="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded transition">
-                    خواندن همه
-                </button>
-            </div>
-            <div class="flex items-center space-x-3 rtl:space-x-reverse">
-                <button id="refreshChatBtn" class="text-white hover:text-gray-200 transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
-                        </path>
-                    </svg>
-                </button>
-                <button id="closeChatBtn" class="text-white hover:text-gray-200 transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
-
-        <!-- Chat Body -->
-        <div class="flex-1 flex flex-col overflow-hidden">
-            <!-- Search Bar -->
-            <div class="p-3 border-b dark:border-gray-700">
-                <div class="relative">
-                    <input type="text" id="chatSearchInput" placeholder="جستجوی کاربر..."
-                        class="w-full px-4 py-2 pr-10 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#122EE1]">
-                    <svg class="w-5 h-5 absolute left-3 top-2.5 text-gray-400" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                </div>
-            </div>
-
-            <!-- Tabs -->
-            <div class="flex border-b dark:border-gray-700 shrink-0">
-                <button id="conversationsTab"
-                    class="flex-1 py-3 text-center font-medium border-b-2 border-[#122EE1] text-[#122EE1]">
-                    مکالمات
-                </button>
-                <button id="usersTab"
-                    class="flex-1 py-3 text-center font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
-                    کاربران
-                </button>
-            </div>
-
-            <!-- Content Area -->
-            <div class="flex-1 overflow-hidden">
-                <!-- Conversations Panel -->
-                <div id="conversationsPanel" class="h-full overflow-y-auto">
-                    <div id="conversationsList" class="p-3">
-                        <!-- مکالمات در اینجا بارگذاری می‌شوند -->
-                    </div>
-                    <div id="noConversations" class="hidden p-6 text-center text-gray-500">
-                        <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
-                            </path>
-                        </svg>
-                        <p>هیچ مکالمه‌ای وجود ندارد</p>
-                    </div>
-                </div>
-
-                <!-- Users Panel -->
-                <div id="usersPanel" class="h-full overflow-y-auto hidden">
-                    <div id="usersList" class="p-3">
-                        <!-- کاربران در اینجا بارگذاری می‌شوند -->
-                    </div>
-                    <div id="noUsers" class="hidden p-6 text-center text-gray-500">
-                        <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-8A8.5 8.5 0 0012 3.5 8.5 8.5 0 003.5 12 8.5 8.5 0 0012 20.5a8.5 8.5 0 008.5-8.5z">
-                            </path>
-                        </svg>
-                        <p>کاربری برای چت پیدا نشد</p>
-                    </div>
-                </div>
-
-                <!-- Messages Panel -->
-                <div id="messagesPanel" class="h-full flex flex-col hidden">
-                    <!-- Messages Header -->
-                    <div
-                        class="p-3 border-b dark:border-gray-700 flex items-center bg-gray-50 dark:bg-gray-900 shrink-0">
-                        <button id="backToChat" class="ml-3 text-[#122EE1] hover:text-blue-700">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 19l-7-7 7-7"></path>
-                            </svg>
-                        </button>
-                        <div id="currentChatUser" class="flex items-center flex-1">
-                            <!-- اطلاعات کاربر در اینجا بارگذاری می‌شود -->
+                    <!-- Chat Header -->
+                    <div class="bg-[#122EE1] text-white p-4 rounded-t-lg flex justify-between items-center">
+                        <div class="flex items-center space-x-3 rtl:space-x-reverse">
+                            <h3 class="font-semibold text-lg">پیام‌رسانی</h3>
+                            <button id="markAllReadBtn"
+                                class="text-xs bg-white/20 hover:bg-white/30 px-2 py-1 rounded transition">
+                                خواندن همه
+                            </button>
+                        </div>
+                        <div class="flex items-center space-x-3 rtl:space-x-reverse">
+                            <button id="refreshChatBtn" class="text-white hover:text-gray-200 transition">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                                    </path>
+                                </svg>
+                            </button>
+                            <button id="closeChatBtn" class="text-white hover:text-gray-200 transition">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Messages Container -->
-                    <div id="messagesContainer"
-                        class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-4 overscroll-contain">
-                        <!-- پیام‌ها در اینجا بارگذاری می‌شوند -->
-                    </div>
-
-                    <!-- Recording Indicator -->
-                    <div id="recordingIndicator"
-                        class="hidden p-3 border-t dark:border-gray-700 bg-red-50 dark:bg-red-900/20">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-3 rtl:space-x-reverse">
-                                <div class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-                                <span class="text-red-600 dark:text-red-400 font-medium">در حال ضبط صوت...</span>
-                            </div>
-                            <div class="flex items-center space-x-2 rtl:space-x-reverse">
-                                <span id="recordingTimer" class="text-red-600 dark:text-red-400 font-mono">0:00</span>
-                                <button id="cancelRecordingBtn" class="text-red-600 dark:text-red-400 hover:text-red-800">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12"></path>
-                                    </svg>
-                                </button>
+                    <!-- Chat Body -->
+                    <div class="flex-1 flex flex-col overflow-hidden">
+                        <!-- Search Bar -->
+                        <div class="p-3 border-b dark:border-gray-700">
+                            <div class="relative">
+                                <input type="text" id="chatSearchInput" placeholder="جستجوی کاربر..."
+                                    class="w-full px-4 py-2 pr-10 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#122EE1]">
+                                <svg class="w-5 h-5 absolute left-3 top-2.5 text-gray-400" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Message Input Area -->
-                    <div class="p-3 border-t dark:border-gray-700 shrink-0">
-                        <!-- Hidden Inputs -->
-                        <input type="file" id="imageInput" accept="image/*" class="hidden">
-                        <input type="file" id="audioInput" accept="audio/*" class="hidden">
-                        
-                        <!-- Media Preview -->
-                        <div id="mediaPreview" class="hidden mb-3 p-3 border rounded-lg bg-gray-50 dark:bg-gray-900">
-                            <div class="flex justify-between items-center">
-                                <div class="flex items-center space-x-3 rtl:space-x-reverse">
-                                    <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
-                                    </svg>
-                                    <span id="mediaFileName" class="text-sm truncate"></span>
+                        <!-- Tabs -->
+                        <div class="flex border-b dark:border-gray-700 shrink-0">
+                            <button id="conversationsTab"
+                                class="flex-1 py-3 text-center font-medium border-b-2 border-[#122EE1] text-[#122EE1]">
+                                مکالمات
+                            </button>
+                            <button id="usersTab"
+                                class="flex-1 py-3 text-center font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+                                کاربران
+                            </button>
+                        </div>
+
+                        <!-- Content Area -->
+                        <div class="flex-1 overflow-hidden">
+                            <!-- Conversations Panel -->
+                            <div id="conversationsPanel" class="h-full overflow-y-auto">
+                                <div id="conversationsList" class="p-3">
+                                    <!-- مکالمات در اینجا بارگذاری می‌شوند -->
                                 </div>
-                                <button id="removeMediaBtn" class="text-red-500 hover:text-red-700">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div id="noConversations" class="hidden p-6 text-center text-gray-500">
+                                    <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12"></path>
+                                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                                        </path>
                                     </svg>
-                                </button>
+                                    <p>هیچ مکالمه‌ای وجود ندارد</p>
+                                </div>
                             </div>
-                            <div id="imagePreview" class="hidden mt-2">
-                                <img id="previewImage" class="max-w-full h-32 object-cover rounded-lg">
-                            </div>
-                        </div>
 
-                        <!-- Input Controls -->
-                        <div class="input-group">
-                            <!-- Attach Button -->
-                            <div class="relative group">
-                                <button id="attachButton"
-                                    class="voice-btn"
-                                    title="ضمیمه فایل">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <!-- Users Panel -->
+                            <div id="usersPanel" class="h-full overflow-y-auto hidden">
+                                <div id="usersList" class="p-3">
+                                    <!-- کاربران در اینجا بارگذاری می‌شوند -->
+                                </div>
+                                <div id="noUsers" class="hidden p-6 text-center text-gray-500">
+                                    <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
+                                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-8A8.5 8.5 0 0012 3.5 8.5 8.5 0 003.5 12 8.5 8.5 0 0012 20.5a8.5 8.5 0 008.5-8.5z">
+                                        </path>
                                     </svg>
-                                </button>
-                                <!-- Attach Menu -->
-                             <div class="absolute bottom-full right-0 mb-2 hidden group-hover:block z-50">
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl
-        border border-gray-200 dark:border-gray-700
-        p-2 min-w-[180px]">
-        
+                                    <p>کاربری برای چت پیدا نشد</p>
+                                </div>
+                            </div>
+
+                            <!-- Messages Panel -->
+                            <div id="messagesPanel" class="h-full flex flex-col hidden">
+                                <!-- Messages Header -->
+                                <div
+                                    class="p-3 border-b dark:border-gray-700 flex items-center bg-gray-50 dark:bg-gray-900 shrink-0">
+                                    <button id="backToChat" class="ml-3 text-[#122EE1] hover:text-blue-700">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 19l-7-7 7-7"></path>
+                                        </svg>
+                                    </button>
+                                    <div id="currentChatUser" class="flex items-center flex-1">
+                                        <!-- اطلاعات کاربر در اینجا بارگذاری می‌شود -->
+                                    </div>
+                                </div>
+
+                                <!-- Messages Container -->
+                                <div id="messagesContainer"
+                                    class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-4 overscroll-contain">
+                                    <!-- پیام‌ها در اینجا بارگذاری می‌شوند -->
+                                </div>
+
+                                <!-- Recording Indicator -->
+                                <div id="recordingIndicator"
+                                    class="hidden p-3 border-t dark:border-gray-700 bg-red-50 dark:bg-red-900/20">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-3 rtl:space-x-reverse">
+                                            <div class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                                            <span class="text-red-600 dark:text-red-400 font-medium">در حال ضبط
+                                                صوت...</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                                            <span id="recordingTimer"
+                                                class="text-red-600 dark:text-red-400 font-mono">0:00</span>
+                                            <button id="cancelRecordingBtn"
+                                                class="text-red-600 dark:text-red-400 hover:text-red-800">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Message Input Area -->
+                                <div class="p-3 border-t dark:border-gray-700 shrink-0">
+                                    <!-- Hidden Inputs -->
+                                    <input type="file" id="imageInput" accept="image/*" class="hidden">
+                                    <input type="file" id="audioInput" accept="audio/*" class="hidden">
+
+                                    <!-- Media Preview -->
+                                    <div id="mediaPreview"
+                                        class="hidden mb-3 p-3 border rounded-lg bg-gray-50 dark:bg-gray-900">
+                                        <div class="flex justify-between items-center">
+                                            <div class="flex items-center space-x-3 rtl:space-x-reverse">
+                                                <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13">
+                                                    </path>
+                                                </svg>
+                                                <span id="mediaFileName" class="text-sm truncate"></span>
+                                            </div>
+                                            <button id="removeMediaBtn" class="text-red-500 hover:text-red-700">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <div id="imagePreview" class="hidden mt-2">
+                                            <img id="previewImage" class="max-w-full h-32 object-cover rounded-lg">
+                                        </div>
+                                    </div>
+
+                                    <!-- Input Controls -->
+                                    <div class="input-group">
+                                        <!-- Attach Button -->
+                                        <div class="relative group">
+                                            <button id="attachButton" class="voice-btn" title="ضمیمه فایل">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                           <!-- Attach Menu -->
+<div
+    class="absolute bottom-full right-0 mb-2
+           hidden group-focus-within:block
+           z-50">
+    <div class="bg-white dark:bg-gray-800
+                rounded-xl shadow-xl
+                border border-gray-200 dark:border-gray-700
+                p-2 min-w-[180px]">
+
         <button id="attachImageBtn"
+            type="button"
             class="flex items-center w-full px-3 py-2 text-sm
-            text-gray-700 dark:text-gray-300
-            hover:bg-gray-100 dark:hover:bg-gray-700
-            rounded-lg">
-            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   text-gray-700 dark:text-gray-300
+                   hover:bg-gray-100 dark:hover:bg-gray-700
+                   rounded-lg transition">
+            <svg class="w-4 h-4 ml-2"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
             ارسال عکس
         </button>
 
         <button id="attachAudioBtn"
+            type="button"
             class="flex items-center w-full px-3 py-2 text-sm
-            text-gray-700 dark:text-gray-300
-            hover:bg-gray-100 dark:hover:bg-gray-700
-            rounded-lg">
-            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   text-gray-700 dark:text-gray-300
+                   hover:bg-gray-100 dark:hover:bg-gray-700
+                   rounded-lg transition">
+            <svg class="w-4 h-4 ml-2"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2
                     1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2
-                    s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+                    s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
             </svg>
             ارسال فایل صوتی
         </button>
+
     </div>
 </div>
 
+
+                                        </div>
+
+                                        <!-- Voice Record Button -->
+                                        <button id="voiceRecordBtn" class="voice-btn" title="ضبط صوت">
+                                            <svg id="voiceIcon" class="w-5 h-5" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z">
+                                                </path>
+                                            </svg>
+                                            <svg id="stopVoiceIcon" class="w-5 h-5 hidden" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z">
+                                                </path>
+                                            </svg>
+                                        </button>
+
+                                        <!-- Message Input -->
+                                        <input type="text" id="messageInput" placeholder="پیام خود را بنویسید..."
+                                            class="flex-1 px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#122EE1]">
+
+                                        <!-- Send Button -->
+                                        <button id="sendMessageBtn"
+                                            class="bg-[#122EE1] text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition flex items-center justify-center">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-
-                            <!-- Voice Record Button -->
-                            <button id="voiceRecordBtn"
-                                class="voice-btn"
-                                title="ضبط صوت">
-                                <svg id="voiceIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
-                                </svg>
-                                <svg id="stopVoiceIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"></path>
-                                </svg>
-                            </button>
-
-                            <!-- Message Input -->
-                            <input type="text" id="messageInput" placeholder="پیام خود را بنویسید..."
-                                class="flex-1 px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#122EE1]">
-
-                            <!-- Send Button -->
-                            <button id="sendMessageBtn"
-                                class="bg-[#122EE1] text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition flex items-center justify-center">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                                </svg>
-                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
 
-<!-- Audio Elements -->
-<audio id="messageSound" preload="auto" style="display: none;">
-    <source src="<?php echo e(asset('assets/sarafi/message.mp3')); ?>" type="audio/mpeg">
-</audio>
+            <!-- Audio Elements -->
+            <audio id="messageSound" preload="auto" style="display: none;">
+                <source src="<?php echo e(asset('assets/sarafi/message.mp3')); ?>" type="audio/mpeg">
+            </audio>
 
-<!-- Image Preview Modal -->
-<div id="imageModal" class="image-modal">
-    <span class="close-modal">&times;</span>
-    <img id="modalImage" src="" alt="تصویر">
-</div>
+            <!-- Image Preview Modal -->
+            <div id="imageModal" class="image-modal">
+                <span class="close-modal">&times;</span>
+                <img id="modalImage" src="" alt="تصویر">
+            </div>
 
-<!-- Toast Container -->
-<div id="toastContainer"></div>
+            <!-- Toast Container -->
+            <div id="toastContainer"></div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
         // -------------------------
         // تعاریف اولیه و متغیرهای گلوبال
         // -------------------------
@@ -5034,7 +5086,7 @@
             });
         });
     });
-</script>
+            </script>
 
         </div>
     </div>
