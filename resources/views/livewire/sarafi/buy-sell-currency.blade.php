@@ -76,7 +76,7 @@
                         <tr class="text-black dark:text-white border-b border-[#D9D9D9] bg-transparent">
                             <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">1</td>
                             @foreach (['usd', 'afn', 'irr', 'eur', 'pkr', 'aed', 'try', 'cny'] as $currency)
-                            <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center">
+                            <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center" dir="ltr">
                                 {{ number_format($totalSell[$currency] ?? 0 ,2) }}
                             </td>
                             @endforeach
