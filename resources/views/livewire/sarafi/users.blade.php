@@ -366,7 +366,8 @@
                             شماره تماس اول
                         </label>
                         <div class="relative">
-                            <input type="text" wire:model.lazy="phone"
+                            <input type="text" wire:model="phone"    onkeydown="lock937(event)"    onkeydown="preventDeletePrefix(event)"
+
                                 placeholder="{{ __('messages.placeholder_phone_user') }}"
                                 class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
@@ -385,7 +386,8 @@
                             شماره تماس دوم
                         </label>
                         <div class="relative">
-                            <input type="text" wire:model.lazy="phone2"
+                            <input type="text" wire:model="phone2"   onkeydown="lock937(event)"     onkeydown="preventDeletePrefix(event)"
+
                                 placeholder="{{ __('messages.placeholder_phone_user') }}"
                                 class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
@@ -404,7 +406,8 @@
                             شماره تماس سوم
                         </label>
                         <div class="relative">
-                            <input type="text" wire:model.lazy="phone3"
+                            <input type="text" wire:model="phone3"   onkeydown="lock937(event)"    onkeydown="preventDeletePrefix(event)"
+
                                 placeholder="{{ __('messages.placeholder_phone_user') }}"
                                 class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
@@ -453,6 +456,33 @@
 
 
                 </div>
+
+                     <script>
+                        function preventDeletePrefix(e) {
+                                const input = e.target;
+
+                                // اگر Backspace یا Delete
+                                if ((e.key === 'Backspace' || e.key === 'Delete')) {
+                                    // اگر کرسر داخل 937 بود
+                                    if (input.selectionStart <= 3) {
+                                        e.preventDefault();
+                                    }
+                                }
+                            }
+                    </script>
+
+
+                                <script>
+                                function lock937(e) {
+                                    const input = e.target;
+
+                                    if (e.key === 'Backspace' || e.key === 'Delete') {
+                                        if (input.selectionStart <= 3) {
+                                            e.preventDefault();
+                                        }
+                                    }
+                                }
+                                </script>
 
                 <!-- دکمه‌ها -->
                 <div class="flex justify-center gap-4 mt-3 pt-2">

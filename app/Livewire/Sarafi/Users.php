@@ -66,7 +66,32 @@ class Users extends Component
     public function mount()
     {
         $this->setDefaultValues();
+            $this->phone = '937';
+            $this->phone2 = '937';
+            $this->phone3 = '937';
+
     }
+
+
+    private function normalizePhone($value)
+{
+    $value = $this->convertToEnglishNumbers($value);
+    $value = preg_replace('/[^0-9]/', '', $value);
+
+    if (strlen($value) < 3) {
+        return '937';
+    }
+
+    if (!str_starts_with($value, '937')) {
+        $value = '937' . substr($value, 3);
+    }
+
+    return $value;
+}
+
+
+
+
 
     private function setDefaultValues()
     {
@@ -94,10 +119,6 @@ class Users extends Component
         return $value;
     }
 
-    public function updatedPhone($value)
-    {
-        $this->phone = $this->convertToEnglishNumbers($value);
-    }
 
     public function updatedPassword($value)
     {
@@ -416,15 +437,30 @@ class Users extends Component
         return User::select('role')->distinct()->pluck('role')->toArray();
     }
 
-    public function updatedPhone2($value)
-    {
-        $this->phone2 = $this->convertToEnglishNumbers($value);
-    }
+ 
 
-    public function updatedPhone3($value)
-    {
+    public function updatedPhone($value)
+{
+    $this->phone = $this->normalizePhone($value);
         $this->phone3 = $this->convertToEnglishNumbers($value);
-    }
+
+    
+
+}
+
+public function updatedPhone2($value)
+{
+    $this->phone2 = $this->normalizePhone($value);
+        $this->phone3 = $this->convertToEnglishNumbers($value);
+
+}
+
+public function updatedPhone3($value)
+{
+    $this->phone3 = $this->normalizePhone($value);
+        $this->phone3 = $this->convertToEnglishNumbers($value);
+
+}
 
     // -------------------------
     // Get unique sarafis for filter

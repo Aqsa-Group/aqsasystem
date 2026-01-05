@@ -184,7 +184,8 @@
                                         this.searchValue = '';
                                         $wire.set('relatedCustomerId', null);
                                     }
-                                }" x-init="updateDisplay(); $watch('selectedId', () => updateDisplay())" class="relative w-full">
+                                }" x-init="updateDisplay(); $watch('selectedId', () => updateDisplay())"
+                                class="relative w-full">
 
                                 <!-- فیلد جستجو -->
                                 <input type="text" list="relatedCustomersList" x-model="searchValue"
@@ -240,20 +241,7 @@
                     </div>
                 </div>
 
-                <div class="w-full">
-                    <label class="block text-sm font-medium text-black dark:text-white mb-2 vazir">
-                        {{ __('messages.city') }}
-
-                    </label>
-                    <div class="relative w-full">
-                        <input type="text" wire:model="city" placeholder="{{ __('messages.placeholder_city') }} "
-                            class="w-full dark:bg-black dark:border dark:border-white dark:text-white dark:placeholder:text-white p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent">
-                        <div class="absolute left-3 top-4 text-gray-400">
-                            <img src="{{ asset('assets/sarafi/all_icon/Group.svg') }}" alt="">
-                        </div>
-                    </div>
-                    @error('city') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                </div>
+               
             </div>
 
             <!-- ردیف 3 -->
@@ -263,7 +251,8 @@
                         {{ __('messages.phone') }}
                     </label>
                     <div class="relative w-full">
-                        <input type="text" wire:model.lazy="phone" placeholder="{{ __('messages.placeholder_phone') }} "
+                        <input type="text" onkeydown="preventDeletePrefix(event)" wire:model="phone"
+                            placeholder="{{ __('messages.placeholder_phone') }} "
                             class="w-full dark:bg-black dark:border dark:border-white dark:text-white dark:placeholder:text-white p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent ">
                         <div class="absolute left-3 top-4 text-gray-400">
                             <img src="{{ asset('assets/sarafi/all_icon/call.svg') }}" alt="">
@@ -271,6 +260,20 @@
                         </div>
                     </div>
                     @error('phone') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                    <script>
+                        function preventDeletePrefix(e) {
+                                const input = e.target;
+
+                                // اگر Backspace یا Delete
+                                if ((e.key === 'Backspace' || e.key === 'Delete')) {
+                                    // اگر کرسر داخل 937 بود
+                                    if (input.selectionStart <= 3) {
+                                        e.preventDefault();
+                                    }
+                                }
+                            }
+                    </script>
+
                 </div>
 
                 <div class="w-full">
@@ -297,7 +300,7 @@
                         {{ __('messages.whatsapp') }}
                     </label>
                     <div class="relative w-full">
-                        <input type="text" wire:model.lazy="whatsapp"
+                        <input type="text" wire:model="whatsapp" onkeydown="preventDeletePrefix(event)"
                             placeholder="{{ __('messages.placeholder_whatsapp') }} "
                             class="w-full dark:bg-black dark:border dark:border-white dark:text-white dark:placeholder:text-white p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent ">
                         <div class="absolute left-3 top-4 text-green-500">
@@ -322,25 +325,40 @@
                     @error('password') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                 </div>
             </div>
-              <!-- دکمه‌های اقدام -->
-    <div class="flex justify-center gap-4 mt-8 pt-6 pb-5  dark:border-gray-700 w-full">
-        <!-- لغو -->
-        <button type="button" wire:click="resetForm"
-            class="flex items-center justify-center gap-2 w-1/2 py-4 text-sm bg-[#B10909] text-white rounded-xl dark:bg-[#B10909] dark:text-gray-200 transition">
-            {{ __('messages.cancel') }}
 
-        </button>
+             <div class="w-[290px] md:w-[750px]">
+                    <label class="block text-sm font-medium text-black dark:text-white mb-2 vazir">
+                        {{ __('messages.city') }}
 
-        <!-- ذخیره / بروزرسانی -->
-        <button type="submit"
-            class="flex items-center justify-center gap-2 w-1/2 py-4 text-sm bg-[#2563EB] text-white rounded-xl hover:bg-blue-700 transition">
-            {{ $customerId ? __('messages.update') : __('messages.save') }}
-        </button>
+                    </label>
+                    <div class="relative w-full">
+                        <input type="text" wire:model="city" placeholder="{{ __('messages.placeholder_city') }} "
+                            class="w-full dark:bg-black dark:border dark:border-white dark:text-white dark:placeholder:text-white p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent">
+                        <div class="absolute left-3 top-4 text-gray-400">
+                            <img src="{{ asset('assets/sarafi/all_icon/Group.svg') }}" alt="">
+                        </div>
+                    </div>
+                    @error('city') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                </div>
+            <!-- دکمه‌های اقدام -->
+            <div class="flex justify-center gap-4 mt-8 pt-6 pb-5  dark:border-gray-700 w-full">
+                <!-- لغو -->
+                <button type="button" wire:click="resetForm"
+                    class="flex items-center justify-center gap-2 w-1/2 py-4 text-sm bg-[#B10909] text-white rounded-xl dark:bg-[#B10909] dark:text-gray-200 transition">
+                    {{ __('messages.cancel') }}
+
+                </button>
+
+                <!-- ذخیره / بروزرسانی -->
+                <button type="submit"
+                    class="flex items-center justify-center gap-2 w-1/2 py-4 text-sm bg-[#2563EB] text-white rounded-xl hover:bg-blue-700 transition">
+                    {{ $customerId ? __('messages.update') : __('messages.save') }}
+                </button>
+            </div>
+
     </div>
 
-    </div>
 
-  
     </form>
 
     <style>
@@ -385,7 +403,7 @@
             display: none !important;
         }
 
-        /* در Edge جدید */  
+        /* در Edge جدید */
         input[list]::-ms-clear,
         input[list]::-ms-expand {
             display: none !important;

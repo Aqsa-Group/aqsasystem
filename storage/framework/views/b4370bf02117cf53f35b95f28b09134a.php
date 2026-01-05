@@ -45,9 +45,7 @@
                     <div class="relative">
                         <select wire:model.live="source_currency"
                             class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer appearance-none pr-3 pl-10">
-                            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <option value="<?php echo e($currency['code']); ?>"><?php echo e($currency['name_fa']); ?></option>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                            <option value="usd">دالر</option>
                         </select>
                         <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓" class="w-4 h-4">

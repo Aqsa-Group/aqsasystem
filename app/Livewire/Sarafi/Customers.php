@@ -42,11 +42,37 @@ class Customers extends Component
             $this->autoGenerateAccount = false;
         } else {
             $this->generateAccountNumber();
+            $this->phone = '937';
+            $this->whatsapp = '937';
+
         }
 
         // بارگذاری لیست مشتریان برای datalist
         $this->loadRelatedCustomers();
     }
+
+
+    public function updatedPhone($value)
+{
+    $value = $this->convertToEnglishNumbers($value);
+
+    // حذف همه چیز غیر عدد
+    $value = preg_replace('/[^0-9]/', '', $value);
+
+    // اگر خالی شد یا کوتاه‌تر از 3 رقم شد → 937
+    if (strlen($value) < 3) {
+        $this->phone = '937';
+        return;
+    }
+
+    // اگر با 937 شروع نمی‌شود، 937 اضافه شود
+    if (!str_starts_with($value, '937')) {
+        $value = '937' . substr($value, 3);
+    }
+
+    $this->phone = $value;
+}
+
 
     // تابع برای بارگذاری مشتریان موجود
     private function loadRelatedCustomers()
@@ -341,11 +367,7 @@ class Customers extends Component
         $this->tazkira = $this->convertToEnglishNumbers($value);
     }
 
-    public function updatedPhone($value)
-    {
-        $this->phone = $this->convertToEnglishNumbers($value);
-    }
-
+ 
     public function updatedPassword($value)
     {
         $this->password = $this->convertToEnglishNumbers($value);
@@ -354,6 +376,22 @@ class Customers extends Component
     public function updatedWhatsapp($value)
     {
         $this->whatsapp = $this->convertToEnglishNumbers($value);
+
+    // حذف همه چیز غیر عدد
+    $value = preg_replace('/[^0-9]/', '', $value);
+
+    // اگر خالی شد یا کوتاه‌تر از 3 رقم شد → 937
+    if (strlen($value) < 3) {
+        $this->phone = '937';
+        return;
+    }
+
+    // اگر با 937 شروع نمی‌شود، 937 اضافه شود
+    if (!str_starts_with($value, '937')) {
+        $value = '937' . substr($value, 3);
+    }
+
+    $this->phone = $value;
     }
 
     // تابع برای زمانی که مقدار جستجوی مشتری معرف تغییر می‌کند

@@ -1,5 +1,5 @@
 <div class="min-h-screen  dark:bg-black py-4 w-full p-6">
-    <?php if(session()->has('message')): ?>
+    <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
         class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
         <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -9,7 +9,7 @@
             </h2>
         </div>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
     <div class="w-full h-auto p-4 bg-[#F5F5F5] dark:border-white dark:border dark:bg-black rounded-2xl "
         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
@@ -38,7 +38,7 @@
 
                     </label>
                     <div class="relative w-20 h-20">
-                        <?php if($newProfile): ?>
+                        <!--[if BLOCK]><![endif]--><?php if($newProfile): ?>
                         <img src="<?php echo e($newProfile->temporaryUrl()); ?>"
                             class="w-20 h-20 rounded-full object-cover border-2 border-blue-400">
                         <?php elseif($profile && $customerId): ?>
@@ -48,7 +48,7 @@
                         <div class="w-20 h-20 rounded-full bg-[#2563EB] flex items-center justify-center">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/profile-circle.svg')); ?>" alt="">
                         </div>
-                        <?php endif; ?>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         <input type="file" wire:model="newProfile" accept="image/*"
                             class="absolute inset-0 opacity-0 cursor-pointer">
                     </div>
@@ -62,7 +62,7 @@
 
                     </label>
                     <div class="relative w-20 h-20">
-                        <?php if($newIdCardImage): ?>
+                        <!--[if BLOCK]><![endif]--><?php if($newIdCardImage): ?>
                         <img src="<?php echo e($newIdCardImage->temporaryUrl()); ?>"
                             class="w-20 h-20 rounded-lg object-cover border-2 border-green-400">
                         <?php elseif($idCardImage && $customerId): ?>
@@ -72,7 +72,7 @@
                         <div class="w-20 h-20 rounded-full bg-[#2563EB] flex items-center justify-center ">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/id.svg')); ?>" alt="">
                         </div>
-                        <?php endif; ?>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         <input type="file" wire:model="newIdCardImage" accept="image/*"
                             class="absolute inset-0 opacity-0 cursor-pointer">
                     </div>
@@ -96,14 +96,14 @@
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/profile.svg')); ?>" alt="">
                             </div>
                         </div>
-                        <?php $__errorArgs = ['fullname'];
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['fullname'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
                     <div class="w-full">
@@ -122,22 +122,22 @@ unset($__errorArgs, $__bag); ?>
 
                                 </div>
                             </div>
-                            <?php if(!$customerId): ?>
+                            <!--[if BLOCK]><![endif]--><?php if(!$customerId): ?>
                             <button type="button" wire:click="generateNewAccountNumber"
                                 class="px-4 py-3  border bg-transparent border-[#8C8C8C]    text-white rounded-lg transition">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/refresh-2.svg')); ?>" alt="">
 
                             </button>
-                            <?php endif; ?>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
-                        <?php $__errorArgs = ['account'];
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['account'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
                 </div>
 
@@ -162,14 +162,14 @@ unset($__errorArgs, $__bag); ?>
                             </div>
 
                         </div>
-                        <?php $__errorArgs = ['category'];
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['category'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
                     <div class="w-full">
@@ -211,7 +211,8 @@ unset($__errorArgs, $__bag); ?>
                                         this.searchValue = '';
                                         $wire.set('relatedCustomerId', null);
                                     }
-                                }" x-init="updateDisplay(); $watch('selectedId', () => updateDisplay())" class="relative w-full">
+                                }" x-init="updateDisplay(); $watch('selectedId', () => updateDisplay())"
+                                class="relative w-full">
 
                                 <!-- فیلد جستجو -->
                                 <input type="text" list="relatedCustomersList" x-model="searchValue"
@@ -222,11 +223,11 @@ unset($__errorArgs, $__bag); ?>
 
                                 <!-- دیتالیست برای گزینه‌ها -->
                                 <datalist id="relatedCustomersList">
-                                    <?php $__currentLoopData = $relatedCustomers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $relatedCustomers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
                                         <?php echo e($customer['fullname']); ?> (<?php echo e($customer['phone']); ?>)
                                     </option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </datalist>
 
                                 <!-- آیکون dropdown -->
@@ -261,7 +262,7 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
-                        <?php $__errorArgs = ['relatedCustomerId'];
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['relatedCustomerId'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -270,32 +271,11 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
                 </div>
 
-                <div class="w-full">
-                    <label class="block text-sm font-medium text-black dark:text-white mb-2 vazir">
-                        <?php echo e(__('messages.city')); ?>
-
-
-                    </label>
-                    <div class="relative w-full">
-                        <input type="text" wire:model="city" placeholder="<?php echo e(__('messages.placeholder_city')); ?> "
-                            class="w-full dark:bg-black dark:border dark:border-white dark:text-white dark:placeholder:text-white p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent">
-                        <div class="absolute left-3 top-4 text-gray-400">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/Group.svg')); ?>" alt="">
-                        </div>
-                    </div>
-                    <?php $__errorArgs = ['city'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span> <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                </div>
+               
             </div>
 
             <!-- ردیف 3 -->
@@ -306,21 +286,36 @@ unset($__errorArgs, $__bag); ?>
 
                     </label>
                     <div class="relative w-full">
-                        <input type="text" wire:model.lazy="phone" placeholder="<?php echo e(__('messages.placeholder_phone')); ?> "
+                        <input type="text" onkeydown="preventDeletePrefix(event)" wire:model="phone"
+                            placeholder="<?php echo e(__('messages.placeholder_phone')); ?> "
                             class="w-full dark:bg-black dark:border dark:border-white dark:text-white dark:placeholder:text-white p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent ">
                         <div class="absolute left-3 top-4 text-gray-400">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/call.svg')); ?>" alt="">
 
                         </div>
                     </div>
-                    <?php $__errorArgs = ['phone'];
+                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['phone'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+                    <script>
+                        function preventDeletePrefix(e) {
+                                const input = e.target;
+
+                                // اگر Backspace یا Delete
+                                if ((e.key === 'Backspace' || e.key === 'Delete')) {
+                                    // اگر کرسر داخل 937 بود
+                                    if (input.selectionStart <= 3) {
+                                        e.preventDefault();
+                                    }
+                                }
+                            }
+                    </script>
+
                 </div>
 
                 <div class="w-full">
@@ -337,14 +332,14 @@ unset($__errorArgs, $__bag); ?>
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/qlementine-icons_id-card-16.svg')); ?>" alt="">
                         </div>
                     </div>
-                    <?php $__errorArgs = ['tazkira'];
+                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['tazkira'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
             </div>
 
@@ -356,21 +351,21 @@ unset($__errorArgs, $__bag); ?>
 
                     </label>
                     <div class="relative w-full">
-                        <input type="text" wire:model.lazy="whatsapp"
+                        <input type="text" wire:model="whatsapp" onkeydown="preventDeletePrefix(event)"
                             placeholder="<?php echo e(__('messages.placeholder_whatsapp')); ?> "
                             class="w-full dark:bg-black dark:border dark:border-white dark:text-white dark:placeholder:text-white p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent ">
                         <div class="absolute left-3 top-4 text-green-500">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/Vector.svg')); ?>" alt="">
                         </div>
                     </div>
-                    <?php $__errorArgs = ['whatsapp'];
+                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['whatsapp'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
 
                 <div class="w-full">
@@ -386,37 +381,60 @@ unset($__errorArgs, $__bag); ?>
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/lock.svg')); ?>" alt="">
                         </div>
                     </div>
-                    <?php $__errorArgs = ['password'];
+                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['password'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
             </div>
-              <!-- دکمه‌های اقدام -->
-    <div class="flex justify-center gap-4 mt-8 pt-6 pb-5  dark:border-gray-700 w-full">
-        <!-- لغو -->
-        <button type="button" wire:click="resetForm"
-            class="flex items-center justify-center gap-2 w-1/2 py-4 text-sm bg-[#B10909] text-white rounded-xl dark:bg-[#B10909] dark:text-gray-200 transition">
-            <?php echo e(__('messages.cancel')); ?>
+
+             <div class="w-[290px] md:w-[750px]">
+                    <label class="block text-sm font-medium text-black dark:text-white mb-2 vazir">
+                        <?php echo e(__('messages.city')); ?>
 
 
-        </button>
+                    </label>
+                    <div class="relative w-full">
+                        <input type="text" wire:model="city" placeholder="<?php echo e(__('messages.placeholder_city')); ?> "
+                            class="w-full dark:bg-black dark:border dark:border-white dark:text-white dark:placeholder:text-white p-3 rounded-xl py-4 focus:ring-2 border bg-transparent border-[#8C8C8C] focus:ring-blue-500 focus:border-transparent">
+                        <div class="absolute left-3 top-4 text-gray-400">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/Group.svg')); ?>" alt="">
+                        </div>
+                    </div>
+                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['city'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+                </div>
+            <!-- دکمه‌های اقدام -->
+            <div class="flex justify-center gap-4 mt-8 pt-6 pb-5  dark:border-gray-700 w-full">
+                <!-- لغو -->
+                <button type="button" wire:click="resetForm"
+                    class="flex items-center justify-center gap-2 w-1/2 py-4 text-sm bg-[#B10909] text-white rounded-xl dark:bg-[#B10909] dark:text-gray-200 transition">
+                    <?php echo e(__('messages.cancel')); ?>
 
-        <!-- ذخیره / بروزرسانی -->
-        <button type="submit"
-            class="flex items-center justify-center gap-2 w-1/2 py-4 text-sm bg-[#2563EB] text-white rounded-xl hover:bg-blue-700 transition">
-            <?php echo e($customerId ? __('messages.update') : __('messages.save')); ?>
 
-        </button>
+                </button>
+
+                <!-- ذخیره / بروزرسانی -->
+                <button type="submit"
+                    class="flex items-center justify-center gap-2 w-1/2 py-4 text-sm bg-[#2563EB] text-white rounded-xl hover:bg-blue-700 transition">
+                    <?php echo e($customerId ? __('messages.update') : __('messages.save')); ?>
+
+                </button>
+            </div>
+
     </div>
 
-    </div>
 
-  
     </form>
 
     <style>
@@ -461,7 +479,7 @@ unset($__errorArgs, $__bag); ?>
             display: none !important;
         }
 
-        /* در Edge جدید */  
+        /* در Edge جدید */
         input[list]::-ms-clear,
         input[list]::-ms-expand {
             display: none !important;
