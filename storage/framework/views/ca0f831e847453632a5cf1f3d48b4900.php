@@ -3495,10 +3495,25 @@
                                         <!-- Send Button -->
                                         <button id="sendMessageBtn"
                                             class="bg-[#122EE1] text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition flex items-center justify-center">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                                            </svg>
+                        <svg width="24" height="24" viewBox="0 0 29 24"
+     fill="none"
+     class="text-white"
+     xmlns="http://www.w3.org/2000/svg">
+    <path
+        d="M17.5087 4.23001L7.1654 8.51001C2.5254 10.43 2.5254 13.57 7.1654 15.49L17.5087 19.77C24.4687 22.65 27.3083 20.29 23.8283 14.54L22.7771 12.81C22.5112 12.37 22.5112 11.64 22.7771 11.2L23.8283 9.46001C27.3083 3.71001 24.4567 1.35001 17.5087 4.23001Z"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+    <path
+        d="M22.4267 12H15.9017"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+</svg>
+
+
                                         </button>
                                     </div>
                                 </div>
