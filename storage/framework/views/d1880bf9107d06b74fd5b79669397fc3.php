@@ -43,7 +43,7 @@
 
             <div class="md:w-1/2 w-full pr-0 md:pr-6">
                 <form action="<?php echo e(route('sarafi.login')); ?>" method="POST" class="space-y-5 border border-[#8C8C8C] p-6 rounded-lg bg-white relative">
-                                            
+            <?php echo csrf_field(); ?>                                
                     <h1 class="text-4xl font-bold text-center mb-2 yekan">
                         ورود به پنل صرافی
                     </h1>

@@ -113,6 +113,8 @@ class ConversionInAccount extends Component
     public function render()
     {
         $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
 
         if (!$user) {
             return view('livewire.sarafi.conversion-in-account', [
@@ -121,7 +123,6 @@ class ConversionInAccount extends Component
             ]);
         }
 
-        $adminId = $user->admin_id ?? $user->id;
 
         if (empty($this->customers)) {
             $this->loadCustomers($adminId);
@@ -426,7 +427,7 @@ class ConversionInAccount extends Component
             // محاسبه بر اساس فرمول جدید
             if ($fromCurrency === 'afn' && $toCurrency === 'irr') {
                 // تبدیل افغانی به تومان: (مبلغ خرید × 1,000) ÷ نرخ ارز
-                    $calculatedAmount = ($amount * 1000) / $rate;
+                $calculatedAmount = ($amount * 1000) / $rate;
             } elseif ($fromCurrency === 'irr' && $toCurrency === 'afn') {
                 // تبدیل تومان به افغانی: (مبلغ خرید × نرخ ارز) ÷ 1,000
                 $calculatedAmount = ($amount * $rate) / 1000;
@@ -555,6 +556,7 @@ class ConversionInAccount extends Component
     /**
      * دریافت نرخ از پیش تعیین شده برای تمام ارزها - منطق اصلاح شده
      */
+
     private function getUniversalPredefinedRate()
     {
         $rateType = $this->getRateType();
@@ -564,12 +566,16 @@ class ConversionInAccount extends Component
             'account_type' => $this->accountType
         ]);
 
-        // استراتژی‌های مختلف برای یافتن نرخ - با اولویت‌بندی صحیح
         $strategies = [
             'direct_from_currency' => function () use ($rateType) {
-                // استراتژی 1: از رکورد ارز مبدا استفاده کن - برای تبدیل‌های مستقیم
                 if ($this->isStandardConversion()) {
-                    $profitRate = ProfitRate::where('source_currency', $this->from_currency)->first();
+                    $user = Auth::guard('sarafi')->user();
+                    $adminId = $user->admin_id ?? $user->id;
+
+                    $profitRate = ProfitRate::where('source_currency', $this->from_currency)
+                        ->where('admin_id', $adminId)
+                        ->latest()
+                        ->first();
                     if ($profitRate) {
                         $field = $this->to_currency . '_' . $rateType;
                         if (isset($profitRate->{$field}) && $profitRate->{$field} > 0) {
@@ -587,7 +593,13 @@ class ConversionInAccount extends Component
             'usd_as_base' => function () use ($rateType) {
                 // استراتژی 2: از رکورد USD استفاده کن - برای تبدیل‌هایی که شامل USD هستند
                 if ($this->from_currency === 'usd' || $this->to_currency === 'usd') {
-                    $profitRate = ProfitRate::where('source_currency', 'usd')->first();
+                    $user = Auth::guard('sarafi')->user();
+                    $adminId = $user->admin_id ?? $user->id;
+
+                    $profitRate = ProfitRate::where('source_currency', 'usd')
+                        ->where('admin_id', $adminId)
+                        ->latest()
+                        ->first();
                     if ($profitRate) {
                         if ($this->from_currency === 'usd') {
                             $field = $this->to_currency . '_' . $rateType;
@@ -610,8 +622,13 @@ class ConversionInAccount extends Component
             },
 
             'reverse_to_currency' => function () use ($rateType) {
-                // استراتژی 3: از رکورد ارز مقصد استفاده کن (منطق معکوس)
-                $profitRate = ProfitRate::where('source_currency', $this->to_currency)->first();
+                $user = Auth::guard('sarafi')->user();
+                $adminId = $user->admin_id ?? $user->id;
+
+                $profitRate = ProfitRate::where('source_currency', $this->to_currency)
+                    ->where('admin_id', $adminId)
+                    ->latest()
+                    ->first();
                 if ($profitRate) {
                     $reverseRateType = $this->getReverseRateType();
                     $field = $this->from_currency . '_' . $reverseRateType;
@@ -628,7 +645,15 @@ class ConversionInAccount extends Component
 
             'fallback_any_rate' => function () use ($rateType) {
                 // استراتژی 4: از هر رکوردی که نرخ دارد استفاده کن
-                $profitRates = ProfitRate::all();
+                $user = Auth::guard('sarafi')->user();
+                $adminId = $user->admin_id ?? $user->id;
+
+                $profitRates = ProfitRate::where(function ($q) use ($adminId) {
+                    $q->where('admin_id', $adminId)
+                        ->orWhere('user_id', $adminId);
+                })
+                    ->latest()
+                    ->get();
 
                 // اولویت 1: جستجوی مستقیم با همان نوع نرخ
                 foreach ($profitRates as $profitRate) {
@@ -823,7 +848,16 @@ class ConversionInAccount extends Component
             return $amount;
         }
 
-        $usdProfitRate = ProfitRate::where('source_currency', 'usd')->first();
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        $usdProfitRate = ProfitRate::where('source_currency', 'usd')
+            ->where(function ($query) use ($adminId) {
+                $query->where('admin_id', $adminId)
+                    ->orWhere('user_id', $adminId);
+            })
+            ->orderBy('created_at', 'desc')
+            ->first();
 
         if (!$usdProfitRate) {
             Log::warning('❌ هیچ رکورد USD در جدول profit_rate برای تبدیل به دالر یافت نشد');
@@ -1185,7 +1219,7 @@ class ConversionInAccount extends Component
             return;
         }
 
-                    $this->updateCustomerCurrencyBalance($this->selectedAccount);
+        $this->updateCustomerCurrencyBalance($this->selectedAccount);
 
         DB::connection('sarafi')->beginTransaction();
 
@@ -1286,13 +1320,13 @@ class ConversionInAccount extends Component
 
             $fileName = 'تبدیل_ارز_در_حساب_' . $conversion->id . '_' . $conversion->type . '.pdf';
 
-                     $path = storage_path('app/public/' . $fileName);
+            $path = storage_path('app/public/' . $fileName);
 
-        // ذخیره PDF
-        $mpdf->Output($path, 'F');
+            // ذخیره PDF
+            $mpdf->Output($path, 'F');
 
-        // ارسال event به JS (Livewire v3)
-        $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
+            // ارسال event به JS (Livewire v3)
+            $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
         } catch (\Exception $e) {
             Log::error('PDF generation error: ' . $e->getMessage());
             session()->flash('error', 'خطا در ایجاد PDF: ' . $e->getMessage());

@@ -355,15 +355,17 @@ Route::get('/sarafi/withdraws-from-bank', function () {
 Route::middleware(['auth:sarafi'])->prefix('chat')->group(function () {
     Route::post('/send', [ChatController::class, 'sendMessage']);
     Route::get('/messages/{userId}', [ChatController::class, 'getMessages']);
-    Route::get('/new-messages/{userId}', [ChatController::class, 'getNewMessages']); 
+    Route::get('/new-messages/{userId}', [ChatController::class, 'getNewMessages']);
     Route::get('/conversations', [ChatController::class, 'getConversations']);
     Route::get('/users', [ChatController::class, 'getChatUsers']);
     Route::get('/unread-count', [ChatController::class, 'getUnreadCount']);
     Route::post('/search', [ChatController::class, 'searchUsers']);
     Route::post('/mark-all-read', [ChatController::class, 'markAllAsRead']);
     Route::delete('/message/{messageId}', [ChatController::class, 'deleteMessage']);
+    Route::post('/audio-info', [ChatController::class, 'getAudioInfo']);
     Route::get('/test', [ChatController::class, 'test']);
 });
+
 
 Route::middleware(['auth:impersonate'])->group(function () {
     Route::get('/impersonate/dashboard', function() {

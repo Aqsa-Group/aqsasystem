@@ -9,30 +9,62 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use getID3;
 
 class ChatController extends Controller
 {
-    // Send a message
+    // ارسال پیام (متن، عکس، صوت)
+      // ارسال پیام (متن، عکس، صوت)
     public function sendMessage(Request $request)
     {
         Log::info('=== CHAT SEND MESSAGE START ===');
-        Log::info('Request data:', $request->all());
+        Log::info('Request type:', ['type' => $request->type]);
+        Log::info('Has file:', ['has' => $request->hasFile('media')]);
+        Log::info('Request all:', $request->except(['media']));
         
         try {
-            // اصلاح کامل validation
-            $validator = \Validator::make($request->all(), [
+            // اعتبارسنجی داینامیک بر اساس نوع پیام
+            $rules = [
                 'receiver_id' => [
                     'required',
+                    'integer',
                     function ($attribute, $value, $fail) {
                         if (!User::where('id', $value)->exists()) {
                             $fail('کاربر دریافت‌کننده معتبر نیست.');
                         }
                     }
                 ],
-                'message' => 'required|string|max:1000'
+                'type' => 'required|in:text,image,audio',
+            ];
+
+            // قوانین خاص برای هر نوع پیام
+            if ($request->type == 'text') {
+                $rules['message'] = 'required|string|max:1000';
+                $rules['media'] = 'nullable';
+            } elseif ($request->type == 'image') {
+                $rules['media'] = 'required|file|mimes:jpg,jpeg,png,gif,webp|max:5120'; // 5MB
+                $rules['message'] = 'nullable|string|max:1000';
+            } elseif ($request->type == 'audio') {
+                $rules['media'] = 'required|file|mimes:mp3,wav,ogg,m4a,mp4,webm|max:10240'; // 10MB
+                $rules['message'] = 'nullable|string|max:1000';
+            }
+
+            $validator = Validator::make($request->all(), $rules, [
+                'receiver_id.required' => 'شناسه دریافت‌کننده الزامی است.',
+                'receiver_id.integer' => 'شناسه دریافت‌کننده باید عدد باشد.',
+                'type.required' => 'نوع پیام الزامی است.',
+                'type.in' => 'نوع پیام باید متن، عکس یا صوت باشد.',
+                'message.required' => 'متن پیام الزامی است.',
+                'message.max' => 'متن پیام نباید بیشتر از 1000 کاراکتر باشد.',
+                'media.required' => 'فایل الزامی است.',
+                'media.file' => 'فایل ارسالی معتبر نیست.',
+                'media.mimes' => 'فرمت فایل نامعتبر است. فرمت‌های مجاز: :values',
+                'media.max' => 'حجم فایل باید کمتر از :max کیلوبایت باشد.',
             ]);
-            
+
             if ($validator->fails()) {
                 Log::error('Validation failed:', $validator->errors()->toArray());
                 return response()->json([
@@ -45,14 +77,8 @@ class ChatController extends Controller
             Log::info('Validation passed');
 
             $sender = Auth::guard('sarafi')->user();
-            Log::info('Sender:', [
-                'id' => $sender->id,
-                'name' => $sender->name,
-                'role' => $sender->role,
-                'admin_id' => $sender->admin_id
-            ]);
-
             $receiver = User::find($request->receiver_id);
+            
             if (!$receiver) {
                 Log::error('Receiver not found with ID: ' . $request->receiver_id);
                 return response()->json([
@@ -60,19 +86,9 @@ class ChatController extends Controller
                     'error' => 'کاربر دریافت‌کننده یافت نشد'
                 ], 404);
             }
-            
-            Log::info('Receiver:', [
-                'id' => $receiver->id,
-                'name' => $receiver->name,
-                'role' => $receiver->role,
-                'admin_id' => $receiver->admin_id
-            ]);
 
-            // Check authorization
-            $canMessage = $this->canMessage($sender, $receiver);
-            Log::info('Can message check:', ['result' => $canMessage]);
-            
-            if (!$canMessage) {
+            // بررسی مجوز ارسال پیام
+            if (!$this->canMessage($sender, $receiver)) {
                 Log::warning('User not authorized to send message');
                 return response()->json([
                     'success' => false,
@@ -83,26 +99,87 @@ class ChatController extends Controller
             DB::connection('sarafi')->beginTransaction();
 
             try {
-                // Create message
+                $messageContent = $request->message;
+                $mediaPath = null;
+                $duration = null;
+
+                // پردازش فایل‌های رسانه‌ای
+                if ($request->hasFile('media') && $request->file('media')->isValid()) {
+                    $file = $request->file('media');
+                    $originalName = $file->getClientOriginalName();
+                    $extension = $file->getClientOriginalExtension();
+                    $mimeType = $file->getMimeType();
+                    $size = $file->getSize();
+                    
+                    Log::info('File details:', [
+                        'name' => $originalName,
+                        'extension' => $extension,
+                        'mime' => $mimeType,
+                        'size' => $size,
+                        'type' => $request->type
+                    ]);
+                    
+                    // ایجاد پوشه بر اساس نوع فایل
+                    $folder = $request->type == 'image' ? 'chat/images' : 'chat/audios';
+                    
+                    // ایجاد پوشه اگر وجود ندارد
+                    if (!Storage::disk('public')->exists($folder)) {
+                        Storage::disk('public')->makeDirectory($folder, 0755, true);
+                    }
+                    
+                    // نام فایل منحصر به فرد
+                    $fileName = time() . '_' . uniqid() . '.' . $extension;
+                    
+                    // ذخیره فایل
+                    $mediaPath = $file->storeAs($folder, $fileName, 'public');
+                    
+                    // محاسبه مدت زمان صوت
+                    if ($request->type == 'audio') {
+                        try {
+                            $duration = $this->getAudioDuration($file);
+                            Log::info('Audio duration calculated:', ['duration' => $duration]);
+                        } catch (\Exception $e) {
+                            Log::error('Error calculating audio duration:', ['error' => $e->getMessage()]);
+                            $duration = 0; // مقدار پیش‌فرض
+                        }
+                    }
+                    
+                    // متن پیش‌فرض برای پیام‌های رسانه‌ای
+                    if (empty($messageContent)) {
+                        $messageContent = $request->type == 'image' ? 'عکس ارسال شد' : 'پیام صوتی ارسال شد';
+                    }
+                } elseif ($request->type != 'text') {
+                    throw new \Exception('فایل ارسالی معتبر نیست.');
+                }
+
+                // ایجاد پیام
                 $message = Message::create([
                     'sender_id' => $sender->id,
                     'receiver_id' => $receiver->id,
-                    'message' => $request->message,
+                    'message' => $messageContent,
+                    'type' => $request->type,
+                    'media_path' => $mediaPath,
+                    'duration' => $duration,
                     'is_read' => false
                 ]);
                 
-                Log::info('Message created:', ['id' => $message->id]);
+                Log::info('Message created:', [
+                    'id' => $message->id, 
+                    'type' => $request->type,
+                    'has_media' => !empty($mediaPath)
+                ]);
 
-                // Create or update conversation
+                // ایجاد یا به‌روزرسانی مکالمه
                 $conversation = $this->getOrCreateConversation($sender->id, $receiver->id);
-                Log::info('Conversation:', ['id' => $conversation->id]);
                 
+                $previewText = $this->getMessagePreview($request->type, $request->message);
                 $conversation->update([
-                    'last_message' => $request->message,
+                    'last_message' => $previewText,
+                    'last_message_type' => $request->type,
                     'last_message_at' => now(),
                 ]);
                 
-                // Increment unread count for receiver
+                // افزایش تعداد پیام‌های خوانده نشده
                 if ($conversation->user1_id == $receiver->id) {
                     $conversation->increment('unread_count_user1');
                 } else {
@@ -113,13 +190,22 @@ class ChatController extends Controller
                 
                 Log::info('=== CHAT SEND MESSAGE SUCCESS ===');
 
+                // بارگذاری روابط و اضافه کردن URL کامل
+                $message->load(['sender', 'receiver']);
+                $messageData = $this->addUrlsToMessage($message);
+
                 return response()->json([
                     'success' => true,
-                    'message' => $message->load('sender')
+                    'message' => $messageData
                 ]);
 
             } catch (\Exception $e) {
                 DB::connection('sarafi')->rollBack();
+                Log::error('Transaction error in sendMessage:', [
+                    'message' => $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine()
+                ]);
                 throw $e;
             }
 
@@ -134,8 +220,7 @@ class ChatController extends Controller
             Log::error('Exception in sendMessage:', [
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
+                'line' => $e->getLine()
             ]);
             return response()->json([
                 'success' => false,
@@ -143,8 +228,7 @@ class ChatController extends Controller
             ], 500);
         }
     }
-
-    // Get messages between users
+    // دریافت پیام‌های بین دو کاربر (همه پیام‌ها)
     public function getMessages($userId)
     {
         Log::info('Getting messages for user: ' . $userId);
@@ -159,7 +243,7 @@ class ChatController extends Controller
             ], 404);
         }
 
-        // Get messages
+        // دریافت پیام‌ها
         $messages = Message::where(function($query) use ($currentUser, $otherUser) {
             $query->where('sender_id', $currentUser->id)
                   ->where('receiver_id', $otherUser->id);
@@ -170,33 +254,16 @@ class ChatController extends Controller
           ->with(['sender', 'receiver'])
           ->get()
           ->map(function ($message) {
-              // ✅ اضافه کردن image_url به sender و receiver
-              $messageArray = $message->toArray();
-              
-              // اضافه کردن تصویر sender
-              if ($message->sender && $message->sender->user_image) {
-                  $messageArray['sender']['image_url'] = asset('storage/' . $message->sender->user_image);
-              } else {
-                  $messageArray['sender']['image_url'] = asset('assets/sarafi/avatar.svg');
-              }
-              
-              // اضافه کردن تصویر receiver
-              if ($message->receiver && $message->receiver->user_image) {
-                  $messageArray['receiver']['image_url'] = asset('storage/' . $message->receiver->user_image);
-              } else {
-                  $messageArray['receiver']['image_url'] = asset('assets/sarafi/avatar.svg');
-              }
-              
-              return $messageArray;
+              return $this->addUrlsToMessage($message);
           });
 
-        // Mark messages as read
+        // علامت‌گذاری پیام‌ها به عنوان خوانده شده
         Message::where('sender_id', $otherUser->id)
                ->where('receiver_id', $currentUser->id)
                ->where('is_read', false)
                ->update(['is_read' => true]);
 
-        // Update conversation unread count
+        // به‌روزرسانی تعداد پیام‌های خوانده نشده در مکالمه
         $conversation = $this->getOrCreateConversation($currentUser->id, $otherUser->id);
         if ($conversation->user1_id == $currentUser->id) {
             $conversation->update(['unread_count_user1' => 0]);
@@ -210,7 +277,7 @@ class ChatController extends Controller
         ]);
     }
 
-    // ✅ تابع جدید برای دریافت فقط پیام‌های جدید
+    // دریافت فقط پیام‌های جدید
     public function getNewMessages($userId)
     {
         Log::info('Getting NEW messages for user: ' . $userId);
@@ -244,29 +311,12 @@ class ChatController extends Controller
             ->with(['sender', 'receiver'])
             ->get()
             ->map(function ($message) {
-                // ✅ اضافه کردن image_url به sender و receiver
-                $messageArray = $message->toArray();
-                
-                // اضافه کردن تصویر sender
-                if ($message->sender && $message->sender->user_image) {
-                    $messageArray['sender']['image_url'] = asset('storage/' . $message->sender->user_image);
-                } else {
-                    $messageArray['sender']['image_url'] = asset('assets/sarafi/avatar.svg');
-                }
-                
-                // اضافه کردن تصویر receiver
-                if ($message->receiver && $message->receiver->user_image) {
-                    $messageArray['receiver']['image_url'] = asset('storage/' . $message->receiver->user_image);
-                } else {
-                    $messageArray['receiver']['image_url'] = asset('assets/sarafi/avatar.svg');
-                }
-                
-                return $messageArray;
+                return $this->addUrlsToMessage($message);
             });
 
         Log::info('Found ' . $messages->count() . ' new messages');
 
-        // Mark messages as read (only new ones from the other user)
+        // علامت‌گذاری پیام‌های جدید به عنوان خوانده شده
         if ($messages->count() > 0) {
             Message::where('sender_id', $otherUser->id)
                    ->where('receiver_id', $currentUser->id)
@@ -274,7 +324,7 @@ class ChatController extends Controller
                    ->where('id', '>', $lastMessageId)
                    ->update(['is_read' => true]);
 
-            // Update conversation unread count
+            // به‌روزرسانی تعداد پیام‌های خوانده نشده
             $conversation = $this->getOrCreateConversation($currentUser->id, $otherUser->id);
             if ($conversation->user1_id == $currentUser->id) {
                 $conversation->update(['unread_count_user1' => 0]);
@@ -289,7 +339,7 @@ class ChatController extends Controller
         ]);
     }
 
-    // Get conversations list
+    // دریافت لیست مکالمات
     public function getConversations()
     {
         $user = Auth::guard('sarafi')->user();
@@ -305,7 +355,6 @@ class ChatController extends Controller
                 $unreadCount = $conversation->user1_id == $user->id ? 
                     $conversation->unread_count_user1 : $conversation->unread_count_user2;
                 
-                // ✅ اضافه کردن user_image به other_user
                 return [
                     'id' => $conversation->id,
                     'other_user' => [
@@ -313,9 +362,12 @@ class ChatController extends Controller
                         'name' => $otherUser->name,
                         'lastname' => $otherUser->lastname,
                         'user_image' => $otherUser->user_image,
-                        'image_url' => $otherUser->user_image ? asset('storage/' . $otherUser->user_image) : asset('assets/sarafi/avatar.svg'),
+                        'image_url' => $otherUser->user_image ? 
+                            asset('storage/' . $otherUser->user_image) : 
+                            asset('assets/sarafi/avatar.svg'),
                     ],
                     'last_message' => $conversation->last_message,
+                    'last_message_type' => $conversation->last_message_type,
                     'last_message_at' => $conversation->last_message_at,
                     'unread_count' => $unreadCount,
                     'created_at' => $conversation->created_at
@@ -328,17 +380,17 @@ class ChatController extends Controller
         ]);
     }
 
-    // Get users available for chat
+    // دریافت کاربران قابل چت
     public function getChatUsers()
     {
         $currentUser = Auth::guard('sarafi')->user();
 
         $users = User::where('id', '!=', $currentUser->id)
             ->where(function ($query) use ($currentUser) {
-                // ✅ همه بتوانند سوپر ادمین را ببینند
+                // همه می‌توانند سوپر ادمین را ببینند
                 $query->where('role', 'superadmin');
 
-                // ✅ سوپر ادمین همه را ببیند
+                // سوپر ادمین همه را می‌بیند
                 if ($currentUser->role === 'superadmin') {
                     $query->orWhereIn('role', [
                         'admin',
@@ -348,7 +400,7 @@ class ChatController extends Controller
                     ]);
                 }
 
-                // ✅ ادمین فقط خزانه‌دارهای خودش
+                // ادمین فقط خزانه‌دارهای خودش
                 if ($currentUser->role === 'admin') {
                     $query->orWhere(function ($q) use ($currentUser) {
                         $q->where('role', 'warehouse_manager')
@@ -356,7 +408,7 @@ class ChatController extends Controller
                     });
                 }
 
-                // ✅ خزانه‌دار فقط ادمین خودش
+                // خزانه‌دار فقط ادمین خودش
                 if ($currentUser->role === 'warehouse_manager') {
                     $query->orWhere('id', $currentUser->admin_id);
                 }
@@ -364,9 +416,10 @@ class ChatController extends Controller
             ->select('id', 'name', 'lastname', 'sarafi_name', 'role', 'admin_id', 'phone', 'user_image')
             ->get()
             ->map(function ($user) {
-                // ✅ اضافه کردن image_url
                 $userArray = $user->toArray();
-                $userArray['image_url'] = $user->user_image ? asset('storage/' . $user->user_image) : asset('assets/sarafi/avatar.svg');
+                $userArray['image_url'] = $user->user_image ? 
+                    asset('storage/' . $user->user_image) : 
+                    asset('assets/sarafi/avatar.svg');
                 return $userArray;
             });
 
@@ -376,7 +429,7 @@ class ChatController extends Controller
         ]);
     }
 
-    // Get unread message count
+    // دریافت تعداد پیام‌های خوانده نشده
     public function getUnreadCount()
     {
         $user = Auth::guard('sarafi')->user();
@@ -391,15 +444,22 @@ class ChatController extends Controller
         ]);
     }
 
-    // Search users for chat
+    // جستجوی کاربران
     public function searchUsers(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'query' => 'required|string|min:2'
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
         $currentUser = Auth::guard('sarafi')->user();
-        $query = $request->query;
+        $query = $request->input('query');
 
         $users = User::where('id', '!=', $currentUser->id)
             ->where(function($q) use ($query) {
@@ -412,9 +472,10 @@ class ChatController extends Controller
             ->limit(20)
             ->get()
             ->map(function ($user) {
-                // ✅ اضافه کردن image_url
                 $userArray = $user->toArray();
-                $userArray['image_url'] = $user->user_image ? asset('storage/' . $user->user_image) : asset('assets/sarafi/avatar.svg');
+                $userArray['image_url'] = $user->user_image ? 
+                    asset('storage/' . $user->user_image) : 
+                    asset('assets/sarafi/avatar.svg');
                 return $userArray;
             });
 
@@ -424,7 +485,7 @@ class ChatController extends Controller
         ]);
     }
 
-    // Mark all messages as read
+    // علامت‌گذاری همه پیام‌ها به عنوان خوانده شده
     public function markAllAsRead()
     {
         $user = Auth::guard('sarafi')->user();
@@ -445,7 +506,94 @@ class ChatController extends Controller
         ]);
     }
 
-    // Test endpoint for debugging
+    // حذف پیام
+    public function deleteMessage($messageId)
+    {
+        $user = Auth::guard('sarafi')->user();
+        
+        $message = Message::find($messageId);
+        
+        if (!$message) {
+            return response()->json([
+                'success' => false,
+                'error' => 'پیام یافت نشد'
+            ], 404);
+        }
+        
+        // بررسی مالکیت پیام
+        if ($message->sender_id !== $user->id) {
+            return response()->json([
+                'success' => false,
+                'error' => 'شما اجازه حذف این پیام را ندارید'
+            ], 403);
+        }
+        
+        // حذف فایل رسانه‌ای اگر وجود دارد
+        if ($message->media_path && Storage::disk('public')->exists($message->media_path)) {
+            Storage::disk('public')->delete($message->media_path);
+        }
+        
+        $message->delete();
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'پیام با موفقیت حذف شد'
+        ]);
+    }
+
+   // دریافت اطلاعات فایل صوت - بهبود یافته
+    public function getAudioInfo(Request $request)
+    {
+        try {
+            Log::info('Audio info request received');
+            
+            $validator = Validator::make($request->all(), [
+                'audio' => 'required|file|mimes:mp3,wav,ogg,m4a,mp4,webm|max:10240'
+            ], [
+                'audio.required' => 'فایل صوتی الزامی است.',
+                'audio.file' => 'فایل ارسالی معتبر نیست.',
+                'audio.mimes' => 'فرمت فایل باید mp3, wav, ogg, m4a, mp4 یا webm باشد.',
+                'audio.max' => 'حجم فایل باید کمتر از 10 مگابایت باشد.'
+            ]);
+
+            if ($validator->fails()) {
+                Log::error('Audio info validation failed:', $validator->errors()->toArray());
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            $file = $request->file('audio');
+            $duration = $this->getAudioDuration($file);
+            
+            Log::info('Audio info calculated:', [
+                'duration' => $duration,
+                'size' => $file->getSize(),
+                'type' => $file->getMimeType(),
+                'name' => $file->getClientOriginalName()
+            ]);
+            
+            return response()->json([
+                'success' => true,
+                'duration' => $duration,
+                'size' => $file->getSize(),
+                'type' => $file->getMimeType(),
+                'name' => $file->getClientOriginalName()
+            ]);
+            
+        } catch (\Exception $e) {
+            Log::error('Error in getAudioInfo:', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'success' => false,
+                'error' => 'خطا در پردازش فایل صوتی: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    // تست endpoint
     public function test()
     {
         $user = Auth::guard('sarafi')->user();
@@ -458,17 +606,18 @@ class ChatController extends Controller
                 'role' => $user->role,
                 'admin_id' => $user->admin_id,
                 'user_image' => $user->user_image,
-                'image_url' => $user->user_image ? asset('storage/' . $user->user_image) : asset('assets/sarafi/avatar.svg'),
+                'image_url' => $user->user_image ? 
+                    asset('storage/' . $user->user_image) : 
+                    asset('assets/sarafi/avatar.svg'),
             ],
-            'session' => session()->all(),
-            'auth' => auth()->check(),
-            'guard' => auth()->guard()->getName(),
+          'auth' => Auth::guard('sarafi')->check(),
             'users_count' => User::count(),
             'messages_count' => Message::count(),
             'conversations_count' => Conversation::count()
         ]);
     }
 
+    // توابع کمکی خصوصی
     private function canMessage($sender, $receiver)
     {
         // جلوگیری از پیام به خود
@@ -476,12 +625,12 @@ class ChatController extends Controller
             return false;
         }
 
-        // ✅ سوپر ادمین ↔ همه
+        // سوپر ادمین ↔ همه
         if ($sender->role === 'superadmin' || $receiver->role === 'superadmin') {
             return true;
         }
 
-        // ✅ ادمین ↔ خزانه‌دارهای خودش
+        // ادمین ↔ خزانه‌دارهای خودش
         if ($sender->role === 'admin') {
             return $receiver->role === 'warehouse_manager'
                 && $receiver->admin_id === $sender->id;
@@ -515,5 +664,93 @@ class ChatController extends Controller
         }
 
         return $conversation;
+    }
+
+    private function addUrlsToMessage($message)
+    {
+        $messageArray = $message->toArray();
+        
+        // اضافه کردن URL تصویر sender
+        if ($message->sender && $message->sender->user_image) {
+            $messageArray['sender']['image_url'] = asset('storage/' . $message->sender->user_image);
+        } else {
+            $messageArray['sender']['image_url'] = asset('assets/sarafi/avatar.svg');
+        }
+        
+        // اضافه کردن URL تصویر receiver
+        if ($message->receiver && $message->receiver->user_image) {
+            $messageArray['receiver']['image_url'] = asset('storage/' . $message->receiver->user_image);
+        } else {
+            $messageArray['receiver']['image_url'] = asset('assets/sarafi/avatar.svg');
+        }
+        
+        // اضافه کردن URL کامل برای فایل‌های رسانه‌ای
+        if ($message->media_path) {
+            $messageArray['media_url'] = asset('storage/' . $message->media_path);
+        }
+        
+        return $messageArray;
+    }
+
+     // بهبود تابع محاسبه مدت زمان صوت
+    private function getAudioDuration($file)
+    {
+        try {
+            // بررسی وجود کتابخانه getID3
+            if (!class_exists('getID3')) {
+                Log::warning('getID3 library not found, using fallback');
+                return 0;
+            }
+            
+            $getID3 = new \getID3();
+            
+            // تحلیل فایل
+            $fileInfo = $getID3->analyze($file->getPathname());
+            
+            Log::info('Audio analysis:', [
+                'playtime' => $fileInfo['playtime_seconds'] ?? null,
+                'format' => $fileInfo['fileformat'] ?? null,
+                'audio_format' => $fileInfo['audio']['dataformat'] ?? null
+            ]);
+            
+            if (isset($fileInfo['playtime_seconds'])) {
+                $duration = (int) ceil($fileInfo['playtime_seconds']);
+                Log::info('Duration calculated successfully:', ['duration' => $duration]);
+                return $duration;
+            }
+            
+            // راه‌حل جایگزین برای فایل‌های خاص
+            if (isset($fileInfo['audio']['bitrate']) && isset($fileInfo['filesize'])) {
+                $bitrate = $fileInfo['audio']['bitrate'];
+                $filesize = $fileInfo['filesize'];
+                if ($bitrate > 0) {
+                    $duration = (int) ceil(($filesize * 8) / $bitrate);
+                    Log::info('Duration calculated from bitrate:', ['duration' => $duration]);
+                    return $duration;
+                }
+            }
+            
+            Log::warning('Could not determine audio duration');
+            return 0;
+            
+        } catch (\Exception $e) {
+            Log::error('Error in getAudioDuration:', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return 0;
+        }
+    }
+
+    private function getMessagePreview($type, $message)
+    {
+        switch ($type) {
+            case 'image':
+                return 'عکس';
+            case 'audio':
+                return 'پیام صوتی';
+            default:
+                return strlen($message) > 50 ? substr($message, 0, 50) . '...' : $message;
+        }
     }
 }

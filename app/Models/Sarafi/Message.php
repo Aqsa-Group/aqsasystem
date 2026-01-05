@@ -3,72 +3,98 @@
 namespace App\Models\Sarafi;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Message extends Model
 {
+    use HasFactory;
+
     protected $connection = 'sarafi';
     protected $table = 'messages';
-    
+
     protected $fillable = [
         'sender_id',
         'receiver_id',
         'message',
-        'is_read',
-        'type'
+        'type',
+        'media_path',
+        'duration',
+        'is_read'
     ];
 
     protected $casts = [
         'is_read' => 'boolean',
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s'
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
     ];
 
-    // Override the getCreatedAtAttribute method to convert to Afghanistan time
-    public function getCreatedAtAttribute($value)
-    {
-        if (!$value) {
-            return null;
-        }
-        
-        $date = \Carbon\Carbon::parse($value)->timezone('Asia/Kabul');
-        return $date->format('Y-m-d H:i:s');
-    }
+    protected $appends = [
+        'media_url',
+        'has_media',
+        'preview',
+        'formatted_duration'
+    ];
 
-    public function getUpdatedAtAttribute($value)
-    {
-        if (!$value) {
-            return null;
-        }
-        
-        $date = \Carbon\Carbon::parse($value)->timezone('Asia/Kabul');
-        return $date->format('Y-m-d H:i:s');
-    }
-
+    /**
+     * Get the sender of the message.
+     */
     public function sender()
     {
         return $this->belongsTo(User::class, 'sender_id');
     }
 
+    /**
+     * Get the receiver of the message.
+     */
     public function receiver()
     {
         return $this->belongsTo(User::class, 'receiver_id');
     }
 
-    // Scope for unread messages
-    public function scopeUnread($query)
+    /**
+     * Get the media URL attribute.
+     */
+    public function getMediaUrlAttribute()
     {
-        return $query->where('is_read', false);
+        if ($this->media_path) {
+            return asset('storage/' . $this->media_path);
+        }
+        return null;
     }
 
-    // Scope for messages between two users
-    public function scopeBetween($query, $user1Id, $user2Id)
+    /**
+     * Check if message has media.
+     */
+    public function getHasMediaAttribute()
     {
-        return $query->where(function($q) use ($user1Id, $user2Id) {
-            $q->where('sender_id', $user1Id)
-              ->where('receiver_id', $user2Id);
-        })->orWhere(function($q) use ($user1Id, $user2Id) {
-            $q->where('sender_id', $user2Id)
-              ->where('receiver_id', $user1Id);
-        });
+        return !empty($this->media_path);
+    }
+
+    /**
+     * Get message preview.
+     */
+    public function getPreviewAttribute()
+    {
+        switch ($this->type) {
+            case 'image':
+                return 'عکس';
+            case 'audio':
+                return 'پیام صوتی';
+            default:
+                return strlen($this->message) > 50 ? substr($this->message, 0, 50) . '...' : $this->message;
+        }
+    }
+
+    /**
+     * Format duration for audio messages.
+     */
+    public function getFormattedDurationAttribute()
+    {
+        if (!$this->duration) return '0:00';
+        
+        $minutes = floor($this->duration / 60);
+        $seconds = $this->duration % 60;
+        
+        return sprintf("%d:%02d", $minutes, $seconds);
     }
 }
