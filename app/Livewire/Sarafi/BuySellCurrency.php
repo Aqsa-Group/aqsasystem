@@ -21,7 +21,7 @@ class BuySellCurrency extends Component
 
 
     public $calculatingFromAmount = false;
-public $calculatingFromEqAmount = false;
+    public $calculatingFromEqAmount = false;
 
 
     // Component Properties
@@ -111,193 +111,193 @@ public $calculatingFromEqAmount = false;
         $this->calculateRealTimeProfitLoss();
     }
 
-  /**
- * Handle exchange rate field update
- */
-public function updatedExchangeRate($value)
-{
-    if ($this->calculatingFromAmount || $this->calculatingFromEqAmount) return;
-    
-    // اگر amount وجود دارد، از آن محاسبه کن
-    if ($this->amount) {
-        $this->calculatingFromAmount = true;
-        $this->calculateEqAmountFromAmount();
-        $this->calculatingFromAmount = false;
-    } 
-    // اگر eq_amount وجود دارد، از آن محاسبه کن
-    elseif ($this->eq_amount) {
+    /**
+     * Handle exchange rate field update
+     */
+    public function updatedExchangeRate($value)
+    {
+        if ($this->calculatingFromAmount || $this->calculatingFromEqAmount) return;
+
+        // اگر amount وجود دارد، از آن محاسبه کن
+        if ($this->amount) {
+            $this->calculatingFromAmount = true;
+            $this->calculateEqAmountFromAmount();
+            $this->calculatingFromAmount = false;
+        }
+        // اگر eq_amount وجود دارد، از آن محاسبه کن
+        elseif ($this->eq_amount) {
+            $this->calculatingFromEqAmount = true;
+            $this->calculateAmountFromEqAmount();
+            $this->calculatingFromEqAmount = false;
+        }
+
+        $this->convertAmountToWords($value, 'exchangeRateInWords');
+        $this->calculateRealTimeProfitLoss();
+    }
+    /**
+     * Handle currency field update
+     */
+    public function updatedCurrency()
+    {
+        $this->recalculateBasedOnAvailableData();
+        $this->calculateRealTimeProfitLoss();
+    }
+
+    /**
+     * Handle to_currency field update
+     */
+    public function updatedToCurrency()
+    {
+        $this->recalculateBasedOnAvailableData();
+        $this->calculateRealTimeProfitLoss();
+    }
+
+
+    /**
+     * Handle eq_amount field update
+     */
+    public function updatedEqAmount($value)
+    {
+        if ($this->calculatingFromAmount) return;
+
         $this->calculatingFromEqAmount = true;
         $this->calculateAmountFromEqAmount();
         $this->calculatingFromEqAmount = false;
+        $this->calculateRealTimeProfitLoss();
     }
-    
-    $this->convertAmountToWords($value, 'exchangeRateInWords');
-    $this->calculateRealTimeProfitLoss();
-}
-   /**
- * Handle currency field update
- */
-public function updatedCurrency()
-{
-    $this->recalculateBasedOnAvailableData();
-    $this->calculateRealTimeProfitLoss();
-}
-
-  /**
- * Handle to_currency field update
- */
-public function updatedToCurrency()
-{
-    $this->recalculateBasedOnAvailableData();
-    $this->calculateRealTimeProfitLoss();
-}
-
-
-   /**
- * Handle eq_amount field update
- */
-public function updatedEqAmount($value)
-{
-    if ($this->calculatingFromAmount) return;
-    
-    $this->calculatingFromEqAmount = true;
-    $this->calculateAmountFromEqAmount();
-    $this->calculatingFromEqAmount = false;
-    $this->calculateRealTimeProfitLoss();
-}
 
 
 
 
-/**
- * محاسبه eq_amount از amount
- */
-public function calculateEqAmountFromAmount()
-{
-    if ($this->amount && $this->exchange_rate && $this->currency && $this->to_currency) {
-        
-        $amount = floatval(str_replace(',', '', $this->amount));
-        $rate   = floatval(str_replace(',', '', $this->exchange_rate));
-        
-        if ($rate == 0) {
-            $this->eq_amount = '';
-            $this->eqAmountInWords = '';
-            return;
-        }
-        
-        $calculatedAmount = 0;
-        
-        // حالت‌های خاص
-        if ($this->currency === 'afn' && $this->to_currency === 'irr') {
-            // افغانی → تومان
-            $calculatedAmount = ($amount * 1000) / $rate;
-        } elseif ($this->currency === 'irr' && $this->to_currency === 'afn') {
-            // تومان → افغانی
-            $calculatedAmount = ($amount * $rate) / 1000;
-        } elseif ($this->currency === 'afn' && $this->to_currency === 'usd') {
-            // افغانی → دالر
-            $calculatedAmount = $amount / $rate;
-        } elseif ($this->currency === 'usd' && $this->to_currency === 'afn') {
-            // دالر → افغانی
-            $calculatedAmount = $amount * $rate;
+    /**
+     * محاسبه eq_amount از amount
+     */
+    public function calculateEqAmountFromAmount()
+    {
+        if ($this->amount && $this->exchange_rate && $this->currency && $this->to_currency) {
+
+            $amount = floatval(str_replace(',', '', $this->amount));
+            $rate   = floatval(str_replace(',', '', $this->exchange_rate));
+
+            if ($rate == 0) {
+                $this->eq_amount = '';
+                $this->eqAmountInWords = '';
+                return;
+            }
+
+            $calculatedAmount = 0;
+
+            // حالت‌های خاص
+            if ($this->currency === 'afn' && $this->to_currency === 'irr') {
+                // افغانی → تومان
+                $calculatedAmount = ($amount * 1000) / $rate;
+            } elseif ($this->currency === 'irr' && $this->to_currency === 'afn') {
+                // تومان → افغانی
+                $calculatedAmount = ($amount * $rate) / 1000;
+            } elseif ($this->currency === 'afn' && $this->to_currency === 'usd') {
+                // افغانی → دالر
+                $calculatedAmount = $amount / $rate;
+            } elseif ($this->currency === 'usd' && $this->to_currency === 'afn') {
+                // دالر → افغانی
+                $calculatedAmount = $amount * $rate;
+            } else {
+                // سایر تبدیل‌ها
+                $calculatedAmount = $amount * $rate;
+            }
+
+            $calculatedAmount = round($calculatedAmount, 2);
+            $this->eq_amount = $calculatedAmount;
+
+            $this->convertAmountToWords($this->amount, 'amountInWords');
+            $this->convertAmountToWords($calculatedAmount, 'eqAmountInWords');
+            $this->convertAmountToWords($this->exchange_rate, 'exchangeRateInWords');
         } else {
-            // سایر تبدیل‌ها
-            $calculatedAmount = $amount * $rate;
+            $this->eq_amount = '';
+            $this->amountInWords = '';
+            $this->eqAmountInWords = '';
+            $this->exchangeRateInWords = '';
         }
-        
-        $calculatedAmount = round($calculatedAmount, 2);
-        $this->eq_amount = $calculatedAmount;
-        
-        $this->convertAmountToWords($this->amount, 'amountInWords');
-        $this->convertAmountToWords($calculatedAmount, 'eqAmountInWords');
-        $this->convertAmountToWords($this->exchange_rate, 'exchangeRateInWords');
-    } else {
-        $this->eq_amount = '';
-        $this->amountInWords = '';
-        $this->eqAmountInWords = '';
-        $this->exchangeRateInWords = '';
     }
-}
 
-/**
- * محاسبه amount از eq_amount
- */
-public function calculateAmountFromEqAmount()
-{
-    if ($this->eq_amount && $this->exchange_rate && $this->currency && $this->to_currency) {
-        
-        $eqAmount = floatval(str_replace(',', '', $this->eq_amount));
-        $rate     = floatval(str_replace(',', '', $this->exchange_rate));
-        
-        if ($rate == 0) {
+    /**
+     * محاسبه amount از eq_amount
+     */
+    public function calculateAmountFromEqAmount()
+    {
+        if ($this->eq_amount && $this->exchange_rate && $this->currency && $this->to_currency) {
+
+            $eqAmount = floatval(str_replace(',', '', $this->eq_amount));
+            $rate     = floatval(str_replace(',', '', $this->exchange_rate));
+
+            if ($rate == 0) {
+                $this->amount = '';
+                $this->amountInWords = '';
+                return;
+            }
+
+            $calculatedAmount = 0;
+
+            // حالت‌های خاص (معکوس)
+            if ($this->currency === 'afn' && $this->to_currency === 'irr') {
+                // افغانی → تومان (معکوس)
+                $calculatedAmount = ($eqAmount * $rate) / 1000;
+            } elseif ($this->currency === 'irr' && $this->to_currency === 'afn') {
+                // تومان → افغانی (معکوس)
+                $calculatedAmount = ($eqAmount * 1000) / $rate;
+            } elseif ($this->currency === 'afn' && $this->to_currency === 'usd') {
+                // افغانی → دالر (معکوس)
+                $calculatedAmount = $eqAmount * $rate;
+            } elseif ($this->currency === 'usd' && $this->to_currency === 'afn') {
+                // دالر → افغانی (معکوس)
+                $calculatedAmount = $eqAmount / $rate;
+            } else {
+                // سایر تبدیل‌ها (معکوس)
+                $calculatedAmount = $eqAmount / $rate;
+            }
+
+            $calculatedAmount = round($calculatedAmount, 2);
+            $this->amount = $calculatedAmount;
+
+            $this->convertAmountToWords($calculatedAmount, 'amountInWords');
+            $this->convertAmountToWords($this->eq_amount, 'eqAmountInWords');
+            $this->convertAmountToWords($this->exchange_rate, 'exchangeRateInWords');
+        } else {
             $this->amount = '';
             $this->amountInWords = '';
-            return;
+            $this->eqAmountInWords = '';
+            $this->exchangeRateInWords = '';
         }
-        
-        $calculatedAmount = 0;
-        
-        // حالت‌های خاص (معکوس)
-        if ($this->currency === 'afn' && $this->to_currency === 'irr') {
-            // افغانی → تومان (معکوس)
-            $calculatedAmount = ($eqAmount * $rate) / 1000;
-        } elseif ($this->currency === 'irr' && $this->to_currency === 'afn') {
-            // تومان → افغانی (معکوس)
-            $calculatedAmount = ($eqAmount * 1000) / $rate;
-        } elseif ($this->currency === 'afn' && $this->to_currency === 'usd') {
-            // افغانی → دالر (معکوس)
-            $calculatedAmount = $eqAmount * $rate;
-        } elseif ($this->currency === 'usd' && $this->to_currency === 'afn') {
-            // دالر → افغانی (معکوس)
-            $calculatedAmount = $eqAmount / $rate;
-        } else {
-            // سایر تبدیل‌ها (معکوس)
-            $calculatedAmount = $eqAmount / $rate;
+    }
+
+    /**
+     * محاسبه مجدد بر اساس داده‌های موجود
+     */
+    private function recalculateBasedOnAvailableData()
+    {
+        if ($this->calculatingFromAmount || $this->calculatingFromEqAmount) return;
+
+        // اگر amount وجود دارد، از آن محاسبه کن
+        if ($this->amount) {
+            $this->calculatingFromAmount = true;
+            $this->calculateEqAmountFromAmount();
+            $this->calculatingFromAmount = false;
         }
-        
-        $calculatedAmount = round($calculatedAmount, 2);
-        $this->amount = $calculatedAmount;
-        
-        $this->convertAmountToWords($calculatedAmount, 'amountInWords');
-        $this->convertAmountToWords($this->eq_amount, 'eqAmountInWords');
-        $this->convertAmountToWords($this->exchange_rate, 'exchangeRateInWords');
-    } else {
-        $this->amount = '';
-        $this->amountInWords = '';
-        $this->eqAmountInWords = '';
-        $this->exchangeRateInWords = '';
+        // اگر eq_amount وجود دارد، از آن محاسبه کن
+        elseif ($this->eq_amount) {
+            $this->calculatingFromEqAmount = true;
+            $this->calculateAmountFromEqAmount();
+            $this->calculatingFromEqAmount = false;
+        }
     }
-}
 
-/**
- * محاسبه مجدد بر اساس داده‌های موجود
- */
-private function recalculateBasedOnAvailableData()
-{
-    if ($this->calculatingFromAmount || $this->calculatingFromEqAmount) return;
-    
-    // اگر amount وجود دارد، از آن محاسبه کن
-    if ($this->amount) {
-        $this->calculatingFromAmount = true;
-        $this->calculateEqAmountFromAmount();
-        $this->calculatingFromAmount = false;
-    } 
-    // اگر eq_amount وجود دارد، از آن محاسبه کن
-    elseif ($this->eq_amount) {
-        $this->calculatingFromEqAmount = true;
-        $this->calculateAmountFromEqAmount();
-        $this->calculatingFromEqAmount = false;
+    /**
+     * Handle transaction type update
+     */
+    public function updatedTransactionType()
+    {
+        $this->recalculateBasedOnAvailableData();
+        $this->calculateRealTimeProfitLoss();
     }
-}
-
-/**
- * Handle transaction type update
- */
-public function updatedTransactionType()
-{
-    $this->recalculateBasedOnAvailableData();
-    $this->calculateRealTimeProfitLoss();
-}
 
  
     // ==================== CALCULATION METHODS ====================
@@ -590,7 +590,7 @@ public function updatedTransactionType()
      * دریافت نرخ از پیش تعیین شده برای خرید/فروش
      */
     private function getBuySellPredefinedRate()
-    {   
+    {
         // منطق: 
         // - برای خرید: نرخ فروش بازار (صراف می‌خرد، پس باید با نرخ فروش بازار مقایسه کند)
         // - برای فروش: نرخ خرید بازار (صراف می‌فروشد، پس باید با نرخ خرید بازار مقایسه کند)
@@ -598,8 +598,13 @@ public function updatedTransactionType()
 
         Log::info("جستجوی نرخ بازار برای {$this->transactionType}: {$this->currency} → {$this->to_currency} با نوع: {$rateType}");
 
-        // همیشه از رکورد USD استفاده می‌کنیم
-        $usdProfitRate = ProfitRate::where('source_currency', 'usd')->first();
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        $usdProfitRate = ProfitRate::where('source_currency', 'usd')
+            ->where('admin_id', $adminId)
+            ->latest()
+            ->first();
 
         if (!$usdProfitRate) {
             Log::warning('❌ رکورد USD در جدول profit_rate یافت نشد');
@@ -612,7 +617,13 @@ public function updatedTransactionType()
         ) {
             Log::info("🔍 حالت خاص: تبدیل {$this->currency} ↔ {$this->to_currency}");
 
-            $afnProfitRate = ProfitRate::where('source_currency', 'afn')->first();
+            $user = Auth::guard('sarafi')->user();
+            $adminId = $user->admin_id ?? $user->id;
+
+            $afnProfitRate = ProfitRate::where('source_currency', 'afn')
+                ->where('admin_id', $adminId)
+                ->latest()
+                ->first();
 
             if ($afnProfitRate) {
                 // تعیین فیلد بر اساس نوع نرخ
@@ -786,7 +797,14 @@ public function updatedTransactionType()
         }
 
         // همیشه از رکورد USD استفاده کن
-        $usdProfitRate = ProfitRate::where('source_currency', 'usd')->first();
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        $usdProfitRate = ProfitRate::where('source_currency', 'usd')
+            ->where('admin_id', $adminId)
+            ->latest()
+            ->first();
+
 
         if (!$usdProfitRate) {
             Log::warning("رکورد USD یافت نشد");
@@ -1545,13 +1563,13 @@ public function updatedTransactionType()
             $mpdf->WriteHTML($html);
 
             $fileName = 'تراکنش_صرافی_' . $transaction->id . '_' . $transaction->type . '.pdf';
-      $path = storage_path('app/public/' . $fileName);
+            $path = storage_path('app/public/' . $fileName);
 
-        // ذخیره PDF
-        $mpdf->Output($path, 'F');
+            // ذخیره PDF
+            $mpdf->Output($path, 'F');
 
-        // ارسال event به JS (Livewire v3)
-        $this->dispatch('print-pdf', url: asset('storage/' . $fileName));   
+            // ارسال event به JS (Livewire v3)
+            $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
         } catch (\Exception $e) {
             session()->flash('message', 'خطا در ایجاد PDF: ' . $e->getMessage());
         }

@@ -19,7 +19,7 @@ class ProfitRates extends Component
     public $editingId = null;
     public $isEditing = false;
     public $confirmDeleteId = null;
-
+    
     // ارزهای سیستمی (تأیید شده توسط کاربر)
     private $currencyCodes = ['usd','afn','irr','eur','pkr','aed' , 'try','cny'];
 

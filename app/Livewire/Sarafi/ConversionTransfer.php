@@ -23,8 +23,8 @@ class ConversionTransfer extends Component
     use WithPagination;
 
 
-    public $calculating = false; 
-    public $calculatingField = 'withdrawal'; 
+    public $calculating = false;
+    public $calculatingField = 'withdrawal';
 
     // حساب برداشت
     public $withdrawalAccount = null;
@@ -324,7 +324,7 @@ class ConversionTransfer extends Component
         }
     }
 
-   /**
+    /**
      * Event Listeners برای محاسبه خودکار دوطرفه
      */
     public function updated($property)
@@ -341,17 +341,14 @@ class ConversionTransfer extends Component
             if ($property === 'withdrawal_amount') {
                 $this->calculatingField = 'withdrawal';
                 $this->calculateReceivedAmount();
-            } 
-            elseif ($property === 'received_amount') {
+            } elseif ($property === 'received_amount') {
                 $this->calculatingField = 'received';
                 $this->calculateWithdrawalAmount();
-            }
-            elseif (in_array($property, ['currency_rate', 'from_currency', 'to_currency', 'transactionType', 'from_account', 'to_account'])) {
+            } elseif (in_array($property, ['currency_rate', 'from_currency', 'to_currency', 'transactionType', 'from_account', 'to_account'])) {
                 // اگر فیلدهای دیگر تغییر کردند، بر اساس آخرین فیلد محاسبه کنیم
                 if ($this->calculatingField === 'withdrawal' && $this->withdrawal_amount) {
                     $this->calculateReceivedAmount();
-                } 
-                elseif ($this->calculatingField === 'received' && $this->received_amount) {
+                } elseif ($this->calculatingField === 'received' && $this->received_amount) {
                     $this->calculateWithdrawalAmount();
                 }
             }
@@ -374,7 +371,7 @@ class ConversionTransfer extends Component
     }
 
 
-     /**
+    /**
      * محاسبه مبلغ برداشت بر اساس مبلغ دریافت (منطق معکوس)
      */
     public function calculateWithdrawalAmount()
@@ -432,14 +429,14 @@ class ConversionTransfer extends Component
 
 
 
-       /**
+    /**
      * تنظیم فیلد محاسبه هنگام کلیک روی input
      */
     public function setCalculatingField($field)
     {
         $this->calculatingField = $field;
     }
-    
+
 
     /**
      * محاسبه و نمایش سود/ضرر در زمان واقعی
@@ -589,7 +586,13 @@ class ConversionTransfer extends Component
         if (($this->from_currency === 'afn' && $this->to_currency === 'irr') ||
             ($this->from_currency === 'irr' && $this->to_currency === 'afn')
         ) {
-            $afnProfitRate = ProfitRate::where('source_currency', 'afn')->first();
+            $user = Auth::guard('sarafi')->user();
+            $adminId = $user->admin_id ?? $user->id;
+
+            $afnProfitRate = ProfitRate::where('source_currency', 'afn')
+                ->where('admin_id', $adminId)
+                ->latest()
+                ->first();
 
             if ($afnProfitRate) {
                 $field = 'irr_' . $rateType . '_' . $accountType;
@@ -608,7 +611,13 @@ class ConversionTransfer extends Component
         if (($this->from_currency === 'usd' && $this->to_currency === 'afn') ||
             ($this->from_currency === 'afn' && $this->to_currency === 'usd')
         ) {
-            $usdProfitRate = ProfitRate::where('source_currency', 'usd')->first();
+            $user = Auth::guard('sarafi')->user();
+            $adminId = $user->admin_id ?? $user->id;
+
+            $usdProfitRate = ProfitRate::where('source_currency', 'usd')
+                ->where('admin_id', $adminId)
+                ->latest()
+                ->first();
 
             if ($usdProfitRate) {
                 $field = 'afn_' . $rateType . '_' . $accountType;
@@ -623,8 +632,13 @@ class ConversionTransfer extends Component
             return null;
         }
 
-        // استراتژی اصلی: از رکورد USD استفاده کن
-        $usdProfitRate = ProfitRate::where('source_currency', 'usd')->first();
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        $usdProfitRate = ProfitRate::where('source_currency', 'usd')
+            ->where('admin_id', $adminId)
+            ->latest()
+            ->first();
 
         if ($usdProfitRate) {
             if ($this->from_currency === 'usd') {
@@ -704,7 +718,13 @@ class ConversionTransfer extends Component
             return $amount;
         }
 
-        $usdProfitRate = ProfitRate::where('source_currency', 'usd')->first();
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        $usdProfitRate = ProfitRate::where('source_currency', 'usd')
+            ->where('admin_id', $adminId)
+            ->latest()
+            ->first();
 
         if (!$usdProfitRate) {
             Log::warning("رکورد USD یافت نشد");
@@ -898,14 +918,14 @@ class ConversionTransfer extends Component
             }
             // ===== حالت‌های دیگر =====
             elseif (($conversion->from_account === 'نقدی' && $conversion->to_account === 'نقدی') ||
-                ($conversion->from_account === 'بانکی' && $conversion->to_account === 'بانکی')) {
+                ($conversion->from_account === 'بانکی' && $conversion->to_account === 'بانکی')
+            ) {
                 Log::info("ℹ️ {$conversion->from_account}→{$conversion->to_account}: نیازی به تغییر صندوق نیست");
             } else {
                 Log::warning("⚠️ حالت نامشخص: {$conversion->from_account}→{$conversion->to_account}");
             }
 
             Log::info("✅ تغییرات صندوق با موفقیت اعمال شد");
-
         } catch (\Exception $e) {
             Log::error('❌ خطا در اعمال تغییرات صندوق: ' . $e->getMessage());
             throw $e;
@@ -978,14 +998,14 @@ class ConversionTransfer extends Component
             }
             // ===== حالت‌های دیگر =====
             elseif (($conversion->from_account === 'نقدی' && $conversion->to_account === 'نقدی') ||
-                ($conversion->from_account === 'بانکی' && $conversion->to_account === 'بانکی')) {
+                ($conversion->from_account === 'بانکی' && $conversion->to_account === 'بانکی')
+            ) {
                 Log::info("ℹ️ {$conversion->from_account}→{$conversion->to_account}: نیازی به برگرداندن تغییرات صندوق نیست");
             } else {
                 Log::warning("⚠️ حالت نامشخص: {$conversion->from_account}→{$conversion->to_account}");
             }
 
             Log::info("✅ تغییرات صندوق با موفقیت برگردانده شد");
-
         } catch (\Exception $e) {
             Log::error('❌ خطا در برگرداندن تغییرات صندوق: ' . $e->getMessage());
             throw $e;
@@ -1029,7 +1049,7 @@ class ConversionTransfer extends Component
             $oldConversion = null;
             if ($this->editingConversionId) {
                 $oldConversion = ConversionTransfers::find($this->editingConversionId);
-                
+
                 // برگرداندن تغییرات صندوق قدیمی
                 if ($oldConversion) {
                     $this->reverseSafeChanges($oldConversion, $adminId, $user);
@@ -1039,7 +1059,7 @@ class ConversionTransfer extends Component
             if ($this->editingConversionId && $oldConversion) {
                 // حالت ویرایش
                 $conversion = $oldConversion;
-                
+
                 // آپدیت رکورد تبدیل ارز
                 $conversion->update([
                     'form_customer' => $this->withdrawalAccount,
@@ -1061,7 +1081,7 @@ class ConversionTransfer extends Component
                 ]);
 
                 $conversionId = $conversion->id;
-                
+
                 // حذف تراکنش‌های قبلی
                 Transaction::where('conversion_transfer_id', $conversion->id)->delete();
                 // حذف سود/ضرر قبلی
@@ -1124,7 +1144,7 @@ class ConversionTransfer extends Component
                 'conversion_transfer_id' => $conversionId,
             ]);
 
-          
+
             // ثبت سود/ضرر
             $this->recordTransferProfitLoss($conversionId, $profitLoss);
 
@@ -1543,13 +1563,13 @@ class ConversionTransfer extends Component
 
             $fileName = 'تبدیل_ارز_' . $conversion->id . '_' . $conversion->type . '.pdf';
 
-                     $path = storage_path('app/public/' . $fileName);
+            $path = storage_path('app/public/' . $fileName);
 
-        // ذخیره PDF
-        $mpdf->Output($path, 'F');
+            // ذخیره PDF
+            $mpdf->Output($path, 'F');
 
-        // ارسال event به JS (Livewire v3)
-        $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
+            // ارسال event به JS (Livewire v3)
+            $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
         } catch (\Exception $e) {
             Log::error('PDF generation error: ' . $e->getMessage());
             session()->flash('error', 'خطا در ایجاد PDF: ' . $e->getMessage());
@@ -1591,32 +1611,32 @@ class ConversionTransfer extends Component
     /**
      * بارگذاری زون‌ها
      */
-  
-private function loadZones($adminId)
-{
-    $zones = \App\Models\Sarafi\User::where(function ($query) use ($adminId) {
+
+    private function loadZones($adminId)
+    {
+        $zones = \App\Models\Sarafi\User::where(function ($query) use ($adminId) {
             $query->where('id', $adminId)
-                  ->orWhere('admin_id', $adminId);
+                ->orWhere('admin_id', $adminId);
         })
-        ->whereNotNull('zone')
-        ->where('zone', '!=', '')
-        ->pluck('zone')
-        ->unique()
-        ->values()
-        ->toArray();
+            ->whereNotNull('zone')
+            ->where('zone', '!=', '')
+            ->pluck('zone')
+            ->unique()
+            ->values()
+            ->toArray();
 
-    if (empty($zones)) {
-        $zones = ['غرب', 'مرکز', 'شمال', 'جنوب', 'شرق'];
+        if (empty($zones)) {
+            $zones = ['غرب', 'مرکز', 'شمال', 'جنوب', 'شرق'];
+        }
+
+        $this->zones = $zones;
+
+        if (!$this->zone_sender) {
+            $this->zone_sender = $zones[0];
+        }
+
+        if (!$this->zone_receiver) {
+            $this->zone_receiver = $zones[0];
+        }
     }
-
-    $this->zones = $zones;
-
-    if (!$this->zone_sender) {
-        $this->zone_sender = $zones[0];
-    }
-
-    if (!$this->zone_receiver) {
-        $this->zone_receiver = $zones[0];
-    }
-}
 }
