@@ -19,11 +19,11 @@
 
 <body class="bg-gray-100">
 
-    <div class="flex justify-center items-center h-screen ">
-        <div class="flex flex-col w-[1200px] h-[600px] md:flex-row-reverse items-center gap-10 bg-white shadow-lg">
+    <div class="flex justify-center items-center h-screen px-4 md:px-0 ">
+        <div class="flex flex-col w-[1200px] h-fit p-4 md:p-0 md:flex-row-reverse items-center gap-10 bg-white shadow-lg">
 
 
-            <div class="md:w-1/2 w-[200px] flex justify-center relative">
+            <div class="md:w-1/2 w-full flex justify-center relative">
                 <img src="<?php echo e(asset('assets/sarafi/all_icon/photo_2025-09-27_10-18-45.jpg')); ?>" alt="ورود به پنل صرافی"
                     class="shadow-md w-full h-[600px] object-cover rounded-xl">
 
@@ -43,7 +43,7 @@
 
             <div class="md:w-1/2 w-full pr-6">
                 <form action="<?php echo e(route('sarafi.login')); ?>" method="POST" class="space-y-5 border border-[#8C8C8C] p-6 rounded-lg bg-white relative">
-  <?php echo csrf_field(); ?>
+                                            
                     <h1 class="text-4xl font-bold text-center mb-2 yekan">
                         ورود به پنل صرافی
                     </h1>
