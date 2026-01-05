@@ -1894,7 +1894,7 @@
         <div class="flex flex-col md:flex-row mt-4 min-h-screen dark:text-white dark:bg-black">
             <!-- سایدبار -->
             <div class="sidebar-container dark:bg-black  dark:text-white" id="sidebar">
-                <nav class="mt-0 space-y-0 dark:text-white" x-data="{
+                <nav class="mt-0 space-y-2 dark:text-white" x-data="{
                     openItems: {
                         customers: false,
                         accounts: false,
@@ -2608,48 +2608,7 @@
                         </div>
                     </div>
 
-                    <!-- مدیریت پیامک ها -->
-                    <div>
-                        <button @click="openItems.sms = !openItems.sms; active = 'sms'"
-                            :class="(active === 'sms' || active === 'sms-management') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
-                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
-                            <span class="flex items-center gap-2">
-                                <img src="{{ asset('assets/sarafi/all_icon/sms.svg') }}" class="w-5 h-5 dark:hidden"
-                                    :class="(active === 'sms' || active === 'sms-management') ? 'filter invert brightness-0' : 'text-gray-500 dark:text-white'">
-
-                                <svg width="26" height="24" class="hidden dark:block" viewBox="0 0 26 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M18.4141 20.5H7.58073C4.33073 20.5 2.16406 19 2.16406 15.5V8.5C2.16406 5 4.33073 3.5 7.58073 3.5H18.4141C21.6641 3.5 23.8307 5 23.8307 8.5V15.5C23.8307 19 21.6641 20.5 18.4141 20.5Z"
-                                        stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path d="M18.4193 9L15.0284 11.5C13.9126 12.32 12.0818 12.32 10.9659 11.5L7.58594 9"
-                                        stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                </svg>
-
-
-                                {{ __('messages.sms') }}
-                            </span>
-                            <svg :class="[openItems.sms ? 'rotate-180' : '', (active === 'sms' || active === 'sms-management') ? 'text-white' : 'text-gray-500 dark:text-white  dark:hover:bg-gray-800']"
-                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                        <div x-show="openItems.sms" x-transition class="mr-6 mt-1 space-y-1">
-                            <a href="#"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                                @click="setActive('sms-management', 'sms')"
-                                :class="active === 'sms-management' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
-                                <img src="{{ asset('assets/sarafi/all_icon/message.svg') }}" class="w-4 h-4"
-                                    :class="active === 'sms-management' ? 'filter invert brightness-0' : 'text-gray-500'">
-                                {{ __('messages.sms_management') }}
-                            </a>
-                        </div>
-                    </div>
-
+                   
                     <!-- اطلاعیه های آنلاین -->
                     <div>
                         <button @click="openItems.notifications = !openItems.notifications; active = 'notifications'"
