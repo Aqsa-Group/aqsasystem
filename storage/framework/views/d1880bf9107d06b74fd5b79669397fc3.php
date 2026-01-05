@@ -19,7 +19,7 @@
 
 <body class="bg-gray-100">
 
-    <div class="flex justify-center items-center h-screen px-4 md:px-0 ">
+    <div class="flex justify-center items-center h-screen px-4 md:px-0  ">
         <div class="flex flex-col w-[1200px] h-fit p-4 md:p-0 md:flex-row-reverse items-center gap-10 bg-white shadow-lg">
 
 
@@ -41,7 +41,7 @@
             </div>
 
 
-            <div class="md:w-1/2 w-full pr-6">
+            <div class="md:w-1/2 w-full pr-0 md:pr-6">
                 <form action="<?php echo e(route('sarafi.login')); ?>" method="POST" class="space-y-5 border border-[#8C8C8C] p-6 rounded-lg bg-white relative">
                                             
                     <h1 class="text-4xl font-bold text-center mb-2 yekan">
