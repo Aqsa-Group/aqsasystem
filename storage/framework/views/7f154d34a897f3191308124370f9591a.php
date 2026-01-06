@@ -51,7 +51,7 @@
                         <tr class="text-black dark:text-white border-b border-[#D9D9D9] bg-transparent">
                             <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">1</td>
                             <!--[if BLOCK]><![endif]--><?php $__currentLoopData = ['usd', 'afn', 'irr', 'eur', 'pkr', 'aed', 'try', 'cny']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center" dir="ltr">
+                            <td dir="ltr" class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center " >
                                 <?php echo e(number_format($totalBuy[$currency] ?? 0 ,2)); ?>
 
                             </td>
@@ -71,7 +71,7 @@
                         <tr>
                             <th class="px-6 py-4 font-bold w-16">#</th>
                             <!--[if BLOCK]><![endif]--><?php $__currentLoopData = ['usd', 'afn', 'irr', 'eur', 'pkr', 'aed', 'try', 'cny']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <th class="px-6 py-4 font-bold w-48 text-center"><?php echo e($this->getCurrencyName($currency)); ?>
+                            <th class="px-6 py-4 font-bold w-48 text-center" dir="ltr"><?php echo e($this->getCurrencyName($currency)); ?>
 
                             </th>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
@@ -81,7 +81,7 @@
                         <tr class="text-black dark:text-white border-b border-[#D9D9D9] bg-transparent">
                             <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">1</td>
                             <!--[if BLOCK]><![endif]--><?php $__currentLoopData = ['usd', 'afn', 'irr', 'eur', 'pkr', 'aed', 'try', 'cny']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center">
+                            <td dir="ltr" class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center" dir="ltr">
                                 <?php echo e(number_format($totalSell[$currency] ?? 0 ,2)); ?>
 
                             </td>

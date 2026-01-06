@@ -2,77 +2,100 @@
 
     <h1 class="mb-8 text-3xl font-bold text-gray-700  dark:text-white"><?php echo e(__('messages.page_title')); ?></h1>
 
-<div class="grid grid-cols-2 md:grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-3">
+    <div class="grid grid-cols-2 md:grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-3">
 
-        <!-- رسید/بردگی -->
-        <a href="<?php echo e(route('sarafi.transactions')); ?>" class="block">
-            <div class="border bg-gradient-to-b dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 
+        <!-- رسید / برداشت -->
+<a href="<?php echo e(route('sarafi.transactions')); ?>" class="block">
+    <div class="border bg-gradient-to-b dark:from-slate-500 dark:to-gray-900
+                from-[#2563EB] to-[#1e325d]
+                rounded-xl px-3 py-4 flex items-center justify-center gap-3
                 text-white text-[16px] font-bold">
-                <i class="fa-solid fa-wallet text-white text-xl"></i>
-                <span class=" whitespace-nowrap overflow-hidden text-ellipsis font-bold">
-                    <?php echo e(__('messages.recipt/withdraw')); ?>
+        <i class="fa-solid fa-money-bill-wave text-xl"></i>
+        <span class="whitespace-nowrap overflow-hidden text-ellipsis">
+            <?php echo e(__('messages.recipt/withdraw')); ?>
 
-                </span>
-            </div>
-        </a>
+        </span>
+    </div>
+</a>
 
-        <!-- انتقال -->
-        <a href="<?php echo e(route('sarafi.account_to_account')); ?>" class="block">
-            <div
-                class="border bg-gradient-to-b dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
-                <i class="fa-solid fa-arrow-right-arrow-left text-white text-xl"></i>
-                <span><?php echo e(__('messages.transfer')); ?></span>
-            </div>
-        </a>
+<!-- انتقال -->
+<a href="<?php echo e(route('sarafi.account_to_account')); ?>" class="block">
+    <div class="border bg-gradient-to-b dark:from-slate-500 dark:to-gray-900
+                from-[#2563EB] to-[#1e325d]
+                rounded-xl px-3 py-4 flex items-center justify-center gap-3
+                text-white text-[16px] font-bold">
+        <i class="fa-solid fa-right-left text-xl"></i>
+        <span><?php echo e(__('messages.transfer')); ?></span>
+    </div>
+</a>
 
+<!-- خرید و فروش ارز / صندوق -->
+<a href="<?php echo e(route('sarafi.buy-sell-currency')); ?>" class="block">
+    <div class="border bg-gradient-to-b dark:from-slate-500 dark:to-gray-900
+                from-[#2563EB] to-[#1e325d]
+                rounded-xl px-3 py-4 flex items-center justify-center gap-3
+                text-white text-[16px] font-bold">
+        <i class="fa-solid fa-coins text-xl"></i>
+        <span><?php echo e(__('messages.selling')); ?></span>
+    </div>
+</a>
 
-        <!-- خرید و فروش ارز و صندوق -->
-        <a href="<?php echo e(route('sarafi.buy-sell-currency')); ?>" class="block">
-            <div
-                class="border bg-gradient-to-b dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center gap-3 text-white justify-center  text-[16px] font-bold">
-                <img src="<?php echo e(asset('assets/sarafi/all_icon/bitcoin-(btc).svg')); ?>" alt="">
-                <span><?php echo e(__('messages.selling')); ?></span>
-            </div>
-        </a>
+<!-- حساب تبدیل -->
+<a href="<?php echo e(route('sarafi.conversion.in.account')); ?>" class="block">
+    <div class="border bg-gradient-to-b dark:from-slate-500 dark:to-gray-900
+                from-[#2563EB] to-[#1e325d]
+                rounded-xl px-3 py-4 flex items-center justify-center gap-3
+                text-white text-[16px] font-bold">
+        <i class="fa-solid fa-arrows-rotate text-xl"></i>
+        <span><?php echo e(__('messages.coversion_account')); ?></span>
+    </div>
+</a>
 
-        <!-- حساب تبدیل -->
-        <a href="<?php echo e(route('sarafi.conversion.in.account')); ?>" class="block">
-            <div
-                class="border bg-gradient-to-b dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
-                <i class="fa-solid fa-exchange-alt text-white text-xl"></i>
-                <span><?php echo e(__('messages.coversion_account')); ?></span>
-            </div>
-        </a>
-
-        <!-- انتقال تبدیل -->
-        <a href="<?php echo e(route('sarafi.conversion-transfer')); ?>" class="block">
-            <div
-                class="border bg-gradient-to-b dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
-                <i class="fa-solid fa-hand-holding-dollar text-white text-xl"></i>
-                <span><?php echo e(__('messages.coversion_transfer')); ?></span>
-            </div>
-        </a>
+<!-- انتقال تبدیل -->
+<a href="<?php echo e(route('sarafi.conversion-transfer')); ?>" class="block">
+    <div class="border bg-gradient-to-b dark:from-slate-500 dark:to-gray-900
+                from-[#2563EB] to-[#1e325d]
+                rounded-xl px-3 py-4 flex items-center justify-center gap-3
+                text-white text-[16px] font-bold">
+        <i class="fa-solid fa-money-bill-transfer text-xl"></i>
+        <span><?php echo e(__('messages.coversion_transfer')); ?></span>
+    </div>
+</a>
 
 
         <!-- رسید بانکی -->
         <a href="<?php echo e(route('sarafi.remittance')); ?>" class="block">
-            <div
-                class="border bg-gradient-to-b dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
-                <i class="fa-solid fa-book-open text-white text-xl"></i>
+            <div class="border bg-gradient-to-b dark:from-slate-500 dark:to-gray-900
+               from-[#2563EB] to-[#1e325d]
+               rounded-xl px-3 py-4 flex items-center justify-center gap-3
+               text-white text-[16px] font-bold">
+                <i class="fa-solid fa-receipt text-xl"></i>
                 <span>رسید بانکی</span>
             </div>
         </a>
 
-
-
-        <!-- ژورنال عمومی -->
+        <!-- برد بانکی -->
         <a href="<?php echo e(route('sarafi.withdrawbank')); ?>" class="block">
-            <div
-                class="border bg-gradient-to-b dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900  from-[#2563EB] to-[#1e325d] rounded-xl px-3 py-4 flex items-center justify-center gap-3 text-white text-[16px] font-bold">
-                <i class="fa-solid fa-file-invoice-dollar text-white text-xl"></i>
+            <div class="border bg-gradient-to-b dark:from-slate-500 dark:to-gray-900
+               from-[#2563EB] to-[#1e325d]
+               rounded-xl px-3 py-4 flex items-center justify-center gap-3
+               text-white text-[16px] font-bold">
+                <i class="fa-solid fa-building-columns text-xl"></i>
                 <span>برد بانکی</span>
             </div>
         </a>
+
+        <!-- روزنامچه -->
+        <a href="<?php echo e(route('sarafi.withdrawbank')); ?>" class="block">
+            <div class="border bg-gradient-to-b dark:from-slate-500 dark:to-gray-900
+               from-[#2563EB] to-[#1e325d]
+               rounded-xl px-3 py-4 flex items-center justify-center gap-3
+               text-white text-[16px] font-bold">
+                <i class="fa-solid fa-book-open text-xl"></i>
+                <span>روزنامچه</span>
+            </div>
+        </a>
+
 
 
     </div>
