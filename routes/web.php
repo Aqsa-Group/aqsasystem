@@ -380,6 +380,28 @@ Route::get('/impersonate/login', [ImpersonateController::class, 'login'])
 
 
 
+Route::get('/sarafi/daily-journal', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.journal');
+})->name('sarafi.journal');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ToolsPanel Route
 Route::get('/tools', [UserController::class, 'showLoginForm'])->name('tools.login.form');
 

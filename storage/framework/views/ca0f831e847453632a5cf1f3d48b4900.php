@@ -1869,107 +1869,33 @@
             <!-- سایدبار -->
             <div class="sidebar-container dark:bg-black  dark:text-white" id="sidebar">
                 <nav class="mt-0 space-y-2 dark:text-white" x-data="{
-    openItems: {
-        customers: false,
-        accounts: false,
-        bankFiles: false,
-        editAccounts: false,
-        reports: false,
-        transactions: false,
-        deletedTransactions: false,
-        management: false,
-        sms: false,
-        notifications: false,
-        support: false,
-        settings: false
-    },
-    active: '',
+                    openItems: {
+                        customers: false,
+                        accounts: false,
+                        bankFiles: false,
+                        editAccounts: false,
+                        reports: false,
+                        transactions: false,
+                        deletedTransactions: false,
+                        management: false,
+                        sms: false,
+                        notifications: false,
+                        support: false,
+                        settings: false
+                    },
+                    active: 'dashboard',
                     
-                init() {
-        const path = window.location.pathname;
-        
-        const routeMap = {
-            '/sarafi/home': 'dashboard',
-            '/sarafi/customer-create': 'customer-create',
-            '/sarafi/customer-table': 'customer-table',
-            '/sarafi/transactions': 'transactions',
-            '/sarafi/account_to_account': 'account_to_account',
-            '/sarafi/buy-sell-currency': 'buy_sell',
-            '/sarafi/conversion.in.account': 'conversion_account',
-            '/sarafi/conversion-transfer': 'conversion_transfer',
-            '/sarafi/remittance': 'remittance',
-            '/sarafi/withdrawbank': 'withdrawbank',
-            '/sarafi/profit-rates': 'register-accounts',
-            '/sarafi/remittance-approval': 'control-transactions',
-            '/sarafi/trash-edit': 'deleted-transactions',
-            '/sarafi/account-reports': 'view-reports',
-            '/sarafi/general-reports': 'view-reports',
-            '/sarafi/revenue': 'view-revenue',
-            '/sarafi/changersdeal': 'edit-accounts',
-            '/sarafi/changer_recive': 'edit-accounts',
-            '/sarafi/sarafi_reports': 'edit-accounts',
-            '/sarafi/users': 'user-management'
-        };
-        
-        this.active = routeMap[path] || 'dashboard';
-        
-        this.openParentMenus();
-    },
-    
-    openParentMenus() {
-     
-        const parentMap = {
-            'customer-create': 'customers',
-            'customer-table': 'customers',
-            'register-accounts': 'accounts',
-            'control-transactions': 'transactions',
-            'deleted-transactions': 'deletedTransactions',
-            'view-reports': 'reports',
-            'view-revenue': 'reports',
-            'edit-accounts': 'changersdeal',
-            'user-management': 'management',
-            'online-notifications': 'notifications',
-            'system-support': 'support',
-            'system-settings': 'settings'
-        };
-        
-        const parent = parentMap[this.active];
-        if (parent && this.openItems.hasOwnProperty(parent)) {
-            this.openItems[parent] = true;
-        }
-        
- 
-        const transactionPages = [
-            'transactions', 'account_to_account', 'buy_sell', 
-            'conversion_account', 'conversion_transfer', 
-            'remittance', 'withdrawbank'
-        ];
-        if (transactionPages.includes(this.active)) {
-         
-            this.$nextTick(() => {
-                
-                if (transactionComponent) {
-                    const transactionData = Alpine.$data(transactionComponent);
-                    transactionData.openItems.transaction = true;
-                    transactionData.active = this.active;
-                }
-            });
-        }
-    },
-    
-    setActive(item, parent = null) {
-        this.active = item;
-        if (parent && this.openItems.hasOwnProperty(parent)) {
-            this.openItems[parent] = true;
-        }
-        if (window.innerWidth < 768) {
-            const sidebar = document.getElementById('sidebar');
-            const mobileOverlay = document.getElementById('mobileOverlay');
-            if (sidebar) sidebar.classList.remove('open');
-            if (mobileOverlay) mobileOverlay.classList.remove('open');
-        }
-    }
-}" x-init="init()">
+                    setActive(item, parent = null) {
+                        this.active = item;
+                        if (parent && this.openItems.hasOwnProperty(parent)) {
+                            this.openItems[parent] = true;
+                        }
+                        if (window.innerWidth < 768) {
+                            document.getElementById('sidebar').classList.remove('open');
+                            document.getElementById('mobileOverlay').classList.remove('open');
+                        }
+                    }
+                }">
                     <!-- داشبورد -->
                     <a href="<?php echo e(route('sarafi.home')); ?>"
                         class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir"

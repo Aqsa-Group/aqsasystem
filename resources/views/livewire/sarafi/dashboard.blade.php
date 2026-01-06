@@ -85,7 +85,7 @@
         </a>
 
         <!-- روزنامچه -->
-        <a href="" class="block">
+        <a href="{{ route('sarafi.journal') }}" class="block">
             <div class="border bg-gradient-to-b dark:from-slate-500 dark:to-gray-900
                from-[#2563EB] to-[#1e325d]
                rounded-xl px-3 py-4 flex items-center justify-center gap-3
