@@ -2004,11 +2004,11 @@
 
                     <!-- ثبت و مدیریت معاملات -->
                     <div x-data="{
-        openItems: {
-            transaction: false,
-        },
-        active: ''
-    }">
+                        openItems: {
+                            transaction: false,
+                            },
+                            active: ''
+                        }">
 
                         <!-- دکمه اصلی -->
                         <button @click="openItems.transaction = !openItems.transaction; active = 'transaction'" :class="active === 'transaction'
