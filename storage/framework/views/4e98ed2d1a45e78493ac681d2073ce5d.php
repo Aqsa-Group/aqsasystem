@@ -986,7 +986,7 @@ input[type="number"]::-webkit-outer-spin-button {
 </style>
 
                         <!-- زون -->
-                        <div class="lg:w-[250px]">
+                        <div class="w-full">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">زون</label>
                             <div class="relative">
                                 <select wire:model="zone"
