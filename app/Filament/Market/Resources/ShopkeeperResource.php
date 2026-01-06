@@ -286,7 +286,9 @@ class ShopkeeperResource extends Resource
         return $table->columns([
             Tables\Columns\TextColumn::make('fullname')->label('نام')->searchable(),
             Tables\Columns\TextColumn::make('phone')->label('شماره تلفن')->searchable(),
+            Tables\Columns\TextColumn::make('market.name')->label('مارکت')->searchable(),
             Tables\Columns\TextColumn::make('shops.number')->label('نمبر دوکان')->searchable(),
+            Tables\Columns\TextColumn::make('shops.floor')->label('طبق')->searchable(),
             Tables\Columns\TextColumn::make('booth.number')->label('نمبر غرفه')->searchable(),
             Tables\Columns\TextColumn::make('shop_activity')->label('شغل')->searchable(),
             Tables\Columns\TextColumn::make('contract_number')->label('نمبر قرارداد'),

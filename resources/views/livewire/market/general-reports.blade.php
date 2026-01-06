@@ -149,7 +149,7 @@
                                 @endif
 
                                 <!-- Expanses Type Filter for combined report -->
-                                @if(in_array($reportType, ['withdraw_salary']))
+                                @if(in_array($reportType, ['withdraw_salary' ,'outside']))
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">نوع هزینه</label>
                                     <select wire:model.live="expansesType"

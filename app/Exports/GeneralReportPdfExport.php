@@ -12,7 +12,7 @@ class GeneralReportPdfExport
     protected $filters;
 
     public function __construct($data, $reportType, $filters = [])
-    {
+   {
         $this->data = $data;
         $this->reportType = $reportType;
         $this->filters = $filters;
