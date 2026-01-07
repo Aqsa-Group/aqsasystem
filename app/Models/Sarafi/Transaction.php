@@ -2,12 +2,16 @@
 
 namespace App\Models\Sarafi;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Sarafi\Journals;
 use App\Models\Sarafi\Trash;
-use Illuminate\Support\Facades\Auth;
 use App\Services\WhatsAppService;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Morilog\Jalali\Jalalian;
+
 
 
 class Transaction extends Model
@@ -171,34 +175,64 @@ class Transaction extends Model
             ]);
         });
 
+        static::created(function ($model) {
+
+            $user = Auth::guard('sarafi')->user();
+            $adminId = $user->admin_id ?? $user->id;
+
+            $balance = static::where('customer_id', $model->customer_id)
+                ->where('currency', $model->currency)
+                ->where('account_type', $model->account_type)
+                ->sum(DB::raw("
+            CASE
+                WHEN type = 'رسید' THEN amount
+                WHEN type = 'برد' THEN -amount
+                ELSE 0
+            END
+        "));
+
+            Journals::create([
+                'customer_id'  => $model->customer_id,
+                'user_id'      => $user->id,
+                'admin_id'     => $adminId,
+                'currency'     => $model->currency,
+                'type'         => $model->type,
+                'account_type' => $model->account_type,
+                'amount'       => $model->amount,
+                'balance'      => $balance,
+                'description'  => $model->description,
+                'date'         => $model->date,
+            ]);
+        });
 
 
-      static::created(function ($transaction) {
 
-    $customer = $transaction->customer;
 
-    if (!$customer || !$customer->whatsapp_number) {
-        return;
-    }
+        static::created(function ($transaction) {
 
-    $phone = preg_replace('/[^0-9]/', '', $customer->whatsapp_number);
+            $customer = $transaction->customer;
 
-    WhatsAppService::sendTransaction(
-        $phone,
-        [
-            'exchange_name'      => $transaction->user->sarafi_name ?? '-',
-            'account_number'     => $customer->fullname ?? '-',
-            'amount'             => (string) ($transaction->amount ?? '-'),
-            'currency'           => $transaction->currency ?? '-',
-            'transaction_type'   => $transaction->type ?? '-',
-            'transaction_date'   => $transaction->date
-                                        ? $transaction->date->format('Y-m-d H:i')
-                                        : '-',
-            'balance'            => (string) ($transaction->amount ?? '-'),
-            'exchange_contact'   => (string) ($transaction->user->phone ?? '-'),
-        ]
-    );
-});
+            if (!$customer || !$customer->whatsapp_number) {
+                return;
+            }
 
+            $phone = preg_replace('/[^0-9]/', '', $customer->whatsapp_number);
+
+            WhatsAppService::sendTransaction(
+                $phone,
+                [
+                    'exchange_name'      => $transaction->user->sarafi_name ?? '-',
+                    'account_number'     => $customer->fullname ?? '-',
+                    'amount'             => (string) ($transaction->amount ?? '-'),
+                    'currency'           => $transaction->currency ?? '-',
+                    'transaction_type'   => $transaction->type ?? '-',
+                    'transaction_date'   => $transaction->date
+                        ? $transaction->date->format('Y-m-d H:i')
+                        : '-',
+                    'balance'            => (string) ($transaction->amount ?? '-'),
+                    'exchange_contact'   => (string) ($transaction->user->phone ?? '-'),
+                ]
+            );
+        });
     }
 }

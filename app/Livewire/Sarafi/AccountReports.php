@@ -353,81 +353,83 @@ class AccountReports extends Component
         session()->flash('message', 'تمام فیلترها بازنشانی شدند.');
     }
 
-    public function printReport()
-    {
-        $latestProfitRate = ProfitRate::latest()->first();
-        $sourceCurrency = 'دالر';
+  public function printReport()
+{
+    // دریافت داده‌های فیلتر شده برای گزارش
+    $transactions = $this->getFilteredTransactions()->get();
+    $summary = $this->getSummaryData()->get();
 
-        if ($latestProfitRate && $latestProfitRate->source_currency) {
-            // تابع تبدیل کد ارز به نام فارسی
-            $currencyMap = [
-                'afn' => 'افغانی',
-                'usd' => 'دالر',
-                'irr' => 'تومان',
-                'eur' => 'یورو',
-                'pkr' => 'کلدار',
-                'aed' => 'درهم',
-                'try' => 'لیره',
-                'cny' => 'یوان',
-            ];
+    // دریافت آخرین نرخ سود (برای تعیین ارز)
+    $latestProfitRate = ProfitRate::latest()->first();
+    $sourceCurrency = 'دالر';
 
-            $currencyCode = strtolower($latestProfitRate->source_currency);
-            $sourceCurrency = $currencyMap[$currencyCode] ?? $latestProfitRate->source_currency;
-        }
-
-
-        // محاسبه مجموع هر ارز نقدی و بانکی
-        $totalsData = $this->calculateTotalsByCurrency();
-
-        $printData = [
-            'title' => 'گزارش بیلانس مشتریان',
-            'filters' => [
-                'جستجو' => $this->search ?: 'همه',
-                'مشتری معرف' => $this->selectedCustomer ? $this->getCustomerName($this->selectedCustomer) : 'همه',
-                'ارز' => $this->selectedCurrency ? $this->currencies[$this->selectedCurrency] : 'همه',
-                'نوع حساب' => $this->accountType ?: 'همه',
-                'تاریخ' => $this->date ?: 'همه'
-            ],
-            'reports' => $this->reports,
-            'print_date' => now()->format('Y/m/d H:i'),
-            'total_customers' => count($this->reports),
-            'total_balance' => array_sum(array_column($this->reports, 'total_balance')),
-            'currencies' => $this->currencies,
-            'source_currency' => $sourceCurrency,
-            'totals' => $totalsData['currencies'],
-            'total_usd' => $totalsData['total_usd'],
+    if ($latestProfitRate && $latestProfitRate->source_currency) {
+        $currencyMap = [
+            'afn' => 'افغانی',
+            'usd' => 'دالر',
+            'irr' => 'تومان',
+            'eur' => 'یورو',
+            'pkr' => 'کلدار',
+            'aed' => 'درهم',
+            'try' => 'لیره',
+            'cny' => 'یوان',
         ];
-
-
-        $mpdf = new Mpdf([
-            'mode' => 'utf-8',
-            'format' => 'A4-L',
-            'directionality' => 'rtl',
-            'margin_top' => 10,
-            'margin_bottom' => 10,
-            'margin_left' => 10,
-            'margin_right' => 10,
-            'fontDir' => array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'], [
-                public_path('fonts'),
-            ]),
-            'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
-                'Shabnam' => [
-                    'R' => 'Shabnam-FD.ttf',
-                ],
-            ],
-            'default_font' => 'Shabnam',
-        ]);
-
-        $html = view('pdf.Sarafi.customer-balance-report', $printData)->render();
-        $mpdf->WriteHTML($html);
-
-        $fileName = 'گزارش_بیلانس_مشتریان_' . now()->format('Y_m_d') . '.pdf';
-
-        return response()->streamDownload(function () use ($mpdf) {
-            echo $mpdf->Output('', 'S');
-        }, $fileName);
+        $currencyCode = strtolower($latestProfitRate->source_currency);
+        $sourceCurrency = $currencyMap[$currencyCode] ?? $latestProfitRate->source_currency;
     }
 
+    // محاسبه مجموع‌ها بر اساس ارز
+    $totalsData = $this->calculateTotalsByCurrency($transactions);
+
+    // اطلاعات برای چاپ
+    $printData = [
+        'title' => 'گزارش ژورنال تراکنش‌ها',
+        'filters' => [
+            'نوع تراکنش' => $this->transactionType ?: 'همه',
+            'نوع حساب' => $this->accountType ?: 'همه',
+            'مشتری' => $this->selectedCustomer ? $this->getCustomerName($this->selectedCustomer) : 'همه',
+            'از تاریخ' => $this->fromDate ?: 'همه',
+            'تا تاریخ' => $this->toDate ?: 'همه',
+            'ارز' => $this->currency ?: 'همه',
+        ],
+        'transactions' => $transactions,
+        'summary' => $summary,
+        'print_date' => now()->format('Y/m/d H:i'),
+        'source_currency' => $sourceCurrency,
+        'totals' => $totalsData['currencies'] ?? [],
+        'total_amount' => $totalsData['total_amount'] ?? 0,
+    ];
+
+    // تنظیمات mPDF
+    $mpdf = new \Mpdf\Mpdf([
+        'mode' => 'utf-8',
+        'format' => 'A4-L',
+        'directionality' => 'rtl',
+        'margin_top' => 10,
+        'margin_bottom' => 10,
+        'margin_left' => 10,
+        'margin_right' => 10,
+        'fontDir' => array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'], [
+            public_path('fonts'),
+        ]),
+        'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+            'Shabnam' => [
+                'R' => 'Shabnam-FD.ttf',
+            ],
+        ],
+        'default_font' => 'Shabnam',
+    ]);
+
+    $html = view('pdf.Sarafi.journal', $printData)->render();
+    $mpdf->WriteHTML($html);
+
+    $fileName = 'گزارش_ژورنال_' . now()->format('Y_m_d') . '.pdf';
+
+    return response()->streamDownload(function () use ($mpdf) {
+        echo $mpdf->Output('', 'S');
+    }, $fileName);
+}
+    
     private function getCustomerName($customerId)
     {
         $customer = Customer::find($customerId);
