@@ -44,6 +44,7 @@ class Journals extends Model
         // متفرقه
         'description',
         'date',
+        'is_sell_table'
     ];
 
     /* =======================
