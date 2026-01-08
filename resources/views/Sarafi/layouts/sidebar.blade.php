@@ -2386,8 +2386,12 @@
 
                                 گزارش عمومی
                             </a>
+                            @php
+                            $currentUser=Auth::guard('sarafi')->user();
+                            @endphp
 
 
+                            @if ($currentUser && $currentUser->role==='admin')
 
                             {{-- عواید معاملات --}}
                             <a href="{{ route('sarafi.revenue') }}"
@@ -2416,7 +2420,7 @@
 
                                 عواید معاملات
                             </a>
-
+                            @endif
                         </div>
 
                     </div>

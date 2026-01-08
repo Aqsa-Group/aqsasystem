@@ -107,6 +107,16 @@ class ConversionInAccount extends Component
         }
     }
 
+
+    private function getCurrencyFaName($code)
+    {
+        $currency = collect($this->currencies)
+            ->firstWhere('code', strtolower($code));
+
+        return $currency['name_fa'] ?? strtoupper($code);
+    }
+
+
     /**
      * رندر کامپوننت
      */
@@ -1024,7 +1034,6 @@ class ConversionInAccount extends Component
                 $conversionId = $conversion->id;
                 Log::info("✅ تبدیل ارز ویرایش شد - ID: {$conversionId}");
             } else {
-                // حالت ایجاد جدید
                 $conversion = ConversionInAccounts::create([
                     'customer_id' => $this->selectedAccount,
                     'account_type' => $this->accountType,
@@ -1048,7 +1057,6 @@ class ConversionInAccount extends Component
                 Log::info("✅ تبدیل ارز ایجاد شد - ID: {$conversionId}");
             }
 
-            // ایجاد تراکنش برداشت (از ارز مبدا)
             Transaction::create([
                 'customer_id' => $this->selectedAccount,
                 'user_id' => $user->id,
@@ -1057,8 +1065,13 @@ class ConversionInAccount extends Component
                 'amount' => $this->buy_amount,
                 'type' => 'برد',
                 'date' => $this->date,
-                'description' => $this->generateWithdrawalDescription(),
                 'zone' => $this->zone_sender,
+                'description' =>
+                    ' برداشت مبلغ ' . number_format($this->buy_amount, 2) . ' ' .
+                    $this->getCurrencyFaName($this->from_currency) .
+                    ' و خرید مبلغ ' . number_format($this->sell_amount, 2) . ' ' .
+                    $this->getCurrencyFaName($this->to_currency) .
+                    ' به نرخ ' . $this->currency_rate,
                 'by' => $this->by_sender,
                 'account_type' => $this->accountType,
                 'conversion_in_account_id' => $conversionId,
@@ -1066,8 +1079,7 @@ class ConversionInAccount extends Component
                 'updated_at' => now(),
             ]);
 
-            // ایجاد تراکنش دریافت (به ارز مقصد)
-            Transaction::create([
+        Transaction::create([
                 'customer_id' => $this->selectedAccount,
                 'user_id' => $user->id,
                 'admin_id' => $adminId,
@@ -1076,7 +1088,12 @@ class ConversionInAccount extends Component
                 'type' => 'رسید',
                 'account_type' => $this->accountType,
                 'date' => $this->date,
-                'description' => $this->generateDepositDescription(),
+                'description' =>
+                    ' دریافت مبلغ ' . number_format($this->sell_amount, 2) . ' ' .
+                    $this->getCurrencyFaName($this->to_currency) .
+                    ' و فروش مبلغ ' . number_format($this->buy_amount, 2) . ' ' .
+                    $this->getCurrencyFaName($this->from_currency) .
+                    ' به نرخ ' . $this->currency_rate,
                 'zone' => $this->zone_receiver,
                 'by' => $this->by_receiver,
                 'conversion_in_account_id' => $conversionId,
@@ -1086,7 +1103,6 @@ class ConversionInAccount extends Component
 
             Log::info('✅ تراکنش‌های برداشت و رسید ایجاد شدند');
 
-            // ثبت سود/ضرر در جدول revenue
             Log::info('بررسی سود/ضرر برای ثبت در revenue', [
                 'profit' => $profitLoss['profit'],
                 'loss' => $profitLoss['loss']

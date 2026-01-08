@@ -2,6 +2,7 @@
 
 namespace App\Models\Sarafi;
 
+use App\Livewire\Sarafi\ConversionInAccount;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Sarafi\User;
@@ -14,26 +15,41 @@ class Journals extends Model
     protected $connection = 'sarafi';
     protected $table = 'journal';
 
-    /**
-     * فیلدهای قابل پر شدن
-     */
+    /* =======================
+     | Mass Assignment
+     ======================= */
+
     protected $fillable = [
+        // روابط اصلی
         'customer_id',
         'user_id',
         'admin_id',
+
+        // منابع Journal (یکی از این‌ها پر می‌شود)
+        'transaction_id',
+        'account_to_account_id',
+        'conversion_in_account_id',
+        'conversion_transfer_id',
+        'buysell_id',
+        'withdrawbank_id',
+        'changerdeals_id',
+
+        // اطلاعات مالی
         'currency',
-        'type',          
-        'account_type',  
+        'type',          // رسید | برد
+        'account_type',  // نقدی | بانکی
         'amount',
         'balance',
+
+        // متفرقه
         'description',
-        'date'
-        
+        'date',
     ];
 
-    /**
-     * تبدیل نوع داده‌ها
-     */
+    /* =======================
+     | Casts
+     ======================= */
+
     protected $casts = [
         'amount'  => 'decimal:2',
         'balance' => 'decimal:2',
@@ -41,8 +57,8 @@ class Journals extends Model
     ];
 
     /* =======================
-     |       Relations
-     |=======================*/
+     | Relations
+     ======================= */
 
     // مشتری
     public function customer()
@@ -56,15 +72,52 @@ class Journals extends Model
         return $this->belongsTo(User::class);
     }
 
-    // ادمین (در صورت وجود)
+    // ادمین
     public function admin()
     {
         return $this->belongsTo(User::class, 'admin_id');
     }
 
+    /* ---------- منابع Journal ---------- */
+
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class);
+    }
+
+    public function accountToAccount()
+    {
+        return $this->belongsTo(SendToAccount::class);
+    }
+
+    public function conversionInAccount()
+    {
+        return $this->belongsTo(ConversionInAccount::class);
+    }
+
+    public function conversionTransfer()
+    {
+        return $this->belongsTo(ConversionTransfers::class);
+    }
+
+    public function buySell()
+    {
+        return $this->belongsTo(CashExchange::class, 'buysell_id');
+    }
+
+    public function withdrawBank()
+    {
+        return $this->belongsTo(WithdrawsBanks::class);
+    }
+
+    public function changerDeal()
+    {
+        return $this->belongsTo(ChangerDeal::class);
+    }
+
     /* =======================
-     |       Scopes (اختیاری)
-     |=======================*/
+     | Scopes
+     ======================= */
 
     public function scopeCurrency($query, $currency)
     {
@@ -94,11 +147,31 @@ class Journals extends Model
         }
     }
 
+    /* =======================
+     | Accessors
+     ======================= */
 
-     protected $appends = ['currency_fa'];
+    protected $appends = ['currency_fa', 'source_type'];
 
     public function getCurrencyFaAttribute()
     {
         return config('currencies.' . $this->currency) ?? $this->currency;
+    }
+
+    /**
+     * تشخیص منبع Journal (خیلی کاربردی برای UI)
+     */
+    public function getSourceTypeAttribute()
+    {
+        return match (true) {
+            !is_null($this->transaction_id)            => 'transaction',
+            !is_null($this->account_to_account_id)     => 'account_to_account',
+            !is_null($this->conversion_in_account_id)  => 'conversion_in_account',
+            !is_null($this->conversion_transfer_id)    => 'conversion_transfer',
+            !is_null($this->buysell_id)                 => 'buy_sell',
+            !is_null($this->withdrawbank_id)            => 'withdraw_bank',
+            !is_null($this->changerdeals_id)            => 'changer_deal',
+            default                                     => 'manual',
+        };
     }
 }

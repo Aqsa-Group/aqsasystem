@@ -25,7 +25,7 @@ class Journal extends Component
     public $toDate = '';
     public $currency = '';
     public $search = '';
-    public $perPage = 10;
+    public $perPage = 10000;
     public $currencies = [];
 
     protected $paginationTheme = 'bootstrap';

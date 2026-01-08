@@ -27,15 +27,17 @@ class GeneralReports extends Component
     public $currencyPercentages = [];
     public $currencyName = [];
 
+    
     public $selectedCustomerId = null;
     public $filteredCustomers = [];
     public $reports = [];
     public $demands = [];
 
+
     public $colors = [];
     public $lightColors = [];
 
-    // متغیرهای جدید برای گزارش خلاصه
+
     public $selectedAccounts = [];
     public $totalBalances = [];
     public $chartData = [];

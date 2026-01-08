@@ -744,7 +744,8 @@ class AccountToAccount extends Component
     }
 
     public function submitConversion()
-    {
+    { 
+
         $validationRules = [
             'withdrawalAccount' => 'required|integer|exists:sarafi.customers,id',
             'depositAccount' => 'required|integer|exists:sarafi.customers,id',
@@ -774,6 +775,11 @@ class AccountToAccount extends Component
 
         DB::connection('sarafi')->beginTransaction();
 
+$senderCustomer = Customer::find($this->withdrawalAccount);
+$receiverCustomer = Customer::find($this->depositAccount);
+
+$senderName = $senderCustomer?->fullname ?? 'نامشخص';
+$receiverName = $receiverCustomer?->fullname ?? 'نامشخص';
         try {
             // محاسبه مبلغ دریافتی
             $receivedAmount = $this->transactionType === 'باتفاوت'
@@ -800,7 +806,7 @@ class AccountToAccount extends Component
                 'transaction_date' => $this->date,
                 'from_account' => $this->from_account,
                 'to_account' => $this->to_account,
-                'description_sender' => $this->description_sender,
+                'description_sender' => $this->description_sender,  
                 'description_receiver' => $this->description_receiver,
                 'zone_sender' => $this->zone_sender,
                 'zone_receiver' => $this->zone_receiver,
@@ -850,7 +856,8 @@ class AccountToAccount extends Component
                     'type' => 'برد',
                     'date' => $this->date,
                     'account_type' => $this->from_account,
-                    'description' => $this->description_sender . ' - انتقال به حساب دیگر (' . $this->transactionType . ')',
+                    'description' => 
+                        '    به حساب    '     . $receiverName . 'انتقال یافت',
                     'zone' => $this->zone_sender,
                     'by' => $this->by_sender,
                     'account_to_id' => $conversionId,
@@ -865,7 +872,7 @@ class AccountToAccount extends Component
                     'type' => 'رسید',
                     'date' => $this->date,
                     'account_type' => $this->to_account,
-                    'description' => $this->description_receiver . ' - دریافت از حساب دیگر (' . $this->transactionType . ')',
+                    'description' => '      از حساب    '   . $senderName . ' دریافت شد',
                     'zone' => $this->zone_receiver,
                     'by' => $this->by_receiver,
                     'account_to_id' => $conversionId,
@@ -881,7 +888,8 @@ class AccountToAccount extends Component
                     'type' => 'برد',
                     'date' => $this->date,
                     'account_type' => $this->from_account,
-                    'description' => $this->description_sender . ' - انتقال با کمیشن',
+                       'description' => 
+                        '   به حساب   '    . $receiverName . 'انتقال یافت',
                     'zone' => $this->zone_sender,
                     'by' => $this->by_sender,
                     'account_to_id' => $conversionId,
@@ -896,7 +904,9 @@ class AccountToAccount extends Component
                     'type' => 'رسید',
                     'date' => $this->date,
                     'account_type' => $this->to_account,
-                    'description' => $this->description_receiver . ' - دریافت با کمیشن',
+                                       'description' =>'     از حساب     ' . $senderName . ' دریافت شد',
+
+                        '',
                     'zone' => $this->zone_receiver,
                     'by' => $this->by_receiver,
                     'account_to_id' => $conversionId,
@@ -911,7 +921,9 @@ class AccountToAccount extends Component
                     'type' => 'رسید',
                     'date' => $this->date,
                     'account_type' => $this->from_account,
-                    'description' => 'کمیشن انتقال از حساب دیگر',
+                    'description' => 
+                        ' بابت کمیشن انتقال از حساب ' . $senderName .
+                        '   به حساب  ' . $receiverName,
                     'zone' => $this->zone_sender,
                     'by' => $this->by_sender,
                     'account_to_id' => $conversionId,
@@ -1137,13 +1149,13 @@ class AccountToAccount extends Component
 
             $fileName = 'تبدیل بین حسابات' . $conversion->id . '_' . $conversion->type . '.pdf';
 
-         $path = storage_path('app/public/' . $fileName);
+            $path = storage_path('app/public/' . $fileName);
 
-        // ذخیره PDF
-        $mpdf->Output($path, 'F');
+            // ذخیره PDF
+            $mpdf->Output($path, 'F');
 
-        // ارسال event به JS (Livewire v3)
-        $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
+            // ارسال event به JS (Livewire v3)
+            $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
         } catch (\Exception $e) {
             Log::error('PDF generation error: ' . $e->getMessage());
             session()->flash('error', 'خطا در ایجاد PDF: ' . $e->getMessage());

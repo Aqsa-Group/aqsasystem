@@ -2361,8 +2361,12 @@
 
                                 گزارش عمومی
                             </a>
+                            <?php
+                            $currentUser=Auth::guard('sarafi')->user();
+                            ?>
 
 
+                            <?php if($currentUser && $currentUser->role==='admin'): ?>
 
                             
                             <a href="<?php echo e(route('sarafi.revenue')); ?>"
@@ -2391,7 +2395,7 @@
 
                                 عواید معاملات
                             </a>
-
+                            <?php endif; ?>
                         </div>
 
                     </div>

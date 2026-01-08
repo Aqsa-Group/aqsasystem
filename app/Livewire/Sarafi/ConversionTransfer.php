@@ -1040,6 +1040,11 @@ class ConversionTransfer extends Component
 
         DB::connection('sarafi')->beginTransaction();
 
+        $senderCustomer = Customer::find($this->withdrawalAccount);
+        $receiverCustomer = Customer::find($this->depositAccount);
+
+        $senderName = $senderCustomer?->fullname ?? 'نامشخص';
+        $receiverName = $receiverCustomer?->fullname ?? 'نامشخص';
         try {
             // محاسبه سود/ضرر
             Log::info('در حال محاسبه سود/ضرر برای انتقال...');
@@ -1122,7 +1127,7 @@ class ConversionTransfer extends Component
                 'amount' => $this->withdrawal_amount,
                 'type' => 'برد',
                 'date' => $this->date,
-                'description' => $this->description . ' - تبدیل به ' . $this->getCurrencyName($this->to_currency) . ' (' . $this->transactionType . ')',
+                'description' => "ارز {$this->getCurrencyName($this->from_currency)} به ارز {$this->getCurrencyName($this->to_currency)} تبدیل شد و انتقال داده شد به حساب {$receiverName} به نرخ {$this->currency_rate}",
                 'zone' => $this->zone_sender,
                 'by' => $this->by_sender,
                 'conversion_transfer_id' => $conversionId,
@@ -1138,7 +1143,8 @@ class ConversionTransfer extends Component
                 'account_type' => $this->to_account,
                 'type' => 'رسید',
                 'date' => $this->date,
-                'description' => $this->description . ' - تبدیل از ' . $this->getCurrencyName($this->from_currency) . ' (' . $this->transactionType . ')',
+                'description' => 'دریافت ارز ' . $this->getCurrencyName($this->to_currency) .
+                    ' از حساب ' . $senderName,
                 'zone' => $this->zone_receiver,
                 'by' => $this->by_receiver,
                 'conversion_transfer_id' => $conversionId,
@@ -1151,7 +1157,7 @@ class ConversionTransfer extends Component
             DB::connection('sarafi')->commit();
 
             $message = $this->editingConversionId ? 'تبدیل ارز با موفقیت ویرایش شد.' : 'تبدیل ارز با موفقیت ثبت شد.';
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
             if ($profitLoss['profit'] > 0) {
                 $message .= ' سود: ' . number_format($profitLoss['profit'], 4) . ' دالر';
             } elseif ($profitLoss['loss'] > 0) {

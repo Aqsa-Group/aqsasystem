@@ -26,6 +26,53 @@ return new class extends Migration
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
             $table->foreign('admin_id')->references('id')->on('users')->nullOnDelete();
+            $table->foreignId('transaction_id')
+                ->nullable()
+                ->constrained('transactions')
+                ->cascadeOnDelete();
+
+
+            $table->foreignId('account_to_account_id')
+                ->nullable()
+                ->constrained('account_to_account')
+                ->cascadeOnDelete();
+
+
+            $table->foreignId('conversion_in_account_id')
+                ->nullable()
+                ->constrained('transferinaccount')
+                ->cascadeOnDelete();
+
+
+
+            $table->foreignId('conversion_transfer_id')
+                ->nullable()
+                ->constrained('conversion_transfer')
+                ->cascadeOnDelete();
+
+
+
+
+            $table->foreignId('buysell_id')
+                ->nullable()
+                ->constrained('cash_exchange')
+                ->cascadeOnDelete();
+
+
+            $table->foreignId('withdrawbank_id')
+                ->nullable()
+                ->constrained('withdrawbank')
+                ->cascadeOnDelete();
+
+
+            $table->foreignId('changerdeals_id')
+                ->nullable()
+                ->constrained('changerdeals')
+                ->cascadeOnDelete();
+
+
+
+
             $table->timestamps();
         });
     }
