@@ -171,9 +171,6 @@
             overflow: hidden;
         }
 
-
-
-
         .progress {
             width: 0%;
             height: 100%;
@@ -325,6 +322,8 @@
             color: #e2e8f0;
         }
 
+
+
         .dark header {
             background-color: black;
             box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4);
@@ -373,6 +372,7 @@
                 align-items: center;
                 padding: 0 1.5rem;
                 height: 80px;
+                width: 100%;
             }
         }
 
@@ -477,58 +477,72 @@
             transform: scale(1.05);
         }
 
-
         @media (min-width: 768px) {
             .mobile-menu-btn {
                 display: none;
             }
         }
 
-        /* سایدبار ریسپانسیو */
+        /* سایدبار ریسپانسیو - کاملا اصلاح شده */
         .sidebar-container {
             position: fixed;
             top: 0;
-            right: 0;
+            right: -100%;
             height: 100vh;
             width: 280px;
             max-width: 80vw;
             background: white;
             z-index: 9999;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
+            transition: right 0.3s ease;
             overflow-y: auto;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
         }
 
         .sidebar-container.open {
-            transform: translateX(0);
+            right: 0;
         }
 
         @media (min-width: 768px) {
             .sidebar-container {
-                position: static;
+                position: fixed;
+                top: 10px;
+                right: 0;
+                width: 296px;
+                height: 100vh;
+                max-width: none;
+                right: 0 !important;
+                z-index: 1000;
                 transform: none;
-                width: 18rem;
-                z-index: 0;
-                height: auto;
-                box-shadow: none;
+                box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);
+                border-radius: 50px 0 0 0;
+                overflow-y: auto;
                 padding: 1.25rem;
             }
         }
 
-        /* محتوای اصلی ریسپانسیو */
+        .dark .sidebar-container {
+            background: #1f2937;
+        }
+
+        /* محتوای اصلی ریسپانسیو - اصلاح شده */
         .main-content-wrapper {
             margin-top: 1rem;
             padding: 0 1rem;
+            position: relative;
+            z-index: 1;
+            width: 100%;
         }
 
         @media (min-width: 768px) {
             .main-content-wrapper {
                 margin-top: 2.5rem;
-                padding: 0;
+                padding: 0 1rem;
+                margin-right: 296px;
+                width: calc(100% - 296px);
             }
         }
 
-        /* لایه overlay برای موبایل */
+        /* لایه overlay برای موبایل - اصلاح شده */
         .mobile-overlay {
             position: fixed;
             top: 0;
@@ -537,7 +551,6 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
             z-index: 9998;
-            /* کمتر از سایدبار */
             display: none;
             backdrop-filter: blur(2px);
         }
@@ -625,7 +638,6 @@
             width: 12px;
             height: 12px;
         }
-
 
         /* هدر ریسپانسیو پیشرفته */
         .header-master {
@@ -1240,6 +1252,13 @@
                 max-width: 300px;
                 margin: 0 auto;
             }
+
+            /* اصلاحات مهم برای موبایل */
+            .main-content-wrapper {
+                margin-right: 0 !important;
+                width: 100% !important;
+                padding: 0 1rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1265,6 +1284,90 @@
             to {
                 opacity: 1;
                 transform: translateY(0);
+            }
+        }
+
+        /* استایل‌های اضافی برای مدیریت منوی موبایل */
+        body.menu-open {
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+        }
+
+        @media (max-width: 767px) {
+            .main-content-wrapper {
+                position: relative;
+                z-index: 1;
+                transition: transform 0.3s ease;
+            }
+
+            body.menu-open .main-content-wrapper {
+                transform: translateX(-20px);
+            }
+        }
+
+        /* بهبود نمایش در موبایل */
+        @media (max-width: 767px) {
+            main {
+                padding-top: 1rem;
+                padding-bottom: 4rem;
+            }
+
+            /* دکمه چت در موبایل */
+            #chatWidget {
+                bottom: 5rem !important;
+                right: 1rem;
+                z-index: 9995;
+            }
+        }
+
+        /* استایل برای جلوگیری از نمایش محتوا زیر سایدبار */
+        @media (max-width: 767px) {
+            #mainContent {
+                position: relative;
+                min-height: 100vh;
+            }
+
+            .dark #mainContent {
+                background: black;
+            }
+
+            /* محتوای اصلی در موبایل باید قابل کلیک نباشد وقتی منو باز است */
+            body.menu-open .main-content-wrapper {
+                pointer-events: none;
+            }
+
+            body.menu-open .main-content-wrapper::after {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: transparent;
+                z-index: 9996;
+            }
+        }
+
+        #mainContent {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            transition: margin-right 0.3s ease;
+        }
+
+        @media (min-width: 768px) {
+            #mainContent {
+                margin-right: 296px;
+                width: calc(100% - 296px);
+            }
+        }
+
+        @media (max-width: 767px) {
+            #mainContent {
+                margin-right: 0 !important;
+                width: 100% !important;
             }
         }
     </style>
@@ -1312,98 +1415,145 @@
         <!-- لایه overlay برای موبایل -->
         <div class="mobile-overlay" id="mobileOverlay"></div>
 
-        <header
-            class="bg-white w-full py-4 md:py-0 md:h-[80px] flex items-center dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)] shadow-[0_4px_4px_rgba(17,41,199,0.4)]">
-            <div class="header-container">
-                <!-- لایه موبایل -->
-                <div class="mobile-header-layout">
-                    <div class="mobile-header-top">
-                        <!-- برند -->
-                        <div class="mobile-brand yekan"><?php echo e(Auth::guard('sarafi')->user()->sarafi_name); ?></div>
+        <header class="bg-white w-full py-4 md:py-0 md:h-[80px] flex  px-14
+shadow-[0_4px_4px_rgba(37,99,235,0.25)]
+dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
+            <div class="mobile-header-layout">
+                <div class="mobile-header-top">
 
-                        <!-- اعلان و پروفایل -->
-                        <div class="mobile-actions">
-                            <button
-                                class="btn-mobile-small relative rounded-full bg-[#E5E5E5] hover:bg-gray-300 transition">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/bill-header.svg')); ?>" alt="اعلان"
-                                    class="w-6 h-6">
-                                <span
-                                    class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
-                            </button>
+                    <!-- اعلان و پروفایل -->
+                    <div class="mobile-actions">
+                        <button
+                            class="btn-mobile-small relative rounded-full bg-[#DEE8FC] border border-[#2563EB]  hover:bg-gray-300 transition">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/bill-header.svg')); ?>" alt="اعلان"
+                                class="w-6 h-6">
+                            <span
+                                class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
+                        </button>
 
-                            <div class="header-profile-section">
-                                <div class="relative">
-                                    <div id="profileBtnMobile"
-                                        class="profile-img-mobile border overflow-hidden flex items-center justify-center cursor-pointer transition">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/man.png')); ?>" alt="پروفایل"
-                                            class="w-full h-full object-cover">
-                                    </div>
+                        <div class="header-profile-section">
+                            <div class="relative">
+                                <div id="profileBtnMobile"
+                                    class="profile-img-mobile border overflow-hidden flex items-center justify-center cursor-pointer transition">
+                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/man.png')); ?>" alt="پروفایل"
+                                        class="w-full h-full object-cover">
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="mobile-header-bottom">
-                        <!-- جستجو -->
-                        <div class="mobile-search-full">
-                            <div class="relative">
-                                <input type="text" placeholder="<?php echo e(__('messages.search_placeholder')); ?>"
-                                    class="border border-[#8C8C8C] placeholder:text-black vazir rounded-full px-3 py-2 pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500 w-full text-sm">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
-                                    class="h-4 w-4 absolute left-2 bottom-3">
-                            </div>
-                        </div>
-
-                        <!-- زبان و دارک مود -->
-                        <div class="mobile-tools">
-                            <?php $locale = session('locale', config('app.locale')); ?>
-                            <div class="relative dropdown-mobile vazir">
-                                <button id="dropdownButtonMobile"
-                                    class="border border-[#1129C766] bg-white rounded-lg px-2 py-1 w-full flex items-center justify-between font-vazir text-xs text-[#1129C7]">
-                                    <img src="<?php echo e($locale === 'en' ? asset('assets/sarafi/all_icon/united.png') : asset('assets/sarafi/all_icon/Flags.png')); ?>"
-                                        class="w-4 h-4 ml-1" alt="Lang">
-                                    <span>
-                                        <?php if($locale === 'fa'): ?> فارسی
-                                        <?php elseif($locale === 'ps'): ?> پشتو
-                                        <?php else: ?> EN
-                                        <?php endif; ?>
-                                    </span>
-                                </button>
-
-                                <ul id="dropdownMenuMobile"
-                                    class="absolute left-5 mt-1 w-full bg-white border border-gray-200 rounded-lg hidden z-10">
-                                    <li><a href="<?php echo e(route('set-locale', 'fa')); ?>"
-                                            class="locale-link flex items-center px-2 py-1 hover:bg-gray-100 cursor-pointer text-xs"><img
-                                                src="<?php echo e(asset('assets/sarafi/all_icon/Flags.png')); ?>"
-                                                class="w-4 h-4 ml-1" alt="fa">
-                                            فارسی</a></li>
-                                    <li><a href="<?php echo e(route('set-locale', 'ps')); ?>"
-                                            class="locale-link flex items-center px-2 py-1 hover:bg-gray-100 cursor-pointer text-xs"><img
-                                                src="<?php echo e(asset('assets/sarafi/all_icon/Flags.png')); ?>"
-                                                class="w-4 h-4 ml-1" alt="ps">
-                                            پشتو</a></li>
-                                    <li><a href="<?php echo e(route('set-locale', 'en')); ?>"
-                                            class="locale-link flex items-center px-2 py-1 hover:bg-gray-100 cursor-pointer text-xs"><img
-                                                src="<?php echo e(asset('assets/sarafi/all_icon/united.png')); ?>"
-                                                class="w-4 h-4 ml-1" alt="en"> English</a></li>
-                                </ul>
-                            </div>
-
-                            
-                        </div>
-                    </div>
                 </div>
 
-                <!-- لایه دسکتاپ -->
-                <div class="desktop-header-layout">
-                    <!-- برند + انتخاب زبان -->
-                    <div class="desktop-brand-section">
-                        <div class="responsive-text dark:text-white text-[#122EE1] font-bold yekan">صرافی <?php echo e(Auth::guard('sarafi')->user()->sarafi_name); ?> </div>
+                <div class="mobile-header-bottom">
+                    <!-- جستجو -->
+                    <div class="mobile-search-full">
+                        <div class="relative">
+                            <input type="text" placeholder="<?php echo e(__('messages.search_placeholder')); ?>"
+                                class="border border-[#8C8C8C] placeholder:text-black vazir rounded-full px-3 py-2 pr-10 text-right font-vazir focus:outline-none focus:ring-2 focus:ring-blue-500 w-full text-sm">
+                            <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
+                                class="h-4 w-4 absolute left-2 bottom-3">
+                        </div>
+                    </div>
+
+                    <!-- زبان و دارک مود -->
+                    <div class="mobile-tools">
+                        <?php $locale = session('locale', config('app.locale')); ?>
+                        <div class="relative dropdown-mobile vazir">
+                            <button id="dropdownButtonMobile"
+                                class="border border-[#1129C766] bg-white rounded-lg px-2 py-1 w-full flex items-center justify-between font-vazir text-xs text-[#1129C7]">
+                                <img src="<?php echo e($locale === 'en' ? asset('assets/sarafi/all_icon/united.png') : asset('assets/sarafi/all_icon/Flags.png')); ?>"
+                                    class="w-4 h-4 ml-1" alt="Lang">
+                                <span>
+                                    <?php if($locale === 'fa'): ?> فارسی
+                                    <?php elseif($locale === 'ps'): ?> پشتو
+                                    <?php else: ?> EN
+                                    <?php endif; ?>
+                                </span>
+                            </button>
+
+                            <ul id="dropdownMenuMobile"
+                                class="absolute left-5 mt-1 w-full bg-white border border-gray-200 rounded-lg hidden z-10">
+                                <li><a href="<?php echo e(route('set-locale', 'fa')); ?>"
+                                        class="locale-link flex items-center px-2 py-1 hover:bg-gray-100 cursor-pointer text-xs"><img
+                                            src="<?php echo e(asset('assets/sarafi/all_icon/Flags.png')); ?>" class="w-4 h-4 ml-1"
+                                            alt="fa">
+                                        فارسی</a></li>
+                                <li><a href="<?php echo e(route('set-locale', 'ps')); ?>"
+                                        class="locale-link flex items-center px-2 py-1 hover:bg-gray-100 cursor-pointer text-xs"><img
+                                            src="<?php echo e(asset('assets/sarafi/all_icon/Flags.png')); ?>" class="w-4 h-4 ml-1"
+                                            alt="ps">
+                                        پشتو</a></li>
+                                <li><a href="<?php echo e(route('set-locale', 'en')); ?>"
+                                        class="locale-link flex items-center px-2 py-1 hover:bg-gray-100 cursor-pointer text-xs"><img
+                                            src="<?php echo e(asset('assets/sarafi/all_icon/united.png')); ?>" class="w-4 h-4 ml-1"
+                                            alt="en"> English</a></li>
+                            </ul>
+                        </div>
+
+                        
+                    </div>
+                </div>
+            </div>
+
+            <!-- لایه دسکتاپ -->
+            <div class="desktop-header-layout">
+
+                <div class="desktop-brand-section">
+                </div>
+
+                <!-- سرچ، اعلان، پروفایل -->
+                <div class="desktop-actions-section">
+
+
+                    <div class="flex justify-center items-center  pl-40">
+                        <!-- سوییچ دارک مود -->
+                        <div
+                            class=" shadow-md shadow-[#8eabe8] relative inline-block w-[98px] h-[32px] rounded-[8px] mx-4">
+
+                            <input type="checkbox" id="darkModeToggle" class="sr-only">
+
+                            <label for="darkModeToggle"
+                                class="flex items-center w-full h-8 bg-white dark:bg-gray-700 rounded-full cursor-pointer px-1 transition-colors duration-300">
+
+                                <span id="toggleCircle"
+                                    class="flex items-center justify-center w-6 h-6 bg-white rounded-full transition-transform duration-300 translate-x-0">
+
+                                    <!-- Sun -->
+                                    <svg id="sunIcon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M7.28451 10.3333C7.10026 10.8546 7 11.4156 7 12C7 14.7614 9.23858 17 12 17C14.7614 17 17 14.7614 17 12C17 9.23858 14.7614 7 12 7C11.4156 7 10.8546 7.10026 10.3333 7.28451"
+                                            stroke="#EBA925" stroke-width="1.5" stroke-linecap="round" />
+                                        <path d="M12 2V4" stroke="#EBA925" stroke-width="1.5" stroke-linecap="round" />
+                                        <path d="M12 20V22" stroke="#EBA925" stroke-width="1.5"
+                                            stroke-linecap="round" />
+                                        <path d="M4 12L2 12" stroke="#EBA925" stroke-width="1.5"
+                                            stroke-linecap="round" />
+                                        <path d="M22 12L20 12" stroke="#EBA925" stroke-width="1.5"
+                                            stroke-linecap="round" />
+                                        <path d="M19.7773 4.22217L17.5553 6.25375" stroke="#EBA925"
+                                            stroke-width="1.5" />
+                                        <path d="M4.22266 4.22217L6.44467 6.25375" stroke="#EBA925"
+                                            stroke-width="1.5" />
+                                        <path d="M6.44434 17.5557L4.22211 19.7779" stroke="#EBA925"
+                                            stroke-width="1.5" />
+                                        <path d="M19.7773 19.7778L17.5553 17.5555" stroke="#EBA925"
+                                            stroke-width="1.5" />
+                                    </svg>
+
+                                    <!-- Moon -->
+                                    <svg id="moonIcon" class="hidden" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="#2563EB">
+                                        <path d="M12 2a10 10 0 1 0 10 10A8 8 0 0 1 12 2Z" />
+                                    </svg>
+
+                                </span>
+                            </label>
+                        </div>
 
                         <?php $locale = session('locale', config('app.locale')); ?>
                         <div class="relative inline-block w-[145px] h-[56px] p-2 vazir">
                             <button id="dropdownButton"
-                                class="border border-[#1129C766] dark:text-white dark:bg-black dark:border-[#FFFFFF] bg-white rounded-lg px-3 py-2 w-full flex items-center justify-between font-vazir text-sm text-[#1129C7]">
+                                class="border vazir dark:text-white dark:bg-black dark:border-[#FFFFFF] bg-[#2563EB] rounded-lg px-3 py-2 w-full flex items-center justify-between font-vazir text-[14px] text-white">
                                 <img src="<?php echo e($locale === 'en' ? asset('assets/sarafi/all_icon/united.png') : asset('assets/sarafi/all_icon/Flags.png')); ?>"
                                     class="w-5 h-5 ml-2" alt="Lang">
                                 <span>
@@ -1415,7 +1565,7 @@
                             </button>
 
                             <ul id="dropdownMenu"
-                                class="absolute left-0 mt-1 w-ful dark:text-white dark:bg-black bg-white border border-gray-200 dark:hover:bg-gray-800 rounded-lg hidden z-10">
+                                class="absolute left-0 mt-1 w-ful dark:text-white dark:bg-black bg-[#2563EB] border border-gray-200 dark:hover:bg-gray-800 rounded-lg hidden z-10 text-white">
                                 <li><a href="<?php echo e(route('set-locale', 'fa')); ?>"
                                         class="locale-link flex items-center px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"><img
                                             src="<?php echo e(asset('assets/sarafi/all_icon/Flags.png')); ?>" class="w-5 h-5 ml-2"
@@ -1434,49 +1584,22 @@
                         </div>
 
 
-                        <!-- سوییچ دارک مود -->
-                        <div class="relative inline-block w-16 h-8 mx-4">
-                            <input type="checkbox" id="darkModeToggle" class="sr-only">
-                            <label for="darkModeToggle"
-                                class="flex items-center w-full h-8 bg-gray-300 rounded-full cursor-pointer transition-colors duration-300 ease-in-out dark:bg-gray-700 px-1">
-                                <span id="toggleCircle"
-                                    class="flex items-center justify-center w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 ease-in-out">
-                                    <!-- آیکون خورشید -->
-                                    <svg id="sunIcon" class="w-4 h-4 text-yellow-500" fill="currentColor"
-                                        viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-                                            clip-rule="evenodd"></path>
-                                    </svg>
-                                    <!-- آیکون ماه -->
-                                    <svg id="moonIcon" class="w-4 h-4 text-blue-300 hidden" fill="currentColor"
-                                        viewBox="0 0 20 20">
-                                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z">
-                                        </path>
-                                    </svg>
-                                </span>
-                            </label>
-                        </div>
-                    </div>
 
-                    <!-- سرچ، اعلان، پروفایل -->
-                    <div class="desktop-actions-section">
                         <div class="header-search-section">
                             <div class="relative" x-data="customerSearch()" x-init="init()">
 
                                 <input type="text" x-model="searchQuery" @input.debounce.500ms="performSearch"
-                                    placeholder="جستجو مشتری"
-                                    class="border border-[#8C8C8C] dark:border-[#FFFFFF] dark:bg-black dark:placeholder:text-white placeholder:text-black vazir rounded-[12px] px-3 py-2 pr-10 text-right font-vazir outline-none w-full">
+                                    placeholder="جستجو ......."
+                                    class="border placeholder:text-[#8C8C8C] vazir justify-center items-center  border-[#DBDBDB] dark:border-[#FFFFFF] dark:bg-black dark:placeholder:text-white  vazir rounded-[16px] w-[290px] h-[42px] pr-10 text-right font-vazir outline-none ">
 
-                                <svg width="24" class="h-5 w-5 absolute left-2 bottom-3" height="24" viewBox="0 0 24 24"
-                                    fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <svg class=" flex text-center items-center  w-6 h-6 justify-center absolute right-3 bottom-2"
+                                    width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
                                     <path
-                                        d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
+                                        d="M19.5586 17.4287C20.1468 18.0169 20.1468 18.9704 19.5586 19.5586C18.9704 20.1468 18.0169 20.1468 17.4287 19.5586L16 18.1299C16.8315 17.5539 17.5539 16.8315 18.1299 16L19.5586 17.4287ZM11 4C14.866 4 18 7.13401 18 11C18 14.866 14.866 18 11 18C7.13401 18 4 14.866 4 11C4 7.13401 7.13401 4 11 4ZM11 5.13477C7.76092 5.13477 5.13477 7.76092 5.13477 11C5.13477 14.2391 7.76092 16.8652 11 16.8652C14.2391 16.8652 16.8652 14.2391 16.8652 11C16.8652 7.76092 14.2391 5.13477 11 5.13477Z"
+                                        fill="#8C8C8C" />
                                 </svg>
+
 
 
                                 <!-- آیکون لودینگ -->
@@ -1628,9 +1751,10 @@
 
                             </div>
                         </div>
+                    </div>
 
-                        <script>
-                            function customerSearch() {
+                    <script>
+                        function customerSearch() {
                                         return {
                                             searchQuery: '',
                                             results: [],
@@ -1761,103 +1885,121 @@
                                             }
                                         };
                                     }
-                        </script>
+                    </script>
 
-                        <button
-                            class="relative flex items-center justify-center w-[50px] h-[50px] rounded-[25px] bg-[#E5E5E5] hover:bg-gray-300 transition">
-                            <svg width="30" height="30" viewBox="0 0 30 30" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M15.0262 3.63745C10.8887 3.63745 7.52621 6.99995 7.52621 11.1375V14.75C7.52621 15.5125 7.20121 16.675 6.81371 17.325L5.37621 19.7125C4.48871 21.1875 5.10121 22.825 6.72621 23.375C12.1137 25.175 17.9262 25.175 23.3137 23.375C24.8262 22.875 25.4887 21.0875 24.6637 19.7125L23.2262 17.325C22.8512 16.675 22.5262 15.5125 22.5262 14.75V11.1375C22.5262 7.01245 19.1512 3.63745 15.0262 3.63745Z"
-                                    stroke="#404040" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" />
-                                <path
-                                    d="M17.3359 4.00005C16.9484 3.88755 16.5484 3.80005 16.1359 3.75005C14.9359 3.60005 13.7859 3.68755 12.7109 4.00005C13.0734 3.07505 13.9734 2.42505 15.0234 2.42505C16.0734 2.42505 16.9734 3.07505 17.3359 4.00005Z"
-                                    stroke="#404040" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path
-                                    d="M18.7734 23.825C18.7734 25.8875 17.0859 27.575 15.0234 27.575C13.9984 27.575 13.0484 27.15 12.3734 26.475C11.6984 25.8 11.2734 24.85 11.2734 23.825"
-                                    stroke="#404040" stroke-width="1.5" stroke-miterlimit="10" />
-                            </svg>
+                    <button
+                        class="relative flex items-center justify-center w-[50px] h-[50px] rounded-[25px] bg-[#DEE8FC] border border-[#2563EB] hover:bg-gray-300 transition">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M12.0201 2.91016C8.71009 2.91016 6.02009 5.60016 6.02009 8.91016V11.8002C6.02009 12.4102 5.76009 13.3402 5.45009 13.8602L4.30009 15.7702C3.59009 16.9502 4.08009 18.2602 5.38009 18.7002C9.69009 20.1402 14.3401 20.1402 18.6501 18.7002C19.8601 18.3002 20.3901 16.8702 19.7301 15.7702L18.5801 13.8602C18.2801 13.3402 18.0201 12.4102 18.0201 11.8002V8.91016C18.0201 5.61016 15.3201 2.91016 12.0201 2.91016Z"
+                                stroke="url(#paint0_linear_2066_17562)" stroke-width="1.5" stroke-miterlimit="10"
+                                stroke-linecap="round" />
+                            <path
+                                d="M13.8699 3.19994C13.5599 3.10994 13.2399 3.03994 12.9099 2.99994C11.9499 2.87994 11.0299 2.94994 10.1699 3.19994C10.4599 2.45994 11.1799 1.93994 12.0199 1.93994C12.8599 1.93994 13.5799 2.45994 13.8699 3.19994Z"
+                                stroke="url(#paint1_linear_2066_17562)" stroke-width="1.5" stroke-miterlimit="10"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path
+                                d="M15.02 19.0601C15.02 20.7101 13.67 22.0601 12.02 22.0601C11.2 22.0601 10.44 21.7201 9.90002 21.1801C9.36002 20.6401 9.02002 19.8801 9.02002 19.0601"
+                                stroke="url(#paint2_linear_2066_17562)" stroke-width="1.5" stroke-miterlimit="10" />
+                            <defs>
+                                <linearGradient id="paint0_linear_2066_17562" x1="11.9954" y1="2.91016" x2="11.9954"
+                                    y2="19.7802" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#2563EB" />
+                                    <stop offset="1" stop-color="#2563EB" />
+                                </linearGradient>
+                                <linearGradient id="paint1_linear_2066_17562" x1="12.0199" y1="1.93994" x2="12.0199"
+                                    y2="3.19994" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#2563EB" />
+                                    <stop offset="1" stop-color="#2563EB" />
+                                </linearGradient>
+                                <linearGradient id="paint2_linear_2066_17562" x1="12.02" y1="19.0601" x2="12.02"
+                                    y2="22.0601" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#2563EB" />
+                                    <stop offset="1" stop-color="#2563EB" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
 
 
-                            
-                        </button>
+                        <span
+                            class="absolute -top-1 -right-1 bg-[#DD2424] text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
 
-                        <div class="header-profile-section">
-                            <div class="relative">
-                                <?php
-                                $currentUser = Auth::guard('sarafi')->user();
-                                ?>
+                    </button>
 
-                                <div id="profileBtnDesktop"
-                                    class="w-[50px] h-[50px] md:w-[60px] md:h-[60px] rounded-full overflow-hidden flex items-center justify-center cursor-pointer transition border-2 border-gray-200 hover:border-blue-500">
-                                    <?php if($currentUser->user_image): ?>
-                                    <img src="<?php echo e(asset('storage/' . $currentUser->user_image)); ?>"
-                                        alt="<?php echo e($currentUser->name); ?>" class="w-full h-full object-cover">
-                                    <?php else: ?>
-                                    <img src="<?php echo e(asset('assets/sarafi/avatar.svg')); ?>" alt="پروفایل"
-                                        class="w-full h-full object-cover">
-                                    <?php endif; ?>
+                    <div class="header-profile-section">
+                        <div class="relative">
+                            <?php
+                            $currentUser = Auth::guard('sarafi')->user();
+                            ?>
+
+                            <div id="profileBtnDesktop"
+                                class="w-[32px] h-[30px] md:w-[60px] md:h-[60px] rounded-full overflow-hidden flex items-center justify-center cursor-pointer transition border-2 border-gray-200 hover:border-blue-500">
+                                <?php if($currentUser->user_image): ?>
+                                <img src="<?php echo e(asset('storage/' . $currentUser->user_image)); ?>"
+                                    alt="<?php echo e($currentUser->name); ?>" class="w-full h-full object-cover">
+                                <?php else: ?>
+                                <img src="<?php echo e(asset('assets/sarafi/avatar.svg')); ?>" alt="پروفایل"
+                                    class="w-full h-full object-cover">
+                                <?php endif; ?>
+                            </div>
+
+                            <!-- منو dropdown -->
+                            <div id="profileDropdownDesktop"
+                                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;"
+                                class="absolute top-full left-0 space-y-3 text-2xl w-72 h-76 bg-white rounded-lg shadow-lg border hidden z-50 p-4">
+
+                                <div class="p-3 border-b space-y-5">
+                                    <div class="flex flex-col justify-center items-center">
+                                        <?php if($currentUser->user_image): ?>
+                                        <img src="<?php echo e(asset('storage/' . $currentUser->user_image)); ?>"
+                                            alt="<?php echo e($currentUser->name); ?>"
+                                            class="h-20 w-20 rounded-full object-cover border-2 border-gray-200">
+                                        <?php else: ?>
+                                        <img src="<?php echo e(asset('assets/sarafi/avatar.svg')); ?>"
+                                            alt="<?php echo e($currentUser->name); ?>" class="h-20 w-20 rounded-full">
+                                        <?php endif; ?>
+                                        <p class="font-vazir font-semibold text-gray-700 mt-3"><?php echo e($currentUser->name); ?></p>
+                                        <p class="font-vazir text-sm text-gray-500">
+                                            <?php
+                                            $roles = [
+                                            'superadmin' => 'سوپر ادمین',
+                                            'admin' => 'ادمین',
+                                            'warehouse_manager' => 'خزانه دار',
+                                            'internal_officer' => 'مسوول احواله جات داخلی',
+                                            'external_officer' => 'مسوول احواله جات خارجی',
+                                            ];
+                                            ?>
+                                            <?php echo e($roles[$currentUser->role] ?? $currentUser->role); ?>
+
+                                        </p>
+                                    </div>
                                 </div>
 
-                                <!-- منو dropdown -->
-                                <div id="profileDropdownDesktop"
-                                    style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;"
-                                    class="absolute top-full left-0 space-y-3 text-2xl w-72 h-76 bg-white rounded-lg shadow-lg border hidden z-50 p-4">
+                                <div class="space-y-2">
+                                    <a href="<?php echo e(route('sarafi.users')); ?>"
+                                        class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition vazir">
+                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/account_profile.svg')); ?>"
+                                            alt="تنظیمات" class="ml-2">
+                                        <span>تنظیمات پروفایل</span>
+                                    </a>
 
-                                    <div class="p-3 border-b space-y-5">
-                                        <div class="flex flex-col justify-center items-center">
-                                            <?php if($currentUser->user_image): ?>
-                                            <img src="<?php echo e(asset('storage/' . $currentUser->user_image)); ?>"
-                                                alt="<?php echo e($currentUser->name); ?>"
-                                                class="h-20 w-20 rounded-full object-cover border-2 border-gray-200">
-                                            <?php else: ?>
-                                            <img src="<?php echo e(asset('assets/sarafi/avatar.svg')); ?>"
-                                                alt="<?php echo e($currentUser->name); ?>" class="h-20 w-20 rounded-full">
-                                            <?php endif; ?>
-                                            <p class="font-vazir font-semibold text-gray-700 mt-3"><?php echo e($currentUser->name); ?></p>
-                                            <p class="font-vazir text-sm text-gray-500">
-                                                <?php
-                                                $roles = [
-                                                'superadmin' => 'سوپر ادمین',
-                                                'admin' => 'ادمین',
-                                                'warehouse_manager' => 'خزانه دار',
-                                                'internal_officer' => 'مسوول احواله جات داخلی',
-                                                'external_officer' => 'مسوول احواله جات خارجی',
-                                                ];
-                                                ?>
-                                                <?php echo e($roles[$currentUser->role] ?? $currentUser->role); ?>
-
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div class="space-y-2">
-                                        <a href="<?php echo e(route('sarafi.users')); ?>"
-                                            class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition vazir">
-                                            <img src="<?php echo e(asset('assets/sarafi/all_icon/account_profile.svg')); ?>"
-                                                alt="تنظیمات" class="ml-2">
-                                            <span>تنظیمات پروفایل</span>
-                                        </a>
-
-                                        <a href="<?php echo e(route('sarafi.users') . '#edit=' . $currentUser->id); ?>"
-                                            class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition vazir">
-                                            <img src="<?php echo e(asset('assets/sarafi/all_icon/edit.svg')); ?>" alt="ویرایش"
-                                                class="ml-2">
-                                            <span>ویرایش اطلاعات</span>
-                                        </a>
-                                    </div>
-
-                                    <form action="<?php echo e(route('sarafi.logout')); ?>" method="POST" class="pt-2 border-t">
-                                        <?php echo csrf_field(); ?>
-                                        <button type="submit"
-                                            class="flex items-center w-full px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition vazir">
-                                            <img src="<?php echo e(asset('assets/sarafi/all_icon/logout.svg')); ?>" alt="خروج"
-                                                class="ml-2">
-                                            <span>خروج از حساب</span>
-                                        </button>
-                                    </form>
+                                    <a href="<?php echo e(route('sarafi.users') . '#edit=' . $currentUser->id); ?>"
+                                        class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition vazir">
+                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/edit.svg')); ?>" alt="ویرایش"
+                                            class="ml-2">
+                                        <span>ویرایش اطلاعات</span>
+                                    </a>
                                 </div>
+
+                                <form action="<?php echo e(route('sarafi.logout')); ?>" method="POST" class="pt-2 border-t">
+                                    <?php echo csrf_field(); ?>
+                                    <button type="submit"
+                                        class="flex items-center w-full px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition vazir">
+                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/logout.svg')); ?>" alt="خروج"
+                                            class="ml-2">
+                                        <span>خروج از حساب</span>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -1867,8 +2009,10 @@
 
         <div class="flex flex-col md:flex-row mt-4 min-h-screen dark:text-white dark:bg-black">
             <!-- سایدبار -->
-            <div class="sidebar-container dark:bg-black  dark:text-white" id="sidebar">
-                <nav class="mt-0 space-y-2 dark:text-white" x-data="{
+            <div id="sidebar" class="sidebar-container rounded-tl-[50px] bg-white w-[296px] h-screen shadow-[0_4px_4px_rgba(37,99,235,0.25)]
+dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
+                <div class="responsive-text text-center mb-6 dark:text-white text-[#2562E8] font-bold yekan">صرافی <?php echo e(Auth::guard('sarafi')->user()->sarafi_name); ?> </div>
+                <nav class="mt-0 vazir space-y-2 dark:text-white" x-data="{
                     openItems: {
                         customers: false,
                         accounts: false,
@@ -1900,25 +2044,25 @@
                     <a href="<?php echo e(route('sarafi.home')); ?>"
                         class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir"
                         @click="active = 'dashboard'"
-                        :class="active === 'dashboard' ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white dark:hover:bg-gray-800 hover:bg-gray-100'">
+                        :class="active === 'dashboard' ? 'bg-[#2563EB] text-white' : 'text-gray-700 dark:text-white dark:hover:bg-gray-800 hover:bg-gray-100'">
                         <span class="flex items-center gap-2">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/element-3.svg')); ?>" class="w-5 h-5 dark:hidden"
-                                :class="active === 'dashboard' ? 'filter invert brightness-0' : 'text-gray-500' ">
-                            <svg width="26" height="24" class="hidden dark:block" viewBox="0 0 26 24" fill="none"
+
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
-                                    d="M23.8333 8.52V3.98C23.8333 2.57 23.14 2 21.4175 2H17.0408C15.3183 2 14.625 2.57 14.625 3.98V8.51C14.625 9.93 15.3183 10.49 17.0408 10.49H21.4175C23.14 10.5 23.8333 9.93 23.8333 8.52Z"
-                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    d="M2.55078 4.5C2.61472 3.84994 2.75923 3.41238 3.08582 3.08579C3.67161 2.5 4.61442 2.5 6.50004 2.5C8.38565 2.5 9.32846 2.5 9.91425 3.08579C10.5 3.67157 10.5 4.61438 10.5 6.5C10.5 8.38562 10.5 9.32843 9.91425 9.91421C9.32846 10.5 8.38565 10.5 6.50004 10.5C4.61442 10.5 3.67161 10.5 3.08582 9.91421C2.77645 9.60484 2.63047 9.19589 2.56158 8.60106"
+                                    stroke="white" stroke-width="1.5" stroke-linecap="round" />
                                 <path
-                                    d="M23.8333 19.77V15.73C23.8333 14.14 23.14 13.5 21.4175 13.5H17.0408C15.3183 13.5 14.625 14.14 14.625 15.73V19.77C14.625 21.36 15.3183 22 17.0408 22H21.4175C23.14 22 23.8333 21.36 23.8333 19.77Z"
-                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    d="M21.4493 15.5C21.3853 14.8499 21.2408 14.4124 20.9142 14.0858C20.3284 13.5 19.3856 13.5 17.5 13.5C15.6144 13.5 14.6716 13.5 14.0858 14.0858C13.5 14.6716 13.5 15.6144 13.5 17.5C13.5 19.3856 13.5 20.3284 14.0858 20.9142C14.6716 21.5 15.6144 21.5 17.5 21.5C19.3856 21.5 20.3284 21.5 20.9142 20.9142C21.2408 20.5876 21.3853 20.1501 21.4493 19.5"
+                                    stroke="white" stroke-width="1.5" stroke-linecap="round" />
                                 <path
-                                    d="M11.3724 8.52V3.98C11.3724 2.57 10.6791 2 8.95656 2H4.5799C2.8574 2 2.16406 2.57 2.16406 3.98V8.51C2.16406 9.93 2.8574 10.49 4.5799 10.49H8.95656C10.6791 10.5 11.3724 9.93 11.3724 8.52Z"
-                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    d="M2.5 17.5C2.5 15.6144 2.5 14.6716 3.08579 14.0858C3.67157 13.5 4.61438 13.5 6.5 13.5C8.38562 13.5 9.32843 13.5 9.91421 14.0858C10.5 14.6716 10.5 15.6144 10.5 17.5C10.5 19.3856 10.5 20.3284 9.91421 20.9142C9.32843 21.5 8.38562 21.5 6.5 21.5C4.61438 21.5 3.67157 21.5 3.08579 20.9142C2.5 20.3284 2.5 19.3856 2.5 17.5Z"
+                                    stroke="white" stroke-width="1.5" />
                                 <path
-                                    d="M11.3724 19.77V15.73C11.3724 14.14 10.6791 13.5 8.95656 13.5H4.5799C2.8574 13.5 2.16406 14.14 2.16406 15.73V19.77C2.16406 21.36 2.8574 22 4.5799 22H8.95656C10.6791 22 11.3724 21.36 11.3724 19.77Z"
-                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    d="M13.5 6.5C13.5 4.61438 13.5 3.67157 14.0858 3.08579C14.6716 2.5 15.6144 2.5 17.5 2.5C19.3856 2.5 20.3284 2.5 20.9142 3.08579C21.5 3.67157 21.5 4.61438 21.5 6.5C21.5 8.38562 21.5 9.32843 20.9142 9.91421C20.3284 10.5 19.3856 10.5 17.5 10.5C15.6144 10.5 14.6716 10.5 14.0858 9.91421C13.5 9.32843 13.5 8.38562 13.5 6.5Z"
+                                    stroke="white" stroke-width="1.5" />
                             </svg>
+
 
 
                             <?php echo e(__('messages.dashboard')); ?>
@@ -1937,36 +2081,24 @@
                         <button @click="openItems.customers = !openItems.customers; active = 'customers'"
                             :class="(active === 'customers' || active === 'customer-create' || active === 'customer-table') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:hover:bg-gray-800 dark:text-white hover:bg-gray-100'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
-                            <span class="flex items-center gap-2">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/people.svg')); ?>" class="w-5 h-5 dark:hidden"
-                                    :class="(active === 'customers' || active === 'customer-create' || active === 'customer-table') ? 'filter invert brightness-0' : 'text-gray-500 dark:text-white dark:hover:bg-gray-800 '">
-                                <svg width="25" height="25" class="hidden dark:block" viewBox="0 0 30 30" fill="none"
+                            <span class="flex items-center gap-2 " style="font-weight: 400">
+
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="6" r="4" stroke="#1C274C" stroke-width="1.5" />
+                                    <path d="M18 9C19.6569 9 21 7.88071 21 6.5C21 5.11929 19.6569 4 18 4"
+                                        stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M6 9C4.34315 9 3 7.88071 3 6.5C3 5.11929 4.34315 4 6 4" stroke="#1C274C"
+                                        stroke-width="1.5" stroke-linecap="round" />
                                     <path
-                                        d="M22.5016 8.95C22.4266 8.9375 22.3391 8.9375 22.2641 8.95C20.5391 8.8875 19.1641 7.475 19.1641 5.725C19.1641 3.9375 20.6016 2.5 22.3891 2.5C24.1766 2.5 25.6141 3.95 25.6141 5.725C25.6016 7.475 24.2266 8.8875 22.5016 8.95Z"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path
-                                        d="M21.2172 18.05C22.9297 18.3375 24.8172 18.0375 26.1422 17.15C27.9047 15.975 27.9047 14.05 26.1422 12.875C24.8047 11.9875 22.8922 11.6875 21.1797 11.9875"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path
-                                        d="M7.45625 8.95C7.53125 8.9375 7.61875 8.9375 7.69375 8.95C9.41875 8.8875 10.7937 7.475 10.7937 5.725C10.7937 3.9375 9.35625 2.5 7.56875 2.5C5.78125 2.5 4.34375 3.95 4.34375 5.725C4.35625 7.475 5.73125 8.8875 7.45625 8.95Z"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path
-                                        d="M8.74687 18.05C7.03437 18.3375 5.14687 18.0375 3.82188 17.15C2.05938 15.975 2.05938 14.05 3.82188 12.875C5.15938 11.9875 7.07187 11.6875 8.78437 11.9875"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path
-                                        d="M15.0016 18.2874C14.9266 18.2749 14.8391 18.2749 14.7641 18.2874C13.0391 18.2249 11.6641 16.8124 11.6641 15.0624C11.6641 13.2749 13.1016 11.8374 14.8891 11.8374C16.6766 11.8374 18.1141 13.2874 18.1141 15.0624C18.1016 16.8124 16.7266 18.2374 15.0016 18.2874Z"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path
-                                        d="M11.3609 22.225C9.59844 23.4 9.59844 25.3249 11.3609 26.4999C13.3609 27.8374 16.6359 27.8374 18.6359 26.4999C20.3984 25.3249 20.3984 23.4 18.6359 22.225C16.6484 20.9 13.3609 20.9 11.3609 22.225Z"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
+                                        d="M17.1973 15C17.7078 15.5883 18 16.2714 18 17C18 19.2091 15.3137 21 12 21C8.68629 21 6 19.2091 6 17C6 14.7909 8.68629 13 12 13C12.3407 13 12.6748 13.0189 13 13.0553"
+                                        stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M20 19C21.7542 18.6153 23 17.6411 23 16.5C23 15.3589 21.7542 14.3847 20 14"
+                                        stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M4 19C2.24575 18.6153 1 17.6411 1 16.5C1 15.3589 2.24575 14.3847 4 14"
+                                        stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
                                 </svg>
+
 
                                 <?php echo e(__('messages.customers')); ?>
 
@@ -2012,13 +2144,20 @@
 
                         <!-- دکمه اصلی -->
                         <button @click="openItems.transaction = !openItems.transaction; active = 'transaction'" :class="active === 'transaction'
-            ? 'bg-[#122EE1] text-white'
+            ? 'bg-[#2563EB] text-white'
             : 'text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
 
                             <span class="flex items-center gap-2">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/edit.svg')); ?>" class="w-5 h-5 dark:hidden"
-                                    :class="active === 'transaction' ? 'filter invert brightness-0' : ''">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M2 12C2 16.714 2 19.0711 3.46447 20.5355C4.92893 22 7.28595 22 12 22C16.714 22 19.0711 22 20.5355 20.5355C22 19.0711 22 16.714 22 12V10.5M13.5 2H12C7.28595 2 4.92893 2 3.46447 3.46447C2.49073 4.43821 2.16444 5.80655 2.0551 8"
+                                        stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                    <path
+                                        d="M16.652 3.45506L17.3009 2.80624C18.3759 1.73125 20.1188 1.73125 21.1938 2.80624C22.2687 3.88124 22.2687 5.62415 21.1938 6.69914L20.5449 7.34795M16.652 3.45506C16.652 3.45506 16.7331 4.83379 17.9497 6.05032C19.1662 7.26685 20.5449 7.34795 20.5449 7.34795M16.652 3.45506L10.6872 9.41993C10.2832 9.82394 10.0812 10.0259 9.90743 10.2487C9.70249 10.5114 9.52679 10.7957 9.38344 11.0965C9.26191 11.3515 9.17157 11.6225 8.99089 12.1646L8.41242 13.9M20.5449 7.34795L17.5625 10.3304M14.5801 13.3128C14.1761 13.7168 13.9741 13.9188 13.7513 14.0926C13.4886 14.2975 13.2043 14.4732 12.9035 14.6166C12.6485 14.7381 12.3775 14.8284 11.8354 15.0091L10.1 15.5876M10.1 15.5876L8.97709 15.9619C8.71035 16.0508 8.41626 15.9814 8.21744 15.7826C8.01862 15.5837 7.9492 15.2897 8.03811 15.0229L8.41242 13.9M10.1 15.5876L8.41242 13.9"
+                                        stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                </svg>
 
                                 <span>ثبت و مدیریت معاملات</span>
                             </span>
@@ -2035,7 +2174,7 @@
                         <div x-show="openItems.transaction" x-transition class="mr-6 mt-2 space-y-1">
 
                             <a href="<?php echo e(route('sarafi.transactions')); ?>" @click="active = 'transactions'" :class="active === 'transactions'
-                ? 'bg-[#122EE1] text-white'
+                ? 'bg-[#2563EB] text-white'
                 : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm vazir">
                                 <i class="fa-solid fa-wallet"></i>
@@ -2044,7 +2183,7 @@
 
                             <a href="<?php echo e(route('sarafi.account_to_account')); ?>" @click="active = 'account_to_account'"
                                 :class="active === 'account_to_account'
-                ? 'bg-[#122EE1] text-white'
+                ? 'bg-[#2563EB] text-white'
                 : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm vazir">
                                 <i class="fa-solid fa-arrow-right-arrow-left"></i>
@@ -2052,7 +2191,7 @@
                             </a>
 
                             <a href="<?php echo e(route('sarafi.buy-sell-currency')); ?>" @click="active = 'buy_sell'" :class="active === 'buy_sell'
-                ? 'bg-[#122EE1] text-white'
+                ? 'bg-[#2563EB] text-white'
                 : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm vazir">
                                 <i class="fa-brands fa-bitcoin" class="w-4 h-4"></i> <span>خرید و فروش ارز</span>
@@ -2060,7 +2199,7 @@
 
                             <a href="<?php echo e(route('sarafi.conversion.in.account')); ?>" @click="active = 'conversion_account'"
                                 :class="active === 'conversion_account'
-                ? 'bg-[#122EE1] text-white'
+                ? 'bg-[#2563EB] text-white'
                 : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm vazir">
                                 <i class="fa-solid fa-exchange-alt"></i>
@@ -2069,7 +2208,7 @@
 
                             <a href="<?php echo e(route('sarafi.conversion-transfer')); ?>" @click="active = 'conversion_transfer'"
                                 :class="active === 'conversion_transfer'
-                ? 'bg-[#122EE1] text-white'
+                ? 'bg-[#2563EB] text-white'
                 : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm vazir">
                                 <i class="fa-solid fa-hand-holding-dollar"></i>
@@ -2077,7 +2216,7 @@
                             </a>
 
                             <a href="<?php echo e(route('sarafi.remittance')); ?>" @click="active = 'remittance'" :class="active === 'remittance'
-                ? 'bg-[#122EE1] text-white'
+                ? 'bg-[#2563EB] text-white'
                 : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm vazir">
                                 <i class="fa-solid fa-book-open"></i>
@@ -2085,7 +2224,7 @@
                             </a>
 
                             <a href="<?php echo e(route('sarafi.withdrawbank')); ?>" @click="active = 'withdrawbank'" :class="active === 'withdrawbank'
-                ? 'bg-[#122EE1] text-white'
+                ? 'bg-[#2563EB] text-white'
                 : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm vazir">
                                 <i class="fa-solid fa-file-invoice-dollar"></i>
@@ -2103,20 +2242,20 @@
                             :class="(active === 'accounts' || active === 'register-accounts') ? 'bg-[#122EE1] text-white' : 'text-gray-700  dark:hover:bg-gray-800 dark:text-white hover:bg-gray-100'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2 ">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/edit-2.svg')); ?>" class="w-5 h-5 dark:hidden"
-                                    :class="(active === 'accounts' || active === 'register-accounts') ? 'filter invert brightness-0' : 'text-gray-500 dark:text-white'">
-                                <svg width="24" height="24" class="hidden dark:block" viewBox="0 0 24 24" fill="none"
+
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 17V17.5V18" stroke="#1C274C" stroke-width="1.5"
+                                        stroke-linecap="round" />
+                                    <path d="M12 6V6.5V7" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
                                     <path
-                                        d="M13.2633 3.59997L5.05327 12.29C4.74327 12.62 4.44327 13.27 4.38327 13.72L4.01327 16.96C3.88327 18.13 4.72327 18.93 5.88327 18.73L9.10327 18.18C9.55327 18.1 10.1833 17.77 10.4933 17.43L18.7033 8.73997C20.1233 7.23997 20.7633 5.52997 18.5533 3.43997C16.3533 1.36997 14.6833 2.09997 13.2633 3.59997Z"
-                                        stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path d="M11.8906 5.05005C12.3206 7.81005 14.5606 9.92005 17.3406 10.2"
-                                        stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path d="M3 22H21" stroke="white" stroke-width="1.5" stroke-miterlimit="10"
-                                        stroke-linecap="round" stroke-linejoin="round" />
+                                        d="M15 9.5C15 8.11929 13.6569 7 12 7C10.3431 7 9 8.11929 9 9.5C9 10.8807 10.3431 12 12 12C13.6569 12 15 13.1193 15 14.5C15 15.8807 13.6569 17 12 17C10.3431 17 9 15.8807 9 14.5"
+                                        stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                    <path
+                                        d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"
+                                        stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
                                 </svg>
+
 
                                 <?php echo e(__('messages.accounts')); ?>
 
@@ -2161,22 +2300,21 @@
                     <!-- کنترول و بررسی معاملات -->
                     <div>
                         <button @click="openItems.transactions = !openItems.transactions; active = 'transactions'"
-                            :class="(active === 'transactions' || active === 'control-transactions') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
+                            :class="(active === 'transactions' || active === 'control-transactions') ? 'bg-[#2563EB] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/health.svg')); ?>" class="w-5 h-5 dark:hidden"
-                                    :class="(active === 'transactions' || active === 'control-transactions') ? 'filter invert brightness-0' : 'text-gray-500 dark:text-white'">
-                                <svg width="24" height="24" class="hidden dark:block" viewBox="0 0 24 24" fill="none"
+
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
-                                        d="M8.96875 22H14.9688C19.9688 22 21.9688 20 21.9688 15V9C21.9688 4 19.9688 2 14.9688 2H8.96875C3.96875 2 1.96875 4 1.96875 9V15C1.96875 20 3.96875 22 8.96875 22Z"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                        d="M7 10L9.29289 12.2929C9.68342 12.6834 10.3166 12.6834 10.7071 12.2929L12.2929 10.7071C12.6834 10.3166 13.3166 10.3166 13.7071 10.7071L17 14M17 14V11.5M17 14H14.5"
+                                        stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
-                                        d="M1.96875 12.7001L7.96875 12.6801C8.71875 12.6801 9.55875 13.2501 9.83875 13.9501L10.9787 16.8301C11.2387 17.4801 11.6487 17.4801 11.9087 16.8301L14.1987 11.0201C14.4187 10.4601 14.8287 10.4401 15.1087 10.9701L16.1487 12.9401C16.4587 13.5301 17.2587 14.0101 17.9187 14.0101H21.9788"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
+                                        d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8"
+                                        stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
                                 </svg>
+
 
 
                                 <?php echo e(__('messages.transactions')); ?>
@@ -2205,52 +2343,13 @@
                                 احواله های تایید نشده
                             </a>
                         </div>
-                    </div>
 
-                    <!-- بررسی معاملات حذف شده -->
-                    <div>
-                        <button
-                            @click="openItems.deletedTransactions = !openItems.deletedTransactions; active = 'deletedTransactions'"
-                            :class="(active === 'deletedTransactions' || active === 'deleted-transactions') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
-                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
-                            <span class="flex items-center gap-2">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/trash.svg')); ?>" class="w-5 h-5 dark:hidden"
-                                    :class="(active === 'deletedTransactions' || active === 'deleted-transactions') ? 'filter invert brightness-0' : 'text-gray-500 dark:text-white'">
-                                <svg width="21" height="21" class="hidden dark:block" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M21 5.97998C17.67 5.64998 14.32 5.47998 10.98 5.47998C9 5.47998 7.02 5.57998 5.04 5.77998L3 5.97998"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path
-                                        d="M8.5 4.97L8.72 3.66C8.88 2.71 9 2 10.69 2H13.31C15 2 15.13 2.75 15.28 3.67L15.5 4.97"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path
-                                        d="M18.8484 9.13989L18.1984 19.2099C18.0884 20.7799 17.9984 21.9999 15.2084 21.9999H8.78844C5.99844 21.9999 5.90844 20.7799 5.79844 19.2099L5.14844 9.13989"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path d="M10.3281 16.5H13.6581" stroke="white" stroke-width="1.5"
-                                        stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M9.5 12.5H14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                </svg>
 
-                                <?php echo e(__('messages.deleted_transactions')); ?>
-
-                            </span>
-                            <svg :class="[openItems.deletedTransactions ? 'rotate-180' : '', (active === 'deletedTransactions' || active === 'deleted-transactions') ? 'text-white' : 'text-gray-500 dark:text-white']"
-                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                        <div x-show="openItems.deletedTransactions" x-transition class="mr-6 mt-1 space-y-1">
+                        <div x-show="openItems.transactions" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="<?php echo e(route('sarafi.trash-edit')); ?>"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('deleted-transactions', 'deletedTransactions')"
-                                :class="active === 'deleted-transactions' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                :class="active === 'deleted-transactions' ? 'bg-[#2563EB] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
                                 <svg width="30" height="30" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -2277,25 +2376,24 @@
                     </div>
 
 
+
+
                     <!-- گزارش و آمار حسابات -->
                     <div>
                         <button @click="openItems.reports = !openItems.reports; active = 'reports'"
-                            :class="(active === 'reports' || active === 'view-reports') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white dark:hover:bg-gray-800 hover:bg-gray-100  dark:hover:bg-gray-800'"
+                            :class="(active === 'reports' || active === 'view-reports') ? 'bg-[#2563EB] text-white' : 'text-gray-700 dark:text-white dark:hover:bg-gray-800 hover:bg-gray-100  dark:hover:bg-gray-800'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/graph.svg')); ?>" class="w-5 h-5 dark:hidden"
-                                    :class="(active === 'reports' || active === 'view-reports') ? 'filter invert brightness-0' : 'text-gray-500'">
-                                <svg width="24" height="24" class="hidden dark:block" viewBox="0 0 24 24" fill="none"
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
-                                        d="M18.32 11.9999C20.92 11.9999 22 10.9999 21.04 7.71994C20.39 5.50994 18.49 3.60994 16.28 2.95994C13 1.99994 12 3.07994 12 5.67994V8.55994C12 10.9999 13 11.9999 15 11.9999H18.32Z"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
+                                        d="M21.446 7.06901C20.6342 5.00831 18.9917 3.36579 16.931 2.55398C15.3895 1.94669 14 3.34316 14 5.00002V9.00002C14 9.5523 14.4477 10 15 10H19C20.6569 10 22.0533 8.61055 21.446 7.06901Z"
+                                        stroke="#1C274C" stroke-width="1.5" />
                                     <path
-                                        d="M20.0014 14.7C19.0714 19.33 14.6314 22.69 9.5814 21.87C5.7914 21.26 2.7414 18.21 2.1214 14.42C1.3114 9.39001 4.6514 4.95001 9.2614 4.01001"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
+                                        d="M6.22209 4.60105C6.66665 4.304 7.13344 4.04636 7.6171 3.82976C8.98898 3.21539 9.67491 2.9082 10.5875 3.4994C11.5 4.09061 11.5 5.06041 11.5 7.00001V8.50001C11.5 10.3856 11.5 11.3284 12.0858 11.9142C12.6716 12.5 13.6144 12.5 15.5 12.5H17C18.9396 12.5 19.9094 12.5 20.5006 13.4125C21.0918 14.3251 20.7846 15.011 20.1702 16.3829C19.9536 16.8666 19.696 17.3334 19.399 17.7779C18.3551 19.3402 16.8714 20.5578 15.1355 21.2769C13.3996 21.9959 11.4895 22.184 9.64665 21.8175C7.80383 21.4509 6.11109 20.5461 4.78249 19.2175C3.45389 17.8889 2.5491 16.1962 2.18254 14.3534C1.81598 12.5105 2.00412 10.6004 2.72315 8.86451"
+                                        stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
                                 </svg>
+
 
                                 <?php echo e(__('messages.reports')); ?>
 
@@ -2313,7 +2411,7 @@
                             <a href="<?php echo e(route('sarafi.account-reports')); ?>"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('view-reports', 'reports')"
-                                :class="active === 'view-reports' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                :class="active === 'view-reports' ? 'bg-[#2563EB] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
 
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -2346,7 +2444,7 @@
                             <a href="<?php echo e(route('sarafi.general-reports')); ?>"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('view-reports', 'reports')"
-                                :class="active === 'view-reports' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                :class="active === 'view-reports' ? 'bg-[#2563EB] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
 
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -2372,7 +2470,7 @@
                             <a href="<?php echo e(route('sarafi.revenue')); ?>"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('view-revenue', 'reports')"
-                                :class="active === 'view-revenue' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                :class="active === 'view-revenue' ? 'bg-[#2563EB] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
 
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -2404,26 +2502,25 @@
                     <!-- معاملات بین صرافی ها-->
                     <div>
                         <button @click="openItems.changersdeal = !openItems.changersdeal; active = 'changersdeal'"
-                            :class="(active === 'changersdeal' || active === 'edit-changersdeal') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
+                            :class="(active === 'changersdeal' || active === 'edit-changersdeal') ? 'bg-[#2563EB] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/edit.svg')); ?>" class="w-5 h-5 dark:hidden"
-                                    :class="(active === 'changersdeal' || active === 'edit-accounts') ? 'filter invert brightness-0' : 'text-gray-500 dark:text-white'">
 
-                                <svg width="26" height="24" class="hidden dark:block" viewBox="0 0 26 24" fill="none"
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
-                                        d="M11.9141 2H9.7474C4.33073 2 2.16406 4 2.16406 9V15C2.16406 20 4.33073 22 9.7474 22H16.2474C21.6641 22 23.8307 20 23.8307 15V13"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
+                                        d="M10 4C6.22876 4 4.34315 4 3.17157 5.17157C2 6.34315 2 8.22876 2 12C2 15.7712 2 17.6569 3.17157 18.8284C4.34315 20 6.22876 20 10 20H11.5M14 4C17.7712 4 19.6569 4 20.8284 5.17157C21.8915 6.23467 21.99 7.8857 21.9991 11"
+                                        stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
                                     <path
-                                        d="M17.3731 3.02001L8.83645 10.9C8.51145 11.2 8.18645 11.79 8.12145 12.22L7.65562 15.23C7.48228 16.32 8.31645 17.08 9.49728 16.93L12.7581 16.5C13.2131 16.44 13.8523 16.14 14.1881 15.84L22.7248 7.96001C24.1981 6.60001 24.8914 5.02001 22.7248 3.02001C20.5581 1.02001 18.8465 1.66001 17.3731 3.02001Z"
-                                        stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                        d="M15.5 14V20M15.5 20L17.5 18M15.5 20L13.5 18M20 20V14M20 14L22 16M20 14L18 16"
+                                        stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M16.1562 4.1499C16.8821 6.5399 18.9079 8.4099 21.5079 9.0899"
-                                        stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                                        stroke-linejoin="round" />
+                                    <path d="M10 16H6" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M2 10L7 10M22 10L11 10" stroke="#1C274C" stroke-width="1.5"
+                                        stroke-linecap="round" />
                                 </svg>
+
+
 
                                 ارسال و دریافت از صرافان
                             </span>
@@ -2438,7 +2535,7 @@
                             <a href="<?php echo e(route('sarafi.changersdeal')); ?>"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('edit-accounts', 'changersdeal')"
-                                :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                :class="active === 'edit-accounts' ? 'bg-[#2563EB] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -2460,7 +2557,7 @@
                             <a href="<?php echo e(route('sarafi.changer_recive')); ?>"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('edit-accounts', 'changersdeal')"
-                                :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                :class="active === 'edit-accounts' ? 'bg-[#2563EB] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -2482,7 +2579,7 @@
                             <a href="<?php echo e(route('sarafi.sarafi_reports')); ?>"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('edit-accounts', 'changersdeal')"
-                                :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                :class="active === 'edit-accounts' ? 'bg-[#2563EB] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path d="M2 22H22" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10"
@@ -2512,38 +2609,37 @@
                     <!-- مدیریت و دسترسی -->
                     <div>
                         <button @click="openItems.management = !openItems.management; active = 'management'"
-                            :class="(active === 'management' || active === 'user-management') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
+                            :class="(active === 'management' || active === 'user-management') ? 'bg-[#2563EB] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/Group 1325.svg')); ?>"
-                                    class="w-5 h-5 dark:hidden"
-                                    :class="(active === 'management' || active === 'user-management') ? 'filter invert brightness-0' : 'text-gray-500 dark:text-white'">
-                                <svg width="26" height="29" class="hidden dark:block" viewBox="0 0 26 29" fill="none"
+
+                                <svg width="25" height="29" viewBox="0 0 25 29" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M8.26035 12.2189C8.55226 12.7093 8.94403 13.1629 9.54282 13.7121C9.79976 13.9477 10.1054 14.1236 10.4331 14.2427C11.4478 14.6117 12.5574 14.6267 13.5817 14.2853L13.6244 14.271C14.0364 14.1337 14.4159 13.9098 14.7215 13.6013C15.5548 12.76 16.0138 12.1215 16.3354 11.2158C16.4511 10.8901 16.6969 10.6219 17.0248 10.5126C17.3933 10.3897 17.6686 10.0716 17.7104 9.68551C17.7523 9.29881 17.7584 8.96851 17.6951 8.65701C17.5344 7.86761 17.2993 7.02633 17.6596 6.30581C17.9844 5.65626 17.9235 4.88039 17.5014 4.28944L16.2505 2.53818C15.1687 1.02373 13.2367 0.375249 11.4603 0.930373L8.99198 1.70173C8.6621 1.80481 8.4375 2.11032 8.4375 2.45592C8.4375 2.68263 8.34012 2.89842 8.17012 3.04842L6.31916 4.68163C5.73039 5.20113 5.67857 6.10119 6.20384 6.68483L6.3445 6.84111C6.69339 7.22877 6.73509 7.80362 6.44579 8.23757C6.28022 8.48592 6.21416 8.79062 6.28274 9.08111C6.36258 9.41933 6.4558 9.69886 6.5921 9.9397C7.05231 10.7529 7.78235 11.416 8.26035 12.2189Z"
-                                        stroke="white" stroke-width="1.3" />
+                                        stroke="black" stroke-width="1.3" />
                                     <path
                                         d="M4.5 26.15C4.85898 26.15 5.15 25.859 5.15 25.5C5.15 25.141 4.85898 24.85 4.5 24.85V25.5V26.15ZM5.26748 17.3371L5.12264 16.7034L5.26748 17.3371ZM1.72357 21.3432L1.12314 21.0942L1.72357 21.3432ZM1.72357 21.3432L2.324 21.5921L2.97072 20.0324L2.37029 19.7834L1.76986 19.5345L1.12314 21.0942L1.72357 21.3432ZM5.26748 17.3371L5.41231 17.9707L7.51861 17.4893L7.37378 16.8556L7.22894 16.222L5.12264 16.7034L5.26748 17.3371ZM7.37378 16.8556L7.51861 17.4893C9.20446 17.104 10.4 15.6043 10.4 13.875H9.75H9.1C9.1 14.998 8.32366 15.9718 7.22894 16.222L7.37378 16.8556ZM2.37029 19.7834L2.97072 20.0324C3.40277 18.9904 4.31265 18.2221 5.41231 17.9707L5.26748 17.3371L5.12264 16.7034C3.61259 17.0486 2.36315 18.1036 1.76986 19.5345L2.37029 19.7834ZM4.5 25.5V24.85C2.82082 24.85 1.68085 23.1433 2.324 21.5921L1.72357 21.3432L1.12314 21.0942C0.125049 23.5014 1.89413 26.15 4.5 26.15V25.5Z"
-                                        fill="white" />
+                                        fill="black" />
                                     <path
                                         d="M15.6529 17.0496C15.9564 17.2413 16.3579 17.1506 16.5496 16.8471C16.7413 16.5436 16.6506 16.1421 16.3471 15.9504L16 16.5L15.6529 17.0496ZM14.8125 13.5H14.1625V14.3455H14.8125H15.4625V13.5H14.8125ZM14.8125 14.3455H14.1625C14.1625 15.4428 14.7251 16.4636 15.6529 17.0496L16 16.5L16.3471 15.9504C15.7964 15.6026 15.4625 14.9968 15.4625 14.3455H14.8125Z"
-                                        fill="white" />
-                                    <path d="M12.375 15.75V19.3125" stroke="white" stroke-width="1.3"
+                                        fill="black" />
+                                    <path d="M12.375 15.75V19.3125" stroke="black" stroke-width="1.3"
                                         stroke-linecap="round" />
-                                    <path d="M6.375 25.5H6.75" stroke="white" stroke-width="1.3"
+                                    <path d="M6.375 25.5H6.75" stroke="black" stroke-width="1.3"
                                         stroke-linecap="round" />
-                                    <path d="M8.25 25.5H12.75" stroke="white" stroke-width="1.3"
+                                    <path d="M8.25 25.5H12.75" stroke="black" stroke-width="1.3"
                                         stroke-linecap="round" />
                                     <path
-                                        d="M18.1868 23.5227C19.0623 23.5227 19.772 22.813 19.772 21.9375C19.772 21.062 19.0623 20.3523 18.1868 20.3523C17.3113 20.3523 16.6016 21.062 16.6016 21.9375C16.6016 22.813 17.3113 23.5227 18.1868 23.5227Z"
-                                        stroke="white" stroke-width="1.3" stroke-linecap="round"
+                                        d="M18.1878 23.5225C19.0633 23.5225 19.773 22.8128 19.773 21.9373C19.773 21.0618 19.0633 20.3521 18.1878 20.3521C17.3123 20.3521 16.6025 21.0618 16.6025 21.9373C16.6025 22.8128 17.3123 23.5225 18.1878 23.5225Z"
+                                        stroke="black" stroke-width="1.3" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M22.0977 23.5227C22.0274 23.6821 22.0064 23.8589 22.0375 24.0303C22.0686 24.2017 22.1503 24.3599 22.2721 24.4844L22.3038 24.5161C22.4021 24.6143 22.48 24.7308 22.5332 24.8591C22.5864 24.9874 22.6138 25.125 22.6138 25.2638C22.6138 25.4027 22.5864 25.5402 22.5332 25.6685C22.48 25.7968 22.4021 25.9134 22.3038 26.0115C22.2057 26.1098 22.0891 26.1877 21.9608 26.2409C21.8325 26.2941 21.695 26.3215 21.5561 26.3215C21.4172 26.3215 21.2797 26.2941 21.1514 26.2409C21.0231 26.1877 20.9066 26.1098 20.8084 26.0115L20.7767 25.9798C20.6522 25.858 20.494 25.7763 20.3226 25.7452C20.1512 25.7141 19.9744 25.7351 19.815 25.8055C19.6587 25.8724 19.5254 25.9837 19.4315 26.1254C19.3377 26.2672 19.2873 26.4333 19.2866 26.6034V26.6932C19.2866 26.9735 19.1752 27.2423 18.9771 27.4405C18.7789 27.6387 18.5101 27.75 18.2298 27.75C17.9495 27.75 17.6807 27.6387 17.4825 27.4405C17.2843 27.2423 17.173 26.9735 17.173 26.6932V26.6456C17.1689 26.4707 17.1122 26.3011 17.0105 26.1588C16.9087 26.0165 16.7665 25.9081 16.6023 25.8477C16.4429 25.7774 16.2661 25.7564 16.0947 25.7875C15.9233 25.8186 15.7651 25.9003 15.6406 26.0221L15.6089 26.0538C15.5107 26.1521 15.3942 26.23 15.2659 26.2832C15.1376 26.3364 15 26.3638 14.8612 26.3638C14.7223 26.3638 14.5848 26.3364 14.4565 26.2832C14.3282 26.23 14.2116 26.1521 14.1135 26.0538C14.0152 25.9557 13.9373 25.8391 13.8841 25.7108C13.8309 25.5825 13.8035 25.445 13.8035 25.3061C13.8035 25.1672 13.8309 25.0297 13.8841 24.9014C13.9373 24.7731 14.0152 24.6566 14.1135 24.5584L14.1452 24.5267C14.267 24.4022 14.3487 24.244 14.3798 24.0726C14.4109 23.9012 14.3899 23.7244 14.3195 23.565C14.2526 23.4087 14.1413 23.2754 13.9996 23.1815C13.8578 23.0877 13.6917 23.0373 13.5216 23.0366H13.4318C13.1515 23.0366 12.8827 22.9252 12.6845 22.7271C12.4863 22.5289 12.375 22.2601 12.375 21.9798C12.375 21.6995 12.4863 21.4307 12.6845 21.2325C12.8827 21.0343 13.1515 20.923 13.4318 20.923H13.4794C13.6543 20.9189 13.8239 20.8622 13.9662 20.7605C14.1085 20.6587 14.2169 20.5165 14.2773 20.3523C14.3476 20.1929 14.3686 20.0161 14.3375 19.8447C14.3064 19.6733 14.2247 19.5151 14.1029 19.3906L14.0712 19.3589C13.9729 19.2607 13.895 19.1442 13.8418 19.0159C13.7886 18.8876 13.7612 18.75 13.7612 18.6112C13.7612 18.4723 13.7886 18.3348 13.8418 18.2065C13.895 18.0782 13.9729 17.9616 14.0712 17.8635C14.1693 17.7652 14.2859 17.6873 14.4142 17.6341C14.5425 17.5809 14.68 17.5535 14.8189 17.5535C14.9578 17.5535 15.0953 17.5809 15.2236 17.6341C15.3519 17.6873 15.4684 17.7652 15.5666 17.8635L15.5983 17.8952C15.7228 18.017 15.881 18.0987 16.0524 18.1298C16.2238 18.1609 16.4006 18.1399 16.56 18.0695H16.6023C16.7586 18.0026 16.8918 17.8913 16.9857 17.7496C17.0796 17.6078 17.13 17.4417 17.1307 17.2716V17.1818C17.1307 16.9015 17.242 16.6327 17.4402 16.4345C17.6384 16.2363 17.9072 16.125 18.1875 16.125C18.4678 16.125 18.7366 16.2363 18.9348 16.4345C19.133 16.6327 19.2443 16.9015 19.2443 17.1818V17.2294C19.245 17.3994 19.2954 17.5655 19.3893 17.7073C19.4831 17.8491 19.6164 17.9603 19.7727 18.0273C19.9321 18.0976 20.1089 18.1186 20.2803 18.0875C20.4517 18.0564 20.6099 17.9747 20.7344 17.8529L20.7661 17.8212C20.8643 17.7229 20.9808 17.645 21.1091 17.5918C21.2374 17.5386 21.375 17.5112 21.5138 17.5112C21.6527 17.5112 21.7902 17.5386 21.9185 17.5918C22.0468 17.645 22.1634 17.7229 22.2615 17.8212C22.3598 17.9193 22.4377 18.0359 22.4909 18.1642C22.5441 18.2925 22.5715 18.43 22.5715 18.5689C22.5715 18.7078 22.5441 18.8453 22.4909 18.9736C22.4377 19.1019 22.3598 19.2184 22.2615 19.3166L22.2298 19.3483C22.108 19.4728 22.0263 19.631 21.9952 19.8024C21.9641 19.9738 21.9851 20.1506 22.0555 20.31V20.3523C22.1224 20.5086 22.2337 20.6418 22.3754 20.7357C22.5172 20.8296 22.6833 20.88 22.8534 20.8807H22.9432C23.2235 20.8807 23.4923 20.992 23.6905 21.1902C23.8887 21.3884 24 21.6572 24 21.9375C24 22.2178 23.8887 22.4866 23.6905 22.6848C23.4923 22.883 23.2235 22.9943 22.9432 22.9943H22.8956C22.7256 22.995 22.5595 23.0454 22.4177 23.1393C22.2759 23.2331 22.1647 23.3664 22.0977 23.5227Z"
-                                        stroke="white" stroke-width="1.3" stroke-linecap="round"
+                                        stroke="black" stroke-width="1.3" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
+
 
 
                                 <?php echo e(__('messages.management')); ?>
@@ -2560,7 +2656,7 @@
                             <a href="<?php echo e(route('sarafi.users')); ?>"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('user-management', 'management')"
-                                :class="active === 'user-management' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                :class="active === 'user-management' ? 'bg-[#2563EB] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/profile-2user.svg')); ?>"
                                     class="w-5 h-5 dark:hidden"
                                     :class="active === 'users' ? 'filter invert brightness-0' : 'text-gray-500' ">
@@ -2593,27 +2689,25 @@
                     <!-- اطلاعیه های آنلاین -->
                     <div>
                         <button @click="openItems.notifications = !openItems.notifications; active = 'notifications'"
-                            :class="(active === 'notifications' || active === 'online-notifications') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
+                            :class="(active === 'notifications' || active === 'online-notifications') ? 'bg-[#2563EB] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/wifi.svg')); ?>" class="w-5 h-5 dark:hidden"
-                                    :class="(active === 'notifications' || active === 'online-notifications') ? 'filter invert brightness-0' : 'text-gray-500 dark:text-white'">
 
-                                <svg width="26" height="24" class="hidden dark:block" viewBox="0 0 26 24" fill="none"
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M5.32031 11.8401C9.97865 8.5201 16.0345 8.5201 20.6928 11.8401"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                    <path d="M6 9.96004C9.63 7.15004 14.37 7.15004 18 9.96004" stroke="#292D32"
+                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M7.6001 13.0499C10.2701 10.9899 13.7401 10.9899 16.4101 13.0499"
+                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M2.16406 8.3601C8.72906 3.6801 17.2657 3.6801 23.8307 8.3601"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path d="M7.35156 15.4902C10.7641 13.0502 15.2166 13.0502 18.6291 15.4902"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path d="M10.1797 19.1501C11.8914 17.9301 14.1122 17.9301 15.8239 19.1501"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                    <path d="M9.80005 16.1402C11.13 15.1102 12.87 15.1102 14.2 16.1402" stroke="#292D32"
+                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path
+                                        d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
+                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
+
 
                                 <?php echo e(__('messages.notifications')); ?>
 
@@ -2629,7 +2723,7 @@
                             <a href="#"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('online-notifications', 'notifications')"
-                                :class="active === 'online-notifications' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                :class="active === 'online-notifications' ? 'bg-[#2563EB] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/notification.svg')); ?>" class="w-4 h-4"
                                     :class="active === 'online-notifications' ? 'filter invert brightness-0' : 'text-gray-500'">
                                 <?php echo e(__('messages.online_notifications')); ?>
@@ -2641,32 +2735,30 @@
                     <!-- پشتیبانی سیستم -->
                     <div>
                         <button @click="openItems.support = !openItems.support; active = 'support'"
-                            :class="(active === 'support' || active === 'system-support') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
+                            :class="(active === 'support' || active === 'system-support') ? 'bg-[#2563EB] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/document-copy.svg')); ?>"
-                                    class="w-5 h-5 dark:hidden"
-                                    :class="(active === 'support' || active === 'system-support') ? 'filter invert brightness-0' : 'text-gray-500 dark:text-white'">
 
-                                <svg width="26" height="24" class="hidden dark:block" viewBox="0 0 26 24" fill="none"
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
-                                        d="M18.4141 13.4V16.4C18.4141 20.4 16.6807 22 12.3474 22H8.23073C3.8974 22 2.16406 20.4 2.16406 16.4V12.6C2.16406 8.6 3.8974 7 8.23073 7H11.4807"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                        d="M17 13.4V16.4C17 20.4 15.4 22 11.4 22H7.6C3.6 22 2 20.4 2 16.4V12.6C2 8.6 3.6 7 7.6 7H10.6"
+                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M18.4177 13.4H14.951C12.351 13.4 11.4844 12.6 11.4844 10.2V7L18.4177 13.4Z"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                    <path
+                                        d="M17.0001 13.4H13.8001C11.4001 13.4 10.6001 12.6 10.6001 10.2V7L17.0001 13.4Z"
+                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M12.5703 2H16.9036" stroke="white" stroke-width="1.5"
+                                    <path d="M11.6001 2H15.6001" stroke="#292D32" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M7.58594 5C7.58594 3.34 9.0376 2 10.8359 2H13.6743" stroke="white"
+                                    <path d="M7 5C7 3.34 8.34 2 10 2H12.62" stroke="#292D32" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M21.9999 8V14.19C21.9999 15.74 20.7399 17 19.1899 17" stroke="#292D32"
                                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M23.8332 8V14.19C23.8332 15.74 22.4682 17 20.7891 17" stroke="white"
-                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M23.8359 8H20.5859C18.1484 8 17.3359 7.25 17.3359 5V2L23.8359 8Z"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
+                                    <path d="M22 8H19C16.75 8 16 7.25 16 5V2L22 8Z" stroke="#292D32" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
+
 
                                 <?php echo e(__('messages.support')); ?>
 
@@ -2694,22 +2786,20 @@
                     <!-- تنظیمات -->
                     <div>
                         <button @click="openItems.settings = !openItems.settings; active = 'settings'"
-                            :class="(active === 'settings' || active === 'system-settings') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
+                            :class="(active === 'settings' || active === 'system-settings') ? 'bg-[#2563EB] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/setting-2.svg')); ?>"
-                                    class="w-5 h-5 dark:hidden"
-                                    :class="(active === 'settings' || active === 'system-settings') ? 'filter invert brightness-0' : 'text-gray-500 dark:text-white'">
-                                <svg width="26" height="24" class="hidden dark:block" viewBox="0 0 26 24" fill="none"
+                             
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
-                                        d="M13 15C14.7949 15 16.25 13.6569 16.25 12C16.25 10.3431 14.7949 9 13 9C11.2051 9 9.75 10.3431 9.75 12C9.75 13.6569 11.2051 15 13 15Z"
-                                        stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                                        stroke-linejoin="round" />
+                                        d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
+                                        stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10"
+                                        stroke-linecap="round" stroke-linejoin="round" />
                                     <path
-                                        d="M2.16406 12.8799V11.1199C2.16406 10.0799 3.0849 9.21994 4.2224 9.21994C6.18323 9.21994 6.9849 7.93994 5.99906 6.36994C5.43573 5.46994 5.77156 4.29994 6.7574 3.77994L8.63156 2.78994C9.4874 2.31994 10.5924 2.59994 11.1016 3.38994L11.2207 3.57994C12.1957 5.14994 13.7991 5.14994 14.7849 3.57994L14.9041 3.38994C15.4132 2.59994 16.5182 2.31994 17.3741 2.78994L19.2482 3.77994C20.2341 4.29994 20.5699 5.46994 20.0066 6.36994C19.0207 7.93994 19.8224 9.21994 21.7832 9.21994C22.9099 9.21994 23.8416 10.0699 23.8416 11.1199V12.8799C23.8416 13.9199 22.9207 14.7799 21.7832 14.7799C19.8224 14.7799 19.0207 16.0599 20.0066 17.6299C20.5699 18.5399 20.2341 19.6999 19.2482 20.2199L17.3741 21.2099C16.5182 21.6799 15.4132 21.3999 14.9041 20.6099L14.7849 20.4199C13.8099 18.8499 12.2066 18.8499 11.2207 20.4199L11.1016 20.6099C10.5924 21.3999 9.4874 21.6799 8.63156 21.2099L6.7574 20.2199C5.77156 19.6999 5.43573 18.5299 5.99906 17.6299C6.9849 16.0599 6.18323 14.7799 4.2224 14.7799C3.0849 14.7799 2.16406 13.9199 2.16406 12.8799Z"
-                                        stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                                        stroke-linejoin="round" />
+                                        d="M2 12.8799V11.1199C2 10.0799 2.85 9.21994 3.9 9.21994C5.71 9.21994 6.45 7.93994 5.54 6.36994C5.02 5.46994 5.33 4.29994 6.24 3.77994L7.97 2.78994C8.76 2.31994 9.78 2.59994 10.25 3.38994L10.36 3.57994C11.26 5.14994 12.74 5.14994 13.65 3.57994L13.76 3.38994C14.23 2.59994 15.25 2.31994 16.04 2.78994L17.77 3.77994C18.68 4.29994 18.99 5.46994 18.47 6.36994C17.56 7.93994 18.3 9.21994 20.11 9.21994C21.15 9.21994 22.01 10.0699 22.01 11.1199V12.8799C22.01 13.9199 21.16 14.7799 20.11 14.7799C18.3 14.7799 17.56 16.0599 18.47 17.6299C18.99 18.5399 18.68 19.6999 17.77 20.2199L16.04 21.2099C15.25 21.6799 14.23 21.3999 13.76 20.6099L13.65 20.4199C12.75 18.8499 11.27 18.8499 10.36 20.4199L10.25 20.6099C9.78 21.3999 8.76 21.6799 7.97 21.2099L6.24 20.2199C5.33 19.6999 5.02 18.5299 5.54 17.6299C6.45 16.0599 5.71 14.7799 3.9 14.7799C2.85 14.7799 2 13.9199 2 12.8799Z"
+                                        stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10"
+                                        stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
 
 
@@ -2727,7 +2817,7 @@
                             <a href="#"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('system-settings', 'settings')"
-                                :class="active === 'system-settings' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                :class="active === 'system-settings' ? 'bg-[#2563EB] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/settings.svg')); ?>" class="w-4 h-4"
                                     :class="active === 'system-settings' ? 'filter invert brightness-0' : 'text-gray-500'">
                                 <?php echo e(__('messages.system_settings')); ?>
@@ -2739,7 +2829,7 @@
             </div>
 
             <!-- محتوای اصلی -->
-            <main class="flex-1 mx-auto main-content-wrapper px-3 w-full min-w-0">
+            <main class="flex-1 mx-auto main-content-wrapper px-20 w-full min-w-0">
                 <?php echo $__env->yieldContent('content'); ?>
             </main>
 
