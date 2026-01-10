@@ -9,6 +9,7 @@ use App\Models\Sarafi\ExchangeRates;
 use App\Models\Sarafi\Transaction;
 use App\Models\Sarafi\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -17,14 +18,12 @@ use Morilog\Jalali\Jalalian;
 use Mpdf\Mpdf;
 use NumberFormatter;
 
-
 class Transactions extends Component
 {
+    use WithFileUploads;
 
     public $searchedCustomer = null;
     public $showCustomerModal = false;
-
-    use WithFileUploads;
     public $confirmDeleteId = null;
 
     public $customer_id;
@@ -48,42 +47,16 @@ class Transactions extends Component
     public $search = '';
     public $selectedCustomer = null;
     public $selectedCustomerId = null;
-    public $filteredCustomers;
+    public $filteredCustomers = [];
 
     public $transactions = [];
 
     public $additionalCustomers = [];
     public $accountSearch = '';
 
-    // اضافه کردن متغیرهای جدید برای نمایش موجودی‌ها
     public $customerCashBalances = [];
     public $customerBankBalances = [];
     public $customerTotalBalances = [];
-
-    public function updatedAccountSearch($value)
-    {
-        $user = Auth::guard('sarafi')->user();
-        $adminId = $user->admin_id ?? $user->id;
-
-        $relatedUserIds = \App\Models\Sarafi\User::where('admin_id', $adminId)
-            ->pluck('id')
-            ->push($adminId)
-            ->toArray();
-
-        $this->filteredCustomers = Customer::with('admins')
-            ->where(function ($query) use ($adminId) {
-                $query->where('admin_id', $adminId)
-                    ->orWhereHas('admins', function ($q) use ($adminId) {
-                        $q->where('customer_admin.admin_id', $adminId);
-                    });
-            })
-            ->where(function ($query) use ($value) {
-                $query->where('fullname', 'like', "%{$value}%")
-                    ->orWhere('account_number', 'like', "%{$value}%");
-            })
-            ->limit(15)
-            ->get();
-    }
 
     public $currenciesdefault = [
         ['name' => 'افغانی', 'value' => 0],
@@ -95,6 +68,12 @@ class Transactions extends Component
         ['name' => 'لیره', 'value' => 0],
         ['name' => 'یوان', 'value' => 0],
         ['name' => 'خلاصه بیلانس به دالر', 'value' => 0],
+    ];
+
+    // متغیرهای کش
+    protected $cacheKeys = [
+        'customer_list' => 'customers_list_',
+        'transactions_list' => 'transactions_list_',
     ];
 
     public function mount()
@@ -117,9 +96,21 @@ class Transactions extends Component
             ['code' => 'inr', 'name_fa' => 'روپیه'],
         ];
 
+        $this->loadCustomers();
         $this->updateTransactions();
-        $this->updateCustomerCurrencyBalance();
+        
+        if ($this->selectedCustomerId) {
+            $this->updateCustomerCurrencyBalance();
+        }
+    }
 
+    public function updatedAccountSearch($value)
+    {
+        $this->searchCustomers($value);
+    }
+
+    private function loadCustomers()
+    {
         $user = Auth::guard('sarafi')->user();
         if (!$user) {
             $this->customers = collect();
@@ -127,37 +118,26 @@ class Transactions extends Component
         }
 
         $adminId = $user->admin_id ?? $user->id;
-        $relatedUserIds = \App\Models\Sarafi\User::where('admin_id', $adminId)
-            ->pluck('id')
-            ->push($adminId)
-            ->toArray();
+        $cacheKey = $this->cacheKeys['customer_list'] . $adminId;
 
-        $user = Auth::guard('sarafi')->user();
-        $adminId = $user->admin_id ?? $user->id;
-
-        $this->customers = Customer::with('admins')
-            ->where('admin_id', $adminId)
-            ->orWhereHas('admins', function ($q) use ($adminId) {
-                $q->where('customer_admin.admin_id', $adminId);
-            })
-
-            ->orderBy('fullname')
-            ->get();
+        // استفاده از کش برای لیست مشتریان
+        $this->customers = Cache::remember($cacheKey, 300, function () use ($adminId) {
+            return Customer::with('admins')
+                ->where(function ($query) use ($adminId) {
+                    $query->where('admin_id', $adminId)
+                        ->orWhereHas('admins', function ($q) use ($adminId) {
+                            $q->where('customer_admin.admin_id', $adminId);
+                        });
+                })
+                ->orderBy('fullname')
+                ->get(['id', 'account_number', 'fullname', 'phone', 'image']);
+        });
 
         $this->customers = collect($this->customers);
     }
 
     public function updatedSearch($value)
     {
-        $user = Auth::guard('sarafi')->user();
-        $adminId = $user->admin_id ?? $user->id;
-
-        // این خط را اضافه کنید: تعریف $relatedUserIds
-        $relatedUserIds = \App\Models\Sarafi\User::where('admin_id', $adminId)
-            ->pluck('id')
-            ->push($adminId)
-            ->toArray();
-
         if (empty($value)) {
             $this->selectedCustomerId = null;
             $this->filteredCustomers = [];
@@ -166,7 +146,29 @@ class Transactions extends Component
             return;
         }
 
-        // جستجو در مشتریان ادمین و کاربران مرتبط
+        $this->searchCustomers($value);
+
+        if ($this->filteredCustomers->isEmpty()) {
+            $this->searchedCustomer = Customer::where('fullname', 'like', "%{$value}%")
+                ->orWhere('account_number', 'like', "%{$value}%")
+                ->first();
+
+            if ($this->searchedCustomer) {
+                $this->showCustomerModal = true;
+            }
+        } elseif ($this->filteredCustomers->count() === 1) {
+            $this->selectCustomer($this->filteredCustomers->first()->id);
+        } else {
+            $this->selectedCustomerId = null;
+            $this->updateTransactions();
+        }
+    }
+
+    private function searchCustomers($value)
+    {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
         $this->filteredCustomers = Customer::with('admins')
             ->where(function ($query) use ($adminId) {
                 $query->where('admin_id', $adminId)
@@ -179,29 +181,7 @@ class Transactions extends Component
                     ->orWhere('account_number', 'like', "%{$value}%");
             })
             ->limit(15)
-            ->get();
-
-
-        // اگر مشتری در لیست ما نبود، در کل سیستم جستجو کن
-        if ($this->filteredCustomers->isEmpty()) {
-            $this->searchedCustomer = Customer::where(function ($query) use ($value) {
-                $query->where('fullname', 'like', "%{$value}%")
-                    ->orWhere('account_number', 'like', "%{$value}%");
-            })
-                ->first();
-
-            if ($this->searchedCustomer) {
-                // مشتری در کل سیستم پیدا شد اما مال ما نیست
-                $this->showCustomerModal = true;
-            }
-        }
-        // اگر فقط یک مشتری پیدا شد، خودکار انتخاب کن
-        elseif ($this->filteredCustomers->count() === 1) {
-            $this->selectCustomer($this->filteredCustomers->first()->id);
-        } else {
-            $this->selectedCustomerId = null;
-            $this->updateTransactions();
-        }
+            ->get(['id', 'account_number', 'fullname', 'phone', 'image']);
     }
 
     public function addCustomerToAdmin($customerId)
@@ -217,21 +197,19 @@ class Transactions extends Component
                 return;
             }
 
-            // اضافه کردن ادمین به مشتری
             $customer->admin_id = $adminId;
             $customer->save();
 
-            // اضافه کردن به لیست مشتریان
             if (!$this->customers->contains('id', $customer->id)) {
                 $this->customers->push($customer);
             }
 
-            // انتخاب مشتری
             $this->selectCustomer($customerId);
-
-            // بستن مودال
             $this->showCustomerModal = false;
             $this->searchedCustomer = null;
+
+            // پاک کردن کش
+            Cache::forget($this->cacheKeys['customer_list'] . $adminId);
 
             session()->flash('message', 'مشتری با موفقیت به حساب شما اضافه شد.');
 
@@ -253,7 +231,6 @@ class Transactions extends Component
         $this->search = '';
     }
 
-
     public function selectCustomer($customerId)
     {
         $this->selectedCustomerId = $customerId;
@@ -261,17 +238,16 @@ class Transactions extends Component
         $this->selectedCustomer = Customer::find($customerId);
         $this->filteredCustomers = [];
 
-        $customer = Customer::find($customerId);
-        if ($customer) {
-            $this->search = $customer->fullname;
+        if ($this->selectedCustomer) {
+            $this->search = $this->selectedCustomer->fullname;
 
-            if (!$this->customers->contains('id', $customer->id)) {
-                $this->customers->push($customer);
+            if (!$this->customers->contains('id', $this->selectedCustomer->id)) {
+                $this->customers->push($this->selectedCustomer);
             }
 
             $this->dispatch('account-selected', [
-                'id' => $customer->id,
-                'text' => $customer->account_number . ' - ' . $customer->fullname,
+                'id' => $this->selectedCustomer->id,
+                'text' => $this->selectedCustomer->account_number . ' - ' . $this->selectedCustomer->fullname,
             ]);
 
             $this->updateTransactions();
@@ -279,7 +255,7 @@ class Transactions extends Component
 
             Log::debug("Customer selected", [
                 'customer_id' => $customerId,
-                'customer_name' => $customer->fullname,
+                'customer_name' => $this->selectedCustomer->fullname,
                 'search_value' => $this->search
             ]);
         }
@@ -307,21 +283,17 @@ class Transactions extends Component
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
 
-        // محاسبه موجودی‌ها
         list($cashBalances, $bankBalances) = $this->calculateBalances($adminId);
         $totalBalances = $this->calculateTotalBalances($cashBalances, $bankBalances);
         $totalInUsd = $this->convertToUsd($totalBalances);
 
-        // تنظیم مقادیر
         $this->setCurrencyDefaults($totalBalances, $totalInUsd);
         $this->setCustomerBalances($cashBalances, $bankBalances, $totalBalances);
     }
 
     private function resetBalances()
     {
-        $this->currenciesdefault = array_map(function ($currency) {
-            return ['name' => $currency, 'value' => 0];
-        }, [
+        $currencies = [
             'افغانی',
             'دالر',
             'تومان',
@@ -332,7 +304,12 @@ class Transactions extends Component
             'یوان',
             'روپیه',
             'خلاصه بیلانس به دالر'
-        ]);
+        ];
+
+        $this->currenciesdefault = [];
+        foreach ($currencies as $currency) {
+            $this->currenciesdefault[] = ['name' => $currency, 'value' => 0];
+        }
 
         $this->customerCashBalances = [];
         $this->customerBankBalances = [];
@@ -341,6 +318,23 @@ class Transactions extends Component
 
     private function calculateBalances($adminId)
     {
+        // استفاده از aggregate functions برای محاسبه سریع‌تر
+        $cashTransactions = Transaction::where('customer_id', $this->selectedCustomerId)
+            ->where('admin_id', $adminId)
+            ->where('account_type', 'نقدی')
+            ->whereIn('type', ['برد', 'رسید'])
+            ->selectRaw('currency, SUM(CASE WHEN type = "رسید" THEN amount ELSE -amount END) as balance')
+            ->groupBy('currency')
+            ->get();
+
+        $bankTransactions = Transaction::where('customer_id', $this->selectedCustomerId)
+            ->where('admin_id', $adminId)
+            ->where('account_type', 'بانکی')
+            ->whereIn('type', ['برد', 'رسید'])
+            ->selectRaw('currency, SUM(CASE WHEN type = "رسید" THEN amount ELSE -amount END) as balance')
+            ->groupBy('currency')
+            ->get();
+
         $cashBalances = array_fill_keys([
             'افغانی',
             'دالر',
@@ -364,22 +358,18 @@ class Transactions extends Component
             'یوان',
             'روپیه'
         ], 0);
-        $transactions = Transaction::where('customer_id', $this->selectedCustomerId)
-            ->where('admin_id', $adminId)
-            ->whereIn('type', ['برد', 'رسید'])
-            ->get();
 
-
-        foreach ($transactions as $transaction) {
+        foreach ($cashTransactions as $transaction) {
             $currencyName = $this->getCurrencyName($transaction->currency);
-            $amount = $transaction->type === 'رسید' ? $transaction->amount : -$transaction->amount;
+            if (isset($cashBalances[$currencyName])) {
+                $cashBalances[$currencyName] += $transaction->balance;
+            }
+        }
 
-            if (isset($cashBalances[$currencyName]) || isset($bankBalances[$currencyName])) {
-                if ($transaction->account_type === 'نقدی') {
-                    $cashBalances[$currencyName] += $amount;
-                } else {
-                    $bankBalances[$currencyName] += $amount;
-                }
+        foreach ($bankTransactions as $transaction) {
+            $currencyName = $this->getCurrencyName($transaction->currency);
+            if (isset($bankBalances[$currencyName])) {
+                $bankBalances[$currencyName] += $transaction->balance;
             }
         }
 
@@ -390,14 +380,22 @@ class Transactions extends Component
     {
         $totalBalances = [];
         foreach ($cashBalances as $currency => $balance) {
-            $totalBalances[$currency] = $balance + $bankBalances[$currency];
+            $totalBalances[$currency] = $balance + ($bankBalances[$currency] ?? 0);
         }
         return $totalBalances;
     }
 
     private function convertToUsd($totalBalances)
     {
-        $latestExchangeRate = ExchangeRates::latest()->first();
+        // استفاده از کش برای نرخ‌های ارز
+        $latestExchangeRate = Cache::remember('latest_exchange_rate', 300, function () {
+            return ExchangeRates::latest()->first();
+        });
+
+        if (!$latestExchangeRate) {
+            return 0;
+        }
+
         $exchangeRates = [
             'افغانی' => $latestExchangeRate->afn_buy ?? 66.20,
             'دالر' => 1,
@@ -500,8 +498,11 @@ class Transactions extends Component
         }
 
         $adminId = $user->admin_id ?? $user->id;
+        $cacheKey = $this->cacheKeys['transactions_list'] . $adminId . ($this->selectedCustomerId ? '_' . $this->selectedCustomerId : '');
 
-        $query = Transaction::with('customer')
+        $query = Transaction::with(['customer' => function ($query) {
+                $query->select('id', 'fullname', 'account_number', 'phone');
+            }])
             ->where('admin_id', $adminId)
             ->whereIn('type', ['برد', 'رسید'])
             ->whereNull('conversion_transfer_id')
@@ -511,46 +512,18 @@ class Transactions extends Component
             ->whereNull('withdrawbank_id')
             ->whereNull('changerdeal_id');
 
-
         if ($this->selectedCustomerId) {
             $query->where('customer_id', $this->selectedCustomerId);
         }
 
-        $this->transactions = $query->latest()->get();
+        // برای نمایش اولیه، محدودیت 50 رکورد
+        $this->transactions = Cache::remember($cacheKey, 60, function () use ($query) {
+            return $query->latest()->limit(50)->get();
+        });
     }
 
     public function render()
     {
-        $user = Auth::guard('sarafi')->user();
-
-        if (!$user) {
-            return view('livewire.sarafi.transactions', [
-                'customers' => collect(),
-                'transactions' => collect(),
-            ]);
-        }
-
-        $adminId = $user->admin_id ?? $user->id;
-        $relatedUserIds = \App\Models\Sarafi\User::where('admin_id', $adminId)
-            ->pluck('id')
-            ->push($adminId)
-            ->toArray();
-
-        if (!$this->customers || $this->customers->isEmpty()) {
-            $this->customers = Customer::select('id', 'account_number', 'fullname')
-                ->where(function ($query) use ($adminId, $relatedUserIds) {
-                    $query->where('admin_id', $adminId)
-                        ->orWhereHas('transactions', function ($t) use ($relatedUserIds) {
-                            $t->whereIn('user_id', $relatedUserIds)
-                                ->orWhereIn('admin_id', $relatedUserIds);
-                        });
-                })
-                ->orderBy('fullname')
-                ->get();
-
-            $this->customers = collect($this->customers);
-        }
-
         return view('livewire.sarafi.transactions', [
             'customers' => $this->customers,
             'transactions' => $this->transactions,
@@ -574,6 +547,7 @@ class Transactions extends Component
             $this->amountInWords = null;
         }
     }
+
     public function toggleTransactionType()
     {
         $this->transactionType = $this->transactionType === 'رسید' ? 'برد' : 'رسید';
@@ -591,7 +565,6 @@ class Transactions extends Component
         }
     }
 
-
     public function formatAmount()
     {
         if ($this->amount) {
@@ -599,10 +572,10 @@ class Transactions extends Component
         }
     }
 
-
     public function edit($id)
     {
-        $transaction = Transaction::findOrFail($id);
+        $transaction = Transaction::with('customer')->findOrFail($id);
+        
         $this->transactionId = $id;
         $this->selectedAccount = $transaction->customer_id;
         $this->amount = $transaction->amount;
@@ -613,6 +586,8 @@ class Transactions extends Component
         $this->description = $transaction->description;
         $this->transactionType = $transaction->type;
         $this->accountType = $transaction->account_type;
+        
+        $this->selectCustomer($transaction->customer_id);
     }
 
     public function confirmDelete($id)
@@ -629,7 +604,12 @@ class Transactions extends Component
 
         $transaction->delete();
 
-        session()->flash('message', 'ترانزکشن موفقـــــانــــــه حذف گردید.');
+        // پاک کردن کش
+        $adminId = $user->admin_id ?? $user->id;
+        Cache::forget($this->cacheKeys['transactions_list'] . $adminId);
+        Cache::forget($this->cacheKeys['transactions_list'] . $adminId . '_' . $transaction->customer_id);
+
+        session()->flash('message', 'ترانزکشن موفقیتانه حذف گردید.');
 
         $this->updateTransactions();
         $this->updateCustomerCurrencyBalance();
@@ -655,8 +635,8 @@ class Transactions extends Component
             'zone'           => 'required|string',
             'file'           => 'nullable|file|max:10240',
         ]);
-        $filePath = $this->file ? $this->file->store('transactions', 'public') : null;
 
+        $filePath = $this->file ? $this->file->store('transactions', 'public') : null;
         $adminId = $user->admin_id ?? $user->id;
 
         $data = [
@@ -678,84 +658,37 @@ class Transactions extends Component
             $old = Transaction::findOrFail($this->transactionId);
 
             $this->applyCurrencyChange($user, $old->currency, $old->amount, $old->type, $old->account_type, true);
-
             $old->update($data);
-
             $this->applyCurrencyChange($user, $this->currency, $this->amount, $this->transactionType, $this->accountType);
 
-            session()->flash('message', 'تراکنش با موفقیت بروزرسانی شد.');
+            $transaction = $old;
+            $message = 'تراکنش با موفقیت بروزرسانی شد.';
         } else {
-            Transaction::create($data);
-
+            $transaction = Transaction::create($data);
             $this->applyCurrencyChange($user, $this->currency, $this->amount, $this->transactionType, $this->accountType);
-
-            session()->flash('message', 'تراکنش با موفقیت ثبت شد.');
+            $message = 'تراکنش با موفقیت ثبت شد.';
         }
+
+        // پاک کردن کش
+        Cache::forget($this->cacheKeys['transactions_list'] . $adminId);
+        Cache::forget($this->cacheKeys['transactions_list'] . $adminId . '_' . $this->selectedAccount);
+
+        session()->flash('message', $message);
+        
         $this->updateTransactions();
         $this->updateCustomerCurrencyBalance();
         $this->resetForm();
+        
+        return $transaction;
     }
 
     public function submitAndPrint()
     {
-        $this->selectedAccount = (int) $this->selectedAccount;
-        $this->amount = str_replace(',', '', $this->amount);
-        $user = Auth::guard('sarafi')->user();
-
-        $this->validate([
-            'selectedAccount'  => 'required|exists:sarafi.customers,id',
-            'byUser'           => 'nullable|string|max:255',
-            'currency'         => 'required|string',
-            'amount'           => 'required|numeric|min:1',
-            'transactionType'  => 'required|string',
-            'accountType'      => 'required|string',
-            'date'             => 'required|date',
-            'description'      => 'nullable|string|max:500',
-            'zone'             => 'required|string',
-            'file'             => 'nullable|file|max:10240',
-        ]);
-
-        $filePath = $this->file ? $this->file->store('transactions', 'public') : null;
-        $adminId = $user->admin_id ?? $user->id;
-
-        $data = [
-            'customer_id'      => $this->selectedAccount,
-            'user_id'          => $user->id,
-            'admin_id'         => $adminId,
-            'currency'         => $this->currency,
-            'amount'           => $this->amount,
-            'type'             => $this->transactionType,
-            'account_type'     => $this->accountType,
-            'date'             => $this->date,
-            'description'      => $this->description,
-            'zone'             => $this->zone,
-            'transaction_file' => $filePath,
-            'by'               => $this->byUser,
-        ];
-
-        if ($this->transactionId) {
-            $old = Transaction::findOrFail($this->transactionId);
-
-            $this->applyCurrencyChange($user, $old->currency, $old->amount, $old->type, $old->account_type, true);
-
-            $old->update($data);
-
-            $this->applyCurrencyChange($user, $this->currency, $this->amount, $this->transactionType, $this->accountType);
-
-            $transaction = $old;
-
-            session()->flash('message', 'تراکنش با موفقیت بروزرسانی شد.');
-        } else {
-            $transaction = Transaction::create($data);
-
-            $this->applyCurrencyChange($user, $this->currency, $this->amount, $this->transactionType, $this->accountType);
-
-            session()->flash('message', 'تراکنش با موفقیت ثبت شد.');
+        $transaction = $this->submitTransaction();
+        
+        if (!$transaction) {
+            return;
         }
-
-        $this->updateTransactions();
-        $this->updateCustomerCurrencyBalance();
-        $this->resetForm();
 
         $html = view('pdf.Sarafi.transaction', ['transaction' => $transaction])->render();
 
@@ -779,7 +712,6 @@ class Transactions extends Component
         ]);
 
         $mpdf->SetAutoPageBreak(false);
-
         $mpdf->WriteHTML($html);
 
         $fileName = 'ترانزکشن_شماره_' . $transaction->id . '_به_اسم_' . $transaction->customer->fullname . '.pdf';
@@ -789,7 +721,6 @@ class Transactions extends Component
         }, $fileName);
     }
 
-    
     public function print($transactionId)
     {
         $transaction = Transaction::with(['customer', 'user'])->findOrFail($transactionId);
@@ -820,13 +751,10 @@ class Transactions extends Component
         $fileName = 'transaction_' . $transaction->id . '.pdf';
         $path = storage_path('app/public/' . $fileName);
 
-        // ذخیره PDF
         $mpdf->Output($path, 'F');
 
-        // ارسال event به JS (Livewire v3)
         $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
     }
-
 
     private function applyCurrencyChange($user, $currency, $amount, $transactionType, $accountType, $reverse = false)
     {
@@ -855,8 +783,9 @@ class Transactions extends Component
                 ]
             );
 
-            $safe->$currency += $change;
+            $safe->increment($currency, $change);
             if ($safe->$currency < 0) {
+                $safe->$currency = 0;
             }
             $safe->save();
         } else {
@@ -879,14 +808,13 @@ class Transactions extends Component
                 ]
             );
 
-            $bankAccount->$currency += $change;
+            $bankAccount->increment($currency, $change);
             if ($bankAccount->$currency < 0) {
                 $bankAccount->$currency = 0;
             }
             $bankAccount->save();
         }
     }
-
 
     public function showReport()
     {
@@ -917,5 +845,11 @@ class Transactions extends Component
         $this->transactionType = 'برد';
         $this->accountType = 'نقدی';
         $this->zone = Auth::guard('sarafi')->user()->zone;
+    }
+
+    public function cancel()
+    {
+        $this->resetForm();
+        $this->dispatch('close-modal');
     }
 }
