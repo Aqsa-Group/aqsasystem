@@ -464,6 +464,17 @@ class Remittance extends Component
 
     public function submitRemittance()
     {
+
+
+        if ($this->remittanceId) {
+            $remittance = Remittances::find($this->remittanceId);
+
+            if ($remittance && $remittance->state == 1) {
+                session()->flash('error', 'حواله تایید شده و قابل ویرایش نیست.');
+                return;
+            }
+        }
+
         $this->amount = str_replace(',', '', $this->amount);
         $this->source_account = $this->source_account_last_four . ' - xxxx - xxxx - xxxx';
 
@@ -520,10 +531,10 @@ class Remittance extends Component
                 }
 
                 $remittance->update($data);
-                
+
                 // **اینجا مهم است: به‌روزرسانی رکورد در RemittanceApproval**
                 $this->updateOrCreateRemittanceApproval($remittance);
-                
+
                 session()->flash('message', 'حواله با موفقیت بروزرسانی شد.');
             } else {
                 $remittance = Remittances::create($data);
@@ -532,10 +543,9 @@ class Remittance extends Component
             }
 
             DB::commit();
-            
+
             $this->updateRemittances();
             $this->resetForm();
-            
         } catch (\Exception $e) {
             DB::rollBack();
             session()->flash('error', 'خطا در ثبت حواله: ' . $e->getMessage());
@@ -574,7 +584,7 @@ class Remittance extends Component
 
         // بررسی وجود رکورد قبلی
         $existingApproval = RemittanceApproval::where('remittance_id', $remittance->id)->first();
-        
+
         if ($existingApproval) {
             // اگر رکورد وجود دارد، به‌روزرسانی کن
             $existingApproval->update($approvalData);
@@ -614,13 +624,16 @@ class Remittance extends Component
     public function edit($id)
     {
         $remittance = Remittances::with(['customer', 'recipient'])->findOrFail($id);
-
+        if ($remittance->state == 1) {
+            session()->flash('error', 'این حواله تایید شده و قابل ویرایش نیست.');
+            return;
+        }
         $this->remittanceId = $id;
         $this->selectedAccount = $remittance->customer_id;
         $this->toAccount = $remittance->to_account;
         $this->source_account = $remittance->source_account;
 
-        $this->source_account_last_four = substr($remittance->source_account, 0, 4);
+        $this->source_account_last_four = explode(' ', $remittance->source_account)[0];
 
         $this->currency = $remittance->currency;
         $this->amount = $remittance->amount;
