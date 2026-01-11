@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('withdraw', function (Blueprint $table) {
             $table->id();
+               $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('admin_id')->nullable();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('SET NULL');
+            $table->foreign('admin_id')->references('id')->on('users')->onDelete('SET NULL');
+
             $table->unsignedBigInteger('staff_id');
             $table->string('expanses_type');
             $table->string('amount');

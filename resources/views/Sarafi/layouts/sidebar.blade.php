@@ -2533,6 +2533,93 @@
 
 
 
+                    <div>
+                        <button @click="openItems.finance = !openItems.finance; active = 'finance'"
+                            :class="(active === 'finance' || active === 'edit-finance') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
+                            <span class="flex items-center gap-2">
+                                <img src="{{ asset('assets/sarafi/all_icon/edit.svg') }}" class="w-5 h-5 dark:hidden"
+                                    :class="(active === 'changersdeal' || active === 'edit-accounts') ? 'filter invert brightness-0' : 'text-gray-500 dark:text-white'">
+
+                                <svg width="26" height="24" class="hidden dark:block" viewBox="0 0 26 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M11.9141 2H9.7474C4.33073 2 2.16406 4 2.16406 9V15C2.16406 20 4.33073 22 9.7474 22H16.2474C21.6641 22 23.8307 20 23.8307 15V13"
+                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path
+                                        d="M17.3731 3.02001L8.83645 10.9C8.51145 11.2 8.18645 11.79 8.12145 12.22L7.65562 15.23C7.48228 16.32 8.31645 17.08 9.49728 16.93L12.7581 16.5C13.2131 16.44 13.8523 16.14 14.1881 15.84L22.7248 7.96001C24.1981 6.60001 24.8914 5.02001 22.7248 3.02001C20.5581 1.02001 18.8465 1.66001 17.3731 3.02001Z"
+                                        stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M16.1562 4.1499C16.8821 6.5399 18.9079 8.4099 21.5079 9.0899"
+                                        stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+
+                                بخش مالی 
+                            </span>
+                            <svg :class="[openItems.finance ? 'rotate-180' : '', (active === 'finance' || active === 'edit-finance') ? 'text-white' : 'text-gray-500']"
+                                class="w-4 h-4 transition-transform dark:text-white" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                       
+                        <div x-show="openItems.finance" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="{{ route('sarafi.staff') }}"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="setActive('edit-accounts', 'finance')"
+                                :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
+                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M10.5898 13.3398H14.8298V9.09985" stroke="#292D32" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M14.8299 13.3399L9.16992 7.67993" stroke="#292D32" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51" stroke="#292D32"
+                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                 ثبت کارمندان
+                            </a>
+                        </div>
+
+
+                           <div x-show="openItems.finance" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="{{ route('sarafi.withdraw') }}"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="setActive('edit-accounts', 'finance')"
+                                :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
+                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M10.5898 13.3398H14.8298V9.09985" stroke="#292D32" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M14.8299 13.3399L9.16992 7.67993" stroke="#292D32" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51" stroke="#292D32"
+                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                 برداشت ها
+                            </a>
+                        </div>
+
+
+                      
+
+
+                    </div>
+
+
+
+
 
                     <!-- مدیریت و دسترسی -->
                     <div>

@@ -3,6 +3,7 @@
 namespace App\Models\Sarafi;
 
 use App\Livewire\Sarafi\ConversionInAccount;
+use App\Livewire\Sarafi\Withdraw;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Sarafi\User;
@@ -33,6 +34,8 @@ class Journals extends Model
         'buysell_id',
         'withdrawbank_id',
         'changerdeals_id',
+        'withdraw_id',
+
 
         // اطلاعات مالی
         'currency',
@@ -115,6 +118,12 @@ class Journals extends Model
     {
         return $this->belongsTo(ChangerDeal::class);
     }
+
+      public function withdraw()
+    {
+        return $this->belongsTo(Withdraws::class);
+    }
+
 
     /* =======================
      | Scopes

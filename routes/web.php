@@ -389,6 +389,39 @@ Route::get('/sarafi/daily-journal', function () {
 
 
 
+Route::get('/sarafi/staff', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.staff');
+})->name('sarafi.staff');
+
+
+Route::get('/sarafi/withdraw', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.withdraw');
+})->name('sarafi.withdraw');
+
+
+
+
+Route::get('/sarafi/withdrawreports', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.withdraw-reports');
+})->name('sarafi.withdraw-reports');
+
+
+
+
+
+
+
+
+
 
 
 

@@ -529,20 +529,28 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                         <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-40">
                                             <div class="whitespace-nowrap">
 
-                                                <div class="font-medium">
-                                                    <!--[if BLOCK]><![endif]--><?php if(empty($transaction->customer_id) && $transaction->is_sell_table
-                                                    == 1): ?>
-                                                    معامله از صندوق
-                                                    <?php else: ?>
-                                                    <?php echo e($transaction->customer->fullname ?? 'نامشخص'); ?>
+                                              <div class="font-medium">
+    <!--[if BLOCK]><![endif]--><?php if(
+        empty($transaction->customer_id)
+        && !empty($transaction->withdraw_id)
+    ): ?>
+        برداشت
+    <?php elseif(
+        empty($transaction->customer_id)
+        && $transaction->is_sell_table == 1
+    ): ?>
+        معامله از صندوق
+    <?php else: ?>
+        <?php echo e($transaction->customer->fullname ?? 'نامشخص'); ?>
 
-                                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                                                </div>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+</div>
+
 
                                                 <div class="text-gray-500 dark:text-white text-sm mt-1">
                                                     <!--[if BLOCK]><![endif]--><?php if(empty($transaction->customer_id) && $transaction->is_sell_table
                                                     == 1): ?>
-                                                    
+
                                                     <?php else: ?>
                                                     <?php echo e($transaction->customer->account_number ?? '-'); ?>
 

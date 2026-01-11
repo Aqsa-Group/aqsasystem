@@ -55,29 +55,29 @@ class CashExchange extends Model
 
     /* ================= BOOT ================= */
 
-    protected static function booted()
-    {
-        /** ---------- CREATED ---------- */
-        static::created(function ($model) {
-            self::syncJournals($model);
-        });
+        protected static function booted()
+        {
+            /** ---------- CREATED ---------- */
+            static::created(function ($model) {
+                self::syncJournals($model);
+            });
 
-        /** ---------- UPDATING ---------- */
-        static::updating(function ($model) {
-            // حذف ژورنال‌های قبلی
-            Journals::where('buysell_id', $model->id)->delete();
-        });
+            /** ---------- UPDATING ---------- */
+            static::updating(function ($model) {
+                // حذف ژورنال‌های قبلی
+                Journals::where('buysell_id', $model->id)->delete();
+            });
 
-        /** ---------- UPDATED ---------- */
-        static::updated(function ($model) {
-            self::syncJournals($model);
-        });
+            /** ---------- UPDATED ---------- */
+            static::updated(function ($model) {
+                self::syncJournals($model);
+            });
 
-        /** ---------- DELETING ---------- */
-        static::deleting(function ($model) {
-            Journals::where('buysell_id', $model->id)->delete();
-        });
-    }
+            /** ---------- DELETING ---------- */
+            static::deleting(function ($model) {
+                Journals::where('buysell_id', $model->id)->delete();
+            });
+        }
 
 
       private static function syncJournals(self $model): void
