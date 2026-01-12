@@ -30,7 +30,7 @@ class Withdraw extends Component
 
     // Withdraw Form fields
     public $selectedStaff = null;
-    public $staff_id, $expanses_type, $amount, $currency = 'AFN';
+    public $staff_id, $expanses_type, $amount, $currency = 'afn';
     public $date, $description, $file;
     public $searchStaff = '';
 
@@ -55,15 +55,15 @@ class Withdraw extends Component
 
     // Currencies
     public $currencies = [
-        ['code' => 'AFN', 'name_fa' => 'افغانی'],
-        ['code' => 'USD', 'name_fa' => 'دالر'],
-        ['code' => 'IRR', 'name_fa' => 'تومان'],
-        ['code' => 'EUR', 'name_fa' => 'یورو'],
-        ['code' => 'PKR', 'name_fa' => 'کلدار'],
-        ['code' => 'AED', 'name_fa' => 'درهم'],
-        ['code' => 'TRY', 'name_fa' => 'لیره'],
-        ['code' => 'CNY', 'name_fa' => 'یوان'],
-        ['code' => 'INR', 'name_fa' => 'روپیه'],
+        ['code' => 'afn', 'name_fa' => 'افغانی'],
+        ['code' => 'usd', 'name_fa' => 'دالر'],
+        ['code' => 'irr', 'name_fa' => 'تومان'],
+        ['code' => 'eur', 'name_fa' => 'یورو'],
+        ['code' => 'pkr', 'name_fa' => 'کلدار'],
+        ['code' => 'aed', 'name_fa' => 'درهم'],
+        ['code' => 'try', 'name_fa' => 'لیره'],
+        ['code' => 'cny', 'name_fa' => 'یوان'],
+        ['code' => 'inr', 'name_fa' => 'روپیه'],
     ];
 
     // Validation rules
@@ -136,7 +136,7 @@ class Withdraw extends Component
         $todayJalali = Jalalian::now();
         $this->date = $todayJalali->format('Y/m/d');
         $this->expanses_type = 'salary';
-        $this->currency = 'AFN';
+        $this->currency = 'afn';
     }
 
     // Select staff

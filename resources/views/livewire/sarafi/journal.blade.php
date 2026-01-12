@@ -583,7 +583,7 @@
                                             <td class="px-4 py-4">
                                                 {{ $transaction->currency_fa }}
                                             </td>
-                                            <td class="px-4 py-4">
+                                            <td class="px-4 py-4 " dir="ltr">
                                                 {{ number_format($transaction->balance, 2) }}
                                             </td>
                                             <td class="px-4 py-4">
@@ -673,6 +673,43 @@
                 </div>
             </div>
         </div>
+
+         <div  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;" class="bg-[#F5F5F5] dark:bg-black dark:border dark:border-white p-4 rounded-[12px] mx-auto mt-10">
+        <!-- جدول موجودی هر ارز به صورت جداگانه -->
+        <div class="mt-8" >
+            <h3 class="text-xl font-bold mb-4 text-center dark:text-white ">موجودی  صندوق نقدی و بانکی</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                @foreach($totalBalanceByCurrency as $currencyCode => $totalAmount)
+                    @if($totalAmount > 0)
+                        @php
+                            $safe = $currencySafeBalance[$currencyCode] ?? 0;
+                            $bank = $bankAccountBalance[$currencyCode] ?? 0;
+                            $currencyName = $currencies[$currencyCode] ?? $currencyCode;
+                        @endphp
+                        <div    style="box-shadow: 0px 4px 4px 0px #00000040;" class="bg-gradient-to-br from-white/40 to-white dark:from-gray-800 dark:to-gray-900 
+                                    p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold text-lg dark:text-white">{{ $currencyName }}</span>
+                                <span class="text-xl font-bold text-black" dir="ltr">
+                                    {{ number_format($totalAmount, 2) }}
+                                </span>
+                            </div>
+                            <div class="text-sm text-black dark:text-gray-300">
+                                <div class="flex justify-between">
+                                    <span>نقدی:</span>
+                                    <span dir="ltr">{{ number_format($safe, 2) }}</span>
+                                </div>
+                                <div class="flex justify-between mt-1">
+                                    <span>بانکی:</span>
+                                    <span dir="ltr">{{ number_format($bank, 2) }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
+            </div>
+        </div>
+      </div>
     </div>
 
     <script>

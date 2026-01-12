@@ -416,6 +416,17 @@ Route::get('/sarafi/withdrawreports', function () {
 
 
 
+Route::get('/sarafi/salary', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.salary');
+})->name('sarafi.salary');
+
+
+
+
+
 
 
 

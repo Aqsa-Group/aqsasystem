@@ -5,6 +5,8 @@ namespace App\Livewire\Sarafi;
 use Livewire\Component;
 use App\Models\Sarafi\Journals;
 use App\Models\Sarafi\Customer;
+use App\Models\Sarafi\CurrencySafe;
+use App\Models\Sarafi\BankAccount;
 use Livewire\WithPagination;
 use Mpdf\Mpdf;
 use Mpdf\Config\ConfigVariables;
@@ -28,16 +30,64 @@ class Journal extends Component
     public $perPage = 10000;
     public $currencies = [];
 
+    // موجودی‌ها
+    public $currencySafeBalance = [];
+    public $bankAccountBalance = [];
+    public $totalBalanceByCurrency = [];
+
     protected $paginationTheme = 'bootstrap';
 
     public function mount()
     {
         // تنظیم تاریخ امروز به صورت شمسی
         $todayJalali = Jalalian::now();
-        $this->fromDate = $todayJalali->format('Y-m-d'); // فرمت مشابه دیتابیس
-        $this->toDate = $todayJalali->format('Y-m-d');   // فرمت مشابه دیتابیس
-        $this->currencies = config('currencies');
+        $this->fromDate = $todayJalali->format('Y-m-d');
+        $this->toDate = $todayJalali->format('Y-m-d');
+        
+        // تعریف ارزها با کد و نام فارسی
+        $this->currencies = [
+            'afn' => 'افغانی',
+            'usd' => 'دالر',
+            'eur' => 'یورو',
+            'irr' => 'تومان',
+            'aed' => 'درهم',
+            'try' => 'لیره',
+            'cny' => 'یوان',
+            'pkr' => 'کلدار',
+            'gbp' => 'پوند',
+            'jpy' => 'ین',
+            'sar' => 'ریال',
+            'inr' => 'روپیه',
+        ];
+        
+        // محاسبه موجودی‌ها
+        $this->calculateBalances();
+    }
 
+    // محاسبه موجودی‌های صندوق و حساب بانکی به تفکیک ارز
+    public function calculateBalances()
+    {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        // موجودی صندوق
+        $currencySafe = CurrencySafe::where('admin_id', $adminId)->first();
+        $bankAccount = BankAccount::where('admin_id', $adminId)->first();
+
+        // مقداردهی اولیه
+        $this->currencySafeBalance = [];
+        $this->bankAccountBalance = [];
+        $this->totalBalanceByCurrency = [];
+
+        foreach ($this->currencies as $code => $name) {
+            $safeBalance = $currencySafe ? ($currencySafe->{$code} ?? 0) : 0;
+            $bankBalance = $bankAccount ? ($bankAccount->{$code} ?? 0) : 0;
+            $total = $safeBalance + $bankBalance;
+
+            $this->currencySafeBalance[$code] = $safeBalance;
+            $this->bankAccountBalance[$code] = $bankBalance;
+            $this->totalBalanceByCurrency[$code] = $total;
+        }
     }
 
     public function render()
@@ -45,13 +95,18 @@ class Journal extends Component
         $transactions = $this->getFilteredTransactions()->paginate($this->perPage);
         $summary = $this->getSummaryData()->get();
         $customers = Customer::select('id', 'fullname', 'account_number', 'phone')->orderBy('fullname')->get();
-        $currencies = Journals::select('currency')->distinct()->orderBy('currency')->pluck('currency');
+        
+        // محاسبه موجودی‌ها
+        $this->calculateBalances();
 
         return view('livewire.sarafi.journal', [
             'transactions' => $transactions,
             'summary' => $summary,
             'customers' => $customers,
-            'currencies' => $currencies,
+            'currencies' => $this->currencies,
+            'currencySafeBalance' => $this->currencySafeBalance,
+            'bankAccountBalance' => $this->bankAccountBalance,
+            'totalBalanceByCurrency' => $this->totalBalanceByCurrency,
         ]);
     }
 
@@ -125,12 +180,19 @@ class Journal extends Component
             </table>
         ');
 
+        // محاسبه موجودی‌ها برای PDF
+        $this->calculateBalances();
+
         // داده‌های ارسالی به view
         $data = [
             'transactions' => $transactions,
             'summary' => $summary,
             'customerName' => $customerName,
             'customerAccount' => $customerAccount,
+            'currencies' => $this->currencies,
+            'currencySafeBalance' => $this->currencySafeBalance,
+            'bankAccountBalance' => $this->bankAccountBalance,
+            'totalBalanceByCurrency' => $this->totalBalanceByCurrency,
             'filters' => [
                 'transactionType' => $this->transactionType,
                 'accountType' => $this->accountType,
@@ -266,7 +328,6 @@ class Journal extends Component
     public function updated()
     {
         $this->resetPage();
+        $this->calculateBalances();
     }
-
-    
 }

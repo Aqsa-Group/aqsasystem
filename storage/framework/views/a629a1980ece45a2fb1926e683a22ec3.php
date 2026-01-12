@@ -29,7 +29,8 @@
                         <!-- ریست فیلترها -->
                         <div>
                             <label class="block text-[16px] font-medium invisible mb-1">ریست</label>
-                            <button wire:click="resetFilters" wire:loading.attr="disabled" class="w-full h-[60px] flex items-center justify-center gap-2
+                            <button wire:click="resetFilters" wire:loading.attr="disabled"
+                                class="w-full h-[60px] flex items-center justify-center gap-2
                                    bg-gray-500 text-white rounded-xl
                                    hover:bg-gray-600 transition">
                                 <span wire:loading.remove>ریست فیلترها</span>
@@ -40,7 +41,8 @@
                         <!-- نوع ترانزکشن -->
                         <div>
                             <label class="block text-[16px] font-medium mb-1 dark:text-white">نوع تراکنش</label>
-                            <select wire:model.live="transactionType" class="w-full h-[60px] appearance-none border dark:bg-black dark:border-white
+                            <select wire:model.live="transactionType"
+                                class="w-full h-[60px] appearance-none border dark:bg-black dark:border-white
                                    border-[#8C8C8C] rounded-xl px-4 text-sm">
                                 <option value="">همه</option>
                                 <option value="رسید">رسید</option>
@@ -51,7 +53,8 @@
                         <!-- نوع حساب -->
                         <div>
                             <label class="block text-[16px] font-medium mb-1 dark:text-white">نوع حساب</label>
-                            <select wire:model.live="accountType" class="w-full h-[60px] appearance-none border dark:bg-black dark:border-white
+                            <select wire:model.live="accountType"
+                                class="w-full h-[60px] appearance-none border dark:bg-black dark:border-white
                                    border-[#8C8C8C] rounded-xl px-4 text-sm">
                                 <option value="">همه</option>
                                 <option value="نقدی">نقدی</option>
@@ -62,11 +65,12 @@
                         <!-- ارز -->
                         <div>
                             <label class="block text-[16px] font-medium mb-1 dark:text-white">ارز</label>
-                            <select wire:model.live="currency" class="w-full h-[60px] appearance-none border dark:bg-black dark:border-white
+                            <select wire:model.live="currency"
+                                class="w-full h-[60px] appearance-none border dark:bg-black dark:border-white
                                    border-[#8C8C8C] rounded-xl px-4 text-sm">
                                 <option value="">همه ارزها</option>
                                 <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <option value="<?php echo e($code); ?>"><?php echo e($name); ?></option>
+                                    <option value="<?php echo e($code); ?>"><?php echo e($name); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
 
                             </select>
@@ -164,11 +168,15 @@
                                                 <!-- Month Selector -->
                                                 <div x-show="showMonthSelector" x-transition>
                                                     <div class="grid grid-cols-3 gap-2 mb-4">
-                                                        <template x-for="(month, index) in monthsAfghan" :key="index">
-                                                            <button @click="selectMonth(index)" :class="{
-                                                                'bg-blue-500 text-white': currentMonth === index,
-                                                                'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentMonth !== index
-                                                            }" class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                                                        <template x-for="(month, index) in monthsAfghan"
+                                                            :key="index">
+                                                            <button @click="selectMonth(index)"
+                                                                :class="{
+                                                                    'bg-blue-500 text-white': currentMonth === index,
+                                                                    'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentMonth !==
+                                                                        index
+                                                                }"
+                                                                class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
                                                                 type="button">
                                                                 <span x-text="month"></span>
                                                             </button>
@@ -201,11 +209,15 @@
                                                         </button>
                                                     </div>
                                                     <div class="grid grid-cols-4 gap-2 mb-4">
-                                                        <template x-for="year in yearRange.years" :key="year">
-                                                            <button @click="selectYear(year)" :class="{
-                                                                'bg-blue-500 text-white': currentYear === year,
-                                                                'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentYear !== year
-                                                            }" class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                                                        <template x-for="year in yearRange.years"
+                                                            :key="year">
+                                                            <button @click="selectYear(year)"
+                                                                :class="{
+                                                                    'bg-blue-500 text-white': currentYear === year,
+                                                                    'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentYear !==
+                                                                        year
+                                                                }"
+                                                                class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
                                                                 type="button">
                                                                 <span x-text="year"></span>
                                                             </button>
@@ -228,13 +240,20 @@
                                                     <!-- Days Grid -->
                                                     <div class="grid grid-cols-7 gap-1">
                                                         <template x-for="day in calendarDays" :key="day.key">
-                                                            <button @click="selectDate(day.day)" :class="{
-                                                                'bg-blue-500 text-white hover:bg-blue-600': day.isSelected,
-                                                                'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300': day.isToday && !day.isSelected,
-                                                                'text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700': !day.isToday && !day.isSelected && !day.isOtherMonth,
-                                                                'text-gray-400 dark:text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800': day.isOtherMonth,
-                                                                'cursor-not-allowed opacity-50': day.isDisabled
-                                                            }" class="w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors"
+                                                            <button @click="selectDate(day.day)"
+                                                                :class="{
+                                                                    'bg-blue-500 text-white hover:bg-blue-600': day
+                                                                        .isSelected,
+                                                                    'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300': day
+                                                                        .isToday && !day.isSelected,
+                                                                    'text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700':
+                                                                        !day.isToday && !day.isSelected && !day
+                                                                        .isOtherMonth,
+                                                                    'text-gray-400 dark:text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800': day
+                                                                        .isOtherMonth,
+                                                                    'cursor-not-allowed opacity-50': day.isDisabled
+                                                                }"
+                                                                class="w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors"
                                                                 :disabled="day.isDisabled" type="button">
                                                                 <span x-text="day.day"></span>
                                                             </button>
@@ -275,7 +294,7 @@ $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                                    <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -288,8 +307,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <div class="lg:col-span-3 relative" x-data="toDatePicker()" x-init="init()">
                                 <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تا
                                     تاریخ</label>
-                                <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
-                                    placeholder="YYYY/MM/DD"
+                                <input type="text" x-ref="dateInput" x-model="displayDate"
+                                    @click="togglePicker()" placeholder="YYYY/MM/DD"
                                     class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 cursor-pointer"
                                     readonly />
 
@@ -375,11 +394,15 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                                 <!-- Month Selector -->
                                                 <div x-show="showMonthSelector" x-transition>
                                                     <div class="grid grid-cols-3 gap-2 mb-4">
-                                                        <template x-for="(month, index) in monthsAfghan" :key="index">
-                                                            <button @click="selectMonth(index)" :class="{
-                                                                'bg-blue-500 text-white': currentMonth === index,
-                                                                'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentMonth !== index
-                                                            }" class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                                                        <template x-for="(month, index) in monthsAfghan"
+                                                            :key="index">
+                                                            <button @click="selectMonth(index)"
+                                                                :class="{
+                                                                    'bg-blue-500 text-white': currentMonth === index,
+                                                                    'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentMonth !==
+                                                                        index
+                                                                }"
+                                                                class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
                                                                 type="button">
                                                                 <span x-text="month"></span>
                                                             </button>
@@ -412,11 +435,15 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                                         </button>
                                                     </div>
                                                     <div class="grid grid-cols-4 gap-2 mb-4">
-                                                        <template x-for="year in yearRange.years" :key="year">
-                                                            <button @click="selectYear(year)" :class="{
-                                                                'bg-blue-500 text-white': currentYear === year,
-                                                                'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentYear !== year
-                                                            }" class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                                                        <template x-for="year in yearRange.years"
+                                                            :key="year">
+                                                            <button @click="selectYear(year)"
+                                                                :class="{
+                                                                    'bg-blue-500 text-white': currentYear === year,
+                                                                    'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentYear !==
+                                                                        year
+                                                                }"
+                                                                class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
                                                                 type="button">
                                                                 <span x-text="year"></span>
                                                             </button>
@@ -428,7 +455,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                                 <div x-show="!showMonthSelector && !showYearSelector" x-transition>
                                                     <!-- Week Days -->
                                                     <div class="grid grid-cols-7 gap-1 mb-2">
-                                                        <template x-for="day in weekDaysAfghan" :key="day">
+                                                        <template x-for="day in weekDaysAfghan"
+                                                            :key="day">
                                                             <div
                                                                 class="text-center text-sm font-medium text-gray-500 dark:text-gray-400 py-1">
                                                                 <span x-text="day"></span>
@@ -439,13 +467,20 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                                     <!-- Days Grid -->
                                                     <div class="grid grid-cols-7 gap-1">
                                                         <template x-for="day in calendarDays" :key="day.key">
-                                                            <button @click="selectDate(day.day)" :class="{
-                                                                'bg-blue-500 text-white hover:bg-blue-600': day.isSelected,
-                                                                'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300': day.isToday && !day.isSelected,
-                                                                'text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700': !day.isToday && !day.isSelected && !day.isOtherMonth,
-                                                                'text-gray-400 dark:text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800': day.isOtherMonth,
-                                                                'cursor-not-allowed opacity-50': day.isDisabled
-                                                            }" class="w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors"
+                                                            <button @click="selectDate(day.day)"
+                                                                :class="{
+                                                                    'bg-blue-500 text-white hover:bg-blue-600': day
+                                                                        .isSelected,
+                                                                    'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300': day
+                                                                        .isToday && !day.isSelected,
+                                                                    'text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700':
+                                                                        !day.isToday && !day.isSelected && !day
+                                                                        .isOtherMonth,
+                                                                    'text-gray-400 dark:text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800': day
+                                                                        .isOtherMonth,
+                                                                    'cursor-not-allowed opacity-50': day.isDisabled
+                                                                }"
+                                                                class="w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors"
                                                                 :disabled="day.isDisabled" type="button">
                                                                 <span x-text="day.day"></span>
                                                             </button>
@@ -486,7 +521,7 @@ $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                                    <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -520,92 +555,85 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 </thead>
                                 <tbody>
                                     <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $transactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $transaction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                                    <tr
-                                        class="border-b dark:bg-black dark:text-white dark:border-white hover:bg-gray-50">
-                                        <td class="px-4 py-4">
-                                            <?php echo e($transactions->firstItem() + $index); ?>
+                                        <tr
+                                            class="border-b dark:bg-black dark:text-white dark:border-white hover:bg-gray-50">
+                                            <td class="px-4 py-4">
+                                                <?php echo e($transactions->firstItem() + $index); ?>
 
-                                        </td>
-                                        <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-40">
-                                            <div class="whitespace-nowrap">
+                                            </td>
+                                            <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-40">
+                                                <div class="whitespace-nowrap">
 
-                                              <div class="font-medium">
-    <!--[if BLOCK]><![endif]--><?php if(
-        empty($transaction->customer_id)
-        && !empty($transaction->withdraw_id)
-    ): ?>
-        برداشت
-    <?php elseif(
-        empty($transaction->customer_id)
-        && $transaction->is_sell_table == 1
-    ): ?>
-        معامله از صندوق
-    <?php else: ?>
-        <?php echo e($transaction->customer->fullname ?? 'نامشخص'); ?>
+                                                    <div class="font-medium">
+                                                        <!--[if BLOCK]><![endif]--><?php if(empty($transaction->customer_id) && !empty($transaction->withdraw_id)): ?>
+                                                            برداشت
+                                                        <?php elseif(empty($transaction->customer_id) && $transaction->is_sell_table == 1): ?>
+                                                            معامله از صندوق
+                                                        <?php else: ?>
+                                                            <?php echo e($transaction->customer->fullname ?? 'نامشخص'); ?>
 
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-</div>
+                                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                                    </div>
 
 
-                                                <div class="text-gray-500 dark:text-white text-sm mt-1">
-                                                    <!--[if BLOCK]><![endif]--><?php if(empty($transaction->customer_id) && $transaction->is_sell_table
-                                                    == 1): ?>
+                                                    <div class="text-gray-500 dark:text-white text-sm mt-1">
+                                                        <?php if(empty($transaction->customer_id) && $transaction->is_sell_table == 1): ?>
+                                                        <?php else: ?>
+                                                            <?php echo e($transaction->customer->account_number ?? '-'); ?>
 
-                                                    <?php else: ?>
-                                                    <?php echo e($transaction->customer->account_number ?? '-'); ?>
-
-                                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                                                </div>
-
-                                            </div>
-                                        </td>
-
-                                        <td class="px-4 py-4">
-                                            <?php echo e($transaction->type); ?>
-
-                                        </td>
-                                        <td class="px-4 py-4">
-                                            <?php echo e($transaction->account_type); ?>
-
-                                        </td>
-                                        <td
-                                            class="px-4 py-4 <?php echo e($transaction->type == 'رسید' ? 'text-green-600' : 'text-red-600'); ?>">
-                                            <?php echo e(number_format($transaction->amount, 2)); ?>
-
-                                        </td>
-                                        <td class="px-4 py-4">
-                                            <?php echo e($transaction->currency_fa); ?>
-
-                                        </td>
-                                        <td class="px-4 py-4">
-                                            <?php echo e(number_format($transaction->balance, 2)); ?>
-
-                                        </td>
-                                        <td class="px-4 py-4">
-                                            <?php echo e($transaction->description); ?>
-
-                                        </td>
-                                        <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-40">
-                                            <div class="whitespace-nowrap">
-                                                <div class="font-medium">
-
-                                                    <?php echo e(explode(' ', $transaction->date)[0]); ?>
-
+                                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                                    </div>
 
                                                 </div>
-                                                <div class="text-gray-500 dark:text-white text-sm mt-1">
-                                                    <?php echo e(\Carbon\Carbon::parse($transaction->created_at)->format('h:i A')); ?>
+                                            </td>
 
+                                            <td class="px-4 py-4">
+                                                <?php echo e($transaction->type); ?>
+
+                                            </td>
+                                            <td class="px-4 py-4">
+                                                <?php echo e($transaction->account_type); ?>
+
+                                            </td>
+                                            <td
+                                                class="px-4 py-4 <?php echo e($transaction->type == 'رسید' ? 'text-green-600' : 'text-red-600'); ?>">
+                                                <?php echo e(number_format($transaction->amount, 2)); ?>
+
+                                            </td>
+                                            <td class="px-4 py-4">
+                                                <?php echo e($transaction->currency_fa); ?>
+
+                                            </td>
+                                            <td class="px-4 py-4 " dir="ltr">
+                                                <?php echo e(number_format($transaction->balance, 2)); ?>
+
+                                            </td>
+                                            <td class="px-4 py-4">
+                                                <?php echo e($transaction->description); ?>
+
+                                            </td>
+                                            <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-40">
+                                                <div class="whitespace-nowrap">
+                                                    <div class="font-medium">
+
+                                                        <?php echo e(explode(' ', $transaction->date)[0]); ?>
+
+
+                                                    </div>
+                                                    <div class="text-gray-500 dark:text-white text-sm mt-1">
+                                                        <?php echo e(\Carbon\Carbon::parse($transaction->created_at)->format('h:i A')); ?>
+
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                                    <tr>
-                                        <td colspan="9" class="px-4 py-4 text-center text-gray-500 dark:text-gray-300">
-                                            هیچ تراکنشی یافت نشد
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td colspan="9"
+                                                class="px-4 py-4 text-center text-gray-500 dark:text-gray-300">
+                                                هیچ تراکنشی یافت نشد
+                                            </td>
+                                        </tr>
                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </tbody>
                             </table>
@@ -638,453 +666,515 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                         <tbody>
                             <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $summary; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                            <tr class="border-b dark:border-white hover:bg-gray-100 dark:hover:bg-gray-800">
-                                <td class="px-4 py-4"><?php echo e($index + 1); ?></td>
-                                <td class="px-4 py-4 font-bold"><?php echo e($item->currency_fa); ?></td>
-                                <td class="px-4 py-4 text-green-600"><?php echo e(number_format($item->receipt_cash, 2)); ?></td>
-                                <td class="px-4 py-4 text-red-600"><?php echo e(number_format($item->withdrawal_cash, 2)); ?></td>
-                                <td class="px-4 py-4 text-green-600"><?php echo e(number_format($item->receipt_bank, 2)); ?></td>
-                                <td class="px-4 py-4 text-red-600"><?php echo e(number_format($item->withdrawal_bank, 2)); ?></td>
-                                <td class="px-4 py-4 font-bold <?php echo e($item->balance_cash >= 0 ? 'text-green-600' : 'text-red-600'); ?>"
-                                    dir="ltr">
-                                    <?php echo e(number_format($item->balance_cash, 2)); ?>
+                                <tr class="border-b dark:border-white hover:bg-gray-100 dark:hover:bg-gray-800">
+                                    <td class="px-4 py-4"><?php echo e($index + 1); ?></td>
+                                    <td class="px-4 py-4 font-bold"><?php echo e($item->currency_fa); ?></td>
+                                    <td class="px-4 py-4 text-green-600"><?php echo e(number_format($item->receipt_cash, 2)); ?>
 
-                                </td>
-                                <td class="px-4 py-4 font-bold <?php echo e($item->balance_bank >= 0 ? 'text-green-600' : 'text-red-600'); ?>"
-                                    dir="ltr">
-                                    <?php echo e(number_format($item->balance_bank, 2)); ?>
+                                    </td>
+                                    <td class="px-4 py-4 text-red-600"><?php echo e(number_format($item->withdrawal_cash, 2)); ?>
 
-                                </td>
-                            </tr>
+                                    </td>
+                                    <td class="px-4 py-4 text-green-600"><?php echo e(number_format($item->receipt_bank, 2)); ?>
+
+                                    </td>
+                                    <td class="px-4 py-4 text-red-600"><?php echo e(number_format($item->withdrawal_bank, 2)); ?>
+
+                                    </td>
+                                    <td class="px-4 py-4 font-bold <?php echo e($item->balance_cash >= 0 ? 'text-green-600' : 'text-red-600'); ?>"
+                                        dir="ltr">
+                                        <?php echo e(number_format($item->balance_cash, 2)); ?>
+
+                                    </td>
+                                    <td class="px-4 py-4 font-bold <?php echo e($item->balance_bank >= 0 ? 'text-green-600' : 'text-red-600'); ?>"
+                                        dir="ltr">
+                                        <?php echo e(number_format($item->balance_bank, 2)); ?>
+
+                                    </td>
+                                </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                            <tr>
-                                <td colspan="8" class="px-4 py-4 text-center text-gray-500 dark:text-gray-300">
-                                    داده‌ای برای نمایش وجود ندارد
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td colspan="8" class="px-4 py-4 text-center text-gray-500 dark:text-gray-300">
+                                        داده‌ای برای نمایش وجود ندارد
+                                    </td>
+                                </tr>
                             <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+
+         <div  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;" class="bg-[#F5F5F5] dark:bg-black dark:border dark:border-white p-4 rounded-[12px] mx-auto mt-10">
+        <!-- جدول موجودی هر ارز به صورت جداگانه -->
+        <div class="mt-8" >
+            <h3 class="text-xl font-bold mb-4 text-center dark:text-white ">موجودی  صندوق نقدی و بانکی</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <?php $__currentLoopData = $totalBalanceByCurrency; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $totalAmount): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <!--[if BLOCK]><![endif]--><?php if($totalAmount > 0): ?>
+                        <?php
+                            $safe = $currencySafeBalance[$currencyCode] ?? 0;
+                            $bank = $bankAccountBalance[$currencyCode] ?? 0;
+                            $currencyName = $currencies[$currencyCode] ?? $currencyCode;
+                        ?>
+                        <div    style="box-shadow: 0px 4px 4px 0px #00000040;" class="bg-gradient-to-br from-white/40 to-white dark:from-gray-800 dark:to-gray-900 
+                                    p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold text-lg dark:text-white"><?php echo e($currencyName); ?></span>
+                                <span class="text-xl font-bold text-black" dir="ltr">
+                                    <?php echo e(number_format($totalAmount, 2)); ?>
+
+                                </span>
+                            </div>
+                            <div class="text-sm text-black dark:text-gray-300">
+                                <div class="flex justify-between">
+                                    <span>نقدی:</span>
+                                    <span dir="ltr"><?php echo e(number_format($safe, 2)); ?></span>
+                                </div>
+                                <div class="flex justify-between mt-1">
+                                    <span>بانکی:</span>
+                                    <span dir="ltr"><?php echo e(number_format($bank, 2)); ?></span>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+            </div>
+        </div>
+      </div>
     </div>
 
     <script>
         function customerSearch() {
-    return {
-        isOpen: false,
-        searchQuery: '',
-        selectedCustomerId: <?php if ((object) ('selectedCustomer') instanceof \Livewire\WireDirective) : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedCustomer'->value()); ?>')<?php echo e('selectedCustomer'->hasModifier('live') ? '.live' : ''); ?><?php else : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedCustomer'); ?>')<?php endif; ?>.live,
-        selectedCustomerName: '',
-        allCustomers: <?php echo json_encode($customers, 15, 512) ?>,
-        filteredCustomers: [],
-        
-        init() {
-            this.filteredCustomers = [...this.allCustomers];
-            
-            if (this.selectedCustomerId) {
-                const selected = this.allCustomers.find(c => c.id == this.selectedCustomerId);
-                if (selected) {
-                    this.selectedCustomerName = `${selected.fullname} - ${selected.account_number}`;
-                }
-            }
-            
-            this.$watch('selectedCustomerId', (value) => {
-                if (value) {
-                    const selected = this.allCustomers.find(c => c.id == value);
-                    this.selectedCustomerName = selected ? 
-                        `${selected.fullname} - ${selected.account_number}` : '';
-                } else {
-                    this.selectedCustomerName = '';
-                }
-            });
-        },
-        
-        toggleDropdown() {
-            this.isOpen = !this.isOpen;
-            if (this.isOpen) {
-                this.searchQuery = '';
-                this.filterCustomers();
-            }
-        },
-        
-        closeDropdown() {
-            this.isOpen = false;
-            this.searchQuery = '';
-        },
-        
-        filterCustomers() {
-            if (!this.searchQuery.trim()) {
-                this.filteredCustomers = [...this.allCustomers];
-                return;
-            }
-            
-            const query = this.searchQuery.toLowerCase();
-            this.filteredCustomers = this.allCustomers.filter(customer => 
-                customer.fullname?.toLowerCase().includes(query) ||
-                customer.account_number?.toLowerCase().includes(query) ||
-                customer.phone?.includes(query)
-            );
-        },
-        
-        selectCustomer(customer) {
-            this.selectedCustomerId = customer.id;
-            this.selectedCustomerName = `${customer.fullname} - ${customer.account_number}`;
-            this.closeDropdown();
-        }
-    };
-}
+            return {
+                isOpen: false,
+                searchQuery: '',
+                selectedCustomerId: <?php if ((object) ('selectedCustomer') instanceof \Livewire\WireDirective) : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedCustomer'->value()); ?>')<?php echo e('selectedCustomer'->hasModifier('live') ? '.live' : ''); ?><?php else : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedCustomer'); ?>')<?php endif; ?>.live,
+                selectedCustomerName: '',
+                allCustomers: <?php echo json_encode($customers, 15, 512) ?>,
+                filteredCustomers: [],
 
-function createPersianDatePicker(fieldName = 'date') {
-    return {
-        isOpen: false,
-        showMonthSelector: false,
-        showYearSelector: false,
-        displayDate: '',
-        currentYear: 1403,
-        currentMonth: 0,
-        selectedDate: null,
-        yearRange: { start: 1400, end: 1410, years: [] },
-        
-        monthsAfghan: ['حمل', 'ثور', 'جوزا', 'سرطان', 'اسد', 'سنبله', 'میزان', 'عقرب', 'قوس', 'جدی', 'دلو', 'حوت'],
-        weekDaysAfghan: ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'],
-        daysInMonthNormal: [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29],
-        
-        init() {
-            this.updateYearRange();
-            const today = this.getTodayPersian();
-            this.currentYear = today.year;
-            this.currentMonth = today.month - 1;
-            
-            const livewireValue = window.Livewire.find('<?php echo e($_instance->getId()); ?>').get(fieldName);
-            if (!livewireValue) {
-                this.selectedDate = today;
-                this.displayDate = this.formatDate(today);
-                window.Livewire.find('<?php echo e($_instance->getId()); ?>').set(fieldName, this.formatDate(today));
-            } else {
-                // تبدیل تاریخ از Y-m-d به Y/m/d برای نمایش
-                const dateParts = livewireValue.split('-');
-                if (dateParts.length === 3) {
-                    const year = parseInt(dateParts[0]);
-                    const month = parseInt(dateParts[1]);
-                    const day = parseInt(dateParts[2]);
-                    
-                    if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
-                        this.selectedDate = { year, month, day };
-                        this.displayDate = `${year}/${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
-                        this.currentYear = year;
-                        this.currentMonth = month - 1;
+                init() {
+                    this.filteredCustomers = [...this.allCustomers];
+
+                    if (this.selectedCustomerId) {
+                        const selected = this.allCustomers.find(c => c.id == this.selectedCustomerId);
+                        if (selected) {
+                            this.selectedCustomerName = `${selected.fullname} - ${selected.account_number}`;
+                        }
                     }
-                }
-            }
-        },
-        
-        updateYearRange() {
-            this.yearRange.years = [];
-            for (let year = this.yearRange.start; year <= this.yearRange.end; year++) {
-                this.yearRange.years.push(year);
-            }
-        },
-        
-        isLeapYear(year) {
-            const remainders = [1, 5, 9, 13, 17, 22, 26, 30];
-            return remainders.includes(year % 33);
-        },
-        
-        getDaysInMonth(year, month) {
-            const days = [...this.daysInMonthNormal];
-            if (month === 11 && this.isLeapYear(year)) return 30;
-            return days[month];
-        },
-        
-        getFirstDayOfWeek(year, month) {
-            const baseYear = 1403;
-            const baseDay = 4;
-            let days = 0;
-            
-            for (let y = baseYear; y < year; y++) {
-                days += this.isLeapYear(y) ? 366 : 365;
-            }
-            
-            for (let m = 0; m < month; m++) {
-                days += this.getDaysInMonth(year, m);
-            }
-            
-            return (baseDay + days) % 7;
-        },
-        
-        getTodayPersian() {
-            const today = new Date();
-            
-            const persianDate = this.gregorianToPersian(
-                today.getFullYear(), 
-                today.getMonth() + 1, 
-                today.getDate()
-            );
-            
-            return persianDate;
-        },
-        
-        gregorianToPersian(gy, gm, gd) {
-            const gDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-            const isGregorianLeap = (gy % 4 === 0 && gy % 100 !== 0) || (gy % 400 === 0);
-            
-            if (isGregorianLeap) gDaysInMonth[1] = 29;
-            
-            let dayOfYear = gd;
-            for (let i = 0; i < gm - 1; i++) dayOfYear += gDaysInMonth[i];
-            
-            const marchDay = 79;
-            let persianYear, persianMonth, persianDay;
-            
-            if (dayOfYear > marchDay) {
-                persianYear = gy - 621;
-                let remainingDays = dayOfYear - marchDay;
-                const pDaysInMonth = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
-                if (this.isLeapYear(persianYear)) pDaysInMonth[11] = 30;
-                
-                for (persianMonth = 0; persianMonth < 12; persianMonth++) {
-                    if (remainingDays <= pDaysInMonth[persianMonth]) {
-                        persianDay = remainingDays;
-                        break;
+
+                    this.$watch('selectedCustomerId', (value) => {
+                        if (value) {
+                            const selected = this.allCustomers.find(c => c.id == value);
+                            this.selectedCustomerName = selected ?
+                                `${selected.fullname} - ${selected.account_number}` : '';
+                        } else {
+                            this.selectedCustomerName = '';
+                        }
+                    });
+                },
+
+                toggleDropdown() {
+                    this.isOpen = !this.isOpen;
+                    if (this.isOpen) {
+                        this.searchQuery = '';
+                        this.filterCustomers();
                     }
-                    remainingDays -= pDaysInMonth[persianMonth];
-                }
-                persianMonth++;
-            } else {
-                persianYear = gy - 622;
-                let remainingDays = dayOfYear + 286;
-                const pDaysInMonth = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
-                if (this.isLeapYear(persianYear)) pDaysInMonth[11] = 30;
-                
-                for (persianMonth = 0; persianMonth < 12; persianMonth++) {
-                    if (remainingDays <= pDaysInMonth[persianMonth]) {
-                        persianDay = remainingDays;
-                        break;
+                },
+
+                closeDropdown() {
+                    this.isOpen = false;
+                    this.searchQuery = '';
+                },
+
+                filterCustomers() {
+                    if (!this.searchQuery.trim()) {
+                        this.filteredCustomers = [...this.allCustomers];
+                        return;
                     }
-                    remainingDays -= pDaysInMonth[persianMonth];
+
+                    const query = this.searchQuery.toLowerCase();
+                    this.filteredCustomers = this.allCustomers.filter(customer =>
+                        customer.fullname?.toLowerCase().includes(query) ||
+                        customer.account_number?.toLowerCase().includes(query) ||
+                        customer.phone?.includes(query)
+                    );
+                },
+
+                selectCustomer(customer) {
+                    this.selectedCustomerId = customer.id;
+                    this.selectedCustomerName = `${customer.fullname} - ${customer.account_number}`;
+                    this.closeDropdown();
                 }
-                persianMonth++;
-            }
-            
-            return { year: persianYear, month: persianMonth, day: persianDay };
-        },
-        
-        get calendarDays() {
-            const days = [];
-            const daysInMonth = this.getDaysInMonth(this.currentYear, this.currentMonth);
-            const firstDayOfWeek = this.getFirstDayOfWeek(this.currentYear, this.currentMonth);
-            const today = this.getTodayPersian();
-            const prevMonthDays = this.currentMonth === 0 ? 
-                this.getDaysInMonth(this.currentYear - 1, 11) : 
-                this.getDaysInMonth(this.currentYear, this.currentMonth - 1);
-            
-            for (let i = 0; i < firstDayOfWeek; i++) {
-                const day = prevMonthDays - firstDayOfWeek + i + 1;
-                days.push({
-                    key: `prev-${day}`, 
-                    day: day,
-                    isSelected: false, 
-                    isToday: false, 
-                    isOtherMonth: true, 
-                    isDisabled: true
-                });
-            }
-            
-            for (let day = 1; day <= daysInMonth; day++) {
-                const isSelected = this.selectedDate && 
-                    this.selectedDate.year === this.currentYear && 
-                    this.selectedDate.month === this.currentMonth + 1 && 
-                    this.selectedDate.day === day;
-                
-                const isToday = today.year === this.currentYear && 
-                    today.month === this.currentMonth + 1 && 
-                    today.day === day;
-                
-                days.push({
-                    key: `current-${day}`, 
-                    day: day,
-                    isSelected: isSelected, 
-                    isToday: isToday,
-                    isOtherMonth: false, 
-                    isDisabled: false
-                });
-            }
-            
-            const remainingCells = 42 - days.length;
-            for (let day = 1; day <= remainingCells; day++) {
-                days.push({
-                    key: `next-${day}`, 
-                    day: day,
-                    isSelected: false, 
-                    isToday: false, 
-                    isOtherMonth: true, 
-                    isDisabled: true
-                });
-            }
-            
-            return days;
-        },
-        
-        togglePicker() {
-            this.isOpen = !this.isOpen;
-            this.showMonthSelector = false;
-            this.showYearSelector = false;
-        },
-        
-        closePicker() {
-            this.isOpen = false;
-            this.showMonthSelector = false;
-            this.showYearSelector = false;
-        },
-        
-        toggleMonthSelector() {
-            this.showMonthSelector = !this.showMonthSelector;
-            this.showYearSelector = false;
-        },
-        
-        toggleYearSelector() {
-            this.showYearSelector = !this.showYearSelector;
-            this.showMonthSelector = false;
-        },
-        
-        prevYear() { 
-            this.currentYear--; 
-            this.updateYearRange(); 
-        },
-        
-        nextYear() { 
-            this.currentYear++; 
-            this.updateYearRange(); 
-        },
-        
-        prevMonth() {
-            if (this.currentMonth === 0) {
-                this.currentMonth = 11;
-                this.currentYear--;
-            } else {
-                this.currentMonth--;
-            }
-        },
-        
-        nextMonth() {
-            if (this.currentMonth === 11) {
-                this.currentMonth = 0;
-                this.currentYear++;
-            } else {
-                this.currentMonth++;
-            }
-        },
-        
-        prevYearRange() {
-            this.yearRange.start -= 12;
-            this.yearRange.end -= 12;
-            this.updateYearRange();
-        },
-        
-        nextYearRange() {
-            this.yearRange.start += 12;
-            this.yearRange.end += 12;
-            this.updateYearRange();
-        },
-        
-        selectMonth(monthIndex) {
-            this.currentMonth = monthIndex;
-            this.showMonthSelector = false;
-        },
-        
-        selectYear(year) {
-            this.currentYear = year;
-            this.showYearSelector = false;
-        },
-        
-        selectDate(day) {
-            this.selectedDate = {
-                year: this.currentYear,
-                month: this.currentMonth + 1,
-                day: day
             };
-            // نمایش به فرمت Y/m/d
-            this.displayDate = `${this.currentYear}/${String(this.currentMonth + 1).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
-        },
-        
-        formatDate(date) {
-            if (!date) return '';
-            // ذخیره به فرمت Y-m-d (مشابه دیتابیس)
-            return `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
-        },
-        
-        setToday() {
-            const today = this.getTodayPersian();
-            this.currentYear = today.year;
-            this.currentMonth = today.month - 1;
-            this.selectedDate = today;
-            // نمایش به فرمت Y/m/d
-            this.displayDate = `${today.year}/${String(today.month).padStart(2, '0')}/${String(today.day).padStart(2, '0')}`;
-            
-            window.Livewire.find('<?php echo e($_instance->getId()); ?>').set(fieldName, this.formatDate(today));
-        },
-        
-        clearDate() {
-            this.selectedDate = null;
-            this.displayDate = '';
-            window.Livewire.find('<?php echo e($_instance->getId()); ?>').set(fieldName, '');
-            this.closePicker();
-        },
-        
-        applyDate() {
-            if (this.selectedDate) {
-                const formattedDate = this.formatDate(this.selectedDate);
-                window.Livewire.find('<?php echo e($_instance->getId()); ?>').set(fieldName, formattedDate);
-                this.closePicker();
-            } else {
-                this.setToday();
-            }
         }
-    };
-}
-function fromDatePicker() {
-    return createPersianDatePicker('fromDate');
-}
 
-function toDatePicker() {
-    return createPersianDatePicker('toDate');
-}
+        function createPersianDatePicker(fieldName = 'date') {
+            return {
+                isOpen: false,
+                showMonthSelector: false,
+                showYearSelector: false,
+                displayDate: '',
+                currentYear: 1403,
+                currentMonth: 0,
+                selectedDate: null,
+                yearRange: {
+                    start: 1400,
+                    end: 1410,
+                    years: []
+                },
 
-let printListenerRegistered = false;
+                monthsAfghan: ['حمل', 'ثور', 'جوزا', 'سرطان', 'اسد', 'سنبله', 'میزان', 'عقرب', 'قوس', 'جدی', 'دلو', 'حوت'],
+                weekDaysAfghan: ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'],
+                daysInMonthNormal: [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29],
 
-document.addEventListener('livewire:init', () => {
-    if (printListenerRegistered) return;
-    printListenerRegistered = true;
+                init() {
+                    this.updateYearRange();
+                    const today = this.getTodayPersian();
+                    this.currentYear = today.year;
+                    this.currentMonth = today.month - 1;
 
-    Livewire.on('print-pdf', (data) => {
-        /* 🔹 1. دانلود (با لینک مخفی) */
-        const downloadLink = document.createElement('a');
-        downloadLink.href = data.url;
-        downloadLink.download = '';
-        downloadLink.style.display = 'none';
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
+                    const livewireValue = window.Livewire.find('<?php echo e($_instance->getId()); ?>').get(fieldName);
+                    if (!livewireValue) {
+                        this.selectedDate = today;
+                        this.displayDate = this.formatDate(today);
+                        window.Livewire.find('<?php echo e($_instance->getId()); ?>').set(fieldName, this.formatDate(today));
+                    } else {
+                        // تبدیل تاریخ از Y-m-d به Y/m/d برای نمایش
+                        const dateParts = livewireValue.split('-');
+                        if (dateParts.length === 3) {
+                            const year = parseInt(dateParts[0]);
+                            const month = parseInt(dateParts[1]);
+                            const day = parseInt(dateParts[2]);
 
-        /* 🔹 2. پرینت */
-        const iframe = document.createElement('iframe');
-        iframe.style.display = 'none';
-        iframe.src = data.url;
-        document.body.appendChild(iframe);
+                            if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+                                this.selectedDate = {
+                                    year,
+                                    month,
+                                    day
+                                };
+                                this.displayDate =
+                                    `${year}/${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
+                                this.currentYear = year;
+                                this.currentMonth = month - 1;
+                            }
+                        }
+                    }
+                },
 
-        iframe.onload = () => {
-            iframe.contentWindow.focus();
-            iframe.contentWindow.print();
+                updateYearRange() {
+                    this.yearRange.years = [];
+                    for (let year = this.yearRange.start; year <= this.yearRange.end; year++) {
+                        this.yearRange.years.push(year);
+                    }
+                },
 
-            /* 🔹 3. حذف با تأخیر */
-            setTimeout(() => {
-                iframe.remove();
-                downloadLink.remove();
-            }, 50000);
-        };
-    });
-});
+                isLeapYear(year) {
+                    const remainders = [1, 5, 9, 13, 17, 22, 26, 30];
+                    return remainders.includes(year % 33);
+                },
+
+                getDaysInMonth(year, month) {
+                    const days = [...this.daysInMonthNormal];
+                    if (month === 11 && this.isLeapYear(year)) return 30;
+                    return days[month];
+                },
+
+                getFirstDayOfWeek(year, month) {
+                    const baseYear = 1403;
+                    const baseDay = 4;
+                    let days = 0;
+
+                    for (let y = baseYear; y < year; y++) {
+                        days += this.isLeapYear(y) ? 366 : 365;
+                    }
+
+                    for (let m = 0; m < month; m++) {
+                        days += this.getDaysInMonth(year, m);
+                    }
+
+                    return (baseDay + days) % 7;
+                },
+
+                getTodayPersian() {
+                    const today = new Date();
+
+                    const persianDate = this.gregorianToPersian(
+                        today.getFullYear(),
+                        today.getMonth() + 1,
+                        today.getDate()
+                    );
+
+                    return persianDate;
+                },
+
+                gregorianToPersian(gy, gm, gd) {
+                    const gDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+                    const isGregorianLeap = (gy % 4 === 0 && gy % 100 !== 0) || (gy % 400 === 0);
+
+                    if (isGregorianLeap) gDaysInMonth[1] = 29;
+
+                    let dayOfYear = gd;
+                    for (let i = 0; i < gm - 1; i++) dayOfYear += gDaysInMonth[i];
+
+                    const marchDay = 79;
+                    let persianYear, persianMonth, persianDay;
+
+                    if (dayOfYear > marchDay) {
+                        persianYear = gy - 621;
+                        let remainingDays = dayOfYear - marchDay;
+                        const pDaysInMonth = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
+                        if (this.isLeapYear(persianYear)) pDaysInMonth[11] = 30;
+
+                        for (persianMonth = 0; persianMonth < 12; persianMonth++) {
+                            if (remainingDays <= pDaysInMonth[persianMonth]) {
+                                persianDay = remainingDays;
+                                break;
+                            }
+                            remainingDays -= pDaysInMonth[persianMonth];
+                        }
+                        persianMonth++;
+                    } else {
+                        persianYear = gy - 622;
+                        let remainingDays = dayOfYear + 286;
+                        const pDaysInMonth = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
+                        if (this.isLeapYear(persianYear)) pDaysInMonth[11] = 30;
+
+                        for (persianMonth = 0; persianMonth < 12; persianMonth++) {
+                            if (remainingDays <= pDaysInMonth[persianMonth]) {
+                                persianDay = remainingDays;
+                                break;
+                            }
+                            remainingDays -= pDaysInMonth[persianMonth];
+                        }
+                        persianMonth++;
+                    }
+
+                    return {
+                        year: persianYear,
+                        month: persianMonth,
+                        day: persianDay
+                    };
+                },
+
+                get calendarDays() {
+                    const days = [];
+                    const daysInMonth = this.getDaysInMonth(this.currentYear, this.currentMonth);
+                    const firstDayOfWeek = this.getFirstDayOfWeek(this.currentYear, this.currentMonth);
+                    const today = this.getTodayPersian();
+                    const prevMonthDays = this.currentMonth === 0 ?
+                        this.getDaysInMonth(this.currentYear - 1, 11) :
+                        this.getDaysInMonth(this.currentYear, this.currentMonth - 1);
+
+                    for (let i = 0; i < firstDayOfWeek; i++) {
+                        const day = prevMonthDays - firstDayOfWeek + i + 1;
+                        days.push({
+                            key: `prev-${day}`,
+                            day: day,
+                            isSelected: false,
+                            isToday: false,
+                            isOtherMonth: true,
+                            isDisabled: true
+                        });
+                    }
+
+                    for (let day = 1; day <= daysInMonth; day++) {
+                        const isSelected = this.selectedDate &&
+                            this.selectedDate.year === this.currentYear &&
+                            this.selectedDate.month === this.currentMonth + 1 &&
+                            this.selectedDate.day === day;
+
+                        const isToday = today.year === this.currentYear &&
+                            today.month === this.currentMonth + 1 &&
+                            today.day === day;
+
+                        days.push({
+                            key: `current-${day}`,
+                            day: day,
+                            isSelected: isSelected,
+                            isToday: isToday,
+                            isOtherMonth: false,
+                            isDisabled: false
+                        });
+                    }
+
+                    const remainingCells = 42 - days.length;
+                    for (let day = 1; day <= remainingCells; day++) {
+                        days.push({
+                            key: `next-${day}`,
+                            day: day,
+                            isSelected: false,
+                            isToday: false,
+                            isOtherMonth: true,
+                            isDisabled: true
+                        });
+                    }
+
+                    return days;
+                },
+
+                togglePicker() {
+                    this.isOpen = !this.isOpen;
+                    this.showMonthSelector = false;
+                    this.showYearSelector = false;
+                },
+
+                closePicker() {
+                    this.isOpen = false;
+                    this.showMonthSelector = false;
+                    this.showYearSelector = false;
+                },
+
+                toggleMonthSelector() {
+                    this.showMonthSelector = !this.showMonthSelector;
+                    this.showYearSelector = false;
+                },
+
+                toggleYearSelector() {
+                    this.showYearSelector = !this.showYearSelector;
+                    this.showMonthSelector = false;
+                },
+
+                prevYear() {
+                    this.currentYear--;
+                    this.updateYearRange();
+                },
+
+                nextYear() {
+                    this.currentYear++;
+                    this.updateYearRange();
+                },
+
+                prevMonth() {
+                    if (this.currentMonth === 0) {
+                        this.currentMonth = 11;
+                        this.currentYear--;
+                    } else {
+                        this.currentMonth--;
+                    }
+                },
+
+                nextMonth() {
+                    if (this.currentMonth === 11) {
+                        this.currentMonth = 0;
+                        this.currentYear++;
+                    } else {
+                        this.currentMonth++;
+                    }
+                },
+
+                prevYearRange() {
+                    this.yearRange.start -= 12;
+                    this.yearRange.end -= 12;
+                    this.updateYearRange();
+                },
+
+                nextYearRange() {
+                    this.yearRange.start += 12;
+                    this.yearRange.end += 12;
+                    this.updateYearRange();
+                },
+
+                selectMonth(monthIndex) {
+                    this.currentMonth = monthIndex;
+                    this.showMonthSelector = false;
+                },
+
+                selectYear(year) {
+                    this.currentYear = year;
+                    this.showYearSelector = false;
+                },
+
+                selectDate(day) {
+                    this.selectedDate = {
+                        year: this.currentYear,
+                        month: this.currentMonth + 1,
+                        day: day
+                    };
+                    // نمایش به فرمت Y/m/d
+                    this.displayDate =
+                        `${this.currentYear}/${String(this.currentMonth + 1).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
+                },
+
+                formatDate(date) {
+                    if (!date) return '';
+                    // ذخیره به فرمت Y-m-d (مشابه دیتابیس)
+                    return `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
+                },
+
+                setToday() {
+                    const today = this.getTodayPersian();
+                    this.currentYear = today.year;
+                    this.currentMonth = today.month - 1;
+                    this.selectedDate = today;
+                    // نمایش به فرمت Y/m/d
+                    this.displayDate =
+                        `${today.year}/${String(today.month).padStart(2, '0')}/${String(today.day).padStart(2, '0')}`;
+
+                    window.Livewire.find('<?php echo e($_instance->getId()); ?>').set(fieldName, this.formatDate(today));
+                },
+
+                clearDate() {
+                    this.selectedDate = null;
+                    this.displayDate = '';
+                    window.Livewire.find('<?php echo e($_instance->getId()); ?>').set(fieldName, '');
+                    this.closePicker();
+                },
+
+                applyDate() {
+                    if (this.selectedDate) {
+                        const formattedDate = this.formatDate(this.selectedDate);
+                        window.Livewire.find('<?php echo e($_instance->getId()); ?>').set(fieldName, formattedDate);
+                        this.closePicker();
+                    } else {
+                        this.setToday();
+                    }
+                }
+            };
+        }
+
+        function fromDatePicker() {
+            return createPersianDatePicker('fromDate');
+        }
+
+        function toDatePicker() {
+            return createPersianDatePicker('toDate');
+        }
+
+        let printListenerRegistered = false;
+
+        document.addEventListener('livewire:init', () => {
+            if (printListenerRegistered) return;
+            printListenerRegistered = true;
+
+            Livewire.on('print-pdf', (data) => {
+                /* 🔹 1. دانلود (با لینک مخفی) */
+                const downloadLink = document.createElement('a');
+                downloadLink.href = data.url;
+                downloadLink.download = '';
+                downloadLink.style.display = 'none';
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+
+                /* 🔹 2. پرینت */
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = data.url;
+                document.body.appendChild(iframe);
+
+                iframe.onload = () => {
+                    iframe.contentWindow.focus();
+                    iframe.contentWindow.print();
+
+                    /* 🔹 3. حذف با تأخیر */
+                    setTimeout(() => {
+                        iframe.remove();
+                        downloadLink.remove();
+                    }, 50000);
+                };
+            });
+        });
     </script>
 
     <style>
@@ -1135,4 +1225,5 @@ document.addEventListener('livewire:init', () => {
             background: #555;
         }
     </style>
-</div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/journal.blade.php ENDPATH**/ ?>
+</div>
+<?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/journal.blade.php ENDPATH**/ ?>

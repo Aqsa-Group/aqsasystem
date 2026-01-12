@@ -59,29 +59,36 @@ class TransactionsReports extends Component
     /**
      * Initialize component
      */
-    public function mount()
-    {
-        $this->loadCustomers();
-        $this->setDefaultDates();
+   public function mount()
+{
+    $this->loadCustomers();
+    $this->setDefaultDates();
 
+    $this->generateDocumentNumber();
 
-        $this->generateDocumentNumber();
-
-
-        // Check if customer is selected from main page
-        if (session()->has('selected_customer_id')) {
-            $customerId = session('selected_customer_id');
-            $this->selectCustomer($customerId);
-            session()->forget('selected_customer_id');
-        }
-
-        if ($this->selectedCustomer) {
-            $this->calculatePreviousBalances();
-            $this->loadTransactions();
-        }
-
-        $this->initializeUserCustomers();
+    // Check if customer is selected from main page
+    if (session()->has('selected_customer_id')) {
+        $customerId = session('selected_customer_id');
+        $this->selectCustomer($customerId);
+        session()->forget('selected_customer_id');
     }
+
+    if ($this->selectedCustomer) {
+        $this->calculatePreviousBalances();
+        $this->loadTransactions();
+    }
+
+    $this->initializeUserCustomers();
+    
+    // تنظیم تاریخ‌های پیش‌فرض با فراخوانی updateDateDisplay
+    $todayJalali = Jalalian::now();
+    $this->startDate = $todayJalali->format('Y-m-d');
+    $this->endDate = $todayJalali->format('Y-m-d');
+    
+    // بروزرسانی نمایش تاریخ‌ها
+    $this->updateDateDisplay('start');
+    $this->updateDateDisplay('end');
+}
 
     /**
      * Generate document number for transactions
@@ -441,28 +448,56 @@ class TransactionsReports extends Component
             str_pad($date->getDay(), 2, '0', STR_PAD_LEFT);
     }
 
-    /**
-     * Set start date from datepicker
-     */
-    public function setStartDate($dateString)
-    {
-        $this->startDate = $this->normalizeDate($dateString);
-        $this->updateDateDisplay('start');
-
-        $this->calculatePreviousBalances();
-        $this->loadTransactions();
+  /**
+ * Set start date from datepicker
+ */
+public function setStartDate($dateString)
+{
+    Log::debug("setStartDate called", ['input' => $dateString]);
+    
+    $normalized = $this->normalizeDate($dateString);
+    
+    if (!$normalized) {
+        Log::error("Failed to normalize start date", ['input' => $dateString]);
+        return;
     }
+    
+    $this->startDate = $normalized;
+    $this->updateDateDisplay('start');
 
-    /**
-     * Set end date from datepicker
-     */
-    public function setEndDate($dateString)
-    {
-        $this->endDate = $this->normalizeDate($dateString);
-        $this->updateDateDisplay('end');
+    Log::debug("Start date updated", [
+        'normalized' => $normalized,
+        'display' => $this->startDateDisplay
+    ]);
 
-        $this->loadTransactions();
+    $this->calculatePreviousBalances();
+    $this->loadTransactions();
+}
+
+/**
+ * Set end date from datepicker
+ */
+public function setEndDate($dateString)
+{
+    Log::debug("setEndDate called", ['input' => $dateString]);
+    
+    $normalized = $this->normalizeDate($dateString);
+    
+    if (!$normalized) {
+        Log::error("Failed to normalize end date", ['input' => $dateString]);
+        return;
     }
+    
+    $this->endDate = $normalized;
+    $this->updateDateDisplay('end');
+
+    Log::debug("End date updated", [
+        'normalized' => $normalized,
+        'display' => $this->endDateDisplay
+    ]);
+
+    $this->loadTransactions();
+}
 
     /**
      * Update date display with Afghan month names

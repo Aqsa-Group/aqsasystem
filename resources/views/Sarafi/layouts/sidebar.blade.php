@@ -2533,7 +2533,7 @@
 
 
 
-                    <div>
+                    {{-- <div>
                         <button @click="openItems.finance = !openItems.finance; active = 'finance'"
                             :class="(active === 'finance' || active === 'edit-finance') ? 'bg-[#122EE1] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
@@ -2612,10 +2612,32 @@
                         </div>
 
 
+
+                           <div x-show="openItems.finance" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="{{ route('sarafi.salary') }}"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="setActive('edit-accounts', 'finance')"
+                                :class="active === 'edit-accounts' ? 'bg-[#122EE1] text-white' : 'text-gray-600 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
+                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M10.5898 13.3398H14.8298V9.09985" stroke="#292D32" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M14.8299 13.3399L9.16992 7.67993" stroke="#292D32" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51" stroke="#292D32"
+                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                پرداخت معاشات
+                            </a>
+                        </div>
                       
 
 
-                    </div>
+                    </div> --}}
 
 
 

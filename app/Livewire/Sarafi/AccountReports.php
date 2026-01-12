@@ -352,14 +352,21 @@ class AccountReports extends Component
         $this->generateReport();
         session()->flash('message', 'تمام فیلترها بازنشانی شدند.');
     }
-
-  public function printReport()
+   public function printReport()
 {
-    // دریافت داده‌های فیلتر شده برای گزارش
-    $transactions = $this->getFilteredTransactions()->get();
-    $summary = $this->getSummaryData()->get();
+    // گزارش ساخته شده توسط generateReport
+    $reports = $this->reports;
 
-    // دریافت آخرین نرخ سود (برای تعیین ارز)
+    // اگر داده‌ای نیست
+    if (empty($reports)) {
+        session()->flash('message', 'داده‌ای برای چاپ وجود ندارد');
+        return;
+    }
+
+    // محاسبه مجموع‌ها
+    $totalsData = $this->calculateTotalsByCurrency();
+
+    // ارز مرجع
     $latestProfitRate = ProfitRate::latest()->first();
     $sourceCurrency = 'دالر';
 
@@ -374,62 +381,51 @@ class AccountReports extends Component
             'try' => 'لیره',
             'cny' => 'یوان',
         ];
+
         $currencyCode = strtolower($latestProfitRate->source_currency);
         $sourceCurrency = $currencyMap[$currencyCode] ?? $latestProfitRate->source_currency;
     }
 
-    // محاسبه مجموع‌ها بر اساس ارز
-    $totalsData = $this->calculateTotalsByCurrency($transactions);
+    // تعداد مشتریان
+    $totalCustomers = count($reports);
 
-    // اطلاعات برای چاپ
+    // داده‌های ارسال‌شده به PDF
     $printData = [
-        'title' => 'گزارش ژورنال تراکنش‌ها',
-        'filters' => [
-            'نوع تراکنش' => $this->transactionType ?: 'همه',
-            'نوع حساب' => $this->accountType ?: 'همه',
-            'مشتری' => $this->selectedCustomer ? $this->getCustomerName($this->selectedCustomer) : 'همه',
-            'از تاریخ' => $this->fromDate ?: 'همه',
-            'تا تاریخ' => $this->toDate ?: 'همه',
-            'ارز' => $this->currency ?: 'همه',
-        ],
-        'transactions' => $transactions,
-        'summary' => $summary,
-        'print_date' => now()->format('Y/m/d H:i'),
-        'source_currency' => $sourceCurrency,
-        'totals' => $totalsData['currencies'] ?? [],
-        'total_amount' => $totalsData['total_amount'] ?? 0,
+        'title'            => 'گزارش بیلانس مشتریان',
+        'reports'          => $reports,
+        'total_customers'  => $totalCustomers,
+        'print_date'       => now()->format('Y/m/d H:i'),
+        'source_currency'  => $sourceCurrency,
+        'currencies'       => $this->currencies,        // ⭐ خیلی مهم
+        'totals'           => $totalsData['currencies'], // برای جدول جمع کل
+        'total_usd'        => $totalsData['total_usd'],
     ];
 
     // تنظیمات mPDF
     $mpdf = new \Mpdf\Mpdf([
-        'mode' => 'utf-8',
-        'format' => 'A4-L',
-        'directionality' => 'rtl',
-        'margin_top' => 10,
-        'margin_bottom' => 10,
-        'margin_left' => 10,
-        'margin_right' => 10,
-        'fontDir' => array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'], [
-            public_path('fonts'),
-        ]),
-        'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
-            'Shabnam' => [
-                'R' => 'Shabnam-FD.ttf',
-            ],
-        ],
-        'default_font' => 'Shabnam',
+        'mode'             => 'utf-8',
+        'format'           => 'A4-L',
+        'directionality'   => 'rtl',
+        'margin_top'       => 10,
+        'margin_bottom'    => 10,
+        'margin_left'      => 10,
+        'margin_right'     => 10,
+        'default_font'     => 'Shabnam',
     ]);
 
-    $html = view('pdf.Sarafi.journal', $printData)->render();
+    // رندر Blade
+    $html = view('pdf.Sarafi.customer-balance-report', $printData)->render();
     $mpdf->WriteHTML($html);
 
-    $fileName = 'گزارش_ژورنال_' . now()->format('Y_m_d') . '.pdf';
-
-    return response()->streamDownload(function () use ($mpdf) {
-        echo $mpdf->Output('', 'S');
-    }, $fileName);
+    // دانلود PDF
+    return response()->streamDownload(
+        fn () => print $mpdf->Output('', 'S'),
+        'گزارش_بیلانس_مشتریان_' . now()->format('Y_m_d') . '.pdf'
+    );
 }
-    
+
+
+
     private function getCustomerName($customerId)
     {
         $customer = Customer::find($customerId);
@@ -474,7 +470,7 @@ class AccountReports extends Component
         );
 
 
-        
+
         return [
             'currencies' => $totals,
             'total_usd' => $totalBalanceUsd
