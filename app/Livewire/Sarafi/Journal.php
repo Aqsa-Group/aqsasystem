@@ -166,7 +166,7 @@ public function printReport()
 
     $mpdf = new Mpdf([
         'mode' => 'utf-8',
-        'format' => 'A4-L',
+        'format' => 'A4',
         'default_font_size' => 9,
         'default_font' => 'dejavusans',
         'margin_left' => 10,

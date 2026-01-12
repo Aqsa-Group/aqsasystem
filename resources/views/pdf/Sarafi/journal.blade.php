@@ -17,10 +17,7 @@
             text-align: right;
         }
 
-        /* جلوگیری از شکستن صفحات */
-        .keep-together {
-            page-break-inside: avoid;
-        }
+      
 
         .page-break {
             page-break-before: always;
@@ -88,7 +85,6 @@
             border-collapse: collapse;
             margin: 8px 0;
             font-size: 8pt;
-            page-break-inside: avoid;
         }
 
         th {

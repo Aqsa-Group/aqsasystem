@@ -17,10 +17,7 @@
             text-align: right;
         }
 
-        /* جلوگیری از شکستن صفحات */
-        .keep-together {
-            page-break-inside: avoid;
-        }
+      
 
         .page-break {
             page-break-before: always;
