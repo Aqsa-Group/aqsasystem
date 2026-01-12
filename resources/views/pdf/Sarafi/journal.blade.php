@@ -143,7 +143,7 @@
 
         /* جدول موجودی ارزها */
         .balance-table th {
-            background-color: #059669;
+            background-color: #2b23c7;
             color: white;
         }
 

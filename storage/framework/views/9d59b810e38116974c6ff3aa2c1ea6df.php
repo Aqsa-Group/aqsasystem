@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>گزارش معاملات روزانه</title>
     <style>
-       =
-
-        body {
+        =body {
             font-family: dejavusans, sans-serif;
             font-size: 9pt;
             line-height: 1.4;
@@ -145,7 +143,7 @@
 
         /* جدول موجودی ارزها */
         .balance-table th {
-            background-color: #059669;
+            background-color: #2b23c7;
             color: white;
         }
 
@@ -167,7 +165,8 @@
             vertical-align: top;
         }
 
-        .profit-card, .loss-card {
+        .profit-card,
+        .loss-card {
             padding: 10px;
             border-radius: 8px;
             min-height: 80px;
@@ -234,7 +233,8 @@
                 font-size: 7pt;
             }
 
-            th, td {
+            th,
+            td {
                 padding: 4px 3px;
             }
         }
@@ -276,11 +276,18 @@
 
     <div class="main-header keep-together">
         <h1>صفحه گزارشات معاملات روزانه حسابات و صندوق ها</h1>
-        <p style="color: #666; font-size: 8pt;">تاریخ تولید: <?php echo e(\Morilog\Jalali\Jalalian::now()->format('Y/m/d H:i')); ?></p>
+        <p style="color: #666; font-size: 8pt;">تاریخ تولید: <?php echo e(\Morilog\Jalali\Jalalian::now()->format('Y/m/d H:i')); ?>
+
+        </p>
     </div>
 
     <!-- نمایش فیلترها -->
-    <?php if(isset($filters) && (isset($filters['transactionType']) || isset($filters['accountType']) || isset($filters['currency']) || isset($filters['fromDate']) || isset($filters['toDate']))): ?>
+    <?php if(isset($filters) &&
+            (isset($filters['transactionType']) ||
+                isset($filters['accountType']) ||
+                isset($filters['currency']) ||
+                isset($filters['fromDate']) ||
+                isset($filters['toDate']))): ?>
         <div class="filters-section keep-together">
             <h3>فیلترهای اعمال شده</h3>
             <div class="filter-row">
@@ -299,19 +306,22 @@
                 <?php if(isset($filters['currency']) && $filters['currency']): ?>
                     <div class="filter-item">
                         <span class="filter-label">ارز:</span>
-                        <span class="filter-value"><?php echo e($currencies[$filters['currency']] ?? $filters['currency']); ?></span>
+                        <span
+                            class="filter-value"><?php echo e($currencies[$filters['currency']] ?? $filters['currency']); ?></span>
                     </div>
                 <?php endif; ?>
                 <?php if(isset($filters['fromDate']) && $filters['fromDate']): ?>
                     <div class="filter-item">
                         <span class="filter-label">از تاریخ:</span>
-                        <span class="filter-value"><?php echo e(\Morilog\Jalali\Jalalian::fromFormat('Y-m-d', $filters['fromDate'])->format('Y/m/d')); ?></span>
+                        <span
+                            class="filter-value"><?php echo e(\Morilog\Jalali\Jalalian::fromFormat('Y-m-d', $filters['fromDate'])->format('Y/m/d')); ?></span>
                     </div>
                 <?php endif; ?>
                 <?php if(isset($filters['toDate']) && $filters['toDate']): ?>
                     <div class="filter-item">
                         <span class="filter-label">تا تاریخ:</span>
-                        <span class="filter-value"><?php echo e(\Morilog\Jalali\Jalalian::fromFormat('Y-m-d', $filters['toDate'])->format('Y/m/d')); ?></span>
+                        <span
+                            class="filter-value"><?php echo e(\Morilog\Jalali\Jalalian::fromFormat('Y-m-d', $filters['toDate'])->format('Y/m/d')); ?></span>
                     </div>
                 <?php endif; ?>
             </div>
@@ -330,7 +340,9 @@
 
     <!-- جدول تراکنش‌ها -->
     <div class="keep-together">
-        <h3 style="margin: 10px 0 5px 0; font-size: 10pt; color: #2B65E5;">لیست تراکنش‌ها (<?php echo e($transactions->count()); ?> رکورد)</h3>
+        <h3 style="margin: 10px 0 5px 0; font-size: 10pt; color: #2B65E5;">لیست تراکنش‌ها (<?php echo e($transactions->count()); ?>
+
+            رکورد)</h3>
         <?php if($transactions->count() > 0): ?>
             <table class="transactions-table">
                 <thead>
@@ -381,7 +393,8 @@
                             <td style="text-align: right; padding: 0 5px;"><?php echo e($transaction->description); ?></td>
                             <td>
                                 <div><?php echo e(explode(' ', $transaction->date)[0]); ?></div>
-                                <div style="font-size: 7pt; color: #666;"><?php echo e(\Carbon\Carbon::parse($transaction->created_at)->format('H:i')); ?></div>
+                                <div style="font-size: 7pt; color: #666;">
+                                    <?php echo e(\Carbon\Carbon::parse($transaction->created_at)->format('H:i')); ?></div>
                             </td>
                         </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -438,19 +451,21 @@
     <!-- موجودی صندوق نقدی و بانکی - با تیبل -->
     <?php if(isset($totalBalanceByCurrency) && count($totalBalanceByCurrency) > 0): ?>
         <div class="keep-together">
-            <h3 style="margin: 15px 0 5px 0; font-size: 10pt; color: #2B65E5; text-align: center;">موجودی صندوق نقدی و بانکی</h3>
-            
+            <h3 style="margin: 15px 0 5px 0; font-size: 10pt; color: #2B65E5; text-align: center;">موجودی صندوق نقدی و
+                بانکی</h3>
+
             <?php
                 // ارزها را به دسته‌های 3 تایی تقسیم می‌کنیم
                 $currencyChunks = array_chunk($totalBalanceByCurrency, 3, true);
             ?>
-            
+
             <?php $__currentLoopData = $currencyChunks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $chunk): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <table class="balance-table" style="width: 100%; margin-bottom: 10px;">
                     <thead>
                         <tr>
                             <?php $__currentLoopData = $chunk; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $totalAmount): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <th style="width: <?php echo e(100 / count($chunk)); ?>%;"><?php echo e($currencies[$currencyCode] ?? $currencyCode); ?></th>
+                                <th style="width: <?php echo e(100 / count($chunk)); ?>%;">
+                                    <?php echo e($currencies[$currencyCode] ?? $currencyCode); ?></th>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tr>
                     </thead>
@@ -462,18 +477,21 @@
                                     $bank = $bankAccountBalance[$currencyCode] ?? 0;
                                 ?>
                                 <td>
-                                    <div style="font-weight: bold; font-size: 11pt; color: #059669; margin-bottom: 5px; direction: ltr;">
+                                    <div
+                                        style="font-weight: bold; font-size: 11pt; color: #059669; margin-bottom: 5px; direction: ltr;">
                                         <?php echo e(number_format($totalAmount, 2)); ?>
 
                                     </div>
                                     <div style="font-size: 9pt;">
                                         <div style="margin-bottom: 3px;">
                                             <span>نقدی:</span>
-                                            <span style="direction: ltr; float: left;"><?php echo e(number_format($safe, 2)); ?></span>
+                                            <span
+                                                style="direction: ltr; float: left;"><?php echo e(number_format($safe, 2)); ?></span>
                                         </div>
                                         <div>
                                             <span>بانکی:</span>
-                                            <span style="direction: ltr; float: left;"><?php echo e(number_format($bank, 2)); ?></span>
+                                            <span
+                                                style="direction: ltr; float: left;"><?php echo e(number_format($bank, 2)); ?></span>
                                         </div>
                                     </div>
                                 </td>
@@ -485,32 +503,32 @@
         </div>
     <?php endif; ?>
 
-<!-- سود و ضرر امروز -->
-<!-- سود و ضرر امروز - نسخه ساده‌تر برای دیباگ -->
-<div style="width: 100%; margin: 15px 0;">
-    <table style="width: 100%; border-collapse: separate; border-spacing: 10px;">
-        <tr>
-            <td width="50%" style="padding: 0 5px;">
-                <div style=" color:black; padding: 15px; border-radius: 8px; text-align: center;">
-                    <div style="font-size: 14pt; margin-bottom: 5px; font-weight: bold;">سود امروز</div>
-                    <div style="font-size: 20pt; font-weight: bold; direction: ltr;">
-                        <?php echo e(number_format($todayProfit, 2)); ?>
+    <!-- سود و ضرر امروز -->
+    <div style="width: 100%; margin: 15px 0;">
+        <table style="width: 100%; border-collapse: separate; border-spacing: 10px;">
+            <tr>
+                <td width="50%" style="padding: 0 5px;">
+                    <div style=" color:black; padding: 15px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 14pt; margin-bottom: 5px; font-weight: bold;">سود امروز</div>
+                        <div style="font-size: 20pt; font-weight: bold; direction: ltr;">
+                            <?php echo e(number_format($todayProfit, 2)); ?>
 
+                        </div>
                     </div>
-                </div>
-            </td>
-            <td width="50%" style="padding: 0 5px;">
-                <div style=" color:black; padding: 15px; border-radius: 8px; text-align: center;">
-                    <div style="font-size: 14pt; margin-bottom: 5px; font-weight: bold;">ضرر امروز</div>
-                    <div style="font-size: 20pt; font-weight: bold; direction: ltr;">
-                        <?php echo e(number_format($todayLoss, 2)); ?>
+                </td>
+                <td width="50%" style="padding: 0 5px;">
+                    <div style=" color:black; padding: 15px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 14pt; margin-bottom: 5px; font-weight: bold;">ضرر امروز</div>
+                        <div style="font-size: 20pt; font-weight: bold; direction: ltr;">
+                            <?php echo e(number_format($todayLoss, 2)); ?>
 
+                        </div>
                     </div>
-                </div>
-            </td>
-        </tr>
-    </table>
-</div>
+                </td>
+            </tr>
+        </table>
+    </div>
 </body>
 
-</html><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/pdf/Sarafi/journal.blade.php ENDPATH**/ ?>
+</html>
+<?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/pdf/Sarafi/journal.blade.php ENDPATH**/ ?>
