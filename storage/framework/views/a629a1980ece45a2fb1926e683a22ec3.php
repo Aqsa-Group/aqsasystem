@@ -29,8 +29,7 @@
                         <!-- ریست فیلترها -->
                         <div>
                             <label class="block text-[16px] font-medium invisible mb-1">ریست</label>
-                            <button wire:click="resetFilters" wire:loading.attr="disabled"
-                                class="w-full h-[60px] flex items-center justify-center gap-2
+                            <button wire:click="resetFilters" wire:loading.attr="disabled" class="w-full h-[60px] flex items-center justify-center gap-2
                                    bg-gray-500 text-white rounded-xl
                                    hover:bg-gray-600 transition">
                                 <span wire:loading.remove>ریست فیلترها</span>
@@ -41,8 +40,7 @@
                         <!-- نوع ترانزکشن -->
                         <div>
                             <label class="block text-[16px] font-medium mb-1 dark:text-white">نوع تراکنش</label>
-                            <select wire:model.live="transactionType"
-                                class="w-full h-[60px] appearance-none border dark:bg-black dark:border-white
+                            <select wire:model.live="transactionType" class="w-full h-[60px] appearance-none border dark:bg-black dark:border-white
                                    border-[#8C8C8C] rounded-xl px-4 text-sm">
                                 <option value="">همه</option>
                                 <option value="رسید">رسید</option>
@@ -53,8 +51,7 @@
                         <!-- نوع حساب -->
                         <div>
                             <label class="block text-[16px] font-medium mb-1 dark:text-white">نوع حساب</label>
-                            <select wire:model.live="accountType"
-                                class="w-full h-[60px] appearance-none border dark:bg-black dark:border-white
+                            <select wire:model.live="accountType" class="w-full h-[60px] appearance-none border dark:bg-black dark:border-white
                                    border-[#8C8C8C] rounded-xl px-4 text-sm">
                                 <option value="">همه</option>
                                 <option value="نقدی">نقدی</option>
@@ -65,12 +62,11 @@
                         <!-- ارز -->
                         <div>
                             <label class="block text-[16px] font-medium mb-1 dark:text-white">ارز</label>
-                            <select wire:model.live="currency"
-                                class="w-full h-[60px] appearance-none border dark:bg-black dark:border-white
+                            <select wire:model.live="currency" class="w-full h-[60px] appearance-none border dark:bg-black dark:border-white
                                    border-[#8C8C8C] rounded-xl px-4 text-sm">
                                 <option value="">همه ارزها</option>
                                 <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($code); ?>"><?php echo e($name); ?></option>
+                                <option value="<?php echo e($code); ?>"><?php echo e($name); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
 
                             </select>
@@ -168,10 +164,8 @@
                                                 <!-- Month Selector -->
                                                 <div x-show="showMonthSelector" x-transition>
                                                     <div class="grid grid-cols-3 gap-2 mb-4">
-                                                        <template x-for="(month, index) in monthsAfghan"
-                                                            :key="index">
-                                                            <button @click="selectMonth(index)"
-                                                                :class="{
+                                                        <template x-for="(month, index) in monthsAfghan" :key="index">
+                                                            <button @click="selectMonth(index)" :class="{
                                                                     'bg-blue-500 text-white': currentMonth === index,
                                                                     'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentMonth !==
                                                                         index
@@ -209,10 +203,8 @@
                                                         </button>
                                                     </div>
                                                     <div class="grid grid-cols-4 gap-2 mb-4">
-                                                        <template x-for="year in yearRange.years"
-                                                            :key="year">
-                                                            <button @click="selectYear(year)"
-                                                                :class="{
+                                                        <template x-for="year in yearRange.years" :key="year">
+                                                            <button @click="selectYear(year)" :class="{
                                                                     'bg-blue-500 text-white': currentYear === year,
                                                                     'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentYear !==
                                                                         year
@@ -240,8 +232,7 @@
                                                     <!-- Days Grid -->
                                                     <div class="grid grid-cols-7 gap-1">
                                                         <template x-for="day in calendarDays" :key="day.key">
-                                                            <button @click="selectDate(day.day)"
-                                                                :class="{
+                                                            <button @click="selectDate(day.day)" :class="{
                                                                     'bg-blue-500 text-white hover:bg-blue-600': day
                                                                         .isSelected,
                                                                     'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300': day
@@ -294,7 +285,7 @@ $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                    <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                                <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -307,8 +298,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <div class="lg:col-span-3 relative" x-data="toDatePicker()" x-init="init()">
                                 <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تا
                                     تاریخ</label>
-                                <input type="text" x-ref="dateInput" x-model="displayDate"
-                                    @click="togglePicker()" placeholder="YYYY/MM/DD"
+                                <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
+                                    placeholder="YYYY/MM/DD"
                                     class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 cursor-pointer"
                                     readonly />
 
@@ -394,10 +385,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                                 <!-- Month Selector -->
                                                 <div x-show="showMonthSelector" x-transition>
                                                     <div class="grid grid-cols-3 gap-2 mb-4">
-                                                        <template x-for="(month, index) in monthsAfghan"
-                                                            :key="index">
-                                                            <button @click="selectMonth(index)"
-                                                                :class="{
+                                                        <template x-for="(month, index) in monthsAfghan" :key="index">
+                                                            <button @click="selectMonth(index)" :class="{
                                                                     'bg-blue-500 text-white': currentMonth === index,
                                                                     'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentMonth !==
                                                                         index
@@ -435,10 +424,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                                         </button>
                                                     </div>
                                                     <div class="grid grid-cols-4 gap-2 mb-4">
-                                                        <template x-for="year in yearRange.years"
-                                                            :key="year">
-                                                            <button @click="selectYear(year)"
-                                                                :class="{
+                                                        <template x-for="year in yearRange.years" :key="year">
+                                                            <button @click="selectYear(year)" :class="{
                                                                     'bg-blue-500 text-white': currentYear === year,
                                                                     'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentYear !==
                                                                         year
@@ -455,8 +442,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                                 <div x-show="!showMonthSelector && !showYearSelector" x-transition>
                                                     <!-- Week Days -->
                                                     <div class="grid grid-cols-7 gap-1 mb-2">
-                                                        <template x-for="day in weekDaysAfghan"
-                                                            :key="day">
+                                                        <template x-for="day in weekDaysAfghan" :key="day">
                                                             <div
                                                                 class="text-center text-sm font-medium text-gray-500 dark:text-gray-400 py-1">
                                                                 <span x-text="day"></span>
@@ -467,8 +453,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                                     <!-- Days Grid -->
                                                     <div class="grid grid-cols-7 gap-1">
                                                         <template x-for="day in calendarDays" :key="day.key">
-                                                            <button @click="selectDate(day.day)"
-                                                                :class="{
+                                                            <button @click="selectDate(day.day)" :class="{
                                                                     'bg-blue-500 text-white hover:bg-blue-600': day
                                                                         .isSelected,
                                                                     'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300': day
@@ -521,7 +506,7 @@ $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                    <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                                <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -555,85 +540,87 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 </thead>
                                 <tbody>
                                     <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $transactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $transaction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                                        <tr
-                                            class="border-b dark:bg-black dark:text-white dark:border-white hover:bg-gray-50">
-                                            <td class="px-4 py-4">
-                                                <?php echo e($transactions->firstItem() + $index); ?>
+                                    <tr
+                                        class="border-b dark:bg-black dark:text-white dark:border-white hover:bg-gray-50">
+                                        <td class="px-4 py-4">
+                                            <?php echo e($transactions->firstItem() + $index); ?>
 
-                                            </td>
-                                            <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-40">
-                                                <div class="whitespace-nowrap">
+                                        </td>
+                                        <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-40">
+                                            <div class="whitespace-nowrap">
 
-                                                    <div class="font-medium">
-                                                        <!--[if BLOCK]><![endif]--><?php if(empty($transaction->customer_id) && !empty($transaction->withdraw_id)): ?>
-                                                            برداشت
-                                                        <?php elseif(empty($transaction->customer_id) && $transaction->is_sell_table == 1): ?>
-                                                            معامله از صندوق
-                                                        <?php else: ?>
-                                                            <?php echo e($transaction->customer->fullname ?? 'نامشخص'); ?>
+                                                <div class="font-medium">
+                                                    <!--[if BLOCK]><![endif]--><?php if(empty($transaction->customer_id) &&
+                                                    !empty($transaction->withdraw_id)): ?>
+                                                    برداشت
+                                                    <?php elseif(empty($transaction->customer_id) &&
+                                                    $transaction->is_sell_table == 1): ?>
+                                                    معامله از صندوق
+                                                    <?php else: ?>
+                                                    <?php echo e($transaction->customer->fullname ?? 'نامشخص'); ?>
 
-                                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                                                    </div>
+                                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                                </div>
 
 
-                                                    <div class="text-gray-500 dark:text-white text-sm mt-1">
-                                                        <?php if(empty($transaction->customer_id) && $transaction->is_sell_table == 1): ?>
-                                                        <?php else: ?>
-                                                            <?php echo e($transaction->customer->account_number ?? '-'); ?>
+                                                <div class="text-gray-500 dark:text-white text-sm mt-1">
+                                                    <?php if(empty($transaction->customer_id) && $transaction->is_sell_table
+                                                    == 1): ?>
+                                                    <?php else: ?>
+                                                    <?php echo e($transaction->customer->account_number ?? '-'); ?>
 
-                                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                                                    </div>
+                                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                                </div>
+
+                                            </div>
+                                        </td>
+
+                                        <td class="px-4 py-4">
+                                            <?php echo e($transaction->type); ?>
+
+                                        </td>
+                                        <td class="px-4 py-4">
+                                            <?php echo e($transaction->account_type); ?>
+
+                                        </td>
+                                        <td
+                                            class="px-4 py-4 <?php echo e($transaction->type == 'رسید' ? 'text-green-600' : 'text-red-600'); ?>">
+                                            <?php echo e(number_format($transaction->amount, 2)); ?>
+
+                                        </td>
+                                        <td class="px-4 py-4">
+                                            <?php echo e($transaction->currency_fa); ?>
+
+                                        </td>
+                                        <td class="px-4 py-4 " dir="ltr">
+                                            <?php echo e(number_format($transaction->balance, 2)); ?>
+
+                                        </td>
+                                        <td class="px-4 py-4">
+                                            <?php echo e($transaction->description); ?>
+
+                                        </td>
+                                        <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-40">
+                                            <div class="whitespace-nowrap">
+                                                <div class="font-medium">
+
+                                                    <?php echo e(explode(' ', $transaction->date)[0]); ?>
+
 
                                                 </div>
-                                            </td>
+                                                <div class="text-gray-500 dark:text-white text-sm mt-1">
+                                                    <?php echo e(\Carbon\Carbon::parse($transaction->created_at)->format('h:i A')); ?>
 
-                                            <td class="px-4 py-4">
-                                                <?php echo e($transaction->type); ?>
-
-                                            </td>
-                                            <td class="px-4 py-4">
-                                                <?php echo e($transaction->account_type); ?>
-
-                                            </td>
-                                            <td
-                                                class="px-4 py-4 <?php echo e($transaction->type == 'رسید' ? 'text-green-600' : 'text-red-600'); ?>">
-                                                <?php echo e(number_format($transaction->amount, 2)); ?>
-
-                                            </td>
-                                            <td class="px-4 py-4">
-                                                <?php echo e($transaction->currency_fa); ?>
-
-                                            </td>
-                                            <td class="px-4 py-4 " dir="ltr">
-                                                <?php echo e(number_format($transaction->balance, 2)); ?>
-
-                                            </td>
-                                            <td class="px-4 py-4">
-                                                <?php echo e($transaction->description); ?>
-
-                                            </td>
-                                            <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-40">
-                                                <div class="whitespace-nowrap">
-                                                    <div class="font-medium">
-
-                                                        <?php echo e(explode(' ', $transaction->date)[0]); ?>
-
-
-                                                    </div>
-                                                    <div class="text-gray-500 dark:text-white text-sm mt-1">
-                                                        <?php echo e(\Carbon\Carbon::parse($transaction->created_at)->format('h:i A')); ?>
-
-                                                    </div>
                                                 </div>
-                                            </td>
-                                        </tr>
+                                            </div>
+                                        </td>
+                                    </tr>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                                        <tr>
-                                            <td colspan="9"
-                                                class="px-4 py-4 text-center text-gray-500 dark:text-gray-300">
-                                                هیچ تراکنشی یافت نشد
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td colspan="9" class="px-4 py-4 text-center text-gray-500 dark:text-gray-300">
+                                            هیچ تراکنشی یافت نشد
+                                        </td>
+                                    </tr>
                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </tbody>
                             </table>
@@ -666,38 +653,38 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                         <tbody>
                             <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $summary; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                                <tr class="border-b dark:border-white hover:bg-gray-100 dark:hover:bg-gray-800">
-                                    <td class="px-4 py-4"><?php echo e($index + 1); ?></td>
-                                    <td class="px-4 py-4 font-bold"><?php echo e($item->currency_fa); ?></td>
-                                    <td class="px-4 py-4 text-green-600"><?php echo e(number_format($item->receipt_cash, 2)); ?>
+                            <tr class="border-b dark:border-white hover:bg-gray-100 dark:hover:bg-gray-800">
+                                <td class="px-4 py-4"><?php echo e($index + 1); ?></td>
+                                <td class="px-4 py-4 font-bold"><?php echo e($item->currency_fa); ?></td>
+                                <td class="px-4 py-4 text-green-600"><?php echo e(number_format($item->receipt_cash, 2)); ?>
 
-                                    </td>
-                                    <td class="px-4 py-4 text-red-600"><?php echo e(number_format($item->withdrawal_cash, 2)); ?>
+                                </td>
+                                <td class="px-4 py-4 text-red-600"><?php echo e(number_format($item->withdrawal_cash, 2)); ?>
 
-                                    </td>
-                                    <td class="px-4 py-4 text-green-600"><?php echo e(number_format($item->receipt_bank, 2)); ?>
+                                </td>
+                                <td class="px-4 py-4 text-green-600"><?php echo e(number_format($item->receipt_bank, 2)); ?>
 
-                                    </td>
-                                    <td class="px-4 py-4 text-red-600"><?php echo e(number_format($item->withdrawal_bank, 2)); ?>
+                                </td>
+                                <td class="px-4 py-4 text-red-600"><?php echo e(number_format($item->withdrawal_bank, 2)); ?>
 
-                                    </td>
-                                    <td class="px-4 py-4 font-bold <?php echo e($item->balance_cash >= 0 ? 'text-green-600' : 'text-red-600'); ?>"
-                                        dir="ltr">
-                                        <?php echo e(number_format($item->balance_cash, 2)); ?>
+                                </td>
+                                <td class="px-4 py-4 font-bold <?php echo e($item->balance_cash >= 0 ? 'text-green-600' : 'text-red-600'); ?>"
+                                    dir="ltr">
+                                    <?php echo e(number_format($item->balance_cash, 2)); ?>
 
-                                    </td>
-                                    <td class="px-4 py-4 font-bold <?php echo e($item->balance_bank >= 0 ? 'text-green-600' : 'text-red-600'); ?>"
-                                        dir="ltr">
-                                        <?php echo e(number_format($item->balance_bank, 2)); ?>
+                                </td>
+                                <td class="px-4 py-4 font-bold <?php echo e($item->balance_bank >= 0 ? 'text-green-600' : 'text-red-600'); ?>"
+                                    dir="ltr">
+                                    <?php echo e(number_format($item->balance_bank, 2)); ?>
 
-                                    </td>
-                                </tr>
+                                </td>
+                            </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                                <tr>
-                                    <td colspan="8" class="px-4 py-4 text-center text-gray-500 dark:text-gray-300">
-                                        داده‌ای برای نمایش وجود ندارد
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td colspan="8" class="px-4 py-4 text-center text-gray-500 dark:text-gray-300">
+                                    داده‌ای برای نمایش وجود ندارد
+                                </td>
+                            </tr>
                             <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </tbody>
                     </table>
@@ -705,43 +692,181 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             </div>
         </div>
 
-         <div  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;" class="bg-[#F5F5F5] dark:bg-black dark:border dark:border-white p-4 rounded-[12px] mx-auto mt-10">
-        <!-- جدول موجودی هر ارز به صورت جداگانه -->
-        <div class="mt-8" >
-            <h3 class="text-xl font-bold mb-4 text-center dark:text-white ">موجودی  صندوق نقدی و بانکی</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                <?php $__currentLoopData = $totalBalanceByCurrency; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $totalAmount): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <!--[if BLOCK]><![endif]--><?php if($totalAmount > 0): ?>
-                        <?php
-                            $safe = $currencySafeBalance[$currencyCode] ?? 0;
-                            $bank = $bankAccountBalance[$currencyCode] ?? 0;
-                            $currencyName = $currencies[$currencyCode] ?? $currencyCode;
-                        ?>
-                        <div    style="box-shadow: 0px 4px 4px 0px #00000040;" class="bg-gradient-to-br from-white/40 to-white dark:from-gray-800 dark:to-gray-900 
-                                    p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="font-bold text-lg dark:text-white"><?php echo e($currencyName); ?></span>
-                                <span class="text-xl font-bold text-black" dir="ltr">
-                                    <?php echo e(number_format($totalAmount, 2)); ?>
 
-                                </span>
+        <div style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;"
+            class="bg-[#F5F5F5] dark:bg-black dark:border dark:border-white p-4 rounded-[12px] mx-auto mt-10">
+            <!-- جدول موجودی هر ارز به صورت جداگانه -->
+            <div class="mt-8">
+                <h3 class="text-xl font-bold mb-4 text-center dark:text-white ">موجودی صندوق نقدی و بانکی</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    <?php $__currentLoopData = $totalBalanceByCurrency; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $totalAmount): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <!--[if BLOCK]><![endif]--><?php if($totalAmount > 0): ?>
+                    <?php
+                    $safe = $currencySafeBalance[$currencyCode] ?? 0;
+                    $bank = $bankAccountBalance[$currencyCode] ?? 0;
+                    $currencyName = $currencies[$currencyCode] ?? $currencyCode;
+                    ?>
+                    <div style="box-shadow: 0px 4px 4px 0px #00000040;" class="bg-gradient-to-br from-white/40 to-white dark:from-gray-800 dark:to-gray-900 
+                                    p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-bold text-lg dark:text-white"><?php echo e($currencyName); ?></span>
+                            <span class="text-xl font-bold text-black" dir="ltr">
+                                <?php echo e(number_format($totalAmount, 2)); ?>
+
+                            </span>
+                        </div>
+                        <div class="text-sm text-black dark:text-gray-300">
+                            <div class="flex justify-between">
+                                <span>نقدی:</span>
+                                <span dir="ltr"><?php echo e(number_format($safe, 2)); ?></span>
                             </div>
-                            <div class="text-sm text-black dark:text-gray-300">
-                                <div class="flex justify-between">
-                                    <span>نقدی:</span>
-                                    <span dir="ltr"><?php echo e(number_format($safe, 2)); ?></span>
-                                </div>
-                                <div class="flex justify-between mt-1">
-                                    <span>بانکی:</span>
-                                    <span dir="ltr"><?php echo e(number_format($bank, 2)); ?></span>
-                                </div>
+                            <div class="flex justify-between mt-1">
+                                <span>بانکی:</span>
+                                <span dir="ltr"><?php echo e(number_format($bank, 2)); ?></span>
                             </div>
                         </div>
+                    </div>
                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                </div>
             </div>
         </div>
-      </div>
+
+
+        <div class="flex  gap-4 p-10 bg-[#F5F5F5] mt-5" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+
+
+
+
+            <!--  سود امروز -->
+
+            <div class="group flex flex-col justify-between border rounded-2xl
+                        bg-gradient-to-br from-white/40 to-white  
+                        shadow-md hover:shadow-xl transition-colors duration-500 ease-in-out
+
+                        w-full h-[180px] p-6">
+
+
+                <!-- ردیف بالا -->
+                <div class="flex items-start justify-between w-full">
+                    <div
+                        class="flex items-center justify-center group-hover:bg-white  bg-[#108614] rounded-full h-[60px] w-[60px] shadow-lg">
+
+
+
+                        <svg width="26" height="26" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            class="block group-hover:hidden">
+                            <path
+                                d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18"
+                                stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+
+                        </svg>
+
+
+
+
+
+
+                        <svg width="26" height="26" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            class="hidden group-hover:block">
+                            <path
+                                d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18"
+                                stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+
+                    </div>
+
+                    <!-- عنوان -->
+                    <p class="text-start font-medium text-[18px] text-[#108614]
+            " style="font-weight: 400;">
+                        سود امروز
+                    </p>
+                </div>
+
+                <!-- عدد + آپدیت -->
+                <div class="flex flex-col items-end text-end space-y-2">
+                    <p class="text-[26px] font-extrabold text-[#108614]
+            ">
+                        <?php echo e($todayprofit); ?>
+
+                    </p>
+
+
+                </div>
+            </div>
+
+
+
+
+
+            <!--  ضرر امروز  -->
+
+            <div class="group flex flex-col justify-between border rounded-2xl
+                       bg-gradient-to-br from-white/40 to-white  hover:bg-opacity-100
+                        shadow-md hover:shadow-xl transition-colors duration-500 ease-in-out
+
+                        w-full h-[180px] p-6">
+
+
+
+
+                <!-- ردیف بالا -->
+                <div class="flex items-start justify-between w-full">
+                    <div
+                        class="flex items-center justify-center group-hover:bg-white  bg-[#DD2424] rounded-full h-[60px] w-[60px] shadow-lg">
+
+
+
+                        <svg width="26" height="26" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            class="block group-hover:hidden">
+                            <path
+                                d="M14.6203 10.6653C13.6227 9.67375 13.1238 9.17795 12.5051 9.17802C11.8864 9.17809 11.3876 9.674 10.3902 10.6658L10.1509 10.9038C9.15254 11.8965 8.65338 12.3929 8.03422 12.3926C7.41506 12.3924 6.91626 11.8957 5.91867 10.9023L2 7M22 18V12.4542M22 18H16.4179M22 18L17.5 13.5"
+                                stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+
+                        </svg>
+
+
+
+
+
+
+                        <svg width="26" height="26" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            class="hidden group-hover:block">
+                            <path
+                                d="M14.6203 10.6653C13.6227 9.67375 13.1238 9.17795 12.5051 9.17802C11.8864 9.17809 11.3876 9.674 10.3902 10.6658L10.1509 10.9038C9.15254 11.8965 8.65338 12.3929 8.03422 12.3926C7.41506 12.3924 6.91626 11.8957 5.91867 10.9023L2 7M22 18V12.4542M22 18H16.4179M22 18L17.5 13.5"
+                                stroke="#DD2424" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+
+
+
+
+                    </div>
+
+                    <!-- عنوان -->
+                    <p class="text-start font-medium text-[18px] text-[#DD2424]
+            " style="font-weight: 400;">
+                        ضرر امروز
+                    </p>
+                </div>
+
+                <!-- عدد + آپدیت -->
+                <div class="flex flex-col items-end text-end space-y-2">
+                    <p class="text-[26px] font-extrabold text-[#DD2424]
+            ">
+                        <?php echo e($todaylost); ?>
+
+                    </p>
+
+
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+
     </div>
 
     <script>
@@ -1225,5 +1350,4 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             background: #555;
         }
     </style>
-</div>
-<?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/journal.blade.php ENDPATH**/ ?>
+</div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/journal.blade.php ENDPATH**/ ?>

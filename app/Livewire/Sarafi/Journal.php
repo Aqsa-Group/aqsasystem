@@ -2,18 +2,20 @@
 
 namespace App\Livewire\Sarafi;
 
-use Livewire\Component;
-use App\Models\Sarafi\Journals;
-use App\Models\Sarafi\Customer;
-use App\Models\Sarafi\CurrencySafe;
 use App\Models\Sarafi\BankAccount;
+use App\Models\Sarafi\CurrencySafe;
+use App\Models\Sarafi\Customer;
+use App\Models\Sarafi\Journals;
+use App\Models\Sarafi\Revenue;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Livewire\Component;
 use Livewire\WithPagination;
-use Mpdf\Mpdf;
+use Morilog\Jalali\Jalalian;
 use Mpdf\Config\ConfigVariables;
 use Mpdf\Config\FontVariables;
-use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
-use Morilog\Jalali\Jalalian;
+use Mpdf\Mpdf;
 
 class Journal extends Component
 {
@@ -43,7 +45,7 @@ class Journal extends Component
         $todayJalali = Jalalian::now();
         $this->fromDate = $todayJalali->format('Y-m-d');
         $this->toDate = $todayJalali->format('Y-m-d');
-        
+
         // تعریف ارزها با کد و نام فارسی
         $this->currencies = [
             'afn' => 'افغانی',
@@ -59,7 +61,7 @@ class Journal extends Component
             'sar' => 'ریال',
             'inr' => 'روپیه',
         ];
-        
+
         // محاسبه موجودی‌ها
         $this->calculateBalances();
     }
@@ -95,9 +97,23 @@ class Journal extends Component
         $transactions = $this->getFilteredTransactions()->paginate($this->perPage);
         $summary = $this->getSummaryData()->get();
         $customers = Customer::select('id', 'fullname', 'account_number', 'phone')->orderBy('fullname')->get();
-        
-        // محاسبه موجودی‌ها
+
         $this->calculateBalances();
+
+        $timezone = 'Asia/Kabul';
+        $today = Carbon::now($timezone)->startOfDay();
+        $tomorrow = Carbon::now($timezone)->addDay()->startOfDay();
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+
+         $todayprofit = Revenue::where('admin_id', $adminId)
+            ->whereBetween('created_at', [$today, $tomorrow])
+            ->sum('profit');
+
+        $todaylost = Revenue::where('admin_id', $adminId)
+            ->whereBetween('created_at', [$today, $tomorrow])
+            ->sum('lost');
 
         return view('livewire.sarafi.journal', [
             'transactions' => $transactions,
@@ -107,127 +123,132 @@ class Journal extends Component
             'currencySafeBalance' => $this->currencySafeBalance,
             'bankAccountBalance' => $this->bankAccountBalance,
             'totalBalanceByCurrency' => $this->totalBalanceByCurrency,
+            'todayprofit' => $todayprofit,
+            'todaylost' => $todaylost,
         ]);
     }
+public function printReport()
+{
+    // دریافت داده‌های فیلتر شده برای PDF
+    $transactions = $this->getFilteredTransactions()->get();
+    $summary = $this->getSummaryData()->get();
+    
+    // محاسبه سود و ضرر امروز دقیقاً مثل تابع render
+    $timezone = 'Asia/Kabul';
+    $today = Carbon::now($timezone)->startOfDay();
+    $tomorrow = Carbon::now($timezone)->addDay()->startOfDay();
+    $user = Auth::guard('sarafi')->user();
+    $adminId = $user->admin_id ?? $user->id;
 
-    public function printReport()
-    {
-        // دریافت داده‌های فیلتر شده برای PDF
-        $transactions = $this->getFilteredTransactions()->get();
-        $summary = $this->getSummaryData()->get();
+    $todayProfit = Revenue::where('admin_id', $adminId)
+        ->whereBetween('created_at', [$today, $tomorrow])
+        ->sum('profit');
 
-        // اطلاعات مشتری انتخاب شده
-        $customerName = '';
-        $customerAccount = '';
-        if ($this->selectedCustomer) {
-            $customer = Customer::find($this->selectedCustomer);
-            $customerName = $customer ? $customer->fullname : '';
-            $customerAccount = $customer ? $customer->account_number : '';
-        }
+    $todayLoss = Revenue::where('admin_id', $adminId)
+        ->whereBetween('created_at', [$today, $tomorrow])
+        ->sum('lost');
 
-        // تنظیمات mPDF
-        $defaultConfig = (new ConfigVariables())->getDefaults();
-        $fontDirs = $defaultConfig['fontDir'];
-        
-        $defaultFontConfig = (new FontVariables())->getDefaults();
-        $fontData = $defaultFontConfig['fontdata'];
-
-        $mpdf = new Mpdf([
-            'mode' => 'utf-8',
-            'format' => 'A4-L',
-            'default_font_size' => 10,
-            'default_font' => 'dejavusans',
-            'margin_left' => 15,
-            'margin_right' => 15,
-            'margin_top' => 25,
-            'margin_bottom' => 20,
-            'margin_header' => 5,
-            'margin_footer' => 5,
-            'orientation' => 'L',
-            'directionality' => 'rtl',
-            'fontDir' => array_merge($fontDirs, [
-                public_path('fonts'),
-                storage_path('fonts'),
-            ]),
-            'fontdata' => $fontData + [
-                'dejavusans' => [
-                    'R' => 'DejaVuSans.ttf',
-                    'B' => 'DejaVuSans-Bold.ttf',
-                    'I' => 'DejaVuSans-Oblique.ttf',
-                    'BI' => 'DejaVuSans-BoldOblique.ttf',
-                ]
-            ],
-            'tempDir' => storage_path('app/mpdf/tmp'),
-            'autoScriptToLang' => true,
-            'autoLangToFont' => true,
-            'autoArabic' => true,
-        ]);
-
-        // هدر و فوتر
-        $mpdf->SetHTMLHeader('
-            <div style="text-align: center; font-size: 9pt; color: #666; border-bottom: 1px solid #ddd; padding-bottom: 5px;">
-                گزارش معاملات روزانه - سیستم صرافی
-            </div>
-        ');
-        
-        $mpdf->SetHTMLFooter('
-            <table width="100%" style="border-top: 1px solid #ddd; font-size: 8pt;">
-                <tr>
-                    <td width="33%" style="text-align: left;">صفحه {PAGENO} از {nbpg}</td>
-                    <td width="34%" style="text-align: center;">تاریخ تولید: ' . now()->format('Y/m/d H:i') . '</td>
-                    <td width="33%" style="text-align: right;">تعداد رکوردها: ' . $transactions->count() . '</td>
-                </tr>
-            </table>
-        ');
-
-        // محاسبه موجودی‌ها برای PDF
-        $this->calculateBalances();
-
-        // داده‌های ارسالی به view
-        $data = [
-            'transactions' => $transactions,
-            'summary' => $summary,
-            'customerName' => $customerName,
-            'customerAccount' => $customerAccount,
-            'currencies' => $this->currencies,
-            'currencySafeBalance' => $this->currencySafeBalance,
-            'bankAccountBalance' => $this->bankAccountBalance,
-            'totalBalanceByCurrency' => $this->totalBalanceByCurrency,
-            'filters' => [
-                'transactionType' => $this->transactionType,
-                'accountType' => $this->accountType,
-                'currency' => $this->currency,
-                'fromDate' => $this->fromDate,
-                'toDate' => $this->toDate,
-            ],
-        ];
-
-        // رندر view و تبدیل به HTML
-        $html = view('pdf.Sarafi.journal', $data)->render();
-        
-        // نوشتن HTML در PDF
-        $mpdf->WriteHTML($html);
-
-        // ذخیره فایل
-        $fileName = 'journal-report-' . now()->format('Y-m-d-H-i-s') . '.pdf';
-        $path = storage_path('app/public/reports/' . $fileName);
-        
-        // اطمینان از وجود دایرکتوری
-        if (!file_exists(dirname($path))) {
-            mkdir(dirname($path), 0777, true);
-        }
-
-        // ذخیره PDF
-        $mpdf->Output($path, 'F');
-
-        // ارسال event به JS
-        $this->dispatch('print-pdf', 
-            url: asset('storage/reports/' . $fileName)
-        );
-
-        // پیام موفقیت
-        session()->flash('message', 'گزارش با موفقیت تولید شد و برای چاپ آماده است.');
+    // اطلاعات مشتری انتخاب شده
+    $customerName = '';
+    $customerAccount = '';
+    if ($this->selectedCustomer) {
+        $customer = Customer::find($this->selectedCustomer);
+        $customerName = $customer ? $customer->fullname : '';
+        $customerAccount = $customer ? $customer->account_number : '';
     }
+
+    // تنظیمات mPDF
+    $defaultConfig = (new ConfigVariables())->getDefaults();
+    $fontDirs = $defaultConfig['fontDir'];
+
+    $defaultFontConfig = (new FontVariables())->getDefaults();
+    $fontData = $defaultFontConfig['fontdata'];
+
+    $mpdf = new Mpdf([
+        'mode' => 'utf-8',
+        'format' => 'A4-L',
+        'default_font_size' => 9,
+        'default_font' => 'dejavusans',
+        'margin_left' => 10,
+        'margin_right' => 10,
+        'margin_top' => 15,
+        'margin_bottom' => 15,
+        'margin_header' => 5,
+        'margin_footer' => 5,
+        'orientation' => 'L',
+        'directionality' => 'rtl',
+        'fontDir' => array_merge($fontDirs, [
+            public_path('fonts'),
+            storage_path('fonts'),
+        ]),
+        'fontdata' => $fontData + [
+            'dejavusans' => [
+                'R' => 'DejaVuSans.ttf',
+                'B' => 'DejaVuSans-Bold.ttf',
+                'I' => 'DejaVuSans-Oblique.ttf',
+                'BI' => 'DejaVuSans-BoldOblique.ttf',
+            ]
+        ],
+        'tempDir' => storage_path('app/mpdf/tmp'),
+        'autoScriptToLang' => true,
+        'autoLangToFont' => true,
+        'autoArabic' => true,
+    ]);
+
+   
+
+    // محاسبه موجودی‌ها برای PDF
+    $this->calculateBalances();
+
+    // داده‌های ارسالی به view
+    $data = [
+        'transactions' => $transactions,
+        'summary' => $summary,
+        'customerName' => $customerName,
+        'customerAccount' => $customerAccount,
+        'currencies' => $this->currencies,
+        'currencySafeBalance' => $this->currencySafeBalance,
+        'bankAccountBalance' => $this->bankAccountBalance,
+        'totalBalanceByCurrency' => $this->totalBalanceByCurrency,
+        'todayProfit' => $todayProfit ?? 0,
+        'todayLoss' => $todayLoss ?? 0,
+        'filters' => [
+            'transactionType' => $this->transactionType,
+            'accountType' => $this->accountType,
+            'currency' => $this->currency,
+            'fromDate' => $this->fromDate,
+            'toDate' => $this->toDate,
+        ],
+    ];
+
+    // دیباگ: بررسی مقادیر
+    Log::info('PDF Data:', [
+        'todayProfit' => $todayProfit,
+        'todayLoss' => $todayLoss,
+        'transactions_count' => $transactions->count()
+    ]);
+
+    // رندر view و تبدیل به HTML
+    $html = view('pdf.Sarafi.journal', $data)->render();
+
+    $mpdf->WriteHTML($html);
+
+    $fileName = 'journal-report-' . now()->format('Y-m-d-H-i-s') . '.pdf';
+    $path = storage_path('app/public/reports/' . $fileName);
+
+    if (!file_exists(dirname($path))) {
+        mkdir(dirname($path), 0777, true);
+    }
+
+    $mpdf->Output($path, 'F');
+
+    $this->dispatch(
+        'print-pdf',
+        url: asset('storage/reports/' . $fileName)
+    );
+
+    session()->flash('message', 'گزارش با موفقیت تولید شد و برای چاپ آماده است.');
+}
 
     private function getFilteredTransactions()
     {
@@ -241,12 +262,15 @@ class Journal extends Component
             ->when($this->selectedCustomer, fn($query) => $query->where('customer_id', $this->selectedCustomer))
             ->when($this->currency, fn($query) => $query->where('currency', $this->currency))
             ->when($this->search, function ($query) {
-                $query->where(fn($q) => 
+                $query->where(
+                    fn($q) =>
                     $q->where('description', 'like', '%' . $this->search . '%')
-                      ->orWhereHas('customer', fn($c) => 
-                          $c->where('fullname', 'like', '%' . $this->search . '%')
-                            ->orWhere('account_number', 'like', '%' . $this->search . '%')
-                      )
+                        ->orWhereHas(
+                            'customer',
+                            fn($c) =>
+                            $c->where('fullname', 'like', '%' . $this->search . '%')
+                                ->orWhere('account_number', 'like', '%' . $this->search . '%')
+                        )
                 );
             });
 
@@ -254,7 +278,7 @@ class Journal extends Component
         if ($this->fromDate) {
             $query->where('date', '>=', $this->fromDate);
         }
-        
+
         if ($this->toDate) {
             $query->where('date', '<=', $this->toDate);
         }
@@ -285,7 +309,7 @@ class Journal extends Component
         if ($this->fromDate) {
             $query->where('date', '>=', $this->fromDate);
         }
-        
+
         if ($this->toDate) {
             $query->where('date', '<=', $this->toDate);
         }
@@ -307,21 +331,24 @@ class Journal extends Component
             SUM(CASE WHEN type = "رسید" AND account_type = "بانکی" THEN amount ELSE 0 END) - 
             SUM(CASE WHEN type = "برد" AND account_type = "بانکی" THEN amount ELSE 0 END) as balance_bank
         ')
-        ->groupBy('currency');
+            ->groupBy('currency');
     }
 
     public function resetFilters()
     {
         $this->reset([
-            'transactionType', 'accountType', 'selectedCustomer',
-            'currency', 'search'
+            'transactionType',
+            'accountType',
+            'selectedCustomer',
+            'currency',
+            'search'
         ]);
-        
+
         // تنظیم مجدد تاریخ به امروز
         $todayJalali = Jalalian::now();
         $this->fromDate = $todayJalali->format('Y-m-d');
         $this->toDate = $todayJalali->format('Y-m-d');
-        
+
         $this->resetPage();
     }
 

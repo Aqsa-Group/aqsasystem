@@ -21,7 +21,7 @@ return new class extends Migration
 
             $table->unsignedBigInteger('staff_id');
             $table->string('expanses_type');
-            $table->string('amount');
+            $table->decimal('amount',20,2);
             $table->string('currency');
             $table->date('date');
             $table->string('description');
