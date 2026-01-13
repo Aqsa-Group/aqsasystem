@@ -400,54 +400,46 @@ class BuySellCurrency extends Component
     /**
      * Calculate totals and net amounts
      */
-    private function calculateTotals()
-    {
-        $user = Auth::guard('sarafi')->user();
-        if (!$user) {
-            return;
-        }
+   private function calculateTotals(): void
+{
+    $user = Auth::guard('sarafi')->user();
+    if (!$user) {
+        return;
+    }
 
-        $userId = $user->id;
-        $adminId = $user->admin_id ?? $user->id;
+    // 🔑 ادمین واقعی (صاحب صندوق)
+    $adminId = $user->admin_id ?? $user->id;
 
-        // Try to find user's currency safe
-        $safe = CurrencySafe::where('user_id', $userId)->first();
+ 
+    $safe = CurrencySafe::where('user_id', $adminId)->first();
 
-        // If user safe not found, use admin safe
-        if (!$safe) {
-            $safe = CurrencySafe::where('user_id', $adminId)->first();
-        }
+    foreach ($this->currencies as $currency) {
+        $code = $currency['code'];
+        $this->netAmounts[$code] = $safe ? ($safe->{$code} ?? 0) : 0;
+    }
 
-        // Display actual balances if safe exists
-        if ($safe) {
-            foreach ($this->currencies as $currency) {
-                $code = $currency['code'];
-                $this->netAmounts[$code] = $safe->{$code} ?? 0;
-            }
+
+    $currencyCodes = array_column($this->currencies, 'code');
+
+    $this->totalBuy  = array_fill_keys($currencyCodes, 0);
+    $this->totalSell = array_fill_keys($currencyCodes, 0);
+
+    $transactions = CashExchange::where('admin_id', $adminId)->get();
+
+    foreach ($transactions as $transaction) {
+
+        if ($transaction->type === 'خرید') {
+           
+            $this->totalBuy[$transaction->to_currency]    += $transaction->eq_amount;
+            $this->totalSell[$transaction->from_currency] += $transaction->amount;
+
         } else {
-            // Display zero if no safe exists
-            foreach ($this->currencies as $currency) {
-                $code = $currency['code'];
-                $this->netAmounts[$code] = 0;
-            }
-        }
-
-        // Calculate buy and sell totals
-        $this->totalBuy = array_fill_keys(array_column($this->currencies, 'code'), 0);
-        $this->totalSell = array_fill_keys(array_column($this->currencies, 'code'), 0);
-
-        $allTransactions = CashExchange::all();
-
-        foreach ($allTransactions as $transaction) {
-            if ($transaction->type === 'خرید') {
-                $this->totalBuy[$transaction->to_currency] += $transaction->eq_amount;
-                $this->totalSell[$transaction->from_currency] += $transaction->amount;
-            } else {
-                $this->totalSell[$transaction->from_currency] += $transaction->amount;
-                $this->totalBuy[$transaction->to_currency] += $transaction->eq_amount;
-            }
+            $this->totalSell[$transaction->from_currency] += $transaction->amount;
+            $this->totalBuy[$transaction->to_currency]    += $transaction->eq_amount;
         }
     }
+}
+
 
     // ==================== PROFIT/LOSS CALCULATION METHODS ====================
 
