@@ -1396,45 +1396,73 @@ class BuySellCurrency extends Component
     /**
      * Load transaction data for editing
      */
-    public function editTransaction($id)
-    {
-        try {
-            $transaction = CashExchange::findOrFail($id);
+  public function editTransaction(int $id): void
+{
+    try {
+        $user = Auth::guard('sarafi')->user();
 
-            // Check user access
-            $user = Auth::guard('sarafi')->user();
-            if ($transaction->user_id !== $user->id && $transaction->admin_id !== $user->id) {
-                session()->flash('message', 'دسترسی به این تراکنش مجاز نیست.');
-                return;
-            }
+        $transaction = CashExchange::findOrFail($id);
 
-            // Fill form with transaction data
-            $this->editingId = $transaction->id;
-            $this->isEditing = true;
-            $this->transactionType = $transaction->type;
-            $this->currency = $transaction->from_currency;
-            $this->to_currency = $transaction->to_currency;
-            $this->amount = number_format($transaction->amount, 2, '.', '');
-            $this->eq_amount = number_format($transaction->eq_amount, 2, '.', '');
-            $this->exchange_rate = number_format($transaction->exchange_rate, 2, '.', '');
-            $this->date = $transaction->date;
-            $this->description = $transaction->description;
+        /**
+         * 🔐 کنترل دسترسی
+         * - ادمین: دسترسی به همه تراکنش‌های خودش
+         * - یوزر: فقط تراکنش‌های مربوط به همان ادمین
+         */
+        $ownerId = $transaction->admin_id ?? $transaction->user_id;
 
-            // Convert amounts to words
-            $this->convertAmountToWords($this->amount, 'amountInWords');
-            $this->convertAmountToWords($this->eq_amount, 'eqAmountInWords');
-            $this->convertAmountToWords($this->exchange_rate, 'exchangeRateInWords');
-
-            // محاسبه سود/ضرر
-            $this->calculateRealTimeProfitLoss();
-
-            $this->transaction_file = null;
-
-            session()->flash('info', 'حالت ویرایش فعال شد. داده‌های تراکنش در فرم لود شدند.');
-        } catch (\Exception $e) {
-            session()->flash('message', 'خطا در لود کردن تراکنش: ' . $e->getMessage());
+        if ($user->id !== $ownerId && $user->admin_id !== $ownerId) {
+            session()->flash('message', 'دسترسی به این تراکنش مجاز نیست.');
+            return;
         }
+
+        /**
+         * ✏️ فعال‌سازی حالت ویرایش
+         */
+        $this->editingId      = $transaction->id;
+        $this->isEditing      = true;
+        $this->transactionType = $transaction->type;
+
+        /**
+         * 💱 مقادیر ارزی
+         */
+        $this->currency     = $transaction->from_currency;
+        $this->to_currency  = $transaction->to_currency;
+
+        /**
+         * 💰 مقادیر عددی (فرمت استاندارد)
+         */
+        $this->amount        = number_format($transaction->amount, 2, '.', '');
+        $this->eq_amount     = number_format($transaction->eq_amount, 2, '.', '');
+        $this->exchange_rate = number_format($transaction->exchange_rate, 6, '.', '');
+
+        /**
+         * 🗓 سایر اطلاعات
+         */
+        $this->date        = $transaction->date;
+        $this->description = $transaction->description;
+
+        /**
+         * 🔤 تبدیل اعداد به حروف
+         */
+        $this->convertAmountToWords($this->amount, 'amountInWords');
+        $this->convertAmountToWords($this->eq_amount, 'eqAmountInWords');
+        $this->convertAmountToWords($this->exchange_rate, 'exchangeRateInWords');
+
+        /**
+         * 📊 محاسبه سود / ضرر
+         */
+        $this->calculateRealTimeProfitLoss();
+
+        /**
+         * 📎 فایل جدید انتخاب نشده
+         */
+        $this->transaction_file = null;
+
+        session()->flash('info', 'حالت ویرایش فعال شد. اطلاعات تراکنش با موفقیت بارگذاری گردید.');
+    } catch (\Throwable $e) {
+        session()->flash('message', 'خطا در بارگذاری تراکنش: ' . $e->getMessage());
     }
+}
 
     /**
      * Cancel edit operation
@@ -1482,49 +1510,50 @@ class BuySellCurrency extends Component
     /**
      * Confirm and execute deletion
      */
-    public function deleteConfirmed()
-    {
-        if (!$this->confirmDeleteId) {
-            return;
-        }
-
-        try {
-            DB::transaction(function () {
-                $transaction = CashExchange::findOrFail($this->confirmDeleteId);
-
-                // Return balance to safe
-                $safe = CurrencySafe::where('user_id', $transaction->user_id)->first();
-                if ($safe) {
-                    if ($transaction->type === 'خرید') {
-                        // Reverse buy: add back the given currency, subtract the received currency
-                        $safe->{$transaction->from_currency} += $transaction->amount;
-                        $safe->{$transaction->to_currency} -= $transaction->eq_amount;
-                    } else {
-                        // Reverse sell: add back the sold currency, subtract the received currency
-                        $safe->{$transaction->from_currency} += $transaction->amount;
-                        $safe->{$transaction->to_currency} -= $transaction->eq_amount;
-                    }
-                    $safe->save();
-                }
-
-                // حذف سود/ضرر مرتبط
-                Revenue::where('safe_exchange_id', $transaction->id)->delete();
-
-                // Delete file
-                if ($transaction->transaction_file) {
-                    Storage::disk('public')->delete($transaction->transaction_file);
-                }
-
-                $transaction->delete();
-
-                session()->flash('message', 'تراکنش با موفقیت حذف شد و موجودی بازگردانده شد.');
-                $this->confirmDeleteId = null;
-            });
-        } catch (\Exception $e) {
-            session()->flash('message', 'خطا در حذف تراکنش: ' . $e->getMessage());
-            $this->confirmDeleteId = null;
-        }
+  public function deleteConfirmed()
+{
+    if (!$this->confirmDeleteId) {
+        return;
     }
+
+    try {
+        DB::transaction(function () {
+
+            $transaction = CashExchange::findOrFail($this->confirmDeleteId);
+
+            // 🔑 تعیین صاحب صندوق (ادمین)
+            $ownerId = $transaction->admin_id ?? $transaction->user_id;
+
+            // همیشه صندوق ادمین را بگیر
+            $safe = CurrencySafe::where('user_id', $ownerId)->lockForUpdate()->first();
+
+            if ($safe) {
+                // برگشت موجودی (خرید و فروش منطق یکسان دارند)
+                $safe->{$transaction->from_currency} += $transaction->amount;
+                $safe->{$transaction->to_currency}   -= $transaction->eq_amount;
+
+                $safe->save();
+            }
+
+            // حذف سود / ضرر
+            Revenue::where('safe_exchange_id', $transaction->id)->delete();
+
+            // حذف فایل
+            if ($transaction->transaction_file) {
+                Storage::disk('public')->delete($transaction->transaction_file);
+            }
+
+            $transaction->delete();
+
+            session()->flash('message', 'تراکنش با موفقیت حذف شد و موجودی صندوق اصلاح گردید.');
+            $this->confirmDeleteId = null;
+        });
+    } catch (\Exception $e) {
+        session()->flash('message', 'خطا در حذف تراکنش: ' . $e->getMessage());
+        $this->confirmDeleteId = null;
+    }
+}
+
 
     /**
      * Cancel deletion operation
