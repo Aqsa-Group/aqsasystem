@@ -69,7 +69,7 @@ class BuySellCurrency extends Component
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
 
-        $transactions = CashExchange::where('user_id', $adminId)
+        $transactions = CashExchange::where('admin_id', $adminId)
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
                     $q->where('description', 'like', '%' . $this->search . '%')
