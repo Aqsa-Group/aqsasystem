@@ -1130,6 +1130,7 @@ class BuySellCurrency extends Component
      */
     public function submitTransaction()
     {
+
         $this->validate([
             'currency' => 'required|string',
             'to_currency' => 'required|string|different:currency',
@@ -1203,9 +1204,13 @@ class BuySellCurrency extends Component
                         $filePath = $this->transaction_file->store('transaction-files', 'public');
                     }
 
+
+                    $user = Auth::guard('sarafi')->user();
+                    $adminId = $user->admin_id ?? $user->id;
+
                     $exchange = CashExchange::create([
-                        'user_id' => $userId,
-                        'admin_id' => $adminId !== $userId ? $adminId : null,
+                        'user_id'          => $user->id,
+                        'admin_id'         => $adminId,
                         'type' => $this->transactionType,
                         'from_currency' => $this->currency,
                         'amount' => $amount,

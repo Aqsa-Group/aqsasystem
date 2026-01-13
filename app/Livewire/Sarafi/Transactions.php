@@ -600,6 +600,9 @@ class Transactions extends Component
         $transaction = Transaction::findOrFail($this->confirmDeleteId);
 
         $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        
         $this->applyCurrencyChange($user, $transaction->currency, $transaction->amount, $transaction->type, $transaction->account_type, true);
 
         $transaction->delete();
