@@ -622,6 +622,8 @@ class Transactions extends Component
         $this->selectedAccount = (int) $this->selectedAccount;
         $this->amount = str_replace(',', '', $this->amount);
         $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
 
         $this->validate([
             'selectedAccount' => 'required|integer|exists:sarafi.customers,id',
@@ -637,7 +639,6 @@ class Transactions extends Component
         ]);
 
         $filePath = $this->file ? $this->file->store('transactions', 'public') : null;
-        $adminId = $user->admin_id ?? $user->id;
 
         $data = [
             'customer_id'      => $this->selectedAccount,

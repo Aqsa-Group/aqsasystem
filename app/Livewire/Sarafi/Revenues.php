@@ -5,7 +5,7 @@ namespace App\Livewire\Sarafi;
 use App\Models\Sarafi\Customer;
 use App\Models\Sarafi\Revenue;
 use App\Models\Sarafi\Transaction;
-use App\Models\Sarafi\WithdrawRevenue; 
+use App\Models\Sarafi\WithdrawRevenue; // اضافه کردن این خط
 use App\Models\Sarafi\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;

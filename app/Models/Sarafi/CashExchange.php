@@ -10,110 +10,89 @@ class CashExchange extends Model
 {
     protected $connection = 'sarafi';
     protected $table = 'cash_exchange';
-
     protected $guarded = [];
+
+    /* ================= RELATIONS ================= */
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-
     public function admin()
     {
         return $this->belongsTo(User::class, 'admin_id');
     }
-
-
-    
 
     public function journals()
     {
         return $this->hasMany(Journals::class, 'buysell_id');
     }
 
-    /* ================= HELPERS ================= */
-
-    private static function currencyFa(string $code): string
-    {
-        return match (strtolower($code)) {
-            'usd' => 'دالر',
-            'afn' => 'افغانی',
-            'irr' => 'ریال ایران',
-            'eur' => 'یورو',
-            'aed' => 'درهم امارات',
-            'try' => 'لیر ترکیه',
-            'cny' => 'یوان چین',
-            'pkr' => 'روپیه پاکستان',
-            'gbp' => 'پوند انگلیس',
-            'jpy' => 'ین جاپان',
-            'sar' => 'ریال سعودی',
-            'inr' => 'روپیه هند',
-            default => strtoupper($code),
-        };
-    }
-
     /* ================= BOOT ================= */
 
-        protected static function booted()
-        {
-            /** ---------- CREATED ---------- */
-            static::created(function ($model) {
-                self::syncJournals($model);
-            });
+    protected static function booted()
+    {
+        // after create
+        static::created(function ($model) {
+            self::syncJournals($model);
+        });
 
-            /** ---------- UPDATING ---------- */
-            static::updating(function ($model) {
-                // حذف ژورنال‌های قبلی
-                Journals::where('buysell_id', $model->id)->delete();
-            });
+        // before update
+        static::updating(function ($model) {
+            Journals::where('buysell_id', $model->id)->delete();
+        });
 
-            /** ---------- UPDATED ---------- */
-            static::updated(function ($model) {
-                self::syncJournals($model);
-            });
+        // after update
+        static::updated(function ($model) {
+            self::syncJournals($model);
+        });
 
-            /** ---------- DELETING ---------- */
-            static::deleting(function ($model) {
-                Journals::where('buysell_id', $model->id)->delete();
-            });
-        }
+        // before delete
+        static::deleting(function ($model) {
+            Journals::where('buysell_id', $model->id)->delete();
+        });
+    }
 
+    /* ================= JOURNAL SYNC ================= */
 
-      private static function syncJournals(self $model): void
+    private static function syncJournals(self $model): void
     {
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
-
         $accountType = 'نقدی';
 
         DB::transaction(function () use ($model, $user, $adminId, $accountType) {
 
-            // موجودی صندوق
-            $fromBefore = (float) CurrencySafe::value($model->from_currency);
-            $toBefore   = (float) CurrencySafe::value($model->to_currency);
+            // موجودی فعلی صندوق (فقط خواندن)
+            $fromBefore = (float) CurrencySafe::where('admin_id', $adminId)
+                ->value($model->from_currency);
 
+            $toBefore = (float) CurrencySafe::where('admin_id', $adminId)
+                ->value($model->to_currency);
+
+            // مانده بعد از معامله (صرفاً برای ژورنال)
             $fromAfter = $fromBefore - $model->amount;
             $toAfter   = $toBefore + $model->eq_amount;
 
             $withdrawDescription =
-                "تبدیل ارز نقدی: "
+                'تبدیل ارز نقدی: '
                 . self::currencyFa($model->from_currency)
-                . " به "
+                . ' به '
                 . self::currencyFa($model->to_currency)
-                . " | مبلغ: "
+                . ' | مبلغ: '
                 . number_format($model->amount, 2)
-                . " | نرخ: "
+                . ' | نرخ: '
                 . number_format($model->exchange_rate, 6);
 
             $receiveDescription =
-                "دریافت ارز نقدی: "
+                'دریافت ارز نقدی: '
                 . self::currencyFa($model->to_currency)
-                . " از "
+                . ' از '
                 . self::currencyFa($model->from_currency)
-                . " | مبلغ: "
+                . ' | مبلغ: '
                 . number_format($model->eq_amount, 2)
-                . " | نرخ: "
+                . ' | نرخ: '
                 . number_format($model->exchange_rate, 6);
 
             // ---------- برد ----------
@@ -147,12 +126,27 @@ class CashExchange extends Model
                 'is_sell_table' => 1,
                 'buysell_id'    => $model->id,
             ]);
-
-            // ---------- آپدیت صندوق ----------
-            CurrencySafe::query()->update([
-                $model->from_currency => $fromAfter,
-                $model->to_currency   => $toAfter,
-            ]);
         });
+    }
+
+    /* ================= HELPERS ================= */
+
+    private static function currencyFa(string $code): string
+    {
+        return match (strtolower($code)) {
+            'usd' => 'دالر',
+            'afn' => 'افغانی',
+            'irr' => 'ریال ایران',
+            'eur' => 'یورو',
+            'aed' => 'درهم امارات',
+            'try' => 'لیر ترکیه',
+            'cny' => 'یوان چین',
+            'pkr' => 'روپیه پاکستان',
+            'gbp' => 'پوند انگلیس',
+            'jpy' => 'ین جاپان',
+            'sar' => 'ریال سعودی',
+            'inr' => 'روپیه هند',
+            default => strtoupper($code),
+        };
     }
 }
