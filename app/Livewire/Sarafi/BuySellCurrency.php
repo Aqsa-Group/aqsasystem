@@ -67,10 +67,17 @@ class BuySellCurrency extends Component
     public function render()
     {
         $user = Auth::guard('sarafi')->user();
-        $transactions = CashExchange::when($this->search, function ($query) {
-            $query->where('description', 'like', '%' . $this->search . '%')
-                ->orWhere('type', 'like', '%' . $this->search . '%');
-        })->latest()->get();
+        $adminId = $user->admin_id ?? $user->id;
+
+        $transactions = CashExchange::where('user_id', $adminId)
+            ->when($this->search, function ($query) {
+                $query->where(function ($q) {
+                    $q->where('description', 'like', '%' . $this->search . '%')
+                        ->orWhere('type', 'like', '%' . $this->search . '%');
+                });
+            })
+            ->latest()
+            ->get();
 
         $this->calculateTotals();
 
@@ -78,6 +85,7 @@ class BuySellCurrency extends Component
             'transactions' => $transactions
         ]);
     }
+
 
     /**
      * Initialize component on mount
@@ -1374,7 +1382,7 @@ class BuySellCurrency extends Component
         if ($this->transactionType === 'خرید') {
             $safe->{$this->currency}    -= $amount;
             $safe->{$this->to_currency} += $eqAmount;
-        } else { 
+        } else {
             $safe->{$this->currency}    -= $amount;
             $safe->{$this->to_currency} += $eqAmount;
         }
