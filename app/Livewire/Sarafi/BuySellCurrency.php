@@ -1371,11 +1371,10 @@ class BuySellCurrency extends Component
             }
         }
 
-        // بروزرسانی صندوق
         if ($this->transactionType === 'خرید') {
             $safe->{$this->currency}    -= $amount;
             $safe->{$this->to_currency} += $eqAmount;
-        } else { // فروش
+        } else { 
             $safe->{$this->currency}    -= $amount;
             $safe->{$this->to_currency} += $eqAmount;
         }
