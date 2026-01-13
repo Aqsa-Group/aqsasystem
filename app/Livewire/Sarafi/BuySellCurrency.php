@@ -168,10 +168,6 @@ class BuySellCurrency extends Component
 
 
 
-
-    /**
-     * محاسبه eq_amount از amount
-     */
     public function calculateEqAmountFromAmount()
     {
         if ($this->amount && $this->exchange_rate && $this->currency && $this->to_currency) {
@@ -179,49 +175,44 @@ class BuySellCurrency extends Component
             $amount = floatval(str_replace(',', '', $this->amount));
             $rate   = floatval(str_replace(',', '', $this->exchange_rate));
 
-            if ($rate == 0) {
-                $this->eq_amount = '';
-                $this->eqAmountInWords = '';
+            if ($rate <= 0) {
+                $this->resetAmounts();
                 return;
             }
 
             $calculatedAmount = 0;
 
-            // حالت‌های خاص
+            // AFN ↔ IRR (تومان)
             if ($this->currency === 'afn' && $this->to_currency === 'irr') {
-                // افغانی → تومان
                 $calculatedAmount = ($amount * 1000) / $rate;
             } elseif ($this->currency === 'irr' && $this->to_currency === 'afn') {
-                // تومان → افغانی
                 $calculatedAmount = ($amount * $rate) / 1000;
-            } elseif ($this->currency === 'afn' && $this->to_currency === 'usd') {
-                // افغانی → دالر
+
+                // AFN → ارز خارجی (USD, EUR, ...)
+            } elseif ($this->currency === 'afn') {
                 $calculatedAmount = $amount / $rate;
-            } elseif ($this->currency === 'usd' && $this->to_currency === 'afn') {
-                // دالر → افغانی
+
+                // ارز خارجی → AFN
+            } elseif ($this->to_currency === 'afn') {
                 $calculatedAmount = $amount * $rate;
+
+                // ارز خارجی → ارز خارجی (مثلاً USD → EUR)
             } else {
-                // سایر تبدیل‌ها
-                $calculatedAmount = $amount * $rate;
+                $calculatedAmount = ($amount * $rate); // اگر نرخ مستقیم داری
             }
 
             $calculatedAmount = round($calculatedAmount, 2);
             $this->eq_amount = $calculatedAmount;
 
             $this->convertAmountToWords($this->amount, 'amountInWords');
-            $this->convertAmountToWords($calculatedAmount, 'eqAmountInWords');
+            $this->convertAmountToWords($this->eq_amount, 'eqAmountInWords');
             $this->convertAmountToWords($this->exchange_rate, 'exchangeRateInWords');
         } else {
-            $this->eq_amount = '';
-            $this->amountInWords = '';
-            $this->eqAmountInWords = '';
-            $this->exchangeRateInWords = '';
+            $this->resetAmounts();
         }
     }
 
-    /**
-     * محاسبه amount از eq_amount
-     */
+
     public function calculateAmountFromEqAmount()
     {
         if ($this->eq_amount && $this->exchange_rate && $this->currency && $this->to_currency) {
@@ -229,45 +220,54 @@ class BuySellCurrency extends Component
             $eqAmount = floatval(str_replace(',', '', $this->eq_amount));
             $rate     = floatval(str_replace(',', '', $this->exchange_rate));
 
-            if ($rate == 0) {
-                $this->amount = '';
-                $this->amountInWords = '';
+            if ($rate <= 0) {
+                $this->resetAmounts();
                 return;
             }
 
             $calculatedAmount = 0;
 
-            // حالت‌های خاص (معکوس)
+            // AFN ↔ IRR (معکوس)
             if ($this->currency === 'afn' && $this->to_currency === 'irr') {
-                // افغانی → تومان (معکوس)
                 $calculatedAmount = ($eqAmount * $rate) / 1000;
             } elseif ($this->currency === 'irr' && $this->to_currency === 'afn') {
-                // تومان → افغانی (معکوس)
                 $calculatedAmount = ($eqAmount * 1000) / $rate;
-            } elseif ($this->currency === 'afn' && $this->to_currency === 'usd') {
-                // افغانی → دالر (معکوس)
+
+                // AFN → ارز خارجی (معکوس)
+            } elseif ($this->currency === 'afn') {
                 $calculatedAmount = $eqAmount * $rate;
-            } elseif ($this->currency === 'usd' && $this->to_currency === 'afn') {
-                // دالر → افغانی (معکوس)
+
+                // ارز خارجی → AFN (معکوس)
+            } elseif ($this->to_currency === 'afn') {
                 $calculatedAmount = $eqAmount / $rate;
+
+                // ارز خارجی → ارز خارجی
             } else {
-                // سایر تبدیل‌ها (معکوس)
                 $calculatedAmount = $eqAmount / $rate;
             }
 
             $calculatedAmount = round($calculatedAmount, 2);
             $this->amount = $calculatedAmount;
 
-            $this->convertAmountToWords($calculatedAmount, 'amountInWords');
+            $this->convertAmountToWords($this->amount, 'amountInWords');
             $this->convertAmountToWords($this->eq_amount, 'eqAmountInWords');
             $this->convertAmountToWords($this->exchange_rate, 'exchangeRateInWords');
         } else {
-            $this->amount = '';
-            $this->amountInWords = '';
-            $this->eqAmountInWords = '';
-            $this->exchangeRateInWords = '';
+            $this->resetAmounts();
         }
     }
+
+
+    private function resetAmounts()
+    {
+        $this->amount = '';
+        $this->eq_amount = '';
+        $this->amountInWords = '';
+        $this->eqAmountInWords = '';
+        $this->exchangeRateInWords = '';
+    }
+
+
 
     /**
      * محاسبه مجدد بر اساس داده‌های موجود
