@@ -23,6 +23,7 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
 
 <div>
     <div class="container mx-auto ">
+
         <!-- Session Message -->
         <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
@@ -36,11 +37,7 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
         </div>
         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-        <!-- Page Header -->
-        <div class="space-y-4 mb-6">
-            <h1 class="text-[24px] font-medium vazir">گزارش بیلانس مشتریان براساس نوعیت</h1>
-            <h1 class="text-[#8C8C8C] dark:text-white">لیست بیلانس تمام مشتریانی که نوعیت حسابشان انتخاب شده</h1>
-        </div>
+    
 
         <hr class="my-6 border-t border-[#D9D9D9] w-full">
 
@@ -69,7 +66,7 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-7 gap-4 items-stretch">
+                <div class="grid grid-cols-1 lg:grid-cols-8 gap-4 items-stretch">
                     <div>
                         <button wire:click="printReport" wire:loading.attr='disabled' wire:target='printReport'
                             class="w-full flex items-center justify-center gap-2 bg-[#2563EB] text-white px-4 py-4 rounded-xl hover:bg-blue-700 transition">
@@ -197,6 +194,32 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
                         </svg>
                     </div>
 
+                    <!-- سلکت ۴ - نوع مشتری (عادی/کارت صرافی) -->
+                    <div class="relative">
+                        <select wire:model.live="customerTypeFilter"
+                            class="appearance-none w-full border dark:bg-black dark:border-white dark:text-white border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
+                            <option value="">همه نوع‌ها</option>
+                            <option value="normal">مشتریان عادی</option>
+                            <option value="sarafi_card">کارت صرافی</option>
+                        </select>
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none dark:hidden" width="20"
+                            height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+
+
+                        <svg width="24" height="24"
+                            class=" absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none hidden dark:block"
+                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+
                     <!-- فیلد تاریخ -->
                     <div class="relative flex items-center justify-center text-center">
                         <input type="text" wire:model.live.debounce.300ms="date" wire:change="generateReport"
@@ -246,10 +269,15 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
                             </thead>
                             <tbody>
                                 <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $reports; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                                <tr class=" border-b  dark:bg-black dark:text-white dark:border-white hover:bg-gray-50">
+                                <?php
+                                    $bgColor = $report['type'] === 'sarafi_card' ? 'bg-green-50' : 'bg-blue-50';
+                                    $textColor = $report['type'] === 'sarafi_card' ? 'text-green-800' : 'text-blue-800';
+                                ?>
+                                <tr class="border-b <?php echo e($bgColor); ?> dark:border-white bg-transparent">
                                     <td class="px-4 py-4">
                                         <span class="border border-gray-300 px-2 py-1 rounded-lg"><?php echo e($index + 1); ?></span>
                                     </td>
+                                  
                                     <td class="px-4 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                         <?php echo e($report['account_number']); ?>
 
@@ -272,14 +300,14 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
                                     <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['aed'] ?? 0, 2)); ?></td>
                                     <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['try'] ?? 0, 2)); ?></td>
                                     <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['cny'] ?? 0, 2)); ?></td>
-                                    <td class="px-4 py-4 font-medium text-left" dir="ltr">
+                                    <td class="px-4 py-4 font-medium text-left <?php echo e($textColor); ?>" dir="ltr">
                                         <?php echo e(number_format($report['total_balance'], 2)); ?>
 
                                     </td>
                                 </tr>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                 <tr>
-                                    <td colspan="14" class="px-4 py-8 text-center text-gray-500">
+                                    <td colspan="15" class="px-4 py-8 text-center text-gray-500">
                                         هیچ داده‌ای یافت نشد
                                     </td>
                                 </tr>
@@ -287,113 +315,6 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
                             </tbody>
                         </table>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- مودال چاپ -->
-    <div x-data="{ showPrintModal: false, printData: null }"
-        x-on:open-print-modal.window="showPrintModal = true; printData = $event.detail.printData"
-        class="fixed inset-0 z-50 overflow-y-auto" x-show="showPrintModal" x-cloak>
-        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div x-show="showPrintModal" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
-                x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200"
-                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-                class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-
-            <div
-                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900 vazir">
-                                پیش‌نمایش چاپ گزارش
-                            </h3>
-                            <div class="mt-4" id="print-content">
-                                <!-- محتوای قابل چاپ -->
-                                <div class="border-2 border-dashed border-gray-300 p-4">
-                                    <div class="text-center mb-4">
-                                        <h2 class="text-xl font-bold vazir" x-text="printData?.title"></h2>
-                                        <p class="text-gray-600" x-text="'تاریخ چاپ: ' + (printData?.print_date || '')">
-                                        </p>
-                                    </div>
-
-                                    <div class="mb-4" x-show="printData?.filters">
-                                        <h3 class="font-bold vazir mb-2">فیلترهای اعمال شده:</h3>
-                                        <div class="grid grid-cols-2 gap-2 text-sm">
-                                            <template x-for="[key, value] in Object.entries(printData?.filters || {})">
-                                                <div class="flex justify-between">
-                                                    <span x-text="key" class="font-medium"></span>
-                                                    <span x-text="value" class="text-gray-600"></span>
-                                                </div>
-                                            </template>
-                                        </div>
-                                    </div>
-
-                                    <table class="w-full text-sm border-collapse border border-gray-300">
-                                        <thead>
-                                            <tr class="bg-gray-100">
-                                                <th class="border border-gray-300 p-2">#</th>
-                                                <th class="border border-gray-300 p-2">نمبرحساب</th>
-                                                <th class="border border-gray-300 p-2">نام حساب</th>
-                                                <th class="border border-gray-300 p-2">مشتری معرف</th>
-                                                <th class="border border-gray-300 p-2">دالر</th>
-                                                <th class="border border-gray-300 p-2">افغانی</th>
-                                                <?php
-                                                // دریافت نام ارز مبدا به فارسی برای چاپ
-                                                $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
-                                                $sourceCurrency =
-                                                getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
-                                                ?>
-                                                <th class="border border-gray-300 p-2">بیلانس به <?php echo e($sourceCurrency); ?>
-
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <template x-for="(report, index) in printData?.reports || []"
-                                                :key="report.id">
-                                                <tr>
-                                                    <td class="border border-gray-300 p-2 text-center"
-                                                        x-text="index + 1"></td>
-                                                    <td class="border border-gray-300 p-2"
-                                                        x-text="report.account_number"></td>
-                                                    <td class="border border-gray-300 p-2" x-text="report.fullname">
-                                                    </td>
-                                                    <td class="border border-gray-300 p-2"
-                                                        x-text="report.related_customer_name || '-'"></td>
-                                                    <td class="border border-gray-300 p-2 text-left"
-                                                        x-text="(report.balances?.usd || 0).toFixed(2)"></td>
-                                                    <td class="border border-gray-300 p-2 text-left"
-                                                        x-text="(report.balances?.afn || 0).toFixed(2)"></td>
-                                                    <td class="border border-gray-300 p-2 text-left font-bold"
-                                                        x-text="report.total_balance.toFixed(2)"></td>
-                                                </tr>
-                                            </template>
-                                        </tbody>
-                                    </table>
-
-                                    <div class="mt-4 text-sm">
-                                        <p x-text="'تعداد کل مشتریان: ' + (printData?.total_customers || 0)"></p>
-                                        <p
-                                            x-text="'مجموع بیلانس: ' + (printData?.total_balance?.toFixed(2) || '0.00') + ' دالر'">
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="button" @click="window.print()"
-                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
-                        چاپ
-                    </button>
-                    <button type="button" @click="showPrintModal = false"
-                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                        بستن
-                    </button>
                 </div>
             </div>
         </div>

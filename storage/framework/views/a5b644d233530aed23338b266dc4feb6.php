@@ -156,6 +156,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <option value="<?php echo e(__('messages.category_regular')); ?>"><?php echo e(__('messages.category_regular')); ?></option>
                                 <option value="gold"><?php echo e(__('messages.category_gold')); ?></option>
                                 <option value="<?php echo e(__('messages.category_special')); ?>"><?php echo e(__('messages.category_special')); ?></option>
+                               <option value="sarafi_card">کارت صرافی</option>
                             </select>
                             <div class="absolute left-3 top-4 text-gray-400">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/clipboard.svg')); ?>" alt="">

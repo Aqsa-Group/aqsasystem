@@ -33,19 +33,13 @@
         }
 
         .section-header {
-            background-color: #f0f8ff;
-            padding: 10px;
-            margin: 20px 0 10px 0;
-            border-radius: 5px;
-            border-right: 4px solid #2B65E5;
-            font-size: 14px;
+            background-color: #2B65E5;
+            color: white;
+            padding: 6px;
+            margin: 15px 0 8px 0;
+            border-radius: 4px;
+            text-align: center;
             font-weight: bold;
-            color: #333;
-        }
-
-        .section-header h2 {
-            margin: 0;
-            font-size: 14px;
         }
 
         table {
@@ -81,12 +75,13 @@
             font-weight: bold;
         }
 
-        .footer {
-            margin-top: 15px;
-            padding-top: 8px;
-            border-top: 1px solid #ddd;
-            font-size: 10px;
-            color: #666;
+        .section-total {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            text-align: center;
+            padding: 8px;
+            margin: 10px 0;
+            border-radius: 4px;
         }
 
         .no-data {
@@ -94,15 +89,19 @@
             padding: 20px;
             color: #999;
             font-style: italic;
+            background-color: #f9f9f9;
+            border: 1px dashed #ddd;
+            margin: 10px 0;
         }
 
-        .section-total {
-            background-color: #f9f9f9;
-            padding: 8px;
-            margin: 10px 0;
-            border-radius: 4px;
-            font-size: 11px;
-            color: #555;
+        .grand-total {
+            background-color: #d4edda;
+            border: 2px solid #155724;
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -111,11 +110,13 @@
     <div class="header">
         <h1><?php echo e($title); ?></h1>
         <p>تاریخ چاپ: <?php echo e($print_date); ?></p>
+        <p>تعداد کل مشتریان: <?php echo e($total_customers); ?> نفر</p>
+        <p>مشتریان عادی: <?php echo e($total_normal_customers); ?> نفر | مشتریان کارت صرافی: <?php echo e($total_sarafi_card_customers); ?> نفر</p>
     </div>
 
+    <!-- بخش مشتریان عادی -->
     <?php if(count($normal_reports) > 0): ?>
-   
-
+    <div class="section-header">جدول مشتریان عادی</div>
     <table>
         <thead>
             <tr>
@@ -127,7 +128,7 @@
                 <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $currencyName): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <th width="60"><?php echo e($currencyName); ?></th>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                <th width="80">بیلانس به <?php echo e($source_currency); ?></th>
+                <th width="80">مجموع (<?php echo e($source_currency); ?>)</th>
             </tr>
         </thead>
         <tbody>
@@ -147,16 +148,17 @@
         </tbody>
     </table>
 
-    <?php if(isset($normal_totals) && count($normal_totals['currencies']) > 0): ?>
-    
-    <table style="width: 100%; border-collapse: collapse; margin-top: 5px; margin-bottom: 20px;">
+    <!-- خلاصه مشتریان عادی -->
+    <?php if(count($normal_totals) > 0): ?>
+    <div class="section-total">خلاصه مشتریان عادی</div>
+    <table>
         <thead>
-            <tr class="total-row" style="background-color: #2B65E5; color: white; text-align: center;">
-                <th style="padding:5px;">نام ارز</th>
-                <th style="padding:5px;">نقدی</th>
-                <th style="padding:5px;">بانکی</th>
-                <th style="padding:5px;">مجموع</th>
-                <th style="padding:5px;">بیلانس به دالر</th>
+            <tr class="total-row">
+                <th>نام ارز</th>
+                <th>نقدی</th>
+                <th>بانکی</th>
+                <th>مجموع</th>
+                <th>بیلانس به <?php echo e($source_currency); ?></th>
             </tr>
         </thead>
         <tbody>
@@ -178,47 +180,43 @@
                     $column = $currency.'_buy_'.($accountTypeForConversion === 'bank' ? 'bank' : 'cash');
                     $exchangeRates[$currency] = ($latestProfitRate->$column ?? 0) > 0 ? $latestProfitRate->$column : $fallback;
                 }
-
-                $grandTotalUsd = 0;
             ?>
 
             <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $currencyName): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php
-                    $cash = $normal_totals['currencies'][$currencyCode]['cash'] ?? 0;
-                    $bank = $normal_totals['currencies'][$currencyCode]['bank'] ?? 0;
-                    $total = $normal_totals['currencies'][$currencyCode]['total'] ?? 0;
+                    $cash = $normal_totals[$currencyCode]['cash'] ?? 0;
+                    $bank = $normal_totals[$currencyCode]['bank'] ?? 0;
+                    $total = $normal_totals[$currencyCode]['total'] ?? 0;
 
+                    // فقط ارزهایی که موجودی دارند
                     if ($total == 0) continue;
 
                     $totalUsd = isset($exchangeRates[$currencyCode]) && $exchangeRates[$currencyCode] > 0
                                 ? $total / $exchangeRates[$currencyCode]
                                 : 0;
-
-                    $grandTotalUsd += $totalUsd;
                 ?>
-                <tr class="total-row" style="text-align:center;">
-                    <td style="padding:5px;"><?php echo e($currencyName); ?></td>
-                    <td style="padding:5px; text-align:right;" dir="ltr"><?php echo e(number_format($cash, 2)); ?></td>
-                    <td style="padding:5px; text-align:right;" dir="ltr"><?php echo e(number_format($bank, 2)); ?></td>
-                    <td style="padding:5px; text-align:right;" dir="ltr"><?php echo e(number_format($total, 2)); ?></td>
-                    <td style="padding:5px; text-align:right;" dir="ltr"><?php echo e(number_format($totalUsd, 2)); ?></td>
+                <tr>
+                    <td><?php echo e($currencyName); ?></td>
+                    <td class="currency-number"><?php echo e(number_format($cash, 2)); ?></td>
+                    <td class="currency-number"><?php echo e(number_format($bank, 2)); ?></td>
+                    <td class="currency-number"><?php echo e(number_format($total, 2)); ?></td>
+                    <td class="currency-number"><?php echo e(number_format($totalUsd, 2)); ?></td>
                 </tr>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-
-            <tr class="total-row" style="font-weight:bold; background:#d0e9d0; text-align:center;">
-                <td colspan="4" style="padding:5px;">جمع کل بیلانس مشتریان  به دالر</td>
-                <td style="padding:5px; text-align:right;" dir="ltr"><?php echo e(number_format($grandTotalUsd, 2)); ?> دالر</td>
+            <tr class="total-row">
+                <td colspan="4">جمع کل مشتریان عادی به <?php echo e($source_currency); ?></td>
+                <td class="currency-number"><?php echo e(number_format($total_normal_usd, 2)); ?></td>
             </tr>
         </tbody>
     </table>
     <?php endif; ?>
+    <?php else: ?>
+    <div class="no-data">هیچ داده‌ای برای مشتریان عادی وجود ندارد</div>
     <?php endif; ?>
 
+    <!-- بخش مشتریان کارت صرافی -->
     <?php if(count($sarafi_card_reports) > 0): ?>
-    <div class="section-header">
-        <h2> کارت صرافی</h2>
-    </div>
-
+    <div class="section-header">جدول مشتریان کارت صرافی</div>
     <table>
         <thead>
             <tr>
@@ -230,7 +228,7 @@
                 <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $currencyName): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <th width="60"><?php echo e($currencyName); ?></th>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                <th width="80">بیلانس به <?php echo e($source_currency); ?></th>
+                <th width="80">مجموع (<?php echo e($source_currency); ?>)</th>
             </tr>
         </thead>
         <tbody>
@@ -250,18 +248,17 @@
         </tbody>
     </table>
 
-    <?php if(isset($sarafi_card_totals) && count($sarafi_card_totals['currencies']) > 0): ?>
-    <div class="section-total">
-        جمع کل  کارت صرافی
-    </div>
-    <table style="width: 100%; border-collapse: collapse; margin-top: 5px;">
+    <!-- خلاصه مشتریان کارت صرافی -->
+    <?php if(count($sarafi_card_totals) > 0): ?>
+    <div class="section-total">خلاصه مشتریان کارت صرافی</div>
+    <table>
         <thead>
-            <tr class="total-row" style="background-color: #2B65E5; color: white; text-align: center;">
-                <th style="padding:5px;">نام ارز</th>
-                <th style="padding:5px;">نقدی</th>
-                <th style="padding:5px;">بانکی</th>
-                <th style="padding:5px;">مجموع</th>
-                <th style="padding:5px;">بیلانس به دالر</th>
+            <tr class="total-row">
+                <th>نام ارز</th>
+                <th>نقدی</th>
+                <th>بانکی</th>
+                <th>مجموع</th>
+                <th>بیلانس به <?php echo e($source_currency); ?></th>
             </tr>
         </thead>
         <tbody>
@@ -283,48 +280,42 @@
                     $column = $currency.'_buy_'.($accountTypeForConversion === 'bank' ? 'bank' : 'cash');
                     $exchangeRates[$currency] = ($latestProfitRate->$column ?? 0) > 0 ? $latestProfitRate->$column : $fallback;
                 }
-
-                $grandTotalUsd = 0;
             ?>
 
             <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $currencyName): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php
-                    $cash = $sarafi_card_totals['currencies'][$currencyCode]['cash'] ?? 0;
-                    $bank = $sarafi_card_totals['currencies'][$currencyCode]['bank'] ?? 0;
-                    $total = $sarafi_card_totals['currencies'][$currencyCode]['total'] ?? 0;
+                    $cash = $sarafi_card_totals[$currencyCode]['cash'] ?? 0;
+                    $bank = $sarafi_card_totals[$currencyCode]['bank'] ?? 0;
+                    $total = $sarafi_card_totals[$currencyCode]['total'] ?? 0;
 
+                    // فقط ارزهایی که موجودی دارند
                     if ($total == 0) continue;
 
                     $totalUsd = isset($exchangeRates[$currencyCode]) && $exchangeRates[$currencyCode] > 0
                                 ? $total / $exchangeRates[$currencyCode]
                                 : 0;
-
-                    $grandTotalUsd += $totalUsd;
                 ?>
-                <tr class="total-row" style="text-align:center;">
-                    <td style="padding:5px;"><?php echo e($currencyName); ?></td>
-                    <td style="padding:5px; text-align:right;" dir="ltr"><?php echo e(number_format($cash, 2)); ?></td>
-                    <td style="padding:5px; text-align:right;" dir="ltr"><?php echo e(number_format($bank, 2)); ?></td>
-                    <td style="padding:5px; text-align:right;" dir="ltr"><?php echo e(number_format($total, 2)); ?></td>
-                    <td style="padding:5px; text-align:right;" dir="ltr"><?php echo e(number_format($totalUsd, 2)); ?></td>
+                <tr>
+                    <td><?php echo e($currencyName); ?></td>
+                    <td class="currency-number"><?php echo e(number_format($cash, 2)); ?></td>
+                    <td class="currency-number"><?php echo e(number_format($bank, 2)); ?></td>
+                    <td class="currency-number"><?php echo e(number_format($total, 2)); ?></td>
+                    <td class="currency-number"><?php echo e(number_format($totalUsd, 2)); ?></td>
                 </tr>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-
-            <tr class="total-row" style="font-weight:bold; background:#d0e9d0; text-align:center;">
-                <td colspan="4" style="padding:5px;">جمع کل بیلانس  کارت صرافی به دالر</td>
-                <td style="padding:5px; text-align:right;" dir="ltr"><?php echo e(number_format($grandTotalUsd, 2)); ?> دالر</td>
+            <tr class="total-row">
+                <td colspan="4">جمع کل مشتریان کارت صرافی به <?php echo e($source_currency); ?></td>
+                <td class="currency-number"><?php echo e(number_format($total_sarafi_card_usd, 2)); ?></td>
             </tr>
         </tbody>
     </table>
     <?php endif; ?>
+    <?php else: ?>
+    <div class="no-data">هیچ داده‌ای برای مشتریان کارت صرافی وجود ندارد</div>
     <?php endif; ?>
 
-    <?php if(count($normal_reports) == 0 && count($sarafi_card_reports) == 0): ?>
-    <div class="no-data">
-        هیچ داده‌ای برای نمایش وجود ندارد
-    </div>
-    <?php endif; ?>
+  
 
 </body>
 
-</html><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/pdf/Sarafi/customer-balance-report.blade.php ENDPATH**/ ?>
+</html><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/pdf/Sarafi/customer-balance-report-separate.blade.php ENDPATH**/ ?>

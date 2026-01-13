@@ -137,6 +137,7 @@
                                 <option value="gold">{{ __('messages.category_gold') }}</option>
                                 <option value="{{ __('messages.category_special') }}">{{ __('messages.category_special')
                                     }}</option>
+                               <option value="sarafi_card">کارت صرافی</option>
                             </select>
                             <div class="absolute left-3 top-4 text-gray-400">
                                 <img src="{{ asset('assets/sarafi/all_icon/clipboard.svg') }}" alt="">
