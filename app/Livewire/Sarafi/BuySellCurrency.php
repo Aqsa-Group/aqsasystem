@@ -1357,38 +1357,32 @@ class BuySellCurrency extends Component
      */
     private function updateCurrencySafe($userId, $adminId, $amount, $eqAmount)
     {
-        $safe = CurrencySafe::where('user_id', $userId)->first();
+        $ownerId = $adminId ?? $userId;
+
+        $safe = CurrencySafe::where('user_id', $ownerId)->first();
 
         if (!$safe) {
             $safe = new CurrencySafe();
-            $safe->user_id = $userId;
-            $safe->admin_id = $adminId !== $userId ? $adminId : null;
+            $safe->user_id  = $ownerId;
+            $safe->admin_id = $ownerId;
 
-            $adminSafe = CurrencySafe::where('user_id', $adminId)->first();
-            if ($adminSafe) {
-                foreach ($this->currencies as $currency) {
-                    $safe->{$currency['code']} = $adminSafe->{$currency['code']} ?? 0;
-                }
-            } else {
-                foreach ($this->currencies as $currency) {
-                    $safe->{$currency['code']} = 0;
-                }
+            foreach ($this->currencies as $currency) {
+                $safe->{$currency['code']} = 0;
             }
         }
 
-        // منطق بروزرسانی صندوق
+        // بروزرسانی صندوق
         if ($this->transactionType === 'خرید') {
-            // خرید: از ارز مبدا کم می‌شود، به ارز مقصد اضافه می‌شود
-            $safe->{$this->currency} -= $amount;
+            $safe->{$this->currency}    -= $amount;
             $safe->{$this->to_currency} += $eqAmount;
-        } else {
-            // فروش: از ارز مبدا کم می‌شود، به ارز مقصد اضافه می‌شود
-            $safe->{$this->currency} -= $amount;
+        } else { // فروش
+            $safe->{$this->currency}    -= $amount;
             $safe->{$this->to_currency} += $eqAmount;
         }
 
         $safe->save();
     }
+
 
     // ==================== EDIT OPERATIONS ====================
 
