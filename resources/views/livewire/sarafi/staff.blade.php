@@ -56,6 +56,65 @@
 
         <!-- Form -->
         <form wire:submit.prevent="save" class="space-y-6">
+            {{-- نمبر حساب --}}
+            <div class="flex-1 w-full">
+                <div class="relative w-full">
+                    <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">نمبر
+                        حساب کارمند</label>
+                    <div x-data="{
+                                    searchValue: '',
+                                    selectedId: @entangle('selectedAccount'),
+                                    customers: @js($customers),
+                                    handleSelect(event) {
+                                        const selected = this.customers.find(
+                                            c => event.target.value === `${c.account_number} - ${c.fullname}`
+                                        );
+                                        if (selected) {
+                                            this.selectedId = selected.id;
+                                            this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                                            $wire.selectCustomer(selected.id);
+                                            $wire.set('search', selected.fullname);
+                                        } else {
+                                            this.selectedId = null;
+                                            this.searchValue = '';
+                                            $wire.set('selectedAccount', null);
+                                            $wire.set('search', '');
+                                        }
+                                    },
+                                    updateDisplay() {
+                                        const selected = this.customers.find(c => c.id === this.selectedId);
+                                        this.searchValue = selected ? `${selected.account_number} - ${selected.fullname}` : '';
+                                    }
+                                }" x-init="updateDisplay();
+                                $watch('selectedId', () => updateDisplay())" class="relative w-full">
+                        <input list="customersList" x-model="searchValue" @change="handleSelect"
+                            placeholder="جستجو یا انتخاب حساب..."
+                            class="w-full h-[60px] dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
+                            autocomplete="off">
+                        <datalist id="customersList">
+                            @foreach ($customers as $customer)
+                            <option value="{{ $customer['account_number'] }} - {{ $customer['fullname'] }}">
+                                @endforeach
+                        </datalist>
+                        @if (empty($selectedAccount))
+                        <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                            <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓" class="dark:hidden">
+                            <svg width="24" height="24" class="hidden dark:block" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                    stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+
+                        </div>
+                        @endif
+                    </div>
+                    @error('selectedAccount')
+                    <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
             <!-- First Row - 2 columns -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <!-- Name -->
@@ -68,7 +127,7 @@
                             class="w-full p-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                    focus:ring-blue-500 dark:bg-black dark:placeholder:text-white dark:border-white dark:text-white">
                         @error('name')
-                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                        <span class="text-red-500 text-xs">{{ $message }} مرد</span>
                         @enderror
                     </div>
                 </div>
@@ -87,6 +146,10 @@
                         @enderror
                     </div>
                 </div>
+
+
+
+
             </div>
 
             <!-- Second Row - 2 columns -->
@@ -166,7 +229,7 @@
                         میزان معاش (افغانی)
                     </label>
                     <div class="relative">
-                        <input type="text" wire:model="formatted_salary" placeholder="مبلغ معاش"
+                        <input type="text" wire:model.lazy="formatted_salary" placeholder="مبلغ معاش"
                             class="w-full p-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
 
@@ -183,6 +246,54 @@
                     </div>
                 </div>
 
+
+                <div>
+                    <label class="block text-sm font-medium text-black dark:text-white mb-1">
+                        فیصدی مالیه
+                    </label>
+                    <div class="relative">
+                        <input type="text" wire:model.lazy="tax_percent" placeholder="فیصدی مالیه (%)"
+                            class="w-full p-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                                      focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
+
+                        @error('salary_amount')
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                        @enderror
+
+                        <!-- نمایش مبلغ به حروف -->
+                        @if ($tax_in_words)
+                        <div class="text-xs text-black dark:text-green-400 mt-1 font-semibold">
+                            {{ $tax_in_words }}
+                        </div>
+                        @endif
+
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-black dark:text-white mb-1">
+                        معاش خالص
+                    </label>
+                    <div class="relative">
+                        <input type="text" value="{{ number_format($final_salary) }}" readonly
+                            class="w-full p-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                                      focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
+
+                        @error('salary_amount')
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                        @enderror
+
+                        <!-- نمایش مبلغ به حروف -->
+                        @if ($final_salary_in_words)
+                        <div class="text-xs text-black dark:text-green-400 mt-1 font-semibold">
+                            {{ $final_salary_in_words }}
+                        </div>
+                        @endif
+
+                    </div>
+                </div>
+
+
                 <!-- From Date -->
 
                 <div>
@@ -191,15 +302,14 @@
                             تاریخ</label>
                         <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
                             placeholder="YYYY/MM/DD"
-                            class="w-full dark:text-white dark:bg-black dark:border-white  p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 cursor-pointer"
+                            class="w-full dark:text-white dark:bg-black dark:border-white p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 cursor-pointer"
                             readonly />
 
                         <!-- Date Picker Modal -->
                         <div x-show="isOpen" x-transition.opacity.duration.300ms x-cloak
                             @keydown.escape.window="closePicker()" @click.away="closePicker()"
                             class="fixed z-50 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog"
-                            aria-modal="true" style="display: none;" :style="isOpen ? 'display: block;' : ''">
-
+                            aria-modal="true" style="display: none" :style="isOpen ? 'display: block;' : ''">
                             <div
                                 class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                                 <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
@@ -218,8 +328,7 @@
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                         viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7">
-                                                        </path>
+                                                            stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path>
                                                     </svg>
                                                 </button>
                                                 <button @click="prevMonth()" type="button"
@@ -257,8 +366,7 @@
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                         viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7">
-                                                        </path>
+                                                            stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path>
                                                     </svg>
                                                 </button>
                                                 <button @click="closePicker()" type="button"
@@ -301,8 +409,9 @@
                                                     </svg>
                                                 </button>
                                                 <span class="text-lg font-bold text-gray-800 dark:text-white">
-                                                    <span x-text="yearRange.start"></span> - <span
-                                                        x-text="yearRange.end"></span>
+                                                    <span x-text="yearRange.start"></span>
+                                                    -
+                                                    <span x-text="yearRange.end"></span>
                                                 </span>
                                                 <button @click="nextYearRange()" type="button"
                                                     class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
@@ -390,7 +499,9 @@
                         </div>
 
                         @error('contract_start')
-                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                        <span class="text-red-500 text-xs mt-1 block">{{
+                            $message
+                            }}</span>
                         @enderror
                     </div>
                 </div>
@@ -613,7 +724,7 @@
                     <label class="block text-sm font-medium text-black dark:text-white mb-1">
                         آدرس
                     </label>
-                    <input type="text" wire:model="address" placeholder="عنوان شغل"
+                    <input type="text" wire:model="address" placeholder="‌آدرس"
                         class="w-full p-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
                                    focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                     @error('address')
@@ -637,7 +748,6 @@
                         uploadedFileName: null,
                         uploadedFileUrl: null,
                         init() {
-                            // گوش دادن به رویدادهای آپلود Livewire
                             this.$wire.on('upload:started', () => {
                                 this.isUploading = true;
                                 this.uploadedFileName = null;
@@ -655,7 +765,6 @@
                                 this.isUploading = false;
                             });
                     
-                            // Set initial preview if editing
                             @if($editId && $image)
                             this.uploadedFileName = 'تصویر آپلود شده';
                             this.uploadedFileUrl = '{{ $tempImageUrl }}';
@@ -1156,11 +1265,6 @@
         </form>
     </div>
 
-    <!-- Date Picker Modal (kept from original for both date pickers) -->
-    <!-- Note: The date picker modal code remains the same as in your original -->
-    <!-- I've removed the duplicate modal code to keep the response concise -->
-    <!-- You should keep your original date picker modal code here -->
-
     <!-- Filters and Search -->
     <div class="flex w-full max-w-[1200px] items-center mt-5 gap-3 mx-auto">
         <!-- Filter Button -->
@@ -1294,7 +1398,7 @@
 
                         <!-- Salary -->
                         <td class="px-6 py-4">
-                            {{ number_format($staff->salary_amount) }} افغانی
+                            {{ number_format($staff->final_salary) }} افغانی
                         </td>
 
                         <!-- Contract Duration -->
@@ -1433,426 +1537,436 @@
     </div>
     @endif
 
-    <!-- JavaScript for Livewire -->
     <script>
         document.addEventListener('livewire:init', () => {
-            // Auto-hide alert after 4 seconds
-            Livewire.on('show-alert', (data) => {
-                setTimeout(() => {
-                    Livewire.dispatch('clear-alert');
-                }, 4000);
-            });
+        // Auto-hide alert after 4 seconds
+        Livewire.on('show-alert', (data) => {
+            setTimeout(() => {
+                Livewire.dispatch('clear-alert');
+            }, 4000);
         });
+    });
 
-        // تابع برای فرمت کردن اعداد فارسی در input
-        function formatPersianNumber(input) {
+    // تابع برای فرمت کردن اعداد فارسی در input
+    function formatPersianNumber(input) {
+        // تبدیل اعداد انگلیسی به فارسی
+        const englishNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        const persianNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+
+        let value = input.value;
+
+        // حذف همه کاراکترهای غیرعددی به جز کاما
+        value = value.replace(/[^0-9,]/g, '');
+
+        // اضافه کردن جداکننده هزارگان
+        if (value) {
+            const parts = value.split(',');
+            let integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
             // تبدیل اعداد انگلیسی به فارسی
-            const englishNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-            const persianNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-
-            let value = input.value;
-
-            // حذف همه کاراکترهای غیرعددی به جز کاما
-            value = value.replace(/[^0-9,]/g, '');
-
-            // اضافه کردن جداکننده هزارگان
-            if (value) {
-                const parts = value.split(',');
-                let integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-                // تبدیل اعداد انگلیسی به فارسی
-                for (let i = 0; i < 10; i++) {
-                    integerPart = integerPart.replace(new RegExp(englishNumbers[i], 'g'), persianNumbers[i]);
-                }
-
-                input.value = integerPart;
+            for (let i = 0; i < 10; i++) {
+                integerPart = integerPart.replace(new RegExp(englishNumbers[i], 'g'), persianNumbers[i]);
             }
+
+            input.value = integerPart;
         }
+    }
 
-        // اعمال فرمت‌دهی روی inputهای مربوط به مبلغ
-        document.addEventListener('DOMContentLoaded', function() {
-            const salaryInputs = document.querySelectorAll('input[wire\\:model*="formatted_salary"]');
+    // اعمال فرمت‌دهی روی inputهای مربوط به مبلغ
+    document.addEventListener('DOMContentLoaded', function() {
+        const salaryInputs = document.querySelectorAll('input[wire\\:model*="formatted_salary"]');
 
-            salaryInputs.forEach(input => {
-                // فرمت کردن در زمان تایپ
-                input.addEventListener('input', function() {
-                    formatPersianNumber(this);
+        salaryInputs.forEach(input => {
+            // فرمت کردن در زمان تایپ
+            input.addEventListener('input', function() {
+                formatPersianNumber(this);
+            });
+
+            // فرمت کردن در زمان لود اولیه
+            if (input.value) {
+                formatPersianNumber(input);
+            }
+        });
+    });
+
+    // تاریخ‌نگار فارسی - تابع اصلی
+    function createPersianDatePicker(fieldName) {
+        return {
+            isOpen: false,
+            showMonthSelector: false,
+            showYearSelector: false,
+            displayDate: '',
+            currentYear: 1403,
+            currentMonth: 0,
+            selectedDate: null,
+            yearRange: {
+                start: 1400,
+                end: 1410,
+                years: []
+            },
+
+            monthsAfghan: ['حمل', 'ثور', 'جوزا', 'سرطان', 'اسد', 'سنبله', 'میزان', 'عقرب', 'قوس', 'جدی', 'دلو', 'حوت'],
+            weekDaysAfghan: ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'],
+            daysInMonthNormal: [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29],
+
+            init() {
+                console.log('DatePicker initialized for:', fieldName);
+                
+                this.updateYearRange();
+                const today = this.getTodayPersian();
+                this.currentYear = today.year;
+                this.currentMonth = today.month - 1;
+
+                // مقداردهی اولیه از Livewire
+                this.$watch('$wire.' + fieldName, (value) => {
+                    if (value) {
+                        this.setDateFromWire(value);
+                    }
                 });
 
-                // فرمت کردن در زمان لود اولیه
-                if (input.value) {
-                    formatPersianNumber(input);
-                }
-            });
-        });
-
-
-
-        function createPersianDatePicker(fieldName = 'date') {
-            return {
-                isOpen: false,
-                showMonthSelector: false,
-                showYearSelector: false,
-                displayDate: '',
-                currentYear: 1403,
-                currentMonth: 0,
-                selectedDate: null,
-                yearRange: {
-                    start: 1400,
-                    end: 1410,
-                    years: []
-                },
-
-                monthsAfghan: ['حمل', 'ثور', 'جوزا', 'سرطان', 'اسد', 'سنبله', 'میزان', 'عقرب', 'قوس', 'جدی', 'دلو', 'حوت'],
-                weekDaysAfghan: ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'],
-                daysInMonthNormal: [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29],
-
-                init() {
-                    this.updateYearRange();
-                    const today = this.getTodayPersian();
-                    this.currentYear = today.year;
-                    this.currentMonth = today.month - 1;
-
-                    const livewireValue = @this.get(fieldName);
-                    if (!livewireValue) {
-                        this.selectedDate = today;
-                        this.displayDate = this.formatDate(today);
-                        @this.set(fieldName, this.formatDate(today));
-                    } else {
-                        // تبدیل تاریخ از Y-m-d به Y/m/d برای نمایش
-                        const dateParts = livewireValue.split('-');
-                        if (dateParts.length === 3) {
-                            const year = parseInt(dateParts[0]);
-                            const month = parseInt(dateParts[1]);
-                            const day = parseInt(dateParts[2]);
-
-                            if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
-                                this.selectedDate = {
-                                    year,
-                                    month,
-                                    day
-                                };
-                                this.displayDate =
-                                    `${year}/${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
-                                this.currentYear = year;
-                                this.currentMonth = month - 1;
-                            }
-                        }
-                    }
-                },
-
-                updateYearRange() {
-                    this.yearRange.years = [];
-                    for (let year = this.yearRange.start; year <= this.yearRange.end; year++) {
-                        this.yearRange.years.push(year);
-                    }
-                },
-
-                isLeapYear(year) {
-                    const remainders = [1, 5, 9, 13, 17, 22, 26, 30];
-                    return remainders.includes(year % 33);
-                },
-
-                getDaysInMonth(year, month) {
-                    const days = [...this.daysInMonthNormal];
-                    if (month === 11 && this.isLeapYear(year)) return 30;
-                    return days[month];
-                },
-
-                getFirstDayOfWeek(year, month) {
-                    const baseYear = 1403;
-                    const baseDay = 4;
-                    let days = 0;
-
-                    for (let y = baseYear; y < year; y++) {
-                        days += this.isLeapYear(y) ? 366 : 365;
-                    }
-
-                    for (let m = 0; m < month; m++) {
-                        days += this.getDaysInMonth(year, m);
-                    }
-
-                    return (baseDay + days) % 7;
-                },
-
-                getTodayPersian() {
-                    const today = new Date();
-
-                    const persianDate = this.gregorianToPersian(
-                        today.getFullYear(),
-                        today.getMonth() + 1,
-                        today.getDate()
-                    );
-
-                    return persianDate;
-                },
-
-                gregorianToPersian(gy, gm, gd) {
-                    const gDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-                    const isGregorianLeap = (gy % 4 === 0 && gy % 100 !== 0) || (gy % 400 === 0);
-
-                    if (isGregorianLeap) gDaysInMonth[1] = 29;
-
-                    let dayOfYear = gd;
-                    for (let i = 0; i < gm - 1; i++) dayOfYear += gDaysInMonth[i];
-
-                    const marchDay = 79;
-                    let persianYear, persianMonth, persianDay;
-
-                    if (dayOfYear > marchDay) {
-                        persianYear = gy - 621;
-                        let remainingDays = dayOfYear - marchDay;
-                        const pDaysInMonth = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
-                        if (this.isLeapYear(persianYear)) pDaysInMonth[11] = 30;
-
-                        for (persianMonth = 0; persianMonth < 12; persianMonth++) {
-                            if (remainingDays <= pDaysInMonth[persianMonth]) {
-                                persianDay = remainingDays;
-                                break;
-                            }
-                            remainingDays -= pDaysInMonth[persianMonth];
-                        }
-                        persianMonth++;
-                    } else {
-                        persianYear = gy - 622;
-                        let remainingDays = dayOfYear + 286;
-                        const pDaysInMonth = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
-                        if (this.isLeapYear(persianYear)) pDaysInMonth[11] = 30;
-
-                        for (persianMonth = 0; persianMonth < 12; persianMonth++) {
-                            if (remainingDays <= pDaysInMonth[persianMonth]) {
-                                persianDay = remainingDays;
-                                break;
-                            }
-                            remainingDays -= pDaysInMonth[persianMonth];
-                        }
-                        persianMonth++;
-                    }
-
-                    return {
-                        year: persianYear,
-                        month: persianMonth,
-                        day: persianDay
-                    };
-                },
-
-                get calendarDays() {
-                    const days = [];
-                    const daysInMonth = this.getDaysInMonth(this.currentYear, this.currentMonth);
-                    const firstDayOfWeek = this.getFirstDayOfWeek(this.currentYear, this.currentMonth);
-                    const today = this.getTodayPersian();
-                    const prevMonthDays = this.currentMonth === 0 ?
-                        this.getDaysInMonth(this.currentYear - 1, 11) :
-                        this.getDaysInMonth(this.currentYear, this.currentMonth - 1);
-
-                    for (let i = 0; i < firstDayOfWeek; i++) {
-                        const day = prevMonthDays - firstDayOfWeek + i + 1;
-                        days.push({
-                            key: `prev-${day}`,
-                            day: day,
-                            isSelected: false,
-                            isToday: false,
-                            isOtherMonth: true,
-                            isDisabled: true
-                        });
-                    }
-
-                    for (let day = 1; day <= daysInMonth; day++) {
-                        const isSelected = this.selectedDate &&
-                            this.selectedDate.year === this.currentYear &&
-                            this.selectedDate.month === this.currentMonth + 1 &&
-                            this.selectedDate.day === day;
-
-                        const isToday = today.year === this.currentYear &&
-                            today.month === this.currentMonth + 1 &&
-                            today.day === day;
-
-                        days.push({
-                            key: `current-${day}`,
-                            day: day,
-                            isSelected: isSelected,
-                            isToday: isToday,
-                            isOtherMonth: false,
-                            isDisabled: false
-                        });
-                    }
-
-                    const remainingCells = 42 - days.length;
-                    for (let day = 1; day <= remainingCells; day++) {
-                        days.push({
-                            key: `next-${day}`,
-                            day: day,
-                            isSelected: false,
-                            isToday: false,
-                            isOtherMonth: true,
-                            isDisabled: true
-                        });
-                    }
-
-                    return days;
-                },
-
-                togglePicker() {
-                    this.isOpen = !this.isOpen;
-                    this.showMonthSelector = false;
-                    this.showYearSelector = false;
-                },
-
-                closePicker() {
-                    this.isOpen = false;
-                    this.showMonthSelector = false;
-                    this.showYearSelector = false;
-                },
-
-                toggleMonthSelector() {
-                    this.showMonthSelector = !this.showMonthSelector;
-                    this.showYearSelector = false;
-                },
-
-                toggleYearSelector() {
-                    this.showYearSelector = !this.showYearSelector;
-                    this.showMonthSelector = false;
-                },
-
-                prevYear() {
-                    this.currentYear--;
-                    this.updateYearRange();
-                },
-
-                nextYear() {
-                    this.currentYear++;
-                    this.updateYearRange();
-                }
-
-                prevMonth() {
-                    if (this.currentMonth === 0) {
-                        this.currentMonth = 11;
-                        this.currentYear--;
-                    } else {
-                        this.currentMonth--;
-                    }
-                },
-
-                nextMonth() {
-                    if (this.currentMonth === 11) {
-                        this.currentMonth = 0;
-                        this.currentYear++;
-                    } else {
-                        this.currentMonth++;
-                    }
-                },
-
-                prevYearRange() {
-                    this.yearRange.start -= 12;
-                    this.yearRange.end -= 12;
-                    this.updateYearRange();
-                },
-
-                nextYearRange() {
-                    this.yearRange.start += 12;
-                    this.yearRange.end += 12;
-                    this.updateYearRange();
-                },
-
-                selectMonth(monthIndex) {
-                    this.currentMonth = monthIndex;
-                    this.showMonthSelector = false;
-                },
-
-                selectYear(year) {
-                    this.currentYear = year;
-                    this.showYearSelector = false;
-                },
-
-                selectDate(day) {
-                    this.selectedDate = {
-                        year: this.currentYear,
-                        month: this.currentMonth + 1,
-                        day: day
-                    };
-                    // نمایش به فرمت Y/m/d
-                    this.displayDate =
-                        `${this.currentYear}/${String(this.currentMonth + 1).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
-                },
-
-                formatDate(date) {
-                    if (!date) return '';
-                    // ذخیره به فرمت Y-m-d (مشابه دیتابیس)
-                    return `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
-                },
-
-                setToday() {
-                    const today = this.getTodayPersian();
-                    this.currentYear = today.year;
-                    this.currentMonth = today.month - 1;
+                // مقدار اولیه
+                const initialValue = this.$wire.get(fieldName);
+                if (initialValue) {
+                    this.setDateFromWire(initialValue);
+                } else {
                     this.selectedDate = today;
-                    // نمایش به فرمت Y/m/d
-                    this.displayDate =
-                        `${today.year}/${String(today.month).padStart(2, '0')}/${String(today.day).padStart(2, '0')}`;
+                    this.displayDate = this.formatDisplayDate(today);
+                }
+            },
 
-                    @this.set(fieldName, this.formatDate(today));
-                },
+            setDateFromWire(value) {
+                if (!value) return;
+                
+                const dateParts = value.split('-');
+                if (dateParts.length === 3) {
+                    const year = parseInt(dateParts[0]);
+                    const month = parseInt(dateParts[1]);
+                    const day = parseInt(dateParts[2]);
 
-                clearDate() {
-                    this.selectedDate = null;
-                    this.displayDate = '';
-                    @this.set(fieldName, '');
-                    this.closePicker();
-                },
-
-                applyDate() {
-                    if (this.selectedDate) {
-                        const formattedDate = this.formatDate(this.selectedDate);
-                        @this.set(fieldName, formattedDate);
-                        this.closePicker();
-                    } else {
-                        this.setToday();
+                    if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+                        this.selectedDate = {
+                            year,
+                            month,
+                            day
+                        };
+                        this.displayDate = `${year}/${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
+                        this.currentYear = year;
+                        this.currentMonth = month - 1;
                     }
                 }
-            };
-        }
+            },
 
-        function fromDatePicker() {
-            return createPersianDatePicker('contract_start');
-        }
+            updateYearRange() {
+                this.yearRange.years = [];
+                for (let year = this.yearRange.start; year <= this.yearRange.end; year++) {
+                    this.yearRange.years.push(year);
+                }
+            },
 
-        function toDatePicker() {
-            return createPersianDatePicker('contract_end');
-        }
+            isLeapYear(year) {
+                const remainders = [1, 5, 9, 13, 17, 22, 26, 30];
+                return remainders.includes(year % 33);
+            },
 
-        let printListenerRegistered = false;
+            getDaysInMonth(year, month) {
+                const days = [...this.daysInMonthNormal];
+                if (month === 11 && this.isLeapYear(year)) return 30;
+                return days[month];
+            },
 
-        document.addEventListener('livewire:init', () => {
-            if (printListenerRegistered) return;
-            printListenerRegistered = true;
+            getFirstDayOfWeek(year, month) {
+                const baseYear = 1403;
+                const baseDay = 4;
+                let days = 0;
 
-            Livewire.on('print-pdf', (data) => {
-                /* 🔹 1. دانلود (با لینک مخفی) */
-                const downloadLink = document.createElement('a');
-                downloadLink.href = data.url;
-                downloadLink.download = '';
-                downloadLink.style.display = 'none';
-                document.body.appendChild(downloadLink);
-                downloadLink.click();
+                for (let y = baseYear; y < year; y++) {
+                    days += this.isLeapYear(y) ? 366 : 365;
+                }
 
-                /* 🔹 2. پرینت */
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.src = data.url;
-                document.body.appendChild(iframe);
+                for (let m = 0; m < month; m++) {
+                    days += this.getDaysInMonth(year, m);
+                }
 
-                iframe.onload = () => {
-                    iframe.contentWindow.focus();
-                    iframe.contentWindow.print();
+                return (baseDay + days) % 7;
+            },
 
-                    /* 🔹 3. حذف با تأخیر */
-                    setTimeout(() => {
-                        iframe.remove();
-                        downloadLink.remove();
-                    }, 50000);
+            getTodayPersian() {
+                const today = new Date();
+                return this.gregorianToPersian(
+                    today.getFullYear(),
+                    today.getMonth() + 1,
+                    today.getDate()
+                );
+            },
+
+            gregorianToPersian(gy, gm, gd) {
+                const gDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+                const isGregorianLeap = (gy % 4 === 0 && gy % 100 !== 0) || (gy % 400 === 0);
+
+                if (isGregorianLeap) gDaysInMonth[1] = 29;
+
+                let dayOfYear = gd;
+                for (let i = 0; i < gm - 1; i++) dayOfYear += gDaysInMonth[i];
+
+                const marchDay = 79;
+                let persianYear, persianMonth, persianDay;
+
+                if (dayOfYear > marchDay) {
+                    persianYear = gy - 621;
+                    let remainingDays = dayOfYear - marchDay;
+                    const pDaysInMonth = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
+                    if (this.isLeapYear(persianYear)) pDaysInMonth[11] = 30;
+
+                    for (persianMonth = 0; persianMonth < 12; persianMonth++) {
+                        if (remainingDays <= pDaysInMonth[persianMonth]) {
+                            persianDay = remainingDays;
+                            break;
+                        }
+                        remainingDays -= pDaysInMonth[persianMonth];
+                    }
+                    persianMonth++;
+                } else {
+                    persianYear = gy - 622;
+                    let remainingDays = dayOfYear + 286;
+                    const pDaysInMonth = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
+                    if (this.isLeapYear(persianYear)) pDaysInMonth[11] = 30;
+
+                    for (persianMonth = 0; persianMonth < 12; persianMonth++) {
+                        if (remainingDays <= pDaysInMonth[persianMonth]) {
+                            persianDay = remainingDays;
+                            break;
+                        }
+                        remainingDays -= pDaysInMonth[persianMonth];
+                    }
+                    persianMonth++;
+                }
+
+                return {
+                    year: persianYear,
+                    month: persianMonth,
+                    day: persianDay
                 };
-            });
+            },
+
+            get calendarDays() {
+                const days = [];
+                const daysInMonth = this.getDaysInMonth(this.currentYear, this.currentMonth);
+                const firstDayOfWeek = this.getFirstDayOfWeek(this.currentYear, this.currentMonth);
+                const today = this.getTodayPersian();
+                const prevMonthDays = this.currentMonth === 0 ?
+                    this.getDaysInMonth(this.currentYear - 1, 11) :
+                    this.getDaysInMonth(this.currentYear, this.currentMonth - 1);
+
+                // روزهای ماه قبل
+                for (let i = 0; i < firstDayOfWeek; i++) {
+                    const day = prevMonthDays - firstDayOfWeek + i + 1;
+                    days.push({
+                        key: `prev-${day}`,
+                        day: day,
+                        isSelected: false,
+                        isToday: false,
+                        isOtherMonth: true,
+                        isDisabled: true
+                    });
+                }
+
+                // روزهای ماه جاری
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const isSelected = this.selectedDate &&
+                        this.selectedDate.year === this.currentYear &&
+                        this.selectedDate.month === this.currentMonth + 1 &&
+                        this.selectedDate.day === day;
+
+                    const isToday = today.year === this.currentYear &&
+                        today.month === this.currentMonth + 1 &&
+                        today.day === day;
+
+                    days.push({
+                        key: `current-${day}`,
+                        day: day,
+                        isSelected: isSelected,
+                        isToday: isToday,
+                        isOtherMonth: false,
+                        isDisabled: false
+                    });
+                }
+
+                // روزهای ماه بعد
+                const remainingCells = 42 - days.length;
+                for (let day = 1; day <= remainingCells; day++) {
+                    days.push({
+                        key: `next-${day}`,
+                        day: day,
+                        isSelected: false,
+                        isToday: false,
+                        isOtherMonth: true,
+                        isDisabled: true
+                    });
+                }
+
+                return days;
+            },
+
+            togglePicker() {
+                this.isOpen = !this.isOpen;
+                this.showMonthSelector = false;
+                this.showYearSelector = false;
+                console.log('Picker toggled, isOpen:', this.isOpen);
+            },
+
+            closePicker() {
+                this.isOpen = false;
+                this.showMonthSelector = false;
+                this.showYearSelector = false;
+            },
+
+            toggleMonthSelector() {
+                this.showMonthSelector = !this.showMonthSelector;
+                this.showYearSelector = false;
+            },
+
+            toggleYearSelector() {
+                this.showYearSelector = !this.showYearSelector;
+                this.showMonthSelector = false;
+            },
+
+            prevYear() {
+                this.currentYear--;
+                this.updateYearRange();
+            },
+
+            nextYear() {
+                this.currentYear++;
+                this.updateYearRange();
+            },
+
+            prevMonth() {
+                if (this.currentMonth === 0) {
+                    this.currentMonth = 11;
+                    this.currentYear--;
+                } else {
+                    this.currentMonth--;
+                }
+            },
+
+            nextMonth() {
+                if (this.currentMonth === 11) {
+                    this.currentMonth = 0;
+                    this.currentYear++;
+                } else {
+                    this.currentMonth++;
+                }
+            },
+
+            prevYearRange() {
+                this.yearRange.start -= 12;
+                this.yearRange.end -= 12;
+                this.updateYearRange();
+            },
+
+            nextYearRange() {
+                this.yearRange.start += 12;
+                this.yearRange.end += 12;
+                this.updateYearRange();
+            },
+
+            selectMonth(monthIndex) {
+                this.currentMonth = monthIndex;
+                this.showMonthSelector = false;
+            },
+
+            selectYear(year) {
+                this.currentYear = year;
+                this.showYearSelector = false;
+            },
+
+            selectDate(day) {
+                this.selectedDate = {
+                    year: this.currentYear,
+                    month: this.currentMonth + 1,
+                    day: day
+                };
+                this.displayDate = `${this.currentYear}/${String(this.currentMonth + 1).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
+            },
+
+            formatDate(date) {
+                if (!date) return '';
+                return `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
+            },
+
+            formatDisplayDate(date) {
+                if (!date) return '';
+                return `${date.year}/${String(date.month).padStart(2, '0')}/${String(date.day).padStart(2, '0')}`;
+            },
+
+            setToday() {
+                const today = this.getTodayPersian();
+                this.currentYear = today.year;
+                this.currentMonth = today.month - 1;
+                this.selectedDate = today;
+                this.displayDate = this.formatDisplayDate(today);
+                this.$wire.set(fieldName, this.formatDate(today));
+            },
+
+            clearDate() {
+                this.selectedDate = null;
+                this.displayDate = '';
+                this.$wire.set(fieldName, '');
+                this.closePicker();
+            },
+
+            applyDate() {
+                if (this.selectedDate) {
+                    const formattedDate = this.formatDate(this.selectedDate);
+                    this.$wire.set(fieldName, formattedDate);
+                    this.closePicker();
+                } else {
+                    this.setToday();
+                }
+            }
+        };
+    }
+
+    // تابع‌های خاص برای هر فیلد
+    function fromDatePicker() {
+        return createPersianDatePicker('contract_start');
+    }
+
+    function toDatePicker() {
+        return createPersianDatePicker('contract_end');
+    }
+
+    // برای پرینت
+    let printListenerRegistered = false;
+
+    document.addEventListener('livewire:init', () => {
+        if (printListenerRegistered) return;
+        printListenerRegistered = true;
+
+        Livewire.on('print-pdf', (data) => {
+            const downloadLink = document.createElement('a');
+            downloadLink.href = data.url;
+            downloadLink.download = '';
+            downloadLink.style.display = 'none';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = data.url;
+            document.body.appendChild(iframe);
+
+            iframe.onload = () => {
+                iframe.contentWindow.focus();
+                iframe.contentWindow.print();
+
+                setTimeout(() => {
+                    iframe.remove();
+                    downloadLink.remove();
+                }, 50000);
+            };
         });
+    });
     </script>
 
     <style>
@@ -1885,6 +1999,81 @@
             transition-duration: 150ms;
         }
 
+        /* استایل‌های مودال Date Picker */
+        .fixed.inset-0 {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        .bg-opacity-75 {
+            --tw-bg-opacity: 0.75;
+        }
+
+        .flex.items-center.justify-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .min-h-screen {
+            min-height: 100vh;
+        }
+
+        .inline-block {
+            display: inline-block;
+        }
+
+        .align-bottom {
+            vertical-align: bottom;
+        }
+
+        .bg-white {
+            background-color: white;
+        }
+
+        .dark\:bg-gray-800:is(.dark *) {
+            background-color: #1f2937;
+        }
+
+        .rounded-lg {
+            border-radius: 0.5rem;
+        }
+
+        .shadow-xl {
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .transform {
+            transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+        }
+
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
+
+        .sm\:my-8 {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .sm\:align-middle {
+            vertical-align: middle;
+        }
+
+        .sm\:max-w-lg {
+            max-width: 32rem;
+        }
+
+        .sm\:w-full {
+            width: 100%;
+        }
+
+        /* اسکرول بار */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -1901,6 +2090,31 @@
 
         ::-webkit-scrollbar-thumb:hover {
             background: #555;
+        }
+
+        /* انیمیشن‌ها */
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .transition-opacity {
+            transition-property: opacity;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
+
+        .duration-300ms {
+            transition-duration: 300ms;
         }
     </style>
 </div>

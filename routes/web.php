@@ -424,6 +424,16 @@ Route::get('/sarafi/salary', function () {
 })->name('sarafi.salary');
 
 
+Route::get('/sarafi/attendances', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.staff-attendance-component');
+})->name('sarafi.attendances');
+
+
+
+
 
 
 

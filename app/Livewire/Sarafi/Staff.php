@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Sarafi;
 
+use App\Models\Sarafi\Customer;
 use App\Models\Sarafi\Staffs;
 use App\Models\Sarafi\User;
 use Illuminate\Support\Facades\Auth;
@@ -30,10 +31,12 @@ class Staff extends Component
     public $name, $fathername, $age, $gender = 'male', $phone, $address;
     public $image, $id_card, $document;
     public $job, $salary_amount, $contract_start, $contract_end;
-    
+
     // For formatted display
     public $formatted_salary = '';
-    public $salary_in_words = ''; // برای نمایش مبلغ به حروف
+    public $salary_in_words = '';
+    public $tax_in_words = ''; // اضافه شد
+    public $final_salary_in_words = ''; // اضافه شد
 
     // Temp URLs for preview
     public $tempImageUrl = null;
@@ -46,8 +49,15 @@ class Staff extends Component
 
     // Filters
     public $filterGender = '';
-    
     public $filterJob = '';
+
+    // Customer selection
+    public $customers = [];
+    public $selectedAccount = null;
+
+    public $tax_percent = '';
+    public $tax_amount = 0;
+    public $final_salary = 0;
 
     // Cache keys
     protected $cacheKeys = [
@@ -72,35 +82,98 @@ class Staff extends Component
         'contract_end' => 'required|date|after_or_equal:contract_start',
     ];
 
-    // Component initialization
     public function mount()
     {
-     $todayJalali = Jalalian::now();
-        $this->contract_start   = $todayJalali->format('Y-m-d'); // فرمت مشابه دیتابیس
-        $this->contract_end = $todayJalali->format('Y-m-d');   // فرمت مشابه دیتابیس
+        $todayJalali = Jalalian::now();
+
+        $this->contract_start = $todayJalali->format('Y-m-d');
+        $this->contract_end   = $todayJalali->format('Y-m-d');
         $this->gender = 'male';
+
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        $this->customers = Customer::where('admin_id', $adminId)
+            ->select('id', 'fullname', 'account_number')
+            ->orderBy('fullname')
+            ->get()
+            ->toArray();
     }
 
+    public function selectCustomer($customerId)
+    {
+        $this->selectedAccount = $customerId;
+    }
 
- 
+    public function updated($property)
+    {
+        if (in_array($property, ['formatted_salary', 'tax_percent'])) {
+            $this->recalculateSalary();
+        }
+    }
+
+    private function recalculateSalary()
+    {
+        // تبدیل مبلغ معاش به عدد
+        $salary = (int) preg_replace('/[^\d]/', '', $this->formatted_salary);
+        $this->salary_amount = $salary;
+
+        // تبدیل فیصدی مالیه به عدد
+        $taxPercent = (float) preg_replace('/[^\d]/', '', $this->tax_percent);
+        $this->tax_percent = $taxPercent;
+
+        if ($salary > 0 && $taxPercent > 0) {
+            // محاسبه صحیح مالیات
+            $this->tax_amount = (int) round(($salary * $taxPercent) / 100);
+        } else {
+            $this->tax_amount = 0;
+        }
+
+        // معاش خالص
+        $this->final_salary = max($salary - $this->tax_amount, 0);
+
+        // نمایش مبلغ به حروف برای همه موارد
+        $this->generateSalaryInWords();
+        $this->generateTaxInWords();
+        $this->generateFinalSalaryInWords();
+    }
+
     // Reset form fields
     public function resetInputFields()
     {
         $this->reset([
-            'name', 'fathername', 'age', 'gender', 'phone', 'address',
-            'image', 'id_card', 'document', 'job', 'salary_amount',
-            'contract_start', 'contract_end', 'editId', 'modalOpen',
-            'formatted_salary', 'salary_in_words'
+            'name',
+            'fathername',
+            'age',
+            'gender',
+            'phone',
+            'address',
+            'image',
+            'id_card',
+            'document',
+            'job',
+            'salary_amount',
+            'contract_start',
+            'contract_end',
+            'editId',
+            'modalOpen',
+            'formatted_salary',
+            'salary_in_words',
+            'tax_percent',
+            'tax_amount',
+            'final_salary',
+            'tax_in_words',
+            'final_salary_in_words'
         ]);
-        
+
         $this->tempImageUrl = null;
         $this->tempIdCardUrl = null;
         $this->tempDocumentUrl = null;
-        
+
         // Reset validation errors
         $this->resetErrorBag();
         $this->resetValidation();
-        
+
         // Reset to default values
         $this->contract_start = now()->format('Y-m-d');
         $this->contract_end = now()->addYear()->format('Y-m-d');
@@ -129,11 +202,25 @@ class Staff extends Component
         $this->job = $staff->job;
         $this->salary_amount = (int)$staff->salary_amount;
         $this->formatted_salary = $staff->salary_amount ? number_format($staff->salary_amount) : '';
+        
+        // اگر در دیتابیس فیلدهای مالیات ذخیره شده‌اند، آنها را هم لود کنید
+        if (isset($staff->tax_percent)) {
+            $this->tax_percent = $staff->tax_percent;
+        }
+        if (isset($staff->tax_amount)) {
+            $this->tax_amount = $staff->tax_amount;
+        }
+        if (isset($staff->final_salary)) {
+            $this->final_salary = $staff->final_salary;
+        }
+        
         $this->contract_start = $staff->contract_start;
         $this->contract_end = $staff->contract_end;
-        
-        // تولید متن به حروف
+
+        // تولید متن به حروف برای همه موارد
         $this->generateSalaryInWords();
+        $this->generateTaxInWords();
+        $this->generateFinalSalaryInWords();
 
         $this->modalOpen = true;
     }
@@ -179,46 +266,62 @@ class Staff extends Component
     {
         // تبدیل اعداد فارسی و عربی به انگلیسی
         $value = $this->convertPersianArabicToEnglish($value);
-        
-        // حذف تمام کاراکترهای غیرعددی (کاما، نقطه، فاصله)
+
+        // حذف تمام کاراکترهای غیرعددی
         $cleaned = preg_replace('/[^\d]/', '', $value);
-        
+
         // تبدیل به عدد صحیح
         $this->salary_amount = $cleaned ? (int)$cleaned : 0;
-        
-        // نمایش فرمت شده برای کاربر (حتی اگر خالی باشد)
+
+        // نمایش فرمت شده برای کاربر
         $this->formatted_salary = $this->salary_amount ? number_format($this->salary_amount) : '';
-        
+
         // تولید متن به حروف
-        $this->generateSalaryInWords();
+        $this->recalculateSalary();
     }
-    
+
+    // Handle tax percent input
+    public function updatedTaxPercent($value)
+    {
+        // تبدیل اعداد فارسی و عربی به انگلیسی
+        $value = $this->convertPersianArabicToEnglish($value);
+
+        // حذف تمام کاراکترهای غیرعددی
+        $cleaned = preg_replace('/[^\d]/', '', $value);
+
+        // تبدیل به عدد
+        $this->tax_percent = $cleaned ? (float)$cleaned : 0;
+
+        // محاسبه مجدد
+        $this->recalculateSalary();
+    }
+
     // تابع برای تبدیل اعداد فارسی و عربی به انگلیسی
     private function convertPersianArabicToEnglish($value)
     {
         if (!$value) return $value;
-        
+
         $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
         $arabic = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
         $english = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-        
+
         $value = str_replace($persian, $english, $value);
         $value = str_replace($arabic, $english, $value);
-        
+
         return $value;
     }
-    
-    // تولید مبلغ به حروف
+
+    // تولید مبلغ معاش به حروف
     private function generateSalaryInWords()
     {
         if ($this->salary_amount > 0) {
             try {
                 $formatter = new NumberFormatter("fa", NumberFormatter::SPELLOUT);
                 $words = $formatter->format($this->salary_amount);
-                
+
                 // اصلاح برخی کلمات برای خوانایی بهتر
                 $words = str_replace(['دویست', 'سیصد', 'پانصد'], ['دوصد', 'سه‌صد', 'پانصد'], $words);
-                
+
                 $this->salary_in_words = $words . ' افغانی';
             } catch (\Exception $e) {
                 Log::error('Error generating salary in words: ' . $e->getMessage());
@@ -229,12 +332,54 @@ class Staff extends Component
         }
     }
 
+    // تولید مبلغ مالیات به حروف
+    private function generateTaxInWords()
+    {
+        if ($this->tax_amount > 0) {
+            try {
+                $formatter = new NumberFormatter("fa", NumberFormatter::SPELLOUT);
+                $words = $formatter->format($this->tax_amount);
+
+                // اصلاح برخی کلمات برای خوانایی بهتر
+                $words = str_replace(['دویست', 'سیصد', 'پانصد'], ['دوصد', 'سه‌صد', 'پانصد'], $words);
+
+                $this->tax_in_words = $words . ' افغانی';
+            } catch (\Exception $e) {
+                Log::error('Error generating tax in words: ' . $e->getMessage());
+                $this->tax_in_words = 'خطا در تولید متن';
+            }
+        } else {
+            $this->tax_in_words = '';
+        }
+    }
+
+    // تولید مبلغ معاش خالص به حروف
+    private function generateFinalSalaryInWords()
+    {
+        if ($this->final_salary > 0) {
+            try {
+                $formatter = new NumberFormatter("fa", NumberFormatter::SPELLOUT);
+                $words = $formatter->format($this->final_salary);
+
+                // اصلاح برخی کلمات برای خوانایی بهتر
+                $words = str_replace(['دویست', 'سیصد', 'پانصد'], ['دوصد', 'سه‌صد', 'پانصد'], $words);
+
+                $this->final_salary_in_words = $words . ' افغانی';
+            } catch (\Exception $e) {
+                Log::error('Error generating final salary in words: ' . $e->getMessage());
+                $this->final_salary_in_words = 'خطا در تولید متن';
+            }
+        } else {
+            $this->final_salary_in_words = '';
+        }
+    }
+
     // Apply filters
     public function applyFilter()
     {
         $this->filterOpen = false;
         $this->resetPage();
-        
+
         // Clear cache when filtering
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
@@ -258,9 +403,11 @@ class Staff extends Component
 
         // اطمینان از اینکه salary_amount عدد صحیح است
         $this->salary_amount = $this->convertToInteger($this->salary_amount);
-        
-        // اعتبارسنجی
-        $this->validate();
+        $this->tax_percent = $this->convertToInteger($this->tax_percent);
+        $this->tax_amount = $this->convertToInteger($this->tax_amount);
+        $this->final_salary = $this->convertToInteger($this->final_salary);
+
+            $this->validate();
 
         $data = [
             'name' => $this->name,
@@ -271,10 +418,15 @@ class Staff extends Component
             'address' => $this->address,
             'job' => $this->job,
             'salary_amount' => $this->salary_amount,
+            'tax_percent' => $this->tax_percent,
+            'tax_amount' => $this->tax_amount,
+            'final_salary' => $this->final_salary,
             'contract_start' => $this->contract_start,
             'contract_end' => $this->contract_end,
             'admin_id' => $adminId,
             'user_id' => $user->id,
+            'customer_id' => $this->selectedAccount,
+
         ];
 
         // Handle file uploads
@@ -332,7 +484,7 @@ class Staff extends Component
 
         // حذف تمام کاراکترهای غیرعددی
         $cleaned = preg_replace('/[^\d]/', '', $value);
-        
+
         return $cleaned ? (int)$cleaned : 0;
     }
 
@@ -344,10 +496,10 @@ class Staff extends Component
 
         try {
             $image = Image::make($fullPath);
-            
+
             // Compress image if larger than 1MB
             if ($image->filesize() > 1024 * 1024) {
-                $image->encode('jpg', 75); // 75% quality
+                $image->encode('jpg', 75);
                 $image->save($fullPath);
             }
 
@@ -392,24 +544,24 @@ class Staff extends Component
     {
         if ($this->confirmDeleteId) {
             $staff = Staffs::findOrFail($this->confirmDeleteId);
-            
+
             // Delete associated files
             $this->deleteOldFiles($staff, ['image', 'id_card', 'document']);
-            
+
             $staff->delete();
-            
+
             // Clear cache
             $user = Auth::guard('sarafi')->user();
             $adminId = $user->admin_id ?? $user->id;
             Cache::forget($this->cacheKeys['staffs_list'] . $adminId);
             Cache::forget($this->cacheKeys['jobs_list'] . $adminId);
-            
+
             $this->alert = [
                 'title' => 'موفقیت',
                 'message' => 'کارمند با موفقیت حذف شد.',
                 'type' => 'success'
             ];
-            
+
             $this->confirmDeleteId = null;
         }
     }
@@ -451,33 +603,33 @@ class Staff extends Component
     }
 
     // Get paginated staff with caching
-   public function getStaffsProperty()
-{
-    $user = Auth::guard('sarafi')->user();
-    $adminId = $user->admin_id ?? $user->id;
-    
-    // 🔴 حذف کش و مستقیم گرفتن از دیتابیس
-    $query = Staffs::where('admin_id', $adminId);
+    public function getStaffsProperty()
+    {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
 
-    if ($this->search) {
-        $query->where(function ($q) {
-            $q->where('name', 'like', '%' . $this->search . '%')
-              ->orWhere('fathername', 'like', '%' . $this->search . '%')
-              ->orWhere('phone', 'like', '%' . $this->search . '%')
-              ->orWhere('job', 'like', '%' . $this->search . '%');
-        });
+        $query = Staffs::where('admin_id', $adminId);
+
+        if ($this->search) {
+            $query->where(function ($q) {
+                $q->where('name', 'like', '%' . $this->search . '%')
+                    ->orWhere('fathername', 'like', '%' . $this->search . '%')
+                    ->orWhere('phone', 'like', '%' . $this->search . '%')
+                    ->orWhere('job', 'like', '%' . $this->search . '%');
+            });
+        }
+
+        if ($this->filterGender) {
+            $query->where('gender', $this->filterGender);
+        }
+
+        if ($this->filterJob) {
+            $query->where('job', 'like', '%' . $this->filterJob . '%');
+        }
+
+        return $query->orderBy('created_at', 'desc')->paginate(10);
     }
 
-    if ($this->filterGender) {
-        $query->where('gender', $this->filterGender);
-    }
-
-    if ($this->filterJob) {
-        $query->where('job', 'like', '%' . $this->filterJob . '%');
-    }
-
-    return $query->orderBy('created_at', 'desc')->paginate(10);
-}
     // Get unique jobs for filter
     public function getJobsProperty()
     {

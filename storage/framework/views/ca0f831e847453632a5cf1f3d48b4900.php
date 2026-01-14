@@ -2508,7 +2508,102 @@
 
 
 
-                    
+             <div>
+    <!-- Finance Parent -->
+    <button
+        @click="openItems.finance = !openItems.finance; active = 'finance'"
+        :class="(active === 'finance' || active.startsWith('finance-'))
+            ? 'bg-[#122EE1] text-white'
+            : 'text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
+        class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir"
+    >
+        <span class="flex items-center gap-2">
+            <!-- Finance Icon -->
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                      d="M12 3v18m9-9H3" />
+            </svg>
+            بخش مالی
+        </span>
+
+        <svg
+            class="w-4 h-4 transition-transform"
+            :class="openItems.finance ? 'rotate-180' : ''"
+            fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        >
+            <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  d="M19 9l-7 7-7-7" />
+        </svg>
+    </button>
+
+    <!-- Finance Items -->
+    <div x-show="openItems.finance" x-transition class="mr-6 mt-2 space-y-1">
+
+        <!-- Staff Register -->
+        <a href="<?php echo e(route('sarafi.staff')); ?>"
+           @click="setActive('finance-staff','finance')"
+           :class="active === 'finance-staff'
+                ? 'bg-[#122EE1] text-white'
+                : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
+           class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm vazir transition">
+
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                      d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+            </svg>
+            ثبت کارمندان
+        </a>
+
+        <!-- Withdraw -->
+        <a href="<?php echo e(route('sarafi.withdraw')); ?>"
+           @click="setActive('finance-withdraw','finance')"
+           :class="active === 'finance-withdraw'
+                ? 'bg-[#122EE1] text-white'
+                : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
+           class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm vazir transition">
+
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                      d="M12 8v8m0 0l-4-4m4 4l4-4" />
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+            </svg>
+            برداشت‌ها
+        </a>
+
+        <!-- Attendance -->
+        <a href="<?php echo e(route('sarafi.attendances')); ?>"
+           @click="setActive('finance-attendance','finance')"
+           :class="active === 'finance-attendance'
+                ? 'bg-[#122EE1] text-white'
+                : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
+           class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm vazir transition">
+
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                      d="M8 7V3m8 4V3M3 11h18" />
+                <rect x="3" y="5" width="18" height="16" rx="2" />
+            </svg>
+            حاضری
+        </a>
+
+        <!-- Salary -->
+        <a href="<?php echo e(route('sarafi.salary')); ?>"
+           @click="setActive('finance-salary','finance')"
+           :class="active === 'finance-salary'
+                ? 'bg-[#122EE1] text-white'
+                : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800'"
+           class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm vazir transition">
+
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                      d="M12 1v22M17 5H9a3 3 0 000 6h6a3 3 0 010 6H6" />
+            </svg>
+            پرداخت معاشات
+        </a>
+
+    </div>
+</div>
 
 
 
