@@ -179,7 +179,7 @@
     $currentUser=Auth::guard('sarafi')->user();
     @endphp
 
-    @if ($currentUser && $currentUser->role==='admin')
+    @if ($currentUser && $currentUser->role==='superadmin')
     <!-- مودال تأیید حذف مشتری -->
     @if ($confirmingDelete)
     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-10 z-50">
