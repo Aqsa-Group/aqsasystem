@@ -1177,46 +1177,65 @@ class ConversionInAccount extends Component
     /**
      * ویرایش تبدیل ارز
      */
-    public function editConversion($conversionId)
-    {
-        $conversion = ConversionInAccounts::with(['customer'])->find($conversionId);
 
-        if ($conversion) {
-            $this->editingConversionId = $conversionId;
+public function editConversion($conversionId)
+{
+    $conversion = ConversionInAccounts::with(['customer'])->find($conversionId);
 
-            // تنظیم مقادیر فرم
-            $this->selectedAccount = $conversion->customer_id;
-            $this->selectedCustomerId = $conversion->customer_id;
-            $this->from_currency = $conversion->from_currency;
-            $this->to_currency = $conversion->to_currency;
-            $this->buy_amount = $conversion->buy_amount;
-            $this->accountType = $conversion->accountType;
-            $this->sell_amount = $conversion->sell_amount;
-            $this->date = $conversion->transaction_date;
-            $this->currency_rate = $conversion->currency_rate;
-            $this->date = $conversion->transaction_date;
-            $this->description = $conversion->description;
-            $this->zone_sender = $conversion->zone_sender;
-            $this->zone_receiver = $conversion->zone_receiver;
-            $this->by_sender = $conversion->by_sender;
-            $this->by_receiver = $conversion->by_receiver;
-            $this->transactionType = $conversion->type;
-
-            // تبدیل به حروف
-            $this->convertAmountToWords($this->buy_amount, 'withdrawalAmountInWords');
-            $this->convertAmountToWords($this->sell_amount, 'receivedAmountInWords');
-            $this->convertAmountToWords($this->currency_rate, 'currencyRateInWords');
-
-            // به‌روزرسانی موجودی‌ها
-            $this->updateCustomerCurrencyBalance($conversion->customer_id);
-
-            $this->dispatch('edit-mode-activated', [
-                'selectedAccount' => $this->selectedAccount,
-                'selectedCustomer' => $conversion->customer ?
-                    $conversion->customer->account_number . ' - ' . $conversion->customer->fullname : ''
-            ]);
-        }
+    if (!$conversion) {
+        return;
     }
+
+    $this->editingConversionId = $conversionId;
+
+    // ترانزکشن برداشت
+    $withdrawTransaction = Transaction::where('conversion_in_account_id', $conversionId)
+        ->where('type', 'برد')
+        ->first();
+
+    // ترانزکشن رسید
+    $receiveTransaction = Transaction::where('conversion_in_account_id', $conversionId)
+        ->where('type', 'رسید')
+        ->first();
+
+    // ---------- مقادیر اصلی ----------
+    $this->selectedAccount = $conversion->customer_id;
+    $this->selectedCustomerId = $conversion->customer_id;
+    $this->from_currency = $conversion->from_currency;
+    $this->to_currency = $conversion->to_currency;
+    $this->buy_amount = $conversion->buy_amount;
+    $this->sell_amount = $conversion->sell_amount;
+    $this->currency_rate = $conversion->currency_rate;
+    $this->date = $conversion->transaction_date;
+    $this->description = $conversion->description;
+
+    // ---------- مقادیر حساب (مهم) ----------
+    $this->from_account = $withdrawTransaction?->account_type;
+    $this->to_account   = $receiveTransaction?->account_type;
+
+    // ---------- سایر فیلدها ----------
+    $this->zone_sender   = $withdrawTransaction?->zone;
+    $this->zone_receiver = $receiveTransaction?->zone;
+
+    $this->by_sender   = $withdrawTransaction?->by;
+    $this->by_receiver = $receiveTransaction?->by;
+
+    // تبدیل عدد به حروف
+    $this->convertAmountToWords($this->buy_amount, 'withdrawalAmountInWords');
+    $this->convertAmountToWords($this->sell_amount, 'receivedAmountInWords');
+    $this->convertAmountToWords($this->currency_rate, 'currencyRateInWords');
+
+    // بروزرسانی موجودی
+    $this->updateCustomerCurrencyBalance($conversion->customer_id);
+
+    $this->dispatch('edit-mode-activated', [
+        'selectedAccount' => $this->selectedAccount,
+        'selectedCustomer' => $conversion->customer
+            ? $conversion->customer->account_number . ' - ' . $conversion->customer->fullname
+            : ''
+    ]);
+}
+
 
     /**
      * تأیید حذف
