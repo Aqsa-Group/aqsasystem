@@ -36,7 +36,7 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
         </div>
         @endif
 
-    
+
 
         <hr class="my-6 border-t border-[#D9D9D9] w-full">
 
@@ -249,74 +249,81 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
                                     <th class="px-4 py-4 font-bold">نام حساب</th>
                                     <th class="px-4 py-4 font-bold">مشتری معرف</th>
                                     <th class="px-4 py-4 font-bold">آخرین تاریخ</th>
-                                    <th class="px-4 py-4 font-bold">دالر</th>
-                                    <th class="px-4 py-4 font-bold">افغانی</th>
-                                    <th class="px-4 py-4 font-bold">تومان</th>
-                                    <th class="px-4 py-4 font-bold">کلدار</th>
-                                    <th class="px-4 py-4 font-bold">یورو</th>
-                                    <th class="px-4 py-4 font-bold">درهم</th>
-                                    <th class="px-4 py-4 font-bold">لیره</th>
-                                    <th class="px-4 py-4 font-bold">یوان</th>
+
+                                    {{-- ستون‌های داینامیک ارزها فقط اگر موجودی دارند --}}
+                                    @foreach($currencies as $code => $name)
+                                    <th class="px-4 py-4 font-bold text-left" dir="ltr">{{ $name }}</th>
+                                    @endforeach
+
                                     @php
-                                    // دریافت نام ارز مبدا به فارسی
-                                    $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
-                                    $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ??
-                                    'usd');
+                                    $user = Auth::guard('sarafi')->user();
+                                    $adminId = $user->admin_id ?? $user->id;
+                                    $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->where('admin_id',
+                                    $adminId)->first()
+
+                                    ;
+                                    $currencyMap = [
+                                    'afn' => 'افغانی',
+                                    'usd' => 'دالر',
+                                    'irr' => 'تومان',
+                                    'eur' => 'یورو',
+                                    'pkr' => 'کلدار',
+                                    'aed' => 'درهم',
+                                    'try' => 'لیره',
+                                    'cny' => 'یوان',
+                                    ];
+                                    $sourceCurrency = $currencyMap[strtolower($latestProfitRate->source_currency ??
+                                    'usd')] ?? 'دالر';
                                     @endphp
-                                    <th class="px-4 py-4 font-bold">بیلانس به {{ $sourceCurrency }}</th>
+                                    <th class="px-4 py-4 font-bold text-left" dir="ltr">بیلانس به {{ $sourceCurrency }}
+                                    </th>
                                 </tr>
                             </thead>
+
                             <tbody>
                                 @forelse($reports as $index => $report)
                                 @php
-                                    $bgColor = $report['type'] === 'sarafi_card' ? 'bg-green-50' : 'bg-blue-50';
-                                    $textColor = $report['type'] === 'sarafi_card' ? 'text-green-800' : 'text-blue-800';
+                                $bgColor = $report['type'] === 'sarafi_card' ? 'bg-green-50' : 'bg-blue-50';
+                                $textColor = $report['type'] === 'sarafi_card' ? 'text-green-800' : 'text-blue-800';
                                 @endphp
                                 <tr class="border-b {{ $bgColor }} dark:border-white bg-transparent">
                                     <td class="px-4 py-4">
-                                        <span class="border border-gray-300 px-2 py-1 rounded-lg">{{ $index + 1 }}</span>
+                                        <span class="border border-gray-300 px-2 py-1 rounded-lg">{{ $index + 1
+                                            }}</span>
                                     </td>
-                                  
                                     <td class="px-4 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                         {{ $report['account_number'] }}
                                     </td>
                                     <td class="px-4 py-4">{{ $report['fullname'] }}</td>
-                                    <td class="px-4 py-4">
-                                        {{ $report['related_customer_name'] ?? '-' }}
-                                    </td>
+                                    <td class="px-4 py-4">{{ $report['related_customer_name'] ?? '-' }}</td>
                                     <td class="px-4 py-4">
                                         {{ $report['last_date'] ?
                                         \Carbon\Carbon::parse($report['last_date'])->format('Y/m/d') : '-' }}
                                     </td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{
-                                        number_format($report['balances']['usd'] ?? 0, 2) }}</td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{
-                                        number_format($report['balances']['afn'] ?? 0, 2) }}</td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{
-                                        number_format($report['balances']['irr'] ?? 0, 2) }}</td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{
-                                        number_format($report['balances']['pkr'] ?? 0, 2) }}</td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{
-                                        number_format($report['balances']['eur'] ?? 0, 2) }}</td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{
-                                        number_format($report['balances']['aed'] ?? 0, 2) }}</td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{
-                                        number_format($report['balances']['try'] ?? 0, 2) }}</td>
-                                    <td class="px-4 py-4 text-left" dir="ltr">{{
-                                        number_format($report['balances']['cny'] ?? 0, 2) }}</td>
+
+                                    {{-- ستون‌های ارز داینامیک --}}
+                                    @foreach($currencies as $code => $name)
+                                    <td class="px-4 py-4 text-left" dir="ltr">
+                                        {{ number_format($report['balances'][$code] ?? 0, 2) }}
+                                    </td>
+                                    @endforeach
+
+                                    {{-- بیلانس به ارز مبدا --}}
                                     <td class="px-4 py-4 font-medium text-left {{ $textColor }}" dir="ltr">
                                         {{ number_format($report['total_balance'], 2) }}
                                     </td>
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="15" class="px-4 py-8 text-center text-gray-500">
+                                    <td colspan="{{ 5 + count($currencies) + 1 }}"
+                                        class="px-4 py-8 text-center text-gray-500">
                                         هیچ داده‌ای یافت نشد
                                     </td>
                                 </tr>
                                 @endforelse
                             </tbody>
                         </table>
+
                     </div>
                 </div>
             </div>

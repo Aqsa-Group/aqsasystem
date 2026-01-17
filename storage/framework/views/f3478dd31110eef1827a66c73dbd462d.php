@@ -37,7 +37,7 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
         </div>
         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-    
+
 
         <hr class="my-6 border-t border-[#D9D9D9] w-full">
 
@@ -250,56 +250,68 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
                                     <th class="px-4 py-4 font-bold">نام حساب</th>
                                     <th class="px-4 py-4 font-bold">مشتری معرف</th>
                                     <th class="px-4 py-4 font-bold">آخرین تاریخ</th>
-                                    <th class="px-4 py-4 font-bold">دالر</th>
-                                    <th class="px-4 py-4 font-bold">افغانی</th>
-                                    <th class="px-4 py-4 font-bold">تومان</th>
-                                    <th class="px-4 py-4 font-bold">کلدار</th>
-                                    <th class="px-4 py-4 font-bold">یورو</th>
-                                    <th class="px-4 py-4 font-bold">درهم</th>
-                                    <th class="px-4 py-4 font-bold">لیره</th>
-                                    <th class="px-4 py-4 font-bold">یوان</th>
+
+                                    
+                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <th class="px-4 py-4 font-bold text-left" dir="ltr"><?php echo e($name); ?></th>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+
                                     <?php
-                                    // دریافت نام ارز مبدا به فارسی
-                                    $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
-                                    $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ??
-                                    'usd');
+                                     $user = Auth::guard('sarafi')->user();
+            $adminId = $user->admin_id ?? $user->id;
+                                    $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->where('admin_id', $adminId)->first()
+                                    
+                                    ;
+                                    $currencyMap = [
+                                    'afn' => 'افغانی',
+                                    'usd' => 'دالر',
+                                    'irr' => 'تومان',
+                                    'eur' => 'یورو',
+                                    'pkr' => 'کلدار',
+                                    'aed' => 'درهم',
+                                    'try' => 'لیره',
+                                    'cny' => 'یوان',
+                                    ];
+                                    $sourceCurrency = $currencyMap[strtolower($latestProfitRate->source_currency ??
+                                    'usd')] ?? 'دالر';
                                     ?>
-                                    <th class="px-4 py-4 font-bold">بیلانس به <?php echo e($sourceCurrency); ?></th>
+                                    <th class="px-4 py-4 font-bold text-left" dir="ltr">بیلانس به <?php echo e($sourceCurrency); ?>
+
+                                    </th>
                                 </tr>
                             </thead>
+
                             <tbody>
                                 <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $reports; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                 <?php
-                                    $bgColor = $report['type'] === 'sarafi_card' ? 'bg-green-50' : 'bg-blue-50';
-                                    $textColor = $report['type'] === 'sarafi_card' ? 'text-green-800' : 'text-blue-800';
+                                $bgColor = $report['type'] === 'sarafi_card' ? 'bg-green-50' : 'bg-blue-50';
+                                $textColor = $report['type'] === 'sarafi_card' ? 'text-green-800' : 'text-blue-800';
                                 ?>
                                 <tr class="border-b <?php echo e($bgColor); ?> dark:border-white bg-transparent">
                                     <td class="px-4 py-4">
                                         <span class="border border-gray-300 px-2 py-1 rounded-lg"><?php echo e($index + 1); ?></span>
                                     </td>
-                                  
                                     <td class="px-4 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                         <?php echo e($report['account_number']); ?>
 
                                     </td>
                                     <td class="px-4 py-4"><?php echo e($report['fullname']); ?></td>
-                                    <td class="px-4 py-4">
-                                        <?php echo e($report['related_customer_name'] ?? '-'); ?>
-
-                                    </td>
+                                    <td class="px-4 py-4"><?php echo e($report['related_customer_name'] ?? '-'); ?></td>
                                     <td class="px-4 py-4">
                                         <?php echo e($report['last_date'] ?
                                         \Carbon\Carbon::parse($report['last_date'])->format('Y/m/d') : '-'); ?>
 
                                     </td>
-                                    <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['usd'] ?? 0, 2)); ?></td>
-                                    <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['afn'] ?? 0, 2)); ?></td>
-                                    <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['irr'] ?? 0, 2)); ?></td>
-                                    <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['pkr'] ?? 0, 2)); ?></td>
-                                    <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['eur'] ?? 0, 2)); ?></td>
-                                    <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['aed'] ?? 0, 2)); ?></td>
-                                    <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['try'] ?? 0, 2)); ?></td>
-                                    <td class="px-4 py-4 text-left" dir="ltr"><?php echo e(number_format($report['balances']['cny'] ?? 0, 2)); ?></td>
+
+                                    
+                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <td class="px-4 py-4 text-left" dir="ltr">
+                                        <?php echo e(number_format($report['balances'][$code] ?? 0, 2)); ?>
+
+                                    </td>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+
+                                    
                                     <td class="px-4 py-4 font-medium text-left <?php echo e($textColor); ?>" dir="ltr">
                                         <?php echo e(number_format($report['total_balance'], 2)); ?>
 
@@ -307,13 +319,15 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
                                 </tr>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                 <tr>
-                                    <td colspan="15" class="px-4 py-8 text-center text-gray-500">
+                                    <td colspan="<?php echo e(5 + count($currencies) + 1); ?>"
+                                        class="px-4 py-8 text-center text-gray-500">
                                         هیچ داده‌ای یافت نشد
                                     </td>
                                 </tr>
                                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </tbody>
                         </table>
+
                     </div>
                 </div>
             </div>
