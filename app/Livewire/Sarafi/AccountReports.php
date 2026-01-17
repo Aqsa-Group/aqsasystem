@@ -113,14 +113,14 @@ class AccountReports extends Component
         }
 
         $customers = $query->get();
-        
+
         // جدا کردن مشتریان به دو گروه
         $this->normalReports = [];
         $this->sarafiCardReports = [];
-        
+
         foreach ($customers as $customer) {
             $report = $this->processCustomer($customer);
-            
+
             if ($report['has_balance']) {
                 if ($customer->type === 'sarafi_card') {
                     $this->sarafiCardReports[] = $report;
@@ -135,11 +135,45 @@ class AccountReports extends Component
             $this->normalReports = array_filter($this->normalReports, function ($report) {
                 return ($report['balances'][$this->selectedCurrency] ?? 0) != 0;
             });
-            
+
             $this->sarafiCardReports = array_filter($this->sarafiCardReports, function ($report) {
                 return ($report['balances'][$this->selectedCurrency] ?? 0) != 0;
             });
         }
+
+        if ($this->selectedCurrency) {
+            $this->normalReports = array_map(function ($report) {
+                foreach ($report['balances'] as $currency => $value) {
+                    if ($currency !== $this->selectedCurrency) {
+                        $report['balances'][$currency] = 0;
+                    }
+                }
+
+                // مجموع فقط از ارز انتخاب شده
+                $report['total_balance'] = $this->calculateTotalBalance(
+                    [$this->selectedCurrency => $report['balances'][$this->selectedCurrency]],
+                    $this->getAccountTypeForConversion()
+                );
+
+                return $report;
+            }, $this->normalReports);
+
+            $this->sarafiCardReports = array_map(function ($report) {
+                foreach ($report['balances'] as $currency => $value) {
+                    if ($currency !== $this->selectedCurrency) {
+                        $report['balances'][$currency] = 0;
+                    }
+                }
+
+                $report['total_balance'] = $this->calculateTotalBalance(
+                    [$this->selectedCurrency => $report['balances'][$this->selectedCurrency]],
+                    $this->getAccountTypeForConversion()
+                );
+
+                return $report;
+            }, $this->sarafiCardReports);
+        }
+
 
         // فیلتر بر اساس تاریخ
         if ($this->date) {
@@ -150,7 +184,7 @@ class AccountReports extends Component
         usort($this->normalReports, function ($a, $b) {
             return $b['total_balance'] <=> $a['total_balance'];
         });
-        
+
         usort($this->sarafiCardReports, function ($a, $b) {
             return $b['total_balance'] <=> $a['total_balance'];
         });
@@ -198,7 +232,7 @@ class AccountReports extends Component
     private function filterReportsByDate()
     {
         $accountTypeForConversion = $this->getAccountTypeForConversion();
-        
+
         $filterNormal = [];
         foreach ($this->normalReports as $report) {
             $filteredReport = $this->filterReportByDate($report, $accountTypeForConversion);
@@ -207,7 +241,7 @@ class AccountReports extends Component
             }
         }
         $this->normalReports = $filterNormal;
-        
+
         $filterSarafiCard = [];
         foreach ($this->sarafiCardReports as $report) {
             $filteredReport = $this->filterReportByDate($report, $accountTypeForConversion);
@@ -224,7 +258,19 @@ class AccountReports extends Component
         $hasBalanceAtDate = false;
 
         foreach ($this->currencies as $currencyCode => $currencyName) {
-            $balance = $this->calculateBalanceAtDate($report['id'], $currencyCode, $this->date);
+
+            // اگر ارز انتخاب شده و این ارز نیست → صفر
+            if ($this->selectedCurrency && $currencyCode !== $this->selectedCurrency) {
+                $balancesAtDate[$currencyCode] = 0;
+                continue;
+            }
+
+            $balance = $this->calculateBalanceAtDate(
+                $report['id'],
+                $currencyCode,
+                $this->date
+            );
+
             $balancesAtDate[$currencyCode] = $balance;
 
             if ($balance != 0) {
@@ -233,8 +279,20 @@ class AccountReports extends Component
         }
 
         $report['balances'] = $balancesAtDate;
-        $report['total_balance'] = $this->calculateTotalBalance($balancesAtDate, $accountTypeForConversion);
-        $report['last_date'] = $this->getLastTransactionDateBefore($report['id'], $this->date);
+
+        // مجموع فقط بر اساس ارز انتخاب‌شده
+        $report['total_balance'] = $this->calculateTotalBalance(
+            $this->selectedCurrency
+                ? [$this->selectedCurrency => $balancesAtDate[$this->selectedCurrency]]
+                : $balancesAtDate,
+            $accountTypeForConversion
+        );
+
+        $report['last_date'] = $this->getLastTransactionDateBefore(
+            $report['id'],
+            $this->date
+        );
+
         $report['has_balance'] = $hasBalanceAtDate;
 
         return $report;
@@ -262,7 +320,7 @@ class AccountReports extends Component
     {
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
-        
+
         $query = Transaction::where('customer_id', $customerId)
             ->where('currency', $currency)
             ->where('admin_id', $adminId);
@@ -279,7 +337,7 @@ class AccountReports extends Component
     {
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
-        
+
         $query = Transaction::where('customer_id', $customerId)
             ->where('currency', $currency)
             ->where('admin_id', $adminId);
@@ -290,7 +348,7 @@ class AccountReports extends Component
 
         return $query->max('date');
     }
-    
+
     private function calculateTotalBalance(array $balances, string $accountType = 'cash'): float
     {
         $latestProfitRate = ProfitRate::latest()->first();
@@ -345,7 +403,7 @@ class AccountReports extends Component
 
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
-        
+
         $query = Transaction::where('customer_id', $customerId)
             ->where('currency', $currency)
             ->where('date', '<=', $gregorianDate)
@@ -380,7 +438,7 @@ class AccountReports extends Component
 
         return $query->max('date');
     }
-    
+
     public function resetFilters()
     {
         $this->search = '';
@@ -393,7 +451,7 @@ class AccountReports extends Component
         $this->generateReport();
         session()->flash('message', 'تمام فیلترها بازنشانی شدند.');
     }
-    
+
     public function printReport()
     {
         if (empty($this->normalReports) && empty($this->sarafiCardReports)) {
@@ -463,7 +521,7 @@ class AccountReports extends Component
 
         // دانلود PDF
         return response()->streamDownload(
-            fn () => print $mpdf->Output('', 'S'),
+            fn() => print $mpdf->Output('', 'S'),
             'گزارش_بیلانس_مشتریان_' . now()->format('Y_m_d') . '.pdf'
         );
     }
@@ -482,21 +540,31 @@ class AccountReports extends Component
 
         foreach ($reports as $report) {
             foreach ($this->currencies as $currencyCode => $currencyName) {
-                if (isset($report['balances'][$currencyCode])) {
-                    $totals[$currencyCode]['total'] += $report['balances'][$currencyCode];
 
-                    // تفکیک بر اساس نوع حساب
-                    $transactionsCash = $this->calculateBalanceByType($report['id'], $currencyCode, 'نقدی');
-                    $transactionsBank = $this->calculateBalanceByType($report['id'], $currencyCode, 'بانکی');
+                if (!isset($report['balances'][$currencyCode])) {
+                    continue;
+                }
 
-                    $totals[$currencyCode]['cash'] += $transactionsCash;
-                    $totals[$currencyCode]['bank'] += $transactionsBank;
+                $totals[$currencyCode]['total'] += $report['balances'][$currencyCode];
+
+                if ($this->accountType === 'نقدی') {
+                    $totals[$currencyCode]['cash'] +=
+                        $this->calculateBalanceByType($report['id'], $currencyCode, 'نقدی');
+                } elseif ($this->accountType === 'بانکی') {
+                    $totals[$currencyCode]['bank'] +=
+                        $this->calculateBalanceByType($report['id'], $currencyCode, 'بانکی');
+                } else {
+                    $totals[$currencyCode]['cash'] +=
+                        $this->calculateBalanceByType($report['id'], $currencyCode, 'نقدی');
+
+                    $totals[$currencyCode]['bank'] +=
+                        $this->calculateBalanceByType($report['id'], $currencyCode, 'بانکی');
                 }
             }
         }
 
-        // محاسبه مجموع به دالر
-        $accountTypeForConversion = 'cash';
+        $accountTypeForConversion = $this->getAccountTypeForConversion();
+
         $totalBalanceUsd = $this->calculateTotalBalance(
             array_map(fn($v) => $v['total'], $totals),
             $accountTypeForConversion
@@ -504,9 +572,10 @@ class AccountReports extends Component
 
         return [
             'currencies' => $totals,
-            'total_usd' => $totalBalanceUsd
+            'total_usd'  => $totalBalanceUsd
         ];
     }
+
 
     private function calculateBalanceByType($customerId, $currency, $accountType)
     {
