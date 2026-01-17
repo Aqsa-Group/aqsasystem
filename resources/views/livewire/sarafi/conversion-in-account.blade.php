@@ -356,10 +356,10 @@
                         {{ $transactionType === 'خرید' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
                         {{ $transactionType === 'خرید' ? 'خرید' : 'فروش' }}
                     </button>
-                    <button wire:click="toggleAccountType" class="rounded-[8px] p-[10px] text-white vazir px-12 font-semibold transition-colors duration-500 ease-in-out
+                    {{-- <button wire:click="toggleAccountType" class="rounded-[8px] p-[10px] text-white vazir px-12 font-semibold transition-colors duration-500 ease-in-out
                         {{ $accountType === 'نقدی' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
                         {{ $accountType === 'نقدی' ? 'نقدی' : 'بانکی' }}
-                    </button>
+                    </button> --}}
 
                 </div>
 
@@ -433,6 +433,35 @@
                         </div>
                     </div>
 
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
+                        <div>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">از
+                                حساب</label>
+                            <select wire:model="from_account"
+                                class="w-full dark:border-white dark:bg-black dark:text-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 appearance-none">
+                                <option value="نقدی">نقدی</option>
+                                <option value="بانکی">بانکی</option>
+                            </select>
+                            @error('from_account')
+                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">به
+                                حساب</label>
+                            <select wire:model="to_account"
+                                class="w-full dark:border-white dark:text-white dark:bg-black  h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 appearance-none">
+                                <option value="نقدی">نقدی</option>
+                                <option value="بانکی">بانکی</option>
+                            </select>
+                            @error('to_account')
+                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                    </div>
                     <!-- بخش تبدیل ارز -->
                     <div class="mt-4 rounded-[12px]">
                         <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">

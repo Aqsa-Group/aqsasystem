@@ -1416,34 +1416,14 @@
         <div class="mobile-overlay" id="mobileOverlay"></div>
 
         <header class="bg-white w-full py-4 md:py-0 md:h-[80px] flex  px-14
-shadow-[0_4px_4px_rgba(37,99,235,0.25)]
-dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
+            shadow-[0_4px_4px_rgba(37,99,235,0.25)]
+            dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
             <div class="mobile-header-layout">
-                <div class="mobile-header-top">
 
-                    <!-- اعلان و پروفایل -->
-                    <div class="mobile-actions">
-                        <button
-                            class="btn-mobile-small relative rounded-full bg-[#DEE8FC] border border-[#2563EB]  hover:bg-gray-300 transition">
-                            <img src="{{ asset('assets/sarafi/all_icon/bill-header.svg') }}" alt="اعلان"
-                                class="w-6 h-6">
-                            <span
-                                class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
-                        </button>
 
-                        <div class="header-profile-section">
-                            <div class="relative">
-                                <div id="profileBtnMobile"
-                                    class="profile-img-mobile border overflow-hidden flex items-center justify-center cursor-pointer transition">
-                                    <img src="{{ asset('assets/sarafi/all_icon/man.png') }}" alt="پروفایل"
-                                        class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="mobile-header-bottom">
+                 
                     <!-- جستجو -->
                     <div class="mobile-search-full">
                         <div class="relative">
@@ -1514,6 +1494,30 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                             </label>
                         </div> --}}
                     </div>
+
+                       <div class="mobile-header-top flex justify-between  gap-10  space-x-10  w-full items-center ">
+
+                        <!-- اعلان و پروفایل -->
+                        <div class="mobile-actions ">
+                            <button
+                                class="btn-mobile-small relative rounded-full bg-[#DEE8FC] border border-[#2563EB]  hover:bg-gray-300 transition">
+                                <img src="{{ asset('assets/sarafi/all_icon/bill-header.svg') }}" alt="اعلان"
+                                    class="w-6 h-6">
+                                <span
+                                    class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
+                            </button>
+
+                            <div class="header-profile-section">
+                                <div class="relative">
+                                    <div id="profileBtnMobile"
+                                        class="profile-img-mobile border overflow-hidden flex items-center justify-center cursor-pointer transition">
+                                        <img src="{{ asset('assets/sarafi/all_icon/man.png') }}" alt="پروفایل"
+                                            class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1574,38 +1578,62 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                         </div>
 
                         @php $locale = session('locale', config('app.locale')); @endphp
+
                         <div class="relative inline-block w-[145px] h-[56px] p-2 vazir">
+                            <!-- دکمه اصلی -->
                             <button id="dropdownButton"
-                                class="border vazir dark:text-white dark:bg-black dark:border-[#FFFFFF] bg-[#2563EB] rounded-lg px-3 py-2 w-full flex items-center justify-between font-vazir text-[14px] text-white">
-                                <img src="{{ $locale === 'en' ? asset('assets/sarafi/all_icon/united.png') : asset('assets/sarafi/all_icon/Flags.png') }}"
-                                    class="w-5 h-5 ml-2" alt="Lang">
+                                class="border vazir dark:text-white dark:bg-black dark:border-white
+               bg-[#184D6C] rounded-lg px-3 py-2 w-full flex items-center justify-between font-vazir text-[14px] text-white">
+
+                                <!-- نام زبان -->
                                 <span>
                                     @if ($locale === 'fa') فارسی
                                     @elseif($locale === 'ps') پشتو
                                     @else English
                                     @endif
                                 </span>
+
+                                <!-- فلش پایین بجای پرچم -->
+                                <svg width="12" height="6" viewBox="0 0 12 6" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg" class="block dark:hidden">
+                                    <path d="M0.75 0.75L5.75 4.75L10.75 0.75" stroke="white" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <svg width="24" height="24" class="hidden dark:block" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                        stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
                             </button>
 
-                            <ul id="dropdownMenu"
-                                class="absolute left-0 mt-1 w-ful dark:text-white dark:bg-black bg-[#2563EB] border border-gray-200 dark:hover:bg-gray-800 rounded-lg hidden z-10 text-white">
-                                <li><a href="{{ route('set-locale', 'fa') }}"
-                                        class="locale-link flex items-center px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"><img
-                                            src="{{ asset('assets/sarafi/all_icon/Flags.png') }}" class="w-5 h-5 ml-2"
-                                            alt="fa">
-                                        فارسی</a></li>
-                                <li><a href="{{ route('set-locale', 'ps') }}"
-                                        class="locale-link flex items-center px-3 py-2 dark:text-white dark:bg-black dark:hover:bg-gray-800   hover:bg-gray-100 cursor-pointer"><img
-                                            src="{{ asset('assets/sarafi/all_icon/Flags.png') }}" class="w-5 h-5 ml-2"
-                                            alt="ps">
-                                        پشتو</a></li>
-                                <li><a href="{{ route('set-locale', 'en') }}"
-                                        class="locale-link flex items-center px-3 py-2 dark:text-white dark:bg-black hover:bg-gray-100  dark:hover:bg-gray-800 cursor-pointer"><img
-                                            src="{{ asset('assets/sarafi/all_icon/united.png') }}" class="w-5 h-5 ml-2"
-                                            alt="en"> English</a></li>
+                            <!-- منوی Dropdown -->
+                            <ul id="dropdownMenu" class="absolute left-0 mt-1 w-full dark:text-white dark:bg-black bg-[#184D6C]
+               border border-gray-200 dark:border-white rounded-lg hidden z-10">
+                                <!-- فارسی -->
+                                <li>
+                                    <a href="{{ route('set-locale', 'fa') }}"
+                                        class="locale-link flex items-center px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">
+                                        <span class="mr-2 text-white hover:text-black">فارسی</span>
+                                    </a>
+                                </li>
+                                <!-- پشتو -->
+                                <li>
+                                    <a href="{{ route('set-locale', 'ps') }}"
+                                        class="locale-link flex items-center px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">
+                                        <span class="mr-2 text-white hover:text-black">پشتو</span>
+                                    </a>
+                                </li>
+                                <!-- انگلیسی -->
+                                <li>
+                                    <a href="{{ route('set-locale', 'en') }}"
+                                        class="locale-link flex items-center px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">
+                                        <span class="mr-2 text-white hover:text-black">انگلیسی</span>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
-
 
 
                         <div class="header-search-section">
@@ -1911,37 +1939,20 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                     </script>
 
                     <button
-                        class="relative flex items-center justify-center w-[50px] h-[50px] rounded-[25px] bg-[#DEE8FC] border border-[#2563EB] hover:bg-gray-300 transition">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        class="relative flex items-center justify-center w-[50px] h-[50px] rounded-[25px] bg-[#DEE8FC] border border-[#184D6C] hover:bg-gray-300 transition">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M12.0201 2.91016C8.71009 2.91016 6.02009 5.60016 6.02009 8.91016V11.8002C6.02009 12.4102 5.76009 13.3402 5.45009 13.8602L4.30009 15.7702C3.59009 16.9502 4.08009 18.2602 5.38009 18.7002C9.69009 20.1402 14.3401 20.1402 18.6501 18.7002C19.8601 18.3002 20.3901 16.8702 19.7301 15.7702L18.5801 13.8602C18.2801 13.3402 18.0201 12.4102 18.0201 11.8002V8.91016C18.0201 5.61016 15.3201 2.91016 12.0201 2.91016Z"
-                                stroke="url(#paint0_linear_2066_17562)" stroke-width="1.5" stroke-miterlimit="10"
-                                stroke-linecap="round" />
+                                stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" />
                             <path
                                 d="M13.8699 3.19994C13.5599 3.10994 13.2399 3.03994 12.9099 2.99994C11.9499 2.87994 11.0299 2.94994 10.1699 3.19994C10.4599 2.45994 11.1799 1.93994 12.0199 1.93994C12.8599 1.93994 13.5799 2.45994 13.8699 3.19994Z"
-                                stroke="url(#paint1_linear_2066_17562)" stroke-width="1.5" stroke-miterlimit="10"
-                                stroke-linecap="round" stroke-linejoin="round" />
+                                stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                stroke-linejoin="round" />
                             <path
                                 d="M15.02 19.0601C15.02 20.7101 13.67 22.0601 12.02 22.0601C11.2 22.0601 10.44 21.7201 9.90002 21.1801C9.36002 20.6401 9.02002 19.8801 9.02002 19.0601"
-                                stroke="url(#paint2_linear_2066_17562)" stroke-width="1.5" stroke-miterlimit="10" />
-                            <defs>
-                                <linearGradient id="paint0_linear_2066_17562" x1="11.9954" y1="2.91016" x2="11.9954"
-                                    y2="19.7802" gradientUnits="userSpaceOnUse">
-                                    <stop stop-color="#2563EB" />
-                                    <stop offset="1" stop-color="#2563EB" />
-                                </linearGradient>
-                                <linearGradient id="paint1_linear_2066_17562" x1="12.0199" y1="1.93994" x2="12.0199"
-                                    y2="3.19994" gradientUnits="userSpaceOnUse">
-                                    <stop stop-color="#2563EB" />
-                                    <stop offset="1" stop-color="#2563EB" />
-                                </linearGradient>
-                                <linearGradient id="paint2_linear_2066_17562" x1="12.02" y1="19.0601" x2="12.02"
-                                    y2="22.0601" gradientUnits="userSpaceOnUse">
-                                    <stop stop-color="#2563EB" />
-                                    <stop offset="1" stop-color="#2563EB" />
-                                </linearGradient>
-                            </defs>
+                                stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10" />
                         </svg>
+
 
 
                         <span
@@ -2034,7 +2045,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
             <!-- سایدبار -->
             <div id="sidebar" class="sidebar-container rounded-tl-[50px] bg-white w-[296px] h-screen shadow-[0_4px_4px_rgba(37,99,235,0.25)]
 dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
-                <div class="responsive-text text-center mb-6 dark:text-white text-[#2562E8] font-bold yekan">صرافی {{
+                <div class="responsive-text text-center mb-6 dark:text-white text-[#184D6C] font-bold yekan">صرافی {{
                     Auth::guard('sarafi')->user()->sarafi_name }} </div>
                 <nav class="mt-0 vazir space-y-2 dark:text-white" x-data="{
                     openItems: {
@@ -2068,7 +2079,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                     <a href="{{ route('sarafi.home') }}"
                         class="nav-link flex items-center justify-between py-3 px-4 rounded-lg transition vazir"
                         @click="active = 'dashboard'"
-                        :class="active === 'dashboard' ? 'bg-[#2563EB] text-white' : 'text-gray-700 dark:text-white dark:hover:bg-gray-800 hover:bg-gray-100'">
+                        :class="active === 'dashboard' ? 'bg-[#184D6C] text-white' : 'text-gray-700 dark:text-white dark:hover:bg-gray-800 hover:bg-gray-100'">
                         <span class="flex items-center gap-2">
 
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -2807,7 +2818,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                             :class="(active === 'settings' || active === 'system-settings') ? 'bg-[#2563EB] text-white' : 'text-gray-700 dark:text-white hover:bg-gray-100  dark:hover:bg-gray-800'"
                             class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
                             <span class="flex items-center gap-2">
-                             
+
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -2863,7 +2874,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                 }
 
                 .chat-message.sent {
-                    background: linear-gradient(135deg, #122EE1, #4ECDC4);
+                    background: linear-gradient(135deg, #184D6C, #4ECDC4);
                     color: white;
                     margin-left: auto;
                     margin-right: 0;
@@ -2920,7 +2931,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
 
                 .conversation-item.active {
                     background-color: #eff6ff;
-                    border-color: #3b82f6;
+                    border-color: rgb(68, 125, 215);
                 }
 
                 .dark .conversation-item.active {
@@ -3020,7 +3031,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                     width: 40px;
                     height: 40px;
                     border: 3px solid #f3f3f3;
-                    border-top: 3px solid #122EE1;
+                    border-top: 3px solid #184D6C;
                     border-radius: 50%;
                     animation: spin 1s linear infinite;
                 }
@@ -3328,7 +3339,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
             <div id="chatWidget" class="fixed bottom-4 right-4 z-[9999]">
                 <!-- Chat Button -->
                 <button id="chatToggle"
-                    class="bg-[#122EE1] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">
+                    class="bg-[#184D6C] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M12 1C7.03 1 3 5.03 3 10V17C3 18.66 4.34 20 6 20H9V12H5V10C5 6.13 8.13 3 12 3C15.87 3 19 6.13 19 10V12H15V20H18C19.66 20 21 18.66 21 17V10C21 5.03 16.97 1 12 1Z" />

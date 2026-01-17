@@ -42,6 +42,8 @@ class ConversionInAccount extends Component
     public $by_receiver = '';
     public $accountType = 'نقدی';
     public $zones = [];
+    public $from_account = 'نقدی';
+    public $to_account = 'نقدی';
 
     // نمایش حروفی
     public $withdrawalAmountInWords = '';
@@ -1009,11 +1011,9 @@ class ConversionInAccount extends Component
                     throw new \Exception('رکورد تبدیل ارز برای ویرایش یافت نشد.');
                 }
 
-                // حذف تراکنش‌های قبلی و سود/ضرر قبلی
                 Transaction::where('conversion_in_account_id', $conversion->id)->delete();
                 Revenue::where('conversion_in_account_id', $conversion->id)->delete();
 
-                // آپدیت رکورد تبدیل ارز
                 $conversion->update([
                     'customer_id' => $this->selectedAccount,
                     'from_currency' => $this->from_currency,
@@ -1073,7 +1073,7 @@ class ConversionInAccount extends Component
                     $this->getCurrencyFaName($this->to_currency) .
                     ' به نرخ ' . $this->currency_rate,
                 'by' => $this->by_sender,
-                'account_type' => $this->accountType,
+                'account_type' => $this->from_account,
                 'conversion_in_account_id' => $conversionId,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -1086,7 +1086,7 @@ class ConversionInAccount extends Component
                 'currency' => $this->to_currency,
                 'amount' => $this->sell_amount,
                 'type' => 'رسید',
-                'account_type' => $this->accountType,
+                'account_type' => $this->to_account,
                 'date' => $this->date,
                 'description' =>
                     ' دریافت مبلغ ' . number_format($this->sell_amount, 2) . ' ' .

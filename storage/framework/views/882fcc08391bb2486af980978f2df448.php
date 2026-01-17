@@ -343,28 +343,37 @@
          space-y-2"
                 style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
-                
-                <div
-                    class="flex flex-col md:flex-row space-y-4 justify-between p-[20px] border border-[#8C8C8C] rounded-[12px] flex-wrap items-center">
-                    <div class="flex">
-                        <p class="flex justify-between items-center text-center gap-1">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/pencil.svg')); ?>" alt=""
-                                class="h-6 w-6">
-                            <span class="vazir font-semibold">فورم انتفال بین حسابات</span>
-                        </p>
-                    </div>
-                    <div class="flex justify-center gap-2">
-                        <button class="bg-[#DD2424] rounded-[8px] p-[10px] text-white vazir font-semibold">توقف
-                            پیامک</button>
-                        <button wire:click="toggleTransactionType"
-                            class="rounded-[8px] p-[10px] text-white vazir font-semibold transition-colors duration-500 ease-in-out
-                         <?php echo e($transactionType === 'باتفاوت' ? 'bg-[#2563EB]' : 'bg-[#DD2424]'); ?>">
-                            <?php echo e($transactionType === 'باتفاوت' ? 'باتفاوت کمیشن' : 'بدون تفاوت کمیشن'); ?>
+             
+<div
+    class="flex flex-row justify-between items-center gap-5 p-[20px]
+           border border-[#8C8C8C] rounded-[12px] flex-nowrap">
 
-                        </button>
+    <div class="flex items-center gap-1 whitespace-nowrap">
+        <img src="<?php echo e(asset('assets/sarafi/all_icon/pencil.svg')); ?>" alt="" class="h-6 w-6">
+        <span class="vazir font-semibold"> انتفال بین حسابات</span>
+    </div>
 
-                    </div>
-                </div>
+    <div class="flex items-center gap-2 flex-nowrap">
+        <button
+            wire:click="toggleAccountType"
+            class="rounded-[8px] p-[10px] px-10 text-white vazir font-semibold
+                   whitespace-nowrap transition-colors duration-500 ease-in-out
+                   <?php echo e($accountType === 'نقدی' ? 'bg-[#2563EB]' : 'bg-[#DD2424]'); ?>">
+            <?php echo e($accountType === 'نقدی' ? 'نقدی' : 'بانکی'); ?>
+
+        </button>
+
+        <button
+            wire:click="toggleTransactionType"
+            class="rounded-[8px] p-[10px] text-white vazir font-semibold
+                   whitespace-nowrap transition-colors duration-500 ease-in-out
+                   <?php echo e($transactionType === 'باتفاوت' ? 'bg-[#2563EB]' : 'bg-[#DD2424]'); ?>">
+            <?php echo e($transactionType === 'باتفاوت' ? 'باتفاوت کمیشن' : 'بدون تفاوت کمیشن'); ?>
+
+        </button>
+    </div>
+</div>
+
 
                 
                 <form wire:submit.prevent="submitConversion" class="space-y-6">
@@ -527,48 +536,6 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
 
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
-                        <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">از
-                                حساب</label>
-                            <select wire:model="from_account"
-                                class="w-full dark:border-white dark:bg-black dark:text-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 appearance-none">
-                                <option value="نقدی">نقدی</option>
-                                <option value="بانکی">بانکی</option>
-                            </select>
-                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['from_account'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-                        </div>
-
-                        <div>
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">به
-                                حساب</label>
-                            <select wire:model="to_account"
-                                class="w-full dark:border-white dark:text-white dark:bg-black  h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 appearance-none">
-                                <option value="نقدی">نقدی</option>
-                                <option value="بانکی">بانکی</option>
-                            </select>
-                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['to_account'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-                        </div>
-
-                    </div>
 
                     
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">

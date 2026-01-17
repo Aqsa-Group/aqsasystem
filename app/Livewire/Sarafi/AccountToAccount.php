@@ -36,6 +36,9 @@ class AccountToAccount extends Component
     public $from_account = 'نقدی';
     public $to_account = 'نقدی';
 
+    public $accountType = 'نقدی';
+
+
     // حساب کمیشن
     public $commissionAccount;
     public $commissionCustomerId;
@@ -169,6 +172,11 @@ class AccountToAccount extends Component
         ]);
 
         return redirect()->route('sarafi.transaction-reports');
+    }
+
+    public function toggleAccountType()
+    {
+        $this->accountType = $this->accountType === 'نقدی' ? 'بانکی' : 'نقدی';
     }
 
     public function search()
@@ -804,8 +812,8 @@ $receiverName = $receiverCustomer?->fullname ?? 'نامشخص';
                 'to_customer' => $this->depositAccount,
                 'received_amount' => $receivedAmount,
                 'transaction_date' => $this->date,
-                'from_account' => $this->from_account,
-                'to_account' => $this->to_account,
+                'from_account' => $this->accountType,
+                'to_account' => $this->accountType,
                 'description_sender' => $this->description_sender,  
                 'description_receiver' => $this->description_receiver,
                 'zone_sender' => $this->zone_sender,
@@ -815,6 +823,8 @@ $receiverName = $receiverCustomer?->fullname ?? 'نامشخص';
                 'type' => $this->transactionType,
                 'user_id' => $user->id,
                 'admin_id' => $adminId,
+                   
+
             ];
 
             // اضافه کردن فیلدهای مربوط به کمیشن در صورت وجود
@@ -855,7 +865,7 @@ $receiverName = $receiverCustomer?->fullname ?? 'نامشخص';
                     'amount' => $this->withdrawal_amount,
                     'type' => 'برد',
                     'date' => $this->date,
-                    'account_type' => $this->from_account,
+                    'account_type' => $this->accountType,
                     'description' => 
                         '    به حساب    '     . $receiverName . 'انتقال یافت',
                     'zone' => $this->zone_sender,
@@ -871,7 +881,7 @@ $receiverName = $receiverCustomer?->fullname ?? 'نامشخص';
                     'amount' => $receivedAmount,
                     'type' => 'رسید',
                     'date' => $this->date,
-                    'account_type' => $this->to_account,
+                    'account_type' => $this->accountType,
                     'description' => '      از حساب    '   . $senderName . ' دریافت شد',
                     'zone' => $this->zone_receiver,
                     'by' => $this->by_receiver,
@@ -887,7 +897,7 @@ $receiverName = $receiverCustomer?->fullname ?? 'نامشخص';
                     'amount' => $this->withdrawal_amount,
                     'type' => 'برد',
                     'date' => $this->date,
-                    'account_type' => $this->from_account,
+                    'account_type' => $this->accountType,
                        'description' => 
                         '   به حساب   '    . $receiverName . 'انتقال یافت',
                     'zone' => $this->zone_sender,
@@ -903,7 +913,7 @@ $receiverName = $receiverCustomer?->fullname ?? 'نامشخص';
                     'amount' => $receivedAmount,
                     'type' => 'رسید',
                     'date' => $this->date,
-                    'account_type' => $this->to_account,
+                    'account_type' => $this->accountType,
                                        'description' =>'     از حساب     ' . $senderName . ' دریافت شد',
 
                         '',
@@ -1037,7 +1047,11 @@ $receiverName = $receiverCustomer?->fullname ?? 'نامشخص';
             $this->currency = $conversion->currency;
             $this->withdrawal_amount = $conversion->withdrawal_amount;
             $this->received_amount = $conversion->received_amount;
-            $this->from_account = $conversion->from_account;
+            $this->from_account = $conversion->account_type;
+           $this->from_account = $conversion->from_account ?? $conversion->account_type ?? 'نقدی';
+        $this->to_account = $conversion->to_account ?? $conversion->account_type ?? 'نقدی';
+    $this->accountType = $this->from_account;
+
             $this->to_account = $conversion->to_account;
             $this->date = $conversion->transaction_date;
             $this->transferable_amount = $conversion->received_amount;

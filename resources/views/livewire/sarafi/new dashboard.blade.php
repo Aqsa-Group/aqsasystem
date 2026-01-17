@@ -3,24 +3,42 @@
     <h1 class="mb-8 text-[18px] font-bold text-gray-700 vazir  dark:text-white" style="font-weight: 800">{{
         __('messages.page_title') }}</h1>
 
-    <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-4 vazir W-[97PX] items-start" style="font-weight: 400">
+    <div class="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-6 gap-4 vazir w-full " style="font-weight: 400">
 
         <!-- رسید / برداشت -->
-        <a href="{{ route('sarafi.transactions') }}" class="block">
-            <div style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);" class="border bg-white
-                rounded-xl py-3 px-4 flex items-center  gap-[10px] justify-start
-                text-[#2563EB] text-[14px] ">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2 8.50488H22" stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10"
+        <a href="{{ route('sarafi.transactions') }}">
+            <div style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);" class=" group border bg-white
+                rounded-xl py-3 px-4 flex items-center  gap-[10px] justify-center
+                text-[#184D6C] text-[14px] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear ">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    class="block group-hover:hidden">
+                    <path d="M2 8.50488H22" stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10"
                         stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M6 16.5049H8" stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10"
+                    <path d="M6 16.5049H8" stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10"
                         stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M10.5 16.5049H14.5" stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10"
+                    <path d="M10.5 16.5049H14.5" stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10"
                         stroke-linecap="round" stroke-linejoin="round" />
                     <path
                         d="M6.44 3.50488H17.55C21.11 3.50488 22 4.38488 22 7.89488V16.1049C22 19.6149 21.11 20.4949 17.56 20.4949H6.44C2.89 20.5049 2 19.6249 2 16.1149V7.89488C2 4.38488 2.89 3.50488 6.44 3.50488Z"
-                        stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        stroke="#184D6C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
+
+
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    class="hidden group-hover:block">
+                    <path d="M2 8.50488H22" stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M6 16.5049H8" stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M10.5 16.5049H14.5" stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M6.44 3.50488H17.55C21.11 3.50488 22 4.38488 22 7.89488V16.1049C22 19.6149 21.11 20.4949 17.56 20.4949H6.44C2.89 20.5049 2 19.6249 2 16.1149V7.89488C2 4.38488 2.89 3.50488 6.44 3.50488Z"
+                        stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+
+
+
                 <span class="whitespace-nowrap overflow-hidden text-ellipsis">
                     رسید / برد صندوق
                 </span>
@@ -31,17 +49,18 @@
         <!-- انتقال -->
         <a href="{{ route('sarafi.account_to_account') }}" class="block">
             <div class="group border bg-white rounded-xl py-3 px-6 flex items-center justify-center gap-[10px]
-                text-[#2563EB] text-[14px] hover:bg-[#2563EB] hover:text-white"
+                text-[#184D6C] text-[14px] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear "
                 style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);">
 
                 <!-- آیکون پیشفرض -->
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="block group-hover:hidden">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M14.55 21.67C18.84 20.54 22 16.64 22 12C22 6.48 17.56 2 12 2C5.33 2 2 7.56 2 7.56M2 7.56V3M2 7.56H4.01H6.44"
-                        stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M2 12C2 17.52 6.48 22 12 22" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round"
+                        stroke="#184D6C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M2 12C2 17.52 6.48 22 12 22" stroke="#184D6C" stroke-width="1.5" stroke-linecap="round"
                         stroke-linejoin="round" stroke-dasharray="3 3" />
                 </svg>
+
 
                 <!-- آیکون جایگزین -->
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="hidden group-hover:block">
@@ -58,71 +77,134 @@
 
         <!-- خرید و فروش ارز / صندوق -->
         <a href="{{ route('sarafi.buy-sell-currency') }}" class="block">
-            <div style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);" class="border bg-white
+            <div style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);" class=" group border bg-white
                 rounded-xl py-3 px-6 flex items-center justify-center gap-[10px] 
-                text-[#2563EB] text-[14px] ">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                text-[#184D6C] text-[14px] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear ">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    class="block group-hover:hidden">
                     <path
                         d="M9 8.38086H13.6846C14.7231 8.38086 15.5654 9.31548 15.5654 10.2616C15.5654 11.3001 14.7231 12.1424 13.6846 12.1424H9V8.38086Z"
-                        stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
                         stroke-linejoin="round" />
                     <path
                         d="M9 12.1309H14.3539C15.5423 12.1309 16.5 12.9732 16.5 14.0116C16.5 15.0501 15.5423 15.8924 14.3539 15.8924H9V12.1309Z"
-                        stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
                         stroke-linejoin="round" />
-                    <path d="M12.2769 15.8809V17.7616" stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10"
+                    <path d="M12.2769 15.8809V17.7616" stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10"
                         stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M9.93457 15.8809V17.7616" stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10"
+                    <path d="M9.93457 15.8809V17.7616" stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10"
                         stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M12.2769 6.5V8.38077" stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10"
+                    <path d="M12.2769 6.5V8.38077" stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10"
                         stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M9.93457 6.5V8.38077" stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10"
+                    <path d="M9.93457 6.5V8.38077" stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10"
                         stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M10.7769 8.38086H7.5" stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10"
+                    <path d="M10.7769 8.38086H7.5" stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10"
                         stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M10.7769 15.8809H7.5" stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10"
+                    <path d="M10.7769 15.8809H7.5" stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10"
                         stroke-linecap="round" stroke-linejoin="round" />
                     <path
                         d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                        stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10" />
+                        stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10" />
                 </svg>
+
+
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    class="hidden group-hover:block">
+                    <path
+                        d="M9 8.38086H13.6846C14.7231 8.38086 15.5654 9.31548 15.5654 10.2616C15.5654 11.3001 14.7231 12.1424 13.6846 12.1424H9V8.38086Z"
+                        stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path
+                        d="M9 12.1309H14.3539C15.5423 12.1309 16.5 12.9732 16.5 14.0116C16.5 15.0501 15.5423 15.8924 14.3539 15.8924H9V12.1309Z"
+                        stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M12.2769 15.8809V17.7616" stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M9.93457 15.8809V17.7616" stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M12.2769 6.5V8.38077" stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M9.93457 6.5V8.38077" stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M10.7769 8.38086H7.5" stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M10.7769 15.8809H7.5" stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                        stroke="white" stroke-width="1.5" stroke-miterlimit="10" />
+                </svg>
+
+
+
                 <span>{{ __('messages.selling') }}</span>
             </div>
         </a>
 
         <!-- حساب تبدیل -->
         <a href="{{ route('sarafi.conversion.in.account') }}" class="block">
-            <div style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);" class="border bg-white
+            <div style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);" class=" group border bg-white
                 rounded-xl py-3 px-6 flex items-center justify-center gap-[10px] 
-                text-[#2563EB] text-[14px] ">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M17.28 10.4498L21 6.72974L17.28 3.00977" stroke="#2563EB" stroke-width="1.5"
+                text-[#184D6C] text-[14px] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear "
+                class="block group-hover:hidden">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    class="block group-hover:hidden">
+                    <path d="M17.2803 10.4498L21.0002 6.72974L17.2803 3.00977" stroke="#184D6C" stroke-width="1.5"
                         stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M3 6.72949H21" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round"
+                    <path d="M3 6.72949H21" stroke="#184D6C" stroke-width="1.5" stroke-linecap="round"
                         stroke-linejoin="round" />
-                    <path d="M6.71997 13.5498L3 17.2698L6.71997 20.9898" stroke="#2563EB" stroke-width="1.5"
+                    <path d="M6.71997 13.5498L3 17.2698L6.71997 20.9898" stroke="#184D6C" stroke-width="1.5"
                         stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M21 17.2695H3" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round"
+                    <path d="M21 17.2695H3" stroke="#184D6C" stroke-width="1.5" stroke-linecap="round"
                         stroke-linejoin="round" />
                 </svg>
+
+
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    class="hidden group-hover:block">
+                    <path d="M17.2803 10.4498L21.0002 6.72974L17.2803 3.00977" stroke="white" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M3 6.72949H21" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M6.71997 13.5498L3 17.2698L6.71997 20.9898" stroke="white" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M21 17.2695H3" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+
                 <span>{{ __('messages.coversion_account') }}</span>
             </div>
         </a>
 
         <!-- انتقال تبدیل -->
         <a href="{{ route('sarafi.conversion-transfer') }}" class="block">
-            <div style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);" class="border bg-white
+            <div style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);" class=" group border bg-white
                 rounded-xl py-3 px-6 flex items-center justify-center gap-[10px] 
-                text-[#2563EB] text-[14px] ">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                text-[#184D6C] text-[14px] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear ">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    class="block group-hover:hidden">
                     <path d="M21 7V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V7C3 4 4.5 2 8 2H16C19.5 2 21 4 21 7Z"
-                        stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
                         stroke-linejoin="round" />
-                    <path d="M14.5 4.5V6.5C14.5 7.6 15.4 8.5 16.5 8.5H18.5" stroke="#2563EB" stroke-width="1.5"
+                    <path d="M14.5 4.5V6.5C14.5 7.6 15.4 8.5 16.5 8.5H18.5" stroke="#184D6C" stroke-width="1.5"
                         stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M8 13H12" stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                    <path d="M8 13H12" stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
                         stroke-linejoin="round" />
-                    <path d="M8 17H16" stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                    <path d="M8 17H16" stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+
+
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    class="hidden group-hover:block">
+                    <path d="M21 7V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V7C3 4 4.5 2 8 2H16C19.5 2 21 4 21 7Z"
+                        stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M14.5 4.5V6.5C14.5 7.6 15.4 8.5 16.5 8.5H18.5" stroke="white" stroke-width="1.5"
+                        stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M8 13H12" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M8 17H16" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
                         stroke-linejoin="round" />
                 </svg>
 
@@ -133,60 +215,118 @@
 
         <!-- رسید بانکی -->
         <a href="{{ route('sarafi.remittance') }}" class="block">
-            <div style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);" class="border bg-white
+            <div style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);" class=" group border bg-white
                 rounded-xl py-3 px-6 flex items-center justify-center gap-[10px] 
-                text-[#2563EB] text-[14px]">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                text-[#184D6C] text-[14px] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    class="block group-hover:hidden">
                     <path
                         d="M22 6V8.42C22 10 21 11 19.42 11H16V4.01C16 2.9 16.91 2 18.02 2C19.11 2.01 20.11 2.45 20.83 3.17C21.55 3.9 22 4.9 22 6Z"
-                        stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
                         stroke-linejoin="round" />
                     <path
                         d="M2 7V21C2 21.83 2.94 22.3 3.6 21.8L5.31 20.52C5.71 20.22 6.27 20.26 6.63 20.62L8.29 22.29C8.68 22.68 9.32 22.68 9.71 22.29L11.39 20.61C11.74 20.26 12.3 20.22 12.69 20.52L14.4 21.8C15.06 22.29 16 21.82 16 21V4C16 2.9 16.9 2 18 2H7H6C3 2 2 3.79 2 6V7Z"
-                        stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
                         stroke-linejoin="round" />
-                    <path d="M9 13.0098H12" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round"
+                    <path d="M9 13.0098H12" stroke="#184D6C" stroke-width="1.5" stroke-linecap="round"
                         stroke-linejoin="round" />
-                    <path d="M9 9.00977H12" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round"
+                    <path d="M9 9.00977H12" stroke="#184D6C" stroke-width="1.5" stroke-linecap="round"
                         stroke-linejoin="round" />
-                    <path d="M5.99561 13H6.00459" stroke="#2563EB" stroke-width="2" stroke-linecap="round"
+                    <path d="M5.99561 13H6.00459" stroke="#184D6C" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" />
-                    <path d="M5.99561 9H6.00459" stroke="#2563EB" stroke-width="2" stroke-linecap="round"
+                    <path d="M5.99561 9H6.00459" stroke="#184D6C" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" />
                 </svg>
+
+
+
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    class="hidden group-hover:block">
+                    <path
+                        d="M22 6V8.42C22 10 21 11 19.42 11H16V4.01C16 2.9 16.91 2 18.02 2C19.11 2.01 20.11 2.45 20.83 3.17C21.55 3.9 22 4.9 22 6Z"
+                        stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path
+                        d="M2 7V21C2 21.83 2.94 22.3 3.6 21.8L5.31 20.52C5.71 20.22 6.27 20.26 6.63 20.62L8.29 22.29C8.68 22.68 9.32 22.68 9.71 22.29L11.39 20.61C11.74 20.26 12.3 20.22 12.69 20.52L14.4 21.8C15.06 22.29 16 21.82 16 21V4C16 2.9 16.9 2 18 2H7H6C3 2 2 3.79 2 6V7Z"
+                        stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M9 13.0098H12" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M9 9.00977H12" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M5.99561 13H6.00459" stroke="white" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M5.99561 9H6.00459" stroke="white" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+
+
+
                 <span>رسید بانکی</span>
             </div>
         </a>
 
         <!-- برد بانکی -->
         <a href="{{ route('sarafi.withdrawbank') }}" class="block">
-            <div style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);" class="border bg-white
+            <div style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);" class="group border bg-white
                 rounded-xl py-3 px-6 flex items-center justify-center gap-[10px] 
-                text-[#2563EB] text-[14px] ">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                text-[#184D6C] text-[14px] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    class="block group-hover:hidden">
                     <path
                         d="M12.37 2.14984L21.37 5.74982C21.72 5.88982 22 6.30981 22 6.67981V9.99982C22 10.5498 21.55 10.9998 21 10.9998H3C2.45 10.9998 2 10.5498 2 9.99982V6.67981C2 6.30981 2.28 5.88982 2.63 5.74982L11.63 2.14984C11.83 2.06984 12.17 2.06984 12.37 2.14984Z"
-                        stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
                         stroke-linejoin="round" />
-                    <path d="M22 22H2V19C2 18.45 2.45 18 3 18H21C21.55 18 22 18.45 22 19V22Z" stroke="#2563EB"
+                    <path d="M22 22H2V19C2 18.45 2.45 18 3 18H21C21.55 18 22 18.45 22 19V22Z" stroke="#184D6C"
                         stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M4 18V11" stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                    <path d="M4 18V11" stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
                         stroke-linejoin="round" />
-                    <path d="M8 18V11" stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                    <path d="M8 18V11" stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
                         stroke-linejoin="round" />
-                    <path d="M12 18V11" stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10"
+                    <path d="M12 18V11" stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10"
                         stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M16 18V11" stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10"
+                    <path d="M16 18V11" stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10"
                         stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M20 18V11" stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10"
+                    <path d="M20 18V11" stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10"
                         stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M1 22H23" stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                    <path d="M1 22H23" stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
                         stroke-linejoin="round" />
                     <path
                         d="M12 8.5C12.8284 8.5 13.5 7.82843 13.5 7C13.5 6.17157 12.8284 5.5 12 5.5C11.1716 5.5 10.5 6.17157 10.5 7C10.5 7.82843 11.1716 8.5 12 8.5Z"
-                        stroke="#2563EB" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
                         stroke-linejoin="round" />
                 </svg>
+
+
+
+
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    class="hidden group-hover:block">
+                    <path
+                        d="M12.37 2.14984L21.37 5.74982C21.72 5.88982 22 6.30981 22 6.67981V9.99982C22 10.5498 21.55 10.9998 21 10.9998H3C2.45 10.9998 2 10.5498 2 9.99982V6.67981C2 6.30981 2.28 5.88982 2.63 5.74982L11.63 2.14984C11.83 2.06984 12.17 2.06984 12.37 2.14984Z"
+                        stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M22 22H2V19C2 18.45 2.45 18 3 18H21C21.55 18 22 18.45 22 19V22Z" stroke="white"
+                        stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M4 18V11" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M8 18V11" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M12 18V11" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M16 18V11" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M20 18V11" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M1 22H23" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path
+                        d="M12 8.5C12.8284 8.5 13.5 7.82843 13.5 7C13.5 6.17157 12.8284 5.5 12 5.5C11.1716 5.5 10.5 6.17157 10.5 7C10.5 7.82843 11.1716 8.5 12 8.5Z"
+                        stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+
+
 
 
 
@@ -196,18 +336,29 @@
 
         <!-- روزنامچه -->
         <a href="{{ route('sarafi.journal') }}" class="block">
-            <div style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);" class="border bg-white
+            <div style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);" class=" group border bg-white
                 rounded-xl py-3 px-6 flex items-center justify-center gap-[10px] 
-                text-[#2563EB] text-[14px] ">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                text-[#184D6C] text-[14px] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    class="block group-hover:hidden">
                     <path
                         d="M20.082 3.01775L20.1081 3.76729V3.76729L20.082 3.01775ZM16.5 3.48744L16.2849 2.76895V2.76895L16.5 3.48744ZM13.6738 4.80275L13.2982 4.15363L13.2982 4.15363L13.6738 4.80275ZM3.9824 3.07489L3.93639 3.82348L3.9824 3.07489ZM7 3.48744L7.19136 2.76227V2.76227L7 3.48744ZM10.2823 4.87546L9.93167 5.53847V5.53847L10.2823 4.87546ZM13.6276 20.0692L13.9804 20.7311V20.7311L13.6276 20.0692ZM17 18.6334L16.8086 17.9082H16.8086L17 18.6334ZM19.9851 18.2228L20.032 18.9714V18.9714L19.9851 18.2228ZM10.3724 20.0692L10.0196 20.7311H10.0196L10.3724 20.0692ZM7 18.6334L7.19136 17.9082H7.19136L7 18.6334ZM4.01486 18.2228L3.96804 18.9714H3.96804L4.01486 18.2228ZM22.75 10.5384C22.75 10.1242 22.4142 9.78839 22 9.78839C21.5858 9.78839 21.25 10.1242 21.25 10.5384H22H22.75ZM21.25 7C21.25 7.41421 21.5858 7.75 22 7.75C22.4142 7.75 22.75 7.41421 22.75 7H22H21.25ZM1.25 10.5707C1.25 10.9849 1.58579 11.3207 2 11.3207C2.41421 11.3207 2.75 10.9849 2.75 10.5707H2H1.25ZM2.75 14C2.75 13.5858 2.41421 13.25 2 13.25C1.58579 13.25 1.25 13.5858 1.25 14H2H2.75ZM20.082 3.01775L20.0559 2.2682C18.9175 2.30785 17.4296 2.42627 16.2849 2.76895L16.5 3.48744L16.7151 4.20594C17.6643 3.92179 18.9892 3.80627 20.1081 3.76729L20.082 3.01775ZM16.5 3.48744L16.2849 2.76895C15.2899 3.06684 14.1706 3.64868 13.2982 4.15363L13.6738 4.80275L14.0495 5.45188C14.9 4.95969 15.8949 4.45149 16.7151 4.20594L16.5 3.48744ZM3.9824 3.07489L3.93639 3.82348C4.90238 3.88285 5.99643 3.99829 6.80864 4.21262L7 3.48744L7.19136 2.76227C6.23055 2.50873 5.01517 2.38695 4.02841 2.3263L3.9824 3.07489ZM7 3.48744L6.80864 4.21262C7.77076 4.46651 8.95486 5.02196 9.93167 5.53847L10.2823 4.87546L10.6328 4.21244C9.63736 3.68606 8.32766 3.06211 7.19136 2.76227L7 3.48744ZM13.6276 20.0692L13.9804 20.7311C14.9714 20.2028 16.1988 19.6205 17.1914 19.3585L17 18.6334L16.8086 17.9082C15.6383 18.217 14.2827 18.8701 13.2748 19.4074L13.6276 20.0692ZM17 18.6334L17.1914 19.3585C17.9943 19.1466 19.0732 19.0313 20.032 18.9714L19.9851 18.2228L19.9383 17.4743C18.9582 17.5356 17.7591 17.6574 16.8086 17.9082L17 18.6334ZM10.3724 20.0692L10.7252 19.4074C9.71727 18.8701 8.3617 18.217 7.19136 17.9082L7 18.6334L6.80864 19.3585C7.8012 19.6205 9.0286 20.2028 10.0196 20.7311L10.3724 20.0692ZM7 18.6334L7.19136 17.9082C6.24092 17.6574 5.04176 17.5356 4.06168 17.4743L4.01486 18.2228L3.96804 18.9714C4.9268 19.0313 6.00566 19.1466 6.80864 19.3585L7 18.6334ZM22 16.1436H21.25C21.25 16.8293 20.6817 17.4278 19.9383 17.4743L19.9851 18.2228L20.032 18.9714C21.5062 18.8791 22.75 17.6798 22.75 16.1436H22ZM22 4.93319H22.75C22.75 3.46989 21.5847 2.21495 20.0559 2.2682L20.082 3.01775L20.1081 3.76729C20.7229 3.74588 21.25 4.25161 21.25 4.93319H22ZM2 16.1436H1.25C1.25 17.6798 2.49378 18.8791 3.96804 18.9714L4.01486 18.2228L4.06168 17.4743C3.31831 17.4278 2.75 16.8293 2.75 16.1436H2ZM13.6276 20.0692L13.2748 19.4074C12.4825 19.8297 11.5175 19.8297 10.7252 19.4074L10.3724 20.0692L10.0196 20.7311C11.2529 21.3885 12.7471 21.3885 13.9804 20.7311L13.6276 20.0692ZM13.6738 4.80275L13.2982 4.15363C12.4801 4.62709 11.4617 4.6507 10.6328 4.21244L10.2823 4.87546L9.93167 5.53847C11.2239 6.22177 12.791 6.18025 14.0495 5.45188L13.6738 4.80275ZM2 4.9978H2.75C2.75 4.30062 3.30243 3.78451 3.93639 3.82348L3.9824 3.07489L4.02841 2.3263C2.47017 2.23053 1.25 3.49864 1.25 4.9978H2ZM22 16.1436H22.75V10.5384H22H21.25V16.1436H22ZM22 7H22.75V4.93319H22H21.25V7H22ZM2 10.5707H2.75V4.9978H2H1.25V10.5707H2ZM2 16.1436H2.75V14H2H1.25V16.1436H2Z"
-                        fill="#2563EB" />
-                    <path d="M12 5.50049V16.0005V20.5005" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" />
+                        fill="#184D6C" />
+                    <path d="M12 5.50049V16.0005V20.5005" stroke="#184D6C" stroke-width="1.5" stroke-linecap="round" />
                 </svg>
+
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    class="hidden group-hover:block">
+                    <path
+                        d="M20.082 3.01775L20.1081 3.76729V3.76729L20.082 3.01775ZM16.5 3.48744L16.2849 2.76895V2.76895L16.5 3.48744ZM13.6738 4.80275L13.2982 4.15363L13.2982 4.15363L13.6738 4.80275ZM3.9824 3.07489L3.93639 3.82348L3.9824 3.07489ZM7 3.48744L7.19136 2.76227V2.76227L7 3.48744ZM10.2823 4.87546L9.93167 5.53847V5.53847L10.2823 4.87546ZM13.6276 20.0692L13.9804 20.7311V20.7311L13.6276 20.0692ZM17 18.6334L16.8086 17.9082H16.8086L17 18.6334ZM19.9851 18.2228L20.032 18.9714V18.9714L19.9851 18.2228ZM10.3724 20.0692L10.0196 20.7311H10.0196L10.3724 20.0692ZM7 18.6334L7.19136 17.9082H7.19136L7 18.6334ZM4.01486 18.2228L3.96804 18.9714H3.96804L4.01486 18.2228ZM22.75 10.5384C22.75 10.1242 22.4142 9.78839 22 9.78839C21.5858 9.78839 21.25 10.1242 21.25 10.5384H22H22.75ZM21.25 7C21.25 7.41421 21.5858 7.75 22 7.75C22.4142 7.75 22.75 7.41421 22.75 7H22H21.25ZM1.25 10.5707C1.25 10.9849 1.58579 11.3207 2 11.3207C2.41421 11.3207 2.75 10.9849 2.75 10.5707H2H1.25ZM2.75 14C2.75 13.5858 2.41421 13.25 2 13.25C1.58579 13.25 1.25 13.5858 1.25 14H2H2.75ZM20.082 3.01775L20.0559 2.2682C18.9175 2.30785 17.4296 2.42627 16.2849 2.76895L16.5 3.48744L16.7151 4.20594C17.6643 3.92179 18.9892 3.80627 20.1081 3.76729L20.082 3.01775ZM16.5 3.48744L16.2849 2.76895C15.2899 3.06684 14.1706 3.64868 13.2982 4.15363L13.6738 4.80275L14.0495 5.45188C14.9 4.95969 15.8949 4.45149 16.7151 4.20594L16.5 3.48744ZM3.9824 3.07489L3.93639 3.82348C4.90238 3.88285 5.99643 3.99829 6.80864 4.21262L7 3.48744L7.19136 2.76227C6.23055 2.50873 5.01517 2.38695 4.02841 2.3263L3.9824 3.07489ZM7 3.48744L6.80864 4.21262C7.77076 4.46651 8.95486 5.02196 9.93167 5.53847L10.2823 4.87546L10.6328 4.21244C9.63736 3.68606 8.32766 3.06211 7.19136 2.76227L7 3.48744ZM13.6276 20.0692L13.9804 20.7311C14.9714 20.2028 16.1988 19.6205 17.1914 19.3585L17 18.6334L16.8086 17.9082C15.6383 18.217 14.2827 18.8701 13.2748 19.4074L13.6276 20.0692ZM17 18.6334L17.1914 19.3585C17.9943 19.1466 19.0732 19.0313 20.032 18.9714L19.9851 18.2228L19.9383 17.4743C18.9582 17.5356 17.7591 17.6574 16.8086 17.9082L17 18.6334ZM10.3724 20.0692L10.7252 19.4074C9.71727 18.8701 8.3617 18.217 7.19136 17.9082L7 18.6334L6.80864 19.3585C7.8012 19.6205 9.0286 20.2028 10.0196 20.7311L10.3724 20.0692ZM7 18.6334L7.19136 17.9082C6.24092 17.6574 5.04176 17.5356 4.06168 17.4743L4.01486 18.2228L3.96804 18.9714C4.9268 19.0313 6.00566 19.1466 6.80864 19.3585L7 18.6334ZM22 16.1436H21.25C21.25 16.8293 20.6817 17.4278 19.9383 17.4743L19.9851 18.2228L20.032 18.9714C21.5062 18.8791 22.75 17.6798 22.75 16.1436H22ZM22 4.93319H22.75C22.75 3.46989 21.5847 2.21495 20.0559 2.2682L20.082 3.01775L20.1081 3.76729C20.7229 3.74588 21.25 4.25161 21.25 4.93319H22ZM2 16.1436H1.25C1.25 17.6798 2.49378 18.8791 3.96804 18.9714L4.01486 18.2228L4.06168 17.4743C3.31831 17.4278 2.75 16.8293 2.75 16.1436H2ZM13.6276 20.0692L13.2748 19.4074C12.4825 19.8297 11.5175 19.8297 10.7252 19.4074L10.3724 20.0692L10.0196 20.7311C11.2529 21.3885 12.7471 21.3885 13.9804 20.7311L13.6276 20.0692ZM13.6738 4.80275L13.2982 4.15363C12.4801 4.62709 11.4617 4.6507 10.6328 4.21244L10.2823 4.87546L9.93167 5.53847C11.2239 6.22177 12.791 6.18025 14.0495 5.45188L13.6738 4.80275ZM2 4.9978H2.75C2.75 4.30062 3.30243 3.78451 3.93639 3.82348L3.9824 3.07489L4.02841 2.3263C2.47017 2.23053 1.25 3.49864 1.25 4.9978H2ZM22 16.1436H22.75V10.5384H22H21.25V16.1436H22ZM22 7H22.75V4.93319H22H21.25V7H22ZM2 10.5707H2.75V4.9978H2H1.25V10.5707H2ZM2 16.1436H2.75V14H2H1.25V16.1436H2Z"
+                        fill="white" />
+                    <path d="M12 5.50049V16.0005V20.5005" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+
 
                 <span>روزنامچه</span>
             </div>
+
         </a>
 
 
@@ -216,7 +367,7 @@
 
 
     <div x-data="{ activeTab: @entangle('activeTab') }" class="mt-12">
-        <div class="flex gap-2">
+        <div class="flex flex-col md:flex-row gap-2">
 
             <!-- TAB: عمومی -->
             <a href="#" @click.prevent="activeTab = 'general'" @click.prevent="activeTab = 'general'" class="flex items-center gap-3 px-6 py-2 rounded-2xl transition-all duration-300
@@ -317,23 +468,26 @@
 
         </div>
 
+        <div class="p-10 w-full mt-8 rounded-[12px] transition-all duration-300" :class="{
+        'bg-[#F5F5F5] h-fit p-4 shadow-sm': activeTab === 'general',
+        'bg-[#184D6C] h-f shadow-[0_0_4px_rgba(0,0,0,0.25)_0_4px_4px_rgba(0,0,0,0.25)]': activeTab === 'safes' || activeTab === 'account_safe'
+     }" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
 
-        <div class="p-10  w-full mt-8 h-[453px] bg-[#F5F5F5] dark:bg-black rounded-b-xl shadow-sm " :class="(activeTab === 'general') 
-                      ? '' 
-                      : ' bg-[#F5F5F5]'" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+
 
             <template x-if="activeTab === 'general'">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
+                <div class="grid grid-cols-1     sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
 
                     <!-- کارت نمونه (تعداد کاربران) -->
                     <div class="group flex flex-col justify-between border rounded-2xl
                         bg-[#1A7477] bg-opacity-20 hover:bg-opacity-100
                         shadow-md hover:shadow-xl
-                        w-full h-[180px] p-6 transform transition-colors duration-500 ease-in-out
+                        w-full h-auto  p-3 md:p-6 lg:p-6 transform transition-colors duration-500 ease-in-out
                                      ">
 
                         <!-- ردیف بالا -->
-                        <div class="flex items-start justify-between w-full">
+                        <div
+                            class="flex flex-col md:flex-row lg:flex-row  items-center md:items-start lg:items-start justify-center md:justify-between lg:justify-between w-full">
                             <div
                                 class="flex items-center justify-center group-hover:bg-white  bg-[#1A7477] rounded-full h-[60px] w-[60px] shadow-lg">
                                 <svg width="26" height="26" viewBox="0 0 20 20" fill="none"
@@ -382,14 +536,14 @@
                             </div>
 
                             <!-- عنوان -->
-                            <p class="text-start font-medium text-[18px] text-[#1A7477]
+                            <p class="text-start mt-2 space-y-2 md:space-y-0 lg:space-y-0 font-medium text-[18px] text-[#1A7477]
             group-hover:text-white" style="font-weight: 400;">
                                 تعداد کاربران
                             </p>
                         </div>
 
                         <!-- عدد + آپدیت -->
-                        <div class="flex flex-col items-end text-end space-y-2">
+                        <div class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
                             <p class="text-[26px] font-extrabold text-[#1A7477]
             group-hover:text-white">
                                 {{ $UserCount }}
@@ -398,7 +552,7 @@
                             <div class="border-2 rounded-2xl px-3 py-2
             border-[#1A7477]
             group-hover:bg-white ">
-                                <p class="text-sm vazir text-[#1A7477]
+                                <p class="text-sm  vazir text-[#1A7477]
                 group-hover:text-[#1A7477]">
                                     آخرین به‌روزرسانی 10 دقیقه پیش
                                 </p>
@@ -410,12 +564,13 @@
 
                     <div class="group flex flex-col justify-between border rounded-2xl
                         bg-[#122EE1] bg-opacity-20 hover:bg-opacity-100
-                        shadow-md hover:shadow-xl transition-colors duration-500 ease-in-out
-
-                        w-full h-[180px] p-6">
+                        shadow-md hover:shadow-xl
+ w-full   p-2 md:p-6 lg:p-6 transform transition-colors duration-500 ease-in-out
+                                     ">
 
                         <!-- ردیف بالا -->
-                        <div class="flex items-start justify-between w-full">
+                        <div
+                            class="flex flex-col md:flex-row lg:flex-row  items-center md:items-start lg:items-start justify-center md:justify-between lg:justify-between w-full">
                             <div
                                 class="flex items-center justify-center group-hover:bg-white  bg-[#122EE1] rounded-full h-[60px] w-[60px] shadow-lg">
                                 <svg width="26" height="26" viewBox="0 0 20 20" fill="none"
@@ -482,14 +637,14 @@
                             </div>
 
                             <!-- عنوان -->
-                            <p class="text-start font-medium text-[18px] text-[#2563EB]
+                            <p class="text-start space-y-6 md:space-y-0 lg:space-y-0 font-medium text-[18px] text-[#2563EB]
             group-hover:text-white" style="font-weight: 400;">
                                 تعداد مشتریان
                             </p>
                         </div>
 
                         <!-- عدد + آپدیت -->
-                        <div class="flex flex-col items-end text-end space-y-2">
+                        <div class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
                             <p class="text-[26px] font-extrabold text-[#2563EB]
             group-hover:text-white">
                                 {{ $customerCount }}
@@ -512,10 +667,12 @@
                     <div class="group flex flex-col justify-between border rounded-2xl
                         bg-[#EC4E19] bg-opacity-20 hover:bg-[#EB7825]
                         shadow-md hover:shadow-xl transition-colors duration-500 ease-in-out
-                        w-full h-[180px] p-6">
+         w-full   p-3 md:p-6 lg:p-6 transform 
+                                     ">
 
                         <!-- ردیف بالا -->
-                        <div class="flex items-start justify-between w-full">
+                        <div
+                            class="flex flex-col md:flex-row lg:flex-row  items-center md:items-start lg:items-start justify-center md:justify-between lg:justify-between w-full">
                             <div
                                 class="flex items-center justify-center group-hover:bg-white  bg-[#EC4E19] rounded-full h-[60px] w-[60px] shadow-lg">
                                 <svg width="26" height="26" viewBox="0 0 20 20" fill="none"
@@ -573,14 +730,14 @@
                             </div>
 
                             <!-- عنوان -->
-                            <p class="text-start font-medium text-[18px] text-[#EC4E19]
+                            <p class="text-start space-y-3 md:space-y-0 lg:space-y-0 font-medium text-[18px] text-[#EC4E19]
             group-hover:text-white" style="font-weight: 400;">
                                 معاملات امروز
                             </p>
                         </div>
 
                         <!-- عدد + آپدیت -->
-                        <div class="flex flex-col items-end text-end space-y-2">
+                        <div class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
                             <p class="text-[26px] font-extrabold text-[#EC4E19]
             group-hover:text-white">
                                 {{ $TransactionCount }}
@@ -606,10 +763,12 @@
                         bg-[#5474BB] bg-opacity-20 hover:bg-opacity-100
                         shadow-md hover:shadow-xl transition-colors duration-500 ease-in-out
 
-                        w-full h-[180px] p-6">
+         w-full   p-3 md:p-6 lg:p-6 transform 
+                                     ">
 
                         <!-- ردیف بالا -->
-                        <div class="flex items-start justify-between w-full">
+                        <div
+                            class="flex flex-col md:flex-row lg:flex-row  items-center md:items-start lg:items-start justify-center md:justify-between lg:justify-between w-full">
                             <div
                                 class="flex items-center justify-center group-hover:bg-white  bg-[#5474BB] rounded-full h-[60px] w-[60px] shadow-lg">
 
@@ -646,14 +805,14 @@
                             </div>
 
                             <!-- عنوان -->
-                            <p class="text-start font-medium text-[18px] text-[#5474BB]
+                            <p class="text-start  space-y-2 md:space-y-0 lg:space-y-0 font-medium text-[18px] text-[#5474BB]
             group-hover:text-white" style="font-weight: 400;">
                                 حواله های امروز
                             </p>
                         </div>
 
                         <!-- عدد + آپدیت -->
-                        <div class="flex flex-col items-end text-end space-y-2">
+                        <div class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
                             <p class="text-[26px] font-extrabold text-[#5474BB]
             group-hover:text-white">
                                 {{ $remittancecount }}
@@ -682,11 +841,12 @@
                         <div class="group flex flex-col justify-between border rounded-2xl
                         bg-[#EBA925] bg-opacity-20 hover:bg-[#AA7407]
                         shadow-md hover:shadow-xl transition-colors duration-500 ease-in-out
-
-                        w-full h-[180px] p-6">
+ w-full   p-3 md:p-6 lg:p-6 transform 
+                                     ">
 
                             <!-- ردیف بالا -->
-                            <div class="flex items-start justify-between w-full">
+                            <div
+                                class="flex flex-col md:flex-row lg:flex-row  items-center md:items-start lg:items-start justify-center md:justify-between lg:justify-between w-full">
                                 <div
                                     class="flex items-center justify-center group-hover:bg-white  bg-[#EBA925] rounded-full h-[60px] w-[60px] shadow-lg">
 
@@ -723,14 +883,14 @@
                                 </div>
 
                                 <!-- عنوان -->
-                                <p class="text-start font-medium text-[18px] text-[#EBA925]
+                                <p class="text-start  font-medium text-[18px] text-[#EBA925]
             group-hover:text-white" style="font-weight: 400;">
                                     حواله های در انتظار
                                 </p>
                             </div>
 
                             <!-- عدد + آپدیت -->
-                            <div class="flex flex-col items-end text-end space-y-2">
+                        <div class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
                                 <p class="text-[26px] font-extrabold text-[#EBA925]
             group-hover:text-white">
                                     {{ $waitting }}
@@ -762,11 +922,12 @@
                         bg-[#108614] bg-opacity-20 hover:bg-[#1C9329]
                         shadow-md hover:shadow-xl transition-colors duration-500 ease-in-out
 
-                        w-full h-[180px] p-6">
-
+                         w-full   p-3 md:p-6 lg:p-6 transform 
+                                     ">
 
                         <!-- ردیف بالا -->
-                        <div class="flex items-start justify-between w-full">
+                        <div
+                            class="flex flex-col md:flex-row lg:flex-row  items-center md:items-start lg:items-start justify-center md:justify-between lg:justify-between w-full">
                             <div
                                 class="flex items-center justify-center group-hover:bg-white  bg-[#108614] rounded-full h-[60px] w-[60px] shadow-lg">
 
@@ -807,7 +968,7 @@
                         </div>
 
                         <!-- عدد + آپدیت -->
-                        <div class="flex flex-col items-end text-end space-y-2">
+                        <div class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
                             <p class="text-[26px] font-extrabold text-[#108614]
             group-hover:text-white">
                                 {{ $todayprofit }}
@@ -834,13 +995,12 @@
                         bg-[#DD2424] bg-opacity-20 hover:bg-opacity-100
                         shadow-md hover:shadow-xl transition-colors duration-500 ease-in-out
 
-                        w-full h-[180px] p-6">
-
-
-
+               w-full   p-3 md:p-6 lg:p-6 transform 
+                                     ">
 
                         <!-- ردیف بالا -->
-                        <div class="flex items-start justify-between w-full">
+                        <div
+                            class="flex flex-col md:flex-row lg:flex-row  items-center md:items-start lg:items-start justify-center md:justify-between lg:justify-between w-full">
                             <div
                                 class="flex items-center justify-center group-hover:bg-white  bg-[#DD2424] rounded-full h-[60px] w-[60px] shadow-lg">
 
@@ -881,7 +1041,7 @@
                         </div>
 
                         <!-- عدد + آپدیت -->
-                        <div class="flex flex-col items-end text-end space-y-2">
+                        <div class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
                             <p class="text-[26px] font-extrabold text-[#DD2424]
             group-hover:text-white">
                                 {{ $todaylost }}
@@ -911,13 +1071,12 @@
                         bg-[#125614] bg-opacity-20 hover:bg-opacity-100
                         shadow-md hover:shadow-xl transition-colors duration-500 ease-in-out
 
-                        w-full h-[180px] p-6">
-
-
-
+                    w-full   p-3 md:p-6 lg:p-6 transform 
+                                     ">
 
                         <!-- ردیف بالا -->
-                        <div class="flex items-start justify-between w-full">
+                        <div
+                            class="flex flex-col md:flex-row lg:flex-row  items-center md:items-start lg:items-start justify-center md:justify-between lg:justify-between w-full">
                             <div
                                 class="flex items-center justify-center group-hover:bg-white  bg-[#125614] rounded-full h-[60px] w-[60px] shadow-lg">
 
@@ -969,7 +1128,7 @@
                         </div>
 
                         <!-- عدد + آپدیت -->
-                        <div class="flex flex-col items-end text-end space-y-2">
+                        <div class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
                             <p class="text-[26px] font-extrabold text-[#125614]
             group-hover:text-white">
                                 @php $currentUser = Auth::guard('sarafi')->user(); @endphp
@@ -1013,23 +1172,67 @@
             in_array($currentUser->role, ['superadmin', 'admin', 'cashier'])
             )
             <template x-if="activeTab === 'safes'">
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 vazir">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 vazir ">
 
                     @foreach($currencies as $key => $label)
-                    <div class="border bg-[#F5F5F5] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
-                        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-                        <div class="rounded-full dark:bg-white/100 bg-[#2563EB] p-6 flex items-center justify-center">
-                            <img src="{{ asset('assets/sarafi/all_icon/coin.svg') }}" alt=""
-                                class="h-10 w-10 dark:hidden">
-                            <i class="fa-solid fa-coins text-black text-2xl hidden  dark:block"></i>
+                    <div class="relative flex flex-col items-center justify-center
+        gap-4
+            w-full h-[147px]
+            p-4
+            rounded-[12px]
+
+            bg-white/10         <!-- شفافیت شیشه -->
+            backdrop-blur-lg     <!-- افکت بلور -->
+            border border-white/30
+            shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
+
+                        <div class="w-full flex justify-between mx-auto items-center">
+                            <div class="bg-white rounded-[27.5px] px-[14px] py-[15px]">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M13 5C15.8284 5 17.2426 5 18.1213 5.87868C19 6.75736 19 8.17157 19 11C19 13.8284 19 15.2426 18.1213 16.1213C17.2426 17 15.8284 17 13 17H8C5.17157 17 3.75736 17 2.87868 16.1213C2 15.2426 2 13.8284 2 11C2 8.17157 2 6.75736 2.87868 5.87868C3.75736 5 5.17157 5 8 5H9"
+                                        stroke="#184D6C" stroke-width="1.5" stroke-linecap="round" />
+                                    <path
+                                        d="M16.0001 20.0001H11.0001C8.17163 20.0001 6.75742 20.0001 5.87874 19.1214C5.38884 18.6315 5.17208 17.9751 5.07617 17M21.1214 19.1214C22.0001 18.2427 22.0001 16.8285 22.0001 14.0001C22.0001 11.1716 22.0001 9.75741 21.1214 8.87873C20.6315 8.38885 19.9751 8.17208 19.0001 8.07617"
+                                        stroke="#184D6C" stroke-width="1.5" stroke-linecap="round" />
+                                    <path
+                                        d="M13 11C13 12.3807 11.8807 13.5 10.5 13.5C9.11929 13.5 8 12.3807 8 11C8 9.61929 9.11929 8.5 10.5 8.5C11.8807 8.5 13 9.61929 13 11Z"
+                                        stroke="#184D6C" stroke-width="1.5" />
+                                    <path d="M16 13L16 9" stroke="#184D6C" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M5 13L5 9" stroke="#184D6C" stroke-width="1.5" stroke-linecap="round" />
+                                </svg>
+
+                            </div>
+                            <div>
+                                <h1 class="text-[16px] font-semibold text-white">
+                                    {{ $label }}
+                                </h1>
+                            </div>
+
+
+
                         </div>
-                        <div class="space-y-2">
-                            <h1 class="text-[16px] font-semibold dark:text-white text-gray-600">{{ $label }}</h1>
-                            <p dir="ltr" class="  text-[25px] font-extrabold dark:text-white text-[#2563EB]">
+                        <div class="flex w-full justify-end">
+                            <p dir="ltr" class="text-[25px] font-extrabold text-[#FFFFFF]">
                                 {{ number_format($safe->$key ?? 0) }}
                             </p>
                         </div>
+
+
+
+
+
+
+
+
+
+
+
+
                     </div>
+
+
                     @endforeach
 
                 </div>
@@ -1038,19 +1241,58 @@
             <template x-if="activeTab === 'account_safe'">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 vazir">
                     @foreach($currencies as $key => $label)
-                    <div class="border bg-[#F5F5F5]  dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 dark:text-white rounded-xl p-6 h-48 flex flex-col items-center gap-4 justify-center text-center"
-                        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-                        <div class="rounded-full dark:bg-white bg-[#2563EB]  p-6 flex items-center justify-center">
-                            <i class="fa-solid fa-credit-card dark:text-black text-white text-2xl"></i>
+                    <div class="relative flex flex-col items-center justify-center
+        gap-4
+            w-full h-[147px]
+            p-4
+            rounded-[12px]
+
+            bg-white/10         
+            backdrop-blur-lg     
+            border border-white/30
+            shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
+                        <div class="w-full flex justify-between mx-auto items-center">
+                            <div class="bg-white rounded-[27.5px] px-[14px] py-[15px]">
+                               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 5.25C12.4142 5.25 12.75 5.58579 12.75 6V6.31673C14.3804 6.60867 15.75 7.83361 15.75 9.5C15.75 9.91421 15.4142 10.25 15 10.25C14.5858 10.25 14.25 9.91421 14.25 9.5C14.25 8.82154 13.6859 8.10339 12.75 7.84748V11.3167C14.3804 11.6087 15.75 12.8336 15.75 14.5C15.75 16.1664 14.3804 17.3913 12.75 17.6833V18C12.75 18.4142 12.4142 18.75 12 18.75C11.5858 18.75 11.25 18.4142 11.25 18V17.6833C9.61957 17.3913 8.25 16.1664 8.25 14.5C8.25 14.0858 8.58579 13.75 9 13.75C9.41421 13.75 9.75 14.0858 9.75 14.5C9.75 15.1785 10.3141 15.8966 11.25 16.1525V12.6833C9.61957 12.3913 8.25 11.1664 8.25 9.5C8.25 7.83361 9.61957 6.60867 11.25 6.31673V6C11.25 5.58579 11.5858 5.25 12 5.25ZM11.25 7.84748C10.3141 8.10339 9.75 8.82154 9.75 9.5C9.75 10.1785 10.3141 10.8966 11.25 11.1525V7.84748ZM12.75 12.8475V16.1525C13.6859 15.8966 14.25 15.1785 14.25 14.5C14.25 13.8215 13.6859 13.1034 12.75 12.8475Z" fill="#387EA2"/>
+</svg>
+
+
+                            </div>
+                            <div>
+                                <h1 class="text-[16px] font-semibold text-white">
+                                    {{ $label }}
+                                </h1>
+                            </div>
+
+
+
                         </div>
-                        <div class="space-y-2">
-                            <h1 class="text-[16px] font-semibold dark:text-white text-gray-600">{{ $label }}</h1>
-                            <p dir="ltr" class="  text-[25px] font-extrabold dark:text-white text-[#2563EB]">
+                        <div class="flex w-full justify-end">
+                            <p dir="ltr" class="text-[25px] font-extrabold text-[#FFFFFF]">
                                 {{ number_format($safe_account[$key] ?? 0) }}
                             </p>
                         </div>
+
+
+
+
+
+
+
+
+
+
+
+
                     </div>
+
                     @endforeach
+
+
+
+
+
                 </div>
             </template>
 

@@ -336,16 +336,16 @@
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
             {{-- فرم تراکنش --}}
                                  <div
-  class="flex flex-col
-         dark:bg-black dark:text-white dark:border dark:border-white
-         bg-[#F5F5F5]
-         mx-auto
-         w-full max-w-[420px] lg:max-w-[474px]
-         p-[10px]
-         h-auto
-         rounded-[12px]
-         space-y-2"
-  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                class="flex flex-col
+                dark:bg-black dark:text-white dark:border dark:border-white
+                bg-[#F5F5F5]
+                mx-auto
+                w-full max-w-[420px] lg:max-w-[474px]
+                p-[10px]
+                h-auto
+                rounded-[12px]
+                space-y-2"
+                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
                 {{-- بالای فرم: فورم و دکمه‌ها --}}
                 <div
                     class="flex flex-row justify-between space-y-4 p-[20px] border border-[#8C8C8C] rounded-[12px] flex-wrap items-center">

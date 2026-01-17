@@ -192,8 +192,6 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     <option value="جنوب‌غرب">جنوب‌غرب (نیمروز)</option>
                                 </select>
                             </div>
-
-                        
                         </div>
                             <div class="w-full">
                                 <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">توسط</label>
