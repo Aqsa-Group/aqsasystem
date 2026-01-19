@@ -19,8 +19,8 @@
             <h1 class="text-[#8C8C8C]">صفحه دریافتی ها حساب مشتریان از صرافی های دیگر</h1>
         </div>
 
-        <div class="flex-1 flex flex-col bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px] w-full mb-5  mx-auto"
-            style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+        <div class="flex-1 flex flex-col    bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC] p-3 md:p-4 lg:p-6 rounded-[12px] w-full mb-5  mx-auto"
+           >
 
 
             <div class="flex items-center gap-3">
@@ -33,7 +33,7 @@
                             <!-- دکمه ۱ - چاپ گزارش -->
                             <div>
                                 <button wire:click="printReport"
-                                    class="w-full flex items-center justify-center gap-2 bg-[#2563EB] text-white px-4 py-4 rounded-xl hover:bg-blue-700 transition">
+                                    class="w-full flex items-center justify-center gap-2  bg-[#184D6C]  text-white px-4 py-4 rounded-xl hover:bg-blue-700 transition">
                                     <span>چاپ گزارش</span>
                                     <svg width="30" height="30" viewBox="0 0 30 30" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -47,7 +47,7 @@
                             <!-- دکمه ۲ - بروزرسانی -->
                             <div>
                                 <button wire:click="refreshReport"
-                                    class="w-full flex items-center justify-center gap-2 bg-[#2563EB] text-white px-4 py-4 rounded-xl hover:bg-blue-700 transition">
+                                    class="w-full flex items-center justify-center gap-2  bg-[#184D6C] text-white px-4 py-4 rounded-xl hover:bg-blue-700 transition">
                                     <span>بروز رسانی</span>
                                     <svg width="24" height="24" viewBox="0 0 30 30" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -64,7 +64,7 @@
                             <!-- دکمه ۳ - بازنشانی فیلترها -->
                             <div>
                                 <button wire:click="resetFilters"
-                                    class="w-full flex items-center justify-center gap-2 bg-[#2563EB] text-white px-4 py-4 rounded-xl hover:bg-blue-700 transition">
+                                    class="w-full flex items-center justify-center gap-2  bg-[#184D6C] text-white px-4 py-4 rounded-xl hover:bg-blue-700 transition">
                                     <span>بازنشانی</span>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -162,9 +162,8 @@
                         </div>
                         <table
                             class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead
-                                class="bg-[#2B65E5] dark:bg-gray-700 text-white text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0"
-                                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                             <thead
+                                class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
                                 <tr>
                                     <th class="px-4 py-4 font-bold w-16">#</th>
                                     <th class="px-4 py-4 font-bold w-48">حساب ارسال کننده</th>
@@ -179,8 +178,9 @@
                             </thead>
                             <tbody>
                                 <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $deals; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $deal): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                                <tr class="text-black border-b border-[#D9D9D9] bg-transparent">
-
+                                <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+                               odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
+                               transition-colors">
                                     <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium w-48">
                                         <?php echo e($loop->iteration); ?>
 

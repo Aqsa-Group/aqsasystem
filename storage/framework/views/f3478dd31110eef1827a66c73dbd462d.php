@@ -42,15 +42,13 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
         <hr class="my-6 border-t border-[#D9D9D9] w-full">
 
         <div class="w-full">
-            <div class="bg-[#F5F5F5] dark:bg-black dark:border dark:border-white p-6 rounded-[12px] mx-auto"
-                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+            <div class="                         bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC]
+ dark:bg-black dark:border dark:border-white p-6 rounded-[12px] mx-auto">
 
                 <div
-                    class="flex flex-col md:flex-row justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
-                    <h1 class="text-[16px] vazir">گزارش مشتریان بر اساس نوعیت / دسته</h1>
+                    class="flex flex-col md:flex-row justify-between items-center  p-3 md:p-4 rounded-[12px] mb-3 gap-3">
+                    <h1 class="text-[22px] inter">گزارش مشتریان بر اساس نوعیت / دسته</h1>
                     <div class="relative w-[250px] md:w-[350]">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
-                            class="absolute  dark:hidden left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6">
                         <svg width="24" height="24"
                             class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 hidden dark:block"
                             viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -61,8 +59,20 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
                                 stroke-linejoin="round" />
                         </svg>
 
-                        <input type="text" wire:model.live="search" placeholder="جستجو ..."
-                            class="w-full dark:bg-black dark:text-white dark:border dark:border-white dark:placeholder:text-white border border-[#8C8C8C] bg-transparent rounded-2xl pl-10 pr-3 py-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm">
+                        <input type="text" wire:model.live="search" placeholder="جستجو..." class="w-full h-12 md:h-[51px]
+                           border border-[#D7E5EC]
+                           dark:bg-black dark:border-white dark:placeholder:text-white placeholder:text-black
+                           rounded-[12px] pl-3 pr-12 text-sm md:text-base
+                           bg-transparent relative z-0">
+
+                        
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none dark:hidden">
+                            <path d="M20 20L22 22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                            <path
+                                d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75"
+                                stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
                     </div>
                 </div>
 

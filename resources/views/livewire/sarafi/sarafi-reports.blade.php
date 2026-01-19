@@ -24,17 +24,28 @@
         <hr class="my-6 border-t border-[#D9D9D9] w-full">
 
         <div class="w-full">
-            <div class="bg-[#F5F5F5] p-6 rounded-[12px] mx-auto"
-                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+            <div class="  bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC] p-6 rounded-[12px] mx-auto">
 
                 <div
-                    class="flex flex-col md:flex-row justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
-                    <h1 class="text-[16px] vazir">گزارش تراکنش‌های با سایر صرافی‌ها</h1>
+                    class="flex flex-col md:flex-row justify-between items-center  p-3 md:p-4 rounded-[12px] mb-3 gap-3">
+                    <h1 class="text-[22px] inter ">گزارش تراکنش‌های با سایر صرافی‌ها</h1>
                     <div class="relative w-[250px] md:w-[250px]">
-                        <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
-                            class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5">
-                        <input type="text" wire:model.live="search" placeholder="جستجو نام صرافی ..."
-                            class="w-full border border-[#8C8C8C] bg-transparent rounded-2xl pl-10 pr-3 py-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm">
+                            <input type="text" wire:model.live="search" placeholder="جستجو..." class="w-full h-12 md:h-[51px]
+                           border border-[#D7E5EC]
+                           dark:bg-black dark:border-white dark:placeholder:text-white placeholder:text-black
+                           rounded-[12px] pl-3 pr-12 text-sm md:text-base
+                           bg-transparent relative z-0">
+
+                            {{-- آیکون --}}
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none dark:hidden">
+                                <path d="M20 20L22 22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                <path
+                                    d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75"
+                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
+
                     </div>
                 </div>
 
@@ -43,7 +54,7 @@
                     <!-- دکمه PDF -->
                     <div>
                         <button wire:click="downloadPDF"
-                            class="w-full flex items-center justify-center gap-2 bg-[#2563EB] text-white px-4 py-4 rounded-xl hover:bg-blue-700 transition">
+                            class="w-full flex items-center justify-center gap-2 bg-[#184D6C] text-white px-4 py-4 rounded-xl  transition">
                             <span>چاپ گزارش</span>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -61,7 +72,7 @@
                     <!-- دکمه ۲ - بروزرسانی -->
                     <div>
                         <button wire:click="refreshReport"
-                            class="w-full flex items-center justify-center gap-2 bg-[#2563EB] text-white px-4 py-4 rounded-xl hover:bg-blue-700 transition">
+                            class="w-full flex items-center justify-center gap-2 bg-[#184D6C] text-white px-4 py-4 rounded-xl  transition">
                             <span>بروز رسانی</span>
                             <svg width="24" height="24" viewBox="0 0 30 30" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -77,7 +88,7 @@
                     <!-- دکمه ۳ - بازنشانی فیلترها -->
                     <div>
                         <button wire:click="resetFilters"
-                            class="w-full flex items-center justify-center gap-2  bg-[#2563EB] text-white px-4 py-4 rounded-xl hover:bg-blue-700 transition">
+                            class="w-full flex items-center justify-center gap-2  bg-[#184D6C] text-white px-4 py-4 rounded-xl  transition">
                             <span>بازنشانی</span>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -148,8 +159,8 @@
                 <div class="overflow-x-auto w-full mt-4">
                     <div class="max-h-[600px] overflow-y-auto">
                         <table class="w-full text-sm md:text-base text-gray-500">
-                            <thead class="bg-[#2B65E5] text-white text-[16px] vazir h-16 sticky top-0">
-                                <tr>
+       <thead
+                                class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">                                <tr>
                                     <th class="px-2 py-4 font-bold w-12 text-center">
                                         <span class="border border-white px-2 py-1 rounded-lg">#</span>
                                     </th>
@@ -166,8 +177,9 @@
                             </thead>
                             <tbody>
                                 @forelse($reports as $index => $report)
-                                    <tr class="border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50"
-                                        dir="ltr">
+                                   <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+                               odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
+                               transition-colors" dir="ltr">
                                         <td class="px-2 py-4 text-center">
                                             <span
                                                 class="border border-gray-300 px-2 py-1 rounded-lg">{{ $index + 1 }}</span>

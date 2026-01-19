@@ -36,8 +36,9 @@
                 <table class="w-[500px] text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <h1 class="text-[24px] mb-5">مجموعه خرید ارز</h1>
                     <thead
-                        class=" w-full dark:bg-gray-700 text-black text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0">
-                        <tr cl>
+                        class="bg-[#2B65E5] w-full dark:bg-gray-700 text-white text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0"
+                        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                        <tr>
                             <th class="px-6 py-4 font-bold w-16">#</th>
                             <!--[if BLOCK]><![endif]--><?php $__currentLoopData = ['usd', 'afn', 'irr', 'eur', 'pkr', 'aed', 'try', 'cny']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <th class="px-6 py-4 font-bold w-48 text-center"><?php echo e($this->getCurrencyName($currency)); ?>
@@ -47,11 +48,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="text-black dark:text-white border-b border-[#D9D9D9]
-                               odd:bg-[#EFF6F9] even:bg-white bg-transparent">
+                        <tr class="text-black dark:text-white border-b border-[#D9D9D9] bg-transparent">
                             <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">1</td>
                             <!--[if BLOCK]><![endif]--><?php $__currentLoopData = ['usd', 'afn', 'irr', 'eur', 'pkr', 'aed', 'try', 'cny']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <td dir="ltr" class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center ">
+                            <td dir="ltr" class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center " >
                                 <?php echo e(number_format($totalBuy[$currency] ?? 0 ,2)); ?>
 
                             </td>
@@ -66,7 +66,8 @@
                 <table class="w-[500px] text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <h1 class="text-[24px] mb-5">مجموعه فروش ارز</h1>
                     <thead
-                        class=" w-full dark:bg-gray-700 text-black text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0">
+                        class="bg-[#2B65E5] w-full dark:bg-gray-700 text-white text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0"
+                        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
                         <tr>
                             <th class="px-6 py-4 font-bold w-16">#</th>
                             <!--[if BLOCK]><![endif]--><?php $__currentLoopData = ['usd', 'afn', 'irr', 'eur', 'pkr', 'aed', 'try', 'cny']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -77,12 +78,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="text-black dark:text-white border-b border-[#D9D9D9]
-                               odd:bg-[#EFF6F9] even:bg-white bg-transparent">
+                        <tr class="text-black dark:text-white border-b border-[#D9D9D9] bg-transparent">
                             <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">1</td>
                             <!--[if BLOCK]><![endif]--><?php $__currentLoopData = ['usd', 'afn', 'irr', 'eur', 'pkr', 'aed', 'try', 'cny']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <td dir="ltr" class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center"
-                                dir="ltr">
+                            <td dir="ltr" class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center" dir="ltr">
                                 <?php echo e(number_format($totalSell[$currency] ?? 0 ,2)); ?>
 
                             </td>
@@ -114,21 +113,22 @@
         </div>
         <div class="flex flex-col lg:flex-row gap-5 mt-7 mx-auto">
             <!-- فرم تراکنش -->
-            <div class="flex flex-col
+                     <div
+  class="flex flex-col
          dark:bg-black dark:text-white dark:border dark:border-white
- bg-white   border border-[#D7E5EC] shadow-sm backdrop:blur-lg          mx-auto
+         bg-[#F5F5F5]
+         mx-auto
          w-full max-w-[420px] lg:max-w-[474px]
          p-[10px]
          h-auto
          rounded-[12px]
-         space-y-2">
-                <div class="flex flex-row justify-between pt-[20px] pb-[20px] rounded-[12px] items-center">
-                    <p class="flex items-center text-center pr-3 inter">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M14.3601 4.07866L15.2869 3.15178C16.8226 1.61607 19.3125 1.61607 20.8482 3.15178C22.3839 4.68748 22.3839 7.17735 20.8482 8.71306L19.9213 9.63993M14.3601 4.07866C14.3601 4.07866 14.4759 6.04828 16.2138 7.78618C17.9517 9.52407 19.9213 9.63993 19.9213 9.63993M14.3601 4.07866L12 6.43872M19.9213 9.63993L14.6607 14.9006L11.5613 18L11.4001 18.1612C10.8229 18.7383 10.5344 19.0269 10.2162 19.2751C9.84082 19.5679 9.43469 19.8189 9.00498 20.0237C8.6407 20.1973 8.25352 20.3263 7.47918 20.5844L4.19792 21.6782M4.19792 21.6782L3.39584 21.9456C3.01478 22.0726 2.59466 21.9734 2.31063 21.6894C2.0266 21.4053 1.92743 20.9852 2.05445 20.6042L2.32181 19.8021M4.19792 21.6782L2.32181 19.8021M2.32181 19.8021L3.41556 16.5208C3.67368 15.7465 3.80273 15.3593 3.97634 14.995C4.18114 14.5653 4.43213 14.1592 4.7249 13.7838C4.97308 13.4656 5.26166 13.1771 5.83882 12.5999L8.5 9.93872"
-                                stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
-                        </svg> <?php echo e($isEditing ? 'فورم ویرایش معاملات نقدی' : 'فورم ثبت معاملات نقدی'); ?>
+         space-y-2"
+  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                <div
+                    class="flex flex-row justify-between pt-[20px] pb-[20px] border border-[#8C8C8C] rounded-[12px] items-center">
+                    <p class="flex items-center text-center pr-3">
+                        <img src="<?php echo e(asset('assets/sarafi/all_icon/pencil.svg')); ?>" alt="" class="h-5 w-5">
+                        <?php echo e($isEditing ? 'فورم ویرایش معاملات نقدی' : 'فورم ثبت معاملات نقدی'); ?>
 
                     </p>
 
@@ -137,8 +137,7 @@
 
                         <button wire:click="toggleTransactionType" type="button" class="rounded-[8px] p-[10px] text-white vazir text-[14px]
                                 transition-colors duration-500 ease-in-out py-4
-                                <?php echo e($transactionType === 'خرید' ?  'bg-[#184D6C] text-white'
-                : 'bg-white text-[#184D6C] border border-[#184D6C] hover:bg-[#184D6C]/10'); ?>">
+                                <?php echo e($transactionType === 'خرید' ? 'bg-[#2563EB]' : 'bg-[#DD2424]'); ?>">
                             <?php echo e($transactionType === 'خرید' ? 'خرید (واحد ارز دربافت صندوق)' : 'فروش (واحد ارز برداشت
                             صندوق)'); ?>
 
@@ -148,23 +147,20 @@
 
                 <form wire:submit.prevent="submitTransaction" class="space-y-3">
                     <!-- مقدار و نوع ارز -->
-                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <div class="lg:w-full">
-                            <label class="block text-[15px] font-medium dark:text-white text-black mb-1 vazir">
-                                ارز برداشت</label>
+                            <label class="block text-[15px] font-medium dark:text-white text-black mb-1 vazir">واحد
+                                ارز</label>
                             <div class="relative">
                                 <select wire:model="currency"
-                                    class="w-full dark:bg-black dark:border-white dark:text-white dark:placeholder:text-white h-[55px] p-3 rounded-[10px] border bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500 appearance-none">
+                                    class="w-full dark:bg-black dark:border-white dark:text-white dark:placeholder:text-white h-[55px] p-3 rounded-[10px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
                                     <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($c['code']); ?>"><?php echo e($c['name_fa']); ?></option>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </select>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
-                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
+                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>"
+                                        class="w-4 h-4 dark:hidden" alt="">
 
                                     <svg width="24" class="hidden dark:block" height="24" viewBox="0 0 24 24"
                                         fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -183,7 +179,7 @@
                                 class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ</label>
                             <div class="relative w-full">
                                 <input type="text" wire:model.live="amount" placeholder="0"
-                                    class="w-full dark:bg-black dark:border-white  h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 dark:text-white"
+                                    class="w-full dark:bg-black dark:border-white  h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:text-white"
                                     oninput="this.value = this.value.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[^0-9]/g, '')" />
                             </div>
                             <!--[if BLOCK]><![endif]--><?php if($amountInWords): ?>
@@ -204,24 +200,20 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
                     <!-- واحد تبدیل ارز و مبلغ معادل -->
-                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <div class="lg:w-full">
-                            <label class="block text-[15px] font-medium  dark:text-white text-black mb-1 vazir">
-                                ارز دریافت</label>
+                            <label class="block text-[15px] font-medium  dark:text-white text-black mb-1 vazir">واحد
+                                تبدیل ارز</label>
                             <div class="relative">
                                 <select wire:model="to_currency"
-                                    class="w-full dark:bg-black dark:text-white dark:border-white h-[55px] p-3 rounded-[10px] border bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500 appearance-none">
+                                    class="w-full dark:bg-black dark:text-white dark:border-white h-[55px] p-3 rounded-[10px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
                                     <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($c['code']); ?>"><?php echo e($c['name_fa']); ?></option>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </select>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
-                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-
+                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>"
+                                        class="w-4 h-4 dark:hidden" alt="">
                                     <svg width="24" class="hidden dark:block " height="24" viewBox="0 0 24 24"
                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -244,7 +236,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </label>
                             <div class="relative w-full">
                                 <input type="text" wire:model.live="exchange_rate" placeholder="0"
-                                    class="w-full dark:bg-black dark:border-white  h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 dark:text-white"
+                                    class="w-full dark:bg-black dark:border-white dark:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:text-white"
                                     oninput="this.value = this.value.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')" />
                             </div>
                             <!--[if BLOCK]><![endif]--><?php if($exchangeRateInWords): ?>
@@ -267,7 +259,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
 
                     <!-- نرخ و تاریخ -->
-                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
 
                         <!-- مبلغ معادل -->
                         <div class="flex-1">
@@ -276,7 +268,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <div class="relative w-full">
                                 <!-- تغییر: readonly حذف شد و wire:model.live اضافه شد -->
                                 <input type="text" wire:model.live="eq_amount" placeholder="0"
-                                    class="w-full dark:bg-black dark:border-white  h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 dark:text-white"
+                                    class="w-full dark:bg-black dark:border-white dark:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:text-white"
                                     oninput="this.value = this.value.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')" />
                             </div>
                             <!--[if BLOCK]><![endif]--><?php if($eqAmountInWords): ?>
@@ -301,7 +293,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <!-- Input field -->
                             <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
                                 placeholder="YYYY/MM/DD"
-                                class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 cursor-pointer"
+                                class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 cursor-pointer"
                                 readonly />
 
                             <!-- Custom Date Picker Modal -->
@@ -919,16 +911,64 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         <label class="block text-[15px] font-medium dark:text-white text-black mb-1 vazir">شرح
                             تراکنش</label>
                         <textarea rows="3" wire:model="description" placeholder="شرح تراکنش..."
-                            class="w-full dark:border-white dark:placeholder:text-white p-3 rounded-[10px] border bg-[#EFF6F9]   focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+                            class="w-full dark:border-white dark:placeholder:text-white p-3 rounded-[10px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
                     </div>
 
 
+                    <!-- آپلود فایل -->
+                    <div>
+                        <label class="block text-[15px] font-medium dark:text-white text-black mb-1 vazir">فایل
+                            تراکنش</label>
+                        <div x-data="{ isDragging: false }"
+                            @drop.prevent="isDragging = false; $wire.upload('transaction_file', $event.dataTransfer.files[0])"
+                            @dragover.prevent="isDragging = true" @dragleave.prevent="isDragging = false"
+                            :class="isDragging ? 'border-[#2563EB] bg-blue-50 dark:bg-black' : 'border-[#112080] dark:border-white bg-white dark:bg-black'"
+                            class="w-full h-[120px] p-3 rounded-[10px] border border-dashed flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gray-50 transition">
 
+                            <!-- اضافه کردن label برای input فایل -->
+                            <label for="fileInput"
+                                class="w-full h-full flex flex-col justify-center items-center cursor-pointer">
+                                <template x-if="!$wire.transaction_file">
+                                    <div class="flex flex-col items-center">
+                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/upload.svg')); ?>"
+                                            class="w-10 h-10 mb-1" alt="">
+                                        <h1 class="font-vazir dark:text-white text-gray-600 mt-2 text-[15px] vazir">فایل
+                                            را اینجا وارد
+                                            کنید یا بکشید</h1>
+
+                                    </div>
+                                </template>
+
+                                <template x-if="$wire.transaction_file">
+                                    <div class="flex flex-col items-center">
+                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/file-uploaded.svg')); ?>"
+                                            class="w-10 h-10 mb-1" alt="">
+                                        <h1 class="font-vazir text-green-600 text-[15px]">فایل انتخاب شده</h1>
+                                        <p class="text-gray-600 text-sm mt-1" x-text="$wire.transaction_file.name"></p>
+                                        <p class="text-blue-500 text-xs mt-1">برای تغییر فایل کلیک کنید</p>
+                                    </div>
+                                </template>
+                            </label>
+
+                            <input type="file" wire:model="transaction_file" class="hidden" id="fileInput">
+
+                        </div>
+                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['transaction_file'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-red-500 text-sm mt-1"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+                    </div>
                     <!-- دکمه‌های نهایی -->
                     <div
                         class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-3 gap-3 justify-center items-center text-center flex-wrap">
                         <button type="submit" wire:loading.attr='disabled' wire:target='submitTransaction'
-                            class="bg-[#184D6C] text-[15px] vazir font-semibold rounded-[8px] px-10 py-3 text-white  transition">
+                            class="bg-[#61B138] text-[15px] vazir font-semibold rounded-[8px] px-10 py-3 text-white hover:bg-green-700 transition">
                             <span wire:loading.remove wire:target='submitTransaction'>
                                 <?php echo e($isEditing ? 'بروزرسانی' : 'ثبت'); ?>
 
@@ -952,7 +992,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         <!--[if BLOCK]><![endif]--><?php if(!$isEditing): ?>
                         <button type="button" wire:click="submitAndPrint" wire:loading.attr='disabled'
                             wire:target='submitAndPrint'
-                            class="bg-[#184D6C] whitespace-nowrap        text-[15px] vazir font-semibold rounded-[8px] px-10 py-3 text-white  transition">
+                            class="bg-[#2563EB] text-[15px] vazir font-semibold rounded-[8px] px-10 py-3 text-white hover:bg-blue-700 transition">
                             <span wire:load.remove wire:target='submitAndPrint'>
                                 ثبت و چاپ
                             </span>
@@ -975,7 +1015,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
 
                         <button type="button" wire:click="cancel"
-                            class="bg-[#184D6C] text-[15px] vazir font-semibold rounded-[8px] px-10 py-3 text-white  transition">
+                            class="bg-[#DD2424] text-[15px] vazir font-semibold rounded-[8px] px-10 py-3 text-white hover:bg-red-700 transition">
                             <?php echo e($isEditing ? 'لغو ویرایش' : 'انصراف'); ?>
 
                         </button>
@@ -986,33 +1026,26 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             </div>
 
             <!-- جدول تراکنش‌ها -->
-            <div class="flex-1 flex flex-col
+              <div
+  class="flex-1 flex flex-col
          dark:border dark:border-white
          dark:bg-black dark:text-white
-                        bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC]
+         bg-[#F5F5F5]
          p-3 md:p-4 lg:p-6
          rounded-[12px]
          w-full max-w-[440px] md:max-w-[410px] lg:max-w-full
          mb-5 mx-auto
-         overflow-x-auto">
+         overflow-x-auto"
+  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
                 <div
-                    class="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 justify-between items-center  p-3 md:p-4 rounded-[12px] mb-3 gap-3">
+                    class="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                     <h1 class="text-lg md:text-[16px] vazir">ترانزکشن های ثبت شده</h1>
                     <div class="relative w-full">
-                        <input type="text" wire:model.live="search" placeholder="جستجو..." class="w-full h-12 md:h-[51px]
-                           border border-[#D7E5EC]
-                           dark:bg-black dark:border-white dark:placeholder:text-white placeholder:text-black
-                           rounded-[12px] pl-3 pr-12 text-sm md:text-base
-                           bg-transparent relative z-0">
-
-                        
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                            class="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none dark:hidden">
-                            <path d="M20 20L22 22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
-                            <path
-                                d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75"
-                                stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
-                        </svg>
+                        <input type="text" wire:model.live="search"
+                            class="border border-[#8C8C8C] dark:bg-black dark:text-white dark:placeholder:text-white dark:border-white dark:border w-full h-[46px] bg-transparent rounded-[10px] p-2 pr-10 text-sm"
+                            placeholder="جستجو ...">
+                        <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
+                            class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 dark:hidden">
 
                         <svg width="24" class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 hidden dark:block"
                             height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1029,10 +1062,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 <div class="overflow-x-auto w-full">
                     <div class="max-h-[650px] overflow-y-auto min-w-[800px]">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                            <thead
-                                class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
-
-                                <tr class="dark:text-white whitespace-nowrap">
+                            <thead class="bg-[#2B65E5] text-white text-[18px] vazir h-[50px] sticky top-0">
+                                <tr class="dark:text-white">
                                     <th class="px-4 py-3 font-bold">#</th>
                                     <th class="px-4 py-3 font-bold">معامله</th>
                                     <th class="px-4 py-3 font-bold">مبلغ</th>
@@ -1047,9 +1078,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </thead>
                             <tbody>
                                 <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $transactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $transaction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
-                               odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
-                               transition-colors">
+                                <tr
+                                    class="text-black dark:text-white border-b border-[#D9D9D9] bg-transparent text-center">
                                     <td class="px-2 py-3 vazir text-[18px] font-medium"><?php echo e($loop->iteration); ?></td>
                                     <td
                                         class="px-2 py-3 vazir text-[18px] font-medium <?php echo e($transaction->type === 'خرید' ? 'text-green-600 dark:text-white' : 'text-red-600 dark:text-white'); ?>">
@@ -1129,10 +1159,10 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                                 </svg>
 
 
-
+                                                
                                             </button>
 
-                                            <script>
+                                                                                        <script>
                                                 let printListenerRegistered = false;
 
     document.addEventListener('livewire:init', () => {

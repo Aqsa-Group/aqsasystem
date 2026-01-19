@@ -34,7 +34,7 @@
             <!-- کارت مشتری انتخاب شده -->
             @if($selectedCustomer)
             <div class="inline-block align-top ml-4 h-auto">
-                      <div class="flex flex-col h-[212px] w-[244px] pr-5 pl-5 pt-2 rounded-[12px]  dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900           bg-[#387EA2]/40
+                <div class="flex flex-col h-[212px] w-[244px] pr-5 pl-5 pt-2 rounded-[12px]  dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900           bg-[#387EA2]/40
             backdrop-blur-lg
             border border-white/30
 
@@ -95,7 +95,7 @@
             $totalBalance = $customerTotalBalances[$currencyName] ?? 0;
             @endphp
             <div class="inline-block align-top ml-4 h-auto">
-                       <div class="
+                <div class="
     flex flex-col
   h-[212px] w-[244px]
     pr-5 pl-5 pt-3
@@ -109,7 +109,7 @@
 
     text-black
   ">
-                   
+
                     <h1 class="text-[24px] text-left vazir text-[#387EA2]">{{ $currencyName }}</h1>
 
                     <div class="flex flex-col gap-1 mt-1 text-center">
@@ -219,20 +219,22 @@
         <!-- محتوای اصلی - فرم و جدول -->
         <div class="flex flex-col lg:flex-row gap-5 mt-4 mx-auto">
             <!-- فرم ثبت ارسال -->
-             <div
-  class="flex flex-col
+            <div class="flex flex-col
          dark:bg-black dark:text-white dark:border dark:border-white
  bg-white   border border-[#D7E5EC] shadow-sm backdrop:blur-lg           mx-auto
          w-full max-w-[420px] lg:max-w-[474px]
          p-[10px]
          h-auto
          rounded-[12px]
-         space-y-2"
->                <!-- هدر فرم -->
-                <div
-                    class="flex flex-row gap-4 p-4 border border-[#8C8C8C] rounded-[12px] flex-wrap items-center justify-between">
+         space-y-2">
+                <!-- هدر فرم -->
+                <div class="flex flex-row gap-4 p-4  rounded-[12px] flex-wrap items-center justify-between">
                     <div class="flex">
-                        <img src="{{ asset('assets/sarafi/all_icon/edit-2.svg') }}" alt="" class="h-6 w-6">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M14.3601 4.07866L15.2869 3.15178C16.8226 1.61607 19.3125 1.61607 20.8482 3.15178C22.3839 4.68748 22.3839 7.17735 20.8482 8.71306L19.9213 9.63993M14.3601 4.07866C14.3601 4.07866 14.4759 6.04828 16.2138 7.78618C17.9517 9.52407 19.9213 9.63993 19.9213 9.63993M14.3601 4.07866L12 6.43872M19.9213 9.63993L14.6607 14.9006L11.5613 18L11.4001 18.1612C10.8229 18.7383 10.5344 19.0269 10.2162 19.2751C9.84082 19.5679 9.43469 19.8189 9.00498 20.0237C8.6407 20.1973 8.25352 20.3263 7.47918 20.5844L4.19792 21.6782M4.19792 21.6782L3.39584 21.9456C3.01478 22.0726 2.59466 21.9734 2.31063 21.6894C2.0266 21.4053 1.92743 20.9852 2.05445 20.6042L2.32181 19.8021M4.19792 21.6782L2.32181 19.8021M2.32181 19.8021L3.41556 16.5208C3.67368 15.7465 3.80273 15.3593 3.97634 14.995C4.18114 14.5653 4.43213 14.1592 4.7249 13.7838C4.97308 13.4656 5.26166 13.1771 5.83882 12.5999L8.5 9.93872"
+                                stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
                         <p class="text-center">
                             @if($isEditMode)
                             ویرایش ارسال
@@ -242,7 +244,8 @@
                         </p>
                     </div>
                     <button wire:click="toggleAccountType" class="rounded-[8px] p-[10px] text-white vazir px-12 font-semibold transition-colors duration-500 ease-in-out
-                        {{ $accountType === 'نقدی' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
+                        {{ $accountType === 'نقدی' ?'bg-[#184D6C] text-white'
+                : 'bg-white text-[#184D6C] border border-[#184D6C] hover:bg-[#184D6C]/10'}}">
                         {{ $accountType === 'نقدی' ? 'نقدی' : 'بانکی' }}
                     </button>
                 </div>
@@ -250,7 +253,7 @@
                 <!-- فرم -->
                 <form wire:submit.prevent="submitRemittance">
                     <!-- حساب مشتری و صرافی مقصد -->
-                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- حساب مشتری فرستنده -->
                         <div class="flex-1">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">از حساب مشتری</label>
@@ -274,8 +277,8 @@
                 }
             }" class="relative w-full">
                                 <input list="fromCustomersList" x-model="searchValue" @change="handleSelect"
-                                    placeholder="جستجو یا انتخاب حساب فرستنده..."
-                                    class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
+                                    placeholder="  انتخاب حساب فرستنده"
+                                    class="w-full h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500"
                                     autocomplete="off">
                                 <datalist id="fromCustomersList">
                                     @foreach ($customers as $customer)
@@ -283,7 +286,11 @@
                                         @endforeach
                                 </datalist>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
                                 </div>
                             </div>
                             @error('selectedAccount')
@@ -314,8 +321,8 @@
                 }
             }" class="relative w-full">
                                 <input list="toCustomersList" x-model="searchValue" @change="handleSelect"
-                                    placeholder="جستجو یا انتخاب حساب گیرنده..."
-                                    class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
+                                    placeholder="  انتخاب حساب گیرنده"
+                                    class="w-full h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500"
                                     autocomplete="off">
                                 <datalist id="toCustomersList">
                                     @foreach ($customers as $customer)
@@ -323,7 +330,11 @@
                                         @endforeach
                                 </datalist>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
                                 </div>
                             </div>
                             @error('to_customer_id')
@@ -333,7 +344,7 @@
                     </div>
 
 
-                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
 
                         <!--  نمبر حواله -->
 
@@ -342,7 +353,7 @@
                             <div class="relative w-full">
                                 <input type="text" wire:model.live="remittance_number" wire:blur="formatAmount"
                                     placeholder="0" readonly
-                                    class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500   dark:text-white"
+                                    class="w-full h-[60px] p-3 rounded-[12px]  focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500   dark:text-white"
                                     oninput="this.value = this.value.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[^0-9]/g, '')" />
                             </div>
 
@@ -356,7 +367,7 @@
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">به صرافی</label>
                             <div class="relative w-full">
                                 <select wire:model="to_sarafi"
-                                    class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 appearance-none">
+                                    class="w-full h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500 appearance-none">
                                     <option value="">انتخاب صرافی مقصد</option>
                                     @foreach ($sarafi_list as $sarafi)
                                     <option value="{{ $sarafi->id }}">
@@ -365,7 +376,11 @@
                                     @endforeach
                                 </select>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
                                 </div>
                             </div>
                             @error('to_sarafi')
@@ -377,13 +392,13 @@
                     </div>
 
                     <!-- مقدار و نوع ارز -->
-                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- مقدار -->
                         <div class="flex-1">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">مقدار</label>
                             <div class="relative w-full">
                                 <input type="text" wire:model.live="amount" wire:blur="formatAmount" placeholder="0"
-                                    class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500   dark:text-white"
+                                    class="w-full h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] focus:ring-2  focus:ring-blue-500   dark:text-white"
                                     oninput="this.value = this.value.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[^0-9]/g, '')" />
                             </div>
                             @if($amountInWords)
@@ -400,15 +415,19 @@
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">نوع ارز</label>
                             <div class="relative w-full">
                                 <select wire:model="currency"
-                                    class="w-full h-[60px] p-3 rounded-[12px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
+                                    class="w-full h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500 appearance-none">
                                     <option value="">انتخاب ارز</option>
                                     @foreach ($currencies as $c)
                                     <option value="{{ $c['code'] }}">{{ $c['name_fa'] }}</option>
                                     @endforeach
                                 </select>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓"
-                                        class="w-4 h-4">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+
                                 </div>
                             </div>
                             @error('currency')
@@ -418,204 +437,214 @@
                     </div>
 
                     <!-- تاریخ و زون -->
-                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- تاریخ -->
-                       <div class="lg:w-full relative" x-data="persianDatePicker()" x-init="init()">
-    <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
-    
-    <!-- Input field -->
-    <input 
-        type="text" 
-        x-ref="dateInput"
-        x-model="displayDate"
-        @click="togglePicker()"
-        placeholder="YYYY/MM/DD"
-        class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 cursor-pointer"
-        readonly
-    />
-    
-    <!-- Custom Date Picker Modal -->
-    <div x-show="isOpen" 
-         x-transition.opacity.duration.300ms
-         x-cloak
-         @keydown.escape.window="closePicker()"
-         @click.away="closePicker()"
-         class="fixed z-50 inset-0 overflow-y-auto"
-         aria-labelledby="modal-title" 
-         role="dialog" 
-         aria-modal="true"
-         style="display: none;"
-         :style="isOpen ? 'display: block;' : ''">
-        
-        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <!-- Background overlay -->
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-            
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            
-            <!-- Modal panel -->
-            <div class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6">
-                    <!-- Header -->
-                    <div class="flex justify-between items-center mb-4">
-                        <div class="flex items-center space-x-2">
-                            <button @click="prevYear()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path>
-                                </svg>
-                            </button>
-                            <button @click="prevMonth()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                                </svg>
-                            </button>
-                        </div>
-                        
-                        <div class="flex items-center space-x-2">
-                            <button @click="toggleMonthSelector()" type="button" class="text-lg font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                                <span x-text="monthsAfghan[currentMonth]"></span>
-                            </button>
-                            <button @click="toggleYearSelector()" type="button" class="text-lg font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                                <span x-text="currentYear"></span>
-                            </button>
-                        </div>
-                        
-                        <div class="flex items-center space-x-2">
-                            <button @click="nextMonth()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                </svg>
-                            </button>
-                            <button @click="nextYear()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path>
-                                </svg>
-                            </button>
-                            <button @click="closePicker()" type="button" class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 transition-colors">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Month Selector -->
-                    <div x-show="showMonthSelector" x-transition>
-                        <div class="grid grid-cols-3 gap-2 mb-4">
-                            <template x-for="(month, index) in monthsAfghan" :key="index">
-                                <button
-                                    @click="selectMonth(index)"
-                                    :class="{
+                        <div class="lg:w-full relative" x-data="persianDatePicker()" x-init="init()">
+                            <label
+                                class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
+
+                            <!-- Input field -->
+                            <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
+                                placeholder="YYYY/MM/DD"
+                                class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px]  focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 cursor-pointer"
+                                readonly />
+
+                            <!-- Custom Date Picker Modal -->
+                            <div x-show="isOpen" x-transition.opacity.duration.300ms x-cloak
+                                @keydown.escape.window="closePicker()" @click.away="closePicker()"
+                                class="fixed z-50 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog"
+                                aria-modal="true" style="display: none;" :style="isOpen ? 'display: block;' : ''">
+
+                                <div
+                                    class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                                    <!-- Background overlay -->
+                                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+                                        aria-hidden="true"></div>
+
+                                    <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
+                                        aria-hidden="true">&#8203;</span>
+
+                                    <!-- Modal panel -->
+                                    <div
+                                        class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                                        <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6">
+                                            <!-- Header -->
+                                            <div class="flex justify-between items-center mb-4">
+                                                <div class="flex items-center space-x-2">
+                                                    <button @click="prevYear()" type="button"
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7">
+                                                            </path>
+                                                        </svg>
+                                                    </button>
+                                                    <button @click="prevMonth()" type="button"
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+
+                                                <div class="flex items-center space-x-2">
+                                                    <button @click="toggleMonthSelector()" type="button"
+                                                        class="text-lg font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                                        <span x-text="monthsAfghan[currentMonth]"></span>
+                                                    </button>
+                                                    <button @click="toggleYearSelector()" type="button"
+                                                        class="text-lg font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                                        <span x-text="currentYear"></span>
+                                                    </button>
+                                                </div>
+
+                                                <div class="flex items-center space-x-2">
+                                                    <button @click="nextMonth()" type="button"
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                        </svg>
+                                                    </button>
+                                                    <button @click="nextYear()" type="button"
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path>
+                                                        </svg>
+                                                    </button>
+                                                    <button @click="closePicker()" type="button"
+                                                        class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 transition-colors">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <!-- Month Selector -->
+                                            <div x-show="showMonthSelector" x-transition>
+                                                <div class="grid grid-cols-3 gap-2 mb-4">
+                                                    <template x-for="(month, index) in monthsAfghan" :key="index">
+                                                        <button @click="selectMonth(index)" :class="{
                                         'bg-blue-500 text-white': currentMonth === index,
                                         'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentMonth !== index
-                                    }"
-                                    class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
-                                    type="button"
-                                >
-                                    <span x-text="month"></span>
-                                </button>
-                            </template>
-                        </div>
-                    </div>
-                    
-                    <!-- Year Selector -->
-                    <div x-show="showYearSelector" x-transition>
-                        <div class="flex items-center justify-between mb-4">
-                            <button @click="prevYearRange()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                                </svg>
-                            </button>
-                            <span class="text-lg font-bold text-gray-800 dark:text-white">
-                                <span x-text="yearRange.start"></span> - <span x-text="yearRange.end"></span>
-                            </span>
-                            <button @click="nextYearRange()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="grid grid-cols-4 gap-2 mb-4">
-                            <template x-for="year in yearRange.years" :key="year">
-                                <button
-                                    @click="selectYear(year)"
-                                    :class="{
+                                    }" class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                                                            type="button">
+                                                            <span x-text="month"></span>
+                                                        </button>
+                                                    </template>
+                                                </div>
+                                            </div>
+
+                                            <!-- Year Selector -->
+                                            <div x-show="showYearSelector" x-transition>
+                                                <div class="flex items-center justify-between mb-4">
+                                                    <button @click="prevYearRange()" type="button"
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                                        </svg>
+                                                    </button>
+                                                    <span class="text-lg font-bold text-gray-800 dark:text-white">
+                                                        <span x-text="yearRange.start"></span> - <span
+                                                            x-text="yearRange.end"></span>
+                                                    </span>
+                                                    <button @click="nextYearRange()" type="button"
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                                <div class="grid grid-cols-4 gap-2 mb-4">
+                                                    <template x-for="year in yearRange.years" :key="year">
+                                                        <button @click="selectYear(year)" :class="{
                                         'bg-blue-500 text-white': currentYear === year,
                                         'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentYear !== year
-                                    }"
-                                    class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
-                                    type="button"
-                                >
-                                    <span x-text="year"></span>
-                                </button>
-                            </template>
-                        </div>
-                    </div>
-                    
-                    <!-- Calendar View -->
-                    <div x-show="!showMonthSelector && !showYearSelector" x-transition>
-                        <!-- Week Days -->
-                        <div class="grid grid-cols-7 gap-1 mb-2">
-                            <template x-for="day in weekDaysAfghan" :key="day">
-                                <div class="text-center text-sm font-medium text-gray-500 dark:text-gray-400 py-1">
-                                    <span x-text="day"></span>
-                                </div>
-                            </template>
-                        </div>
-                        
-                        <!-- Days Grid -->
-                        <div class="grid grid-cols-7 gap-1">
-                            <template x-for="day in calendarDays" :key="day.key">
-                                <button
-                                    @click="selectDate(day.day)"
-                                    :class="{
+                                    }" class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                                                            type="button">
+                                                            <span x-text="year"></span>
+                                                        </button>
+                                                    </template>
+                                                </div>
+                                            </div>
+
+                                            <!-- Calendar View -->
+                                            <div x-show="!showMonthSelector && !showYearSelector" x-transition>
+                                                <!-- Week Days -->
+                                                <div class="grid grid-cols-7 gap-1 mb-2">
+                                                    <template x-for="day in weekDaysAfghan" :key="day">
+                                                        <div
+                                                            class="text-center text-sm font-medium text-gray-500 dark:text-gray-400 py-1">
+                                                            <span x-text="day"></span>
+                                                        </div>
+                                                    </template>
+                                                </div>
+
+                                                <!-- Days Grid -->
+                                                <div class="grid grid-cols-7 gap-1">
+                                                    <template x-for="day in calendarDays" :key="day.key">
+                                                        <button @click="selectDate(day.day)" :class="{
                                         'bg-blue-500 text-white hover:bg-blue-600': day.isSelected,
                                         'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300': day.isToday && !day.isSelected,
                                         'text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700': !day.isToday && !day.isSelected && !day.isOtherMonth,
                                         'text-gray-400 dark:text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800': day.isOtherMonth,
                                         'cursor-not-allowed opacity-50': day.isDisabled
-                                    }"
-                                    class="w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors"
-                                    :disabled="day.isDisabled"
-                                    type="button"
-                                >
-                                    <span x-text="day.day"></span>
-                                </button>
-                            </template>
-                        </div>
-                    </div>
-                    
-                    <!-- Footer -->
-                    <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
-                        <div class="flex justify-between items-center">
-                            <div class="text-sm text-gray-600 dark:text-gray-300">
-                                <span x-text="selectedDate ? formatDate(selectedDate) : 'تاریخ انتخاب نشده'"></span>
-                            </div>
-                            <div class="flex space-x-2">
-                                <button @click="setToday()" type="button" class="px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors">
-                                    امروز
-                                </button>
-                                <button @click="clearDate()" type="button" class="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors">
-                                    پاک کردن
-                                </button>
-                                <button @click="applyDate()" type="button" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                    تأیید
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    @error('date')
-    <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-    @enderror
-</div>
+                                    }" class="w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors"
+                                                            :disabled="day.isDisabled" type="button">
+                                                            <span x-text="day.day"></span>
+                                                        </button>
+                                                    </template>
+                                                </div>
+                                            </div>
 
-<script>
-function persianDatePicker() {
+                                            <!-- Footer -->
+                                            <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                                <div class="flex justify-between items-center">
+                                                    <div class="text-sm text-gray-600 dark:text-gray-300">
+                                                        <span
+                                                            x-text="selectedDate ? formatDate(selectedDate) : 'تاریخ انتخاب نشده'"></span>
+                                                    </div>
+                                                    <div class="flex space-x-2">
+                                                        <button @click="setToday()" type="button"
+                                                            class="px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors">
+                                                            امروز
+                                                        </button>
+                                                        <button @click="clearDate()" type="button"
+                                                            class="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors">
+                                                            پاک کردن
+                                                        </button>
+                                                        <button @click="applyDate()" type="button"
+                                                            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                            تأیید
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @error('date')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <script>
+                            function persianDatePicker() {
     return {
         isOpen: false,
         showMonthSelector: false,
@@ -972,60 +1001,60 @@ function persianDatePicker() {
         }
     }
 }
-</script>
+                        </script>
 
-<style>
-/* Hide scrollbar for number inputs */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
+                        <style>
+                            /* Hide scrollbar for number inputs */
+                            input[type="number"]::-webkit-inner-spin-button,
+                            input[type="number"]::-webkit-outer-spin-button {
+                                -webkit-appearance: none;
+                                margin: 0;
+                            }
 
-/* Persian datepicker custom styles */
-.persian-datepicker {
-    font-family: 'Vazir', sans-serif;
-    direction: rtl;
-}
+                            /* Persian datepicker custom styles */
+                            .persian-datepicker {
+                                font-family: 'Vazir', sans-serif;
+                                direction: rtl;
+                            }
 
-/* Animation for modal */
-[x-cloak] {
-    display: none !important;
-}
+                            /* Animation for modal */
+                            [x-cloak] {
+                                display: none !important;
+                            }
 
-/* Smooth transitions */
-.transition-all {
-    transition-property: all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
-}
+                            /* Smooth transitions */
+                            .transition-all {
+                                transition-property: all;
+                                transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+                                transition-duration: 150ms;
+                            }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-    width: 8px;
-}
+                            /* Custom scrollbar */
+                            ::-webkit-scrollbar {
+                                width: 8px;
+                            }
 
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
-}
+                            ::-webkit-scrollbar-track {
+                                background: #f1f1f1;
+                                border-radius: 4px;
+                            }
 
-::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
-}
+                            ::-webkit-scrollbar-thumb {
+                                background: #888;
+                                border-radius: 4px;
+                            }
 
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-</style>
+                            ::-webkit-scrollbar-thumb:hover {
+                                background: #555;
+                            }
+                        </style>
 
                         <!-- زون -->
                         <div class="w-full">
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">زون</label>
                             <div class="relative">
                                 <select wire:model="zone"
-                                    class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 appearance-none">
+                                    class="w-full h-[60px] p-3 rounded-[12px]  focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 appearance-none">
                                     <option value="">انتخاب زون</option>
                                     <option value="{{ Auth::guard('sarafi')->user()->zone }}">
                                         {{ Auth::guard('sarafi')->user()->zone }}
@@ -1042,7 +1071,7 @@ input[type="number"]::-webkit-outer-spin-button {
                     <!-- توضیحات -->
                     <div class="mt-3">
                         <textarea wire:model="description" rows="3" placeholder="شرح ارسال ..."
-                            class="w-full p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 resize-none"></textarea>
+                            class="w-full p-3 rounded-[12px]  focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 resize-none"></textarea>
                         @error('description')
                         <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                         @enderror
@@ -1051,7 +1080,7 @@ input[type="number"]::-webkit-outer-spin-button {
                     <!-- دکمه‌های عملیات -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 py-4 justify-center items-center text-center">
                         <button type="submit"
-                            class="bg-[#61B138] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
+                            class="bg-[#184D6C] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white whitespace-nowrap">
                             @if($isEditMode)
                             بروزرسانی
                             @else
@@ -1061,13 +1090,13 @@ input[type="number"]::-webkit-outer-spin-button {
 
                         @if(!$isEditMode)
                         <button type="button" wire:click="submitAndPrint"
-                            class="bg-[#2563EB] text-[14px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
+                            class="bg-[#184D6C] text-[14px] vazir font-semibold rounded-[8px] px-12 py-3 text-white whitespace-nowrap">
                             ثبت و چاپ
                         </button>
                         @endif
 
                         <button type="button" wire:click="cancel"
-                            class="bg-[#DD2424] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
+                            class="bg-[#184D6C] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white whitespace-nowrap">
                             انصراف
                         </button>
                     </div>
@@ -1075,12 +1104,12 @@ input[type="number"]::-webkit-outer-spin-button {
             </div>
 
             <!-- جدول تراکنش‌ها -->
-            <div class="flex-1 flex flex-col  bg-white   border border-[#D7E5EC] shadow-sm backdrop:blur-lg   p-4 lg:p-6 rounded-[12px] w-full"
-              >
+            <div
+                class="flex-1 flex flex-col  bg-white   border border-[#D7E5EC] shadow-sm backdrop:blur-lg   p-4 lg:p-6 rounded-[12px] w-full">
                 <!-- هدر جدول -->
                 <div
-                    class="grid grid-cols-1 lg:grid-cols-2 justify-between items-center border border-[#8C8C8C] p-4 rounded-[12px] mb-4 gap-4">
-                    <h1 class="text-xl lg:text-2xl vazir">تراکنش‌های ثبت شده</h1>
+                    class="grid grid-cols-1 lg:grid-cols-2 justify-between items-center   p-4 rounded-[12px] mb-4 gap-4">
+                    <h1 class="text-xl lg:text-2xl inter">تراکنش‌های ثبت شده</h1>
 
                     <div class="flex items-center gap-3">
                         <!-- فیلتر مشتری -->
@@ -1095,11 +1124,21 @@ input[type="number"]::-webkit-outer-spin-button {
 
                         <!-- جستجو -->
                         <div class="relative flex-1">
-                            <input type="text" wire:model.live="search"
-                                class="border border-[#8C8C8C] w-full h-12 bg-transparent rounded-[12px] p-3 pr-10"
-                                placeholder="جستجو بر اساس نام یا شماره حساب...">
-                            <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
-                                class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5">
+                            <input type="text" wire:model.live="search" placeholder="جستجو..." class="w-full h-12 md:h-[51px]
+                           border border-[#D7E5EC]
+                           dark:bg-black dark:border-white dark:placeholder:text-white placeholder:text-black
+                           rounded-[12px] pl-3 pr-12 text-sm md:text-base
+                           bg-transparent relative z-0">
+
+                            {{-- آیکون --}}
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none dark:hidden">
+                                <path d="M20 20L22 22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                <path
+                                    d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75"
+                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
                             @if($search)
                             <button wire:click="clearSearch"
                                 class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
@@ -1131,7 +1170,8 @@ input[type="number"]::-webkit-outer-spin-button {
                 <!-- جدول -->
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500">
-                        <thead class="bg-[#2B65E5] text-white text-[16px] vazir h-[67px] sticky top-0">
+                        <thead
+                            class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
                             <tr>
                                 <th class="px-4 py-4 font-bold">#</th>
                                 <th class="px-4 py-4 font-bold">مشتری</th>
@@ -1146,7 +1186,9 @@ input[type="number"]::-webkit-outer-spin-button {
                         </thead>
                         <tbody>
                             @forelse($transactions as $key => $transaction)
-                            <tr class="text-black border-b border-[#D9D9D9] bg-transparent hover:bg-gray-50">
+                            <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+                               odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
+                               transition-colors">
                                 <td class="px-4 py-4 vazir text-[14px] font-medium">
                                     {{ $loop->iteration }}
                                 </td>
@@ -1186,7 +1228,7 @@ input[type="number"]::-webkit-outer-spin-button {
                                 <td class="px-4 py-4 vazir text-[14px] text-center">
                                     <div>
                                         <div class="font-medium">
-                                                {{ explode(' ', $transaction->date)[0] }}
+                                            {{ explode(' ', $transaction->date)[0] }}
                                         </div>
                                         <div class="text-gray-500 text-sm mt-1">
                                             {{ \Carbon\Carbon::parse($transaction->created_at)->format('H:i') }}
@@ -1223,8 +1265,8 @@ input[type="number"]::-webkit-outer-spin-button {
                                                 class="w-10 h-10" alt="Print">
                                         </button>
 
-                                                       <script>
-                                        let printListenerRegistered = false;
+                                        <script>
+                                            let printListenerRegistered = false;
 
     document.addEventListener('livewire:init', () => {
         if (printListenerRegistered) return;
@@ -1258,7 +1300,7 @@ input[type="number"]::-webkit-outer-spin-button {
             };
         });
     });
-                                    </script>
+                                        </script>
                                     </div>
                                 </td>
                             </tr>
