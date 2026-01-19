@@ -18,12 +18,11 @@
             {{-- کارت مشتری انتخاب شده --}}
             @if ($selectedCustomer)
             <div class="inline-block align-top ml-4 h-auto">
-                <div
-                    class="flex flex-col h-[212px] w-[244px] pr-5 pl-5 pt-2 rounded-[12px]  dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900           bg-[#387EA2]/40
-    backdrop-blur-lg
-    border border-white/30
+                        <div class="flex flex-col h-[212px] w-[244px] pr-5 pl-5 pt-2 rounded-[12px]  dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900           bg-[#387EA2]/40
+            backdrop-blur-lg
+            border border-white/30
 
-    shadow-[0_4px_4px_rgba(24,77,108,0.25)] text-black">
+            shadow-[0_4px_4px_rgba(24,77,108,0.25)] text-black">
 
                     {{-- عکس مشتری --}}
                     <div x-data="{ showLargeImage: false, largeImageSrc: '' }">
@@ -63,7 +62,8 @@
 
                                 {{-- نام مشتری زیر عکس --}}
                                 <div class="mt-4 text-center text-black">
-                                    <p class="text-lg font-semibold text-black">{{ $selectedCustomer->fullname }}</p>
+                                    <p class="text-lg font-semibold text-black">{{ $selectedCustomer->fullname }}
+                                    </p>
                                     @if ($selectedCustomer->phone)
                                     <p class="text-sm text-gray-300">{{ $selectedCustomer->phone }}</p>
                                     @endif
@@ -219,8 +219,7 @@
                                 </div>
                                 <span class="text-[#184D6C]">مجموعه</span>
                             </div>
-                            <span class="font-bold text-[16px] text-left" dir="ltr">{{
-                                number_format($totalBalance)
+                            <span class="font-bold text-[16px] text-left" dir="ltr">{{ number_format($totalBalance)
                                 }}</span>
                         </div>
                     </div>
@@ -435,35 +434,45 @@
             {{-- فرم تراکنش --}}
             <div class="flex flex-col
          dark:bg-black dark:text-white dark:border dark:border-white
-         bg-[#F5F5F5]
-         mx-auto
-         w-full max-w-[420px] lg:max-w-[474px]
+         bg-white   border border-[#D7E5EC] shadow-sm backdrop:blur-lg       mx-auto
+         w-full max-w-[436px] lg:max-w-[600px]
          p-[10px]
-         h-auto
+         h-fit
          rounded-[12px]
-         space-y-2" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+         space-y-2">
 
 
                 {{-- بالای فرم: فورم و دکمه‌ها --}}
-                <div
-                    class="flex  dark:border-white space-y-3 flex-row justify-between p-[10px] border border-[#8C8C8C] rounded-[12px] flex-wrap">
-                    <p class="flex justify-center items-center text-center">
-                        <img src="{{ asset('assets/sarafi/all_icon/edit-2.svg') }}" alt="" class="h-6 w-6">
+                <div class="flex items-center justify-between p-[10px]
+           rounded-[12px]
+           dark:border-white gap-2">
+
+                    <!-- عنوان -->
+                    <p class="flex items-center gap-2 text-[18px] inter whitespace-nowrap">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M14.3601 4.07866L15.2869 3.15178C16.8226 1.61607 19.3125 1.61607 20.8482 3.15178C22.3839 4.68748 22.3839 7.17735 20.8482 8.71306L19.9213 9.63993M14.3601 4.07866C14.3601 4.07866 14.4759 6.04828 16.2138 7.78618C17.9517 9.52407 19.9213 9.63993 19.9213 9.63993M14.3601 4.07866L12 6.43872M19.9213 9.63993L14.6607 14.9006L11.5613 18L11.4001 18.1612C10.8229 18.7383 10.5344 19.0269 10.2162 19.2751C9.84082 19.5679 9.43469 19.8189 9.00498 20.0237C8.6407 20.1973 8.25352 20.3263 7.47918 20.5844L4.19792 21.6782M4.19792 21.6782L3.39584 21.9456C3.01478 22.0726 2.59466 21.9734 2.31063 21.6894C2.0266 21.4053 1.92743 20.9852 2.05445 20.6042L2.32181 19.8021M4.19792 21.6782L2.32181 19.8021M2.32181 19.8021L3.41556 16.5208C3.67368 15.7465 3.80273 15.3593 3.97634 14.995C4.18114 14.5653 4.43213 14.1592 4.7249 13.7838C4.97308 13.4656 5.26166 13.1771 5.83882 12.5999L8.5 9.93872"
+                                stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+
                         {{ $transactionId ? 'فورم ویرایش ترانزکشن' : 'فورم ثبت ترانزکشن' }}
                     </p>
 
-                    <div class="flex gap-4 flex-wrap">
-
-                        {{-- <button wire:click="toggleAccountType" class="rounded-[8px] p-[10px] text-white vazir font-semibold transition-colors duration-500 ease-in-out
-    {{ $accountType === 'نقدی' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
-                            {{ $accountType === 'نقدی' ? 'نقدی' : 'بانکی' }}
-                        </button> --}}
-
-                        <button wire:click="toggleTransactionType" class="rounded-[8px] p-[10px] text-white vazir font-semibold transition-colors duration-500 ease-in-out
-    {{ $transactionType === 'رسید' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
-                            {{ $transactionType === 'رسید' ? 'رسید (دریافت صندوق)' : 'برد (برداشت صندوق)' }}
+                    <!-- دکمه‌ها -->
+                    <div class="flex gap-3 whitespace-nowrap">
+                        <button wire:click="$set('transactionType','رسید')" class="rounded-[8px] px-4 py-2 vazir font-semibold transition-all duration-300
+            {{ $transactionType === 'رسید'
+                ? 'bg-[#184D6C] text-white'
+                : 'bg-white text-[#184D6C] border border-[#184D6C] hover:bg-[#184D6C]/10' }}">
+                            رسید (دریافت صندوق)
                         </button>
 
+                        <button wire:click="$set('transactionType','برد')" class="rounded-[8px] px-4 py-2 vazir font-semibold transition-all duration-300
+            {{ $transactionType === 'برد'
+                ? 'bg-[#184D6C] text-white'
+                : 'bg-white text-[#184D6C] border border-[#184D6C] hover:bg-[#184D6C]/10' }}">
+                            برد (برداشت صندوق)
+                        </button>
                     </div>
                 </div>
 
@@ -508,7 +517,7 @@
                                 $watch('selectedId', () => updateDisplay())" class="relative w-full">
                                     <input list="customersList" x-model="searchValue" @change="handleSelect"
                                         placeholder="جستجو یا انتخاب حساب..."
-                                        class="w-full h-[60px] dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
+                                        class="w-full h-[60px] bg-[#EFF6F9] dark:bg-black dark:text-white dark:border-white placeholder:text-[#929897] dark:placeholder:text-white p-3 rounded-[12px] border   focus:ring-2 focus:ring-blue-500"
                                         autocomplete="off">
                                     <datalist id="customersList">
                                         @foreach ($customers as $customer)
@@ -517,15 +526,12 @@
                                     </datalist>
                                     @if (empty($selectedAccount))
                                     <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                        <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓"
-                                            class="dark:hidden">
-                                        <svg width="24" height="24" class="hidden dark:block" viewBox="0 0 24 24"
-                                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
-                                                stroke="white" stroke-width="1.5" stroke-miterlimit="10"
-                                                stroke-linecap="round" stroke-linejoin="round" />
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
+
 
                                     </div>
                                     @endif
@@ -546,7 +552,7 @@
                                 class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مقدار</label>
                             <div class="relative w-full">
                                 <input type="text" wire:model.live="amount" wire:blur="formatAmount" placeholder="0"
-                                    class="w-full dark:border-white dark:bg-black  dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500   dark:text-white"
+                                    class="w-full dark:border-white dark:bg-black  dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500   dark:text-white"
                                     oninput="this.value = this.value.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[^0-9]/g, '')" />
                             </div>
                             @if ($amountInWords)
@@ -563,7 +569,7 @@
                                 ارز</label>
                             <div class="relative w-full">
                                 <select wire:model="currency"
-                                    class="w-full  dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500   dark:text-white appearance-none">
+                                    class="w-full  dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500   dark:text-white appearance-none">
                                     <option value="">انتخاب ارز</option>
                                     @foreach ($currencies as $c)
                                     <option value="{{ $c['code'] }}">{{ $c['name_fa'] }}</option>
@@ -597,7 +603,7 @@
                                 ها</label>
                             <div class="relative">
                                 <select wire:model="zone" wire:init="setDefaultZone"
-                                    class="w-full h-[60px]  p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-black dark:border-white dark:text-white appearance-none"
+                                    class="w-full h-[60px]  p-3 rounded-[12px] border focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 dark:bg-black dark:border-white dark:text-white appearance-none"
                                     style="max-height: 200px; overflow-y: auto;">
                                     <option value="">انتخاب زون</option>
                                     <option value="{{ Auth::guard('sarafi')->user()->zone }}">
@@ -617,7 +623,7 @@
                             <!-- Input field -->
                             <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
                                 placeholder="YYYY/MM/DD"
-                                class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 cursor-pointer"
+                                class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 cursor-pointer"
                                 readonly />
 
                             <!-- Custom Date Picker Modal -->
@@ -1241,7 +1247,7 @@
                     <div class="mt-3 flex gap-3">
                         <div class="w-full">
                             <textarea wire:model="description" rows="3" placeholder="شرح تراکنش..."
-                                class="w-full p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-black dark:border-white dark:placeholder:text-white dark:text-white resize-none"></textarea>
+                                class="w-full p-3 rounded-[12px] border focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 dark:bg-black dark:border-white dark:placeholder:text-white dark:text-white resize-none"></textarea>
                             @error('description')
                             <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                             @enderror
@@ -1307,10 +1313,10 @@
                                 }
                             }" x-on:drop.prevent="handleDrop" x-on:dragover.prevent :class="{
                                     'border-green-500 bg-green-50 dark:bg-black': uploadedFileName && !isUploading,
-                                    'border-blue-500 bg-blue-50 dark:bg-black': isUploading,
-                                    'border-[#112080] bg-white dark:bg-black': !uploadedFileName && !isUploading
+                                    'border-[#184D6C] bg-blue-50 dark:bg-black': isUploading,
+                                    'border-[#184D6C] bg-white dark:bg-black': !uploadedFileName && !isUploading
                                 }"
-                                class="w-full h-[150px] p-3 rounded-[12px] border-2 border-dashed focus:ring-2 focus:ring-blue-500 dark:border-white dark:bg-black dark:text-white flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300 relative"
+                                class="w-full h-[46px] p-[16px] rounded-[12px] border-2 border-dashed border-[#184D6C] focus:ring-2 focus:ring-[#EFF6F9] dark:border-white dark:bg-black dark:text-white flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300 relative"
                                 x-on:click="$refs.fileInput.click()">
 
                                 <!-- حالت در حال آپلود -->
@@ -1328,41 +1334,49 @@
 
                                 <!-- حالت آپلود موفق -->
                                 <template x-if="!isUploading && uploadedFileName">
-                                    <div class="flex flex-col items-center w-full">
-                                        <div
-                                            class="w-12 h-12 mb-2 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
-                                            <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none"
-                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 13l4 4L19 7"></path>
+                                    <div class="flex justify-between w-full  items-center ">
+                                        <div class="flex">
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M12.5 17.5H7.5C5.14298 17.5 3.96447 17.5 3.23223 16.7678C2.5 16.0355 2.5 14.857 2.5 12.5M17.5 12.5C17.5 14.857 17.5 16.0355 16.7678 16.7678C16.5179 17.0176 16.2162 17.1822 15.8333 17.2906"
+                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path
+                                                    d="M9.99984 13.3333V2.5M9.99984 2.5L13.3332 6.14583M9.99984 2.5L6.6665 6.14583"
+                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
                                             </svg>
+
+                                            <h1 class="font-vazir text-gray-600 dark:text-white text-[16px]">آپلود فایل
+                                            </h1>
                                         </div>
-                                        <h1 class="font-vazir text-green-600 dark:text-green-300 text-[16px]">آپلود
-                                            موفق
-                                        </h1>
-                                        <p class="font-vazir text-gray-600 dark:text-gray-300 text-sm mt-1 truncate max-w-full px-2"
-                                            x-text="uploadedFileName" :title="uploadedFileName"></p>
-                                        <button type="button" x-on:click.stop="removeFile()"
-                                            class="mt-2 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 text-sm flex items-center gap-1 transition-colors">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                                </path>
-                                            </svg>
-                                            حذف فایل
-                                        </button>
+                                        <p class="font-vazir text-gray-500 dark:text-white text-sm mt-1">
+                                            JPG, PNG,WEBP</p>
                                     </div>
                                 </template>
 
                                 <!-- حالت اولیه (بدون فایل) -->
                                 <template x-if="!isUploading && !uploadedFileName">
-                                    <div class="flex flex-col items-center ">
-                                        <img src="{{ asset('assets/sarafi/all_icon/upload.svg') }}" alt="آپلود"
-                                            class="w-12 h-12 mb-2">
-                                        <h1 class="font-vazir text-gray-600 dark:text-white text-[16px]">فایل را
-                                            اینجا وارد کنید یا بکشید</h1>
-                                        <p class="font-vazir text-gray-500 dark:text-white text-sm mt-1">فرمت‌های
-                                            مجاز: JPG, PNG,WEBP</p>
+                                    <div class="flex justify-between w-full  items-center ">
+                                        <div class="flex">
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M12.5 17.5H7.5C5.14298 17.5 3.96447 17.5 3.23223 16.7678C2.5 16.0355 2.5 14.857 2.5 12.5M17.5 12.5C17.5 14.857 17.5 16.0355 16.7678 16.7678C16.5179 17.0176 16.2162 17.1822 15.8333 17.2906"
+                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path
+                                                    d="M9.99984 13.3333V2.5M9.99984 2.5L13.3332 6.14583M9.99984 2.5L6.6665 6.14583"
+                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                            </svg>
+
+                                            <h1 class="font-vazir text-gray-600 dark:text-white text-[16px]">آپلود فایل
+                                            </h1>
+                                        </div>
+                                        <p class="font-vazir text-gray-500 dark:text-white text-sm mt-1">
+                                            JPG, PNG,WEBP</p>
                                     </div>
                                 </template>
 
@@ -1430,7 +1444,7 @@
                     <div
                         class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 py-4 justify-center items-center text-center ">
                         <button type="submit" wire:loading.attr="disabled" wire:target="submitTransaction"
-                            class="bg-[#61B138] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
+                            class="bg-[#184D6C] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
                             <span wire:loading.remove wire:target="submitTransaction">
                                 {{ $transactionId ? 'بروزرسانی' : 'ثبت' }}
                             </span>
@@ -1452,7 +1466,7 @@
                         @if (!$transactionId)
                         <button type="button" wire:click="submitAndPrint" wire:loading.attr='disabled'
                             wire:target='submitAndPrint'
-                            class="bg-[#2563EB] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
+                            class="bg-[#184D6C] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
                             <span wire:loading.remove wire:target='submitAndPrint'>
                                 ثبت و چاپ
 
@@ -1474,7 +1488,7 @@
                         @endif
 
                         <button type="button" wire:click="cancel"
-                            class="bg-[#DD2424] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
+                            class="bg-[#184D6C] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
                             {{ $transactionId ? 'لغو ویرایش' : 'انصراف' }}
                         </button>
 
@@ -1487,19 +1501,19 @@
             <div class="flex-1 flex flex-col
                         dark:border dark:border-white
                         dark:bg-black dark:text-white
-                        bg-[#F5F5F5]
+                        bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC]
                         p-3 md:p-4 lg:p-6
                         rounded-[12px]
-                        w-full max-w-[440px] md:max-w-[410px] lg:max-w-full
+                        w-full max-w-full
                         mb-5 mx-auto
-                        overflow-x-auto" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                        h-auto md:h-[630px]">
 
                 {{-- بالای جدول: عنوان و جستجو --}}
                 <div
-                    class="grid grid-cols-1 md:grid-cols-1 dark:border-white xl:grid-cols-2 justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
-                    <h1 class="text-lg md:text-xl lg:text-2xl vazir">ترانزکشن های ثبت شده</h1>
+                    class="grid grid-cols-1 xl:grid-cols-2 gap-3 justify-between items-center mb-3 p-3 md:p-4 rounded-[12px]">
+                    <h1 class="text-lg md:text-xl lg:text-2xl vazir font-semibold">ترانزکشن های ثبت شده</h1>
 
-                    <div class="flex items-center gap-3">
+                    <div class="flex flex-wrap items-center gap-3">
                         {{-- نمایش نام مشتری انتخاب شده --}}
                         @if ($selectedCustomerId)
                         @php
@@ -1508,20 +1522,29 @@
                         <div class="bg-blue-100 px-3 py-2 rounded-lg flex items-center gap-2">
                             <span class="text-blue-700 vazir">فیلتر:
                                 {{ $selectedCustomer->fullname ?? '' }}</span>
-                            <button wire:click="clearFilter" class="text-red-500 hover:text-red-700 text-lg">
-                                ✕
-                            </button>
+                            <button wire:click="clearFilter" class="text-red-500 hover:text-red-700 text-lg">✕</button>
                         </div>
                         @endif
 
-                        <div class="relative w-[340px] md:w-[500px]">
-                            <!-- Input جستجوی زنده با wire:model.live -->
-                            <input type="text" wire:model.live="search"
-                                class="border dark:bg-black  dark:border-white dark:placeholder:text-white  border-[#8C8C8C] w-full h-12 md:h-[51px] bg-transparent rounded-[12px] p-2 md:p-3 text-sm md:text-base pr-10"
-                                placeholder="جستجو بر اساس نام یا نمبر حساب...">
+                        {{-- جستجو --}}
+                        <div class="relative flex-1 min-w-[200px] w-full md:w-[400px] lg:w-[500px]">
+                            <input type="text" wire:model.live="search" placeholder="جستجو..." class="w-full h-12 md:h-[51px]
+                           border border-[#D7E5EC]
+                           dark:bg-black dark:border-white dark:placeholder:text-white placeholder:text-black
+                           rounded-[12px] pl-3 pr-12 text-sm md:text-base
+                           bg-transparent relative z-0">
 
-                            <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
-                                class="absolute  dark:hidden left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6">
+                            {{-- آیکون --}}
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none dark:hidden">
+                                <path d="M20 20L22 22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                <path
+                                    d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75"
+                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
+
+                            {{-- آیکن دارک --}}
                             <svg width="24" height="24"
                                 class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 hidden dark:block"
                                 viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1532,15 +1555,13 @@
                                     stroke-linejoin="round" />
                             </svg>
 
-                            <!-- دکمه پاک کردن جستجو -->
+                            {{-- دکمه پاک کردن --}}
                             @if ($search)
                             <button wire:click="clearSearchAndFilter"
-                                class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
-                                ✕
-                            </button>
+                                class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">✕</button>
                             @endif
 
-                            <!-- لیست پیشنهادات -->
+                            {{-- لیست پیشنهادات --}}
                             @if ($search && count($filteredCustomers) > 0 && !$selectedCustomerId)
                             <ul
                                 class="absolute z-50 w-full bg-white border border-gray-300 mt-1 rounded-md shadow-lg max-h-60 overflow-y-auto">
@@ -1559,223 +1580,179 @@
 
                 {{-- جدول --}}
                 <div class="overflow-x-auto w-full">
-                    <div class="max-h-[680px] overflow-y-auto min-w-[890px]">
+                    <div class="min-w-[890px] max-h-[680px] overflow-y-auto">
                         <table
-                            class="w-full text-sm  md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead
-                                class="bg-[#2B65E5]  text-white text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0"
-                                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-                                <tr>
-                                    <th class="px-4 py-4 font-bold w-16">#</th>
-                                    <th class="px-4 py-4 font-bold w-48">نام مشتری</th>
-                                    <th class="px-4 py-4 font-bold w-32">معامله</th>
-                                    <th class="px-4 py-4 font-bold w-48">نوع ترانزکشن</th>
-                                    <th class="px-4 py-4 font-bold w-40">مبلغ</th>
-                                    <th class="px-4 py-4 font-bold w-32">واحد</th>
-                                    <th class="px-4 py-4 font-bold w-80 text-center">توضیحات</th>
-                                    <th class="px-4 py-4 font-bold w-40">تاریخ</th>
-                                    <th class="px-4 py-4 font-bold w-48 text-center">عملیات</th>
+                                class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
+                                <tr class="whitespace-nowrap">
+                                    <th class="px-3 py-3 font-bold w-16 text-center">#</th>
+                                    <th class="px-3 py-3 font-bold w-48 text-right">نام مشتری</th>
+                                    <th class="px-3 py-3 font-bold w-32 text-center">معامله</th>
+                                    <th class="px-3 py-3 font-bold w-40 text-right">مبلغ</th>
+                                    <th class="px-3 py-3 font-bold w-32 text-right">واحد</th>
+                                    <th class="px-3 py-3 font-bold w-80 text-center">توضیحات</th>
+                                    <th class="px-3 py-3 font-bold w-40 text-center">تاریخ</th>
+                                    <th class="px-3 py-3 font-bold w-48 text-center">عملیات</th>
                                 </tr>
                             </thead>
+
                             <tbody>
                                 @forelse($transactions as $key => $transaction)
-                                <tr class="text-black border-b dark:text-white border-[#D9D9D9] bg-transparent">
-                                    <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">
-                                        {{ $key + 1 }}
-                                    </td>
-                                    <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium w-48">
-                                        {{ $transaction->customer->fullname ?? '-' }}
-                                    </td>
-                                    <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium w-32">
+                                <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+                               odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
+                               transition-colors">
+                                    <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium text-center">
+                                        {{ $key + 1 }}</td>
+                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium whitespace-nowrap">
+                                        {{ $transaction->customer->fullname ?? '-' }}</td>
+                                    <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium text-center">
                                         <span
-                                            class="px-3 py-1 rounded-full text-[16px] {{ $transaction->type === 'رسید' ? ' text-green-800 dark:text-white' : 'text-red-800 dark:text-white' }}">
+                                            class="px-3 py-1 rounded-full text-[16px] {{ $transaction->type === 'رسید' ? 'text-green-800 dark:text-white' : 'text-red-800 dark:text-white' }}">
                                             {{ $transaction->type }}
                                         </span>
                                     </td>
-
-
-                                    <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium w-32">
-                                        <span
-                                            class="px-3 py-1 rounded-full text-[16px] {{ $transaction->type === 'نقدی' ? ' text-green-800 dark:text-white' : 'text-red-800 dark:text-white' }}">
-                                            {{ $transaction->account_type }}
-                                        </span>
-                                    </td>
-
-                                    <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium w-40">
-                                        {{ number_format($transaction->amount) }}
-                                    </td>
-                                    <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium w-32">
+                                    <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium">
+                                        {{ number_format($transaction->amount) }}</td>
+                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium">
                                         {{ collect($currencies)->firstWhere('code', $transaction->currency)['name_fa']
                                         ?? $transaction->currency }}
                                     </td>
-                                    <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-80">
+                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium text-center">
                                         <div class="space-y-1 text-right">
                                             <p class="text-sm">زون: {{ $transaction->zone }}</p>
                                             <p class="text-sm">تفصیلات: {{ $transaction->description }}</p>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-40">
+                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] text-center">
                                         <div class="whitespace-nowrap">
-                                            <div class="font-medium">
-
-                                                {{ explode(' ', $transaction->date)[0] }}
-
+                                            <div class="font-medium">{{ explode(' ', $transaction->date)[0] }}
                                             </div>
                                             <div class="text-gray-500 dark:text-white text-sm mt-1">
                                                 {{ \Carbon\Carbon::parse($transaction->created_at)->format('h:i A') }}
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="py-4 text-center w-[68]">
-                                        <div class="flex justify-center gap-3">
-                                            <!-- دکمه ویرایش -->
-                                            <button wire:click="edit({{ $transaction->id }})" class="w-12 h-12 flex items-center justify-center  
+                                    <td class="py-2 text-center">
+                                        <div class="flex flex-wrap justify-center gap-2 md:gap-3">
+                                            {{-- ویرایش، حذف، پرینت --}}
+                                            <div class="flex justify-center gap-3">
+                                                <!-- دکمه ویرایش -->
+                                                <button wire:click="edit({{ $transaction->id }})" class="w-12 h-12 flex items-center justify-center  
                                                     rounded-full transition-colors" title="ویرایش">
-                                                <img src="{{ asset('assets/sarafi/all_icon/edit_table.svg') }}"
-                                                    class="w-7 h-7 dark:hidden" alt="Edit">
+                                                    <img src="{{ asset('assets/sarafi/all_icon/edit_table.svg') }}"
+                                                        class="w-7 h-7 dark:hidden" alt="Edit">
 
-                                                <svg width="22" height="22" class="hidden dark:block"
-                                                    viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M10.082 1.83325H8.2487C3.66536 1.83325 1.83203 3.66659 1.83203 8.24992V13.7499C1.83203 18.3333 3.66536 20.1666 8.2487 20.1666H13.7487C18.332 20.1666 20.1654 18.3333 20.1654 13.7499V11.9166"
-                                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path
-                                                        d="M14.7027 2.76832L7.4794 9.99165C7.2044 10.2667 6.9294 10.8075 6.8744 11.2017L6.48023 13.9608C6.33357 14.96 7.0394 15.6567 8.03857 15.5192L10.7977 15.125C11.1827 15.07 11.7236 14.795 12.0077 14.52L19.2311 7.29665C20.4777 6.04999 21.0644 4.60165 19.2311 2.76832C17.3977 0.934987 15.9494 1.52165 14.7027 2.76832Z"
-                                                        stroke="white" stroke-width="1.5" stroke-miterlimit="10"
-                                                        stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path
-                                                        d="M13.668 3.8042C14.2821 5.99503 15.9963 7.7092 18.1963 8.33253"
-                                                        stroke="white" stroke-width="1.5" stroke-miterlimit="10"
-                                                        stroke-linecap="round" stroke-linejoin="round" />
-                                                </svg>
+                                                    <svg width="22" height="22" class="hidden dark:block"
+                                                        viewBox="0 0 22 22" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M10.082 1.83325H8.2487C3.66536 1.83325 1.83203 3.66659 1.83203 8.24992V13.7499C1.83203 18.3333 3.66536 20.1666 8.2487 20.1666H13.7487C18.332 20.1666 20.1654 18.3333 20.1654 13.7499V11.9166"
+                                                            stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                        <path
+                                                            d="M14.7027 2.76832L7.4794 9.99165C7.2044 10.2667 6.9294 10.8075 6.8744 11.2017L6.48023 13.9608C6.33357 14.96 7.0394 15.6567 8.03857 15.5192L10.7977 15.125C11.1827 15.07 11.7236 14.795 12.0077 14.52L19.2311 7.29665C20.4777 6.04999 21.0644 4.60165 19.2311 2.76832C17.3977 0.934987 15.9494 1.52165 14.7027 2.76832Z"
+                                                            stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                                                            stroke-linecap="round" stroke-linejoin="round" />
+                                                        <path
+                                                            d="M13.668 3.8042C14.2821 5.99503 15.9963 7.7092 18.1963 8.33253"
+                                                            stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                                                            stroke-linecap="round" stroke-linejoin="round" />
+                                                    </svg>
 
-                                            </button>
-
-
-                                            @php
-                                            $currentUser = Auth::guard('sarafi')->user();
-                                            @endphp
+                                                </button>
 
 
-                                            @if (($currentUser && $currentUser->role === 'admin') || $currentUser->role
-                                            === 'superadmin')
-                                            <!-- دکمه حذف -->
-                                            <button wire:click="confirmDelete({{ $transaction->id }})"
-                                                class="w-12 h-12 flex items-center justify-center rounded-full transition-colors"
-                                                title="حذف">
-                                                <img src="{{ asset('assets/sarafi/all_icon/trash_table.svg') }}"
-                                                    class="w-8 h-8 dark:hidden" alt="Delete">
-                                                <svg width="24" height="24" class="hidden dark:block"
-                                                    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M21 5.97998C17.67 5.64998 14.32 5.47998 10.98 5.47998C9 5.47998 7.02 5.57998 5.04 5.77998L3 5.97998"
-                                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path
-                                                        d="M8.5 4.97L8.72 3.66C8.88 2.71 9 2 10.69 2H13.31C15 2 15.13 2.75 15.28 3.67L15.5 4.97"
-                                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path
-                                                        d="M18.8484 9.13989L18.1984 19.2099C18.0884 20.7799 17.9984 21.9999 15.2084 21.9999H8.78844C5.99844 21.9999 5.90844 20.7799 5.79844 19.2099L5.14844 9.13989"
-                                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path d="M10.3281 16.5H13.6581" stroke="white" stroke-width="1.5"
-                                                        stroke-linecap="round" stroke-linejoin="round" />
-                                                    <path d="M9.5 12.5H14.5" stroke="white" stroke-width="1.5"
-                                                        stroke-linecap="round" stroke-linejoin="round" />
-                                                </svg>
-
-                                            </button>
-                                            @endif
+                                                @php
+                                                $currentUser = Auth::guard('sarafi')->user();
+                                                @endphp
 
 
-                                            <!-- مودال تأیید حذف -->
-                                            @if ($confirmDeleteId)
-                                            <div
-                                                class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-10 z-50">
+                                                @if (($currentUser && $currentUser->role === 'admin') ||
+                                                $currentUser->role === 'superadmin')
+                                                <!-- دکمه حذف -->
+                                                <button wire:click="confirmDelete({{ $transaction->id }})"
+                                                    class="w-12 h-12 flex items-center justify-center rounded-full transition-colors"
+                                                    title="حذف">
+                                                    <img src="{{ asset('assets/sarafi/all_icon/trash_table.svg') }}"
+                                                        class="w-8 h-8 dark:hidden" alt="Delete">
+                                                    <svg width="24" height="24" class="hidden dark:block"
+                                                        viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M21 5.97998C17.67 5.64998 14.32 5.47998 10.98 5.47998C9 5.47998 7.02 5.57998 5.04 5.77998L3 5.97998"
+                                                            stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                        <path
+                                                            d="M8.5 4.97L8.72 3.66C8.88 2.71 9 2 10.69 2H13.31C15 2 15.13 2.75 15.28 3.67L15.5 4.97"
+                                                            stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                        <path
+                                                            d="M18.8484 9.13989L18.1984 19.2099C18.0884 20.7799 17.9984 21.9999 15.2084 21.9999H8.78844C5.99844 21.9999 5.90844 20.7799 5.79844 19.2099L5.14844 9.13989"
+                                                            stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                        <path d="M10.3281 16.5H13.6581" stroke="white"
+                                                            stroke-width="1.5" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                        <path d="M9.5 12.5H14.5" stroke="white" stroke-width="1.5"
+                                                            stroke-linecap="round" stroke-linejoin="round" />
+                                                    </svg>
+
+                                                </button>
+                                                @endif
+
+
+                                                <!-- مودال تأیید حذف -->
+                                                @if ($confirmDeleteId)
                                                 <div
-                                                    class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px]  rounded-[12px] shadow-xl w-[653px] h-[239.7267608642578px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
-                                                    <button wire:click="$set('confirmDeleteId', null)"
-                                                        class="flex right-0 h-4 w-4"><img
-                                                            src="{{ asset('assets/sarafi/all_icon/close.svg') }}"
-                                                            alt=""></button>
-                                                    <h1 class="text-2xl text-black shabnam font-medium leading-[100%] ">
-                                                        حذف ترانزکشــــــــــن</h1>
-                                                    <hr class="bg-[#E1DED3] mt-8">
-                                                    <p class=" mb-6 text-xl shabnam mt-5">آیا مطمئن هستید می
-                                                        خواهید این
-                                                        ترانزکشن را حذف کنید؟</p>
-                                                    <div class="flex justify-center gap-4">
+                                                    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-10 z-50">
+                                                    <div
+                                                        class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px]  rounded-[12px] shadow-xl w-[653px] h-[239.7267608642578px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
                                                         <button wire:click="$set('confirmDeleteId', null)"
-                                                            class="px-20  text-white text-xl shabnam-fd py-3 bg-[#DD2424] rounded-xl transition">
-                                                            {{ __('messages.no') }}
-                                                        </button>
-                                                        <button wire:click="deleteConfirmed"
-                                                            class="px-20 py-3 bg-[#2563EB] text-xl shabnam-fd text-white rounded-xl  transition flex items-center gap-2">
-                                                            {{ __('messages.yes') }}
-                                                        </button>
+                                                            class="flex right-0 h-4 w-4"><img
+                                                                src="{{ asset('assets/sarafi/all_icon/close.svg') }}"
+                                                                alt=""></button>
+                                                        <h1
+                                                            class="text-2xl text-black shabnam font-medium leading-[100%] ">
+                                                            حذف ترانزکشــــــــــن</h1>
+                                                        <hr class="bg-[#E1DED3] mt-8">
+                                                        <p class=" mb-6 text-xl shabnam mt-5">آیا مطمئن هستید
+                                                            می
+                                                            خواهید این
+                                                            ترانزکشن را حذف کنید؟</p>
+                                                        <div class="flex justify-center gap-4">
+                                                            <button wire:click="$set('confirmDeleteId', null)"
+                                                                class="px-20  text-white text-xl shabnam-fd py-3 bg-[#DD2424] rounded-xl transition">
+                                                                {{ __('messages.no') }}
+                                                            </button>
+                                                            <button wire:click="deleteConfirmed"
+                                                                class="px-20 py-3 bg-[#2563EB] text-xl shabnam-fd text-white rounded-xl  transition flex items-center gap-2">
+                                                                {{ __('messages.yes') }}
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            @endif
+                                                @endif
 
 
 
-                                            <!-- دکمه پرینت -->
-                                            <button wire:click="print({{ $transaction->id }})" class="w-12 h-12 flex items-center justify-center  
+                                                <!-- دکمه پرینت -->
+                                                <button wire:click="print({{ $transaction->id }})" class="w-12 h-12 flex items-center justify-center  
                                                 rounded-full transition-colors" title="پرینت">
-                                                <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"
-                                                    class="w-10 h-10 dark:hidden" alt="Print">
-                                                <svg width="30" class="hidden dark:block" height="30"
-                                                    viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M10.7714 25.0001C10.2156 25.0001 9.74016 24.8022 9.34516 24.4063C8.95016 24.0105 8.75224 23.5359 8.75141 22.9826V20.0001H6.49141C5.93641 20.0001 5.46141 19.8022 5.06641 19.4063C4.67141 19.0105 4.47349 18.5355 4.47266 17.9813V13.2688C4.47266 12.5605 4.71307 11.9672 5.19391 11.4888C5.67474 11.0088 6.26766 10.7688 6.97266 10.7688H23.0302C23.7385 10.7688 24.3322 11.0088 24.8114 11.4888C25.2906 11.9688 25.5302 12.5622 25.5302 13.2688V17.9813C25.5302 18.5363 25.3327 19.0113 24.9377 19.4063C24.5427 19.8013 24.0672 19.9992 23.5114 20.0001H21.2514V22.9813C21.2514 23.5363 21.0535 24.0113 20.6577 24.4063C20.2618 24.8013 19.7868 24.9992 19.2327 25.0001H10.7714ZM6.49141 18.7501H8.75141C8.78391 18.2226 8.99307 17.7701 9.37891 17.3926C9.76474 17.0159 10.2289 16.8276 10.7714 16.8276H19.2327C19.7743 16.8276 20.2381 17.0163 20.6239 17.3938C21.0097 17.7705 21.2189 18.2226 21.2514 18.7501H23.5114C23.7356 18.7501 23.9197 18.678 24.0639 18.5338C24.2081 18.3897 24.2802 18.2055 24.2802 17.9813V13.2688C24.2802 12.9155 24.1606 12.6188 23.9214 12.3788C23.6822 12.1388 23.3852 12.0188 23.0302 12.0188H6.97266C6.61849 12.0188 6.32182 12.1388 6.08266 12.3788C5.84349 12.6188 5.72349 12.9159 5.72266 13.2701V17.9813C5.72266 18.2055 5.79474 18.3897 5.93891 18.5338C6.08307 18.678 6.26724 18.7501 6.49141 18.7501ZM20.0014 10.7701V7.78758C20.0014 7.56258 19.9293 7.37841 19.7852 7.23508C19.641 7.09091 19.4568 7.01883 19.2327 7.01883H10.7702C10.546 7.01883 10.3618 7.09091 10.2177 7.23508C10.0735 7.37925 10.0014 7.56341 10.0014 7.78758V10.7688H8.75141V7.78758C8.75141 7.23258 8.94932 6.75716 9.34516 6.36133C9.74016 5.9655 10.2152 5.76758 10.7702 5.76758H19.2327C19.7877 5.76758 20.2627 5.9655 20.6577 6.36133C21.0535 6.75716 21.2514 7.23216 21.2514 7.78633V10.7688L20.0014 10.7701ZM22.0214 15.1451C22.3756 15.1451 22.6722 15.0251 22.9114 14.7851C23.1506 14.5451 23.2706 14.2484 23.2714 13.8951C23.2722 13.5417 23.1522 13.2447 22.9114 13.0038C22.6706 12.763 22.3739 12.643 22.0214 12.6438C21.6689 12.6447 21.3718 12.7647 21.1302 13.0038C20.8885 13.243 20.7689 13.5401 20.7714 13.8951C20.7739 14.2501 20.8935 14.5467 21.1302 14.7851C21.3668 15.0234 21.6639 15.1434 22.0214 15.1451ZM20.0014 22.9801V18.8463C20.0014 18.6213 19.9293 18.4367 19.7852 18.2926C19.641 18.1484 19.4568 18.0763 19.2327 18.0763H10.7702C10.546 18.0763 10.3618 18.1484 10.2177 18.2926C10.0735 18.4376 10.0014 18.6222 10.0014 18.8463V22.9813C10.0014 23.2055 10.0735 23.3897 10.2177 23.5338C10.3618 23.678 10.5464 23.7501 10.7714 23.7501H19.2327C19.4568 23.7501 19.641 23.678 19.7852 23.5338C19.9293 23.3897 20.0014 23.2051 20.0014 22.9801ZM6.49141 12.0201H5.72266H24.2802H6.49141Z"
-                                                        fill="white" />
-                                                </svg>
+                                                    <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"
+                                                        class="w-10 h-10 dark:hidden" alt="Print">
+                                                    <svg width="30" class="hidden dark:block" height="30"
+                                                        viewBox="0 0 30 30" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M10.7714 25.0001C10.2156 25.0001 9.74016 24.8022 9.34516 24.4063C8.95016 24.0105 8.75224 23.5359 8.75141 22.9826V20.0001H6.49141C5.93641 20.0001 5.46141 19.8022 5.06641 19.4063C4.67141 19.0105 4.47349 18.5355 4.47266 17.9813V13.2688C4.47266 12.5605 4.71307 11.9672 5.19391 11.4888C5.67474 11.0088 6.26766 10.7688 6.97266 10.7688H23.0302C23.7385 10.7688 24.3322 11.0088 24.8114 11.4888C25.2906 11.9688 25.5302 12.5622 25.5302 13.2688V17.9813C25.5302 18.5363 25.3327 19.0113 24.9377 19.4063C24.5427 19.8013 24.0672 19.9992 23.5114 20.0001H21.2514V22.9813C21.2514 23.5363 21.0535 24.0113 20.6577 24.4063C20.2618 24.8013 19.7868 24.9992 19.2327 25.0001H10.7714ZM6.49141 18.7501H8.75141C8.78391 18.2226 8.99307 17.7701 9.37891 17.3926C9.76474 17.0159 10.2289 16.8276 10.7714 16.8276H19.2327C19.7743 16.8276 20.2381 17.0163 20.6239 17.3938C21.0097 17.7705 21.2189 18.2226 21.2514 18.7501H23.5114C23.7356 18.7501 23.9197 18.678 24.0639 18.5338C24.2081 18.3897 24.2802 18.2055 24.2802 17.9813V13.2688C24.2802 12.9155 24.1606 12.6188 23.9214 12.3788C23.6822 12.1388 23.3852 12.0188 23.0302 12.0188H6.97266C6.61849 12.0188 6.32182 12.1388 6.08266 12.3788C5.84349 12.6188 5.72349 12.9159 5.72266 13.2701V17.9813C5.72266 18.2055 5.79474 18.3897 5.93891 18.5338C6.08307 18.678 6.26724 18.7501 6.49141 18.7501ZM20.0014 10.7701V7.78758C20.0014 7.56258 19.9293 7.37841 19.7852 7.23508C19.641 7.09091 19.4568 7.01883 19.2327 7.01883H10.7702C10.546 7.01883 10.3618 7.09091 10.2177 7.23508C10.0735 7.37925 10.0014 7.56341 10.0014 7.78758V10.7688H8.75141V7.78758C8.75141 7.23258 8.94932 6.75716 9.34516 6.36133C9.74016 5.9655 10.2152 5.76758 10.7702 5.76758H19.2327C19.7877 5.76758 20.2627 5.9655 20.6577 6.36133C21.0535 6.75716 21.2514 7.23216 21.2514 7.78633V10.7688L20.0014 10.7701ZM22.0214 15.1451C22.3756 15.1451 22.6722 15.0251 22.9114 14.7851C23.1506 14.5451 23.2706 14.2484 23.2714 13.8951C23.2722 13.5417 23.1522 13.2447 22.9114 13.0038C22.6706 12.763 22.3739 12.643 22.0214 12.6438C21.6689 12.6447 21.3718 12.7647 21.1302 13.0038C20.8885 13.243 20.7689 13.5401 20.7714 13.8951C20.7739 14.2501 20.8935 14.5467 21.1302 14.7851C21.3668 15.0234 21.6639 15.1434 22.0214 15.1451ZM20.0014 22.9801V18.8463C20.0014 18.6213 19.9293 18.4367 19.7852 18.2926C19.641 18.1484 19.4568 18.0763 19.2327 18.0763H10.7702C10.546 18.0763 10.3618 18.1484 10.2177 18.2926C10.0735 18.4376 10.0014 18.6222 10.0014 18.8463V22.9813C10.0014 23.2055 10.0735 23.3897 10.2177 23.5338C10.3618 23.678 10.5464 23.7501 10.7714 23.7501H19.2327C19.4568 23.7501 19.641 23.678 19.7852 23.5338C19.9293 23.3897 20.0014 23.2051 20.0014 22.9801ZM6.49141 12.0201H5.72266H24.2802H6.49141Z"
+                                                            fill="white" />
+                                                    </svg>
 
-                                            </button>
+                                                </button>
+                                            </div>
                                         </div>
                                     </td>
-                                    <script>
-                                        let printListenerRegistered = false;
-
-                                            document.addEventListener('livewire:init', () => {
-                                                if (printListenerRegistered) return;
-                                                printListenerRegistered = true;
-
-                                                Livewire.on('print-pdf', (data) => {
-
-                                                    /* 🔹 1. دانلود (با لینک مخفی) */
-                                                    const downloadLink = document.createElement('a');
-                                                    downloadLink.href = data.url;
-                                                    downloadLink.download = '';
-                                                    downloadLink.style.display = 'none';
-                                                    document.body.appendChild(downloadLink);
-                                                    downloadLink.click();
-
-                                                    /* 🔹 2. پرینت */
-                                                    const iframe = document.createElement('iframe');
-                                                    iframe.style.display = 'none';
-                                                    iframe.src = data.url;
-                                                    document.body.appendChild(iframe);
-
-                                                    iframe.onload = () => {
-                                                        iframe.contentWindow.focus();
-                                                        iframe.contentWindow.print();
-
-                                                        /* 🔹 3. حذف با تأخیر */
-                                                        setTimeout(() => {
-                                                            iframe.remove();
-                                                            downloadLink.remove();
-                                                        }, 5000); // ⏱ ۵ ثانیه
-                                                    };
-                                                });
-                                            });
-                                    </script>
-
-
-
                                 </tr>
                                 @empty
                                 <tr>

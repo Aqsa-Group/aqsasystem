@@ -1,330 +1,479 @@
 <div>
     <div class="container mx-auto ">
         <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
-            <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
-                class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
-                <div class="h-[80px] w-full flex justify-start items-center px-4">
-                    <h2 class="text-white vazir text-[18px]">
-                        <?php echo e(session('message')); ?>
+        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
+            class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
+            <div class="h-[80px] w-full flex justify-start items-center px-4">
+                <h2 class="text-white vazir text-[18px]">
+                    <?php echo e(session('message')); ?>
 
-                    </h2>
-                </div>
+                </h2>
             </div>
+        </div>
         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
 
 
         <?php if(session()->has('error')): ?>
-            <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
-                class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#DC2626] vazir">
-                <div class="h-[80px] w-full flex justify-start items-center px-4">
-                    <h2 class="text-white vazir text-[18px]">
-                        <?php echo e(session('error')); ?>
+        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
+            class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#DC2626] vazir">
+            <div class="h-[80px] w-full flex justify-start items-center px-4">
+                <h2 class="text-white vazir text-[18px]">
+                    <?php echo e(session('error')); ?>
 
-                    </h2>
-                </div>
+                </h2>
             </div>
+        </div>
         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
         <div class="scroll-container overflow-x-auto whitespace-nowrap py-3">
             <!--[if BLOCK]><![endif]--><?php if($withdrawalCustomer): ?>
-                <div class="inline-block align-top ml-4 h-auto">
-                    <div
-                        class="flex flex-col h-[180px] w-[273px] pr-5 pl-5 pt-2 rounded-[12px] bg-gradient-to-b dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 from-[#20559c] to-[#3065b5] text-white">
+            <div class="inline-block align-top ml-4 h-auto">
+                    <div class="flex flex-col h-[212px] w-[244px] pr-5 pl-5 pt-2 rounded-[12px]  dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900           bg-[#387EA2]/40
+            backdrop-blur-lg
+            border border-white/30
 
-                        
-                        <div x-data="{
+            shadow-[0_4px_4px_rgba(24,77,108,0.25)] text-black">
+                    
+                    <div x-data="{
                             showLargeImage: false,
                             largeImageSrc: '',
                             customerName: '<?php echo e($withdrawalCustomer->fullname); ?>',
                             customerPhone: '<?php echo e($withdrawalCustomer->phone ?? ''); ?>'
                         }">
 
-                            
-                            <!--[if BLOCK]><![endif]--><?php if($withdrawalCustomer->image): ?>
-                                <div class="flex justify-center mb-2">
-                                    <img src="<?php echo e(Storage::url($withdrawalCustomer->image)); ?>"
-                                        alt="<?php echo e($withdrawalCustomer->fullname); ?>"
-                                        class="w-20 h-20 rounded-lg object-cover border-2 border-white cursor-pointer hover:scale-105 transition-transform duration-200"
-                                        @click="showLargeImage = true; largeImageSrc = '<?php echo e(Storage::url($withdrawalCustomer->image)); ?>'"
-                                        onerror="this.onerror=null; this.src='<?php echo e(asset('assets/web.jpg')); ?>'">
-                                </div>
-                            <?php else: ?>
-                                <div class="flex justify-center mb-2">
-                                    <img src="<?php echo e(asset('assets/web.jpg')); ?>"
-                                        alt="dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900<?php echo e($withdrawalCustomer->fullname); ?>"
-                                        class="w-20 h-20 rounded-full object-cover border-2 border-white cursor-pointer hover:scale-105 transition-transform duration-200"
-                                        @click="showLargeImage = true; largeImageSrc = '<?php echo e(asset('assets/web.jpg')); ?>'">
-                                </div>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-
-                            
-                            <div x-show="showLargeImage" x-transition:enter="transition ease-out duration-300"
-                                x-transition:enter-start="opacity-0 scale-95"
-                                x-transition:enter-end="opacity-100 scale-100"
-                                x-transition:leave="transition ease-in duration-200"
-                                x-transition:leave-start="opacity-100 scale-100"
-                                x-transition:leave-end="opacity-0 scale-95"
-                                class="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4"
-                                @click.away="showLargeImage = false" @keydown.escape.window="showLargeImage = false"
-                                style="display: none;">
-
-                                <div class="relative max-w-4xl max-h-[90vh] w-full">
-
-                                    
-                                    <button @click="showLargeImage = false"
-                                        class="absolute -top-12 right-0 text-white hover:text-gray-300 text-3xl z-10 transition-colors duration-200">
-                                        ✕
-                                    </button>
-
-                                    
-                                    <div class="flex justify-center">
-                                        <img :src="largeImageSrc" :alt="customerName"
-                                            class="max-w-full max-h-[70vh] object-contain rounded-lg shadow-2xl">
-                                    </div>
-
-                                    
-                                    <div class="mt-6 text-center text-white">
-                                        <p class="text-2xl font-bold mb-2" x-text="customerName"></p>
-                                        <template x-if="customerPhone">
-                                            <p class="text-lg text-gray-300" x-text="customerPhone"></p>
-                                        </template>
-
-                                        
-                                        <div class="mt-6 flex justify-center gap-4">
-                                            <a :href="largeImageSrc"
-                                                :download="customerName + '_' + new Date().toISOString().split('T')[0] + '.jpg'"
-                                                class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                                </svg>
-                                                دانلود عکس
-                                            </a>
-
-                                            <button @click="showLargeImage = false"
-                                                class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200">
-                                                بستن
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
+                        
+                        <!--[if BLOCK]><![endif]--><?php if($withdrawalCustomer->image): ?>
+                        <div class="flex justify-center mb-2">
+                            <img src="<?php echo e(Storage::url($withdrawalCustomer->image)); ?>"
+                                alt="<?php echo e($withdrawalCustomer->fullname); ?>"
+                                class="w-20 h-20 rounded-lg object-cover border-2 border-white cursor-pointer hover:scale-105 transition-transform duration-200"
+                                @click="showLargeImage = true; largeImageSrc = '<?php echo e(Storage::url($withdrawalCustomer->image)); ?>'"
+                                onerror="this.onerror=null; this.src='<?php echo e(asset('assets/web.jpg')); ?>'">
                         </div>
-                        
-                        <h1 class="text-[20px] text-white text-center font-bold truncate"
-                            title="<?php echo e($withdrawalCustomer->fullname); ?>">
-                            <?php echo e($withdrawalCustomer->fullname); ?>
-
-                        </h1>
-
-                        
-                        <!--[if BLOCK]><![endif]--><?php if($withdrawalCustomer->phone): ?>
-                            <div class="flex items-center justify-center gap-2 mt-1">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        d="M20 15.5c-1.2 0-2.4-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.5-5.2-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.3-.5-3.5 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1zM5 6h1.5c.1 1.2.3 2.4.6 3.5L5.3 11.8c-.9-2-1.3-4.1-1.3-6.2V6zM19 19c-2.1 0-4.2-.4-6.2-1.3l2.3-2.3c1.1.3 2.3.5 3.5.6V19z" />
-                                </svg>
-                                <span
-                                    class="text-white text-[14px] dir-ltr text-left"><?php echo e($withdrawalCustomer->phone); ?></span>
-                            </div>
+                        <?php else: ?>
+                        <div class="flex justify-center mb-2">
+                            <img src="<?php echo e(asset('assets/web.jpg')); ?>"
+                                alt="dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900<?php echo e($withdrawalCustomer->fullname); ?>"
+                                class="w-20 h-20 rounded-full object-cover border-2 border-white cursor-pointer hover:scale-105 transition-transform duration-200"
+                                @click="showLargeImage = true; largeImageSrc = '<?php echo e(asset('assets/web.jpg')); ?>'">
+                        </div>
                         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                         
-                        <div class="flex items-center justify-center gap-2 mt-1">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8h16v10zm-8-7c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-2.2 0-4 1.8-4 4h8c0-2.2-1.8-4-4-4z" />
-                            </svg>
-                            <span
-                                class="text-white text-[14px] dir-ltr text-left"><?php echo e($withdrawalCustomer->account_number); ?></span>
+                        <div x-show="showLargeImage" x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-200"
+                            x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+                            class="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4"
+                            @click.away="showLargeImage = false" @keydown.escape.window="showLargeImage = false"
+                            style="display: none;">
+
+                            <div class="relative max-w-4xl max-h-[90vh] w-full">
+
+                                
+                                <button @click="showLargeImage = false"
+                                    class="absolute -top-12 right-0 text-white hover:text-gray-300 text-3xl z-10 transition-colors duration-200">
+                                    ✕
+                                </button>
+
+                                
+                                <div class="flex justify-center">
+                                    <img :src="largeImageSrc" :alt="customerName"
+                                        class="max-w-full max-h-[70vh] object-contain rounded-lg shadow-2xl">
+                                </div>
+
+                                
+                                <div class="mt-6 text-center text-white">
+                                    <p class="text-2xl font-bold mb-2" x-text="customerName"></p>
+                                    <template x-if="customerPhone">
+                                        <p class="text-lg text-gray-300" x-text="customerPhone"></p>
+                                    </template>
+
+                                    
+                                    <div class="mt-6 flex justify-center gap-4">
+                                        <a :href="largeImageSrc"
+                                            :download="customerName + '_' + new Date().toISOString().split('T')[0] + '.jpg'"
+                                            class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                            </svg>
+                                            دانلود عکس
+                                        </a>
+
+                                        <button @click="showLargeImage = false"
+                                            class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200">
+                                            بستن
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
 
                     </div>
+                    
+                    <h1 class="text-[20px] text-black text-center font-bold truncate"
+                        title="<?php echo e($withdrawalCustomer->fullname); ?>">
+                        <?php echo e($withdrawalCustomer->fullname); ?>
+
+                    </h1>
+
+                    
+                    <!--[if BLOCK]><![endif]--><?php if($withdrawalCustomer->phone): ?>
+                    <div class="flex items-center justify-center gap-2 mt-1">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M20 15.5c-1.2 0-2.4-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.5-5.2-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.3-.5-3.5 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1zM5 6h1.5c.1 1.2.3 2.4.6 3.5L5.3 11.8c-.9-2-1.3-4.1-1.3-6.2V6zM19 19c-2.1 0-4.2-.4-6.2-1.3l2.3-2.3c1.1.3 2.3.5 3.5.6V19z" />
+                        </svg>
+                        <span class="text-black text-[14px] dir-ltr text-left"><?php echo e($withdrawalCustomer->phone); ?></span>
+                    </div>
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
+                    
+                    <div class="flex items-center justify-center gap-2 mt-1">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8h16v10zm-8-7c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-2.2 0-4 1.8-4 4h8c0-2.2-1.8-4-4-4z" />
+                        </svg>
+                        <span class="text-black text-[14px] dir-ltr text-left"><?php echo e($withdrawalCustomer->account_number); ?></span>
+                    </div>
+
                 </div>
+            </div>
             <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <?php
-                    $currencyName = $currencyItem['name_fa'];
-                    $cashBalance = $customerCashBalances[$currencyName] ?? 0;
-                    $bankBalance = $customerBankBalances[$currencyName] ?? 0;
-                    $totalBalance = $customerTotalBalances[$currencyName] ?? 0;
-                ?>
+            <?php
+            $currencyName = $currencyItem['name_fa'];
+            $cashBalance = $customerCashBalances[$currencyName] ?? 0;
+            $bankBalance = $customerBankBalances[$currencyName] ?? 0;
+            $totalBalance = $customerTotalBalances[$currencyName] ?? 0;
+            ?>
 
-                
-                <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
-                    <div
-                        class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 bg-gradient-to-b from-[#2563EB] to-[#5474BB] text-white">
+            
+            <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
+                <div class="
+    flex flex-col
+  h-[212px] w-[244px]
+    pr-5 pl-5 pt-3
+    rounded-[12px]
 
-                        <h1 class="text-[24px] text-white"><?php echo e($currencyName); ?></h1>
+    bg-[#387EA2]/40
+    backdrop-blur-lg
+    border border-white/30
 
-                        <div class="flex flex-col gap-1 mt-1 text-center">
-                            <div class="flex justify-between items-center text-[14px]">
-                                <span>نقدی:</span>
-                                <span class="font-bold text-left"
-                                    dir="ltr"><?php echo e(number_format($cashBalance)); ?></span>
+    shadow-[0_4px_4px_rgba(24,77,108,0.25)]
+
+    text-black
+  ">
+                    <h1 class="text-[24px] text-left vazir text-[#387EA2]"><?php echo e($currencyName); ?></h1>
+  <div class="flex flex-col gap-1 mt-1 text-center">
+                        <div class="flex justify-between items-center text-[14px]">
+                            <div class="flex justify-end items-center gap-2">
+                                <div class="bg-white rounded-[12px] h-[30px] w-[30px] justify-center items-center   ">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="flex justify-center items-center w-full mt-1">
+                                        <path
+                                            d="M10.8332 4.1665C13.1902 4.1665 14.3687 4.1665 15.1009 4.89874C15.8332 5.63097 15.8332 6.80948 15.8332 9.1665C15.8332 11.5235 15.8332 12.702 15.1009 13.4343C14.3687 14.1665 13.1902 14.1665 10.8332 14.1665H6.6665C4.30948 14.1665 3.13097 14.1665 2.39874 13.4343C1.6665 12.702 1.6665 11.5235 1.6665 9.1665C1.6665 6.80948 1.6665 5.63097 2.39874 4.89874C3.13097 4.1665 4.30948 4.1665 6.6665 4.1665H7.49984"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                        <path
+                                            d="M13.3337 16.6665H9.16704C6.81002 16.6665 5.63151 16.6665 4.89927 15.9343C4.49103 15.5261 4.31039 14.9791 4.23047 14.1665M17.6015 15.9343C18.3337 15.2021 18.3337 14.0236 18.3337 11.6665C18.3337 9.30953 18.3337 8.13101 17.6015 7.39878C17.1932 6.99054 16.6463 6.80991 15.8337 6.72998"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                        <path
+                                            d="M10.8332 9.16683C10.8332 10.3174 9.90043 11.2502 8.74984 11.2502C7.59924 11.2502 6.6665 10.3174 6.6665 9.16683C6.6665 8.01624 7.59924 7.0835 8.74984 7.0835C9.90043 7.0835 10.8332 8.01624 10.8332 9.16683Z"
+                                            stroke="#1C274C" stroke-width="1.5" />
+                                        <path d="M13.3335 10.8335L13.3335 7.50016" stroke="#1C274C" stroke-width="1.5"
+                                            stroke-linecap="round" />
+                                        <path d="M4.1665 10.8335L4.1665 7.50016" stroke="#1C274C" stroke-width="1.5"
+                                            stroke-linecap="round" />
+                                    </svg>
+
+                                </div>
+                                <span>نقدی</span>
                             </div>
-                            <div class="flex justify-between items-center text-[14px]">
-                                <span>بانکی:</span>
-                                <span class="font-bold text-left"
-                                    dir="ltr"><?php echo e(number_format($bankBalance)); ?></span>
-                            </div>
-                            <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
-                                <span class="font-semibold">مجموعه:</span>
-                                <span class="font-bold text-[16px] text-left"
-                                    dir="ltr"><?php echo e(number_format($totalBalance)); ?></span>
-                            </div>
+                            <span class="font-medium text-left" dir="ltr"><?php echo e(number_format($cashBalance)); ?></span>
                         </div>
+                        <div class="flex justify-between items-center text-[14px]">
+                            <div class="flex justify-end items-center gap-2">
+                                <div class="bg-white rounded-[12px] h-[30px] w-[30px] justify-center items-center   ">
+                                    <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="flex justify-center items-center w-full mt-1">
+                                        <path
+                                            d="M2.64281 18.2249C3.61913 19.25 5.19047 19.25 8.33317 19.25H11.6665C14.8092 19.25 16.3805 19.25 17.3569 18.2249C18.3332 17.1997 18.3332 15.5498 18.3332 12.25C18.3332 11.2265 18.3332 10.3617 18.304 9.625M17.3569 6.27513C16.3805 5.25 14.8092 5.25 11.6665 5.25H8.33317C5.19047 5.25 3.61913 5.25 2.64281 6.27513C1.6665 7.30025 1.6665 8.95017 1.6665 12.25C1.6665 13.2735 1.6665 14.1383 1.69564 14.875"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                        <path
+                                            d="M9.99984 1.75C11.5712 1.75 12.3569 1.75 12.845 2.26256C13.3332 2.77513 13.3332 3.60008 13.3332 5.25M7.15466 2.26256C6.6665 2.77513 6.6665 3.60008 6.6665 5.25"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                        <path
+                                            d="M10.0002 15.1667C10.9206 15.1667 11.6668 14.5137 11.6668 13.7083C11.6668 12.9029 10.9206 12.25 10.0002 12.25C9.07969 12.25 8.3335 11.5971 8.3335 10.7917C8.3335 9.98625 9.07969 9.33333 10.0002 9.33333M10.0002 15.1667C9.07969 15.1667 8.3335 14.5137 8.3335 13.7083M10.0002 15.1667V15.75M10.0002 8.75V9.33333M10.0002 9.33333C10.9206 9.33333 11.6668 9.98625 11.6668 10.7917"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                    </svg>
 
-                        <button wire:click="showReport" wire:loading.attr="disabled"
-                            class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
-                            <span wire:loading.remove>نمایش گزارش</span>
-                            <span wire:loading>
-                                در حال انتقال...
-                            </span>
-                        </button>
+                                </div>
+                                <span>بانکی</span>
+                            </div>
+                            <span class="font-medium text-left" dir="ltr"><?php echo e(number_format($bankBalance)); ?></span>
+                        </div>
+                        <div class="flex justify-between items-center text-[14px] border-b border-[#184D6C]/15 pb-2">
+                            <div class="flex justify-end items-center gap-2">
+                                <div class="bg-white rounded-[12px] h-[30px] w-[30px] justify-center items-center   ">
+                                    <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="flex justify-center items-center w-full mt-1">
+                                        <path
+                                            d="M15.8332 11.6665V16.6665M15.8332 16.6665L17.4998 14.9998M15.8332 16.6665L14.1665 14.9998"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                        <path
+                                            d="M18.3332 10.0002C18.3332 6.85747 18.3332 5.28612 17.3569 4.30981C16.3805 3.3335 14.8092 3.3335 11.6665 3.3335M11.6665 16.6668H8.33317C5.19047 16.6668 3.61913 16.6668 2.64281 15.6905C1.6665 14.7142 1.6665 13.1429 1.6665 10.0002C1.6665 6.85747 1.6665 5.28612 2.64281 4.30981C3.61913 3.3335 5.19047 3.3335 8.33317 3.3335"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                        <path d="M8.33333 13.3335H5" stroke="#1C274C" stroke-width="1.5"
+                                            stroke-linecap="round" />
+                                        <path d="M10.8332 13.3335H10.4165" stroke="#1C274C" stroke-width="1.5"
+                                            stroke-linecap="round" />
+                                        <path d="M1.6665 8.3335L5.83317 8.3335M18.3332 8.3335L9.1665 8.3335"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                    </svg>
+
+                                </div>
+                                <span class="text-[#184D6C]">مجموعه</span>
+                            </div>
+                            <span class="font-bold text-[16px] text-left" dir="ltr"><?php echo e(number_format($totalBalance)); ?></span>
+                        </div>
                     </div>
+
+
+
+
+                    <button wire:click="showReport" wire:loading.attr="disabled"
+                        class="bg-[#FFFFFF]/10  rounded-[8px] mr-auto  backdrop:blur-2xl text-[12px] p-2 mt-2 text-gray-800 hover:shadow-md transition border border-white flex items-center justify-end gap-2 w-[114px] h-[25px]">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.5 12.5L12.5 7.5M12.5 7.5H8.75M12.5 7.5V11.25" stroke="#184D6C"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path
+                                d="M5.83317 2.78136C7.05889 2.07231 8.48197 1.6665 9.99984 1.6665C14.6022 1.6665 18.3332 5.39746 18.3332 9.99984C18.3332 14.6022 14.6022 18.3332 9.99984 18.3332C5.39746 18.3332 1.6665 14.6022 1.6665 9.99984C1.6665 8.48197 2.07231 7.05889 2.78136 5.83317"
+                                stroke="#184D6C" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+                        <span wire:loading.remove class="text-[#184D6C]">نمایش گزارش</span>
+                        <span wire:loading class="text-[#184D6C]">
+                            در حال انتقال...
+                        </span>
+
+                    </button>
                 </div>
+            </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
 
             
             <!--[if BLOCK]><![endif]--><?php if($withdrawalCustomerId): ?>
-                <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
-                    <div
-                        class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px]
-        dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900
-        bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
+            <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
+              <div class="flex flex-col h-[212px] w-[244px] pr-5 pl-5 pt-3 rounded-[12px]
+                        dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900
+                         bg-[#387EA2]/40
+    backdrop-blur-lg
+    border border-white/30
 
-                        <?php
-                            /* =========================
+    shadow-[0_4px_4px_rgba(24,77,108,0.25)] text-black">
+                    <?php
+                    /* =========================
                     تبدیل کد ارز به نام فارسی
                     ========================== */
-                            function getPersianCurrencyName($currencyCode)
-                            {
-                                $currencyMap = [
-                                    'afn' => 'افغانی',
-                                    'usd' => 'دالر',
-                                    'irr' => 'تومان',
-                                    'eur' => 'یورو',
-                                    'pkr' => 'کلدار',
-                                    'aed' => 'درهم',
-                                    'try' => 'لیره',
-                                    'cny' => 'یوان',
-                                    'gbp' => 'پوند',
-                                    'jpy' => 'ین',
-                                    'sar' => 'ریال سعودی',
-                                    'inr' => 'روپیه',
-                                ];
+                    function getPersianCurrencyName($currencyCode)
+                    {
+                    $currencyMap = [
+                    'afn' => 'افغانی',
+                    'usd' => 'دالر',
+                    'irr' => 'تومان',
+                    'eur' => 'یورو',
+                    'pkr' => 'کلدار',
+                    'aed' => 'درهم',
+                    'try' => 'لیره',
+                    'cny' => 'یوان',
+                    'gbp' => 'پوند',
+                    'jpy' => 'ین',
+                    'sar' => 'ریال سعودی',
+                    'inr' => 'روپیه',
+                    ];
 
-                                $currencyCode = strtolower($currencyCode ?? 'usd');
-                                return $currencyMap[$currencyCode] ?? $currencyCode;
-                            }
+                    $currencyCode = strtolower($currencyCode ?? 'usd');
+                    return $currencyMap[$currencyCode] ?? $currencyCode;
+                    }
 
-                            $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
-                            $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
+                    $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
+                    $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
 
-                            $totalCashUsd = 0;
-                            $totalBankUsd = 0;
+                    $totalCashUsd = 0;
+                    $totalBankUsd = 0;
 
-                            /* =========================
+                    /* =========================
                     نرخ‌های خرید نقدی
                     ========================== */
-                            $exchangeRatesCash = [
-                                'افغانی' => $latestProfitRate->afn_buy_cash ?? 66.2,
-                                'دالر' => 1,
-                                'تومان' => $latestProfitRate->irr_buy_cash ?? 110000,
-                                'یورو' => $latestProfitRate->eur_buy_cash ?? 70,
-                                'کلدار' => $latestProfitRate->pkr_buy_cash ?? 32,
-                                'درهم' => $latestProfitRate->aed_buy_cash ?? 44,
-                                'لیره' => $latestProfitRate->try_buy_cash ?? 60,
-                                'یوان' => $latestProfitRate->cny_buy_cash ?? 43,
-                                'روپیه' => $latestProfitRate->inr_buy_cash ?? 7.14,
-                            ];
+                    $exchangeRatesCash = [
+                    'افغانی' => $latestProfitRate->afn_buy_cash ?? 66.2,
+                    'دالر' => 1,
+                    'تومان' => $latestProfitRate->irr_buy_cash ?? 110000,
+                    'یورو' => $latestProfitRate->eur_buy_cash ?? 70,
+                    'کلدار' => $latestProfitRate->pkr_buy_cash ?? 32,
+                    'درهم' => $latestProfitRate->aed_buy_cash ?? 44,
+                    'لیره' => $latestProfitRate->try_buy_cash ?? 60,
+                    'یوان' => $latestProfitRate->cny_buy_cash ?? 43,
+                    'روپیه' => $latestProfitRate->inr_buy_cash ?? 7.14,
+                    ];
 
-                            /* =========================
+                    /* =========================
                     نرخ‌های خرید بانکی
                     ========================== */
-                            $exchangeRatesBank = [
-                                'افغانی' => $latestProfitRate->afn_buy_bank ?? 66.2,
-                                'دالر' => 1,
-                                'تومان' => $latestProfitRate->irr_buy_bank ?? 110000,
-                                'یورو' => $latestProfitRate->eur_buy_bank ?? 70,
-                                'کلدار' => $latestProfitRate->pkr_buy_bank ?? 32,
-                                'درهم' => $latestProfitRate->aed_buy_bank ?? 44,
-                                'لیره' => $latestProfitRate->try_buy_bank ?? 60,
-                                'یوان' => $latestProfitRate->cny_buy_bank ?? 43,
-                                'روپیه' => $latestProfitRate->inr_buy_bank ?? 7.14,
-                            ];
+                    $exchangeRatesBank = [
+                    'افغانی' => $latestProfitRate->afn_buy_bank ?? 66.2,
+                    'دالر' => 1,
+                    'تومان' => $latestProfitRate->irr_buy_bank ?? 110000,
+                    'یورو' => $latestProfitRate->eur_buy_bank ?? 70,
+                    'کلدار' => $latestProfitRate->pkr_buy_bank ?? 32,
+                    'درهم' => $latestProfitRate->aed_buy_bank ?? 44,
+                    'لیره' => $latestProfitRate->try_buy_bank ?? 60,
+                    'یوان' => $latestProfitRate->cny_buy_bank ?? 43,
+                    'روپیه' => $latestProfitRate->inr_buy_bank ?? 7.14,
+                    ];
 
-                            /* =========================
+                    /* =========================
                     محاسبه موجودی نقدی
                     ========================== */
-                            foreach ($customerCashBalances as $currency => $balance) {
-                                if ($currency === 'دالر') {
-                                    $totalCashUsd += $balance; // دالر مستقیم
-                                } elseif (isset($exchangeRatesCash[$currency]) && $exchangeRatesCash[$currency] > 0) {
-                                    $totalCashUsd += $balance / $exchangeRatesCash[$currency];
-                                }
-                            }
+                    foreach ($customerCashBalances as $currency => $balance) {
+                    if ($currency === 'دالر') {
+                    $totalCashUsd += $balance; // دالر مستقیم
+                    } elseif (isset($exchangeRatesCash[$currency]) && $exchangeRatesCash[$currency] > 0) {
+                    $totalCashUsd += $balance / $exchangeRatesCash[$currency];
+                    }
+                    }
 
-                            /* =========================
+                    /* =========================
                     محاسبه موجودی بانکی
                     ========================== */
-                            foreach ($customerBankBalances as $currency => $balance) {
-                                if ($currency === 'دالر') {
-                                    $totalBankUsd += $balance; // دالر مستقیم
-                                } elseif (isset($exchangeRatesBank[$currency]) && $exchangeRatesBank[$currency] > 0) {
-                                    $totalBankUsd += $balance / $exchangeRatesBank[$currency];
-                                }
-                            }
+                    foreach ($customerBankBalances as $currency => $balance) {
+                    if ($currency === 'دالر') {
+                    $totalBankUsd += $balance; // دالر مستقیم
+                    } elseif (isset($exchangeRatesBank[$currency]) && $exchangeRatesBank[$currency] > 0) {
+                    $totalBankUsd += $balance / $exchangeRatesBank[$currency];
+                    }
+                    }
 
-                            $grandTotalUsd = $totalCashUsd + $totalBankUsd;
-                        ?>
+                    $grandTotalUsd = $totalCashUsd + $totalBankUsd;
+                    ?>
 
-                        <h1 class="text-[24px] text-white">
-                            خلاصه بیلانس به <?php echo e($sourceCurrency); ?>
+                       <h1 class="text-[24px] text-left vazir text-[#387EA2]">
+                        خلاصه بیلانس به <?php echo e($sourceCurrency); ?>
 
-                        </h1>
+                    </h1>
 
-                        <div class="flex flex-col gap-1 mt-1 text-center">
-                            <div class="flex justify-between items-center text-[14px]">
-                                <span>نقدی:</span>
-                                <span class="font-bold text-left" dir="ltr">
-                                    <?php echo e(number_format($totalCashUsd, 2)); ?>
+                    <div class="flex flex-col gap-1 mt-1 text-center">
 
-                                </span>
+                        <div class="flex justify-between items-center text-[14px]">
+                            <div class="flex justify-end items-center gap-2">
+                                <div class="bg-white rounded-[12px] h-[30px] w-[30px] justify-center items-center   ">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="flex justify-center items-center w-full mt-1">
+                                        <path
+                                            d="M10.8332 4.1665C13.1902 4.1665 14.3687 4.1665 15.1009 4.89874C15.8332 5.63097 15.8332 6.80948 15.8332 9.1665C15.8332 11.5235 15.8332 12.702 15.1009 13.4343C14.3687 14.1665 13.1902 14.1665 10.8332 14.1665H6.6665C4.30948 14.1665 3.13097 14.1665 2.39874 13.4343C1.6665 12.702 1.6665 11.5235 1.6665 9.1665C1.6665 6.80948 1.6665 5.63097 2.39874 4.89874C3.13097 4.1665 4.30948 4.1665 6.6665 4.1665H7.49984"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                        <path
+                                            d="M13.3337 16.6665H9.16704C6.81002 16.6665 5.63151 16.6665 4.89927 15.9343C4.49103 15.5261 4.31039 14.9791 4.23047 14.1665M17.6015 15.9343C18.3337 15.2021 18.3337 14.0236 18.3337 11.6665C18.3337 9.30953 18.3337 8.13101 17.6015 7.39878C17.1932 6.99054 16.6463 6.80991 15.8337 6.72998"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                        <path
+                                            d="M10.8332 9.16683C10.8332 10.3174 9.90043 11.2502 8.74984 11.2502C7.59924 11.2502 6.6665 10.3174 6.6665 9.16683C6.6665 8.01624 7.59924 7.0835 8.74984 7.0835C9.90043 7.0835 10.8332 8.01624 10.8332 9.16683Z"
+                                            stroke="#1C274C" stroke-width="1.5" />
+                                        <path d="M13.3335 10.8335L13.3335 7.50016" stroke="#1C274C" stroke-width="1.5"
+                                            stroke-linecap="round" />
+                                        <path d="M4.1665 10.8335L4.1665 7.50016" stroke="#1C274C" stroke-width="1.5"
+                                            stroke-linecap="round" />
+                                    </svg>
+
+                                </div>
+                                <span>نقدی</span>
                             </div>
+                            <span class="font-medium text-left" dir="ltr">
+                                <?php echo e(number_format($totalCashUsd, 2)); ?>
 
-                            <div class="flex justify-between items-center text-[14px]">
-                                <span>بانکی:</span>
-                                <span class="font-bold text-left" dir="ltr">
-                                    <?php echo e(number_format($totalBankUsd, 2)); ?>
-
-                                </span>
-                            </div>
-
-                            <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
-                                <span class="font-semibold">مجموعه:</span>
-                                <span class="font-bold text-[16px] text-left" dir="ltr">
-                                    <?php echo e(number_format($grandTotalUsd, 2)); ?>
-
-                                </span>
-                            </div>
+                            </span>
                         </div>
 
-                        <button wire:click="showReport" wire:loading.attr="disabled"
-                            class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800
-                   hover:shadow-md transition flex items-center justify-center gap-2">
-                            <span wire:loading.remove>نمایش گزارش</span>
-                            <span wire:loading>در حال انتقال...</span>
-                        </button>
+                        <div class="flex justify-between items-center text-[14px]">
+                            <div class="flex justify-end items-center gap-2">
+                                <div class="bg-white rounded-[12px] h-[30px] w-[30px] justify-center items-center   ">
+                                    <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="flex justify-center items-center w-full mt-1">
+                                        <path
+                                            d="M2.64281 18.2249C3.61913 19.25 5.19047 19.25 8.33317 19.25H11.6665C14.8092 19.25 16.3805 19.25 17.3569 18.2249C18.3332 17.1997 18.3332 15.5498 18.3332 12.25C18.3332 11.2265 18.3332 10.3617 18.304 9.625M17.3569 6.27513C16.3805 5.25 14.8092 5.25 11.6665 5.25H8.33317C5.19047 5.25 3.61913 5.25 2.64281 6.27513C1.6665 7.30025 1.6665 8.95017 1.6665 12.25C1.6665 13.2735 1.6665 14.1383 1.69564 14.875"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                        <path
+                                            d="M9.99984 1.75C11.5712 1.75 12.3569 1.75 12.845 2.26256C13.3332 2.77513 13.3332 3.60008 13.3332 5.25M7.15466 2.26256C6.6665 2.77513 6.6665 3.60008 6.6665 5.25"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                        <path
+                                            d="M10.0002 15.1667C10.9206 15.1667 11.6668 14.5137 11.6668 13.7083C11.6668 12.9029 10.9206 12.25 10.0002 12.25C9.07969 12.25 8.3335 11.5971 8.3335 10.7917C8.3335 9.98625 9.07969 9.33333 10.0002 9.33333M10.0002 15.1667C9.07969 15.1667 8.3335 14.5137 8.3335 13.7083M10.0002 15.1667V15.75M10.0002 8.75V9.33333M10.0002 9.33333C10.9206 9.33333 11.6668 9.98625 11.6668 10.7917"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                    </svg>
+
+                                </div>
+                                <span>بانکی </span>
+                            </div> <span class="font-medium text-left" dir="ltr">
+                                <?php echo e(number_format($totalBankUsd, 2)); ?>
+
+                            </span>
+                        </div>
+
+                        <div class="flex justify-between items-center text-[14px] border-b border-[#184D6C]/15 pb-2">
+                            <div class="flex justify-end items-center gap-2">
+                                <div class="bg-white rounded-[12px] h-[30px] w-[30px] justify-center items-center   ">
+                                    <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="flex justify-center items-center w-full mt-1">
+                                        <path
+                                            d="M15.8332 11.6665V16.6665M15.8332 16.6665L17.4998 14.9998M15.8332 16.6665L14.1665 14.9998"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                        <path
+                                            d="M18.3332 10.0002C18.3332 6.85747 18.3332 5.28612 17.3569 4.30981C16.3805 3.3335 14.8092 3.3335 11.6665 3.3335M11.6665 16.6668H8.33317C5.19047 16.6668 3.61913 16.6668 2.64281 15.6905C1.6665 14.7142 1.6665 13.1429 1.6665 10.0002C1.6665 6.85747 1.6665 5.28612 2.64281 4.30981C3.61913 3.3335 5.19047 3.3335 8.33317 3.3335"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                        <path d="M8.33333 13.3335H5" stroke="#1C274C" stroke-width="1.5"
+                                            stroke-linecap="round" />
+                                        <path d="M10.8332 13.3335H10.4165" stroke="#1C274C" stroke-width="1.5"
+                                            stroke-linecap="round" />
+                                        <path d="M1.6665 8.3335L5.83317 8.3335M18.3332 8.3335L9.1665 8.3335"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                    </svg>
+
+                                </div>
+                                <span class="text-[#184D6C]">مجموعه</span>
+                            </div> <span class="font-bold text-[16px] text-left" dir="ltr">
+                                <?php echo e(number_format($grandTotalUsd, 2)); ?>
+
+                            </span>
+                        </div>
 
                     </div>
+
+
+                    <button wire:click="showReport" wire:loading.attr="disabled"
+                        class="bg-[#FFFFFF]/10  rounded-[8px] mr-auto  backdrop:blur-2xl text-[12px] p-2 mt-2 text-gray-800 hover:shadow-md transition border border-white flex items-center justify-end gap-2 w-[114px] h-[25px]">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.5 12.5L12.5 7.5M12.5 7.5H8.75M12.5 7.5V11.25" stroke="#184D6C"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path
+                                d="M5.83317 2.78136C7.05889 2.07231 8.48197 1.6665 9.99984 1.6665C14.6022 1.6665 18.3332 5.39746 18.3332 9.99984C18.3332 14.6022 14.6022 18.3332 9.99984 18.3332C5.39746 18.3332 1.6665 14.6022 1.6665 9.99984C1.6665 8.48197 2.07231 7.05889 2.78136 5.83317"
+                                stroke="#184D6C" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+                        <span wire:loading.remove class="text-[#184D6C]">نمایش گزارش</span>
+                        <span wire:loading class="text-[#184D6C]">
+                            در حال انتقال...
+                        </span>
+
+                    </button>
                 </div>
+            </div>
             <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
         </div>
@@ -334,45 +483,42 @@
             
             <div class="flex flex-col
          dark:bg-black dark:text-white dark:border dark:border-white
-         bg-[#F5F5F5]
+         bg-white   border border-[#D7E5EC] shadow-sm backdrop:blur-lg 
          mx-auto
          w-full max-w-[420px] lg:max-w-[474px]
          p-[10px]
          h-auto
          rounded-[12px]
-         space-y-2"
-                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+         space-y-2">
 
-             
-<div
-    class="flex flex-row justify-between items-center gap-5 p-[20px]
-           border border-[#8C8C8C] rounded-[12px] flex-nowrap">
+                
+                <div class="flex flex-row justify-between items-center gap-5 p-[20px]
+             rounded-[12px] flex-nowrap">
 
-    <div class="flex items-center gap-1 whitespace-nowrap">
-        <img src="<?php echo e(asset('assets/sarafi/all_icon/pencil.svg')); ?>" alt="" class="h-6 w-6">
-        <span class="vazir font-semibold"> انتفال بین حسابات</span>
-    </div>
+                    <div class="flex items-center gap-1 whitespace-nowrap">
+ <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M14.3601 4.07866L15.2869 3.15178C16.8226 1.61607 19.3125 1.61607 20.8482 3.15178C22.3839 4.68748 22.3839 7.17735 20.8482 8.71306L19.9213 9.63993M14.3601 4.07866C14.3601 4.07866 14.4759 6.04828 16.2138 7.78618C17.9517 9.52407 19.9213 9.63993 19.9213 9.63993M14.3601 4.07866L12 6.43872M19.9213 9.63993L14.6607 14.9006L11.5613 18L11.4001 18.1612C10.8229 18.7383 10.5344 19.0269 10.2162 19.2751C9.84082 19.5679 9.43469 19.8189 9.00498 20.0237C8.6407 20.1973 8.25352 20.3263 7.47918 20.5844L4.19792 21.6782M4.19792 21.6782L3.39584 21.9456C3.01478 22.0726 2.59466 21.9734 2.31063 21.6894C2.0266 21.4053 1.92743 20.9852 2.05445 20.6042L2.32181 19.8021M4.19792 21.6782L2.32181 19.8021M2.32181 19.8021L3.41556 16.5208C3.67368 15.7465 3.80273 15.3593 3.97634 14.995C4.18114 14.5653 4.43213 14.1592 4.7249 13.7838C4.97308 13.4656 5.26166 13.1771 5.83882 12.5999L8.5 9.93872"
+                                stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>                        <span class="text-[18px] inter"> انتفال بین حسابات</span>
+                    </div>
 
-    <div class="flex items-center gap-2 flex-nowrap">
-        <button
-            wire:click="toggleAccountType"
-            class="rounded-[8px] p-[10px] px-10 text-white vazir font-semibold
+                    <div class="flex items-center gap-2 flex-nowrap">
+                        <button wire:click="toggleAccountType" class="rounded-[8px] p-[10px] px-10 text-white vazir font-semibold
                    whitespace-nowrap transition-colors duration-500 ease-in-out
-                   <?php echo e($accountType === 'نقدی' ? 'bg-[#2563EB]' : 'bg-[#DD2424]'); ?>">
-            <?php echo e($accountType === 'نقدی' ? 'نقدی' : 'بانکی'); ?>
+                   <?php echo e($accountType === 'نقدی' ? 'bg-[#184D6C]' : 'bg-[#FFFF] border border-[#184D6C] text-black'); ?>">
+                            <?php echo e($accountType === 'نقدی' ? 'نقدی' : 'بانکی'); ?>
 
-        </button>
+                        </button>
 
-        <button
-            wire:click="toggleTransactionType"
-            class="rounded-[8px] p-[10px] text-white vazir font-semibold
+                        <button wire:click="toggleTransactionType" class="rounded-[8px] p-[10px] text-white vazir font-semibold
                    whitespace-nowrap transition-colors duration-500 ease-in-out
-                   <?php echo e($transactionType === 'باتفاوت' ? 'bg-[#2563EB]' : 'bg-[#DD2424]'); ?>">
-            <?php echo e($transactionType === 'باتفاوت' ? 'باتفاوت کمیشن' : 'بدون تفاوت کمیشن'); ?>
+                   <?php echo e($transactionType === 'باتفاوت' ? 'bg-[#184D6C]' : 'bg-[#FFFF] border border-[#184D6C] text-black'); ?>">
+                            <?php echo e($transactionType === 'باتفاوت' ? 'باتفاوت کمیشن' : 'بدون تفاوت کمیشن'); ?>
 
-        </button>
-    </div>
-</div>
+                        </button>
+                    </div>
+                </div>
 
 
                 
@@ -421,28 +567,30 @@
                                 }
                             }" x-init="init()" class="relative w-full">
                                 <input list="withdrawalCustomersList" x-model="searchValue" @change="handleSelect"
-                                    placeholder="جستجو یا انتخاب حساب بردگی..."
-                                    class="w-full dark:placeholder:text-white dark:bg-black dark:border-white  h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
+                                    placeholder="  انتخاب حساب بردگی"
+                                    class="w-full dark:placeholder:text-white dark:bg-black dark:border-white  h-[60px] p-3 rounded-[12px] border bg-[#EFF6F9]  focus:ring-2 focus:ring-blue-500"
                                     autocomplete="off">
                                 <datalist id="withdrawalCustomersList">
                                     <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <option
-                                            value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                    <option value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </datalist>
                                 <!--[if BLOCK]><![endif]--><?php if(empty($withdrawalAccount)): ?>
-                                    <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>"
-                                            alt="↓" class="dark:hidden">
-                                        <svg width="24" class="hidden dark:block" height="24"
-                                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
-                                                stroke="white" stroke-width="1.5" stroke-miterlimit="10"
-                                                stroke-linecap="round" stroke-linejoin="round" />
+                                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
+                                    <svg width="24" class="hidden dark:block" height="24" viewBox="0 0 24 24"
+                                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                            stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
 
-                                    </div>
+                                </div>
                                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
                             <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['withdrawalAccount'];
@@ -450,7 +598,7 @@ $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -498,28 +646,30 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 }
                             }" x-init="init()" class="relative w-full">
                                 <input list="depositCustomersList" x-model="searchValue" @change="handleSelect"
-                                    placeholder="جستجو یا انتخاب حساب رسیدگی..."
-                                    class="w-full dark:text-white dark:bg-black dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
+                                    placeholder=" انتخاب حساب رسیدگی"
+                                    class="w-full dark:text-white dark:bg-black dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border  bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500"
                                     autocomplete="off">
                                 <datalist id="depositCustomersList">
                                     <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <option
-                                            value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                    <option value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </datalist>
                                 <!--[if BLOCK]><![endif]--><?php if(empty($depositAccount)): ?>
-                                    <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                        <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>"
-                                            alt="↓" class="dark:hidden">
-                                        <svg width="24" class="hidden dark:block" height="24"
-                                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
-                                                stroke="white" stroke-width="1.5" stroke-miterlimit="10"
-                                                stroke-linecap="round" stroke-linejoin="round" />
+                                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
+                                    <svg width="24" class="hidden dark:block" height="24" viewBox="0 0 24 24"
+                                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                            stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
 
-                                    </div>
+                                </div>
                                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
                             <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['depositAccount'];
@@ -527,7 +677,7 @@ $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -542,21 +692,21 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         
                         <div>
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ
-                                پول</label>
+                                برداشت</label>
                             <input type="text" wire:model.live="withdrawal_amount" placeholder="0"
-                                class="w-full dark:text-white dark:bg-black dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 bg-transparent"
+                                class="w-full dark:text-white dark:bg-black dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border  focus:ring-2 focus:ring-blue-500 bg-[#EFF6F9]"
                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
                             <!--[if BLOCK]><![endif]--><?php if($withdrawalAmountInWords): ?>
-                                <div class="mt-2 text-sm dark:text-white text-gray-600"><?php echo e($withdrawalAmountInWords); ?>
+                            <div class="mt-2 text-sm dark:text-white text-gray-600"><?php echo e($withdrawalAmountInWords); ?>
 
-                                </div>
+                            </div>
                             <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['withdrawal_amount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -566,55 +716,53 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                         
                         <!--[if BLOCK]><![endif]--><?php if($transactionType === 'باتفاوت'): ?>
-                            <div>
-                                <label
-                                    class="block text-[16px] font-medium dark:text-white  text-black mb-1 vazir">مبلغ
-                                    کمیشن</label>
-                                <input type="text" wire:model.live="commission_amount" placeholder="0"
-                                    dir="ltr"
-                                    class="w-full text-right dark:bg-black dark:text-white dark:border-white dark:placeholder-white  h-[60px] p-3  rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 bg-transparent"
-                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
-                                <!--[if BLOCK]><![endif]--><?php if($commissionAmountInWords): ?>
-                                    <div class="mt-2 text-sm dark:text-white text-gray-600">
-                                        <?php echo e($commissionAmountInWords); ?></div>
-                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <div>
+                            <label class="block text-[16px] font-medium dark:text-white  text-black mb-1 vazir">مبلغ
+                                کمیشن</label>
+                            <input type="text" wire:model.live="commission_amount" placeholder="0" dir="ltr"
+                                class="w-full text-right dark:bg-black dark:text-white dark:border-white dark:placeholder-white  h-[60px] p-3  rounded-[12px] border  focus:ring-2 focus:ring-blue-500 bg-[#EFF6F9]"
+                                oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
+                            <!--[if BLOCK]><![endif]--><?php if($commissionAmountInWords): ?>
+                            <div class="mt-2 text-sm dark:text-white text-gray-600">
+                                <?php echo e($commissionAmountInWords); ?></div>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
 
-                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['commission_amount'];
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['commission_amount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                    <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                                <?php unset($message);
+                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                            <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-                            </div>
+                        </div>
 
-                            
-                            <div>
-                                <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ
-                                    قابل
-                                    انتقال
-                                </label>
-                                <input type="text" wire:model.live="transferable_amount" placeholder=""
-                                    class="w-full dark:text-white dark:bg-black dark:border-white  h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-gray-100 focus:ring-2 focus:ring-blue-500" />
-                                <!--[if BLOCK]><![endif]--><?php if($receivedAmountInWords): ?>
-                                    <div class="mt-2 text-sm dark:text-white text-gray-600">
-                                        <?php echo e($receivedAmountInWords); ?></div>
-                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        
+                        <div>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ
+                                قابل
+                                انتقال
+                            </label>
+                            <input type="text" wire:model.live="transferable_amount" placeholder=""
+                                class="w-full dark:text-white dark:bg-black dark:border-white  h-[60px] p-3 rounded-[12px] border  bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500" />
+                            <!--[if BLOCK]><![endif]--><?php if($receivedAmountInWords): ?>
+                            <div class="mt-2 text-sm dark:text-white text-gray-600">
+                                <?php echo e($receivedAmountInWords); ?></div>
+                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                            </div>
-
-
+                        </div>
 
 
 
-                            <div>
-                                <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">حساب
-                                    کمیشن</label>
-                                <div x-data="{
+
+
+                        <div>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">حساب
+                                کمیشن</label>
+                            <div x-data="{
                                     searchValue: '',
                                     selectedId: <?php if ((object) ('commissionAccount') instanceof \Livewire\WireDirective) : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('commissionAccount'->value()); ?>')<?php echo e('commissionAccount'->hasModifier('live') ? '.live' : ''); ?><?php else : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('commissionAccount'); ?>')<?php endif; ?>,
                                     customers: <?php echo \Illuminate\Support\Js::from($customers)->toHtml() ?>,
@@ -649,34 +797,35 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                         }
                                     }
                                 }" x-init="init()" class="relative w-full">
-                                    <input list="commissionCustomersList" x-model="searchValue"
-                                        @change="handleSelect" placeholder="حساب دریافت کمیشن"
-                                        class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
-                                        autocomplete="off">
-                                    <datalist id="commissionCustomersList">
-                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option
-                                                value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
+                                <input list="commissionCustomersList" x-model="searchValue" @change="handleSelect"
+                                    placeholder="حساب دریافت کمیشن"
+                                    class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500"
+                                    autocomplete="off">
+                                <datalist id="commissionCustomersList">
+                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
-                                    </datalist>
-                                    <!--[if BLOCK]><![endif]--><?php if(empty($commissionAccount)): ?>
-                                        <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                            <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>"
-                                                alt="↓">
-                                        </div>
-                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                                </div>
-                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['commissionAccount'];
+                                </datalist>
+                                <!--[if BLOCK]><![endif]--><?php if(empty($commissionAccount)): ?>
+                                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+ <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>                                </div>
+                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                            </div>
+                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['commissionAccount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                    <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                                <?php unset($message);
+                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                            <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-                            </div>
+                        </div>
 
 
                         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
@@ -686,10 +835,10 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <label
                                 class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">ارز</label>
                             <select wire:model="currency"
-                                class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 appearance-none">
+                                class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white h-[60px] p-3 rounded-[12px] border bg-[#EFF6F9]  focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="">انتخاب ارز</option>
                                 <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($c['code']); ?>"><?php echo e($c['name_fa']); ?></option>
+                                <option value="<?php echo e($c['code']); ?>"><?php echo e($c['name_fa']); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                             </select>
                             <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['from_currency'];
@@ -697,7 +846,7 @@ $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -712,15 +861,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <!-- Input field -->
                             <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
                                 placeholder="YYYY/MM/DD"
-                                class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 cursor-pointer"
+                                class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border focus:ring-2  bg-[#EFF6F9] focus:ring-blue-500 cursor-pointer"
                                 readonly />
 
                             <!-- Custom Date Picker Modal -->
                             <div x-show="isOpen" x-transition.opacity.duration.300ms x-cloak
                                 @keydown.escape.window="closePicker()" @click.away="closePicker()"
-                                class="fixed z-50 inset-0 overflow-y-auto" aria-labelledby="modal-title"
-                                role="dialog" aria-modal="true" style="display: none;"
-                                :style="isOpen ? 'display: block;' : ''">
+                                class="fixed z-50 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog"
+                                aria-modal="true" style="display: none;" :style="isOpen ? 'display: block;' : ''">
 
                                 <div
                                     class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -799,10 +947,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                             <!-- Month Selector -->
                                             <div x-show="showMonthSelector" x-transition>
                                                 <div class="grid grid-cols-3 gap-2 mb-4">
-                                                    <template x-for="(month, index) in monthsAfghan"
-                                                        :key="index">
-                                                        <button @click="selectMonth(index)"
-                                                            :class="{
+                                                    <template x-for="(month, index) in monthsAfghan" :key="index">
+                                                        <button @click="selectMonth(index)" :class="{
                                                                 'bg-blue-500 text-white': currentMonth === index,
                                                                 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentMonth !==
                                                                     index
@@ -841,8 +987,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                                 </div>
                                                 <div class="grid grid-cols-4 gap-2 mb-4">
                                                     <template x-for="year in yearRange.years" :key="year">
-                                                        <button @click="selectYear(year)"
-                                                            :class="{
+                                                        <button @click="selectYear(year)" :class="{
                                                                 'bg-blue-500 text-white': currentYear === year,
                                                                 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentYear !==
                                                                     year
@@ -870,8 +1015,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                                 <!-- Days Grid -->
                                                 <div class="grid grid-cols-7 gap-1">
                                                     <template x-for="day in calendarDays" :key="day.key">
-                                                        <button @click="selectDate(day.day)"
-                                                            :class="{
+                                                        <button @click="selectDate(day.day)" :class="{
                                                                 'bg-blue-500 text-white hover:bg-blue-600': day
                                                                     .isSelected,
                                                                 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300': day
@@ -924,7 +1068,7 @@ $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -1356,10 +1500,10 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">زون
                                 برداشت</label>
                             <select wire:model="zone_sender"
-                                class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
+                                class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white h-[60px] p-3 rounded-[12px] border bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="">انتخاب زون</option>
                                 <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $zones; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $zone): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($zone); ?>"><?php echo e($zone); ?></option>
+                                <option value="<?php echo e($zone); ?>"><?php echo e($zone); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                             </select>
                             <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['zone_sender'];
@@ -1367,7 +1511,7 @@ $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -1378,10 +1522,10 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">زون
                                 دریافت</label>
                             <select wire:model="zone_receiver"
-                                class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 appearance-none">
+                                class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white h-[60px] p-3 rounded-[12px] border bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500 appearance-none">
                                 <option value="">انتخاب زون</option>
                                 <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $zones; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $zone): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($zone); ?>"><?php echo e($zone); ?></option>
+                                <option value="<?php echo e($zone); ?>"><?php echo e($zone); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                             </select>
                             <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['zone_receiver'];
@@ -1389,7 +1533,7 @@ $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
+                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -1402,7 +1546,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">شرح
                             بردگی</label>
                         <textarea wire:model="description_sender" rows="3" placeholder="شرح بردگی..."
-                            class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+                            class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white p-3 rounded-[12px] border bg-[#EFF6F9]  focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
                     </div>
 
                     
@@ -1410,18 +1554,18 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">شرح
                             رسیدگی</label>
                         <textarea wire:model="description_receiver" rows="3" placeholder="شرح رسیدگی..."
-                            class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+                            class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white p-3 rounded-[12px] border bg-[#EFF6F9]  focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
                     </div>
 
                     
-                    <div class="flex gap-4 p-4 justify-center items-center flex-wrap">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 p-4 justify-center items-center flex-wrap">
                         <button type="submit" wire:loading.attr="disabled" wire:target='submitConversion'
-                            class="bg-[#2563EB] text-[14px] vazir font-semibold rounded-[8px] px-[74px] py-4 text-white hover:bg-blue-700 transition disabled:opacity-50">
+                            class="bg-[#184D6C] text-[14px] vazir font-semibold rounded-[8px] px-[74px] py-4 text-white hover:bg-blue-700 transition disabled:opacity-50 whitespace-nowrap">
                             <span wire:loading.remove wire:target='submitConversion'>
                                 <!--[if BLOCK]><![endif]--><?php if($editingConversionId): ?>
-                                    ویرایش تبدیل ارز
+                                ویرایش تبدیل ارز
                                 <?php else: ?>
-                                    ثبت تبدیل ارز
+                                ثبت تبدیل ارز
                                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </span>
 
@@ -1430,16 +1574,16 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 class="flex items-center justify-center gap-2">
                                 <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
                                     fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10"
-                                        stroke="currentColor" stroke-width="4"></circle>
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
                                     <path class="opacity-75" fill="currentColor"
                                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                                     </path>
                                 </svg>
                                 <!--[if BLOCK]><![endif]--><?php if($editingConversionId): ?>
-                                    در حال ویرایش تبدیل ارز
+                                در حال ویرایش تبدیل ارز
                                 <?php else: ?>
-                                    در حال ثبت تبدیل ارز
+                                در حال ثبت تبدیل ارز
                                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </span>
 
@@ -1447,11 +1591,11 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                         </button>
                         <button type="button" wire:click="resetForm" wire:loading.attr="disabled"
-                            class="bg-[#DD2424] text-[14px] vazir font-semibold rounded-[8px] px-[74px] py-4 text-white hover:bg-red-700 transition">
+                            class="bg-[#184D6C] text-[14px] vazir font-semibold rounded-[8px] px-[74px] py-4 text-white hover:bg-red-700 transition">
                             <!--[if BLOCK]><![endif]--><?php if($editingConversionId): ?>
-                                انصراف از ویرایش
+                            انصراف از ویرایش
                             <?php else: ?>
-                                انصراف
+                            انصراف
                             <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </button>
                     </div>
@@ -1463,44 +1607,48 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             <div class="flex-1 flex flex-col
          dark:border dark:border-white
          dark:bg-black dark:text-white
-         bg-[#F5F5F5]
-         p-3 md:p-4 lg:p-6
+ bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC]         p-3 md:p-4 lg:p-6
          rounded-[12px]
          w-full max-w-[440px] md:max-w-[410px] lg:max-w-full
          mb-5 mx-auto
-         overflow-x-auto"
-                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+         overflow-x-auto" >
                 <div
-                    class="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
-                    <h1 class="text-lg md:text-xl lg:text-2xl vazir">تراکنش های تبدیل ارز ثبت شده</h1>
+                    class="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 justify-between items-center  p-3 md:p-4 rounded-[12px] mb-3 gap-3">
+                    <h1 class="text-lg md:text-xl lg:text-xl  vazir font-medium">ترانزکشن های ثبت شده</h1>
 
                     <div class="flex items-center gap-3">
                         <div class="relative w-[340px] md:w-[500px]">
-                            <input type="text" wire:model.live="search" wire:keydown.debounce.500ms="search"
-                                class="border dark:bg-black dark:text-white dark:placeholder:text-white dark:border-white border-[#8C8C8C] w-full h-12 md:h-[51px] bg-transparent rounded-[12px] p-2 md:p-3 text-sm md:text-base pr-10"
-                                placeholder="جستجو بر اساس نام،...">
+                            <input type="text" wire:model.live="search" placeholder="جستجو..." class="w-full h-12 md:h-[51px]
+                           border border-[#D7E5EC]
+                           dark:bg-black dark:border-white dark:placeholder:text-white placeholder:text-black
+                           rounded-[12px] pl-3 pr-12 text-sm md:text-base
+                           bg-transparent relative z-0">
 
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
-                                class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 dark:hidden">
-
+                            
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none dark:hidden">
+                                <path d="M20 20L22 22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                <path
+                                    d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75"
+                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
                             <svg width="24"
                                 class="absolute hidden dark:block left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6"
-                                height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
+                                height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
-                                    stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
+                                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 <path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round"
                                     stroke-linejoin="round" />
                             </svg>
 
 
                             <!--[if BLOCK]><![endif]--><?php if($search): ?>
-                                <button wire:click="$set('search', '')"
-                                    class="absolute left-8 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
-                                    ✕
-                                </button>
+                            <button wire:click="$set('search', '')"
+                                class="absolute left-8 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                                ✕
+                            </button>
                             <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
@@ -1511,8 +1659,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         <table
                             class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500 border-collapse">
                             <thead
-                                class="bg-[#2B65E5] text-white text-[14px] md:text-[18px] vazir h-[50px] md:h-[60px] sticky top-0 z-10"
-                                style="box-shadow: 0px 4px 4px 0px #00000040;">
+                                class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
                                 <tr>
                                     <th class="px-2 py-3 font-bold text-center">#</th>
                                     <th class="px-2 py-3 font-bold">از حساب</th>
@@ -1527,116 +1674,111 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </thead>
                             <tbody>
                                 <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $SendToAccount; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $conversion): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                                    <tr class="text-black dark:text-white border-b border-[#D9D9D9]">
-                                        <td class="px-2 py-3 text-center"><?php echo e($key + 1); ?></td>
-                                        <td class="px-2 py-3">
-                                            <div title="<?php echo e($conversion->from_customer_name ?? '-'); ?>">
-                                                <?php echo e($conversion->from_customer_name ?? '-'); ?>
+   <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+                               odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
+                               transition-colors">                                    <td class="px-2 py-3 text-center"><?php echo e($key + 1); ?></td>
+                                    <td class="px-2 py-3">
+                                        <div title="<?php echo e($conversion->from_customer_name ?? '-'); ?>">
+                                            <?php echo e($conversion->from_customer_name ?? '-'); ?>
 
-                                            </div>
-                                        </td>
-                                        <td class="px-2 py-3">
-                                            <div title="<?php echo e($conversion->to_customer_name ?? '-'); ?>">
-                                                <?php echo e($conversion->to_customer_name ?? '-'); ?>
+                                        </div>
+                                    </td>
+                                    <td class="px-2 py-3">
+                                        <div title="<?php echo e($conversion->to_customer_name ?? '-'); ?>">
+                                            <?php echo e($conversion->to_customer_name ?? '-'); ?>
 
-                                            </div>
-                                        </td>
-                                        <td class="px-2 py-3 text-left">
-                                            <?php echo e(number_format($conversion->withdrawal_amount)); ?>
+                                        </div>
+                                    </td>
+                                    <td class="px-2 py-3 text-left">
+                                        <?php echo e(number_format($conversion->withdrawal_amount)); ?>
 
-                                            <?php echo e($this->getCurrencyName($conversion->from_currency)); ?>
+                                        <?php echo e($this->getCurrencyName($conversion->from_currency)); ?>
 
-                                        </td>
-                                        <td class="px-2 py-3 text-left">
-                                            <?php echo e(number_format($conversion->received_amount)); ?>
+                                    </td>
+                                    <td class="px-2 py-3 text-left">
+                                        <?php echo e(number_format($conversion->received_amount)); ?>
 
-                                            <?php echo e($this->getCurrencyName($conversion->from_currency)); ?>
+                                        <?php echo e($this->getCurrencyName($conversion->from_currency)); ?>
 
-                                        </td>
-                                        <td class="px-2 py-3 text-center">
-                                            <!--[if BLOCK]><![endif]--><?php if($conversion->type === 'باتفاوت'): ?>
-                                                <span class="text-red-600 dark:text-white">باتفاوت</span>
-                                            <?php else: ?>
-                                                <span class="text-green-600 dark:text-white">بدون تفاوت</span>
-                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                                        </td>
-                                        <td class="px-2 py-3 text-left">
-                                            <?php echo e(Str::limit($conversion->description_sender, 35)); ?>
+                                    </td>
+                                    <td class="px-2 py-3 text-center">
+                                        <!--[if BLOCK]><![endif]--><?php if($conversion->type === 'باتفاوت'): ?>
+                                        <span class=" dark:text-white">باتفاوت</span>
+                                        <?php else: ?>
+                                        <span class=" dark:text-white">بدون تفاوت</span>
+                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    </td>
+                                    <td class="px-2 py-3 text-left">
+                                        <?php echo e(Str::limit($conversion->description_sender, 35)); ?>
 
-                                        </td>
-                                        <td class="px-2 py-3 text-center">
-                                            <?php echo e(explode(' ', $conversion->transaction_date)[0]); ?>
+                                    </td>
+                                    <td class="px-2 py-3 text-center">
+                                        <?php echo e(explode(' ', $conversion->transaction_date)[0]); ?>
 
-                                            <div class="text-gray-500 dark:text-white text-[14px] mt-1">
-                                                <?php echo e(\Carbon\Carbon::parse($conversion->created_at)->format('h:i A')); ?>
+                                        <div class="text-gray-500 dark:text-white text-[14px] mt-1">
+                                            <?php echo e(\Carbon\Carbon::parse($conversion->created_at)->format('h:i A')); ?>
 
-                                            </div>
-                                        </td>
-                                        <td class="px-2 py-3 text-center">
-                                            <div class="flex justify-center gap-2">
-                                                <button wire:click="editConversion(<?php echo e($conversion->id); ?>)"
-                                                    title="ویرایش">
-                                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>"
-                                                        class="w-7 h-7 dark:hidden" alt="Edit">
+                                        </div>
+                                    </td>
+                                    <td class="px-2 py-3 text-center">
+                                        <div class="flex justify-center gap-2">
+                                            <button wire:click="editConversion(<?php echo e($conversion->id); ?>)" title="ویرایش">
+                                                <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>"
+                                                    class="w-7 h-7 dark:hidden" alt="Edit">
 
-                                                    <svg width="22" height="22" class="hidden dark:block"
-                                                        viewBox="0 0 22 22" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M10.082 1.83325H8.2487C3.66536 1.83325 1.83203 3.66659 1.83203 8.24992V13.7499C1.83203 18.3333 3.66536 20.1666 8.2487 20.1666H13.7487C18.332 20.1666 20.1654 18.3333 20.1654 13.7499V11.9166"
-                                                            stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                        <path
-                                                            d="M14.7027 2.76832L7.4794 9.99165C7.2044 10.2667 6.9294 10.8075 6.8744 11.2017L6.48023 13.9608C6.33357 14.96 7.0394 15.6567 8.03857 15.5192L10.7977 15.125C11.1827 15.07 11.7236 14.795 12.0077 14.52L19.2311 7.29665C20.4777 6.04999 21.0644 4.60165 19.2311 2.76832C17.3977 0.934987 15.9494 1.52165 14.7027 2.76832Z"
-                                                            stroke="white" stroke-width="1.5" stroke-miterlimit="10"
-                                                            stroke-linecap="round" stroke-linejoin="round" />
-                                                        <path
-                                                            d="M13.668 3.8042C14.2821 5.99503 15.9963 7.7092 18.1963 8.33253"
-                                                            stroke="white" stroke-width="1.5" stroke-miterlimit="10"
-                                                            stroke-linecap="round" stroke-linejoin="round" />
-                                                    </svg>
-                                                </button>
-                                                <button wire:click="confirmDelete(<?php echo e($conversion->id); ?>)"
-                                                    title="حذف">
-                                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>"
-                                                        class="w-8 h-8 dark:hidden" alt="Delete">
-                                                    <svg width="24" height="24" class="hidden dark:block"
-                                                        viewBox="0 0 24 24" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M21 5.97998C17.67 5.64998 14.32 5.47998 10.98 5.47998C9 5.47998 7.02 5.57998 5.04 5.77998L3 5.97998"
-                                                            stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                        <path
-                                                            d="M8.5 4.97L8.72 3.66C8.88 2.71 9 2 10.69 2H13.31C15 2 15.13 2.75 15.28 3.67L15.5 4.97"
-                                                            stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                        <path
-                                                            d="M18.8484 9.13989L18.1984 19.2099C18.0884 20.7799 17.9984 21.9999 15.2084 21.9999H8.78844C5.99844 21.9999 5.90844 20.7799 5.79844 19.2099L5.14844 9.13989"
-                                                            stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                        <path d="M10.3281 16.5H13.6581" stroke="white"
-                                                            stroke-width="1.5" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                        <path d="M9.5 12.5H14.5" stroke="white" stroke-width="1.5"
-                                                            stroke-linecap="round" stroke-linejoin="round" />
-                                                    </svg>
-                                                </button>
-                                                <button wire:click="printTransaction(<?php echo e($conversion->id); ?>)"
-                                                    title="پرینت PDF">
-                                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
-                                                        class="w-10 h-10 dark:hidden" alt="Print">
-                                                    <svg width="30" class="hidden dark:block" height="30"
-                                                        viewBox="0 0 30 30" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M10.7714 25.0001C10.2156 25.0001 9.74016 24.8022 9.34516 24.4063C8.95016 24.0105 8.75224 23.5359 8.75141 22.9826V20.0001H6.49141C5.93641 20.0001 5.46141 19.8022 5.06641 19.4063C4.67141 19.0105 4.47349 18.5355 4.47266 17.9813V13.2688C4.47266 12.5605 4.71307 11.9672 5.19391 11.4888C5.67474 11.0088 6.26766 10.7688 6.97266 10.7688H23.0302C23.7385 10.7688 24.3322 11.0088 24.8114 11.4888C25.2906 11.9688 25.5302 12.5622 25.5302 13.2688V17.9813C25.5302 18.5363 25.3327 19.0113 24.9377 19.4063C24.5427 19.8013 24.0672 19.9992 23.5114 20.0001H21.2514V22.9813C21.2514 23.5363 21.0535 24.0113 20.6577 24.4063C20.2618 24.8013 19.7868 24.9992 19.2327 25.0001H10.7714ZM6.49141 18.7501H8.75141C8.78391 18.2226 8.99307 17.7701 9.37891 17.3926C9.76474 17.0159 10.2289 16.8276 10.7714 16.8276H19.2327C19.7743 16.8276 20.2381 17.0163 20.6239 17.3938C21.0097 17.7705 21.2189 18.2226 21.2514 18.7501H23.5114C23.7356 18.7501 23.9197 18.678 24.0639 18.5338C24.2081 18.3897 24.2802 18.2055 24.2802 17.9813V13.2688C24.2802 12.9155 24.1606 12.6188 23.9214 12.3788C23.6822 12.1388 23.3852 12.0188 23.0302 12.0188H6.97266C6.61849 12.0188 6.32182 12.1388 6.08266 12.3788C5.84349 12.6188 5.72349 12.9159 5.72266 13.2701V17.9813C5.72266 18.2055 5.79474 18.3897 5.93891 18.5338C6.08307 18.678 6.26724 18.7501 6.49141 18.7501ZM20.0014 10.7701V7.78758C20.0014 7.56258 19.9293 7.37841 19.7852 7.23508C19.641 7.09091 19.4568 7.01883 19.2327 7.01883H10.7702C10.546 7.01883 10.3618 7.09091 10.2177 7.23508C10.0735 7.37925 10.0014 7.56341 10.0014 7.78758V10.7688H8.75141V7.78758C8.75141 7.23258 8.94932 6.75716 9.34516 6.36133C9.74016 5.9655 10.2152 5.76758 10.7702 5.76758H19.2327C19.7877 5.76758 20.2627 5.9655 20.6577 6.36133C21.0535 6.75716 21.2514 7.23216 21.2514 7.78633V10.7688L20.0014 10.7701ZM22.0214 15.1451C22.3756 15.1451 22.6722 15.0251 22.9114 14.7851C23.1506 14.5451 23.2706 14.2484 23.2714 13.8951C23.2722 13.5417 23.1522 13.2447 22.9114 13.0038C22.6706 12.763 22.3739 12.643 22.0214 12.6438C21.6689 12.6447 21.3718 12.7647 21.1302 13.0038C20.8885 13.243 20.7689 13.5401 20.7714 13.8951C20.7739 14.2501 20.8935 14.5467 21.1302 14.7851C21.3668 15.0234 21.6639 15.1434 22.0214 15.1451ZM20.0014 22.9801V18.8463C20.0014 18.6213 19.9293 18.4367 19.7852 18.2926C19.641 18.1484 19.4568 18.0763 19.2327 18.0763H10.7702C10.546 18.0763 10.3618 18.1484 10.2177 18.2926C10.0735 18.4376 10.0014 18.6222 10.0014 18.8463V22.9813C10.0014 23.2055 10.0735 23.3897 10.2177 23.5338C10.3618 23.678 10.5464 23.7501 10.7714 23.7501H19.2327C19.4568 23.7501 19.641 23.678 19.7852 23.5338C19.9293 23.3897 20.0014 23.2051 20.0014 22.9801ZM6.49141 12.0201H5.72266H24.2802H6.49141Z"
-                                                            fill="white" />
-                                                    </svg>
-                                                </button>
+                                                <svg width="22" height="22" class="hidden dark:block"
+                                                    viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M10.082 1.83325H8.2487C3.66536 1.83325 1.83203 3.66659 1.83203 8.24992V13.7499C1.83203 18.3333 3.66536 20.1666 8.2487 20.1666H13.7487C18.332 20.1666 20.1654 18.3333 20.1654 13.7499V11.9166"
+                                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                    <path
+                                                        d="M14.7027 2.76832L7.4794 9.99165C7.2044 10.2667 6.9294 10.8075 6.8744 11.2017L6.48023 13.9608C6.33357 14.96 7.0394 15.6567 8.03857 15.5192L10.7977 15.125C11.1827 15.07 11.7236 14.795 12.0077 14.52L19.2311 7.29665C20.4777 6.04999 21.0644 4.60165 19.2311 2.76832C17.3977 0.934987 15.9494 1.52165 14.7027 2.76832Z"
+                                                        stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                                                        stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M13.668 3.8042C14.2821 5.99503 15.9963 7.7092 18.1963 8.33253"
+                                                        stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                                                        stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+                                            </button>
+                                            <button wire:click="confirmDelete(<?php echo e($conversion->id); ?>)" title="حذف">
+                                                <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>"
+                                                    class="w-8 h-8 dark:hidden" alt="Delete">
+                                                <svg width="24" height="24" class="hidden dark:block"
+                                                    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M21 5.97998C17.67 5.64998 14.32 5.47998 10.98 5.47998C9 5.47998 7.02 5.57998 5.04 5.77998L3 5.97998"
+                                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                    <path
+                                                        d="M8.5 4.97L8.72 3.66C8.88 2.71 9 2 10.69 2H13.31C15 2 15.13 2.75 15.28 3.67L15.5 4.97"
+                                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                    <path
+                                                        d="M18.8484 9.13989L18.1984 19.2099C18.0884 20.7799 17.9984 21.9999 15.2084 21.9999H8.78844C5.99844 21.9999 5.90844 20.7799 5.79844 19.2099L5.14844 9.13989"
+                                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                    <path d="M10.3281 16.5H13.6581" stroke="white" stroke-width="1.5"
+                                                        stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M9.5 12.5H14.5" stroke="white" stroke-width="1.5"
+                                                        stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+                                            </button>
+                                            <button wire:click="printTransaction(<?php echo e($conversion->id); ?>)"
+                                                title="پرینت PDF">
+                                                <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
+                                                    class="w-10 h-10 dark:hidden" alt="Print">
+                                                <svg width="30" class="hidden dark:block" height="30"
+                                                    viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M10.7714 25.0001C10.2156 25.0001 9.74016 24.8022 9.34516 24.4063C8.95016 24.0105 8.75224 23.5359 8.75141 22.9826V20.0001H6.49141C5.93641 20.0001 5.46141 19.8022 5.06641 19.4063C4.67141 19.0105 4.47349 18.5355 4.47266 17.9813V13.2688C4.47266 12.5605 4.71307 11.9672 5.19391 11.4888C5.67474 11.0088 6.26766 10.7688 6.97266 10.7688H23.0302C23.7385 10.7688 24.3322 11.0088 24.8114 11.4888C25.2906 11.9688 25.5302 12.5622 25.5302 13.2688V17.9813C25.5302 18.5363 25.3327 19.0113 24.9377 19.4063C24.5427 19.8013 24.0672 19.9992 23.5114 20.0001H21.2514V22.9813C21.2514 23.5363 21.0535 24.0113 20.6577 24.4063C20.2618 24.8013 19.7868 24.9992 19.2327 25.0001H10.7714ZM6.49141 18.7501H8.75141C8.78391 18.2226 8.99307 17.7701 9.37891 17.3926C9.76474 17.0159 10.2289 16.8276 10.7714 16.8276H19.2327C19.7743 16.8276 20.2381 17.0163 20.6239 17.3938C21.0097 17.7705 21.2189 18.2226 21.2514 18.7501H23.5114C23.7356 18.7501 23.9197 18.678 24.0639 18.5338C24.2081 18.3897 24.2802 18.2055 24.2802 17.9813V13.2688C24.2802 12.9155 24.1606 12.6188 23.9214 12.3788C23.6822 12.1388 23.3852 12.0188 23.0302 12.0188H6.97266C6.61849 12.0188 6.32182 12.1388 6.08266 12.3788C5.84349 12.6188 5.72349 12.9159 5.72266 13.2701V17.9813C5.72266 18.2055 5.79474 18.3897 5.93891 18.5338C6.08307 18.678 6.26724 18.7501 6.49141 18.7501ZM20.0014 10.7701V7.78758C20.0014 7.56258 19.9293 7.37841 19.7852 7.23508C19.641 7.09091 19.4568 7.01883 19.2327 7.01883H10.7702C10.546 7.01883 10.3618 7.09091 10.2177 7.23508C10.0735 7.37925 10.0014 7.56341 10.0014 7.78758V10.7688H8.75141V7.78758C8.75141 7.23258 8.94932 6.75716 9.34516 6.36133C9.74016 5.9655 10.2152 5.76758 10.7702 5.76758H19.2327C19.7877 5.76758 20.2627 5.9655 20.6577 6.36133C21.0535 6.75716 21.2514 7.23216 21.2514 7.78633V10.7688L20.0014 10.7701ZM22.0214 15.1451C22.3756 15.1451 22.6722 15.0251 22.9114 14.7851C23.1506 14.5451 23.2706 14.2484 23.2714 13.8951C23.2722 13.5417 23.1522 13.2447 22.9114 13.0038C22.6706 12.763 22.3739 12.643 22.0214 12.6438C21.6689 12.6447 21.3718 12.7647 21.1302 13.0038C20.8885 13.243 20.7689 13.5401 20.7714 13.8951C20.7739 14.2501 20.8935 14.5467 21.1302 14.7851C21.3668 15.0234 21.6639 15.1434 22.0214 15.1451ZM20.0014 22.9801V18.8463C20.0014 18.6213 19.9293 18.4367 19.7852 18.2926C19.641 18.1484 19.4568 18.0763 19.2327 18.0763H10.7702C10.546 18.0763 10.3618 18.1484 10.2177 18.2926C10.0735 18.4376 10.0014 18.6222 10.0014 18.8463V22.9813C10.0014 23.2055 10.0735 23.3897 10.2177 23.5338C10.3618 23.678 10.5464 23.7501 10.7714 23.7501H19.2327C19.4568 23.7501 19.641 23.678 19.7852 23.5338C19.9293 23.3897 20.0014 23.2051 20.0014 22.9801ZM6.49141 12.0201H5.72266H24.2802H6.49141Z"
+                                                        fill="white" />
+                                                </svg>
+                                            </button>
 
-                                                <script>
-                                                    let printListenerRegistered = false;
+                                            <script>
+                                                let printListenerRegistered = false;
 
                                                     document.addEventListener('livewire:init', () => {
                                                         if (printListenerRegistered) return;
@@ -1670,17 +1812,16 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                                             };
                                                         });
                                                     });
-                                                </script>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </script>
+                                        </div>
+                                    </td>
+                                </tr>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                                    <tr>
-                                        <td colspan="9"
-                                            class="px-4 py-4 text-center text-gray-500 vazir text-[14px]">
-                                            هیچ تراکنش تبدیلی یافت نشد.
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td colspan="9" class="px-4 py-4 text-center text-gray-500 vazir text-[14px]">
+                                        هیچ تراکنش تبدیلی یافت نشد.
+                                    </td>
+                                </tr>
                                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </tbody>
                         </table>
@@ -1689,41 +1830,40 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                 
                 <!--[if BLOCK]><![endif]--><?php if($SendToAccount->hasPages()): ?>
-                    <div class="mt-4 px-4">
-                        <?php echo e($SendToAccount->links()); ?>
+                <div class="mt-4 px-4">
+                    <?php echo e($SendToAccount->links()); ?>
 
-                    </div>
+                </div>
                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             </div>
 
             <!-- مودال تأیید حذف -->
             <!--[if BLOCK]><![endif]--><?php if($confirmDeleteId): ?>
-                <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div
-                        class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px]  rounded-[12px] shadow-xl w-[653px] h-[219.7267608642578px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
-                        <!-- دکمه بستن -->
-                        <button wire:click="$set('confirmDeleteId', null)"
-                            class="absolute left-0 right-4 top-4 h-6 w-6 flex items-center justify-center">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/close.svg')); ?>" alt="بستن"
-                                class="w-4 h-4">
-                        </button>
+            <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                <div
+                    class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px]  rounded-[12px] shadow-xl w-[653px] h-[219.7267608642578px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
+                    <!-- دکمه بستن -->
+                    <button wire:click="$set('confirmDeleteId', null)"
+                        class="absolute left-0 right-4 top-4 h-6 w-6 flex items-center justify-center">
+                        <img src="<?php echo e(asset('assets/sarafi/all_icon/close.svg')); ?>" alt="بستن" class="w-4 h-4">
+                    </button>
 
-                        <h1 class="text-2xl text-black shabnam font-medium leading-[100%] mt-2">حذف تراکنش تبدیل ارز
-                        </h1>
-                        <hr class="bg-[#E1DED3] mt-4 mx-4">
-                        <p class="mb-6 text-xl shabnam mt-5">آیا مطمئن هستید می خواهید این تراکنش را حذف کنید؟</p>
-                        <div class="flex justify-center gap-4">
-                            <button wire:click="$set('confirmDeleteId', null)"
-                                class="px-12 text-white text-lg shabnam-fd py-3 bg-[#DD2424] rounded-xl transition hover:bg-red-700">
-                                خیر
-                            </button>
-                            <button wire:click="deleteConversion"
-                                class="px-12 py-3 bg-[#2563EB] text-lg shabnam-fd text-white rounded-xl transition hover:bg-blue-700 flex items-center gap-2">
-                                بلی
-                            </button>
-                        </div>
+                    <h1 class="text-2xl text-black shabnam font-medium leading-[100%] mt-2">حذف تراکنش تبدیل ارز
+                    </h1>
+                    <hr class="bg-[#E1DED3] mt-4 mx-4">
+                    <p class="mb-6 text-xl shabnam mt-5">آیا مطمئن هستید می خواهید این تراکنش را حذف کنید؟</p>
+                    <div class="flex justify-center gap-4">
+                        <button wire:click="$set('confirmDeleteId', null)"
+                            class="px-12 text-white text-lg shabnam-fd py-3 bg-[#DD2424] rounded-xl transition hover:bg-red-700">
+                            خیر
+                        </button>
+                        <button wire:click="deleteConversion"
+                            class="px-12 py-3 bg-[#2563EB] text-lg shabnam-fd text-white rounded-xl transition hover:bg-blue-700 flex items-center gap-2">
+                            بلی
+                        </button>
                     </div>
                 </div>
+            </div>
             <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </div>
 
@@ -1783,5 +1923,4 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             }
         </style>
     </div>
-</div>
-<?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/account-to-account.blade.php ENDPATH**/ ?>
+</div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/account-to-account.blade.php ENDPATH**/ ?>

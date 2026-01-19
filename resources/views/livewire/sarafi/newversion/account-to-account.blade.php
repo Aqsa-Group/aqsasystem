@@ -1,136 +1,156 @@
 <div>
-    <div class="container mx-auto px-0 ">
-        <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
+    <div class="container mx-auto ">
+        @if (session()->has('message'))
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
-            class="fixed top-0 left-0 right-0 w-full z-[9999] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-400  bg-[#2B65E5] vazir">
+            class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
             <div class="h-[80px] w-full flex justify-start items-center px-4">
                 <h2 class="text-white vazir text-[18px]">
-                    <?php echo e(session('message')); ?>
-
+                    {{ session('message') }}
                 </h2>
             </div>
         </div>
-        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+        @endif
 
 
 
-        
-        <div class="scroll-container overflow-x-auto whitespace-nowrap py-3 ">
-            
-            <!--[if BLOCK]><![endif]--><?php if($selectedCustomer): ?>
+        @if (session()->has('error'))
+        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
+            class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#DC2626] vazir">
+            <div class="h-[80px] w-full flex justify-start items-center px-4">
+                <h2 class="text-white vazir text-[18px]">
+                    {{ session('error') }}
+                </h2>
+            </div>
+        </div>
+        @endif
+
+        <div class="scroll-container overflow-x-auto whitespace-nowrap py-3">
+            @if ($withdrawalCustomer)
             <div class="inline-block align-top ml-4 h-auto">
-                        <div class="flex flex-col h-[212px] w-[244px] pr-5 pl-5 pt-2 rounded-[12px]  dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900           bg-[#387EA2]/40
+                    <div class="flex flex-col h-[212px] w-[244px] pr-5 pl-5 pt-2 rounded-[12px]  dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900           bg-[#387EA2]/40
             backdrop-blur-lg
             border border-white/30
 
             shadow-[0_4px_4px_rgba(24,77,108,0.25)] text-black">
+                    {{-- عکس مشتری --}}
+                    <div x-data="{
+                            showLargeImage: false,
+                            largeImageSrc: '',
+                            customerName: '{{ $withdrawalCustomer->fullname }}',
+                            customerPhone: '{{ $withdrawalCustomer->phone ?? '' }}'
+                        }">
 
-                    
-                    <div x-data="{ showLargeImage: false, largeImageSrc: '' }">
-                        <!--[if BLOCK]><![endif]--><?php if($selectedCustomer->image): ?>
+                        {{-- عکس مشتری --}}
+                        @if ($withdrawalCustomer->image)
                         <div class="flex justify-center mb-2">
-                            <img src="<?php echo e(Storage::url($selectedCustomer->image)); ?>"
-                                alt="<?php echo e($selectedCustomer->fullname); ?>"
-                                class="w-20 h-20 rounded-full object-cover border-2 border-white cursor-pointer hover:scale-105 transition-transform"
-                                @click="showLargeImage = true; largeImageSrc = '<?php echo e(Storage::url($selectedCustomer->image)); ?>'">
+                            <img src="{{ Storage::url($withdrawalCustomer->image) }}"
+                                alt="{{ $withdrawalCustomer->fullname }}"
+                                class="w-20 h-20 rounded-lg object-cover border-2 border-white cursor-pointer hover:scale-105 transition-transform duration-200"
+                                @click="showLargeImage = true; largeImageSrc = '{{ Storage::url($withdrawalCustomer->image) }}'"
+                                onerror="this.onerror=null; this.src='{{ asset('assets/web.jpg') }}'">
                         </div>
-                        <?php else: ?>
+                        @else
                         <div class="flex justify-center mb-2">
-                            <img src="<?php echo e(asset('assets/web.jpg')); ?>" alt="<?php echo e($selectedCustomer->fullname); ?>"
-                                class="w-20 h-20 rounded-full object-cover border-2 border-white cursor-pointer hover:scale-105 transition-transform"
-                                @click="showLargeImage = true; largeImageSrc = '<?php echo e(asset('assets/web.jpg')); ?>'">
+                            <img src="{{ asset('assets/web.jpg') }}"
+                                alt="dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900{{ $withdrawalCustomer->fullname }}"
+                                class="w-20 h-20 rounded-full object-cover border-2 border-white cursor-pointer hover:scale-105 transition-transform duration-200"
+                                @click="showLargeImage = true; largeImageSrc = '{{ asset('assets/web.jpg') }}'">
                         </div>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        @endif
 
-                        
+                        {{-- مودال نمایش عکس بزرگ --}}
                         <div x-show="showLargeImage" x-transition:enter="transition ease-out duration-300"
-                            x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                            x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
-                            x-transition:leave-end="opacity-0"
-                            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 p-4"
-                            @click.away="showLargeImage = false" @keydown.escape.window="showLargeImage = false">
+                            x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-200"
+                            x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+                            class="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4"
+                            @click.away="showLargeImage = false" @keydown.escape.window="showLargeImage = false"
+                            style="display: none;">
 
-                            <div class="relative max-w-4xl max-h-[90vh]">
-                                
+                            <div class="relative max-w-4xl max-h-[90vh] w-full">
+
+                                {{-- دکمه بستن --}}
                                 <button @click="showLargeImage = false"
-                                    class="absolute -top-10 right-0 text-white hover:text-gray-300 text-2xl z-10">
+                                    class="absolute -top-12 right-0 text-white hover:text-gray-300 text-3xl z-10 transition-colors duration-200">
                                     ✕
                                 </button>
 
-                                
-                                <img :src="largeImageSrc" alt="<?php echo e($selectedCustomer->fullname); ?>"
-                                    class="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl">
-
-                                
-                                <div class="mt-4 text-center text-black">
-                                    <p class="text-lg font-semibold text-black"><?php echo e($selectedCustomer->fullname); ?>
-
-                                    </p>
-                                    <!--[if BLOCK]><![endif]--><?php if($selectedCustomer->phone): ?>
-                                    <p class="text-sm text-gray-300"><?php echo e($selectedCustomer->phone); ?></p>
-                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                {{-- عکس بزرگ --}}
+                                <div class="flex justify-center">
+                                    <img :src="largeImageSrc" :alt="customerName"
+                                        class="max-w-full max-h-[70vh] object-contain rounded-lg shadow-2xl">
                                 </div>
 
-                                <div class="mt-6 flex justify-center gap-4">
-                                    <a :href="largeImageSrc"
-                                        :download="customerName + '_' + new Date().toISOString().split('T')[0] + '.jpg'"
-                                        class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                        </svg>
-                                        دانلود عکس
-                                    </a>
+                                {{-- اطلاعات مشتری زیر عکس --}}
+                                <div class="mt-6 text-center text-white">
+                                    <p class="text-2xl font-bold mb-2" x-text="customerName"></p>
+                                    <template x-if="customerPhone">
+                                        <p class="text-lg text-gray-300" x-text="customerPhone"></p>
+                                    </template>
 
-                                    <button @click="showLargeImage = false"
-                                        class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200">
-                                        بستن
-                                    </button>
+                                    {{-- دکمه دانلود --}}
+                                    <div class="mt-6 flex justify-center gap-4">
+                                        <a :href="largeImageSrc"
+                                            :download="customerName + '_' + new Date().toISOString().split('T')[0] + '.jpg'"
+                                            class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                            </svg>
+                                            دانلود عکس
+                                        </a>
+
+                                        <button @click="showLargeImage = false"
+                                            class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200">
+                                            بستن
+                                        </button>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
+
                     </div>
-
-                    
+                    {{-- نام مشتری --}}
                     <h1 class="text-[20px] text-black text-center font-bold truncate"
-                        title="<?php echo e($selectedCustomer->fullname); ?>">
-                        <?php echo e($selectedCustomer->fullname); ?>
-
+                        title="{{ $withdrawalCustomer->fullname }}">
+                        {{ $withdrawalCustomer->fullname }}
                     </h1>
 
-                    
-                    <!--[if BLOCK]><![endif]--><?php if($selectedCustomer->phone): ?>
+                    {{-- شماره تماس --}}
+                    @if ($withdrawalCustomer->phone)
                     <div class="flex items-center justify-center gap-2 mt-1">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                             <path
                                 d="M20 15.5c-1.2 0-2.4-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.5-5.2-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.3-.5-3.5 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1zM5 6h1.5c.1 1.2.3 2.4.6 3.5L5.3 11.8c-.9-2-1.3-4.1-1.3-6.2V6zM19 19c-2.1 0-4.2-.4-6.2-1.3l2.3-2.3c1.1.3 2.3.5 3.5.6V19z" />
                         </svg>
-                        <span class="text-black text-[14px] dir-ltr text-left"><?php echo e($selectedCustomer->phone); ?></span>
+                        <span class="text-black text-[14px] dir-ltr text-left">{{ $withdrawalCustomer->phone }}</span>
                     </div>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    @endif
 
-                    
+                    {{-- شماره حساب --}}
                     <div class="flex items-center justify-center gap-2 mt-1">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                             <path
                                 d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8h16v10zm-8-7c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-2.2 0-4 1.8-4 4h8c0-2.2-1.8-4-4-4z" />
                         </svg>
-                        <span class="text-black text-[14px] dir-ltr text-left"><?php echo e($selectedCustomer->account_number); ?></span>
+                        <span class="text-black text-[14px] dir-ltr text-left">{{ $withdrawalCustomer->account_number
+                            }}</span>
                     </div>
 
                 </div>
             </div>
-            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <?php
+            @endif
+            @foreach ($currencies as $currencyItem)
+            @php
             $currencyName = $currencyItem['name_fa'];
             $cashBalance = $customerCashBalances[$currencyName] ?? 0;
             $bankBalance = $customerBankBalances[$currencyName] ?? 0;
             $totalBalance = $customerTotalBalances[$currencyName] ?? 0;
-            ?>
+            @endphp
 
-            
-            <div class="inline-block align-top ml-4 h-auto ">
+            {{-- نمایش تمام کارت‌ها حتی با موجودی صفر --}}
+            <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
                 <div class="
     flex flex-col
   h-[212px] w-[244px]
@@ -145,10 +165,8 @@
 
     text-black
   ">
-
-                    <h1 class="text-[24px] text-left vazir text-[#387EA2]"><?php echo e($currencyName); ?></h1>
-
-                    <div class="flex flex-col gap-1 mt-1 text-center">
+                    <h1 class="text-[24px] text-left vazir text-[#387EA2]">{{ $currencyName }}</h1>
+  <div class="flex flex-col gap-1 mt-1 text-center">
                         <div class="flex justify-between items-center text-[14px]">
                             <div class="flex justify-end items-center gap-2">
                                 <div class="bg-white rounded-[12px] h-[30px] w-[30px] justify-center items-center   ">
@@ -173,7 +191,7 @@
                                 </div>
                                 <span>نقدی</span>
                             </div>
-                            <span class="font-medium text-left" dir="ltr"><?php echo e(number_format($cashBalance)); ?></span>
+                            <span class="font-medium text-left" dir="ltr">{{ number_format($cashBalance) }}</span>
                         </div>
                         <div class="flex justify-between items-center text-[14px]">
                             <div class="flex justify-end items-center gap-2">
@@ -195,7 +213,7 @@
                                 </div>
                                 <span>بانکی</span>
                             </div>
-                            <span class="font-medium text-left" dir="ltr"><?php echo e(number_format($bankBalance)); ?></span>
+                            <span class="font-medium text-left" dir="ltr">{{ number_format($bankBalance) }}</span>
                         </div>
                         <div class="flex justify-between items-center text-[14px] border-b border-[#184D6C]/15 pb-2">
                             <div class="flex justify-end items-center gap-2">
@@ -221,7 +239,8 @@
                                 </div>
                                 <span class="text-[#184D6C]">مجموعه</span>
                             </div>
-                            <span class="font-bold text-[16px] text-left" dir="ltr"><?php echo e(number_format($totalBalance)); ?></span>
+                            <span class="font-bold text-[16px] text-left" dir="ltr">{{ number_format($totalBalance)
+                                }}</span>
                         </div>
                     </div>
 
@@ -245,27 +264,52 @@
                     </button>
                 </div>
             </div>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+            @endforeach
 
-            
-            <!--[if BLOCK]><![endif]--><?php if($selectedCustomerId): ?>
+            {{-- کارت خلاصه بیلانس به دالر --}}
+            @if ($withdrawalCustomerId)
             <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
-                <div class="flex flex-col h-[212px] w-[244px] pr-5 pl-5 pt-3 rounded-[12px]
+              <div class="flex flex-col h-[212px] w-[244px] pr-5 pl-5 pt-3 rounded-[12px]
                         dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900
                          bg-[#387EA2]/40
     backdrop-blur-lg
     border border-white/30
 
     shadow-[0_4px_4px_rgba(24,77,108,0.25)] text-black">
+                    @php
+                    /* =========================
+                    تبدیل کد ارز به نام فارسی
+                    ========================== */
+                    function getPersianCurrencyName($currencyCode)
+                    {
+                    $currencyMap = [
+                    'afn' => 'افغانی',
+                    'usd' => 'دالر',
+                    'irr' => 'تومان',
+                    'eur' => 'یورو',
+                    'pkr' => 'کلدار',
+                    'aed' => 'درهم',
+                    'try' => 'لیره',
+                    'cny' => 'یوان',
+                    'gbp' => 'پوند',
+                    'jpy' => 'ین',
+                    'sar' => 'ریال سعودی',
+                    'inr' => 'روپیه',
+                    ];
 
-                    <?php
+                    $currencyCode = strtolower($currencyCode ?? 'usd');
+                    return $currencyMap[$currencyCode] ?? $currencyCode;
+                    }
+
                     $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
-                    $sourceCurrency = $latestProfitRate->currency_name ?? 'دالر';
+                    $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? 'usd');
 
                     $totalCashUsd = 0;
                     $totalBankUsd = 0;
 
-                    // نرخ‌های نقدی
+                    /* =========================
+                    نرخ‌های خرید نقدی
+                    ========================== */
                     $exchangeRatesCash = [
                     'افغانی' => $latestProfitRate->afn_buy_cash ?? 66.2,
                     'دالر' => 1,
@@ -275,10 +319,12 @@
                     'درهم' => $latestProfitRate->aed_buy_cash ?? 44,
                     'لیره' => $latestProfitRate->try_buy_cash ?? 60,
                     'یوان' => $latestProfitRate->cny_buy_cash ?? 43,
-                    'روپیه' => 7.14,
+                    'روپیه' => $latestProfitRate->inr_buy_cash ?? 7.14,
                     ];
 
-                    // نرخ‌های بانکی
+                    /* =========================
+                    نرخ‌های خرید بانکی
+                    ========================== */
                     $exchangeRatesBank = [
                     'افغانی' => $latestProfitRate->afn_buy_bank ?? 66.2,
                     'دالر' => 1,
@@ -288,12 +334,12 @@
                     'درهم' => $latestProfitRate->aed_buy_bank ?? 44,
                     'لیره' => $latestProfitRate->try_buy_bank ?? 60,
                     'یوان' => $latestProfitRate->cny_buy_bank ?? 43,
-                    'روپیه' => 7.14,
+                    'روپیه' => $latestProfitRate->inr_buy_bank ?? 7.14,
                     ];
 
-                    /* =====================
+                    /* =========================
                     محاسبه موجودی نقدی
-                    ====================== */
+                    ========================== */
                     foreach ($customerCashBalances as $currency => $balance) {
                     if ($currency === 'دالر') {
                     $totalCashUsd += $balance; // دالر مستقیم
@@ -302,9 +348,9 @@
                     }
                     }
 
-                    /* =====================
+                    /* =========================
                     محاسبه موجودی بانکی
-                    ====================== */
+                    ========================== */
                     foreach ($customerBankBalances as $currency => $balance) {
                     if ($currency === 'دالر') {
                     $totalBankUsd += $balance; // دالر مستقیم
@@ -314,11 +360,10 @@
                     }
 
                     $grandTotalUsd = $totalCashUsd + $totalBankUsd;
-                    ?>
+                    @endphp
 
-                    <h1 class="text-[24px] text-left vazir text-[#387EA2]">
-                        خلاصه بیلانس به <?php echo e($sourceCurrency); ?>
-
+                       <h1 class="text-[24px] text-left vazir text-[#387EA2]">
+                        خلاصه بیلانس به {{ $sourceCurrency }}
                     </h1>
 
                     <div class="flex flex-col gap-1 mt-1 text-center">
@@ -348,8 +393,7 @@
                                 <span>نقدی</span>
                             </div>
                             <span class="font-medium text-left" dir="ltr">
-                                <?php echo e(number_format($totalCashUsd, 2)); ?>
-
+                                {{ number_format($totalCashUsd, 2) }}
                             </span>
                         </div>
 
@@ -373,8 +417,7 @@
                                 </div>
                                 <span>بانکی </span>
                             </div> <span class="font-medium text-left" dir="ltr">
-                                <?php echo e(number_format($totalBankUsd, 2)); ?>
-
+                                {{ number_format($totalBankUsd, 2) }}
                             </span>
                         </div>
 
@@ -402,8 +445,7 @@
                                 </div>
                                 <span class="text-[#184D6C]">مجموعه</span>
                             </div> <span class="font-bold text-[16px] text-left" dir="ltr">
-                                <?php echo e(number_format($grandTotalUsd, 2)); ?>
-
+                                {{ number_format($grandTotalUsd, 2) }}
                             </span>
                         </div>
 
@@ -425,77 +467,277 @@
                         </span>
 
                     </button>
-
                 </div>
             </div>
-            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            @endif
 
         </div>
 
 
-        
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
-
-            
+            {{-- فرم تراکنش --}}
             <div class="flex flex-col
          dark:bg-black dark:text-white dark:border dark:border-white
-         bg-white   border border-[#D7E5EC] shadow-sm backdrop:blur-lg       mx-auto
-         w-full max-w-[436px] lg:max-w-[550px]
+         bg-white   border border-[#D7E5EC] shadow-sm backdrop:blur-lg 
+         mx-auto
+         w-full max-w-[420px] lg:max-w-[474px]
          p-[10px]
-         h-fit
+         h-auto
          rounded-[12px]
          space-y-2">
 
+                {{-- بالای فرم: فورم و دکمه‌ها --}}
+                <div class="flex flex-row justify-between items-center gap-5 p-[20px]
+             rounded-[12px] flex-nowrap">
 
-                
-                <div class="flex items-center justify-between p-[10px]
-           rounded-[12px]
-           dark:border-white gap-2">
-
-                    <!-- عنوان -->
-                    <p class="flex items-center gap-2 text-[18px] inter whitespace-nowrap">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <div class="flex items-center gap-1 whitespace-nowrap">
+ <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M14.3601 4.07866L15.2869 3.15178C16.8226 1.61607 19.3125 1.61607 20.8482 3.15178C22.3839 4.68748 22.3839 7.17735 20.8482 8.71306L19.9213 9.63993M14.3601 4.07866C14.3601 4.07866 14.4759 6.04828 16.2138 7.78618C17.9517 9.52407 19.9213 9.63993 19.9213 9.63993M14.3601 4.07866L12 6.43872M19.9213 9.63993L14.6607 14.9006L11.5613 18L11.4001 18.1612C10.8229 18.7383 10.5344 19.0269 10.2162 19.2751C9.84082 19.5679 9.43469 19.8189 9.00498 20.0237C8.6407 20.1973 8.25352 20.3263 7.47918 20.5844L4.19792 21.6782M4.19792 21.6782L3.39584 21.9456C3.01478 22.0726 2.59466 21.9734 2.31063 21.6894C2.0266 21.4053 1.92743 20.9852 2.05445 20.6042L2.32181 19.8021M4.19792 21.6782L2.32181 19.8021M2.32181 19.8021L3.41556 16.5208C3.67368 15.7465 3.80273 15.3593 3.97634 14.995C4.18114 14.5653 4.43213 14.1592 4.7249 13.7838C4.97308 13.4656 5.26166 13.1771 5.83882 12.5999L8.5 9.93872"
                                 stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
-                        </svg>
+                        </svg>                        <span class="text-[18px] inter"> انتفال بین حسابات</span>
+                    </div>
 
-                        <?php echo e($transactionId ? 'فورم ویرایش ترانزکشن' : 'فورم ثبت ترانزکشن'); ?>
-
-                    </p>
-
-                    <!-- دکمه‌ها -->
-                    <div class="flex gap-3 whitespace-nowrap">
-                        <button wire:click="$set('transactionType','رسید')" class="rounded-[8px] px-4 py-2 vazir font-semibold transition-all duration-300
-            <?php echo e($transactionType === 'رسید'
-                ? 'bg-[#184D6C] text-white'
-                : 'bg-white text-[#184D6C] border border-[#184D6C] hover:bg-[#184D6C]/10'); ?>">
-                            رسید (دریافت صندوق)
+                    <div class="flex items-center gap-2 flex-nowrap">
+                        <button wire:click="toggleAccountType" class="rounded-[8px] p-[10px] px-10 text-white vazir font-semibold
+                   whitespace-nowrap transition-colors duration-500 ease-in-out
+                   {{ $accountType === 'نقدی' ? 'bg-[#184D6C]' : 'bg-[#FFFF] border border-[#184D6C] text-black' }}">
+                            {{ $accountType === 'نقدی' ? 'نقدی' : 'بانکی' }}
                         </button>
 
-                        <button wire:click="$set('transactionType','برد')" class="rounded-[8px] px-4 py-2 vazir font-semibold transition-all duration-300
-            <?php echo e($transactionType === 'برد'
-                ? 'bg-[#184D6C] text-white'
-                : 'bg-white text-[#184D6C] border border-[#184D6C] hover:bg-[#184D6C]/10'); ?>">
-                            برد (برداشت صندوق)
+                        <button wire:click="toggleTransactionType" class="rounded-[8px] p-[10px] text-white vazir font-semibold
+                   whitespace-nowrap transition-colors duration-500 ease-in-out
+                   {{ $transactionType === 'باتفاوت' ? 'bg-[#184D6C]' : 'bg-[#FFFF] border border-[#184D6C] text-black' }}">
+                            {{ $transactionType === 'باتفاوت' ? 'باتفاوت کمیشن' : 'بدون تفاوت کمیشن' }}
                         </button>
                     </div>
                 </div>
 
-                
-                <form wire:submit.prevent="submitTransaction" class="dark:text-white">
 
-                    
-                    <div class="mt-2  grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 w-full gap-3">
-                        <!-- در بخش نمبر حساب -->
-                        <div class="flex-1 w-full">
-                            <div class="relative w-full">
-                                <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">نمبر
-                                    حساب</label>
-                                <div x-data="{
+                {{-- فرم --}}
+                <form wire:submit.prevent="submitConversion" class="space-y-6">
+
+                    {{-- حساب برداشت و دریافت --}}
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-2">
+                        {{-- حساب برداشت --}}
+                        <div>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">حساب
+                                مبدا</label>
+                            <div x-data="{
+                                searchValue: '',
+                                selectedId: @entangle('withdrawalAccount'),
+                                customers: @js($customers),
+                                init() {
+                                    this.updateDisplay();
+                                    $wire.on('edit-mode-activated', (data) => {
+                                        this.selectedId = data.withdrawalAccount;
+                                        this.searchValue = data.withdrawalCustomer;
+                                        setTimeout(() => this.updateDisplay(), 100);
+                                    });
+                                    $wire.on('accountsSwapped', () => setTimeout(() => this.updateDisplay(), 100));
+                                },
+                                handleSelect(event) {
+                                    const selected = this.customers.find(
+                                        c => event.target.value === `${c.account_number} - ${c.fullname}`
+                                    );
+                                    if (selected) {
+                                        this.selectedId = selected.id;
+                                        this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                                        $wire.selectWithdrawalAccount(selected.id);
+                                    } else {
+                                        this.selectedId = null;
+                                        this.searchValue = '';
+                                        $wire.set('withdrawalAccount', null);
+                                    }
+                                },
+                                updateDisplay() {
+                                    if (this.selectedId) {
+                                        const selected = this.customers.find(c => c.id == this.selectedId);
+                                        if (selected) {
+                                            this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                                        }
+                                    }
+                                }
+                            }" x-init="init()" class="relative w-full">
+                                <input list="withdrawalCustomersList" x-model="searchValue" @change="handleSelect"
+                                    placeholder="  انتخاب حساب بردگی"
+                                    class="w-full dark:placeholder:text-white dark:bg-black dark:border-white  h-[60px] p-3 rounded-[12px] border bg-[#EFF6F9]  focus:ring-2 focus:ring-blue-500"
+                                    autocomplete="off">
+                                <datalist id="withdrawalCustomersList">
+                                    @foreach ($customers as $customer)
+                                    <option value="{{ $customer['account_number'] }} - {{ $customer['fullname'] }}">
+                                        @endforeach
+                                </datalist>
+                                @if (empty($withdrawalAccount))
+                                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    <svg width="24" class="hidden dark:block" height="24" viewBox="0 0 24 24"
+                                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                            stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+
+                                </div>
+                                @endif
+                            </div>
+                            @error('withdrawalAccount')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        {{-- حساب دریافت --}}
+                        <div>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">حساب
+                                مقصد</label>
+                            <div x-data="{
+                                searchValue: '',
+                                selectedId: @entangle('depositAccount'),
+                                customers: @js($customers),
+                                init() {
+                                    this.updateDisplay();
+                                    $wire.on('edit-mode-activated', (data) => {
+                                        this.selectedId = data.depositAccount;
+                                        this.searchValue = data.depositCustomer;
+                                        setTimeout(() => this.updateDisplay(), 100);
+                                    });
+                                    $wire.on('accountsSwapped', () => setTimeout(() => this.updateDisplay(), 100));
+                                },
+                                handleSelect(event) {
+                                    const selected = this.customers.find(
+                                        c => event.target.value === `${c.account_number} - ${c.fullname}`
+                                    );
+                                    if (selected) {
+                                        this.selectedId = selected.id;
+                                        this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                                        $wire.selectDepositAccount(selected.id);
+                                    } else {
+                                        this.selectedId = null;
+                                        this.searchValue = '';
+                                        $wire.set('depositAccount', null);
+                                    }
+                                },
+                                updateDisplay() {
+                                    if (this.selectedId) {
+                                        const selected = this.customers.find(c => c.id == this.selectedId);
+                                        if (selected) {
+                                            this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                                        }
+                                    }
+                                }
+                            }" x-init="init()" class="relative w-full">
+                                <input list="depositCustomersList" x-model="searchValue" @change="handleSelect"
+                                    placeholder=" انتخاب حساب رسیدگی"
+                                    class="w-full dark:text-white dark:bg-black dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border  bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500"
+                                    autocomplete="off">
+                                <datalist id="depositCustomersList">
+                                    @foreach ($customers as $customer)
+                                    <option value="{{ $customer['account_number'] }} - {{ $customer['fullname'] }}">
+                                        @endforeach
+                                </datalist>
+                                @if (empty($depositAccount))
+                                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    <svg width="24" class="hidden dark:block" height="24" viewBox="0 0 24 24"
+                                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                            stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+
+                                </div>
+                                @endif
+                            </div>
+                            @error('depositAccount')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+
+
+
+                    {{-- بخش مبالغ --}}
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
+                        {{-- مبلغ اصلی --}}
+                        <div>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ
+                                برداشت</label>
+                            <input type="text" wire:model.live="withdrawal_amount" placeholder="0"
+                                class="w-full dark:text-white dark:bg-black dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border  focus:ring-2 focus:ring-blue-500 bg-[#EFF6F9]"
+                                oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
+                            @if ($withdrawalAmountInWords)
+                            <div class="mt-2 text-sm dark:text-white text-gray-600">{{ $withdrawalAmountInWords }}
+                            </div>
+                            @endif
+                            @error('withdrawal_amount')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+
+                        {{-- فیلدهای مربوط به کمیشن --}}
+                        @if ($transactionType === 'باتفاوت')
+                        <div>
+                            <label class="block text-[16px] font-medium dark:text-white  text-black mb-1 vazir">مبلغ
+                                کمیشن</label>
+                            <input type="text" wire:model.live="commission_amount" placeholder="0" dir="ltr"
+                                class="w-full text-right dark:bg-black dark:text-white dark:border-white dark:placeholder-white  h-[60px] p-3  rounded-[12px] border  focus:ring-2 focus:ring-blue-500 bg-[#EFF6F9]"
+                                oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
+                            @if ($commissionAmountInWords)
+                            <div class="mt-2 text-sm dark:text-white text-gray-600">
+                                {{ $commissionAmountInWords }}</div>
+                            @endif
+
+
+                            @error('commission_amount')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        {{-- مبلغ دریافت --}}
+                        <div>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ
+                                قابل
+                                انتقال
+                            </label>
+                            <input type="text" wire:model.live="transferable_amount" placeholder=""
+                                class="w-full dark:text-white dark:bg-black dark:border-white  h-[60px] p-3 rounded-[12px] border  bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500" />
+                            @if ($receivedAmountInWords)
+                            <div class="mt-2 text-sm dark:text-white text-gray-600">
+                                {{ $receivedAmountInWords }}</div>
+                            @endif
+
+                        </div>
+
+
+
+
+
+                        <div>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">حساب
+                                کمیشن</label>
+                            <div x-data="{
                                     searchValue: '',
-                                    selectedId: <?php if ((object) ('selectedAccount') instanceof \Livewire\WireDirective) : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccount'->value()); ?>')<?php echo e('selectedAccount'->hasModifier('live') ? '.live' : ''); ?><?php else : ?>window.Livewire.find('<?php echo e($__livewire->getId()); ?>').entangle('<?php echo e('selectedAccount'); ?>')<?php endif; ?>,
-                                    customers: <?php echo \Illuminate\Support\Js::from($customers)->toHtml() ?>,
+                                    selectedId: @entangle('commissionAccount'),
+                                    customers: @js($customers),
+                                    init() {
+                                        this.updateDisplay();
+                                        $wire.on('edit-mode-activated', (data) => {
+                                            this.selectedId = data.commissionAccount;
+                                            this.searchValue = data.commissionCustomer;
+                                            setTimeout(() => this.updateDisplay(), 100);
+                                        });
+                                    },
                                     handleSelect(event) {
                                         const selected = this.customers.find(
                                             c => event.target.value === `${c.account_number} - ${c.fullname}`
@@ -503,165 +745,73 @@
                                         if (selected) {
                                             this.selectedId = selected.id;
                                             this.searchValue = `${selected.account_number} - ${selected.fullname}`;
-                                            // ✅ فراخوانی متد Livewire برای انتخاب مشتری
-                                            $wire.selectCustomer(selected.id);
-                                            // به روزرسانی جستجو
-                                            $wire.set('search', selected.fullname);
+                                            $wire.set('commissionAccount', selected.id);
                                         } else {
-                                            // اگر چیزی اشتباه وارد شد، مقدار پاک شود
                                             this.selectedId = null;
                                             this.searchValue = '';
-                                            $wire.set('selectedAccount', null);
-                                            $wire.set('search', '');
+                                            $wire.set('commissionAccount', null);
                                         }
                                     },
                                     updateDisplay() {
-                                        const selected = this.customers.find(c => c.id === this.selectedId);
-                                        this.searchValue = selected ? `${selected.account_number} - ${selected.fullname}` : '';
+                                        if (this.selectedId) {
+                                            const selected = this.customers.find(c => c.id == this.selectedId);
+                                            if (selected) {
+                                                this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                                            }
+                                        }
                                     }
-                                }" x-init="updateDisplay();
-                                $watch('selectedId', () => updateDisplay())" class="relative w-full">
-                                    <input list="customersList" x-model="searchValue" @change="handleSelect"
-                                        placeholder="جستجو یا انتخاب حساب..."
-                                        class="w-full h-[60px] bg-[#EFF6F9] dark:bg-black dark:text-white dark:border-white placeholder:text-[#929897] dark:placeholder:text-white p-3 rounded-[12px] border   focus:ring-2 focus:ring-blue-500"
-                                        autocomplete="off">
-                                    <datalist id="customersList">
-                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <option value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
-                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
-                                    </datalist>
-                                    <!--[if BLOCK]><![endif]--><?php if(empty($selectedAccount)): ?>
-                                    <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
-                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
-
-
-                                    </div>
-                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                                </div>
-                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['selectedAccount'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                                <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-                            </div>
-                        </div>
-
-                    </div>
-
-                    
-                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
-                        
-                        <div class="flex-1">
-                            <label
-                                class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مقدار</label>
-                            <div class="relative w-full">
-                                <input type="text" wire:model.live="amount" wire:blur="formatAmount" placeholder="0"
-                                    class="w-full dark:border-white dark:bg-black  dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500   dark:text-white"
-                                    oninput="this.value = this.value.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[^0-9]/g, '')" />
-                            </div>
-                            <!--[if BLOCK]><![endif]--><?php if($amountInWords): ?>
-                            <p class="text-sm dark:text-white text-blue-600 mt-2 vazir"><?php echo e($amountInWords); ?></p>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['amount'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-                        </div>
-
-                        
-                        <div class="lg:w-full">
-                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">نوع
-                                ارز</label>
-                            <div class="relative w-full">
-                                <select wire:model="currency"
-                                    class="w-full  dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500   dark:text-white appearance-none">
-                                    <option value="">انتخاب ارز</option>
-                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($c['code']); ?>"><?php echo e($c['name_fa']); ?></option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
-                                </select>
+                                }" x-init="init()" class="relative w-full">
+                                <input list="commissionCustomersList" x-model="searchValue" @change="handleSelect"
+                                    placeholder="حساب دریافت کمیشن"
+                                    class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500"
+                                    autocomplete="off">
+                                <datalist id="commissionCustomersList">
+                                    @foreach ($customers as $customer)
+                                    <option value="{{ $customer['account_number'] }} - {{ $customer['fullname'] }}">
+                                        @endforeach
+                                </datalist>
+                                @if (empty($commissionAccount))
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+ <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
                                                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
-                                    <svg width="24" height="24" class="hidden dark:block" viewBox="0 0 24 24"
-                                        fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
-                                            stroke="white" stroke-width="1.5" stroke-miterlimit="10"
-                                            stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </div>
+                                        </svg>                                </div>
+                                @endif
                             </div>
-                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['currency'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-                        </div>
-                    </div>
-
-
-
-                    
-                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
-                        
-                        <div class="lg:w-full">
-                            <label class="block text-[16px] font-medium text-black mb-1 vazir dark:text-white">درج زون
-                                ها</label>
-                            <div class="relative">
-                                <select wire:model="zone" wire:init="setDefaultZone"
-                                    class="w-full h-[60px]  p-3 rounded-[12px] border focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 dark:bg-black dark:border-white dark:text-white appearance-none"
-                                    style="max-height: 200px; overflow-y: auto;">
-                                    <option value="">انتخاب زون</option>
-                                    <option value="<?php echo e(Auth::guard('sarafi')->user()->zone); ?>">
-                                        <?php echo e(Auth::guard('sarafi')->user()->zone); ?>
-
-                                    </option>
-                                </select>
-                            </div>
-                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['zone'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+                            @error('commissionAccount')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
                         </div>
 
-                        <div class="lg:w-full relative" x-data="persianDatePicker()" x-init="init()">
+
+                        @endif
+
+                        {{-- ارز --}}
+                        <div>
+                            <label
+                                class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">ارز</label>
+                            <select wire:model="currency"
+                                class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white h-[60px] p-3 rounded-[12px] border bg-[#EFF6F9]  focus:ring-2 focus:ring-blue-500 appearance-none">
+                                <option value="">انتخاب ارز</option>
+                                @foreach ($currencies as $c)
+                                <option value="{{ $c['code'] }}">{{ $c['name_fa'] }}</option>
+                                @endforeach
+                            </select>
+                            @error('from_currency')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+
+                        <div class="relative" x-data="persianDatePicker()" x-init="init()">
                             <label
                                 class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
 
                             <!-- Input field -->
                             <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
                                 placeholder="YYYY/MM/DD"
-                                class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 cursor-pointer"
+                                class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border focus:ring-2  bg-[#EFF6F9] focus:ring-blue-500 cursor-pointer"
                                 readonly />
 
                             <!-- Custom Date Picker Modal -->
@@ -863,16 +1013,9 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 </div>
                             </div>
 
-                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['date'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+                            @error('date')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <script>
@@ -915,8 +1058,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                         this.currentMonth = today.month - 1;
 
                                         // اگر تاریخ از قبل انتخاب شده بود
-                                        if (window.Livewire.find('<?php echo e($_instance->getId()); ?>').get('date')) {
-                                            const dateParts = window.Livewire.find('<?php echo e($_instance->getId()); ?>').get('date').split('/');
+                                        if (@this.get('date')) {
+                                            const dateParts = @this.get('date').split('/');
                                             if (dateParts.length === 3) {
                                                 const year = parseInt(dateParts[0]);
                                                 const month = parseInt(dateParts[1]);
@@ -928,7 +1071,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                                         month,
                                                         day
                                                     };
-                                                    this.displayDate = window.Livewire.find('<?php echo e($_instance->getId()); ?>').get('date');
+                                                    this.displayDate = @this.get('date');
                                                     this.currentYear = year;
                                                     this.currentMonth = month - 1;
                                                 }
@@ -1224,7 +1367,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     clearDate() {
                                         this.selectedDate = null;
                                         this.displayDate = '';
-                                        window.Livewire.find('<?php echo e($_instance->getId()); ?>').set('date', '');
+                                        @this.set('date', '');
                                         this.closePicker();
                                     },
 
@@ -1232,7 +1375,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                         if (this.selectedDate) {
                                             const formattedDate = this.formatDate(this.selectedDate);
                                             this.displayDate = formattedDate;
-                                            window.Livewire.find('<?php echo e($_instance->getId()); ?>').set('date', formattedDate);
+                                            @this.set('date', formattedDate);
                                             this.closePicker();
                                         }
                                     }
@@ -1286,230 +1429,77 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             }
                         </style>
 
+
                     </div>
 
-                    
-                    <div class="mt-3 flex gap-3">
-                        <div class="w-full">
-                            <textarea wire:model="description" rows="3" placeholder="شرح تراکنش..."
-                                class="w-full p-3 rounded-[12px] border focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 dark:bg-black dark:border-white dark:placeholder:text-white dark:text-white resize-none"></textarea>
-                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['description'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+
+
+
+
+
+                    {{-- زون برداشت و دریافت --}}
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
+                        <div>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">زون
+                                برداشت</label>
+                            <select wire:model="zone_sender"
+                                class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white h-[60px] p-3 rounded-[12px] border bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500 appearance-none">
+                                <option value="">انتخاب زون</option>
+                                @foreach ($zones as $zone)
+                                <option value="{{ $zone }}">{{ $zone }}</option>
+                                @endforeach
+                            </select>
+                            @error('zone_sender')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">زون
+                                دریافت</label>
+                            <select wire:model="zone_receiver"
+                                class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white h-[60px] p-3 rounded-[12px] border bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500 appearance-none">
+                                <option value="">انتخاب زون</option>
+                                @foreach ($zones as $zone)
+                                <option value="{{ $zone }}">{{ $zone }}</option>
+                                @endforeach
+                            </select>
+                            @error('zone_receiver')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 
-                    
-                    <div class="mt-2 flex gap-3">
-                        <div class="w-full ">
-                            <div x-data="{
-                                files: [],
-                                isUploading: false,
-                                uploadedFileName: null,
-                                uploadedFileUrl: null,
-                                init() {
-                                    // گوش دادن به رویدادهای آپلود Livewire
-                                    this.$wire.on('upload:started', () => {
-                                        this.isUploading = true;
-                                        this.uploadedFileName = null;
-                                        this.uploadedFileUrl = null;
-                                    });
-                            
-                                    this.$wire.on('upload:finished', (event) => {
-                                        this.isUploading = false;
-                                        if (event.detail.filename) {
-                                            this.uploadedFileName = event.detail.filename;
-                                        }
-                                    });
-                            
-                                    this.$wire.on('upload:error', () => {
-                                        this.isUploading = false;
-                                    });
-                                },
-                                handleFileSelect(event) {
-                                    const file = event.target.files[0];
-                                    if (file) {
-                                        this.uploadedFileName = file.name;
-                                        this.isUploading = true;
-                                        this.$wire.upload('file', file, () => {
-                                            this.isUploading = false;
-                                        });
-                                    }
-                                },
-                                handleDrop(event) {
-                                    event.preventDefault();
-                                    const file = event.dataTransfer.files[0];
-                                    if (file) {
-                                        this.uploadedFileName = file.name;
-                                        this.isUploading = true;
-                                        this.$wire.upload('file', file, () => {
-                                            this.isUploading = false;
-                                        });
-                                    }
-                                },
-                                removeFile() {
-                                    this.uploadedFileName = null;
-                                    this.uploadedFileUrl = null;
-                                    this.$wire.set('file', null);
-                                    // ریست کردن input فایل
-                                    if (this.$refs.fileInput) {
-                                        this.$refs.fileInput.value = '';
-                                    }
-                                }
-                            }" x-on:drop.prevent="handleDrop" x-on:dragover.prevent :class="{
-                                    'border-green-500 bg-green-50 dark:bg-black': uploadedFileName && !isUploading,
-                                    'border-[#184D6C] bg-blue-50 dark:bg-black': isUploading,
-                                    'border-[#184D6C] bg-white dark:bg-black': !uploadedFileName && !isUploading
-                                }"
-                                class="w-full h-[46px] p-[16px] rounded-[12px] border-2 border-dashed border-[#184D6C] focus:ring-2 focus:ring-[#EFF6F9] dark:border-white dark:bg-black dark:text-white flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300 relative"
-                                x-on:click="$refs.fileInput.click()">
-
-                                <!-- حالت در حال آپلود -->
-                                <template x-if="isUploading">
-                                    <div class="flex flex-col items-center">
-                                        <div
-                                            class="w-12 h-12 mb-2 border-4 border-blue-500 border-t-transparent rounded-full animate-spin">
-                                        </div>
-                                        <h1 class="font-vazir text-blue-600 dark:text-blue-300 text-[16px]">در حال
-                                            آپلود...</h1>
-                                        <p class="font-vazir text-gray-500 dark:text-gray-400 text-sm mt-1"
-                                            x-text="uploadedFileName"></p>
-                                    </div>
-                                </template>
-
-                                <!-- حالت آپلود موفق -->
-                                <template x-if="!isUploading && uploadedFileName">
-                                    <div class="flex justify-between w-full  items-center ">
-                                        <div class="flex">
-                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M12.5 17.5H7.5C5.14298 17.5 3.96447 17.5 3.23223 16.7678C2.5 16.0355 2.5 14.857 2.5 12.5M17.5 12.5C17.5 14.857 17.5 16.0355 16.7678 16.7678C16.5179 17.0176 16.2162 17.1822 15.8333 17.2906"
-                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                                <path
-                                                    d="M9.99984 13.3333V2.5M9.99984 2.5L13.3332 6.14583M9.99984 2.5L6.6665 6.14583"
-                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                            </svg>
-
-                                            <h1 class="font-vazir text-gray-600 dark:text-white text-[16px]">آپلود فایل
-                                            </h1>
-                                        </div>
-                                        <p class="font-vazir text-gray-500 dark:text-white text-sm mt-1">
-                                            JPG, PNG,WEBP</p>
-                                    </div>
-                                </template>
-
-                                <!-- حالت اولیه (بدون فایل) -->
-                                <template x-if="!isUploading && !uploadedFileName">
-                                    <div class="flex justify-between w-full  items-center ">
-                                        <div class="flex">
-                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M12.5 17.5H7.5C5.14298 17.5 3.96447 17.5 3.23223 16.7678C2.5 16.0355 2.5 14.857 2.5 12.5M17.5 12.5C17.5 14.857 17.5 16.0355 16.7678 16.7678C16.5179 17.0176 16.2162 17.1822 15.8333 17.2906"
-                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                                <path
-                                                    d="M9.99984 13.3333V2.5M9.99984 2.5L13.3332 6.14583M9.99984 2.5L6.6665 6.14583"
-                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                            </svg>
-
-                                            <h1 class="font-vazir text-gray-600 dark:text-white text-[16px]">آپلود فایل
-                                            </h1>
-                                        </div>
-                                        <p class="font-vazir text-gray-500 dark:text-white text-sm mt-1">
-                                            JPG, PNG,WEBP</p>
-                                    </div>
-                                </template>
-
-                                <input type="file" class="hidden" x-ref="fileInput" accept=".jpg,.jpeg,.png,.pdf,.webp"
-                                    x-on:change="handleFileSelect($event)">
-                            </div>
-
-                            <!-- نمایش خطاهای اعتبارسنجی -->
-                            <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['file'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <div class="mt-2 flex items-center gap-2 text-red-500 dark:text-red-400 text-sm">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                <span><?php echo e($message); ?></span>
-                            </div>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
-
-
-
-                            <!-- نمایش فایل ذخیره شده (در حالت ویرایش) -->
-                            <!--[if BLOCK]><![endif]--><?php if($file && is_string($file)): ?>
-                            <div
-                                class="mt-2 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg flex items-center justify-between">
-                                <div class="flex items-center gap-2">
-                                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    <span class="text-blue-700 dark:text-blue-300 text-sm">فایل قبلاً آپلود
-                                        شده</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <a href="<?php echo e(Storage::url($file)); ?>" target="_blank"
-                                        class="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm flex items-center gap-1">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                            </path>
-                                        </svg>
-                                        مشاهده
-                                    </a>
-                                    <button type="button" wire:click="$set('file', null)"
-                                        class="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 text-sm flex items-center gap-1">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                            </path>
-                                        </svg>
-                                        حذف
-                                    </button>
-                                </div>
-                            </div>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                        </div>
+                    {{-- شرح بردگی --}}
+                    <div class="mt-3">
+                        <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">شرح
+                            بردگی</label>
+                        <textarea wire:model="description_sender" rows="3" placeholder="شرح بردگی..."
+                            class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white p-3 rounded-[12px] border bg-[#EFF6F9]  focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
                     </div>
 
+                    {{-- شرح رسیدگی --}}
+                    <div class="mt-3">
+                        <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">شرح
+                            رسیدگی</label>
+                        <textarea wire:model="description_receiver" rows="3" placeholder="شرح رسیدگی..."
+                            class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white p-3 rounded-[12px] border bg-[#EFF6F9]  focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+                    </div>
 
-
-
-                    <!-- دکمه‌های نهایی -->
-                    <div
-                        class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 py-4 justify-center items-center text-center ">
-                        <button type="submit" wire:loading.attr="disabled" wire:target="submitTransaction"
-                            class="bg-[#184D6C] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
-                            <span wire:loading.remove wire:target="submitTransaction">
-                                <?php echo e($transactionId ? 'بروزرسانی' : 'ثبت'); ?>
-
+                    {{-- دکمه‌ها --}}
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 p-4 justify-center items-center flex-wrap">
+                        <button type="submit" wire:loading.attr="disabled" wire:target='submitConversion'
+                            class="bg-[#184D6C] text-[14px] vazir font-semibold rounded-[8px] px-[74px] py-4 text-white hover:bg-blue-700 transition disabled:opacity-50 whitespace-nowrap">
+                            <span wire:loading.remove wire:target='submitConversion'>
+                                @if ($editingConversionId)
+                                ویرایش تبدیل ارز
+                                @else
+                                ثبت تبدیل ارز
+                                @endif
                             </span>
 
-                            <span wire:loading wire:target="submitTransaction"
+
+                            <span wire:loading wire:target="submitConversion"
                                 class="flex items-center justify-center gap-2">
                                 <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
                                     fill="none" viewBox="0 0 24 24">
@@ -1519,84 +1509,51 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                                     </path>
                                 </svg>
-                                در حال ثبت
-                            </span>
-                        </button>
-
-                        <!--[if BLOCK]><![endif]--><?php if(!$transactionId): ?>
-                        <button type="button" wire:click="submitAndPrint" wire:loading.attr='disabled'
-                            wire:target='submitAndPrint'
-                            class="bg-[#184D6C] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
-                            <span wire:loading.remove wire:target='submitAndPrint'>
-                                ثبت و چاپ
-
+                                @if ($editingConversionId)
+                                در حال ویرایش تبدیل ارز
+                                @else
+                                در حال ثبت تبدیل ارز
+                                @endif
                             </span>
 
-                            <span wire:loading wire:target="submitAndPrint"
-                                class="flex items-center justify-center gap-2">
-                                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                        stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor"
-                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                    </path>
-                                </svg>
-                                در حال ثبت و چاپ
-                            </span>
-                        </button>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                        <button type="button" wire:click="cancel"
-                            class="bg-[#184D6C] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
-                            <?php echo e($transactionId ? 'لغو ویرایش' : 'انصراف'); ?>
 
                         </button>
-
-
+                        <button type="button" wire:click="resetForm" wire:loading.attr="disabled"
+                            class="bg-[#184D6C] text-[14px] vazir font-semibold rounded-[8px] px-[74px] py-4 text-white hover:bg-red-700 transition">
+                            @if ($editingConversionId)
+                            انصراف از ویرایش
+                            @else
+                            انصراف
+                            @endif
+                        </button>
                     </div>
-
                 </form>
+
             </div>
-            
+
+            {{-- جدول تراکنش‌های تبدیل ارز --}}
             <div class="flex-1 flex flex-col
-                        dark:border dark:border-white
-                        dark:bg-black dark:text-white
-                        bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC]
-                        p-3 md:p-4 lg:p-6
-                        rounded-[12px]
-                          w-full max-w-[440px] md:max-w-[410px] lg:max-w-full
-                        mb-5 mx-auto
-                        overflow-x-auto"
-                        >
-
-                
+         dark:border dark:border-white
+         dark:bg-black dark:text-white
+ bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC]         p-3 md:p-4 lg:p-6
+         rounded-[12px]
+         w-full max-w-[440px] md:max-w-[410px] lg:max-w-full
+         mb-5 mx-auto
+         overflow-x-auto" >
                 <div
-                    class="grid grid-cols-1 xl:grid-cols-2 gap-3 justify-between items-center mb-3 p-3 md:p-4 rounded-[12px]">
-                    <h1 class="text-lg md:text-xl lg:text-2xl vazir font-semibold">ترانزکشن های ثبت شده</h1>
+                    class="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 justify-between items-center  p-3 md:p-4 rounded-[12px] mb-3 gap-3">
+                    <h1 class="text-lg md:text-xl lg:text-xl  vazir font-medium">ترانزکشن های ثبت شده</h1>
 
-                    <div class="flex flex-wrap items-center gap-3">
-                        
-                        <!--[if BLOCK]><![endif]--><?php if($selectedCustomerId): ?>
-                        <?php
-                        $selectedCustomer = \App\Models\Sarafi\Customer::find($selectedCustomerId);
-                        ?>
-                        <div class="bg-blue-100 px-3 py-2 rounded-lg flex items-center gap-2">
-                            <span class="text-blue-700 vazir">فیلتر:
-                                <?php echo e($selectedCustomer->fullname ?? ''); ?></span>
-                            <button wire:click="clearFilter" class="text-red-500 hover:text-red-700 text-lg">✕</button>
-                        </div>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-
-                        
-                        <div class="relative flex-1 min-w-[200px] w-full md:w-[400px] lg:w-[500px]">
+                    <div class="flex items-center gap-3">
+                        <div class="relative w-[340px] md:w-[500px]">
                             <input type="text" wire:model.live="search" placeholder="جستجو..." class="w-full h-12 md:h-[51px]
                            border border-[#D7E5EC]
                            dark:bg-black dark:border-white dark:placeholder:text-white placeholder:text-black
                            rounded-[12px] pl-3 pr-12 text-sm md:text-base
                            bg-transparent relative z-0">
 
-                            
+                            {{-- آیکون --}}
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg"
                                 class="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none dark:hidden">
@@ -1605,11 +1562,9 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75"
                                     stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
                             </svg>
-
-                            
-                            <svg width="24" height="24"
-                                class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 hidden dark:block"
-                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="24"
+                                class="absolute hidden dark:block left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6"
+                                height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
                                     stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -1617,294 +1572,274 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     stroke-linejoin="round" />
                             </svg>
 
-                            
-                            <!--[if BLOCK]><![endif]--><?php if($search): ?>
-                            <button wire:click="clearSearchAndFilter"
-                                class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">✕</button>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                            
-                            <!--[if BLOCK]><![endif]--><?php if($search && count($filteredCustomers) > 0 && !$selectedCustomerId): ?>
-                            <ul
-                                class="absolute z-50 w-full bg-white border border-gray-300 mt-1 rounded-md shadow-lg max-h-60 overflow-y-auto">
-                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $filteredCustomers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <li wire:click="selectCustomer(<?php echo e($customer->id); ?>)"
-                                    class="px-3 py-2 hover:bg-blue-100 cursor-pointer flex justify-between items-center">
-                                    <span><?php echo e($customer->fullname); ?></span>
-                                    <span class="text-gray-500 text-sm"><?php echo e($customer->account_number); ?></span>
-                                </li>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
-                            </ul>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                            @if ($search)
+                            <button wire:click="$set('search', '')"
+                                class="absolute left-8 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                                ✕
+                            </button>
+                            @endif
                         </div>
                     </div>
                 </div>
 
-                
                 <div class="overflow-x-auto w-full">
-                    <div class="min-w-[890px] max-h-[680px] overflow-y-auto">
+                    <div class="max-h-[680px] overflow-y-auto min-w-[890px]">
                         <table
-                            class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500 border-collapse">
                             <thead
                                 class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
-                                <tr class="whitespace-nowrap">
-                                    <th class="px-3 py-3 font-bold w-16 text-center">#</th>
-                                    <th class="px-3 py-3 font-bold w-48 text-right">نام مشتری</th>
-                                    <th class="px-3 py-3 font-bold w-32 text-center">معامله</th>
-                                    <th class="px-3 py-3 font-bold w-40 text-right">مبلغ</th>
-                                    <th class="px-3 py-3 font-bold w-32 text-right">واحد</th>
-                                    <th class="px-3 py-3 font-bold w-80 text-center">توضیحات</th>
-                                    <th class="px-3 py-3 font-bold w-40 text-center">تاریخ</th>
-                                    <th class="px-3 py-3 font-bold w-48 text-center">عملیات</th>
+                                <tr>
+                                    <th class="px-2 py-3 font-bold text-center">#</th>
+                                    <th class="px-2 py-3 font-bold">از حساب</th>
+                                    <th class="px-2 py-3 font-bold">به حساب</th>
+                                    <th class="px-2 py-3 font-bold">مبلغ برداشت</th>
+                                    <th class="px-2 py-3 font-bold">مبلغ دریافت</th>
+                                    <th class="px-2 py-3 font-bold">نوع انتقال</th>
+                                    <th class="px-2 py-3 font-bold text-center">توضیحات</th>
+                                    <th class="px-2 py-3 font-bold text-center">تاریخ</th>
+                                    <th class="px-2 py-3 font-bold text-center">عملیات</th>
                                 </tr>
                             </thead>
-
                             <tbody>
-                                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $transactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $transaction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                                <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+                                @forelse($SendToAccount as $key => $conversion)
+   <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
                                odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
-                               transition-colors">
-                                    <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium text-center">
-                                        <?php echo e($key + 1); ?></td>
-                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium whitespace-nowrap">
-                                        <?php echo e($transaction->customer->fullname ?? '-'); ?></td>
-                                    <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium text-center">
-                                        <span
-                                            class="px-3 py-1 rounded-full text-[16px] <?php echo e($transaction->type === 'رسید' ? 'text-green-800 dark:text-white' : 'text-red-800 dark:text-white'); ?>">
-                                            <?php echo e($transaction->type); ?>
-
-                                        </span>
-                                    </td>
-                                    <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium">
-                                        <?php echo e(number_format($transaction->amount)); ?></td>
-                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium">
-                                        <?php echo e(collect($currencies)->firstWhere('code', $transaction->currency)['name_fa']
-                                        ?? $transaction->currency); ?>
-
-                                    </td>
-                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium text-center">
-                                        <div class="space-y-1 text-right">
-                                            <p class="text-sm">زون: <?php echo e($transaction->zone); ?></p>
-                                            <p class="text-sm">تفصیلات: <?php echo e($transaction->description); ?></p>
+                               transition-colors">                                    <td class="px-2 py-3 text-center">{{ $key + 1 }}</td>
+                                    <td class="px-2 py-3">
+                                        <div title="{{ $conversion->from_customer_name ?? '-' }}">
+                                            {{ $conversion->from_customer_name ?? '-' }}
                                         </div>
                                     </td>
-                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] text-center">
-                                        <div class="whitespace-nowrap">
-                                            <div class="font-medium"><?php echo e(explode(' ', $transaction->date)[0]); ?>
-
-                                            </div>
-                                            <div class="text-gray-500 dark:text-white text-sm mt-1">
-                                                <?php echo e(\Carbon\Carbon::parse($transaction->created_at)->format('h:i A')); ?>
-
-                                            </div>
+                                    <td class="px-2 py-3">
+                                        <div title="{{ $conversion->to_customer_name ?? '-' }}">
+                                            {{ $conversion->to_customer_name ?? '-' }}
                                         </div>
                                     </td>
-                                    <td class="py-2 text-center">
-                                        <div class="flex flex-wrap justify-center gap-2 md:gap-3">
-                                            
-                                            <div class="flex justify-center gap-3">
-                                                <!-- دکمه ویرایش -->
-                                                <button wire:click="edit(<?php echo e($transaction->id); ?>)" class="w-12 h-12 flex items-center justify-center  
-                                                    rounded-full transition-colors" title="ویرایش">
-                                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>"
-                                                        class="w-7 h-7 dark:hidden" alt="Edit">
+                                    <td class="px-2 py-3 text-left">
+                                        {{ number_format($conversion->withdrawal_amount) }}
+                                        {{ $this->getCurrencyName($conversion->from_currency) }}
+                                    </td>
+                                    <td class="px-2 py-3 text-left">
+                                        {{ number_format($conversion->received_amount) }}
+                                        {{ $this->getCurrencyName($conversion->from_currency) }}
+                                    </td>
+                                    <td class="px-2 py-3 text-center">
+                                        @if ($conversion->type === 'باتفاوت')
+                                        <span class=" dark:text-white">باتفاوت</span>
+                                        @else
+                                        <span class=" dark:text-white">بدون تفاوت</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-2 py-3 text-left">
+                                        {{ Str::limit($conversion->description_sender, 35) }}
+                                    </td>
+                                    <td class="px-2 py-3 text-center">
+                                        {{ explode(' ', $conversion->transaction_date)[0] }}
+                                        <div class="text-gray-500 dark:text-white text-[14px] mt-1">
+                                            {{ \Carbon\Carbon::parse($conversion->created_at)->format('h:i A') }}
+                                        </div>
+                                    </td>
+                                    <td class="px-2 py-3 text-center">
+                                        <div class="flex justify-center gap-2">
+                                            <button wire:click="editConversion({{ $conversion->id }})" title="ویرایش">
+                                                <img src="{{ asset('assets/sarafi/all_icon/edit_table.svg') }}"
+                                                    class="w-7 h-7 dark:hidden" alt="Edit">
 
-                                                    <svg width="22" height="22" class="hidden dark:block"
-                                                        viewBox="0 0 22 22" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M10.082 1.83325H8.2487C3.66536 1.83325 1.83203 3.66659 1.83203 8.24992V13.7499C1.83203 18.3333 3.66536 20.1666 8.2487 20.1666H13.7487C18.332 20.1666 20.1654 18.3333 20.1654 13.7499V11.9166"
-                                                            stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                        <path
-                                                            d="M14.7027 2.76832L7.4794 9.99165C7.2044 10.2667 6.9294 10.8075 6.8744 11.2017L6.48023 13.9608C6.33357 14.96 7.0394 15.6567 8.03857 15.5192L10.7977 15.125C11.1827 15.07 11.7236 14.795 12.0077 14.52L19.2311 7.29665C20.4777 6.04999 21.0644 4.60165 19.2311 2.76832C17.3977 0.934987 15.9494 1.52165 14.7027 2.76832Z"
-                                                            stroke="white" stroke-width="1.5" stroke-miterlimit="10"
-                                                            stroke-linecap="round" stroke-linejoin="round" />
-                                                        <path
-                                                            d="M13.668 3.8042C14.2821 5.99503 15.9963 7.7092 18.1963 8.33253"
-                                                            stroke="white" stroke-width="1.5" stroke-miterlimit="10"
-                                                            stroke-linecap="round" stroke-linejoin="round" />
-                                                    </svg>
+                                                <svg width="22" height="22" class="hidden dark:block"
+                                                    viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M10.082 1.83325H8.2487C3.66536 1.83325 1.83203 3.66659 1.83203 8.24992V13.7499C1.83203 18.3333 3.66536 20.1666 8.2487 20.1666H13.7487C18.332 20.1666 20.1654 18.3333 20.1654 13.7499V11.9166"
+                                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                    <path
+                                                        d="M14.7027 2.76832L7.4794 9.99165C7.2044 10.2667 6.9294 10.8075 6.8744 11.2017L6.48023 13.9608C6.33357 14.96 7.0394 15.6567 8.03857 15.5192L10.7977 15.125C11.1827 15.07 11.7236 14.795 12.0077 14.52L19.2311 7.29665C20.4777 6.04999 21.0644 4.60165 19.2311 2.76832C17.3977 0.934987 15.9494 1.52165 14.7027 2.76832Z"
+                                                        stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                                                        stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path
+                                                        d="M13.668 3.8042C14.2821 5.99503 15.9963 7.7092 18.1963 8.33253"
+                                                        stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+                                                        stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+                                            </button>
+                                            <button wire:click="confirmDelete({{ $conversion->id }})" title="حذف">
+                                                <img src="{{ asset('assets/sarafi/all_icon/trash_table.svg') }}"
+                                                    class="w-8 h-8 dark:hidden" alt="Delete">
+                                                <svg width="24" height="24" class="hidden dark:block"
+                                                    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M21 5.97998C17.67 5.64998 14.32 5.47998 10.98 5.47998C9 5.47998 7.02 5.57998 5.04 5.77998L3 5.97998"
+                                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                    <path
+                                                        d="M8.5 4.97L8.72 3.66C8.88 2.71 9 2 10.69 2H13.31C15 2 15.13 2.75 15.28 3.67L15.5 4.97"
+                                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                    <path
+                                                        d="M18.8484 9.13989L18.1984 19.2099C18.0884 20.7799 17.9984 21.9999 15.2084 21.9999H8.78844C5.99844 21.9999 5.90844 20.7799 5.79844 19.2099L5.14844 9.13989"
+                                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                    <path d="M10.3281 16.5H13.6581" stroke="white" stroke-width="1.5"
+                                                        stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M9.5 12.5H14.5" stroke="white" stroke-width="1.5"
+                                                        stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+                                            </button>
+                                            <button wire:click="printTransaction({{ $conversion->id }})"
+                                                title="پرینت PDF">
+                                                <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"
+                                                    class="w-10 h-10 dark:hidden" alt="Print">
+                                                <svg width="30" class="hidden dark:block" height="30"
+                                                    viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M10.7714 25.0001C10.2156 25.0001 9.74016 24.8022 9.34516 24.4063C8.95016 24.0105 8.75224 23.5359 8.75141 22.9826V20.0001H6.49141C5.93641 20.0001 5.46141 19.8022 5.06641 19.4063C4.67141 19.0105 4.47349 18.5355 4.47266 17.9813V13.2688C4.47266 12.5605 4.71307 11.9672 5.19391 11.4888C5.67474 11.0088 6.26766 10.7688 6.97266 10.7688H23.0302C23.7385 10.7688 24.3322 11.0088 24.8114 11.4888C25.2906 11.9688 25.5302 12.5622 25.5302 13.2688V17.9813C25.5302 18.5363 25.3327 19.0113 24.9377 19.4063C24.5427 19.8013 24.0672 19.9992 23.5114 20.0001H21.2514V22.9813C21.2514 23.5363 21.0535 24.0113 20.6577 24.4063C20.2618 24.8013 19.7868 24.9992 19.2327 25.0001H10.7714ZM6.49141 18.7501H8.75141C8.78391 18.2226 8.99307 17.7701 9.37891 17.3926C9.76474 17.0159 10.2289 16.8276 10.7714 16.8276H19.2327C19.7743 16.8276 20.2381 17.0163 20.6239 17.3938C21.0097 17.7705 21.2189 18.2226 21.2514 18.7501H23.5114C23.7356 18.7501 23.9197 18.678 24.0639 18.5338C24.2081 18.3897 24.2802 18.2055 24.2802 17.9813V13.2688C24.2802 12.9155 24.1606 12.6188 23.9214 12.3788C23.6822 12.1388 23.3852 12.0188 23.0302 12.0188H6.97266C6.61849 12.0188 6.32182 12.1388 6.08266 12.3788C5.84349 12.6188 5.72349 12.9159 5.72266 13.2701V17.9813C5.72266 18.2055 5.79474 18.3897 5.93891 18.5338C6.08307 18.678 6.26724 18.7501 6.49141 18.7501ZM20.0014 10.7701V7.78758C20.0014 7.56258 19.9293 7.37841 19.7852 7.23508C19.641 7.09091 19.4568 7.01883 19.2327 7.01883H10.7702C10.546 7.01883 10.3618 7.09091 10.2177 7.23508C10.0735 7.37925 10.0014 7.56341 10.0014 7.78758V10.7688H8.75141V7.78758C8.75141 7.23258 8.94932 6.75716 9.34516 6.36133C9.74016 5.9655 10.2152 5.76758 10.7702 5.76758H19.2327C19.7877 5.76758 20.2627 5.9655 20.6577 6.36133C21.0535 6.75716 21.2514 7.23216 21.2514 7.78633V10.7688L20.0014 10.7701ZM22.0214 15.1451C22.3756 15.1451 22.6722 15.0251 22.9114 14.7851C23.1506 14.5451 23.2706 14.2484 23.2714 13.8951C23.2722 13.5417 23.1522 13.2447 22.9114 13.0038C22.6706 12.763 22.3739 12.643 22.0214 12.6438C21.6689 12.6447 21.3718 12.7647 21.1302 13.0038C20.8885 13.243 20.7689 13.5401 20.7714 13.8951C20.7739 14.2501 20.8935 14.5467 21.1302 14.7851C21.3668 15.0234 21.6639 15.1434 22.0214 15.1451ZM20.0014 22.9801V18.8463C20.0014 18.6213 19.9293 18.4367 19.7852 18.2926C19.641 18.1484 19.4568 18.0763 19.2327 18.0763H10.7702C10.546 18.0763 10.3618 18.1484 10.2177 18.2926C10.0735 18.4376 10.0014 18.6222 10.0014 18.8463V22.9813C10.0014 23.2055 10.0735 23.3897 10.2177 23.5338C10.3618 23.678 10.5464 23.7501 10.7714 23.7501H19.2327C19.4568 23.7501 19.641 23.678 19.7852 23.5338C19.9293 23.3897 20.0014 23.2051 20.0014 22.9801ZM6.49141 12.0201H5.72266H24.2802H6.49141Z"
+                                                        fill="white" />
+                                                </svg>
+                                            </button>
 
-                                                </button>
+                                            <script>
+                                                let printListenerRegistered = false;
 
+                                                    document.addEventListener('livewire:init', () => {
+                                                        if (printListenerRegistered) return;
+                                                        printListenerRegistered = true;
 
-                                                <?php
-                                                $currentUser = Auth::guard('sarafi')->user();
-                                                ?>
+                                                        Livewire.on('print-pdf', (data) => {
 
+                                                            /* 🔹 1. دانلود (با لینک مخفی) */
+                                                            const downloadLink = document.createElement('a');
+                                                            downloadLink.href = data.url;
+                                                            downloadLink.download = '';
+                                                            downloadLink.style.display = 'none';
+                                                            document.body.appendChild(downloadLink);
+                                                            downloadLink.click();
 
-                                                <!--[if BLOCK]><![endif]--><?php if(($currentUser && $currentUser->role === 'admin') ||
-                                                $currentUser->role === 'superadmin'): ?>
-                                                <!-- دکمه حذف -->
-                                                <button wire:click="confirmDelete(<?php echo e($transaction->id); ?>)"
-                                                    class="w-12 h-12 flex items-center justify-center rounded-full transition-colors"
-                                                    title="حذف">
-                                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>"
-                                                        class="w-8 h-8 dark:hidden" alt="Delete">
-                                                    <svg width="24" height="24" class="hidden dark:block"
-                                                        viewBox="0 0 24 24" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M21 5.97998C17.67 5.64998 14.32 5.47998 10.98 5.47998C9 5.47998 7.02 5.57998 5.04 5.77998L3 5.97998"
-                                                            stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                        <path
-                                                            d="M8.5 4.97L8.72 3.66C8.88 2.71 9 2 10.69 2H13.31C15 2 15.13 2.75 15.28 3.67L15.5 4.97"
-                                                            stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                        <path
-                                                            d="M18.8484 9.13989L18.1984 19.2099C18.0884 20.7799 17.9984 21.9999 15.2084 21.9999H8.78844C5.99844 21.9999 5.90844 20.7799 5.79844 19.2099L5.14844 9.13989"
-                                                            stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                        <path d="M10.3281 16.5H13.6581" stroke="white"
-                                                            stroke-width="1.5" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                        <path d="M9.5 12.5H14.5" stroke="white" stroke-width="1.5"
-                                                            stroke-linecap="round" stroke-linejoin="round" />
-                                                    </svg>
+                                                            /* 🔹 2. پرینت */
+                                                            const iframe = document.createElement('iframe');
+                                                            iframe.style.display = 'none';
+                                                            iframe.src = data.url;
+                                                            document.body.appendChild(iframe);
 
-                                                </button>
-                                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                                            iframe.onload = () => {
+                                                                iframe.contentWindow.focus();
+                                                                iframe.contentWindow.print();
 
-
-                                                <!-- مودال تأیید حذف -->
-                                                <!--[if BLOCK]><![endif]--><?php if($confirmDeleteId): ?>
-                                                <div
-                                                    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-10 z-50">
-                                                    <div
-                                                        class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px]  rounded-[12px] shadow-xl w-[653px] h-[239.7267608642578px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
-                                                        <button wire:click="$set('confirmDeleteId', null)"
-                                                            class="flex right-0 h-4 w-4"><img
-                                                                src="<?php echo e(asset('assets/sarafi/all_icon/close.svg')); ?>"
-                                                                alt=""></button>
-                                                        <h1
-                                                            class="text-2xl text-black shabnam font-medium leading-[100%] ">
-                                                            حذف ترانزکشــــــــــن</h1>
-                                                        <hr class="bg-[#E1DED3] mt-8">
-                                                        <p class=" mb-6 text-xl shabnam mt-5">آیا مطمئن هستید
-                                                            می
-                                                            خواهید این
-                                                            ترانزکشن را حذف کنید؟</p>
-                                                        <div class="flex justify-center gap-4">
-                                                            <button wire:click="$set('confirmDeleteId', null)"
-                                                                class="px-20  text-white text-xl shabnam-fd py-3 bg-[#DD2424] rounded-xl transition">
-                                                                <?php echo e(__('messages.no')); ?>
-
-                                                            </button>
-                                                            <button wire:click="deleteConfirmed"
-                                                                class="px-20 py-3 bg-[#2563EB] text-xl shabnam-fd text-white rounded-xl  transition flex items-center gap-2">
-                                                                <?php echo e(__('messages.yes')); ?>
-
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-
-
-
-                                                <!-- دکمه پرینت -->
-                                                <button wire:click="print(<?php echo e($transaction->id); ?>)" class="w-12 h-12 flex items-center justify-center  
-                                                rounded-full transition-colors" title="پرینت">
-                                                    <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
-                                                        class="w-10 h-10 dark:hidden" alt="Print">
-                                                    <svg width="30" class="hidden dark:block" height="30"
-                                                        viewBox="0 0 30 30" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M10.7714 25.0001C10.2156 25.0001 9.74016 24.8022 9.34516 24.4063C8.95016 24.0105 8.75224 23.5359 8.75141 22.9826V20.0001H6.49141C5.93641 20.0001 5.46141 19.8022 5.06641 19.4063C4.67141 19.0105 4.47349 18.5355 4.47266 17.9813V13.2688C4.47266 12.5605 4.71307 11.9672 5.19391 11.4888C5.67474 11.0088 6.26766 10.7688 6.97266 10.7688H23.0302C23.7385 10.7688 24.3322 11.0088 24.8114 11.4888C25.2906 11.9688 25.5302 12.5622 25.5302 13.2688V17.9813C25.5302 18.5363 25.3327 19.0113 24.9377 19.4063C24.5427 19.8013 24.0672 19.9992 23.5114 20.0001H21.2514V22.9813C21.2514 23.5363 21.0535 24.0113 20.6577 24.4063C20.2618 24.8013 19.7868 24.9992 19.2327 25.0001H10.7714ZM6.49141 18.7501H8.75141C8.78391 18.2226 8.99307 17.7701 9.37891 17.3926C9.76474 17.0159 10.2289 16.8276 10.7714 16.8276H19.2327C19.7743 16.8276 20.2381 17.0163 20.6239 17.3938C21.0097 17.7705 21.2189 18.2226 21.2514 18.7501H23.5114C23.7356 18.7501 23.9197 18.678 24.0639 18.5338C24.2081 18.3897 24.2802 18.2055 24.2802 17.9813V13.2688C24.2802 12.9155 24.1606 12.6188 23.9214 12.3788C23.6822 12.1388 23.3852 12.0188 23.0302 12.0188H6.97266C6.61849 12.0188 6.32182 12.1388 6.08266 12.3788C5.84349 12.6188 5.72349 12.9159 5.72266 13.2701V17.9813C5.72266 18.2055 5.79474 18.3897 5.93891 18.5338C6.08307 18.678 6.26724 18.7501 6.49141 18.7501ZM20.0014 10.7701V7.78758C20.0014 7.56258 19.9293 7.37841 19.7852 7.23508C19.641 7.09091 19.4568 7.01883 19.2327 7.01883H10.7702C10.546 7.01883 10.3618 7.09091 10.2177 7.23508C10.0735 7.37925 10.0014 7.56341 10.0014 7.78758V10.7688H8.75141V7.78758C8.75141 7.23258 8.94932 6.75716 9.34516 6.36133C9.74016 5.9655 10.2152 5.76758 10.7702 5.76758H19.2327C19.7877 5.76758 20.2627 5.9655 20.6577 6.36133C21.0535 6.75716 21.2514 7.23216 21.2514 7.78633V10.7688L20.0014 10.7701ZM22.0214 15.1451C22.3756 15.1451 22.6722 15.0251 22.9114 14.7851C23.1506 14.5451 23.2706 14.2484 23.2714 13.8951C23.2722 13.5417 23.1522 13.2447 22.9114 13.0038C22.6706 12.763 22.3739 12.643 22.0214 12.6438C21.6689 12.6447 21.3718 12.7647 21.1302 13.0038C20.8885 13.243 20.7689 13.5401 20.7714 13.8951C20.7739 14.2501 20.8935 14.5467 21.1302 14.7851C21.3668 15.0234 21.6639 15.1434 22.0214 15.1451ZM20.0014 22.9801V18.8463C20.0014 18.6213 19.9293 18.4367 19.7852 18.2926C19.641 18.1484 19.4568 18.0763 19.2327 18.0763H10.7702C10.546 18.0763 10.3618 18.1484 10.2177 18.2926C10.0735 18.4376 10.0014 18.6222 10.0014 18.8463V22.9813C10.0014 23.2055 10.0735 23.3897 10.2177 23.5338C10.3618 23.678 10.5464 23.7501 10.7714 23.7501H19.2327C19.4568 23.7501 19.641 23.678 19.7852 23.5338C19.9293 23.3897 20.0014 23.2051 20.0014 22.9801ZM6.49141 12.0201H5.72266H24.2802H6.49141Z"
-                                                            fill="white" />
-                                                    </svg>
-
-                                                </button>
-                                            </div>
+                                                                /* 🔹 3. حذف با تأخیر */
+                                                                setTimeout(() => {
+                                                                    iframe.remove();
+                                                                    downloadLink.remove();
+                                                                }, 50000); // ⏱ ۵ ثانیه
+                                                            };
+                                                        });
+                                                    });
+                                            </script>
                                         </div>
                                     </td>
                                 </tr>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                @empty
                                 <tr>
-                                    <td colspan="8" class="text-center text-gray-500 py-8 text-lg">
-                                        <!--[if BLOCK]><![endif]--><?php if($selectedCustomerId): ?>
-                                        هیچ تراکنشی برای این مشتری یافت نشد
-                                        <?php else: ?>
-                                        هیچ تراکنشی یافت نشد
-                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    <td colspan="9" class="px-4 py-4 text-center text-gray-500 vazir text-[14px]">
+                                        هیچ تراکنش تبدیلی یافت نشد.
                                     </td>
                                 </tr>
-                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
                 </div>
+
+                {{-- صفحه‌بندی --}}
+                @if ($SendToAccount->hasPages())
+                <div class="mt-4 px-4">
+                    {{ $SendToAccount->links() }}
+                </div>
+                @endif
             </div>
 
+            <!-- مودال تأیید حذف -->
+            @if ($confirmDeleteId)
+            <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                <div
+                    class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px]  rounded-[12px] shadow-xl w-[653px] h-[219.7267608642578px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
+                    <!-- دکمه بستن -->
+                    <button wire:click="$set('confirmDeleteId', null)"
+                        class="absolute left-0 right-4 top-4 h-6 w-6 flex items-center justify-center">
+                        <img src="{{ asset('assets/sarafi/all_icon/close.svg') }}" alt="بستن" class="w-4 h-4">
+                    </button>
+
+                    <h1 class="text-2xl text-black shabnam font-medium leading-[100%] mt-2">حذف تراکنش تبدیل ارز
+                    </h1>
+                    <hr class="bg-[#E1DED3] mt-4 mx-4">
+                    <p class="mb-6 text-xl shabnam mt-5">آیا مطمئن هستید می خواهید این تراکنش را حذف کنید؟</p>
+                    <div class="flex justify-center gap-4">
+                        <button wire:click="$set('confirmDeleteId', null)"
+                            class="px-12 text-white text-lg shabnam-fd py-3 bg-[#DD2424] rounded-xl transition hover:bg-red-700">
+                            خیر
+                        </button>
+                        <button wire:click="deleteConversion"
+                            class="px-12 py-3 bg-[#2563EB] text-lg shabnam-fd text-white rounded-xl transition hover:bg-blue-700 flex items-center gap-2">
+                            بلی
+                        </button>
+                    </div>
+                </div>
+            </div>
+            @endif
         </div>
 
+        <script>
+            window.addEventListener('report-alert', event => {
+                alert(event.detail.message);
+            });
+        </script>
 
+        {{-- Scrollbar Style --}}
+        <style>
+            .scroll-container {
+                scrollbar-width: thin;
+                scrollbar-color: #e5e7eb #f9fafb;
+            }
 
+            .scroll-container::-webkit-scrollbar {
+                height: 6px;
+            }
+
+            .scroll-container::-webkit-scrollbar-track {
+                background: #f9fafb;
+                border-radius: 10px;
+            }
+
+            .scroll-container::-webkit-scrollbar-thumb {
+                background: #e5e7eb;
+                border-radius: 10px;
+            }
+
+            .scroll-container::-webkit-scrollbar-thumb:hover {
+                background: #cbd5e1;
+            }
+
+            #selectCustomer {
+                appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                background: transparent;
+                padding-left: 1rem;
+            }
+
+            input[list]::-webkit-calendar-picker-indicator {
+                display: none !important;
+                -webkit-appearance: none;
+            }
+
+            /* در Firefox */
+            input[list]::-moz-list-button {
+                display: none !important;
+            }
+
+            /* در Edge جدید */
+            input[list]::-ms-clear,
+            input[list]::-ms-expand {
+                display: none !important;
+            }
+        </style>
     </div>
-
-    
-    <script>
-        window.addEventListener('report-alert', event => {
-            alert(event.detail.message);
-        });
-
-        window.addEventListener('redirectToCustomers', () => {
-            window.location.href = "<?php echo e(route('sarafi.customers.create')); ?>";
-        });
-    </script>
-
-
-
-    
-    <style>
-        .scroll-container {
-            scrollbar-width: thin;
-            scrollbar-color: #e5e7eb #f9fafb;
-        }
-
-        .scroll-container::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .scroll-container::-webkit-scrollbar-track {
-            background: #f9fafb;
-            border-radius: 10px;
-        }
-
-        .scroll-container::-webkit-scrollbar-thumb {
-            background: #e5e7eb;
-            border-radius: 10px;
-        }
-
-        .scroll-container::-webkit-scrollbar-thumb:hover {
-            background: #cbd5e1;
-        }
-
-        #selectCustomer {
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background: transparent;
-            padding-left: 1rem;
-        }
-
-        input[list]::-webkit-calendar-picker-indicator {
-            display: none !important;
-            -webkit-appearance: none;
-        }
-
-        /* در Firefox */
-        input[list]::-moz-list-button {
-            display: none !important;
-        }
-
-        /* در Edge جدید */
-        input[list]::-ms-clear,
-        input[list]::-ms-expand {
-            display: none !important;
-        }
-    </style>
-</div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/transactions.blade.php ENDPATH**/ ?>
+</div>

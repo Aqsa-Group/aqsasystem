@@ -34,7 +34,8 @@
                 <table class="w-[500px] text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <h1 class="text-[24px] mb-5">مجموعه خرید ارز</h1>
                     <thead
-                        class=" w-full dark:bg-gray-700 text-black text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0">
+                        class=" w-full dark:bg-gray-700 text-black text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0"
+                        >
                         <tr cl>
                             <th class="px-6 py-4 font-bold w-16">#</th>
                             @foreach (['usd', 'afn', 'irr', 'eur', 'pkr', 'aed', 'try', 'cny'] as $currency)
@@ -48,7 +49,7 @@
                                odd:bg-[#EFF6F9] even:bg-white bg-transparent">
                             <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">1</td>
                             @foreach (['usd', 'afn', 'irr', 'eur', 'pkr', 'aed', 'try', 'cny'] as $currency)
-                            <td dir="ltr" class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center ">
+                            <td dir="ltr" class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center " >
                                 {{ number_format($totalBuy[$currency] ?? 0 ,2) }}
                             </td>
                             @endforeach
@@ -62,23 +63,21 @@
                 <table class="w-[500px] text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <h1 class="text-[24px] mb-5">مجموعه فروش ارز</h1>
                     <thead
-                        class=" w-full dark:bg-gray-700 text-black text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0">
+                        class=" w-full dark:bg-gray-700 text-black text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0"
+                       >
                         <tr>
                             <th class="px-6 py-4 font-bold w-16">#</th>
                             @foreach (['usd', 'afn', 'irr', 'eur', 'pkr', 'aed', 'try', 'cny'] as $currency)
-                            <th class="px-6 py-4 font-bold w-48 text-center" dir="ltr">{{
-                                $this->getCurrencyName($currency) }}
+                            <th class="px-6 py-4 font-bold w-48 text-center" dir="ltr">{{ $this->getCurrencyName($currency) }}
                             </th>
                             @endforeach
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="text-black dark:text-white border-b border-[#D9D9D9]
-                               odd:bg-[#EFF6F9] even:bg-white bg-transparent">
-                            <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">1</td>
+ <tr class="text-black dark:text-white border-b border-[#D9D9D9]
+                               odd:bg-[#EFF6F9] even:bg-white bg-transparent">                            <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">1</td>
                             @foreach (['usd', 'afn', 'irr', 'eur', 'pkr', 'aed', 'try', 'cny'] as $currency)
-                            <td dir="ltr" class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center"
-                                dir="ltr">
+                            <td dir="ltr" class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center" dir="ltr">
                                 {{ number_format($totalSell[$currency] ?? 0 ,2) }}
                             </td>
                             @endforeach
@@ -107,21 +106,24 @@
         </div>
         <div class="flex flex-col lg:flex-row gap-5 mt-7 mx-auto">
             <!-- فرم تراکنش -->
-            <div class="flex flex-col
+                     <div
+  class="flex flex-col
          dark:bg-black dark:text-white dark:border dark:border-white
  bg-white   border border-[#D7E5EC] shadow-sm backdrop:blur-lg          mx-auto
          w-full max-w-[420px] lg:max-w-[474px]
          p-[10px]
          h-auto
          rounded-[12px]
-         space-y-2">
-                <div class="flex flex-row justify-between pt-[20px] pb-[20px] rounded-[12px] items-center">
+         space-y-2"
+>
+                <div
+                    class="flex flex-row justify-between pt-[20px] pb-[20px] rounded-[12px] items-center">
                     <p class="flex items-center text-center pr-3 inter">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+ <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M14.3601 4.07866L15.2869 3.15178C16.8226 1.61607 19.3125 1.61607 20.8482 3.15178C22.3839 4.68748 22.3839 7.17735 20.8482 8.71306L19.9213 9.63993M14.3601 4.07866C14.3601 4.07866 14.4759 6.04828 16.2138 7.78618C17.9517 9.52407 19.9213 9.63993 19.9213 9.63993M14.3601 4.07866L12 6.43872M19.9213 9.63993L14.6607 14.9006L11.5613 18L11.4001 18.1612C10.8229 18.7383 10.5344 19.0269 10.2162 19.2751C9.84082 19.5679 9.43469 19.8189 9.00498 20.0237C8.6407 20.1973 8.25352 20.3263 7.47918 20.5844L4.19792 21.6782M4.19792 21.6782L3.39584 21.9456C3.01478 22.0726 2.59466 21.9734 2.31063 21.6894C2.0266 21.4053 1.92743 20.9852 2.05445 20.6042L2.32181 19.8021M4.19792 21.6782L2.32181 19.8021M2.32181 19.8021L3.41556 16.5208C3.67368 15.7465 3.80273 15.3593 3.97634 14.995C4.18114 14.5653 4.43213 14.1592 4.7249 13.7838C4.97308 13.4656 5.26166 13.1771 5.83882 12.5999L8.5 9.93872"
                                 stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
-                        </svg> {{ $isEditing ? 'فورم ویرایش معاملات نقدی' : 'فورم ثبت معاملات نقدی' }}
+                        </svg>                        {{ $isEditing ? 'فورم ویرایش معاملات نقدی' : 'فورم ثبت معاملات نقدی' }}
                     </p>
 
 
@@ -139,7 +141,7 @@
 
                 <form wire:submit.prevent="submitTransaction" class="space-y-3">
                     <!-- مقدار و نوع ارز -->
-                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <div class="lg:w-full">
                             <label class="block text-[15px] font-medium dark:text-white text-black mb-1 vazir">
                                 ارز برداشت</label>
@@ -151,11 +153,8 @@
                                     @endforeach
                                 </select>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
-                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
+                                    <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}"
+                                        class="w-4 h-4 dark:hidden" alt="">
 
                                     <svg width="24" class="hidden dark:block" height="24" viewBox="0 0 24 24"
                                         fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -188,11 +187,11 @@
                     </div>
 
                     <!-- واحد تبدیل ارز و مبلغ معادل -->
-                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <div class="lg:w-full">
                             <label class="block text-[15px] font-medium  dark:text-white text-black mb-1 vazir">
                                 ارز دریافت</label>
-                            <div class="relative">
+                            <div class="relative">  
                                 <select wire:model="to_currency"
                                     class="w-full dark:bg-black dark:text-white dark:border-white h-[55px] p-3 rounded-[10px] border bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500 appearance-none">
                                     @foreach ($currencies as $c)
@@ -200,12 +199,8 @@
                                     @endforeach
                                 </select>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
-                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-
+                                    <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}"
+                                        class="w-4 h-4 dark:hidden" alt="">
                                     <svg width="24" class="hidden dark:block " height="24" viewBox="0 0 24 24"
                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -244,7 +239,7 @@
 
 
                     <!-- نرخ و تاریخ -->
-                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
 
                         <!-- مبلغ معادل -->
                         <div class="flex-1">
@@ -886,7 +881,7 @@
                     </div>
 
 
-
+                
                     <!-- دکمه‌های نهایی -->
                     <div
                         class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-3 gap-3 justify-center items-center text-center flex-wrap">
@@ -947,7 +942,8 @@
             </div>
 
             <!-- جدول تراکنش‌ها -->
-            <div class="flex-1 flex flex-col
+              <div
+  class="flex-1 flex flex-col
          dark:border dark:border-white
          dark:bg-black dark:text-white
                         bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC]
@@ -966,14 +962,15 @@
                            rounded-[12px] pl-3 pr-12 text-sm md:text-base
                            bg-transparent relative z-0">
 
-                        {{-- آیکون --}}
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                            class="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none dark:hidden">
-                            <path d="M20 20L22 22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
-                            <path
-                                d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75"
-                                stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
-                        </svg>
+                            {{-- آیکون --}}
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none dark:hidden">
+                                <path d="M20 20L22 22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                <path
+                                    d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75"
+                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
 
                         <svg width="24" class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 hidden dark:block"
                             height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -990,8 +987,7 @@
                 <div class="overflow-x-auto w-full">
                     <div class="max-h-[650px] overflow-y-auto min-w-[800px]">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                            <thead
-                                class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
+                            <thead                                 class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
 
                                 <tr class="dark:text-white whitespace-nowrap">
                                     <th class="px-4 py-3 font-bold">#</th>
@@ -1010,8 +1006,7 @@
                                 @foreach($transactions as $transaction)
                                 <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
                                odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
-                               transition-colors">
-                                    <td class="px-2 py-3 vazir text-[18px] font-medium">{{ $loop->iteration }}</td>
+                               transition-colors">                                    <td class="px-2 py-3 vazir text-[18px] font-medium">{{ $loop->iteration }}</td>
                                     <td
                                         class="px-2 py-3 vazir text-[18px] font-medium {{ $transaction->type === 'خرید' ? 'text-green-600 dark:text-white' : 'text-red-600 dark:text-white' }}">
                                         {{ $transaction->type }}
@@ -1092,10 +1087,10 @@
                                                 </svg>
 
 
-
+                                                
                                             </button>
 
-                                            <script>
+                                                                                        <script>
                                                 let printListenerRegistered = false;
 
     document.addEventListener('livewire:init', () => {

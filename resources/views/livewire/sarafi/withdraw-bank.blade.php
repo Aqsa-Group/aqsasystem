@@ -33,7 +33,8 @@
             @if($selectedCustomer)
             <div class="inline-block align-top ml-4 h-auto">
                 <div
-                    class="flex flex-col h-[180px] w-[273px] pr-5 pl-5 pt-2 rounded-[12px]  dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 bg-gradient-to-b from-[#20559c] to-[#3065b5] text-white">
+                    class="flex flex-col    h-[212px] w-[244px] pr-5 pl-5 pt-2 rounded-[12px]  dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900  bg-[#387EA2]/40
+            backdrop-blur-lg text-white">
 
                     {{-- عکس مشتری --}}
                     <div x-data="{ showLargeImage: false, largeImageSrc: '' }">
@@ -100,7 +101,7 @@
                     </div>
 
                     {{-- نام مشتری --}}
-                    <h1 class="text-[20px] text-white text-center font-bold truncate"
+                    <h1 class="text-[20px] text-black text-center font-bold truncate"
                         title="{{ $selectedCustomer->fullname }}">
                         {{ $selectedCustomer->fullname }}
                     </h1>
@@ -112,7 +113,7 @@
                             <path
                                 d="M20 15.5c-1.2 0-2.4-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.5-5.2-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.3-.5-3.5 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1zM5 6h1.5c.1 1.2.3 2.4.6 3.5L5.3 11.8c-.9-2-1.3-4.1-1.3-6.2V6zM19 19c-2.1 0-4.2-.4-6.2-1.3l2.3-2.3c1.1.3 2.3.5 3.5.6V19z" />
                         </svg>
-                        <span class="text-white text-[14px] dir-ltr text-left">{{ $selectedCustomer->phone }}</span>
+                        <span class="text-black text-[14px] dir-ltr text-left">{{ $selectedCustomer->phone }}</span>
                     </div>
                     @endif
 
@@ -122,7 +123,7 @@
                             <path
                                 d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8h16v10zm-8-7c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-2.2 0-4 1.8-4 4h8c0-2.2-1.8-4-4-4z" />
                         </svg>
-                        <span class="text-white text-[14px] dir-ltr text-left">{{ $selectedCustomer->account_number
+                        <span class="text-black text-[14px] dir-ltr text-left">{{ $selectedCustomer->account_number
                             }}</span>
                     </div>
 
@@ -139,22 +140,95 @@
 
             {{-- نمایش تمام کارت‌ها حتی با موجودی صفر --}}
             <div class="inline-block align-top ml-4 h-auto ">
-                <div
-                    class="flex flex-col h-[180px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900 bg-gradient-to-b from-[#2563EB] to-[#5474BB] text-white">
+        <div class="
+                flex flex-col
+                 h-[212px] w-[244px]
+                pr-5 pl-5 pt-3
+                rounded-[12px]
 
-                    <h1 class="text-[24px] text-white">{{ $currencyName }}</h1>
+                bg-[#387EA2]/40
+                backdrop-blur-lg
+                border border-white/30
+
+                shadow-[0_4px_4px_rgba(24,77,108,0.25)]
+
+                text-black
+                            ">
+                    <h1 class="text-[24px] text-left vazir text-[#387EA2]">{{ $currencyName }}</h1>
 
                     <div class="flex flex-col gap-1 mt-1 text-center">
-                        <div class="flex justify-between items-center text-[14px]">
-                            <span>نقدی:</span>
-                            <span class="font-bold text-left" dir="ltr">{{ number_format($cashBalance) }}</span>
+                            <div class="flex justify-between items-center text-[14px]">
+                            <div class="flex justify-end items-center gap-2">
+                                <div class="bg-white rounded-[12px] h-[30px] w-[30px] justify-center items-center   ">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="flex justify-center items-center w-full mt-1">
+                                        <path
+                                            d="M10.8332 4.1665C13.1902 4.1665 14.3687 4.1665 15.1009 4.89874C15.8332 5.63097 15.8332 6.80948 15.8332 9.1665C15.8332 11.5235 15.8332 12.702 15.1009 13.4343C14.3687 14.1665 13.1902 14.1665 10.8332 14.1665H6.6665C4.30948 14.1665 3.13097 14.1665 2.39874 13.4343C1.6665 12.702 1.6665 11.5235 1.6665 9.1665C1.6665 6.80948 1.6665 5.63097 2.39874 4.89874C3.13097 4.1665 4.30948 4.1665 6.6665 4.1665H7.49984"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                        <path
+                                            d="M13.3337 16.6665H9.16704C6.81002 16.6665 5.63151 16.6665 4.89927 15.9343C4.49103 15.5261 4.31039 14.9791 4.23047 14.1665M17.6015 15.9343C18.3337 15.2021 18.3337 14.0236 18.3337 11.6665C18.3337 9.30953 18.3337 8.13101 17.6015 7.39878C17.1932 6.99054 16.6463 6.80991 15.8337 6.72998"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                        <path
+                                            d="M10.8332 9.16683C10.8332 10.3174 9.90043 11.2502 8.74984 11.2502C7.59924 11.2502 6.6665 10.3174 6.6665 9.16683C6.6665 8.01624 7.59924 7.0835 8.74984 7.0835C9.90043 7.0835 10.8332 8.01624 10.8332 9.16683Z"
+                                            stroke="#1C274C" stroke-width="1.5" />
+                                        <path d="M13.3335 10.8335L13.3335 7.50016" stroke="#1C274C" stroke-width="1.5"
+                                            stroke-linecap="round" />
+                                        <path d="M4.1665 10.8335L4.1665 7.50016" stroke="#1C274C" stroke-width="1.5"
+                                            stroke-linecap="round" />
+                                    </svg>
+
+                                </div>
+                                <span>نقدی</span>
+                            </div>
+                            <span class="font-medium text-left" dir="ltr">{{ number_format($cashBalance) }}</span>
                         </div>
                         <div class="flex justify-between items-center text-[14px]">
-                            <span>بانکی:</span>
-                            <span class="font-bold text-left" dir="ltr">{{ number_format($bankBalance) }}</span>
+                            <div class="flex justify-end items-center gap-2">
+                                <div class="bg-white rounded-[12px] h-[30px] w-[30px] justify-center items-center   ">
+                                    <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="flex justify-center items-center w-full mt-1">
+                                        <path
+                                            d="M2.64281 18.2249C3.61913 19.25 5.19047 19.25 8.33317 19.25H11.6665C14.8092 19.25 16.3805 19.25 17.3569 18.2249C18.3332 17.1997 18.3332 15.5498 18.3332 12.25C18.3332 11.2265 18.3332 10.3617 18.304 9.625M17.3569 6.27513C16.3805 5.25 14.8092 5.25 11.6665 5.25H8.33317C5.19047 5.25 3.61913 5.25 2.64281 6.27513C1.6665 7.30025 1.6665 8.95017 1.6665 12.25C1.6665 13.2735 1.6665 14.1383 1.69564 14.875"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                        <path
+                                            d="M9.99984 1.75C11.5712 1.75 12.3569 1.75 12.845 2.26256C13.3332 2.77513 13.3332 3.60008 13.3332 5.25M7.15466 2.26256C6.6665 2.77513 6.6665 3.60008 6.6665 5.25"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                        <path
+                                            d="M10.0002 15.1667C10.9206 15.1667 11.6668 14.5137 11.6668 13.7083C11.6668 12.9029 10.9206 12.25 10.0002 12.25C9.07969 12.25 8.3335 11.5971 8.3335 10.7917C8.3335 9.98625 9.07969 9.33333 10.0002 9.33333M10.0002 15.1667C9.07969 15.1667 8.3335 14.5137 8.3335 13.7083M10.0002 15.1667V15.75M10.0002 8.75V9.33333M10.0002 9.33333C10.9206 9.33333 11.6668 9.98625 11.6668 10.7917"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                    </svg>
+
+                                </div>
+                                <span>بانکی</span>
+                            </div>
+                            <span class="font-medium text-left" dir="ltr">{{ number_format($bankBalance) }}</span>
                         </div>
-                        <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
-                            <span class="font-semibold">مجموعه:</span>
+                        <div class="flex justify-between items-center text-[14px] border-b border-[#184D6C]/15 pb-2">
+                            <div class="flex justify-end items-center gap-2">
+                                <div class="bg-white rounded-[12px] h-[30px] w-[30px] justify-center items-center   ">
+                                    <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="flex justify-center items-center w-full mt-1">
+                                        <path
+                                            d="M15.8332 11.6665V16.6665M15.8332 16.6665L17.4998 14.9998M15.8332 16.6665L14.1665 14.9998"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                        <path
+                                            d="M18.3332 10.0002C18.3332 6.85747 18.3332 5.28612 17.3569 4.30981C16.3805 3.3335 14.8092 3.3335 11.6665 3.3335M11.6665 16.6668H8.33317C5.19047 16.6668 3.61913 16.6668 2.64281 15.6905C1.6665 14.7142 1.6665 13.1429 1.6665 10.0002C1.6665 6.85747 1.6665 5.28612 2.64281 4.30981C3.61913 3.3335 5.19047 3.3335 8.33317 3.3335"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                        <path d="M8.33333 13.3335H5" stroke="#1C274C" stroke-width="1.5"
+                                            stroke-linecap="round" />
+                                        <path d="M10.8332 13.3335H10.4165" stroke="#1C274C" stroke-width="1.5"
+                                            stroke-linecap="round" />
+                                        <path d="M1.6665 8.3335L5.83317 8.3335M18.3332 8.3335L9.1665 8.3335"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                    </svg>
+
+                                </div>
+                                <span class="text-[#184D6C]">مجموعه</span>
+                            </div>
                             <span class="font-bold text-[16px] text-left" dir="ltr">{{ number_format($totalBalance)
                                 }}</span>
                         </div>
@@ -174,10 +248,13 @@
             {{-- کارت خلاصه بیلانس به دالر --}}
             @if($selectedCustomerId)
             <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
-                <div class="flex flex-col h-[185px] w-[273px] pr-5 pl-5 pt-3 rounded-[12px]
+              <div class="flex flex-col h-[212px] w-[244px] pr-5 pl-5 pt-3 rounded-[12px]
                         dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900
-                        bg-gradient-to-b from-[#11BEC7] to-[#6371D0] text-white">
+                         bg-[#387EA2]/40
+    backdrop-blur-lg
+    border border-white/30
 
+    shadow-[0_4px_4px_rgba(24,77,108,0.25)] text-black">
                     @php
                     $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
                     $sourceCurrency = $latestProfitRate->currency_name ?? 'دالر';
@@ -236,42 +313,109 @@
                     $grandTotalUsd = $totalCashUsd + $totalBankUsd;
                     @endphp
 
-                    <h1 class="text-[24px] text-white">
+                      <h1 class="text-[24px] text-left vazir text-[#387EA2]">
                         خلاصه بیلانس به {{ $sourceCurrency }}
                     </h1>
 
                     <div class="flex flex-col gap-1 mt-1 text-center">
-
                         <div class="flex justify-between items-center text-[14px]">
-                            <span>نقدی:</span>
-                            <span class="font-bold text-left" dir="ltr">
+                            <div class="flex justify-end items-center gap-2">
+                                <div class="bg-white rounded-[12px] h-[30px] w-[30px] justify-center items-center   ">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="flex justify-center items-center w-full mt-1">
+                                        <path
+                                            d="M10.8332 4.1665C13.1902 4.1665 14.3687 4.1665 15.1009 4.89874C15.8332 5.63097 15.8332 6.80948 15.8332 9.1665C15.8332 11.5235 15.8332 12.702 15.1009 13.4343C14.3687 14.1665 13.1902 14.1665 10.8332 14.1665H6.6665C4.30948 14.1665 3.13097 14.1665 2.39874 13.4343C1.6665 12.702 1.6665 11.5235 1.6665 9.1665C1.6665 6.80948 1.6665 5.63097 2.39874 4.89874C3.13097 4.1665 4.30948 4.1665 6.6665 4.1665H7.49984"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                        <path
+                                            d="M13.3337 16.6665H9.16704C6.81002 16.6665 5.63151 16.6665 4.89927 15.9343C4.49103 15.5261 4.31039 14.9791 4.23047 14.1665M17.6015 15.9343C18.3337 15.2021 18.3337 14.0236 18.3337 11.6665C18.3337 9.30953 18.3337 8.13101 17.6015 7.39878C17.1932 6.99054 16.6463 6.80991 15.8337 6.72998"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                        <path
+                                            d="M10.8332 9.16683C10.8332 10.3174 9.90043 11.2502 8.74984 11.2502C7.59924 11.2502 6.6665 10.3174 6.6665 9.16683C6.6665 8.01624 7.59924 7.0835 8.74984 7.0835C9.90043 7.0835 10.8332 8.01624 10.8332 9.16683Z"
+                                            stroke="#1C274C" stroke-width="1.5" />
+                                        <path d="M13.3335 10.8335L13.3335 7.50016" stroke="#1C274C" stroke-width="1.5"
+                                            stroke-linecap="round" />
+                                        <path d="M4.1665 10.8335L4.1665 7.50016" stroke="#1C274C" stroke-width="1.5"
+                                            stroke-linecap="round" />
+                                    </svg>
+
+                                </div>
+                                <span>نقدی</span>
+                            </div>
+                            <span class="font-medium text-left" dir="ltr">
                                 {{ number_format($totalCashUsd, 2) }}
                             </span>
                         </div>
 
                         <div class="flex justify-between items-center text-[14px]">
-                            <span>بانکی:</span>
-                            <span class="font-bold text-left" dir="ltr">
+                            <div class="flex justify-end items-center gap-2">
+                                <div class="bg-white rounded-[12px] h-[30px] w-[30px] justify-center items-center   ">
+                                    <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="flex justify-center items-center w-full mt-1">
+                                        <path
+                                            d="M2.64281 18.2249C3.61913 19.25 5.19047 19.25 8.33317 19.25H11.6665C14.8092 19.25 16.3805 19.25 17.3569 18.2249C18.3332 17.1997 18.3332 15.5498 18.3332 12.25C18.3332 11.2265 18.3332 10.3617 18.304 9.625M17.3569 6.27513C16.3805 5.25 14.8092 5.25 11.6665 5.25H8.33317C5.19047 5.25 3.61913 5.25 2.64281 6.27513C1.6665 7.30025 1.6665 8.95017 1.6665 12.25C1.6665 13.2735 1.6665 14.1383 1.69564 14.875"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                        <path
+                                            d="M9.99984 1.75C11.5712 1.75 12.3569 1.75 12.845 2.26256C13.3332 2.77513 13.3332 3.60008 13.3332 5.25M7.15466 2.26256C6.6665 2.77513 6.6665 3.60008 6.6665 5.25"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                        <path
+                                            d="M10.0002 15.1667C10.9206 15.1667 11.6668 14.5137 11.6668 13.7083C11.6668 12.9029 10.9206 12.25 10.0002 12.25C9.07969 12.25 8.3335 11.5971 8.3335 10.7917C8.3335 9.98625 9.07969 9.33333 10.0002 9.33333M10.0002 15.1667C9.07969 15.1667 8.3335 14.5137 8.3335 13.7083M10.0002 15.1667V15.75M10.0002 8.75V9.33333M10.0002 9.33333C10.9206 9.33333 11.6668 9.98625 11.6668 10.7917"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                    </svg>
+
+                                </div>
+                                <span>بانکی </span>
+                            </div> <span class="font-medium text-left" dir="ltr">
                                 {{ number_format($totalBankUsd, 2) }}
                             </span>
                         </div>
 
-                        <div class="flex justify-between items-center text-[14px] border-t border-white/30 pt-1">
-                            <span class="font-semibold">مجموعه:</span>
-                            <span class="font-bold text-[16px] text-left" dir="ltr">
+                        <div class="flex justify-between items-center text-[14px] border-b border-[#184D6C]/15 pb-2">
+                            <div class="flex justify-end items-center gap-2">
+                                <div class="bg-white rounded-[12px] h-[30px] w-[30px] justify-center items-center   ">
+                                    <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="flex justify-center items-center w-full mt-1">
+                                        <path
+                                            d="M15.8332 11.6665V16.6665M15.8332 16.6665L17.4998 14.9998M15.8332 16.6665L14.1665 14.9998"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                        <path
+                                            d="M18.3332 10.0002C18.3332 6.85747 18.3332 5.28612 17.3569 4.30981C16.3805 3.3335 14.8092 3.3335 11.6665 3.3335M11.6665 16.6668H8.33317C5.19047 16.6668 3.61913 16.6668 2.64281 15.6905C1.6665 14.7142 1.6665 13.1429 1.6665 10.0002C1.6665 6.85747 1.6665 5.28612 2.64281 4.30981C3.61913 3.3335 5.19047 3.3335 8.33317 3.3335"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                        <path d="M8.33333 13.3335H5" stroke="#1C274C" stroke-width="1.5"
+                                            stroke-linecap="round" />
+                                        <path d="M10.8332 13.3335H10.4165" stroke="#1C274C" stroke-width="1.5"
+                                            stroke-linecap="round" />
+                                        <path d="M1.6665 8.3335L5.83317 8.3335M18.3332 8.3335L9.1665 8.3335"
+                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                    </svg>
+
+                                </div>
+                                <span class="text-[#184D6C]">مجموعه</span>
+                            </div> <span class="font-bold text-[16px] text-left" dir="ltr">
                                 {{ number_format($grandTotalUsd, 2) }}
                             </span>
                         </div>
-
                     </div>
 
-                    <button wire:click="showReport" wire:loading.attr="disabled" class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800
-                   hover:shadow-md transition flex items-center justify-center gap-2">
 
-                        <span wire:loading.remove>نمایش گزارش</span>
-                        <span wire:loading>در حال انتقال...</span>
+                    <button wire:click="showReport" wire:loading.attr="disabled"
+                        class="bg-[#FFFFFF]/10  rounded-[8px] mr-auto  backdrop:blur-2xl text-[12px] p-2 mt-2 text-gray-800 hover:shadow-md transition border border-white flex items-center justify-end gap-2 w-[114px] h-[25px]">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.5 12.5L12.5 7.5M12.5 7.5H8.75M12.5 7.5V11.25" stroke="#184D6C"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path
+                                d="M5.83317 2.78136C7.05889 2.07231 8.48197 1.6665 9.99984 1.6665C14.6022 1.6665 18.3332 5.39746 18.3332 9.99984C18.3332 14.6022 14.6022 18.3332 9.99984 18.3332C5.39746 18.3332 1.6665 14.6022 1.6665 9.99984C1.6665 8.48197 2.07231 7.05889 2.78136 5.83317"
+                                stroke="#184D6C" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+                        <span wire:loading.remove class="text-[#184D6C]">نمایش گزارش</span>
+                        <span wire:loading class="text-[#184D6C]">
+                            در حال انتقال...
+                        </span>
+
                     </button>
-
                 </div>
             </div>
             @endif
@@ -289,20 +433,22 @@
                                              <div
   class="flex flex-col
          dark:bg-black dark:text-white dark:border dark:border-white
-         bg-[#F5F5F5]
+         bg-white   border border-[#D7E5EC] shadow-sm backdrop:blur-lg
          mx-auto
          w-full max-w-[420px] lg:max-w-[474px]
          p-[10px]
          h-auto
          rounded-[12px]
          space-y-2"
-  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+  >
 
                 <!-- Form Header -->
-                <div class="flex flex-row gap-4 p-4 p-[10px] border border-[#8C8C8C] rounded-[12px] flex-wrap">
-                    <img src="{{ asset('assets/sarafi/all_icon/edit-2.svg') }}" alt="" class="h-6 w-6">
+                <div class="flex flex-row gap-4  p-[10px]  rounded-[12px] flex-wrap">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.3601 4.07866L15.2869 3.15178C16.8226 1.61607 19.3125 1.61607 20.8482 3.15178C22.3839 4.68748 22.3839 7.17735 20.8482 8.71306L19.9213 9.63993M14.3601 4.07866C14.3601 4.07866 14.4759 6.04828 16.2138 7.78618C17.9517 9.52407 19.9213 9.63993 19.9213 9.63993M14.3601 4.07866L12 6.43872M19.9213 9.63993L14.6607 14.9006L11.5613 18L11.4001 18.1612C10.8229 18.7383 10.5344 19.0269 10.2162 19.2751C9.84082 19.5679 9.43469 19.8189 9.00498 20.0237C8.6407 20.1973 8.25352 20.3263 7.47918 20.5844L4.19792 21.6782M4.19792 21.6782L3.39584 21.9456C3.01478 22.0726 2.59466 21.9734 2.31063 21.6894C2.0266 21.4053 1.92743 20.9852 2.05445 20.6042L2.32181 19.8021M4.19792 21.6782L2.32181 19.8021M2.32181 19.8021L3.41556 16.5208C3.67368 15.7465 3.80273 15.3593 3.97634 14.995C4.18114 14.5653 4.43213 14.1592 4.7249 13.7838C4.97308 13.4656 5.26166 13.1771 5.83882 12.5999L8.5 9.93872" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
 
-                    <p class="flex justify-center items-center text-center dark:text-white">
+                    <p class="flex justify-center items-center text-center dark:text-white inter text-xl">
                         {{ $remittanceId ? 'فورم ویرایش برداشت بانکی' : 'فورم ثبت برداشت بانکی' }}
                     </p>
                 </div>
@@ -345,7 +491,7 @@
                                     class="relative w-full">
                                     <input list="customersList" x-model="searchValue" @change="handleSelect"
                                         placeholder="جستجو یا انتخاب حساب..."
-                                        class="w-full dark:bg-black dark:border-white dark:placeholder:text-white dark:text-white  h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
+                                        class="w-full dark:bg-black dark:border-white dark:placeholder:text-white dark:text-white  h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500"
                                         autocomplete="off">
                                     <datalist id="customersList">
                                         @foreach ($customers as $customer)
@@ -354,7 +500,9 @@
                                     </datalist>
                                     @if(empty($selectedAccount))
                                     <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                        <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
                                     </div>
                                     @endif
                                 </div>
@@ -369,15 +517,17 @@
                             <label class="block text-[16px] font-medium text-black mb-1 vazir">نوع ارز</label>
                             <div class="relative w-full">
                                 <select wire:model="currency"
-                                    class="w-full dark:text-white dark:bg-black dark:placeholder:text-white dark:border-white   h-[60px] p-3 rounded-[12px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500   appearance-none">
+                                    class="w-full dark:text-white dark:bg-black dark:placeholder:text-white dark:border-white   h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500   appearance-none">
                                     <option value="">انتخاب ارز</option>
                                     @foreach ($currencies as $c)
                                     <option value="{{ $c['code'] }}">{{ $c['name_fa'] }}</option>
                                     @endforeach
                                 </select>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓"
-                                        class="w-4 h-4">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
                                 </div>
                             </div>
                             @error('currency')
@@ -394,7 +544,7 @@
                                 class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مقدار</label>
                             <div class="relative w-full">
                                 <input type="text" wire:model.live="amount" wire:blur="formatAmount" placeholder="0"
-                                    class="w-full dark:bg-black  dark:border-white  h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:text-white"
+                                    class="w-full dark:bg-black  dark:border-white  h-[60px] p-3 rounded-[12px]  focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 dark:text-white"
                                     oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
                             </div>
                             @if($amountInWords)
@@ -412,7 +562,7 @@
                             <!-- Input field -->
                             <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
                                 placeholder="YYYY/MM/DD"
-                                class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 cursor-pointer"
+                                class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px]  focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 cursor-pointer"
                                 readonly />
 
                             <!-- Custom Date Picker Modal -->
@@ -1027,7 +1177,7 @@
                             <input type="text" x-model="displayTime" @click="togglePicker()"
                                 @keydown.enter.prevent="applyTime()" @keydown.escape="closePicker()"
                                 placeholder="2:25:20"
-                                class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-black dark:border-white dark:text-white cursor-pointer"
+                                class="w-full h-[60px] p-3 rounded-[12px]  focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 dark:bg-black dark:border-white dark:text-white cursor-pointer"
                                 readonly x-ref="timeInput" />
 
                             <!-- Time Picker Modal -->
@@ -1362,7 +1512,7 @@
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">کد
                                 رهگیری</label>
                             <input type="text" wire:model="tracking_code" placeholder="5155221034568"
-                                class="w-full  h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-black dark:border-white dark:text-white cursor-pointer" />
+                                class="w-full  h-[60px] p-3 rounded-[12px]  focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 dark:bg-black dark:border-white dark:text-white cursor-pointer" />
                             @error('tracking_code')
                             <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                             @enderror
@@ -1377,7 +1527,7 @@
                             </label>
 
                             <input type="text" wire:model="from_bank" list="banks-list" placeholder="بانک مبدا"
-                                class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent dark:bg-black dark:border-white dark:text-white">
+                                class="w-full h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] dark:bg-black dark:border-white dark:text-white">
 
                             <datalist id="banks-list">
                                 <option value="بانک ملی ایران">
@@ -1409,7 +1559,7 @@
                             </label>
 
                             <input type="text" wire:model="to_bank" list="banks-list" placeholder="بانک مقصد"
-                                class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent dark:bg-black dark:border-white dark:text-white">
+                                class="w-full h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] dark:bg-black dark:border-white dark:text-white">
 
                             @error('to_bank')
                             <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
@@ -1424,10 +1574,10 @@
                                 حساب مبدا</label>
                             <div class="relative">
                                 <div
-                                    class="flex items-center dark:bg-black bg-[#F5F5F5] border border-[#8C8C8C] rounded-[12px] h-[60px] px-3">
+                                    class="flex items-center dark:bg-black bg-[#EFF6F9]   rounded-[12px] h-[60px] px-3">
                                     <input dir="ltr" type="text" wire:model="source_account_last_four" maxlength="4"
                                         placeholder="1234"
-                                        class="w-12 dark:bg-black dark:border-white  dark:text-white  h-full bg-transparent text-center border-0 outline-none font-mono"
+                                        class="w-12 dark:bg-black dark:border-white  dark:text-white  h-full bg-white text-center border-0 outline-none font-mono"
                                         oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
                                     <span class="text-gray-500 vazir whitespace-nowrap mr-2">- xxxx - xxxx - xxxx</span>
                                 </div>
@@ -1465,8 +1615,8 @@
                             }" x-init="updateDisplay(); $watch('selectedId', () => updateDisplay())"
                                 class="relative w-full">
                                 <input list="customersList2" x-model="searchValue" @change="handleSelect"
-                                    placeholder="جستجو یا انتخاب حساب مقصد..."
-                                    class="w-full dark:bg-black dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
+                                    placeholder="  انتخاب حساب مقصد"
+                                    class="w-full dark:bg-black dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500"
                                     autocomplete="off">
                                 <datalist id="customersList2">
                                     @foreach ($customers as $customer)
@@ -1475,7 +1625,9 @@
                                 </datalist>
                                 @if(empty($toAccount))
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
                                 </div>
                                 @endif
                             </div>
@@ -1494,7 +1646,7 @@
                                 ها</label>
                             <div class="relative">
                                 <select wire:model="zone"
-                                    class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-black dark:border-white dark:text-white appearance-none"
+                                    class="w-full h-[60px] p-3 rounded-[12px]  focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 dark:bg-black dark:border-white dark:text-white appearance-none"
                                     style="max-height: 200px; overflow-y: auto;">
                                     <option value="">انتخاب زون</option>
                                     <option value="{{ Auth::guard('sarafi')->user()->zone }}">
@@ -1512,7 +1664,7 @@
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir"> نام کارت
                                 برداشت</label>
                             <input type="text" wire:model="giver_name" placeholder="مجید مرتضی"
-                                class="w-full   h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-black dark:border-white dark:placeholder:text-gray-600 dark:text-white cursor-pointer" />
+                                class="w-full   h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] focus:ring-2  focus:ring-blue-500 dark:bg-black dark:border-white dark:placeholder:text-gray-600 dark:text-white cursor-pointer" />
                             @error('giver_name')
                             <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                             @enderror
@@ -1524,7 +1676,7 @@
                     <div class="mt-3 flex gap-3">
                         <div class="w-full">
                             <textarea wire:model="description" rows="3" placeholder="شرح برد..."
-                                class="w-full  p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-black dark:border-white dark:placeholder:text-white dark:text-white resize-none"></textarea>
+                                class="w-full  p-3 rounded-[12px] bg-[#EFF6F9] focus:ring-2  focus:ring-blue-500 dark:bg-black dark:border-white dark:placeholder:text-white dark:text-white resize-none"></textarea>
                             @error('description')
                             <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                             @enderror
@@ -1556,9 +1708,10 @@
             })
         " x-on:dragover.prevent :class="{
             'border-green-500 bg-green-50': uploadedFileName && !isUploading,
-            'border-blue-500 bg-blue-50': isUploading,
-            'border-[#112080] bg-white': !uploadedFileName && !isUploading
-        }" class="w-full h-[150px] p-3 rounded-[12px] border-2 border-dashed focus:ring-2 dark:bg-black dark:border-white dark:text-white flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300 relative"
+            'border-green-500 bg-green-50 dark:bg-black': uploadedFileName && !isUploading,
+                                    'border-[#184D6C] bg-blue-50 dark:bg-black': isUploading,
+                                    'border-[#184D6C] bg-white dark:bg-black': !uploadedFileName && !isUploading
+        }" class="w-full h-[46px] p-3 rounded-[12px] border-2 border-dashed focus:ring-2 dark:bg-black dark:border-white dark:text-white flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300 relative"
                                 x-on:click="$refs.fileInput.click()">
 
                                 <!-- حالت آپلود در حال انجام -->
@@ -1604,13 +1757,25 @@
 
                                 <!-- حالت اولیه (بدون آپلود) -->
                                 <template x-if="!isUploading && !uploadedFileName">
-                                    <div class="flex flex-col items-center">
-                                        <img src="{{ asset('assets/sarafi/all_icon/upload.svg') }}" alt="آپلود"
-                                            class="w-12 h-12 mb-2">
-                                        <h1 class="font-vazir text-gray-600 dark:text-gray-300 text-[16px]">فایل را
-                                            اینجا وارد کنید یا بکشید</h1>
-                                        <p class="font-vazir text-gray-500 dark:text-gray-400 text-sm mt-1">فرمت‌های
-                                            مجاز: JPG, PNG, webpp</p>
+                                    <div class="flex justify-between w-full  items-center ">
+                                        <div class="flex">
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M12.5 17.5H7.5C5.14298 17.5 3.96447 17.5 3.23223 16.7678C2.5 16.0355 2.5 14.857 2.5 12.5M17.5 12.5C17.5 14.857 17.5 16.0355 16.7678 16.7678C16.5179 17.0176 16.2162 17.1822 15.8333 17.2906"
+                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path
+                                                    d="M9.99984 13.3333V2.5M9.99984 2.5L13.3332 6.14583M9.99984 2.5L6.6665 6.14583"
+                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                            </svg>
+
+                                            <h1 class="font-vazir text-gray-600 dark:text-white text-[16px]">آپلود فایل
+                                            </h1>
+                                        </div>
+                                        <p class="font-vazir text-gray-500 dark:text-white text-sm mt-1">
+                                            JPG, PNG,WEBP</p>
                                     </div>
                                 </template>
 
@@ -1668,7 +1833,7 @@
                     <div
                         class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 py-4 justify-center items-center text-center flex-wrap">
                         <button type="submit" wire:loading.attr='disabled' wire:target='submitRemittance'
-                            class="bg-[#61B138] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
+                            class="bg-[#184D6C] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white whitespace-nowrap">
 
 
                             <span wire:loading.remove wire:target="submitRemittance">
@@ -1692,7 +1857,7 @@
                         @if(!$remittanceId)
                         <button type="button" wire:click="submitAndPrint" wire:loading.attr='disabled'
                             wire:target='submitAndPrint'
-                            class="bg-[#2563EB] text-[14px] text-center justify-center vazir font-semibold rounded-[8px]  flex px-12 py-3 text-white">
+                            class="bg-[#184D6C] text-[14px] text-center justify-center vazir font-semibold rounded-[8px]  flex px-12 py-3 text-white whitespace-nowrap">
                             <span wire:loading.remove wire:target='submitAndPrint'>
                                 ثبت و چاپ
 
@@ -1714,7 +1879,7 @@
                         @endif
 
                         <button type="button" wire:click="cancel"
-                            class="bg-[#DD2424] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
+                            class="bg-[#184D6C] text-[16px] vazir font-semibold rounded-[8px] px-12 py-3 text-white">
                             {{ $remittanceId ? 'لغو ویرایش' : 'انصراف' }}
                         </button>
                     </div>
@@ -1725,7 +1890,8 @@
             <div class="flex-1 flex flex-col
          dark:border dark:border-white
          dark:bg-black dark:text-white
-         bg-[#F5F5F5]
+            bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC]
+
          p-3 md:p-4 lg:p-6
          rounded-[12px]
          w-full max-w-[440px] md:max-w-[410px] lg:max-w-full
@@ -1734,7 +1900,7 @@
 
                 <!-- Table Header -->
                 <div
-                    class="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
+                    class="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 justify-between items-center  p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                     <h1 class="text-lg md:text-xl lg:text-2xl vazir">برد های ثبت شده</h1>
 
                     <div class="flex items-center gap-3">
@@ -1753,13 +1919,21 @@
 
                         <!-- Search Box -->
                         <div class="relative w-full">
-                            <input type="text" wire:model.live="search"
-                                class="border dark:bg-black dark:border dark:border-white dark:placeholder:text-white border-[#8C8C8C] w-full h-12 md:h-[51px] bg-transparent rounded-[12px] p-2 md:p-3 text-sm md:text-base pr-10"
-                                placeholder="جستجو بر اساس نام یا نمبر حساب...">
+                             <input type="text" wire:model.live="search" placeholder="جستجو..." class="w-full h-12 md:h-[51px]
+                           border border-[#D7E5EC]
+                           dark:bg-black dark:border-white dark:placeholder:text-white placeholder:text-black
+                           rounded-[12px] pl-3 pr-12 text-sm md:text-base
+                           bg-transparent relative z-0">
 
-
-                            <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
-                                class="absolute  dark:hidden left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6">
+                            {{-- آیکون --}}
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none dark:hidden">
+                                <path d="M20 20L22 22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                <path
+                                    d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75"
+                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
                             <svg width="24" height="24"
                                 class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 hidden dark:block"
                                 viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1799,9 +1973,8 @@
                     <div class="max-h-[680px] overflow-y-auto min-w-[890px]">
                         <table
                             class="w-full text-sm  md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead
-                                class="bg-[#2B65E5]  text-white text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0"
-                                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                           <thead
+                                class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir whitespace-nowrap">
                                 <th class="px-4 py-4 font-bold w-16">#</th>
                                 <th class="px-4 py-4 font-bold w-48">حساب مشتری</th>
                                 <th class="px-4 py-4 font-bold w-32">از کارت</th>
@@ -1814,26 +1987,27 @@
                             </thead>
                             <tbody>
                                 @forelse($remittances as $key => $remittance)
-                                <tr class="text-black border-b dark:text-white border-[#D9D9D9] bg-transparent">
-                                    <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">
+<tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+                               odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
+                               transition-colors">                                        <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">
                                         {{ $key + 1 }}
                                     </td>
-                                    <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium w-48">
+                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium w-48">
                                         {{ $remittance->customer->fullname ?? '-' }}
                                     </td>
-                                    <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium w-32">
+                                    <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium w-32 whitespace-nowrap">
                                         {{ $remittance->recipient->fullname ?? $remittance->giver_name }}
                                     </td>
-                                    <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium w-40">
+                                    <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium w-40">
                                         {{ number_format($remittance->amount) }}
                                     </td>
-                                    <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium w-32">
+                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium w-32">
                                         {{ collect($currencies)->firstWhere('code',
                                         $remittance->currency)['name_fa'] ??
                                         $remittance->currency }}
                                     </td>
 
-                                    <td class="px-4 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-80">
+                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium text-center w-80">
                                         <div class="space-y-1 text-right">
                                             <p class="text-sm">کد رهگیری: {{ $remittance->tracking_code }}
                                             </p>
@@ -1841,7 +2015,7 @@
                                             <p class="text-sm">تفصیلات: {{ $remittance->description }}</p>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-40">
+                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] text-center w-40">
                                         <div class="whitespace-nowrap">
                                             <div class="font-medium">
                                                 {{ explode(' ',$remittance->date)[0] }}
@@ -1851,7 +2025,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="py-4 text-center w-[68]">
+                                    <td class="py-2 text-center w-[68]">
                                         <div class="flex justify-center gap-3">
                                             <!-- Edit Button -->
                                             <button wire:click="edit({{ $remittance->id }})"

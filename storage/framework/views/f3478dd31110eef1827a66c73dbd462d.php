@@ -257,10 +257,11 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
 
                                     <?php
-                                     $user = Auth::guard('sarafi')->user();
-            $adminId = $user->admin_id ?? $user->id;
-                                    $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->where('admin_id', $adminId)->first()
-                                    
+                                    $user = Auth::guard('sarafi')->user();
+                                    $adminId = $user->admin_id ?? $user->id;
+                                    $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->where('admin_id',
+                                    $adminId)->first()
+
                                     ;
                                     $currencyMap = [
                                     'afn' => 'افغانی',

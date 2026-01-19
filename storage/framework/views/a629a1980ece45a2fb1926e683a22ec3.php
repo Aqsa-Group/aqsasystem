@@ -6,16 +6,16 @@
             </div>
 
             <div class="w-full">
-                <div class="bg-[#F5F5F5] dark:bg-black dark:border dark:border-white p-4 rounded-[12px] mx-auto"
-                    style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+                <div class="bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC]
+ dark:bg-black dark:border dark:border-white p-4 rounded-[12px] mx-auto">
                     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-7 gap-4 items-end">
                         <!-- چاپ -->
                         <div>
                             <label class="block text-[16px] font-medium invisible mb-1">چاپ</label>
                             <button wire:click="printReport" wire:loading.attr="disabled" wire:target="printReport"
                                 class="w-full h-[60px] flex items-center justify-center gap-2
-                                       bg-[#2563EB] text-white rounded-xl
-                                       hover:bg-blue-700 transition">
+                                       bg-[#184D6C] text-white rounded-xl
+                                       transition">
                                 <svg wire:loading.remove wire:target="printReport" class="w-5 h-5" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -30,8 +30,8 @@
                         <div>
                             <label class="block text-[16px] font-medium invisible mb-1">ریست</label>
                             <button wire:click="resetFilters" wire:loading.attr="disabled" class="w-full h-[60px] flex items-center justify-center gap-2
-                                   bg-gray-500 text-white rounded-xl
-                                   hover:bg-gray-600 transition">
+                                  bg-[#EFF6F9] text-black border border-[#184D6C] rounded-xl
+                                  transition">
                                 <span wire:loading.remove>ریست فیلترها</span>
                                 <span wire:loading>در حال ریست...</span>
                             </button>
@@ -40,8 +40,8 @@
                         <!-- نوع ترانزکشن -->
                         <div>
                             <label class="block text-[16px] font-medium mb-1 dark:text-white">نوع تراکنش</label>
-                            <select wire:model.live="transactionType" class="w-full h-[60px] appearance-none border dark:bg-black dark:border-white
-                                   border-[#8C8C8C] rounded-xl px-4 text-sm">
+                            <select wire:model.live="transactionType" class="w-full h-[60px] appearance-none  dark:bg-black dark:border-white
+                                   bg-[#EFF6F9] text-black border border-[#184D6C] rounded-xl px-4 text-sm">
                                 <option value="">همه</option>
                                 <option value="رسید">رسید</option>
                                 <option value="برد">برد</option>
@@ -51,8 +51,8 @@
                         <!-- نوع حساب -->
                         <div>
                             <label class="block text-[16px] font-medium mb-1 dark:text-white">نوع حساب</label>
-                            <select wire:model.live="accountType" class="w-full h-[60px] appearance-none border dark:bg-black dark:border-white
-                                   border-[#8C8C8C] rounded-xl px-4 text-sm">
+                            <select wire:model.live="accountType" class="w-full h-[60px] appearance-none  dark:bg-black dark:border-white
+                                  bg-[#EFF6F9] text-black border border-[#184D6C]  rounded-xl px-4 text-sm">
                                 <option value="">همه</option>
                                 <option value="نقدی">نقدی</option>
                                 <option value="بانکی">بانکی</option>
@@ -62,8 +62,8 @@
                         <!-- ارز -->
                         <div>
                             <label class="block text-[16px] font-medium mb-1 dark:text-white">ارز</label>
-                            <select wire:model.live="currency" class="w-full h-[60px] appearance-none border dark:bg-black dark:border-white
-                                   border-[#8C8C8C] rounded-xl px-4 text-sm">
+                            <select wire:model.live="currency" class="w-full h-[60px] appearance-none  dark:bg-black dark:border-white
+                                   bg-[#EFF6F9] text-black border border-[#184D6C]  rounded-xl px-4 text-sm">
                                 <option value="">همه ارزها</option>
                                 <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($code); ?>"><?php echo e($name); ?></option>
@@ -79,7 +79,7 @@
                                     تاریخ</label>
                                 <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
                                     placeholder="YYYY/MM/DD"
-                                    class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 cursor-pointer"
+                                    class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] text-black border border-[#184D6C]  focus:ring-2  focus:ring-blue-500 cursor-pointer"
                                     readonly />
 
                                 <!-- Date Picker Modal -->
@@ -300,7 +300,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     تاریخ</label>
                                 <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
                                     placeholder="YYYY/MM/DD"
-                                    class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 cursor-pointer"
+                                    class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] text-black border border-[#184D6C]  focus:ring-2  focus:ring-blue-500 cursor-pointer"
                                     readonly />
 
                                 <!-- Date Picker Modal -->
@@ -523,7 +523,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     <div class="overflow-x-auto w-full mt-4">
                         <div class="max-h-[600px] overflow-y-auto">
                             <table class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500">
-                                <thead class="bg-[#2B65E5] text-white text-[16px] vazir h-16 sticky top-0">
+                                <thead
+                                    class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
                                     <tr>
                                         <th class="px-4 py-4 font-bold w-16">
                                             <span class="border border-white px-2 py-1 rounded-lg">#</span>
@@ -540,8 +541,9 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 </thead>
                                 <tbody>
                                     <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $transactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $transaction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                                    <tr
-                                        class="border-b dark:bg-black dark:text-white dark:border-white hover:bg-gray-50">
+                                    <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+                                            odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
+                                            transition-colors">
                                         <td class="px-4 py-4">
                                             <?php echo e($transactions->firstItem() + $index); ?>
 
@@ -633,12 +635,13 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
         <!-- جدول خلاصه گزارشات -->
         <div class="w-full mt-10">
-            <div class="bg-[#F5F5F5] dark:bg-black dark:border dark:border-white p-6 rounded-[12px] mx-auto"
-                style="box-shadow: 0px 4px 4px 0px #00000040;">
+            <div
+                class="bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC] dark:bg-black dark:border dark:border-white p-6 rounded-[12px] mx-auto">
 
                 <div class="overflow-x-auto w-full mt-4">
                     <table class="w-full text-sm md:text-base text-center text-gray-700 dark:text-white">
-                        <thead class="bg-[#2B65E5] text-white text-[16px] vazir h-16">
+                        <thead
+                            class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
                             <tr>
                                 <th class="px-4 py-4 w-12">#</th>
                                 <th class="px-4 py-4">ارز</th>
@@ -653,7 +656,9 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                         <tbody>
                             <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $summary; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                            <tr class="border-b dark:border-white hover:bg-gray-100 dark:hover:bg-gray-800">
+                            <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+                               odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
+                               transition-colors">
                                 <td class="px-4 py-4"><?php echo e($index + 1); ?></td>
                                 <td class="px-4 py-4 font-bold"><?php echo e($item->currency_fa); ?></td>
                                 <td class="px-4 py-4 text-green-600"><?php echo e(number_format($item->receipt_cash, 2)); ?>
@@ -693,8 +698,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
         </div>
 
 
-        <div style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;"
-            class="bg-[#F5F5F5] dark:bg-black dark:border dark:border-white p-4 rounded-[12px] mx-auto mt-10">
+        <div 
+            class="bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC] dark:bg-black dark:border dark:border-white p-4 rounded-[12px] mx-auto mt-10">
             <!-- جدول موجودی هر ارز به صورت جداگانه -->
             <div class="mt-8">
                 <h3 class="text-xl font-bold mb-4 text-center dark:text-white ">موجودی صندوق نقدی و بانکی</h3>
@@ -706,7 +711,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     $bank = $bankAccountBalance[$currencyCode] ?? 0;
                     $currencyName = $currencies[$currencyCode] ?? $currencyCode;
                     ?>
-                    <div style="box-shadow: 0px 4px 4px 0px #00000040;" class="bg-gradient-to-br from-white/40 to-white dark:from-gray-800 dark:to-gray-900 
+                    <div style="box-shadow: 0px 4px 4px 0px #00000040;" class="bg-[#EFF6F9] dark:from-gray-800 dark:to-gray-900 
                                     p-4 rounded-lg border border-gray-200 dark:border-gray-700">
                         <div class="flex justify-between items-center mb-2">
                             <span class="font-bold text-lg dark:text-white"><?php echo e($currencyName); ?></span>
@@ -733,7 +738,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
         </div>
 
 
-        <div class="flex  gap-4 p-10 bg-[#F5F5F5] mt-5" style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+        <div class="flex  gap-4 p-10 bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC] mt-5" >
 
 
 
@@ -741,7 +746,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             <!--  سود امروز -->
 
             <div class="group flex flex-col justify-between border rounded-2xl
-                        bg-gradient-to-br from-white/40 to-white  
+                        bg-[#EFF6F9]
                         shadow-md hover:shadow-xl transition-colors duration-500 ease-in-out
 
                         w-full h-[180px] p-6">
@@ -802,7 +807,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             <!--  ضرر امروز  -->
 
             <div class="group flex flex-col justify-between border rounded-2xl
-                       bg-gradient-to-br from-white/40 to-white  hover:bg-opacity-100
+                       bg-[#EFF6F9] to-white  hover:bg-opacity-100
                         shadow-md hover:shadow-xl transition-colors duration-500 ease-in-out
 
                         w-full h-[180px] p-6">

@@ -23,12 +23,12 @@
 
         <!-- جدول تایید حواله‌ها -->
         <div class="w-full">
-            <div class="bg-[#F5F5F5] dark:bg-black dark:border dark:border-white dark:text-white p-6 rounded-[12px]"
-                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+            <div class=" bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC] dark:bg-black dark:border dark:border-white dark:text-white p-6 rounded-[12px]"
+               >
 
                 <div
-                    class="flex flex-col md:flex-row justify-between items-center border border-[#8C8C8C] p-4 rounded-[12px] mb-4 gap-3">
-                    <h1 class="text-xl md:text-2xl vazir dark:text-white">حواله‌های در انتظار تایید</h1>
+                    class="flex flex-col md:flex-row justify-between items-center p-4 rounded-[12px] mb-4 gap-3">
+                    <h1 class="text-xl md:text-2xl vazir dark:text-white inter">حواله‌های در انتظار تایید</h1>
                     <div class="text-gray-600 vazir dark:text-white">
                         تعداد: <?php echo e(count($pendingApprovals)); ?> حواله
                     </div>
@@ -38,8 +38,8 @@
                     <div class="max-h-[600px] overflow-y-auto">
                         <table
                             class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead
-                                class="bg-[#2B65E5] dark:bg-[#2B65E5] text-white text-[16px] vazir h-16 sticky top-0">
+                                                       <thead
+                                class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
                                 <tr>
                                     <th class="px-4 py-4 font-bold w-16">
                                         <span class="border border-white px-2 py-1 rounded-lg">#</span>
@@ -55,8 +55,9 @@
                             </thead>
                             <tbody>
                                 <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $pendingApprovals; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $approval): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                                <tr
-                                    class="text-black border-b dark:text-white border-[#D9D9D9] bg-transparent hover:bg-gray-50 dark:hover:bg-gray-800">
+                                  <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+                               odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
+                                    transition-colors">
                                     <td class="px-4 py-4 vazir text-[16px] font-medium text-center">
                                         <?php echo e($key + 1); ?>
 

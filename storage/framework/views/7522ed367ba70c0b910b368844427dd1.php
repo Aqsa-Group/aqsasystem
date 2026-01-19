@@ -23,8 +23,8 @@
 
         <!-- جدول تراکنش‌های حذف/ویرایش شده -->
         <div class="w-full">
-            <div class="bg-[#F5F5F5] dark:bg-black dark:border-white dark:border dark:text-white p-6 rounded-[12px]"
-                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+            <div class=" bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC] dark:bg-black dark:border-white dark:border dark:text-white p-6 rounded-[12px]"
+>
 
                 <!-- فیلتر و جستجو -->
                 <div class="flex items-center justify-between mt-5 gap-3 w-full">
@@ -33,7 +33,7 @@
                       <!-- دکمه فیلتر -->
                     <div class="relative">
                         <button wire:click="$toggle('filterOpen')"
-                            class="px-10 py-3 border rounded-lg  bg-[#2563EB] transition flex items-center gap-2 text-white">
+                            class="px-10 py-3 border rounded-lg  bg-[#184D6C] transition flex items-center gap-2 text-white">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/filter.svg')); ?>" alt="">
                             <span class="text-white">فیلتر</span>
                         </button>
@@ -58,7 +58,7 @@
                             </select>
 
                             <button wire:click="applyFilter"
-                                class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 w-full">
+                                class="px-3 py-2 bg-[#184D6C] text-white rounded-lg  w-full">
                                 اعمال فیلتر
                             </button>
                         </div>
@@ -68,8 +68,21 @@
 
                     <!-- جستجو -->
                     <div class="relative w-[800px]">
-                        <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
-                                class="absolute  dark:hidden left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6">
+                           <input type="text" wire:model.live="search" placeholder="جستجو..." class="w-full h-12 md:h-[51px]
+                           border border-[#D7E5EC]
+                           dark:bg-black dark:border-white dark:placeholder:text-white placeholder:text-black
+                           rounded-[12px] pl-3 pr-12 text-sm md:text-base
+                           bg-transparent relative z-0">
+
+                            
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none dark:hidden">
+                                <path d="M20 20L22 22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                <path
+                                    d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75"
+                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
                             <svg width="24" height="24"
                                 class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 hidden dark:block"
                                 viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -79,8 +92,7 @@
                                 <path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round"
                                     stroke-linejoin="round" />
                             </svg>
-                        <input type="text" wire:model.debounce.500ms="search" placeholder="جستجو بر اساس شرح سند..."
-                            class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white border border-gray-300 bg-transparent rounded-2xl pl-10 pr-3 py-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm">
+                   
                     </div>
 
                     
@@ -91,7 +103,7 @@
                 <div class="overflow-x-auto w-full mt-4">
                     <div class="max-h-[600px] overflow-y-auto">
                         <table class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500">
-                            <thead class="bg-[#2B65E5] text-white text-[16px] vazir h-16 sticky top-0">
+                            <thead class=" text-black text-[16px] vazir h-16 sticky top-0 whitespace-nowrap">
                                 <tr>
                                     <th class="px-4 py-4 font-bold w-16">
                                         <span class="border border-white px-2 py-1 rounded-lg">#</span>
@@ -107,8 +119,9 @@
                             </thead>
                             <tbody>
                                 <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $trashRecords; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $record): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                                <tr class="text-black dark:text-white border-b border-[#D9D9D9] bg-transparent hover:bg-gray-50 dark:hover:bg-gray-700">
-                                    <td class="px-4 py-4 vazir text-[16px] font-medium text-center">
+   <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+                               odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
+                               transition-colors">                                    <td class="px-4 py-4 vazir text-[16px] font-medium text-center">
                                         <?php echo e($trashRecords->firstItem() + $key); ?>
 
                                     </td>

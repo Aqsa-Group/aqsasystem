@@ -28,12 +28,11 @@
         <h1 class="text-[24px] font-medium vazir dark:text-white">ثبت نرخ ارز برای بیلانس گیری ، مفاد و ضرر</h1>
         <h1 class="text-[#8C8C8C] dark:text-white">ثبت نرخ ارز برای بیلانس گیری ، مفاد و ضرر حسابات مشتریان</h1>
     </div>
-    <hr class="my-6 border-t border-[#D9D9D9] w-full">
 
     <!-- فرم کامل عرض -->
-    <div class="w-full dark:bg-black dark:border-white dark:border dark:text-white bg-[#F5F5F5] p-[12px] rounded-[12px] h-fit mb-6"
-        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-        <div class="flex gap-2 border border-[#8C8C8C] rounded-[12px] p-6 mb-4">
+    <div class="w-full dark:bg-black dark:border-white dark:border  bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC] dark:text-white  p-[12px] rounded-[12px] h-fit mb-6"
+        >
+        <div class="flex gap-2  rounded-[12px] p-6 mb-4 inter text-xl">
             <img src="<?php echo e(asset('assets/sarafi/all_icon/exchange-rate.svg')); ?>" alt="">
             <p><?php echo e($isEditing ? 'ویرایش قیمت ارز' : 'ثبت قیمت ارز'); ?></p>
         </div>
@@ -44,7 +43,7 @@
                     <label class="block text-[16px] font-medium text-black mb-1 vazir"> ارز اصلی</label>
                     <div class="relative">
                         <select wire:model.live="source_currency"
-                            class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer appearance-none pr-3 pl-10">
+                            class="w-full h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] focus:ring-2  focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer appearance-none pr-3 pl-10">
                             <option value="usd">دالر</option>
                         </select>
                         <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
@@ -63,7 +62,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 <div class="flex-1">
                     <label class="block text-[16px] font-medium text-black mb-1 vazir">تاریخ</label>
                     <input type="text" wire:model="date" placeholder="YYYY/MM/DD"
-                        class="w-full h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
+                        class="w-full h-[60px] p-3 rounded-[12px]  focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white cursor-pointer" />
                     <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['date'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -79,7 +78,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             <div class="overflow-x-auto">
                 <table class="w-full text-center border-collapse mb-4 min-w-[1000px]">
                     <thead>
-                        <tr class="bg-[#2B65E5] text-white">
+                        <tr class="bg-white text-black">
                             <th class="px-4 py-3 border-l border-white">واحد ارز</th>
                             <th class="px-4 py-3 border-l border-white">خرید نقدی</th>
                             <th class="px-4 py-3 border-l border-white">خرید بانکی</th>
@@ -100,7 +99,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         $currencyName = $this->getCurrencyName($currencyCode);
                         ?>
                         <tr class="border-b">
-                            <td class="px-4 py-3 font-bold text-gray-700 dark:bg-black dark:border-white dark:border dark:text-white bg-gray-50">
+                            <td class="px-4 py-3 font-bold text-gray-700 dark:bg-black bg-[#EFF6F9] dark:border-white dark:border dark:text-white ">
                                 <?php echo e($currencyName); ?>
 
                             </td>
@@ -181,13 +180,13 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             <div
                 class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-6 mt-6 justify-center items-center text-center">
                 <button type="submit"
-                    class="bg-[#2563EB] hover:bg-[#1E4FD6] transition-all duration-200 text-[16px] vazir font-semibold rounded-[10px] px-8 sm:px-20 py-3 text-white shadow-md w-full sm:w-auto">
+                    class="bg-[#184D6C]  transition-all duration-200 text-[16px] vazir font-semibold rounded-[10px] px-8 sm:px-20 py-3 text-white shadow-md w-full sm:w-auto">
                     <?php echo e($isEditing ? 'بروزرسانی' : 'ثبت'); ?>
 
                 </button>
 
                 <button type="button" wire:click="cancel"
-                    class="bg-[#DD2424] hover:bg-[#B81E1E] transition-all duration-200 text-[16px] vazir font-semibold rounded-[10px] px-8 sm:px-20 py-3 text-white shadow-md w-full sm:w-auto">
+                    class="bg-[#184D6C]  transition-all duration-200 text-[16px] vazir font-semibold rounded-[10px] px-8 sm:px-20 py-3 text-white shadow-md w-full sm:w-auto">
                     انصراف
                 </button>
             </div>
@@ -195,8 +194,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
     </div>
 
     <!-- جدول زیر فرم -->
-    <div class="w-full flex flex-col dark:bg-black dark:border dark:border-white bg-[#F5F5F5] p-1 md:p-4 lg:p-6 rounded-[12px] overflow-x-auto mx-auto"
-        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+    <div class="w-full flex flex-col dark:bg-black dark:border dark:border-white  bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC] p-1 md:p-4 lg:p-6 rounded-[12px] overflow-x-auto mx-auto"
+       >
         <div class="flex gap-2 border border-[#8C8C8C] rounded-[12px] p-6 mb-4">
             <img src="<?php echo e(asset('assets/sarafi/all_icon/exchange-rate.svg')); ?>" alt="">
             <p>جدول قیمت ارز</p>
@@ -206,7 +205,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
         <div class="flex-1 overflow-x-auto">
             <table
                 class="w-full min-w-[1000px] text-sm md:text-base text-center text-gray-500 dark:text-gray-400 border-collapse">
-                <thead class="bg-[#2B65E5] text-white">
+                <thead class="bg-white text-black">
                     <tr>
                         <th class="px-4 py-3 border-l border-white">ارز مبدأ</th>
                         <?php
@@ -226,10 +225,11 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 </thead>
                 <tbody>
                     <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $records; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $record): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                    <tr class="bg-transparent dark:text-white dark:bg-black dark:hover:bg-gray-700 hover:bg-gray-50">
-                        <!-- ارز مبدأ -->
+  <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+                               odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
+                               transition-colors">                        <!-- ارز مبدأ -->
                         <td class="px-3 py-2 font-medium border-l dark:bg-black dark:border dark:border-white bg-blue-50">
-                            <span class="font-bold text-blue-700 dark:text-white"><?php echo e($this->getCurrencyName($record->source_currency)); ?></span>
+                            <span class="font-bold text-black dark:text-white"><?php echo e($this->getCurrencyName($record->source_currency)); ?></span>
                             <div class="text-xs dark:text-white text-gray-500 mt-1">نرخ‌ها نسبت به این ارز</div>
                         </td>
 
