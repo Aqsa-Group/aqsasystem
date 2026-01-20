@@ -264,6 +264,16 @@
         }
 
 
+        @media (max-width: 1920px) {
+  body {
+    transform: scale(0.85);
+    transform-origin: top center;
+    width: 117.647%;
+  }
+}
+
+
+
         @keyframes fadeInUp {
             from {
                 opacity: 0;
