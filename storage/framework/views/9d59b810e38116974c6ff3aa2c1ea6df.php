@@ -85,7 +85,6 @@
             border-collapse: collapse;
             margin: 8px 0;
             font-size: 8pt;
-            page-break-inside: avoid;
         }
 
         th {

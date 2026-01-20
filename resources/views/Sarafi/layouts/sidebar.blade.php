@@ -2093,19 +2093,26 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
 
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
+
                                 <path
                                     d="M2.55078 4.5C2.61472 3.84994 2.75923 3.41238 3.08582 3.08579C3.67161 2.5 4.61442 2.5 6.50004 2.5C8.38565 2.5 9.32846 2.5 9.91425 3.08579C10.5 3.67157 10.5 4.61438 10.5 6.5C10.5 8.38562 10.5 9.32843 9.91425 9.91421C9.32846 10.5 8.38565 10.5 6.50004 10.5C4.61442 10.5 3.67161 10.5 3.08582 9.91421C2.77645 9.60484 2.63047 9.19589 2.56158 8.60106"
-                                    stroke="#184D6C" stroke-width="1.5" stroke-linecap="round" />
+                                    :stroke="active === 'dashboard' ? '#000000' : '#FFFFFF'" stroke-width="1.5"
+                                    stroke-linecap="round" />
+
                                 <path
                                     d="M21.4493 15.5C21.3853 14.8499 21.2408 14.4124 20.9142 14.0858C20.3284 13.5 19.3856 13.5 17.5 13.5C15.6144 13.5 14.6716 13.5 14.0858 14.0858C13.5 14.6716 13.5 15.6144 13.5 17.5C13.5 19.3856 13.5 20.3284 14.0858 20.9142C14.6716 21.5 15.6144 21.5 17.5 21.5C19.3856 21.5 20.3284 21.5 20.9142 20.9142C21.2408 20.5876 21.3853 20.1501 21.4493 19.5"
-                                    stroke="#184D6C" stroke-width="1.5" stroke-linecap="round" />
+                                    :stroke="active === 'dashboard' ? '#000000' : '#FFFFFF'" stroke-width="1.5"
+                                    stroke-linecap="round" />
+
                                 <path
                                     d="M2.5 17.5C2.5 15.6144 2.5 14.6716 3.08579 14.0858C3.67157 13.5 4.61438 13.5 6.5 13.5C8.38562 13.5 9.32843 13.5 9.91421 14.0858C10.5 14.6716 10.5 15.6144 10.5 17.5C10.5 19.3856 10.5 20.3284 9.91421 20.9142C9.32843 21.5 8.38562 21.5 6.5 21.5C4.61438 21.5 3.67157 21.5 3.08579 20.9142C2.5 20.3284 2.5 19.3856 2.5 17.5Z"
-                                    stroke="#184D6C" stroke-width="1.5" />
+                                    :stroke="active === 'dashboard' ? '#000000' : '#FFFFFF'" stroke-width="1.5" />
+
                                 <path
                                     d="M13.5 6.5C13.5 4.61438 13.5 3.67157 14.0858 3.08579C14.6716 2.5 15.6144 2.5 17.5 2.5C19.3856 2.5 20.3284 2.5 20.9142 3.08579C21.5 3.67157 21.5 4.61438 21.5 6.5C21.5 8.38562 21.5 9.32843 20.9142 9.91421C20.3284 10.5 19.3856 10.5 17.5 10.5C15.6144 10.5 14.6716 10.5 14.0858 9.91421C13.5 9.32843 13.5 8.38562 13.5 6.5Z"
-                                    stroke="#184D6C" stroke-width="1.5" />
+                                    :stroke="active === 'dashboard' ? '#000000' : '#FFFFFF'" stroke-width="1.5" />
                             </svg>
+
 
 
 
@@ -2128,20 +2135,28 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                             <span class="flex items-center gap-2 " style="font-weight: 400">
 
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="12" cy="6" r="4" stroke="white" stroke-width="1.5" />
-                                    <path d="M18 9C19.6569 9 21 7.88071 21 6.5C21 5.11929 19.6569 4 18 4" stroke="white"
-                                        stroke-width="1.5" stroke-linecap="round" />
-                                    <path d="M6 9C4.34315 9 3 7.88071 3 6.5C3 5.11929 4.34315 4 6 4" stroke="white"
-                                        stroke-width="1.5" stroke-linecap="round" />
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    :class="active === 'customers' ? 'text-black' : 'text-white'">
+
+                                    <circle cx="12" cy="6" r="4" stroke="currentColor" stroke-width="1.5" />
+
+                                    <path d="M18 9C19.6569 9 21 7.88071 21 6.5C21 5.11929 19.6569 4 18 4"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+
+                                    <path d="M6 9C4.34315 9 3 7.88071 3 6.5C3 5.11929 4.34315 4 6 4"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+
                                     <path
                                         d="M17.1973 15C17.7078 15.5883 18 16.2714 18 17C18 19.2091 15.3137 21 12 21C8.68629 21 6 19.2091 6 17C6 14.7909 8.68629 13 12 13C12.3407 13 12.6748 13.0189 13 13.0553"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+
                                     <path d="M20 19C21.7542 18.6153 23 17.6411 23 16.5C23 15.3589 21.7542 14.3847 20 14"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+
                                     <path d="M4 19C2.24575 18.6153 1 17.6411 1 16.5C1 15.3589 2.24575 14.3847 4 14"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                                 </svg>
+
 
 
 
@@ -2149,8 +2164,9 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                             </span>
                             <svg width="12" height="6" viewBox="0 0 12 6" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" stroke="white" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" :stroke="(active === 'customers' || active === 'control-customers')
+                                ? '#000000'
+                                : '#FFFFFF'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
 
 
@@ -2160,7 +2176,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('customer-create', 'customers')"
                                 :class="active === 'customer-create' ? 'bg-[#122EE1] text-white' : 'text-white dark:hover:bg-gray-800 dark:text-white hover:bg-gray-600'">
-                                <i class="fa-solid fa-user-pen w-4 h-4"
+                                <i class="fa-solid fa-user-pen w-4 h-4 text-white"
                                     :class="active === 'customer-create' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
                                 {{ __('messages.customer_create') }}
                             </a>
@@ -2169,7 +2185,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('customer-table', 'customers')"
                                 :class="active === 'customer-table' ? 'bg-[#122EE1] text-white' : 'text-white dark:hover:bg-gray-800 dark:text-white hover:bg-gray-600'">
-                                <i class="fa-solid fa-users-gear h-4 w-4"
+                                <i class="fa-solid fa-users-gear h-4 w-4 text-white"
                                     :class="active === 'customer-table' ? 'filter invert brightness-0' : 'text-gray-500'"></i>
                                 {{ __('messages.customer_list') }}
                             </a>
@@ -2196,10 +2212,10 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M2 12C2 16.714 2 19.0711 3.46447 20.5355C4.92893 22 7.28595 22 12 22C16.714 22 19.0711 22 20.5355 20.5355C22 19.0711 22 16.714 22 12V10.5M13.5 2H12C7.28595 2 4.92893 2 3.46447 3.46447C2.49073 4.43821 2.16444 5.80655 2.0551 8"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                                     <path
                                         d="M16.652 3.45506L17.3009 2.80624C18.3759 1.73125 20.1188 1.73125 21.1938 2.80624C22.2687 3.88124 22.2687 5.62415 21.1938 6.69914L20.5449 7.34795M16.652 3.45506C16.652 3.45506 16.7331 4.83379 17.9497 6.05032C19.1662 7.26685 20.5449 7.34795 20.5449 7.34795M16.652 3.45506L10.6872 9.41993C10.2832 9.82394 10.0812 10.0259 9.90743 10.2487C9.70249 10.5114 9.52679 10.7957 9.38344 11.0965C9.26191 11.3515 9.17157 11.6225 8.99089 12.1646L8.41242 13.9M20.5449 7.34795L17.5625 10.3304M14.5801 13.3128C14.1761 13.7168 13.9741 13.9188 13.7513 14.0926C13.4886 14.2975 13.2043 14.4732 12.9035 14.6166C12.6485 14.7381 12.3775 14.8284 11.8354 15.0091L10.1 15.5876M10.1 15.5876L8.97709 15.9619C8.71035 16.0508 8.41626 15.9814 8.21744 15.7826C8.01862 15.5837 7.9492 15.2897 8.03811 15.0229L8.41242 13.9M10.1 15.5876L8.41242 13.9"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                                 </svg>
 
 
@@ -2209,9 +2225,11 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
 
                             <svg width="12" height="6" viewBox="0 0 12 6" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" stroke="white" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" :stroke="(active === 'transaction' || active === 'control-transaction')
+                                ? '#000000'
+                                : '#FFFFFF'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
+
 
                         </button>
 
@@ -2289,14 +2307,14 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                             <span class="flex items-center gap-2 ">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 17V17.5V18" stroke="white" stroke-width="1.5" stroke-linecap="round" />
-                                    <path d="M12 6V6.5V7" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M12 17V17.5V18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M12 6V6.5V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                                     <path
                                         d="M15 9.5C15 8.11929 13.6569 7 12 7C10.3431 7 9 8.11929 9 9.5C9 10.8807 10.3431 12 12 12C13.6569 12 15 13.1193 15 14.5C15 15.8807 13.6569 17 12 17C10.3431 17 9 15.8807 9 14.5"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                                     <path
                                         d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                                 </svg>
 
 
@@ -2306,9 +2324,11 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                             </span>
                             <svg width="12" height="6" viewBox="0 0 12 6" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" stroke="white" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" :stroke="(active === 'accounts' || active === 'control-accounts')
+                                ? '#000000'
+                                : '#FFFFFF'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
+
 
                         </button>
                         <div x-show="openItems.accounts" x-transition class="mr-6 mt-1 space-y-1">
@@ -2322,15 +2342,15 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M18.5 12.6499V16.3499C18.5 19.4699 15.59 21.9999 12 21.9999C8.41 21.9999 5.5 19.4699 5.5 16.3499V12.6499C5.5 15.7699 8.41 17.9999 12 17.9999C15.59 17.9999 18.5 15.7699 18.5 12.6499Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M18.5 7.65C18.5 8.56 18.25 9.4 17.81 10.12C16.74 11.88 14.54 13 12 13C9.46 13 7.26 11.88 6.19 10.12C5.75 9.4 5.5 8.56 5.5 7.65C5.5 6.09 6.22999 4.68 7.39999 3.66C8.57999 2.63 10.2 2 12 2C13.8 2 15.42 2.63 16.6 3.65C17.77 4.68 18.5 6.09 18.5 7.65Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M18.5 7.65V12.65C18.5 15.77 15.59 18 12 18C8.41 18 5.5 15.77 5.5 12.65V7.65C5.5 4.53 8.41 2 12 2C13.8 2 15.42 2.63 16.6 3.65C17.77 4.68 18.5 6.09 18.5 7.65Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
 
@@ -2351,11 +2371,11 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M7 10L9.29289 12.2929C9.68342 12.6834 10.3166 12.6834 10.7071 12.2929L12.2929 10.7071C12.6834 10.3166 13.3166 10.3166 13.7071 10.7071L17 14M17 14V11.5M17 14H14.5"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                                 </svg>
 
 
@@ -2365,9 +2385,11 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                             </span>
                             <svg width="12" height="6" viewBox="0 0 12 6" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" stroke="white" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" :stroke="(active === 'transactions' || active === 'control-transactions')
+                            ? '#000000'
+                            : '#FFFFFF'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
+
 
                         </button>
                         <div x-show="openItems.transactions" x-transition class="mr-6 mt-1 space-y-1">
@@ -2379,7 +2401,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M15.24 2H8.76004C5.00004 2 4.71004 5.38 6.74004 7.22L17.26 16.78C19.29 18.62 19 22 15.24 22H8.76004C5.00004 22 4.71004 18.62 6.74004 16.78L17.26 7.22C19.29 5.38 19 2 15.24 2Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
 
@@ -2397,19 +2419,19 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M17.9 9.04997C15.72 8.82997 13.52 8.71997 11.33 8.71997C10.03 8.71997 8.72997 8.78997 7.43997 8.91997L6.09998 9.04997"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M9.70996 8.38994L9.84996 7.52994C9.94996 6.90994 10.03 6.43994 11.14 6.43994H12.86C13.97 6.43994 14.0499 6.92994 14.1499 7.52994L14.2899 8.37994"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M16.49 9.12988L16.06 15.7299C15.99 16.7599 15.93 17.5599 14.1 17.5599H9.89C8.06 17.5599 7.99999 16.7599 7.92999 15.7299L7.5 9.12988"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
 
@@ -2431,10 +2453,10 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M21.446 7.06901C20.6342 5.00831 18.9917 3.36579 16.931 2.55398C15.3895 1.94669 14 3.34316 14 5.00002V9.00002C14 9.5523 14.4477 10 15 10H19C20.6569 10 22.0533 8.61055 21.446 7.06901Z"
-                                        stroke="white" stroke-width="1.5" />
+                                       stroke="currentColor" stroke-width="1.5" />
                                     <path
                                         d="M6.22209 4.60105C6.66665 4.304 7.13344 4.04636 7.6171 3.82976C8.98898 3.21539 9.67491 2.9082 10.5875 3.4994C11.5 4.09061 11.5 5.06041 11.5 7.00001V8.50001C11.5 10.3856 11.5 11.3284 12.0858 11.9142C12.6716 12.5 13.6144 12.5 15.5 12.5H17C18.9396 12.5 19.9094 12.5 20.5006 13.4125C21.0918 14.3251 20.7846 15.011 20.1702 16.3829C19.9536 16.8666 19.696 17.3334 19.399 17.7779C18.3551 19.3402 16.8714 20.5578 15.1355 21.2769C13.3996 21.9959 11.4895 22.184 9.64665 21.8175C7.80383 21.4509 6.11109 20.5461 4.78249 19.2175C3.45389 17.8889 2.5491 16.1962 2.18254 14.3534C1.81598 12.5105 2.00412 10.6004 2.72315 8.86451"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                                 </svg>
 
 
@@ -2445,9 +2467,11 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                             </span>
                             <svg width="12" height="6" viewBox="0 0 12 6" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" stroke="white" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" :stroke="(active === 'reports' || active === 'control-reports')
+                                ? '#000000'
+                                : '#FFFFFF'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
+
 
                         </button>
                         <div x-show="openItems.reports" x-transition class="mr-6 mt-1 space-y-1">
@@ -2462,21 +2486,21 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M17 21H7C3 21 2 20 2 16V8C2 4 3 3 7 3H17C21 3 22 4 22 8V16C22 20 21 21 17 21Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M14 8H19" stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                    <path d="M14 8H19"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M15 12H19" stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                    <path d="M15 12H19"  stroke="currentColor"stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M17 16H19" stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                    <path d="M17 16H19"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M8.49994 11.2899C9.49958 11.2899 10.3099 10.4796 10.3099 9.47992C10.3099 8.48029 9.49958 7.66992 8.49994 7.66992C7.50031 7.66992 6.68994 8.48029 6.68994 9.47992C6.68994 10.4796 7.50031 11.2899 8.49994 11.2899Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M12 16.33C11.86 14.88 10.71 13.74 9.26 13.61C8.76 13.56 8.25 13.56 7.74 13.61C6.29 13.75 5.14 14.88 5 16.33"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
 
@@ -2493,11 +2517,11 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
 
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M2 2V19C2 20.66 3.34 22 5 22H22" stroke="#292D32" stroke-width="1.5"
+                                    <path d="M2 2V19C2 20.66 3.34 22 5 22H22"  stroke="currentColor" stroke-width="1.5"
                                         stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
                                     <path
                                         d="M5 17L9.59 11.64C10.35 10.76 11.7 10.7 12.52 11.53L13.47 12.48C14.29 13.3 15.64 13.25 16.4 12.37L21 7"
-                                        stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10"
+                                         stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"
                                         stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
 
@@ -2521,18 +2545,18 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path d="M6.87988 18.1501V16.0801" stroke="#292D32" stroke-width="1.5"
                                         stroke-linecap="round" />
-                                    <path d="M12 18.15V14.01" stroke="#292D32" stroke-width="1.5"
+                                    <path d="M12 18.15V14.01"  stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" />
-                                    <path d="M17.1201 18.1499V11.9299" stroke="#292D32" stroke-width="1.5"
+                                    <path d="M17.1201 18.1499V11.9299"  stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" />
                                     <path
                                         d="M17.1199 5.8501L16.6599 6.3901C14.1099 9.3701 10.6899 11.4801 6.87988 12.4301"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round" />
-                                    <path d="M14.1899 5.8501H17.1199V8.7701" stroke="#292D32" stroke-width="1.5"
+                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M14.1899 5.8501H17.1199V8.7701"  stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
                                     <path
                                         d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
 
@@ -2555,13 +2579,13 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M10 4C6.22876 4 4.34315 4 3.17157 5.17157C2 6.34315 2 8.22876 2 12C2 15.7712 2 17.6569 3.17157 18.8284C4.34315 20 6.22876 20 10 20H11.5M14 4C17.7712 4 19.6569 4 20.8284 5.17157C21.8915 6.23467 21.99 7.8857 21.9991 11"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                                     <path
                                         d="M15.5 14V20M15.5 20L17.5 18M15.5 20L13.5 18M20 20V14M20 14L22 16M20 14L18 16"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M10 16H6" stroke="white" stroke-width="1.5" stroke-linecap="round" />
-                                    <path d="M2 10L7 10M22 10L11 10" stroke="white" stroke-width="1.5"
+                                    <path d="M10 16H6"  stroke="currentColor"stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M2 10L7 10M22 10L11 10"  stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" />
                                 </svg>
 
@@ -2570,10 +2594,12 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
 
                                 ارسال و دریافت از صرافان
                             </span>
+                            </span>
                             <svg width="12" height="6" viewBox="0 0 12 6" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" stroke="white" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" :stroke="(active === 'changersdeal' || active === 'control-changersdeal')
+                                ? '#000000'
+                                : '#FFFFFF'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
 
                         </button>
@@ -2586,13 +2612,13 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M10.5898 7.67993H14.8298V11.9299" stroke="#292D32" stroke-width="1.5"
+                                    <path d="M10.5898 7.67993H14.8298V11.9299"  stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M14.8299 7.67993L9.16992 13.3399" stroke="#292D32" stroke-width="1.5"
+                                    <path d="M14.8299 7.67993L9.16992 13.3399"  stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51" stroke="#292D32"
+                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51"  stroke="currentColor"
                                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 ارسال به صرافی
@@ -2608,13 +2634,13 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M10.5898 13.3398H14.8298V9.09985" stroke="#292D32" stroke-width="1.5"
+                                    <path d="M10.5898 13.3398H14.8298V9.09985"  stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M14.8299 13.3399L9.16992 7.67993" stroke="#292D32" stroke-width="1.5"
+                                    <path d="M14.8299 13.3399L9.16992 7.67993"  stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51" stroke="#292D32"
+                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51"  stroke="currentColor"
                                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 دریافت از صرافی
@@ -2628,15 +2654,15 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                 :class="active === 'edit-accounts' ? 'bg-[#FFFFFF] text-[#184D6C]' : 'text-white dark:text-white hover:bg-gray-600  dark:hover:bg-gray-800'">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M2 22H22" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10"
+                                    <path d="M2 22H22"  stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"
                                         stroke-linecap="round" stroke-linejoin="round" />
                                     <path d="M9.75 4V22H14.25V4C14.25 2.9 13.8 2 12.45 2H11.55C10.2 2 9.75 2.9 9.75 4Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M3 10V22H7V10C7 8.9 6.6 8 5.4 8H4.6C3.4 8 3 8.9 3 10Z" stroke="#292D32"
+                                    <path d="M3 10V22H7V10C7 8.9 6.6 8 5.4 8H4.6C3.4 8 3 8.9 3 10Z"  stroke="currentColor"
                                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                     <path d="M17 15V22H21V15C21 13.9 20.6 13 19.4 13H18.6C17.4 13 17 13.9 17 15Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
 
@@ -2663,17 +2689,17 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M21 7V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V7C3 4 4.5 2 8 2H16C19.5 2 21 4 21 7Z"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
 
                                     <path
                                         d="M15.5 2V9.85999C15.5 10.3 14.98 10.52 14.66 10.23L12.34 8.09003C12.15 7.91003 11.85 7.91003 11.66 8.09003L9.34003 10.23C9.02003 10.52 8.5 10.3 8.5 9.85999V2H15.5Z"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
 
-                                    <path d="M13.25 14H17.5" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M13.25 14H17.5"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
 
-                                    <path d="M9 18H17.5" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M9 18H17.5"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                                 </svg>
 
 
@@ -2683,9 +2709,11 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                             </span>
                             <svg width="12" height="6" viewBox="0 0 12 6" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" stroke="white" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" :stroke="(active === 'finance' || active === 'control-finance')
+                                ? '#000000'
+                                : '#FFFFFF'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
+
 
                         </button>
                         <div x-show="openItems.finance" x-transition class="mr-6 mt-1 space-y-1">
@@ -2697,13 +2725,13 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M10.5898 7.67993H14.8298V11.9299" stroke="#292D32" stroke-width="1.5"
+                                    <path d="M10.5898 7.67993H14.8298V11.9299"  stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M14.8299 7.67993L9.16992 13.3399" stroke="#292D32" stroke-width="1.5"
+                                    <path d="M14.8299 7.67993L9.16992 13.3399"  stroke="currentColor"stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51" stroke="#292D32"
+                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51"  stroke="currentColor"
                                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 ثبت کارمندان
@@ -2719,13 +2747,13 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M10.5898 13.3398H14.8298V9.09985" stroke="#292D32" stroke-width="1.5"
+                                    <path d="M10.5898 13.3398H14.8298V9.09985"  stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M14.8299 13.3399L9.16992 7.67993" stroke="#292D32" stroke-width="1.5"
+                                    <path d="M14.8299 13.3399L9.16992 7.67993"  stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51" stroke="#292D32"
+                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51"  stroke="currentColor"
                                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 برداشت ها
@@ -2739,15 +2767,15 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                 :class="active === 'edit-accounts' ? 'bg-[#FFFFFF] text-[#184D6C]' : 'text-white dark:text-white hover:bg-gray-600  dark:hover:bg-gray-800'">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M2 22H22" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10"
+                                    <path d="M2 22H22"  stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"
                                         stroke-linecap="round" stroke-linejoin="round" />
                                     <path d="M9.75 4V22H14.25V4C14.25 2.9 13.8 2 12.45 2H11.55C10.2 2 9.75 2.9 9.75 4Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M3 10V22H7V10C7 8.9 6.6 8 5.4 8H4.6C3.4 8 3 8.9 3 10Z" stroke="#292D32"
+                                    <path d="M3 10V22H7V10C7 8.9 6.6 8 5.4 8H4.6C3.4 8 3 8.9 3 10Z"  stroke="currentColor"
                                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                     <path d="M17 15V22H21V15C21 13.9 20.6 13 19.4 13H18.6C17.4 13 17 13.9 17 15Z"
-                                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round"
+ stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
                                 مدیریت معاشات
@@ -2774,26 +2802,26 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M8.26035 12.2189C8.55226 12.7093 8.94403 13.1629 9.54282 13.7121C9.79976 13.9477 10.1054 14.1236 10.4331 14.2427C11.4478 14.6117 12.5574 14.6267 13.5817 14.2853L13.6244 14.271C14.0364 14.1337 14.4159 13.9098 14.7215 13.6013C15.5548 12.76 16.0138 12.1215 16.3354 11.2158C16.4511 10.8901 16.6969 10.6219 17.0248 10.5126C17.3933 10.3897 17.6686 10.0716 17.7104 9.68551C17.7523 9.29881 17.7584 8.96851 17.6951 8.65701C17.5344 7.86761 17.2993 7.02633 17.6596 6.30581C17.9844 5.65626 17.9235 4.88039 17.5014 4.28944L16.2505 2.53818C15.1687 1.02373 13.2367 0.375249 11.4603 0.930373L8.99198 1.70173C8.6621 1.80481 8.4375 2.11032 8.4375 2.45592C8.4375 2.68263 8.34012 2.89842 8.17012 3.04842L6.31916 4.68163C5.73039 5.20113 5.67857 6.10119 6.20384 6.68483L6.3445 6.84111C6.69339 7.22877 6.73509 7.80362 6.44579 8.23757C6.28022 8.48592 6.21416 8.79062 6.28274 9.08111C6.36258 9.41933 6.4558 9.69886 6.5921 9.9397C7.05231 10.7529 7.78235 11.416 8.26035 12.2189Z"
-                                        stroke="white" stroke-width="1.3" />
+                                        stroke="currentColor" stroke-width="1.3" />
                                     <path
                                         d="M4.5 26.15C4.85898 26.15 5.15 25.859 5.15 25.5C5.15 25.141 4.85898 24.85 4.5 24.85V25.5V26.15ZM5.26748 17.3371L5.12264 16.7034L5.26748 17.3371ZM1.72357 21.3432L1.12314 21.0942L1.72357 21.3432ZM1.72357 21.3432L2.324 21.5921L2.97072 20.0324L2.37029 19.7834L1.76986 19.5345L1.12314 21.0942L1.72357 21.3432ZM5.26748 17.3371L5.41231 17.9707L7.51861 17.4893L7.37378 16.8556L7.22894 16.222L5.12264 16.7034L5.26748 17.3371ZM7.37378 16.8556L7.51861 17.4893C9.20446 17.104 10.4 15.6043 10.4 13.875H9.75H9.1C9.1 14.998 8.32366 15.9718 7.22894 16.222L7.37378 16.8556ZM2.37029 19.7834L2.97072 20.0324C3.40277 18.9904 4.31265 18.2221 5.41231 17.9707L5.26748 17.3371L5.12264 16.7034C3.61259 17.0486 2.36315 18.1036 1.76986 19.5345L2.37029 19.7834ZM4.5 25.5V24.85C2.82082 24.85 1.68085 23.1433 2.324 21.5921L1.72357 21.3432L1.12314 21.0942C0.125049 23.5014 1.89413 26.15 4.5 26.15V25.5Z"
-                                        fill="white" />
+                                        fill="currentColor" />
                                     <path
                                         d="M15.6529 17.0496C15.9564 17.2413 16.3579 17.1506 16.5496 16.8471C16.7413 16.5436 16.6506 16.1421 16.3471 15.9504L16 16.5L15.6529 17.0496ZM14.8125 13.5H14.1625V14.3455H14.8125H15.4625V13.5H14.8125ZM14.8125 14.3455H14.1625C14.1625 15.4428 14.7251 16.4636 15.6529 17.0496L16 16.5L16.3471 15.9504C15.7964 15.6026 15.4625 14.9968 15.4625 14.3455H14.8125Z"
-                                        fill="white" />
-                                    <path d="M12.375 15.75V19.3125" stroke="white" stroke-width="1.3"
+                                        fill="currentColor" />
+                                    <path d="M12.375 15.75V19.3125" stroke="currentColor" stroke-width="1.3"
                                         stroke-linecap="round" />
-                                    <path d="M6.375 25.5H6.75" stroke="white" stroke-width="1.3"
+                                    <path d="M6.375 25.5H6.75" stroke="currentColor" stroke-width="1.3"
                                         stroke-linecap="round" />
-                                    <path d="M8.25 25.5H12.75" stroke="white" stroke-width="1.3"
+                                    <path d="M8.25 25.5H12.75" stroke="currentColor" stroke-width="1.3"
                                         stroke-linecap="round" />
                                     <path
                                         d="M18.1878 23.5225C19.0633 23.5225 19.773 22.8128 19.773 21.9373C19.773 21.0618 19.0633 20.3521 18.1878 20.3521C17.3123 20.3521 16.6025 21.0618 16.6025 21.9373C16.6025 22.8128 17.3123 23.5225 18.1878 23.5225Z"
-                                        stroke="white" stroke-width="1.3" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.3" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M22.0977 23.5227C22.0274 23.6821 22.0064 23.8589 22.0375 24.0303C22.0686 24.2017 22.1503 24.3599 22.2721 24.4844L22.3038 24.5161C22.4021 24.6143 22.48 24.7308 22.5332 24.8591C22.5864 24.9874 22.6138 25.125 22.6138 25.2638C22.6138 25.4027 22.5864 25.5402 22.5332 25.6685C22.48 25.7968 22.4021 25.9134 22.3038 26.0115C22.2057 26.1098 22.0891 26.1877 21.9608 26.2409C21.8325 26.2941 21.695 26.3215 21.5561 26.3215C21.4172 26.3215 21.2797 26.2941 21.1514 26.2409C21.0231 26.1877 20.9066 26.1098 20.8084 26.0115L20.7767 25.9798C20.6522 25.858 20.494 25.7763 20.3226 25.7452C20.1512 25.7141 19.9744 25.7351 19.815 25.8055C19.6587 25.8724 19.5254 25.9837 19.4315 26.1254C19.3377 26.2672 19.2873 26.4333 19.2866 26.6034V26.6932C19.2866 26.9735 19.1752 27.2423 18.9771 27.4405C18.7789 27.6387 18.5101 27.75 18.2298 27.75C17.9495 27.75 17.6807 27.6387 17.4825 27.4405C17.2843 27.2423 17.173 26.9735 17.173 26.6932V26.6456C17.1689 26.4707 17.1122 26.3011 17.0105 26.1588C16.9087 26.0165 16.7665 25.9081 16.6023 25.8477C16.4429 25.7774 16.2661 25.7564 16.0947 25.7875C15.9233 25.8186 15.7651 25.9003 15.6406 26.0221L15.6089 26.0538C15.5107 26.1521 15.3942 26.23 15.2659 26.2832C15.1376 26.3364 15 26.3638 14.8612 26.3638C14.7223 26.3638 14.5848 26.3364 14.4565 26.2832C14.3282 26.23 14.2116 26.1521 14.1135 26.0538C14.0152 25.9557 13.9373 25.8391 13.8841 25.7108C13.8309 25.5825 13.8035 25.445 13.8035 25.3061C13.8035 25.1672 13.8309 25.0297 13.8841 24.9014C13.9373 24.7731 14.0152 24.6566 14.1135 24.5584L14.1452 24.5267C14.267 24.4022 14.3487 24.244 14.3798 24.0726C14.4109 23.9012 14.3899 23.7244 14.3195 23.565C14.2526 23.4087 14.1413 23.2754 13.9996 23.1815C13.8578 23.0877 13.6917 23.0373 13.5216 23.0366H13.4318C13.1515 23.0366 12.8827 22.9252 12.6845 22.7271C12.4863 22.5289 12.375 22.2601 12.375 21.9798C12.375 21.6995 12.4863 21.4307 12.6845 21.2325C12.8827 21.0343 13.1515 20.923 13.4318 20.923H13.4794C13.6543 20.9189 13.8239 20.8622 13.9662 20.7605C14.1085 20.6587 14.2169 20.5165 14.2773 20.3523C14.3476 20.1929 14.3686 20.0161 14.3375 19.8447C14.3064 19.6733 14.2247 19.5151 14.1029 19.3906L14.0712 19.3589C13.9729 19.2607 13.895 19.1442 13.8418 19.0159C13.7886 18.8876 13.7612 18.75 13.7612 18.6112C13.7612 18.4723 13.7886 18.3348 13.8418 18.2065C13.895 18.0782 13.9729 17.9616 14.0712 17.8635C14.1693 17.7652 14.2859 17.6873 14.4142 17.6341C14.5425 17.5809 14.68 17.5535 14.8189 17.5535C14.9578 17.5535 15.0953 17.5809 15.2236 17.6341C15.3519 17.6873 15.4684 17.7652 15.5666 17.8635L15.5983 17.8952C15.7228 18.017 15.881 18.0987 16.0524 18.1298C16.2238 18.1609 16.4006 18.1399 16.56 18.0695H16.6023C16.7586 18.0026 16.8918 17.8913 16.9857 17.7496C17.0796 17.6078 17.13 17.4417 17.1307 17.2716V17.1818C17.1307 16.9015 17.242 16.6327 17.4402 16.4345C17.6384 16.2363 17.9072 16.125 18.1875 16.125C18.4678 16.125 18.7366 16.2363 18.9348 16.4345C19.133 16.6327 19.2443 16.9015 19.2443 17.1818V17.2294C19.245 17.3994 19.2954 17.5655 19.3893 17.7073C19.4831 17.8491 19.6164 17.9603 19.7727 18.0273C19.9321 18.0976 20.1089 18.1186 20.2803 18.0875C20.4517 18.0564 20.6099 17.9747 20.7344 17.8529L20.7661 17.8212C20.8643 17.7229 20.9808 17.645 21.1091 17.5918C21.2374 17.5386 21.375 17.5112 21.5138 17.5112C21.6527 17.5112 21.7902 17.5386 21.9185 17.5918C22.0468 17.645 22.1634 17.7229 22.2615 17.8212C22.3598 17.9193 22.4377 18.0359 22.4909 18.1642C22.5441 18.2925 22.5715 18.43 22.5715 18.5689C22.5715 18.7078 22.5441 18.8453 22.4909 18.9736C22.4377 19.1019 22.3598 19.2184 22.2615 19.3166L22.2298 19.3483C22.108 19.4728 22.0263 19.631 21.9952 19.8024C21.9641 19.9738 21.9851 20.1506 22.0555 20.31V20.3523C22.1224 20.5086 22.2337 20.6418 22.3754 20.7357C22.5172 20.8296 22.6833 20.88 22.8534 20.8807H22.9432C23.2235 20.8807 23.4923 20.992 23.6905 21.1902C23.8887 21.3884 24 21.6572 24 21.9375C24 22.2178 23.8887 22.4866 23.6905 22.6848C23.4923 22.883 23.2235 22.9943 22.9432 22.9943H22.8956C22.7256 22.995 22.5595 23.0454 22.4177 23.1393C22.2759 23.2331 22.1647 23.3664 22.0977 23.5227Z"
-                                        stroke="white" stroke-width="1.3" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.3" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
 
@@ -2803,9 +2831,11 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                             </span>
                             <svg width="12" height="6" viewBox="0 0 12 6" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" stroke="white" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" :stroke="(active === 'management' || active === 'control-management')
+                                ? '#000000'
+                                : '#FFFFFF'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
+
 
                         </button>
                         <div x-show="openItems.management" x-transition class="mr-6 mt-1 space-y-1">
@@ -2813,26 +2843,24 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('user-management', 'management')"
                                 :class="active === 'user-management' ? 'bg-[#FFFFFF] text-[#184D6C]' : 'text-white dark:text-white hover:bg-gray-600  dark:hover:bg-gray-800'">
-                                <img src="{{ asset('assets/sarafi/all_icon/profile-2user.svg') }}"
-                                    class="w-5 h-5 dark:hidden"
-                                    :class="active === 'users' ? 'filter invert brightness-0' : 'text-gray-500' ">
+                                <i class="fas fa-user-alt"></i>
                                 <svg width="25" class="hidden dark:block" height="25" viewBox="0 0 30 30" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M11.4531 13.5875C11.3281 13.575 11.1781 13.575 11.0406 13.5875C8.06562 13.4875 5.70312 11.05 5.70312 8.05C5.70312 4.9875 8.17813 2.5 11.2531 2.5C14.3156 2.5 16.8031 4.9875 16.8031 8.05C16.7906 11.05 14.4281 13.4875 11.4531 13.5875Z"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M20.5141 5C22.9391 5 24.8891 6.9625 24.8891 9.375C24.8891 11.7375 23.0141 13.6625 20.6766 13.75C20.5766 13.7375 20.4641 13.7375 20.3516 13.75"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                         stroke="currentColor" stroke-width="1.5" stroke-lin  stroke="currentColor"ecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M5.19844 18.2C2.17344 20.225 2.17344 23.525 5.19844 25.5375C8.63594 27.8375 14.2734 27.8375 17.7109 25.5375C20.7359 23.5125 20.7359 20.2125 17.7109 18.2C14.2859 15.9125 8.64844 15.9125 5.19844 18.2Z"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M22.9219 25C23.8219 24.8125 24.6719 24.45 25.3719 23.9125C27.3219 22.45 27.3219 20.0375 25.3719 18.575C24.6844 18.05 23.8469 17.7 22.9594 17.5"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
                                 {{ __('messages.user_management') }}
@@ -2850,17 +2878,17 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
 
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M6 9.96004C9.63 7.15004 14.37 7.15004 18 9.96004" stroke="white"
+                                    <path d="M6 9.96004C9.63 7.15004 14.37 7.15004 18 9.96004" stroke="currentColor"
                                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                     <path d="M7.59961 13.0499C10.2696 10.9899 13.7396 10.9899 16.4096 13.0499"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path d="M9.7998 16.1402C11.1298 15.1102 12.8698 15.1102 14.1998 16.1402"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
 
@@ -2869,9 +2897,11 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                             </span>
                             <svg width="12" height="6" viewBox="0 0 12 6" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" stroke="white" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" :stroke="(active === 'notifications' || active === 'control-notifications')
+                                ? '#000000'
+                                : '#FFFFFF'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
+
 
                         </button>
                         <div x-show="openItems.notifications" x-transition class="mr-6 mt-1 space-y-1">
@@ -2879,8 +2909,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('online-notifications', 'notifications')"
                                 :class="active === 'online-notifications' ? 'bg-[#FFFFFF] text-[#184D6C]' : 'text-white dark:text-white hover:bg-gray-600  dark:hover:bg-gray-800'">
-                                <img src="{{ asset('assets/sarafi/all_icon/notification.svg') }}" class="w-4 h-4"
-                                    :class="active === 'online-notifications' ? 'filter invert brightness-0' : 'text-gray-500'">
+                                  <i class="fas fa-bell"></i>
                                 {{ __('messages.online_notifications') }}
                             </a>
                         </div>
@@ -2897,19 +2926,19 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M17 13.4V16.4C17 20.4 15.4 22 11.4 22H7.6C3.6 22 2 20.4 2 16.4V12.6C2 8.6 3.6 7 7.6 7H10.6"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M16.9996 13.4H13.7996C11.3996 13.4 10.5996 12.6 10.5996 10.2V7L16.9996 13.4Z"
-                                        stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path d="M11.5996 2H15.5996" stroke="white" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M7 5C7 3.34 8.34 2 10 2H12.62" stroke="white" stroke-width="1.5"
+                                    <path d="M7 5C7 3.34 8.34 2 10 2H12.62" stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M22.0004 8V14.19C22.0004 15.74 20.7404 17 19.1904 17" stroke="white"
+                                    <path d="M22.0004 8V14.19C22.0004 15.74 20.7404 17 19.1904 17" stroke="currentColor"
                                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M22 8H19C16.75 8 16 7.25 16 5V2L22 8Z" stroke="white" stroke-width="1.5"
+                                    <path d="M22 8H19C16.75 8 16 7.25 16 5V2L22 8Z" stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
 
@@ -2919,10 +2948,10 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                             </span>
                             <svg width="12" height="6" viewBox="0 0 12 6" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" stroke="white" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" :stroke="(active === 'support' || active === 'control-support')
+                                ? '#000000'
+                                : '#FFFFFF'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
-
                         </button>
                         <div x-show="openItems.support" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="#"
@@ -2947,11 +2976,11 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
-                                        stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M2 12.8799V11.1199C2 10.0799 2.85 9.21994 3.9 9.21994C5.71 9.21994 6.45 7.93994 5.54 6.36994C5.02 5.46994 5.33 4.29994 6.24 3.77994L7.97 2.78994C8.76 2.31994 9.78 2.59994 10.25 3.38994L10.36 3.57994C11.26 5.14994 12.74 5.14994 13.65 3.57994L13.76 3.38994C14.23 2.59994 15.25 2.31994 16.04 2.78994L17.77 3.77994C18.68 4.29994 18.99 5.46994 18.47 6.36994C17.56 7.93994 18.3 9.21994 20.11 9.21994C21.15 9.21994 22.01 10.0699 22.01 11.1199V12.8799C22.01 13.9199 21.16 14.7799 20.11 14.7799C18.3 14.7799 17.56 16.0599 18.47 17.6299C18.99 18.5399 18.68 19.6999 17.77 20.2199L16.04 21.2099C15.25 21.6799 14.23 21.3999 13.76 20.6099L13.65 20.4199C12.75 18.8499 11.27 18.8499 10.36 20.4199L10.25 20.6099C9.78 21.3999 8.76 21.6799 7.97 21.2099L6.24 20.2199C5.33 19.6999 5.02 18.5299 5.54 17.6299C6.45 16.0599 5.71 14.7799 3.9 14.7799C2.85 14.7799 2 13.9199 2 12.8799Z"
-                                        stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
 
@@ -2962,8 +2991,9 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                             </span>
                             <svg width="12" height="6" viewBox="0 0 12 6" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" stroke="white" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" :stroke="(active === 'settings' || active === 'control-settings')
+                                ? '#000000'
+                                : '#FFFFFF'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
 
                         </button>

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 @php
-    $currentUser = Auth::guard('sarafi')->user();
+$currentUser = Auth::guard('sarafi')->user();
 @endphp
+
 <head>
     <meta charset="UTF-8">
     <title>تراکنش صرافی - {{ $sarafi_name ?? 'صرافی' }}</title>
@@ -28,14 +29,14 @@
 
         body {
             font-family: "Shabnam-FD", sans-serif;
-            width: 85mm;
+            width: 72.1mm;
             margin: 0 auto;
             padding: 0;
             background-color: white;
         }
 
         .document {
-            width: 85mm;
+            width: 72.1mm;
             margin: 0 auto;
             background-color: white;
             padding: 10px;
@@ -122,7 +123,14 @@
             /* بورد بالایی */
             width: 100%;
             padding-left: 20px;
-            margin-bottom: 30px;{{ explode(' ', $transaction->date)[0] }}
+            margin-bottom: 30px;
+
+                {
+                    {
+                    explode(' ', $transaction->date)[0]
+                }
+            }
+
             /* فاصله بین بورد و متن/خط پایین */
         }
 
@@ -159,7 +167,7 @@
             body {
                 background-color: white;
                 padding: 0;
-                width: 85mm;
+                width: 72.1mm;
             }
 
             .document {
@@ -183,7 +191,7 @@
             <table class="header-table" style="width:100%; border-collapse: collapse;">
                 <tr>
                     <td style="text-align:center;">نوع تراکنش : {{ $transaction->type }}</td>
-                    
+
                 </tr>
             </table>
         </div>
@@ -192,23 +200,23 @@
         <table class="info-table">
             @php
             $currenciesFa = [
-                'afn' => 'افغانی',
-                'usd' => 'دالر',
-                'eur' => 'یورو',
-                'irr' => 'تومان',
-                'aed' => 'درهم',
-                'try' => 'لیره',
-                'cny' => 'یوان',
-                'pkr' => 'کلدار',
-                'gbp' => 'پوند',
-                'jpy' => 'ین',
-                'sar' => 'ریال سعودی',
-                'inr' => 'روپیه',
+            'afn' => 'افغانی',
+            'usd' => 'دالر',
+            'eur' => 'یورو',
+            'irr' => 'تومان',
+            'aed' => 'درهم',
+            'try' => 'لیره',
+            'cny' => 'یوان',
+            'pkr' => 'کلدار',
+            'gbp' => 'پوند',
+            'jpy' => 'ین',
+            'sar' => 'ریال سعودی',
+            'inr' => 'روپیه',
             ];
             @endphp
 
 
-   <tr>
+            <tr>
                 <td>حساب مشتری:</td>
                 <td>{{ $transaction->customer->fullname ?? 'نامشخص' }}</td>
             </tr>
@@ -218,7 +226,7 @@
                 <td>{{ $transaction->customer->account_number ?? 'نامشخص' }}</td>
             </tr>
 
-              <tr>
+            <tr>
                 <td>نوع حساب :</td>
                 <td>{{ $transaction->account_type ?? 'نامشخص' }}</td>
             </tr>
@@ -239,9 +247,9 @@
 
             <tr>
                 <td>تاریخ:</td>
-                 <td>
-                       {{ explode(' ', $transaction->date)[0] }}
-                 </td>
+                <td>
+                    {{ explode(' ', $transaction->date)[0] }}
+                </td>
             </tr>
 
             <tr>

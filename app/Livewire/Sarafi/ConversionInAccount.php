@@ -1067,7 +1067,7 @@ class ConversionInAccount extends Component
                 'date' => $this->date,
                 'zone' => $this->zone_sender,
                 'description' =>
-                    ' برداشت مبلغ ' . number_format($this->buy_amount, 2) . ' ' .
+                ' برداشت مبلغ ' . number_format($this->buy_amount, 2) . ' ' .
                     $this->getCurrencyFaName($this->from_currency) .
                     ' و خرید مبلغ ' . number_format($this->sell_amount, 2) . ' ' .
                     $this->getCurrencyFaName($this->to_currency) .
@@ -1079,7 +1079,7 @@ class ConversionInAccount extends Component
                 'updated_at' => now(),
             ]);
 
-        Transaction::create([
+            Transaction::create([
                 'customer_id' => $this->selectedAccount,
                 'user_id' => $user->id,
                 'admin_id' => $adminId,
@@ -1089,7 +1089,7 @@ class ConversionInAccount extends Component
                 'account_type' => $this->to_account,
                 'date' => $this->date,
                 'description' =>
-                    ' دریافت مبلغ ' . number_format($this->sell_amount, 2) . ' ' .
+                ' دریافت مبلغ ' . number_format($this->sell_amount, 2) . ' ' .
                     $this->getCurrencyFaName($this->to_currency) .
                     ' و فروش مبلغ ' . number_format($this->buy_amount, 2) . ' ' .
                     $this->getCurrencyFaName($this->from_currency) .
@@ -1178,63 +1178,63 @@ class ConversionInAccount extends Component
      * ویرایش تبدیل ارز
      */
 
-public function editConversion($conversionId)
-{
-    $conversion = ConversionInAccounts::with(['customer'])->find($conversionId);
+    public function editConversion($conversionId)
+    {
+        $conversion = ConversionInAccounts::with(['customer'])->find($conversionId);
 
-    if (!$conversion) {
-        return;
+        if (!$conversion) {
+            return;
+        }
+
+        $this->editingConversionId = $conversionId;
+
+        // ترانزکشن برداشت
+        $withdrawTransaction = Transaction::where('conversion_in_account_id', $conversionId)
+            ->where('type', 'برد')
+            ->first();
+
+        // ترانزکشن رسید
+        $receiveTransaction = Transaction::where('conversion_in_account_id', $conversionId)
+            ->where('type', 'رسید')
+            ->first();
+
+        // ---------- مقادیر اصلی ----------
+        $this->selectedAccount = $conversion->customer_id;
+        $this->selectedCustomerId = $conversion->customer_id;
+        $this->from_currency = $conversion->from_currency;
+        $this->to_currency = $conversion->to_currency;
+        $this->buy_amount = $conversion->buy_amount;
+        $this->sell_amount = $conversion->sell_amount;
+        $this->currency_rate = $conversion->currency_rate;
+        $this->date = $conversion->transaction_date;
+        $this->description = $conversion->description;
+
+        // ---------- مقادیر حساب (مهم) ----------
+        $this->from_account = $withdrawTransaction?->account_type;
+        $this->to_account   = $receiveTransaction?->account_type;
+
+        // ---------- سایر فیلدها ----------
+        $this->zone_sender   = $withdrawTransaction?->zone;
+        $this->zone_receiver = $receiveTransaction?->zone;
+
+        $this->by_sender   = $withdrawTransaction?->by;
+        $this->by_receiver = $receiveTransaction?->by;
+
+        // تبدیل عدد به حروف
+        $this->convertAmountToWords($this->buy_amount, 'withdrawalAmountInWords');
+        $this->convertAmountToWords($this->sell_amount, 'receivedAmountInWords');
+        $this->convertAmountToWords($this->currency_rate, 'currencyRateInWords');
+
+        // بروزرسانی موجودی
+        $this->updateCustomerCurrencyBalance($conversion->customer_id);
+
+        $this->dispatch('edit-mode-activated', [
+            'selectedAccount' => $this->selectedAccount,
+            'selectedCustomer' => $conversion->customer
+                ? $conversion->customer->account_number . ' - ' . $conversion->customer->fullname
+                : ''
+        ]);
     }
-
-    $this->editingConversionId = $conversionId;
-
-    // ترانزکشن برداشت
-    $withdrawTransaction = Transaction::where('conversion_in_account_id', $conversionId)
-        ->where('type', 'برد')
-        ->first();
-
-    // ترانزکشن رسید
-    $receiveTransaction = Transaction::where('conversion_in_account_id', $conversionId)
-        ->where('type', 'رسید')
-        ->first();
-
-    // ---------- مقادیر اصلی ----------
-    $this->selectedAccount = $conversion->customer_id;
-    $this->selectedCustomerId = $conversion->customer_id;
-    $this->from_currency = $conversion->from_currency;
-    $this->to_currency = $conversion->to_currency;
-    $this->buy_amount = $conversion->buy_amount;
-    $this->sell_amount = $conversion->sell_amount;
-    $this->currency_rate = $conversion->currency_rate;
-    $this->date = $conversion->transaction_date;
-    $this->description = $conversion->description;
-
-    // ---------- مقادیر حساب (مهم) ----------
-    $this->from_account = $withdrawTransaction?->account_type;
-    $this->to_account   = $receiveTransaction?->account_type;
-
-    // ---------- سایر فیلدها ----------
-    $this->zone_sender   = $withdrawTransaction?->zone;
-    $this->zone_receiver = $receiveTransaction?->zone;
-
-    $this->by_sender   = $withdrawTransaction?->by;
-    $this->by_receiver = $receiveTransaction?->by;
-
-    // تبدیل عدد به حروف
-    $this->convertAmountToWords($this->buy_amount, 'withdrawalAmountInWords');
-    $this->convertAmountToWords($this->sell_amount, 'receivedAmountInWords');
-    $this->convertAmountToWords($this->currency_rate, 'currencyRateInWords');
-
-    // بروزرسانی موجودی
-    $this->updateCustomerCurrencyBalance($conversion->customer_id);
-
-    $this->dispatch('edit-mode-activated', [
-        'selectedAccount' => $this->selectedAccount,
-        'selectedCustomer' => $conversion->customer
-            ? $conversion->customer->account_number . ' - ' . $conversion->customer->fullname
-            : ''
-    ]);
-}
 
 
     /**
@@ -1331,12 +1331,12 @@ public function editConversion($conversionId)
 
             $mpdf = new \Mpdf\Mpdf([
                 'mode' => 'utf-8',
-                'format' => [85, 220],
+                'format' => [72.1, 297],
                 'directionality' => 'rtl',
-                'margin_top' => 5,
-                'margin_bottom' => 5,
-                'margin_left' => 5,
-                'margin_right' => 5,
+                'margin_top' => 0,
+                'margin_bottom' => 0,
+                'margin_left' => 0,
+                'margin_right' => 0,
                 'fontDir' => array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'], [
                     public_path('fonts'),
                 ]),

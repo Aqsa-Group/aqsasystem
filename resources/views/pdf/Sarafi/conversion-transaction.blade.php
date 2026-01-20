@@ -13,7 +13,7 @@
 
         body {
             font-family: "Shabnam", sans-serif;
-            width: 85mm;
+            width: 72.1mm;
             margin: 0 auto;
             padding: 0;
             background-color: white;
@@ -22,7 +22,7 @@
         }
 
         .document {
-            width: 85mm;
+            width: 72.1mm;
             margin: 0 auto;
             background-color: white;
             padding: 8px;

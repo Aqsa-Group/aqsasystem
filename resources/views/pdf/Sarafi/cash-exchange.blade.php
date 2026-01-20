@@ -26,14 +26,14 @@
 
         body {
             font-family: "Shabnam-FD", sans-serif;
-            width: 85mm;
+            width: 72.1mm;
             margin: 0 auto;
             padding: 0;
             background-color: white;
         }
 
         .document {
-            width: 85mm;
+            width: 72.1mm;
             margin: 0 auto;
             background-color: white;
             padding: 10px;
@@ -144,12 +144,13 @@
             font-size: 12px;
             color: black;
         }
+        
 
         @media print {
             body {
                 background-color: white;
                 padding: 0;
-                width: 85mm;
+                width: 72.1mm;
             }
 
             .document {

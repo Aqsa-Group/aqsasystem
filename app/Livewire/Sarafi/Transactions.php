@@ -98,7 +98,7 @@ class Transactions extends Component
 
         $this->loadCustomers();
         $this->updateTransactions();
-        
+
         if ($this->selectedCustomerId) {
             $this->updateCustomerCurrencyBalance();
         }
@@ -501,8 +501,8 @@ class Transactions extends Component
         $cacheKey = $this->cacheKeys['transactions_list'] . $adminId . ($this->selectedCustomerId ? '_' . $this->selectedCustomerId : '');
 
         $query = Transaction::with(['customer' => function ($query) {
-                $query->select('id', 'fullname', 'account_number', 'phone');
-            }])
+            $query->select('id', 'fullname', 'account_number', 'phone');
+        }])
             ->where('admin_id', $adminId)
             ->whereIn('type', ['برد', 'رسید'])
             ->whereNull('conversion_transfer_id')
@@ -575,7 +575,7 @@ class Transactions extends Component
     public function edit($id)
     {
         $transaction = Transaction::with('customer')->findOrFail($id);
-        
+
         $this->transactionId = $id;
         $this->selectedAccount = $transaction->customer_id;
         $this->amount = $transaction->amount;
@@ -586,7 +586,7 @@ class Transactions extends Component
         $this->description = $transaction->description;
         $this->transactionType = $transaction->type;
         $this->accountType = $transaction->account_type;
-        
+
         $this->selectCustomer($transaction->customer_id);
     }
 
@@ -602,7 +602,7 @@ class Transactions extends Component
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
 
-        
+
         $this->applyCurrencyChange($user, $transaction->currency, $transaction->amount, $transaction->type, $transaction->account_type, true);
 
         $transaction->delete();
@@ -678,18 +678,18 @@ class Transactions extends Component
         Cache::forget($this->cacheKeys['transactions_list'] . $adminId . '_' . $this->selectedAccount);
 
         session()->flash('message', $message);
-        
+
         $this->updateTransactions();
         $this->updateCustomerCurrencyBalance();
         $this->resetForm();
-        
+
         return $transaction;
     }
 
     public function submitAndPrint()
     {
         $transaction = $this->submitTransaction();
-        
+
         if (!$transaction) {
             return;
         }
@@ -698,12 +698,12 @@ class Transactions extends Component
 
         $mpdf = new Mpdf([
             'mode' => 'utf-8',
-            'format' => [80, 250],
+            'format' => [72.1, 297],
             'directionality' => 'rtl',
-            'margin_top' => 2,
-            'margin_bottom' => 2,
-            'margin_left' => 2,
-            'margin_right' => 2,
+            'margin_top' => 0,
+            'margin_bottom' => 0,
+            'margin_left' => 0,
+            'margin_right' => 0,
             'fontDir' => array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'], [
                 public_path('fonts'),
             ]),
@@ -731,12 +731,12 @@ class Transactions extends Component
 
         $mpdf = new \Mpdf\Mpdf([
             'mode' => 'utf-8',
-            'format' => [80, 250],
+            'format' => [72.1, 297],
             'directionality' => 'rtl',
-            'margin_top' => 2,
-            'margin_bottom' => 2,
-            'margin_left' => 2,
-            'margin_right' => 2,
+            'margin_top' => 0,
+            'margin_bottom' => 0,
+            'margin_left' => 0,
+            'margin_right' => 0,
             'fontDir' => array_merge(
                 (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
                 [public_path('fonts')]

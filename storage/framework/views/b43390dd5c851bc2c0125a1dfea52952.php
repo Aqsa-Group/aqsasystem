@@ -19,7 +19,7 @@
             
             <!--[if BLOCK]><![endif]--><?php if($selectedCustomer): ?>
             <div class="inline-block align-top ml-4 h-auto">
-                        <div class="flex flex-col h-[212px] w-[244px] pr-5 pl-5 pt-2 rounded-[12px]  dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900           bg-[#184D6C]
+                <div class="flex flex-col h-[212px] w-[244px] pr-5 pl-5 pt-2 rounded-[12px]  dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900           bg-[#184D6C]
             backdrop-blur-lg
             border border-white/30
 
@@ -177,7 +177,8 @@
                         </div>
                         <div class="flex justify-between items-center text-[14px]">
                             <div class="flex justify-end items-center gap-2">
-                                <div class="bg-white text-white rounded-[12px] h-[30px] w-[30px] justify-center items-center   ">
+                                <div
+                                    class="bg-white text-white rounded-[12px] h-[30px] w-[30px] justify-center items-center   ">
                                     <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
                                         xmlns="http://www.w3.org/2000/svg"
                                         class="flex justify-center items-center w-full mt-1">
@@ -230,10 +231,13 @@
 
                     <button wire:click="showReport" wire:loading.attr="disabled"
                         class="bg-[#FFFFFF]/10  rounded-[8px] mr-auto  backdrop:blur-2xl text-[12px] p-2 mt-2 text-gray-800 hover:shadow-md transition border border-white flex items-center justify-end gap-2 w-[114px] h-[25px]">
-                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M7.5 12.5L12.5 7.5M12.5 7.5H8.75M12.5 7.5V11.25" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M5.83366 2.78136C7.05938 2.07231 8.48246 1.6665 10.0003 1.6665C14.6027 1.6665 18.3337 5.39746 18.3337 9.99984C18.3337 14.6022 14.6027 18.3332 10.0003 18.3332C5.39795 18.3332 1.66699 14.6022 1.66699 9.99984C1.66699 8.48197 2.0728 7.05889 2.78184 5.83317" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-</svg>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.5 12.5L12.5 7.5M12.5 7.5H8.75M12.5 7.5V11.25" stroke="white" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path
+                                d="M5.83366 2.78136C7.05938 2.07231 8.48246 1.6665 10.0003 1.6665C14.6027 1.6665 18.3337 5.39746 18.3337 9.99984C18.3337 14.6022 14.6027 18.3332 10.0003 18.3332C5.39795 18.3332 1.66699 14.6022 1.66699 9.99984C1.66699 8.48197 2.0728 7.05889 2.78184 5.83317"
+                                stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
 
                         <span wire:loading.remove class="text-[#FFFFFF]">نمایش گزارش</span>
                         <span wire:loading class="text-[#FFFFFF]">
@@ -408,13 +412,16 @@
                     </div>
 
 
-                    
+
                     <button wire:click="showReport" wire:loading.attr="disabled"
                         class="bg-[#FFFFFF]/10  rounded-[8px] mr-auto  backdrop:blur-2xl text-[12px] p-2 mt-2 text-gray-800 hover:shadow-md transition border border-white flex items-center justify-end gap-2 w-[114px] h-[25px]">
-                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M7.5 12.5L12.5 7.5M12.5 7.5H8.75M12.5 7.5V11.25" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M5.83366 2.78136C7.05938 2.07231 8.48246 1.6665 10.0003 1.6665C14.6027 1.6665 18.3337 5.39746 18.3337 9.99984C18.3337 14.6022 14.6027 18.3332 10.0003 18.3332C5.39795 18.3332 1.66699 14.6022 1.66699 9.99984C1.66699 8.48197 2.0728 7.05889 2.78184 5.83317" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-</svg>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.5 12.5L12.5 7.5M12.5 7.5H8.75M12.5 7.5V11.25" stroke="white" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path
+                                d="M5.83366 2.78136C7.05938 2.07231 8.48246 1.6665 10.0003 1.6665C14.6027 1.6665 18.3337 5.39746 18.3337 9.99984C18.3337 14.6022 14.6027 18.3332 10.0003 18.3332C5.39795 18.3332 1.66699 14.6022 1.66699 9.99984C1.66699 8.48197 2.0728 7.05889 2.78184 5.83317"
+                                stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
 
                         <span wire:loading.remove class="text-[#FFFFFF]">نمایش گزارش</span>
                         <span wire:loading class="text-[#FFFFFF]">
@@ -444,7 +451,7 @@
          space-y-2">
 
 
-              <div class="flex flex-wrap items-center justify-between gap-3">
+                <div class="flex flex-wrap items-center justify-between gap-3">
 
 
                     <!-- عنوان -->
@@ -591,11 +598,11 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                                 </select>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
-                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
                                     <svg width="24" height="24" class="hidden dark:block" viewBox="0 0 24 24"
                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -1562,8 +1569,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         rounded-[12px]
                           w-full max-w-[440px] md:max-w-[410px] lg:max-w-full
                         mb-5 mx-auto
-                        overflow-x-auto"
-                        >
+                        overflow-x-auto">
 
                 
                 <div
@@ -1661,7 +1667,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                transition-colors">
                                     <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium text-center">
                                         <?php echo e($key + 1); ?></td>
-                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium whitespace-nowrap">
+                                    <td
+                                        class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium whitespace-nowrap">
                                         <?php echo e($transaction->customer->fullname ?? '-'); ?></td>
                                     <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium text-center">
                                         <span
@@ -1813,6 +1820,43 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                                     </svg>
 
                                                 </button>
+
+                                                <script>
+                                                    let printListenerRegistered = false;
+
+                                                    document.addEventListener('livewire:init', () => {
+                                                        if (printListenerRegistered) return;
+                                                        printListenerRegistered = true;
+
+                                                        Livewire.on('print-pdf', (data) => {
+
+                                                            /* 🔹 1. دانلود (با لینک مخفی) */
+                                                            const downloadLink = document.createElement('a');
+                                                            downloadLink.href = data.url;
+                                                            downloadLink.download = '';
+                                                            downloadLink.style.display = 'none';
+                                                            document.body.appendChild(downloadLink);
+                                                            downloadLink.click();
+
+                                                            /* 🔹 2. پرینت */
+                                                            const iframe = document.createElement('iframe');
+                                                            iframe.style.display = 'none';
+                                                            iframe.src = data.url;
+                                                            document.body.appendChild(iframe);
+
+                                                            iframe.onload = () => {
+                                                                iframe.contentWindow.focus();
+                                                                iframe.contentWindow.print();
+
+                                                                /* 🔹 3. حذف با تأخیر */
+                                                                setTimeout(() => {
+                                                                    iframe.remove();
+                                                                    downloadLink.remove();
+                                                                }, 50000); // ⏱ ۵ ثانیه
+                                                            };
+                                                        });
+                                                    });
+                                                </script>
                                             </div>
                                         </div>
                                     </td>

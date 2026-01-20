@@ -32,9 +32,9 @@
             {{-- کارت مشتری انتخاب شده --}}
             @if($selectedCustomer)
             <div class="inline-block align-top ml-4 h-auto">
-                <div
-                    class="flex flex-col    h-[212px] w-[244px] pr-5 pl-5 pt-2 rounded-[12px]  dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900  bg-[#387EA2]/40
-            backdrop-blur-lg text-white">
+                <div class="flex flex-col    h-[212px] w-[244px] pr-5 pl-5 pt-2 rounded-[12px]  dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900  bg-[#184D6C]
+                backdrop-blur-lg
+                border border-white/30 text-white">
 
                     {{-- عکس مشتری --}}
                     <div x-data="{ showLargeImage: false, largeImageSrc: '' }">
@@ -101,7 +101,7 @@
                     </div>
 
                     {{-- نام مشتری --}}
-                    <h1 class="text-[20px] text-black text-center font-bold truncate"
+                    <h1 class="text-[20px] text-white text-center font-bold truncate"
                         title="{{ $selectedCustomer->fullname }}">
                         {{ $selectedCustomer->fullname }}
                     </h1>
@@ -113,7 +113,7 @@
                             <path
                                 d="M20 15.5c-1.2 0-2.4-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.5-5.2-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.3-.5-3.5 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1zM5 6h1.5c.1 1.2.3 2.4.6 3.5L5.3 11.8c-.9-2-1.3-4.1-1.3-6.2V6zM19 19c-2.1 0-4.2-.4-6.2-1.3l2.3-2.3c1.1.3 2.3.5 3.5.6V19z" />
                         </svg>
-                        <span class="text-black text-[14px] dir-ltr text-left">{{ $selectedCustomer->phone }}</span>
+                        <span class="text-white text-[14px] dir-ltr text-left">{{ $selectedCustomer->phone }}</span>
                     </div>
                     @endif
 
@@ -123,7 +123,7 @@
                             <path
                                 d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8h16v10zm-8-7c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-2.2 0-4 1.8-4 4h8c0-2.2-1.8-4-4-4z" />
                         </svg>
-                        <span class="text-black text-[14px] dir-ltr text-left">{{ $selectedCustomer->account_number
+                        <span class="text-white text-[14px] dir-ltr text-left">{{ $selectedCustomer->account_number
                             }}</span>
                     </div>
 
@@ -140,13 +140,13 @@
 
             {{-- نمایش تمام کارت‌ها حتی با موجودی صفر --}}
             <div class="inline-block align-top ml-4 h-auto ">
-        <div class="
+                <div class="
                 flex flex-col
                  h-[212px] w-[244px]
                 pr-5 pl-5 pt-3
                 rounded-[12px]
 
-                bg-[#387EA2]/40
+                bg-[#184D6C]
                 backdrop-blur-lg
                 border border-white/30
 
@@ -154,10 +154,10 @@
 
                 text-black
                             ">
-                    <h1 class="text-[24px] text-left vazir text-[#387EA2]">{{ $currencyName }}</h1>
+                    <h1 class="text-[24px] text-left vazir text-[#FFFFFF]">{{ $currencyName }}</h1>
 
                     <div class="flex flex-col gap-1 mt-1 text-center">
-                            <div class="flex justify-between items-center text-[14px]">
+                        <div class="flex justify-between items-center text-[14px]">
                             <div class="flex justify-end items-center gap-2">
                                 <div class="bg-white rounded-[12px] h-[30px] w-[30px] justify-center items-center   ">
                                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
@@ -179,9 +179,10 @@
                                     </svg>
 
                                 </div>
-                                <span>نقدی</span>
+                                <span class="text-white">نقدی</span>
                             </div>
-                            <span class="font-medium text-left" dir="ltr">{{ number_format($cashBalance) }}</span>
+                            <span class="font-medium text-left text-white" dir="ltr">{{ number_format($cashBalance)
+                                }}</span>
                         </div>
                         <div class="flex justify-between items-center text-[14px]">
                             <div class="flex justify-end items-center gap-2">
@@ -201,9 +202,10 @@
                                     </svg>
 
                                 </div>
-                                <span>بانکی</span>
+                                <span class="text-white">بانکی</span>
                             </div>
-                            <span class="font-medium text-left" dir="ltr">{{ number_format($bankBalance) }}</span>
+                            <span class="font-medium text-left text-white" dir="ltr">{{ number_format($bankBalance)
+                                }}</span>
                         </div>
                         <div class="flex justify-between items-center text-[14px] border-b border-[#184D6C]/15 pb-2">
                             <div class="flex justify-end items-center gap-2">
@@ -227,19 +229,28 @@
                                     </svg>
 
                                 </div>
-                                <span class="text-[#184D6C]">مجموعه</span>
+                                <span class="text-[#FFFFFF]">مجموعه</span>
                             </div>
-                            <span class="font-bold text-[16px] text-left" dir="ltr">{{ number_format($totalBalance)
+                            <span class="font-bold text-[16px] text-left text-white" dir="ltr">{{
+                                number_format($totalBalance)
                                 }}</span>
                         </div>
                     </div>
-
                     <button wire:click="showReport" wire:loading.attr="disabled"
-                        class="bg-white rounded-[12px] text-[16px] p-1 mt-2 text-gray-800 hover:shadow-md transition flex items-center justify-center gap-2">
-                        <span wire:loading.remove>نمایش گزارش</span>
-                        <span wire:loading>
+                        class="bg-[#FFFFFF]/10  rounded-[8px] mr-auto  backdrop:blur-2xl text-[12px] p-2 mt-2 text-gray-800 hover:shadow-md transition border border-white flex items-center justify-end gap-2 w-[114px] h-[25px]">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.5 12.5L12.5 7.5M12.5 7.5H8.75M12.5 7.5V11.25" stroke="white" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path
+                                d="M5.83366 2.78136C7.05938 2.07231 8.48246 1.6665 10.0003 1.6665C14.6027 1.6665 18.3337 5.39746 18.3337 9.99984C18.3337 14.6022 14.6027 18.3332 10.0003 18.3332C5.39795 18.3332 1.66699 14.6022 1.66699 9.99984C1.66699 8.48197 2.0728 7.05889 2.78184 5.83317"
+                                stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+
+                        <span wire:loading.remove class="text-[#FFFFFF]">نمایش گزارش</span>
+                        <span wire:loading class="text-[#FFFFFF]">
                             در حال انتقال...
                         </span>
+
                     </button>
                 </div>
             </div>
@@ -248,11 +259,11 @@
             {{-- کارت خلاصه بیلانس به دالر --}}
             @if($selectedCustomerId)
             <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
-              <div class="flex flex-col h-[212px] w-[244px] pr-5 pl-5 pt-3 rounded-[12px]
+                <div class="flex flex-col h-[212px] w-[244px] pr-5 pl-5 pt-3 rounded-[12px]
                         dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900
-                         bg-[#387EA2]/40
-    backdrop-blur-lg
-    border border-white/30
+                  bg-[#184D6C]
+                backdrop-blur-lg
+                border border-white/30
 
     shadow-[0_4px_4px_rgba(24,77,108,0.25)] text-black">
                     @php
@@ -313,7 +324,7 @@
                     $grandTotalUsd = $totalCashUsd + $totalBankUsd;
                     @endphp
 
-                      <h1 class="text-[24px] text-left vazir text-[#387EA2]">
+                    <h1 class="text-[24px] text-left vazir text-[#FFFFFF]">
                         خلاصه بیلانس به {{ $sourceCurrency }}
                     </h1>
 
@@ -340,9 +351,9 @@
                                     </svg>
 
                                 </div>
-                                <span>نقدی</span>
+                                <span class="text-white">نقدی</span>
                             </div>
-                            <span class="font-medium text-left" dir="ltr">
+                            <span class="font-medium text-left text-white" dir="ltr">
                                 {{ number_format($totalCashUsd, 2) }}
                             </span>
                         </div>
@@ -365,8 +376,8 @@
                                     </svg>
 
                                 </div>
-                                <span>بانکی </span>
-                            </div> <span class="font-medium text-left" dir="ltr">
+                                <span class="text-white">بانکی </span>
+                            </div> <span class="font-medium text-left text-white" dir="ltr">
                                 {{ number_format($totalBankUsd, 2) }}
                             </span>
                         </div>
@@ -393,8 +404,8 @@
                                     </svg>
 
                                 </div>
-                                <span class="text-[#184D6C]">مجموعه</span>
-                            </div> <span class="font-bold text-[16px] text-left" dir="ltr">
+                                <span class="text-[#FFFFFF]">مجموعه</span>
+                            </div> <span class="font-bold text-[16px] text-left text-white" dir="ltr">
                                 {{ number_format($grandTotalUsd, 2) }}
                             </span>
                         </div>
@@ -404,14 +415,15 @@
                     <button wire:click="showReport" wire:loading.attr="disabled"
                         class="bg-[#FFFFFF]/10  rounded-[8px] mr-auto  backdrop:blur-2xl text-[12px] p-2 mt-2 text-gray-800 hover:shadow-md transition border border-white flex items-center justify-end gap-2 w-[114px] h-[25px]">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M7.5 12.5L12.5 7.5M12.5 7.5H8.75M12.5 7.5V11.25" stroke="#184D6C"
-                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M7.5 12.5L12.5 7.5M12.5 7.5H8.75M12.5 7.5V11.25" stroke="white" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
                             <path
-                                d="M5.83317 2.78136C7.05889 2.07231 8.48197 1.6665 9.99984 1.6665C14.6022 1.6665 18.3332 5.39746 18.3332 9.99984C18.3332 14.6022 14.6022 18.3332 9.99984 18.3332C5.39746 18.3332 1.6665 14.6022 1.6665 9.99984C1.6665 8.48197 2.07231 7.05889 2.78136 5.83317"
-                                stroke="#184D6C" stroke-width="1.5" stroke-linecap="round" />
+                                d="M5.83366 2.78136C7.05938 2.07231 8.48246 1.6665 10.0003 1.6665C14.6027 1.6665 18.3337 5.39746 18.3337 9.99984C18.3337 14.6022 14.6027 18.3332 10.0003 18.3332C5.39795 18.3332 1.66699 14.6022 1.66699 9.99984C1.66699 8.48197 2.0728 7.05889 2.78184 5.83317"
+                                stroke="white" stroke-width="1.5" stroke-linecap="round" />
                         </svg>
-                        <span wire:loading.remove class="text-[#184D6C]">نمایش گزارش</span>
-                        <span wire:loading class="text-[#184D6C]">
+
+                        <span wire:loading.remove class="text-[#FFFFFF]">نمایش گزارش</span>
+                        <span wire:loading class="text-[#FFFFFF]">
                             در حال انتقال...
                         </span>
 
@@ -430,8 +442,7 @@
         <div class="flex flex-col lg:flex-row gap-5 mt-4 mx-auto">
 
             <!-- Remittance Form -->
-                                             <div
-  class="flex flex-col
+            <div class="flex flex-col
          dark:bg-black dark:text-white dark:border dark:border-white
          bg-white   border border-[#D7E5EC] shadow-sm backdrop:blur-lg
          mx-auto
@@ -439,14 +450,15 @@
          p-[10px]
          h-auto
          rounded-[12px]
-         space-y-2"
-  >
+         space-y-2">
 
                 <!-- Form Header -->
                 <div class="flex flex-row gap-4  p-[10px]  rounded-[12px] flex-wrap">
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M14.3601 4.07866L15.2869 3.15178C16.8226 1.61607 19.3125 1.61607 20.8482 3.15178C22.3839 4.68748 22.3839 7.17735 20.8482 8.71306L19.9213 9.63993M14.3601 4.07866C14.3601 4.07866 14.4759 6.04828 16.2138 7.78618C17.9517 9.52407 19.9213 9.63993 19.9213 9.63993M14.3601 4.07866L12 6.43872M19.9213 9.63993L14.6607 14.9006L11.5613 18L11.4001 18.1612C10.8229 18.7383 10.5344 19.0269 10.2162 19.2751C9.84082 19.5679 9.43469 19.8189 9.00498 20.0237C8.6407 20.1973 8.25352 20.3263 7.47918 20.5844L4.19792 21.6782M4.19792 21.6782L3.39584 21.9456C3.01478 22.0726 2.59466 21.9734 2.31063 21.6894C2.0266 21.4053 1.92743 20.9852 2.05445 20.6042L2.32181 19.8021M4.19792 21.6782L2.32181 19.8021M2.32181 19.8021L3.41556 16.5208C3.67368 15.7465 3.80273 15.3593 3.97634 14.995C4.18114 14.5653 4.43213 14.1592 4.7249 13.7838C4.97308 13.4656 5.26166 13.1771 5.83882 12.5999L8.5 9.93872" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
-</svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M14.3601 4.07866L15.2869 3.15178C16.8226 1.61607 19.3125 1.61607 20.8482 3.15178C22.3839 4.68748 22.3839 7.17735 20.8482 8.71306L19.9213 9.63993M14.3601 4.07866C14.3601 4.07866 14.4759 6.04828 16.2138 7.78618C17.9517 9.52407 19.9213 9.63993 19.9213 9.63993M14.3601 4.07866L12 6.43872M19.9213 9.63993L14.6607 14.9006L11.5613 18L11.4001 18.1612C10.8229 18.7383 10.5344 19.0269 10.2162 19.2751C9.84082 19.5679 9.43469 19.8189 9.00498 20.0237C8.6407 20.1973 8.25352 20.3263 7.47918 20.5844L4.19792 21.6782M4.19792 21.6782L3.39584 21.9456C3.01478 22.0726 2.59466 21.9734 2.31063 21.6894C2.0266 21.4053 1.92743 20.9852 2.05445 20.6042L2.32181 19.8021M4.19792 21.6782L2.32181 19.8021M2.32181 19.8021L3.41556 16.5208C3.67368 15.7465 3.80273 15.3593 3.97634 14.995C4.18114 14.5653 4.43213 14.1592 4.7249 13.7838C4.97308 13.4656 5.26166 13.1771 5.83882 12.5999L8.5 9.93872"
+                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
 
                     <p class="flex justify-center items-center text-center dark:text-white inter text-xl">
                         {{ $remittanceId ? 'فورم ویرایش برداشت بانکی' : 'فورم ثبت برداشت بانکی' }}
@@ -456,7 +468,7 @@
                 <!-- Form -->
                 <form wire:submit.prevent="submitRemittance">
                     <!-- Account Number and Currency -->
-                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- Source Account Number -->
                         <div class="flex-1">
                             <div class="relative w-full">
@@ -500,9 +512,11 @@
                                     </datalist>
                                     @if(empty($selectedAccount))
                                     <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
                                     </div>
                                     @endif
                                 </div>
@@ -524,9 +538,11 @@
                                     @endforeach
                                 </select>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
 
                                 </div>
                             </div>
@@ -537,7 +553,7 @@
                     </div>
 
                     <!-- Amount and Date -->
-                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- Amount -->
                         <div class="flex-1">
                             <label
@@ -1167,7 +1183,7 @@
                     </div>
 
                     <!-- Time and Tracking Code -->
-                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- Time -->
                         <div class="lg:w-full" x-data="timePicker()" x-init="init()">
                             <label
@@ -1520,7 +1536,7 @@
                     </div>
 
                     <!-- Source and Destination Banks -->
-                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <div class="lg:w-full">
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
                                 بانک مبدا
@@ -1567,7 +1583,7 @@
                         </div>
                     </div>
                     <!-- Source and Destination Account Numbers -->
-                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- Source Account Number (Display only) -->
                         <div class="lg:w-full">
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">شماره
@@ -1625,9 +1641,11 @@
                                 </datalist>
                                 @if(empty($toAccount))
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
                                 </div>
                                 @endif
                             </div>
@@ -1639,7 +1657,7 @@
 
 
                     <!-- Zone and Beneficiary -->
-                        <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         <!-- Zone -->
                         <div class="lg:w-full">
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">درج زون
@@ -1919,7 +1937,7 @@
 
                         <!-- Search Box -->
                         <div class="relative w-full">
-                             <input type="text" wire:model.live="search" placeholder="جستجو..." class="w-full h-12 md:h-[51px]
+                            <input type="text" wire:model.live="search" placeholder="جستجو..." class="w-full h-12 md:h-[51px]
                            border border-[#D7E5EC]
                            dark:bg-black dark:border-white dark:placeholder:text-white placeholder:text-black
                            rounded-[12px] pl-3 pr-12 text-sm md:text-base
@@ -1973,7 +1991,7 @@
                     <div class="max-h-[680px] overflow-y-auto min-w-[890px]">
                         <table
                             class="w-full text-sm  md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                           <thead
+                            <thead
                                 class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir whitespace-nowrap">
                                 <th class="px-4 py-4 font-bold w-16">#</th>
                                 <th class="px-4 py-4 font-bold w-48">حساب مشتری</th>
@@ -1987,15 +2005,17 @@
                             </thead>
                             <tbody>
                                 @forelse($remittances as $key => $remittance)
-<tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+                                <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
                                odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
-                               transition-colors">                                        <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">
+                               transition-colors">
+                                    <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">
                                         {{ $key + 1 }}
                                     </td>
                                     <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium w-48">
                                         {{ $remittance->customer->fullname ?? '-' }}
                                     </td>
-                                    <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium w-32 whitespace-nowrap">
+                                    <td
+                                        class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium w-32 whitespace-nowrap">
                                         {{ $remittance->recipient->fullname ?? $remittance->giver_name }}
                                     </td>
                                     <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium w-40">

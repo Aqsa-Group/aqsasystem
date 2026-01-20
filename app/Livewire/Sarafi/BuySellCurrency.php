@@ -1543,12 +1543,12 @@ class BuySellCurrency extends Component
 
             $mpdf = new \Mpdf\Mpdf([
                 'mode' => 'utf-8',
-                'format' => [85, 297],
+                'format' => [72.1, 297],
                 'directionality' => 'rtl',
-                'margin_top' => 5,
-                'margin_bottom' => 5,
-                'margin_left' => 5,
-                'margin_right' => 5,
+                'margin_top' => 0,
+                'margin_bottom' => 0,
+                'margin_left' => 0,
+                'margin_right' => 0,
                 'fontDir' => array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'], [
                     public_path('fonts'),
                 ]),
