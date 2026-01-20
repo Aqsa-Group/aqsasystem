@@ -12,7 +12,7 @@
 
         body {
             font-family: "Shabnam", sans-serif;
-            width: 85mm;
+            width: 95mm;
             margin: 0 auto;
             padding: 0;
             background-color: white;
@@ -112,6 +112,19 @@
             text-align: center;
             font-size: 9px;
             color: #666;
+        }
+
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+                width: 85mm;
+            }
+
+            .document {
+                box-shadow: none;
+                border: 1px solid #000;
+            }
         }
     </style>
 </head>
