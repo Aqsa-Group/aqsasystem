@@ -268,7 +268,7 @@
   body {
     transform: scale(0.85);
     transform-origin: top center;
-     width: 133.3333%;
+     width: 200%;
   }
 }
 
