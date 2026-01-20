@@ -2054,7 +2054,7 @@
             <!-- سایدبار -->
             <div id="sidebar" class="sidebar-container rounded-tl-[50px] bg-[#184D6C] w-[296px] h-screen shadow-[0_4px_4px_rgba(37,99,235,0.25)]
 dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
-                <div class="responsive-text text-center mb-6 dark:text-white text-white font-bold yekan">صرافی {{
+                <div class="responsive-text text-center mb-6 dark:text-white text-white font-bold yekan"> {{
                     Auth::guard('sarafi')->user()->sarafi_name }} </div>
                 <nav class="mt-0 vazir space-y-2 dark:text-white" x-data="{
                     openItems: {

@@ -2,13 +2,12 @@
     <div class="flex flex-col pr-20 mx-auto">
         <div class="flex flex-col p-4 space-y-3">
             <h1 class="text-[25px] vazir">گزارش حساب و بیلانس</h1>
-            <h1 class="text-[#8C8C8C] border-b border-[#D9D9D9] pb-6">لیست تمام مشتریان و خزانه</h1>
-            <h1 class="text-[24px] font-medium">گزارش اختصاصـــــی</h1>
+            <h1 class="text-[#8C8C8C]  pb-6">لیست تمام مشتریان و خزانه</h1>
         </div>
 
         {{-- Form --}}
-        <div class="w-full max-w-[1465px] bg-[#F5F5F5] rounded-[12px] p-6 mx-auto"
-            style="box-shadow: 0px 4px 4px 0px #00000040;">
+        <div
+            class="w-full max-w-[1465px]  bg-white  border border-[#D7E5EC] shadow-sm backdrop:blur-lg  rounded-[12px] p-6 mx-auto">
             <form wire:submit.prevent="loadTransactions" class="space-y-8">
 
                 <div class="flex flex-col md:flex-row gap-8">
@@ -50,34 +49,38 @@
                                 $watch('selectedId', () => updateDisplay())" class="relative w-full">
                                     <input list="customersList" x-model="searchValue" @change="handleSelect"
                                         placeholder="جستجو یا انتخاب حساب..."
-                                        class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
+                                        class="w-full h-[60px] p-3 rounded-[12px]  bg-[#EFF6F9] border focus:ring-2 focus:ring-blue-500 appearance-none"
                                         autocomplete="off">
 
-                                    <datalist id="customersList">
+                                    <datalist id="customersList" class="appearance-none">
                                         @foreach ($customers as $customer)
-                                            <option
-                                                value="{{ $customer['account_number'] }} - {{ $customer['fullname'] }}">
-                                            </option>
+                                        <option value="{{ $customer['account_number'] }} - {{ $customer['fullname'] }}">
+                                        </option>
                                         @endforeach
                                     </datalist>
 
                                     <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                        <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
                                     </div>
                                 </div>
 
                                 @error('selectedAccount')
-                                    <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
 
 
                         {{-- نوع سند --}}
-                        <div>
-                            <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">نوع سند</label>
+                        <div class="relative">
+                            <label class="  block mb-2 pr-2 text-[16px] font-medium text-[#404040]">نوع
+                                سند</label>
                             <select wire:model="typeDocument"
-                                class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
+                                class="w-full pr-4 h-[59px] rounded-[12px]  border  bg-[#EFF6F9] focus:ring-2 focus:ring-blue-400 appearance-none">
                                 <option value="">همه اسناد</option>
                                 <option value="خرید">خرید</option>
                                 <option value="فروش">فروش</option>
@@ -85,35 +88,56 @@
                                 <option value="دریافت">دریافت</option>
                                 <option value="پرداخت">پرداخت</option>
                             </select>
+                            <div class="absolute left-3 bottom-2 -translate-y-1/2 pointer-events-none">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
                         </div>
 
                         {{-- نوع معامله --}}
-                        <div>
+                        <div class="relative">
                             <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">نوع حساب</label>
                             <select wire:model="accountType"
-                                class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
+                                class="w-full pr-4 h-[59px] rounded-[12px]  border  bg-[#EFF6F9] focus:ring-2 focus:ring-blue-400 appearance-none">
                                 <option value="">همه حساب ها</option>
                                 <option value="نقدی">نقدی</option>
                                 <option value="بانکی">بانکی</option>
                             </select>
+                            <div class="absolute left-3 bottom-2 -translate-y-1/2 pointer-events-none">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
                         </div>
 
                         {{-- توضیحات --}}
                         <div>
                             <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">توضیحات</label>
                             <input type="text" wire:model="description"
-                                class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400 placeholder:text-[#404040]"
+                                class="w-full pr-4 h-[59px] rounded-[12px]  bg-[#EFF6F9] border  focus:ring-2 focus:ring-blue-400 placeholder:text-[#404040]"
                                 placeholder="درج توضیحات">
                         </div>
-                           {{-- نوع گزارش --}}
-                        <div>
+                        {{-- نوع گزارش --}}
+                        <div class="relative">
                             <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">نوع گزارش</label>
                             <select wire:model="typeTransaction2"
-                                class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
+                                class="w-full pr-4 h-[59px] rounded-[12px]  bg-[#EFF6F9] border  focus:ring-2 focus:ring-blue-400 appearance-none">
                                 <option value="">همه ترانزکشن‌ها</option>
                                 <option value="رسید">رسید</option>
                                 <option value="برد">برد</option>
                             </select>
+                            <div class="absolute left-3 bottom-2 -translate-y-1/2 pointer-events-none">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
                         </div>
 
                     </div>
@@ -121,7 +145,7 @@
                     <!-- ستون سمت چپ -->
                     <div class="flex-1 flex flex-col space-y-6">
 
-                     
+
                         {{-- واحد ارز --}}
                         <div class="relative w-full" x-data="{
                             open: false,
@@ -134,7 +158,7 @@
 
                             <!-- Container کلیک‌شدنی و نمایش انتخاب‌ها به جای placeholder -->
                             <div @click="open = !open"
-                                class="flex flex-wrap gap-2 items-center min-h-[59px] border border-[#8C8C8C] rounded-[12px] p-2 cursor-pointer">
+                                class="flex flex-wrap gap-2 items-center min-h-[59px] border  bg-[#EFF6F9] rounded-[12px] p-2 cursor-pointer">
                                 <template x-if="selectedCurrencies.length > 0">
                                     <template x-for="code in selectedCurrencies" :key="code">
                                         <span
@@ -156,13 +180,13 @@
                                 class="absolute z-50 w-full bg-white border border-gray-300 mt-1 max-h-60 overflow-y-auto rounded-md shadow-lg">
                                 <div class="p-2 flex flex-wrap gap-2">
                                     @foreach ($currencies as $currency)
-                                        <label
-                                            class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 cursor-pointer border border-transparent hover:border-blue-200">
-                                            <input type="checkbox" value="{{ $currency['code'] }}"
-                                                x-model="selectedCurrencies"
-                                                class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
-                                            <span class="text-gray-700 font-medium">{{ $currency['name_fa'] }}</span>
-                                        </label>
+                                    <label
+                                        class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 cursor-pointer border border-transparent hover:border-blue-200">
+                                        <input type="checkbox" value="{{ $currency['code'] }}"
+                                            x-model="selectedCurrencies"
+                                            class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+                                        <span class="text-gray-700 font-medium">{{ $currency['name_fa'] }}</span>
+                                    </label>
                                     @endforeach
                                 </div>
                             </div>
@@ -170,10 +194,10 @@
 
                         {{-- زون و توسط --}}
                         <div class="flex flex-col md:flex-row gap-4">
-                            <div class="w-full">
+                            <div class="w-full relative">
                                 <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">زون</label>
                                 <select wire:model="zone"
-                                    class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400">
+                                    class="w-full pr-4 h-[59px] rounded-[12px]  border  bg-[#EFF6F9] focus:ring-2 focus:ring-blue-400 appearance-none">
                                     <option value="">انتخاب زون</option>
                                     <option value="غرب">غرب (هرات، بادغیس، غور، فراه)</option>
                                     <option value="مرکز">مرکز (کابل، پروان، کاپیسا، وردک، لوگر)</option>
@@ -184,22 +208,29 @@
                                     <option value="شرق">شرق (ننگرهار، لغمان، کنر، نورستان)</option>
                                     <option value="جنوب‌غرب">جنوب‌غرب (نیمروز)</option>
                                 </select>
+                                <div class="absolute left-3 bottom-2 -translate-y-1/2 pointer-events-none">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </div>
                             </div>
                         </div>
-                            <div class="w-full">
-                                <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">توسط</label>
-                                <input type="text" wire:model="by"
-                                    class="w-full pr-4 h-[59px] rounded-[12px] bg-transparent border border-[#8C8C8C] focus:ring-2 focus:ring-blue-400 placeholder:text-[#404040]"
-                                    placeholder="جستجو توسط">
-                            </div>
+                        <div class="w-full">
+                            <label class="block mb-2 pr-2 text-[16px] font-medium text-[#404040]">توسط</label>
+                            <input type="text" wire:model="by"
+                                class="w-full pr-4 h-[59px] rounded-[12px]  bg-[#EFF6F9] border  focus:ring-2 focus:ring-blue-400 placeholder:text-[#404040]"
+                                placeholder="جستجو توسط">
+                        </div>
 
                         <div>
                             <div class="lg:col-span-3 relative" x-data="fromDatePicker()" x-init="init()">
                                 <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">از
                                     تاریخ</label>
-                                <input type="text" x-ref="dateInput" x-model="displayDate"
-                                    @click="togglePicker()" placeholder="YYYY/MM/DD"
-                                    class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 cursor-pointer"
+                                <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
+                                    placeholder="YYYY/MM/DD"
+                                    class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border focus:ring-2  bg-[#EFF6F9]  focus:ring-blue-500 cursor-pointer"
                                     readonly />
 
                                 <!-- Date Picker Modal -->
@@ -284,10 +315,8 @@
                                                 <!-- Month Selector -->
                                                 <div x-show="showMonthSelector" x-transition>
                                                     <div class="grid grid-cols-3 gap-2 mb-4">
-                                                        <template x-for="(month, index) in monthsAfghan"
-                                                            :key="index">
-                                                            <button @click="selectMonth(index)"
-                                                                :class="{
+                                                        <template x-for="(month, index) in monthsAfghan" :key="index">
+                                                            <button @click="selectMonth(index)" :class="{
                                                                     'bg-blue-500 text-white': currentMonth === index,
                                                                     'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentMonth !==
                                                                         index
@@ -325,10 +354,8 @@
                                                         </button>
                                                     </div>
                                                     <div class="grid grid-cols-4 gap-2 mb-4">
-                                                        <template x-for="year in yearRange.years"
-                                                            :key="year">
-                                                            <button @click="selectYear(year)"
-                                                                :class="{
+                                                        <template x-for="year in yearRange.years" :key="year">
+                                                            <button @click="selectYear(year)" :class="{
                                                                     'bg-blue-500 text-white': currentYear === year,
                                                                     'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentYear !==
                                                                         year
@@ -356,8 +383,7 @@
                                                     <!-- Days Grid -->
                                                     <div class="grid grid-cols-7 gap-1">
                                                         <template x-for="day in calendarDays" :key="day.key">
-                                                            <button @click="selectDate(day.day)"
-                                                                :class="{
+                                                            <button @click="selectDate(day.day)" :class="{
                                                                     'bg-blue-500 text-white hover:bg-blue-600': day
                                                                         .isSelected,
                                                                     'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300': day
@@ -406,7 +432,7 @@
                                 </div>
 
                                 @error('startDate')
-                                    <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
@@ -416,9 +442,9 @@
                             <div class="lg:col-span-3 relative" x-data="toDatePicker()" x-init="init()">
                                 <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تا
                                     تاریخ</label>
-                                <input type="text" x-ref="dateInput" x-model="displayDate"
-                                    @click="togglePicker()" placeholder="YYYY/MM/DD"
-                                    class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 cursor-pointer"
+                                <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
+                                    placeholder="YYYY/MM/DD"
+                                    class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border focus:ring-2  bg-[#EFF6F9]  focus:ring-blue-500 cursor-pointer"
                                     readonly />
 
                                 <!-- Date Picker Modal -->
@@ -503,10 +529,8 @@
                                                 <!-- Month Selector -->
                                                 <div x-show="showMonthSelector" x-transition>
                                                     <div class="grid grid-cols-3 gap-2 mb-4">
-                                                        <template x-for="(month, index) in monthsAfghan"
-                                                            :key="index">
-                                                            <button @click="selectMonth(index)"
-                                                                :class="{
+                                                        <template x-for="(month, index) in monthsAfghan" :key="index">
+                                                            <button @click="selectMonth(index)" :class="{
                                                                     'bg-blue-500 text-white': currentMonth === index,
                                                                     'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentMonth !==
                                                                         index
@@ -544,10 +568,8 @@
                                                         </button>
                                                     </div>
                                                     <div class="grid grid-cols-4 gap-2 mb-4">
-                                                        <template x-for="year in yearRange.years"
-                                                            :key="year">
-                                                            <button @click="selectYear(year)"
-                                                                :class="{
+                                                        <template x-for="year in yearRange.years" :key="year">
+                                                            <button @click="selectYear(year)" :class="{
                                                                     'bg-blue-500 text-white': currentYear === year,
                                                                     'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentYear !==
                                                                         year
@@ -564,8 +586,7 @@
                                                 <div x-show="!showMonthSelector && !showYearSelector" x-transition>
                                                     <!-- Week Days -->
                                                     <div class="grid grid-cols-7 gap-1 mb-2">
-                                                        <template x-for="day in weekDaysAfghan"
-                                                            :key="day">
+                                                        <template x-for="day in weekDaysAfghan" :key="day">
                                                             <div
                                                                 class="text-center text-sm font-medium text-gray-500 dark:text-gray-400 py-1">
                                                                 <span x-text="day"></span>
@@ -576,8 +597,7 @@
                                                     <!-- Days Grid -->
                                                     <div class="grid grid-cols-7 gap-1">
                                                         <template x-for="day in calendarDays" :key="day.key">
-                                                            <button @click="selectDate(day.day)"
-                                                                :class="{
+                                                            <button @click="selectDate(day.day)" :class="{
                                                                     'bg-blue-500 text-white hover:bg-blue-600': day
                                                                         .isSelected,
                                                                     'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300': day
@@ -626,7 +646,7 @@
                                 </div>
 
                                 @error('endDate')
-                                    <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
@@ -637,12 +657,12 @@
                 <!-- در بخش دکمه‌ها -->
                 <div class="flex justify-center gap-4 pt-4">
                     <button type="submit"
-                        class="bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-[16px] font-medium rounded-[12px] w-full px-8 py-4 transition">
+                        class="bg-[#184D6C]  text-white text-[16px] font-medium rounded-[12px] w-full px-8 py-4 transition">
                         بروزرسانی گزارش
                     </button>
 
                     <button type="button" wire:click="print" wire:loading.attr="disabled"
-                        class="bg-[#B10909] hover:bg-[#8B0000] text-white text-[16px] font-medium rounded-[12px] w-full py-4 transition flex items-center justify-center gap-2">
+                        class="bg-[#184D6C]  text-white text-[16px] font-medium rounded-[12px] w-full py-4 transition flex items-center justify-center gap-2">
                         <span wire:loading.remove>چاپ گزارش</span>
                         <span wire:loading>
                             در حال تولید...
@@ -656,32 +676,40 @@
         </div>
 
         {{-- Report Table --}}
-        <div class="w-full max-w-[1465px] bg-[#F5F5F5] rounded-[12px] mt-10 p-6 mx-auto"
-            style="box-shadow: 0px 4px 4px 0px #00000040;">
+        <div
+            class="w-full max-w-[1465px] bg-white  border border-[#D7E5EC] shadow-sm backdrop:blur-lg rounded-[12px] mt-10 p-6 mx-auto">
 
             <div class="flex justify-between items-center mb-4">
                 <div class="relative w-[302px]">
-                    <input type="text" id="searchTable"
-                        class="border border-[#8C8C8C] bg-transparent rounded-[12px] h-[51px] w-[302px] pl-10 pr-4"
-                        placeholder="جستجو در جدول...">
-                    <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt="search"
-                        class="absolute left-3 top-3 w-5 h-5">
+                    <input type="text" wire:model.live="search" placeholder="جستجو..." class="w-full h-12 md:h-[51px]
+                           border border-[#D7E5EC]
+                           dark:bg-black dark:border-white dark:placeholder:text-white placeholder:text-black
+                           rounded-[12px] pl-3 pr-12 text-sm md:text-base
+                           bg-transparent relative z-0">
+
+                    {{-- آیکون --}}
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none dark:hidden">
+                        <path d="M20 20L22 22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                        <path
+                            d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75"
+                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+
                 </div>
 
                 @if ($selectedCustomer)
-                    <div class="text-right">
-                        <h3 class="text-lg font-bold">{{ $selectedCustomerName }}</h3>
-                        <p class="text-sm text-gray-600">تعداد تراکنش‌ها: {{ count($transactions) }}</p>
-                    </div>
+                <div class="text-right">
+                    <h3 class="text-lg font-bold">{{ $selectedCustomerName }}</h3>
+                    <p class="text-sm text-gray-600">تعداد تراکنش‌ها: {{ count($transactions) }}</p>
+                </div>
                 @endif
             </div>
 
             <table class="w-full text-sm md:text-base text-left mt-6 rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead
-                    class="bg-[#2B65E5] w-full text-white text-[14px] md:text-[16px] h-[50px] md:h-[67px] sticky top-0"
-                    style="box-shadow: 0px 4px 4px 0px #00000040;">
-                    <!-- سطر اول -->
-                    <tr class="w-full">
+                    class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
+                    <tr class="whitespace-nowrap">
                         <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-12 md:w-16" rowspan="2">#</th>
                         <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-32 md:w-48" rowspan="2">تاریخ</th>
                         <th class="px-2 md:px-8 py-3 md:py-4 font-bold w-32 md:w-48" rowspan="2">حساب</th>
@@ -691,14 +719,13 @@
 
                         <!-- نمایش داینامیک ارزها بر اساس مشتری -->
                         @foreach ($active_currencies as $code => $currency)
-                            @php
-                                $currencyName = is_array($currency) ? $currency['name_fa'] : $currency;
-                                $colspan = 2;
-                            @endphp
-                            <th class="px-4 md:px-6 py-3 md:py-4 font-bold text-center"
-                                colspan="{{ $colspan }}">
-                                {{ $currencyName }}
-                            </th>
+                        @php
+                        $currencyName = is_array($currency) ? $currency['name_fa'] : $currency;
+                        $colspan = 2;
+                        @endphp
+                        <th class="px-4 md:px-6 py-3 md:py-4 font-bold text-center" colspan="{{ $colspan }}">
+                            {{ $currencyName }}
+                        </th>
                         @endforeach
 
                     </tr>
@@ -706,57 +733,62 @@
                     <tr>
                         <!-- نمایش ستون‌های رسید و برد برای هر ارز -->
                         @foreach ($active_currencies as $code => $currency)
-                            <th class="px-2 md:px-3 py-2 font-semibold text-center min-w-[70px] md:min-w-[80px]">رسید
-                            </th>
-                            <th class="px-2 md:px-3 py-2 font-semibold text-center min-w-[70px] md:min-w-[80px]">برد
-                            </th>
+                        <th class="px-2 md:px-3 py-2 font-semibold text-center min-w-[70px] md:min-w-[80px]">رسید
+                        </th>
+                        <th class="px-2 md:px-3 py-2 font-semibold text-center min-w-[70px] md:min-w-[80px]">برد
+                        </th>
                         @endforeach
                     </tr>
                 </thead>
 
                 <tbody class="text-[14px] md:text-[15px] text-gray-800">
                     @if (count($transactions) > 0)
-                        @foreach ($transactions as $index => $transaction)
-                            <tr class="border-b hover:bg-gray-50">
-                                <td class="px-2 md:px-4 py-3 text-center">{{ $index + 1 }}</td>
-                                <td class="px-2 md:px-4 py-3">
-                                    <div class="flex flex-col">
-                                        <span>
-                                            {{ explode(' ', $transaction->date)[0] }}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td class="px-2 md:px-4 py-3">{{ $transaction->account_type }}</td>
-                                <td class="px-2 md:px-4 py-3">
-                                    {{ $transaction->document_number ?? 'SN-' . str_pad($transaction->id, 3, '0', STR_PAD_LEFT) }}
-                                </td>
-                                <td class="px-2 md:px-4 py-3">{{ $transaction->description }}</td>
-                                <td class="px-2 md:px-4 py-3">{{ $transaction->by }}</td>
+                    @foreach ($transactions as $index => $transaction)
+                    <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+                               odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
+                               transition-colors">
+                        <td class="px-2 md:px-4 py-3 text-center">{{ $index + 1 }}</td>
+                        <td class="px-2 md:px-4 py-3">
+                            <div class="flex flex-col">
+                                <span>
+                                    {{ explode(' ', $transaction->date)[0] }}
+                                </span>
+                            </div>
+                        </td>
+                        <td class="px-2 md:px-4 py-3">{{ $transaction->account_type }}</td>
+                        <td class="px-2 md:px-4 py-3">
+                            {{ $transaction->document_number ?? 'SN-' . str_pad($transaction->id, 3, '0', STR_PAD_LEFT)
+                            }}
+                        </td>
+                        <td class="px-2 md:px-4 py-3">{{ $transaction->description }}</td>
+                        <td class="px-2 md:px-4 py-3">{{ $transaction->by }}</td>
 
-                                <!-- نمایش داینامیک مقادیر برای هر ارز -->
-                                @foreach ($active_currencies as $code => $currency)
-                                    <td class="px-2 md:px-3 py-3 text-center">
-                                        {{ $transaction->currency == $code && $transaction->type == 'رسید' ? number_format($transaction->amount) : '-' }}
-                                    </td>
-                                    <td class="px-2 md:px-3 py-3 text-center">
-                                        {{ $transaction->currency == $code && $transaction->type == 'برد' ? number_format($transaction->amount) : '-' }}
-                                    </td>
-                                @endforeach
-
-                               
-                            </tr>
+                        <!-- نمایش داینامیک مقادیر برای هر ارز -->
+                        @foreach ($active_currencies as $code => $currency)
+                        <td class="px-2 md:px-3 py-3 text-center">
+                            {{ $transaction->currency == $code && $transaction->type == 'رسید' ?
+                            number_format($transaction->amount) : '-' }}
+                        </td>
+                        <td class="px-2 md:px-3 py-3 text-center">
+                            {{ $transaction->currency == $code && $transaction->type == 'برد' ?
+                            number_format($transaction->amount) : '-' }}
+                        </td>
                         @endforeach
+
+
+                    </tr>
+                    @endforeach
                     @else
-                        <tr>
-                            <td colspan="{{ 5 + count($active_currencies) * 2 + 1 }}"
-                                class="px-4 py-8 text-center text-gray-500">
-                                @if ($selectedCustomer)
-                                    هیچ تراکنشی با فیلترهای انتخاب شده یافت نشد
-                                @else
-                                    لطفاً ابتدا یک مشتری را انتخاب کنید
-                                @endif
-                            </td>
-                        </tr>
+                    <tr>
+                        <td colspan="{{ 5 + count($active_currencies) * 2 + 1 }}"
+                            class="px-4 py-8 text-center text-gray-500">
+                            @if ($selectedCustomer)
+                            هیچ تراکنشی با فیلترهای انتخاب شده یافت نشد
+                            @else
+                            لطفاً ابتدا یک مشتری را انتخاب کنید
+                            @endif
+                        </td>
+                    </tr>
                     @endif
                 </tbody>
             </table>
@@ -764,7 +796,8 @@
         </div>
 
         {{-- General Table --}}
-        <div class="w-full max-w-[1465px] bg-[#F5F5F5] rounded-[12px] mt-10 p-6 mx-auto">
+        <div
+            class="w-full max-w-[1465px]  bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC] rounded-[12px] mt-10 p-6 mx-auto">
 
             <div class="flex justify-between items-center text-center mx-auto mb-6">
                 <h1 class="text-xl font-bold">مجموعه کل</h1>
@@ -777,9 +810,9 @@
 
             <div class="overflow-x-auto w-full mt-6">
                 <table class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead class="bg-[#2B65E5] text-white text-[14px] md:text-[16px] h-[50px] md:h-[67px] sticky top-0"
-                        style="box-shadow: 0px 4px 4px 0px #00000040;">
-                        <tr>
+                    <thead
+                        class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
+                        <tr class="whitespace-nowrap">
                             <th class="px-3 py-3 font-bold text-center" style="width: 5%;">#</th>
                             <th class="px-3 py-3 font-bold text-center" style="width: 15%;">واحد پول</th>
                             <th class="px-3 py-3 font-bold text-center" style="width: 15%;">رسید</th>
@@ -792,46 +825,48 @@
 
                     <tbody class="text-[16px] md:text-[18px] text-gray-800 bg-white">
                         @if (count($balances) > 0)
-                            @foreach ($balances as $index => $balance)
-                                <tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors duration-200">
-                                    <td class="px-3 py-4 vazir font-medium text-center align-middle">
-                                        {{ $index + 1 }}
-                                    </td>
+                        @foreach ($balances as $index => $balance)
+                        <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+                               odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
+                               transition-colors">
+                            <td class="px-3 py-4 vazir font-medium text-center align-middle">
+                                {{ $index + 1 }}
+                            </td>
 
-                                    <td class="px-3 py-4 vazir font-medium text-center align-middle">
-                                        {{ $balance['name_fa'] }}
-                                    </td>
+                            <td class="px-3 py-4 vazir font-medium text-center align-middle">
+                                {{ $balance['name_fa'] }}
+                            </td>
 
-                                    <td class="px-3 py-4 vazir font-medium text-center align-middle">
-                                        {{ number_format($balance['received']) }}
-                                    </td>
+                            <td class="px-3 py-4 vazir font-medium text-center align-middle">
+                                {{ number_format($balance['received']) }}
+                            </td>
 
-                                    <td dir="ltr" class="px-3 py-4 vazir font-medium text-center align-middle">
-                                        {{ number_format($balance['spent']) }}
-                                    </td>
+                            <td dir="ltr" class="px-3 py-4 vazir font-medium text-center align-middle">
+                                {{ number_format($balance['spent']) }}
+                            </td>
 
-                                    <td  dir="ltr" class="px-3 py-4 vazir font-medium text-left align-middle">
-                                        {{ number_format($balance['balance']) }}
-                                    </td>
+                            <td dir="ltr" class="px-3 py-4 vazir font-medium text-left align-middle">
+                                {{ number_format($balance['balance']) }}
+                            </td>
 
-                                    <td  dir="ltr" class="px-3 py-4 vazir font-medium text-center align-middle">
-                                        {{ number_format($balance['current_balance']) }}
-                                    </td>
+                            <td dir="ltr" class="px-3 py-4 vazir font-medium text-center align-middle">
+                                {{ number_format($balance['current_balance']) }}
+                            </td>
 
-                                    <td class="px-3 py-4 text-center align-middle">
-                                        <span
-                                            class="inline-block px-3 py-1 rounded-full text-sm font-medium {{ $balance['status'] == 'طلبکار' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200' }}">
-                                            {{ $balance['status'] }}
-                                        </span>
-                                    </td>
-                                </tr>
-                            @endforeach
+                            <td class="px-3 py-4 text-center align-middle">
+                                <span
+                                    class="inline-block px-3 py-1 rounded-full text-sm font-medium {{ $balance['status'] == 'طلبکار' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200' }}">
+                                    {{ $balance['status'] }}
+                                </span>
+                            </td>
+                        </tr>
+                        @endforeach
                         @else
-                            <tr>
-                                <td colspan="7" class="px-4 py-8 text-center text-gray-500 text-[16px]">
-                                    هیچ موجودی فعالی وجود ندارد
-                                </td>
-                            </tr>
+                        <tr>
+                            <td colspan="7" class="px-4 py-8 text-center text-gray-500 text-[16px]">
+                                هیچ موجودی فعالی وجود ندارد
+                            </td>
+                        </tr>
                         @endif
                     </tbody>
                 </table>
@@ -839,8 +874,8 @@
 
         </div>
     </div>
-<script>
-    // جستجوی ساده در جدول
+    <script>
+        // جستجوی ساده در جدول
     document.addEventListener('DOMContentLoaded', function() {
         const searchInput = document.getElementById('searchTable');
         if (searchInput) {
@@ -1234,58 +1269,56 @@
             };
         });
     });
-</script>
+    </script>
 
-<style>
-    [x-cloak] {
-        display: none !important;
-    }
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
 
-    .rotate-180 {
-        transform: rotate(180deg);
-    }
+        .rotate-180 {
+            transform: rotate(180deg);
+        }
 
-    .transition-transform {
-        transition: transform 0.2s ease;
-    }
+        .transition-transform {
+            transition: transform 0.2s ease;
+        }
 
-    input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
 
-    .persian-datepicker {
-        font-family: 'Vazir', sans-serif;
-        direction: rtl;
-    }
+        .persian-datepicker {
+            font-family: 'Vazir', sans-serif;
+            direction: rtl;
+        }
 
-    .transition-all {
-        transition-property: all;
-        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        transition-duration: 150ms;
-    }
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
 
-    ::-webkit-scrollbar {
-        width: 8px;
-    }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
 
-    ::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 4px;
-    }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
 
-    ::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 4px;
-    }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
 
-    ::-webkit-scrollbar-thumb:hover {
-        background: #555;
-    }
-</style>
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
 
 
 </div>
-
-

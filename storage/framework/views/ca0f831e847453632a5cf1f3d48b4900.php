@@ -254,13 +254,18 @@
                 transform: translateY(-20px) rotate(180deg);
             }
         }
+
         @media (max-width: 1370px) {
-  body {
-    transform: scale(0.75);
-    transform-origin: top center;
-    width: 133.3333%;
-  }
-}
+            body {
+                transform: scale(0.75);
+                transform-origin: top center;
+                width: 133.3333%;
+            }
+        }
+
+
+
+
 
 
         @keyframes fadeInUp {
@@ -2027,7 +2032,7 @@
             <!-- سایدبار -->
             <div id="sidebar" class="sidebar-container rounded-tl-[50px] bg-[#184D6C] w-[296px] h-screen shadow-[0_4px_4px_rgba(37,99,235,0.25)]
 dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
-                <div class="responsive-text text-center mb-6 dark:text-white text-white font-bold yekan">صرافی <?php echo e(Auth::guard('sarafi')->user()->sarafi_name); ?> </div>
+                <div class="responsive-text text-center mb-6 dark:text-white text-white font-bold yekan"> <?php echo e(Auth::guard('sarafi')->user()->sarafi_name); ?> </div>
                 <nav class="mt-0 vazir space-y-2 dark:text-white" x-data="{
                     openItems: {
                         customers: false,
