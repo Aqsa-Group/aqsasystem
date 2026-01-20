@@ -43,8 +43,8 @@
     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
     <!-- Add Staff Form -->
-    <div class="w-full max-w-[1200px] p-4 mx-auto bg-[#F5F5F5] dark:bg-black dark:border dark:border-white rounded-2xl space-y-2 mb-5"
-        style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+    <div class="w-full max-w-[1200px] p-4 mx-auto bg-white  border border-[#D7E5EC] shadow-sm backdrop:blur-lg dark:border-white dark:bg-black dark:border dark:border-white rounded-2xl space-y-2 mb-5"
+       >
 
         <!-- Header -->
         <div class="text-center space-y-2 mb-6">
@@ -91,7 +91,7 @@
                                 $watch('selectedId', () => updateDisplay())" class="relative w-full">
                         <input list="customersList" x-model="searchValue" @change="handleSelect"
                             placeholder="جستجو یا انتخاب حساب..."
-                            class="w-full h-[60px] dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
+                            class="w-full h-[60px] dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white p-3 rounded-[12px] bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500"
                             autocomplete="off">
                         <datalist id="customersList">
                             <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -133,7 +133,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </label>
                     <div class="relative">
                         <input type="text" wire:model="name" placeholder="نام کارمند"
-                            class="w-full p-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                            class="w-full p-3 rounded-xl  focus:ring-2 bg-[#EFF6F9]
                                    focus:ring-blue-500 dark:bg-black dark:placeholder:text-white dark:border-white dark:text-white">
                         <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -155,7 +155,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </label>
                     <div class="relative">
                         <input type="text" wire:model="fathername" placeholder="نام پدر"
-                            class="w-full p-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                            class="w-full p-3 rounded-xl  focus:ring-2 bg-[#EFF6F9]
                                    focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                         <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['fathername'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -184,7 +184,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </label>
                     <div class="relative">
                         <input type="number" wire:model="age" placeholder="سن" min="18" max="80"
-                            class="w-full p-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                            class="w-full p-3 rounded-xl dark:border focus:ring-2 bg-[#EFF6F9]
                                    focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                         <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['age'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -206,7 +206,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </label>
                     <div class="relative">
                         <select wire:model="gender"
-                            class="w-full p-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                            class="w-full p-3 rounded-xl  focus:ring-2 bg-[#EFF6F9]
                                    focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                             <option value="male">مرد</option>
                             <option value="female">زن</option>
@@ -234,7 +234,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </label>
                     <div class="relative">
                         <input type="text" wire:model="phone" placeholder="شماره تماس"
-                            class="w-full p-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                            class="w-full p-3 rounded-xl  focus:ring-2 bg-[#EFF6F9]
                                    focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                         <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['phone'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -256,7 +256,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </label>
                     <div class="relative">
                         <input type="text" wire:model="job" placeholder="عنوان شغل"
-                            class="w-full p-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                            class="w-full p-3 rounded-xl  focus:ring-2 bg-[#EFF6F9]
                                    focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                         <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['job'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -281,7 +281,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </label>
                     <div class="relative">
                         <input type="text" wire:model.lazy="formatted_salary" placeholder="مبلغ معاش"
-                            class="w-full p-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                            class="w-full p-3 rounded-xl  focus:ring-2 bg-[#EFF6F9]
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
 
                         <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['salary_amount'];
@@ -312,7 +312,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </label>
                     <div class="relative">
                         <input type="text" wire:model.lazy="tax_percent" placeholder="فیصدی مالیه (%)"
-                            class="w-full p-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                            class="w-full p-3 rounded-xl  focus:ring-2 bg-[#EFF6F9]
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
 
                         <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['salary_amount'];
@@ -343,7 +343,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </label>
                     <div class="relative">
                         <input type="text" value="<?php echo e(number_format($final_salary)); ?>" readonly
-                            class="w-full p-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                            class="w-full p-3 rounded-xl  focus:ring-2 bg-[#EFF6F9]
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
 
                         <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['salary_amount'];
@@ -377,7 +377,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             تاریخ</label>
                         <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
                             placeholder="YYYY/MM/DD"
-                            class="w-full dark:text-white dark:bg-black dark:border-white p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 cursor-pointer"
+                            class="w-full dark:text-white dark:bg-black dark:border-white p-3 rounded-[12px]  focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 cursor-pointer"
                             readonly />
 
                         <!-- Date Picker Modal -->
@@ -596,7 +596,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         تاریخ</label>
                     <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
                         placeholder="YYYY/MM/DD"
-                        class="w-full dark:text-white dark:bg-black dark:border-white  p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 cursor-pointer"
+                        class="w-full dark:text-white dark:bg-black dark:border-white  p-3 rounded-[12px]  focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 cursor-pointer"
                         readonly />
 
                     <!-- Date Picker Modal -->
@@ -812,7 +812,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         آدرس
                     </label>
                     <input type="text" wire:model="address" placeholder="‌آدرس"
-                        class="w-full p-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                        class="w-full p-3 rounded-xl  focus:ring-2 bg-[#EFF6F9]
                                    focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                     <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['address'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -899,7 +899,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             'border-blue-500 bg-blue-50 dark:bg-black': isUploading,
                             'border-[#112080] bg-white dark:bg-black': !uploadedFileName && !isUploading
                         }"
-                        class="w-full h-[150px] p-3 rounded-[12px] border-2 border-dashed focus:ring-2 focus:ring-blue-500 dark:border-white dark:bg-black dark:text-white flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300 relative"
+                        class="w-full h-[46px] p-3 rounded-[12px] border-2 border-dashed focus:ring-2 focus:ring-blue-500 dark:border-white dark:bg-black dark:text-white flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300 relative"
                         x-on:click="$refs.fileInput.click()">
 
                         <!-- حالت در حال آپلود -->
@@ -917,40 +917,50 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                         <!-- حالت آپلود موفق -->
                         <template x-if="!isUploading && uploadedFileName">
-                            <div class="flex flex-col items-center w-full">
-                                <div
-                                    class="w-12 h-12 mb-2 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                </div>
-                                <h1 class="font-vazir text-green-600 dark:text-green-300 text-[16px]">آپلود موفق</h1>
-                                <p class="font-vazir text-gray-600 dark:text-gray-300 text-sm mt-1 truncate max-w-full px-2"
-                                    x-text="uploadedFileName" :title="uploadedFileName"></p>
-                                <button type="button" x-on:click.stop="removeFile()"
-                                    class="mt-2 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 text-sm flex items-center gap-1 transition-colors">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                        </path>
-                                    </svg>
-                                    حذف فایل
-                                </button>
-                            </div>
+                           <div class="flex justify-between w-full  items-center ">
+                                        <div class="flex">
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M12.5 17.5H7.5C5.14298 17.5 3.96447 17.5 3.23223 16.7678C2.5 16.0355 2.5 14.857 2.5 12.5M17.5 12.5C17.5 14.857 17.5 16.0355 16.7678 16.7678C16.5179 17.0176 16.2162 17.1822 15.8333 17.2906"
+                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path
+                                                    d="M9.99984 13.3333V2.5M9.99984 2.5L13.3332 6.14583M9.99984 2.5L6.6665 6.14583"
+                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                            </svg>
+
+                                            <h1 class="font-vazir text-gray-600 dark:text-white text-[16px]">آپلود فایل
+                                            </h1>
+                                        </div>
+                                        <p class="font-vazir text-gray-500 dark:text-white text-sm mt-1">
+                                            JPG, PNG,WEBP</p>
+                                    </div>
                         </template>
 
                         <!-- حالت اولیه (بدون فایل) -->
                         <template x-if="!isUploading && !uploadedFileName">
-                            <div class="flex flex-col items-center">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/upload.svg')); ?>" alt="آپلود"
-                                    class="w-12 h-12 mb-2">
-                                <h1 class="font-vazir text-gray-600 dark:text-white text-[16px]">فایل را
-                                    اینجا وارد کنید یا بکشید</h1>
-                                <p class="font-vazir text-gray-500 dark:text-white text-sm mt-1">فرمت‌های
-                                    مجاز: JPG, PNG, WEBP</p>
-                            </div>
+                            <div class="flex justify-between w-full  items-center ">
+                                        <div class="flex">
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M12.5 17.5H7.5C5.14298 17.5 3.96447 17.5 3.23223 16.7678C2.5 16.0355 2.5 14.857 2.5 12.5M17.5 12.5C17.5 14.857 17.5 16.0355 16.7678 16.7678C16.5179 17.0176 16.2162 17.1822 15.8333 17.2906"
+                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path
+                                                    d="M9.99984 13.3333V2.5M9.99984 2.5L13.3332 6.14583M9.99984 2.5L6.6665 6.14583"
+                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                            </svg>
+
+                                            <h1 class="font-vazir text-gray-600 dark:text-white text-[16px]">آپلود فایل
+                                            </h1>
+                                        </div>
+                                        <p class="font-vazir text-gray-500 dark:text-white text-sm mt-1">
+                                            JPG, PNG,WEBP</p>
+                                    </div>
                         </template>
 
                         <input type="file" class="hidden" x-ref="fileInput" accept=".jpg,.jpeg,.png,.webp"
@@ -1080,7 +1090,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             'border-blue-500 bg-blue-50 dark:bg-black': isUploading,
                             'border-[#112080] bg-white dark:bg-black': !uploadedFileName && !isUploading
                         }"
-                        class="w-full h-[150px] p-3 rounded-[12px] border-2 border-dashed focus:ring-2 focus:ring-blue-500 dark:border-white dark:bg-black dark:text-white flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300 relative"
+                        class="w-full h-[46px] p-3 rounded-[12px] border-2 border-dashed focus:ring-2 focus:ring-blue-500 dark:border-white dark:bg-black dark:text-white flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300 relative"
                         x-on:click="$refs.fileInput.click()">
 
                         <template x-if="isUploading">
@@ -1096,39 +1106,49 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </template>
 
                         <template x-if="!isUploading && uploadedFileName">
-                            <div class="flex flex-col items-center w-full">
-                                <div
-                                    class="w-12 h-12 mb-2 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                </div>
-                                <h1 class="font-vazir text-green-600 dark:text-green-300 text-[16px]">آپلود موفق</h1>
-                                <p class="font-vazir text-gray-600 dark:text-gray-300 text-sm mt-1 truncate max-w-full px-2"
-                                    x-text="uploadedFileName" :title="uploadedFileName"></p>
-                                <button type="button" x-on:click.stop="removeFile()"
-                                    class="mt-2 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 text-sm flex items-center gap-1 transition-colors">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                        </path>
-                                    </svg>
-                                    حذف فایل
-                                </button>
-                            </div>
+                            <div class="flex justify-between w-full  items-center ">
+                                        <div class="flex">
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M12.5 17.5H7.5C5.14298 17.5 3.96447 17.5 3.23223 16.7678C2.5 16.0355 2.5 14.857 2.5 12.5M17.5 12.5C17.5 14.857 17.5 16.0355 16.7678 16.7678C16.5179 17.0176 16.2162 17.1822 15.8333 17.2906"
+                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path
+                                                    d="M9.99984 13.3333V2.5M9.99984 2.5L13.3332 6.14583M9.99984 2.5L6.6665 6.14583"
+                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                            </svg>
+
+                                            <h1 class="font-vazir text-gray-600 dark:text-white text-[16px]">آپلود فایل
+                                            </h1>
+                                        </div>
+                                        <p class="font-vazir text-gray-500 dark:text-white text-sm mt-1">
+                                            JPG, PNG,WEBP</p>
+                                    </div>
                         </template>
 
                         <template x-if="!isUploading && !uploadedFileName">
-                            <div class="flex flex-col items-center">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/upload.svg')); ?>" alt="آپلود"
-                                    class="w-12 h-12 mb-2">
-                                <h1 class="font-vazir text-gray-600 dark:text-white text-[16px]">فایل را
-                                    اینجا وارد کنید یا بکشید</h1>
-                                <p class="font-vazir text-gray-500 dark:text-white text-sm mt-1">فرمت‌های
-                                    مجاز: JPG, PNG, WEBP</p>
-                            </div>
+                            <div class="flex justify-between w-full  items-center ">
+                                        <div class="flex">
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M12.5 17.5H7.5C5.14298 17.5 3.96447 17.5 3.23223 16.7678C2.5 16.0355 2.5 14.857 2.5 12.5M17.5 12.5C17.5 14.857 17.5 16.0355 16.7678 16.7678C16.5179 17.0176 16.2162 17.1822 15.8333 17.2906"
+                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path
+                                                    d="M9.99984 13.3333V2.5M9.99984 2.5L13.3332 6.14583M9.99984 2.5L6.6665 6.14583"
+                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                            </svg>
+
+                                            <h1 class="font-vazir text-gray-600 dark:text-white text-[16px]">آپلود فایل
+                                            </h1>
+                                        </div>
+                                        <p class="font-vazir text-gray-500 dark:text-white text-sm mt-1">
+                                            JPG, PNG,WEBP</p>
+                                    </div>
                         </template>
 
                         <input type="file" class="hidden" x-ref="fileInput" accept=".jpg,.jpeg,.png,.webp"
@@ -1257,7 +1277,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             'border-blue-500 bg-blue-50 dark:bg-black': isUploading,
                             'border-[#112080] bg-white dark:bg-black': !uploadedFileName && !isUploading
                         }"
-                        class="w-full h-[150px] p-3 rounded-[12px] border-2 border-dashed focus:ring-2 focus:ring-blue-500 dark:border-white dark:bg-black dark:text-white flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300 relative"
+                        class="w-full h-[46px] p-3 rounded-[12px] border-2 border-dashed focus:ring-2 focus:ring-blue-500 dark:border-white dark:bg-black dark:text-white flex flex-col justify-center items-center text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300 relative"
                         x-on:click="$refs.fileInput.click()">
 
                         <template x-if="isUploading">
@@ -1273,39 +1293,49 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </template>
 
                         <template x-if="!isUploading && uploadedFileName">
-                            <div class="flex flex-col items-center w-full">
-                                <div
-                                    class="w-12 h-12 mb-2 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                </div>
-                                <h1 class="font-vazir text-green-600 dark:text-green-300 text-[16px]">آپلود موفق</h1>
-                                <p class="font-vazir text-gray-600 dark:text-gray-300 text-sm mt-1 truncate max-w-full px-2"
-                                    x-text="uploadedFileName" :title="uploadedFileName"></p>
-                                <button type="button" x-on:click.stop="removeFile()"
-                                    class="mt-2 text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 text-sm flex items-center gap-1 transition-colors">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                        </path>
-                                    </svg>
-                                    حذف فایل
-                                </button>
-                            </div>
+                           <div class="flex justify-between w-full  items-center ">
+                                        <div class="flex">
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M12.5 17.5H7.5C5.14298 17.5 3.96447 17.5 3.23223 16.7678C2.5 16.0355 2.5 14.857 2.5 12.5M17.5 12.5C17.5 14.857 17.5 16.0355 16.7678 16.7678C16.5179 17.0176 16.2162 17.1822 15.8333 17.2906"
+                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path
+                                                    d="M9.99984 13.3333V2.5M9.99984 2.5L13.3332 6.14583M9.99984 2.5L6.6665 6.14583"
+                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                            </svg>
+
+                                            <h1 class="font-vazir text-gray-600 dark:text-white text-[16px]">آپلود فایل
+                                            </h1>
+                                        </div>
+                                        <p class="font-vazir text-gray-500 dark:text-white text-sm mt-1">
+                                            JPG, PNG,WEBP</p>
+                                    </div>
                         </template>
 
                         <template x-if="!isUploading && !uploadedFileName">
-                            <div class="flex flex-col items-center">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/upload.svg')); ?>" alt="آپلود"
-                                    class="w-12 h-12 mb-2">
-                                <h1 class="font-vazir text-gray-600 dark:text-white text-[16px]">فایل را
-                                    اینجا وارد کنید یا بکشید</h1>
-                                <p class="font-vazir text-gray-500 dark:text-white text-sm mt-1">فرمت‌های
-                                    مجاز: PDF, DOC, DOCX</p>
-                            </div>
+                            <div class="flex justify-between w-full  items-center ">
+                                        <div class="flex">
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M12.5 17.5H7.5C5.14298 17.5 3.96447 17.5 3.23223 16.7678C2.5 16.0355 2.5 14.857 2.5 12.5M17.5 12.5C17.5 14.857 17.5 16.0355 16.7678 16.7678C16.5179 17.0176 16.2162 17.1822 15.8333 17.2906"
+                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path
+                                                    d="M9.99984 13.3333V2.5M9.99984 2.5L13.3332 6.14583M9.99984 2.5L6.6665 6.14583"
+                                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                            </svg>
+
+                                            <h1 class="font-vazir text-gray-600 dark:text-white text-[16px]">آپلود فایل
+                                            </h1>
+                                        </div>
+                                        <p class="font-vazir text-gray-500 dark:text-white text-sm mt-1">
+                                            JPG, PNG,WEBP</p>
+                                    </div>
                         </template>
 
                         <input type="file" class="hidden" x-ref="fileInput" accept=".pdf,.doc,.docx"
@@ -1370,10 +1400,10 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             <!-- Action Buttons -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
                 <button type="button" wire:click="resetInputFields"
-                    class="px-8 py-4 bg-red-500 text-white rounded-xl hover:bg-red-600 transition">
+                    class="px-8 py-4 bg-[#184D6C] text-white rounded-xl  transition">
                     انصراف
                 </button>
-                <button type="submit" class="px-8 py-4 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition">
+                <button type="submit" class="px-8 py-4 bg-[#184D6C] text-white rounded-xl    transition">
                     <?php echo e($editId ? 'بروزرسانی' : 'ثبت کارمند'); ?>
 
                 </button>
@@ -1386,7 +1416,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
         <!-- Filter Button -->
         <div class="relative">
             <button wire:click="$toggle('filterOpen')"
-                class="px-4 py-2 border rounded-lg dark:bg-black bg-[#2563EB] transition flex items-center gap-2 text-white">
+                class="px-4 py-2 border rounded-lg dark:bg-black bg-[#184D6C] transition flex items-center gap-2 text-white">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z">
@@ -1437,27 +1467,34 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
         <!-- Search Box -->
         <div class="relative flex-1 max-w-md">
-            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none"
-                stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
+              <input type="text" wire:model.live="search" placeholder="جستجو..." class="w-full h-12 md:h-[51px]
+                           border border-[#D7E5EC]
+                           dark:bg-black dark:border-white dark:placeholder:text-white placeholder:text-black
+                           rounded-[12px] pl-3 pr-12 text-sm md:text-base
+                           bg-transparent relative z-0">
 
-            <input type="text" wire:model.live="search"
-                placeholder="جستجوی کارمند بر اساس نام، نام پدر، شماره تماس یا شغل..."
-                class="w-full border border-gray-300 rounded-2xl pl-10 pr-3 py-3 focus:ring-2 focus:ring-blue-400 focus:outline-none dark:bg-black dark:text-white">
+                            
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none dark:hidden">
+                                <path d="M20 20L22 22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                <path
+                                    d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75"
+                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
+
         </div>
     </div>
 
     <!-- Staff Table -->
-    <div class="w-full max-w-[1200px] p-6 mt-4 mx-auto dark:bg-black dark:border dark:border-white bg-[#F5F5F5] rounded-lg"
-        style="box-shadow: 0px 4px 4px 0px #00000040;">
+    <div class="w-full max-w-[1200px] p-6 mt-4 mx-auto dark:bg-black dark:border dark:border-white  bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC] rounded-lg"
+     >
 
         <!-- Table Header -->
         <div class="overflow-x-auto">
             <table class="min-w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="bg-[#2563EB] dark:bg-gray-700 text-white text-lg vazir">
-                    <tr>
+    <thead
+                                class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">                    <tr>
                         <th class="px-6 py-4 font-bold">#</th>
                         <th class="px-6 py-4 font-bold">تصویر</th>
                         <th class="px-6 py-4 font-bold">نام کامل</th>
@@ -1473,8 +1510,9 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
                 <tbody>
                     <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $staffs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $staff): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                    <tr class="border-b dark:bg-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td class="px-6 py-4"><?php echo e($staffs->firstItem() + $index); ?></td>
+<tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+                               odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
+                               transition-colors">                        <td class="px-6 py-4"><?php echo e($staffs->firstItem() + $index); ?></td>
 
                         <!-- Image -->
                         <td class="px-6 py-4">

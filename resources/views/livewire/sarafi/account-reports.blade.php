@@ -38,10 +38,9 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
 
 
 
-        <hr class="my-6 border-t border-[#D9D9D9] w-full">
 
         <div class="w-full">
-            <div class="                         bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC]
+            <div class="bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC]
  dark:bg-black dark:border dark:border-white p-6 rounded-[12px] mx-auto">
 
                 <div
@@ -78,7 +77,7 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
                 <div class="grid grid-cols-1 lg:grid-cols-8 gap-4 items-stretch">
                     <div>
                         <button wire:click="printReport" wire:loading.attr='disabled' wire:target='printReport'
-                            class="w-full flex items-center justify-center gap-2 bg-[#2563EB] text-white px-4 py-4 rounded-xl hover:bg-blue-700 transition">
+                            class="w-full flex items-center justify-center gap-2 bg-[#184D6C] text-white px-4 py-3 rounded-xl  transition">
                             <span wire:loading.remove wire:target='printReport'>چاپ گزارش</span>
                             <span wire:loading wire:target='printReport'> در حال چاپ گزارش.....</span>
                             <svg width="30" height="30" viewBox="0 0 30 30" fill="none"
@@ -92,7 +91,7 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
                     <!-- دکمه ۲ - بروزرسانی -->
                     <div>
                         <button wire:click="refreshReport"
-                            class="w-full flex items-center justify-center gap-2 bg-[#2563EB] text-white px-4 py-4 rounded-xl hover:bg-blue-700 transition">
+                            class="w-full flex items-center justify-center gap-2 bg-[#184D6C] text-white px-4 py-4 rounded-xl  transition">
                             <span>بروز رسانی </span>
                             <svg width="24" height="24" viewBox="0 0 30 30" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -108,7 +107,7 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
                     <!-- دکمه ۳ - بازنشانی فیلترها -->
                     <div>
                         <button wire:click="resetFilters"
-                            class="w-full flex items-center justify-center gap-2  bg-[#2563EB] text-white px-4 py-4 rounded-xl hover:bg-blue-700 transition">
+                            class="w-full flex items-center justify-center gap-2  bg-[#184D6C] text-white px-4 py-4 rounded-xl  transition">
                             <span>بازنشانی </span>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -250,7 +249,8 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
                 <div class="overflow-x-auto w-full mt-4">
                     <div class="max-h-[600px] overflow-y-auto">
                         <table class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500">
-                            <thead class="bg-[#2B65E5] text-white text-[16px] vazir h-16 sticky top-0">
+                            <thead
+                                class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
                                 <tr>
                                     <th class="px-4 py-4 font-bold w-16">
                                         <span class="border border-white px-2 py-1 rounded-lg">#</span>
@@ -296,7 +296,9 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
                                 $bgColor = $report['type'] === 'sarafi_card' ? 'bg-green-50' : 'bg-blue-50';
                                 $textColor = $report['type'] === 'sarafi_card' ? 'text-green-800' : 'text-blue-800';
                                 @endphp
-                                <tr class="border-b {{ $bgColor }} dark:border-white bg-transparent">
+                                <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+                                            odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
+                                            transition-colors">
                                     <td class="px-4 py-4">
                                         <span class="border border-gray-300 px-2 py-1 rounded-lg">{{ $index + 1
                                             }}</span>

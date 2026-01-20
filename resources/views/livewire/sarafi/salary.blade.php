@@ -132,12 +132,12 @@
         {{-- فرم و جدول کنار هم --}}
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
             {{-- فرم پرداخت حقوق --}}
-            <div class="flex flex-col dark:bg-black dark:text-white dark:border dark:border-white bg-[#F5F5F5] mx-auto w-full max-w-[420px] lg:max-w-[474px] p-[10px] h-auto rounded-[12px] space-y-2"
-                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+            <div class="flex flex-col dark:bg-black dark:text-white dark:border dark:border-white  bg-white   border border-[#D7E5EC] shadow-sm backdrop:blur-lg  mx-auto w-full max-w-[420px] lg:max-w-[474px] p-[10px] h-auto rounded-[12px] space-y-2"
+              >
 
                 {{-- بالای فرم --}}
                 <div
-                    class="flex dark:border-white space-y-3 flex-row justify-between p-[10px] border border-[#8C8C8C] rounded-[12px] flex-wrap">
+                    class="flex dark:border-white space-y-3 flex-row justify-between p-[10px]  rounded-[12px] flex-wrap">
                     <p class="flex justify-center items-center text-center">
                         <img src="{{ asset('assets/sarafi/all_icon/edit-2.svg') }}" alt="" class="h-6 w-6">
                         فورم پرداخت معاشات
@@ -145,12 +145,12 @@
 
                     <div class="flex gap-4 flex-wrap">
                         <button wire:click="setPaymentMethod('نقدی')" class="rounded-[8px] p-[10px] text-white vazir font-semibold transition-colors duration-500 ease-in-out
-                            {{ $paymentMethod === 'نقدی' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
+                            {{ $paymentMethod === 'نقدی' ?  'bg-[#184D6C]' : 'bg-[#FFFF] border border-[#184D6C] text-black' }}">
                             پرداخت نقدی
                         </button>
 
                         <button wire:click="setPaymentMethod('کارتی')" class="rounded-[8px] p-[10px] text-white vazir font-semibold transition-colors duration-500 ease-in-out
-                            {{ $paymentMethod === 'کارتی' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
+                            {{ $paymentMethod === 'کارتی' ? 'bg-[#184D6C]' : 'bg-[#FFFF] border border-[#184D6C] text-black' }}">
                             پرداخت کارتی
                         </button>
                     </div>
@@ -166,7 +166,7 @@
                                     انتخاب کارمند
                                 </label>
                                 <select wire:model.live="selectedStaffId"
-                                    class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 dark:bg-black dark:border-white dark:text-white appearance-none">
+                                    class="w-full h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] dark:border focus:ring-2 focus:ring-blue-500 dark:bg-black dark:border-white dark:text-white appearance-none">
                                     <option value="">انتخاب کارمند</option>
                                     @foreach($staffs as $staff)
                                     <option value="{{ $staff->id }}">
@@ -175,8 +175,11 @@
                                     @endforeach
                                 </select>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓"
-                                        class="dark:hidden">
+                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
                                     <svg width="24" height="24" class="hidden dark:block" viewBox="0 0 24 24"
                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -195,7 +198,7 @@
                     {{-- نمایش اطلاعات کارمند --}}
                     @if($staffDetails)
                     <div dir="rtl"
-                        class="mt-3 p-4  border border-[#8C8C8C] rounded-xl bg-transparent dark:bg-green-900/20 space-y-4 text-sm">
+                        class="mt-3 p-4  bg-[#EFF6F9] dark:border rounded-xl  dark:bg-green-900/20 space-y-4 text-sm">
 
                         {{-- عنوان --}}
                         <h3 class="font-bold text-green-700 dark:text-green-300 text-base">
@@ -381,8 +384,11 @@
                                     </datalist>
                                     @if (empty($selectedCustomerId))
                                     <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                        <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓"
-                                            class="dark:hidden">
+                                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
                                         <svg width="24" height="24" class="hidden dark:block" viewBox="0 0 24 24"
                                             fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -410,7 +416,7 @@
                                 class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مقدار</label>
                             <div class="relative w-full">
                                 <input type="text" wire:model.live="amount" wire:blur="formatAmount" placeholder="0"
-                                    class="w-full dark:border-white dark:bg-black dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:text-white"
+                                    class="w-full dark:border-white dark:bg-black dark:placeholder:text-white h-[60px] p-3 rounded-[12px] dark:border focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 dark:text-white"
                                     readonly>
                             </div>
                             @error('amount')
@@ -424,14 +430,17 @@
                                 ارز</label>
                             <div class="relative w-full">
                                 <select wire:model="currency"
-                                    class="w-full dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 dark:text-white appearance-none">
+                                    class="w-full dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500 dark:text-white appearance-none">
                                     @foreach ($currencies as $c)
                                     <option value="{{ $c['code'] }}">{{ $c['name_fa'] }}</option>
                                     @endforeach
                                 </select>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="{{ asset('assets/sarafi/all_icon/arrow-down.svg') }}" alt="↓"
-                                        class="dark:hidden">
+                                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
                                     <svg width="24" height="24" class="hidden dark:block" viewBox="0 0 24 24"
                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -454,7 +463,7 @@
                                 پرداخت</label>
                             <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
                                 placeholder="YYYY/MM/DD"
-                                class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 cursor-pointer"
+                                class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px]  focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 cursor-pointer"
                                 readonly />
                         </div>
                         @error('date')
@@ -465,7 +474,7 @@
                     {{-- شرح پرداخت --}}
                     <div class="mt-3">
                         <textarea wire:model="description" rows="3" placeholder="شرح پرداخت..."
-                            class="w-full p-3 rounded-[12px] border focus:ring-2 bg-transparent border-[#8C8C8C] focus:ring-blue-500 dark:bg-black dark:border-white dark:placeholder:text-white dark:text-white resize-none"></textarea>
+                            class="w-full p-3 rounded-[12px] dark:border focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 dark:bg-black dark:border-white dark:placeholder:text-white dark:text-white resize-none"></textarea>
                         @error('description')
                         <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                         @enderror
@@ -475,7 +484,7 @@
                     <div
                         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 py-4 justify-center items-center text-center">
                         <button type="submit" wire:loading.attr="disabled" wire:target="paySalary"
-                            class="bg-[#61B138] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
+                            class="bg-[#184D6C] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
                             <span wire:loading.remove wire:target="paySalary">
                                 پرداخت حقوق
                             </span>
@@ -493,7 +502,7 @@
                         </button>
 
                         <button type="button" wire:click="clearFilter"
-                            class="bg-[#DD2424] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
+                            class="bg-[#184D6C] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
                             پاک کردن
                         </button>
                     </div>
@@ -501,12 +510,13 @@
             </div>
 
             {{-- جدول تاریخچه پرداخت‌ها --}}
-            <div class="flex-1 flex flex-col dark:border dark:border-white dark:bg-black dark:text-white bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px] w-full max-w-[440px] md:max-w-[410px] lg:max-w-full mb-5 mx-auto overflow-x-auto"
-                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+            <div class="flex-1 flex flex-col dark:border dark:border-white dark:bg-black dark:text-white                         bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC]
+ p-3 md:p-4 lg:p-6 rounded-[12px] w-full max-w-[440px] md:max-w-[410px] lg:max-w-full mb-5 mx-auto overflow-x-auto"
+                >
 
                 {{-- بالای جدول --}}
                 <div
-                    class="grid grid-cols-1 md:grid-cols-1 dark:border-white xl:grid-cols-2 justify-between items-center border border-[#8C8C8C] p-3 md:p-4 rounded-[12px] mb-3 gap-3">
+                    class="grid grid-cols-1 md:grid-cols-1 dark:border-white xl:grid-cols-2 justify-between items-center  p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                     <h1 class="text-lg md:text-xl lg:text-2xl vazir">تاریخچه پرداخت معاشات</h1>
 
                     <div class="flex items-center gap-3">
@@ -525,9 +535,8 @@
                         <table
                             class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead
-                                class="bg-[#2B65E5] text-white text-[14px] md:text-[16px] lg:text-[18px] vazir h-[50px] md:h-[67px] sticky top-0"
-                                style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-                                <tr>
+                                class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
+                                <tr class="whitespace-nowrap">
                                     <th class="px-4 py-4 font-bold w-16">#</th>
                                     <th class="px-4 py-4 font-bold w-32">تاریخ پرداخت</th>
                                     <th class="px-4 py-4 font-bold w-48">کارمند</th>
@@ -541,8 +550,9 @@
                             </thead>
                             <tbody>
                                 @forelse($salaryHistory as $key => $salary)
-                                <tr class="text-black border-b dark:text-white border-[#D9D9D9] bg-transparent">
-                                    <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">
+    <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+                               odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
+                               transition-colors">                                    <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">
                                         {{ $key + 1 }}
                                     </td>
                                     <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-32">

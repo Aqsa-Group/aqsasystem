@@ -50,7 +50,7 @@
         <!-- فرم ثبت کاربر -->
 <div
   class="w-full max-w-[460px] md:max-w-[800px] lg:max-w-[1200px] p-4 mx-auto bg-[#F5F5F5] dark:bg-black dark:border dark:border-white rounded-2xl space-y-2"
-  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+  >
 
             <!-- عنوان و آیکون -->
             <!-- عنوان و آیکون -->

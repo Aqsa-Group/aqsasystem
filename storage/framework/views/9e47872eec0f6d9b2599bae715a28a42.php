@@ -436,7 +436,7 @@
             <!-- Remittance Form -->
             <div class="flex flex-col
                                         dark:bg-black dark:text-white dark:border dark:border-white
-                                        bg-white   border border-[#D7E5EC] shadow-sm backdrop:blur-lg
+                                        bg-white  border border-[#D7E5EC] shadow-sm backdrop:blur-lg
                                         mx-auto
                                         w-full max-w-[420px] lg:max-w-[474px]
                                         p-[10px]
@@ -2008,7 +2008,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
          rounded-[12px]
          w-full max-w-[440px] md:max-w-[410px] lg:max-w-full
          mb-5 mx-auto
-         overflow-x-auto" >
+         overflow-x-auto">
 
                 <!-- Table Header -->
                 <div
@@ -2085,7 +2085,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     <div class="max-h-[680px] overflow-y-auto min-w-[890px]">
                         <table
                             class="w-full text-sm  md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                          <thead
+                            <thead
                                 class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
                                 <th class="px-4 py-4 font-bold w-16">#</th>
                                 <th class="px-4 py-4 font-bold w-48">نام مشتری</th>
@@ -2100,9 +2100,11 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </thead>
                             <tbody>
                                 <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $remittances; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $remittance): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-    <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+                                <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
                                odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
-                               transition-colors">                                    <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">
+                               transition-colors">
+
+                                    <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center w-16">
                                         <?php echo e($key + 1); ?>
 
                                     </td>
