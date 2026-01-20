@@ -254,6 +254,14 @@
                 transform: translateY(-20px) rotate(180deg);
             }
         }
+        @media (max-width: 1370px) {
+  body {
+    transform: scale(0.75);
+    transform-origin: top center;
+    width: 133.3333%;
+  }
+}
+
 
         @keyframes fadeInUp {
             from {
@@ -360,7 +368,7 @@
 
         /* هدر ریسپانسیو */
         .header-container {
-position: static;
+            position: static;
             top: 0;
             left: 0;
             right: 0;
@@ -647,21 +655,23 @@ position: static;
         }
 
         /* هدر ریسپانسیو پیشرفته */
-       .header-master {
-    position: fixed;   /* ← همیشه ثابت */
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    z-index: 9999;
-    background: white;
-    box-shadow: 0 4px 4px rgba(17, 41, 199, 0.4);
-}
+        .header-master {
+            position: fixed;
+            /* ← همیشه ثابت */
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 9999;
+            background: white;
+            box-shadow: 0 4px 4px rgba(17, 41, 199, 0.4);
+        }
 
-.dark .header-master {
-    background: black;
-}
-eader-content {
+        .dark .header-master {
+            background: black;
+        }
+
+        eader-content {
             max-width: 100%;
             margin: 0 auto;
             padding: 0.75rem 1rem;

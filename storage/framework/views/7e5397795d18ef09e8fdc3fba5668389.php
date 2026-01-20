@@ -2,13 +2,13 @@
 
     <h1 class="mb-8 text-[18px] font-bold text-gray-700 vazir  dark:text-white" style="font-weight: 800"><?php echo e(__('messages.page_title')); ?></h1>
 
-    <div class="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-6 gap-4 vazir w-full " style="font-weight: 400">
+    <div class="grid grid-cols-1   md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4 vazir w-full " style="font-weight: 400">
 
         <!-- رسید / برداشت -->
         <a href="<?php echo e(route('sarafi.transactions')); ?>">
             <div style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);" class=" group border bg-white
                 rounded-xl py-3 px-4 flex items-center  gap-[10px] justify-center
-                text-[#184D6C] text-[14px] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear ">
+                text-[#184D6C] text-[0.875rem] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear ">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                     class="block group-hover:hidden">
                     <path d="M2 8.50488H22" stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10"
@@ -48,7 +48,7 @@
         <!-- انتقال -->
         <a href="<?php echo e(route('sarafi.account_to_account')); ?>" class="block">
             <div class="group border bg-white rounded-xl py-3 px-6 flex items-center justify-center gap-[10px]
-                text-[#184D6C] text-[14px] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear "
+                text-[#184D6C] text-[0.875rem] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear "
                 style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);">
 
                 <!-- آیکون پیشفرض -->
@@ -70,7 +70,7 @@
                         stroke-linejoin="round" stroke-dasharray="3 3" />
                 </svg>
 
-                <span>انتقال حساب به حساب</span>
+                <span >انتقال حساب به حساب</span>
             </div>
         </a>
 
@@ -78,7 +78,7 @@
         <a href="<?php echo e(route('sarafi.buy-sell-currency')); ?>" class="block">
             <div style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);" class=" group border bg-white
                 rounded-xl py-3 px-6 flex items-center justify-center gap-[10px] 
-                text-[#184D6C] text-[14px] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear ">
+                text-[#184D6C] text-[0.875rem] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear ">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                     class="block group-hover:hidden">
                     <path
@@ -144,7 +144,7 @@
         <a href="<?php echo e(route('sarafi.conversion.in.account')); ?>" class="block">
             <div style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);" class=" group border bg-white
                 rounded-xl py-3 px-6 flex items-center justify-center gap-[10px] 
-                text-[#184D6C] text-[14px] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear "
+                text-[#184D6C] text-[0.875rem] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear "
                 class="block group-hover:hidden">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                     class="block group-hover:hidden">
@@ -179,7 +179,7 @@
         <a href="<?php echo e(route('sarafi.conversion-transfer')); ?>" class="block">
             <div style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);" class=" group border bg-white
                 rounded-xl py-3 px-6 flex items-center justify-center gap-[10px] 
-                text-[#184D6C] text-[14px] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear ">
+                text-[#184D6C] text-[0.875rem] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear ">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                     class="block group-hover:hidden">
                     <path d="M21 7V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V7C3 4 4.5 2 8 2H16C19.5 2 21 4 21 7Z"
@@ -216,7 +216,7 @@
         <a href="<?php echo e(route('sarafi.remittance')); ?>" class="block">
             <div style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);" class=" group border bg-white
                 rounded-xl py-3 px-6 flex items-center justify-center gap-[10px] 
-                text-[#184D6C] text-[14px] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear">
+                text-[#184D6C] text-[0.875rem] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                     class="block group-hover:hidden">
                     <path
@@ -269,7 +269,7 @@
         <a href="<?php echo e(route('sarafi.withdrawbank')); ?>" class="block">
             <div style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);" class="group border bg-white
                 rounded-xl py-3 px-6 flex items-center justify-center gap-[10px] 
-                text-[#184D6C] text-[14px] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear">
+                text-[#184D6C] text-[0.875rem] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                     class="block group-hover:hidden">
                     <path
@@ -337,7 +337,7 @@
         <a href="<?php echo e(route('sarafi.journal')); ?>" class="block">
             <div style="box-shadow: -1px 4px 4px 0px rgba(37, 99, 235, 0.25);" class=" group border bg-white
                 rounded-xl py-3 px-6 flex items-center justify-center gap-[10px] 
-                text-[#184D6C] text-[14px] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear">
+                text-[#184D6C] text-[0.875rem] hover:bg-[#184D6C] hover:text-white transition-transform ease-linear">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                     class="block group-hover:hidden">
                     <path

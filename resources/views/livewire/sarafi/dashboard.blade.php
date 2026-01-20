@@ -3,7 +3,7 @@
     <h1 class="mb-8 text-[18px] font-bold text-gray-700 vazir  dark:text-white" style="font-weight: 800">{{
         __('messages.page_title') }}</h1>
 
-    <div class="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4 vazir w-full " style="font-weight: 400">
+    <div class="grid grid-cols-1   md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4 vazir w-full " style="font-weight: 400">
 
         <!-- رسید / برداشت -->
         <a href="{{ route('sarafi.transactions') }}">
