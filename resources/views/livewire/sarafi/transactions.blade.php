@@ -439,10 +439,8 @@
          space-y-2">
 
 
-                {{-- بالای فرم: فورم و دکمه‌ها --}}
-                <div class="flex items-center justify-between p-[10px]
-           rounded-[12px]
-           dark:border-white gap-2">
+              <div class="flex flex-wrap items-center justify-between gap-3">
+
 
                     <!-- عنوان -->
                     <p class="flex items-center gap-2 text-[18px] inter whitespace-nowrap">

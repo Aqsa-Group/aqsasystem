@@ -33,7 +33,7 @@
         {{-- پیام Session --}}
         @if (session()->has('message'))
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
-            class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
+            class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#184D6C] vazir ">
             <div class="h-[80px] w-full flex justify-start items-center px-4">
                 <h2 class="text-white vazir text-[18px]">
                     {{ session('message') }}
@@ -47,7 +47,7 @@
     <div class="pl-5">
         <!-- فرم ثبت کاربر -->
 <div
-  class="w-full max-w-[460px] md:max-w-[800px] lg:max-w-[1200px] p-4 mx-auto bg-[#F5F5F5] dark:bg-black dark:border dark:border-white rounded-2xl space-y-2"
+  class="w-full max-w-[460px] md:max-w-[800px] lg:max-w-[1200px] p-4 mx-auto   bg-white   border border-[#D7E5EC] shadow-sm backdrop:blur-lg ] dark:bg-black dark:border dark:border-white rounded-2xl space-y-2"
   >
 
             <!-- عنوان و آیکون -->
@@ -66,7 +66,7 @@
 
                     <label for="avatarUploadInput" class="cursor-pointer">
                         <div
-                            class="bg-[#545964] rounded-full h-20 w-20 mx-auto flex items-center justify-center overflow-hidden relative group">
+                            class="bg-[#184D6C] rounded-full h-20 w-20 mx-auto flex items-center justify-center overflow-hidden relative group">
                             @if ($temp_image_url || ($editId && $current_user_image))
                             <img src="{{ $temp_image_url ?: ($current_user_image ? asset('storage/' . $current_user_image) : '') }}"
                                 alt="پیش‌نمایش" class="w-full h-full object-cover">
@@ -119,7 +119,7 @@
                         </label>
                         <div class="relative">
                             <input type="text" wire:model="name" placeholder="{{ __('messages.placeholder_name') }}"
-                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                                class="w-full p-2 py-3 rounded-xl border focus:ring-2  bg-[#EFF6F9]
                          focus:ring-blue-500 dark:bg-black dark:placeholder:text-white dark:border-white dark:text-white">
                             <div class="absolute left-2 top-2">
                                 <img src="{{ asset('assets/sarafi/all_icon/profile.svg') }}" alt="">
@@ -138,7 +138,7 @@
                         <div class="relative">
                             <input type="text" wire:model="lastname"
                                 placeholder="{{ __('messages.placeholder_lastname') }}"
-                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-[#EFF6F9]
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                             <div class="absolute left-2 top-2">
                                 <img src="{{ asset('assets/sarafi/all_icon/profile.svg') }}" alt="">
@@ -158,7 +158,7 @@
                             <input type="text" wire:model="sarafi_name"
                                 placeholder="{{ __('messages.placeholder_sarafi_name') }}" {{
                                 Auth::guard('sarafi')->user()->role === 'admin' ? : '' }}
-                            class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C]
+                            class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-[#EFF6F9]
                             focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white
                             dark:text-white
                             {{ Auth::guard('sarafi')->user()->role === 'admin' ? 'bg-gray-100' : '' }}">
@@ -179,7 +179,7 @@
                         <div class="relative">
                             <input type="text" wire:model="username"
                                 placeholder="{{ __('messages.placeholder_username') }}"
-                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-[#EFF6F9]
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                             <div class="absolute left-2 top-2">
                                 <img src="{{ asset('assets/sarafi/all_icon/profile.svg') }}" alt="">
@@ -198,7 +198,7 @@
                         <div class="relative">
                             <input type="password" wire:model.lazy="password"
                                 placeholder="{{ __('messages.placeholder_userpassword') }}"
-                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-[#EFF6F9] 
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                             <div class="absolute left-2 top-2">
                                 <img src="{{ asset('assets/sarafi/all_icon/lock.svg') }}" alt="">
@@ -217,7 +217,7 @@
                         </label>
                         <div class="relative">
                             <select wire:model="role"
-                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-[#EFF6F9]
                                            focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white appearance-none">
                                 <option value="">{{ __('messages.select_role') }}</option>
                                 <option value="admin">{{ __('messages.admin') }}</option>
@@ -237,7 +237,7 @@
                         </label>
                         <div class="relative">
                             <select wire:model="role"
-                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-[#EFF6F9]
                                            focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white appearance-none">
                                 <option value="">{{ __('messages.select_role') }}</option>
                                 <option value="warehouse_manager">{{ __('messages.warehouse_manager') }}</option>
@@ -263,7 +263,7 @@
                         <div class="relative">
                             <input type="text" wire:model="user_limition"
                                 placeholder="{{ __('messages.placeholder_user_limit') }}"
-                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-[#EFF6F9]
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                             <div class="absolute left-2 top-2">
                                 <img src="{{ asset('assets/sarafi/all_icon/customers.svg') }}" alt="" class="h-8 w-8">
@@ -282,7 +282,7 @@
                         </label>
                         <div class="relative">
                             <input type="text" wire:model="zone" placeholder="{{ __('messages.placeholder_zone') }}"
-                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-[#EFF6F9]
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                             <div class="absolute left-2 top-2">
                                 <img src="{{ asset('assets/sarafi/all_icon/location.svg') }}" alt="">
@@ -303,7 +303,7 @@
                             <input type="text" wire:model="address"
                                 placeholder="{{ __('messages.placeholder_address') }}" {{
                                 Auth::guard('sarafi')->user()->role === 'admin' ? : '' }}
-                            class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C]
+                            class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-[#EFF6F9]
                             focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white
                             dark:text-white
                             {{ Auth::guard('sarafi')->user()->role === 'admin' ? 'bg-gray-100' : '' }}">
@@ -325,7 +325,7 @@
                             <input type="text" wire:model="address2"
                                 placeholder="{{ __('messages.placeholder_address') }}" {{
                                 Auth::guard('sarafi')->user()->role === 'admin' ? : '' }}
-                            class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C]
+                            class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-[#EFF6F9]
                             focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white
                             dark:text-white
                             {{ Auth::guard('sarafi')->user()->role === 'admin' ? 'bg-gray-100' : '' }}">
@@ -347,7 +347,7 @@
                             <input type="text" wire:model="address3"
                                 placeholder="{{ __('messages.placeholder_address') }}" {{
                                 Auth::guard('sarafi')->user()->role === 'admin' ? : '' }}
-                            class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C]
+                            class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-[#EFF6F9]
                             focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white
                             dark:text-white
                             {{ Auth::guard('sarafi')->user()->role === 'admin' ? 'bg-gray-100' : '' }}">
@@ -369,7 +369,7 @@
                             <input type="text" wire:model="phone"    onkeydown="lock937(event)"    onkeydown="preventDeletePrefix(event)"
 
                                 placeholder="{{ __('messages.placeholder_phone_user') }}"
-                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-[#EFF6F9]
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                             <div class="absolute left-2 top-2">
                                 <img src="{{ asset('assets/sarafi/all_icon/call.svg') }}" alt="">
@@ -389,7 +389,7 @@
                             <input type="text" wire:model="phone2"   onkeydown="lock937(event)"     onkeydown="preventDeletePrefix(event)"
 
                                 placeholder="{{ __('messages.placeholder_phone_user') }}"
-                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-[#EFF6F9] 
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                             <div class="absolute left-2 top-2">
                                 <img src="{{ asset('assets/sarafi/all_icon/call.svg') }}" alt="">
@@ -409,7 +409,7 @@
                             <input type="text" wire:model="phone3"   onkeydown="lock937(event)"    onkeydown="preventDeletePrefix(event)"
 
                                 placeholder="{{ __('messages.placeholder_phone_user') }}"
-                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-transparent border-[#8C8C8C] 
+                                class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-[#EFF6F9] 
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
                             <div class="absolute left-2 top-2">
                                 <img src="{{ asset('assets/sarafi/all_icon/call.svg') }}" alt="">
@@ -487,11 +487,11 @@
                 <!-- دکمه‌ها -->
                 <div class="flex justify-center gap-4 mt-3 pt-2">
                     <button type="button" wire:click="resetInputFields"
-                        class="flex-1 py-4 bg-[#B10909] text-white rounded-xl hover:bg-gray-700 transition">
+                        class="flex-1 py-4 bg-[#184D6C] text-white rounded-xl  transition">
                         {{ __('messages.cancel') }}
                     </button>
                     <button type="submit"
-                        class="flex-1 py-4 bg-[#2563EB] text-white rounded-xl hover:bg-blue-700 transition">
+                        class="flex-1 py-4 bg-[#184D6C] text-white rounded-xl transition">
                         {{ $editId ? __('messages.update') : __('messages.save') }}
                     </button>
                 </div>
@@ -506,7 +506,7 @@
         <!-- دکمه فیلتر -->
         <div class="relative">
             <button wire:click="$toggle('filterOpen')"
-                class="px-3 py-2 border rounded-lg dark:bg-black bg-[#2563EB] transition flex items-center gap-2 text-white">
+                class="px-3 py-2 border rounded-lg dark:bg-black bg-[#184D6C] transition flex items-center gap-2 text-white">
                 <img src="{{ asset('assets/sarafi/all_icon/filter.svg') }}" alt="">
                 <span class="text-white">{{ __('messages.filter') }}</span>
             </button>
@@ -538,10 +538,21 @@
 
         <!-- جستجو -->
         <div class="relative w-80">
-            <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt=""
-                class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 dark:hidden">
-            <svg width="24" class=" hidden dark:block absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5"
-                height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+   <input type="text" wire:model.live="search" placeholder="جستجو..." class="w-full h-12 md:h-[51px]
+                           border border-[#D7E5EC]
+                           dark:bg-black dark:border-white dark:placeholder:text-white placeholder:text-black
+                           rounded-[12px] pl-3 pr-12 text-sm md:text-base
+                           bg-transparent relative z-0">
+
+                            {{-- آیکون --}}
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none dark:hidden">
+                                <path d="M20 20L22 22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                <path
+                                    d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75"
+                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
                 <path
                     d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
                     stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -549,21 +560,20 @@
                     stroke-linejoin="round" />
             </svg>
 
-            <input type="text" wire:model.debounce.500ms="search" wire:keydown.enter="searchUser"
-                placeholder="{{ __('messages.search_placeholder') }}"
-                class="w-full dark:placeholder:text-white dark:bg-black dark:border-white border border-gray-300 rounded-2xl pl-10 pr-3 py-3 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm">
+          
         </div>
     </div>
 
     <!-- جدول کاربران -->
   <div
-  class="w-full max-w-[420px] md:max-w-[800px] lg:max-w-[1200px] p-6 mt-4 relative overflow-x-auto shadow-md sm:rounded-lg mb-4 mx-auto dark:bg-black dark:border dark:border-white bg-[#F5F5F5]"
-  style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
+  class="w-full max-w-[420px] md:max-w-[800px] lg:max-w-[1200px] p-6 mt-4 relative overflow-x-auto shadow-md sm:rounded-lg mb-4 mx-auto dark:bg-black dark:border dark:border-white  bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC]"
+  >
         <table class="min-w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mb-5">
 
             <!-- هدر جدول -->
-            <thead class="bg-[#2563EB] dark:bg-gray-700 text-white w-full text-[18px] vazir h-20">
-                <tr>
+               <thead
+                                class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
+                                <tr class="whitespace-nowrap">
                     <th class="px-6 py-6 font-bold">
                         <span class="border border-white h-2 w-5 px-3 rounded-lg">#</span>
                     </th>
@@ -580,8 +590,9 @@
             <!-- بدنه جدول -->
             <tbody>
                 @forelse ($users as $index => $user)
-                <tr class="border-b dark:bg-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td class="px-3 py-2 vazir text-[16px] font-medium dark:text-white">{{ $users->firstItem() + $index
+   <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+                               odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
+                               transition-colors">                    <td class="px-3 py-2 vazir text-[16px] font-medium dark:text-white">{{ $users->firstItem() + $index
                         }}</td>
                     <td class="px-6 py-4 vazir text-[16px] font-medium dark:text-white text-black vazir">
                         <div class="flex items-center">

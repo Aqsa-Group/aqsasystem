@@ -29,7 +29,7 @@
         <div class="scroll-container overflow-x-auto whitespace-nowrap py-3">
             <!--[if BLOCK]><![endif]--><?php if($withdrawalCustomer): ?>
             <div class="inline-block align-top ml-4 h-auto">
-                    <div class="flex flex-col h-[212px] w-[244px] pr-5 pl-5 pt-2 rounded-[12px]  dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900           bg-[#387EA2]/40
+                <div class="flex flex-col h-[212px] w-[244px] pr-5 pl-5 pt-2 rounded-[12px]  dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900           bg-[#387EA2]/40
             backdrop-blur-lg
             border border-white/30
 
@@ -168,7 +168,7 @@
     text-black
   ">
                     <h1 class="text-[24px] text-left vazir text-[#387EA2]"><?php echo e($currencyName); ?></h1>
-  <div class="flex flex-col gap-1 mt-1 text-center">
+                    <div class="flex flex-col gap-1 mt-1 text-center">
                         <div class="flex justify-between items-center text-[14px]">
                             <div class="flex justify-end items-center gap-2">
                                 <div class="bg-white rounded-[12px] h-[30px] w-[30px] justify-center items-center   ">
@@ -270,7 +270,7 @@
             
             <!--[if BLOCK]><![endif]--><?php if($withdrawalCustomerId): ?>
             <div class="inline-block align-top ml-4 last:ml-0 min-w-[273px]">
-              <div class="flex flex-col h-[212px] w-[244px] pr-5 pl-5 pt-3 rounded-[12px]
+                <div class="flex flex-col h-[212px] w-[244px] pr-5 pl-5 pt-3 rounded-[12px]
                         dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900
                          bg-[#387EA2]/40
     backdrop-blur-lg
@@ -363,7 +363,7 @@
                     $grandTotalUsd = $totalCashUsd + $totalBankUsd;
                     ?>
 
-                       <h1 class="text-[24px] text-left vazir text-[#387EA2]">
+                    <h1 class="text-[24px] text-left vazir text-[#387EA2]">
                         خلاصه بیلانس به <?php echo e($sourceCurrency); ?>
 
                     </h1>
@@ -496,11 +496,11 @@
              rounded-[12px] flex-nowrap">
 
                     <div class="flex items-center gap-1 whitespace-nowrap">
- <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M14.3601 4.07866L15.2869 3.15178C16.8226 1.61607 19.3125 1.61607 20.8482 3.15178C22.3839 4.68748 22.3839 7.17735 20.8482 8.71306L19.9213 9.63993M14.3601 4.07866C14.3601 4.07866 14.4759 6.04828 16.2138 7.78618C17.9517 9.52407 19.9213 9.63993 19.9213 9.63993M14.3601 4.07866L12 6.43872M19.9213 9.63993L14.6607 14.9006L11.5613 18L11.4001 18.1612C10.8229 18.7383 10.5344 19.0269 10.2162 19.2751C9.84082 19.5679 9.43469 19.8189 9.00498 20.0237C8.6407 20.1973 8.25352 20.3263 7.47918 20.5844L4.19792 21.6782M4.19792 21.6782L3.39584 21.9456C3.01478 22.0726 2.59466 21.9734 2.31063 21.6894C2.0266 21.4053 1.92743 20.9852 2.05445 20.6042L2.32181 19.8021M4.19792 21.6782L2.32181 19.8021M2.32181 19.8021L3.41556 16.5208C3.67368 15.7465 3.80273 15.3593 3.97634 14.995C4.18114 14.5653 4.43213 14.1592 4.7249 13.7838C4.97308 13.4656 5.26166 13.1771 5.83882 12.5999L8.5 9.93872"
                                 stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
-                        </svg>                        <span class="text-[18px] inter"> انتفال بین حسابات</span>
+                        </svg> <span class="text-[18px] inter"> انتفال بین حسابات</span>
                     </div>
 
                     <div class="flex items-center gap-2 flex-nowrap">
@@ -511,7 +511,8 @@
 
                         </button>
 
-                        <button wire:click="toggleTransactionType" class="rounded-[8px] p-[10px] text-white vazir font-semibold
+                        <button wire:click="toggleTransactionType"
+                            class="rounded-[8px] p-[10px] text-white vazir font-semibold
                    whitespace-nowrap transition-colors duration-500 ease-in-out
                    <?php echo e($transactionType === 'باتفاوت' ? 'bg-[#184D6C]' : 'bg-[#FFFF] border border-[#184D6C] text-black'); ?>">
                             <?php echo e($transactionType === 'باتفاوت' ? 'باتفاوت کمیشن' : 'بدون تفاوت کمیشن'); ?>
@@ -578,10 +579,10 @@
                                 <!--[if BLOCK]><![endif]--><?php if(empty($withdrawalAccount)): ?>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
-                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
                                     <svg width="24" class="hidden dark:block" height="24" viewBox="0 0 24 24"
                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -657,10 +658,10 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <!--[if BLOCK]><![endif]--><?php if(empty($depositAccount)): ?>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
-                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
                                     <svg width="24" class="hidden dark:block" height="24" viewBox="0 0 24 24"
                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -808,11 +809,12 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 </datalist>
                                 <!--[if BLOCK]><![endif]--><?php if(empty($commissionAccount)): ?>
                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
- <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
-                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>                                </div>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </div>
                                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
                             <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['commissionAccount'];
@@ -1558,7 +1560,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </div>
 
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 p-4 justify-center items-center flex-wrap">
+                    <div
+                        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 p-4 justify-center items-center flex-wrap">
                         <button type="submit" wire:loading.attr="disabled" wire:target='submitConversion'
                             class="bg-[#184D6C] text-[14px] vazir font-semibold rounded-[8px] px-[74px] py-4 text-white hover:bg-blue-700 transition disabled:opacity-50 whitespace-nowrap">
                             <span wire:loading.remove wire:target='submitConversion'>
@@ -1611,7 +1614,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
          rounded-[12px]
          w-full max-w-[440px] md:max-w-[410px] lg:max-w-full
          mb-5 mx-auto
-         overflow-x-auto" >
+         overflow-x-auto">
                 <div
                     class="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 justify-between items-center  p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                     <h1 class="text-lg md:text-xl lg:text-xl  vazir font-medium">ترانزکشن های ثبت شده</h1>
@@ -1674,9 +1677,10 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </thead>
                             <tbody>
                                 <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $SendToAccount; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $conversion): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-   <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+                                <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
                                odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
-                               transition-colors">                                    <td class="px-2 py-3 text-center"><?php echo e($key + 1); ?></td>
+                               transition-colors">
+                                    <td class="px-2 py-3 text-center"><?php echo e($key + 1); ?></td>
                                     <td class="px-2 py-3">
                                         <div title="<?php echo e($conversion->from_customer_name ?? '-'); ?>">
                                             <?php echo e($conversion->from_customer_name ?? '-'); ?>

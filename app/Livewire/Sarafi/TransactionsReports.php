@@ -82,6 +82,7 @@ class TransactionsReports extends Component
     
     // تنظیم تاریخ‌های پیش‌فرض با فراخوانی updateDateDisplay
     $todayJalali = Jalalian::now();
+    $this->startDate = $todayJalali->format('Y-m-d');
     $this->endDate = $todayJalali->format('Y-m-d');
     
     // بروزرسانی نمایش تاریخ‌ها

@@ -908,9 +908,9 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
     </div>
     <script>
         // جستجوی ساده در جدول
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('searchTable');
-        if (searchInput) {
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchInput = document.getElementById('searchTable');
+                if (searchInput) {
             searchInput.addEventListener('input', function() {
                 const searchText = this.value.toLowerCase();
                 const rows = document.querySelectorAll('tbody tr');

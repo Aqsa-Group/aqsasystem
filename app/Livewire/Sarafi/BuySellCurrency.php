@@ -400,45 +400,44 @@ class BuySellCurrency extends Component
     /**
      * Calculate totals and net amounts
      */
-   private function calculateTotals(): void
-{
-    $user = Auth::guard('sarafi')->user();
-    if (!$user) {
-        return;
-    }
+    private function calculateTotals(): void
+    {
+        $user = Auth::guard('sarafi')->user();
+        if (!$user) {
+            return;
+        }
 
-    // 🔑 ادمین واقعی (صاحب صندوق)
-    $adminId = $user->admin_id ?? $user->id;
-
- 
-    $safe = CurrencySafe::where('user_id', $adminId)->first();
-
-    foreach ($this->currencies as $currency) {
-        $code = $currency['code'];
-        $this->netAmounts[$code] = $safe ? ($safe->{$code} ?? 0) : 0;
-    }
+        // 🔑 ادمین واقعی (صاحب صندوق)
+        $adminId = $user->admin_id ?? $user->id;
 
 
-    $currencyCodes = array_column($this->currencies, 'code');
+        $safe = CurrencySafe::where('user_id', $adminId)->first();
 
-    $this->totalBuy  = array_fill_keys($currencyCodes, 0);
-    $this->totalSell = array_fill_keys($currencyCodes, 0);
+        foreach ($this->currencies as $currency) {
+            $code = $currency['code'];
+            $this->netAmounts[$code] = $safe ? ($safe->{$code} ?? 0) : 0;
+        }
 
-    $transactions = CashExchange::where('admin_id', $adminId)->get();
 
-    foreach ($transactions as $transaction) {
+        $currencyCodes = array_column($this->currencies, 'code');
 
-        if ($transaction->type === 'خرید') {
-           
-            $this->totalBuy[$transaction->to_currency]    += $transaction->eq_amount;
-            $this->totalSell[$transaction->from_currency] += $transaction->amount;
+        $this->totalBuy  = array_fill_keys($currencyCodes, 0);
+        $this->totalSell = array_fill_keys($currencyCodes, 0);
 
-        } else {
-            $this->totalSell[$transaction->from_currency] += $transaction->amount;
-            $this->totalBuy[$transaction->to_currency]    += $transaction->eq_amount;
+        $transactions = CashExchange::where('admin_id', $adminId)->get();
+
+        foreach ($transactions as $transaction) {
+
+            if ($transaction->type === 'خرید') {
+
+                $this->totalBuy[$transaction->to_currency]    += $transaction->eq_amount;
+                $this->totalSell[$transaction->from_currency] += $transaction->amount;
+            } else {
+                $this->totalSell[$transaction->from_currency] += $transaction->amount;
+                $this->totalBuy[$transaction->to_currency]    += $transaction->eq_amount;
+            }
         }
     }
-}
 
 
     // ==================== PROFIT/LOSS CALCULATION METHODS ====================
@@ -486,101 +485,94 @@ class BuySellCurrency extends Component
         try {
             Log::info('=== شروع محاسبه سود/ضرر خرید/فروش ===', [
                 'transaction_type' => $this->transactionType,
-                'amount' => $this->amount,
-                'exchange_rate' => $this->exchange_rate,
-                'eq_amount' => $this->eq_amount,
-                'currency' => $this->currency,
-                'to_currency' => $this->to_currency,
+                'amount'           => $this->amount,
+                'exchange_rate'    => $this->exchange_rate,
+                'eq_amount'        => $this->eq_amount,
+                'currency'         => $this->currency,
+                'to_currency'      => $this->to_currency,
             ]);
 
-            // 1️⃣ دریافت نرخ از پیش تعیین شده بر اساس نوع تراکنش
+            // 1️⃣ نرخ از پیش تعیین‌شده
             $predefinedRate = $this->getBuySellPredefinedRate();
 
-            if ($predefinedRate === null || $predefinedRate == 0) {
-                Log::warning("❌ نرخ پیش‌فرض یافت نشد یا صفر است");
+            if (!$predefinedRate) {
+                Log::warning('❌ نرخ پیش‌فرض معتبر نیست');
                 return $this->getDefaultProfitLossResult();
             }
 
-            // 2️⃣ محاسبه مبلغ معادل براساس نرخ سیستم
+            // 2️⃣ مبلغ معادل با نرخ سیستم
             $amountWithPredefinedRate = $this->calculateBuySellWithPredefinedRate($predefinedRate);
 
-            // 3️⃣ مبلغ معادل واقعی با نرخ وارد شده
-            $amountWithEnteredRate = floatval($this->eq_amount);
+            // 3️⃣ مبلغ معادل با نرخ وارد شده
+            $amountWithEnteredRate = (float) $this->eq_amount;
 
-            Log::info('📌 داده‌های پایه:', [
-                'predefined_rate' => $predefinedRate,
-                'amount_with_predefined_rate' => $amountWithPredefinedRate,
-                'amount_with_entered_rate' => $amountWithEnteredRate
+            Log::info('📌 داده‌های پایه', [
+                'predefined_rate'                 => $predefinedRate,
+                'amount_with_predefined_rate'     => $amountWithPredefinedRate,
+                'amount_with_entered_rate'        => $amountWithEnteredRate,
             ]);
 
-            // 4️⃣ محاسبه تفاوت بر اساس نوع تراکنش
-            $difference = 0;
+            // 4️⃣ محاسبه اختلاف
+            $difference = $amountWithEnteredRate - $amountWithPredefinedRate;
 
-            if ($this->transactionType === 'خرید') {
-                // خرید: اگر نرخ وارد شده کمتر از نرخ فروش بازار باشد → سود
-                // تفاوت = مبلغ با نرخ وارد شده - مبلغ با نرخ فروش بازار
-                $difference = $amountWithEnteredRate - $amountWithPredefinedRate;
-                Log::info("💰 محاسبه سود/ضرر خرید:", [
-                    'formula' => "{$amountWithEnteredRate} (مبلغ با نرخ وارد شده) - {$amountWithPredefinedRate} (مبلغ با نرخ فروش بازار) = {$difference}",
-                    'تفسیر' => 'مثبت = سود (ارزان‌تر از نرخ فروش بازار خریدیم)',
-                    'منطق' => 'هرچی ارزانتر خریدم، فایده'
-                ]);
+            Log::info('📐 اختلاف محاسبه شد', [
+                'difference' => $difference,
+            ]);
+
+            // 5️⃣ تعیین سود یا ضرر (مهم‌ترین اصلاح)
+            if ($difference > 0) {
+                $profit = $difference;
+                $loss   = 0;
+            } elseif ($difference < 0) {
+                $profit = 0;
+                $loss   = abs($difference);
             } else {
-                // فروش: اگر نرخ وارد شده بیشتر از نرخ خرید بازار باشد → سود
-                // تفاوت = مبلغ با نرخ وارد شده - مبلغ با نرخ خرید بازار
-                $difference = $amountWithEnteredRate - $amountWithPredefinedRate;
-                Log::info("💰 محاسبه سود/ضرر فروش:", [
-                    'formula' => "{$amountWithEnteredRate} (مبلغ با نرخ وارد شده) - {$amountWithPredefinedRate} (مبلغ با نرخ خرید بازار) = {$difference}",
-                    'تفسیر' => 'مثبت = سود (گران‌تر از نرخ خرید بازار فروختیم)',
-                    'منطق' => 'هرچی از نرخ خرید بازار بزرگتر فروختم، فایده'
-                ]);
+                // نرخ وارد شده == نرخ بازار
+                $profit = 0;
+                $loss   = 0;
             }
 
-            // 5️⃣ تعیین سود یا ضرر
-            $profit = $difference > 0 ? $difference : 0;
-            $loss = $difference < 0 ? abs($difference) : 0;
-
-            Log::info('🔍 سود/ضرر در ارز مقصد:', [
+            Log::info('🔍 سود/ضرر اولیه', [
                 'profit' => $profit,
-                'loss' => $loss,
-                'currency' => $this->to_currency
+                'loss'   => $loss,
             ]);
 
-            // 6️⃣ تبدیل سود/ضرر به USD
-            $profitUsd = 0;
-            $lossUsd = 0;
-
-            if ($profit > 0) {
-                $profitUsd = $this->convertProfitLossToUsd($profit, $this->to_currency);
-                Log::info('💰 سود تبدیل به USD:', [
-                    'profit_original' => $profit,
-                    'profit_usd' => $profitUsd
-                ]);
+            // 6️⃣ اگر هیچ سود یا ضرری نیست → خروج تمیز
+            if ($profit == 0 && $loss == 0) {
+                return [
+                    'profit'      => 0,
+                    'loss'        => 0,
+                    'predefined_rate' => $predefinedRate,
+                    'amount_with_predefined_rate' => $amountWithPredefinedRate,
+                    'amount_with_entered_rate'    => $amountWithEnteredRate,
+                    'difference'  => 0,
+                ];
             }
 
-            if ($loss > 0) {
-                $lossUsd = $this->convertProfitLossToUsd($loss, $this->to_currency);
-                Log::info('💸 ضرر تبدیل به USD:', [
-                    'loss_original' => $loss,
-                    'loss_usd' => $lossUsd
-                ]);
-            }
+            // 7️⃣ تبدیل به USD
+            $profitUsd = $profit > 0
+                ? $this->convertProfitLossToUsd($profit, $this->to_currency)
+                : 0;
 
-            Log::info('🔍 نتیجه نهایی در USD:', [
-                'profit' => $profitUsd,
-                'loss' => $lossUsd
+            $lossUsd = $loss > 0
+                ? $this->convertProfitLossToUsd($loss, $this->to_currency)
+                : 0;
+
+            Log::info('💱 نتیجه نهایی (USD)', [
+                'profit_usd' => $profitUsd,
+                'loss_usd'   => $lossUsd,
             ]);
 
             return [
-                'profit' => round($profitUsd, 4),
-                'loss' => round($lossUsd, 4),
-                'predefined_rate' => round($predefinedRate, 4),
-                'amount_with_predefined_rate' => round($amountWithPredefinedRate, 4),
-                'amount_with_entered_rate' => round($amountWithEnteredRate, 4),
-                'difference' => round($difference, 4)
+                'profit'      => $profitUsd,
+                'loss'        => $lossUsd,
+                'predefined_rate' => $predefinedRate,
+                'amount_with_predefined_rate' => $amountWithPredefinedRate,
+                'amount_with_entered_rate'    => $amountWithEnteredRate,
+                'difference'  => $difference,
             ];
         } catch (\Exception $e) {
-            Log::error('❌ خطا در compute سود/ضرر: ' . $e->getMessage());
+            Log::error('❌ خطا در محاسبه سود/ضرر: ' . $e->getMessage());
             return $this->getDefaultProfitLossResult();
         }
     }
@@ -880,7 +872,7 @@ class BuySellCurrency extends Component
             'profit' => 0,
             'loss' => 0,
             'predefined_rate' => 0,
-            'amount_with_predefined_rate' => 0,
+            'amount_with_predefined_rate' => 0, 
             'amount_with_entered_rate' => 0,
             'difference' => 0
         ];
@@ -891,43 +883,49 @@ class BuySellCurrency extends Component
     private function recordBuySellProfitLoss($exchangeId, $profitLoss)
     {
         try {
+            // Guard clause: اگر سود و ضرر صفر است، اصلاً ثبت نکن
+            if (
+                empty($profitLoss) ||
+                (
+                    ($profitLoss['profit'] ?? 0) == 0 &&
+                    ($profitLoss['loss'] ?? 0) == 0
+                )
+            ) {
+                Log::info('ℹ️ سود/ضرر صفر است، revenue ثبت نشد');
+                return null;
+            }
+
             $user = Auth::guard('sarafi')->user();
             $adminId = $user->admin_id ?? $user->id;
 
-            if ($profitLoss['profit'] > 0 || $profitLoss['loss'] > 0) {
-                Log::info('📊 در حال ثبت سود/ضرر خرید/فروش در جدول revenue...', [
-                    'profit' => $profitLoss['profit'],
-                    'loss' => $profitLoss['loss'],
-                    'exchange_id' => $exchangeId
-                ]);
+            Log::info('📊 در حال ثبت revenue خرید/فروش', [
+                'profit'      => $profitLoss['profit'],
+                'loss'        => $profitLoss['loss'],
+                'exchange_id' => $exchangeId,
+            ]);
 
-                $revenueData = [
-                    'currency' => 'usd',
-                    'profit' => $profitLoss['profit'],
-                    'lost' => $profitLoss['loss'],
-                    'from' => 'خرید/فروش ارز',
-                    'description' => $this->generateBuySellProfitLossDescription($profitLoss),
-                    'user_id' => $user->id,
-                    'admin_id' => $adminId,
-                    'safe_exchange_id' => $exchangeId,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
+            $revenue = Revenue::create([
+                'currency'          => 'usd',
+                'profit'            => $profitLoss['profit'],
+                'lost'              => $profitLoss['loss'],
+                'from'              => 'خرید/فروش ارز',
+                'description'       => $this->generateBuySellProfitLossDescription($profitLoss),
+                'user_id'           => $user->id,
+                'admin_id'          => $adminId,
+                'safe_exchange_id'  => $exchangeId,
+                'created_at'        => now(),
+                'updated_at'        => now(),
+            ]);
 
-                $revenue = Revenue::create($revenueData);
+            Log::info("✅ revenue ثبت شد", ['revenue_id' => $revenue->id]);
 
-                Log::info("✅ سود/ضرر خرید/فروش در جدول revenue ثبت شد - ID: {$revenue->id}");
-
-                return $revenue;
-            }
-
-            Log::info('ℹ️ هیچ سود یا ضرری برای ثبت در revenue وجود ندارد');
-            return null;
+            return $revenue;
         } catch (\Exception $e) {
-            Log::error('❌ خطا در ثبت سود/ضرر خرید/فروش: ' . $e->getMessage());
+            Log::error('❌ خطا در ثبت revenue: ' . $e->getMessage());
             throw $e;
         }
     }
+
     /**
      * تولید توضیحات برای سود/ضرر خرید/فروش
      */
