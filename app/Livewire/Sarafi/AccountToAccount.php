@@ -1139,7 +1139,7 @@ $receiverName = $receiverCustomer?->fullname ?? 'نامشخص';
 
             $mpdf = new \Mpdf\Mpdf([
                 'mode' => 'utf-8',
-                'format' => [80, 297],
+                'format' => [72.1, 297],
                 'directionality' => 'rtl',
                 'margin_top' => 5,
                 'margin_bottom' => 5,
