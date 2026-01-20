@@ -24,11 +24,11 @@
 
 
             <div class="md:w-1/2 w-full flex justify-center relative">
-                <img src="{{ asset('assets/sarafi/all_icon/photo_2025-09-27_10-18-45.jpg') }}" alt="ورود به پنل صرافی"
+                <img src="{{ asset('assets/sarafi/login-bg.jpg') }}" alt="ورود به پنل صرافی"
                     class="shadow-md w-full h-[600px] object-cover rounded-xl">
 
                 <!-- لایه نیمه شفاف -->
-                <div class="absolute inset-0 bg-[#051580]/70 rounded-xl"></div>
+                
 
                 <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
                     <h1 class="text-[50px] font-bold yekan text-white">
