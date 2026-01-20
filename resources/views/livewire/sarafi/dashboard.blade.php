@@ -71,7 +71,7 @@
                         stroke-linejoin="round" stroke-dasharray="3 3" />
                 </svg>
 
-                <span>انتقال حساب به حساب</span>
+                <span class="whitespace-nowrap">انتقال حساب به حساب</span>
             </div>
         </a>
 

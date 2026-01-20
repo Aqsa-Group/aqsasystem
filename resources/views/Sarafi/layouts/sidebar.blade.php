@@ -25,7 +25,8 @@
         body {
             max-width: 100%;
             overflow-x: hidden;
-            background:
+            margin: 0;
+            padding: 0;
         }
 
         .animate-pulse {
@@ -359,17 +360,21 @@
 
         /* هدر ریسپانسیو */
         .header-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            padding: 1rem;
-            width: 100%;
+position: static;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            background: #fff;
         }
+
 
         @media (min-width: 768px) {
             .header-container {
                 flex-direction: row;
                 justify-content: space-between;
+                position: sticky;
+
                 align-items: center;
                 padding: 0 1.5rem;
                 height: 80px;
@@ -487,7 +492,7 @@
         /* سایدبار ریسپانسیو - کاملا اصلاح شده */
         .sidebar-container {
             position: fixed;
-            top: 0;
+            top: 2px;
             right: -100%;
             height: 100vh;
             width: 280px;
@@ -498,6 +503,7 @@
             overflow-y: auto;
             box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
         }
+
 
         .sidebar-container.open {
             right: 0;
@@ -641,21 +647,21 @@
         }
 
         /* هدر ریسپانسیو پیشرفته */
-        .header-master {
-            width: 100%;
-            background: white;
-            box-shadow: 0 4px 4px rgba(17, 41, 199, 0.4);
-            position: sticky;
-            top: 0;
-            z-index: 999;
-        }
+       .header-master {
+    position: fixed;   /* ← همیشه ثابت */
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 9999;
+    background: white;
+    box-shadow: 0 4px 4px rgba(17, 41, 199, 0.4);
+}
 
-        .dark .header-master {
-            background: black;
-            box-shadow: 0 4px 4px rgba(255, 255, 255, 0.5);
-        }
-
-        .header-content {
+.dark .header-master {
+    background: black;
+}
+eader-content {
             max-width: 100%;
             margin: 0 auto;
             padding: 0.75rem 1rem;
@@ -2291,7 +2297,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
 
                         </button>
                         <div x-show="openItems.accounts" x-transition class="mr-6 mt-1 space-y-1">
-                  
+
 
                             <a href="{{ route('sarafi.profit-rates') }}"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
