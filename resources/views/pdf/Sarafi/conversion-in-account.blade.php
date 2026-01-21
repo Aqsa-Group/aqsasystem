@@ -1,5 +1,13 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+@php
+$currentUser = Auth::guard('sarafi')->user();
+
+$adminUser = $currentUser->role === 'admin'
+? $currentUser
+: \App\Models\Sarafi\User::find($currentUser->admin_id);
+@endphp
+
 <head>
     <meta charset="UTF-8">
     <title>تبدیل ارز - {{ $conversion->type }}</title>
@@ -115,6 +123,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="document">
         <div class="header">
@@ -123,50 +132,50 @@
                 <strong>تبدیل ارز در حساب </strong>
             </div>
             <div style="font-size: 10px; margin-top: 5px;">
-                 تاریخ:
-                  {{ explode(' ', $conversion->transaction_date)[0] }}
+                تاریخ:
+                {{ explode(' ', $conversion->transaction_date)[0] }}
             </div>
         </div>
 
         <table class="info-table">
             @php
             $currenciesFa = [
-                'afn' => 'افغانی',
-                'usd' => 'دالر',
-                'eur' => 'یورو',
-                'irr' => 'تومان',
-                'aed' => 'درهم',
-                'try' => 'لیره',
-                'cny' => 'یوان',
-                'pkr' => 'کلدار',
-                'gbp' => 'پوند',
-                'jpy' => 'ین',
-                'sar' => 'ریال سعودی',
-                'inr' => 'روپیه',
+            'afn' => 'افغانی',
+            'usd' => 'دالر',
+            'eur' => 'یورو',
+            'irr' => 'تومان',
+            'aed' => 'درهم',
+            'try' => 'لیره',
+            'cny' => 'یوان',
+            'pkr' => 'کلدار',
+            'gbp' => 'پوند',
+            'jpy' => 'ین',
+            'sar' => 'ریال سعودی',
+            'inr' => 'روپیه',
             ];
 
             function convertToWords($number) {
-                if (!is_numeric($number)) return '';
-                try {
-                    $formatter = new NumberFormatter("fa", NumberFormatter::SPELLOUT);
-                    $words = $formatter->format(floatval($number));
-                    return str_replace(['دویست', 'سیصد', 'پانصد'], ['دوصد', 'سه صد', 'پنجصد'], $words);
-                } catch (\Exception $e) {
-                    return '';
-                }
+            if (!is_numeric($number)) return '';
+            try {
+            $formatter = new NumberFormatter("fa", NumberFormatter::SPELLOUT);
+            $words = $formatter->format(floatval($number));
+            return str_replace(['دویست', 'سیصد', 'پانصد'], ['دوصد', 'سه صد', 'پنجصد'], $words);
+            } catch (\Exception $e) {
+            return '';
+            }
             }
             @endphp
 
-          <tr>
-    <td>حساب</td>
-    <td>
-        {{ $conversion->customer->fullname ?? 'نامشخص' }}
-        <div class="amount-in-words">
-            {{ $conversion->customer->account_number ?? 'نامشخص' }}
-        </div>
-    </td>
-    
-</tr>
+            <tr>
+                <td>حساب</td>
+                <td>
+                    {{ $conversion->customer->fullname ?? 'نامشخص' }}
+                    <div class="amount-in-words">
+                        {{ $conversion->customer->account_number ?? 'نامشخص' }}
+                    </div>
+                </td>
+
+            </tr>
 
 
             <tr>
@@ -187,11 +196,11 @@
                 <td>مبلغ :</td>
                 <td>
                     {{ number_format((float)$conversion->buy_amount) }}
-                    
+
                 </td>
             </tr>
 
-           
+
 
             <tr>
                 <td> ارز دریافتی:</td>
@@ -204,7 +213,7 @@
                 <td>مبلغ دریافتی:</td>
                 <td>
                     {{ number_format((float)$conversion->sell_amount, 2) }}
-                  
+
                 </td>
             </tr>
 
@@ -212,7 +221,7 @@
                 <td>نرخ ارز:</td>
                 <td>
                     {{ number_format((float)$conversion->currency_rate, 2) }}
-                 
+
                 </td>
             </tr>
 
@@ -226,18 +235,18 @@
                 <td>{{ $conversion->zone_receiver }}</td>
             </tr>
 
-          
+
 
             <tr>
                 <td>زمان ثبت:</td>
                 <td>
                     @php
-                        try {
-                            $time = \Carbon\Carbon::parse($conversion->created_at);
-                            echo $time->format('h:i:s') . ' ' . ($time->format('A') == 'AM' ? 'ق.ظ' : 'ب.ظ');
-                        } catch (Exception $e) {
-                            echo $conversion->created_at;
-                        }
+                    try {
+                    $time = \Carbon\Carbon::parse($conversion->created_at);
+                    echo $time->format('h:i:s') . ' ' . ($time->format('A') == 'AM' ? 'ق.ظ' : 'ب.ظ');
+                    } catch (Exception $e) {
+                    echo $conversion->created_at;
+                    }
                     @endphp
                 </td>
             </tr>
@@ -255,10 +264,13 @@
 
         <div class="contact-info">
             <div style="margin-bottom: 5px;">
-                <strong>تماس:</strong> {{ Auth::guard('sarafi')->user()->phone ? '+93' . Auth::guard('sarafi')->user()->phone : 'نامشخص' }}
+                <strong>تماس:</strong> {{ Auth::guard('sarafi')->user()->phone ? '+93' .
+                Auth::guard('sarafi')->user()->phone : 'نامشخص' }}
             </div>
             <div>
-                <strong>آدرس:</strong> {{ Auth::guard('sarafi')->user()->address ? 'افغانستان - ' . Auth::guard('sarafi')->user()->address : 'نامشخص' }}
+                <strong>آدرس شبعه اول:</strong> افغانستان {{ $currentUser->address ?? '-' }} <br>
+                <strong>آدرس شبعه دوم:</strong> افغانستان {{ $currentUser->address2 ?? '-' }} <br>
+                <strong>آدرس شبعه سوم:</strong> افغانستان {{ $currentUser->address3 ?? '-' }}
             </div>
         </div>
 
@@ -271,4 +283,5 @@
         </div>
     </div>
 </body>
+
 </html>

@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+<?php
+$currentUser = Auth::guard('sarafi')->user();
 
+$adminUser = $currentUser->role === 'admin'
+    ? $currentUser
+    : \App\Models\Sarafi\User::find($currentUser->admin_id);
+?>
 <head>
     <meta charset="UTF-8">
     <title>تبدیل ارز - <?php echo e($conversion->type); ?></title>
@@ -293,8 +299,9 @@
 
             </div>
             <div>
-                <strong>آدرس:</strong> <?php echo e(Auth::guard('sarafi')->user()->address ? 'افغانستان - ' .
-                Auth::guard('sarafi')->user()->address : 'نامشخص'); ?>
+                 <strong>آدرس شبعه اول:</strong> افغانستان <?php echo e($currentUser->address ?? '-'); ?> <br>
+                <strong>آدرس شبعه دوم:</strong> افغانستان <?php echo e($currentUser->address2 ?? '-'); ?> <br>
+                <strong>آدرس شبعه سوم:</strong> افغانستان <?php echo e($currentUser->address3 ?? '-'); ?>
 
             </div>
         </div>

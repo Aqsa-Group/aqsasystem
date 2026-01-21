@@ -2,6 +2,10 @@
 <html lang="fa" dir="rtl">
 @php
 $currentUser = Auth::guard('sarafi')->user();
+
+$adminUser = $currentUser->role === 'admin'
+    ? $currentUser
+    : \App\Models\Sarafi\User::find($currentUser->admin_id);
 @endphp
 
 <head>
@@ -183,6 +187,7 @@ $currentUser = Auth::guard('sarafi')->user();
 </head>
 
 <body>
+    
     <div class="document">
         <h1 style="text-align:center; font-family: amiri ,sans-serif" class="shabnam-fd "> صرافی {{
             $currentUser->sarafi_name ?? 'صرافی' }}</h1>
@@ -279,13 +284,26 @@ $currentUser = Auth::guard('sarafi')->user();
             <table style="width:100%; border-collapse: collapse; pass">
                 <tr>
                     <td>
-                        <strong>تماس:</strong> 93{{ $currentUser->phone ?? '-' }}+
+                        <strong>تماس:</strong> {{ $currentUser->phone ?? '-' }}+
                     </td>
                 </tr>
 
                 <tr>
                     <td>
-                        <strong>آدرس:</strong> افغانستان {{ $currentUser->address ?? '-' }}
+                        <strong>آدرس شبعه اول:</strong> افغانستان {{ $currentUser->address ?? '-' }}
+                    </td>
+                </tr>
+
+
+                 <tr>
+                    <td>
+                        <strong>آدرس شبعه دوم:</strong> افغانستان {{ $currentUser->address2 ?? '-' }}
+                    </td>
+                </tr>
+
+                 <tr>
+                    <td>
+                        <strong>آدرس شبعه سوم:</strong> افغانستان {{ $currentUser->address3 ?? '-' }}
                     </td>
                 </tr>
             </table>

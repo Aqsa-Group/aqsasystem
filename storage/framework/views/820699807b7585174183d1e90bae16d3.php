@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+<?php
+$currentUser = Auth::guard('sarafi')->user();
+
+$adminUser = $currentUser->role === 'admin'
+    ? $currentUser
+    : \App\Models\Sarafi\User::find($currentUser->admin_id);
+?>
 <head>
     <meta charset="UTF-8">
     <title>تبدیل ارز - <?php echo e($conversion->type); ?></title>
@@ -128,6 +135,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="document">
         <div class="header">
@@ -136,7 +144,7 @@
                 <strong>انتفال بین حسابات</strong>
             </div>
             <div style="font-size: 10px; margin-top: 5px;">
-                 تاریخ:    <?php echo e(explode(' ', $conversion->transaction_date)[0]); ?>
+                تاریخ: <?php echo e(explode(' ', $conversion->transaction_date)[0]); ?>
 
             </div>
         </div>
@@ -144,29 +152,29 @@
         <table class="info-table">
             <?php
             $currenciesFa = [
-                'afn' => 'افغانی',
-                'usd' => 'دالر',
-                'eur' => 'یورو',
-                'irr' => 'تومان',
-                'aed' => 'درهم',
-                'try' => 'لیره',
-                'cny' => 'یوان',
-                'pkr' => 'کلدار',
-                'gbp' => 'پوند',
-                'jpy' => 'ین',
-                'sar' => 'ریال سعودی',
-                'inr' => 'روپیه',
+            'afn' => 'افغانی',
+            'usd' => 'دالر',
+            'eur' => 'یورو',
+            'irr' => 'تومان',
+            'aed' => 'درهم',
+            'try' => 'لیره',
+            'cny' => 'یوان',
+            'pkr' => 'کلدار',
+            'gbp' => 'پوند',
+            'jpy' => 'ین',
+            'sar' => 'ریال سعودی',
+            'inr' => 'روپیه',
             ];
 
             function convertToWords($number) {
-                if (!is_numeric($number)) return '';
-                try {
-                    $formatter = new NumberFormatter("fa", NumberFormatter::SPELLOUT);
-                    $words = $formatter->format(floatval($number));
-                    return str_replace(['دویست', 'سیصد', 'پانصد'], ['دوصد', 'سه صد', 'پنجصد'], $words);
-                } catch (\Exception $e) {
-                    return '';
-                }
+            if (!is_numeric($number)) return '';
+            try {
+            $formatter = new NumberFormatter("fa", NumberFormatter::SPELLOUT);
+            $words = $formatter->format(floatval($number));
+            return str_replace(['دویست', 'سیصد', 'پانصد'], ['دوصد', 'سه صد', 'پنجصد'], $words);
+            } catch (\Exception $e) {
+            return '';
+            }
             }
             ?>
 
@@ -176,7 +184,7 @@
                     <?php echo e($conversion->fromCustomer->fullname ?? 'نامشخص'); ?>
 
                     <div class="amount-in-words">
-                         <?php echo e($conversion->fromCustomer->account_number ?? 'نامشخص'); ?>
+                        <?php echo e($conversion->fromCustomer->account_number ?? 'نامشخص'); ?>
 
                     </div>
                 </td>
@@ -195,7 +203,7 @@
                 <td>
                     <?php echo e(number_format((float)$conversion->withdrawal_amount)); ?>
 
-                    
+
                 </td>
             </tr>
 
@@ -205,13 +213,13 @@
                     <?php echo e($conversion->toCustomer->fullname ?? 'نامشخص'); ?>
 
                     <div class="amount-in-words">
-                     <?php echo e($conversion->toCustomer->account_number ?? 'نامشخص'); ?>
+                        <?php echo e($conversion->toCustomer->account_number ?? 'نامشخص'); ?>
 
                     </div>
                 </td>
             </tr>
 
-         
+
 
             <tr>
                 <td>مبلغ دریافت:</td>
@@ -222,7 +230,7 @@
             </tr>
 
             <?php if($conversion->type==='باتفاوت'): ?>
-                    <tr>
+            <tr>
                 <td>مبلغ کمیشن:</td>
                 <td>
                     <?php echo e(number_format((float)$conversion->tax_amount, )); ?>
@@ -232,7 +240,7 @@
 
             <?php endif; ?>
 
-          
+
 
             <tr>
                 <td>زون برداشت:</td>
@@ -244,18 +252,18 @@
                 <td><?php echo e($conversion->zone_receiver); ?></td>
             </tr>
 
-          
+
 
             <tr>
                 <td>زمان ثبت:</td>
                 <td>
                     <?php
-                        try {
-                            $time = \Carbon\Carbon::parse($conversion->created_at);
-                            echo $time->format('h:i:s') . ' ' . ($time->format('A') == 'AM' ? 'ق.ظ' : 'ب.ظ');
-                        } catch (Exception $e) {
-                            echo $conversion->created_at;
-                        }
+                    try {
+                    $time = \Carbon\Carbon::parse($conversion->created_at);
+                    echo $time->format('h:i:s') . ' ' . ($time->format('A') == 'AM' ? 'ق.ظ' : 'ب.ظ');
+                    } catch (Exception $e) {
+                    echo $conversion->created_at;
+                    }
                     ?>
                 </td>
             </tr>
@@ -264,7 +272,8 @@
         <div class="description">
             <h3>شرح تراکنش:</h3>
             <?php echo e($conversion->description_sender ?? 'تبدیل ارز - بدون توضیحات بیشتر'); ?><br>
-            <?php echo e($conversion->description_receiver ?? 'تبدیل ارز - بدون توضیحات بیشتر'); ?> 
+            <?php echo e($conversion->description_receiver ?? 'تبدیل ارز - بدون توضیحات بیشتر'); ?>
+
         </div>
 
         <div class="signature">
@@ -274,11 +283,15 @@
 
         <div class="contact-info">
             <div style="margin-bottom: 5px;">
-                <strong>تماس:</strong> <?php echo e(Auth::guard('sarafi')->user()->phone ? '+93' . Auth::guard('sarafi')->user()->phone : 'نامشخص'); ?>
+                <strong>تماس:</strong> <?php echo e(Auth::guard('sarafi')->user()->phone ? '+93' .
+                Auth::guard('sarafi')->user()->phone : 'نامشخص'); ?>
 
             </div>
             <div>
-                <strong>آدرس:</strong> <?php echo e(Auth::guard('sarafi')->user()->address ? 'افغانستان - ' . Auth::guard('sarafi')->user()->address : 'نامشخص'); ?>
+                <strong>آدرس شبعه اول:</strong> افغانستان <?php echo e($currentUser->address ?? '-'); ?> <br>
+                <strong>آدرس شبعه دوم:</strong> افغانستان <?php echo e($currentUser->address2 ?? '-'); ?> <br>
+                <strong>آدرس شبعه سوم:</strong> افغانستان <?php echo e($currentUser->address3 ?? '-'); ?>
+
 
             </div>
         </div>
@@ -293,4 +306,5 @@
         </div>
     </div>
 </body>
+
 </html><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/pdf/Sarafi/account-to-account.blade.php ENDPATH**/ ?>
