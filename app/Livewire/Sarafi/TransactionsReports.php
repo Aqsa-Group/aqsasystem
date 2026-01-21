@@ -587,60 +587,64 @@ class TransactionsReports extends Component
     /**
      * Calculate total balances for current period
      */
-    private function calculateTotalBalances()
-    {
-        $transactions = collect($this->transactions);
+   private function calculateTotalBalances()
+{
+    $transactions = collect($this->transactions);
 
-        Log::debug("calculateTotalBalances: Starting", [
-            'transactions_count' => $transactions->count()
-        ]);
+    Log::debug("calculateTotalBalances: Starting", [
+        'transactions_count' => $transactions->count(),
+        'previous_balances' => $this->previousBalances
+    ]);
 
-        // Get all currencies that have transactions in current period
-        $activeCurrencies = $transactions->pluck('currency')->unique()->toArray();
+    $this->totalBalances = [];
+
+    // Process all currencies (even those with no transactions in current period)
+    foreach ($this->currencies as $currency) {
+        $code = $currency['code'];
+        $name_fa = $currency['name_fa'];
+
+        // Calculate received and spent for CURRENT PERIOD ONLY
+        $received = $transactions->where('currency', $code)
+            ->where('type', 'رسید')
+            ->sum('amount');
+
+        $spent = $transactions->where('currency', $code)
+            ->where('type', 'برد')
+            ->sum('amount');
+
+        $balance = $received - $spent; // This is ONLY for the current period
+
+        // Get previous balance (calculated in calculatePreviousBalances())
+        $previousBalance = $this->previousBalances[$code] ?? 0;
         
-        Log::debug("calculateTotalBalances: Active currencies in period", $activeCurrencies);
+        // Current balance = previous balance + balance of current period
+        $currentBalance = $previousBalance + $balance;
 
-        $this->totalBalances = [];
+        // Always add to totalBalances if there's any data
+        // (either previous balance or transactions in current period)
+        if ($previousBalance != 0 || $received > 0 || $spent > 0) {
+            $this->totalBalances[$code] = [
+                'name_fa' => $name_fa,
+                'received' => $received,
+                'spent' => $spent,
+                'balance' => $balance,
+                'previous_balance' => $previousBalance,
+                'current_balance' => $currentBalance,
+                'status' => $currentBalance >= 0 ? 'طلبکار' : 'بدهکار'
+            ];
 
-        foreach ($this->currencies as $currency) {
-            $code = $currency['code'];
-            $name_fa = $currency['name_fa'];
-
-            // Calculate received and spent for current period
-            $received = $transactions->where('currency', $code)
-                ->where('type', 'رسید')
-                ->sum('amount');
-
-            $spent = $transactions->where('currency', $code)
-                ->where('type', 'برد')
-                ->sum('amount');
-
-            $balance = $received - $spent;
-
-            // Get previous balance
-            $previousBalance = $this->previousBalances[$code] ?? 0;
-            
-            // Current balance = previous balance + balance of current period
-            $currentBalance = $previousBalance + $balance;
-
-            // Only add to totalBalances if there are transactions OR there is a previous balance
-            if ($received > 0 || $spent > 0 || $previousBalance != 0) {
-                $this->totalBalances[$code] = [
-                    'name_fa' => $name_fa,
-                    'received' => $received,
-                    'spent' => $spent,
-                    'balance' => $balance,
-                    'previous_balance' => $previousBalance,
-                    'current_balance' => $currentBalance,
-                    'status' => $currentBalance >= 0 ? 'طلبکار' : 'بدهکار'
-                ];
-
-                Log::debug("calculateTotalBalances: Balance for $code", $this->totalBalances[$code]);
-            }
+            Log::debug("calculateTotalBalances: Currency {$code}", [
+                'previous_balance' => $previousBalance,
+                'received_in_period' => $received,
+                'spent_in_period' => $spent,
+                'balance_in_period' => $balance,
+                'current_balance' => $currentBalance
+            ]);
         }
-
-        Log::debug("calculateTotalBalances: Final total balances", $this->totalBalances);
     }
+
+    Log::debug("calculateTotalBalances: Final result", $this->totalBalances);
+}
 
     /**
      * Get customer's currencies from transactions
@@ -810,74 +814,57 @@ class TransactionsReports extends Component
     /**
      * Prepare data for PDF generation
      */
-    private function preparePdfData()
-    {
-        $customer = Customer::find($this->selectedCustomer);
-        
-        if (!$customer) {
-            throw new \Exception('مشتری یافت نشد');
-        }
+  private function preparePdfData()
+{
+    $customer = Customer::find($this->selectedCustomer);
+    
+    if (!$customer) {
+        throw new \Exception('مشتری یافت نشد');
+    }
 
-        // Use the same transactions that are displayed on the page
-        $transactions = collect($this->transactions);
-        
-        // Calculate balances for PDF - Use the SAME data as the page
-        $pdfBalances = [];
-        
-        // Use totalBalances which is already calculated for the page
-        foreach ($this->totalBalances as $code => $balanceData) {
-            $pdfBalances[] = [
-                'name_fa' => $balanceData['name_fa'],
-                'received' => $balanceData['received'],
-                'spent' => $balanceData['spent'],
-                'balance' => $balanceData['balance'],
-                'previous_balance' => $balanceData['previous_balance'],
-                'current_balance' => $balanceData['current_balance'],
-                'status' => $balanceData['status']
-            ];
-        }
-        
-        // If totalBalances is empty but we have previous balances, include them
-        if (empty($pdfBalances) && !empty($this->previousBalances)) {
-            foreach ($this->previousBalances as $code => $prevBalance) {
-                $currencyInfo = collect($this->currencies)->firstWhere('code', $code);
-                if ($currencyInfo && $prevBalance != 0) {
-                    $pdfBalances[] = [
-                        'name_fa' => $currencyInfo['name_fa'],
-                        'received' => 0,
-                        'spent' => 0,
-                        'balance' => 0,
-                        'previous_balance' => $prevBalance,
-                        'current_balance' => $prevBalance,
-                        'status' => $prevBalance >= 0 ? 'طلبکار' : 'بدهکار'
-                    ];
-                }
-            }
-        }
+    $activeCurrencies = $this->getActiveCurrenciesForPdf();
 
-        // Get active currencies for this customer
-        $activeCurrencies = $this->getActiveCurrenciesForPdf();
-        
-        Log::debug("PDF Data Preparation Complete", [
-            'customer_id' => $this->selectedCustomer,
-            'customer_name' => $this->selectedCustomerName,
-            'transactions_count' => $transactions->count(),
-            'balances_count' => count($pdfBalances),
-            'active_currencies_count' => count($activeCurrencies)
-        ]);
-        
-        return [
-            'transactions' => $transactions,
-            'customer_name' => $this->selectedCustomerName,
-            'customer' => $customer,
-            'start_date' => $this->startDateDisplay ?: '---',
-            'end_date' => $this->endDateDisplay ?: '---',
-            'active_currencies' => $activeCurrencies,
-            'generated_at' => Jalalian::now()->format('Y/m/d H:i:s'),
-            'balances' => $pdfBalances,
-            'has_data' => $transactions->count() > 0 || count($pdfBalances) > 0
+    $pdfBalances = [];
+    $transactions = collect($this->transactions);
+
+    foreach ($activeCurrencies as $code => $currency) {
+        $received = $transactions->where('currency', $code)
+            ->where('type', 'رسید')
+            ->sum('amount');
+
+        $spent = $transactions->where('currency', $code)
+            ->where('type', 'برد')
+            ->sum('amount');
+
+        $balance = $received - $spent;
+
+        // استفاده از previous_balance که قبلاً در کامپوننت محاسبه شده
+        $previousBalance = $this->previousBalances[$code] ?? 0;
+        $currentBalance = $previousBalance + $balance;
+
+        $pdfBalances[] = [
+            'name_fa' => $currency['name_fa'],
+            'previous_balance' => $previousBalance,
+            'received' => $received,
+            'spent' => $spent,
+            'balance' => $balance,
+            'current_balance' => $currentBalance,
+            'status' => $currentBalance >= 0 ? 'طلبکار' : 'بدهکار'
         ];
     }
+
+    return [
+        'transactions' => $this->transactions,
+        'customer_name' => $this->selectedCustomerName,
+        'customer' => $customer,
+        'start_date' => $this->startDateDisplay ?? '---',
+        'end_date' => $this->endDateDisplay ?? '---',
+        'active_currencies' => $activeCurrencies,
+        'generated_at' => Jalalian::now()->format('Y/m/d H:i:s'),
+        'balances' => $pdfBalances,
+        'has_data' => count($this->transactions) > 0 || count($pdfBalances) > 0
+    ];
+}
 
     /**
      * Get active currencies for PDF
@@ -1279,30 +1266,33 @@ class TransactionsReports extends Component
     /**
      * Calculate balances for render
      */
-    private function calculateRenderBalances($transactions, $activeCurrencies)
-    {
-        $balances = [];
+   private function calculateRenderBalances($transactions, $activeCurrencies)
+{
+    $balances = [];
 
-        // Use totalBalances for rendering
-        foreach ($this->totalBalances as $code => $balanceData) {
-            $balances[] = [
-                'name_fa' => $balanceData['name_fa'],
-                'code' => $code,
-                'received' => $balanceData['received'],
-                'spent' => $balanceData['spent'],
-                'balance' => $balanceData['balance'],
-                'previous_balance' => $balanceData['previous_balance'],
-                'current_balance' => $balanceData['current_balance'],
-                'status' => $balanceData['status']
-            ];
-        }
-
-        return $balances;
+    // Use totalBalances for rendering
+    foreach ($this->totalBalances as $code => $balanceData) {
+        $balances[] = [
+            'name_fa' => $balanceData['name_fa'],
+            'code' => $code,
+            'previous_balance' => $balanceData['previous_balance'],
+            'received' => $balanceData['received'],
+            'spent' => $balanceData['spent'],
+            'balance' => $balanceData['balance'],
+            'current_balance' => $balanceData['current_balance'],
+            'status' => $balanceData['status']
+        ];
     }
+
+    return $balances;
+}
     // در کلاس TransactionsReports این متد را اضافه کنید:
 
 /**
  * Generate PDF report for summary only
+ */
+/**
+ * Generate PDF report for summary table
  */
 public function printSummary()
 {
@@ -1366,15 +1356,30 @@ private function prepareSummaryPdfData()
         throw new \Exception('مشتری یافت نشد');
     }
 
-    // Prepare simplified balances data (only name and current balance)
+    // Prepare full balances data for summary table
     $summaryBalances = [];
+    $totalPrevious = 0;
+    $totalReceived = 0;
+    $totalSpent = 0;
+    $totalBalance = 0;
+    $totalCurrent = 0;
     
     foreach ($this->totalBalances as $code => $balanceData) {
         $summaryBalances[] = [
             'name_fa' => $balanceData['name_fa'],
+            'previous_balance' => $balanceData['previous_balance'],
+            'received' => $balanceData['received'],
+            'spent' => $balanceData['spent'],
+            'balance' => $balanceData['balance'],
             'current_balance' => $balanceData['current_balance'],
             'status' => $balanceData['status']
         ];
+        
+        $totalPrevious += $balanceData['previous_balance'];
+        $totalReceived += $balanceData['received'];
+        $totalSpent += $balanceData['spent'];
+        $totalBalance += $balanceData['balance'];
+        $totalCurrent += $balanceData['current_balance'];
     }
 
     // Sort by currency name
@@ -1386,7 +1391,13 @@ private function prepareSummaryPdfData()
         'customer_id' => $this->selectedCustomer,
         'customer_name' => $this->selectedCustomerName,
         'balances_count' => count($summaryBalances),
-        'balances' => $summaryBalances
+        'totals' => [
+            'previous' => $totalPrevious,
+            'received' => $totalReceived,
+            'spent' => $totalSpent,
+            'balance' => $totalBalance,
+            'current' => $totalCurrent
+        ]
     ]);
     
     return [
@@ -1394,10 +1405,21 @@ private function prepareSummaryPdfData()
         'customer' => $customer,
         'balances' => $summaryBalances,
         'generated_at' => Jalalian::now()->format('Y/m/d H:i:s'),
-        'total_balances_count' => count($summaryBalances),
-        'total_current_balance' => array_sum(array_column($summaryBalances, 'current_balance'))
+        'start_date' => $this->startDateDisplay ?: '---',
+        'end_date' => $this->endDateDisplay ?: '---',
+        'totals' => [
+            'previous' => $totalPrevious,
+            'received' => $totalReceived,
+            'spent' => $totalSpent,
+            'balance' => $totalBalance,
+            'current' => $totalCurrent
+        ]
     ];
 }
+/**
+ * Prepare data for summary PDF generation
+ */
+
 
     /**
      * Check if any filters are active

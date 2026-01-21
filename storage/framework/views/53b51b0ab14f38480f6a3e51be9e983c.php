@@ -820,91 +820,132 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
         </div>
 
-        
-        <div
-            class="w-full max-w-[1465px]  bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC] rounded-[12px] mt-10 p-6 mx-auto">
-
-            <div class="flex justify-between items-center text-center mx-auto mb-6">
-                <h1 class="text-xl font-bold">مجموعه کل</h1>
-               <button type="button" wire:click="printSummary" 
-                class="w-[31px] h-[29.232500076293945px] rounded-[8px] bg-transparent border border-[#000000] pr-1 hover:bg-gray-100 transition-colors cursor-pointer">
+      
+<div class="w-full max-w-[1465px] bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC] rounded-[12px] mt-10 p-6 mx-auto">
+    <div class="flex justify-between items-center text-center mx-auto mb-6">
+        <h1 class="text-xl font-bold">مجموعه کل</h1>
+        <button type="button" wire:click="printSummary"
+            class="w-[31px] h-[29.232500076293945px] rounded-[8px] bg-transparent border border-[#000000] pr-1 hover:bg-gray-100 transition-colors cursor-pointer">
             <img src="<?php echo e(asset('assets/sarafi/all_icon/printer.svg')); ?>" alt="چاپ خلاصه"
                 class="w-[21.0575008392334px] h-[19.232500076293945px]">
         </button>
-            </div>
+    </div>
 
-            <div class="overflow-x-auto w-full mt-6">
-                <table class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead
-                        class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
-                        <tr class="whitespace-nowrap">
-                            <th class="px-3 py-3 font-bold text-center" style="width: 5%;">#</th>
-                            <th class="px-3 py-3 font-bold text-center" style="width: 15%;">واحد پول</th>
-                            <th class="px-3 py-3 font-bold text-center" style="width: 15%;">رسید</th>
-                            <th class="px-3 py-3 font-bold text-center" style="width: 15%;">برد</th>
-                            <th class="px-3 py-3 font-bold text-center" style="width: 15%;">بیلانس</th>
-                            <th class="px-3 py-3 font-bold text-center" style="width: 15%;">موجودی</th>
-                            <th class="px-3 py-3 font-bold text-center" style="width: 20%;">وضعیت</th>
-                        </tr>
-                    </thead>
+    <div class="overflow-x-auto w-full mt-6">
+        <table class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
+                <tr class="whitespace-nowrap">
+                    <th class="px-3 py-3 font-bold text-center" style="width: 5%;">#</th>
+                    <th class="px-3 py-3 font-bold text-center" style="width: 15%;">واحد پول</th>
+                    <th class="px-3 py-3 font-bold text-center" style="width: 15%;">موجودی قبلی</th>
+                    <th class="px-3 py-3 font-bold text-center" style="width: 15%;">رسید</th>
+                    <th class="px-3 py-3 font-bold text-center" style="width: 15%;">برد</th>
+                    <th class="px-3 py-3 font-bold text-center" style="width: 15%;">بیلانس دوره</th>
+                    <th class="px-3 py-3 font-bold text-center" style="width: 15%;">موجودی فعلی</th>
+                    <th class="px-3 py-3 font-bold text-center" style="width: 20%;">وضعیت</th>
+                </tr>
+            </thead>
 
-                    <tbody class="text-[16px] md:text-[18px] text-gray-800 bg-white">
-                        <!--[if BLOCK]><![endif]--><?php if(count($balances) > 0): ?>
-                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $balances; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $balance): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+            <tbody class="text-[16px] md:text-[18px] text-gray-800 bg-white">
+                <!--[if BLOCK]><![endif]--><?php if(count($balances) > 0): ?>
+                    <?php
+                        $totalPrevious = 0;
+                        $totalReceived = 0;
+                        $totalSpent = 0;
+                        $totalBalance = 0;
+                        $totalCurrent = 0;
+                    ?>
+                    
+                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $balances; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $balance): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php
+                            $totalPrevious += $balance['previous_balance'];
+                            $totalReceived += $balance['received'];
+                            $totalSpent += $balance['spent'];
+                            $totalBalance += $balance['balance'];
+                            $totalCurrent += $balance['current_balance'];
+                        ?>
+                        <tr class="text-black border-b dark:text-white border-[#D9D9D9]
                                odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
                                transition-colors">
                             <td class="px-3 py-4 vazir font-medium text-center align-middle">
                                 <?php echo e($index + 1); ?>
 
                             </td>
-
                             <td class="px-3 py-4 vazir font-medium text-center align-middle">
                                 <?php echo e($balance['name_fa']); ?>
 
                             </td>
+                            <td dir="ltr" class="px-3 py-4 vazir font-medium text-center align-middle">
+                                <?php echo e(number_format($balance['previous_balance'])); ?>
 
-                            <td class="px-3 py-4 vazir font-medium text-center align-middle">
+                            </td>
+                            <td dir="ltr" class="px-3 py-4 vazir font-medium text-center align-middle">
                                 <?php echo e(number_format($balance['received'])); ?>
 
                             </td>
-
                             <td dir="ltr" class="px-3 py-4 vazir font-medium text-center align-middle">
                                 <?php echo e(number_format($balance['spent'])); ?>
 
                             </td>
-
-                            <td dir="ltr" class="px-3 py-4 vazir font-medium text-left align-middle">
+                            <td dir="ltr" class="px-3 py-4 vazir font-medium text-center align-middle">
                                 <?php echo e(number_format($balance['balance'])); ?>
 
                             </td>
-
                             <td dir="ltr" class="px-3 py-4 vazir font-medium text-center align-middle">
                                 <?php echo e(number_format($balance['current_balance'])); ?>
 
                             </td>
-
                             <td class="px-3 py-4 text-center align-middle">
-                                <span
-                                    class="inline-block px-3 py-1 rounded-full text-sm font-medium <?php echo e($balance['status'] == 'طلبکار' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'); ?>">
+                                <span class="inline-block px-3 py-1 rounded-full text-sm font-medium <?php echo e($balance['status'] == 'طلبکار' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'); ?>">
                                     <?php echo e($balance['status']); ?>
 
                                 </span>
                             </td>
                         </tr>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
-                        <?php else: ?>
-                        <tr>
-                            <td colspan="7" class="px-4 py-8 text-center text-gray-500 text-[16px]">
-                                هیچ موجودی فعالی وجود ندارد
-                            </td>
-                        </tr>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                    </tbody>
-                </table>
-            </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                    
+                    <!-- ردیف جمع کل -->
+                    <tr class="text-black border-t-2 border-gray-300 font-bold bg-gray-50">
+                        <td class="px-3 py-4 vazir text-center align-middle" colspan="2">
+                            <strong>جمع کل</strong>
+                        </td>
+                        <td dir="ltr" class="px-3 py-4 vazir text-center align-middle">
+                            <strong><?php echo e(number_format($totalPrevious)); ?></strong>
+                        </td>
+                        <td dir="ltr" class="px-3 py-4 vazir text-center align-middle">
+                            <strong><?php echo e(number_format($totalReceived)); ?></strong>
+                        </td>
+                        <td dir="ltr" class="px-3 py-4 vazir text-center align-middle">
+                            <strong><?php echo e(number_format($totalSpent)); ?></strong>
+                        </td>
+                        <td dir="ltr" class="px-3 py-4 vazir text-center align-middle">
+                            <strong><?php echo e(number_format($totalBalance)); ?></strong>
+                        </td>
+                        <td dir="ltr" class="px-3 py-4 vazir text-center align-middle">
+                            <strong><?php echo e(number_format($totalCurrent)); ?></strong>
+                        </td>
+                        <td class="px-3 py-4 text-center align-middle">
+                            <?php
+                                $overallStatus = $totalCurrent >= 0 ? 'طلبکار' : 'بدهکار';
+                                $statusClass = $overallStatus == 'طلبکار' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200';
+                            ?>
+                            <span class="inline-block px-3 py-1 rounded-full text-sm font-medium <?php echo e($statusClass); ?>">
+                                <?php echo e($overallStatus); ?>
 
-        </div>
+                            </span>
+                        </td>
+                    </tr>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="8" class="px-4 py-8 text-center text-gray-500 text-[16px]">
+                            هیچ موجودی فعالی وجود ندارد
+                        </td>
+                    </tr>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            </tbody>
+        </table>
+    </div>
+</div>
     </div>
     <script>
         // جستجوی ساده در جدول

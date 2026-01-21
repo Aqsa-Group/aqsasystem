@@ -232,24 +232,41 @@
     <?php endif; ?>
 
     <!-- بخش خلاصه موجودی -->
-    <?php if(count($balances) > 0): ?>
-    <div class="summary-section">
-        <div class="summary-title"> خلاصه موجودی‌ها</div>
-        <table class="summary-table">
-            <thead>
-                <tr>
-                    <th>واحد پول</th>
-                    <th>رسید</th>
-                    <th>برد</th>
-                    <th>بیلانس</th>
-                    <th>موجودی فعلی</th>
-                    <th>وضعیت</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php $__currentLoopData = $balances; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $balance): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+   <?php if(count($balances) > 0): ?>
+<div class="summary-section">
+    <div class="summary-title"> خلاصه موجودی‌ها</div>
+    <table class="summary-table">
+        <thead>
+            <tr>
+                <th>واحد پول</th>
+                <th>موجودی قبلی</th>
+                <th>رسید</th>
+                <th>برد</th>
+                <th>بیلانس دوره</th>
+                <th>موجودی فعلی</th>
+                <th>وضعیت</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+                $totalPrevious = 0;
+                $totalReceived = 0;
+                $totalSpent = 0;
+                $totalBalance = 0;
+                $totalCurrent = 0;
+            ?>
+            
+            <?php $__currentLoopData = $balances; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $balance): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php
+                    $totalPrevious += $balance['previous_balance'] ?? 0;
+                    $totalReceived += $balance['received'] ?? 0;
+                    $totalSpent += $balance['spent'] ?? 0;
+                    $totalBalance += $balance['balance'] ?? 0;
+                    $totalCurrent += $balance['current_balance'] ?? 0;
+                ?>
                 <tr>
                     <td><strong><?php echo e($balance['name_fa']); ?></strong></td>
+                    <td class="amount-cell" dir="ltr"><?php echo e(number_format($balance['previous_balance'] ?? 0)); ?></td>
                     <td class="amount-cell" dir="ltr"><?php echo e(number_format($balance['received'])); ?></td>
                     <td class="amount-cell" dir="ltr"><?php echo e(number_format($balance['spent'])); ?></td>
                     <td class="amount-cell" dir="ltr"><?php echo e(number_format($balance['balance'])); ?></td>
@@ -261,11 +278,31 @@
                         </span>
                     </td>
                 </tr>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </tbody>
-        </table>
-    </div>
-    <?php endif; ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            
+            <!-- ردیف جمع کل -->
+            <tr style="background-color: #f0f7ff; font-weight: bold; border-top: 2px solid #2980b9;">
+                <td><strong>جمع کل</strong></td>
+                <td class="amount-cell" dir="ltr"><strong><?php echo e(number_format($totalPrevious)); ?></strong></td>
+                <td class="amount-cell" dir="ltr"><strong><?php echo e(number_format($totalReceived)); ?></strong></td>
+                <td class="amount-cell" dir="ltr"><strong><?php echo e(number_format($totalSpent)); ?></strong></td>
+                <td class="amount-cell" dir="ltr"><strong><?php echo e(number_format($totalBalance)); ?></strong></td>
+                <td class="amount-cell" dir="ltr"><strong><?php echo e(number_format($totalCurrent)); ?></strong></td>
+                <td>
+                    <?php
+                        $overallStatus = $totalCurrent >= 0 ? 'طلبکار' : 'بدهکار';
+                        $overallStatusClass = $overallStatus == 'طلبکار' ? 'status-confirmed' : 'status-pending';
+                    ?>
+                    <span class="<?php echo e($overallStatusClass); ?>">
+                        <?php echo e($overallStatus); ?>
+
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<?php endif; ?>
 
     <!-- فوتر -->
     <div class="footer">
