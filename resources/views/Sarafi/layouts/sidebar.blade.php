@@ -2784,6 +2784,18 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                         </div>
 
 
+                             <div x-show="openItems.finance" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="{{ route('sarafi.attendances') }}"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="setActive('edit-accounts', 'finacne')"
+                                :class="active === 'edit-accounts' ? 'bg-[#FFFFFF] text-[#184D6C]' : 'text-white dark:text-white hover:bg-gray-600  dark:hover:bg-gray-800'">
+                                <i class="fas fa-id-badge"></i> 
+                               حاضری کارمندان
+
+                            </a>
+                        </div>
+
+
 
                     </div>
 
