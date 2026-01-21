@@ -871,36 +871,7 @@
                         </tr>
                     @endforeach
                     
-                    <!-- ردیف جمع کل -->
-                    <tr class="text-black border-t-2 border-gray-300 font-bold bg-gray-50">
-                        <td class="px-3 py-4 vazir text-center align-middle" colspan="2">
-                            <strong>جمع کل</strong>
-                        </td>
-                        <td dir="ltr" class="px-3 py-4 vazir text-center align-middle">
-                            <strong>{{ number_format($totalPrevious) }}</strong>
-                        </td>
-                        <td dir="ltr" class="px-3 py-4 vazir text-center align-middle">
-                            <strong>{{ number_format($totalReceived) }}</strong>
-                        </td>
-                        <td dir="ltr" class="px-3 py-4 vazir text-center align-middle">
-                            <strong>{{ number_format($totalSpent) }}</strong>
-                        </td>
-                        <td dir="ltr" class="px-3 py-4 vazir text-center align-middle">
-                            <strong>{{ number_format($totalBalance) }}</strong>
-                        </td>
-                        <td dir="ltr" class="px-3 py-4 vazir text-center align-middle">
-                            <strong>{{ number_format($totalCurrent) }}</strong>
-                        </td>
-                        <td class="px-3 py-4 text-center align-middle">
-                            @php
-                                $overallStatus = $totalCurrent >= 0 ? 'طلبکار' : 'بدهکار';
-                                $statusClass = $overallStatus == 'طلبکار' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200';
-                            @endphp
-                            <span class="inline-block px-3 py-1 rounded-full text-sm font-medium {{ $statusClass }}">
-                                {{ $overallStatus }}
-                            </span>
-                        </td>
-                    </tr>
+                
                 @else
                     <tr>
                         <td colspan="8" class="px-4 py-8 text-center text-gray-500 text-[16px]">
