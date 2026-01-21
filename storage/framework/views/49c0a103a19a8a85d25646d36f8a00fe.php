@@ -28,29 +28,31 @@ $currentUser = Auth::guard('sarafi')->user();
         }
 
         body {
-            font-family: "Shabnam-FD", sans-serif;
+             font-family: "Shabnam", sans-serif;
             width: 72.1mm;
             margin: 0 auto;
             padding: 0;
             background-color: white;
+            font-size: 12px;
+            line-height: 1.4;
         }
 
         .document {
-            width: 72.1mm;
+           width: 85mm;
             margin: 0 auto;
             background-color: white;
-            padding: 10px;
-            line-height: 1.6;
+            padding: 8px;
         }
 
         .header {
-            text-align: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
+              text-align: center;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #ddd;
         }
 
         .header h1 {
-            font-size: 18px;
+           font-size: 16px;
             margin-bottom: 5px;
             color: #333;
         }
@@ -63,36 +65,37 @@ $currentUser = Auth::guard('sarafi')->user();
         .info-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border: 1px solid #999;
+            font-size: 11px;
         }
 
         .info-table td {
-            padding: 8px 10px;
+              padding: 6px 8px;
             border: 1px solid #999;
         }
 
         .info-table td:first-child {
-            font-weight: bold;
+              font-weight: bold;
             width: 40%;
             background-color: #f5f5f5;
         }
 
         .description {
-            padding: 10px;
+            padding: 8px;
             background-color: #f9f9f9;
             border-right: 3px solid #2B65E5;
-            border-top: 1px solid black;
-            border-left: 1px solid black;
-            border-bottom: 1px solid black;
-
+            border: 1px solid #999;
+            margin-bottom: 15px;
         }
 
         .description h3 {
-            margin-bottom: 8px;
-            font-size: 14px;
+            margin-bottom: 6px;
+            font-size: 12px;
             color: #333;
         }
+
+       
 
         .contact-info {
             display: flex;
@@ -110,20 +113,16 @@ $currentUser = Auth::guard('sarafi')->user();
         }
 
 
-        .signature {
+         .signature {
             text-align: right;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            /* راست‌چین کردن محتوا */
-            /* فاصله کل بخش امضا با بخش بالایی */
+            margin-bottom: 15px;
         }
 
         .signature-top-border {
             /* بورد بالایی */
             width: 100%;
             padding-left: 20px;
-            margin-bottom: 30px;
+          
 
                 {
                     {
@@ -135,23 +134,23 @@ $currentUser = Auth::guard('sarafi')->user();
         }
 
         .signature-text {
-            margin-bottom: 60px;
+            margin-bottom: 20px;
 
         }
 
         .signature-line {
-            width: 180px;
+            width: 100px;
             height: 1px;
             background: #777;
         }
 
 
         .note {
-            font-size: 16px;
+            font-size: 14px;
             color: black;
             text-align: center;
-            margin-top: 20px;
-            padding: 14px;
+            margin-top: 15px;
+            padding: 10px;
             border-radius: 3px;
             border-top: 1px #999 dashed;
         }

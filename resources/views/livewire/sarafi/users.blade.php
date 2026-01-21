@@ -654,6 +654,12 @@
                                     stroke-linejoin="round" />
                             </svg>
                         </button>
+
+                         @php
+    $currentUser=Auth::guard('sarafi')->user();
+    @endphp
+
+    @if ($currentUser && $currentUser->role==='superadmin')
                         <button wire:click="confirmDelete({{ $user->id }})" class="px-2 py-1">
                             <img src="{{ asset('assets/sarafi/all_icon/trash_table.svg') }}" class="w-8 h-8 dark:hidden"
                                 alt="Delete">
@@ -674,6 +680,8 @@
                                     stroke-linejoin="round" />
                             </svg>
                         </button>
+                        @endif
+
                         <button class="px-2 py-1" wire:click="print({{ $user->id }})">
                             <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"
                                 class="w-10 h-10 dark:hidden" alt="Print">

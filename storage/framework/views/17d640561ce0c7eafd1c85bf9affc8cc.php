@@ -788,6 +788,12 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     stroke-linejoin="round" />
                             </svg>
                         </button>
+
+                         <?php
+    $currentUser=Auth::guard('sarafi')->user();
+    ?>
+
+    <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role==='superadmin'): ?>
                         <button wire:click="confirmDelete(<?php echo e($user->id); ?>)" class="px-2 py-1">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>" class="w-8 h-8 dark:hidden"
                                 alt="Delete">
@@ -808,6 +814,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     stroke-linejoin="round" />
                             </svg>
                         </button>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
                         <button class="px-2 py-1" wire:click="print(<?php echo e($user->id); ?>)">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>"
                                 class="w-10 h-10 dark:hidden" alt="Print">

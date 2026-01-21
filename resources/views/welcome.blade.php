@@ -260,7 +260,35 @@
                 </div>
             </a>
 
-            <!-- پنل کلپ -->
+
+
+
+          <a href="/update"
+   class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
+
+    <div
+        class="w-16 h-16 rounded-full 
+bg-gradient-to-r from-red-600 to-rose-800
+
+               flex items-center justify-center mb-4 
+               group-hover:glow transition-all">
+        <i class="fas fa-utensils text-white text-2xl"></i>
+    </div>
+
+    <h3 class="text-xl font-bold mb-2">پنل رستورانت</h3>
+
+    <p class="text-blue-200 text-sm">
+        مدیریت رستورانت‌ها
+    </p>
+
+    <div class="mt-4 text-orange-400 opacity-0 group-hover:opacity-100 transition-opacity">
+        <i class="fas fa-arrow-left ml-1"></i>
+        ورود به پنل
+    </div>
+</a>
+
+
+            {{-- <!-- پنل کلپ -->
 
             <a href="/gym" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
                 <div
@@ -272,10 +300,10 @@
                 <div class="mt-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity">
                     <i class="fas fa-arrow-left ml-1"></i> ورود به پنل
                 </div>
-            </a>
+            </a> --}}
 
 
-                  <!-- پنل کلپ -->
+                  {{-- <!-- پنل مارکت -->
 
             <a href="/update" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
                 <div
@@ -287,7 +315,7 @@
                 <div class="mt-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity">
                     <i class="fas fa-arrow-left ml-1"></i> ورود به پنل
                 </div>
-            </a>
+            </a> --}}
         </div>
     </main>
 
