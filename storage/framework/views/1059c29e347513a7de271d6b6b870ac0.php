@@ -123,7 +123,8 @@
                 <strong>تبدیل ارز در حساب </strong>
             </div>
             <div style="font-size: 10px; margin-top: 5px;">
-                 تاریخ: <?php echo e($conversion->transaction_date); ?>
+                 تاریخ:
+                  <?php echo e(explode(' ', $conversion->transaction_date)[0]); ?>
 
             </div>
         </div>
@@ -218,7 +219,7 @@
             <tr>
                 <td>نرخ ارز:</td>
                 <td>
-                    <?php echo e(number_format((float)$conversion->currency_rate, 4)); ?>
+                    <?php echo e(number_format((float)$conversion->currency_rate, 2)); ?>
 
                  
                 </td>

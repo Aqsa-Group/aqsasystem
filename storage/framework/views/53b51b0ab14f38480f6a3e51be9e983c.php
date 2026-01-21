@@ -826,11 +826,11 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 
             <div class="flex justify-between items-center text-center mx-auto mb-6">
                 <h1 class="text-xl font-bold">مجموعه کل</h1>
-                <button
-                    class="w-[31px] h-[29.232500076293945px] rounded-[8px] bg-transparent border border-[#000000] pr-1 ">
-                    <img src="<?php echo e(asset('assets/sarafi/all_icon/printer.svg')); ?>" alt=""
-                        class="w-[21.0575008392334px] h-[19.232500076293945px]">
-                </button>
+               <button type="button" wire:click="printSummary" 
+                class="w-[31px] h-[29.232500076293945px] rounded-[8px] bg-transparent border border-[#000000] pr-1 hover:bg-gray-100 transition-colors cursor-pointer">
+            <img src="<?php echo e(asset('assets/sarafi/all_icon/printer.svg')); ?>" alt="چاپ خلاصه"
+                class="w-[21.0575008392334px] h-[19.232500076293945px]">
+        </button>
             </div>
 
             <div class="overflow-x-auto w-full mt-6">
@@ -946,39 +946,39 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             weekDaysAfghan: ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'],
             daysInMonthNormal: [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29],
 
-            init() {
-                this.updateYearRange();
-                const today = this.getTodayPersian();
-                this.currentYear = today.year;
-                this.currentMonth = today.month - 1;
-
-                const livewireValue = window.Livewire.find('<?php echo e($_instance->getId()); ?>').get(fieldName);
-                if (!livewireValue) {
-                    this.selectedDate = today;
-                    this.displayDate = this.formatDate(today);
-                    window.Livewire.find('<?php echo e($_instance->getId()); ?>').set(fieldName, this.formatDate(today));
-                } else {
-                    // تبدیل تاریخ از Y-m-d به Y/m/d برای نمایش
-                    const dateParts = livewireValue.split('-');
-                    if (dateParts.length === 3) {
-                        const year = parseInt(dateParts[0]);
-                        const month = parseInt(dateParts[1]);
-                        const day = parseInt(dateParts[2]);
-
-                        if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
-                            this.selectedDate = {
-                                year,
-                                month,
-                                day
-                            };
-                            this.displayDate =
-                                `${year}/${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
-                            this.currentYear = year;
-                            this.currentMonth = month - 1;
-                        }
-                    }
-                }
-            },
+          init() {
+    this.updateYearRange();
+    const today = this.getTodayPersian();
+    this.currentYear = today.year;
+    this.currentMonth = today.month - 1;
+    
+    const livewireValue = window.Livewire.find('<?php echo e($_instance->getId()); ?>').get(fieldName);
+    if (!livewireValue) {
+        // اگر مقدار Livewire خالی است، تاریخ انتخاب نشده
+        this.selectedDate = null; // این خط اضافه شود
+        this.displayDate = ''; // نمایش خالی
+    } else {
+        // تبدیل تاریخ از Y-m-d به Y/m/d برای نمایش
+        const dateParts = livewireValue.split('-');
+        if (dateParts.length === 3) {
+            const year = parseInt(dateParts[0]);
+            const month = parseInt(dateParts[1]);
+            const day = parseInt(dateParts[2]);
+            
+            if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+                this.selectedDate = {
+                    year,
+                    month,
+                    day
+                };
+                this.displayDate = 
+                    `${year}/${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
+                this.currentYear = year;
+                this.currentMonth = month - 1;
+            }
+        }
+    }
+},  
 
             updateYearRange() {
                 this.yearRange.years = [];

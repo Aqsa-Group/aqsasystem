@@ -123,7 +123,8 @@
                 <strong>تبدیل ارز در حساب </strong>
             </div>
             <div style="font-size: 10px; margin-top: 5px;">
-                 تاریخ: {{ $conversion->transaction_date }}
+                 تاریخ:
+                  {{ explode(' ', $conversion->transaction_date)[0] }}
             </div>
         </div>
 
@@ -210,7 +211,7 @@
             <tr>
                 <td>نرخ ارز:</td>
                 <td>
-                    {{ number_format((float)$conversion->currency_rate, 4) }}
+                    {{ number_format((float)$conversion->currency_rate, 2) }}
                  
                 </td>
             </tr>

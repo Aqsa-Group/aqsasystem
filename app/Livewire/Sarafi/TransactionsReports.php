@@ -10,6 +10,7 @@ use Livewire\Component;
 use Morilog\Jalali\Jalalian;
 use Mpdf\Mpdf;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class TransactionsReports extends Component
 {
@@ -59,36 +60,31 @@ class TransactionsReports extends Component
     /**
      * Initialize component
      */
-   public function mount()
-{
-    $this->loadCustomers();
-    $this->setDefaultDates();
+    public function mount()
+    {
+        $this->loadCustomers();
+        $this->generateDocumentNumber();
+        $this->initializeUserCustomers();
 
-    $this->generateDocumentNumber();
+        // Check if customer is selected from main page
+        if (session()->has('selected_customer_id')) {
+            $customerId = session('selected_customer_id');
+            $this->selectCustomer($customerId);
+            session()->forget('selected_customer_id');
+        }
 
-    // Check if customer is selected from main page
-    if (session()->has('selected_customer_id')) {
-        $customerId = session('selected_customer_id');
-        $this->selectCustomer($customerId);
-        session()->forget('selected_customer_id');
+        // Only set end date to today if not already set
+        if (!$this->endDate) {
+            $todayJalali = Jalalian::now();
+            $this->endDate = $todayJalali->format('Y-m-d');
+            $this->updateDateDisplay('end');
+        }
+
+        // Only load transactions if customer is selected
+        if ($this->selectedCustomer) {
+            $this->loadTransactions();
+        }
     }
-
-    if ($this->selectedCustomer) {
-        $this->calculatePreviousBalances();
-        $this->loadTransactions();
-    }
-
-    $this->initializeUserCustomers();
-    
-    // تنظیم تاریخ‌های پیش‌فرض با فراخوانی updateDateDisplay
-    $todayJalali = Jalalian::now();
-    $this->startDate = $todayJalali->format('Y-m-d');
-    $this->endDate = $todayJalali->format('Y-m-d');
-    
-    // بروزرسانی نمایش تاریخ‌ها
-    $this->updateDateDisplay('start');
-    $this->updateDateDisplay('end');
-}
 
     /**
      * Generate document number for transactions
@@ -97,9 +93,6 @@ class TransactionsReports extends Component
     {
         $this->documentNumber = 'TR-' . date('Ymd') . '-' . rand(1000, 9999);
     }
-
-
-
 
     /**
      * Initialize customers based on user permissions
@@ -165,7 +158,7 @@ class TransactionsReports extends Component
      */
     private function normalizeDate($date)
     {
-        if (!$date) return null;
+        if (!$date || trim($date) === '') return null;
 
         // Convert Persian numbers to Latin
         $persianNums = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
@@ -213,148 +206,83 @@ class TransactionsReports extends Component
     /**
      * Load transactions with applied filters
      */
-  public function loadTransactions()
-{
-    if (!$this->selectedCustomer) {
-        Log::debug("loadTransactions: No customer selected");
-        return;
-    }
-
-    $user = Auth::guard('sarafi')->user();
-    if (!$user) {
-        $this->transactions = collect();
-        return;
-    }
-
-    $adminId = $user->admin_id ?? $user->id;
-    $relatedUserIds = $this->getRelatedUserIds($adminId);
-
-    Log::debug("loadTransactions: Starting", [
-        'customer_id' => $this->selectedCustomer,
-        'start_date' => $this->startDate,
-        'end_date' => $this->endDate
-    ]);
-
-    $baseQuery = Transaction::query()
-        ->where('customer_id', $this->selectedCustomer)
-        ->where(function ($query) use ($adminId, $relatedUserIds) {
-            $query->where('admin_id', $adminId)
-                ->orWhereIn('user_id', $relatedUserIds);
-        })
-        ->where(function ($query) {
-            // شامل تمام تراکنش‌ها - هم حواله‌های معمولی و هم حواله‌های بانکی
-            $query->whereNotNull('amount')
-                ->where('amount', '>', 0);
-        });
-
-    // لاگ کردن قبل از اعمال فیلتر
-    Log::debug("loadTransactions: Base query count", [
-        'count' => $baseQuery->count(),
-        'customer_id' => $this->selectedCustomer
-    ]);
-
-    // Apply non-date filters
-    $this->applyNonDateFilters($baseQuery);
-
-    // Apply date filter if specified
-    if ($this->startDate && $this->endDate) {
-        $this->applyDateFilter($baseQuery);
-    }
-
-    Log::debug("loadTransactions: After filters", [
-        'filter_count' => $baseQuery->count(),
-        'filters' => [
-            'typeTransaction' => $this->typeTransaction,
-            'typeTransaction2' => $this->typeTransaction2,
-            'accountType' => $this->accountType,
-            'selectedCurrencies' => $this->selectedCurrencies
-        ]
-    ]);
-
-    // First calculate previous balances, then get transactions
-    $this->calculatePreviousBalances();
-
-    Log::debug("loadTransactions: After calculating previous balances", [
-        'previous_balances' => $this->previousBalances
-    ]);
-
-    $this->transactions = $baseQuery->orderBy('date')->get();
-
-    // لاگ تمام تراکنش‌های بازیابی شده
-    Log::debug("loadTransactions: All retrieved transactions", [
-        'count' => $this->transactions->count(),
-        'transactions' => $this->transactions->map(function ($t) {
-            return [
-                'id' => $t->id,
-                'type' => $t->type,
-                'amount' => $t->amount,
-                'currency' => $t->currency,
-                'date' => $t->date,
-                'remittance_id' => $t->remittance_id,
-                'withdrawbank_id' => $t->withdrawbank_id,
-                'description' => $t->description
-            ];
-        })->values()
-    ]);
-
-    $this->calculateTotalBalances();
-
-    Log::debug("loadTransactions: Completed", [
-        'total_balances' => $this->totalBalances,
-        'transactions_count' => $this->transactions->count()
-    ]);
-}
-
-    public function testPreviousBalance()
+    public function loadTransactions()
     {
         if (!$this->selectedCustomer) {
-            dd('لطفاً ابتدا یک مشتری انتخاب کنید');
+            $this->transactions = collect();
+            $this->previousBalances = [];
+            $this->totalBalances = [];
+            return;
         }
 
         $user = Auth::guard('sarafi')->user();
+        if (!$user) {
+            $this->transactions = collect();
+            $this->previousBalances = [];
+            $this->totalBalances = [];
+            return;
+        }
+
         $adminId = $user->admin_id ?? $user->id;
         $relatedUserIds = $this->getRelatedUserIds($adminId);
 
-        // محاسبه دستی موجودی قبلی
-        $manualPreviousBalances = [];
-        foreach ($this->currencies as $currency) {
-            $code = $currency['code'];
-
-            $query = Transaction::where('customer_id', $this->selectedCustomer)
-                ->where('currency', $code)
-                ->where(function ($q) use ($adminId, $relatedUserIds) {
-                    $q->where('admin_id', $adminId)
-                        ->orWhereIn('user_id', $relatedUserIds);
-                });
-
-            // اگر تاریخ شروع مشخص است
-            if ($this->startDate) {
-                $startNormalized = $this->normalizeDate($this->startDate);
-                if ($startNormalized) {
-                    $query->where('date', '<', $startNormalized);
-                }
-            } else {
-                // اگر تاریخ شروع مشخص نیست، از امروز استفاده کن
-                $today = Jalalian::now()->format('Y-m-d');
-                $query->where('date', '<', $today);
-            }
-
-            $previousTransactions = $query->get();
-            $received = $previousTransactions->where('type', 'رسید')->sum('amount');
-            $spent = $previousTransactions->where('type', 'برد')->sum('amount');
-            $manualPreviousBalances[$code] = $received - $spent;
-        }
-
-        $debugInfo = [
-            'selected_customer' => $this->selectedCustomerName,
+        Log::debug("loadTransactions: Starting", [
+            'customer_id' => $this->selectedCustomer,
             'start_date' => $this->startDate,
-            'calculated_previous_balances' => $this->previousBalances,
-            'manual_previous_balances' => $manualPreviousBalances,
-            'match' => $this->previousBalances == $manualPreviousBalances
-        ];
+            'end_date' => $this->endDate,
+            'selected_currencies' => $this->selectedCurrencies
+        ]);
 
-        dd($debugInfo);
+        $baseQuery = Transaction::query()
+            ->where('customer_id', $this->selectedCustomer)
+            ->where(function ($query) use ($adminId, $relatedUserIds) {
+                $query->where('admin_id', $adminId)
+                    ->orWhereIn('user_id', $relatedUserIds);
+            })
+            ->whereNotNull('amount')
+            ->where('amount', '>', 0);
+
+        // Apply non-date filters
+        $this->applyNonDateFilters($baseQuery);
+
+        // Apply date filter
+        $this->applyDateFilter($baseQuery);
+
+        Log::debug("loadTransactions: Before calculating previous balances", [
+            'query_count' => $baseQuery->count()
+        ]);
+
+        // First calculate previous balances
+        $this->calculatePreviousBalances();
+
+        Log::debug("loadTransactions: Previous balances calculated", [
+            'previous_balances' => $this->previousBalances
+        ]);
+
+        // Get transactions
+        $this->transactions = $baseQuery->orderBy('date')->get();
+
+        Log::debug("loadTransactions: Transactions retrieved", [
+            'count' => $this->transactions->count(),
+            'sample' => $this->transactions->take(3)->map(function($t) {
+                return [
+                    'id' => $t->id,
+                    'date' => $t->date,
+                    'type' => $t->type,
+                    'amount' => $t->amount,
+                    'currency' => $t->currency
+                ];
+            })->values()
+        ]);
+
+        // Calculate total balances
+        $this->calculateTotalBalances();
+
+        Log::debug("loadTransactions: Total balances calculated", [
+            'total_balances' => $this->totalBalances
+        ]);
     }
+
     /**
      * Apply non-date filters to query
      */
@@ -362,35 +290,42 @@ class TransactionsReports extends Component
     {
         if (!empty($this->selectedCurrencies)) {
             $query->whereIn('currency', $this->selectedCurrencies);
+            Log::debug("Applied currency filter", ['currencies' => $this->selectedCurrencies]);
         }
 
         if ($this->typeTransaction) {
             $query->where('type', $this->typeTransaction);
+            Log::debug("Applied typeTransaction filter", ['type' => $this->typeTransaction]);
         }
 
         if ($this->typeTransaction2) {
             $query->where('type', $this->typeTransaction2);
+            Log::debug("Applied typeTransaction2 filter", ['type' => $this->typeTransaction2]);
         }
-
 
         if ($this->accountType) {
             $query->where('account_type', $this->accountType);
+            Log::debug("Applied accountType filter", ['account_type' => $this->accountType]);
         }
 
         if ($this->typeDocument) {
             $query->where('description', 'like', '%' . $this->typeDocument . '%');
+            Log::debug("Applied typeDocument filter", ['type_document' => $this->typeDocument]);
         }
 
         if ($this->zone) {
             $query->where('zone', $this->zone);
+            Log::debug("Applied zone filter", ['zone' => $this->zone]);
         }
 
         if ($this->by) {
             $query->where('by', 'like', '%' . $this->by . '%');
+            Log::debug("Applied by filter", ['by' => $this->by]);
         }
 
         if ($this->description) {
             $query->where('description', 'like', '%' . $this->description . '%');
+            Log::debug("Applied description filter", ['description' => $this->description]);
         }
     }
 
@@ -402,8 +337,31 @@ class TransactionsReports extends Component
         $startNormalized = $this->normalizeDate($this->startDate);
         $endNormalized = $this->normalizeDate($this->endDate);
 
+        Log::debug("applyDateFilter: Dates normalized", [
+            'start_original' => $this->startDate,
+            'end_original' => $this->endDate,
+            'start_normalized' => $startNormalized,
+            'end_normalized' => $endNormalized
+        ]);
+
         if ($startNormalized && $endNormalized) {
+            // Both dates selected
             $query->whereBetween('date', [$startNormalized, $endNormalized]);
+            Log::debug("Applied date filter: BETWEEN", [
+                'start' => $startNormalized,
+                'end' => $endNormalized
+            ]);
+        } elseif ($startNormalized) {
+            // Only start date selected
+            $query->where('date', '>=', $startNormalized);
+            Log::debug("Applied date filter: >= start", ['start' => $startNormalized]);
+        } elseif ($endNormalized) {
+            // Only end date selected
+            $query->where('date', '<=', $endNormalized);
+            Log::debug("Applied date filter: <= end", ['end' => $endNormalized]);
+        } else {
+            // No dates selected - show all
+            Log::debug("No date filter applied - showing all transactions");
         }
     }
 
@@ -429,18 +387,8 @@ class TransactionsReports extends Component
     private function formatWithAfghanMonth(Jalalian $date)
     {
         $afghanMonths = [
-            'حمل',
-            'ثور',
-            'جوزا',
-            'سرطان',
-            'اسد',
-            'سنبله',
-            'میزان',
-            'عقرب',
-            'قوس',
-            'جدی',
-            'دلو',
-            'حوت'
+            'حمل', 'ثور', 'جوزا', 'سرطان', 'اسد', 'سنبله',
+            'میزان', 'عقرب', 'قوس', 'جدی', 'دلو', 'حوت'
         ];
 
         return $date->getYear() . '/' .
@@ -448,56 +396,73 @@ class TransactionsReports extends Component
             str_pad($date->getDay(), 2, '0', STR_PAD_LEFT);
     }
 
-  /**
- * Set start date from datepicker
- */
-public function setStartDate($dateString)
-{
-    Log::debug("setStartDate called", ['input' => $dateString]);
-    
-    $normalized = $this->normalizeDate($dateString);
-    
-    if (!$normalized) {
-        Log::error("Failed to normalize start date", ['input' => $dateString]);
-        return;
+    /**
+     * Set start date from datepicker
+     */
+    public function setStartDate($dateString)
+    {
+        Log::debug("setStartDate called", ['input' => $dateString]);
+        
+        if (empty($dateString) || $dateString === 'null' || $dateString === '') {
+            $this->startDate = null;
+            $this->startDateDisplay = '';
+            Log::debug("Start date cleared");
+        } else {
+            $normalized = $this->normalizeDate($dateString);
+            
+            if ($normalized) {
+                $this->startDate = $normalized;
+                $this->updateDateDisplay('start');
+                Log::debug("Start date updated", [
+                    'normalized' => $normalized,
+                    'display' => $this->startDateDisplay
+                ]);
+            } else {
+                Log::error("Failed to normalize start date", ['input' => $dateString]);
+                $this->startDate = null;
+                $this->startDateDisplay = '';
+            }
+        }
+
+        // Reload transactions if customer is selected
+        if ($this->selectedCustomer) {
+            $this->loadTransactions();
+        }
     }
-    
-    $this->startDate = $normalized;
-    $this->updateDateDisplay('start');
 
-    Log::debug("Start date updated", [
-        'normalized' => $normalized,
-        'display' => $this->startDateDisplay
-    ]);
+    /**
+     * Set end date from datepicker
+     */
+    public function setEndDate($dateString)
+    {
+        Log::debug("setEndDate called", ['input' => $dateString]);
+        
+        if (empty($dateString) || $dateString === 'null' || $dateString === '') {
+            $this->endDate = null;
+            $this->endDateDisplay = '';
+            Log::debug("End date cleared");
+        } else {
+            $normalized = $this->normalizeDate($dateString);
+            
+            if ($normalized) {
+                $this->endDate = $normalized;
+                $this->updateDateDisplay('end');
+                Log::debug("End date updated", [
+                    'normalized' => $normalized,
+                    'display' => $this->endDateDisplay
+                ]);
+            } else {
+                Log::error("Failed to normalize end date", ['input' => $dateString]);
+                $this->endDate = null;
+                $this->endDateDisplay = '';
+            }
+        }
 
-    $this->calculatePreviousBalances();
-    $this->loadTransactions();
-}
-
-/**
- * Set end date from datepicker
- */
-public function setEndDate($dateString)
-{
-    Log::debug("setEndDate called", ['input' => $dateString]);
-    
-    $normalized = $this->normalizeDate($dateString);
-    
-    if (!$normalized) {
-        Log::error("Failed to normalize end date", ['input' => $dateString]);
-        return;
+        // Reload transactions if customer is selected
+        if ($this->selectedCustomer) {
+            $this->loadTransactions();
+        }
     }
-    
-    $this->endDate = $normalized;
-    $this->updateDateDisplay('end');
-
-    Log::debug("End date updated", [
-        'normalized' => $normalized,
-        'display' => $this->endDateDisplay
-    ]);
-
-    $this->loadTransactions();
-}
 
     /**
      * Update date display with Afghan month names
@@ -514,31 +479,28 @@ public function setEndDate($dateString)
                 $day = $parts[2];
 
                 $afghanMonths = [
-                    'حمل',
-                    'ثور',
-                    'جوزا',
-                    'سرطان',
-                    'اسد',
-                    'سنبله',
-                    'میزان',
-                    'عقرب',
-                    'قوس',
-                    'جدی',
-                    'دلو',
-                    'حوت'
+                    'حمل', 'ثور', 'جوزا', 'سرطان', 'اسد', 'سنبله',
+                    'میزان', 'عقرب', 'قوس', 'جدی', 'دلو', 'حوت'
                 ];
 
-                $displayValue = $year . '/' . $afghanMonths[$month - 1] . '/' . $day;
+                if ($month >= 1 && $month <= 12) {
+                    $displayValue = $year . '/' . $afghanMonths[$month - 1] . '/' . $day;
 
-                if ($type === 'start') {
-                    $this->startDateDisplay = $displayValue;
-                } else {
-                    $this->endDateDisplay = $displayValue;
+                    if ($type === 'start') {
+                        $this->startDateDisplay = $displayValue;
+                    } else {
+                        $this->endDateDisplay = $displayValue;
+                    }
                 }
+            }
+        } else {
+            if ($type === 'start') {
+                $this->startDateDisplay = '';
+            } else {
+                $this->endDateDisplay = '';
             }
         }
     }
-
 
     /**
      * Calculate previous balances (balance before the filter period)
@@ -547,277 +509,139 @@ public function setEndDate($dateString)
     {
         if (!$this->selectedCustomer) {
             Log::debug("calculatePreviousBalances: No customer selected");
+            $this->previousBalances = [];
             return;
         }
 
         $user = Auth::guard('sarafi')->user();
         if (!$user) {
             Log::debug("calculatePreviousBalances: No user found");
+            $this->previousBalances = [];
             return;
         }
 
         $adminId = $user->admin_id ?? $user->id;
         $relatedUserIds = $this->getRelatedUserIds($adminId);
 
-        // Reset previous balances
         $this->previousBalances = [];
 
-        // دریافت ارزهای فعال برای این مشتری
-        $customerCurrencies = Transaction::where('customer_id', $this->selectedCustomer)
-            ->where(function ($q) use ($adminId, $relatedUserIds) {
-                $q->where('admin_id', $adminId)
-                    ->orWhereIn('user_id', $relatedUserIds);
-            })
-            ->distinct()
-            ->pluck('currency')
-            ->toArray();
+        Log::debug("calculatePreviousBalances: Starting calculation", [
+            'start_date' => $this->startDate,
+            'customer_id' => $this->selectedCustomer
+        ]);
 
+        // If start date is empty, previous balance = 0 for all currencies
+        if (!$this->startDate) {
+            Log::debug("calculatePreviousBalances: startDate is empty, setting all to 0");
+            foreach ($this->currencies as $currency) {
+                $this->previousBalances[$currency['code']] = 0;
+            }
+            return;
+        }
+
+        $startNormalized = $this->normalizeDate($this->startDate);
+        if (!$startNormalized) {
+            Log::debug("calculatePreviousBalances: Could not normalize startDate, setting all to 0");
+            foreach ($this->currencies as $currency) {
+                $this->previousBalances[$currency['code']] = 0;
+            }
+            return;
+        }
+
+        Log::debug("calculatePreviousBalances: Calculating with startDate", [
+            'start_date_original' => $this->startDate,
+            'start_date_normalized' => $startNormalized
+        ]);
+
+        // Calculate previous balances for each currency
         foreach ($this->currencies as $currency) {
             $code = $currency['code'];
 
-            // فقط ارزهایی که برای این مشتری تراکنش دارند را محاسبه کن
-            if (!in_array($code, $customerCurrencies)) {
-                continue;
-            }
-
-            // Query for all transactions
-            $query = Transaction::query()
-                ->where('customer_id', $this->selectedCustomer)
+            $previousTransactions = Transaction::where('customer_id', $this->selectedCustomer)
                 ->where('currency', $code)
                 ->where(function ($q) use ($adminId, $relatedUserIds) {
                     $q->where('admin_id', $adminId)
                         ->orWhereIn('user_id', $relatedUserIds);
-                });
+                })
+                ->where('date', '<', $startNormalized)
+                ->get();
 
-            Log::debug("calculatePreviousBalances: Before date filter", [
-                'customer_id' => $this->selectedCustomer,
+            $received = $previousTransactions->where('type', 'رسید')->sum('amount');
+            $spent = $previousTransactions->where('type', 'برد')->sum('amount');
+            $balance = $received - $spent;
+
+            $this->previousBalances[$code] = $balance;
+
+            Log::debug("calculatePreviousBalances: Currency calculation", [
                 'currency' => $code,
-                'start_date' => $this->startDate,
-                'query_count' => $query->count()
-            ]);
-
-            // اگر تاریخ شروع مشخص است، تراکنش‌های قبل از تاریخ شروع را محاسبه کن
-            if ($this->startDate) {
-                $startNormalized = $this->normalizeDate($this->startDate);
-                Log::debug("calculatePreviousBalances: Date normalization", [
-                    'start_date_original' => $this->startDate,
-                    'start_date_normalized' => $startNormalized
-                ]);
-
-                if ($startNormalized) {
-                    $query->where('date', '<', $startNormalized);
-
-                    Log::debug("calculatePreviousBalances: After date filter", [
-                        'currency' => $code,
-                        'start_date_normalized' => $startNormalized,
-                        'filtered_count' => $query->count()
-                    ]);
-                }
-            } else {
-                // اگر تاریخ شروع مشخص نیست، موجودی قبلی = مجموع تمام تراکنش‌های قبل از امروز
-                $today = Jalalian::now()->format('Y-m-d');
-                $query->where('date', '<', $today);
-
-                Log::debug("calculatePreviousBalances: No start date - using today as boundary", [
-                    'currency' => $code,
-                    'today' => $today,
-                    'filtered_count' => $query->count()
-                ]);
-            }
-
-            $transactionsBefore = $query->get();
-
-            $received = $transactionsBefore->where('type', 'رسید')->sum('amount');
-            $spent = $transactionsBefore->where('type', 'برد')->sum('amount');
-
-            $this->previousBalances[$code] = $received - $spent;
-
-            Log::debug("calculatePreviousBalances: Final calculation", [
-                'currency' => $code,
-                'transactions_before_count' => $transactionsBefore->count(),
-                'transactions' => $transactionsBefore->map(function ($t) {
-                    return [
-                        'id' => $t->id,
-                        'date' => $t->date,
-                        'type' => $t->type,
-                        'amount' => $t->amount
-                    ];
-                })->values(),
+                'transactions_before_count' => $previousTransactions->count(),
                 'received' => $received,
                 'spent' => $spent,
-                'previous_balance' => $this->previousBalances[$code]
+                'previous_balance' => $balance
             ]);
         }
 
-        Log::debug("calculatePreviousBalances: Final result", [
-            'all_previous_balances' => $this->previousBalances
-        ]);
+        Log::debug("calculatePreviousBalances: Final previous balances", $this->previousBalances);
     }
-
-    /**
-     * Debug method for testing previous balances
-     */
-    public function debugPreviousBalance()
-    {
-        if (!$this->selectedCustomer) {
-            dd('لطفاً ابتدا یک مشتری انتخاب کنید');
-        }
-
-        $user = Auth::guard('sarafi')->user();
-        $adminId = $user->admin_id ?? $user->id;
-        $relatedUserIds = $this->getRelatedUserIds($adminId);
-
-        $debugInfo = [
-            'selected_customer' => $this->selectedCustomerName,
-            'customer_id' => $this->selectedCustomer,
-            'start_date' => $this->startDate,
-            'start_date_normalized' => $this->normalizeDate($this->startDate),
-            'end_date' => $this->endDate,
-        ];
-
-        // تمام تراکنش‌های مشتری
-        $allTransactions = Transaction::where('customer_id', $this->selectedCustomer)
-            ->where(function ($q) use ($adminId, $relatedUserIds) {
-                $q->where('admin_id', $adminId)
-                    ->orWhereIn('user_id', $relatedUserIds);
-            })
-            ->orderBy('date')
-            ->get();
-
-        $debugInfo['all_transactions'] = $allTransactions->map(function ($t) {
-            return [
-                'id' => $t->id,
-                'date' => $t->date,
-                'type' => $t->type,
-                'amount' => $t->amount,
-                'currency' => $t->currency,
-                'description' => $t->description
-            ];
-        });
-
-        // محاسبه دستی موجودی قبلی برای افغانی
-        $startNormalized = $this->normalizeDate($this->startDate);
-        $previousQuery = Transaction::where('customer_id', $this->selectedCustomer)
-            ->where('currency', 'afn')
-            ->where(function ($q) use ($adminId, $relatedUserIds) {
-                $q->where('admin_id', $adminId)
-                    ->orWhereIn('user_id', $relatedUserIds);
-            });
-
-        if ($startNormalized) {
-            $previousQuery->where('date', '<', $startNormalized);
-        } else {
-            $today = Jalalian::now()->format('Y-m-d');
-            $previousQuery->where('date', '<', $today);
-        }
-
-        $previousTransactions = $previousQuery->get();
-
-        $debugInfo['previous_transactions'] = $previousTransactions->map(function ($t) {
-            return [
-                'id' => $t->id,
-                'date' => $t->date,
-                'type' => $t->type,
-                'amount' => $t->amount
-            ];
-        });
-
-        $debugInfo['manual_calculation'] = [
-            'transactions_count' => $previousTransactions->count(),
-            'received' => $previousTransactions->where('type', 'رسید')->sum('amount'),
-            'spent' => $previousTransactions->where('type', 'برد')->sum('amount'),
-            'balance' => $previousTransactions->where('type', 'رسید')->sum('amount') - $previousTransactions->where('type', 'برد')->sum('amount')
-        ];
-
-        $debugInfo['calculated_previous_balance'] = $this->previousBalances['afn'] ?? 'Not calculated';
-
-        dd($debugInfo);
-    }
-
-
-
-
-
-
-
-
-
-
 
     /**
      * Calculate total balances for current period
      */
-  private function calculateTotalBalances()
-{
-    $transactions = collect($this->transactions);
+    private function calculateTotalBalances()
+    {
+        $transactions = collect($this->transactions);
 
-    // دریافت تمام ارزهای موجود در تراکنش‌ها
-    $activeCurrencies = $transactions->pluck('currency')->unique()->toArray();
-    
-    Log::debug("calculateTotalBalances: Active currencies", [
-        'currencies' => $activeCurrencies
-    ]);
-
-    // پاک کردن totalBalances قبلی
-    $this->totalBalances = [];
-
-    foreach ($activeCurrencies as $code) {
-        // پیدا کردن نام فارسی ارز
-        $currencyInfo = collect($this->currencies)->firstWhere('code', $code);
-        $name_fa = $currencyInfo ? $currencyInfo['name_fa'] : $code;
-
-        // محاسبه رسیدها و بردها
-        $received = $transactions->where('currency', $code)
-            ->where('type', 'رسید')
-            ->sum('amount');
-
-        $spent = $transactions->where('currency', $code)
-            ->where('type', 'برد')
-            ->sum('amount');
-
-        $balance = $received - $spent;
-
-        // استفاده از موجودی قبلی که محاسبه شده
-        $previousBalance = $this->previousBalances[$code] ?? 0;
-        $currentBalance = $previousBalance + $balance;
-
-        $this->totalBalances[$code] = [
-            'name_fa' => $name_fa,
-            'received' => $received,
-            'spent' => $spent,
-            'balance' => $balance,
-            'previous_balance' => $previousBalance,
-            'current_balance' => $currentBalance,
-            'status' => $currentBalance >= 0 ? 'طلبکار' : 'بدهکار'
-        ];
-
-        Log::debug("Total balance for $code", [
-            'received' => $received,
-            'spent' => $spent,
-            'balance' => $balance,
-            'previous_balance' => $previousBalance,
-            'current_balance' => $currentBalance
+        Log::debug("calculateTotalBalances: Starting", [
+            'transactions_count' => $transactions->count()
         ]);
+
+        // Get all currencies that have transactions in current period
+        $activeCurrencies = $transactions->pluck('currency')->unique()->toArray();
+        
+        Log::debug("calculateTotalBalances: Active currencies in period", $activeCurrencies);
+
+        $this->totalBalances = [];
+
+        foreach ($this->currencies as $currency) {
+            $code = $currency['code'];
+            $name_fa = $currency['name_fa'];
+
+            // Calculate received and spent for current period
+            $received = $transactions->where('currency', $code)
+                ->where('type', 'رسید')
+                ->sum('amount');
+
+            $spent = $transactions->where('currency', $code)
+                ->where('type', 'برد')
+                ->sum('amount');
+
+            $balance = $received - $spent;
+
+            // Get previous balance
+            $previousBalance = $this->previousBalances[$code] ?? 0;
+            
+            // Current balance = previous balance + balance of current period
+            $currentBalance = $previousBalance + $balance;
+
+            // Only add to totalBalances if there are transactions OR there is a previous balance
+            if ($received > 0 || $spent > 0 || $previousBalance != 0) {
+                $this->totalBalances[$code] = [
+                    'name_fa' => $name_fa,
+                    'received' => $received,
+                    'spent' => $spent,
+                    'balance' => $balance,
+                    'previous_balance' => $previousBalance,
+                    'current_balance' => $currentBalance,
+                    'status' => $currentBalance >= 0 ? 'طلبکار' : 'بدهکار'
+                ];
+
+                Log::debug("calculateTotalBalances: Balance for $code", $this->totalBalances[$code]);
+            }
+        }
+
+        Log::debug("calculateTotalBalances: Final total balances", $this->totalBalances);
     }
 
-    // برای ارزهایی که در previousBalances هستند اما در تراکنش‌های فعلی نیستند
-    foreach ($this->previousBalances as $code => $prevBalance) {
-        if (!isset($this->totalBalances[$code])) {
-            $currencyInfo = collect($this->currencies)->firstWhere('code', $code);
-            $name_fa = $currencyInfo ? $currencyInfo['name_fa'] : $code;
-            
-            $this->totalBalances[$code] = [
-                'name_fa' => $name_fa,
-                'received' => 0,
-                'spent' => 0,
-                'balance' => 0,
-                'previous_balance' => $prevBalance,
-                'current_balance' => $prevBalance,
-                'status' => $prevBalance >= 0 ? 'طلبکار' : 'بدهکار'
-            ];
-        }
-    }
-}
     /**
      * Get customer's currencies from transactions
      */
@@ -841,40 +665,44 @@ public function setEndDate($dateString)
             ->toArray();
     }
 
-
     /**
      * Handle customer selection
      */
     public function selectCustomer($customerId)
     {
+        Log::debug("selectCustomer called", ['customer_id' => $customerId]);
+
+        $customer = Customer::find($customerId);
+        if (!$customer) {
+            Log::error("Customer not found", ['customer_id' => $customerId]);
+            return;
+        }
+
         $this->selectedCustomerId = $customerId;
         $this->selectedAccount = $customerId;
         $this->selectedCustomer = $customerId;
+        $this->selectedCustomerName = $customer->fullname;
+        $this->search = $customer->fullname;
         $this->filteredCustomers = [];
 
-        $customer = Customer::find($customerId);
-        if ($customer) {
-            $this->search = $customer->fullname;
-            $this->selectedCustomerName = $customer->fullname;
-
-            if (!$this->customers->contains('id', $customer->id)) {
-                $this->customers->push($customer);
-            }
-
-            $this->calculatePreviousBalances();
-            $this->loadTransactions();
-
-            $this->dispatch('account-selected', [
-                'id' => $customer->id,
-                'text' => $customer->account_number . ' - ' . $customer->fullname,
-            ]);
+        if (!$this->customers->contains('id', $customer->id)) {
+            $this->customers->push($customer);
         }
+
+        Log::debug("Customer selected", [
+            'customer_id' => $customerId,
+            'customer_name' => $customer->fullname
+        ]);
+
+        // Load transactions for selected customer
+        $this->loadTransactions();
+
+        $this->dispatch('account-selected', [
+            'id' => $customer->id,
+            'text' => $customer->account_number . ' - ' . $customer->fullname,
+        ]);
     }
 
-
-    /**
-     * Generate PDF report
-     */
     /**
      * Generate PDF report
      */
@@ -886,13 +714,28 @@ public function setEndDate($dateString)
         }
 
         try {
+            Log::debug("PDF Generation: Starting", [
+                'customer_id' => $this->selectedCustomer,
+                'customer_name' => $this->selectedCustomerName
+            ]);
+
             $pdfData = $this->preparePdfData();
 
-            // بررسی اینکه آیا تراکنشی برای نمایش وجود دارد
-            $hasTransactions = count($pdfData['transactions']) > 0;
-            $hasBalances = count($pdfData['balances']) > 0;
+            // Log PDF data for debugging
+            Log::debug("PDF Generation Data", [
+                'customer_id' => $this->selectedCustomer,
+                'customer_name' => $pdfData['customer_name'],
+                'transactions_count' => count($pdfData['transactions']),
+                'balances_count' => count($pdfData['balances']),
+                'balances' => $pdfData['balances'],
+                'previous_balances' => $this->previousBalances,
+                'total_balances_in_component' => $this->totalBalances,
+                'start_date' => $pdfData['start_date'],
+                'end_date' => $pdfData['end_date']
+            ]);
 
-            if (!$hasTransactions && !$hasBalances) {
+            // Check if there's any data to print
+            if (count($pdfData['transactions']) === 0 && count($pdfData['balances']) === 0) {
                 $this->dispatchToast('warning', 'هیچ تراکنشی برای چاپ وجود ندارد');
                 return;
             }
@@ -902,16 +745,26 @@ public function setEndDate($dateString)
 
             $mpdf->WriteHTML($html);
 
-            $fileName = 'گزارش_تراکنش_' . ($pdfData['customer_name'] ?? 'report') . '_' . Jalalian::now()->format('Y-m-d') . '.pdf';
+            $fileName = 'گزارش_تراکنش_' . Str::slug($pdfData['customer_name']) . '_' . Jalalian::now()->format('Y-m-d') . '.pdf';
 
-            return response()->streamDownload(function () use ($mpdf) {
-                echo $mpdf->Output('', 'S');
-            }, $fileName);
+            Log::debug("PDF Generation: File created", ['file_name' => $fileName]);
+
+            return response()->streamDownload(
+                function () use ($mpdf) {
+                    echo $mpdf->Output('', 'S');
+                },
+                $fileName,
+                [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
+                ]
+            );
+
         } catch (\Exception $e) {
-            Log::error("TransactionsReports: print error - " . $e->getMessage(), [
+            Log::error("PDF Generation Error: " . $e->getMessage(), [
                 'exception' => $e,
-                'customer_id' => $this->selectedCustomer,
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
+                'customer_id' => $this->selectedCustomer
             ]);
             $this->dispatchToast('error', 'خطا در تولید گزارش: ' . $e->getMessage());
         }
@@ -925,7 +778,7 @@ public function setEndDate($dateString)
         return new Mpdf([
             'mode' => 'utf-8',
             'format' => 'A4',
-            'orientation' => 'P', // Portrait (عمودی)
+            'orientation' => 'P',
             'default_font_size' => 9,
             'default_font' => 'Shabnam',
             'directionality' => 'rtl',
@@ -954,46 +807,80 @@ public function setEndDate($dateString)
         ]);
     }
 
-
     /**
      * Prepare data for PDF generation
      */
     private function preparePdfData()
     {
         $customer = Customer::find($this->selectedCustomer);
-
-        // دریافت ارزهای فعال برای این مشتری (همان منطق صفحه اصلی)
-        $activeCurrencies = $this->getActiveCurrenciesForPdf();
-
-        // محاسبه موجودی‌ها برای PDF
-        $pdfBalances = [];
-        $transactions = collect($this->transactions);
-
-        foreach ($activeCurrencies as $code => $currency) {
-            $pdfBalances[] = $this->calculateCurrencyBalanceForPdf($code, $transactions, $currency);
+        
+        if (!$customer) {
+            throw new \Exception('مشتری یافت نشد');
         }
 
+        // Use the same transactions that are displayed on the page
+        $transactions = collect($this->transactions);
+        
+        // Calculate balances for PDF - Use the SAME data as the page
+        $pdfBalances = [];
+        
+        // Use totalBalances which is already calculated for the page
+        foreach ($this->totalBalances as $code => $balanceData) {
+            $pdfBalances[] = [
+                'name_fa' => $balanceData['name_fa'],
+                'received' => $balanceData['received'],
+                'spent' => $balanceData['spent'],
+                'balance' => $balanceData['balance'],
+                'previous_balance' => $balanceData['previous_balance'],
+                'current_balance' => $balanceData['current_balance'],
+                'status' => $balanceData['status']
+            ];
+        }
+        
+        // If totalBalances is empty but we have previous balances, include them
+        if (empty($pdfBalances) && !empty($this->previousBalances)) {
+            foreach ($this->previousBalances as $code => $prevBalance) {
+                $currencyInfo = collect($this->currencies)->firstWhere('code', $code);
+                if ($currencyInfo && $prevBalance != 0) {
+                    $pdfBalances[] = [
+                        'name_fa' => $currencyInfo['name_fa'],
+                        'received' => 0,
+                        'spent' => 0,
+                        'balance' => 0,
+                        'previous_balance' => $prevBalance,
+                        'current_balance' => $prevBalance,
+                        'status' => $prevBalance >= 0 ? 'طلبکار' : 'بدهکار'
+                    ];
+                }
+            }
+        }
+
+        // Get active currencies for this customer
+        $activeCurrencies = $this->getActiveCurrenciesForPdf();
+        
+        Log::debug("PDF Data Preparation Complete", [
+            'customer_id' => $this->selectedCustomer,
+            'customer_name' => $this->selectedCustomerName,
+            'transactions_count' => $transactions->count(),
+            'balances_count' => count($pdfBalances),
+            'active_currencies_count' => count($activeCurrencies)
+        ]);
+        
         return [
-            'transactions' => $this->transactions,
+            'transactions' => $transactions,
             'customer_name' => $this->selectedCustomerName,
             'customer' => $customer,
-            'start_date' => $this->startDateDisplay,
-            'end_date' => $this->endDateDisplay,
+            'start_date' => $this->startDateDisplay ?: '---',
+            'end_date' => $this->endDateDisplay ?: '---',
             'active_currencies' => $activeCurrencies,
             'generated_at' => Jalalian::now()->format('Y/m/d H:i:s'),
-            'filters' => [
-                'type_transaction' => $this->typeTransaction,
-                'type_document' => $this->typeDocument,
-                'zone' => $this->zone,
-                'selected_currencies' => $this->selectedCurrencies
-            ],
             'balances' => $pdfBalances,
-            'has_data' => count($this->transactions) > 0 || count($pdfBalances) > 0
+            'has_data' => $transactions->count() > 0 || count($pdfBalances) > 0
         ];
     }
 
     /**
-     * Get active currencies for PDF - only currencies that have transactions for this customer
+     * Get active currencies for PDF
      */
     private function getActiveCurrenciesForPdf()
     {
@@ -1005,7 +892,7 @@ public function setEndDate($dateString)
         $adminId = $user->admin_id ?? $user->id;
         $relatedUserIds = $this->getRelatedUserIds($adminId);
 
-        // دریافت تمام ارزهایی که برای این مشتری تراکنش دارند
+        // Get all currencies that this customer has transactions for
         $customerCurrencies = Transaction::where('customer_id', $this->selectedCustomer)
             ->where(function ($q) use ($adminId, $relatedUserIds) {
                 $q->where('admin_id', $adminId)
@@ -1017,169 +904,14 @@ public function setEndDate($dateString)
 
         $activeCurrencies = [];
 
+        // Only include currencies that the customer actually has
         foreach ($this->currencies as $currency) {
             if (in_array($currency['code'], $customerCurrencies)) {
                 $activeCurrencies[$currency['code']] = $currency;
             }
         }
 
-        Log::debug("Active currencies for PDF", [
-            'customer_id' => $this->selectedCustomer,
-            'customer_currencies' => $customerCurrencies,
-            'active_currencies' => array_keys($activeCurrencies)
-        ]);
-
         return $activeCurrencies;
-    }
-
-    /**
-     * Calculate balance for specific currency for PDF
-     */
-    private function calculateCurrencyBalanceForPdf($code, $transactions, $currency)
-    {
-        $received = $transactions->where('currency', $code)
-            ->where('type', 'رسید')
-            ->sum('amount');
-
-        $spent = $transactions->where('currency', $code)
-            ->where('type', 'برد')
-            ->sum('amount');
-
-        $balance = $received - $spent;
-
-        $user = Auth::guard('sarafi')->user();
-        $adminId = $user->admin_id ?? $user->id;
-        $relatedUserIds = $this->getRelatedUserIds($adminId);
-
-        // محاسبه موجودی قبلی
-        $previousQuery = Transaction::where('customer_id', $this->selectedCustomer)
-            ->where('currency', $code)
-            ->where(function ($q) use ($adminId, $relatedUserIds) {
-                $q->where('admin_id', $adminId)
-                    ->orWhereIn('user_id', $relatedUserIds);
-            });
-
-        if ($this->startDate) {
-            $startNormalized = $this->normalizeDate($this->startDate);
-            if ($startNormalized) {
-                $previousQuery->where('date', '<', $startNormalized);
-            }
-        } else {
-            $today = Jalalian::now()->format('Y-m-d');
-            $previousQuery->where('date', '<', $today);
-        }
-
-        $previousTransactions = $previousQuery->get();
-        $previousReceived = $previousTransactions->where('type', 'رسید')->sum('amount');
-        $previousSpent = $previousTransactions->where('type', 'برد')->sum('amount');
-        $previousBalance = $previousReceived - $previousSpent;
-
-        $currentBalance = $previousBalance + $balance;
-
-        return [
-            'name_fa' => $currency['name_fa'],
-            'received' => $received,
-            'spent' => $spent,
-            'balance' => $balance,
-            'previous_balance' => $previousBalance,
-            'current_balance' => $currentBalance,
-            'status' => $currentBalance >= 0 ? 'طلبکار' : 'بدهکار'
-        ];
-    }
-
-
-
-    /**
-     * Calculate balance for specific currency
-     */
-    private function calculateCurrencyBalance($code, $transactions)
-    {
-        $received = $transactions->where('currency', $code)
-            ->where('type', 'رسید')
-            ->sum('amount');
-
-        $spent = $transactions->where('currency', $code)
-            ->where('type', 'برد')
-            ->sum('amount');
-
-        $balance = $received - $spent;
-
-        $user = Auth::guard('sarafi')->user();
-        $adminId = $user->admin_id ?? $user->id;
-        $relatedUserIds = $this->getRelatedUserIds($adminId);
-
-        $previousAll = Transaction::where('customer_id', $this->selectedCustomer)
-            ->where('currency', $code)
-            ->where(function ($q) use ($adminId, $relatedUserIds) {
-                $q->where('admin_id', $adminId)
-                    ->orWhereIn('user_id', $relatedUserIds);
-            })
-            ->get();
-
-        $previous = $this->getPreviousTransactions($previousAll);
-        $previousReceived = $previous->where('type', 'رسید')->sum('amount');
-        $previousSpent = $previous->where('type', 'برد')->sum('amount');
-        $previousBalance = $previousReceived - $previousSpent;
-
-        $currentBalance = $previousBalance + $balance;
-
-        return [
-            'received' => $received,
-            'spent' => $spent,
-            'balance' => $balance,
-            'previous_balance' => $previousBalance,
-            'current_balance' => $currentBalance,
-            'status' => $currentBalance >= 0 ? 'طلبکار' : 'بدهکار',
-            'name_fa' => $this->currencies[array_search($code, array_column($this->currencies, 'code'))]['name_fa']
-        ];
-    }
-
-    /**
-     * Get previous transactions before start date
-     */
-    private function getPreviousTransactions($transactions)
-    {
-        if (!$this->startDate) {
-            return $transactions;
-        }
-
-        $startNum = $this->normalizeDate($this->startDate);
-        return $transactions->filter(function ($transaction) use ($startNum) {
-            $transactionDate = $this->normalizeDate($transaction->date);
-            return $transactionDate !== null && $transactionDate < $startNum;
-        });
-    }
-
-    /**
-     * Initialize mPDF configuration
-     */
-    private function initializeMpdf()
-    {
-        return new Mpdf([
-            'mode' => 'utf-8',
-            'format' => 'A4',
-            'default_font_size' => 9,
-            'default_font' => 'Shabnam',
-            'directionality' => 'rtl',
-            'margin_top' => 10,
-            'margin_bottom' => 10,
-            'margin_left' => 8,
-            'margin_right' => 8,
-            'fontDir' => array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'], [
-                public_path('fonts'),
-            ]),
-            'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
-                'Shabnam' => [
-                    'R' => 'Shabnam-FD.ttf',
-                    'B' => 'Shabnam-FD.ttf',
-                    'I' => 'Shabnam-FD.ttf',
-                    'BI' => 'Shabnam-FD.ttf',
-                    'useOTL' => 0xFF,
-                    'useKashida' => 75,
-                ],
-            ],
-            'tempDir' => storage_path('app/mpdf/tmp'),
-        ]);
     }
 
     /**
@@ -1196,27 +928,58 @@ public function setEndDate($dateString)
     // Livewire property update handlers
     public function updatedSelectedCurrencies()
     {
-        $this->loadTransactions();
+        if ($this->selectedCustomer) {
+            $this->loadTransactions();
+        }
     }
+    
     public function updatedTypeTransaction()
     {
-        $this->loadTransactions();
+        if ($this->selectedCustomer) {
+            $this->loadTransactions();
+        }
     }
+    
+    public function updatedTypeTransaction2()
+    {
+        if ($this->selectedCustomer) {
+            $this->loadTransactions();
+        }
+    }
+    
+    public function updatedAccountType()
+    {
+        if ($this->selectedCustomer) {
+            $this->loadTransactions();
+        }
+    }
+    
     public function updatedTypeDocument()
     {
-        $this->loadTransactions();
+        if ($this->selectedCustomer) {
+            $this->loadTransactions();
+        }
     }
+    
     public function updatedZone()
     {
-        $this->loadTransactions();
+        if ($this->selectedCustomer) {
+            $this->loadTransactions();
+        }
     }
+    
     public function updatedBy()
     {
-        $this->loadTransactions();
+        if ($this->selectedCustomer) {
+            $this->loadTransactions();
+        }
     }
+    
     public function updatedDescription()
     {
-        $this->loadTransactions();
+        if ($this->selectedCustomer) {
+            $this->loadTransactions();
+        }
     }
 
     public function updatedSearch($value)
@@ -1266,9 +1029,9 @@ public function setEndDate($dateString)
     }
 
     /**
-     * Debug method for balances
+     * Test method to verify calculations
      */
-    public function debugBalances()
+    public function testCalculations()
     {
         if (!$this->selectedCustomer) {
             dd('لطفاً ابتدا یک مشتری انتخاب کنید');
@@ -1278,30 +1041,25 @@ public function setEndDate($dateString)
         $adminId = $user->admin_id ?? $user->id;
         $relatedUserIds = $this->getRelatedUserIds($adminId);
 
-        // All customer transactions
-        $allTransactions = Transaction::where('customer_id', $this->selectedCustomer)
-            ->where(function ($q) use ($adminId, $relatedUserIds) {
-                $q->where('admin_id', $adminId)
-                    ->orWhereIn('user_id', $relatedUserIds);
-            })
-            ->get();
-
-        $debugInfo = [
-            'selected_customer' => $this->selectedCustomerName,
+        $testData = [
+            'customer_id' => $this->selectedCustomer,
+            'customer_name' => $this->selectedCustomerName,
             'start_date' => $this->startDate,
             'end_date' => $this->endDate,
-            'all_transactions_count' => $allTransactions->count(),
-            'calculated_previous_balances' => $this->previousBalances,
-            'calculated_total_balances' => $this->totalBalances,
+            'normalized_start' => $this->normalizeDate($this->startDate),
+            'normalized_end' => $this->normalizeDate($this->endDate),
+            'transactions_in_component' => count($this->transactions),
+            'previous_balances_in_component' => $this->previousBalances,
+            'total_balances_in_component' => $this->totalBalances,
         ];
 
         // Manual calculation for verification
-        $manualPreviousBalances = [];
+        $manualCalculations = [];
         foreach ($this->currencies as $currency) {
             $code = $currency['code'];
-
-            // Manual previous balance calculation
-            $previousQuery = Transaction::where('customer_id', $this->selectedCustomer)
+            
+            // Calculate previous balance manually
+            $prevQuery = Transaction::where('customer_id', $this->selectedCustomer)
                 ->where('currency', $code)
                 ->where(function ($q) use ($adminId, $relatedUserIds) {
                     $q->where('admin_id', $adminId)
@@ -1311,19 +1069,142 @@ public function setEndDate($dateString)
             if ($this->startDate) {
                 $startNormalized = $this->normalizeDate($this->startDate);
                 if ($startNormalized) {
-                    $previousQuery->where('date', '<', $startNormalized);
+                    $prevQuery->where('date', '<', $startNormalized);
                 }
             }
 
-            $previousTransactions = $previousQuery->get();
-            $received = $previousTransactions->where('type', 'رسید')->sum('amount');
-            $spent = $previousTransactions->where('type', 'برد')->sum('amount');
-            $manualPreviousBalances[$code] = $received - $spent;
+            $prevTransactions = $prevQuery->get();
+            $prevReceived = $prevTransactions->where('type', 'رسید')->sum('amount');
+            $prevSpent = $prevTransactions->where('type', 'برد')->sum('amount');
+            $manualPrevious = $prevReceived - $prevSpent;
+
+            // Calculate current period manually
+            $currentQuery = Transaction::where('customer_id', $this->selectedCustomer)
+                ->where('currency', $code)
+                ->where(function ($q) use ($adminId, $relatedUserIds) {
+                    $q->where('admin_id', $adminId)
+                        ->orWhereIn('user_id', $relatedUserIds);
+                });
+
+            // Apply date filters
+            $startNormalized = $this->normalizeDate($this->startDate);
+            $endNormalized = $this->normalizeDate($this->endDate);
+            
+            if ($startNormalized && $endNormalized) {
+                $currentQuery->whereBetween('date', [$startNormalized, $endNormalized]);
+            } elseif ($startNormalized) {
+                $currentQuery->where('date', '>=', $startNormalized);
+            } elseif ($endNormalized) {
+                $currentQuery->where('date', '<=', $endNormalized);
+            }
+
+            $currentTransactions = $currentQuery->get();
+            $currentReceived = $currentTransactions->where('type', 'رسید')->sum('amount');
+            $currentSpent = $currentTransactions->where('type', 'برد')->sum('amount');
+            $currentBalance = $currentReceived - $currentSpent;
+            $totalBalance = $manualPrevious + $currentBalance;
+
+            $manualCalculations[$code] = [
+                'manual_previous' => $manualPrevious,
+                'component_previous' => $this->previousBalances[$code] ?? 0,
+                'manual_current_received' => $currentReceived,
+                'manual_current_spent' => $currentSpent,
+                'manual_current_balance' => $currentBalance,
+                'manual_total_balance' => $totalBalance,
+                'component_total_balance' => $this->totalBalances[$code]['current_balance'] ?? 0,
+                'match_previous' => $manualPrevious == ($this->previousBalances[$code] ?? 0),
+                'match_total' => $totalBalance == ($this->totalBalances[$code]['current_balance'] ?? 0)
+            ];
         }
 
-        $debugInfo['manual_previous_balances'] = $manualPreviousBalances;
+        $testData['manual_calculations'] = $manualCalculations;
+        
+        dd($testData);
+    }
 
-        dd($debugInfo);
+    /**
+     * Debug PDF data
+     */
+    public function debugPdf()
+    {
+        if (!$this->selectedCustomer) {
+            dd('لطفاً ابتدا یک مشتری انتخاب کنید');
+        }
+
+        $pdfData = $this->preparePdfData();
+        
+        dd([
+            'selected_customer' => $this->selectedCustomer,
+            'customer_name' => $this->selectedCustomerName,
+            'pdf_data' => [
+                'transactions_count' => count($pdfData['transactions']),
+                'balances' => $pdfData['balances'],
+                'start_date' => $pdfData['start_date'],
+                'end_date' => $pdfData['end_date'],
+                'active_currencies' => array_keys($pdfData['active_currencies']),
+            ],
+            'component_data' => [
+                'previous_balances' => $this->previousBalances,
+                'total_balances' => $this->totalBalances,
+                'transactions_count' => count($this->transactions),
+            ],
+            'verification' => [
+                'balances_match' => $this->verifyBalancesMatch($pdfData['balances'])
+            ]
+        ]);
+    }
+
+    /**
+     * Verify that PDF balances match component balances
+     */
+    private function verifyBalancesMatch($pdfBalances)
+    {
+        $matches = [];
+        
+        foreach ($pdfBalances as $pdfBalance) {
+            $code = $this->getCurrencyCodeByName($pdfBalance['name_fa']);
+            if ($code && isset($this->totalBalances[$code])) {
+                $componentBalance = $this->totalBalances[$code];
+                $matches[$code] = [
+                    'pdf' => [
+                        'received' => $pdfBalance['received'],
+                        'spent' => $pdfBalance['spent'],
+                        'balance' => $pdfBalance['balance'],
+                        'previous' => $pdfBalance['previous_balance'],
+                        'current' => $pdfBalance['current_balance']
+                    ],
+                    'component' => [
+                        'received' => $componentBalance['received'],
+                        'spent' => $componentBalance['spent'],
+                        'balance' => $componentBalance['balance'],
+                        'previous' => $componentBalance['previous_balance'],
+                        'current' => $componentBalance['current_balance']
+                    ],
+                    'matches' => [
+                        'received' => $pdfBalance['received'] == $componentBalance['received'],
+                        'spent' => $pdfBalance['spent'] == $componentBalance['spent'],
+                        'balance' => $pdfBalance['balance'] == $componentBalance['balance'],
+                        'previous' => $pdfBalance['previous_balance'] == $componentBalance['previous_balance'],
+                        'current' => $pdfBalance['current_balance'] == $componentBalance['current_balance']
+                    ]
+                ];
+            }
+        }
+        
+        return $matches;
+    }
+
+    /**
+     * Get currency code by Persian name
+     */
+    private function getCurrencyCodeByName($name_fa)
+    {
+        foreach ($this->currencies as $currency) {
+            if ($currency['name_fa'] == $name_fa) {
+                return $currency['code'];
+            }
+        }
+        return null;
     }
 
     /**
@@ -1342,7 +1223,7 @@ public function setEndDate($dateString)
             'balances' => $balances,
             'active_currencies' => $activeCurrencies,
             'currencies' => collect($this->currencies),
-            'transactions_count' => is_countable($this->transactions) ? count($this->transactions) : $this->transactions->count(),
+            'transactions_count' => count($this->transactions),
             'has_filters' => $this->hasActiveFilters()
         ]);
     }
@@ -1376,39 +1257,21 @@ public function setEndDate($dateString)
     /**
      * Get active currencies for display
      */
-    /**
-     * Get active currencies for display - only currencies that have transactions for this customer
-     */
     private function getActiveCurrencies($transactions)
     {
-        $user = Auth::guard('sarafi')->user();
-        $adminId = $user->admin_id ?? $user->id;
-        $relatedUserIds = $this->getRelatedUserIds($adminId);
-
-        // دریافت تمام ارزهایی که برای این مشتری تراکنش دارند
-        $customerCurrencies = Transaction::where('customer_id', $this->selectedCustomer)
-            ->where(function ($q) use ($adminId, $relatedUserIds) {
-                $q->where('admin_id', $adminId)
-                    ->orWhereIn('user_id', $relatedUserIds);
-            })
-            ->distinct()
-            ->pluck('currency')
-            ->toArray();
-
-        $activeCurrencies = [];
-
-        // فقط ارزهایی که برای این مشتری تراکنش دارند را نمایش بده
-        foreach ($this->currencies as $currency) {
-            if (in_array($currency['code'], $customerCurrencies)) {
-                $activeCurrencies[$currency['code']] = $currency;
-            }
+        if (!$this->selectedCustomer) {
+            return [];
         }
 
-        Log::debug("Active currencies for customer", [
-            'customer_id' => $this->selectedCustomer,
-            'customer_currencies' => $customerCurrencies,
-            'active_currencies' => array_keys($activeCurrencies)
-        ]);
+        // Use totalBalances to determine active currencies
+        $activeCurrencies = [];
+        
+        foreach ($this->totalBalances as $code => $balanceData) {
+            $currencyInfo = collect($this->currencies)->firstWhere('code', $code);
+            if ($currencyInfo) {
+                $activeCurrencies[$code] = $currencyInfo;
+            }
+        }
 
         return $activeCurrencies;
     }
@@ -1420,44 +1283,121 @@ public function setEndDate($dateString)
     {
         $balances = [];
 
-        foreach ($activeCurrencies as $code => $currency) {
-            // محاسبه تراکنش‌های دوره جاری
-            $received = $transactions->where('currency', $code)
-                ->where('type', 'رسید')
-                ->sum('amount');
-
-            $spent = $transactions->where('currency', $code)
-                ->where('type', 'برد')
-                ->sum('amount');
-
-            $balance = $received - $spent;
-
-            // استفاده از موجودی قبلی که قبلاً محاسبه شده
-            $previousBalance = $this->previousBalances[$code] ?? 0;
-            $currentBalance = $previousBalance + $balance;
-
+        // Use totalBalances for rendering
+        foreach ($this->totalBalances as $code => $balanceData) {
             $balances[] = [
-                'name_fa' => $currency['name_fa'],
+                'name_fa' => $balanceData['name_fa'],
                 'code' => $code,
-                'received' => $received,
-                'spent' => $spent,
-                'balance' => $balance,
-                'previous_balance' => $previousBalance,
-                'current_balance' => $currentBalance,
-                'status' => $currentBalance >= 0 ? 'طلبکار' : 'بدهکار'
+                'received' => $balanceData['received'],
+                'spent' => $balanceData['spent'],
+                'balance' => $balanceData['balance'],
+                'previous_balance' => $balanceData['previous_balance'],
+                'current_balance' => $balanceData['current_balance'],
+                'status' => $balanceData['status']
             ];
-
-            Log::debug("Render balance for currency", [
-                'currency' => $code,
-                'received' => $received,
-                'spent' => $spent,
-                'previous_balance' => $previousBalance,
-                'current_balance' => $currentBalance
-            ]);
         }
 
         return $balances;
     }
+    // در کلاس TransactionsReports این متد را اضافه کنید:
+
+/**
+ * Generate PDF report for summary only
+ */
+public function printSummary()
+{
+    if (!$this->selectedCustomer) {
+        $this->dispatchToast('error', 'لطفاً ابتدا یک مشتری را انتخاب کنید');
+        return;
+    }
+
+    if (empty($this->totalBalances)) {
+        $this->dispatchToast('warning', 'هیچ موجودی فعالی برای چاپ وجود ندارد');
+        return;
+    }
+
+    try {
+        Log::debug("PDF Summary Generation: Starting", [
+            'customer_id' => $this->selectedCustomer,
+            'customer_name' => $this->selectedCustomerName,
+            'balances_count' => count($this->totalBalances)
+        ]);
+
+        $pdfData = $this->prepareSummaryPdfData();
+        
+        $mpdf = $this->initializeMpdfA4();
+        $html = view('pdf.Sarafi.summary-report', $pdfData)->render();
+
+        $mpdf->WriteHTML($html);
+
+        $fileName = 'خلاصه_موجودی_' . Str::slug($pdfData['customer_name']) . '_' . Jalalian::now()->format('Y-m-d') . '.pdf';
+
+        Log::debug("PDF Summary Generation: File created", ['file_name' => $fileName]);
+
+        return response()->streamDownload(
+            function () use ($mpdf) {
+                echo $mpdf->Output('', 'S');
+            },
+            $fileName,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
+            ]
+        );
+
+    } catch (\Exception $e) {
+        Log::error("PDF Summary Generation Error: " . $e->getMessage(), [
+            'exception' => $e,
+            'trace' => $e->getTraceAsString(),
+            'customer_id' => $this->selectedCustomer
+        ]);
+        $this->dispatchToast('error', 'خطا در تولید گزارش خلاصه: ' . $e->getMessage());
+    }
+}
+
+/**
+ * Prepare data for summary PDF generation
+ */
+private function prepareSummaryPdfData()
+{
+    $customer = Customer::find($this->selectedCustomer);
+    
+    if (!$customer) {
+        throw new \Exception('مشتری یافت نشد');
+    }
+
+    // Prepare simplified balances data (only name and current balance)
+    $summaryBalances = [];
+    
+    foreach ($this->totalBalances as $code => $balanceData) {
+        $summaryBalances[] = [
+            'name_fa' => $balanceData['name_fa'],
+            'current_balance' => $balanceData['current_balance'],
+            'status' => $balanceData['status']
+        ];
+    }
+
+    // Sort by currency name
+    usort($summaryBalances, function($a, $b) {
+        return strcmp($a['name_fa'], $b['name_fa']);
+    });
+
+    Log::debug("Summary PDF Data Prepared", [
+        'customer_id' => $this->selectedCustomer,
+        'customer_name' => $this->selectedCustomerName,
+        'balances_count' => count($summaryBalances),
+        'balances' => $summaryBalances
+    ]);
+    
+    return [
+        'customer_name' => $this->selectedCustomerName,
+        'customer' => $customer,
+        'balances' => $summaryBalances,
+        'generated_at' => Jalalian::now()->format('Y/m/d H:i:s'),
+        'total_balances_count' => count($summaryBalances),
+        'total_current_balance' => array_sum(array_column($summaryBalances, 'current_balance'))
+    ];
+}
 
     /**
      * Check if any filters are active
@@ -1467,10 +1407,14 @@ public function setEndDate($dateString)
         return !empty(array_filter([
             $this->selectedCurrencies,
             $this->typeTransaction,
+            $this->typeTransaction2,
             $this->typeDocument,
             $this->zone,
             $this->by,
-            $this->description
+            $this->description,
+            $this->startDate,
+            $this->endDate,
+            $this->accountType
         ]));
     }
 }

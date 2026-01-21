@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <?php
-    $currentUser = Auth::guard('sarafi')->user();
+$currentUser = Auth::guard('sarafi')->user();
 ?>
+
 <head>
     <meta charset="UTF-8">
     <title>تراکنش صرافی - <?php echo e($sarafi_name ?? 'صرافی'); ?></title>
@@ -122,7 +123,13 @@
             /* بورد بالایی */
             width: 100%;
             padding-left: 20px;
-            margin-bottom: 30px;<?php echo e(explode(' ', $transaction->date)[0]); ?>
+            margin-bottom: 30px;
+
+                {
+                    {
+                    explode(' ', $transaction->date)[0]
+                }
+            }
 
             /* فاصله بین بورد و متن/خط پایین */
         }
@@ -183,7 +190,7 @@
             <table class="header-table" style="width:100%; border-collapse: collapse;">
                 <tr>
                     <td style="text-align:center;">نوع تراکنش : <?php echo e($transaction->type); ?></td>
-                    
+
                 </tr>
             </table>
         </div>
@@ -192,23 +199,23 @@
         <table class="info-table">
             <?php
             $currenciesFa = [
-                'afn' => 'افغانی',
-                'usd' => 'دالر',
-                'eur' => 'یورو',
-                'irr' => 'تومان',
-                'aed' => 'درهم',
-                'try' => 'لیره',
-                'cny' => 'یوان',
-                'pkr' => 'کلدار',
-                'gbp' => 'پوند',
-                'jpy' => 'ین',
-                'sar' => 'ریال سعودی',
-                'inr' => 'روپیه',
+            'afn' => 'افغانی',
+            'usd' => 'دالر',
+            'eur' => 'یورو',
+            'irr' => 'تومان',
+            'aed' => 'درهم',
+            'try' => 'لیره',
+            'cny' => 'یوان',
+            'pkr' => 'کلدار',
+            'gbp' => 'پوند',
+            'jpy' => 'ین',
+            'sar' => 'ریال سعودی',
+            'inr' => 'روپیه',
             ];
             ?>
 
 
-   <tr>
+            <tr>
                 <td>حساب مشتری:</td>
                 <td><?php echo e($transaction->customer->fullname ?? 'نامشخص'); ?></td>
             </tr>
@@ -218,7 +225,7 @@
                 <td><?php echo e($transaction->customer->account_number ?? 'نامشخص'); ?></td>
             </tr>
 
-              <tr>
+            <tr>
                 <td>نوع حساب :</td>
                 <td><?php echo e($transaction->account_type ?? 'نامشخص'); ?></td>
             </tr>
@@ -241,10 +248,10 @@
 
             <tr>
                 <td>تاریخ:</td>
-                 <td>
-                       <?php echo e(explode(' ', $transaction->date)[0]); ?>
+                <td>
+                    <?php echo e(explode(' ', $transaction->date)[0]); ?>
 
-                 </td>
+                </td>
             </tr>
 
             <tr>
