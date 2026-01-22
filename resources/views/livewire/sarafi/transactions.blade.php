@@ -438,15 +438,15 @@
         {{-- فرم و جدول کنار هم --}}
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
 
-            {{-- فرم تراکنش --}}
-            <div class="flex flex-col
-         dark:bg-black dark:text-white dark:border dark:border-white
-         bg-white   border border-[#D7E5EC] shadow-sm backdrop:blur-lg       mx-auto
-         w-full max-w-[436px] lg:max-w-[550px]
-         p-[10px]
-         h-fit
-         rounded-[12px]
-         space-y-2">
+                {{-- فرم تراکنش --}}
+                <div class="flex flex-col
+            dark:bg-black dark:text-white dark:border dark:border-white
+            bg-white   border border-[#D7E5EC] shadow-sm backdrop:blur-lg       mx-auto
+            w-full max-w-[436px] lg:max-w-[550px]
+            p-[10px]
+            h-fit
+            rounded-[12px]
+            space-y-2">
 
 
                 <div class="flex flex-wrap items-center justify-between gap-3">

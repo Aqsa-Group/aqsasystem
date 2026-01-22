@@ -838,9 +838,9 @@
 
 
                     <!-- حواله های در انتظار تایید -->
-                    <!--[if BLOCK]><![endif]--><?php if($waitting > 0): ?>
+                    <?php if($waitting > 0): ?>
                     <a href="<?php echo e(route('sarafi.remittance-approval')); ?>" class="w-full">
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endif; ?>
                         <div class="group flex flex-col justify-between border rounded-2xl
                         bg-[#EBA925] bg-opacity-20 hover:bg-[#AA7407]
                         shadow-md hover:shadow-xl transition-colors duration-500 ease-in-out
@@ -910,9 +910,9 @@
                                 </div>
                             </div>
                         </div>
-                        <!--[if BLOCK]><![endif]--><?php if($waitting > 0): ?>
+                        <?php if($waitting > 0): ?>
                     </a>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?>
 
 
 
@@ -1138,12 +1138,12 @@
                             <p class="text-[26px] font-extrabold text-[#125614]
             group-hover:text-white">
                                 <?php $currentUser = Auth::guard('sarafi')->user(); ?>
-                                <!--[if BLOCK]><![endif]--><?php if($currentUser && in_array($currentUser->role, ['superadmin', 'admin', 'cashier'])): ?>
+                                <?php if($currentUser && in_array($currentUser->role, ['superadmin', 'admin', 'cashier'])): ?>
                                 <?php echo e(number_format($total_balance_usd, 2)); ?>
 
                                 <?php else: ?>
                                 0
-                                <?php endif; ?><!--[if ENDBLOCK]><![endif]--> </p>
+                                <?php endif; ?> </p>
 
                             <div class="border-2 rounded-2xl px-3 py-2
             border-[#125614]
@@ -1174,14 +1174,14 @@
             $currentUser = Auth::guard('sarafi')->user();
             ?>
 
-            <!--[if BLOCK]><![endif]--><?php if(
+            <?php if(
             $currentUser &&
             in_array($currentUser->role, ['superadmin', 'admin', 'cashier'])
             ): ?>
             <template x-if="activeTab === 'safes'">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 vazir ">
 
-                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="relative flex flex-col items-center justify-center
         gap-4
             w-full h-[147px]
@@ -1242,14 +1242,14 @@
                     </div>
 
 
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                 </div>
             </template>
 
             <template x-if="activeTab === 'account_safe'">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 vazir">
-                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="relative flex flex-col items-center justify-center
         gap-4
             w-full h-[147px]
@@ -1298,7 +1298,7 @@
 
                     </div>
 
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
 
 
@@ -1307,7 +1307,7 @@
                 </div>
             </template>
 
-            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            <?php endif; ?>
 
         </div>
     </div>

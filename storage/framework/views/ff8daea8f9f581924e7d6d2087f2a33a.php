@@ -1,6 +1,6 @@
 <div>
     <!-- Alert Component -->
-    <!--[if BLOCK]><![endif]--><?php if($alert): ?>
+    <?php if($alert): ?>
     <div x-data="{
             show: true,
             init() {
@@ -28,9 +28,9 @@
             </h2>
         </div>
     </div>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?>
 
-    <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
+    <?php if(session()->has('message')): ?>
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
         class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
         <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -40,7 +40,7 @@
             </h2>
         </div>
     </div>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?>
 
     <!-- Add Staff Form -->
     <div class="w-full max-w-[1200px] p-4 mx-auto bg-white  border border-[#D7E5EC] shadow-sm backdrop:blur-lg dark:border-white dark:bg-black dark:border dark:border-white rounded-2xl space-y-2 mb-5"
@@ -94,11 +94,11 @@
                             class="w-full h-[60px] dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white p-3 rounded-[12px] bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500"
                             autocomplete="off">
                         <datalist id="customersList">
-                            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <option value="<?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>">
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </datalist>
-                        <!--[if BLOCK]><![endif]--><?php if(empty($selectedAccount)): ?>
+                        <?php if(empty($selectedAccount)): ?>
                         <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓" class="dark:hidden">
                             <svg width="24" height="24" class="hidden dark:block" viewBox="0 0 24 24" fill="none"
@@ -110,9 +110,9 @@
                             </svg>
 
                         </div>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endif; ?>
                     </div>
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['selectedAccount'];
+                    <?php $__errorArgs = ['selectedAccount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -121,7 +121,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                 </div>
             </div>
             <!-- First Row - 2 columns -->
@@ -135,7 +135,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         <input type="text" wire:model="name" placeholder="نام کارمند"
                             class="w-full p-3 rounded-xl  focus:ring-2 bg-[#EFF6F9]
                                    focus:ring-blue-500 dark:bg-black dark:placeholder:text-white dark:border-white dark:text-white">
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['name'];
+                        <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -144,7 +144,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
 
@@ -157,7 +157,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         <input type="text" wire:model="fathername" placeholder="نام پدر"
                             class="w-full p-3 rounded-xl  focus:ring-2 bg-[#EFF6F9]
                                    focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['fathername'];
+                        <?php $__errorArgs = ['fathername'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -166,7 +166,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
 
@@ -186,7 +186,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         <input type="number" wire:model="age" placeholder="سن" min="18" max="80"
                             class="w-full p-3 rounded-xl dark:border focus:ring-2 bg-[#EFF6F9]
                                    focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['age'];
+                        <?php $__errorArgs = ['age'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -195,7 +195,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
 
@@ -211,7 +211,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <option value="male">مرد</option>
                             <option value="female">زن</option>
                         </select>
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['gender'];
+                        <?php $__errorArgs = ['gender'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -220,7 +220,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
             </div>
@@ -236,7 +236,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         <input type="text" wire:model="phone" placeholder="شماره تماس"
                             class="w-full p-3 rounded-xl  focus:ring-2 bg-[#EFF6F9]
                                    focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['phone'];
+                        <?php $__errorArgs = ['phone'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -245,7 +245,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
 
@@ -258,7 +258,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         <input type="text" wire:model="job" placeholder="عنوان شغل"
                             class="w-full p-3 rounded-xl  focus:ring-2 bg-[#EFF6F9]
                                    focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['job'];
+                        <?php $__errorArgs = ['job'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -267,7 +267,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
             </div>
@@ -284,7 +284,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             class="w-full p-3 rounded-xl  focus:ring-2 bg-[#EFF6F9]
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
 
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['salary_amount'];
+                        <?php $__errorArgs = ['salary_amount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -293,15 +293,15 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
 
                         <!-- نمایش مبلغ به حروف -->
-                        <!--[if BLOCK]><![endif]--><?php if($salary_in_words): ?>
+                        <?php if($salary_in_words): ?>
                         <div class="text-xs text-black dark:text-green-400 mt-1 font-semibold">
                             <?php echo e($salary_in_words); ?>
 
                         </div>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endif; ?>
                     </div>
                 </div>
 
@@ -315,7 +315,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             class="w-full p-3 rounded-xl  focus:ring-2 bg-[#EFF6F9]
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
 
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['salary_amount'];
+                        <?php $__errorArgs = ['salary_amount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -324,15 +324,15 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
 
                         <!-- نمایش مبلغ به حروف -->
-                        <!--[if BLOCK]><![endif]--><?php if($tax_in_words): ?>
+                        <?php if($tax_in_words): ?>
                         <div class="text-xs text-black dark:text-green-400 mt-1 font-semibold">
                             <?php echo e($tax_in_words); ?>
 
                         </div>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endif; ?>
 
                     </div>
                 </div>
@@ -346,7 +346,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             class="w-full p-3 rounded-xl  focus:ring-2 bg-[#EFF6F9]
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
 
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['salary_amount'];
+                        <?php $__errorArgs = ['salary_amount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -355,15 +355,15 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
 
                         <!-- نمایش مبلغ به حروف -->
-                        <!--[if BLOCK]><![endif]--><?php if($final_salary_in_words): ?>
+                        <?php if($final_salary_in_words): ?>
                         <div class="text-xs text-black dark:text-green-400 mt-1 font-semibold">
                             <?php echo e($final_salary_in_words); ?>
 
                         </div>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endif; ?>
 
                     </div>
                 </div>
@@ -573,7 +573,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
                         </div>
 
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['contract_start'];
+                        <?php $__errorArgs = ['contract_start'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -582,7 +582,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
 
@@ -794,7 +794,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </div>
                     </div>
 
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['contract_end'];
+                    <?php $__errorArgs = ['contract_end'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -803,7 +803,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <!-- Address -->
@@ -814,7 +814,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     <input type="text" wire:model="address" placeholder="‌آدرس"
                         class="w-full p-3 rounded-xl  focus:ring-2 bg-[#EFF6F9]
                                    focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['address'];
+                    <?php $__errorArgs = ['address'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -823,7 +823,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                 </div>
 
 
@@ -967,7 +967,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             x-on:change="handleFileSelect($event)">
                     </div>
 
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['image'];
+                    <?php $__errorArgs = ['image'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -982,10 +982,10 @@ $message = $__bag->first($__errorArgs[0]); ?>
                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
 
                     <!-- نمایش فایل ذخیره شده (در حالت ویرایش) -->
-                    <!--[if BLOCK]><![endif]--><?php if($editId && is_string($image)): ?>
+                    <?php if($editId && is_string($image)): ?>
                     <div
                         class="mt-2 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg flex items-center justify-between">
                         <div class="flex items-center gap-2">
@@ -1019,7 +1019,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </button>
                         </div>
                     </div>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?>
                 </div>
 
                 <!-- ID Card Upload -->
@@ -1155,7 +1155,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             x-on:change="handleFileSelect($event)">
                     </div>
 
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['id_card'];
+                    <?php $__errorArgs = ['id_card'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -1170,9 +1170,9 @@ $message = $__bag->first($__errorArgs[0]); ?>
                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
 
-                    <!--[if BLOCK]><![endif]--><?php if($editId && is_string($id_card)): ?>
+                    <?php if($editId && is_string($id_card)): ?>
                     <div
                         class="mt-2 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg flex items-center justify-between">
                         <div class="flex items-center gap-2">
@@ -1207,7 +1207,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </button>
                         </div>
                     </div>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?>
                 </div>
 
                 <!-- Document Upload - Full width -->
@@ -1342,7 +1342,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             x-on:change="handleFileSelect($event)">
                     </div>
 
-                    <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['document'];
+                    <?php $__errorArgs = ['document'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -1357,9 +1357,9 @@ $message = $__bag->first($__errorArgs[0]); ?>
                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
 
-                    <!--[if BLOCK]><![endif]--><?php if($editId && is_string($document)): ?>
+                    <?php if($editId && is_string($document)): ?>
                     <div
                         class="mt-2 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg flex items-center justify-between">
                         <div class="flex items-center gap-2">
@@ -1393,7 +1393,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </button>
                         </div>
                     </div>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -1425,7 +1425,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 <span>فیلتر</span>
             </button>
 
-            <!--[if BLOCK]><![endif]--><?php if($filterOpen): ?>
+            <?php if($filterOpen): ?>
             <div
                 class="absolute top-full mt-2 dark:bg-black bg-white border rounded-xl shadow-lg p-4 w-72 z-50 space-y-3">
                 <!-- Gender Filter -->
@@ -1445,9 +1445,9 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     <select wire:model="filterJob"
                         class="border rounded px-3 py-2 w-full dark:bg-black dark:text-white">
                         <option value="">همه مشاغل</option>
-                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $jobs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php $__currentLoopData = $jobs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <option value="<?php echo e($job); ?>"><?php echo e($job); ?></option>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
                 </div>
 
@@ -1462,7 +1462,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                     </button>
                 </div>
             </div>
-            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            <?php endif; ?>
         </div>
 
         <!-- Search Box -->
@@ -1509,14 +1509,14 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 </thead>
 
                 <tbody>
-                    <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $staffs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $staff): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <?php $__empty_1 = true; $__currentLoopData = $staffs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $staff): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
 <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
                                odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
                                transition-colors">                        <td class="px-6 py-4"><?php echo e($staffs->firstItem() + $index); ?></td>
 
                         <!-- Image -->
                         <td class="px-6 py-4">
-                            <!--[if BLOCK]><![endif]--><?php if($staff->image): ?>
+                            <?php if($staff->image): ?>
                             <img src="<?php echo e(Storage::url($staff->image)); ?>" alt="<?php echo e($staff->name); ?>"
                                 class="w-12 h-12 rounded-full object-cover">
                             <?php else: ?>
@@ -1527,7 +1527,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     </path>
                                 </svg>
                             </div>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                            <?php endif; ?>
                         </td>
 
                         <!-- Name -->
@@ -1643,7 +1643,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             هیچ کارمندی یافت نشد.
                         </td>
                     </tr>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
@@ -1656,7 +1656,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
     </div>
 
     <!-- Delete Confirmation Modal -->
-    <!--[if BLOCK]><![endif]--><?php if($confirmDeleteId): ?>
+    <?php if($confirmDeleteId): ?>
     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-96 p-6">
             <div class="text-center">
@@ -1691,7 +1691,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
             </div>
         </div>
     </div>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?>
 
     <script>
         document.addEventListener('livewire:init', () => {

@@ -65,9 +65,9 @@
                             <select wire:model.live="currency" class="w-full h-[60px] appearance-none  dark:bg-black dark:border-white
                                    bg-[#EFF6F9] text-black border border-[#184D6C]  rounded-xl px-4 text-sm">
                                 <option value="">همه ارزها</option>
-                                <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($code); ?>"><?php echo e($name); ?></option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                             </select>
                         </div>
@@ -280,7 +280,7 @@
                                     </div>
                                 </div>
 
-                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['fromDate'];
+                                <?php $__errorArgs = ['fromDate'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -289,7 +289,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -501,7 +501,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     </div>
                                 </div>
 
-                                <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['toDate'];
+                                <?php $__errorArgs = ['toDate'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -510,7 +510,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -540,7 +540,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $transactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $transaction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                    <?php $__empty_1 = true; $__currentLoopData = $transactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $transaction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                     <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
                                             odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
                                             transition-colors">
@@ -552,7 +552,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                             <div class="whitespace-nowrap">
 
                                                 <div class="font-medium">
-                                                    <!--[if BLOCK]><![endif]--><?php if(empty($transaction->customer_id) &&
+                                                    <?php if(empty($transaction->customer_id) &&
                                                     !empty($transaction->withdraw_id)): ?>
                                                     برداشت
                                                     <?php elseif(empty($transaction->customer_id) &&
@@ -561,7 +561,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                                     <?php else: ?>
                                                     <?php echo e($transaction->customer->fullname ?? 'نامشخص'); ?>
 
-                                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                                    <?php endif; ?>
                                                 </div>
 
 
@@ -571,7 +571,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                                     <?php else: ?>
                                                     <?php echo e($transaction->customer->account_number ?? '-'); ?>
 
-                                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                                    <?php endif; ?>
                                                 </div>
 
                                             </div>
@@ -623,7 +623,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                             هیچ تراکنشی یافت نشد
                                         </td>
                                     </tr>
-                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -655,7 +655,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                         </thead>
 
                         <tbody>
-                            <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $summary; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                            <?php $__empty_1 = true; $__currentLoopData = $summary; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                             <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
                                odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
                                transition-colors">
@@ -690,7 +690,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     داده‌ای برای نمایش وجود ندارد
                                 </td>
                             </tr>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
@@ -705,7 +705,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 <h3 class="text-xl font-bold mb-4 text-center dark:text-white ">موجودی صندوق نقدی و بانکی</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     <?php $__currentLoopData = $totalBalanceByCurrency; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $totalAmount): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <!--[if BLOCK]><![endif]--><?php if($totalAmount > 0): ?>
+                    <?php if($totalAmount > 0): ?>
                     <?php
                     $safe = $currencySafeBalance[$currencyCode] ?? 0;
                     $bank = $bankAccountBalance[$currencyCode] ?? 0;
@@ -731,8 +731,8 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             </div>
                         </div>
                     </div>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
             </div>
         </div>

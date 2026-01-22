@@ -25,7 +25,7 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
     <div class="container mx-auto ">
 
         <!-- Session Message -->
-        <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
+        <?php if(session()->has('message')): ?>
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
             <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -35,7 +35,7 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
                 </h2>
             </div>
         </div>
-        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+        <?php endif; ?>
 
 
 
@@ -123,9 +123,9 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
                         <select wire:model.live="selectedCustomer"
                             class="appearance-none w-full dark:bg-black dark:border-white dark:text-white border border-[#8C8C8C] bg-transparent rounded-xl py-4 pl-10 pr-4 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm text-gray-800">
                             <option value="">همه مشتریان</option>
-                            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <option value="<?php echo e($customer['id']); ?>"><?php echo e($customer['fullname']); ?></option>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
                         <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none dark:hidden" width="20"
                             height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -262,9 +262,9 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
                                     <th class="px-4 py-4 font-bold">آخرین تاریخ</th>
 
                                     
-                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <th class="px-4 py-4 font-bold text-left" dir="ltr"><?php echo e($name); ?></th>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                                     <?php
                                     $user = Auth::guard('sarafi')->user();
@@ -293,7 +293,7 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
                             </thead>
 
                             <tbody>
-                                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $reports; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                <?php $__empty_1 = true; $__currentLoopData = $reports; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                 <?php
                                 $bgColor = $report['type'] === 'sarafi_card' ? 'bg-green-50' : 'bg-blue-50';
                                 $textColor = $report['type'] === 'sarafi_card' ? 'text-green-800' : 'text-blue-800';
@@ -317,12 +317,12 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
                                     </td>
 
                                     
-                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <td class="px-4 py-4 text-left" dir="ltr">
                                         <?php echo e(number_format($report['balances'][$code] ?? 0, 2)); ?>
 
                                     </td>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                                     
                                     <td class="px-4 py-4 font-medium text-left <?php echo e($textColor); ?>" dir="ltr">
@@ -337,7 +337,7 @@ return $currencyMap[$currencyCode] ?? $currencyCode;
                                         هیچ داده‌ای یافت نشد
                                     </td>
                                 </tr>
-                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                <?php endif; ?>
                             </tbody>
                         </table>
 

@@ -432,6 +432,13 @@ Route::get('/sarafi/attendances', function () {
 })->name('sarafi.attendances');
 
 
+Route::get('/sarafi/notification', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.online-notif');
+})->name('sarafi.online');
+
 
 
 

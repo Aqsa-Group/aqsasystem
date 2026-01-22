@@ -6,6 +6,7 @@ use App\Models\Sarafi\Customer;
 use App\Models\Sarafi\Transaction;
 use App\Models\Sarafi\ChangerDeal;
 use App\Models\Sarafi\User;
+use App\Models\Sarafi\SarafiNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -343,6 +344,26 @@ class ChangersDeal extends Component
                 'updated_at' => now(),
             ]);
 
+            SarafiNotification::create([
+                'user_id' => $user->id,
+                'admin_id' => $adminId,
+                'changerdeal_id' => $changerDeal->id,
+                'type' => 'send',
+                'title' => 'ارسال پول',
+                'message' => "ارسال {$this->amount} {$currencyName} به صرافی {$toSarafi->sarafi_name}",
+            ]);
+
+
+            SarafiNotification::create([
+                'user_id' => $this->to_sarafi,
+                'admin_id' => $adminId,
+                'changerdeal_id' => $changerDeal->id,
+                'type' => 'receive',
+                'title' => 'دریافت پول',
+                'message' => "دریافت {$this->amount} {$currencyName} از صرافی {$user->sarafi_name}",
+            ]);
+
+
             // ذخیره فایل اگر وجود دارد
             if ($this->file) {
                 $path = $this->file->store('changerdeals', 'public');
@@ -461,7 +482,7 @@ class ChangersDeal extends Component
                     'R' => 'Shabnam-FD.ttf',
                 ],
             ],
-            'default_font' => 'Shabnam', 
+            'default_font' => 'Shabnam',
         ]);
 
         $mpdf->SetAutoPageBreak(false);

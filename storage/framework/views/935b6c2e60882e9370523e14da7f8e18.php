@@ -280,25 +280,7 @@
                 </tr>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             
-            <!-- ردیف جمع کل -->
-            <tr style="background-color: #f0f7ff; font-weight: bold; border-top: 2px solid #2980b9;">
-                <td><strong>جمع کل</strong></td>
-                <td class="amount-cell" dir="ltr"><strong><?php echo e(number_format($totalPrevious)); ?></strong></td>
-                <td class="amount-cell" dir="ltr"><strong><?php echo e(number_format($totalReceived)); ?></strong></td>
-                <td class="amount-cell" dir="ltr"><strong><?php echo e(number_format($totalSpent)); ?></strong></td>
-                <td class="amount-cell" dir="ltr"><strong><?php echo e(number_format($totalBalance)); ?></strong></td>
-                <td class="amount-cell" dir="ltr"><strong><?php echo e(number_format($totalCurrent)); ?></strong></td>
-                <td>
-                    <?php
-                        $overallStatus = $totalCurrent >= 0 ? 'طلبکار' : 'بدهکار';
-                        $overallStatusClass = $overallStatus == 'طلبکار' ? 'status-confirmed' : 'status-pending';
-                    ?>
-                    <span class="<?php echo e($overallStatusClass); ?>">
-                        <?php echo e($overallStatus); ?>
-
-                    </span>
-                </td>
-            </tr>
+       
         </tbody>
     </table>
 </div>

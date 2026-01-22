@@ -1457,14 +1457,22 @@
 
                     <!-- اعلان و پروفایل -->
                     <div class="mobile-actions ">
-                        <button
-                            class="btn-mobile-small relative rounded-full bg-[#DEE8FC] border border-[#2563EB]  hover:bg-gray-300 transition">
-                            <img src="<?php echo e(asset('assets/sarafi/all_icon/bill-header.svg')); ?>" alt="اعلان"
-                                class="w-6 h-6">
-                            <span
-                                class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
-                        </button>
+                        <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('sarafi.bell', []);
 
+$__html = app('livewire')->mount($__name, $__params, 'lw-2289462049-0', $__slots ?? [], get_defined_vars());
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
                         <div class="header-profile-section">
                             <div class="relative">
                                 <div id="profileBtnMobile"
@@ -1887,27 +1895,22 @@
                                     }
                 </script>
 
-                <button
-                    class="relative flex items-center justify-center w-[50px] h-[50px] rounded-[25px] bg-[#DEE8FC] border border-[#184D6C] hover:bg-gray-300 transition">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M12.0201 2.91016C8.71009 2.91016 6.02009 5.60016 6.02009 8.91016V11.8002C6.02009 12.4102 5.76009 13.3402 5.45009 13.8602L4.30009 15.7702C3.59009 16.9502 4.08009 18.2602 5.38009 18.7002C9.69009 20.1402 14.3401 20.1402 18.6501 18.7002C19.8601 18.3002 20.3901 16.8702 19.7301 15.7702L18.5801 13.8602C18.2801 13.3402 18.0201 12.4102 18.0201 11.8002V8.91016C18.0201 5.61016 15.3201 2.91016 12.0201 2.91016Z"
-                            stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" />
-                        <path
-                            d="M13.8699 3.19994C13.5599 3.10994 13.2399 3.03994 12.9099 2.99994C11.9499 2.87994 11.0299 2.94994 10.1699 3.19994C10.4599 2.45994 11.1799 1.93994 12.0199 1.93994C12.8599 1.93994 13.5799 2.45994 13.8699 3.19994Z"
-                            stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                        <path
-                            d="M15.02 19.0601C15.02 20.7101 13.67 22.0601 12.02 22.0601C11.2 22.0601 10.44 21.7201 9.90002 21.1801C9.36002 20.6401 9.02002 19.8801 9.02002 19.0601"
-                            stroke="#184D6C" stroke-width="1.5" stroke-miterlimit="10" />
-                    </svg>
+                <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('sarafi.bell', []);
 
+$__html = app('livewire')->mount($__name, $__params, 'lw-2289462049-1', $__slots ?? [], get_defined_vars());
 
+echo $__html;
 
-                    <span
-                        class="absolute -top-1 -right-1 bg-[#DD2424] text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
-
-                </button>
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
 
                 <div class="header-profile-section">
                     <div class="relative">
@@ -2193,10 +2196,10 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M2 12C2 16.714 2 19.0711 3.46447 20.5355C4.92893 22 7.28595 22 12 22C16.714 22 19.0711 22 20.5355 20.5355C22 19.0711 22 16.714 22 12V10.5M13.5 2H12C7.28595 2 4.92893 2 3.46447 3.46447C2.49073 4.43821 2.16444 5.80655 2.0551 8"
-                                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                                     <path
                                         d="M16.652 3.45506L17.3009 2.80624C18.3759 1.73125 20.1188 1.73125 21.1938 2.80624C22.2687 3.88124 22.2687 5.62415 21.1938 6.69914L20.5449 7.34795M16.652 3.45506C16.652 3.45506 16.7331 4.83379 17.9497 6.05032C19.1662 7.26685 20.5449 7.34795 20.5449 7.34795M16.652 3.45506L10.6872 9.41993C10.2832 9.82394 10.0812 10.0259 9.90743 10.2487C9.70249 10.5114 9.52679 10.7957 9.38344 11.0965C9.26191 11.3515 9.17157 11.6225 8.99089 12.1646L8.41242 13.9M20.5449 7.34795L17.5625 10.3304M14.5801 13.3128C14.1761 13.7168 13.9741 13.9188 13.7513 14.0926C13.4886 14.2975 13.2043 14.4732 12.9035 14.6166C12.6485 14.7381 12.3775 14.8284 11.8354 15.0091L10.1 15.5876M10.1 15.5876L8.97709 15.9619C8.71035 16.0508 8.41626 15.9814 8.21744 15.7826C8.01862 15.5837 7.9492 15.2897 8.03811 15.0229L8.41242 13.9M10.1 15.5876L8.41242 13.9"
-                                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                                 </svg>
 
 
@@ -2288,8 +2291,10 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                             <span class="flex items-center gap-2 ">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 17V17.5V18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                    <path d="M12 6V6.5V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M12 17V17.5V18" stroke="currentColor" stroke-width="1.5"
+                                        stroke-linecap="round" />
+                                    <path d="M12 6V6.5V7" stroke="currentColor" stroke-width="1.5"
+                                        stroke-linecap="round" />
                                     <path
                                         d="M15 9.5C15 8.11929 13.6569 7 12 7C10.3431 7 9 8.11929 9 9.5C9 10.8807 10.3431 12 12 12C13.6569 12 15 13.1193 15 14.5C15 15.8807 13.6569 17 12 17C10.3431 17 9 15.8807 9 14.5"
                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
@@ -2328,11 +2333,11 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                         stroke-linejoin="round" />
                                     <path
                                         d="M18.5 7.65C18.5 8.56 18.25 9.4 17.81 10.12C16.74 11.88 14.54 13 12 13C9.46 13 7.26 11.88 6.19 10.12C5.75 9.4 5.5 8.56 5.5 7.65C5.5 6.09 6.22999 4.68 7.39999 3.66C8.57999 2.63 10.2 2 12 2C13.8 2 15.42 2.63 16.6 3.65C17.77 4.68 18.5 6.09 18.5 7.65Z"
-                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M18.5 7.65V12.65C18.5 15.77 15.59 18 12 18C8.41 18 5.5 15.77 5.5 12.65V7.65C5.5 4.53 8.41 2 12 2C13.8 2 15.42 2.63 16.6 3.65C17.77 4.68 18.5 6.09 18.5 7.65Z"
-                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
 
@@ -2353,7 +2358,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M7 10L9.29289 12.2929C9.68342 12.6834 10.3166 12.6834 10.7071 12.2929L12.2929 10.7071C12.6834 10.3166 13.3166 10.3166 13.7071 10.7071L17 14M17 14V11.5M17 14H14.5"
-                                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8"
@@ -2384,7 +2389,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M15.24 2H8.76004C5.00004 2 4.71004 5.38 6.74004 7.22L17.26 16.78C19.29 18.62 19 22 15.24 22H8.76004C5.00004 22 4.71004 18.62 6.74004 16.78L17.26 7.22C19.29 5.38 19 2 15.24 2Z"
-                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
 
@@ -2414,7 +2419,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                         stroke-linejoin="round" />
                                     <path
                                         d="M16.49 9.12988L16.06 15.7299C15.99 16.7599 15.93 17.5599 14.1 17.5599H9.89C8.06 17.5599 7.99999 16.7599 7.92999 15.7299L7.5 9.12988"
-                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
 
@@ -2436,7 +2441,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M21.446 7.06901C20.6342 5.00831 18.9917 3.36579 16.931 2.55398C15.3895 1.94669 14 3.34316 14 5.00002V9.00002C14 9.5523 14.4477 10 15 10H19C20.6569 10 22.0533 8.61055 21.446 7.06901Z"
-                                       stroke="currentColor" stroke-width="1.5" />
+                                        stroke="currentColor" stroke-width="1.5" />
                                     <path
                                         d="M6.22209 4.60105C6.66665 4.304 7.13344 4.04636 7.6171 3.82976C8.98898 3.21539 9.67491 2.9082 10.5875 3.4994C11.5 4.09061 11.5 5.06041 11.5 7.00001V8.50001C11.5 10.3856 11.5 11.3284 12.0858 11.9142C12.6716 12.5 13.6144 12.5 15.5 12.5H17C18.9396 12.5 19.9094 12.5 20.5006 13.4125C21.0918 14.3251 20.7846 15.011 20.1702 16.3829C19.9536 16.8666 19.696 17.3334 19.399 17.7779C18.3551 19.3402 16.8714 20.5578 15.1355 21.2769C13.3996 21.9959 11.4895 22.184 9.64665 21.8175C7.80383 21.4509 6.11109 20.5461 4.78249 19.2175C3.45389 17.8889 2.5491 16.1962 2.18254 14.3534C1.81598 12.5105 2.00412 10.6004 2.72315 8.86451"
                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
@@ -2472,11 +2477,11 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                         d="M17 21H7C3 21 2 20 2 16V8C2 4 3 3 7 3H17C21 3 22 4 22 8V16C22 20 21 21 17 21Z"
                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M14 8H19"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                    <path d="M14 8H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M15 12H19"  stroke="currentColor"stroke-width="1.5" stroke-linecap="round"
+                                    <path d="M15 12H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M17 16H19"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                    <path d="M17 16H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M8.49994 11.2899C9.49958 11.2899 10.3099 10.4796 10.3099 9.47992C10.3099 8.48029 9.49958 7.66992 8.49994 7.66992C7.50031 7.66992 6.68994 8.48029 6.68994 9.47992C6.68994 10.4796 7.50031 11.2899 8.49994 11.2899Z"
@@ -2484,7 +2489,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                         stroke-linejoin="round" />
                                     <path
                                         d="M12 16.33C11.86 14.88 10.71 13.74 9.26 13.61C8.76 13.56 8.25 13.56 7.74 13.61C6.29 13.75 5.14 14.88 5 16.33"
-                                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
 
@@ -2501,11 +2506,11 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
 
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M2 2V19C2 20.66 3.34 22 5 22H22"  stroke="currentColor" stroke-width="1.5"
+                                    <path d="M2 2V19C2 20.66 3.34 22 5 22H22" stroke="currentColor" stroke-width="1.5"
                                         stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
                                     <path
                                         d="M5 17L9.59 11.64C10.35 10.76 11.7 10.7 12.52 11.53L13.47 12.48C14.29 13.3 15.64 13.25 16.4 12.37L21 7"
-                                         stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"
+                                        stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"
                                         stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
 
@@ -2529,18 +2534,18 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path d="M6.87988 18.1501V16.0801" stroke="#292D32" stroke-width="1.5"
                                         stroke-linecap="round" />
-                                    <path d="M12 18.15V14.01"  stroke="currentColor" stroke-width="1.5"
+                                    <path d="M12 18.15V14.01" stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" />
-                                    <path d="M17.1201 18.1499V11.9299"  stroke="currentColor" stroke-width="1.5"
+                                    <path d="M17.1201 18.1499V11.9299" stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" />
                                     <path
                                         d="M17.1199 5.8501L16.6599 6.3901C14.1099 9.3701 10.6899 11.4801 6.87988 12.4301"
-                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                    <path d="M14.1899 5.8501H17.1199V8.7701"  stroke="currentColor" stroke-width="1.5"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M14.1899 5.8501H17.1199V8.7701" stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
                                     <path
                                         d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
 
@@ -2568,8 +2573,9 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                         d="M15.5 14V20M15.5 20L17.5 18M15.5 20L13.5 18M20 20V14M20 14L22 16M20 14L18 16"
                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M10 16H6"  stroke="currentColor"stroke-width="1.5" stroke-linecap="round" />
-                                    <path d="M2 10L7 10M22 10L11 10"  stroke="currentColor" stroke-width="1.5"
+                                    <path d="M10 16H6" stroke="currentColor" stroke-width="1.5"
+                                        stroke-linecap="round" />
+                                    <path d="M2 10L7 10M22 10L11 10" stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" />
                                 </svg>
 
@@ -2598,11 +2604,11 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                         d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M10.5898 7.67993H14.8298V11.9299"  stroke="currentColor" stroke-width="1.5"
+                                    <path d="M10.5898 7.67993H14.8298V11.9299" stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M14.8299 7.67993L9.16992 13.3399"  stroke="currentColor" stroke-width="1.5"
+                                    <path d="M14.8299 7.67993L9.16992 13.3399" stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51"  stroke="currentColor"
+                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51" stroke="currentColor"
                                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 ارسال به صرافی
@@ -2618,13 +2624,13 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M10.5898 13.3398H14.8298V9.09985"  stroke="currentColor" stroke-width="1.5"
+                                    <path d="M10.5898 13.3398H14.8298V9.09985" stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M14.8299 13.3399L9.16992 7.67993"  stroke="currentColor" stroke-width="1.5"
+                                    <path d="M14.8299 13.3399L9.16992 7.67993" stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51"  stroke="currentColor"
+                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51" stroke="currentColor"
                                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 دریافت از صرافی
@@ -2638,15 +2644,16 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                 :class="active === 'edit-accounts' ? 'bg-[#FFFFFF] text-[#184D6C]' : 'text-white dark:text-white hover:bg-gray-600  dark:hover:bg-gray-800'">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M2 22H22"  stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"
+                                    <path d="M2 22H22" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"
                                         stroke-linecap="round" stroke-linejoin="round" />
                                     <path d="M9.75 4V22H14.25V4C14.25 2.9 13.8 2 12.45 2H11.55C10.2 2 9.75 2.9 9.75 4Z"
                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M3 10V22H7V10C7 8.9 6.6 8 5.4 8H4.6C3.4 8 3 8.9 3 10Z"  stroke="currentColor"
-                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M3 10V22H7V10C7 8.9 6.6 8 5.4 8H4.6C3.4 8 3 8.9 3 10Z"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
                                     <path d="M17 15V22H21V15C21 13.9 20.6 13 19.4 13H18.6C17.4 13 17 13.9 17 15Z"
-                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
 
@@ -2681,9 +2688,11 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
 
-                                    <path d="M13.25 14H17.5"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M13.25 14H17.5" stroke="currentColor" stroke-width="1.5"
+                                        stroke-linecap="round" />
 
-                                    <path d="M9 18H17.5"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M9 18H17.5" stroke="currentColor" stroke-width="1.5"
+                                        stroke-linecap="round" />
                                 </svg>
 
 
@@ -2709,13 +2718,13 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-                                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M10.5898 7.67993H14.8298V11.9299"  stroke="currentColor" stroke-width="1.5"
+                                    <path d="M10.5898 7.67993H14.8298V11.9299" stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M14.8299 7.67993L9.16992 13.3399"  stroke="currentColor"stroke-width="1.5"
+                                    <path d="M14.8299 7.67993L9.16992 13.3399" stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51"  stroke="currentColor"
+                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51" stroke="currentColor"
                                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 ثبت کارمندان
@@ -2731,13 +2740,13 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M10.5898 13.3398H14.8298V9.09985"  stroke="currentColor" stroke-width="1.5"
+                                    <path d="M10.5898 13.3398H14.8298V9.09985" stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M14.8299 13.3399L9.16992 7.67993"  stroke="currentColor" stroke-width="1.5"
+                                    <path d="M14.8299 13.3399L9.16992 7.67993" stroke="currentColor" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51"  stroke="currentColor"
+                                    <path d="M6 16.51C9.89 17.81 14.11 17.81 18 16.51" stroke="currentColor"
                                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 برداشت ها
@@ -2751,15 +2760,16 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                 :class="active === 'edit-accounts' ? 'bg-[#FFFFFF] text-[#184D6C]' : 'text-white dark:text-white hover:bg-gray-600  dark:hover:bg-gray-800'">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M2 22H22"  stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"
+                                    <path d="M2 22H22" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"
                                         stroke-linecap="round" stroke-linejoin="round" />
                                     <path d="M9.75 4V22H14.25V4C14.25 2.9 13.8 2 12.45 2H11.55C10.2 2 9.75 2.9 9.75 4Z"
-                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
-                                    <path d="M3 10V22H7V10C7 8.9 6.6 8 5.4 8H4.6C3.4 8 3 8.9 3 10Z"  stroke="currentColor"
-                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M3 10V22H7V10C7 8.9 6.6 8 5.4 8H4.6C3.4 8 3 8.9 3 10Z"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
                                     <path d="M17 15V22H21V15C21 13.9 20.6 13 19.4 13H18.6C17.4 13 17 13.9 17 15Z"
- stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                 </svg>
                                 مدیریت معاشات
@@ -2768,13 +2778,13 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                         </div>
 
 
-                             <div x-show="openItems.finance" x-transition class="mr-6 mt-1 space-y-1">
+                        <div x-show="openItems.finance" x-transition class="mr-6 mt-1 space-y-1">
                             <a href="<?php echo e(route('sarafi.attendances')); ?>"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('edit-accounts', 'finacne')"
                                 :class="active === 'edit-accounts' ? 'bg-[#FFFFFF] text-[#184D6C]' : 'text-white dark:text-white hover:bg-gray-600  dark:hover:bg-gray-800'">
-                                <i class="fas fa-id-badge"></i> 
-                               حاضری کارمندان
+                                <i class="fas fa-id-badge"></i>
+                                حاضری کارمندان
 
                             </a>
                         </div>
@@ -2849,11 +2859,11 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                         stroke-linejoin="round" />
                                     <path
                                         d="M20.5141 5C22.9391 5 24.8891 6.9625 24.8891 9.375C24.8891 11.7375 23.0141 13.6625 20.6766 13.75C20.5766 13.7375 20.4641 13.7375 20.3516 13.75"
-                                         stroke="currentColor" stroke-width="1.5" stroke-lin  stroke="currentColor"ecap="round"
-                                        stroke-linejoin="round" />
+                                        stroke="currentColor" stroke-width="1.5" stroke-lin stroke="currentColor"
+                                        ecap="round" stroke-linejoin="round" />
                                     <path
                                         d="M5.19844 18.2C2.17344 20.225 2.17344 23.525 5.19844 25.5375C8.63594 27.8375 14.2734 27.8375 17.7109 25.5375C20.7359 23.5125 20.7359 20.2125 17.7109 18.2C14.2859 15.9125 8.64844 15.9125 5.19844 18.2Z"
-                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M22.9219 25C23.8219 24.8125 24.6719 24.45 25.3719 23.9125C27.3219 22.45 27.3219 20.0375 25.3719 18.575C24.6844 18.05 23.8469 17.7 22.9594 17.5"
@@ -2867,13 +2877,33 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                     </div>
 
 
-                    <!-- اطلاعیه های آنلاین -->
-                    <div>
-                        <button @click="openItems.notifications = !openItems.notifications; active = 'notifications'"
-                            :class="(active === 'notifications' || active === 'online-notifications') ? 'bg-[#FFFFFF] text-[#184D6C]' : 'text-white dark:text-white hover:bg-gray-600  dark:hover:bg-gray-800'"
-                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
-                            <span class="flex items-center gap-2">
+                    <?php
+                    use App\Models\Sarafi\OnlineNotifications;
+                    use Illuminate\Support\Facades\Auth;
 
+                    $currentUser = Auth::guard('sarafi')->user();
+
+                    // پیام هایی که هنوز کاربر ندیده
+                    $newNotifications = OnlineNotifications::whereDoesntHave('seenByUsers', function($q) use
+                    ($currentUser){
+                    $q->where('user_id', $currentUser->id);
+                    })->get();
+
+                    // ثبت پیام‌ها به عنوان دیده شده
+                    foreach($newNotifications as $notif){
+                    $notif->seenByUsers()->attach($currentUser->id);
+                    }
+
+                    // تعداد پیام های جدید برای Badge
+                    $newCount = $newNotifications->count();
+                    ?>
+
+                    <!-- اطلاعیه های آنلاین -->
+                    <div x-data="{ open: false }" class="relative">
+                        <button @click="open = !open"
+                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir"
+                            :class="open ? 'bg-[#FFFFFF] text-[#184D6C]' : 'text-white dark:text-white hover:bg-gray-600 dark:hover:bg-gray-800'">
+                            <span class="flex items-center gap-2">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path d="M6 9.96004C9.63 7.15004 14.37 7.15004 18 9.96004" stroke="currentColor"
@@ -2882,7 +2912,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path d="M9.7998 16.1402C11.1298 15.1102 12.8698 15.1102 14.1998 16.1402"
-                                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path
                                         d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
@@ -2890,30 +2920,37 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                         stroke-linejoin="round" />
                                 </svg>
 
-
                                 <?php echo e(__('messages.notifications')); ?>
 
+
+                                <!-- Badge پیام های جدید -->
+                                <?php if($newCount > 0): ?>
+                                <span
+                                    class="ml-2 inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold leading-none text-white bg-red-500 rounded-full">
+                                    <?php echo e($newCount); ?>
+
+                                </span>
+                                <?php endif; ?>
                             </span>
+
                             <svg width="12" height="6" viewBox="0 0 12 6" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" :stroke="(active === 'notifications' || active === 'control-notifications')
-                                ? '#000000'
-                                : '#FFFFFF'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" :stroke="open ? '#000000' : '#FFFFFF'"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
-
-
                         </button>
-                        <div x-show="openItems.notifications" x-transition class="mr-6 mt-1 space-y-1">
-                            <a href="#"
+
+                        <div x-show="open" x-transition class="mr-6 mt-1 space-y-1">
+                            <a href="<?php echo e(route('sarafi.online')); ?>"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                                @click="setActive('online-notifications', 'notifications')"
-                                :class="active === 'online-notifications' ? 'bg-[#FFFFFF] text-[#184D6C]' : 'text-white dark:text-white hover:bg-gray-600  dark:hover:bg-gray-800'">
-                                  <i class="fas fa-bell"></i>
+                                :class="open ? 'bg-[#FFFFFF] text-[#184D6C]' : 'text-white dark:text-white hover:bg-gray-600 dark:hover:bg-gray-800'">
+                                <i class="fas fa-bell"></i>
                                 <?php echo e(__('messages.online_notifications')); ?>
 
                             </a>
                         </div>
                     </div>
+
 
                     <!-- پشتیبانی سیستم -->
                     <div>
@@ -2930,7 +2967,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                         stroke-linejoin="round" />
                                     <path
                                         d="M16.9996 13.4H13.7996C11.3996 13.4 10.5996 12.6 10.5996 10.2V7L16.9996 13.4Z"
-                                       stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                         stroke-linejoin="round" />
                                     <path d="M11.5996 2H15.5996" stroke="white" stroke-width="1.5"
                                         stroke-linecap="round" stroke-linejoin="round" />
@@ -2938,8 +2975,8 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                         stroke-linecap="round" stroke-linejoin="round" />
                                     <path d="M22.0004 8V14.19C22.0004 15.74 20.7404 17 19.1904 17" stroke="currentColor"
                                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M22 8H19C16.75 8 16 7.25 16 5V2L22 8Z" stroke="currentColor" stroke-width="1.5"
-                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M22 8H19C16.75 8 16 7.25 16 5V2L22 8Z" stroke="currentColor"
+                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
 
 
@@ -2978,12 +3015,12 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
-                                        stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                                        stroke-linejoin="round" />
+                                        stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"
+                                        stroke-linecap="round" stroke-linejoin="round" />
                                     <path
                                         d="M2 12.8799V11.1199C2 10.0799 2.85 9.21994 3.9 9.21994C5.71 9.21994 6.45 7.93994 5.54 6.36994C5.02 5.46994 5.33 4.29994 6.24 3.77994L7.97 2.78994C8.76 2.31994 9.78 2.59994 10.25 3.38994L10.36 3.57994C11.26 5.14994 12.74 5.14994 13.65 3.57994L13.76 3.38994C14.23 2.59994 15.25 2.31994 16.04 2.78994L17.77 3.77994C18.68 4.29994 18.99 5.46994 18.47 6.36994C17.56 7.93994 18.3 9.21994 20.11 9.21994C21.15 9.21994 22.01 10.0699 22.01 11.1199V12.8799C22.01 13.9199 21.16 14.7799 20.11 14.7799C18.3 14.7799 17.56 16.0599 18.47 17.6299C18.99 18.5399 18.68 19.6999 17.77 20.2199L16.04 21.2099C15.25 21.6799 14.23 21.3999 13.76 20.6099L13.65 20.4199C12.75 18.8499 11.27 18.8499 10.36 20.4199L10.25 20.6099C9.78 21.3999 8.76 21.6799 7.97 21.2099L6.24 20.2199C5.33 19.6999 5.02 18.5299 5.54 17.6299C6.45 16.0599 5.71 14.7799 3.9 14.7799C2.85 14.7799 2 13.9199 2 12.8799Z"
-                                        stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                                        stroke-linejoin="round" />
+                                        stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"
+                                        stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
 
 

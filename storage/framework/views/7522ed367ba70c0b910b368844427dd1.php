@@ -1,7 +1,7 @@
 <div>
     <div class="container mx-auto px-4">
         <!-- Session Message -->
-        <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
+        <?php if(session()->has('message')): ?>
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
             <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -11,7 +11,7 @@
                 </h2>
             </div>
         </div>
-        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+        <?php endif; ?>
 
         <!-- Page Header -->
         <div class="space-y-4 mb-6">
@@ -38,7 +38,7 @@
                             <span class="text-white">فیلتر</span>
                         </button>
 
-                        <!--[if BLOCK]><![endif]--><?php if($filterOpen): ?>
+                        <?php if($filterOpen): ?>
                         <div
                             class="absolute top-full mt-2 dark:bg-black bg-white border rounded-xl shadow-lg p-4 w-72 z-50 flex flex-col gap-3">
                             <select wire:model="filterAction" class="border dark:bg-black rounded px-3 py-2 w-full">
@@ -62,7 +62,7 @@
                                 اعمال فیلتر
                             </button>
                         </div>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endif; ?>
                     </div>
 
 
@@ -118,7 +118,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $trashRecords; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $record): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                <?php $__empty_1 = true; $__currentLoopData = $trashRecords; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $record): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
    <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
                                odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
                                transition-colors">                                    <td class="px-4 py-4 vazir text-[16px] font-medium text-center">
@@ -127,7 +127,7 @@
                                     </td>
 
                                     <td class="px-4 py-4 vazir text-[16px] font-medium">
-                                        <!--[if BLOCK]><![endif]--><?php if($record->action == 'حذف'): ?>
+                                        <?php if($record->action == 'حذف'): ?>
                                         <span class="bg-red-100 text-red-800 px-2 py-1 rounded-lg text-sm">
                                             حذف شده
                                         </span>
@@ -135,7 +135,7 @@
                                         <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-lg text-sm">
                                             ویرایش شده
                                         </span>
-                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                        <?php endif; ?>
                                     </td>
 
                                     <td class="px-4 py-4 vazir text-[16px] font-medium">
@@ -154,16 +154,16 @@
                                     </td>
 
                                     <td class="px-4 py-4 vazir text-[16px] font-medium">
-                                        <!--[if BLOCK]><![endif]--><?php if($record->registeredUser): ?>
+                                        <?php if($record->registeredUser): ?>
                                         <?php echo e($record->registeredUser->name); ?>
 
                                         <?php else: ?>
                                         <span class="text-gray-400">نامشخص</span>
-                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                        <?php endif; ?>
                                     </td>
 
                                     <td class="px-4 py-4 vazir text-[16px] font-medium">
-                                        <!--[if BLOCK]><![endif]--><?php if($record->user): ?>
+                                        <?php if($record->user): ?>
                                         <?php echo e($record->user->name); ?>
 
                                         <?php elseif($record->admin): ?>
@@ -171,7 +171,7 @@
 
                                         <?php else: ?>
                                         <span class="text-gray-400">سیستم</span>
-                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                        <?php endif; ?>
                                     </td>
 
                                     <td class="px-4 py-4  flex gap-3 vazir text-[16px] font-medium text-center">
@@ -190,7 +190,7 @@
                                         </button>
 
                                         <!-- مودال تأیید حذف -->
-                                        <!--[if BLOCK]><![endif]--><?php if($confirmDeleteId): ?>
+                                        <?php if($confirmDeleteId): ?>
                                         <div
                                             class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-10 z-50">
                                             <div
@@ -218,7 +218,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                        <?php endif; ?>
 
                                     </td>
 
@@ -230,24 +230,24 @@
                                         هیچ سند حذف یا ویرایش شده‌ای وجود ندارد
                                     </td>
                                 </tr>
-                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                <?php endif; ?>
                             </tbody>
                         </table>
                     </div>
 
                     <!-- Pagination -->
-                    <!--[if BLOCK]><![endif]--><?php if($trashRecords->hasPages()): ?>
+                    <?php if($trashRecords->hasPages()): ?>
                     <div class="mt-4">
                         <?php echo e($trashRecords->links()); ?>
 
                     </div>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </div>
 
-    <!--[if BLOCK]><![endif]--><?php if($showDetailsModal): ?>
+    <?php if($showDetailsModal): ?>
     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50 backdrop-blur-sm">
         <div
             class="bg-white dark:bg-black dark:text-white p-6 rounded-2xl shadow-2xl w-11/12 max-w-6xl max-h-[90vh] overflow-y-auto border border-gray-100">
@@ -286,7 +286,7 @@
 
                                 </td>
                                 <td class="px-4 py-4 vazir text-[16px] font-medium">
-                                    <!--[if BLOCK]><![endif]--><?php if(($selectedRecord->action ?? '') == 'حذف'): ?>
+                                    <?php if(($selectedRecord->action ?? '') == 'حذف'): ?>
                                     <span class="bg-red-100 text-red-800 px-2 py-1 rounded-lg text-sm">
                                         حذف شده
                                     </span>
@@ -294,14 +294,14 @@
                                     <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-lg text-sm">
                                         ویرایش شده
                                     </span>
-                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endif; ?>
                                 </td>
                                 <td class="px-4 py-4 vazir text-[16px] font-medium">
                                     <?php echo e(jdate($selectedRecord->created_at ?? now())->format('Y/m/d H:i')); ?>
 
                                 </td>
                                 <td class="px-4 py-4 vazir text-[16px] font-medium">
-                                    <!--[if BLOCK]><![endif]--><?php if($selectedRecord->user ?? false): ?>
+                                    <?php if($selectedRecord->user ?? false): ?>
                                     <?php echo e($selectedRecord->user->name); ?>
 
                                     <?php elseif($selectedRecord->admin ?? false): ?>
@@ -309,7 +309,7 @@
 
                                     <?php else: ?>
                                     <span class="text-gray-400">سیستم</span>
-                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                         </tbody>
@@ -354,7 +354,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $this->formatDataForDisplay($selectedRecord->old_data ?? []); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key =>
+                                    <?php $__currentLoopData = $this->formatDataForDisplay($selectedRecord->old_data ?? []); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key =>
                                     $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr class="border-b border-[#D9D9D9] hover:bg-gray-50">
                                         <td class="px-4 py-3 vazir text-gray-700 font-medium bg-gray-50">
@@ -366,7 +366,7 @@
 
                                         </td>
                                     </tr>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </tbody>
                             </table>
                         </div>
@@ -392,7 +392,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $this->formatDataForDisplay($selectedRecord->new_data ?? []); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key =>
+                                    <?php $__currentLoopData = $this->formatDataForDisplay($selectedRecord->new_data ?? []); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key =>
                                     $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr class="border-b      border-[#D9D9D9] hover:bg-gray-50">
                                         <td class="px-4 py-3 vazir text-gray-700 font-medium bg-gray-50">
@@ -404,7 +404,7 @@
 
                                         </td>
                                     </tr>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </tbody>
                             </table>
                         </div>
@@ -450,13 +450,13 @@
 
                                     </td>
                                 </tr>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            <?php endif; ?>
 
             <!-- فوتر -->
             <div class="flex justify-end gap-3 pt-6 mt-6 border-t border-[#D9D9D9]">
@@ -467,5 +467,5 @@
             </div>
         </div>
     </div>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?>
 </div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/trash-edit.blade.php ENDPATH**/ ?>
