@@ -2933,7 +2933,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                     </div>
 
 
-                    <!-- پشتیبانی سیستم -->
+                    {{-- <!-- پشتیبانی سیستم -->
                     <div>
                         <button @click="openItems.support = !openItems.support; active = 'support'"
                             :class="(active === 'support' || active === 'system-support') ? 'bg-[#FFFFFF] text-[#184D6C]': 'text-white dark:text-white hover:bg-gray-600  dark:hover:bg-gray-800'"
@@ -2981,7 +2981,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                 {{ __('messages.system_support') }}
                             </a>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <!-- تنظیمات -->
                     <div>
@@ -3015,16 +3015,24 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                             </svg>
 
                         </button>
+
+                        @php
+                            $currentUser=Auth::guard('sarafi')->user();
+                            @endphp
+
+
+                            @if ($currentUser && $currentUser->role==='admin')
                         <div x-show="openItems.settings" x-transition class="mr-6 mt-1 space-y-1">
-                            <a href="#"
+                            <a href="{{ route('sarafi.backup') }}"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('system-settings', 'settings')"
                                 :class="active === 'system-settings' ? 'bg-[#2563EB] text-white' : 'text-white dark:text-white hover:bg-gray-600  dark:hover:bg-gray-800'">
                                 <img src="{{ asset('assets/sarafi/all_icon/settings.svg') }}" class="w-4 h-4"
                                     :class="active === 'system-settings' ? 'filter invert brightness-0' : 'text-gray-500'">
-                                {{ __('messages.system_settings') }}
+                               بک آپ گیری
                             </a>
                         </div>
+                        @endif
                     </div>
                 </nav>
             </div>

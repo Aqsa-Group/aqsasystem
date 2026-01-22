@@ -2952,57 +2952,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                     </div>
 
 
-                    <!-- پشتیبانی سیستم -->
-                    <div>
-                        <button @click="openItems.support = !openItems.support; active = 'support'"
-                            :class="(active === 'support' || active === 'system-support') ? 'bg-[#FFFFFF] text-[#184D6C]': 'text-white dark:text-white hover:bg-gray-600  dark:hover:bg-gray-800'"
-                            class="flex items-center justify-between w-full py-3 px-4 rounded-lg transition vazir">
-                            <span class="flex items-center gap-2">
-
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M17 13.4V16.4C17 20.4 15.4 22 11.4 22H7.6C3.6 22 2 20.4 2 16.4V12.6C2 8.6 3.6 7 7.6 7H10.6"
-                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path
-                                        d="M16.9996 13.4H13.7996C11.3996 13.4 10.5996 12.6 10.5996 10.2V7L16.9996 13.4Z"
-                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path d="M11.5996 2H15.5996" stroke="white" stroke-width="1.5"
-                                        stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M7 5C7 3.34 8.34 2 10 2H12.62" stroke="currentColor" stroke-width="1.5"
-                                        stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M22.0004 8V14.19C22.0004 15.74 20.7404 17 19.1904 17" stroke="currentColor"
-                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M22 8H19C16.75 8 16 7.25 16 5V2L22 8Z" stroke="currentColor"
-                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-
-
-
-                                <?php echo e(__('messages.support')); ?>
-
-                            </span>
-                            <svg width="12" height="6" viewBox="0 0 12 6" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0.75 0.75L5.75 4.75L10.75 0.75" :stroke="(active === 'support' || active === 'control-support')
-                                ? '#000000'
-                                : '#FFFFFF'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </button>
-                        <div x-show="openItems.support" x-transition class="mr-6 mt-1 space-y-1">
-                            <a href="#"
-                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
-                                @click="setActive('system-support', 'support')"
-                                :class="active === 'system-support' ?'bg-[#FFFFFF] text-[#184D6C]' : 'text-white dark:text-white hover:bg-gray-600 dark:hover:bg-gray-800'">
-                                <img src="<?php echo e(asset('assets/sarafi/all_icon/support.svg')); ?>" class="w-4 h-4"
-                                    :class="active === 'system-support' ? 'filter invert brightness-0' : 'text-gray-500'">
-                                <?php echo e(__('messages.system_support')); ?>
-
-                            </a>
-                        </div>
-                    </div>
+                    
 
                     <!-- تنظیمات -->
                     <div>
@@ -3037,17 +2987,24 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                             </svg>
 
                         </button>
+
+                        <?php
+                            $currentUser=Auth::guard('sarafi')->user();
+                            ?>
+
+
+                            <?php if($currentUser && $currentUser->role==='admin'): ?>
                         <div x-show="openItems.settings" x-transition class="mr-6 mt-1 space-y-1">
-                            <a href="#"
+                            <a href="<?php echo e(route('sarafi.backup')); ?>"
                                 class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
                                 @click="setActive('system-settings', 'settings')"
                                 :class="active === 'system-settings' ? 'bg-[#2563EB] text-white' : 'text-white dark:text-white hover:bg-gray-600  dark:hover:bg-gray-800'">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/settings.svg')); ?>" class="w-4 h-4"
                                     :class="active === 'system-settings' ? 'filter invert brightness-0' : 'text-gray-500'">
-                                <?php echo e(__('messages.system_settings')); ?>
-
+                               بک آپ گیری
                             </a>
                         </div>
+                        <?php endif; ?>
                     </div>
                 </nav>
             </div>

@@ -442,6 +442,17 @@ Route::get('/sarafi/notification', function () {
 
 
 
+Route::get('/sarafi/backup', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.database-backup');
+})->name('sarafi.backup');
+
+
+
+
+
 
 
 
