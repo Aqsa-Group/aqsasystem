@@ -104,7 +104,7 @@
             <td><?php echo e($currencies[$loan->currency] ?? $loan->currency); ?></td>
             <td><?php echo e(number_format($loan->amount)); ?></td>
             <td>
-                <?php if($loan->staff): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($loan->staff): ?>
                     <?php echo e($loan->staff->fullname); ?>
 
                 <?php elseif($loan->customer): ?>
@@ -115,7 +115,7 @@
 
                 <?php else: ?>
                     -
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </td>
             <td><?php echo e($loan->description ?? '-'); ?></td>
         </tr>
@@ -175,7 +175,7 @@
             <td><?php echo e($currencies[$loan->currency] ?? $loan->currency); ?></td>
             <td><?php echo e(number_format($loan->amount)); ?></td>
             <td>
-                <?php if($loan->staff): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($loan->staff): ?>
                     <?php echo e($loan->staff->fullname); ?>
 
                 <?php elseif($loan->customer): ?>
@@ -186,7 +186,7 @@
 
                 <?php else: ?>
                     -
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </td>
             <td><?php echo e($loan->description ?? '-'); ?></td>
         </tr>

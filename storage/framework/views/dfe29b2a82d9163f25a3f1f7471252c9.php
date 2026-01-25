@@ -19,7 +19,7 @@
             \Filament\Support\prepare_inherited_attributes($getExtraAttributeBag())
                 ->class(['fi-fo-component-ctn gap-6'])
         )]); ?>
-        <?php $__currentLoopData = $getComponents(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $infolistComponent): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $getComponents(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $infolistComponent): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <?php if (isset($component)) { $__componentOriginal6f9d0ad23f77111c926012ad6ce09333 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal6f9d0ad23f77111c926012ad6ce09333 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.grid.column','data' => ['default' => $infolistComponent->getColumnSpan('default'),'sm' => $infolistComponent->getColumnSpan('sm'),'md' => $infolistComponent->getColumnSpan('md'),'lg' => $infolistComponent->getColumnSpan('lg'),'xl' => $infolistComponent->getColumnSpan('xl'),'twoXl' => $infolistComponent->getColumnSpan('2xl'),'defaultStart' => $infolistComponent->getColumnStart('default'),'smStart' => $infolistComponent->getColumnStart('sm'),'mdStart' => $infolistComponent->getColumnStart('md'),'lgStart' => $infolistComponent->getColumnStart('lg'),'xlStart' => $infolistComponent->getColumnStart('xl'),'twoXlStart' => $infolistComponent->getColumnStart('2xl'),'class' => \Illuminate\Support\Arr::toCssClasses([
@@ -72,7 +72,7 @@
 <?php $component = $__componentOriginal6f9d0ad23f77111c926012ad6ce09333; ?>
 <?php unset($__componentOriginal6f9d0ad23f77111c926012ad6ce09333); ?>
 <?php endif; ?>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
      <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal30dbd75eb120a380110a2b340cd88f46)): ?>

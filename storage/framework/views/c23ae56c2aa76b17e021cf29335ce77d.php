@@ -11,7 +11,7 @@
     </div>
 
     <!-- نمایش فرم -->
-    <?php if($showForm): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($showForm): ?>
     <div id="customer-form-section" class="mb-8">
         <?php
 $__split = function ($name, $params = []) {
@@ -19,7 +19,11 @@ $__split = function ($name, $params = []) {
 };
 [$__name, $__params] = $__split('sarafi.customers', []);
 
-$__html = app('livewire')->mount($__name, $__params, 'lw-2289573421-0', $__slots ?? [], get_defined_vars());
+$key = null;
+
+$key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-2289573421-0', null);
+
+$__html = app('livewire')->mount($__name, $__params, $key);
 
 echo $__html;
 
@@ -30,7 +34,7 @@ unset($__split);
 if (isset($__slots)) unset($__slots);
 ?>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <!-- نمایش جدول -->
     <?php
@@ -39,7 +43,11 @@ $__split = function ($name, $params = []) {
 };
 [$__name, $__params] = $__split('sarafi.customers-table', []);
 
-$__html = app('livewire')->mount($__name, $__params, 'lw-2289573421-1', $__slots ?? [], get_defined_vars());
+$key = null;
+
+$key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-2289573421-1', null);
+
+$__html = app('livewire')->mount($__name, $__params, $key);
 
 echo $__html;
 

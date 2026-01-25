@@ -1,7 +1,7 @@
 <div>
     <div class="container mx-auto px-4">
         <!-- Session Message -->
-        <?php if(session()->has('message')): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session()->has('message')): ?>
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
             <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -11,7 +11,7 @@
                 </h2>
             </div>
         </div>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         <!-- Page Header -->
         <div class="space-y-4 mb-6">
@@ -54,7 +54,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $__empty_1 = true; $__currentLoopData = $pendingApprovals; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $approval): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $pendingApprovals; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $approval): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                   <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
                                odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
                                     transition-colors">
@@ -137,7 +137,7 @@
                                         هیچ حواله‌ای در انتظار تایید وجود ندارد
                                     </td>
                                 </tr>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </tbody>
                         </table>
                     </div>
@@ -147,7 +147,7 @@
     </div>
 
     <!-- Modal تایید -->
-    <?php if($confirmApproveId): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($confirmApproveId): ?>
     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
         <div class="bg-[#F5F5F5] dark:bg-black dark:border dark:border-white dark:text-white p-6 rounded-[12px] shadow-xl w-[600px] max-h-[90vh] overflow-y-auto"
             style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
@@ -168,7 +168,7 @@
                 </div>
 
 
-                <?php if($withCommission): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($withCommission): ?>
                 <div class="space-y-3 animate-fadeIn">
                     <!-- حساب کمیشن -->
                     <div>
@@ -176,14 +176,14 @@
                         <select wire:model="commissionAccount"
                             class="w-full h-[50px] p-3 rounded-[8px] border border-[#8C8C8C] dark:bg-black dark:border dark:border-white bg-white focus:ring-2 focus:ring-blue-500 vazir">
                             <option value="">انتخاب حساب کمیشن</option>
-                            <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <option value="<?php echo e($customer['id']); ?>">
                                 <?php echo e($customer['account_number']); ?> - <?php echo e($customer['fullname']); ?>
 
                             </option>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </select>
-                        <?php $__errorArgs = ['commissionAccount'];
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['commissionAccount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -192,7 +192,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
 
                     <!-- ارز کمیشن -->
@@ -210,7 +210,7 @@ unset($__errorArgs, $__bag); ?>
                             <option value="cny">یوان</option>
                             <option value="pkr">کلدار</option>
                         </select>
-                        <?php $__errorArgs = ['commissionCurrency'];
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['commissionCurrency'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -219,7 +219,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
 
                     <!-- مبلغ کمیشن -->
@@ -227,7 +227,7 @@ unset($__errorArgs, $__bag); ?>
                         <label class="block text-sm font-medium text-black mb-1 vazir">مبلغ کمیشن</label>
                         <input type="text" wire:model="commissionAmount" placeholder="0"
                             class="w-full h-[50px] p-3 text-left rounded-[8px] border border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 bg-white vazir" />
-                        <?php $__errorArgs = ['commissionAmount'];
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['commissionAmount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -236,11 +236,11 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                     </div>
                 </div>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
 
             <div class="flex justify-center  text-center gap-3">
@@ -270,9 +270,9 @@ unset($__errorArgs, $__bag); ?>
             </div>
         </div>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     <!-- Modal رد -->
-    <?php if($confirmRejectId): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($confirmRejectId): ?>
     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
         <div
             class="bg-white dark:bg-black dark:text-white dark:border dark:border-white p-6 rounded-[12px] shadow-xl w-[600px]">
@@ -292,5 +292,5 @@ unset($__errorArgs, $__bag); ?>
             </div>
         </div>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/remittance-approval.blade.php ENDPATH**/ ?>

@@ -85,9 +85,9 @@
             <th>مارکت</th>
             <th>نام کارمند</th>
             <th>معاش</th>
-            <?php if(!empty($salary->reduce_loan) && $salary->reduce_loan > 0): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($salary->reduce_loan) && $salary->reduce_loan > 0): ?>
                 <th>رسید قرض</th>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             <th>رسید معاش</th>
             <th>باقی‌مانده معاش</th>
             <th>تاریخ پرداخت</th>
@@ -98,9 +98,9 @@
             <td><?php echo e($salary->market->name ?? '-'); ?></td>
             <td><?php echo e($salary->staff->fullname ?? '-'); ?></td>
             <td><?php echo e(number_format($salary->salary)); ?></td>
-            <?php if(!empty($salary->reduce_loan) && $salary->reduce_loan > 0): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($salary->reduce_loan) && $salary->reduce_loan > 0): ?>
                 <td><?php echo e(number_format($salary->reduce_loan)); ?></td>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             <td><?php echo e(number_format($salary->paid ?? 0)); ?></td>
             <td><?php echo e(number_format($salary->remained ?? 0)); ?></td>
             <td><?php echo e(\Morilog\Jalali\Jalalian::fromDateTime($salary->paid_date)->format('Y/m/d')); ?></td>
@@ -143,9 +143,9 @@
             <th>مارکت</th>
             <th>نام کارمند</th>
             <th>معاش</th>
-            <?php if(!empty($salary->reduce_loan) && $salary->reduce_loan > 0): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($salary->reduce_loan) && $salary->reduce_loan > 0): ?>
                 <th>رسید قرض</th>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             <th>رسید معاش</th>
             <th>باقی‌مانده معاش</th>
             <th>تاریخ پرداخت</th>
@@ -156,9 +156,9 @@
             <td><?php echo e($salary->market->name ?? '-'); ?></td>
             <td><?php echo e($salary->staff->fullname ?? '-'); ?></td>
             <td><?php echo e(number_format($salary->salary)); ?></td>
-            <?php if(!empty($salary->reduce_loan) && $salary->reduce_loan > 0): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($salary->reduce_loan) && $salary->reduce_loan > 0): ?>
                 <td><?php echo e(number_format($salary->reduce_loan)); ?></td>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             <td><?php echo e(number_format($salary->paid ?? 0)); ?></td>
             <td><?php echo e(number_format($salary->remained ?? 0)); ?></td>
             <td><?php echo e(\Morilog\Jalali\Jalalian::fromDateTime($salary->paid_date)->format('Y/m/d')); ?></td>

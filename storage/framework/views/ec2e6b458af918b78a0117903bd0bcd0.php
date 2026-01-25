@@ -50,29 +50,29 @@ unset($__defined_vars, $__key, $__value); ?>
         ])); ?>
 
 >
-    <?php if($heading || $description): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($heading || $description): ?>
         <div class="grid gap-y-1">
-            <?php if($heading): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($heading): ?>
                 <h3
                     class="fi-ta-header-heading text-base font-semibold leading-6 text-gray-950 dark:text-white"
                 >
                     <?php echo e($heading); ?>
 
                 </h3>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-            <?php if($description): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($description): ?>
                 <p
                     class="fi-ta-header-description text-sm text-gray-600 dark:text-gray-400"
                 >
                     <?php echo e($description); ?>
 
                 </p>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-    <?php if($actions): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($actions): ?>
         <?php if (isset($component)) { $__componentOriginal32a2358b99de73a2a27625c392d6fe38 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal32a2358b99de73a2a27625c392d6fe38 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-tables::components.actions','data' => ['actions' => $actions,'alignment' => Alignment::Start,'wrap' => true,'class' => \Illuminate\Support\Arr::toCssClasses([
@@ -99,6 +99,6 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php $component = $__componentOriginal32a2358b99de73a2a27625c392d6fe38; ?>
 <?php unset($__componentOriginal32a2358b99de73a2a27625c392d6fe38); ?>
 <?php endif; ?>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </div>
 <?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/vendor/filament/tables/resources/views/components/header.blade.php ENDPATH**/ ?>

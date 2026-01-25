@@ -106,12 +106,12 @@
     </td>
 </tr>
 
-        <?php if($withdraw->description): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($withdraw->description): ?>
         <tr>
             <th>توضیحات</th>
             <td><?php echo e($withdraw->description); ?></td>
         </tr>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </table>
 
     <div class="line"></div>

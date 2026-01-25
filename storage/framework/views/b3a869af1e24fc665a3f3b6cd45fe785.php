@@ -76,12 +76,12 @@
 
                             </span>
                         </div>
-                        <?php if($sale->customer): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($sale->customer): ?>
                         <div class="flex justify-between">
                             <span class="text-gray-600">مشتری:</span>
                             <span class="font-bold"><?php echo e($sale->customer->name); ?></span>
                         </div>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
                 </div>
 
@@ -126,7 +126,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php $__currentLoopData = $sale->items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $sale->items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr class="hover:bg-gray-50">
                                 <td class="border border-gray-300 p-3 text-center"><?php echo e($index + 1); ?></td>
                                 <td class="border border-gray-300 p-3"><?php echo e($item->product_name); ?></td>
@@ -135,7 +135,7 @@
                                 <td class="border border-gray-300 p-3 text-left"><?php echo e(number_format($item->price_per_unit, 3)); ?></td>
                                 <td class="border border-gray-300 p-3 text-left font-bold"><?php echo e(number_format($item->total_price, 3)); ?></td>
                             </tr>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </tbody>
                     </table>
                 </div>
@@ -154,12 +154,12 @@
                             <span class="text-xl font-bold text-blue-800"><?php echo e(number_format($sale->total_price, 3)); ?> دالر</span>
                         </div>
                         
-                        <?php if($sale->discount > 0): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($sale->discount > 0): ?>
                         <div class="flex justify-between items-center">
                             <span class="text-red-600">تخفیف:</span>
                             <span class="text-lg font-bold text-red-600">- <?php echo e(number_format($sale->discount, 3)); ?> دالر</span>
                         </div>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                         <div class="flex justify-between items-center border-t border-blue-200 pt-3">
                             <span class="text-green-700 font-bold">مبلغ نهایی:</span>
@@ -173,12 +173,12 @@
                             <span class="text-lg font-bold text-gray-800"><?php echo e(number_format($sale->received_amount, 3)); ?> دالر</span>
                         </div>
 
-                        <?php if($sale->remaining_amount > 0): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($sale->remaining_amount > 0): ?>
                         <div class="flex justify-between items-center">
                             <span class="text-orange-600">باقیمانده:</span>
                             <span class="text-lg font-bold text-orange-600"><?php echo e(number_format($sale->remaining_amount, 3)); ?> دالر</span>
                         </div>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
                 </div>
 

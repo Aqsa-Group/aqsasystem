@@ -124,7 +124,7 @@
         <p>تاریخ گزارش: <?php echo e($reportDate); ?></p>
     </div>
 
-    <?php if(!empty($staffName) || !empty($filters['expanses_type']) || !empty($filters['currency']) || !empty($filters['fromDate']) || !empty($filters['toDate'])): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($staffName) || !empty($filters['expanses_type']) || !empty($filters['currency']) || !empty($filters['fromDate']) || !empty($filters['toDate'])): ?>
     <div class="filters">
         <h3 style="margin-top: 0; margin-bottom: 10px; color: #333;">فیلترهای اعمال شده</h3>
         <table>
@@ -132,20 +132,20 @@
                 <?php if(!empty($staffName)): ?>
                 <td class="label">کارمند</td>
                 <td><?php echo e($staffName); ?></td>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 
-                <?php if(!empty($filters['expanses_type'])): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($filters['expanses_type'])): ?>
                 <td class="label">نوع هزینه</td>
                 <td><?php echo e($filters['expanses_type']); ?></td>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </tr>
             <tr>
-                <?php if(!empty($filters['currency'])): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($filters['currency'])): ?>
                 <td class="label">ارز</td>
                 <td><?php echo e($currencies[$filters['currency']] ?? $filters['currency']); ?></td>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 
-                <?php if(!empty($filters['fromDate']) || !empty($filters['toDate'])): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($filters['fromDate']) || !empty($filters['toDate'])): ?>
                 <td class="label">بازه زمانی</td>
                 <td>
                     <?php echo e($filters['fromDate'] ? str_replace('-', '/', $filters['fromDate']) : 'از ابتدا'); ?> 
@@ -153,16 +153,16 @@
                     <?php echo e($filters['toDate'] ? str_replace('-', '/', $filters['toDate']) : 'تا کنون'); ?>
 
                 </td>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </tr>
         </table>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <!-- جدول اصلی برداشت‌ها -->
     <h3 style="color: #333; margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px;">لیست برداشت‌ها</h3>
     
-    <?php if($transactions->count() > 0): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($transactions->count() > 0): ?>
     <table class="main-table">
         <thead>
             <tr>
@@ -176,7 +176,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php $__currentLoopData = $transactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $transaction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $transactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $transaction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <tr>
                 <td><?php echo e($index + 1); ?></td>
                 <td>
@@ -192,17 +192,17 @@
 
                 </td>
             </tr>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </tbody>
     </table>
     <?php else: ?>
     <div class="no-data">
         هیچ برداشتی در بازه زمانی انتخاب شده یافت نشد.
     </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <!-- جدول خلاصه -->
-    <?php if($summary->count() > 0): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($summary->count() > 0): ?>
     <div class="summary-table">
         <h3 style="color: #333; margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px;">خلاصه گزارش بر اساس ارز</h3>
         
@@ -215,20 +215,20 @@
                 </tr>
             </thead>
             <tbody>
-                <?php $__currentLoopData = $summary; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $summary; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr>
                     <td><?php echo e($index + 1); ?></td>
                     <td><?php echo e($item->currency_fa); ?></td>
                     <td class="text-red"><?php echo e(number_format($item->total_amount, 2)); ?></td>
                 </tr>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 
                 <!-- جمع کل -->
                
             </tbody>
         </table>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
    
 </body>

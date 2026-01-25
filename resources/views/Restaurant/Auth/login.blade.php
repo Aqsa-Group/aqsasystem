@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ورود به پنل رستورانت</title>
+    <link rel="icon" type="image/jpeg" href="{{ asset('assets/aqsa.jpg') }}">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{{ asset('assets/js/app.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('assets/css/sarafi.css')}}">
+
+
+    <!-- تعریف فونت -->
+
+</head>
+
+<body class="bg-gradient-to-l from-blue-100 to-slate-100">
+
+    <div class="flex justify-center items-center h-screen px-4 md:px-0  ">
+        <div
+            class="flex flex-col w-[1200px] h-fit p-4 md:p-0 md:flex-row-reverse items-center gap-10 bg-white shadow-lg rounded-2xl backdrop:blur-2xl">
+
+
+            <div class="md:w-1/2 w-full flex justify-center relative ">
+                <img src="{{ asset('assets/restaurant/login.jpg') }}" alt="ورود به پنل صرافی"
+                    class="shadow-md w-full h-[600px] object-cover rounded-tr-[20%] rounded-br-[20%]">
+
+            
+            </div>
+
+
+            <div class="md:w-1/2 w-full pr-0 md:pr-6">
+                <form action="{{ route('restaurant.login') }}" method="POST"
+                    class="space-y-5 border border-[#8C8C8C] p-6 rounded-lg bg-white relative">
+                    @csrf
+                    <h1 class="text-4xl font-bold text-center mb-2 inter">
+                        ورود به پنل رستورانت
+                    </h1>
+
+                    <!-- نام کاربری -->
+                    <div class="flex flex-col relative">
+                        <label for="username" class="mb-2 font-semibold vazir text-[#000000]">نام کاربری</label>
+                        <input id="username" name="username" value="{{ old('username') }}" type="text"
+                            placeholder="نام کاربری خود را وارید کنید!"
+                            class="border border-[#8C8C8C] rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 vazir">
+                        <img src="{{ asset('assets/sarafi/all_icon/profile.svg') }}" alt="آیکون پروفایل"
+                            class="h-5 w-5 absolute right-3 bottom-3">
+                    </div>
+
+                    <!-- رمز عبور -->
+                    <div class="flex flex-col relative">
+                        <label for="password" class="mb-2 font-semibold vazir">رمز عبور</label>
+                        <input id="password" name="password" type="password" placeholder=" رمز عبور خود را وارید کنید!"
+                            class="border border-[#8C8C8C] rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                      
+                            <img src="{{ asset('assets/sarafi/all_icon/lock.png') }}" alt="آیکون قفل"
+                            class="h-5 w-5 absolute right-3 bottom-3">
+                      
+                    </div>
+
+                    <!-- دکمه ورود -->
+                    <button type="submit"
+                        class="w-full bg-gradient-to-r from-red-600 to-rose-800 text-white py-3 vazir rounded-lg hover:bg-rose-900  transition duration-300">
+                        ورود به حساب
+                    </button>
+
+
+                    @if ($errors->any())
+                    <div class="error-message">
+                        {{ $errors->first() }}
+                    </div>
+                    @endif
+
+                    @if (session('error'))
+                    <div class="error-message text-center text-red-500 vazir">
+                        {{ session('error') }}
+                    </div>
+                    @endif
+
+
+                    @if (session('success'))
+                    <div class="success-message">
+                        {{ session('success') }}
+                    </div>
+                    @endif
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

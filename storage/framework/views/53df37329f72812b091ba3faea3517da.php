@@ -13,7 +13,7 @@
             </tr>
         </thead>
         <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-            <?php $__empty_1 = true; $__currentLoopData = $sales; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $sale): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $sales; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $sale): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
             <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
                 <td class="p-2 border"><?php echo e($index + 1); ?></td>
                 <td class="p-2 border"><?php echo e($sale['invoice_number'] ?? '---'); ?></td>
@@ -41,7 +41,7 @@
             <tr>
                 <td colspan="8" class="text-center py-6 text-gray-400">هیچ فروشی ثبت نشده است.</td>
             </tr>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </tbody>
     </table>
 </div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/filament/import/pages/partials/sales-table.blade.php ENDPATH**/ ?>

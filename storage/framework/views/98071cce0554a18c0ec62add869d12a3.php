@@ -57,22 +57,22 @@ unset($__defined_vars, $__key, $__value); ?>
 
         </h4>
 
-        <?php if($details): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($details): ?>
             <dl class="mt-1">
-                <?php $__currentLoopData = $details; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $label => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $details; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $label => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="text-sm text-gray-500 dark:text-gray-400">
-                        <?php if($isAssoc ??= \Illuminate\Support\Arr::isAssoc($details)): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isAssoc ??= \Illuminate\Support\Arr::isAssoc($details)): ?>
                             <dt class="inline font-medium"><?php echo e($label); ?>:</dt>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                         <dd class="inline"><?php echo e($value); ?></dd>
                     </div>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </dl>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </a>
 
-    <?php if($actions): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($actions): ?>
         <?php if (isset($component)) { $__componentOriginal06869628e057700d7c7d1210beefbe23 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal06869628e057700d7c7d1210beefbe23 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-panels::components.global-search.actions','data' => ['actions' => $actions]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -93,6 +93,6 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php $component = $__componentOriginal06869628e057700d7c7d1210beefbe23; ?>
 <?php unset($__componentOriginal06869628e057700d7c7d1210beefbe23); ?>
 <?php endif; ?>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </li>
 <?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/vendor/filament/filament/resources/views/components/global-search/result.blade.php ENDPATH**/ ?>

@@ -14,7 +14,7 @@
             </tr>
         </thead>
         <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-            <?php $__empty_1 = true; $__currentLoopData = $loans; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $loan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $loans; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $loan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
                     <td class="p-2 border"><?php echo e($index + 1); ?></td>
                     <td class="p-2 border">
@@ -36,7 +36,7 @@
                 <tr>
                     <td colspan="9" class="text-center py-6 text-gray-400">هیچ قرضه‌ای ثبت نشده است.</td>
                 </tr>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </tbody>
     </table>
 </div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/filament/import/pages/partials/loans-table.blade.php ENDPATH**/ ?>

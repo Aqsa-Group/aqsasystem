@@ -10,25 +10,25 @@
         $to = $state[1] ?? null;
     ?>
 
-    <?php if(filled($label = $getLabel())): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(filled($label = $getLabel())): ?>
         <span class="text-sm font-medium text-gray-950 dark:text-white">
             <?php echo e($label); ?>
 
         </span>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-    <?php if(filled($from) || filled($to)): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(filled($from) || filled($to)): ?>
         <span class="text-sm text-gray-500 dark:text-gray-400">
             <?php echo e($from); ?>
 
 
             <?php if(filled($from) && filled($to)): ?>
                 -
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
             <?php echo e($to); ?>
 
         </span>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </div>
 <?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/vendor/filament/tables/resources/views/columns/summaries/range.blade.php ENDPATH**/ ?>

@@ -91,7 +91,7 @@
     </div>
 
     <!-- جدول ساده -->
-    <?php if(isset($balances) && count($balances) > 0): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($balances) && count($balances) > 0): ?>
     <table class="simple-table">
         <thead>
             <tr>
@@ -100,19 +100,19 @@
             </tr>
         </thead>
         <tbody>
-            <?php $__currentLoopData = $balances; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $balance): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $balances; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $balance): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <tr>
                 <td><strong><?php echo e($balance['name_fa'] ?? '---'); ?></strong></td>
                 <td class="amount-cell"><?php echo e(number_format($balance['current_balance'] ?? 0)); ?></td>
             </tr>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </tbody>
     </table>
     <?php else: ?>
     <div style="text-align: center; padding: 40px; color: #7f8c8d; font-style: italic;">
         هیچ موجودی فعالی وجود ندارد
     </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <!-- فوتر -->
     <div class="footer">

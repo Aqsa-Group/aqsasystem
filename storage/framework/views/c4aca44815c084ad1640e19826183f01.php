@@ -136,7 +136,7 @@
         ]); ?>"
         x-ref="header"
     >
-        <?php $__currentLoopData = $getChildComponentContainer()->getComponents(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $step): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $getChildComponentContainer()->getComponents(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $step): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <li
                 class="fi-fo-wizard-header-step relative flex"
                 x-bind:class="{
@@ -189,7 +189,7 @@
 <?php unset($__componentOriginalbfc641e0710ce04e5fe02876ffc6f950); ?>
 <?php endif; ?>
 
-                        <?php if(filled($icon = $step->getIcon())): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(filled($icon = $step->getIcon())): ?>
                             <?php if (isset($component)) { $__componentOriginalbfc641e0710ce04e5fe02876ffc6f950 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalbfc641e0710ce04e5fe02876ffc6f950 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.icon','data' => ['icon' => $icon,'xCloak' => 'x-cloak','xShow' => 'getStepIndex(step) <= '.e($loop->index).'','class' => 'fi-fo-wizard-header-step-icon h-6 w-6','xBind:class' => '{
@@ -230,11 +230,11 @@
                                 <?php echo e(str_pad($loop->index + 1, 2, '0', STR_PAD_LEFT)); ?>
 
                             </span>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
 
                     <div class="grid justify-items-start md:w-max md:max-w-60">
-                        <?php if(! $step->isLabelHidden()): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(! $step->isLabelHidden()): ?>
                             <span
                                 class="fi-fo-wizard-header-step-label text-sm font-medium"
                                 x-bind:class="{
@@ -248,20 +248,20 @@
                                 <?php echo e($step->getLabel()); ?>
 
                             </span>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                        <?php if(filled($description = $step->getDescription())): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(filled($description = $step->getDescription())): ?>
                             <span
                                 class="fi-fo-wizard-header-step-description text-start text-sm text-gray-500 dark:text-gray-400"
                             >
                                 <?php echo e($description); ?>
 
                             </span>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
                 </button>
 
-                <?php if(! $loop->last): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(! $loop->last): ?>
                     <div
                         aria-hidden="true"
                         class="fi-fo-wizard-header-step-separator absolute end-0 hidden h-full w-5 md:block"
@@ -280,15 +280,15 @@
                             ></path>
                         </svg>
                     </div>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </li>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </ol>
 
-    <?php $__currentLoopData = $getChildComponentContainer()->getComponents(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $step): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $getChildComponentContainer()->getComponents(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $step): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <?php echo e($step); ?>
 
-    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <div
         class="<?php echo \Illuminate\Support\Arr::toCssClasses([

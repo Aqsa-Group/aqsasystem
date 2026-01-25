@@ -6,15 +6,15 @@
     <div class="w-full max-w-[460px] md:max-w-[800px] lg:max-w-[1200px] p-8 mx-auto bg-white border border-[#D7E5EC] shadow-sm rounded-2xl space-y-6">
 
         
-        <!--[if BLOCK]><![endif]--><?php if($currentUser && $currentUser->role === 'superadmin'): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($currentUser && $currentUser->role === 'superadmin'): ?>
             <div class="text-center space-y-2">
                 <h2 class="text-3xl font-extrabold text-gray-900 vazir tracking-widest">ثبت اطلاعیه آنلاین</h2>
                 <p class="text-lg text-gray-600 vazir">پیام جدید برای کاربران صرافی ثبت کنید</p>
             </div>
 
-            <!--[if BLOCK]><![endif]--><?php if(session()->has('success')): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session()->has('success')): ?>
                 <p class="text-green-600 text-sm text-center"><?php echo e(session('success')); ?></p>
-            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
             <form wire:submit.prevent="save" class="space-y-4">
                 <div class="relative">
@@ -37,13 +37,13 @@
                     </button>
                 </div>
             </form>
-        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         
         <div class="space-y-4 mt-6">
             <h3 class="text-2xl font-bold text-gray-700 vazir text-center mb-6">آخرین اطلاعیه‌ها</h3>
 
-    <!--[if BLOCK]><![endif]--><?php $__empty_1 = true; $__currentLoopData = $notifications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $n): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $notifications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $n): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
         <?php
             $isNew = $currentUser && !$n->seenByUsers->contains($currentUser->id);
 
@@ -69,15 +69,15 @@
                     </svg>
                     <?php echo e(Jalalian::fromCarbon(\Carbon\Carbon::parse($n->created_at))->format('Y/m/d h:i A')); ?>
 
-                    <!--[if BLOCK]><![endif]--><?php if($isNew): ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isNew): ?>
                         <span class="ml-2 px-1.5 py-0.5 text-[10px] font-bold text-white bg-blue-500 rounded">جدید</span>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
             </div>
         </div>
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
         <p class="text-center text-gray-400 text-sm">هیچ اطلاعیه‌ای وجود ندارد</p>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         </div>
     </div>

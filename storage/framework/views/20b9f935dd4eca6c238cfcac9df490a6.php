@@ -1,6 +1,6 @@
 <div>
     <!-- Alert Component -->
-    <?php if(session()->has('message')): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session()->has('message')): ?>
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
         class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
         <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -10,7 +10,7 @@
             </h2>
         </div>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <!-- Main Container -->
     <div class="w-full max-w-[1400px] mx-auto p-4">
@@ -21,17 +21,17 @@
                 سیستم حضور و غیاب کارمندان
             </h1>
             <p class="text-base text-gray-600 dark:text-gray-300 vazir">
-                <?php if($isMonthlyView): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isMonthlyView): ?>
                 نمایش و گزارش حضور و غیاب ماه <?php echo e($persianMonths[$monthFilter]); ?> سال <?php echo e($yearFilter); ?>
 
                 <?php else: ?>
                 ثبت روزانه حضور و غیاب با نعیین معاش دریافتی هر کارمند
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </p>
         </div>
 
         <!-- Date & Time Section -->
-        <?php if(!$isMonthlyView): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!$isMonthlyView): ?>
         <div class="bg-[#F5F5F5] dark:bg-blue-900/20 rounded-xl mt-5 p-5 mb-6"
             style="box-shadow: 0px 4px 4px 0px #00000040;">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -84,7 +84,7 @@
                 </div>
             </div>
         </div>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         <!-- Filters Section -->
         <div class="w-full">
@@ -103,11 +103,11 @@
                                     d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                             </svg>
                             <span wire:loading.remove wire:target="printReport">
-                                <?php if($isMonthlyView): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isMonthlyView): ?>
                                 چاپ گزارش ماهانه
                                 <?php else: ?>
                                 چاپ گزارش روزانه
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </span>
                             <span wire:loading wire:target="printReport">در حال تولید گزارش...</span>
                         </button>
@@ -128,17 +128,17 @@
                         <select wire:model.live="filterEmployee" class="w-full h-[60px] appearance-none border dark:bg-black dark:border-white
                                    border-[#8C8C8C] rounded-xl px-4 text-sm">
                             <option value="">انتخاب کارمند</option>
-                            <?php $__currentLoopData = $staffs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $staff): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $staffs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $staff): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($staff['id']); ?>">
                                     <?php echo e($staff['name']); ?> <?php echo e($staff['fathername']); ?>
 
                                 </option>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </select>
                     </div>
 
                     <!-- وضعیت (فقط در حالت روزانه فعال باشد) -->
-                    <?php if(!$isMonthlyView): ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!$isMonthlyView): ?>
                     <div>
                         <select wire:model.live="filterStatus" class="w-full h-[60px] appearance-none border dark:bg-black dark:border-white
                                    border-[#8C8C8C] rounded-xl px-4 text-sm">
@@ -147,16 +147,16 @@
                             <option value="غیرحاضر">غیرحاضر</option>
                         </select>
                     </div>
-                    <?php endif; ?>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                     <!-- فیلتر ماه -->
                     <div>
                         <select wire:model.live="filterMonth" class="w-full h-[60px] appearance-none border dark:bg-black dark:border-white
                                    border-[#8C8C8C] rounded-xl px-4 text-sm">
                             <option value="">فیلتر ماه</option>
-                            <?php $__currentLoopData = $persianMonths; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $month): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $persianMonths; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $month): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($key); ?>"><?php echo e($month); ?></option>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </select>
                     </div>
                     
@@ -169,12 +169,12 @@
                                 $currentYear = \Morilog\Jalali\Jalalian::now()->getYear();
                                 $years = range($currentYear - 2, $currentYear + 2);
                             ?>
-                            <?php $__currentLoopData = $years; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $year): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $years; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $year): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($year); ?>" <?php echo e($year == $yearFilter ? 'selected' : ''); ?>>
                                     <?php echo e($year); ?>
 
                                 </option>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </select>
                     </div>
                 </div>
@@ -182,7 +182,7 @@
         </div>
 
         <!-- Detailed Attendance Form (فقط در حالت روزانه نمایش داده شود) -->
-        <?php if($selectedStaff && !$isMonthlyView): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($selectedStaff && !$isMonthlyView): ?>
         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-6">
             <div class="flex items-center justify-between mb-6">
                 <div>
@@ -241,7 +241,7 @@
                         </div>
 
                         <!-- Time Input -->
-                        <?php if($attendanceData['morning_present']): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($attendanceData['morning_present']): ?>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 زمان حضور صبح
@@ -262,7 +262,7 @@
                                 فرمت: ساعت:دقیقه AM/PM (مثال: 08:30 AM)
                             </p>
                         </div>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
                 </div>
 
@@ -305,7 +305,7 @@
                         </div>
 
                         <!-- Time Input -->
-                        <?php if($attendanceData['evening_present']): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($attendanceData['evening_present']): ?>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 زمان حضور شام
@@ -326,7 +326,7 @@
                                 فرمت: ساعت:دقیقه AM/PM (مثال: 01:00 PM)
                             </p>
                         </div>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -338,7 +338,7 @@
                 </h3>
 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <?php $__currentLoopData = ['none' => 'بدون مرخصی', 'morning' => 'مرخصی صبح', 'evening' => 'مرخصی شام', 'full_day'
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = ['none' => 'بدون مرخصی', 'morning' => 'مرخصی صبح', 'evening' => 'مرخصی شام', 'full_day'
                     =>
                     'مرخصی کامل']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <label
@@ -348,10 +348,10 @@
                             class="w-4 h-4 text-blue-600 focus:ring-blue-500">
                         <span class="mr-3 text-sm text-gray-700 dark:text-gray-300"><?php echo e($label); ?></span>
                     </label>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
 
-                <?php if($attendanceData['leave_type'] !== 'none'): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($attendanceData['leave_type'] !== 'none'): ?>
                 <div class="mt-4">
                     <label class="flex items-center">
                         <input type="checkbox" wire:model="attendanceData.is_paid"
@@ -362,7 +362,7 @@
                         در صورت انتخاب مرخصی با حقوق، معاش آن نوبت محاسبه می‌شود
                     </p>
                 </div>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
 
             <!-- Notes -->
@@ -387,12 +387,12 @@
                 </button>
             </div>
         </div>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
        <!-- در بخش Quick Attendance Table (خط 391 به بعد) -->
 
 <!-- Quick Attendance Table (حالت روزانه) -->
-<?php if(!$isMonthlyView): ?>
+<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!$isMonthlyView): ?>
 <div class="bg-[#F5F5F5] dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-6"
     style="box-shadow: 0px 4px 4px 0px #00000040;">
     <div class="flex items-center justify-between mb-6">
@@ -426,7 +426,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php $__empty_1 = true; $__currentLoopData = $staffsArray; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $staff): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $staffsArray; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $staff): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <?php
                 $attendance = \App\Models\Sarafi\StaffAttendance::where('staff_id', $staff['id'])
                 ->whereDate('attendance_date', $selectedDate)
@@ -445,7 +445,7 @@
                         <div class="flex flex-col items-center gap-2">
                             <button wire:click="quickAttendance(<?php echo e($staff['id']); ?>, 'morning_present')"
                                 class="p-2 rounded-lg <?php echo e($attendance && $attendance->morning_present ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300'); ?>">
-                                <?php if($attendance && $attendance->morning_present): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($attendance && $attendance->morning_present): ?>
                                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -457,14 +457,14 @@
                                         d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </button>
-                            <?php if($attendance && $attendance->morning_time): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($attendance && $attendance->morning_time): ?>
                             <span class="text-xs text-gray-600 dark:text-gray-400">
                                 <?php echo e($attendance->morning_time); ?>
 
                             </span>
-                            <?php endif; ?>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
                     </td>
 
@@ -473,7 +473,7 @@
                         <div class="flex flex-col items-center gap-2">
                             <button wire:click="quickAttendance(<?php echo e($staff['id']); ?>, 'evening_present')"
                                 class="p-2 rounded-lg <?php echo e($attendance && $attendance->evening_present ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300'); ?>">
-                                <?php if($attendance && $attendance->evening_present): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($attendance && $attendance->evening_present): ?>
                                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -485,14 +485,14 @@
                                         d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </button>
-                            <?php if($attendance && $attendance->evening_time): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($attendance && $attendance->evening_time): ?>
                             <span class="text-xs text-gray-600 dark:text-gray-400">
                                 <?php echo e($attendance->evening_time); ?>
 
                             </span>
-                            <?php endif; ?>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
                     </td>
 
@@ -500,7 +500,7 @@
                     <td class="px-6 py-4 text-center">
                         <button wire:click="quickAttendance(<?php echo e($staff['id']); ?>, 'full_day_leave')"
                             class="p-2 rounded-lg <?php echo e($attendance && $attendance->leave_type === 'full_day' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300' : 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300'); ?>">
-                            <?php if($attendance && $attendance->leave_type === 'full_day'): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($attendance && $attendance->leave_type === 'full_day'): ?>
                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd"
                                     d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z"
@@ -512,18 +512,18 @@
                                     d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z"
                                     clip-rule="evenodd" />
                             </svg>
-                            <?php endif; ?>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </button>
                     </td>
 
                     <!-- Day Status -->
                     <td class="px-6 py-4">
-                        <?php if($attendance): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($attendance): ?>
                         <span class="px-3 py-1 rounded-full text-xs 
                         <?php echo e($attendance->morning_present && $attendance->evening_present ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 
                           ($attendance->leave_type !== 'none' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300' : 
                           'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300')); ?>">
-                            <?php if($attendance->leave_type === 'full_day'): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($attendance->leave_type === 'full_day'): ?>
                                 مرخصی کامل
                             <?php elseif($attendance->leave_type === 'morning'): ?>
                                 مرخصی صبح
@@ -537,23 +537,23 @@
                                 حاضر شام
                             <?php else: ?>
                                 غایب
-                            <?php endif; ?>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </span>
                         <?php else: ?>
                         <span
                             class="px-3 py-1 rounded-full text-xs bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300">
                             ثبت نشده
                         </span>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </td>
 
                     <!-- Daily Salary -->
                     <td class="px-6 py-4 font-medium">
-                        <?php if($attendance): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($attendance): ?>
                         <?php echo e(number_format($attendance->daily_salary)); ?> افغانی
                         <?php else: ?>
                         0 افغانی
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </td>
                 </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
@@ -562,25 +562,25 @@
                         هیچ کارمندی یافت نشد.
                     </td>
                 </tr>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </tbody>
         </table>
     </div>
 </div>
-<?php endif; ?>
+<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         <!-- Monthly Report Summary -->
         <div class="bg-[#F5F5F5] dark:bg-gray-800 rounded-2xl shadow-lg p-6"
             style="box-shadow: 0px 4px 4px 0px #00000040;">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white vazir">
-                    <?php if($isMonthlyView): ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isMonthlyView): ?>
                     گزارش تفصیلی ماه <?php echo e($persianMonths[$monthFilter]); ?> سال <?php echo e($yearFilter); ?>
 
                     <?php else: ?>
                     گزارش ماه <?php echo e($persianMonths[$monthFilter]); ?> سال <?php echo e($yearFilter); ?>
 
-                    <?php endif; ?>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </h2>
                 <div class="text-lg font-bold text-blue-600 dark:text-blue-400">
                     مجموع معاش این ماه کل کارمندان: <span class="text-red-500"><?php echo e(number_format($totalMonthlySalary)); ?></span> افغانی
@@ -603,7 +603,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php $__empty_1 = true; $__currentLoopData = $monthlyReport; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $monthlyReport; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                         <?php
                         $totalDays = $this->getJalaliDaysInMonth($yearFilter, $monthFilter);
                         $presentDays = $report['full_days'] + ($report['half_days'] * 0.5);
@@ -641,7 +641,7 @@
                                 هیچ گزارشی برای این ماه موجود نیست.
                             </td>
                         </tr>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </tbody>
                 </table>
             </div>

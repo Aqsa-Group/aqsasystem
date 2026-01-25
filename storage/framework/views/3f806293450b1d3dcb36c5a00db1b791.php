@@ -1,4 +1,4 @@
-<?php if($this instanceof \Filament\Actions\Contracts\HasActions && (! $this->hasActionsModalRendered)): ?>
+<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($this instanceof \Filament\Actions\Contracts\HasActions && (! $this->hasActionsModalRendered)): ?>
     <form wire:submit.prevent="callMountedAction">
         <?php
             $action = $this->getMountedAction();
@@ -40,21 +40,21 @@
 
                 $wire.unmountAction(false, false)
             ','x-on:opened-form-component-action-modal.window' => 'if ($event.detail.id === \''.e($this->getId()).'\') close()']); ?>
-            <?php if($action): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($action): ?>
                 <?php echo e($action->getModalContent()); ?>
 
 
-                <?php if(count(($infolist = $action->getInfolist())?->getComponents() ?? [])): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(count(($infolist = $action->getInfolist())?->getComponents() ?? [])): ?>
                     <?php echo e($infolist); ?>
 
                 <?php elseif($this->mountedActionHasForm(mountedAction: $action)): ?>
                     <?php echo e($this->getMountedActionForm(mountedAction: $action)); ?>
 
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                 <?php echo e($action->getModalContentFooter()); ?>
 
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
          <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal0942a211c37469064369f887ae8d1cef)): ?>
@@ -70,9 +70,9 @@
     <?php
         $this->hasActionsModalRendered = true;
     ?>
-<?php endif; ?>
+<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-<?php if($this instanceof \Filament\Tables\Contracts\HasTable && (! $this->hasTableModalRendered)): ?>
+<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($this instanceof \Filament\Tables\Contracts\HasTable && (! $this->hasTableModalRendered)): ?>
     <form wire:submit.prevent="callMountedTableAction">
         <?php
             $action = $this->getMountedTableAction();
@@ -114,21 +114,21 @@
 
                 $wire.unmountTableAction(false, false)
             ','x-on:opened-form-component-action-modal.window' => 'if ($event.detail.id === \''.e($this->getId()).'\') close()']); ?>
-            <?php if($action): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($action): ?>
                 <?php echo e($action->getModalContent()); ?>
 
 
-                <?php if(count(($infolist = $action->getInfolist())?->getComponents() ?? [])): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(count(($infolist = $action->getInfolist())?->getComponents() ?? [])): ?>
                     <?php echo e($infolist); ?>
 
                 <?php elseif($this->mountedTableActionHasForm(mountedAction: $action)): ?>
                     <?php echo e($this->getMountedTableActionForm()); ?>
 
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                 <?php echo e($action->getModalContentFooter()); ?>
 
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
          <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal0942a211c37469064369f887ae8d1cef)): ?>
@@ -182,21 +182,21 @@
 
                 $wire.unmountTableBulkAction(false)
             ','x-on:opened-form-component-action-modal.window' => 'if ($event.detail.id === \''.e($this->getId()).'\') close()']); ?>
-            <?php if($action): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($action): ?>
                 <?php echo e($action->getModalContent()); ?>
 
 
-                <?php if(count(($infolist = $action->getInfolist())?->getComponents() ?? [])): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(count(($infolist = $action->getInfolist())?->getComponents() ?? [])): ?>
                     <?php echo e($infolist); ?>
 
                 <?php elseif($this->mountedTableBulkActionHasForm(mountedBulkAction: $action)): ?>
                     <?php echo e($this->getMountedTableBulkActionForm(mountedBulkAction: $action)); ?>
 
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                 <?php echo e($action->getModalContentFooter()); ?>
 
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
          <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal0942a211c37469064369f887ae8d1cef)): ?>
@@ -212,9 +212,9 @@
     <?php
         $this->hasTableModalRendered = true;
     ?>
-<?php endif; ?>
+<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-<?php if($this instanceof \Filament\Infolists\Contracts\HasInfolists && (! $this->hasInfolistsModalRendered)): ?>
+<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($this instanceof \Filament\Infolists\Contracts\HasInfolists && (! $this->hasInfolistsModalRendered)): ?>
     <form wire:submit.prevent="callMountedInfolistAction">
         <?php
             $action = $this->getMountedInfolistAction();
@@ -256,21 +256,21 @@
 
                 $wire.unmountInfolistAction(false, false)
             ','x-on:opened-form-component-action-modal.window' => 'if ($event.detail.id === \''.e($this->getId()).'\') close()']); ?>
-            <?php if($action): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($action): ?>
                 <?php echo e($action->getModalContent()); ?>
 
 
-                <?php if(count(($infolist = $action->getInfolist())?->getComponents() ?? [])): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(count(($infolist = $action->getInfolist())?->getComponents() ?? [])): ?>
                     <?php echo e($infolist); ?>
 
                 <?php elseif($this->mountedInfolistActionHasForm(mountedAction: $action)): ?>
                     <?php echo e($this->getMountedInfolistActionForm(mountedAction: $action)); ?>
 
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                 <?php echo e($action->getModalContentFooter()); ?>
 
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
          <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal0942a211c37469064369f887ae8d1cef)): ?>
@@ -286,9 +286,9 @@
     <?php
         $this->hasInfolistsModalRendered = true;
     ?>
-<?php endif; ?>
+<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-<?php if(! $this->hasFormsModalRendered): ?>
+<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(! $this->hasFormsModalRendered): ?>
     <?php
         $action = $this->getMountedFormComponentAction();
     ?>
@@ -318,21 +318,21 @@
                     $wire.unmountFormComponentAction(false, false)
                 }
             ']); ?>
-            <?php if($action): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($action): ?>
                 <?php echo e($action->getModalContent()); ?>
 
 
-                <?php if(count(($infolist = $action->getInfolist())?->getComponents() ?? [])): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(count(($infolist = $action->getInfolist())?->getComponents() ?? [])): ?>
                     <?php echo e($infolist); ?>
 
                 <?php elseif($this->mountedFormComponentActionHasForm(mountedAction: $action)): ?>
                     <?php echo e($this->getMountedFormComponentActionForm(mountedAction: $action)); ?>
 
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                 <?php echo e($action->getModalContentFooter()); ?>
 
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
          <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal0942a211c37469064369f887ae8d1cef)): ?>
@@ -348,5 +348,5 @@
     <?php
         $this->hasFormsModalRendered = true;
     ?>
-<?php endif; ?>
+<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 <?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/vendor/filament/actions/resources/views/components/modals.blade.php ENDPATH**/ ?>

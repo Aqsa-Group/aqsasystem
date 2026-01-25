@@ -121,12 +121,12 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php $component->withAttributes(['x-model' => 'group','x-on:change' => 'resetCollapsedGroups()']); ?>
                         <option value="">-</option>
 
-                        <?php $__currentLoopData = $groups; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $group): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $groups; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $group): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <option value="<?php echo e($group->getId()); ?>">
                                 <?php echo e($group->getLabel()); ?>
 
                             </option>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                      <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal97dc683fe4ff7acce9e296503563dd85)): ?>
@@ -149,7 +149,7 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php endif; ?>
             </label>
 
-            <?php if(! $directionSetting): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(! $directionSetting): ?>
                 <label x-cloak x-show="group" class="grid gap-y-2">
                     <span class="<?php echo e($labelClasses); ?>">
                         <?php echo e(__('filament-tables::table.grouping.fields.direction.label')); ?>
@@ -206,7 +206,7 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php unset($__componentOriginal505efd9768415fdb4543e8c564dad437); ?>
 <?php endif; ?>
                 </label>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
      <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
@@ -219,7 +219,7 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php unset($__componentOriginal22ab0dbc2c6619d5954111bba06f01db); ?>
 <?php endif; ?>
 
-    <?php if(! $dropdownOnDesktop): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(! $dropdownOnDesktop): ?>
         <div class="hidden items-center gap-x-3 sm:flex">
             <label>
                 <span class="sr-only">
@@ -252,12 +252,12 @@ unset($__defined_vars, $__key, $__value); ?>
 
                         </option>
 
-                        <?php $__currentLoopData = $groups; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $group): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $groups; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $group): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <option value="<?php echo e($group->getId()); ?>">
                                 <?php echo e($group->getLabel()); ?>
 
                             </option>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                      <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal97dc683fe4ff7acce9e296503563dd85)): ?>
@@ -280,7 +280,7 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php endif; ?>
             </label>
 
-            <?php if(! $directionSetting): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(! $directionSetting): ?>
                 <label x-cloak x-show="group">
                     <span class="sr-only">
                         <?php echo e(__('filament-tables::table.grouping.fields.direction.label')); ?>
@@ -337,8 +337,8 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php unset($__componentOriginal505efd9768415fdb4543e8c564dad437); ?>
 <?php endif; ?>
                 </label>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </div>
 <?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/vendor/filament/tables/resources/views/components/groups.blade.php ENDPATH**/ ?>

@@ -107,7 +107,7 @@
 
 
 
-    <?php if($reportType === 'loan'): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($reportType === 'loan'): ?>
 
     <table>
         <thead >
@@ -142,13 +142,13 @@
     </div>
 
 
-    <?php endif; ?>
-    <?php if($data && $data->count() > 0): ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($data && $data->count() > 0): ?>
     <table>
         <thead>
             <tr>
                 <th class="row-number">#</th>
-                <?php switch($reportType):
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php switch($reportType):
                 case ('withdraw_log'): ?>
                 <th>نوع</th>
                 <th>کارمند</th>
@@ -209,14 +209,14 @@
                 <th>باقی مانده</th>
                 <th>تاریخ ثبت</th>
                 <?php break; ?>
-                <?php endswitch; ?>
+                <?php endswitch; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </tr>
         </thead>
         <tbody>
-            <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <tr>
                 <td class="row-number"><?php echo e($index + 1); ?></td>
-                <?php switch($reportType):
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php switch($reportType):
                 case ('withdraw_log'): ?>
                 <td>
                     <?php
@@ -258,7 +258,7 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                     <span class="font-bold text-gray-900">
-                        <?php if($report->type === 'بردگی'): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($report->type === 'بردگی'): ?>
                         <?php echo e(number_format($report->amount)); ?>
 
 
@@ -266,7 +266,7 @@
                         <?php echo e(number_format($report->loan_recipt)); ?>
 
 
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
@@ -306,10 +306,10 @@
                 <?php case ('transaction'): ?>
                 <td><?php echo e($report->type); ?></td>
                 <td>
-                    <?php if($report->customer_id): ?> مشتری
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($report->customer_id): ?> مشتری
                     <?php elseif($report->staff_id): ?> کارمند
                     <?php elseif($report->sarafi_id): ?> صرافی
-                    <?php else: ?> دوکان <?php endif; ?>
+                    <?php else: ?> دوکان <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </td>
                 <td><?php echo e($report->customer->fullname ?? $report->staff->fullname ?? $report->sarafi->name ?? '-'); ?></td>
                 <td><?php echo e(number_format($report->amount)); ?></td>
@@ -327,9 +327,9 @@
                 <td><?php echo e($report->created_at ?
                     \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-'); ?></td>
                 <?php break; ?>
-                <?php endswitch; ?>
+                <?php endswitch; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </tr>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </tbody>
     </table>
 
@@ -341,7 +341,7 @@
         <h3>داده‌ای برای نمایش وجود ندارد</h3>
         <p>هیچ رکوردی با فیلترهای اعمال شده مطابقت ندارد.</p>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <div class="footer">
         <div>سیستم گزارش‌گیری جامع - پرزه جات TVS</div>

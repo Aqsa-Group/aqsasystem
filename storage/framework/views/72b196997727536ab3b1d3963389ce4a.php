@@ -14,7 +14,7 @@
         'fi-resource-manage-related-records-page',
         'fi-resource-' . str_replace('/', '-', $this->getResource()::getSlug()),
     ]))]); ?>
-    <?php if($this->table->getColumns()): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($this->table->getColumns()): ?>
         <div class="flex flex-col gap-y-6">
             <?php if (isset($component)) { $__componentOriginale77d85bd24d039fa58cc32119f1d9bc5 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginale77d85bd24d039fa58cc32119f1d9bc5 = $attributes; } ?>
@@ -46,9 +46,9 @@
             <?php echo e(\Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::RESOURCE_PAGES_MANAGE_RELATED_RECORDS_TABLE_AFTER, scopes: $this->getRenderHookScopes())); ?>
 
         </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-    <?php if(count($relationManagers = $this->getRelationManagers())): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(count($relationManagers = $this->getRelationManagers())): ?>
         <?php if (isset($component)) { $__componentOriginal66235374c4c55de4d5fac61c84f69826 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal66235374c4c55de4d5fac61c84f69826 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-panels::components.resources.relation-managers','data' => ['activeLocale' => isset($activeLocale) ? $activeLocale : null,'activeManager' => $this->activeRelationManager ?? array_key_first($relationManagers),'managers' => $relationManagers,'ownerRecord' => $record,'pageClass' => static::class]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -69,7 +69,7 @@
 <?php $component = $__componentOriginal66235374c4c55de4d5fac61c84f69826; ?>
 <?php unset($__componentOriginal66235374c4c55de4d5fac61c84f69826); ?>
 <?php endif; ?>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal166a02a7c5ef5a9331faf66fa665c256)): ?>

@@ -1443,10 +1443,10 @@
                                 <img src="<?php echo e($locale === 'en' ? asset('assets/sarafi/all_icon/united.png') : asset('assets/sarafi/all_icon/Flags.png')); ?>"
                                     class="w-4 h-4 ml-1" alt="Lang">
                                 <span>
-                                    <?php if($locale === 'fa'): ?> فارسی
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($locale === 'fa'): ?> فارسی
                                     <?php elseif($locale === 'ps'): ?> پشتو
                                     <?php else: ?> EN
-                                    <?php endif; ?>
+                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 </span>
                             </button>
 
@@ -1564,10 +1564,10 @@
 
                                 <!-- نام زبان -->
                                 <span>
-                                    <?php if($locale === 'fa'): ?> فارسی
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($locale === 'fa'): ?> فارسی
                                     <?php elseif($locale === 'ps'): ?> پشتو
                                     <?php else: ?> English
-                                    <?php endif; ?>
+                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 </span>
 
                                 <!-- فلش پایین بجای پرچم -->
@@ -1945,13 +1945,13 @@
 
                             <div id="profileBtnDesktop"
                                 class="w-[32px] h-[30px] md:w-[60px] md:h-[60px] rounded-full overflow-hidden flex items-center justify-center cursor-pointer transition border-2 border-gray-200 hover:border-blue-500">
-                                <?php if($currentUser->user_image): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($currentUser->user_image): ?>
                                 <img src="<?php echo e(asset('storage/' . $currentUser->user_image)); ?>"
                                     alt="<?php echo e($currentUser->name); ?>" class="w-full h-full object-cover">
                                 <?php else: ?>
                                 <img src="<?php echo e(asset('assets/sarafi/avatar.svg')); ?>" alt="پروفایل"
                                     class="w-full h-full object-cover">
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
 
                             <!-- منو dropdown -->
@@ -1961,14 +1961,14 @@
 
                                 <div class="p-3 border-b space-y-5">
                                     <div class="flex flex-col justify-center items-center">
-                                        <?php if($currentUser->user_image): ?>
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($currentUser->user_image): ?>
                                         <img src="<?php echo e(asset('storage/' . $currentUser->user_image)); ?>"
                                             alt="<?php echo e($currentUser->name); ?>"
                                             class="h-20 w-20 rounded-full object-cover border-2 border-gray-200">
                                         <?php else: ?>
                                         <img src="<?php echo e(asset('assets/sarafi/avatar.svg')); ?>"
                                             alt="<?php echo e($currentUser->name); ?>" class="h-20 w-20 rounded-full">
-                                        <?php endif; ?>
+                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                         <p class="font-vazir font-semibold text-gray-700 mt-3"><?php echo e($currentUser->name); ?></p>
                                         <p class="font-vazir text-sm text-gray-500">
                                             <?php
@@ -2475,7 +2475,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                             ?>
 
 
-                            <?php if($currentUser && $currentUser->role==='admin'): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($currentUser && $currentUser->role==='admin'): ?>
 
                             
                             <a href="<?php echo e(route('sarafi.revenue')); ?>"
@@ -2504,7 +2504,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
 
                                 عواید معاملات
                             </a>
-                            <?php endif; ?>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
 
                     </div>

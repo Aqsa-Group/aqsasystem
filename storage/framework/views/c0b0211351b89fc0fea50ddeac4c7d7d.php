@@ -58,34 +58,34 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
 <?php $component->withAttributes(['x-data' => '{}','x-on:change' => 'window.location.href = $event.target.value']); ?>
-        <?php $__currentLoopData = $navigation; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $navigationGroup): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $navigation; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $navigationGroup): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             
             <?php $options = (function ($args) {
                 return function () use ($args) {
                     extract($args, EXTR_SKIP);
                     ob_start(); ?>
         
-                <?php $__currentLoopData = $navigationGroup->getItems(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $navigationItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <?php $__currentLoopData = [$navigationItem, ...$navigationItem->getChildItems()]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $navigationItemChild): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $navigationGroup->getItems(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $navigationItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = [$navigationItem, ...$navigationItem->getChildItems()]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $navigationItemChild): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <option
                             <?php if($navigationItemChild->isActive()): echo 'selected'; endif; ?>
                             value="<?php echo e($navigationItemChild->getUrl()); ?>"
                         >
-                            <?php if($loop->index): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($loop->index): ?>
                                 &ensp;&ensp;
-                            <?php endif; ?>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                             <?php echo e($navigationItemChild->getLabel()); ?>
 
                         </option>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             
             <?php return new \Illuminate\Support\HtmlString(ob_get_clean()); };
                 })(get_defined_vars()); ?>
         
 
-            <?php if(filled($navigationGroupLabel = $navigationGroup->getLabel())): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(filled($navigationGroupLabel = $navigationGroup->getLabel())): ?>
                 <optgroup label="<?php echo e($navigationGroupLabel); ?>">
                     <?php echo e($options()); ?>
 
@@ -93,8 +93,8 @@ unset($__defined_vars, $__key, $__value); ?>
             <?php else: ?>
                 <?php echo e($options()); ?>
 
-            <?php endif; ?>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
      <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal97dc683fe4ff7acce9e296503563dd85)): ?>

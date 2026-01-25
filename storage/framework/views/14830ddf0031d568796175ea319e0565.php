@@ -60,7 +60,7 @@ unset($__defined_vars, $__key, $__value); ?>
         };
     ?>
 
-    <?php $__currentLoopData = $widgets; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $widgetKey => $widget): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $widgets; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $widgetKey => $widget): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <?php
             $widgetClass = $normalizeWidgetClass($widget);
         ?>
@@ -72,7 +72,11 @@ $__split = function ($name, $params = []) {
 [$__name, $__params] = $__split($widgetClass,
             [...(($widget instanceof \Filament\Widgets\WidgetConfiguration) ? [...$widget->widget::getDefaultProperties(), ...$widget->getProperties()] : $widget::getDefaultProperties()), ...$data],);
 
-$__html = app('livewire')->mount($__name, $__params, "{$widgetClass}-{$widgetKey}", $__slots ?? [], get_defined_vars());
+$key = "{$widgetClass}-{$widgetKey}";
+
+$key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-48599703-0', "{$widgetClass}-{$widgetKey}");
+
+$__html = app('livewire')->mount($__name, $__params, $key);
 
 echo $__html;
 
@@ -82,7 +86,7 @@ unset($__params);
 unset($__split);
 if (isset($__slots)) unset($__slots);
 ?>
-    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal30dbd75eb120a380110a2b340cd88f46)): ?>

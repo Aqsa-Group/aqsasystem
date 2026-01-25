@@ -14,7 +14,11 @@ $__split = function ($name, $params = []) {
 };
 [$__name, $__params] = $__split('import.withdrawals');
 
-$__html = app('livewire')->mount($__name, $__params, 'lw-587963641-0', $__slots ?? [], get_defined_vars());
+$key = null;
+
+$key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-587963641-0', null);
+
+$__html = app('livewire')->mount($__name, $__params, $key);
 
 echo $__html;
 

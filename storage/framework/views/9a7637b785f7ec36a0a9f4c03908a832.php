@@ -26,8 +26,8 @@
                 ])); ?>
 
     >
-        <?php if(count($arrayState)): ?>
-            <?php $__currentLoopData = $arrayState; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $state): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(count($arrayState)): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $arrayState; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $state): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php
                     $itemIsCopyable = $isCopyable($state);
                     $copyableState = $getCopyableState($state) ?? $state;
@@ -54,7 +54,7 @@
                         'background-color: ' . e($state) => $state,
                     ]) ?>"
                 ></div>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         <?php elseif(($placeholder = $getPlaceholder()) !== null): ?>
             <?php if (isset($component)) { $__componentOriginale647119d200eac5fcc6d6ed603b86297 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginale647119d200eac5fcc6d6ed603b86297 = $attributes; } ?>
@@ -78,7 +78,7 @@
 <?php $component = $__componentOriginale647119d200eac5fcc6d6ed603b86297; ?>
 <?php unset($__componentOriginale647119d200eac5fcc6d6ed603b86297); ?>
 <?php endif; ?>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </div>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>

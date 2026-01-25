@@ -1,5 +1,5 @@
 <div class="min-h-screen dark:bg-gray-900 py-4 w-full px-3 sm:px-4 md:px-6">
-    <?php if(session()->has('message')): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session()->has('message')): ?>
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
         class="fixed top-0 left-0 right-0 w-full z-[9999] bg-gradient-to-br from-indigo-400 to-indigo-500 vazir">
         <div class="h-16 md:h-[80px] w-full flex justify-start items-center px-4">
@@ -9,7 +9,7 @@
             </h2>
         </div>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <div class="w-full max-w-6xl mx-auto p-3 md:p-4 bg-[#F5F5F5] dark:bg-gray-800 rounded-xl md:rounded-2xl"
         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
@@ -38,7 +38,7 @@
 
                     </label>
                     <div class="relative w-16 h-16 md:w-20 md:h-20">
-                        <?php if($newProfile): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($newProfile): ?>
                         <img src="<?php echo e($newProfile->temporaryUrl()); ?>"
                             class="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover border-2 border-blue-400">
                         <?php elseif($profile && $customerId): ?>
@@ -50,7 +50,7 @@
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/profile-circle.svg')); ?>" alt=""
                                 class="w-8 h-8 md:w-10 md:h-10">
                         </div>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         <input type="file" wire:model="newProfile" accept="image/*"
                             class="absolute inset-0 opacity-0 cursor-pointer">
                     </div>
@@ -63,7 +63,7 @@
 
                     </label>
                     <div class="relative w-16 h-16 md:w-20 md:h-20">
-                        <?php if($newIdCardImage): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($newIdCardImage): ?>
                         <img src="<?php echo e($newIdCardImage->temporaryUrl()); ?>"
                             class="w-16 h-16 md:w-20 md:h-20 rounded-lg object-cover border-2 border-green-400">
                         <?php elseif($idCardImage && $customerId): ?>
@@ -75,7 +75,7 @@
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/id.svg')); ?>" alt=""
                                 class="w-8 h-8 md:w-10 md:h-10">
                         </div>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         <input type="file" wire:model="newIdCardImage" accept="image/*"
                             class="absolute inset-0 opacity-0 cursor-pointer">
                     </div>
@@ -101,14 +101,14 @@
                                     class="w-4 h-4 md:w-5 md:h-5">
                             </div>
                         </div>
-                        <?php $__errorArgs = ['fullname'];
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['fullname'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
 
                     <div class="w-full">
@@ -127,22 +127,22 @@ unset($__errorArgs, $__bag); ?>
                                         class="w-4 h-4 md:w-5 md:h-5">
                                 </div>
                             </div>
-                            <?php if(!$customerId): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!$customerId): ?>
                             <button type="button" wire:click="generateNewAccountNumber"
                                 class="px-3 md:px-4 py-2 md:py-3 border bg-transparent border-[#8C8C8C] text-white rounded-lg transition">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/refresh-2.svg')); ?>" alt=""
                                     class="w-4 h-4 md:w-5 md:h-5">
                             </button>
-                            <?php endif; ?>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
-                        <?php $__errorArgs = ['account'];
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['account'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
                 </div>
 
@@ -162,14 +162,14 @@ unset($__errorArgs, $__bag); ?>
                                     class="w-4 h-4 md:w-5 md:h-5">
                             </div>
                         </div>
-                        <?php $__errorArgs = ['city'];
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['city'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
 
                     <div class="w-full">
@@ -187,14 +187,14 @@ unset($__errorArgs, $__bag); ?>
                                     class="w-4 h-4 md:w-5 md:h-5">
                             </div>
                         </div>
-                        <?php $__errorArgs = ['phone'];
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['phone'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
                 </div>
 
@@ -214,14 +214,14 @@ unset($__errorArgs, $__bag); ?>
                                 class="w-4 h-4 md:w-5 md:h-5">
                         </div>
                     </div>
-                    <?php $__errorArgs = ['tazkira'];
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['tazkira'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs mt-1 block"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
             </div>
 

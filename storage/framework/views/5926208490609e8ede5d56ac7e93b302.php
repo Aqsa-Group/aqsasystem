@@ -114,12 +114,12 @@
         </div>
     </div>
 
-    <?php if($data && $data->count() > 0): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($data && $data->count() > 0): ?>
     <table>
         <thead>
             <tr>
                 <th class="row-number">#</th>
-                <?php switch($reportType):
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php switch($reportType):
                 case ('salary'): ?>
                 <th>مبلغ</th>
                 <th>واحد</th>
@@ -197,23 +197,23 @@
                 <th>مبلغ کل</th>
                 <th>تاریخ</th>
                 <?php break; ?>
-                <?php endswitch; ?>
+                <?php endswitch; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </tr>
         </thead>
         <tbody>
-            <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <tr>
                 <td class="row-number"><?php echo e($index + 1); ?></td>
-                <?php switch($reportType):
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php switch($reportType):
                 case ('salary'): ?>
                 <td><?php echo e(number_format($report->amount)); ?></td>
                 <td>
-                    <?php switch($report->currency):
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php switch($report->currency):
                     case ('AFN'): ?> افغانی <?php break; ?>
                     <?php case ('USD'): ?> دالر <?php break; ?>
                     <?php default: ?> <?php echo e($report->currency); ?>
 
-                    <?php endswitch; ?>
+                    <?php endswitch; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </td>
                 <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?></td>
                 <td><?php echo e($report->description ?? '-'); ?></td>
@@ -223,12 +223,12 @@
                 <td><?php echo e($report->type); ?></td>
                 <td><?php echo e(number_format($report->amount)); ?></td>
                 <td>
-                    <?php switch($report->currency):
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php switch($report->currency):
                     case ('AFN'): ?> افغانی <?php break; ?>
                     <?php case ('USD'): ?> دالر <?php break; ?>
                     <?php default: ?> <?php echo e($report->currency); ?>
 
-                    <?php endswitch; ?>
+                    <?php endswitch; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </td>
                 <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?></td>
                 <td><?php echo e($report->description ?? '-'); ?></td>
@@ -279,12 +279,12 @@
                 <td><?php echo e($report->type); ?></td>
                 <td><?php echo e(number_format($report->amount)); ?></td>
                 <td>
-                    <?php switch($report->currency):
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php switch($report->currency):
                     case ('AFN'): ?> افغانی <?php break; ?>
                     <?php case ('USD'): ?> دالر <?php break; ?>
                     <?php default: ?> <?php echo e($report->currency); ?>
 
-                    <?php endswitch; ?>
+                    <?php endswitch; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </td>
                 <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?></td>
                 <td><?php echo e($report->description ?? '-'); ?></td>
@@ -312,9 +312,9 @@
                 <td><?php echo e($report->created_at ? \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-'); ?></td>
                 <?php break; ?>
 
-                <?php endswitch; ?>
+                <?php endswitch; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </tr>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </tbody>
     </table>
     <?php else: ?>
@@ -322,7 +322,7 @@
         <h3>داده‌ای برای نمایش وجود ندارد</h3>
         <p>هیچ رکوردی با فیلترهای اعمال شده مطابقت ندارد.</p>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <div class="footer">
         <div>سیستم گزارش‌گیری جامع - Tools</div>

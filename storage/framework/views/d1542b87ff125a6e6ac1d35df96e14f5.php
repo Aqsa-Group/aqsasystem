@@ -355,11 +355,11 @@
                                 <th style="font-weight:600;">مشتری</th>
                                 <th style="font-weight:600;">مارکت</th>
                                 <th style="font-weight:600;">
-                                    <?php if(!empty($accounting->shop->number) ): ?>
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($accounting->shop->number) ): ?>
                                     شماره دوکان
                                     <?php else: ?>
                                     شماره غرفه
-                                    <?php endif; ?>
+                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 </th>
                                 <th style="font-weight:600;">شماره مسلسل</th>
                                 <th style="font-weight:600;">از تاریخ</th>
@@ -379,20 +379,20 @@
                 <td><?php echo e($rowNumber); ?></td>
 
                 <td>
-                    <?php if($accounting->paid_date): ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($accounting->paid_date): ?>
                     <?php echo e(\Morilog\Jalali\Jalalian::fromDateTime($accounting->paid_date)->format('Y/m/d')); ?>
 
                     <?php else: ?>
                     ---
-                    <?php endif; ?>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </td>
                 <td>
-                    <?php if($accounting->expiration_date): ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($accounting->expiration_date): ?>
                     <?php echo e(\Morilog\Jalali\Jalalian::fromDateTime($accounting->expiration_date)->format('Y/m/d')); ?>
 
                     <?php else: ?>
                     ---
-                    <?php endif; ?>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </td>
 
             </tr>
@@ -539,11 +539,11 @@
                         <th>مشتری</th>
                         <th>مارکت</th>
                         <th style="font-weight:600;">
-                            <?php if(!empty($accounting->shop->number) ): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($accounting->shop->number) ): ?>
                             شماره دوکان
                             <?php else: ?>
                             شماره غرفه
-                            <?php endif; ?>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </th>
                         <th>شماره مسلسل</th>
 

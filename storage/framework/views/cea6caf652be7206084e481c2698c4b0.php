@@ -50,7 +50,7 @@ unset($__defined_vars, $__key, $__value); ?>
     </div>
 
     <ul class="divide-y divide-gray-200 dark:divide-white/10">
-        <?php $__currentLoopData = $results; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $result): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $results; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $result): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <?php if (isset($component)) { $__componentOriginal778cd2be112571395dc0ac2afc159ec1 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal778cd2be112571395dc0ac2afc159ec1 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-panels::components.global-search.result','data' => ['actions' => $result->actions,'details' => $result->details,'title' => $result->title,'url' => $result->url]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -71,7 +71,7 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php $component = $__componentOriginal778cd2be112571395dc0ac2afc159ec1; ?>
 <?php unset($__componentOriginal778cd2be112571395dc0ac2afc159ec1); ?>
 <?php endif; ?>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </ul>
 </li>
 <?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/vendor/filament-panels/components/global-search/result-group.blade.php ENDPATH**/ ?>

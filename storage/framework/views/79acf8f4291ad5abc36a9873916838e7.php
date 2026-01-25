@@ -14,15 +14,15 @@
 <body>
     <h2 style="text-align:center;">💳 گزارش قرضه‌ها</h2>
 
-    <?php if($customer_name || $type || $currency || $date): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($customer_name || $type || $currency || $date): ?>
         <p>فیلتر شده بر اساس:</p>
         <ul>
-            <?php if($customer_name): ?> <li>نام مشتری: <?php echo e($customer_name); ?></li> <?php endif; ?>
-            <?php if($type): ?> <li>نوع تراکنش: <?php echo e($type); ?></li> <?php endif; ?>
-            <?php if($currency): ?> <li>نوع ارز: <?php echo e($currency); ?></li> <?php endif; ?>
-            <?php if($date): ?> <li>تاریخ: <?php echo e($date); ?></li> <?php endif; ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($customer_name): ?> <li>نام مشتری: <?php echo e($customer_name); ?></li> <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($type): ?> <li>نوع تراکنش: <?php echo e($type); ?></li> <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($currency): ?> <li>نوع ارز: <?php echo e($currency); ?></li> <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($date): ?> <li>تاریخ: <?php echo e($date); ?></li> <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </ul>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <table>
         <thead>
@@ -42,7 +42,7 @@
                 $totalsByCustomerCurrency = [];
             ?>
 
-            <?php $__currentLoopData = $loans; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $loan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $loans; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $loan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php
                     $key = $loan['customer']['name'] . '_' . $loan['currency'];
                     if(!isset($totalsByCustomerCurrency[$key])){
@@ -66,17 +66,17 @@
                     <td><?php echo e(number_format($loan['loan_recipt'])); ?></td>
                     <td><?php echo e(number_format($loan['reminded'])); ?></td>
                 </tr>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </tbody>
         <tfoot>
-            <?php $__currentLoopData = $totalsByCustomerCurrency; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $totals): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $totalsByCustomerCurrency; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $totals): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr>
                     <td colspan="5">جمع برای <?php echo e(explode('_', $key)[0]); ?> (<?php echo e(explode('_', $key)[1]); ?>)</td>
                     <td><?php echo e(number_format($totals['total_loan'])); ?></td>
                     <td><?php echo e(number_format($totals['total_receipt'])); ?></td>
                     <td><?php echo e(number_format($totals['balance'])); ?></td>
                 </tr>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </tfoot>
     </table>
 </body>

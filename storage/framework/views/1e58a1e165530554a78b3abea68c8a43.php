@@ -54,7 +54,7 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
 
     <div class="flex-1 flex flex-col dark:bg-black dark:border-white dark:border dark:text-white  bg-[#F5F5F5] p-3 md:p-4 lg:p-6 rounded-[12px] w-full mb-5"
         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
-        <?php if($selectedCategory): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($selectedCategory): ?>
      <div x-data="{ open:false, value:'' }" class="relative w-full ">
     <!-- Input -->
     <button @click="open = !open"
@@ -74,7 +74,7 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                border dark:border-white
                rounded-xl shadow-lg max-h-60 overflow-y-auto">
 
-        <?php $__currentLoopData = $subCategories[$selectedCategory]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sub): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $subCategories[$selectedCategory]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sub): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <div
             @click="
                 value='<?php echo e($sub); ?>';
@@ -85,16 +85,16 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
             <?php echo e($sub); ?>
 
         </div>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </div>
 </div>
 
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
 
         <!-- نمایش محتوای زیرشاخه -->
-        <?php if($selectedSubCategory): ?>
-        <?php switch($selectedSubCategory):
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($selectedSubCategory): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php switch($selectedSubCategory):
         case ('گزارش بیلانس مشتریان'): ?>
         <div class="overflow-x-auto w-full mt-4 mb-8">
             <div class="flex flex-col max-h-[600px] overflow-y-auto">
@@ -119,7 +119,7 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                         </tr>
                     </thead>
                     <tbody>
-                        <?php $__empty_1 = true; $__currentLoopData = $reports; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $reports; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                         <tr class="border-b dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
                             <td class="px-4 py-4">
                                 <span
@@ -161,7 +161,7 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                                 هیچ داده‌ای یافت نشد
                             </td>
                         </tr>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -294,7 +294,7 @@ $sourceCurrency = getPersianCurrencyName($latestProfitRate->source_currency ?? '
                         </div>
                     </div>
 
-                    <?php $__errorArgs = ['selectedAccounts'];
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['selectedAccounts'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -303,7 +303,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
             </div>
         </div>
@@ -311,7 +311,7 @@ unset($__errorArgs, $__bag); ?>
         <h1 class="mt-5 mr-4 text-xl font-bold text-gray-800 dark:text-white">گزارش خلاصه بیلانس مشتریان انتخاب شده</h1>
 
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 p-4 mb-8">
-            <?php $__currentLoopData = $totalBalances; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $totalBalances; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div
                 class="flex flex-col bg-white justify-center items-center gap-3 rounded-xl py-6 px-4 shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
                 <p class="text-gray-500 dark: text-white text-sm font-medium"><?php echo e($data['currency_name']); ?></p>
@@ -320,7 +320,7 @@ unset($__errorArgs, $__bag); ?>
 
                 </p>
                 <p class=" dark:text-white text-gray-400 text-xs font-medium uppercase">
-                    <?php switch($currencyCode):
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php switch($currencyCode):
                     case ('usd'): ?> USD <?php break; ?>
                     <?php case ('afn'): ?> AFN <?php break; ?>
                     <?php case ('irr'): ?> IRR <?php break; ?>
@@ -331,10 +331,10 @@ unset($__errorArgs, $__bag); ?>
                     <?php case ('cny'): ?> CNY <?php break; ?>
                     <?php default: ?> <?php echo e($currencyCode); ?>
 
-                    <?php endswitch; ?>
+                    <?php endswitch; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </p>
             </div>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
 
         <!-- نمودار میله‌ای -->
@@ -426,7 +426,7 @@ unset($__errorArgs, $__bag); ?>
                 $startX = 140;
                 ?>
 
-                <?php $__currentLoopData = $chartData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $chartData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php
                 $barHeight = $maxValue > 0 ? ($item['value'] / $maxValue) * $chartHeight : 0;
                 $x = $startX + ($index * ($barWidth + $spacing));
@@ -454,7 +454,7 @@ unset($__errorArgs, $__bag); ?>
                     <?php echo e($item['currency']); ?>
 
                 </text>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </svg>
         </div>
 
@@ -492,7 +492,7 @@ unset($__errorArgs, $__bag); ?>
 
                     
                     <tbody>
-                        <?php $__empty_1 = true; $__currentLoopData = $demands; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $demand): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $demands; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $demand): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                         <tr class="border-b hover:bg-gray-50 transition-colors">
 
                             
@@ -550,7 +550,7 @@ unset($__errorArgs, $__bag); ?>
                                 هیچ داده‌ای یافت نشد
                             </td>
                         </tr>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </tbody>
 
                 </table>
@@ -564,12 +564,12 @@ unset($__errorArgs, $__bag); ?>
             <h3 class="font-bold text-lg mb-3"><?php echo e($selectedSubCategory); ?></h3>
             <p>این گزارش در حال توسعه می‌باشد</p>
         </div>
-        <?php endswitch; ?>
-        <?php endif; ?>
+        <?php endswitch; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </div>
 
     <!-- بخش گزارش بیلانس مشتریان (کارت‌ها و نمودار دایره‌ای) -->
-    <?php if($selectedSubCategory == 'گزارش بیلانس مشتریان'): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($selectedSubCategory == 'گزارش بیلانس مشتریان'): ?>
     <div class="flex-1 flex flex-col dark:bg-black dark:border-white dark:border bg-[#F5F5F5] h-fit p-3 md:p-4 lg:p-6 rounded-[12px] w-full mb-5"
         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
         <div class="flex w-full flex-col lg:flex-row">
@@ -607,15 +607,15 @@ unset($__errorArgs, $__bag); ?>
                                 class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
                                 autocomplete="off">
                             <datalist id="customersList">
-                                <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($customer->account_number); ?> - <?php echo e($customer->fullname); ?>">
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </datalist>
                             <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
                             </div>
                         </div>
-                        <?php $__errorArgs = ['selectedAccount'];
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['selectedAccount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -624,12 +624,12 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
                 </div>
 
                 <!-- نمایش موجودی‌ها -->
-                <?php if($selectedCustomerId): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($selectedCustomerId): ?>
                 <?php
                 $hasNonZeroBalance = false;
                 foreach($selectedCustomerBalance as $balance) {
@@ -640,7 +640,7 @@ unset($__errorArgs, $__bag); ?>
                 }
                 ?>
 
-                <?php if($hasNonZeroBalance): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasNonZeroBalance): ?>
                 <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6 mt-6 w-full lg:w-[589px]">
                     <div class="space-y-4">
                         <div
@@ -661,8 +661,8 @@ unset($__errorArgs, $__bag); ?>
                             </p>
                         </div>
 
-                        <?php $__currentLoopData = $selectedCustomerBalance; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <?php if(abs($data['balance']) > 0.001): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $selectedCustomerBalance; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(abs($data['balance']) > 0.001): ?>
                         <div
                             class="w-full h-[79px] flex flex-col md:flex-row items-center justify-between p-6 bg-transparent border border-[#2563EB] dark:bg-black dark:border-white dark:text-white text-black text-[16px] rounded-[12px] hover:bg-blue-50 transition-colors">
                             <div class="flex items-center gap-3">
@@ -675,8 +675,8 @@ unset($__errorArgs, $__bag); ?>
                                 <p class="vazir font-bold"><?php echo e(number_format($data['balance'], 2)); ?></p>
                             </div>
                         </div>
-                        <?php endif; ?>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
                 </div>
                 <?php else: ?>
@@ -688,16 +688,16 @@ unset($__errorArgs, $__bag); ?>
                         <p>Balances Count: <?php echo e(count($selectedCustomerBalance)); ?></p>
                     </div>
                 </div>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 <?php else: ?>
                 <div class="text-center py-8">
                     <p class="text-gray-500 vazir">لطفاً یک مشتری انتخاب کنید</p>
                 </div>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
 
             <!-- بخش نمودار SVG -->
-            <?php if($selectedCustomerId && count($currencyPercentages) > 0): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($selectedCustomerId && count($currencyPercentages) > 0): ?>
             <div class="lg:w-1/2 mt-6 lg:mt-0 flex justify-center" dir="ltr">
                 <?php
                 $chartData = [
@@ -724,7 +724,7 @@ unset($__errorArgs, $__bag); ?>
                         <svg width="100%" height="100%" viewBox="0 0 40 40">
                             <!-- تعریف گرادینت‌ها -->
                             <defs>
-                                <?php $__currentLoopData = $chartData['colors']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $color): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $chartData['colors']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $color): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php
                                 $lighterColor = $this->lightenColor($color, 30);
                                 $darkerColor = $this->darkenColor($color, 20);
@@ -740,7 +740,7 @@ unset($__errorArgs, $__bag); ?>
                                     <stop offset="70%" stop-color="<?php echo e($color); ?>" />
                                     <stop offset="100%" stop-color="<?php echo e($darkerColor); ?>" />
                                 </radialGradient>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </defs>
 
                             <?php
@@ -749,7 +749,7 @@ unset($__errorArgs, $__bag); ?>
                             $radius = 20;
                             ?>
 
-                            <?php $__currentLoopData = $chartData['series']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $chartData['series']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <?php
                             $percentage = ($value / $total) * 100;
                             $angle = ($value / $total) * 360;
@@ -781,13 +781,13 @@ unset($__errorArgs, $__bag); ?>
                             <?php
                             $startAngle += $angle;
                             ?>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </svg>
                     </div>
 
                     <!-- لیبل‌ها کنار چارت -->
                     <div class="absolute right-9 flex mt-4  gap-4" dir="ltr">
-                        <?php $__currentLoopData = $chartData['labels']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $chartData['labels']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="flex items-end gap-2">
                             <div class="w-4 h-4 rounded-full shadow-sm"
                                 style="background: linear-gradient(135deg, <?php echo e($this->lightenColor($chartData['colors'][$index], 30)); ?>, <?php echo e($this->darkenColor($chartData['colors'][$index], 20)); ?>);">
@@ -796,22 +796,22 @@ unset($__errorArgs, $__bag); ?>
                                 <?php echo e($label); ?> (<?php echo e(round($chartData['series'][$index], 1)); ?>%)
                             </span>
                         </div>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
                 </div>
             </div>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <!-- بخش کارت‌های مشتریان برای گزارش خلاصه -->
-    <?php if($selectedSubCategory == 'گزارش خلاصه بیلانس مشتریان' && !empty($selectedCustomersData)): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($selectedSubCategory == 'گزارش خلاصه بیلانس مشتریان' && !empty($selectedCustomersData)): ?>
     <div class="mt-8 dark:bg-black dark:text-white dark:border dark:border-white bg-[#F5F5F5] p-5 rounded-[16px] mb-5"
         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
         <h2 class="text-xl font-bold text-gray-800 mb-6 dark:text-white">کارت‌های موجودی مشتریان انتخاب شده</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <?php $__currentLoopData = $selectedCustomersData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $selectedCustomersData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <?php
             // محاسبه کل موجودی و فیلتر ارزهای دارای موجودی
             $customerTotalUSD = 0;
@@ -843,8 +843,8 @@ unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <!-- موجودی‌های ارزی -->
-                    <?php if(count($customerCurrenciesWithBalance) > 0): ?>
-                    <?php $__currentLoopData = $customerCurrenciesWithBalance; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(count($customerCurrenciesWithBalance) > 0): ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $customerCurrenciesWithBalance; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div
                         class="w-full h-[50px] flex flex-col md:flex-row items-center justify-between p-4 bg-transparent border dark:bg-black dark:text-white dark:border-white border-[#2563EB] text-black text-[14px] rounded-[12px] hover:bg-blue-50 transition-colors">
                         <div class="flex items-center gap-3">
@@ -855,17 +855,17 @@ unset($__errorArgs, $__bag); ?>
                             <p class="vazir font-bold text-sm" dir="ltr"><?php echo e(number_format($data['balance'], 2)); ?></p>
                         </div>
                     </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     <?php else: ?>
                     <div
                         class="w-full h-[50px] flex items-center justify-center p-4 bg-transparent border dark:text-white border-gray-300 text-gray-500 text-[14px] rounded-[12px]">
                         <span class="vazir text-sm">بدون موجودی</span>
                     </div>
-                    <?php endif; ?>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
             </div>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/sarafi/general-reports.blade.php ENDPATH**/ ?>

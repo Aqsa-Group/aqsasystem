@@ -64,6 +64,11 @@ return [
                 'driver' => 'session',
                 'provider' => 'gyms',
             ],
+               'restaurant' => [
+            'driver' => 'session',
+            'provider' => 'restaurant',
+        ],
+
   'sarafi_impersonate' => [
         'driver' => 'session',
         'provider' => 'sarafi_users',
@@ -118,6 +123,12 @@ return [
             'driver' => 'eloquent',
              'model' => App\Models\Gym\User::class,
         ],
+
+           'restaurant' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Restaurant\User::class,
+        ],
+
 
 
 

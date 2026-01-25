@@ -5,7 +5,11 @@ $__split = function ($name, $params = []) {
 };
 [$__name, $__params] = $__split('sarafi.journal');
 
-$__html = app('livewire')->mount($__name, $__params, 'lw-3432362946-0', $__slots ?? [], get_defined_vars());
+$key = null;
+
+$key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-3432362946-0', null);
+
+$__html = app('livewire')->mount($__name, $__params, $key);
 
 echo $__html;
 

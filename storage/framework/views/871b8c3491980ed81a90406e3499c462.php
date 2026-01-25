@@ -1,8 +1,8 @@
-<?php if($paginator->hasPages()): ?>
+<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($paginator->hasPages()): ?>
     <nav role="navigation" aria-label="<?php echo __('Pagination Navigation'); ?>">
         <ul class="pagination">
             
-            <?php if($paginator->onFirstPage()): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($paginator->onFirstPage()): ?>
                 <li class="page-item disabled" aria-disabled="true">
                     <span class="page-link"><?php echo __('pagination.previous'); ?></span>
                 </li>
@@ -13,10 +13,10 @@
 
                     </a>
                 </li>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
             
-            <?php if($paginator->hasMorePages()): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($paginator->hasMorePages()): ?>
                 <li class="page-item">
                     <a class="page-link" href="<?php echo e($paginator->nextPageUrl()); ?>" rel="next"><?php echo __('pagination.next'); ?></a>
                 </li>
@@ -24,8 +24,8 @@
                 <li class="page-item disabled" aria-disabled="true">
                     <span class="page-link"><?php echo __('pagination.next'); ?></span>
                 </li>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </ul>
     </nav>
-<?php endif; ?>
+<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 <?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/vendor/laravel/framework/src/Illuminate/Pagination/resources/views/simple-bootstrap-5.blade.php ENDPATH**/ ?>

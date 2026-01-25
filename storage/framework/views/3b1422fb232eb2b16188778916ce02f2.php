@@ -46,7 +46,7 @@ unset($__defined_vars, $__key, $__value); ?>
         <?php echo e(__('filament-notifications::database.modal.heading')); ?>
 
 
-        <?php if($unreadNotificationsCount): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($unreadNotificationsCount): ?>
             <?php if (isset($component)) { $__componentOriginal986dce9114ddce94a270ab00ce6c273d = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal986dce9114ddce94a270ab00ce6c273d = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.badge','data' => ['size' => 'xs','class' => 'absolute -top-1 start-full ms-1 w-max']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -69,7 +69,7 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php $component = $__componentOriginal986dce9114ddce94a270ab00ce6c273d; ?>
 <?php unset($__componentOriginal986dce9114ddce94a270ab00ce6c273d); ?>
 <?php endif; ?>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </span>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>

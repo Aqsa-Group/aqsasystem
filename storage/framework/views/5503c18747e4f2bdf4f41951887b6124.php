@@ -106,12 +106,12 @@ unset($__defined_vars, $__key, $__value); ?>
             ->class(['fi-in-entry-wrp'])); ?>
 
 >
-    <?php if($label && $labelSrOnly): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($label && $labelSrOnly): ?>
         <dt class="sr-only">
             <?php echo e($label); ?>
 
         </dt>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <div
         class="<?php echo \Illuminate\Support\Arr::toCssClasses([
@@ -119,7 +119,7 @@ unset($__defined_vars, $__key, $__value); ?>
             'sm:grid-cols-3 sm:items-start sm:gap-x-4' => $hasInlineLabel,
         ]); ?>"
     >
-        <?php if(($label && (! $labelSrOnly)) || $labelPrefix || $labelSuffix || filled($hint) || $hintIcon): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(($label && (! $labelSrOnly)) || $labelPrefix || $labelSuffix || filled($hint) || $hintIcon): ?>
             <div
                 class="<?php echo \Illuminate\Support\Arr::toCssClasses([
                     'flex items-center gap-x-3',
@@ -128,7 +128,7 @@ unset($__defined_vars, $__key, $__value); ?>
                     ($label instanceof \Illuminate\View\ComponentSlot) ? $label->attributes->get('class') : null,
                 ]); ?>"
             >
-                <?php if($label && (! $labelSrOnly)): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($label && (! $labelSrOnly)): ?>
                     <?php if (isset($component)) { $__componentOriginalfccc0df05cc66fe3fb846bd7ea93f9df = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalfccc0df05cc66fe3fb846bd7ea93f9df = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-infolists::components.entry-wrapper.label','data' => ['prefix' => $labelPrefix,'suffix' => $labelSuffix]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -157,9 +157,9 @@ unset($__defined_vars, $__key, $__value); ?>
                 <?php elseif($labelSuffix): ?>
                     <?php echo e($labelSuffix); ?>
 
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                <?php if(filled($hint) || $hintIcon || count($hintActions)): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(filled($hint) || $hintIcon || count($hintActions)): ?>
                     <?php if (isset($component)) { $__componentOriginalac45e35131ef0224834cf5d158196d88 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalac45e35131ef0224834cf5d158196d88 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-infolists::components.entry-wrapper.hint','data' => ['actions' => $hintActions,'color' => $hintColor,'icon' => $hintIcon,'tooltip' => $hintIconTooltip]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -182,9 +182,9 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php $component = $__componentOriginalac45e35131ef0224834cf5d158196d88; ?>
 <?php unset($__componentOriginalac45e35131ef0224834cf5d158196d88); ?>
 <?php endif; ?>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         <div
             class="<?php echo \Illuminate\Support\Arr::toCssClasses([
@@ -212,7 +212,7 @@ unset($__defined_vars, $__key, $__value); ?>
                     },
                 ]); ?>"
             >
-                <?php if($url): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($url): ?>
                     <a
                         <?php echo e(\Filament\Support\generate_href_html($url, $shouldOpenUrlInNewTab)); ?>
 
@@ -239,10 +239,10 @@ unset($__defined_vars, $__key, $__value); ?>
                 <?php else: ?>
                     <?php echo e($slot); ?>
 
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </dd>
 
-            <?php if(filled($helperText)): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(filled($helperText)): ?>
                 <?php if (isset($component)) { $__componentOriginal382c9a3a5ce137e9c7ffa56b700ac7ed = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal382c9a3a5ce137e9c7ffa56b700ac7ed = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-infolists::components.entry-wrapper.helper-text','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -265,7 +265,7 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php $component = $__componentOriginal382c9a3a5ce137e9c7ffa56b700ac7ed; ?>
 <?php unset($__componentOriginal382c9a3a5ce137e9c7ffa56b700ac7ed); ?>
 <?php endif; ?>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
     </div>
 </div>

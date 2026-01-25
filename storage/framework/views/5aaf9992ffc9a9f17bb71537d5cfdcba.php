@@ -64,7 +64,7 @@ unset($__defined_vars, $__key, $__value); ?>
     };
 ?>
 
-<?php $__currentLoopData = $components; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $layoutComponent): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $components; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $layoutComponent): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
     <?php
         $layoutComponent->record($record);
         $layoutComponent->rowLoop($rowLoop);
@@ -72,7 +72,7 @@ unset($__defined_vars, $__key, $__value); ?>
         $isColumn = $layoutComponent instanceof \Filament\Tables\Columns\Column;
     ?>
 
-    <?php if($layoutComponent->isVisible()): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($layoutComponent->isVisible()): ?>
         <?php if (isset($component)) { $__componentOriginal6f9d0ad23f77111c926012ad6ce09333 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal6f9d0ad23f77111c926012ad6ce09333 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.grid.column','data' => ['default' => $layoutComponent->getColumnSpan('default'),'sm' => $layoutComponent->getColumnSpan('sm'),'md' => $layoutComponent->getColumnSpan('md'),'lg' => $layoutComponent->getColumnSpan('lg'),'xl' => $layoutComponent->getColumnSpan('xl'),'twoXl' => $layoutComponent->getColumnSpan('2xl'),'defaultStart' => $layoutComponent->getColumnStart('default'),'smStart' => $layoutComponent->getColumnStart('sm'),'mdStart' => $layoutComponent->getColumnStart('md'),'lgStart' => $layoutComponent->getColumnStart('lg'),'xlStart' => $layoutComponent->getColumnStart('xl'),'twoXlStart' => $layoutComponent->getColumnStart('2xl'),'class' => \Illuminate\Support\Arr::toCssClasses([
@@ -89,7 +89,7 @@ unset($__defined_vars, $__key, $__value); ?>
                 'flex-1 w-full' => $layoutComponent->canGrow(),
                 $getHiddenClasses($layoutComponent),
             ]))]); ?>
-            <?php if($isColumn): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isColumn): ?>
                 <?php if (isset($component)) { $__componentOriginal9e6c25ad176a3fd7bc1fa75b239c0fc8 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal9e6c25ad176a3fd7bc1fa75b239c0fc8 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-tables::components.columns.column','data' => ['column' => $layoutComponent->inline(),'record' => $record,'recordKey' => $recordKey]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -113,7 +113,7 @@ unset($__defined_vars, $__key, $__value); ?>
             <?php else: ?>
                 <?php echo e($layoutComponent->viewData(['recordKey' => $recordKey])); ?>
 
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
          <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal6f9d0ad23f77111c926012ad6ce09333)): ?>
@@ -124,6 +124,6 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php $component = $__componentOriginal6f9d0ad23f77111c926012ad6ce09333; ?>
 <?php unset($__componentOriginal6f9d0ad23f77111c926012ad6ce09333); ?>
 <?php endif; ?>
-    <?php endif; ?>
-<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 <?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/vendor/filament/tables/resources/views/components/columns/layout.blade.php ENDPATH**/ ?>

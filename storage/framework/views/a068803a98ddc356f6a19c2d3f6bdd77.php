@@ -113,7 +113,7 @@ unset($__defined_vars, $__key, $__value); ?>
             ])); ?>
 
 >
-    <?php if($icon && $iconPosition === IconPosition::Before): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($icon && $iconPosition === IconPosition::Before): ?>
         <?php if (isset($component)) { $__componentOriginalbfc641e0710ce04e5fe02876ffc6f950 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalbfc641e0710ce04e5fe02876ffc6f950 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.icon','data' => ['icon' => $icon,'xBind:class' => $hasAlpineActiveClasses ? '{ ' . \Illuminate\Support\Js::from($inactiveIconClasses) . ': ! (' . $alpineActive . '), ' . \Illuminate\Support\Js::from($activeIconClasses) . ': ' . $alpineActive . ' }' : null,'class' => \Illuminate\Support\Arr::toCssClasses([
@@ -142,7 +142,7 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php $component = $__componentOriginalbfc641e0710ce04e5fe02876ffc6f950; ?>
 <?php unset($__componentOriginalbfc641e0710ce04e5fe02876ffc6f950); ?>
 <?php endif; ?>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <span
         <?php if($hasAlpineActiveClasses): ?>
@@ -161,7 +161,7 @@ unset($__defined_vars, $__key, $__value); ?>
 
     </span>
 
-    <?php if($icon && $iconPosition === IconPosition::After): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($icon && $iconPosition === IconPosition::After): ?>
         <?php if (isset($component)) { $__componentOriginalbfc641e0710ce04e5fe02876ffc6f950 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalbfc641e0710ce04e5fe02876ffc6f950 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.icon','data' => ['icon' => $icon,'xBind:class' => $hasAlpineActiveClasses ? '{ ' . \Illuminate\Support\Js::from($inactiveIconClasses) . ': ! (' . $alpineActive . '), ' . \Illuminate\Support\Js::from($activeIconClasses) . ': ' . $alpineActive . ' }' : null,'class' => \Illuminate\Support\Arr::toCssClasses([
@@ -190,9 +190,9 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php $component = $__componentOriginalbfc641e0710ce04e5fe02876ffc6f950; ?>
 <?php unset($__componentOriginalbfc641e0710ce04e5fe02876ffc6f950); ?>
 <?php endif; ?>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-    <?php if(filled($badge)): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(filled($badge)): ?>
         <?php if (isset($component)) { $__componentOriginal986dce9114ddce94a270ab00ce6c273d = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal986dce9114ddce94a270ab00ce6c273d = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.badge','data' => ['color' => $badgeColor,'icon' => $badgeIcon,'iconPosition' => $badgeIconPosition,'size' => 'sm','tooltip' => $badgeTooltip,'class' => 'w-max']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -215,6 +215,6 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php $component = $__componentOriginal986dce9114ddce94a270ab00ce6c273d; ?>
 <?php unset($__componentOriginal986dce9114ddce94a270ab00ce6c273d); ?>
 <?php endif; ?>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </<?php echo e($tag); ?>>
 <?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/vendor/filament/components/tabs/item.blade.php ENDPATH**/ ?>

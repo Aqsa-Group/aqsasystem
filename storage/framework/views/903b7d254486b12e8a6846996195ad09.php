@@ -208,7 +208,7 @@
                 </td>
             </tr>
 
-            <?php if($conversion->type==='باتفاوت'): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($conversion->type==='باتفاوت'): ?>
                     <tr>
                 <td>مبلغ کمیشن:</td>
                 <td>
@@ -217,7 +217,7 @@
                 </td>
             </tr>
 
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
           
 

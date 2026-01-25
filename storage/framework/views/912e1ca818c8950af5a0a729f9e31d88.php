@@ -1,6 +1,6 @@
 <div>
     <!-- Alerts -->
-    <?php if($alert): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($alert): ?>
     <div x-data="{
         show: true,
         init() {
@@ -28,9 +28,9 @@
             </h2>
         </div>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-    <?php if($currentUser && ($currentUser->role === 'admin' || $currentUser->role === 'superadmin')): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($currentUser && ($currentUser->role === 'admin' || $currentUser->role === 'superadmin')): ?>
     <!-- فرم ثبت کارمند -->
     <div class="w-full max-w-7xl p-3 md:p-4 bg-[#F5F5F5] dark:bg-gray-800 rounded-xl md:rounded-2xl mx-auto space-y-2 md:space-y-4"
         style="box-shadow: 0px 4px 4px 0px #00000040, 0 0 0 0 #3B82F6;">
@@ -55,7 +55,7 @@
                         عکس کارمند
                     </label>
                     <div class="relative w-16 h-16 md:w-20 md:h-20">
-                        <?php if($newProfile): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($newProfile): ?>
                         <img src="<?php echo e($newProfile->temporaryUrl()); ?>"
                             class="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover border-2 border-blue-400">
                         <?php elseif($profile && $editId): ?>
@@ -65,18 +65,18 @@
                         <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-500 flex items-center justify-center">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/profile-circle.svg')); ?>" alt="" class="w-8 h-8 md:w-10 md:h-10">
                         </div>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         <input type="file" wire:model="newProfile" accept="image/*"
                             class="absolute inset-0 opacity-0 cursor-pointer">
                     </div>
-                    <?php $__errorArgs = ['newProfile'];
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['newProfile'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
 
                 <!-- عکس شناسنامه -->
@@ -85,7 +85,7 @@ unset($__errorArgs, $__bag); ?>
                         عکس تذکره کارمند
                     </label>
                     <div class="relative w-16 h-16 md:w-20 md:h-20">
-                        <?php if($newIdCardImage): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($newIdCardImage): ?>
                         <img src="<?php echo e($newIdCardImage->temporaryUrl()); ?>"
                             class="w-16 h-16 md:w-20 md:h-20 rounded-lg object-cover border-2 border-green-400">
                         <?php elseif($idCardImage && $editId): ?>
@@ -95,18 +95,18 @@ unset($__errorArgs, $__bag); ?>
                         <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-500 flex items-center justify-center">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/id.svg')); ?>" alt="" class="w-8 h-8 md:w-10 md:h-10">
                         </div>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         <input type="file" wire:model="newIdCardImage" accept="image/*"
                             class="absolute inset-0 opacity-0 cursor-pointer">
                     </div>
-                    <?php $__errorArgs = ['newIdCardImage'];
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['newIdCardImage'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> <span class="text-red-500 text-xs"><?php echo e($message); ?></span> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
             </div>
 
@@ -124,7 +124,7 @@ unset($__errorArgs, $__bag); ?>
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/profile.svg')); ?>" alt="" class="w-4 h-4 md:w-5 md:h-5">
                         </div>
                     </div>
-                    <?php $__errorArgs = ['name'];
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -133,7 +133,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
 
                 <!-- Lastname -->
@@ -149,7 +149,7 @@ unset($__errorArgs, $__bag); ?>
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/profile.svg')); ?>" alt="" class="w-4 h-4 md:w-5 md:h-5">
                         </div>
                     </div>
-                    <?php $__errorArgs = ['lastname'];
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['lastname'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -158,7 +158,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
 
                 <!-- Address -->
@@ -174,7 +174,7 @@ unset($__errorArgs, $__bag); ?>
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/location.svg')); ?>" alt="" class="w-4 h-4 md:w-5 md:h-5">
                         </div>
                     </div>
-                    <?php $__errorArgs = ['address'];
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['address'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -183,7 +183,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
 
                 <!-- Phone -->
@@ -200,7 +200,7 @@ unset($__errorArgs, $__bag); ?>
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/call.svg')); ?>" alt="" class="w-4 h-4 md:w-5 md:h-5">
                         </div>
                     </div>
-                    <?php $__errorArgs = ['phone'];
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['phone'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -209,7 +209,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
 
                 <!-- Job -->
@@ -231,7 +231,7 @@ unset($__errorArgs, $__bag); ?>
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/clipboard.svg')); ?>" alt="" class="w-4 h-4 md:w-5 md:h-5">
                         </div>
                     </div>
-                    <?php $__errorArgs = ['job'];
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['job'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -240,7 +240,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
 
                 <!-- salary -->
@@ -257,7 +257,7 @@ unset($__errorArgs, $__bag); ?>
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/dollar-circle.svg')); ?>" class="w-6 h-6 md:w-8 md:h-8" alt="">
                         </div>
                     </div>
-                    <?php $__errorArgs = ['salary'];
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['salary'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -266,7 +266,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
             </div>
 
@@ -283,7 +283,7 @@ unset($__errorArgs, $__bag); ?>
             </div>
         </form>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <!-- فیلتر و سرچ -->
     <div class="flex flex-col sm:flex-row items-stretch sm:items-center mt-4 md:mt-5 gap-3 w-full max-w-7xl mx-auto px-2 sm:px-0">
@@ -295,13 +295,13 @@ unset($__errorArgs, $__bag); ?>
                 <span class="text-white">فیلتر</span>
             </button>
 
-            <?php if($filterOpen): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($filterOpen): ?>
             <div class="absolute top-full mt-2 bg-white border rounded-xl shadow-lg p-3 md:p-4 w-64 md:w-72 z-50 flex flex-col gap-2 md:gap-3">
                 <select wire:model="filterJob" class="border rounded px-2 md:px-3 py-1 md:py-2 w-full text-sm md:text-base">
                     <option value="">همه وظایف</option>
-                    <?php $__currentLoopData = $jobs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $jobs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <option value="<?php echo e($job); ?>"><?php echo e($job); ?></option>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </select>
 
                 <button wire:click="applyFilter"
@@ -309,7 +309,7 @@ unset($__errorArgs, $__bag); ?>
                     اعمال فیلتر
                 </button>
             </div>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
 
         <!-- جستجو -->
@@ -343,7 +343,7 @@ unset($__errorArgs, $__bag); ?>
 
             <!-- بدنه جدول -->
             <tbody>
-                <?php $__empty_1 = true; $__currentLoopData = $staffs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $staff): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $staffs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $staff): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr class="border-b dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td class="px-2 md:px-3 py-2 vazir text-xs md:text-[16px] font-medium"><?php echo e($staffs->firstItem() + $index); ?></td>
                     <td class="px-3 md:px-6 py-2 md:py-4 vazir text-xs md:text-[16px] font-medium text-black vazir">
@@ -355,14 +355,14 @@ unset($__errorArgs, $__bag); ?>
                     <td class="px-3 md:px-6 py-2 md:py-4 vazir text-xs md:text-[16px] font-medium text-black vazir"><?php echo e(number_format($staff->salary)); ?> افغانی</td>
                     <td class="px-3 md:px-6 py-2 md:py-4 vazir text-xs md:text-[16px] font-medium text-black vazir hidden lg:table-cell"><?php echo e($staff->address ?? '-'); ?></td>
                     <td class="px-3 md:px-6 py-2 md:py-4 flex justify-center gap-1 md:gap-2">
-                        <?php if($currentUser && ($currentUser->role === 'admin' || $currentUser->role === 'superadmin')): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($currentUser && ($currentUser->role === 'admin' || $currentUser->role === 'superadmin')): ?>
                         <button wire:click="edit(<?php echo e($staff->id); ?>)" class="p-1 md:px-2 md:py-1">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/edit_table.svg')); ?>" class="w-4 h-4 md:w-6 md:h-6" alt="Edit">
                         </button>
                         <button wire:click="confirmDelete(<?php echo e($staff->id); ?>)" class="p-1 md:px-2 md:py-1">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/trash_table.svg')); ?>" class="w-4 h-4 md:w-6 md:h-6" alt="Delete">
                         </button>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         <button class="p-1 md:px-2 md:py-1" wire:click="print(<?php echo e($staff->id); ?>)">
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/print_table.svg')); ?>" class="w-5 h-5 md:w-8 md:h-8" alt="Print">
                         </button>
@@ -374,7 +374,7 @@ unset($__errorArgs, $__bag); ?>
                         هیچ کارمندی یافت نشد.
                     </td>
                 </tr>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </tbody>
         </table>
 
@@ -385,9 +385,9 @@ unset($__errorArgs, $__bag); ?>
         </div>
     </div>
 
-    <?php if($currentUser && ($currentUser->role === 'admin' || $currentUser->role === 'superadmin')): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($currentUser && ($currentUser->role === 'admin' || $currentUser->role === 'superadmin')): ?>
     <!-- مودال تأیید حذف -->
-    <?php if($confirmDeleteId): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($confirmDeleteId): ?>
     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-2 md:p-4">
         <div class="bg-[#FFFFFF] pt-4 md:pt-[21px] pr-3 md:pr-[15px] pl-3 md:pl-[15px] rounded-lg md:rounded-[12px] shadow-xl w-full max-w-md md:w-[653px] h-auto md:h-[219px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
             <!-- دکمه بستن -->
@@ -422,6 +422,6 @@ unset($__errorArgs, $__bag); ?>
             </div>
         </div>
     </div>
-    <?php endif; ?>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/tools-panel/staff.blade.php ENDPATH**/ ?>

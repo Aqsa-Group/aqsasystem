@@ -236,17 +236,17 @@
         <div class="info-section">
             <h3>فیلترهای اعمال شده:</h3>
             <div class="filters-grid">
-                <?php $__currentLoopData = $printData['filters']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $printData['filters']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="filter-item">
                     <span class="filter-label"><?php echo e($key); ?>:</span>
                     <span class="filter-value"><?php echo e($value); ?></span>
                 </div>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
         </div>
         
         <!-- اگر فقط یک صرافی انتخاب شده باشد، جزئیات تراکنش‌ها -->
-        <?php if(count($printData['reports']) === 1): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(count($printData['reports']) === 1): ?>
         <div class="transactions-section">
             <div class="section-title">
                 جزئیات معاملات با <?php echo e($printData['reports'][0]['sarafi_name']); ?>
@@ -266,8 +266,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if(isset($printData['reports'][0]['transactions']) && count($printData['reports'][0]['transactions']) > 0): ?>
-                        <?php $__currentLoopData = $printData['reports'][0]['transactions']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $transaction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($printData['reports'][0]['transactions']) && count($printData['reports'][0]['transactions']) > 0): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $printData['reports'][0]['transactions']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $transaction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
                             <td class="col-no text-center"><?php echo e($index + 1); ?></td>
                             <td class="col-date text-center"><?php echo e($transaction['date']); ?></td>
@@ -283,16 +283,16 @@
                             <td class="col-account text-center"><?php echo e($transaction['account_type'] ?? '-'); ?></td>
                             <td class="col-desc text-right"><?php echo e($transaction['description'] ?? '-'); ?></td>
                         </tr>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     <?php else: ?>
                         <tr>
                             <td colspan="7" class="text-center">هیچ تراکنشی یافت نشد</td>
                         </tr>
-                    <?php endif; ?>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </tbody>
             </table>
         </div>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         
         <!-- جدول خلاصه موجودی‌ها -->
         <div class="summary-section">
@@ -318,7 +318,7 @@
                 </thead>
                 <tbody>
                     <?php if(count($printData['reports']) > 0): ?>
-                        <?php $__currentLoopData = $printData['reports']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $printData['reports']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
                             <td class="col-no text-center"><?php echo e($index + 1); ?></td>
                             <td class="col-sarafi text-center"><?php echo e($report['sarafi_name']); ?></td>
@@ -359,12 +359,12 @@
 
                             </td>
                         </tr>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     <?php else: ?>
                         <tr>
                             <td colspan="11" class="text-center">هیچ داده‌ای یافت نشد</td>
                         </tr>
-                    <?php endif; ?>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </tbody>
             </table>
             

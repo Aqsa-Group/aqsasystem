@@ -5,7 +5,11 @@ $__split = function ($name, $params = []) {
 };
 [$__name, $__params] = $__split('sarafi.dashboard');
 
-$__html = app('livewire')->mount($__name, $__params, 'lw-201231765-0', $__slots ?? [], get_defined_vars());
+$key = null;
+
+$key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-201231765-0', null);
+
+$__html = app('livewire')->mount($__name, $__params, $key);
 
 echo $__html;
 

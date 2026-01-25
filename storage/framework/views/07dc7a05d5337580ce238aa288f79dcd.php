@@ -51,34 +51,34 @@
                 ->class(['fi-fo-builder grid gap-y-4'])); ?>
 
     >
-        <?php if($collapseAllActionIsVisible || $expandAllActionIsVisible): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($collapseAllActionIsVisible || $expandAllActionIsVisible): ?>
             <div
                 class="<?php echo \Illuminate\Support\Arr::toCssClasses([
                     'flex gap-x-3',
                     'hidden' => count($containers) < 2,
                 ]); ?>"
             >
-                <?php if($collapseAllActionIsVisible): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($collapseAllActionIsVisible): ?>
                     <span
                         x-on:click="$dispatch('builder-collapse', '<?php echo e($statePath); ?>')"
                     >
                         <?php echo e($collapseAllAction); ?>
 
                     </span>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                <?php if($expandAllActionIsVisible): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($expandAllActionIsVisible): ?>
                     <span
                         x-on:click="$dispatch('builder-expand', '<?php echo e($statePath); ?>')"
                     >
                         <?php echo e($expandAllAction); ?>
 
                     </span>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-        <?php if(count($containers)): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(count($containers)): ?>
             <ul
                 x-sortable
                 data-sortable-animation-duration="<?php echo e($getReorderAnimationDuration()); ?>"
@@ -91,7 +91,7 @@
                     $hasBlockNumbers = $hasBlockNumbers();
                 ?>
 
-                <?php $__currentLoopData = $containers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $uuid => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $containers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $uuid => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <?php
                         $visibleExtraItemActions = array_filter(
                             $extraItemActions,
@@ -122,7 +122,7 @@
                         class="fi-fo-builder-item rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:bg-white/5 dark:ring-white/10"
                         x-bind:class="{ 'fi-collapsed overflow-hidden': isCollapsed }"
                     >
-                        <?php if($reorderActionIsVisible || $moveUpActionIsVisible || $moveDownActionIsVisible || $hasBlockIcons || $hasBlockLabels || $editActionIsVisible || $cloneActionIsVisible || $deleteActionIsVisible || $isCollapsible || $visibleExtraItemActions): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($reorderActionIsVisible || $moveUpActionIsVisible || $moveDownActionIsVisible || $hasBlockIcons || $hasBlockLabels || $editActionIsVisible || $cloneActionIsVisible || $deleteActionIsVisible || $isCollapsible || $visibleExtraItemActions): ?>
                             <div
                                 <?php if($isCollapsible): ?>
                                     x-on:click.stop="isCollapsed = !isCollapsed"
@@ -132,9 +132,9 @@
                                     'cursor-pointer select-none' => $isCollapsible,
                                 ]); ?>"
                             >
-                                <?php if($reorderActionIsVisible || $moveUpActionIsVisible || $moveDownActionIsVisible): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($reorderActionIsVisible || $moveUpActionIsVisible || $moveDownActionIsVisible): ?>
                                     <ul class="flex items-center gap-x-3">
-                                        <?php if($reorderActionIsVisible): ?>
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($reorderActionIsVisible): ?>
                                             <li
                                                 x-sortable-handle
                                                 x-on:click.stop
@@ -142,9 +142,9 @@
                                                 <?php echo e($reorderAction); ?>
 
                                             </li>
-                                        <?php endif; ?>
+                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                                        <?php if($moveUpActionIsVisible || $moveDownActionIsVisible): ?>
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($moveUpActionIsVisible || $moveDownActionIsVisible): ?>
                                             <li x-on:click.stop>
                                                 <?php echo e($moveUpAction); ?>
 
@@ -154,15 +154,15 @@
                                                 <?php echo e($moveDownAction); ?>
 
                                             </li>
-                                        <?php endif; ?>
+                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                     </ul>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                                 <?php
                                     $blockIcon = $item->getParentComponent()->getIcon($item->getRawState(), $uuid);
                                 ?>
 
-                                <?php if($hasBlockIcons && filled($blockIcon)): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasBlockIcons && filled($blockIcon)): ?>
                                     <?php if (isset($component)) { $__componentOriginalbfc641e0710ce04e5fe02876ffc6f950 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalbfc641e0710ce04e5fe02876ffc6f950 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.icon','data' => ['icon' => $blockIcon,'class' => 'fi-fo-builder-item-header-icon h-5 w-5 text-gray-400 dark:text-gray-500']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -183,9 +183,9 @@
 <?php $component = $__componentOriginalbfc641e0710ce04e5fe02876ffc6f950; ?>
 <?php unset($__componentOriginalbfc641e0710ce04e5fe02876ffc6f950); ?>
 <?php endif; ?>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                                <?php if($hasBlockLabels): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasBlockLabels): ?>
                                     <h4
                                         class="<?php echo \Illuminate\Support\Arr::toCssClasses([
                                             'text-sm font-medium text-gray-950 dark:text-white',
@@ -195,46 +195,46 @@
                                         <?php echo e($item->getParentComponent()->getLabel($item->getRawState(), $uuid)); ?>
 
 
-                                        <?php if($hasBlockNumbers): ?>
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasBlockNumbers): ?>
                                             <?php echo e($loop->iteration); ?>
 
-                                        <?php endif; ?>
+                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                     </h4>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                                <?php if($editActionIsVisible || $cloneActionIsVisible || $deleteActionIsVisible || $isCollapsible || $visibleExtraItemActions): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($editActionIsVisible || $cloneActionIsVisible || $deleteActionIsVisible || $isCollapsible || $visibleExtraItemActions): ?>
                                     <ul
                                         class="ms-auto flex items-center gap-x-3"
                                     >
-                                        <?php $__currentLoopData = $visibleExtraItemActions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $extraItemAction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $visibleExtraItemActions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $extraItemAction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <li x-on:click.stop>
                                                 <?php echo e($extraItemAction(['item' => $uuid])); ?>
 
                                             </li>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                                        <?php if($editActionIsVisible): ?>
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($editActionIsVisible): ?>
                                             <li x-on:click.stop>
                                                 <?php echo e($editAction); ?>
 
                                             </li>
-                                        <?php endif; ?>
+                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                                        <?php if($cloneActionIsVisible): ?>
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($cloneActionIsVisible): ?>
                                             <li x-on:click.stop>
                                                 <?php echo e($cloneAction); ?>
 
                                             </li>
-                                        <?php endif; ?>
+                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                                        <?php if($deleteActionIsVisible): ?>
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($deleteActionIsVisible): ?>
                                             <li x-on:click.stop>
                                                 <?php echo e($deleteAction); ?>
 
                                             </li>
-                                        <?php endif; ?>
+                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                                        <?php if($isCollapsible): ?>
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isCollapsible): ?>
                                             <li
                                                 class="relative transition"
                                                 x-on:click.stop="isCollapsed = !isCollapsed"
@@ -256,11 +256,11 @@
 
                                                 </div>
                                             </li>
-                                        <?php endif; ?>
+                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                     </ul>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                         <div
                             x-show="! isCollapsed"
@@ -269,7 +269,7 @@
                                 'p-4' => ! ($hasBlockPreviews && $item->getParentComponent()->hasPreview()),
                             ]); ?>"
                         >
-                            <?php if($hasBlockPreviews && $item->getParentComponent()->hasPreview()): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasBlockPreviews && $item->getParentComponent()->hasPreview()): ?>
                                 <div
                                     class="<?php echo \Illuminate\Support\Arr::toCssClasses([
                                         'fi-fo-builder-item-preview',
@@ -280,22 +280,22 @@
 
                                 </div>
 
-                                <?php if($editActionIsVisible && (! $hasInteractiveBlockPreviews)): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($editActionIsVisible && (! $hasInteractiveBlockPreviews)): ?>
                                     <div
                                         class="absolute inset-0 z-[1] cursor-pointer"
                                         role="button"
                                         x-on:click.stop="<?php echo e('$wire.mountFormComponentAction(\'' . $statePath . '\', \'edit\', { item: \'' . $uuid . '\' })'); ?>"
                                     ></div>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             <?php else: ?>
                                 <?php echo e($item); ?>
 
-                            <?php endif; ?>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
                     </li>
 
-                    <?php if(! $loop->last): ?>
-                        <?php if($isAddable && $addBetweenAction(['afterItem' => $uuid])->isVisible()): ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(! $loop->last): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isAddable && $addBetweenAction(['afterItem' => $uuid])->isVisible()): ?>
                             <li class="relative -top-2 !mt-0 h-0">
                                 <div
                                     class="flex w-full justify-center opacity-0 transition duration-75 hover:opacity-100"
@@ -341,13 +341,13 @@
 
                                 </span>
                             </li>
-                        <?php endif; ?>
-                    <?php endif; ?>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </ul>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-        <?php if($isAddable && $addAction->isVisible()): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isAddable && $addAction->isVisible()): ?>
             <?php if (isset($component)) { $__componentOriginalcf011b913eed6cf65506740170d1fccb = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalcf011b913eed6cf65506740170d1fccb = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-forms::components.builder.block-picker','data' => ['action' => $addAction,'blocks' => $blockPickerBlocks,'columns' => $blockPickerColumns,'statePath' => $statePath,'width' => $blockPickerWidth,'class' => \Illuminate\Support\Arr::toCssClasses([
@@ -388,7 +388,7 @@
 <?php $component = $__componentOriginalcf011b913eed6cf65506740170d1fccb; ?>
 <?php unset($__componentOriginalcf011b913eed6cf65506740170d1fccb); ?>
 <?php endif; ?>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </div>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>

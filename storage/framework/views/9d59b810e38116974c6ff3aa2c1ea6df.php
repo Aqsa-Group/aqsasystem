@@ -278,7 +278,7 @@
     </div>
 
     <!-- نمایش فیلترها -->
-    <?php if(isset($filters) &&
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($filters) &&
             (isset($filters['transactionType']) ||
                 isset($filters['accountType']) ||
                 isset($filters['currency']) ||
@@ -287,59 +287,59 @@
         <div class="filters-section keep-together">
             <h3>فیلترهای اعمال شده</h3>
             <div class="filter-row">
-                <?php if(isset($filters['transactionType']) && $filters['transactionType']): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($filters['transactionType']) && $filters['transactionType']): ?>
                     <div class="filter-item">
                         <span class="filter-label">نوع تراکنش:</span>
                         <span class="filter-value"><?php echo e($filters['transactionType']); ?></span>
                     </div>
-                <?php endif; ?>
-                <?php if(isset($filters['accountType']) && $filters['accountType']): ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($filters['accountType']) && $filters['accountType']): ?>
                     <div class="filter-item">
                         <span class="filter-label">نوع حساب:</span>
                         <span class="filter-value"><?php echo e($filters['accountType']); ?></span>
                     </div>
-                <?php endif; ?>
-                <?php if(isset($filters['currency']) && $filters['currency']): ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($filters['currency']) && $filters['currency']): ?>
                     <div class="filter-item">
                         <span class="filter-label">ارز:</span>
                         <span
                             class="filter-value"><?php echo e($currencies[$filters['currency']] ?? $filters['currency']); ?></span>
                     </div>
-                <?php endif; ?>
-                <?php if(isset($filters['fromDate']) && $filters['fromDate']): ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($filters['fromDate']) && $filters['fromDate']): ?>
                     <div class="filter-item">
                         <span class="filter-label">از تاریخ:</span>
                         <span
                             class="filter-value"><?php echo e(\Morilog\Jalali\Jalalian::fromFormat('Y-m-d', $filters['fromDate'])->format('Y/m/d')); ?></span>
                     </div>
-                <?php endif; ?>
-                <?php if(isset($filters['toDate']) && $filters['toDate']): ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($filters['toDate']) && $filters['toDate']): ?>
                     <div class="filter-item">
                         <span class="filter-label">تا تاریخ:</span>
                         <span
                             class="filter-value"><?php echo e(\Morilog\Jalali\Jalalian::fromFormat('Y-m-d', $filters['toDate'])->format('Y/m/d')); ?></span>
                     </div>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
         </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <!-- اطلاعات مشتری -->
-    <?php if($customerName): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($customerName): ?>
         <div class="customer-info keep-together">
             <div class="customer-name"><?php echo e($customerName); ?></div>
-            <?php if($customerAccount): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($customerAccount): ?>
                 <div class="customer-account">شماره حساب: <?php echo e($customerAccount); ?></div>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <!-- جدول تراکنش‌ها -->
     <div class="keep-together">
         <h3 style="margin: 10px 0 5px 0; font-size: 10pt; color: #2B65E5;">لیست تراکنش‌ها (<?php echo e($transactions->count()); ?>
 
             رکورد)</h3>
-        <?php if($transactions->count() > 0): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($transactions->count() > 0): ?>
             <table class="transactions-table">
                 <thead>
                     <tr>
@@ -357,11 +357,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $__currentLoopData = $transactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $transaction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $transactions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $transaction): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
                             <td><?php echo e($index + 1); ?></td>
                             <td>
-                                <?php if(empty($transaction->customer_id) && !empty($transaction->withdraw_id)): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(empty($transaction->customer_id) && !empty($transaction->withdraw_id)): ?>
                                     <div style="font-weight: bold;">برداشت</div>
                                 <?php elseif(empty($transaction->customer_id) && $transaction->is_sell_table == 1): ?>
                                     <div style="font-weight: bold;">معامله از صندوق</div>
@@ -370,13 +370,13 @@
                                         <?php echo e($transaction->customer->fullname ?? 'نامشخص'); ?>
 
                                     </div>
-                                    <?php if(!empty($transaction->customer_id) && $transaction->customer): ?>
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($transaction->customer_id) && $transaction->customer): ?>
                                         <div style="font-size: 7pt; color: #666;">
                                             <?php echo e($transaction->customer->account_number ?? ''); ?>
 
                                         </div>
-                                    <?php endif; ?>
-                                <?php endif; ?>
+                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </td>
                             <td><?php echo e($transaction->type); ?></td>
                             <td><?php echo e($transaction->account_type); ?></td>
@@ -393,18 +393,18 @@
                                     <?php echo e(\Carbon\Carbon::parse($transaction->created_at)->format('H:i')); ?></div>
                             </td>
                         </tr>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </tbody>
             </table>
         <?php else: ?>
             <div style="text-align: center; padding: 15px; color: #666; font-style: italic; font-size: 9pt;">
                 هیچ تراکنشی برای نمایش وجود ندارد
             </div>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </div>
 
     <!-- جدول خلاصه گزارشات -->
-    <?php if($summary->count() > 0): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($summary->count() > 0): ?>
         <div class="keep-together">
             <h3 style="margin: 15px 0 5px 0; font-size: 10pt; color: #2B65E5;">خلاصه گزارشات</h3>
             <table class="summary-table">
@@ -421,7 +421,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $__currentLoopData = $summary; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $summary; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
                             <td><?php echo e($index + 1); ?></td>
                             <td style="font-weight: bold;"><?php echo e($item->currency_fa); ?></td>
@@ -438,14 +438,14 @@
 
                             </td>
                         </tr>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </tbody>
             </table>
         </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <!-- موجودی صندوق نقدی و بانکی - با تیبل -->
-    <?php if(isset($totalBalanceByCurrency) && count($totalBalanceByCurrency) > 0): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($totalBalanceByCurrency) && count($totalBalanceByCurrency) > 0): ?>
         <div class="keep-together">
             <h3 style="margin: 15px 0 5px 0; font-size: 10pt; color: #2B65E5; text-align: center;">موجودی صندوق نقدی و
                 بانکی</h3>
@@ -455,19 +455,19 @@
                 $currencyChunks = array_chunk($totalBalanceByCurrency, 3, true);
             ?>
 
-            <?php $__currentLoopData = $currencyChunks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $chunk): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $currencyChunks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $chunk): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <table class="balance-table" style="width: 100%; margin-bottom: 10px;">
                     <thead>
                         <tr>
-                            <?php $__currentLoopData = $chunk; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $totalAmount): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $chunk; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $totalAmount): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <th style="width: <?php echo e(100 / count($chunk)); ?>%;">
                                     <?php echo e($currencies[$currencyCode] ?? $currencyCode); ?></th>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <?php $__currentLoopData = $chunk; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $totalAmount): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $chunk; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $totalAmount): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php
                                     $safe = $currencySafeBalance[$currencyCode] ?? 0;
                                     $bank = $bankAccountBalance[$currencyCode] ?? 0;
@@ -491,13 +491,13 @@
                                         </div>
                                     </div>
                                 </td>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </tr>
                     </tbody>
                 </table>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <!-- سود و ضرر امروز -->
     <div style="width: 100%; margin: 15px 0;">

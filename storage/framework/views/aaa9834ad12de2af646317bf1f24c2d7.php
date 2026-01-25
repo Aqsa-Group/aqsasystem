@@ -165,12 +165,12 @@
 
     
 
-    <?php if($data && $data->count() > 0): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($data && $data->count() > 0): ?>
     <table>
         <thead>
             <tr>
                 <th class="row-number">#</th>
-                <?php switch($reportType):
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php switch($reportType):
                 case ('accounting'): ?>
                 <th>مارکت</th>
                 <th>نوع مصرف</th>
@@ -280,18 +280,18 @@
                 <th>وضعیت کسر</th>
                 <?php break; ?>
 
-                <?php endswitch; ?>
+                <?php endswitch; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </tr>
         </thead>
 
         <tbody>
 
          
-            <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
             <tr>
                 <td class="row-number"><?php echo e($index + 1); ?></td>
-                <?php switch($reportType):
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php switch($reportType):
 
                 case ('accounting'): ?>
                 <td><?php echo e($report->market->name ?? '-'); ?></td>
@@ -335,13 +335,13 @@
                     (<?php echo e($report->record_type === 'withdraw' ? 'برداشت' : 'معاش'); ?>)
                 </td>
                 <td>
-                    <?php if($report->record_type == 'withdraw' || $report->record_type == 'withdraw_salary'): ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($report->record_type == 'withdraw' || $report->record_type == 'withdraw_salary'): ?>
                     <?php echo e($report->expanses_type ?? '-'); ?>
 
                     <?php else: ?>
                     <?php echo e($report->reduce_from ?? '-'); ?>
 
-                    <?php endif; ?>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </td>
                 <td>
                     <?php echo e($report->staff->fullname ?? $report->customer->fullname ?? $report->shopkeeper->fullname ?? '-'); ?>
@@ -355,12 +355,12 @@
                     </span>
                 </td>
                 <td>
-                    <?php switch($report->currency):
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php switch($report->currency):
                     case ('AFN'): ?> افغانی <?php break; ?>
                     <?php case ('USD'): ?> دالر <?php break; ?>
                     <?php default: ?> <?php echo e($report->currency); ?>
 
-                    <?php endswitch; ?>
+                    <?php endswitch; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </td>
                 <td>
                     <?php echo e(($report->record_type == 'withdraw' || $report->record_type == 'withdraw_salary') ?
@@ -380,12 +380,12 @@
                 <td><?php echo e(number_format($report->paid)); ?></td>
                 <td><?php echo e(number_format($report->remained)); ?></td>
                 <td>
-                    <?php switch($report->currency):
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php switch($report->currency):
                     case ('AFN'): ?> افغانی <?php break; ?>
                     <?php case ('USD'): ?> دالر <?php break; ?>
                     <?php default: ?> <?php echo e($report->currency); ?>
 
-                    <?php endswitch; ?>
+                    <?php endswitch; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </td>
                 <td><?php echo e($report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
                     : '-'); ?></td>
@@ -394,7 +394,7 @@
                 <?php case ('outside'): ?>
                 <td><?php echo e($report->market->name ?? '-'); ?></td>
                 <td>
-                    <?php if($report->customer_id): ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($report->customer_id): ?>
                     مشتری
                     <?php elseif($report->staff_id): ?>
                     کارمند
@@ -402,17 +402,17 @@
                     دوکاندار
                     <?php else: ?>
                     نامشخص
-                    <?php endif; ?>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </td>
                 <td><?php echo e($report->customer->fullname ?? $report->staff->fullname ?? $report->shopkeeper->fullname ?? '-'); ?></td>
                 <td><?php echo e(number_format($report->paid)); ?></td>
                 <td>
-                    <?php switch($report->currency):
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php switch($report->currency):
                     case ('AFN'): ?> افغانی <?php break; ?>
                     <?php case ('USD'): ?> دالر <?php break; ?>
                     <?php default: ?> <?php echo e($report->currency); ?>
 
-                    <?php endswitch; ?>
+                    <?php endswitch; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </td>
                 <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
 
@@ -424,7 +424,7 @@
                 <td><?php echo e($report->market->name ?? '-'); ?></td>
                 <td><?php echo e($report->person); ?></td>
                 <td>
-                    <?php if($report->person === 'مشتری' && $report->customer): ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($report->person === 'مشتری' && $report->customer): ?>
                     <?php echo e($report->customer->fullname); ?>
 
                     <?php elseif($report->person === 'دوکاندار' && $report->shopkeeper): ?>
@@ -433,18 +433,18 @@
                     <?php elseif($report->person === 'کارمند' && $report->staff): ?>
                     <?php echo e($report->staff->fullname); ?>
 
-                    <?php else: ?> - <?php endif; ?>
+                    <?php else: ?> - <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </td>
                 <td><?php echo e(number_format($report->amount)); ?></td>
                 <td><?php echo e(number_format($report->totalPaid())); ?></td>
                 <td><?php echo e(number_format($report->remainingAmount())); ?></td>
                 <td>
-                    <?php switch($report->currency):
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php switch($report->currency):
                     case ('AFN'): ?> افغانی <?php break; ?>
                     <?php case ('USD'): ?> دالر <?php break; ?>
                     <?php default: ?> <?php echo e($report->currency); ?>
 
-                    <?php endswitch; ?>
+                    <?php endswitch; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </td>
                 <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
 
@@ -455,11 +455,11 @@
                 <td>#<?php echo e($report->loan_id); ?></td>
                 <td><?php echo e(number_format($report->amount)); ?></td>
                 <td>
-                    <?php switch($report->currency):
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php switch($report->currency):
                     case ('AFN'): ?> افغانی <?php break; ?>
                     <?php case ('USD'): ?> دالر <?php break; ?>
                     <?php default: ?> <?php echo e($report->currency); ?>1404/08/17
-                    <?php endswitch; ?>
+                    <?php endswitch; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </td>
                 <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
 
@@ -473,12 +473,12 @@
                 <td><?php echo e($report->property); ?></td>
                 <td><?php echo e(number_format($report->price)); ?></td>
                 <td>
-                    <?php switch($report->currency):
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php switch($report->currency):
                     case ('AFN'): ?> افغانی <?php break; ?>
                     <?php case ('USD'): ?> دالر <?php break; ?>
                     <?php default: ?> <?php echo e($report->currency); ?>
 
-                    <?php endswitch; ?>
+                    <?php endswitch; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </td>
                 <td><?php echo e($report->created_at ?
                     \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-'); ?></td>
@@ -490,12 +490,12 @@
                 <td><?php echo e($report->property); ?></td>
                 <td><?php echo e(number_format($report->price)); ?></td>
                 <td>
-                    <?php switch($report->currency):
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php switch($report->currency):
                     case ('AFN'): ?> افغانی <?php break; ?>
                     <?php case ('USD'): ?> دالر <?php break; ?>
                     <?php default: ?> <?php echo e($report->currency); ?>
 
-                    <?php endswitch; ?>
+                    <?php endswitch; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </td>
                 <td><?php echo e($report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'); ?>
 
@@ -508,12 +508,12 @@
                 <td><?php echo e($report->recipient_name); ?></td>
                 <td><?php echo e(number_format($report->amount)); ?></td>
                 <td>
-                    <?php switch($report->currency):
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php switch($report->currency):
                     case ('AFN'): ?> افغانی <?php break; ?>
                     <?php case ('USD'): ?> دالر <?php break; ?>
                     <?php default: ?> <?php echo e($report->currency); ?>
 
-                    <?php endswitch; ?>
+                    <?php endswitch; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </td>
                 <td><?php echo e($report->description ?? '-'); ?></td>
                 <td><?php echo e($report->created_at ?
@@ -528,22 +528,22 @@
                 <td><?php echo e(number_format($report->remained)); ?></td>
                 <td><?php echo e(number_format($report->loan)); ?></td>
                 <td>
-                    <?php switch($report->currency):
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php switch($report->currency):
                     case ('AFN'): ?> افغانی <?php break; ?>
                     <?php case ('USD'): ?> دالر <?php break; ?>
                     <?php default: ?> <?php echo e($report->currency); ?>
 
-                    <?php endswitch; ?>
+                    <?php endswitch; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </td>
                 <td><?php echo e($report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
                     : '-'); ?></td>
                 <td><?php echo e($report->is_reduce ? 'فعال' : 'غیرفعال'); ?></td>
                 <?php break; ?>
 
-                <?php endswitch; ?>
+                <?php endswitch; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </tr>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-  <?php if($reportType == 'accounting' && isset($summary['accounting_totals'])): ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+  <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($reportType == 'accounting' && isset($summary['accounting_totals'])): ?>
 <tfoot>
     <tr style="font-weight: bold; background: #f0f0f0;">
         <td colspan="11">مجموع</td>
@@ -554,7 +554,7 @@
         <td colspan="3"></td>
     </tr>
 </tfoot>
-<?php endif; ?>
+<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
 
         </tbody>
@@ -564,25 +564,25 @@
         <h3>داده‌ای برای نمایش وجود ندارد</h3>
         <p>هیچ رکوردی با فیلترهای اعمال شده مطابقت ندارد.</p>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <div class="footer">
         <div>سیستم گزارش‌گیری جامع</div>
         <div>تعداد: <?php echo e(number_format($summary['total_count'])); ?> | مجموع کل: <?php echo e(number_format($summary['total_amount'])); ?></div>
-        <?php if(isset($summary['currency_totals']) && count($summary['currency_totals']) > 0): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($summary['currency_totals']) && count($summary['currency_totals']) > 0): ?>
         <div style="margin-top: 3px;">
-            <?php $__currentLoopData = $summary['currency_totals']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency => $total): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $summary['currency_totals']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency => $total): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <span style="margin: 0 5px;">
                 <?php echo e($currency); ?>: <?php echo e(number_format($total)); ?>
 
             </span>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </div>
 
     <!-- جدول موجودی صندوق -->
-    <?php if(isset($safeRows) && count($safeRows) > 0): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($safeRows) && count($safeRows) > 0): ?>
     <div style="margin-top: 20px;">
         <h4 style="text-align: center; margin-bottom: 5px;"> موجودی صندوق</h4>
         <table style="width:100%; border-collapse: collapse; font-size: 18px;">
@@ -599,7 +599,7 @@
                 <?php
                 $total_af = $total_us = $total_er = $total_ir = 0;
                 ?>
-                <?php $__currentLoopData = $safeRows; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $safeRows; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php
                 $total_af += $row['af'];
                 $total_us += $row['us'];
@@ -613,7 +613,7 @@
                     <td style="border:1px solid #262727; padding:4px; text-align:center;"><?php echo e(number_format($row['er'])); ?></td>
                     <td style="border:1px solid #262727; padding:4px; text-align:center;"><?php echo e(number_format($row['ir'])); ?></td>
                 </tr>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 <!-- جمع کل -->
                 <tr style="font-weight:bold; background:#f0f0f0;">
                     <td style="border:1px solid #262727; text-align:center;">جمع کل</td>
@@ -625,7 +625,7 @@
             </tbody>
         </table>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
 </body>
 

@@ -85,7 +85,7 @@ unset($__defined_vars, $__key, $__value); ?>
     <?php echo e($attributes->class(['fi-ta-col-wrp'])); ?>
 
 >
-    <?php if(($url || ($recordUrl && $action === null)) && (! $isClickDisabled)): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(($url || ($recordUrl && $action === null)) && (! $isClickDisabled)): ?>
         <a
             <?php echo e(\Filament\Support\generate_href_html($url ?: $recordUrl, $url ? $shouldOpenUrlInNewTab : $shouldOpenRecordUrlInNewTab)); ?>
 
@@ -124,6 +124,6 @@ unset($__defined_vars, $__key, $__value); ?>
             <?php echo e($slot); ?>
 
         </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </div>
 <?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/vendor/filament/tables/resources/views/components/columns/column.blade.php ENDPATH**/ ?>

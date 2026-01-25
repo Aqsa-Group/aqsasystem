@@ -64,7 +64,7 @@ unset($__defined_vars, $__key, $__value); ?>
         ])); ?>
 
 >
-    <?php if($results->getCategories()->isEmpty()): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($results->getCategories()->isEmpty()): ?>
         <?php if (isset($component)) { $__componentOriginal5f91e8e55a301fec75d7ec79ec637319 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal5f91e8e55a301fec75d7ec79ec637319 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-panels::components.global-search.no-results-message','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -87,7 +87,7 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php endif; ?>
     <?php else: ?>
         <ul class="divide-y divide-gray-200 dark:divide-white/10">
-            <?php $__currentLoopData = $results->getCategories(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $group => $groupedResults): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $results->getCategories(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $group => $groupedResults): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php if (isset($component)) { $__componentOriginal931e4381c43960a92f84023b5c6c375a = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal931e4381c43960a92f84023b5c6c375a = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-panels::components.global-search.result-group','data' => ['label' => $group,'results' => $groupedResults]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -108,8 +108,8 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php $component = $__componentOriginal931e4381c43960a92f84023b5c6c375a; ?>
 <?php unset($__componentOriginal931e4381c43960a92f84023b5c6c375a); ?>
 <?php endif; ?>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </ul>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </div>
 <?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/vendor/filament-panels/components/global-search/results-container.blade.php ENDPATH**/ ?>

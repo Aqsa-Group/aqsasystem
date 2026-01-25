@@ -11,7 +11,7 @@
             </tr>
         </thead>
       <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-    <?php $__empty_1 = true; $__currentLoopData = $withdrawals; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $withdrawal): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $withdrawals; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $withdrawal): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
         <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
             <td class="p-2 border"><?php echo e($index + 1); ?></td>
             <td class="p-2 border">
@@ -21,14 +21,14 @@
             <td class="p-2 border"><?php echo e($withdrawal->staff->name ?? '---'); ?></td>
             <td class="p-2 border text-red-600 font-bold"><?php echo e(number_format($withdrawal->amount ?? 0)); ?></td>
             <td class="p-2 border">
-                <?php if($withdrawal->currency === 'AFN'): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($withdrawal->currency === 'AFN'): ?>
                     افغانی
                 <?php elseif($withdrawal->currency === 'USD'): ?>
                     دالر
                 <?php else: ?>
                     <?php echo e($withdrawal->currency ?? '---'); ?>
 
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </td>
             <td class="p-2 border"><?php echo e($withdrawal->description ?? '---'); ?></td>
         </tr>
@@ -36,7 +36,7 @@
         <tr>
             <td colspan="5" class="text-center py-6 text-gray-400">هیچ برداشتی ثبت نشده است.</td>
         </tr>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </tbody>
 
     </table>

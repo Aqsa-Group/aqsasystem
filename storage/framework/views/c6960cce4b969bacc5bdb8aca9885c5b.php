@@ -104,8 +104,8 @@
             })
         "
     >
-        <?php if(! $isDisabled): ?>
-            <?php if($isSearchable): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(! $isDisabled): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isSearchable): ?>
                 <?php if (isset($component)) { $__componentOriginal505efd9768415fdb4543e8c564dad437 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal505efd9768415fdb4543e8c564dad437 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament::components.input.wrapper','data' => ['inlinePrefix' => true,'prefixIcon' => 'heroicon-m-magnifying-glass','prefixIconAlias' => 'forms:components.checkbox-list.search-field','class' => 'mb-4']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -158,9 +158,9 @@
 <?php $component = $__componentOriginal505efd9768415fdb4543e8c564dad437; ?>
 <?php unset($__componentOriginal505efd9768415fdb4543e8c564dad437); ?>
 <?php endif; ?>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-            <?php if($isBulkToggleable && count($getOptions())): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isBulkToggleable && count($getOptions())): ?>
                 <div
                     x-cloak
                     class="mb-2"
@@ -184,8 +184,8 @@
 
                     </span>
                 </div>
-            <?php endif; ?>
-        <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         <?php if (isset($component)) { $__componentOriginal30dbd75eb120a380110a2b340cd88f46 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal30dbd75eb120a380110a2b340cd88f46 = $attributes; } ?>
@@ -211,7 +211,7 @@
                         '-mt-4' => $gridDirection === 'column',
                     ])
             )]); ?>
-            <?php $__empty_1 = true; $__currentLoopData = $getOptions(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $getOptions(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <div
                     wire:key="<?php echo e($this->getId()); ?>.<?php echo e($statePath); ?>.<?php echo e($field::class); ?>.options.<?php echo e($value); ?>"
                     <?php if($isSearchable): ?>
@@ -278,23 +278,23 @@
                             <span
                                 class="fi-fo-checkbox-list-option-label overflow-hidden break-words font-medium text-gray-950 dark:text-white"
                             >
-                                <?php if($isHtmlAllowed()): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isHtmlAllowed()): ?>
                                     <?php echo $label; ?>
 
                                 <?php else: ?>
                                     <?php echo e($label); ?>
 
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </span>
 
-                            <?php if($hasDescription($value)): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasDescription($value)): ?>
                                 <p
                                     class="fi-fo-checkbox-list-option-description text-gray-500 dark:text-gray-400"
                                 >
                                     <?php echo e($getDescription($value)); ?>
 
                                 </p>
-                            <?php endif; ?>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
                     </label>
                 </div>
@@ -302,7 +302,7 @@
                 <div
                     wire:key="<?php echo e($this->getId()); ?>.<?php echo e($statePath); ?>.<?php echo e($field::class); ?>.empty"
                 ></div>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
          <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal30dbd75eb120a380110a2b340cd88f46)): ?>
@@ -314,7 +314,7 @@
 <?php unset($__componentOriginal30dbd75eb120a380110a2b340cd88f46); ?>
 <?php endif; ?>
 
-        <?php if($isSearchable): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isSearchable): ?>
             <div
                 x-cloak
                 x-show="search && ! visibleCheckboxListOptions.length"
@@ -323,7 +323,7 @@
                 <?php echo e($getNoSearchResultsMessage()); ?>
 
             </div>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </div>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>

@@ -22,10 +22,10 @@
     <table>
         <tr>
             <td>
-                <?php if($sale->sale_type === 'wholesale' && $sale->customer): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($sale->sale_type === 'wholesale' && $sale->customer): ?>
                 محترم: <?php echo e($sale->customer->name); ?>
 
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </td>
             <td>&nbsp;&nbsp; شماره فاکتور: <?php echo e($sale->invoice_number); ?></td>
             <td>تاریخ: <?php echo e(jdate($sale->created_at)->format('Y/m/d')); ?></td>
@@ -57,22 +57,22 @@
             </tr>
         </thead>
         <tbody>
-            <?php $__currentLoopData = $sale->items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $sale->items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <tr>
                 <td><?php echo e($index + 1); ?></td>
                 <td><?php echo e($item->warehouse->name ?? '-'); ?></td>
                 <td><?php echo e(number_format($item->price_per_unit , 2)); ?></td>
                 <td><?php echo e($item->quantity); ?></td>
-                <?php if($sale->sale_type === 'wholesale'): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($sale->sale_type === 'wholesale'): ?>
                 <td><?php echo e($item->warehouse->unit ?? '-'); ?></td>
                 <?php else: ?>
                 <td>عدد</td>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 <td><?php echo e(number_format($item->total_price , 2)); ?></td>
             </tr>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-            <?php for($i = count($sale->items) + 1; $i <=13; $i++): ?> <tr>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php for($i = count($sale->items) + 1; $i <=13; $i++): ?> <tr>
                 <td><?php echo e($i); ?></td>
                 <td></td>
                 <td></td>
@@ -80,7 +80,7 @@
                 <td></td>
                 <td></td>
                 </tr>
-                <?php endfor; ?>
+                <?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </tbody>
     </table>
 
@@ -104,7 +104,7 @@
                     <strong><?php echo e(number_format($sale->total_price , 2)); ?>&nbsp;دالر</strong>
                 </td>
             </tr>
-            <?php if($sale->sale_type === 'wholesale'): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($sale->sale_type === 'wholesale'): ?>
             <tr>
                 <td style="padding:6px; font-weight:bold;">مبلغ دریافت شده</td>
                 <td style="padding:6px; text-align:center;">
@@ -131,7 +131,7 @@
                     <strong><?php echo e(number_format($sale->remaining_amount + $previousLoanRemaining , 2)); ?>&nbsp;دالر</strong>
                 </td>
             </tr>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         </tbody>
     </table>

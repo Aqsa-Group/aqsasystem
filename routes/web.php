@@ -13,6 +13,7 @@ use App\Http\Controllers\OutsideController;
 use App\Http\Controllers\PrintBoothContract;
 use App\Http\Controllers\PrintContract;
 use App\Http\Controllers\printLoan;
+use App\Http\Controllers\Restaurant\AuthController;
 use App\Http\Controllers\SalaryPrintController;
 use App\Http\Controllers\Sarafi\Auth\CustomController;
 use App\Http\Controllers\Sarafi\CustomerController;
@@ -30,6 +31,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+
 
 
 
@@ -781,6 +783,52 @@ Route::get('/updated-market/home', function () {
     }
     return view('Market.components.dashboard');
 })->name('market.home');
+
+
+
+
+// Restaurant Web
+
+
+Route::get('/restaurant', [AuthController::class, 'showLoginForm'])->name('restaurant.login.form');
+
+Route::post('/restaurant/login', [AuthController::class, 'login'])->name('restaurant.login');
+
+Route::post('/restaurant/logout', [AuthController::class, 'logout'])->name('restaurnat.logout');
+
+
+
+Route::get('/set-locale/{locale}', function ($locale) {
+    $availableLocales = ['fa', 'ps', 'en'];
+
+    if (in_array($locale, $availableLocales)) {
+        Session::put('locale', $locale);
+        Cookie::queue('locale', $locale, 60 * 24 * 30); 
+    }
+
+    return redirect()->back();
+})->name('set-locale');
+
+
+// Pages    
+Route::get('/restaurant/home', function () {
+    if (!Auth::guard('restaurant')->check()) {
+        return redirect()->route('restaurant.login.form');
+    }
+    return view('Restaurant.components.dashboard');
+})->name('restaurant.home');
+
+
+
+Route::get('/restaurant/menu', function () {
+    if (!Auth::guard('restaurant')->check()) {
+        return redirect()->route('restaurant.login.form');
+    }
+    return view('Restaurant.components.menu');
+})->name('restaurant.menu');
+
+
+
 
 
 

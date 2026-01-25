@@ -189,23 +189,23 @@
             <tr>
                 <td>تاریخ ایجاد</td>
                 <td>
-                    <?php if($user->created_at): ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($user->created_at): ?>
                         <?php echo e(\Morilog\Jalali\Jalalian::fromDateTime($user->created_at)->format('Y/m/d')); ?>
 
                     <?php else: ?>
                         -
-                    <?php endif; ?>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </td>
             </tr>
 
             <tr>
                 <td>وضعیت</td>
                 <td>
-                    <?php if($user->status == 1): ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($user->status == 1): ?>
                         <span style="color: green;">فعال</span>
                     <?php else: ?>
                         <span style="color: red;">غیرفعال</span>
-                    <?php endif; ?>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </td>
             </tr>
         </table>

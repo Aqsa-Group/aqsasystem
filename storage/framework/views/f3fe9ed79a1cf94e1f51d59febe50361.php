@@ -82,30 +82,30 @@
             <th>مارکت</th>
             <th>نوع ملک</th>
 
-            <?php if($accounting->type === 'دوکان'): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($accounting->type === 'دوکان'): ?>
                 <th>شماره دوکان</th>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-            <?php if($accounting->type === 'غرفه'): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($accounting->type === 'غرفه'): ?>
                 <th>شماره غرفه</th>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
             <th>نام دوکاندار</th>
             <th>نوع مصرف</th>
 
             
-            <?php if($accounting->expanses_type === 'پول برق'): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($accounting->expanses_type === 'پول برق'): ?>
                 <th>شماره متر</th>
                 <th>درجه قبلی</th>
                 <th>درجه فعلی</th>
                 <th>قیمت فی کیلوات</th>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
             <th>مبلغ</th>
-            <?php if(!empty($accounting->paid) && $accounting->paid > 0): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($accounting->paid) && $accounting->paid > 0): ?>
                 <th>پرداخت شده</th>
                 <th>باقی‌مانده</th>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             <th>تاریخ ثبت</th>
         </tr>
 
@@ -113,31 +113,31 @@
             <td><?php echo e($accounting->market->name ?? '-'); ?></td>
             <td><?php echo e($accounting->type ?? '-'); ?></td>
 
-            <?php if($accounting->type === 'دوکان'): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($accounting->type === 'دوکان'): ?>
                 <td><?php echo e($accounting->shop->number ?? '-'); ?></td>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-            <?php if($accounting->type === 'غرفه'): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($accounting->type === 'غرفه'): ?>
                 <td><?php echo e($accounting->booth->number ?? '-'); ?></td>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
             <td><?php echo e($accounting->shopkeeper->fullname ?? '-'); ?></td>
             <td><?php echo e($accounting->expanses_type ?? '-'); ?></td>
 
             
-            <?php if($accounting->expanses_type === 'پول برق'): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($accounting->expanses_type === 'پول برق'): ?>
                 <td><?php echo e($accounting->meter_serial ?? '-'); ?></td>
                 <td><?php echo e($accounting->past_degree ?? '-'); ?></td>
                 <td><?php echo e($accounting->current_degree ?? '-'); ?></td>
                 <td><?php echo e(number_format($accounting->degree_price ?? 0)); ?></td>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
             <td><?php echo e(number_format($accounting->price)); ?></td>
 
-            <?php if(!empty($accounting->paid) && $accounting->paid > 0): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($accounting->paid) && $accounting->paid > 0): ?>
                 <td><?php echo e(number_format($accounting->paid)); ?></td>
                 <td><?php echo e(number_format($accounting->remained ?? 0)); ?></td>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
             <td><?php echo e(\Morilog\Jalali\Jalalian::fromDateTime($accounting->paid_date)->format('Y/m/d')); ?></td>
         </tr>

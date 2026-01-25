@@ -64,13 +64,13 @@
             >
                 <thead>
                     <tr>
-                        <?php if($isReorderable && (! $isDisabled)): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isReorderable && (! $isDisabled)): ?>
                             <th
                                 scope="col"
                                 x-show="rows.length"
                                 class="w-9"
                             ></th>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                         <th
                             scope="col"
@@ -88,13 +88,13 @@
 
                         </th>
 
-                        <?php if($isDeletable && (! $isDisabled)): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isDeletable && (! $isDisabled)): ?>
                             <th
                                 scope="col"
                                 x-show="rows.length"
                                 class="w-9"
                             ></th>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </tr>
                 </thead>
 
@@ -116,14 +116,14 @@
                             <?php endif; ?>
                             class="divide-x divide-gray-200 dark:divide-white/5 rtl:divide-x-reverse"
                         >
-                            <?php if($isReorderable && (! $isDisabled)): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isReorderable && (! $isDisabled)): ?>
                                 <td class="p-0.5">
                                     <div x-sortable-handle class="flex">
                                         <?php echo e($getAction('reorder')); ?>
 
                                     </div>
                                 </td>
-                            <?php endif; ?>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                             <td class="w-1/2 p-0">
                                 <?php if (isset($component)) { $__componentOriginal9ad6b66c56a2379ee0ba04e1e358c61e = $component; } ?>
@@ -195,27 +195,27 @@
 <?php endif; ?>
                             </td>
 
-                            <?php if($isDeletable && (! $isDisabled)): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isDeletable && (! $isDisabled)): ?>
                                 <td class="p-0.5">
                                     <div x-on:click="deleteRow(index)">
                                         <?php echo e($getAction('delete')); ?>
 
                                     </div>
                                 </td>
-                            <?php endif; ?>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </tr>
                     </template>
                 </tbody>
             </table>
 
-            <?php if($isAddable && (! $isDisabled)): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isAddable && (! $isDisabled)): ?>
                 <div class="flex justify-center px-3 py-2">
                     <span x-on:click="addRow" class="flex">
                         <?php echo e($getAction('add')); ?>
 
                     </span>
                 </div>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
      <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>

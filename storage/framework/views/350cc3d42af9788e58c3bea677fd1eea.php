@@ -27,7 +27,7 @@
                     $total_af = $total_us = $total_er = $total_ir = 0;
                 ?>
 
-                <?php $__currentLoopData = $rows; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $rows; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <?php
                         $total_af += $row['af'];
                         $total_us += $row['us'];
@@ -41,7 +41,7 @@
                         <td class="px-6 py-3 text-indigo-800 dark:text-gray-300 text-right"><?php echo e(number_format($row['er'])); ?></td>
                         <td class="px-6 py-3 text-indigo-800 dark:text-gray-300 text-right"><?php echo e(number_format($row['ir'])); ?></td>
                     </tr>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                 
                 <tr class="bg-indigo-100 dark:bg-[#444455] font-bold border-t border-indigo-300 dark:border-gray-500 text-indigo-900 dark:text-gray-100">

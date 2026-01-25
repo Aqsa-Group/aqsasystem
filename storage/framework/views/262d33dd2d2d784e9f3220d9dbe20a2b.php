@@ -104,7 +104,7 @@
             <td><?php echo e($currencies[$outside->currency] ?? $outside->currency); ?></td>
             <td><?php echo e(number_format($outside->paid)); ?></td>
             <td>
-                <?php if($outside->staff): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($outside->staff): ?>
                     <?php echo e($outside->staff->fullname); ?>
 
                 <?php elseif($outside->customer): ?>
@@ -112,7 +112,7 @@
 
                 <?php else: ?>
                     -
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
             </td>
             <td><?php echo e($outside->description ?? '-'); ?></td>
@@ -173,7 +173,7 @@
             <td><?php echo e($currencies[$outside->currency] ?? $outside->currency); ?></td>
             <td><?php echo e(number_format($outside->paid)); ?></td>
             <td>
-                <?php if($outside->staff): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($outside->staff): ?>
                     <?php echo e($outside->staff->fullname); ?>
 
                 <?php elseif($outside->customer): ?>
@@ -184,7 +184,7 @@
 
                 <?php else: ?>
                     -
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
             </td>
             <td><?php echo e($outside->description ?? '-'); ?></td>

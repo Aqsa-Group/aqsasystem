@@ -57,10 +57,10 @@
     <div class="info-row">
         <span class="info-label">مبلغ:</span>
         <span class="info-value"><?php echo e(number_format($withdrawal->amount)); ?> 
-            <?php if($withdrawal->currency === 'afn'): ?> افغانی
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($withdrawal->currency === 'afn'): ?> افغانی
             <?php elseif($withdrawal->currency === 'usd'): ?> دالر
             <?php else: ?> تومان
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </span>
     </div>
 
@@ -69,12 +69,12 @@
         <span class="info-value"><?php echo e($withdrawal->date); ?></span>
     </div>
 
-    <?php if($withdrawal->description): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($withdrawal->description): ?>
     <div class="info-row">
         <span class="info-label">توضیحات:</span>
         <span class="info-value"><?php echo e($withdrawal->description); ?></span>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <div class="info-row">
         <span class="info-label">ثبت کننده:</span>

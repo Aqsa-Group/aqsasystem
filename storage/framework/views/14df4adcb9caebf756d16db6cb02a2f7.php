@@ -86,7 +86,7 @@
                 ])); ?>
 
     >
-        <?php if($limitedStateCount): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($limitedStateCount): ?>
             <div
                 class="<?php echo \Illuminate\Support\Arr::toCssClasses([
                     'flex flex-wrap',
@@ -104,7 +104,7 @@
                     },
                 ]); ?>"
             >
-                <?php $__currentLoopData = $limitedState; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $stateItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $limitedState; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $stateItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <img
                         src="<?php echo e(filled($stateItem) ? $getImageUrl($stateItem) : $defaultImageUrl); ?>"
                         <?php echo e($getExtraImgAttributeBag()
@@ -119,9 +119,9 @@
                                 ])); ?>
 
                     />
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                <?php if($hasLimitedRemainingText && (! $isLimitedRemainingTextSeparate) && $isCircular): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasLimitedRemainingText && (! $isLimitedRemainingTextSeparate) && $isCircular): ?>
                     <div
                         style="
                             <?php if($height): ?> height: <?php echo e($height); ?>; <?php endif; ?>
@@ -143,10 +143,10 @@
 
                         </span>
                     </div>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
 
-            <?php if($hasLimitedRemainingText && ($isLimitedRemainingTextSeparate || (! $isCircular))): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasLimitedRemainingText && ($isLimitedRemainingTextSeparate || (! $isCircular))): ?>
                 <div
                     class="<?php echo \Illuminate\Support\Arr::toCssClasses([
                         'font-medium text-gray-500 dark:text-gray-400',
@@ -156,7 +156,7 @@
                     +<?php echo e($stateCount - $limitedStateCount); ?>
 
                 </div>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         <?php elseif(($placeholder = $getPlaceholder()) !== null): ?>
             <?php if (isset($component)) { $__componentOriginale647119d200eac5fcc6d6ed603b86297 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginale647119d200eac5fcc6d6ed603b86297 = $attributes; } ?>
@@ -180,7 +180,7 @@
 <?php $component = $__componentOriginale647119d200eac5fcc6d6ed603b86297; ?>
 <?php unset($__componentOriginale647119d200eac5fcc6d6ed603b86297); ?>
 <?php endif; ?>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </div>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>

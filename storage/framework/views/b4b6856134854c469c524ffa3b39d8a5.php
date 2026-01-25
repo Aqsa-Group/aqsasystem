@@ -52,12 +52,12 @@
             <form action="<?php echo e(route('login')); ?>" method="POST" class="space-y-6">
                 <?php echo csrf_field(); ?>
 
-                <?php if(session('error')): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session('error')): ?>
                     <div class="bg-red-500/80 text-black p-3 rounded-md shadow text-center">
                         <?php echo e(session('error')); ?>
 
                     </div>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                 <!-- Username -->
                 <div class="relative">

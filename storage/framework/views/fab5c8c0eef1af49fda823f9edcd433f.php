@@ -2,8 +2,8 @@
     use Filament\Support\Facades\FilamentView;
 ?>
 
-<?php if($this->hasUnsavedDataChangesAlert()): ?>
-    <?php if(FilamentView::hasSpaMode()): ?>
+<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($this->hasUnsavedDataChangesAlert()): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(FilamentView::hasSpaMode()): ?>
             <?php
         $__scriptKey = '109809468-0';
         ob_start();
@@ -86,6 +86,6 @@
 
         \Livewire\store($this)->push('scripts', $__output, $__scriptKey)
     ?>
-    <?php endif; ?>
-<?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 <?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/vendor/filament/filament/resources/views/components/page/unsaved-data-changes-alert.blade.php ENDPATH**/ ?>

@@ -40,7 +40,7 @@ unset($__defined_vars, $__key, $__value); ?>
         ])); ?>
 
 >
-    <?php if(filled($label)): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(filled($label)): ?>
         <legend
             class="<?php echo \Illuminate\Support\Arr::toCssClasses([
                 '-ms-2 px-2 text-sm font-medium leading-6 text-gray-950 dark:text-white',
@@ -50,7 +50,7 @@ unset($__defined_vars, $__key, $__value); ?>
             <?php echo e($label); ?>
 
         </legend>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <?php echo e($slot); ?>
 

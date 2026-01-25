@@ -1,6 +1,6 @@
     <div>
         <!-- پیام‌های سیستم -->
-        <?php if(session()->has('message')): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session()->has('message')): ?>
             <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 40000)" x-show="show" x-transition
                 class="fixed top-0 left-0 right-0 w-full z-[9999] bg-gradient-to-br from-indigo-400 to-indigo-500 vazir">
                 <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -10,7 +10,7 @@
                     </h2>
                 </div>
             </div>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         <?php if(session()->has('error')): ?>
             <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 40000)" x-show="show" x-transition
@@ -22,7 +22,7 @@
                     </h2>
                 </div>
             </div>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         <!-- کارت‌های آماری -->
         <div class="space-y-6">
@@ -193,17 +193,17 @@
                                 class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500"
                                 autocomplete="off">
                             <datalist id="staffsList">
-                                <?php $__currentLoopData = $staffs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $staff): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $staffs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $staff): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($staff->name); ?>">
                                         <?php echo e($staff->name); ?> - <?php echo e(number_format($staff->salary)); ?> افغانی
                                     </option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </datalist>
                             <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                 <img src="<?php echo e(asset('assets/sarafi/all_icon/arrow-down.svg')); ?>" alt="↓">
                             </div>
                         </div>
-                        <?php $__errorArgs = ['selectedStaff'];
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['selectedStaff'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -212,7 +212,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
 
                     <!-- مقدار و تاریخ -->
@@ -227,10 +227,10 @@ unset($__errorArgs, $__bag); ?>
                                     افغانی
                                 </div>
                             </div>
-                            <?php if($amountInWords): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($amountInWords): ?>
                                 <p class="text-sm text-blue-600 mt-2 vazir"><?php echo e($amountInWords); ?></p>
-                            <?php endif; ?>
-                            <?php $__errorArgs = ['amount'];
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['amount'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -239,7 +239,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
 
                         <div class="lg:w-[290px]">
@@ -254,7 +254,7 @@ unset($__errorArgs, $__bag); ?>
                         <label class="block text-[16px] font-medium text-black mb-2 vazir">شرح پرداخت</label>
                         <textarea wire:model="description" rows="3" placeholder="توضیحات پرداخت معاش..."
                             class="w-full p-3 rounded-[12px] border bg-transparent border-[#8C8C8C] focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
-                        <?php $__errorArgs = ['description'];
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['description'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -263,7 +263,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
 
                     <!-- دکمه‌ها -->
@@ -293,7 +293,7 @@ unset($__errorArgs, $__bag); ?>
 
                     <div class="flex items-center gap-3">
                         <!-- فیلتر کارمند انتخاب شده -->
-                        <?php if($selectedStaffId): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($selectedStaffId): ?>
                             <?php
                                 $selectedStaff = \App\Models\Import\Staff::find($selectedStaffId);
                             ?>
@@ -303,7 +303,7 @@ unset($__errorArgs, $__bag); ?>
                                     ✕
                                 </button>
                             </div>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                         <!-- جستجو -->
                         <div class="relative w-full md:w-[302px]">
@@ -314,12 +314,12 @@ unset($__errorArgs, $__bag); ?>
                             <img src="<?php echo e(asset('assets/sarafi/all_icon/search-normal.png')); ?>" alt=""
                                 class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6">
 
-                            <?php if($search): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($search): ?>
                                 <button wire:click="clearSearchAndFilter"
                                     class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
                                     ✕
                                 </button>
-                            <?php endif; ?>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -339,7 +339,7 @@ unset($__errorArgs, $__bag); ?>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $__empty_1 = true; $__currentLoopData = $salaries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $salary): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $salaries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $salary): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                     <tr class="border-b border-[#D9D9D9] bg-transparent hover:bg-gray-50 transition-colors">
                                         <td class="px-2 py-4 vazir text-[14px] md:text-[16px] font-medium text-center">
                                             <?php echo e($key + 1); ?>
@@ -390,14 +390,14 @@ unset($__errorArgs, $__bag); ?>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                     <tr>
                                         <td colspan="6" class="text-center text-gray-500 py-8 text-lg">
-                                            <?php if($selectedStaffId): ?>
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($selectedStaffId): ?>
                                                 هیچ پرداخت معاش برای این کارمند یافت نشد
                                             <?php else: ?>
                                                 هیچ پرداخت معاش یافت نشد
-                                            <?php endif; ?>
+                                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                         </td>
                                     </tr>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </tbody>
                         </table>
                     </div>
@@ -406,7 +406,7 @@ unset($__errorArgs, $__bag); ?>
         </div>
 
         <!-- مودال تأیید حذف -->
-        <?php if($confirmDeleteId): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($confirmDeleteId): ?>
             <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                 <div class="bg-white p-6 rounded-[12px] shadow-xl w-[90%] max-w-[653px] text-center animate-fadeIn z-50 border border-[#E1DED3] relative">
                     <button wire:click="$set('confirmDeleteId', null)"
@@ -428,7 +428,7 @@ unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
             </div>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         <!-- اسکریپت‌ها -->
         <script>

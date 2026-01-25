@@ -113,7 +113,7 @@
             <td><?php echo e($withdraw->currency); ?></td>
             <td><?php echo e(number_format($withdraw->amount)); ?></td>
             <td>
-                <?php if($withdraw->staff): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($withdraw->staff): ?>
                     <?php echo e($withdraw->staff->fullname); ?>
 
                 <?php elseif($withdraw->customer): ?>
@@ -121,7 +121,7 @@
 
                 <?php else: ?>
                     -
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </td>
             <td><?php echo e($withdraw->description ?? '-'); ?></td>
         </tr>
@@ -188,7 +188,7 @@
             <td><?php echo e($withdraw->currency); ?></td>
             <td><?php echo e(number_format($withdraw->amount)); ?></td>
             <td>
-                <?php if($withdraw->staff): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($withdraw->staff): ?>
                     <?php echo e($withdraw->staff->fullname); ?>
 
                 <?php elseif($withdraw->customer): ?>
@@ -196,7 +196,7 @@
 
                 <?php else: ?>
                     -
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </td>
             <td><?php echo e($withdraw->description ?? '-'); ?></td>
         </tr>

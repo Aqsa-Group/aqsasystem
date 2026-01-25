@@ -156,9 +156,9 @@
                 <td style="vertical-align: middle; text-align: center;">
                     <div class="card-number">
                         <?php $groups = str_split($accountNumber, 4); ?>
-                        <?php $__currentLoopData = $groups; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $group): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $groups; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $group): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <span class="number-group"><?php echo e($group); ?></span>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
                 </td>
             </tr>
@@ -182,13 +182,13 @@
                 <td style="vertical-align: middle; text-align: right; width: 30%;">
                     <div class="qr-section">
                         <div class="qr-code">
-                            <?php if(isset($qrCodeUrl)): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($qrCodeUrl)): ?>
                                 <img src="<?php echo e($qrCodeUrl); ?>" alt="QR Code" title="اسکن کنید برای اطلاعات مشتری">
                             <?php else: ?>
                                 <div style="text-align: center; color: #666; font-size: 6px; padding: 5px;">
                                     QR CODE
                                 </div>
-                            <?php endif; ?>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
                         <div class="qr-text">SCAN FOR DETAILS</div>
                     </div>

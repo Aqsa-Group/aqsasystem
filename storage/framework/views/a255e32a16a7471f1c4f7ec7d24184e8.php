@@ -1,6 +1,6 @@
 <div class="w-full mx-auto p-4 md:p-6 space-y-6">
     <!-- نمایش پیام موفقیت -->
-    <!--[if BLOCK]><![endif]--><?php if(session()->has('message')): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session()->has('message')): ?>
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
         class="fixed top-0 left-0 right-0 w-full z-[9999] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-400 bg-[#2B65E5] vazir">
         <div class="h-[80px] w-full flex justify-start items-center px-4">
@@ -10,7 +10,7 @@
             </h2>
         </div>
     </div>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <!-- نمایش پیام خطا -->
     <?php if(session()->has('error')): ?>
@@ -23,7 +23,7 @@
             </h2>
         </div>
     </div>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <!-- عنوان و توضیحات -->
     <div class="text-center mb-8">
@@ -117,7 +117,7 @@
                             
                             <label for="sqlFileInput" class="block w-full px-4 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 border-2 border-dashed border-blue-300 dark:border-blue-700 hover:border-blue-400 dark:hover:border-blue-600 rounded-lg cursor-pointer transition-colors duration-200">
                                 <div class="flex flex-col items-center justify-center">
-                                    <!--[if BLOCK]><![endif]--><?php if(!$sqlFile): ?>
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!$sqlFile): ?>
                                         <svg class="w-8 h-8 text-blue-500 dark:text-blue-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
                                         </svg>
@@ -129,12 +129,12 @@
                                         </svg>
                                         <span class="text-green-600 dark:text-green-400 font-medium"><?php echo e($sqlFile->getClientOriginalName()); ?></span>
                                         <span class="text-gray-500 dark:text-gray-400 text-xs mt-1"><?php echo e(round($sqlFile->getSize() / 1024, 2)); ?> KB</span>
-                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 </div>
                             </label>
                         </div>
                         
-                        <!--[if BLOCK]><![endif]--><?php $__errorArgs = ['sqlFile'];
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['sqlFile'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -146,9 +146,9 @@ $message = $__bag->first($__errorArgs[0]); ?>
                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         
-                        <!--[if BLOCK]><![endif]--><?php if($sqlFile): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($sqlFile): ?>
                             <div class="mt-3 space-y-2">
                                 <button 
                                     wire:click="import"
@@ -178,7 +178,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                     حذف فایل
                                 </button>
                             </div>
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         
                         <p class="mt-3 text-xs text-gray-500 dark:text-gray-400">
                             ⚠️ این عملیات داده‌های فعلی را با اطلاعات فایل جایگزین می‌کند
@@ -221,7 +221,7 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
 </div>
 
 <!-- مودال Import -->
-<!--[if BLOCK]><![endif]--><?php if($showImportModal): ?>
+<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($showImportModal): ?>
     <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" x-data x-show="$wire.showImportModal" x-transition>
         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full">
             <!-- هدر مودال -->
@@ -238,13 +238,13 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             <p class="text-gray-600 dark:text-gray-400 text-sm mt-1"><?php echo e($importStatus); ?></p>
                         </div>
                     </div>
-                    <!--[if BLOCK]><![endif]--><?php if($importProgress === 100): ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($importProgress === 100): ?>
                         <button wire:click="closeImportModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
                         </button>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
             </div>
 
@@ -267,13 +267,13 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                 <!-- وضعیت فعلی -->
                 <div class="mb-6">
                     <div class="flex items-center p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                        <!--[if BLOCK]><![endif]--><?php if($importProgress < 100): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($importProgress < 100): ?>
                             <svg class="animate-spin w-5 h-5 text-blue-500 ml-3" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
                         <?php else: ?>
-                            <!--[if BLOCK]><![endif]--><?php if(str_contains($importStatus, 'موفق')): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(str_contains($importStatus, 'موفق')): ?>
                                 <svg class="w-5 h-5 text-green-500 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
@@ -281,15 +281,15 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                                 <svg class="w-5 h-5 text-red-500 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
-                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         <span class="text-gray-700 dark:text-gray-300 mr-2"><?php echo e($importStatus); ?></span>
                     </div>
                 </div>
 
                 <!-- دکمه‌ها -->
                 <div class="flex justify-end">
-                    <!--[if BLOCK]><![endif]--><?php if($importProgress === 100): ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($importProgress === 100): ?>
                         <button 
                             wire:click="closeImportModal"
                             class="px-6 py-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-medium rounded-lg transition-all duration-200">
@@ -301,12 +301,12 @@ unset($__errorArgs, $__bag); ?><!--[if ENDBLOCK]><![endif]-->
                             class="px-6 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg transition-colors duration-200">
                             لغو عملیات
                         </button>
-                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
             </div>
         </div>
     </div>
-<?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <?php
         $__scriptKey = '1003712764-0';

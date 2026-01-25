@@ -88,14 +88,14 @@
 <?php endif; ?>
 
             <datalist id="<?php echo e($id); ?>-suggestions">
-                <?php $__currentLoopData = $getSuggestions(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $suggestion): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $getSuggestions(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $suggestion): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <template
                         x-bind:key="<?php echo \Illuminate\Support\Js::from($suggestion)->toHtml() ?>"
                         x-if="! (state?.includes(<?php echo \Illuminate\Support\Js::from($suggestion)->toHtml() ?>) ?? true)"
                     >
                         <option value="<?php echo e($suggestion); ?>" />
                     </template>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </datalist>
 
             <div

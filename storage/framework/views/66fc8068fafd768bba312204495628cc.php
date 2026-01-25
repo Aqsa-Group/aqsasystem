@@ -44,12 +44,12 @@
                 <tr>
                     <!-- مربع سمت راست -->
                     <td style="width: 28mm; height: 28mm; border: 1px solid #1e3a8a; text-align: center; vertical-align: middle;">
-                        <?php if($staff->market && $staff->market->market_owner): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($staff->market && $staff->market->market_owner): ?>
                         <img src="<?php echo e(public_path('storage/' . $staff->market->market_owner)); ?>" alt="امضاء مدیر"
                             style="width: 28mm; height: 28mm;" />
                         <?php else: ?>
                         ---
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </td>
 
                     <!-- جدول وسط (فقط وظیفه و معاش) -->

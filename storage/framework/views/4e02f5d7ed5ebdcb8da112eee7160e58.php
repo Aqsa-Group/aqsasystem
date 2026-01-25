@@ -43,7 +43,7 @@ unset($__defined_vars, $__key, $__value); ?>
         wire:ignore
         class="fi-page-sub-navigation-sidebar flex flex-col gap-y-7"
     >
-        <?php $__currentLoopData = $navigation; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $navigationGroup): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $navigation; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $navigationGroup): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <?php if (isset($component)) { $__componentOriginal59b772cc9788bdb14bf9872624b4f33a = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal59b772cc9788bdb14bf9872624b4f33a = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-panels::components.sidebar.group','data' => ['active' => $navigationGroup->isActive(),'collapsible' => $navigationGroup->isCollapsible(),'icon' => $navigationGroup->getIcon(),'items' => $navigationGroup->getItems(),'label' => $navigationGroup->getLabel(),'sidebarCollapsible' => false,'subNavigation' => true,'attributes' => \Filament\Support\prepare_inherited_attributes($navigationGroup->getExtraSidebarAttributeBag())]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -64,7 +64,7 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php $component = $__componentOriginal59b772cc9788bdb14bf9872624b4f33a; ?>
 <?php unset($__componentOriginal59b772cc9788bdb14bf9872624b4f33a); ?>
 <?php endif; ?>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </ul>
 
     <?php echo e(\Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::PAGE_SUB_NAVIGATION_SIDEBAR_AFTER, scopes: $this->getRenderHookScopes())); ?>

@@ -1,5 +1,5 @@
 <div>
-    <?php if(session()->has('message')): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session()->has('message')): ?>
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
         class="fixed top-0 left-0 right-0 w-full z-[9999] bg-gradient-to-br from-indigo-400 to-indigo-500 vazir">
         <div class="h-[60px] md:h-[80px] w-full flex justify-start items-center px-4">
@@ -9,7 +9,7 @@
             </h2>
         </div>
     </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <div class="flex flex-col md:flex-row items-center gap-3 md:gap-4 mb-4  md:mb-6 mr-4 md:mr-10">
         <!-- دکمه افزودن مشتری جدید -->
@@ -47,7 +47,7 @@
 
             <!-- 📊 Table Body -->
             <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-                <?php $__empty_1 = true; $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
                     <!-- نام -->
                     <td class="px-3 md:px-6 py-3 md:py-4 text-right flex items-center gap-2 md:gap-3">
@@ -99,7 +99,7 @@
                         هیچ مشتری یافت نشد.
                     </td>
                 </tr>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </tbody>
         </table>
 
@@ -124,9 +124,9 @@
     $currentUser=Auth::guard('tools')->user();
     ?>
 
-    <?php if($currentUser && $currentUser->role==='admin' || $currentUser->role==='superadmin'): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($currentUser && $currentUser->role==='admin' || $currentUser->role==='superadmin'): ?>
     <!-- مودال تأیید حذف مشتری -->
-    <?php if($confirmingDelete): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($confirmingDelete): ?>
     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-10 z-50 p-4">
         <div
             class="bg-[#FFFFFF] pt-[21px] pr-[15px] pl-[15px] rounded-[12px] shadow-xl w-full max-w-[653px] h-auto min-h-[240px] text-center animate-fadeIn z-50 border-[1px] border-[#E1DED3] relative">
@@ -166,6 +166,6 @@
             </div>
         </div>
     </div>
-    <?php endif; ?>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </div><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/livewire/tools-panel/customers-table.blade.php ENDPATH**/ ?>

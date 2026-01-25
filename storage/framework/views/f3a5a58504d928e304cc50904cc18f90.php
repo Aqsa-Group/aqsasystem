@@ -28,7 +28,7 @@
 <?php unset($__componentOriginal1b0ab65785d9a1f9b804503a8a469787); ?>
 <?php endif; ?>
 
-        <?php if($results !== null): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($results !== null): ?>
             <?php if (isset($component)) { $__componentOriginal0b1246772224f052c1dabd584ab4a6fc = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal0b1246772224f052c1dabd584ab4a6fc = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-panels::components.global-search.results-container','data' => ['results' => $results]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -49,7 +49,7 @@
 <?php $component = $__componentOriginal0b1246772224f052c1dabd584ab4a6fc; ?>
 <?php unset($__componentOriginal0b1246772224f052c1dabd584ab4a6fc); ?>
 <?php endif; ?>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </div>
 
     <?php echo e(\Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::GLOBAL_SEARCH_END)); ?>

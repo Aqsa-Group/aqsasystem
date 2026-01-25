@@ -4,12 +4,12 @@
             ->class(['fi-ta-text-summary grid gap-y-1 px-3 py-4'])); ?>
 
 >
-    <?php if(filled($label = $getLabel())): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(filled($label = $getLabel())): ?>
         <span class="text-sm font-medium text-gray-950 dark:text-white">
             <?php echo e($label); ?>
 
         </span>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <span class="text-sm text-gray-500 dark:text-gray-400">
         <?php echo e($formatState($getState())); ?>

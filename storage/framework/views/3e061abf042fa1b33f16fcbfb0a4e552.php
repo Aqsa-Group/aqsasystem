@@ -15,7 +15,7 @@
 <?php $attributes = $attributes->except(\Illuminate\View\DynamicComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
 <?php $component->withAttributes(['field' => $field]); ?>
-    <?php if($isDisabled()): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isDisabled()): ?>
         <div
             x-data="{
                 state: $wire.<?php echo e($applyStateBindingModifiers("\$entangle('{$statePath}')")); ?>,
@@ -112,7 +112,7 @@
                     ]); ?>"
                 >
                     <div class="flex gap-x-3 overflow-x-auto">
-                        <?php if($hasToolbarButton(['bold', 'italic', 'underline', 'strike', 'link'])): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasToolbarButton(['bold', 'italic', 'underline', 'strike', 'link'])): ?>
                             <?php if (isset($component)) { $__componentOriginalf21079f320da8e97fd08192b02ab8475 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalf21079f320da8e97fd08192b02ab8475 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-forms::components.rich-editor.toolbar.group','data' => ['dataTrixButtonGroup' => 'text-tools']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -123,7 +123,7 @@
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
 <?php $component->withAttributes(['data-trix-button-group' => 'text-tools']); ?>
-                                <?php if($hasToolbarButton('bold')): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasToolbarButton('bold')): ?>
                                     <?php if (isset($component)) { $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal4ffbd1ca444c7c0765c9f59c53769005 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-forms::components.rich-editor.toolbar.button','data' => ['dataTrixAttribute' => 'bold','dataTrixKey' => 'b','title' => ''.e(__('filament-forms::components.rich_editor.toolbar_buttons.bold')).'','tabindex' => '-1']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -164,9 +164,9 @@
 <?php $component = $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005; ?>
 <?php unset($__componentOriginal4ffbd1ca444c7c0765c9f59c53769005); ?>
 <?php endif; ?>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                                <?php if($hasToolbarButton('italic')): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasToolbarButton('italic')): ?>
                                     <?php if (isset($component)) { $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal4ffbd1ca444c7c0765c9f59c53769005 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-forms::components.rich-editor.toolbar.button','data' => ['dataTrixAttribute' => 'italic','dataTrixKey' => 'i','title' => ''.e(__('filament-forms::components.rich_editor.toolbar_buttons.italic')).'','tabindex' => '-1']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -207,9 +207,9 @@
 <?php $component = $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005; ?>
 <?php unset($__componentOriginal4ffbd1ca444c7c0765c9f59c53769005); ?>
 <?php endif; ?>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                                <?php if($hasToolbarButton('underline')): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasToolbarButton('underline')): ?>
                                     <?php if (isset($component)) { $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal4ffbd1ca444c7c0765c9f59c53769005 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-forms::components.rich-editor.toolbar.button','data' => ['dataTrixAttribute' => 'underline','dataTrixKey' => 'u','title' => ''.e(__('filament-forms::components.rich_editor.toolbar_buttons.underline')).'','tabindex' => '-1']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -250,9 +250,9 @@
 <?php $component = $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005; ?>
 <?php unset($__componentOriginal4ffbd1ca444c7c0765c9f59c53769005); ?>
 <?php endif; ?>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                                <?php if($hasToolbarButton('strike')): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasToolbarButton('strike')): ?>
                                     <?php if (isset($component)) { $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal4ffbd1ca444c7c0765c9f59c53769005 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-forms::components.rich-editor.toolbar.button','data' => ['dataTrixAttribute' => 'strike','dataTrixKey' => 's','title' => ''.e(__('filament-forms::components.rich_editor.toolbar_buttons.strike')).'','tabindex' => '-1']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -293,9 +293,9 @@
 <?php $component = $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005; ?>
 <?php unset($__componentOriginal4ffbd1ca444c7c0765c9f59c53769005); ?>
 <?php endif; ?>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                                <?php if($hasToolbarButton('link')): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasToolbarButton('link')): ?>
                                     <?php if (isset($component)) { $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal4ffbd1ca444c7c0765c9f59c53769005 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-forms::components.rich-editor.toolbar.button','data' => ['dataTrixAttribute' => 'href','dataTrixAction' => 'link','dataTrixKey' => 'k','title' => ''.e(__('filament-forms::components.rich_editor.toolbar_buttons.link')).'','tabindex' => '-1']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -336,7 +336,7 @@
 <?php $component = $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005; ?>
 <?php unset($__componentOriginal4ffbd1ca444c7c0765c9f59c53769005); ?>
 <?php endif; ?>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                              <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginalf21079f320da8e97fd08192b02ab8475)): ?>
@@ -347,9 +347,9 @@
 <?php $component = $__componentOriginalf21079f320da8e97fd08192b02ab8475; ?>
 <?php unset($__componentOriginalf21079f320da8e97fd08192b02ab8475); ?>
 <?php endif; ?>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                        <?php if($hasToolbarButton(['h1', 'h2', 'h3'])): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasToolbarButton(['h1', 'h2', 'h3'])): ?>
                             <?php if (isset($component)) { $__componentOriginalf21079f320da8e97fd08192b02ab8475 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalf21079f320da8e97fd08192b02ab8475 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-forms::components.rich-editor.toolbar.group','data' => ['dataTrixButtonGroup' => 'heading-tools']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -360,7 +360,7 @@
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
 <?php $component->withAttributes(['data-trix-button-group' => 'heading-tools']); ?>
-                                <?php if($hasToolbarButton('h1')): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasToolbarButton('h1')): ?>
                                     <?php if (isset($component)) { $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal4ffbd1ca444c7c0765c9f59c53769005 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-forms::components.rich-editor.toolbar.button','data' => ['dataTrixAttribute' => 'heading1','title' => ''.e(__('filament-forms::components.rich_editor.toolbar_buttons.h1')).'','tabindex' => '-1']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -401,9 +401,9 @@
 <?php $component = $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005; ?>
 <?php unset($__componentOriginal4ffbd1ca444c7c0765c9f59c53769005); ?>
 <?php endif; ?>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                                <?php if($hasToolbarButton('h2')): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasToolbarButton('h2')): ?>
                                     <?php if (isset($component)) { $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal4ffbd1ca444c7c0765c9f59c53769005 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-forms::components.rich-editor.toolbar.button','data' => ['dataTrixAttribute' => 'heading','title' => ''.e(__('filament-forms::components.rich_editor.toolbar_buttons.h2')).'','tabindex' => '-1']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -444,9 +444,9 @@
 <?php $component = $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005; ?>
 <?php unset($__componentOriginal4ffbd1ca444c7c0765c9f59c53769005); ?>
 <?php endif; ?>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                                <?php if($hasToolbarButton('h3')): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasToolbarButton('h3')): ?>
                                     <?php if (isset($component)) { $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal4ffbd1ca444c7c0765c9f59c53769005 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-forms::components.rich-editor.toolbar.button','data' => ['dataTrixAttribute' => 'subHeading','title' => ''.e(__('filament-forms::components.rich_editor.toolbar_buttons.h3')).'','tabindex' => '-1']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -487,7 +487,7 @@
 <?php $component = $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005; ?>
 <?php unset($__componentOriginal4ffbd1ca444c7c0765c9f59c53769005); ?>
 <?php endif; ?>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                              <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginalf21079f320da8e97fd08192b02ab8475)): ?>
@@ -498,9 +498,9 @@
 <?php $component = $__componentOriginalf21079f320da8e97fd08192b02ab8475; ?>
 <?php unset($__componentOriginalf21079f320da8e97fd08192b02ab8475); ?>
 <?php endif; ?>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                        <?php if($hasToolbarButton(['blockquote', 'codeBlock', 'bulletList', 'orderedList'])): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasToolbarButton(['blockquote', 'codeBlock', 'bulletList', 'orderedList'])): ?>
                             <?php if (isset($component)) { $__componentOriginalf21079f320da8e97fd08192b02ab8475 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalf21079f320da8e97fd08192b02ab8475 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-forms::components.rich-editor.toolbar.group','data' => ['dataTrixButtonGroup' => 'block-tools']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -511,7 +511,7 @@
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
 <?php $component->withAttributes(['data-trix-button-group' => 'block-tools']); ?>
-                                <?php if($hasToolbarButton('blockquote')): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasToolbarButton('blockquote')): ?>
                                     <?php if (isset($component)) { $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal4ffbd1ca444c7c0765c9f59c53769005 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-forms::components.rich-editor.toolbar.button','data' => ['dataTrixAttribute' => 'quote','title' => ''.e(__('filament-forms::components.rich_editor.toolbar_buttons.blockquote')).'','tabindex' => '-1']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -552,9 +552,9 @@
 <?php $component = $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005; ?>
 <?php unset($__componentOriginal4ffbd1ca444c7c0765c9f59c53769005); ?>
 <?php endif; ?>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                                <?php if($hasToolbarButton('codeBlock')): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasToolbarButton('codeBlock')): ?>
                                     <?php if (isset($component)) { $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal4ffbd1ca444c7c0765c9f59c53769005 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-forms::components.rich-editor.toolbar.button','data' => ['dataTrixAttribute' => 'code','title' => ''.e(__('filament-forms::components.rich_editor.toolbar_buttons.code_block')).'','tabindex' => '-1']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -595,9 +595,9 @@
 <?php $component = $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005; ?>
 <?php unset($__componentOriginal4ffbd1ca444c7c0765c9f59c53769005); ?>
 <?php endif; ?>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                                <?php if($hasToolbarButton('bulletList')): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasToolbarButton('bulletList')): ?>
                                     <?php if (isset($component)) { $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal4ffbd1ca444c7c0765c9f59c53769005 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-forms::components.rich-editor.toolbar.button','data' => ['dataTrixAttribute' => 'bullet','title' => ''.e(__('filament-forms::components.rich_editor.toolbar_buttons.bullet_list')).'','tabindex' => '-1']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -638,9 +638,9 @@
 <?php $component = $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005; ?>
 <?php unset($__componentOriginal4ffbd1ca444c7c0765c9f59c53769005); ?>
 <?php endif; ?>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                                <?php if($hasToolbarButton('orderedList')): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasToolbarButton('orderedList')): ?>
                                     <?php if (isset($component)) { $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal4ffbd1ca444c7c0765c9f59c53769005 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-forms::components.rich-editor.toolbar.button','data' => ['dataTrixAttribute' => 'number','title' => ''.e(__('filament-forms::components.rich_editor.toolbar_buttons.ordered_list')).'','tabindex' => '-1']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -681,7 +681,7 @@
 <?php $component = $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005; ?>
 <?php unset($__componentOriginal4ffbd1ca444c7c0765c9f59c53769005); ?>
 <?php endif; ?>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                              <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginalf21079f320da8e97fd08192b02ab8475)): ?>
@@ -692,9 +692,9 @@
 <?php $component = $__componentOriginalf21079f320da8e97fd08192b02ab8475; ?>
 <?php unset($__componentOriginalf21079f320da8e97fd08192b02ab8475); ?>
 <?php endif; ?>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                        <?php if($hasToolbarButton('attachFiles')): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasToolbarButton('attachFiles')): ?>
                             <?php if (isset($component)) { $__componentOriginalf21079f320da8e97fd08192b02ab8475 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalf21079f320da8e97fd08192b02ab8475 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-forms::components.rich-editor.toolbar.group','data' => ['dataTrixButtonGroup' => 'file-tools']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -755,9 +755,9 @@
 <?php $component = $__componentOriginalf21079f320da8e97fd08192b02ab8475; ?>
 <?php unset($__componentOriginalf21079f320da8e97fd08192b02ab8475); ?>
 <?php endif; ?>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                        <?php if($hasToolbarButton(['undo', 'redo'])): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasToolbarButton(['undo', 'redo'])): ?>
                             <?php if (isset($component)) { $__componentOriginalf21079f320da8e97fd08192b02ab8475 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalf21079f320da8e97fd08192b02ab8475 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-forms::components.rich-editor.toolbar.group','data' => ['dataTrixButtonGroup' => 'history-tools']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -768,7 +768,7 @@
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
 <?php $component->withAttributes(['data-trix-button-group' => 'history-tools']); ?>
-                                <?php if($hasToolbarButton('undo')): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasToolbarButton('undo')): ?>
                                     <?php if (isset($component)) { $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal4ffbd1ca444c7c0765c9f59c53769005 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-forms::components.rich-editor.toolbar.button','data' => ['dataTrixAction' => 'undo','dataTrixKey' => 'z','title' => ''.e(__('filament-forms::components.rich_editor.toolbar_buttons.undo')).'','tabindex' => '-1']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -809,9 +809,9 @@
 <?php $component = $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005; ?>
 <?php unset($__componentOriginal4ffbd1ca444c7c0765c9f59c53769005); ?>
 <?php endif; ?>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-                                <?php if($hasToolbarButton('redo')): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasToolbarButton('redo')): ?>
                                     <?php if (isset($component)) { $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal4ffbd1ca444c7c0765c9f59c53769005 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'filament-forms::components.rich-editor.toolbar.button','data' => ['dataTrixAction' => 'redo','dataTrixKey' => 'shift+z','title' => ''.e(__('filament-forms::components.rich_editor.toolbar_buttons.redo')).'','tabindex' => '-1']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -852,7 +852,7 @@
 <?php $component = $__componentOriginal4ffbd1ca444c7c0765c9f59c53769005; ?>
 <?php unset($__componentOriginal4ffbd1ca444c7c0765c9f59c53769005); ?>
 <?php endif; ?>
-                                <?php endif; ?>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                              <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginalf21079f320da8e97fd08192b02ab8475)): ?>
@@ -863,7 +863,7 @@
 <?php $component = $__componentOriginalf21079f320da8e97fd08192b02ab8475; ?>
 <?php unset($__componentOriginalf21079f320da8e97fd08192b02ab8475); ?>
 <?php endif; ?>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
 
                     <div x-cloak data-trix-dialogs class="trix-dialogs">
@@ -939,7 +939,7 @@
 <?php $component = $__componentOriginal505efd9768415fdb4543e8c564dad437; ?>
 <?php unset($__componentOriginal505efd9768415fdb4543e8c564dad437); ?>
 <?php endif; ?>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal511d4862ff04963c3c16115c05a86a9d)): ?>

@@ -242,18 +242,18 @@
                         </span>
                     </span>
                 </div>
-                <?php if($sale->customer): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($sale->customer): ?>
                 <div class="info-item">
                     <span class="info-label">مشتری</span>
                     <span class="info-value"><?php echo e($sale->customer->fullname); ?></span>
                 </div>
-                <?php if($sale->customer->phone): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($sale->customer->phone): ?>
                 <div class="info-item">
                     <span class="info-label">تلفن</span>
                     <span class="info-value"><?php echo e($sale->customer->phone); ?></span>
                 </div>
-                <?php endif; ?>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
         </div>
 
@@ -268,7 +268,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php $__currentLoopData = $sale->saleItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $sale->saleItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr>
                     <td><?php echo e($index + 1); ?></td>
                     <td><?php echo e($item->warehouse->product_name); ?></td>
@@ -276,7 +276,7 @@
                     <td><?php echo e(number_format($item->price_per_unit)); ?></td>
                     <td><?php echo e(number_format($item->total_price)); ?></td>
                 </tr>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </tbody>
         </table>
 
@@ -287,19 +287,19 @@
                     <span class="total-value"><?php echo e(number_format($sale->total_price)); ?> افغانی</span>
                 </div>
                 
-                <?php if($sale->discount > 0): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($sale->discount > 0): ?>
                 <div class="total-row">
                     <span class="total-label">تخفیف:</span>
                     <span class="total-value">- <?php echo e(number_format($sale->discount)); ?> افغانی</span>
                 </div>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 
                 <div class="total-row">
                     <span class="total-label">پرداختی:</span>
                     <span class="total-value paid"><?php echo e(number_format($sale->received_amount)); ?> افغانی</span>
                 </div>
                 
-                <?php if($sale->remaining_amount > 0): ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($sale->remaining_amount > 0): ?>
                 <div class="total-row">
                     <span class="total-label">باقی مانده:</span>
                     <span class="total-value remaining"><?php echo e(number_format($sale->remaining_amount)); ?> افغانی</span>
@@ -309,7 +309,7 @@
                     <span class="total-label">وضعیت:</span>
                     <span class="total-value paid">تکمیل شده</span>
                 </div>
-                <?php endif; ?>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
         </div>
         

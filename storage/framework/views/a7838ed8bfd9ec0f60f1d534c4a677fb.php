@@ -6,14 +6,18 @@
             ->merge($getExtraAttributes(), escape: false)); ?>
 
 >
-    <?php if(filled($key = $getKey())): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(filled($key = $getKey())): ?>
         <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
 };
 [$__name, $__params] = $__split($getComponent(), $getComponentProperties());
 
-$__html = app('livewire')->mount($__name, $__params, $key, $__slots ?? [], get_defined_vars());
+$key = $key;
+
+$key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-885258131-0', $key);
+
+$__html = app('livewire')->mount($__name, $__params, $key);
 
 echo $__html;
 
@@ -30,7 +34,11 @@ $__split = function ($name, $params = []) {
 };
 [$__name, $__params] = $__split($getComponent(), $getComponentProperties());
 
-$__html = app('livewire')->mount($__name, $__params, 'lw-885258131-0', $__slots ?? [], get_defined_vars());
+$key = null;
+
+$key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-885258131-1', null);
+
+$__html = app('livewire')->mount($__name, $__params, $key);
 
 echo $__html;
 
@@ -40,6 +48,6 @@ unset($__params);
 unset($__split);
 if (isset($__slots)) unset($__slots);
 ?>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </div>
 <?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/vendor/filament-forms/components/livewire.blade.php ENDPATH**/ ?>

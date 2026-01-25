@@ -384,12 +384,12 @@
             </div>
             
             <!-- توضیحات -->
-            <?php if($salary->description): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($salary->description): ?>
             <div class="description-section">
                 <div class="description-title">توضیحات پرداخت</div>
                 <div class="description-text"><?php echo e($salary->description); ?></div>
             </div>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             
             <!-- بخش امضا -->
             <div class="signature-section">
