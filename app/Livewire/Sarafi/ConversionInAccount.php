@@ -246,39 +246,8 @@ class ConversionInAccount extends Component
     {
         $this->transactionType = $this->transactionType === 'خرید' ? 'فروش' : 'خرید';
 
-        // جابجایی ارزها
-        $tempCurrency = $this->from_currency;
-        $this->from_currency = $this->to_currency;
-        $this->to_currency = $tempCurrency;
-
-        // جابجایی زون‌ها
-        $tempZone = $this->zone_sender;
-        $this->zone_sender = $this->zone_receiver;
-        $this->zone_receiver = $tempZone;
-
-        // جابجایی نام افراد
-        $tempBy = $this->by_sender;
-        $this->by_sender = $this->by_receiver;
-        $this->by_receiver = $tempBy;
-
-        // محاسبه مجدد
-        if ($this->calculatingField === 'buy' && $this->buy_amount && $this->currency_rate) {
-            $this->calculateReceivedAmount();
-        } elseif ($this->calculatingField === 'sell' && $this->sell_amount && $this->currency_rate) {
-            $this->calculateBuyAmount();
-        }
-
-        // به‌روزرسانی حروف‌نویسی
-        if ($this->buy_amount) {
-            $this->convertAmountToWords($this->buy_amount, 'withdrawalAmountInWords', 2);
-        }
-        if ($this->sell_amount) {
-            $this->convertAmountToWords($this->sell_amount, 'receivedAmountInWords', 2);
-        }
-        if ($this->currency_rate) {
-            $this->convertAmountToWords($this->currency_rate, 'currencyRateInWords', 4);
-        }
-
+     
+  
         $this->dispatch('transactionTypeToggled');
     }
 
@@ -510,7 +479,7 @@ class ConversionInAccount extends Component
                 'sell_amount' => $this->sell_amount,
                 'currency_rate' => $this->currency_rate,
                 'transaction_type' => $this->transactionType,
-                'account_type' => $this->accountType
+                'account_type' => $this->getAccountTypeForRate()
             ]);
 
             // دریافت نرخ از پیش تعیین شده
@@ -575,7 +544,7 @@ class ConversionInAccount extends Component
 
         Log::info("جستجوی نرخ برای: {$this->from_currency} → {$this->to_currency} با نوع: {$rateType}", [
             'transaction_type' => $this->transactionType,
-            'account_type' => $this->accountType
+            'account_type' => $this->getAccountTypeForRate()
         ]);
 
         $strategies = [
@@ -744,35 +713,43 @@ class ConversionInAccount extends Component
         return in_array($conversionKey, $standardConversions);
     }
 
+  
     /**
-     * تعیین نوع نرخ مورد نیاز
-     * اصلاح شده: برای خرید نرخ خرید، برای فروش نرخ فروش
-     */
-    private function getRateType()
-    {
-        if ($this->transactionType === 'خرید') {
-            // برای خرید: نرخ خرید
-            return $this->accountType === 'نقدی' ? 'sell_cash' : 'sell_bank';
-        } else {
-            // برای فروش: نرخ فروش
-            return $this->accountType === 'نقدی' ? 'buy_cash' : 'buy_bank';
-        }
+ * تعیین نوع نرخ مورد نیاز
+ * اصلاح شده: برای خرید نرخ خرید، برای فروش نرخ فروش
+ */
+private function getRateType()
+{
+    // تعیین نوع حساب بر اساس نوع تراکنش
+    $accountTypeForRate = $this->getAccountTypeForRate();
+    
+    if ($this->transactionType === 'خرید') {
+        // برای خرید: نرخ فروش (چون ما از مشتری خرید می‌کنیم)
+        return $accountTypeForRate === 'cash' ? 'sell_cash' : 'sell_bank';
+    } else {
+        // برای فروش: نرخ خرید (چون ما به مشتری می‌فروشیم)
+        return $accountTypeForRate === 'cash' ? 'buy_cash' : 'buy_bank';
     }
+}
 
     /**
-     * تعیین نوع نرخ معکوس
-     */
-    private function getReverseRateType()
-    {
-        // معکوس getRateType
-        if ($this->transactionType === 'خرید') {
-            // اگر getRateType برای خرید نرخ خرید برمی‌گرداند، ما نرخ فروش برگردانیم
-            return $this->accountType === 'نقدی' ? 'sell_cash' : 'sell_bank';
-        } else {
-            // اگر getRateType برای فروش نرخ فروش برمی‌گرداند، ما نرخ خرید برگردانیم
-            return $this->accountType === 'نقدی' ? 'buy_cash' : 'buy_bank';
-        }
+ /**
+ * تعیین نوع نرخ معکوس
+ */
+private function getReverseRateType()
+{
+    // تعیین نوع حساب بر اساس نوع تراکنش
+    $accountTypeForRate = $this->getAccountTypeForRate();
+    
+    // معکوس getRateType
+    if ($this->transactionType === 'خرید') {
+        // اگر getRateType برای خرید نرخ فروش برمی‌گرداند، ما نرخ خرید برگردانیم
+        return $accountTypeForRate === 'cash' ? 'buy_cash' : 'buy_bank';
+    } else {
+        // اگر getRateType برای فروش نرخ خرید برمی‌گرداند، ما نرخ فروش برگردانیم
+        return $accountTypeForRate === 'cash' ? 'sell_cash' : 'sell_bank';
     }
+}
 
     /**
      * محاسبه جهانی با نرخ از پیش تعیین شده - منطق بهبود یافته
@@ -877,7 +854,7 @@ class ConversionInAccount extends Component
         }
 
         // همیشه از نرخ خرید دلار استفاده می‌کنیم
-        $rateType = $this->accountType === 'نقدی' ? 'buy_cash' : 'buy_bank';
+        $rateType = $this->getAccountTypeForRate();
         $usdRateField = $currency . '_' . $rateType;
         $usdRate = $usdProfitRate->{$usdRateField} ?? null;
 
@@ -1369,6 +1346,19 @@ class ConversionInAccount extends Component
         }
     }
 
+    /**
+ * تعیین نوع حساب (نقدی/بانکی) بر اساس نوع تراکنش
+ */
+private function getAccountTypeForRate()
+{
+    if ($this->transactionType === 'خرید') {
+        // در حالت خرید، از حساب مبدا استفاده می‌کنیم
+        return $this->from_account === 'نقدی' ? 'cash' : 'bank';
+    } else {
+        // در حالت فروش، از حساب مقصد استفاده می‌کنیم
+        return $this->to_account === 'نقدی' ? 'cash' : 'bank';
+    }
+}
     /**
      * Print conversion transaction as PDF
      */

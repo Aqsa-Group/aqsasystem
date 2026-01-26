@@ -249,21 +249,6 @@ class ConversionTransfer extends Component
     {
         $this->transactionType = $this->transactionType === 'خرید' ? 'فروش' : 'خرید';
 
-        // جابجایی ارزها
-        $tempCurrency = $this->from_currency;
-        $this->from_currency = $this->to_currency;
-        $this->to_currency = $tempCurrency;
-
-        // جابجایی زون‌ها
-        $tempZone = $this->zone_sender;
-        $this->zone_sender = $this->zone_receiver;
-        $this->zone_receiver = $tempZone;
-
-        // جابجایی نام افراد
-        $tempBy = $this->by_sender;
-        $this->by_sender = $this->by_receiver;
-        $this->by_receiver = $tempBy;
-
         $this->calculateReceivedAmount();
         $this->dispatch('transactionTypeToggled');
     }
@@ -572,17 +557,30 @@ class ConversionTransfer extends Component
         }
     }
 
+
+    /**
+     * تعیین نوع حساب (نقدی/بانکی) بر اساس نوع تراکنش
+     */
+    private function getAccountTypeForRate()
+    {
+        if ($this->transactionType === 'خرید') {
+            return $this->from_account === 'نقدی' ? 'cash' : 'bank';
+        } else {
+            return $this->to_account === 'نقدی' ? 'cash' : 'bank';
+        }
+    }
+
+
     /**
      * دریافت نرخ از پیش تعیین شده برای انتقال
      */
     private function getTransferPredefinedRate()
     {
+
         $rateType = $this->getTransferRateType();
-        $accountType = $this->from_account === 'نقدی' ? 'cash' : 'bank';
+        $accountType = $this->getAccountTypeForRate(); 
 
         Log::info("جستجوی نرخ برای انتقال: {$this->from_currency} → {$this->to_currency} با نوع: {$rateType} و حساب: {$accountType}");
-
-        // حالت خاص: تبدیل AFN ↔ IRR
         if (($this->from_currency === 'afn' && $this->to_currency === 'irr') ||
             ($this->from_currency === 'irr' && $this->to_currency === 'afn')
         ) {
@@ -672,14 +670,15 @@ class ConversionTransfer extends Component
         return null;
     }
 
-    /**
-     * تعیین نوع نرخ مورد نیاز برای انتقال
-     */
-    private function getTransferRateType()
-    {
-        return $this->transactionType === 'خرید' ? 'sell' : 'buy';
-    }
+ 
 
+    /**
+ * تعیین نوع نرخ مورد نیاز برای انتقال
+ */
+private function getTransferRateType()
+{
+    return $this->transactionType === 'خرید' ? 'sell' : 'buy';
+}
     /**
      * محاسبه با نرخ از پیش تعیین شده
      */
@@ -712,43 +711,46 @@ class ConversionTransfer extends Component
     /**
      * تبدیل به دالر
      */
-    private function convertTransferToUsd($amount, $currency)
-    {
-        if ($currency === 'usd') {
-            return $amount;
-        }
+   /**
+ * تبدیل به دالر
+ */
+private function convertTransferToUsd($amount, $currency)
+{
+    if ($currency === 'usd') {
+        return $amount;
+    }
 
-        $user = Auth::guard('sarafi')->user();
-        $adminId = $user->admin_id ?? $user->id;
+    $user = Auth::guard('sarafi')->user();
+    $adminId = $user->admin_id ?? $user->id;
 
-        $usdProfitRate = ProfitRate::where('source_currency', 'usd')
-            ->where('admin_id', $adminId)
-            ->latest()
-            ->first();
+    $usdProfitRate = ProfitRate::where('source_currency', 'usd')
+        ->where('admin_id', $adminId)
+        ->latest()
+        ->first();
 
-        if (!$usdProfitRate) {
-            Log::warning("رکورد USD یافت نشد");
-            return 0;
-        }
-
-        $rateType = $this->getTransferRateType();
-        $accountType = $this->from_account === 'نقدی' ? 'cash' : 'bank';
-
-        $buyField = $currency . '_buy_' . $accountType;
-        $rate = $usdProfitRate->{$buyField} ?? 0;
-
-        if ($rate <= 0) {
-            $sellField = $currency . '_sell_' . $accountType;
-            $rate = $usdProfitRate->{$sellField} ?? 0;
-        }
-
-        if ($rate > 0) {
-            return $amount / $rate;
-        }
-
-        Log::warning("نرخ تبدیل برای {$currency} یافت نشد");
+    if (!$usdProfitRate) {
+        Log::warning("رکورد USD یافت نشد");
         return 0;
     }
+
+    $rateType = $this->getTransferRateType();
+    $accountType = $this->getAccountTypeForRate(); // تغییر این خط
+
+    $buyField = $currency . '_buy_' . $accountType;
+    $rate = $usdProfitRate->{$buyField} ?? 0;
+
+    if ($rate <= 0) {
+        $sellField = $currency . '_sell_' . $accountType;
+        $rate = $usdProfitRate->{$sellField} ?? 0;
+    }
+
+    if ($rate > 0) {
+        return $amount / $rate;
+    }
+
+    Log::warning("نرخ تبدیل برای {$currency} یافت نشد");
+    return 0;
+}
 
     /**
      * نتیجه پیش‌فرض برای سود/ضرر
@@ -1157,7 +1159,7 @@ class ConversionTransfer extends Component
             DB::connection('sarafi')->commit();
 
             $message = $this->editingConversionId ? 'تبدیل ارز با موفقیت ویرایش شد.' : 'تبدیل ارز با موفقیت ثبت شد.';
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+
             if ($profitLoss['profit'] > 0) {
                 $message .= ' سود: ' . number_format($profitLoss['profit'], 4) . ' دالر';
             } elseif ($profitLoss['loss'] > 0) {

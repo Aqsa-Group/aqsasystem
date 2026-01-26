@@ -741,7 +741,7 @@
                             {{-- نوع ارز برداشت --}}
                             <div class="w-full">
                                 <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">ارز
-                                    برداشت</label>
+                                    خرید</label>
                                 <div class="relative w-full">
                                     <select wire:model="from_currency"
                                         class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500  appearance-none">
@@ -773,7 +773,7 @@
                             {{-- مقدار برداشت --}}
                             <div class="flex-1">
                                 <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ
-                                    برداشت</label>
+                                    خرید</label>
                                 <div class="relative w-full">
                                     <input type="text" wire:model.live="withdrawal_amount"
                                         wire:click="setCalculatingField('withdrawal')" placeholder="0"
@@ -798,7 +798,7 @@
                             {{-- نوع ارز دریافت --}}
                             <div class="lg:w-full">
                                 <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">ارز
-                                    دریافت</label>
+                                    فروش</label>
                                 <div class="relative w-full">
                                     <select wire:model="to_currency"
                                         class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500  appearance-none">
@@ -863,7 +863,7 @@
                         {{-- مقدار دریافت --}}
                         <div class="flex-1">
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">مبلغ
-                                دریافت</label>
+                                فروش</label>
                             <div class="relative w-full">
                                 <input type="text" wire:model.live="received_amount"
                                     wire:click="setCalculatingField('received')" placeholder="0"
