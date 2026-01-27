@@ -180,7 +180,8 @@
                                 </div>
                                 <span class="text-white">نقدی</span>
                             </div>
-                            <span class="font-medium text-left text-white" dir="ltr">{{ number_format($cashBalance) }}</span>
+                            <span class="font-medium text-left text-white" dir="ltr">{{ number_format($cashBalance)
+                                }}</span>
                         </div>
                         <div class="flex justify-between items-center text-[14px]">
                             <div class="flex justify-end items-center gap-2">
@@ -202,7 +203,8 @@
                                 </div>
                                 <span class="text-white">بانکی</span>
                             </div>
-                            <span class="font-medium text-left text-white" dir="ltr">{{ number_format($bankBalance) }}</span>
+                            <span class="font-medium text-left text-white" dir="ltr">{{ number_format($bankBalance)
+                                }}</span>
                         </div>
                         <div class="flex justify-between items-center text-[14px] border-b border-[#184D6C]/15 pb-2">
                             <div class="flex justify-end items-center gap-2">
@@ -228,12 +230,13 @@
                                 </div>
                                 <span class="text-[#FFFFFF]">مجموعه</span>
                             </div>
-                            <span class="font-bold text-[16px] text-left text-white" dir="ltr">{{ number_format($totalBalance)
+                            <span class="font-bold text-[16px] text-left text-white" dir="ltr">{{
+                                number_format($totalBalance)
                                 }}</span>
                         </div>
                     </div>
 
-                     <button wire:click="showReport" wire:loading.attr="disabled"
+                    <button wire:click="showReport" wire:loading.attr="disabled"
                         class="bg-[#FFFFFF]/10  rounded-[8px] mr-auto  backdrop:blur-2xl text-[12px] p-2 mt-2 text-gray-800 hover:shadow-md transition border border-white flex items-center justify-end gap-2 w-[114px] h-[25px]">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M7.5 12.5L12.5 7.5M12.5 7.5H8.75M12.5 7.5V11.25" stroke="white" stroke-width="1.5"
@@ -409,7 +412,7 @@
                     </div>
 
 
-                      <button wire:click="showReport" wire:loading.attr="disabled"
+                    <button wire:click="showReport" wire:loading.attr="disabled"
                         class="bg-[#FFFFFF]/10  rounded-[8px] mr-auto  backdrop:blur-2xl text-[12px] p-2 mt-2 text-gray-800 hover:shadow-md transition border border-white flex items-center justify-end gap-2 w-[114px] h-[25px]">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M7.5 12.5L12.5 7.5M12.5 7.5H8.75M12.5 7.5V11.25" stroke="white" stroke-width="1.5"
@@ -460,6 +463,9 @@
                     <p class="flex text-xl justify-center items-center text-center dark:text-white inter">
                         {{ $remittanceId ? 'فورم ویرایش حواله' : 'فورم ثبت اطلاعات حواله' }}
                     </p>
+
+                     
+                        
                 </div>
 
                 <!-- Form -->

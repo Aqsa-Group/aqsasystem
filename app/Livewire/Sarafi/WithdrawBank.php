@@ -26,6 +26,8 @@ class WithdrawBank extends Component
     public $selectedAccount;
     public $toAccount;
     public $source_account;
+    public $distantion_account;
+
     public $currency;
     public $amount;
     public $date;
@@ -38,6 +40,10 @@ class WithdrawBank extends Component
     public $description;
     public $remittance_image;
     public $source_account_last_four;
+    public $distantion_account_last_four;
+
+    public $accountType = 'معاملات داخلی';
+
 
     // Data collections
     public $currencies = [];
@@ -90,6 +96,15 @@ class WithdrawBank extends Component
         ['name' => 'خلاصه بیلانس به دالر', 'value' => 0],
     ];
 
+
+
+    public function toggleAccountType()
+    {
+        $this->accountType = $this->accountType === 'معاملات داخلی' ? 'معاملات بیرونی' : 'معاملات داخلی';
+    }
+
+
+
     public function mount()
     {
         $this->date = Jalalian::now()->format('Y/m/d');
@@ -113,7 +128,7 @@ class WithdrawBank extends Component
 
         $this->loadCustomers();
         $this->updateRemittances();
-        
+
         // مقداردهی اولیه filteredCustomers به آرایه خالی
         $this->filteredCustomers = [];
     }
@@ -283,7 +298,7 @@ class WithdrawBank extends Component
 
         return $currencyMap[$currencyCode] ?? $currencyCode;
     }
-    
+
     public function selectCustomer($customerId)
     {
         $this->selectedCustomerId = $customerId;
@@ -519,55 +534,59 @@ class WithdrawBank extends Component
         }
     }
 
- private function createTransactions($remittance)
-{
-    $user = Auth::guard('sarafi')->user();
-    $adminId = $user->admin_id ?? $user->id;
+    private function createTransactions($remittance)
+    {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
 
-    $senderCustomer   = Customer::find($this->selectedAccount);
-    $receiverCustomer = Customer::find($this->toAccount);
+        $senderCustomer   = Customer::find($this->selectedAccount);
+        $receiverCustomer = Customer::find($this->toAccount);
 
-    // date = شمسی
-    $jalaliDate = $this->date; // مثال: 1404/10/04
+        // date = شمسی
+        $jalaliDate = $this->date; // مثال: 1404/10/04
 
-    // تراکنش برداشت از فرستنده
-    Transaction::create([
-        'withdrawbank_id' => $remittance->id,
-        'customer_id'     => $this->selectedAccount,
-        'user_id'         => $user->id,
-        'admin_id'        => $adminId,
-        'currency'        => $this->currency,
-        'amount'          => $this->amount,
-        'type'            => 'برد',
-        'date'            => $jalaliDate, // ✅ شمسی
-        'description'     => 'برداشت حواله بانکی | کد: ' . $this->tracking_code .
-            ' | به: ' . ($receiverCustomer->fullname ?? ''),
-        'zone'            => $this->zone,
-        'by'              => 'خودش',
-        'account_type'    => 'بانکی',
-        'created_at'      => now(), // میلادی
-        'updated_at'      => now(),
-    ]);
+        // تراکنش برداشت از فرستنده
 
-    // تراکنش واریز به گیرنده
-    Transaction::create([
-        'withdrawbank_id' => $remittance->id,
-        'customer_id'     => $this->toAccount,
-        'user_id'         => $user->id,
-        'admin_id'        => $adminId,
-        'currency'        => $this->currency,
-        'amount'          => $this->amount,
-        'type'            => 'برد',
-        'date'            => $jalaliDate, // ✅ شمسی
-        'description'     => 'ورود حواله بانکی | کد: ' . $this->tracking_code .
-            ' | از: ' . ($senderCustomer->fullname ?? ''),
-        'by'              => 'خودش',
-        'zone'            => $this->zone,
-        'account_type'    => 'بانکی',
-        'created_at'      => now(), // میلادی
-        'updated_at'      => now(),
-    ]);
-}
+        Transaction::create([
+            'withdrawbank_id' => $remittance->id,
+            'customer_id'     => $this->selectedAccount,
+            'user_id'         => $user->id,
+            'admin_id'        => $adminId,
+            'currency'        => $this->currency,
+            'amount'          => $this->amount,
+            'type'            => 'برد',
+            'date'            => $jalaliDate, // ✅ شمسی
+            'description'     => 'برداشت حواله بانکی | کد: ' . $this->tracking_code .
+                ' | به: ' . ($receiverCustomer->fullname ?? ''),
+            'zone'            => $this->zone,
+            'by'              => 'خودش',
+            'account_type'    => 'بانکی',
+            'created_at'      => now(), // میلادی
+            'updated_at'      => now(),
+        ]);
+
+
+        // تراکنش واریز به گیرنده
+        if ($this->accountType === 'معاملات داخلی') {
+            Transaction::create([
+                'withdrawbank_id' => $remittance->id,
+                'customer_id'     => $this->toAccount,
+                'user_id'         => $user->id,
+                'admin_id'        => $adminId,
+                'currency'        => $this->currency,
+                'amount'          => $this->amount,
+                'type'            => 'برد',
+                'date'            => $jalaliDate, // ✅ شمسی
+                'description'     => 'ورود حواله بانکی | کد: ' . $this->tracking_code .
+                    ' | از: ' . ($senderCustomer->fullname ?? ''),
+                'by'              => 'خودش',
+                'zone'            => $this->zone,
+                'account_type'    => 'بانکی',
+                'created_at'      => now(), // میلادی
+                'updated_at'      => now(),
+            ]);
+        }
+    }
 
 
     private function deleteTransactions($remittanceId)
@@ -582,11 +601,15 @@ class WithdrawBank extends Component
         $this->amount = str_replace(',', '', $this->amount);
         $this->source_account = $this->source_account_last_four . ' - xxxx - xxxx - xxxx';
 
-        // اعتبارسنجی
-        $this->validate([
+        // مقداردهی فیلد distantion_account در معاملات بیرونی
+        if ($this->accountType === 'معاملات بیرونی') {
+            $this->distantion_account = $this->distantion_account_last_four . ' - xxxx - xxxx - xxxx';
+            $this->toAccount = null; // در معاملات بیرونی حساب داخلی نداریم
+        }
+
+        // اعتبارسنجی شرطی
+        $validationRules = [
             'selectedAccount'          => 'required|exists:sarafi.customers,id',
-            'toAccount'                => 'required|exists:sarafi.customers,id|different:selectedAccount',
-            'source_account_last_four' => 'required|digits:4',
             'currency'                 => 'required|string',
             'amount'                   => 'required|numeric|min:1',
             'date'                     => 'required|date',
@@ -594,11 +617,21 @@ class WithdrawBank extends Component
             'tracking_code'            => 'required|string|max:255',
             'from_bank'                => 'required|string|max:255',
             'to_bank'                  => 'required|string|max:255',
-            'zone'                     => 'required|string|max:255',
-            'giver_name'               => 'required|string|max:255',
+            'zone'                     => 'nullable|string|max:255',
             'description'              => 'nullable|string',
             'remittance_image'         => 'nullable|image|max:10240',
-        ]);
+            'source_account_last_four' => 'required|digits:4',
+        ];
+
+        if ($this->accountType === 'معاملات داخلی') {
+            $validationRules['toAccount'] = 'required|exists:sarafi.customers,id|different:selectedAccount';
+            $validationRules['giver_name'] = 'required|string|max:255';
+        } else {
+            $validationRules['distantion_account_last_four'] = 'required|digits:4';
+            $validationRules['giver_name'] = 'nullable|string|max:255'; 
+        }
+
+        $this->validate($validationRules);
 
         $user    = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
@@ -607,7 +640,8 @@ class WithdrawBank extends Component
             'user_id' => $user->id,
             'admin_id' => $adminId,
             'amount' => $this->amount,
-            'currency' => $this->currency
+            'currency' => $this->currency,
+            'account_type' => $this->accountType
         ]);
 
         $imagePath = $this->remittance_image
@@ -620,6 +654,7 @@ class WithdrawBank extends Component
             'user_id'           => $user->id,
             'admin_id'          => $adminId,
             'source_account'    => $this->source_account,
+            'distanition_account' => $this->distantion_account,
             'currency'          => $this->currency,
             'amount'            => $this->amount,
             'date'              => $this->date,
@@ -631,7 +666,8 @@ class WithdrawBank extends Component
             'giver_name'        => $this->giver_name,
             'description'       => $this->description,
             'remittance_image'  => $imagePath,
-            'state'             => 1, // مستقیم تایید شده
+            'state'             => 1,
+            'account_type'      => $this->accountType, // اضافه کردن نوع حساب
         ];
 
         DB::beginTransaction();
@@ -645,13 +681,11 @@ class WithdrawBank extends Component
             if ($this->remittanceId) {
                 $remittance = WithdrawsBanks::findOrFail($this->remittanceId);
 
-                // ذخیره اطلاعات قبلی برای برگشت موجودی
                 $oldAmount = $remittance->amount;
                 $oldCurrency = $remittance->currency;
                 $oldFromAccount = $remittance->customer_id;
                 $oldToAccount = $remittance->to_account;
 
-                // برگشت موجودی قبلی
                 if ($oldAmount > 0 && $oldCurrency) {
                     $this->reverseBankWithdrawal($oldAmount, $oldCurrency);
                 }
@@ -661,8 +695,6 @@ class WithdrawBank extends Component
                 }
 
                 $remittance->update($data);
-
-                // حذف تراکنش‌های قبلی - اصلاح شده
                 $this->deleteTransactions($remittance->id);
 
                 Log::info('Updated existing remittance', ['id' => $remittance->id]);
@@ -671,46 +703,40 @@ class WithdrawBank extends Component
                 Log::info('Created new remittance', ['id' => $remittance->id]);
             }
 
-            // ایجاد تراکنش‌های جدید
+            // ایجاد تراکنش‌ها
             $this->createTransactions($remittance);
-            Log::info('Transactions created for remittance', ['id' => $remittance->id]);
 
             // اعمال کسر از صندوق بانکی
             $this->applyBankWithdrawal();
-            Log::info('Bank withdrawal applied for remittance', ['id' => $remittance->id]);
 
             DB::commit();
-            Log::info('Transaction committed successfully');
 
             session()->flash('message', 'حواله با موفقیت ثبت شد.');
             $this->updateRemittances();
             $this->resetForm();
         } catch (\Exception $e) {
             DB::rollBack();
-
             Log::error('Remittance Error', [
-                'error'   => $e->getMessage(),
-                'trace'   => $e->getTraceAsString(),
-                'user_id' => $user->id,
-                'admin'   => $adminId,
-                'data'    => $data
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
             ]);
-
             session()->flash('error', 'خطا در ثبت حواله: ' . $e->getMessage());
         }
+        $this->updateCustomerCurrencyBalance();
     }
-
     public function edit($id)
     {
         $remittance = WithdrawsBanks::with(['customer', 'recipient'])->findOrFail($id);
 
-       
+
         $this->remittanceId = $id;
         $this->selectedAccount = $remittance->customer_id;
         $this->toAccount = $remittance->to_account;
         $this->source_account = $remittance->source_account;
 
         $this->source_account_last_four = substr($remittance->source_account, 0, 4);
+        $this->distantion_account_last_four = substr($remittance->distanition_account, 0, 4);
+
 
         $this->currency = $remittance->currency;
         $this->amount = $remittance->amount;
@@ -724,7 +750,8 @@ class WithdrawBank extends Component
         $this->description = $remittance->description;
 
         $this->search = $remittance->customer->fullname ?? '';
-        $this->filteredCustomers = []; 
+        $this->filteredCustomers = [];
+        $this->updateCustomerCurrencyBalance();
     }
 
     public function confirmDelete($id)
@@ -771,6 +798,8 @@ class WithdrawBank extends Component
             'toAccount',
             'source_account',
             'source_account_last_four',
+            'distantion_account',
+            'distantion_account_last_four',
             'currency',
             'amount',
             'clock',
@@ -786,6 +815,8 @@ class WithdrawBank extends Component
         $this->clock = now()->format('H:i:s');
         $this->zone = Auth::guard('sarafi')->user()->zone;
         $this->search = '';
+        $this->filteredCustomers = [];
+        $this->amountInWords = null;
         $this->filteredCustomers = []; // مقداردهی به آرایه خالی
     }
 

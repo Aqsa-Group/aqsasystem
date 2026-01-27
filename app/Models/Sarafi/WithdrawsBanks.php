@@ -31,7 +31,9 @@ class WithdrawsBanks extends Model
         'giver_name',
         'description',
         'remittance_image',
-        'state'
+        'state',
+        'distanition_account',
+    
     ];
 
     protected $casts = [

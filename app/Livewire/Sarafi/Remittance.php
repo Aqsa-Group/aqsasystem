@@ -20,8 +20,9 @@ use NumberFormatter;
 
 class Remittance extends Component
 {
-    use WithFileUploads;
 
+
+    use WithFileUploads;
     public $confirmDeleteId = null;
     public $remittanceId = null;
     public $amountInWords;
