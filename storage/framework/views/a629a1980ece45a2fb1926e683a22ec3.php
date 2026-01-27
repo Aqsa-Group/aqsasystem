@@ -68,11 +68,10 @@
                                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($code); ?>"><?php echo e($name); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-
                             </select>
                         </div>
 
-
+                        <!-- از تاریخ -->
                         <div>
                             <div class="lg:col-span-3 relative" x-data="fromDatePicker()" x-init="init()">
                                 <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">از
@@ -293,8 +292,8 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                             </div>
                         </div>
 
+                        <!-- تا تاریخ -->
                         <div>
-                            <!-- تا تاریخ -->
                             <div class="lg:col-span-3 relative" x-data="toDatePicker()" x-init="init()">
                                 <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تا
                                     تاریخ</label>
@@ -513,11 +512,7 @@ endif;
 unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
                         </div>
-
-
                     </div>
-
-
 
                     <!-- جدول تراکنش‌ها -->
                     <div class="overflow-x-auto w-full mt-4">
@@ -550,7 +545,6 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                                         </td>
                                         <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-40">
                                             <div class="whitespace-nowrap">
-
                                                 <div class="font-medium">
                                                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(empty($transaction->customer_id) &&
                                                     !empty($transaction->withdraw_id)): ?>
@@ -563,8 +557,6 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
 
                                                     <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                                 </div>
-
-
                                                 <div class="text-gray-500 dark:text-white text-sm mt-1">
                                                     <?php if(empty($transaction->customer_id) && $transaction->is_sell_table
                                                     == 1): ?>
@@ -573,10 +565,8 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
 
                                                     <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                                 </div>
-
                                             </div>
                                         </td>
-
                                         <td class="px-4 py-4">
                                             <?php echo e($transaction->type); ?>
 
@@ -605,9 +595,7 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                                         <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-40">
                                             <div class="whitespace-nowrap">
                                                 <div class="font-medium">
-
                                                     <?php echo e(explode(' ', $transaction->date)[0]); ?>
-
 
                                                 </div>
                                                 <div class="text-gray-500 dark:text-white text-sm mt-1">
@@ -628,7 +616,6 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                             </table>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -637,7 +624,6 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
         <div class="w-full mt-10">
             <div
                 class="bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC] dark:bg-black dark:border dark:border-white p-6 rounded-[12px] mx-auto">
-
                 <div class="overflow-x-auto w-full mt-4">
                     <table class="w-full text-sm md:text-base text-center text-gray-700 dark:text-white">
                         <thead
@@ -653,7 +639,6 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                                 <th class="px-4 py-4"> بیلانس بانکی</th>
                             </tr>
                         </thead>
-
                         <tbody>
                             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $summary; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                             <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
@@ -697,15 +682,19 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
             </div>
         </div>
 
-
+        <!-- جدول موجودی هر ارز -->
         <div 
             class="bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC] dark:bg-black dark:border dark:border-white p-4 rounded-[12px] mx-auto mt-10">
-            <!-- جدول موجودی هر ارز به صورت جداگانه -->
             <div class="mt-8">
-                <h3 class="text-xl font-bold mb-4 text-center dark:text-white ">موجودی صندوق نقدی و بانکی</h3>
+                <h3 class="text-xl font-bold mb-4 text-center dark:text-white">موجودی صندوق نقدی و بانکی 
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($fromDate && $toDate): ?>
+                        (از <?php echo e($fromDate); ?> تا <?php echo e($toDate); ?>)
+                    <?php elseif($toDate): ?>
+                        (تا تاریخ <?php echo e($toDate); ?>)
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $totalBalanceByCurrency; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currencyCode => $totalAmount): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($totalAmount > 0): ?>
                     <?php
                     $safe = $currencySafeBalance[$currencyCode] ?? 0;
                     $bank = $bankAccountBalance[$currencyCode] ?? 0;
@@ -731,147 +720,87 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                             </div>
                         </div>
                     </div>
-                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
             </div>
         </div>
 
-
-        <div class="flex  gap-4 p-10 bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC] mt-5" >
-
-
-
-
-            <!--  سود امروز -->
-
+        <!-- سود و ضرر امروز -->
+        <div class="flex gap-4 p-10 bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC] mt-5">
+            <!-- سود امروز -->
             <div class="group flex flex-col justify-between border rounded-2xl
                         bg-[#EFF6F9]
                         shadow-md hover:shadow-xl transition-colors duration-500 ease-in-out
-
                         w-full h-[180px] p-6">
-
-
-                <!-- ردیف بالا -->
                 <div class="flex items-start justify-between w-full">
                     <div
-                        class="flex items-center justify-center group-hover:bg-white  bg-[#108614] rounded-full h-[60px] w-[60px] shadow-lg">
-
-
-
+                        class="flex items-center justify-center group-hover:bg-white bg-[#108614] rounded-full h-[60px] w-[60px] shadow-lg">
                         <svg width="26" height="26" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
                             class="block group-hover:hidden">
                             <path
                                 d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18"
                                 stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-
                         </svg>
-
-
-
-
-
-
                         <svg width="26" height="26" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
                             class="hidden group-hover:block">
                             <path
                                 d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18"
                                 stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-
                     </div>
-
-                    <!-- عنوان -->
-                    <p class="text-start font-medium text-[18px] text-[#108614]
-            " style="font-weight: 400;">
-                        سود امروز
+                    <p class="text-start font-medium text-[18px] text-[#108614]" style="font-weight: 400;">
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($fromDate && $toDate): ?>
+                            سود بازه زمانی
+                        <?php else: ?>
+                            سود امروز
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </p>
                 </div>
-
-                <!-- عدد + آپدیت -->
                 <div class="flex flex-col items-end text-end space-y-2">
-                    <p class="text-[26px] font-extrabold text-[#108614]
-            ">
-                        <?php echo e($todayprofit); ?>
+                    <p class="text-[26px] font-extrabold text-[#108614]">
+                        <?php echo e(number_format($todayprofit, 2)); ?>
 
                     </p>
-
-
                 </div>
             </div>
 
-
-
-
-
-            <!--  ضرر امروز  -->
-
+            <!-- ضرر امروز -->
             <div class="group flex flex-col justify-between border rounded-2xl
-                       bg-[#EFF6F9] to-white  hover:bg-opacity-100
+                       bg-[#EFF6F9] to-white hover:bg-opacity-100
                         shadow-md hover:shadow-xl transition-colors duration-500 ease-in-out
-
                         w-full h-[180px] p-6">
-
-
-
-
-                <!-- ردیف بالا -->
                 <div class="flex items-start justify-between w-full">
                     <div
-                        class="flex items-center justify-center group-hover:bg-white  bg-[#DD2424] rounded-full h-[60px] w-[60px] shadow-lg">
-
-
-
+                        class="flex items-center justify-center group-hover:bg-white bg-[#DD2424] rounded-full h-[60px] w-[60px] shadow-lg">
                         <svg width="26" height="26" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
                             class="block group-hover:hidden">
                             <path
                                 d="M14.6203 10.6653C13.6227 9.67375 13.1238 9.17795 12.5051 9.17802C11.8864 9.17809 11.3876 9.674 10.3902 10.6658L10.1509 10.9038C9.15254 11.8965 8.65338 12.3929 8.03422 12.3926C7.41506 12.3924 6.91626 11.8957 5.91867 10.9023L2 7M22 18V12.4542M22 18H16.4179M22 18L17.5 13.5"
                                 stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-
                         </svg>
-
-
-
-
-
-
                         <svg width="26" height="26" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
                             class="hidden group-hover:block">
                             <path
                                 d="M14.6203 10.6653C13.6227 9.67375 13.1238 9.17795 12.5051 9.17802C11.8864 9.17809 11.3876 9.674 10.3902 10.6658L10.1509 10.9038C9.15254 11.8965 8.65338 12.3929 8.03422 12.3926C7.41506 12.3924 6.91626 11.8957 5.91867 10.9023L2 7M22 18V12.4542M22 18H16.4179M22 18L17.5 13.5"
                                 stroke="#DD2424" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-
-
-
-
                     </div>
-
-                    <!-- عنوان -->
-                    <p class="text-start font-medium text-[18px] text-[#DD2424]
-            " style="font-weight: 400;">
-                        ضرر امروز
+                    <p class="text-start font-medium text-[18px] text-[#DD2424]" style="font-weight: 400;">
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($fromDate && $toDate): ?>
+                            ضرر بازه زمانی
+                        <?php else: ?>
+                            ضرر امروز
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </p>
                 </div>
-
-                <!-- عدد + آپدیت -->
                 <div class="flex flex-col items-end text-end space-y-2">
-                    <p class="text-[26px] font-extrabold text-[#DD2424]
-            ">
-                        <?php echo e($todaylost); ?>
+                    <p class="text-[26px] font-extrabold text-[#DD2424]">
+                        <?php echo e(number_format($todaylost, 2)); ?>
 
                     </p>
-
-
                 </div>
             </div>
-
-
-
-
-
         </div>
-
     </div>
 
     <script>
