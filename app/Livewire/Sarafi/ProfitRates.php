@@ -100,7 +100,7 @@ class ProfitRates extends Component
 
             // تبدیل تاریخ شمسی به میلادی
             $jdate = Jalalian::fromFormat('Y/m/d', $this->date);
-            $gdate = $jdate->toCarbon()->format('Y-m-d');
+            $gdate = $jdate->toCarbon()->startOfDay();
 
             /*
         |--------------------------------------------------------------------------
@@ -170,10 +170,8 @@ class ProfitRates extends Component
         | حالت ایجاد جدید
         |--------------------------------------------------------------------------
         */ else {
-                // حذف رکوردهای قبلی برای همین admin_id در همین تاریخ
-                ProfitRate::where('admin_id', $adminId)
-                    ->whereDate('created_at', $gdate)
-                    ->delete();
+                // حذف تمام رکوردهای قبلی همان ادمین
+                ProfitRate::where('admin_id', $adminId)->delete();
 
                 $data = array_merge($data, [
                     'created_at' => $jdate->toCarbon(),
@@ -184,11 +182,11 @@ class ProfitRates extends Component
 
                 session()->flash('message', 'نرخ ارز با موفقیت ثبت شد.');
 
-                // اگر USD ساخته شد → بقیه ارزها تولید شود
                 if ($this->source_currency === 'usd') {
                     $this->generateAllReverseRates($data);
                 }
             }
+
 
             $this->resetForm();
         } catch (\Exception $e) {
@@ -198,9 +196,7 @@ class ProfitRates extends Component
     }
 
 
-    /**
-     * تولید رکوردهای معکوس و تکمیل جدول نرخ‌ها
-     */
+
     /**
      * تولید رکوردهای معکوس و تکمیل جدول نرخ‌ها
      */
@@ -226,9 +222,13 @@ class ProfitRates extends Component
 
         // حذف تمام رکوردهای قبلی برای این admin_id در این تاریخ
         ProfitRate::where('admin_id', $adminId)
-            ->whereDate('created_at', $dateOnly)
-            ->where('source_currency', '!=', 'usd') // رکورد USD اصلی را حذف نکن
+            ->whereBetween('created_at', [
+                \Carbon\Carbon::parse($dateOnly)->startOfDay(),
+                \Carbon\Carbon::parse($dateOnly)->endOfDay(),
+            ])
+            ->where('source_currency', '!=', 'usd')
             ->delete();
+
 
         foreach ($this->currencyCodes as $targetCurrency) {
             if ($targetCurrency === $baseCurrencyCode) continue;
