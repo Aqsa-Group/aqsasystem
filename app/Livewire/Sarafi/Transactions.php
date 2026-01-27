@@ -595,30 +595,43 @@ class Transactions extends Component
         $this->confirmDeleteId = $id;
     }
 
-    public function deleteConfirmed()
+    public function deleteConfirmed(): void
     {
         $transaction = Transaction::findOrFail($this->confirmDeleteId);
 
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
 
+        // 1️⃣ برگشت اثر تراکنش از صندوق / حساب بانکی
+        $this->applyCurrencyChange(
+            $user,
+            $transaction->currency,
+            $transaction->amount,
+            $transaction->type,
+            $transaction->account_type,
+            true // reverse = true
+        );
 
-        $this->applyCurrencyChange($user, $transaction->currency, $transaction->amount, $transaction->type, $transaction->account_type, true);
-
+        // 2️⃣ حذف تراکنش
         $transaction->delete();
 
-        // پاک کردن کش
-        $adminId = $user->admin_id ?? $user->id;
+        // 3️⃣ پاک کردن کش‌ها
         Cache::forget($this->cacheKeys['transactions_list'] . $adminId);
-        Cache::forget($this->cacheKeys['transactions_list'] . $adminId . '_' . $transaction->customer_id);
+        Cache::forget(
+            $this->cacheKeys['transactions_list'] . $adminId . '_' . $transaction->customer_id
+        );
 
-        session()->flash('message', 'ترانزکشن موفقیتانه حذف گردید.');
+        // 4️⃣ پیام موفقیت
+        session()->flash('message', 'تراکنش با موفقیت حذف گردید.');
 
+        // 5️⃣ بروزرسانی لیست و بیلانس‌ها
         $this->updateTransactions();
         $this->updateCustomerCurrencyBalance();
 
+        // 6️⃣ ریست شناسه حذف
         $this->confirmDeleteId = null;
     }
+
 
     public function submitTransaction()
     {
@@ -765,7 +778,8 @@ class Transactions extends Component
         $adminId = $user->admin_id ?? $user->id;
 
         $factor = $reverse ? -1 : 1;
-        $change = ($transactionType === 'رسید' ? 1 : -1) * $amount * $factor;
+
+        $change = ($transactionType === 'رسید' ? $amount : -$amount) * $factor;
 
         if ($accountType === 'نقدی') {
             $safe = CurrencySafe::firstOrCreate(
@@ -788,9 +802,9 @@ class Transactions extends Component
             );
 
             $safe->increment($currency, $change);
-            if ($safe->$currency < 0) {
-                $safe->$currency = 0;
-            }
+
+          
+
             $safe->save();
         } else {
             $bankAccount = BankAccount::firstOrCreate(
@@ -813,12 +827,10 @@ class Transactions extends Component
             );
 
             $bankAccount->increment($currency, $change);
-            if ($bankAccount->$currency < 0) {
-                $bankAccount->$currency = 0;
-            }
             $bankAccount->save();
         }
     }
+
 
     public function showReport()
     {

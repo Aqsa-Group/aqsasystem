@@ -21,10 +21,10 @@ class ConversionInAccount extends Component
 {
     use WithPagination;
 
-
     public $selectedCustomer = null;
     public $selectedAccount = null;
     public $selectedCustomerId = null;
+    
     // متغیرهای فرم
     public $calculatingField = 'buy';
     public $calculating = false;
@@ -85,6 +85,9 @@ class ConversionInAccount extends Component
     {
         $this->date = Jalalian::now()->format('Y/m/d');
         $this->transactionType = 'خرید';
+        $this->accountType = 'نقدی';
+        $this->from_account = 'نقدی';
+        $this->to_account = 'نقدی';
 
         $this->currencies = [
             ['code' => 'usd', 'name_fa' => 'دالر'],
@@ -109,6 +112,19 @@ class ConversionInAccount extends Component
         }
     }
 
+    /**
+     * تعیین نوع حساب (نقدی/بانکی) بر اساس نوع تراکنش
+     */
+    private function getAccountTypeForRate()
+    {
+        if ($this->transactionType === 'خرید') {
+            // در حالت خرید، از حساب مبدا استفاده می‌کنیم
+            return $this->from_account === 'نقدی' ? 'cash' : 'bank';
+        } else {
+            // در حالت فروش، از حساب مقصد استفاده می‌کنیم
+            return $this->to_account === 'نقدی' ? 'cash' : 'bank';
+        }
+    }
 
     private function getCurrencyFaName($code)
     {
@@ -118,7 +134,6 @@ class ConversionInAccount extends Component
         return $currency['name_fa'] ?? strtoupper($code);
     }
 
-
     /**
      * رندر کامپوننت
      */
@@ -127,14 +142,12 @@ class ConversionInAccount extends Component
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
 
-
         if (!$user) {
             return view('livewire.sarafi.conversion-in-account', [
                 'customers' => collect(),
                 'conversionTransactions' => collect(),
             ]);
         }
-
 
         if (empty($this->customers)) {
             $this->loadCustomers($adminId);
@@ -192,7 +205,6 @@ class ConversionInAccount extends Component
             ->orWhereHas('admins', function ($q) use ($adminId) {
                 $q->where('customer_admin.admin_id', $adminId);
             })
-
             ->orderBy('fullname')
             ->get();
     }
@@ -200,7 +212,6 @@ class ConversionInAccount extends Component
     /**
      * انتخاب حساب مشتری
      */
-
     public function selectAccount($customerId)
     {
         try {
@@ -238,7 +249,6 @@ class ConversionInAccount extends Component
         }
     }
 
-
     /**
      * تغییر نوع معامله (خرید/فروش) - نسخه بهبود یافته
      */
@@ -246,19 +256,62 @@ class ConversionInAccount extends Component
     {
         $this->transactionType = $this->transactionType === 'خرید' ? 'فروش' : 'خرید';
 
-     
-  
+        // جابجایی ارزها
+        $tempCurrency = $this->from_currency;
+        $this->from_currency = $this->to_currency;
+        $this->to_currency = $tempCurrency;
+
+        // جابجایی زون‌ها
+        $tempZone = $this->zone_sender;
+        $this->zone_sender = $this->zone_receiver;
+        $this->zone_receiver = $tempZone;
+
+        // جابجایی نام افراد
+        $tempBy = $this->by_sender;
+        $this->by_sender = $this->by_receiver;
+        $this->by_receiver = $tempBy;
+
+        // جابجایی حساب‌ها (در حالت خرید/فروش)
+        $tempAccount = $this->from_account;
+        $this->from_account = $this->to_account;
+        $this->to_account = $tempAccount;
+
+        // محاسبه مجدد
+        if ($this->calculatingField === 'buy' && $this->buy_amount && $this->currency_rate) {
+            $this->calculateReceivedAmount();
+        } elseif ($this->calculatingField === 'sell' && $this->sell_amount && $this->currency_rate) {
+            $this->calculateBuyAmount();
+        }
+
+        // به‌روزرسانی حروف‌نویسی
+        if ($this->buy_amount) {
+            $this->convertAmountToWords($this->buy_amount, 'withdrawalAmountInWords', 2);
+        }
+        if ($this->sell_amount) {
+            $this->convertAmountToWords($this->sell_amount, 'receivedAmountInWords', 2);
+        }
+        if ($this->currency_rate) {
+            $this->convertAmountToWords($this->currency_rate, 'currencyRateInWords', 4);
+        }
+
         $this->dispatch('transactionTypeToggled');
     }
 
-    public function toggleAccountType()
+    /**
+     * تغییر نوع حساب
+     */
+    public function toggleAccountType($accountField)
     {
-        $this->accountType = $this->accountType === 'نقدی' ? 'بانکی' : 'نقدی';
+        if ($accountField === 'from') {
+            $this->from_account = $this->from_account === 'نقدی' ? 'بانکی' : 'نقدی';
+        } elseif ($accountField === 'to') {
+            $this->to_account = $this->to_account === 'نقدی' ? 'بانکی' : 'نقدی';
+        }
+        
+        // محاسبه مجدد سود/ضرر
+        $this->calculateRealTimeProfitLoss();
     }
 
-    /**
-     * Event listener برای تغییر فیلدها
-     */
     /**
      * Event listener برای تغییر فیلدها - نسخه بهبود یافته
      */
@@ -313,6 +366,11 @@ class ConversionInAccount extends Component
                 if ($this->currency_rate) {
                     $this->convertAmountToWords($this->currency_rate, 'currencyRateInWords', 4);
                 }
+            }
+
+            // اگر حساب‌ها تغییر کردند، سود/ضرر را مجدداً محاسبه کن
+            if (in_array($property, ['from_account', 'to_account'])) {
+                $this->calculateRealTimeProfitLoss();
             }
 
             // تبدیل به حروف برای هر تغییری که روی این فیلدها تأثیر می‌گذارد
@@ -443,6 +501,7 @@ class ConversionInAccount extends Component
     {
         $this->calculatingField = $field;
     }
+
     /**
      * تعیین منطق محاسبه (تقسیم یا ضرب) برای سایر ارزها
      */
@@ -465,6 +524,29 @@ class ConversionInAccount extends Component
         return true;
     }
 
+    /**
+     * محاسبه و نمایش سود/ضرر در زمان واقعی
+     */
+    public function calculateRealTimeProfitLoss()
+    {
+        try {
+            if (!$this->buy_amount || !$this->currency_rate || !$this->from_currency || !$this->to_currency) {
+                return;
+            }
+
+            $profitLoss = $this->calculateProfitOrLoss();
+            
+            // نمایش سود/ضرر
+            $this->dispatch('show-profit-loss', [
+                'profit' => $profitLoss['profit'],
+                'loss' => $profitLoss['loss'],
+                'predefined_rate' => $profitLoss['predefined_rate']
+            ]);
+            
+        } catch (\Exception $e) {
+            Log::error('خطا در محاسبه سود/ضرر زمان واقعی: ' . $e->getMessage());
+        }
+    }
 
     /**
      * محاسبه سود/ضرر تبدیل ارز - نسخه جهانی برای تمام ارزها
@@ -537,14 +619,15 @@ class ConversionInAccount extends Component
     /**
      * دریافت نرخ از پیش تعیین شده برای تمام ارزها - منطق اصلاح شده
      */
-
     private function getUniversalPredefinedRate()
     {
         $rateType = $this->getRateType();
 
         Log::info("جستجوی نرخ برای: {$this->from_currency} → {$this->to_currency} با نوع: {$rateType}", [
             'transaction_type' => $this->transactionType,
-            'account_type' => $this->getAccountTypeForRate()
+            'from_account' => $this->from_account,
+            'to_account' => $this->to_account,
+            'calculated_account_type' => $this->getAccountTypeForRate()
         ]);
 
         $strategies = [
@@ -713,43 +796,41 @@ class ConversionInAccount extends Component
         return in_array($conversionKey, $standardConversions);
     }
 
-  
     /**
- * تعیین نوع نرخ مورد نیاز
- * اصلاح شده: برای خرید نرخ خرید، برای فروش نرخ فروش
- */
-private function getRateType()
-{
-    // تعیین نوع حساب بر اساس نوع تراکنش
-    $accountTypeForRate = $this->getAccountTypeForRate();
-    
-    if ($this->transactionType === 'خرید') {
-        // برای خرید: نرخ فروش (چون ما از مشتری خرید می‌کنیم)
-        return $accountTypeForRate === 'cash' ? 'sell_cash' : 'sell_bank';
-    } else {
-        // برای فروش: نرخ خرید (چون ما به مشتری می‌فروشیم)
-        return $accountTypeForRate === 'cash' ? 'buy_cash' : 'buy_bank';
+     * تعیین نوع نرخ مورد نیاز
+     * اصلاح شده: برای خرید نرخ خرید، برای فروش نرخ فروش
+     */
+    private function getRateType()
+    {
+        // تعیین نوع حساب بر اساس نوع تراکنش
+        $accountTypeForRate = $this->getAccountTypeForRate();
+        
+        if ($this->transactionType === 'خرید') {
+            // برای خرید: نرخ فروش (چون ما از مشتری خرید می‌کنیم)
+            return $accountTypeForRate === 'cash' ? 'sell_cash' : 'sell_bank';
+        } else {
+            // برای فروش: نرخ خرید (چون ما به مشتری می‌فروشیم)
+            return $accountTypeForRate === 'cash' ? 'buy_cash' : 'buy_bank';
+        }
     }
-}
 
     /**
- /**
- * تعیین نوع نرخ معکوس
- */
-private function getReverseRateType()
-{
-    // تعیین نوع حساب بر اساس نوع تراکنش
-    $accountTypeForRate = $this->getAccountTypeForRate();
-    
-    // معکوس getRateType
-    if ($this->transactionType === 'خرید') {
-        // اگر getRateType برای خرید نرخ فروش برمی‌گرداند، ما نرخ خرید برگردانیم
-        return $accountTypeForRate === 'cash' ? 'buy_cash' : 'buy_bank';
-    } else {
-        // اگر getRateType برای فروش نرخ خرید برمی‌گرداند، ما نرخ فروش برگردانیم
-        return $accountTypeForRate === 'cash' ? 'sell_cash' : 'sell_bank';
+     * تعیین نوع نرخ معکوس
+     */
+    private function getReverseRateType()
+    {
+        // تعیین نوع حساب بر اساس نوع تراکنش
+        $accountTypeForRate = $this->getAccountTypeForRate();
+        
+        // معکوس getRateType
+        if ($this->transactionType === 'خرید') {
+            // اگر getRateType برای خرید نرخ فروش برمی‌گرداند، ما نرخ خرید برگردانیم
+            return $accountTypeForRate === 'cash' ? 'buy_cash' : 'buy_bank';
+        } else {
+            // اگر getRateType برای فروش نرخ خرید برمی‌گرداند، ما نرخ فروش برگردانیم
+            return $accountTypeForRate === 'cash' ? 'sell_cash' : 'sell_bank';
+        }
     }
-}
 
     /**
      * محاسبه جهانی با نرخ از پیش تعیین شده - منطق بهبود یافته
@@ -828,8 +909,7 @@ private function getReverseRateType()
     }
 
     /**
-     * تبدیل جهانی به دالر - نسخه اصلاح شده با منطق یکسان
-     * همیشه از نرخ خرید دلار استفاده می‌کند
+     * تبدیل جهانی به دالر - نسخه اصلاح شده
      */
     private function convertToUsdUniversal($amount, $currency)
     {
@@ -853,18 +933,22 @@ private function getReverseRateType()
             return 0;
         }
 
-        // همیشه از نرخ خرید دلار استفاده می‌کنیم
-        $rateType = $this->getAccountTypeForRate();
+        // استفاده از getAccountTypeForRate برای تعیین نوع حساب
+        $accountTypeForRate = $this->getAccountTypeForRate();
+        
+        // همیشه از نرخ خرید دلار استفاده می‌کنیم (برای سود/ضرر)
+        $rateType = $accountTypeForRate === 'cash' ? 'buy_cash' : 'buy_bank';
         $usdRateField = $currency . '_' . $rateType;
         $usdRate = $usdProfitRate->{$usdRateField} ?? null;
 
-        Log::info("تبدیل {$currency} به دالر (همیشه با نرخ خرید)", [
+        Log::info("تبدیل {$currency} به دالر", [
             'amount' => $amount,
             'currency' => $currency,
             'rate_field' => $usdRateField,
             'rate_value' => $usdRate,
             'rate_type' => $rateType,
-            'transaction_type' => $this->transactionType
+            'transaction_type' => $this->transactionType,
+            'account_type_for_rate' => $accountTypeForRate
         ]);
 
         if (!$usdRate || $usdRate == 0) {
@@ -919,6 +1003,7 @@ private function getReverseRateType()
             'difference' => 0
         ];
     }
+
     /**
      * تولید توضیحات برای سود/ضرر
      */
@@ -972,7 +1057,6 @@ private function getReverseRateType()
 
         try {
             Log::info('=== شروع ثبت تبدیل ارز ===');
-
 
             // محاسبه سود/ضرر
             Log::info('در حال محاسبه سود/ضرر...');
@@ -1148,13 +1232,9 @@ private function getReverseRateType()
         }
     }
 
-
-
-
     /**
      * ویرایش تبدیل ارز
      */
-
     public function editConversion($conversionId)
     {
         $conversion = ConversionInAccounts::with(['customer'])->find($conversionId);
@@ -1212,7 +1292,6 @@ private function getReverseRateType()
                 : ''
         ]);
     }
-
 
     /**
      * تأیید حذف
@@ -1286,6 +1365,8 @@ private function getReverseRateType()
 
         $this->transactionType = 'خرید';
         $this->accountType = 'نقدی';
+        $this->from_account = 'نقدی';
+        $this->to_account = 'نقدی';
         $this->date = Jalalian::now()->format('Y/m/d');
     }
 
@@ -1346,19 +1427,6 @@ private function getReverseRateType()
         }
     }
 
-    /**
- * تعیین نوع حساب (نقدی/بانکی) بر اساس نوع تراکنش
- */
-private function getAccountTypeForRate()
-{
-    if ($this->transactionType === 'خرید') {
-        // در حالت خرید، از حساب مبدا استفاده می‌کنیم
-        return $this->from_account === 'نقدی' ? 'cash' : 'bank';
-    } else {
-        // در حالت فروش، از حساب مقصد استفاده می‌کنیم
-        return $this->to_account === 'نقدی' ? 'cash' : 'bank';
-    }
-}
     /**
      * Print conversion transaction as PDF
      */
@@ -1454,7 +1522,6 @@ private function getAccountTypeForRate()
 
         return $balance;
     }
-
 
     /**
      * به‌روزرسانی موجودی ارزهای مشتری
@@ -1669,9 +1736,6 @@ private function getAccountTypeForRate()
     }
 
     /**
-     * تبدیل عدد به حروف فارسی
-     */
-    /**
      * تبدیل عدد به حروف فارسی - نسخه بهبود یافته
      */
     private function convertAmountToWords($value, $property, $decimals = 2)
@@ -1762,6 +1826,7 @@ private function getAccountTypeForRate()
             $this->$property = '';
         }
     }
+
     /**
      * دریافت نام ارز
      */
@@ -1785,7 +1850,9 @@ private function getAccountTypeForRate()
         return $currencyMap[$currencyCode] ?? $currencyCode;
     }
 
-
+    /**
+     * بارگذاری زون‌ها
+     */
     private function loadZones($adminId)
     {
         $zones = \App\Models\Sarafi\User::where(function ($query) use ($adminId) {
