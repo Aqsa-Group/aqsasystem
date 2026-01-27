@@ -210,6 +210,8 @@ class Transaction extends Model
         $balance = static::where('customer_id', $this->customer_id)
             ->where('currency', $this->currency)
             ->where('account_type', $this->account_type)
+            ->where('admin_id', $adminId) 
+
             ->sum(DB::raw("
                 CASE
                     WHEN type = 'رسید' THEN amount
