@@ -543,7 +543,7 @@ class WithdrawBank extends Component
         $receiverCustomer = Customer::find($this->toAccount);
 
         // date = شمسی
-        $jalaliDate = $this->date; // مثال: 1404/10/04
+        $jalaliDate = $this->date; 
 
         // تراکنش برداشت از فرستنده
 
@@ -566,26 +566,22 @@ class WithdrawBank extends Component
         ]);
 
 
-        // تراکنش واریز به گیرنده
-        if ($this->accountType === 'معاملات داخلی') {
-            Transaction::create([
-                'withdrawbank_id' => $remittance->id,
-                'customer_id'     => $this->toAccount,
-                'user_id'         => $user->id,
-                'admin_id'        => $adminId,
-                'currency'        => $this->currency,
-                'amount'          => $this->amount,
-                'type'            => 'برد',
-                'date'            => $jalaliDate, // ✅ شمسی
-                'description'     => 'ورود حواله بانکی | کد: ' . $this->tracking_code .
-                    ' | از: ' . ($senderCustomer->fullname ?? ''),
-                'by'              => 'خودش',
-                'zone'            => $this->zone,
-                'account_type'    => 'بانکی',
-                'created_at'      => now(), // میلادی
-                'updated_at'      => now(),
-            ]);
-        }
+       if ($this->accountType === 'معاملات داخلی') {
+    Transaction::create([
+        'withdrawbank_id' => $remittance->id,
+        'customer_id'     => $this->toAccount,
+        'user_id'         => $user->id,
+        'admin_id'        => $adminId,
+        'currency'        => $this->currency,
+        'amount'          => $this->amount,
+        'type'            => 'برد',
+        'date'            => $jalaliDate,
+        'description'     => 'برد حواله بانکی | کد: ' . $this->tracking_code,
+        'zone'            => $this->zone,
+        'by'              => 'خودش',
+        'account_type'    => 'بانکی',
+    ]);
+}
     }
 
 
@@ -703,11 +699,12 @@ class WithdrawBank extends Component
                 Log::info('Created new remittance', ['id' => $remittance->id]);
             }
 
+
+            // اعمال کسر از صندوق بانکی
+            $this->applyBankWithdrawal();   
             // ایجاد تراکنش‌ها
             $this->createTransactions($remittance);
 
-            // اعمال کسر از صندوق بانکی
-            $this->applyBankWithdrawal();
 
             DB::commit();
 
