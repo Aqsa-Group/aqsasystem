@@ -10,6 +10,7 @@ use App\Models\Sarafi\Revenue;
 use App\Models\Sarafi\Transaction;
 use App\Models\Sarafi\User;
 use App\Models\Sarafi\ProfitRate;
+use App\Models\Sarafi\RemittanceApproval;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -23,6 +24,35 @@ class Dashboard extends Component
     public $safe_account = [];
     public $currencies = [];
     public $total_balance_usd = 0;
+
+
+
+    public $TransactionCount;
+    public $LastTransactionTime;
+
+    public $CustomerCount;
+    public $LastCustomerTime;
+
+
+    public $UserCount;
+    public $LastUserTime;
+
+    public $RemittanceCount;
+    public $LastRemittanceTime;
+
+    public $RemittanceApprovalCount;
+    public $LastRemittanceApprovalTime;
+
+
+    public $ProfitCount;
+    public $LastProfitTime;
+
+
+    public $LostCount;
+    public $LastLostTime;
+
+
+
 
     public function mount()
     {
@@ -38,9 +68,18 @@ class Dashboard extends Component
 
         // مقدار پیش‌فرض ارزها
         $defaults = [
-            'afn' => 0, 'usd' => 0, 'eur' => 0, 'irr' => 0,
-            'aed' => 0, 'try' => 0, 'cny' => 0, 'pkr' => 0,
-            'gbp' => 0, 'jpy' => 0, 'sar' => 0, 'inr' => 0,
+            'afn' => 0,
+            'usd' => 0,
+            'eur' => 0,
+            'irr' => 0,
+            'aed' => 0,
+            'try' => 0,
+            'cny' => 0,
+            'pkr' => 0,
+            'gbp' => 0,
+            'jpy' => 0,
+            'sar' => 0,
+            'inr' => 0,
         ];
 
         $this->safe_account = array_merge($defaults, $this->safe_account ?? []);
@@ -60,6 +99,98 @@ class Dashboard extends Component
             'sar' => __('messages.safes_sar'),
             'inr' => __('messages.safes_inr'),
         ];
+
+
+        // Transaction
+
+        $startOfDay = Carbon::today()->startOfDay();
+        $endOfDay = Carbon::today()->endOfDay();
+
+        $this->TransactionCount = Transaction::whereBetween('created_at', [$startOfDay, $endOfDay])->count();
+
+        $lastTransaction = Transaction::whereBetween('created_at', [$startOfDay, $endOfDay])
+            ->latest('created_at')
+            ->first();
+
+        $this->LastTransactionTime = $lastTransaction
+            ? $lastTransaction->created_at->diffForHumans()
+            : 'بدون تراکنش';
+
+
+
+
+
+        //    Customer
+        $this->CustomerCount = Customer::whereBetween('created_at', [$startOfDay, $endOfDay])->count();
+
+        $lastcustomer = Customer::whereBetween('created_at', [$startOfDay, $endOfDay])
+            ->latest('created_at')
+            ->first();
+
+        $this->LastCustomerTime = $lastcustomer
+            ? $lastcustomer->created_at->diffForHumans()
+            : 'بدون ثبت مشتری';
+
+
+        // User
+        $this->UserCount = User::whereBetween('created_at', [$startOfDay, $endOfDay])->count();
+
+        $lastuser = User::whereBetween('created_at', [$startOfDay, $endOfDay])
+            ->latest('created_at')
+            ->first();
+
+        $this->LastUserTime = $lastuser
+            ? $lastuser->created_at->diffForHumans()
+            : 'بدون ثبت کاربر';
+
+        // Remittance
+        $this->RemittanceCount = Remittances::whereBetween('created_at', [$startOfDay, $endOfDay])->count();
+
+        $lastremittance = Remittances::whereBetween('created_at', [$startOfDay, $endOfDay])
+            ->latest('created_at')
+            ->first();
+
+        $this->LastRemittanceTime = $lastremittance
+            ? $lastremittance->created_at->diffForHumans()
+            : 'بدون ثبت حواله';
+
+
+        // Remittance approval
+        $this->RemittanceApprovalCount = RemittanceApproval::whereBetween('created_at', [$startOfDay, $endOfDay])->count();
+
+        $lastremittanceapproval = RemittanceApproval::whereBetween('created_at', [$startOfDay, $endOfDay])
+            ->latest('created_at')
+            ->first();
+
+        $this->LastRemittanceApprovalTime = $lastremittanceapproval
+            ? $lastremittanceapproval->created_at->diffForHumans()
+            : 'بدون  تایید حواله';
+
+
+        // Profit
+        $this->ProfitCount = Revenue::whereBetween('created_at', [$startOfDay, $endOfDay])->count();
+
+        $lastprofit = Revenue::whereBetween('created_at', [$startOfDay, $endOfDay])
+            ->latest('created_at')
+            ->where('profit', '>', 0)
+            ->first();
+
+        $this->LastProfitTime = $lastprofit
+            ? $lastprofit->created_at->diffForHumans()
+            : 'بدون   فایده';
+
+
+        // Lost
+        $this->LostCount = Revenue::whereBetween('created_at', [$startOfDay, $endOfDay])->count();
+
+        $lastlost = Revenue::whereBetween('created_at', [$startOfDay, $endOfDay])
+            ->latest('created_at')
+            ->where('lost', '<', 0)
+            ->first();
+
+        $this->LastLostTime = $lastlost
+            ? $lastlost->created_at->diffForHumans()
+            : 'بدون ضرر';
     }
 
     public function calculateTotalBalance()
@@ -70,7 +201,7 @@ class Dashboard extends Component
         // دریافت داده‌ها
         $safe = CurrencySafe::where('admin_id', $adminId)->first();
         $bank = BankAccount::where('admin_id', $adminId)->first();
-        
+
         // دریافت نرخ‌ها - با source_currency='usd'
         $rates = ProfitRate::where('admin_id', $adminId)
             ->where('source_currency', 'usd')
@@ -98,20 +229,20 @@ class Dashboard extends Component
         foreach ($allCurrencies as $currency) {
             // مقدار کل این ارز (نقدی + بانکی)
             $totalAmount = 0;
-            
+
             if ($safe && isset($safe->$currency)) {
                 $totalAmount += $safe->$currency;
             }
-            
+
             if ($bank && isset($bank->$currency)) {
                 $totalAmount += $bank->$currency;
             }
-            
+
             // اگر مقدار صفر است، ادامه بده
             if ($totalAmount == 0) {
                 continue;
             }
-            
+
             // تبدیل به دلار
             if ($currency === 'usd') {
                 // خودش دلار است
@@ -120,12 +251,12 @@ class Dashboard extends Component
             } else {
                 // نرخ خرید نقدی این ارز به دلار
                 $rateField = $currency . '_buy_cash';
-                
+
                 if ($rates && isset($rates->$rateField) && $rates->$rateField > 0) {
                     // فرمول: مقدار ارز ÷ نرخ خرید نقدی = مقدار دلار
                     $converted = $totalAmount / $rates->$rateField;
                     $totalUsd += $converted;
-                    
+
                     // لاگ برای دیباگ
                     Log::info("تبدیل {$currency}: {$totalAmount} ÷ {$rates->$rateField} = {$converted} USD");
                 } else {
@@ -138,9 +269,9 @@ class Dashboard extends Component
                 }
             }
         }
-        
+
         $this->total_balance_usd = round($totalUsd, 2);
-        
+
         // لاگ نهایی
         Log::info('محاسبه موجودی کل Dashboard', [
             'admin_id' => $adminId,

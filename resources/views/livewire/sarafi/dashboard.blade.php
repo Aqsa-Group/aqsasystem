@@ -3,7 +3,8 @@
     <h1 class="mb-8 text-[18px] font-bold text-gray-700 vazir  dark:text-white" style="font-weight: 800">{{
         __('messages.page_title') }}</h1>
 
-    <div class="grid grid-cols-1   md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4 vazir w-full " style="font-weight: 400">
+    <div class="grid grid-cols-1   md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4 vazir w-full "
+        style="font-weight: 400">
 
         <!-- رسید / برداشت -->
         <a href="{{ route('sarafi.transactions') }}">
@@ -71,7 +72,7 @@
                         stroke-linejoin="round" stroke-dasharray="3 3" />
                 </svg>
 
-                <span >انتقال حساب به حساب</span>
+                <span>انتقال حساب به حساب</span>
             </div>
         </a>
 
@@ -543,7 +544,8 @@
                         </div>
 
                         <!-- عدد + آپدیت -->
-                        <div class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
+                        <div
+                            class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
                             <p class="text-[26px] font-extrabold text-[#1A7477]
             group-hover:text-white">
                                 {{ $UserCount }}
@@ -554,11 +556,13 @@
             group-hover:bg-white ">
                                 <p class="text-sm  vazir text-[#1A7477]
                 group-hover:text-[#1A7477]">
-                                    آخرین به‌روزرسانی 10 دقیقه پیش
+                                    آخرین به‌روزرسانی {{ $LastUserTime }}
                                 </p>
                             </div>
                         </div>
                     </div>
+
+
 
                     <!-- تعداد مشتریان -->
 
@@ -644,7 +648,8 @@
                         </div>
 
                         <!-- عدد + آپدیت -->
-                        <div class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
+                        <div
+                            class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
                             <p class="text-[26px] font-extrabold text-[#2563EB]
             group-hover:text-white">
                                 {{ $customerCount }}
@@ -655,7 +660,7 @@
             group-hover:bg-white">
                                 <p class="text-sm vazir text-[#2563EB]
                 group-hover:text-[#2563EB]">
-                                    آخرین به‌روزرسانی 10 دقیقه پیش
+                                    آخرین به‌روزرسانی {{ $LastCustomerTime }}
                                 </p>
                             </div>
                         </div>
@@ -667,7 +672,7 @@
                     <div class="group flex flex-col justify-between border rounded-2xl
                         bg-[#EC4E19] bg-opacity-20 hover:bg-[#EB7825]
                         shadow-md hover:shadow-xl transition-colors duration-500 ease-in-out
-         w-full   p-3 md:p-6 lg:p-6 transform 
+                       w-full   p-3 md:p-6 lg:p-6 transform 
                                      ">
 
                         <!-- ردیف بالا -->
@@ -737,7 +742,8 @@
                         </div>
 
                         <!-- عدد + آپدیت -->
-                        <div class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
+                        <div
+                            class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
                             <p class="text-[26px] font-extrabold text-[#EC4E19]
             group-hover:text-white">
                                 {{ $TransactionCount }}
@@ -748,8 +754,7 @@
             group-hover:bg-white">
                                 <p class="text-sm vazir text-[#EC4E19]
                 group-hover:text-[#EC4E19]">
-                                    آخرین به‌روزرسانی 10 دقیقه پیش
-                                </p>
+                                    آخرین به‌روزرسانی {{ $LastTransactionTime }} </p>
                             </div>
                         </div>
                     </div>
@@ -812,7 +817,8 @@
                         </div>
 
                         <!-- عدد + آپدیت -->
-                        <div class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
+                        <div
+                            class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
                             <p class="text-[26px] font-extrabold text-[#5474BB]
             group-hover:text-white">
                                 {{ $remittancecount }}
@@ -823,7 +829,7 @@
             group-hover:bg-white">
                                 <p class="text-sm vazir text-[#5474BB]
                 group-hover:text-[#5474BB]">
-                                    آخرین به‌روزرسانی 10 دقیقه پیش
+                                    آخرین به‌روزرسانی {{ $LastRemittanceTime }} </p>
                                 </p>
                             </div>
                         </div>
@@ -890,7 +896,8 @@
                             </div>
 
                             <!-- عدد + آپدیت -->
-                        <div class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
+                            <div
+                                class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
                                 <p class="text-[26px] font-extrabold text-[#EBA925]
             group-hover:text-white">
                                     {{ $waitting }}
@@ -901,7 +908,7 @@
             group-hover:bg-white">
                                     <p class="text-sm vazir text-[#EBA925]
                 group-hover:text-[#EBA925]">
-                                        آخرین به‌روزرسانی 10 دقیقه پیش
+                                        آخرین به‌روزرسانی {{ $LastRemittanceApprovalTime }}
                                     </p>
                                 </div>
                             </div>
@@ -968,7 +975,8 @@
                         </div>
 
                         <!-- عدد + آپدیت -->
-                        <div class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
+                        <div
+                            class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
                             <p class="text-[26px] font-extrabold text-[#108614]
             group-hover:text-white">
                                 {{ $todayprofit }}
@@ -979,7 +987,7 @@
             group-hover:bg-white">
                                 <p class="text-sm vazir text-[#108614]
                 group-hover:text-[#108614]">
-                                    آخرین به‌روزرسانی 10 دقیقه پیش
+                                    آخرین به‌روزرسانی {{ $LastProfitTime }}
                                 </p>
                             </div>
                         </div>
@@ -1041,7 +1049,8 @@
                         </div>
 
                         <!-- عدد + آپدیت -->
-                        <div class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
+                        <div
+                            class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
                             <p class="text-[26px] font-extrabold text-[#DD2424]
             group-hover:text-white">
                                 {{ $todaylost }}
@@ -1052,7 +1061,7 @@
             group-hover:bg-white">
                                 <p class="text-sm vazir text-[#DD2424]
                 group-hover:text-[#DD2424]">
-                                    آخرین به‌روزرسانی 10 دقیقه پیش
+                                    آخرین به‌روزرسانی {{ $LastLostTime }}
                                 </p>
                             </div>
                         </div>
@@ -1128,7 +1137,8 @@
                         </div>
 
                         <!-- عدد + آپدیت -->
-                        <div class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
+                        <div
+                            class="flex flex-col items-center md:items-end lg:items-end text-center md:text-end lg:text-end space-y-2">
                             <p class="text-[26px] font-extrabold text-[#125614]
             group-hover:text-white">
                                 @php $currentUser = Auth::guard('sarafi')->user(); @endphp
@@ -1143,7 +1153,7 @@
             group-hover:bg-white">
                                 <p class="text-sm vazir text-[#125614]
                 group-hover:text-[#125614]">
-                                    آخرین به‌روزرسانی 10 دقیقه پیش
+                                    آخرین به‌روزرسانی {{ $LastTransactionTime }} </p>
                                 </p>
                             </div>
                         </div>
@@ -1253,9 +1263,12 @@
             shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
                         <div class="w-full flex justify-between mx-auto items-center">
                             <div class="bg-white rounded-[27.5px] px-[14px] py-[15px]">
-                               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 5.25C12.4142 5.25 12.75 5.58579 12.75 6V6.31673C14.3804 6.60867 15.75 7.83361 15.75 9.5C15.75 9.91421 15.4142 10.25 15 10.25C14.5858 10.25 14.25 9.91421 14.25 9.5C14.25 8.82154 13.6859 8.10339 12.75 7.84748V11.3167C14.3804 11.6087 15.75 12.8336 15.75 14.5C15.75 16.1664 14.3804 17.3913 12.75 17.6833V18C12.75 18.4142 12.4142 18.75 12 18.75C11.5858 18.75 11.25 18.4142 11.25 18V17.6833C9.61957 17.3913 8.25 16.1664 8.25 14.5C8.25 14.0858 8.58579 13.75 9 13.75C9.41421 13.75 9.75 14.0858 9.75 14.5C9.75 15.1785 10.3141 15.8966 11.25 16.1525V12.6833C9.61957 12.3913 8.25 11.1664 8.25 9.5C8.25 7.83361 9.61957 6.60867 11.25 6.31673V6C11.25 5.58579 11.5858 5.25 12 5.25ZM11.25 7.84748C10.3141 8.10339 9.75 8.82154 9.75 9.5C9.75 10.1785 10.3141 10.8966 11.25 11.1525V7.84748ZM12.75 12.8475V16.1525C13.6859 15.8966 14.25 15.1785 14.25 14.5C14.25 13.8215 13.6859 13.1034 12.75 12.8475Z" fill="#387EA2"/>
-</svg>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 5.25C12.4142 5.25 12.75 5.58579 12.75 6V6.31673C14.3804 6.60867 15.75 7.83361 15.75 9.5C15.75 9.91421 15.4142 10.25 15 10.25C14.5858 10.25 14.25 9.91421 14.25 9.5C14.25 8.82154 13.6859 8.10339 12.75 7.84748V11.3167C14.3804 11.6087 15.75 12.8336 15.75 14.5C15.75 16.1664 14.3804 17.3913 12.75 17.6833V18C12.75 18.4142 12.4142 18.75 12 18.75C11.5858 18.75 11.25 18.4142 11.25 18V17.6833C9.61957 17.3913 8.25 16.1664 8.25 14.5C8.25 14.0858 8.58579 13.75 9 13.75C9.41421 13.75 9.75 14.0858 9.75 14.5C9.75 15.1785 10.3141 15.8966 11.25 16.1525V12.6833C9.61957 12.3913 8.25 11.1664 8.25 9.5C8.25 7.83361 9.61957 6.60867 11.25 6.31673V6C11.25 5.58579 11.5858 5.25 12 5.25ZM11.25 7.84748C10.3141 8.10339 9.75 8.82154 9.75 9.5C9.75 10.1785 10.3141 10.8966 11.25 11.1525V7.84748ZM12.75 12.8475V16.1525C13.6859 15.8966 14.25 15.1785 14.25 14.5C14.25 13.8215 13.6859 13.1034 12.75 12.8475Z"
+                                        fill="#387EA2" />
+                                </svg>
 
 
                             </div>
