@@ -639,7 +639,9 @@ class Transactions extends Component
         $this->amount = str_replace(',', '', $this->amount);
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
-
+        if (empty($this->description)) {
+            $this->description = ($this->transactionType === 'رسید' ? 'رسید شد مبلغ ' : 'برد شد مبلغ ') . number_format($this->amount);
+        }
 
         $this->validate([
             'selectedAccount' => 'required|integer|exists:sarafi.customers,id',
@@ -649,7 +651,7 @@ class Transactions extends Component
             'transactionType' => 'required|string',
             'accountType' => 'required|string',
             'date'           => 'required|date',
-            'description'    => 'required|string|max:500',
+            'description'    => 'nullable|string|max:500',
             'zone'           => 'required|string',
             'file'           => 'nullable|file|max:10240',
         ]);
@@ -803,7 +805,7 @@ class Transactions extends Component
 
             $safe->increment($currency, $change);
 
-          
+
 
             $safe->save();
         } else {
