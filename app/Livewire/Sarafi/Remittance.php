@@ -794,31 +794,16 @@ class Remittance extends Component
     /**
      * برگشت موجودی بانک
      */
-    private function reverseBankAccount(Remittances $remittance, $user, $adminId)
-    {
-        $bankAccount = BankAccount::where('admin_id', $adminId)->first();
+  private function reverseBankAccount(Remittances $remittance, $user, $adminId)
+{
+    $bankAccount = BankAccount::where('admin_id', $adminId)->first();
 
-        if ($bankAccount) {
-            $currentBalance = $bankAccount->{$remittance->currency} ?? 0;
-
-            // کاهش موجودی بانک (چون هنگام تایید افزایش یافته بود)
-            if ($currentBalance >= $remittance->amount) {
-                $bankAccount->decrement($remittance->currency, $remittance->amount);
-            } else {
-                // اگر موجودی کافی نبود، فقط تا صفر کاهش دهید
-                $bankAccount->update([
-                    $remittance->currency => 0
-                ]);
-
-                Log::warning("موجودی بانک برای برگشت کامل حواله کافی نبود", [
-                    'remittance_id' => $remittance->id,
-                    'currency' => $remittance->currency,
-                    'amount' => $remittance->amount,
-                    'current_balance' => $currentBalance
-                ]);
-            }
-        }
+    if ($bankAccount) {
+        // کاهش موجودی بانک حتی اگر منفی شود
+        $bankAccount->decrement($remittance->currency, $remittance->amount);
     }
+}
+
 
     public function cancel()
     {
