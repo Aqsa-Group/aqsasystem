@@ -649,7 +649,7 @@ class Transactions extends Component
             'transactionType' => 'required|string',
             'accountType' => 'required|string',
             'date'           => 'required|date',
-            'description'    => 'nullable|string|max:500',
+            'description'    => 'required|string|max:500',
             'zone'           => 'required|string',
             'file'           => 'nullable|file|max:10240',
         ]);
