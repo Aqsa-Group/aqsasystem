@@ -24,7 +24,7 @@ class ConversionInAccount extends Component
     public $selectedCustomer = null;
     public $selectedAccount = null;
     public $selectedCustomerId = null;
-    
+
     // متغیرهای فرم
     public $calculatingField = 'buy';
     public $calculating = false;
@@ -307,7 +307,7 @@ class ConversionInAccount extends Component
         } elseif ($accountField === 'to') {
             $this->to_account = $this->to_account === 'نقدی' ? 'بانکی' : 'نقدی';
         }
-        
+
         // محاسبه مجدد سود/ضرر
         $this->calculateRealTimeProfitLoss();
     }
@@ -535,14 +535,13 @@ class ConversionInAccount extends Component
             }
 
             $profitLoss = $this->calculateProfitOrLoss();
-            
+
             // نمایش سود/ضرر
             $this->dispatch('show-profit-loss', [
                 'profit' => $profitLoss['profit'],
                 'loss' => $profitLoss['loss'],
                 'predefined_rate' => $profitLoss['predefined_rate']
             ]);
-            
         } catch (\Exception $e) {
             Log::error('خطا در محاسبه سود/ضرر زمان واقعی: ' . $e->getMessage());
         }
@@ -804,7 +803,7 @@ class ConversionInAccount extends Component
     {
         // تعیین نوع حساب بر اساس نوع تراکنش
         $accountTypeForRate = $this->getAccountTypeForRate();
-        
+
         if ($this->transactionType === 'خرید') {
             // برای خرید: نرخ فروش (چون ما از مشتری خرید می‌کنیم)
             return $accountTypeForRate === 'cash' ? 'sell_cash' : 'sell_bank';
@@ -821,7 +820,7 @@ class ConversionInAccount extends Component
     {
         // تعیین نوع حساب بر اساس نوع تراکنش
         $accountTypeForRate = $this->getAccountTypeForRate();
-        
+
         // معکوس getRateType
         if ($this->transactionType === 'خرید') {
             // اگر getRateType برای خرید نرخ فروش برمی‌گرداند، ما نرخ خرید برگردانیم
@@ -935,7 +934,7 @@ class ConversionInAccount extends Component
 
         // استفاده از getAccountTypeForRate برای تعیین نوع حساب
         $accountTypeForRate = $this->getAccountTypeForRate();
-        
+
         // همیشه از نرخ خرید دلار استفاده می‌کنیم (برای سود/ضرر)
         $rateType = $accountTypeForRate === 'cash' ? 'buy_cash' : 'buy_bank';
         $usdRateField = $currency . '_' . $rateType;
@@ -1526,6 +1525,9 @@ class ConversionInAccount extends Component
     /**
      * به‌روزرسانی موجودی ارزهای مشتری
      */
+    /**
+     * به‌روزرسانی موجودی ارزهای مشتری - نسخه اصلاح شده
+     */
     public function updateCustomerCurrencyBalance()
     {
         if (!$this->selectedCustomerId) {
@@ -1552,6 +1554,7 @@ class ConversionInAccount extends Component
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
 
+        // دریافت همه تراکنش‌های مشتری
         $transactions = Transaction::where('customer_id', $this->selectedCustomerId)
             ->where('admin_id', $adminId)
             ->get();
@@ -1585,6 +1588,7 @@ class ConversionInAccount extends Component
             $currencyName = $this->getCurrencyName($transaction->currency);
             $amount = $transaction->type === 'رسید' ? $transaction->amount : -$transaction->amount;
 
+            // بررسی نوع حساب
             if ($transaction->account_type === 'نقدی') {
                 if (array_key_exists($currencyName, $cashBalances)) {
                     $cashBalances[$currencyName] += $amount;
@@ -1596,31 +1600,14 @@ class ConversionInAccount extends Component
             }
         }
 
-        $latestExchangeRate = ExchangeRates::latest()->first();
-        $exchangeRates = [
-            'افغانی' => $latestExchangeRate->afn_buy ?? 0.011,
-            'دالر' => 1,
-            'تومان' => $latestExchangeRate->irr_buy ?? 0.000024,
-            'یورو' => $latestExchangeRate->eur_buy ?? 1.07,
-            'کلدار' => $latestExchangeRate->pkr_buy ?? 0.0036,
-            'درهم' => $latestExchangeRate->aed_buy ?? 0.27,
-            'لیره' => $latestExchangeRate->try_buy ?? 0.031,
-            'یوان' => $latestExchangeRate->cny_buy ?? 0.14,
-            'روپیه' => 0.14,
-        ];
-
         // محاسبه مجموع برای نمایش در کارت‌های اصلی
         $totalBalances = [];
         foreach ($cashBalances as $currency => $balance) {
             $totalBalances[$currency] = $balance + $bankBalances[$currency];
         }
 
-        $totalInUsd = 0;
-        foreach ($totalBalances as $currency => $balance) {
-            if ($currency !== 'خلاصه بیلانس به دالر' && isset($exchangeRates[$currency])) {
-                $totalInUsd += $balance * $exchangeRates[$currency];
-            }
-        }
+        // محاسبه خلاصه بیلانس به دالر
+        $totalInUsd = $this->calculateTotalBalanceInUsd($cashBalances, $bankBalances);
 
         $this->currenciesdefault = [
             ['name' => 'افغانی', 'value' => $totalBalances['افغانی']],
@@ -1639,6 +1626,73 @@ class ConversionInAccount extends Component
         $this->customerCashBalances = $cashBalances;
         $this->customerBankBalances = $bankBalances;
         $this->customerTotalBalances = $totalBalances;
+    }
+
+    /**
+     * محاسبه کل موجودی به دالر
+     */
+    private function calculateTotalBalanceInUsd($cashBalances, $bankBalances): float
+    {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        // دریافت آخرین نرخ‌های ارز
+        $latestProfitRate = ProfitRate::where('admin_id', $adminId)
+            ->orWhere('user_id', $adminId)
+            ->latest()
+            ->first();
+
+        if (!$latestProfitRate) {
+            // نرخ‌های پیش‌فرض
+            $exchangeRates = [
+                'افغانی' => 0.011,
+                'دالر' => 1,
+                'تومان' => 0.000024,
+                'یورو' => 1.07,
+                'کلدار' => 0.0036,
+                'درهم' => 0.27,
+                'لیره' => 0.031,
+                'یوان' => 0.14,
+                'روپیه' => 0.14,
+            ];
+        } else {
+            // استفاده از نرخ خرید نقدی (buy_cash) برای محاسبه
+            $exchangeRates = [
+                'افغانی' => $latestProfitRate->afn_buy_cash ?? 0.011,
+                'دالر' => 1,
+                'تومان' => $latestProfitRate->irr_buy_cash ?? 0.000024,
+                'یورو' => $latestProfitRate->eur_buy_cash ?? 1.07,
+                'کلدار' => $latestProfitRate->pkr_buy_cash ?? 0.0036,
+                'درهم' => $latestProfitRate->aed_buy_cash ?? 0.27,
+                'لیره' => $latestProfitRate->try_buy_cash ?? 0.031,
+                'یوان' => $latestProfitRate->cny_buy_cash ?? 0.14,
+                'روپیه' => $latestProfitRate->inr_buy_cash ?? 0.14,
+            ];
+        }
+
+        $totalInUsd = 0;
+
+        // محاسبه موجودی نقدی
+        foreach ($cashBalances as $currency => $balance) {
+            if ($currency === 'دالر') {
+                $totalInUsd += $balance;
+            } elseif (isset($exchangeRates[$currency]) && $exchangeRates[$currency] > 0) {
+                // تقسیم برای تبدیل به دالر
+                $totalInUsd += $balance / $exchangeRates[$currency];
+            }
+        }
+
+        // محاسبه موجودی بانکی
+        foreach ($bankBalances as $currency => $balance) {
+            if ($currency === 'دالر') {
+                $totalInUsd += $balance;
+            } elseif (isset($exchangeRates[$currency]) && $exchangeRates[$currency] > 0) {
+                // تقسیم برای تبدیل به دالر
+                $totalInUsd += $balance / $exchangeRates[$currency];
+            }
+        }
+
+        return $totalInUsd;
     }
 
     /**
