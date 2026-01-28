@@ -5,234 +5,232 @@
                 <h1 class="text-[24px] font-medium vazir">صفحه گزارشات معاملات روزانه حسابات و صندوق ها</h1>
             </div>
 
-            <div class="w-full">
-                <div class="bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC]
- dark:bg-black dark:border dark:border-white p-4 rounded-[12px] mx-auto">
-                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-7 gap-4 items-end">
-                        <!-- چاپ -->
-                        <div>
-                            <label class="block text-[16px] font-medium invisible mb-1">چاپ</label>
-                            <button wire:click="printReport" wire:loading.attr="disabled" wire:target="printReport"
-                                class="w-full h-[60px] flex items-center justify-center gap-2
+
+
+
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-7 gap-4 mb-5 items-end">
+                <!-- چاپ -->
+                <div>
+                    <label class="block text-[16px] font-medium invisible mb-1">چاپ</label>
+                    <button wire:click="printReport" wire:loading.attr="disabled" wire:target="printReport" class="w-full h-[60px] flex items-center justify-center gap-2
                                        bg-[#184D6C] text-white rounded-xl
                                        transition">
-                                <svg wire:loading.remove wire:target="printReport" class="w-5 h-5" fill="none"
-                                    stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                                </svg>
-                                <span wire:loading.remove wire:target="printReport">چاپ گزارش</span>
-                                <span wire:loading wire:target="printReport">در حال تولید گزارش...</span>
-                            </button>
-                        </div>
+                        <svg wire:loading.remove wire:target="printReport" class="w-5 h-5" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                        </svg>
+                        <span wire:loading.remove wire:target="printReport">چاپ گزارش</span>
+                        <span wire:loading wire:target="printReport">در حال تولید گزارش...</span>
+                    </button>
+                </div>
 
-                        <!-- ریست فیلترها -->
-                        <div>
-                            <label class="block text-[16px] font-medium invisible mb-1">ریست</label>
-                            <button wire:click="resetFilters" wire:loading.attr="disabled" class="w-full h-[60px] flex items-center justify-center gap-2
+                <!-- ریست فیلترها -->
+                <div>
+                    <label class="block text-[16px] font-medium invisible mb-1">ریست</label>
+                    <button wire:click="resetFilters" wire:loading.attr="disabled" class="w-full h-[60px] flex items-center justify-center gap-2
                                   bg-[#EFF6F9] text-black border border-[#184D6C] rounded-xl
                                   transition">
-                                <span wire:loading.remove>ریست فیلترها</span>
-                                <span wire:loading>در حال ریست...</span>
-                            </button>
-                        </div>
+                        <span wire:loading.remove>ریست فیلترها</span>
+                        <span wire:loading>در حال ریست...</span>
+                    </button>
+                </div>
 
-                        <!-- نوع ترانزکشن -->
-                        <div>
-                            <label class="block text-[16px] font-medium mb-1 dark:text-white">نوع تراکنش</label>
-                            <select wire:model.live="transactionType" class="w-full h-[60px] appearance-none  dark:bg-black dark:border-white
+                <!-- نوع ترانزکشن -->
+                <div>
+                    <label class="block text-[16px] font-medium mb-1 dark:text-white">نوع تراکنش</label>
+                    <select wire:model.live="transactionType" class="w-full h-[60px] appearance-none  dark:bg-black dark:border-white
                                    bg-[#EFF6F9] text-black border border-[#184D6C] rounded-xl px-4 text-sm">
-                                <option value="">همه</option>
-                                <option value="رسید">رسید</option>
-                                <option value="برد">برد</option>
-                            </select>
-                        </div>
+                        <option value="">همه</option>
+                        <option value="رسید">رسید</option>
+                        <option value="برد">برد</option>
+                    </select>
+                </div>
 
-                        <!-- نوع حساب -->
-                        <div>
-                            <label class="block text-[16px] font-medium mb-1 dark:text-white">نوع حساب</label>
-                            <select wire:model.live="accountType" class="w-full h-[60px] appearance-none  dark:bg-black dark:border-white
+                <!-- نوع حساب -->
+                <div>
+                    <label class="block text-[16px] font-medium mb-1 dark:text-white">نوع حساب</label>
+                    <select wire:model.live="accountType" class="w-full h-[60px] appearance-none  dark:bg-black dark:border-white
                                   bg-[#EFF6F9] text-black border border-[#184D6C]  rounded-xl px-4 text-sm">
-                                <option value="">همه</option>
-                                <option value="نقدی">نقدی</option>
-                                <option value="بانکی">بانکی</option>
-                            </select>
-                        </div>
+                        <option value="">همه</option>
+                        <option value="نقدی">نقدی</option>
+                        <option value="بانکی">بانکی</option>
+                    </select>
+                </div>
 
-                        <!-- ارز -->
-                        <div>
-                            <label class="block text-[16px] font-medium mb-1 dark:text-white">ارز</label>
-                            <select wire:model.live="currency" class="w-full h-[60px] appearance-none  dark:bg-black dark:border-white
+                <!-- ارز -->
+                <div>
+                    <label class="block text-[16px] font-medium mb-1 dark:text-white">ارز</label>
+                    <select wire:model.live="currency" class="w-full h-[60px] appearance-none  dark:bg-black dark:border-white
                                    bg-[#EFF6F9] text-black border border-[#184D6C]  rounded-xl px-4 text-sm">
-                                <option value="">همه ارزها</option>
-                                @foreach ($currencies as $code => $name)
-                                <option value="{{ $code }}">{{ $name }}</option>
-                                @endforeach
+                        <option value="">همه ارزها</option>
+                        @foreach ($currencies as $code => $name)
+                        <option value="{{ $code }}">{{ $name }}</option>
+                        @endforeach
 
-                            </select>
-                        </div>
+                    </select>
+                </div>
 
 
-                        <div>
-                            <div class="lg:col-span-3 relative" x-data="fromDatePicker()" x-init="init()">
-                                <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">از
-                                    تاریخ</label>
-                                <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
-                                    placeholder="YYYY/MM/DD"
-                                    class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] text-black border border-[#184D6C]  focus:ring-2  focus:ring-blue-500 cursor-pointer"
-                                    readonly />
+                <div>
+                    <div class="lg:col-span-3 relative" x-data="fromDatePicker()" x-init="init()">
+                        <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">از
+                            تاریخ</label>
+                        <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
+                            placeholder="YYYY/MM/DD"
+                            class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] text-black border border-[#184D6C]  focus:ring-2  focus:ring-blue-500 cursor-pointer"
+                            readonly />
 
-                                <!-- Date Picker Modal -->
-                                <div x-show="isOpen" x-transition.opacity.duration.300ms x-cloak
-                                    @keydown.escape.window="closePicker()" @click.away="closePicker()"
-                                    class="fixed z-50 inset-0 overflow-y-auto" aria-labelledby="modal-title"
-                                    role="dialog" aria-modal="true" style="display: none;"
-                                    :style="isOpen ? 'display: block;' : ''">
+                        <!-- Date Picker Modal -->
+                        <div x-show="isOpen" x-transition.opacity.duration.300ms x-cloak
+                            @keydown.escape.window="closePicker()" @click.away="closePicker()"
+                            class="fixed z-50 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog"
+                            aria-modal="true" style="display: none;" :style="isOpen ? 'display: block;' : ''">
 
-                                    <div
-                                        class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                                        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-                                            aria-hidden="true"></div>
-                                        <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
-                                            aria-hidden="true">&#8203;</span>
+                            <div
+                                class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+                                    aria-hidden="true"></div>
+                                <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
+                                    aria-hidden="true">&#8203;</span>
 
-                                        <div
-                                            class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                                            <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6">
-                                                <!-- Header -->
-                                                <div class="flex justify-between items-center mb-4">
-                                                    <div class="flex items-center space-x-2">
-                                                        <button @click="prevYear()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                                viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7">
-                                                                </path>
-                                                            </svg>
-                                                        </button>
-                                                        <button @click="prevMonth()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                                viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                                                            </svg>
-                                                        </button>
-                                                    </div>
+                                <div
+                                    class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                                    <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6">
+                                        <!-- Header -->
+                                        <div class="flex justify-between items-center mb-4">
+                                            <div class="flex items-center space-x-2">
+                                                <button @click="prevYear()" type="button"
+                                                    class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7">
+                                                        </path>
+                                                    </svg>
+                                                </button>
+                                                <button @click="prevMonth()" type="button"
+                                                    class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                                    </svg>
+                                                </button>
+                                            </div>
 
-                                                    <div class="flex items-center space-x-2">
-                                                        <button @click="toggleMonthSelector()" type="button"
-                                                            class="text-lg font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                                                            <span x-text="monthsAfghan[currentMonth]"></span>
-                                                        </button>
-                                                        <button @click="toggleYearSelector()" type="button"
-                                                            class="text-lg font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                                                            <span x-text="currentYear"></span>
-                                                        </button>
-                                                    </div>
+                                            <div class="flex items-center space-x-2">
+                                                <button @click="toggleMonthSelector()" type="button"
+                                                    class="text-lg font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                                    <span x-text="monthsAfghan[currentMonth]"></span>
+                                                </button>
+                                                <button @click="toggleYearSelector()" type="button"
+                                                    class="text-lg font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                                    <span x-text="currentYear"></span>
+                                                </button>
+                                            </div>
 
-                                                    <div class="flex items-center space-x-2">
-                                                        <button @click="nextMonth()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                                viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                                            </svg>
-                                                        </button>
-                                                        <button @click="nextYear()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                                viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7">
-                                                                </path>
-                                                            </svg>
-                                                        </button>
-                                                        <button @click="closePicker()" type="button"
-                                                            class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 transition-colors">
-                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                                viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-                                                </div>
+                                            <div class="flex items-center space-x-2">
+                                                <button @click="nextMonth()" type="button"
+                                                    class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                    </svg>
+                                                </button>
+                                                <button @click="nextYear()" type="button"
+                                                    class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7">
+                                                        </path>
+                                                    </svg>
+                                                </button>
+                                                <button @click="closePicker()" type="button"
+                                                    class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 transition-colors">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
 
-                                                <!-- Month Selector -->
-                                                <div x-show="showMonthSelector" x-transition>
-                                                    <div class="grid grid-cols-3 gap-2 mb-4">
-                                                        <template x-for="(month, index) in monthsAfghan" :key="index">
-                                                            <button @click="selectMonth(index)" :class="{
+                                        <!-- Month Selector -->
+                                        <div x-show="showMonthSelector" x-transition>
+                                            <div class="grid grid-cols-3 gap-2 mb-4">
+                                                <template x-for="(month, index) in monthsAfghan" :key="index">
+                                                    <button @click="selectMonth(index)" :class="{
                                                                     'bg-blue-500 text-white': currentMonth === index,
                                                                     'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentMonth !==
                                                                         index
                                                                 }"
-                                                                class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
-                                                                type="button">
-                                                                <span x-text="month"></span>
-                                                            </button>
-                                                        </template>
-                                                    </div>
-                                                </div>
+                                                        class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                                                        type="button">
+                                                        <span x-text="month"></span>
+                                                    </button>
+                                                </template>
+                                            </div>
+                                        </div>
 
-                                                <!-- Year Selector -->
-                                                <div x-show="showYearSelector" x-transition>
-                                                    <div class="flex items-center justify-between mb-4">
-                                                        <button @click="prevYearRange()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                                viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                                                            </svg>
-                                                        </button>
-                                                        <span class="text-lg font-bold text-gray-800 dark:text-white">
-                                                            <span x-text="yearRange.start"></span> - <span
-                                                                x-text="yearRange.end"></span>
-                                                        </span>
-                                                        <button @click="nextYearRange()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                                viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-                                                    <div class="grid grid-cols-4 gap-2 mb-4">
-                                                        <template x-for="year in yearRange.years" :key="year">
-                                                            <button @click="selectYear(year)" :class="{
+                                        <!-- Year Selector -->
+                                        <div x-show="showYearSelector" x-transition>
+                                            <div class="flex items-center justify-between mb-4">
+                                                <button @click="prevYearRange()" type="button"
+                                                    class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                                    </svg>
+                                                </button>
+                                                <span class="text-lg font-bold text-gray-800 dark:text-white">
+                                                    <span x-text="yearRange.start"></span> - <span
+                                                        x-text="yearRange.end"></span>
+                                                </span>
+                                                <button @click="nextYearRange()" type="button"
+                                                    class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <div class="grid grid-cols-4 gap-2 mb-4">
+                                                <template x-for="year in yearRange.years" :key="year">
+                                                    <button @click="selectYear(year)" :class="{
                                                                     'bg-blue-500 text-white': currentYear === year,
                                                                     'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentYear !==
                                                                         year
                                                                 }"
-                                                                class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
-                                                                type="button">
-                                                                <span x-text="year"></span>
-                                                            </button>
-                                                        </template>
-                                                    </div>
-                                                </div>
+                                                        class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                                                        type="button">
+                                                        <span x-text="year"></span>
+                                                    </button>
+                                                </template>
+                                            </div>
+                                        </div>
 
-                                                <!-- Calendar View -->
-                                                <div x-show="!showMonthSelector && !showYearSelector" x-transition>
-                                                    <!-- Week Days -->
-                                                    <div class="grid grid-cols-7 gap-1 mb-2">
-                                                        <template x-for="day in weekDaysAfghan" :key="day">
-                                                            <div
-                                                                class="text-center text-sm font-medium text-gray-500 dark:text-gray-400 py-1">
-                                                                <span x-text="day"></span>
-                                                            </div>
-                                                        </template>
+                                        <!-- Calendar View -->
+                                        <div x-show="!showMonthSelector && !showYearSelector" x-transition>
+                                            <!-- Week Days -->
+                                            <div class="grid grid-cols-7 gap-1 mb-2">
+                                                <template x-for="day in weekDaysAfghan" :key="day">
+                                                    <div
+                                                        class="text-center text-sm font-medium text-gray-500 dark:text-gray-400 py-1">
+                                                        <span x-text="day"></span>
                                                     </div>
+                                                </template>
+                                            </div>
 
-                                                    <!-- Days Grid -->
-                                                    <div class="grid grid-cols-7 gap-1">
-                                                        <template x-for="day in calendarDays" :key="day.key">
-                                                            <button @click="selectDate(day.day)" :class="{
+                                            <!-- Days Grid -->
+                                            <div class="grid grid-cols-7 gap-1">
+                                                <template x-for="day in calendarDays" :key="day.key">
+                                                    <button @click="selectDate(day.day)" :class="{
                                                                     'bg-blue-500 text-white hover:bg-blue-600': day
                                                                         .isSelected,
                                                                     'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300': day
@@ -244,264 +242,268 @@
                                                                         .isOtherMonth,
                                                                     'cursor-not-allowed opacity-50': day.isDisabled
                                                                 }"
-                                                                class="w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors"
-                                                                :disabled="day.isDisabled" type="button">
-                                                                <span x-text="day.day"></span>
-                                                            </button>
-                                                        </template>
-                                                    </div>
-                                                </div>
+                                                        class="w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors"
+                                                        :disabled="day.isDisabled" type="button">
+                                                        <span x-text="day.day"></span>
+                                                    </button>
+                                                </template>
+                                            </div>
+                                        </div>
 
-                                                <!-- Footer -->
-                                                <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
-                                                    <div class="flex justify-between items-center">
-                                                        <div class="text-sm text-gray-600 dark:text-gray-300">
-                                                            <span
-                                                                x-text="selectedDate ? formatDate(selectedDate) : 'تاریخ انتخاب نشده'"></span>
-                                                        </div>
-                                                        <div class="flex space-x-2">
-                                                            <button @click="setToday()" type="button"
-                                                                class="px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors">
-                                                                امروز
-                                                            </button>
-                                                            <button @click="clearDate()" type="button"
-                                                                class="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors">
-                                                                پاک کردن
-                                                            </button>
-                                                            <button @click="applyDate()" type="button"
-                                                                class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                                                تأیید
-                                                            </button>
-                                                        </div>
-                                                    </div>
+                                        <!-- Footer -->
+                                        <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                            <div class="flex justify-between items-center">
+                                                <div class="text-sm text-gray-600 dark:text-gray-300">
+                                                    <span
+                                                        x-text="selectedDate ? formatDate(selectedDate) : 'تاریخ انتخاب نشده'"></span>
+                                                </div>
+                                                <div class="flex space-x-2">
+                                                    <button @click="setToday()" type="button"
+                                                        class="px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors">
+                                                        امروز
+                                                    </button>
+                                                    <button @click="clearDate()" type="button"
+                                                        class="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors">
+                                                        پاک کردن
+                                                    </button>
+                                                    <button @click="applyDate()" type="button"
+                                                        class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                        تأیید
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                @error('fromDate')
-                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                                @enderror
                             </div>
                         </div>
 
-                        <div>
-                            <!-- تا تاریخ -->
-                            <div class="lg:col-span-3 relative" x-data="toDatePicker()" x-init="init()">
-                                <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تا
-                                    تاریخ</label>
-                                <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
-                                    placeholder="YYYY/MM/DD"
-                                    class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] text-black border border-[#184D6C]  focus:ring-2  focus:ring-blue-500 cursor-pointer"
-                                    readonly />
-
-                                <!-- Date Picker Modal -->
-                                <div x-show="isOpen" x-transition.opacity.duration.300ms x-cloak
-                                    @keydown.escape.window="closePicker()" @click.away="closePicker()"
-                                    class="fixed z-50 inset-0 overflow-y-auto" aria-labelledby="modal-title"
-                                    role="dialog" aria-modal="true" style="display: none;"
-                                    :style="isOpen ? 'display: block;' : ''">
-
-                                    <div
-                                        class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                                        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-                                            aria-hidden="true"></div>
-                                        <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
-                                            aria-hidden="true">&#8203;</span>
-
-                                        <div
-                                            class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                                            <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6">
-                                                <!-- Header -->
-                                                <div class="flex justify-between items-center mb-4">
-                                                    <div class="flex items-center space-x-2">
-                                                        <button @click="prevYear()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                                viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7">
-                                                                </path>
-                                                            </svg>
-                                                        </button>
-                                                        <button @click="prevMonth()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                                viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-
-                                                    <div class="flex items-center space-x-2">
-                                                        <button @click="toggleMonthSelector()" type="button"
-                                                            class="text-lg font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                                                            <span x-text="monthsAfghan[currentMonth]"></span>
-                                                        </button>
-                                                        <button @click="toggleYearSelector()" type="button"
-                                                            class="text-lg font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                                                            <span x-text="currentYear"></span>
-                                                        </button>
-                                                    </div>
-
-                                                    <div class="flex items-center space-x-2">
-                                                        <button @click="nextMonth()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                                viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                                            </svg>
-                                                        </button>
-                                                        <button @click="nextYear()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                                viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7">
-                                                                </path>
-                                                            </svg>
-                                                        </button>
-                                                        <button @click="closePicker()" type="button"
-                                                            class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 transition-colors">
-                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                                viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Month Selector -->
-                                                <div x-show="showMonthSelector" x-transition>
-                                                    <div class="grid grid-cols-3 gap-2 mb-4">
-                                                        <template x-for="(month, index) in monthsAfghan" :key="index">
-                                                            <button @click="selectMonth(index)" :class="{
-                                                                    'bg-blue-500 text-white': currentMonth === index,
-                                                                    'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentMonth !==
-                                                                        index
-                                                                }"
-                                                                class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
-                                                                type="button">
-                                                                <span x-text="month"></span>
-                                                            </button>
-                                                        </template>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Year Selector -->
-                                                <div x-show="showYearSelector" x-transition>
-                                                    <div class="flex items-center justify-between mb-4">
-                                                        <button @click="prevYearRange()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                                viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                                                            </svg>
-                                                        </button>
-                                                        <span class="text-lg font-bold text-gray-800 dark:text-white">
-                                                            <span x-text="yearRange.start"></span> - <span
-                                                                x-text="yearRange.end"></span>
-                                                        </span>
-                                                        <button @click="nextYearRange()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                                viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-                                                    <div class="grid grid-cols-4 gap-2 mb-4">
-                                                        <template x-for="year in yearRange.years" :key="year">
-                                                            <button @click="selectYear(year)" :class="{
-                                                                    'bg-blue-500 text-white': currentYear === year,
-                                                                    'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentYear !==
-                                                                        year
-                                                                }"
-                                                                class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
-                                                                type="button">
-                                                                <span x-text="year"></span>
-                                                            </button>
-                                                        </template>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Calendar View -->
-                                                <div x-show="!showMonthSelector && !showYearSelector" x-transition>
-                                                    <!-- Week Days -->
-                                                    <div class="grid grid-cols-7 gap-1 mb-2">
-                                                        <template x-for="day in weekDaysAfghan" :key="day">
-                                                            <div
-                                                                class="text-center text-sm font-medium text-gray-500 dark:text-gray-400 py-1">
-                                                                <span x-text="day"></span>
-                                                            </div>
-                                                        </template>
-                                                    </div>
-
-                                                    <!-- Days Grid -->
-                                                    <div class="grid grid-cols-7 gap-1">
-                                                        <template x-for="day in calendarDays" :key="day.key">
-                                                            <button @click="selectDate(day.day)" :class="{
-                                                                    'bg-blue-500 text-white hover:bg-blue-600': day
-                                                                        .isSelected,
-                                                                    'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300': day
-                                                                        .isToday && !day.isSelected,
-                                                                    'text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700':
-                                                                        !day.isToday && !day.isSelected && !day
-                                                                        .isOtherMonth,
-                                                                    'text-gray-400 dark:text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800': day
-                                                                        .isOtherMonth,
-                                                                    'cursor-not-allowed opacity-50': day.isDisabled
-                                                                }"
-                                                                class="w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors"
-                                                                :disabled="day.isDisabled" type="button">
-                                                                <span x-text="day.day"></span>
-                                                            </button>
-                                                        </template>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Footer -->
-                                                <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
-                                                    <div class="flex justify-between items-center">
-                                                        <div class="text-sm text-gray-600 dark:text-gray-300">
-                                                            <span
-                                                                x-text="selectedDate ? formatDate(selectedDate) : 'تاریخ انتخاب نشده'"></span>
-                                                        </div>
-                                                        <div class="flex space-x-2">
-                                                            <button @click="setToday()" type="button"
-                                                                class="px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors">
-                                                                امروز
-                                                            </button>
-                                                            <button @click="clearDate()" type="button"
-                                                                class="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors">
-                                                                پاک کردن
-                                                            </button>
-                                                            <button @click="applyDate()" type="button"
-                                                                class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                                                تأیید
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                @error('toDate')
-                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-
-
+                        @error('fromDate')
+                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                        @enderror
                     </div>
+                </div>
+
+                <div>
+                    <!-- تا تاریخ -->
+                    <div class="lg:col-span-3 relative" x-data="toDatePicker()" x-init="init()">
+                        <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تا
+                            تاریخ</label>
+                        <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
+                            placeholder="YYYY/MM/DD"
+                            class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] bg-[#EFF6F9] text-black border border-[#184D6C]  focus:ring-2  focus:ring-blue-500 cursor-pointer"
+                            readonly />
+
+                        <!-- Date Picker Modal -->
+                        <div x-show="isOpen" x-transition.opacity.duration.300ms x-cloak
+                            @keydown.escape.window="closePicker()" @click.away="closePicker()"
+                            class="fixed z-50 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog"
+                            aria-modal="true" style="display: none;" :style="isOpen ? 'display: block;' : ''">
+
+                            <div
+                                class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+                                    aria-hidden="true"></div>
+                                <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
+                                    aria-hidden="true">&#8203;</span>
+
+                                <div
+                                    class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                                    <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6">
+                                        <!-- Header -->
+                                        <div class="flex justify-between items-center mb-4">
+                                            <div class="flex items-center space-x-2">
+                                                <button @click="prevYear()" type="button"
+                                                    class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7">
+                                                        </path>
+                                                    </svg>
+                                                </button>
+                                                <button @click="prevMonth()" type="button"
+                                                    class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                                    </svg>
+                                                </button>
+                                            </div>
+
+                                            <div class="flex items-center space-x-2">
+                                                <button @click="toggleMonthSelector()" type="button"
+                                                    class="text-lg font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                                    <span x-text="monthsAfghan[currentMonth]"></span>
+                                                </button>
+                                                <button @click="toggleYearSelector()" type="button"
+                                                    class="text-lg font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                                    <span x-text="currentYear"></span>
+                                                </button>
+                                            </div>
+
+                                            <div class="flex items-center space-x-2">
+                                                <button @click="nextMonth()" type="button"
+                                                    class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                    </svg>
+                                                </button>
+                                                <button @click="nextYear()" type="button"
+                                                    class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7">
+                                                        </path>
+                                                    </svg>
+                                                </button>
+                                                <button @click="closePicker()" type="button"
+                                                    class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 transition-colors">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Month Selector -->
+                                        <div x-show="showMonthSelector" x-transition>
+                                            <div class="grid grid-cols-3 gap-2 mb-4">
+                                                <template x-for="(month, index) in monthsAfghan" :key="index">
+                                                    <button @click="selectMonth(index)" :class="{
+                                                                    'bg-blue-500 text-white': currentMonth === index,
+                                                                    'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentMonth !==
+                                                                        index
+                                                                }"
+                                                        class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                                                        type="button">
+                                                        <span x-text="month"></span>
+                                                    </button>
+                                                </template>
+                                            </div>
+                                        </div>
+
+                                        <!-- Year Selector -->
+                                        <div x-show="showYearSelector" x-transition>
+                                            <div class="flex items-center justify-between mb-4">
+                                                <button @click="prevYearRange()" type="button"
+                                                    class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                                    </svg>
+                                                </button>
+                                                <span class="text-lg font-bold text-gray-800 dark:text-white">
+                                                    <span x-text="yearRange.start"></span> - <span
+                                                        x-text="yearRange.end"></span>
+                                                </span>
+                                                <button @click="nextYearRange()" type="button"
+                                                    class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <div class="grid grid-cols-4 gap-2 mb-4">
+                                                <template x-for="year in yearRange.years" :key="year">
+                                                    <button @click="selectYear(year)" :class="{
+                                                                    'bg-blue-500 text-white': currentYear === year,
+                                                                    'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentYear !==
+                                                                        year
+                                                                }"
+                                                        class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                                                        type="button">
+                                                        <span x-text="year"></span>
+                                                    </button>
+                                                </template>
+                                            </div>
+                                        </div>
+
+                                        <!-- Calendar View -->
+                                        <div x-show="!showMonthSelector && !showYearSelector" x-transition>
+                                            <!-- Week Days -->
+                                            <div class="grid grid-cols-7 gap-1 mb-2">
+                                                <template x-for="day in weekDaysAfghan" :key="day">
+                                                    <div
+                                                        class="text-center text-sm font-medium text-gray-500 dark:text-gray-400 py-1">
+                                                        <span x-text="day"></span>
+                                                    </div>
+                                                </template>
+                                            </div>
+
+                                            <!-- Days Grid -->
+                                            <div class="grid grid-cols-7 gap-1">
+                                                <template x-for="day in calendarDays" :key="day.key">
+                                                    <button @click="selectDate(day.day)" :class="{
+                                                                    'bg-blue-500 text-white hover:bg-blue-600': day
+                                                                        .isSelected,
+                                                                    'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300': day
+                                                                        .isToday && !day.isSelected,
+                                                                    'text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700':
+                                                                        !day.isToday && !day.isSelected && !day
+                                                                        .isOtherMonth,
+                                                                    'text-gray-400 dark:text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800': day
+                                                                        .isOtherMonth,
+                                                                    'cursor-not-allowed opacity-50': day.isDisabled
+                                                                }"
+                                                        class="w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors"
+                                                        :disabled="day.isDisabled" type="button">
+                                                        <span x-text="day.day"></span>
+                                                    </button>
+                                                </template>
+                                            </div>
+                                        </div>
+
+                                        <!-- Footer -->
+                                        <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                            <div class="flex justify-between items-center">
+                                                <div class="text-sm text-gray-600 dark:text-gray-300">
+                                                    <span
+                                                        x-text="selectedDate ? formatDate(selectedDate) : 'تاریخ انتخاب نشده'"></span>
+                                                </div>
+                                                <div class="flex space-x-2">
+                                                    <button @click="setToday()" type="button"
+                                                        class="px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors">
+                                                        امروز
+                                                    </button>
+                                                    <button @click="clearDate()" type="button"
+                                                        class="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors">
+                                                        پاک کردن
+                                                    </button>
+                                                    <button @click="applyDate()" type="button"
+                                                        class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                        تأیید
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @error('toDate')
+                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            <div class="w-full">
+                <div class="bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC]
+                       dark:bg-black dark:border dark:border-white p-4 rounded-[12px] mx-auto">
 
 
 
@@ -578,7 +580,7 @@
                                             {{ number_format($transaction->balance, 2) }}
                                         </td>
 
-                                         <td class="px-4 py-4 " dir="ltr">
+                                        <td class="px-4 py-4 " dir="ltr">
                                             {{ number_format($transaction->safe_balance, 2) }}
                                         </td>
                                         <td class="px-4 py-4">
@@ -673,7 +675,7 @@
         </div>
 
 
-        <div 
+        <div
             class="bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC] dark:bg-black dark:border dark:border-white p-4 rounded-[12px] mx-auto mt-10">
             <!-- جدول موجودی هر ارز به صورت جداگانه -->
             <div class="mt-8">
@@ -712,7 +714,7 @@
         </div>
 
 
-        <div class="flex  gap-4 p-10 bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC] mt-5" >
+        <div class="flex  gap-4 p-10 bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC] mt-5">
 
 
 
