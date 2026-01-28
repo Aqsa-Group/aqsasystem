@@ -206,62 +206,63 @@ class Transaction extends Model
     ======================= */
 
     private function getRealAccountBalance(string $currency, string $accountType, int $adminId): float
-{
-    if ($accountType === 'نقدی') {
-        return CurrencySafe::where('admin_id', $adminId)->value($currency) ?? 0;
+    {
+        if ($accountType === 'نقدی') {
+            return CurrencySafe::where('admin_id', $adminId)->value($currency) ?? 0;
+        }
+
+        if ($accountType === 'بانکی') {
+            return BankAccount::where('admin_id', $adminId)->value($currency) ?? 0;
+        }
+
+        return 0;
     }
 
-    if ($accountType === 'بانکی') {
-        return BankAccount::where('admin_id', $adminId)->value($currency) ?? 0;
+
+    private function shouldAffectSafeBalance(): bool
+    {
+        // فقط حساب نقدی و بانکی
+        if (!in_array($this->account_type, ['نقدی', 'بانکی'], true)) {
+            return false;
+        }
+
+        // برد بانکی + مشتری کارت صرافی → بی‌اثر
+        if (
+            $this->account_type === 'بانکی'
+            && $this->type === 'برد'
+            && $this->customer
+            && $this->customer->category === 'sarafi_card'
+        ) {
+            return false;
+        }
+
+        // معاملات داخلی / تبدیل / انتقال → بی‌اثر
+        if (
+            $this->conversion_transfer_id
+            || $this->conversion_in_account_id
+            || $this->account_to_id
+        ) {
+            return false;
+        }
+
+        return true;
     }
 
-    return 0;
-}
 
 
-private function shouldAffectSafeBalance(): bool
-{
-    // فقط حساب‌های نقدی و بانکی
-    if (!in_array($this->account_type, ['نقدی', 'بانکی'])) {
-        return false;
-    }
+    public function createJournal()
+    {
+        $user    = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
 
-    // برد بانکی مشتری با کارت صرافی → بی‌اثر
-    if (
-        $this->account_type === 'بانکی'
-        && $this->type === 'برد'
-        && $this->customer
-        && $this->customer->category === 'sarafi_card'
-    ) {
-        return false;
-    }
-
-    // معاملات تبدیل / انتقال داخلی → بی‌اثر
-    if (
-        !empty($this->conversion_transfer_id)
-        || !empty($this->conversion_in_account_id)
-        || !empty($this->account_to_id)
-    ) {
-        return false;
-    }
-
-    return true;
-}
-
-
-public function createJournal()
-{
-    $user    = Auth::guard('sarafi')->user();
-    $adminId = $user->admin_id ?? $user->id;
-
-    /* ===============================
-       balance (مربوط به مشتری)
+        /* ===============================
+       balance مشتری (فقط یک بار)
     =============================== */
-    $balance = static::where('customer_id', $this->customer_id)
-        ->where('currency', $this->currency)
-        ->where('account_type', $this->account_type)
-        ->where('admin_id', $adminId)
-        ->sum(DB::raw("
+        $balanceBefore = static::where('customer_id', $this->customer_id)
+            ->where('currency', $this->currency)
+            ->where('account_type', $this->account_type)
+            ->where('admin_id', $adminId)
+            ->sum(DB::raw("
             CASE
                 WHEN type = 'رسید' THEN amount
                 WHEN type = 'برد' THEN -amount
@@ -269,55 +270,56 @@ public function createJournal()
             END
         "));
 
-    $signedAmount = $this->type === 'رسید'
-        ? $this->amount
-        : -$this->amount;
+        $signedAmount = $this->type === 'رسید'
+            ? $this->amount
+            : -$this->amount;
 
-    $balance += $signedAmount;
+        $balanceAfter = $balanceBefore + $signedAmount;
 
-    /* ===============================
-       safe_balance (واقعی صندوق)
+        /* ===============================
+       safe_balance صندوق (واقعی)
     =============================== */
-    $safeBalance = $this->getRealAccountBalance(
-        $this->currency,
-        $this->account_type,
-        $adminId
-    );
+        $safeBalance = $this->getRealAccountBalance(
+            $this->currency,
+            $this->account_type,
+            $adminId
+        );
 
-    if ($this->shouldAffectSafeBalance()) {
-        $safeBalance += $signedAmount;
+        if ($this->shouldAffectSafeBalance()) {
+            $safeBalance += $signedAmount; // ممکن است منفی شود (مجاز)
+        }
+
+        return Journals::create([
+            'transaction_id' => $this->id,
+            'customer_id'    => $this->customer_id,
+            'user_id'        => $user->id,
+            'admin_id'       => $adminId,
+            'currency'       => $this->currency,
+            'type'           => $this->type,
+            'account_type'   => $this->account_type,
+            'amount'         => $this->amount,
+            'balance'        => $balanceAfter,
+            'safe_balance'   => $safeBalance,
+            'description'    => $this->description,
+            'date'           => $this->date,
+        ]);
     }
 
-    return Journals::create([
-        'transaction_id' => $this->id,
-        'customer_id'    => $this->customer_id,
-        'user_id'        => $user->id,
-        'admin_id'       => $adminId,
-        'currency'       => $this->currency,
-        'type'           => $this->type,
-        'account_type'   => $this->account_type,
-        'amount'         => $this->amount,
-        'balance'        => $balance,
-        'safe_balance'   => $safeBalance,
-        'description'    => $this->description,
-        'date'           => $this->date,
-    ]);
-}
 
+    public function updateJournal()
+    {
+        $journal = Journals::where('transaction_id', $this->id)->first();
+        if (!$journal) return;
 
-public function updateJournal()
-{
-    $journal = Journals::where('transaction_id', $this->id)->first();
-    if (!$journal) return;
-
-    /* ===============================
-       balance (مشتری)
+        /* ===============================
+       balance مشتری (بدون خود تراکنش)
     =============================== */
-    $balance = static::where('customer_id', $this->customer_id)
-        ->where('currency', $this->currency)
-        ->where('account_type', $this->account_type)
-        ->where('id', '<>', $journal->id)
-        ->sum(DB::raw("
+        $balanceBefore = static::where('customer_id', $this->customer_id)
+            ->where('currency', $this->currency)
+            ->where('account_type', $this->account_type)
+            ->where('admin_id', $journal->admin_id)
+            ->where('id', '<>', $journal->transaction_id)
+            ->sum(DB::raw("
             CASE
                 WHEN type = 'رسید' THEN amount
                 WHEN type = 'برد' THEN -amount
@@ -325,36 +327,37 @@ public function updateJournal()
             END
         "));
 
-    $signedAmount = $this->type === 'رسید'
-        ? $this->amount
-        : -$this->amount;
+        $signedAmount = $this->type === 'رسید'
+            ? $this->amount
+            : -$this->amount;
 
-    $balance += $signedAmount;
+        $balanceAfter = $balanceBefore + $signedAmount;
 
-    /* ===============================
-       safe_balance (واقعی صندوق)
+        /* ===============================
+       safe_balance صندوق (واقعی)
     =============================== */
-    $safeBalance = $this->getRealAccountBalance(
-        $this->currency,
-        $this->account_type,
-        $journal->admin_id
-    );
+        $safeBalance = $this->getRealAccountBalance(
+            $this->currency,
+            $this->account_type,
+            $journal->admin_id
+        );
 
-    if ($this->shouldAffectSafeBalance()) {
-        $safeBalance += $signedAmount;
+        if ($this->shouldAffectSafeBalance()) {
+            $safeBalance += $signedAmount;
+        }
+
+        $journal->update([
+            'amount'       => $this->amount,
+            'balance'      => $balanceAfter,
+            'safe_balance' => $safeBalance,
+            'currency'     => $this->currency,
+            'type'         => $this->type,
+            'account_type' => $this->account_type,
+            'description'  => $this->description,
+            'date'         => $this->date,
+        ]);
     }
 
-    $journal->update([
-        'amount'       => $this->amount,
-        'balance'      => $balance,
-        'safe_balance' => $safeBalance,
-        'currency'     => $this->currency,
-        'type'         => $this->type,
-        'account_type' => $this->account_type,
-        'description'  => $this->description,
-        'date'         => $this->date,
-    ]);
-}
 
 
 
