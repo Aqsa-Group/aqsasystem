@@ -5,16 +5,17 @@ namespace App\Livewire\Sarafi;
 use App\Models\Sarafi\BankAccount;
 use App\Models\Sarafi\CurrencySafe;
 use App\Models\Sarafi\Customer;
+use App\Models\Sarafi\ProfitRate;
+use App\Models\Sarafi\RemittanceApproval;
 use App\Models\Sarafi\Remittances;
 use App\Models\Sarafi\Revenue;
 use App\Models\Sarafi\Transaction;
 use App\Models\Sarafi\User;
-use App\Models\Sarafi\ProfitRate;
-use App\Models\Sarafi\RemittanceApproval;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Component;
 use Illuminate\Support\Facades\Log;
+use Livewire\Component;
+use Morilog\Jalali\Jalalian;
 
 
 class Dashboard extends Component
@@ -27,7 +28,7 @@ class Dashboard extends Component
 
 
 
-    public $TransactionCount;
+    public $Transactioncount;
     public $LastTransactionTime;
 
     public $CustomerCount;
@@ -106,7 +107,7 @@ class Dashboard extends Component
         $startOfDay = Carbon::today()->startOfDay();
         $endOfDay = Carbon::today()->endOfDay();
 
-        $this->TransactionCount = Transaction::whereBetween('created_at', [$startOfDay, $endOfDay])->count();
+        $this->Transactioncount = Transaction::whereBetween('created_at', [$startOfDay, $endOfDay])->count();
 
         $lastTransaction = Transaction::whereBetween('created_at', [$startOfDay, $endOfDay])
             ->latest('created_at')
@@ -313,8 +314,16 @@ class Dashboard extends Component
         $customerCount = Customer::where('admin_id', $adminId)->count();
         $UserCount = User::where('admin_id', $adminId)->count();
 
-        $TransactionCount = Transaction::where('admin_id', $adminId)
-            ->whereBetween('created_at', [$today, $tomorrow])
+        $todayJalali = Jalalian::now()->format('Y-m-d');
+
+        
+        $TransactionCount = Transaction::whereIn('user_id', function ($q) use ($adminId) {
+            $q->select('id')
+                ->from('users')
+                ->where('admin_id', $adminId)
+                ->orWhere('id', $adminId);
+        })
+            ->whereDate('created_at', Carbon::today('UTC'))
             ->count();
 
         $Waiting = Remittances::where('admin_id', $adminId)

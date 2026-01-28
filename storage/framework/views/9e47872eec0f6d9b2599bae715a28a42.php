@@ -234,7 +234,7 @@
                         </div>
                     </div>
 
-                     <button wire:click="showReport" wire:loading.attr="disabled"
+                    <button wire:click="showReport" wire:loading.attr="disabled"
                         class="bg-[#FFFFFF]/10  rounded-[8px] mr-auto  backdrop:blur-2xl text-[12px] p-2 mt-2 text-gray-800 hover:shadow-md transition border border-white flex items-center justify-end gap-2 w-[114px] h-[25px]">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M7.5 12.5L12.5 7.5M12.5 7.5H8.75M12.5 7.5V11.25" stroke="white" stroke-width="1.5"
@@ -414,7 +414,7 @@
                     </div>
 
 
-                      <button wire:click="showReport" wire:loading.attr="disabled"
+                    <button wire:click="showReport" wire:loading.attr="disabled"
                         class="bg-[#FFFFFF]/10  rounded-[8px] mr-auto  backdrop:blur-2xl text-[12px] p-2 mt-2 text-gray-800 hover:shadow-md transition border border-white flex items-center justify-end gap-2 w-[114px] h-[25px]">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M7.5 12.5L12.5 7.5M12.5 7.5H8.75M12.5 7.5V11.25" stroke="white" stroke-width="1.5"
@@ -466,6 +466,9 @@
                         <?php echo e($remittanceId ? 'فورم ویرایش حواله' : 'فورم ثبت اطلاعات حواله'); ?>
 
                     </p>
+
+                     
+                        
                 </div>
 
                 <!-- Form -->

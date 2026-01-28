@@ -520,7 +520,8 @@
                                         <th class="px-4 py-4 font-bold">نوع حساب</th>
                                         <th class="px-4 py-4 font-bold">مقدار</th>
                                         <th class="px-4 py-4 font-bold">ارز</th>
-                                        <th class="px-4 py-4 font-bold">بیلانس فعلی</th>
+                                        <th class="px-4 py-4 font-bold">بیلانس فعلی مشتری</th>
+                                        <th class="px-4 py-4 font-bold">بیلانس فعلی صندوق</th>
                                         <th class="px-4 py-4 font-bold">توضیحات</th>
                                         <th class="px-4 py-4 font-bold">تاریخ</th>
                                     </tr>
@@ -575,6 +576,10 @@
                                         </td>
                                         <td class="px-4 py-4 " dir="ltr">
                                             {{ number_format($transaction->balance, 2) }}
+                                        </td>
+
+                                         <td class="px-4 py-4 " dir="ltr">
+                                            {{ number_format($transaction->safe_balance, 2) }}
                                         </td>
                                         <td class="px-4 py-4">
                                             {{ $transaction->description }}

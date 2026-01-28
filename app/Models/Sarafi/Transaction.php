@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Morilog\Jalali\Jalalian;
+use App\Models\Sarafi\CurrencySafe;
+
 
 class Transaction extends Model
 {
@@ -202,71 +204,154 @@ class Transaction extends Model
     /* =======================
        Journal Management
     ======================= */
-    public function createJournal()
-    {
-        $user = Auth::guard('sarafi')->user();
-        $adminId = $user->admin_id ?? $user->id;
 
-        $balance = static::where('customer_id', $this->customer_id)
-            ->where('currency', $this->currency)
-            ->where('account_type', $this->account_type)
-            ->where('admin_id', $adminId) 
-
-            ->sum(DB::raw("
-                CASE
-                    WHEN type = 'رسید' THEN amount
-                    WHEN type = 'برد' THEN -amount
-                    ELSE 0
-                END
-            "));
-
-        return Journals::create([
-            'transaction_id' => $this->id,
-            'customer_id' => $this->customer_id,
-            'user_id' => $user->id,
-            'admin_id' => $adminId,
-            'currency' => $this->currency,
-            'type' => $this->type,
-            'account_type' => $this->account_type,
-            'amount' => $this->amount,
-            'balance' => $balance,
-            'description' => $this->description,
-            'date' => $this->date,
-        ]);
+    private function getRealAccountBalance(string $currency, string $accountType, int $adminId): float
+{
+    if ($accountType === 'نقدی') {
+        return CurrencySafe::where('admin_id', $adminId)->value($currency) ?? 0;
     }
+
+    if ($accountType === 'بانکی') {
+        return BankAccount::where('admin_id', $adminId)->value($currency) ?? 0;
+    }
+
+    return 0;
+}
+
+
+private function shouldAffectSafeBalance(): bool
+{
+    // فقط نقدی و بانکی
+    if (!in_array($this->account_type, ['نقدی', 'بانکی'])) {
+        return false;
+    }
+
+    // اگر مشتری کارت صرافی است و برد بانکی است → بی‌اثر
+    if (
+        $this->account_type === 'بانکی'
+        && $this->type === 'برد'
+        && $this->customer
+        && $this->customer->category === 'sarafi_card'
+    ) {
+        return false;
+    }
+
+    return true;
+}
+
+
+
+public function createJournal()
+{
+    $user = Auth::guard('sarafi')->user();
+    $adminId = $user->admin_id ?? $user->id;
+
+    /* ===============================
+       balance (دست نخورده)
+    =============================== */
+    $balance = static::where('customer_id', $this->customer_id)
+        ->where('currency', $this->currency)
+        ->where('account_type', $this->account_type)
+        ->where('admin_id', $adminId)
+        ->sum(DB::raw("
+            CASE
+                WHEN type = 'رسید' THEN amount
+                WHEN type = 'برد' THEN -amount
+                ELSE 0
+            END
+        "));
+
+    /* ===============================
+       safe_balance (واقعی و صحیح)
+    =============================== */
+    $safeBalance = null;
+
+    if ($this->shouldAffectSafeBalance()) {
+
+        $signedAmount = $this->type === 'رسید'
+            ? $this->amount
+            : -$this->amount;
+
+        $realBalance = $this->getRealAccountBalance(
+            $this->currency,
+            $this->account_type,
+            $adminId
+        );
+
+        $safeBalance = $realBalance + $signedAmount;
+    }
+
+    return Journals::create([
+        'transaction_id' => $this->id,
+        'customer_id'    => $this->customer_id,
+        'user_id'        => $user->id,
+        'admin_id'       => $adminId,
+        'currency'       => $this->currency,
+        'type'           => $this->type,
+        'account_type'   => $this->account_type,
+        'amount'         => $this->amount,
+        'balance'        => $balance,
+        'safe_balance'   => $safeBalance,
+        'description'    => $this->description,
+        'date'           => $this->date,
+    ]);
+}
+
+
 public function updateJournal()
 {
     $journal = Journals::where('transaction_id', $this->id)->first();
+    if (!$journal) return;
 
-    if ($journal) {
-        $balance = static::where('customer_id', $this->customer_id)
-            ->where('currency', $this->currency)
-            ->where('account_type', $this->account_type)
-            ->where('id', '<>', $this->id) // حذف تراکنش فعلی
-            ->sum(DB::raw("
-                CASE
-                    WHEN type = 'رسید' THEN amount
-                    WHEN type = 'برد' THEN -amount
-                    ELSE 0
-                END
-            "));
+    /* ===============================
+       balance (تراکنش‌های قبلی + فعلی)
+    =============================== */
+    $balance = static::where('customer_id', $this->customer_id)
+        ->where('currency', $this->currency)
+        ->where('account_type', $this->account_type)
+        ->where('id', '<>', $this->id)
+        ->sum(DB::raw("
+            CASE
+                WHEN type = 'رسید' THEN amount
+                WHEN type = 'برد' THEN -amount
+                ELSE 0
+            END
+        "));
 
-        // اضافه کردن مقدار تراکنش فعلی (ویرایش شده)
-        $signedAmount = $this->type === 'رسید' ? $this->amount : -$this->amount;
-        $balance += $signedAmount;
+    $signedAmount = $this->type === 'رسید' ? $this->amount : -$this->amount;
+    $balance += $signedAmount;
 
-        // آپدیت Journal
-        $journal->update([
-            'amount'       => $this->amount,
-            'balance'      => $balance,
-            'currency'     => $this->currency,
-            'type'         => $this->type,
-            'account_type' => $this->account_type,
-            'description'  => $this->description,
-            'date'         => $this->date,
-        ]);
+    /* ===============================
+       safe_balance (واقعی، با شرط کارت صرافی)
+    =============================== */
+    $affectsSafeBalance =
+        in_array($this->account_type, ['نقدی', 'بانکی'])
+        && !($this->account_type === 'بانکی'
+            && $this->type === 'برد'
+            && $this->category === 'sarafi_card'); // برد بانکی کارت صرافی اثر ندارد
+
+    $safeBalance = null;
+    if ($affectsSafeBalance) {
+        $realBalance = $this->getRealAccountBalance(
+            $this->currency,
+            $this->account_type,
+            $journal->admin_id
+        );
+        $safeBalance = $realBalance + $signedAmount;
     }
+
+    $journal->update([
+        'amount'       => $this->amount,
+        'balance'      => $balance,
+        'safe_balance' => $safeBalance,
+        'currency'     => $this->currency,
+        'type'         => $this->type,
+        'account_type' => $this->account_type,
+        'description'  => $this->description,
+        'date'         => $this->date,
+    ]);
 }
+
 
 
     public function deleteJournal()
