@@ -252,6 +252,9 @@ class ConversionInAccount extends Component
     /**
      * تغییر نوع معامله (خرید/فروش) - نسخه بهبود یافته
      */
+    /**
+     * تغییر نوع معامله (خرید/فروش) - نسخه بهبود یافته
+     */
     public function toggleTransactionType()
     {
         $this->transactionType = $this->transactionType === 'خرید' ? 'فروش' : 'خرید';
@@ -271,10 +274,13 @@ class ConversionInAccount extends Component
         $this->by_sender = $this->by_receiver;
         $this->by_receiver = $tempBy;
 
-        // جابجایی حساب‌ها (در حالت خرید/فروش)
+        // جابجایی حساب‌ها
         $tempAccount = $this->from_account;
         $this->from_account = $this->to_account;
         $this->to_account = $tempAccount;
+
+        // به‌روزرسانی accountType بر اساس from_account جدید
+        $this->accountType = $this->from_account;
 
         // محاسبه مجدد
         if ($this->calculatingField === 'buy' && $this->buy_amount && $this->currency_rate) {
@@ -1041,6 +1047,8 @@ class ConversionInAccount extends Component
             'zone_receiver' => 'required|string',
             'by_sender' => 'nullable|string|max:255',
             'by_receiver' => 'nullable|string|max:255',
+            'from_account' => 'required|in:نقدی,بانکی',
+            'to_account' => 'required|in:نقدی,بانکی',
         ]);
 
         $user = Auth::guard('sarafi')->user();
@@ -1055,7 +1063,11 @@ class ConversionInAccount extends Component
         DB::connection('sarafi')->beginTransaction();
 
         try {
-            Log::info('=== شروع ثبت تبدیل ارز ===');
+            Log::info('=== شروع ثبت تبدیل ارز ===', [
+                'from_account' => $this->from_account,
+                'to_account' => $this->to_account,
+                'accountType' => $this->accountType
+            ]);
 
             // محاسبه سود/ضرر
             Log::info('در حال محاسبه سود/ضرر...');
@@ -1081,7 +1093,7 @@ class ConversionInAccount extends Component
                     'to_currency' => $this->to_currency,
                     'sell_amount' => $this->sell_amount,
                     'currency_rate' => $this->currency_rate,
-                    'account_type' => $this->accountType,
+                    'account_type' => $this->from_account, // استفاده از from_account
                     'transaction_date' => $this->date,
                     'description' => $this->description,
                     'zone_sender' => $this->zone_sender,
@@ -1096,7 +1108,7 @@ class ConversionInAccount extends Component
             } else {
                 $conversion = ConversionInAccounts::create([
                     'customer_id' => $this->selectedAccount,
-                    'account_type' => $this->accountType,
+                    'account_type' => $this->from_account, // استفاده از from_account
                     'from_currency' => $this->from_currency,
                     'buy_amount' => $this->buy_amount,
                     'to_currency' => $this->to_currency,
@@ -1117,6 +1129,7 @@ class ConversionInAccount extends Component
                 Log::info("✅ تبدیل ارز ایجاد شد - ID: {$conversionId}");
             }
 
+            // ایجاد تراکنش برداشت
             Transaction::create([
                 'customer_id' => $this->selectedAccount,
                 'user_id' => $user->id,
@@ -1139,6 +1152,7 @@ class ConversionInAccount extends Component
                 'updated_at' => now(),
             ]);
 
+            // ایجاد تراکنش رسید
             Transaction::create([
                 'customer_id' => $this->selectedAccount,
                 'user_id' => $user->id,
@@ -1161,7 +1175,10 @@ class ConversionInAccount extends Component
                 'updated_at' => now(),
             ]);
 
-            Log::info('✅ تراکنش‌های برداشت و رسید ایجاد شدند');
+            Log::info('✅ تراکنش‌های برداشت و رسید ایجاد شدند', [
+                'from_account' => $this->from_account,
+                'to_account' => $this->to_account
+            ]);
 
             Log::info('بررسی سود/ضرر برای ثبت در revenue', [
                 'profit' => $profitLoss['profit'],
@@ -1207,7 +1224,7 @@ class ConversionInAccount extends Component
             session()->flash('message', $message);
 
             // به‌روزرسانی موجودی‌ها بعد از ثبت
-            $this->updateCustomerCurrencyBalance($this->selectedAccount);
+            $this->updateCustomerCurrencyBalance();
 
             Log::info('=== پایان ثبت تبدیل ارز ===');
 
@@ -1224,6 +1241,8 @@ class ConversionInAccount extends Component
                 'to_currency' => $this->to_currency,
                 'buy_amount' => $this->buy_amount,
                 'sell_amount' => $this->sell_amount,
+                'from_account' => $this->from_account,
+                'to_account' => $this->to_account,
                 'user_id' => $user->id ?? 'unknown',
                 'admin_id' => $adminId ?? 'unknown',
                 'editing' => $this->editingConversionId ? 'yes' : 'no',
@@ -1503,9 +1522,9 @@ class ConversionInAccount extends Component
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
 
+        // حذف فیلتر account_type یا استفاده از پارامتر اضافی
         $transactions = Transaction::where('customer_id', $customerId)
             ->where('admin_id', $adminId)
-            ->where('account_type', $this->accountType)
             ->where('currency', $currencyCode)
             ->get();
 
@@ -1521,7 +1540,6 @@ class ConversionInAccount extends Component
 
         return $balance;
     }
-
     /**
      * به‌روزرسانی موجودی ارزهای مشتری
      */
