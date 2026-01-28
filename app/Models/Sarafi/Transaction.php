@@ -226,7 +226,6 @@ class Transaction extends Model
             return false;
         }
 
-        // برد بانکی + مشتری کارت صرافی → بی‌اثر
         if (
             $this->account_type === 'بانکی'
             && $this->type === 'برد'
@@ -236,7 +235,6 @@ class Transaction extends Model
             return false;
         }
 
-        // معاملات داخلی / تبدیل / انتقال → بی‌اثر
         if (
             $this->conversion_transfer_id
             || $this->conversion_in_account_id
