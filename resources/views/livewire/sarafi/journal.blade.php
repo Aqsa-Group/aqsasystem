@@ -546,6 +546,10 @@
                                                     @elseif(empty($transaction->customer_id) &&
                                                     $transaction->is_sell_table == 1)
                                                     معامله از صندوق
+                                                     @elseif(empty($transaction->customer_id) &&
+                                                    $transaction->withdraw_external_safe_id)
+                                                        معاملات بیرونی
+
                                                     @else
                                                     {{ $transaction->customer->fullname ?? 'نامشخص' }}
                                                     @endif
@@ -556,7 +560,7 @@
                                                     @if (empty($transaction->customer_id) && $transaction->is_sell_table
                                                     == 1)
                                                     @else
-                                                    {{ $transaction->customer->account_number ?? '-' }}
+                                                    {{ $transaction->customer->account_number ?? '' }}
                                                     @endif
                                                 </div>
 

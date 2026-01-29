@@ -561,6 +561,10 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                                                     <?php elseif(empty($transaction->customer_id) &&
                                                     $transaction->is_sell_table == 1): ?>
                                                     معامله از صندوق
+                                                     <?php elseif(empty($transaction->customer_id) &&
+                                                    $transaction->withdraw_external_safe_id): ?>
+                                                        معاملات بیرونی
+
                                                     <?php else: ?>
                                                     <?php echo e($transaction->customer->fullname ?? 'نامشخص'); ?>
 
@@ -572,7 +576,7 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                                                     <?php if(empty($transaction->customer_id) && $transaction->is_sell_table
                                                     == 1): ?>
                                                     <?php else: ?>
-                                                    <?php echo e($transaction->customer->account_number ?? '-'); ?>
+                                                    <?php echo e($transaction->customer->account_number ?? ''); ?>
 
                                                     <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                                 </div>

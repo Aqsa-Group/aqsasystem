@@ -2,6 +2,7 @@
 
 namespace App\Models\Sarafi;
 
+use App\Livewire\Sarafi\ExternalTransactions;
 use Illuminate\Database\Eloquent\Model;
 
 class Revenue extends Model
@@ -21,7 +22,9 @@ class Revenue extends Model
         'admin_id',
         'conversion_in_account_id',
         'conversion_transfer_in_account_id',
-        'safe_exchange_id'
+        'safe_exchange_id',
+        'external_transaction_id'
+
     ];
 
     public function conversion()
@@ -39,6 +42,13 @@ class Revenue extends Model
     {
         return $this->belongsTo(CashExchange::class, 'safe_exchange_id');
     }
+
+
+        public function externalTransaction()
+    {
+        return $this->belongsTo(ExternalTransactions::class, 'external_transaction_id');
+    }
+
 
 
     public function user()

@@ -453,6 +453,23 @@ Route::get('/sarafi/backup', function () {
 
 
 
+Route::get('/sarafi/external', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.external-transaction');
+})->name('sarafi.external');
+
+
+
+
+
+
+
+
+
+
+
 
 
 

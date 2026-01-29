@@ -3,6 +3,7 @@
 namespace App\Models\Sarafi;
 
 use App\Livewire\Sarafi\ConversionInAccount;
+use App\Livewire\Sarafi\ExternalTransaction;
 use App\Livewire\Sarafi\Withdraw;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -35,9 +36,11 @@ class Journals extends Model
         'withdrawbank_id',
         'changerdeals_id',
         'withdraw_id',
+        'external_transaction_id',	
+        'withdraw_external_safe_id',	
 
 
-        // اطلاعات مالی
+
         'currency',
         'type',          // رسید | برد
         'account_type',  // نقدی | بانکی
@@ -116,6 +119,10 @@ class Journals extends Model
         return $this->belongsTo(WithdrawsBanks::class);
     }
 
+      public function externaltransaction()
+    {
+        return $this->belongsTo(ExternalTransaction::class,'external_transaction_id');
+    }
     public function changerDeal()
     {
         return $this->belongsTo(ChangerDeal::class);

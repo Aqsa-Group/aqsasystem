@@ -67,30 +67,45 @@ class Journal extends Component
     }
 
     // محاسبه موجودی‌های صندوق و حساب بانکی به تفکیک ارز
-    public function calculateBalances()
-    {
-        $user = Auth::guard('sarafi')->user();
-        $adminId = $user->admin_id ?? $user->id;
+public function calculateBalances()
+{
+    $user = Auth::guard('sarafi')->user();
+    $adminId = $user->admin_id ?? $user->id;
 
-        // موجودی صندوق
-        $currencySafe = CurrencySafe::where('admin_id', $adminId)->first();
-        $bankAccount = BankAccount::where('admin_id', $adminId)->first();
+    $isToday = $this->toDate === Jalalian::now()->format('Y-m-d');
 
-        // مقداردهی اولیه
-        $this->currencySafeBalance = [];
-        $this->bankAccountBalance = [];
-        $this->totalBalanceByCurrency = [];
+    $currencySafe = CurrencySafe::where('admin_id', $adminId)->first();
+    $bankAccount = BankAccount::where('admin_id', $adminId)->first();
 
-        foreach ($this->currencies as $code => $name) {
-            $safeBalance = $currencySafe ? ($currencySafe->{$code} ?? 0) : 0;
-            $bankBalance = $bankAccount ? ($bankAccount->{$code} ?? 0) : 0;
-            $total = $safeBalance + $bankBalance;
+    foreach ($this->currencies as $code => $name) {
 
-            $this->currencySafeBalance[$code] = $safeBalance;
-            $this->bankAccountBalance[$code] = $bankBalance;
-            $this->totalBalanceByCurrency[$code] = $total;
+        if ($isToday) {
+            // برای امروز همان موجودی واقعی
+            $safe = $currencySafe->{$code} ?? 0;
+            $bank = $bankAccount->{$code} ?? 0;
+        } else {
+            // برای روزهای قبل: جمع کل رسید - جمع کل برداشت تا آن روز
+            $safe = Journals::where('admin_id', $adminId)
+                ->where('currency', $code)
+                ->where('account_type', 'نقدی')
+                ->where('date', '<=', $this->toDate)
+                ->selectRaw('SUM(CASE WHEN type = "رسید" THEN amount ELSE 0 END) - SUM(CASE WHEN type = "برد" THEN amount ELSE 0 END) as balance')
+                ->value('balance') ?? 0;
+
+            $bank = Journals::where('admin_id', $adminId)
+                ->where('currency', $code)
+                ->where('account_type', 'بانکی')
+                ->where('date', '<=', $this->toDate)
+                ->selectRaw('SUM(CASE WHEN type = "رسید" THEN amount ELSE 0 END) - SUM(CASE WHEN type = "برد" THEN amount ELSE 0 END) as balance')
+                ->value('balance') ?? 0;
         }
+
+        $this->currencySafeBalance[$code] = $safe;
+        $this->bankAccountBalance[$code] = $bank;
+        $this->totalBalanceByCurrency[$code] = $safe + $bank;
     }
+}
+
 
     public function render()
     {

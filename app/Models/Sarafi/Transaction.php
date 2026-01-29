@@ -42,6 +42,8 @@ class Transaction extends Model
         'remittance_id',
         'changerdeal_id',
         'withdrawbank_id',
+        'external_transaction_id',
+
     ];
 
     /* =======================
@@ -94,6 +96,13 @@ class Transaction extends Model
     {
         return $this->belongsTo(ConversionInAccounts::class, 'conversion_in_account_id');
     }
+
+
+    public function externalTransaction()
+    {
+        return $this->belongsTo(ExternalTransactions::class, 'external_transaction_id');
+    }
+
 
     public function currencyInfo()
     {
@@ -205,28 +214,33 @@ class Transaction extends Model
        Journal Management
     ======================= */
 
-    private function getRealAccountBalance(string $currency, string $accountType, int $adminId): float
-    {
-        if ($accountType === 'نقدی') {
-            return CurrencySafe::where('admin_id', $adminId)->value($currency) ?? 0;
-        }
-
-        if ($accountType === 'بانکی') {
-            return BankAccount::where('admin_id', $adminId)->value($currency) ?? 0;
-        }
-
-        return 0;
+   private function getRealAccountBalance(string $currency, string $accountType, int $adminId): float
+{
+    if ($accountType === 'نقدی') {
+        return CurrencySafe::where('admin_id', $adminId)->value($currency) ?? 0;
     }
 
+    if ($accountType === 'بانکی') {
+        return BankAccount::where('admin_id', $adminId)->value($currency) ?? 0;
+    }
 
-   private function shouldAffectSafeBalance(): bool
+    return 0;
+}
+
+
+    private function shouldAffectSafeBalance(): bool
 {
-    // فقط حساب نقدی و بانکی
+    // ❌ معاملات تبدیل ارز (external_transaction)
+    if ($this->external_transaction_id) {
+        return false;
+    }
+
+    // فقط نقدی و بانکی
     if (!in_array($this->account_type, ['نقدی', 'بانکی'], true)) {
         return false;
     }
 
-    // برد بانکی + مشتری کارت صرافی → بی‌اثر
+    // برد بانکی + کارت صرافی
     if (
         $this->account_type === 'بانکی'
         && $this->type === 'برد'
@@ -236,11 +250,11 @@ class Transaction extends Model
         return false;
     }
 
-    // معاملات داخلی / تبدیل / انتقال → بی‌اثر
+    // انتقالات داخلی
     if (
-        $this->conversion_transfer_id
-        || $this->conversion_in_account_id
-        || $this->account_to_id
+        $this->conversion_transfer_id ||
+        $this->conversion_in_account_id ||
+        $this->account_to_id
     ) {
         return false;
     }
@@ -249,19 +263,17 @@ class Transaction extends Model
 }
 
 
- public function createJournal()
+public function createJournal()
 {
     $user    = Auth::guard('sarafi')->user();
     $adminId = $user->admin_id ?? $user->id;
 
-    /* ===============================
-       balance مشتری (قبل از این تراکنش)
-    =============================== */
+    /* ========= balance مشتری ========= */
     $balanceBefore = static::where('customer_id', $this->customer_id)
         ->where('currency', $this->currency)
         ->where('account_type', $this->account_type)
         ->where('admin_id', $adminId)
-        ->where('id', '<>', $this->id) // ✅ خیلی مهم
+        ->where('id', '<>', $this->id)
         ->sum(DB::raw("
             CASE
                 WHEN type = 'رسید' THEN amount
@@ -276,15 +288,14 @@ class Transaction extends Model
 
     $balanceAfter = $balanceBefore + $signedAmount;
 
-    /* ===============================
-       safe_balance صندوق
-    =============================== */
+    /* ========= safe_balance واقعی ========= */
     $safeBalance = $this->getRealAccountBalance(
         $this->currency,
         $this->account_type,
         $adminId
     );
 
+    // فقط معاملات واقعی صندوق
     if ($this->shouldAffectSafeBalance()) {
         $safeBalance += $signedAmount;
     }
@@ -299,20 +310,17 @@ class Transaction extends Model
         'account_type'   => $this->account_type,
         'amount'         => $this->amount,
         'balance'        => $balanceAfter,
-        'safe_balance'   => $safeBalance,
+        'safe_balance'   => $safeBalance, 
         'description'    => $this->description,
         'date'           => $this->date,
     ]);
 }
 
-   public function updateJournal()
+  public function updateJournal()
 {
     $journal = Journals::where('transaction_id', $this->id)->first();
     if (!$journal) return;
 
-    /* ===============================
-       balance مشتری (بدون خود تراکنش)
-    =============================== */
     $balanceBefore = static::where('customer_id', $this->customer_id)
         ->where('currency', $this->currency)
         ->where('account_type', $this->account_type)
@@ -332,9 +340,6 @@ class Transaction extends Model
 
     $balanceAfter = $balanceBefore + $signedAmount;
 
-    /* ===============================
-       safe_balance صندوق (واقعی)
-    =============================== */
     $safeBalance = $this->getRealAccountBalance(
         $this->currency,
         $this->account_type,
@@ -356,7 +361,6 @@ class Transaction extends Model
         'date'         => $this->date,
     ]);
 }
-
 
 
 
