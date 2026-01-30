@@ -1,0 +1,1014 @@
+[30-Jan-2026 05:04:37 UTC] PHP Fatal error:  Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.1.34. in /home/aqsasystem/public_html/vendor/composer/platform_check.php on line 28
+[30-Jan-2026 05:07:10 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 05:07:11 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:07:11 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 09:37:12 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 09:37:12 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php on line 445
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(803): Illuminate\Foundation\Exceptions\Handler->{closure:Illuminate\Foundation\Exceptions\Handler::shouldntReport():445}()
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(445): rescue(Object(Closure), false, false)
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(361): Illuminate\Foundation\Exceptions\Handler->shouldntReport(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#3 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#8 {main}
+[30-Jan-2026 05:18:22 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 05:18:23 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:18:23 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 09:48:24 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 09:48:24 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php on line 445
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(803): Illuminate\Foundation\Exceptions\Handler->{closure:Illuminate\Foundation\Exceptions\Handler::shouldntReport():445}()
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(445): rescue(Object(Closure), false, false)
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(361): Illuminate\Foundation\Exceptions\Handler->shouldntReport(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#3 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#8 {main}
+[30-Jan-2026 05:18:54 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 05:18:54 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:18:54 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 09:48:55 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 09:48:55 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php on line 445
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(803): Illuminate\Foundation\Exceptions\Handler->{closure:Illuminate\Foundation\Exceptions\Handler::shouldntReport():445}()
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(445): rescue(Object(Closure), false, false)
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(361): Illuminate\Foundation\Exceptions\Handler->shouldntReport(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#3 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#8 {main}
+[30-Jan-2026 05:19:25 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 05:19:25 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:19:25 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 09:49:26 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 09:49:26 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php on line 445
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(803): Illuminate\Foundation\Exceptions\Handler->{closure:Illuminate\Foundation\Exceptions\Handler::shouldntReport():445}()
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(445): rescue(Object(Closure), false, false)
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(361): Illuminate\Foundation\Exceptions\Handler->shouldntReport(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#3 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#8 {main}
+[30-Jan-2026 05:19:26 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 05:19:26 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:19:26 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 09:49:27 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 09:49:27 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php on line 445
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(803): Illuminate\Foundation\Exceptions\Handler->{closure:Illuminate\Foundation\Exceptions\Handler::shouldntReport():445}()
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(445): rescue(Object(Closure), false, false)
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(361): Illuminate\Foundation\Exceptions\Handler->shouldntReport(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#3 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#8 {main}
+[30-Jan-2026 05:19:27 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 05:19:27 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:19:27 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 09:49:28 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 09:49:28 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php on line 445
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(803): Illuminate\Foundation\Exceptions\Handler->{closure:Illuminate\Foundation\Exceptions\Handler::shouldntReport():445}()
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(445): rescue(Object(Closure), false, false)
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(361): Illuminate\Foundation\Exceptions\Handler->shouldntReport(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#3 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#8 {main}
+[30-Jan-2026 05:20:14 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 05:20:14 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:20:14 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 09:50:15 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 09:50:15 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php on line 445
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(803): Illuminate\Foundation\Exceptions\Handler->{closure:Illuminate\Foundation\Exceptions\Handler::shouldntReport():445}()
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(445): rescue(Object(Closure), false, false)
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(361): Illuminate\Foundation\Exceptions\Handler->shouldntReport(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#3 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#8 {main}
+[30-Jan-2026 05:20:16 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 05:20:16 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:20:16 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 09:50:17 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 09:50:17 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php on line 445
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(803): Illuminate\Foundation\Exceptions\Handler->{closure:Illuminate\Foundation\Exceptions\Handler::shouldntReport():445}()
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(445): rescue(Object(Closure), false, false)
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(361): Illuminate\Foundation\Exceptions\Handler->shouldntReport(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#3 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#8 {main}
+[30-Jan-2026 05:21:14 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 05:21:14 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:21:14 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 09:51:15 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 09:51:15 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php on line 445
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(803): Illuminate\Foundation\Exceptions\Handler->{closure:Illuminate\Foundation\Exceptions\Handler::shouldntReport():445}()
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(445): rescue(Object(Closure), false, false)
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(361): Illuminate\Foundation\Exceptions\Handler->shouldntReport(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#3 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#8 {main}
+[30-Jan-2026 05:21:16 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 05:21:16 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:21:16 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 09:51:16 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 09:51:16 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php on line 445
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(803): Illuminate\Foundation\Exceptions\Handler->{closure:Illuminate\Foundation\Exceptions\Handler::shouldntReport():445}()
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(445): rescue(Object(Closure), false, false)
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(361): Illuminate\Foundation\Exceptions\Handler->shouldntReport(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#3 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#8 {main}
+[30-Jan-2026 05:21:17 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 05:21:17 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:21:17 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 09:51:17 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 09:51:17 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php on line 445
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(803): Illuminate\Foundation\Exceptions\Handler->{closure:Illuminate\Foundation\Exceptions\Handler::shouldntReport():445}()
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(445): rescue(Object(Closure), false, false)
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(361): Illuminate\Foundation\Exceptions\Handler->shouldntReport(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#3 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#8 {main}
+[30-Jan-2026 05:21:52 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 05:21:53 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:21:53 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 09:51:53 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 09:51:53 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php on line 445
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(803): Illuminate\Foundation\Exceptions\Handler->{closure:Illuminate\Foundation\Exceptions\Handler::shouldntReport():445}()
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(445): rescue(Object(Closure), false, false)
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(361): Illuminate\Foundation\Exceptions\Handler->shouldntReport(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#3 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#8 {main}
+[30-Jan-2026 05:23:05 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 05:23:05 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:23:05 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 09:53:06 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 09:53:06 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php on line 445
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(803): Illuminate\Foundation\Exceptions\Handler->{closure:Illuminate\Foundation\Exceptions\Handler::shouldntReport():445}()
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(445): rescue(Object(Closure), false, false)
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(361): Illuminate\Foundation\Exceptions\Handler->shouldntReport(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#3 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#8 {main}
+[30-Jan-2026 05:36:41 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 05:36:41 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:36:41 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 10:06:42 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 10:06:42 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php on line 445
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(803): Illuminate\Foundation\Exceptions\Handler->{closure:Illuminate\Foundation\Exceptions\Handler::shouldntReport():445}()
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(445): rescue(Object(Closure), false, false)
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(361): Illuminate\Foundation\Exceptions\Handler->shouldntReport(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#3 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#8 {main}
+[30-Jan-2026 05:55:04 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 05:55:04 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:55:04 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 10:25:05 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 10:25:05 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php on line 445
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(803): Illuminate\Foundation\Exceptions\Handler->{closure:Illuminate\Foundation\Exceptions\Handler::shouldntReport():445}()
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(445): rescue(Object(Closure), false, false)
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(361): Illuminate\Foundation\Exceptions\Handler->shouldntReport(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#3 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#8 {main}
+[30-Jan-2026 05:57:47 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 05:57:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:57:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 10:27:48 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 10:27:48 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php on line 445
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(803): Illuminate\Foundation\Exceptions\Handler->{closure:Illuminate\Foundation\Exceptions\Handler::shouldntReport():445}()
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(445): rescue(Object(Closure), false, false)
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(361): Illuminate\Foundation\Exceptions\Handler->shouldntReport(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#3 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#8 {main}
+[30-Jan-2026 05:57:48 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 05:57:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:57:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 10:27:49 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 10:27:49 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php on line 445
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(803): Illuminate\Foundation\Exceptions\Handler->{closure:Illuminate\Foundation\Exceptions\Handler::shouldntReport():445}()
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(445): rescue(Object(Closure), false, false)
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(361): Illuminate\Foundation\Exceptions\Handler->shouldntReport(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#3 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#8 {main}
+[30-Jan-2026 05:58:08 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 05:58:08 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:58:08 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 10:28:10 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 10:28:10 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php on line 445
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(803): Illuminate\Foundation\Exceptions\Handler->{closure:Illuminate\Foundation\Exceptions\Handler::shouldntReport():445}()
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(445): rescue(Object(Closure), false, false)
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(361): Illuminate\Foundation\Exceptions\Handler->shouldntReport(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#3 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#8 {main}
+[30-Jan-2026 05:59:16 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 05:59:16 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:59:16 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 10:29:17 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 10:29:17 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php on line 445
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(803): Illuminate\Foundation\Exceptions\Handler->{closure:Illuminate\Foundation\Exceptions\Handler::shouldntReport():445}()
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(445): rescue(Object(Closure), false, false)
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(361): Illuminate\Foundation\Exceptions\Handler->shouldntReport(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#3 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#8 {main}
+[30-Jan-2026 05:59:17 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 05:59:18 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:59:18 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 10:29:18 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 10:29:18 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php on line 445
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(803): Illuminate\Foundation\Exceptions\Handler->{closure:Illuminate\Foundation\Exceptions\Handler::shouldntReport():445}()
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(445): rescue(Object(Closure), false, false)
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(361): Illuminate\Foundation\Exceptions\Handler->shouldntReport(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#3 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#8 {main}
+[30-Jan-2026 06:01:29 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 06:01:30 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:01:30 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 10:31:34 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 10:31:34 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php on line 445
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(803): Illuminate\Foundation\Exceptions\Handler->{closure:Illuminate\Foundation\Exceptions\Handler::shouldntReport():445}()
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(445): rescue(Object(Closure), false, false)
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(361): Illuminate\Foundation\Exceptions\Handler->shouldntReport(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#3 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#8 {main}
+[30-Jan-2026 06:02:34 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 06:05:23 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 06:05:23 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:05:23 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 10:35:24 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 10:35:24 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php on line 445
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(803): Illuminate\Foundation\Exceptions\Handler->{closure:Illuminate\Foundation\Exceptions\Handler::shouldntReport():445}()
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(445): rescue(Object(Closure), false, false)
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(361): Illuminate\Foundation\Exceptions\Handler->shouldntReport(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#3 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#8 {main}
+[30-Jan-2026 06:09:41 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 06:10:12 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:10:13 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 10:40:31 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 10:40:31 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Support/Facades/Auth.php on line 71
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/composer/ClassLoader.php(427): {closure:Composer\Autoload\ClassLoader::initializeIncludeClosure():575}('/home/aqsasyste...')
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(571): Composer\Autoload\ClassLoader->loadClass('Illuminate\\Supp...')
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(536): Illuminate\Foundation\Exceptions\Handler->context()
+#3 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(399): Illuminate\Foundation\Exceptions\Handler->buildExceptionContext(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(365): Illuminate\Foundation\Exceptions\Handler->reportThrowable(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#9 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#10 {main}
+[30-Jan-2026 06:38:51 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 06:38:51 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:38:51 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 11:08:53 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 11:08:53 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Support/Facades/Auth.php on line 71
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/composer/ClassLoader.php(427): {closure:Composer\Autoload\ClassLoader::initializeIncludeClosure():575}('/home/aqsasyste...')
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(571): Composer\Autoload\ClassLoader->loadClass('Illuminate\\Supp...')
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(536): Illuminate\Foundation\Exceptions\Handler->context()
+#3 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(399): Illuminate\Foundation\Exceptions\Handler->buildExceptionContext(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(365): Illuminate\Foundation\Exceptions\Handler->reportThrowable(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#9 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#10 {main}
+[30-Jan-2026 06:38:58 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 06:39:33 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 06:40:18 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 06:40:18 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:40:18 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:40:50 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 06:40:50 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:40:50 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:41:26 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 06:41:27 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:41:27 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:42:02 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 06:42:03 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:42:03 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:43:28 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 06:43:28 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:43:28 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 11:13:30 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 11:13:30 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Support/Facades/Auth.php on line 71
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/composer/ClassLoader.php(427): {closure:Composer\Autoload\ClassLoader::initializeIncludeClosure():575}('/home/aqsasyste...')
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(571): Composer\Autoload\ClassLoader->loadClass('Illuminate\\Supp...')
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(536): Illuminate\Foundation\Exceptions\Handler->context()
+#3 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(399): Illuminate\Foundation\Exceptions\Handler->buildExceptionContext(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(365): Illuminate\Foundation\Exceptions\Handler->reportThrowable(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#9 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#10 {main}
+[30-Jan-2026 06:43:43 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 06:43:43 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:43:43 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 11:13:45 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/RecursiveDirectoryIterator.php on line 72
+Stack trace:
+#0 [internal function]: Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator->current()
+#1 [internal function]: FilterIterator->next()
+#2 [internal function]: FilterIterator->next()
+#3 [internal function]: FilterIterator->next()
+#4 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(93): iterator_to_array(Object(Symfony\Component\Finder\Iterator\PathFilterIterator), true)
+#5 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#6 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#11 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#12 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(74): BladeUI\Icons\Factory->registerComponents()
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1194): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():72}(Object(Illuminate\Foundation\Application))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1137): Illuminate\Foundation\Application->fireAppCallbacks(Array)
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\Foundation\Application->boot()
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(342): Illuminate\Foundation\Bootstrap\BootProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(494): Illuminate\Foundation\Application->bootstrapWith(Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\Foundation\Console\Kernel->bootstrap()
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/aqsasystem/public_html/artisan(16): Illuminate\Foundation\Application->handleCommand(Object(Symfony\Component\Console\Input\ArgvInput))
+#21 {main}
+[30-Jan-2026 11:13:45 Asia/Kabul] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65536 bytes) in /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Support/Facades/Auth.php on line 71
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/composer/ClassLoader.php(427): {closure:Composer\Autoload\ClassLoader::initializeIncludeClosure():575}('/home/aqsasyste...')
+#1 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(571): Composer\Autoload\ClassLoader->loadClass('Illuminate\\Supp...')
+#2 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(536): Illuminate\Foundation\Exceptions\Handler->context()
+#3 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(399): Illuminate\Foundation\Exceptions\Handler->buildExceptionContext(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#4 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(365): Illuminate\Foundation\Exceptions\Handler->reportThrowable(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#5 /home/aqsasystem/public_html/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(46): Illuminate\Foundation\Exceptions\Handler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(186): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->report(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#7 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(234): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\ErrorHandler\Error\FatalError))
+#8 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(258): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#9 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->{closure:Illuminate\Foundation\Bootstrap\HandleExceptions::forwardsTo():257}()
+#10 {main}
+[30-Jan-2026 06:45:36 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0
+[30-Jan-2026 06:45:41 UTC] PHP Warning:  PHP Startup: session.gc_divisor must be greater than 0 in Unknown on line 0

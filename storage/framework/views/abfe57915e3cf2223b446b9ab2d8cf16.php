@@ -1,1 +1,0 @@
-<?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/Sarafi/layouts/header.blade.php ENDPATH**/ ?>

@@ -1,0 +1,735 @@
+[30-Jan-2026 05:06:37 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:06:37 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:06:55 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:06:55 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:06:56 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:06:56 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:08:25 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:08:25 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:08:31 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:08:31 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:09:02 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:09:02 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:09:30 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:09:30 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:10:03 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:10:03 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:10:05 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:10:05 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:10:32 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:10:32 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:10:38 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:10:38 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:10:38 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:10:38 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:10:39 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:10:39 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:10:42 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:10:42 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:10:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:10:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:10:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:10:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:10:46 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:10:46 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:11:02 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:11:02 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:11:05 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:11:05 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:11:08 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:11:08 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:11:26 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:11:26 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:11:38 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:11:38 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:12:04 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:12:04 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:12:21 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:12:21 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:12:49 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:12:49 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:12:53 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:12:53 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:13:34 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:13:34 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:13:59 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:13:59 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:14:18 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:14:18 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:16:13 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:16:13 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:17:36 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:17:36 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:19:03 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:19:03 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:20:23 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:20:23 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:20:24 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:20:24 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:23:55 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:23:55 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:23:55 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:23:55 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:23:57 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:23:57 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:23:58 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:23:58 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:24:19 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:24:19 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:24:25 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:24:25 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:25:46 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:25:46 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:30:38 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:30:38 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:31:12 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:31:12 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:31:19 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:31:19 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:31:53 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:31:53 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:33:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:33:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:35:13 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:35:13 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:35:13 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:35:13 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:35:58 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:35:58 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:36:00 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:36:00 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:36:56 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:36:56 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:37:49 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:37:49 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:38:41 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:38:41 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:39:22 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:39:22 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:40:19 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:40:19 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 05:40:25 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 05:40:25 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:03:26 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:03:26 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:04:02 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:04:02 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:04:08 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:04:08 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:05:52 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:05:52 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:06:22 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:06:22 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:06:53 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:06:53 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:06:54 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:06:54 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:07:14 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:07:14 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:07:25 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:07:25 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:07:55 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:07:55 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:11 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:11 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:20 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:20 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:20 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:20 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:20 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:20 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:20 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:20 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:20 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:20 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:20 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:20 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:20 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:20 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:21 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:21 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:22 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:22 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:23 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:23 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:24 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:24 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:25 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:25 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:26 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:26 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:28 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:28 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:28 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:28 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:29 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:29 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:29 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:29 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:29 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:29 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:30 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:30 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:30 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:30 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:30 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:30 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:31 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:31 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:32 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:32 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:32 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:32 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:32 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:32 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:32 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:32 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:32 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:32 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:32 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:32 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:33 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:33 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:33 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:33 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:34 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:34 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:35 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:35 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:35 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:35 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:35 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:35 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:35 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:35 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:35 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:35 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:35 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:35 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:35 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:35 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:36 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:36 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:36 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:36 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:36 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:36 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:36 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:36 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:36 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:36 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:36 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:36 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:37 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:37 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:37 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:37 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:37 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:37 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:37 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:37 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:37 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:37 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:38 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:38 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:38 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:38 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:38 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:38 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:39 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:39 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:39 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:39 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:39 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:39 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:40 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:40 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:41 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:41 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:41 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:41 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:41 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:41 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:41 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:41 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:41 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:41 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:41 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:41 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:41 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:41 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:42 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:42 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:42 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:42 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:42 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:42 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:42 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:42 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:42 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:42 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:42 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:42 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:42 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:42 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:43 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:43 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:43 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:43 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:43 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:43 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:43 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:43 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:43 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:43 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:43 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:43 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:43 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:43 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:43 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:43 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:43 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:43 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:45 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:46 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:46 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:46 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:46 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:46 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:46 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:46 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:46 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:46 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:46 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:46 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:46 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:46 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:46 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:46 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:46 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:47 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:49 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:49 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:49 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:49 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:49 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:49 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:49 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:49 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:49 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:49 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:50 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:50 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:50 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:50 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:50 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:50 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:50 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:50 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:50 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:50 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:50 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:50 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:51 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:51 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:51 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:51 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:08:52 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:08:52 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:18:56 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:18:56 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:18:59 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:18:59 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:19:41 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:19:41 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:28:41 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:28:41 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:28:53 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:28:53 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 10:59:20 Asia/Kabul] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php on line 51
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(51): SplFileInfo->getRealPath()
+#1 [internal function]: Symfony\Component\Finder\Iterator\SortableIterator::{closure:Symfony\Component\Finder\Iterator\SortableIterator::__construct():51}(Object(Symfony\Component\Finder\SplFileInfo), Object(Symfony\Component\Finder\SplFileInfo))
+#2 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(98): uasort(Array, Object(Closure))
+#3 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#4 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#7 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#8 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(66): BladeUI\Icons\Factory->registerComponents()
+#11 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(1622): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():65}(Object(Illuminate\View\Factory), Object(Illuminate\Foundation\Application))
+#12 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(1560): Illuminate\Container\Container->fireCallbackArray(Object(Illuminate\View\Factory), Array)
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(1546): Illuminate\Container\Container->fireAfterResolvingCallbacks('view', Object(Illuminate\View\Factory))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(951): Illuminate\Container\Container->fireResolvingCallbacks('view', Object(Illuminate\View\Factory))
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1078): Illuminate\Container\Container->resolve('view', Array, true)
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(864): Illuminate\Foundation\Application->resolve('view', Array)
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1058): Illuminate\Container\Container->make('view', Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(1809): Illuminate\Foundation\Application->make('view')
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(240): Illuminate\Container\Container->offsetGet('view')
+#20 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(211): Illuminate\Support\Facades\Facade::resolveFacadeInstance('view')
+#21 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(357): Illuminate\Support\Facades\Facade::getFacadeRoot()
+#22 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/RegisterErrorViewPaths.php(17): Illuminate\Support\Facades\Facade::__callStatic('replaceNamespac...', Array)
+#23 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(947): Illuminate\Foundation\Exceptions\RegisterErrorViewPaths->__invoke()
+#24 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(922): Illuminate\Foundation\Exceptions\Handler->registerErrorViewPaths()
+#25 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(847): Illuminate\Foundation\Exceptions\Handler->renderHttpException(Object(Symfony\Component\HttpKernel\Exception\HttpException))
+#26 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(738): Illuminate\Foundation\Exceptions\Handler->prepareResponse(Object(Illuminate\Http\Request), Object(Symfony\Component\HttpKernel\Exception\HttpException))
+#27 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(626): Illuminate\Foundation\Exceptions\Handler->renderExceptionResponse(Object(Illuminate\Http\Request), Object(Error))
+#28 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(51): Illuminate\Foundation\Exceptions\Handler->render(Object(Illuminate\Http\Request), Object(Error))
+#29 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(224): Illuminate\Routing\Pipeline->handleException(Object(Illuminate\Http\Request), Object(Error))
+#30 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(36): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#31 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse->handle(Object(Illuminate\Http\Request), Object(Closure))
+#32 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(74): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#33 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Cookie\Middleware\EncryptCookies->handle(Object(Illuminate\Http\Request), Object(Closure))
+#34 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#35 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+#36 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(800): Illuminate\Routing\Router->runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))
+#37 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(764): Illuminate\Routing\Router->runRoute(Object(Illuminate\Http\Request), Object(Illuminate\Routing\Route))
+#38 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(753): Illuminate\Routing\Router->dispatchToRoute(Object(Illuminate\Http\Request))
+#39 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate\Routing\Router->dispatch(Object(Illuminate\Http\Request))
+#40 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\Foundation\Http\Kernel->{closure:Illuminate\Foundation\Http\Kernel::dispatchToRouter():197}(Object(Illuminate\Http\Request))
+#41 /home/aqsasystem/public_html/vendor/livewire/livewire/src/Features/SupportDisablingBackButtonCache/DisableBackButtonCacheMiddleware.php(19): Illuminate\Pipeline\Pipeline->{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
+#42 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Livewire\Features\SupportDisablingBackButtonCache\DisableBackButtonCacheMiddleware->handle(Object(Illuminate\Http\Request), Object(Closure))
+#43 /home/aqsasystem/public_html/app/Http/Middleware/SetLocale.php(27): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#44 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): App\Http\Middleware\SetLocale->handle(Object(Illuminate\Http\Request), Object(Closure))
+#45 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(36): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#46 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse->handle(Object(Illuminate\Http\Request), Object(Closure))
+#47 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#48 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\Foundation\Http\Middleware\TransformsRequest->handle(Object(Illuminate\Http\Request), Object(Closure))
+#49 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull->handle(Object(Illuminate\Http\Request), Object(Closure))
+#50 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#51 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate\Foundation\Http\Middleware\TransformsRequest->handle(Object(Illuminate\Http\Request), Object(Closure))
+#52 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\TrimStrings->handle(Object(Illuminate\Http\Request), Object(Closure))
+#53 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#54 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\ValidatePostSize->handle(Object(Illuminate\Http\Request), Object(Closure))
+#55 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(109): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#56 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance->handle(Object(Illuminate\Http\Request), Object(Closure))
+#57 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(61): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#58 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\HandleCors->handle(Object(Illuminate\Http\Request), Object(Closure))
+#59 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(58): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#60 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\TrustProxies->handle(Object(Illuminate\Http\Request), Object(Closure))
+#61 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php(22): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#62 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks->handle(Object(Illuminate\Http\Request), Object(Closure))
+#63 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php(26): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#64 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\ValidatePathEncoding->handle(Object(Illuminate\Http\Request), Object(Closure))
+#65 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#66 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+#67 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter(Object(Illuminate\Http\Request))
+#68 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1220): Illuminate\Foundation\Http\Kernel->handle(Object(Illuminate\Http\Request))
+#69 /home/aqsasystem/public_html/public/index.php(20): Illuminate\Foundation\Application->handleRequest(Object(Illuminate\Http\Request))
+#70 {main}
+[30-Jan-2026 06:29:32 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:29:32 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:31:26 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:31:26 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:32:38 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:32:38 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:34:29 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:34:29 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:39:53 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:39:53 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:40:27 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:40:27 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:40:46 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:40:46 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:42:04 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:42:04 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:43:54 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:43:54 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:44:04 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:44:04 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:44:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:44:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:46:34 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:46:34 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:47:22 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:47:22 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:49:30 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:49:30 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:56:03 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:56:03 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:58:09 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:58:09 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:58:25 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:58:25 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:58:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:58:44 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:59:11 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:59:11 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 06:59:37 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 06:59:37 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 07:02:42 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 07:02:42 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 07:03:04 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 07:03:04 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 11:33:22 Asia/Kabul] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php on line 51
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(51): SplFileInfo->getRealPath()
+#1 [internal function]: Symfony\Component\Finder\Iterator\SortableIterator::{closure:Symfony\Component\Finder\Iterator\SortableIterator::__construct():51}(Object(Symfony\Component\Finder\SplFileInfo), Object(Symfony\Component\Finder\SplFileInfo))
+#2 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(98): uasort(Array, Object(Closure))
+#3 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#4 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#7 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#8 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(66): BladeUI\Icons\Factory->registerComponents()
+#11 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(1622): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():65}(Object(Illuminate\View\Factory), Object(Illuminate\Foundation\Application))
+#12 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(1560): Illuminate\Container\Container->fireCallbackArray(Object(Illuminate\View\Factory), Array)
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(1546): Illuminate\Container\Container->fireAfterResolvingCallbacks('view', Object(Illuminate\View\Factory))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(951): Illuminate\Container\Container->fireResolvingCallbacks('view', Object(Illuminate\View\Factory))
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1078): Illuminate\Container\Container->resolve('view', Array, true)
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(864): Illuminate\Foundation\Application->resolve('view', Array)
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1058): Illuminate\Container\Container->make('view', Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(1809): Illuminate\Foundation\Application->make('view')
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(240): Illuminate\Container\Container->offsetGet('view')
+#20 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(211): Illuminate\Support\Facades\Facade::resolveFacadeInstance('view')
+#21 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(357): Illuminate\Support\Facades\Facade::getFacadeRoot()
+#22 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/RegisterErrorViewPaths.php(17): Illuminate\Support\Facades\Facade::__callStatic('replaceNamespac...', Array)
+#23 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(947): Illuminate\Foundation\Exceptions\RegisterErrorViewPaths->__invoke()
+#24 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(922): Illuminate\Foundation\Exceptions\Handler->registerErrorViewPaths()
+#25 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(847): Illuminate\Foundation\Exceptions\Handler->renderHttpException(Object(Symfony\Component\HttpKernel\Exception\HttpException))
+#26 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(738): Illuminate\Foundation\Exceptions\Handler->prepareResponse(Object(Illuminate\Http\Request), Object(Symfony\Component\HttpKernel\Exception\HttpException))
+#27 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(626): Illuminate\Foundation\Exceptions\Handler->renderExceptionResponse(Object(Illuminate\Http\Request), Object(Error))
+#28 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(51): Illuminate\Foundation\Exceptions\Handler->render(Object(Illuminate\Http\Request), Object(Error))
+#29 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(224): Illuminate\Routing\Pipeline->handleException(Object(Illuminate\Http\Request), Object(Error))
+#30 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(36): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#31 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse->handle(Object(Illuminate\Http\Request), Object(Closure))
+#32 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(74): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#33 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Cookie\Middleware\EncryptCookies->handle(Object(Illuminate\Http\Request), Object(Closure))
+#34 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#35 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+#36 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(800): Illuminate\Routing\Router->runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))
+#37 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(764): Illuminate\Routing\Router->runRoute(Object(Illuminate\Http\Request), Object(Illuminate\Routing\Route))
+#38 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(753): Illuminate\Routing\Router->dispatchToRoute(Object(Illuminate\Http\Request))
+#39 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate\Routing\Router->dispatch(Object(Illuminate\Http\Request))
+#40 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\Foundation\Http\Kernel->{closure:Illuminate\Foundation\Http\Kernel::dispatchToRouter():197}(Object(Illuminate\Http\Request))
+#41 /home/aqsasystem/public_html/vendor/livewire/livewire/src/Features/SupportDisablingBackButtonCache/DisableBackButtonCacheMiddleware.php(19): Illuminate\Pipeline\Pipeline->{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
+#42 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Livewire\Features\SupportDisablingBackButtonCache\DisableBackButtonCacheMiddleware->handle(Object(Illuminate\Http\Request), Object(Closure))
+#43 /home/aqsasystem/public_html/app/Http/Middleware/SetLocale.php(27): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#44 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): App\Http\Middleware\SetLocale->handle(Object(Illuminate\Http\Request), Object(Closure))
+#45 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(36): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#46 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse->handle(Object(Illuminate\Http\Request), Object(Closure))
+#47 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#48 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\Foundation\Http\Middleware\TransformsRequest->handle(Object(Illuminate\Http\Request), Object(Closure))
+#49 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull->handle(Object(Illuminate\Http\Request), Object(Closure))
+#50 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#51 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate\Foundation\Http\Middleware\TransformsRequest->handle(Object(Illuminate\Http\Request), Object(Closure))
+#52 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\TrimStrings->handle(Object(Illuminate\Http\Request), Object(Closure))
+#53 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#54 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\ValidatePostSize->handle(Object(Illuminate\Http\Request), Object(Closure))
+#55 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(109): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#56 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance->handle(Object(Illuminate\Http\Request), Object(Closure))
+#57 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(61): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#58 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\HandleCors->handle(Object(Illuminate\Http\Request), Object(Closure))
+#59 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(58): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#60 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\TrustProxies->handle(Object(Illuminate\Http\Request), Object(Closure))
+#61 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php(22): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#62 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks->handle(Object(Illuminate\Http\Request), Object(Closure))
+#63 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php(26): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#64 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\ValidatePathEncoding->handle(Object(Illuminate\Http\Request), Object(Closure))
+#65 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#66 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+#67 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter(Object(Illuminate\Http\Request))
+#68 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1220): Illuminate\Foundation\Http\Kernel->handle(Object(Illuminate\Http\Request))
+#69 /home/aqsasystem/public_html/public/index.php(20): Illuminate\Foundation\Application->handleRequest(Object(Illuminate\Http\Request))
+#70 {main}
+[30-Jan-2026 07:04:30 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 07:04:30 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 07:05:49 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 07:05:49 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 07:09:22 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 07:09:22 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 07:13:52 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 07:13:52 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 07:15:49 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 07:15:49 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 07:19:08 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 07:19:08 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 11:49:44 Asia/Kabul] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php on line 51
+Stack trace:
+#0 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(51): SplFileInfo->getRealPath()
+#1 [internal function]: Symfony\Component\Finder\Iterator\SortableIterator::{closure:Symfony\Component\Finder\Iterator\SortableIterator::__construct():51}(Object(Symfony\Component\Finder\SplFileInfo), Object(Symfony\Component\Finder\SplFileInfo))
+#2 /home/aqsasystem/public_html/vendor/symfony/finder/Iterator/SortableIterator.php(98): uasort(Array, Object(Closure))
+#3 /home/aqsasystem/public_html/vendor/symfony/finder/Finder.php(674): Symfony\Component\Finder\Iterator\SortableIterator->getIterator()
+#4 [internal function]: Symfony\Component\Finder\Finder->getIterator()
+#5 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(587): iterator_to_array(Object(Symfony\Component\Finder\Finder), false)
+#6 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(602): Illuminate\Filesystem\Filesystem->files('/home/aqsasyste...', false, Array)
+#7 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(40): Illuminate\Filesystem\Filesystem->allFiles('/home/aqsasyste...')
+#8 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/IconsManifest.php(93): BladeUI\Icons\IconsManifest->build(Array)
+#9 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/Factory.php(105): BladeUI\Icons\IconsManifest->getManifest(Array)
+#10 /home/aqsasystem/public_html/vendor/blade-ui-kit/blade-icons/src/BladeIconsServiceProvider.php(66): BladeUI\Icons\Factory->registerComponents()
+#11 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(1622): BladeUI\Icons\BladeIconsServiceProvider->{closure:BladeUI\Icons\BladeIconsServiceProvider::registerFactory():65}(Object(Illuminate\View\Factory), Object(Illuminate\Foundation\Application))
+#12 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(1560): Illuminate\Container\Container->fireCallbackArray(Object(Illuminate\View\Factory), Array)
+#13 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(1546): Illuminate\Container\Container->fireAfterResolvingCallbacks('view', Object(Illuminate\View\Factory))
+#14 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(951): Illuminate\Container\Container->fireResolvingCallbacks('view', Object(Illuminate\View\Factory))
+#15 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1078): Illuminate\Container\Container->resolve('view', Array, true)
+#16 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(864): Illuminate\Foundation\Application->resolve('view', Array)
+#17 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1058): Illuminate\Container\Container->make('view', Array)
+#18 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Container/Container.php(1809): Illuminate\Foundation\Application->make('view')
+#19 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(240): Illuminate\Container\Container->offsetGet('view')
+#20 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(211): Illuminate\Support\Facades\Facade::resolveFacadeInstance('view')
+#21 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(357): Illuminate\Support\Facades\Facade::getFacadeRoot()
+#22 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/RegisterErrorViewPaths.php(17): Illuminate\Support\Facades\Facade::__callStatic('replaceNamespac...', Array)
+#23 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(947): Illuminate\Foundation\Exceptions\RegisterErrorViewPaths->__invoke()
+#24 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(922): Illuminate\Foundation\Exceptions\Handler->registerErrorViewPaths()
+#25 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(847): Illuminate\Foundation\Exceptions\Handler->renderHttpException(Object(Symfony\Component\HttpKernel\Exception\HttpException))
+#26 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(738): Illuminate\Foundation\Exceptions\Handler->prepareResponse(Object(Illuminate\Http\Request), Object(Symfony\Component\HttpKernel\Exception\HttpException))
+#27 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(626): Illuminate\Foundation\Exceptions\Handler->renderExceptionResponse(Object(Illuminate\Http\Request), Object(Error))
+#28 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Routing/Pipeline.php(51): Illuminate\Foundation\Exceptions\Handler->render(Object(Illuminate\Http\Request), Object(Error))
+#29 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(224): Illuminate\Routing\Pipeline->handleException(Object(Illuminate\Http\Request), Object(Error))
+#30 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(36): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#31 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse->handle(Object(Illuminate\Http\Request), Object(Closure))
+#32 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(74): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#33 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Cookie\Middleware\EncryptCookies->handle(Object(Illuminate\Http\Request), Object(Closure))
+#34 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#35 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+#36 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(800): Illuminate\Routing\Router->runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))
+#37 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(764): Illuminate\Routing\Router->runRoute(Object(Illuminate\Http\Request), Object(Illuminate\Routing\Route))
+#38 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(753): Illuminate\Routing\Router->dispatchToRoute(Object(Illuminate\Http\Request))
+#39 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate\Routing\Router->dispatch(Object(Illuminate\Http\Request))
+#40 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\Foundation\Http\Kernel->{closure:Illuminate\Foundation\Http\Kernel::dispatchToRouter():197}(Object(Illuminate\Http\Request))
+#41 /home/aqsasystem/public_html/vendor/livewire/livewire/src/Features/SupportDisablingBackButtonCache/DisableBackButtonCacheMiddleware.php(19): Illuminate\Pipeline\Pipeline->{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
+#42 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Livewire\Features\SupportDisablingBackButtonCache\DisableBackButtonCacheMiddleware->handle(Object(Illuminate\Http\Request), Object(Closure))
+#43 /home/aqsasystem/public_html/app/Http/Middleware/SetLocale.php(27): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#44 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): App\Http\Middleware\SetLocale->handle(Object(Illuminate\Http\Request), Object(Closure))
+#45 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(36): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#46 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse->handle(Object(Illuminate\Http\Request), Object(Closure))
+#47 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#48 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\Foundation\Http\Middleware\TransformsRequest->handle(Object(Illuminate\Http\Request), Object(Closure))
+#49 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull->handle(Object(Illuminate\Http\Request), Object(Closure))
+#50 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#51 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate\Foundation\Http\Middleware\TransformsRequest->handle(Object(Illuminate\Http\Request), Object(Closure))
+#52 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\TrimStrings->handle(Object(Illuminate\Http\Request), Object(Closure))
+#53 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#54 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\ValidatePostSize->handle(Object(Illuminate\Http\Request), Object(Closure))
+#55 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(109): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#56 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance->handle(Object(Illuminate\Http\Request), Object(Closure))
+#57 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(61): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#58 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\HandleCors->handle(Object(Illuminate\Http\Request), Object(Closure))
+#59 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(58): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#60 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\TrustProxies->handle(Object(Illuminate\Http\Request), Object(Closure))
+#61 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php(22): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#62 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks->handle(Object(Illuminate\Http\Request), Object(Closure))
+#63 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php(26): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#64 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\ValidatePathEncoding->handle(Object(Illuminate\Http\Request), Object(Closure))
+#65 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#66 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+#67 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter(Object(Illuminate\Http\Request))
+#68 /home/aqsasystem/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1220): Illuminate\Foundation\Http\Kernel->handle(Object(Illuminate\Http\Request))
+#69 /home/aqsasystem/public_html/public/index.php(20): Illuminate\Foundation\Application->handleRequest(Object(Illuminate\Http\Request))
+#70 {main}
+[30-Jan-2026 07:22:34 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 07:22:34 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 07:22:42 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 07:22:42 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 07:23:16 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 07:23:16 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 07:23:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 07:23:48 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 07:24:00 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 07:24:00 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 07:24:56 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 07:24:56 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 07:25:01 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 07:25:01 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 07:26:53 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 07:26:53 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[30-Jan-2026 07:26:56 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
+[30-Jan-2026 07:26:56 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
