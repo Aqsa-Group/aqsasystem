@@ -72,6 +72,10 @@ Route::get('/deposit-log/{id}/print', [DepositLogPrintController::class, 'genera
 
 
 Route::get('/accounting/{id}/print', [AccountingPrintController::class, 'generate'])->name('accounting.print');
+Route::get('/accounting/print/filtered', [AccountingPrintController::class, 'printFiltered'])->name('accounting.print.filtered');
+// در routes/web.php
+Route::get('/accounting/print/bulk/{ids}', [AccountingPrintController::class, 'printBulk'])->name('accounting.print.bulk');
+Route::get('/accounting/print/filtered', [AccountingPrintController::class, 'printFiltered'])->name('accounting.print.filtered');
 
 Route::get('/salary/print/{id}', [SalaryPrintController::class, 'generate'])->name('salary.print');
 Route::get('/loan/print/{id}', [printLoan::class, 'generate'])->name('loan.print');
