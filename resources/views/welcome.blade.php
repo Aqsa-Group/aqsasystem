@@ -187,7 +187,7 @@
                     <img src="{{ asset('assets/icon.jpg') }}" class="rounded-full" alt="">
                 </div>
                 <h2 class="text-4xl md:text-5xl font-bold mb-2 yekan">
-                    به <span class="logo-text ">اقصی گروپ</span> خوش آمدید
+                    به <span class="logo-text ">اقصی گروپ</span> خوش آمدید   test
                 </h2>
                 <p class="text-xl text-blue-200 yekan"> <span class="times">Aqsasystem</span> - پلتفرم جامع مدیریت کسب و
                     کار</p>

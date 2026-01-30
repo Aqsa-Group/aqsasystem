@@ -1,5 +1,5 @@
-@extends('Sarafi.layouts.sidebar')
+    @extends('Sarafi.layouts.sidebar')
 
-@section('content')
-@livewire('sarafi.account-to-account')
-@endsection
+    @section('content')
+    @livewire('sarafi.account-to-account')
+    @endsection
