@@ -1,5 +1,7 @@
-<?php $__env->startSection('content'); ?>
-<?php
+    
+
+    <?php $__env->startSection('content'); ?>
+    <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
 };
@@ -19,5 +21,5 @@ unset($__params);
 unset($__split);
 if (isset($__slots)) unset($__slots);
 ?>
-<?php $__env->stopSection(); ?>
+    <?php $__env->stopSection(); ?>
 <?php echo $__env->make('Sarafi.layouts.sidebar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/safiullah/Documents/GitHub/AqsaSystem/resources/views/Sarafi/components/account-to-account.blade.php ENDPATH**/ ?>
