@@ -255,7 +255,7 @@ class AccountingResource extends Resource
             Forms\Components\TextInput::make('past_degree')
                 ->label('درجه قبلی')
                 ->numeric()
-                ->reactive()
+                ->live(onBlur: true)
                 ->visible(fn($get) => $get('expanses_type') === 'پول برق')
                 ->afterStateUpdated(fn($state, callable $set, callable $get) => $updateCalculatedPrice($get, $set)),
 
@@ -477,77 +477,77 @@ class AccountingResource extends Resource
                     ->openUrlInNewTab(),
             ])
 
-       ->bulkActions([
-            Tables\Actions\DeleteBulkAction::make(),
-           
-            // چاپ انتخابی - فقط آی‌دی‌های انتخاب شده
-            Tables\Actions\BulkAction::make('printSelected')
-                ->label('چاپ انتخابی')
-                ->icon('heroicon-o-printer')
-                ->action(function ($records) {
-                    $ids = $records->pluck('id')->join(',');
-                    // ارسال به route مناسب برای bulk print
-                    return redirect()->route('accounting.print.bulk', ['ids' => $ids]);
-                })
-                ->requiresConfirmation()
-                ->color('primary'),
-                
-            // چاپ فیلتر شده - کل رکوردهای فیلتر شده
-            Tables\Actions\BulkAction::make('printFilteredBulk')
-                ->label('چاپ فیلتر شده')
-                ->icon('heroicon-o-printer')
-                ->action(function ($records, $livewire) {
-                    // گرفتن فیلترهای اعمال شده
-                    $filters = $livewire->tableFilters;
-                    
-                    // ساخت پارامترهای فیلتر
-                    $params = [];
-                    
-                    if (!empty($filters['market_id'])) {
-                        $params['market_id'] = $filters['market_id'];
-                    }
-                    
-                    if (!empty($filters['type'])) {
-                        $params['type'] = $filters['type'];
-                    }
-                    
-                    if (!empty($filters['shop_id'])) {
-                        $params['shop_id'] = $filters['shop_id'];
-                    }
-                    
-                    if (!empty($filters['booth_id'])) {
-                        $params['booth_id'] = $filters['booth_id'];
-                    }
-                    
-                    if (!empty($filters['expanses_type'])) {
-                        $params['expanses_type'] = $filters['expanses_type'];
-                    }
-                    
-                    if (!empty($filters['floor'])) {
-                        $params['floor'] = $filters['floor'];
-                    }
-                    
-                    // فیلتر تاریخ
-                    if (!empty($filters['paid_date']['from'])) {
-                        $params['paid_date_from'] = $filters['paid_date']['from'];
-                    }
-                    
-                    if (!empty($filters['paid_date']['until'])) {
-                        $params['paid_date_until'] = $filters['paid_date']['until'];
-                    }
-                    
-                    // هدایت به صفحه چاپ با پارامترهای فیلتر
-                    $url = route('accounting.print.filtered', $params);
-                    
-                    // باز کردن در تب جدید
-                    return redirect()->away($url);
-                })
-                ->requiresConfirmation()
-                ->modalHeading('چاپ فیلتر شده')
-                ->modalSubheading('آیا می‌خواهید تمام رکوردهای فیلتر شده چاپ شوند؟')
-                ->modalButton('بله، چاپ کن')
-                ->color('success'),
-        ]);
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make(),
+
+                // چاپ انتخابی - فقط آی‌دی‌های انتخاب شده
+                Tables\Actions\BulkAction::make('printSelected')
+                    ->label('چاپ انتخابی')
+                    ->icon('heroicon-o-printer')
+                    ->action(function ($records) {
+                        $ids = $records->pluck('id')->join(',');
+                        // ارسال به route مناسب برای bulk print
+                        return redirect()->route('accounting.print.bulk', ['ids' => $ids]);
+                    })
+                    ->requiresConfirmation()
+                    ->color('primary'),
+
+                // چاپ فیلتر شده - کل رکوردهای فیلتر شده
+                Tables\Actions\BulkAction::make('printFilteredBulk')
+                    ->label('چاپ فیلتر شده')
+                    ->icon('heroicon-o-printer')
+                    ->action(function ($records, $livewire) {
+                        // گرفتن فیلترهای اعمال شده
+                        $filters = $livewire->tableFilters;
+
+                        // ساخت پارامترهای فیلتر
+                        $params = [];
+
+                        if (!empty($filters['market_id'])) {
+                            $params['market_id'] = $filters['market_id'];
+                        }
+
+                        if (!empty($filters['type'])) {
+                            $params['type'] = $filters['type'];
+                        }
+
+                        if (!empty($filters['shop_id'])) {
+                            $params['shop_id'] = $filters['shop_id'];
+                        }
+
+                        if (!empty($filters['booth_id'])) {
+                            $params['booth_id'] = $filters['booth_id'];
+                        }
+
+                        if (!empty($filters['expanses_type'])) {
+                            $params['expanses_type'] = $filters['expanses_type'];
+                        }
+
+                        if (!empty($filters['floor'])) {
+                            $params['floor'] = $filters['floor'];
+                        }
+
+                        // فیلتر تاریخ
+                        if (!empty($filters['paid_date']['from'])) {
+                            $params['paid_date_from'] = $filters['paid_date']['from'];
+                        }
+
+                        if (!empty($filters['paid_date']['until'])) {
+                            $params['paid_date_until'] = $filters['paid_date']['until'];
+                        }
+
+                        // هدایت به صفحه چاپ با پارامترهای فیلتر
+                        $url = route('accounting.print.filtered', $params);
+
+                        // باز کردن در تب جدید
+                        return redirect()->away($url);
+                    })
+                    ->requiresConfirmation()
+                    ->modalHeading('چاپ فیلتر شده')
+                    ->modalSubheading('آیا می‌خواهید تمام رکوردهای فیلتر شده چاپ شوند؟')
+                    ->modalButton('بله، چاپ کن')
+                    ->color('success'),
+            ]);
     }
 
     public static function getPages(): array
