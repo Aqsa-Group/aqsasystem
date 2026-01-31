@@ -449,11 +449,7 @@
                                 <td>جمع کل بدهی</td>
                                 <td style="text-align:center;">{{ number_format($totalRemaining) }} افغانی</td>
                             </tr>
-                            <tr>
-                                <td>مبلغ پرداخت شده</td>
-                                <td style="text-align:center;">{{ number_format($totalPaid) }} افغانی</td>
-                            </tr>
-
+                       
 
                         </tbody>
                     </table>
@@ -607,10 +603,7 @@
                     <td>جمع کل بدهی</td>
                     <td style="text-align:center;">{{ number_format($totalRemaining) }} افغانی</td>
                 </tr>
-                <tr>
-                    <td>مبلغ پرداخت شده</td>
-                    <td style="text-align:center;">{{ number_format($totalPaid) }} افغانی</td>
-                </tr>
+             
 
             </tbody>
         </table>

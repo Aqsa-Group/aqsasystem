@@ -454,12 +454,7 @@
                                                 افغانی</td>
 
                                         </tr>
-                                        <tr>
-                                            <td>مبلغ پرداخت شده</td>
-                                            <td style="text-align:center;">{{ number_format($data['currentPaid']) }}
-                                                افغانی</td>
-
-                                        </tr>
+                                    
                                     </tbody>
                                 </table>
                             </td>
@@ -603,12 +598,7 @@
                                     افغانی</td>
 
                             </tr>
-                            <tr>
-                                <td>مبلغ پرداخت شده</td>
-                                <td style="text-align:center;">{{ number_format($data['currentPaid']) }}
-                                    افغانی</td>
-
-                            </tr>
+                           
                         </tbody>
                     </table>
                 </td>

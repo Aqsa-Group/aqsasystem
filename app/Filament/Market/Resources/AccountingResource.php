@@ -270,7 +270,7 @@ class AccountingResource extends Resource
                 ->label('قیمت هر کیلوات')
                 ->numeric()
                 ->dehydrated(true)
-                ->reactive()
+                ->lazy()    
                 ->visible(fn($get) => $get('expanses_type') === 'پول برق')
                 ->afterStateUpdated(fn($state, callable $set, callable $get) => $updateCalculatedPrice($get, $set)),
 
