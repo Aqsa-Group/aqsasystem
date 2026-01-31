@@ -751,7 +751,51 @@ class ExternalTransaction extends Component
                 $actualIrr = $sellAmount;
                 $differenceInIrr = $actualIrr - $expectedIrr;
                 $differenceInUsd = $differenceInIrr / $marketRate;
+            } elseif (
+                $this->transactionType === 'خرید' &&
+                $this->from_currency === 'afn' &&
+                $this->to_currency === 'irr'
+            ) {
+                // افغانی ثبت‌شده
+                $actualAfn = $buyAmount;
+
+                // افغانی واقعی برداشت‌شده از صندوق (نرخ بازار)
+                $marketAfn = floatval($this->withdraw_safe_amount);
+
+                if ($marketAfn <= 0) {
+                    Log::error('withdraw_safe_amount is invalid');
+                    return $this->getDefaultProfitLossResult();
+                }
+
+                // سود واقعی به افغانی
+                $profitAfn = $actualAfn - $marketAfn;
+
+                // گرفتن نرخ دلار
+                $user = Auth::guard('sarafi')->user();
+                $adminId = $user->admin_id ?? $user->id;
+
+                $usdRateRow = ProfitRate::where('admin_id', $adminId)
+                    ->where('source_currency', 'usd')
+                    ->latest('id')
+                    ->first();
+
+                $usdAfnRate = $usdRateRow?->afn_buy_cash;
+
+                if (!$usdAfnRate || $usdAfnRate <= 0) {
+                    Log::error('USD AFN rate not found');
+                    return $this->getDefaultProfitLossResult();
+                }
+
+                // تبدیل سود به دلار
+                $differenceInUsd = $profitAfn / $usdAfnRate;
+
+                Log::info('AFN → IRR FINAL:', [
+                    'profit_afn' => $profitAfn,
+                    'usd_rate'   => $usdAfnRate,
+                    'profit_usd' => $differenceInUsd,
+                ]);
             }
+
             // سایر حالات را می‌توانید اضافه کنید...
 
             Log::info('نتیجه:', ['difference_in_usd' => $differenceInUsd]);
@@ -1084,6 +1128,31 @@ class ExternalTransaction extends Component
         return $description;
     }
 
+    private function refundPreviousWithdrawAmount($conversion)
+    {
+        if (!$conversion || !$conversion->withdraw_safe_amount) {
+            return;
+        }
+
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        $currencySafe = CurrencySafe::where('admin_id', $adminId)->first();
+
+        if (!$currencySafe) return;
+
+        $currencyColumn = $conversion->from_currency;
+        $currencySafe->$currencyColumn += floatval($conversion->withdraw_safe_amount);
+        $currencySafe->save();
+
+        Log::info("💡 مبلغ قبلی برداشت به صندوق بازگردانده شد", [
+            'currency' => $currencyColumn,
+            'amount_refunded' => $conversion->withdraw_safe_amount,
+            'new_balance' => $currencySafe->$currencyColumn
+        ]);
+    }
+
+
     /**
      * ثبت تبدیل ارز
      */
@@ -1273,40 +1342,73 @@ class ExternalTransaction extends Component
                 'loss' => $profitLoss['loss']
             ]);
 
-            // به روزرسانی صندوق با مبلغ withdraw_safe_amount
-            if (!empty($this->withdraw_safe_amount) && floatval($this->withdraw_safe_amount) > 0) {
-                // پیدا کردن صندوق admin
-                $currencyColumn = $this->from_currency; // مثلا 'afn', 'usd', ...
-                $currencySafe = CurrencySafe::where('admin_id', $adminId)->first();
+       // در تابع submitConversion()، بخش به‌روزرسانی صندوق را به این شکل تغییر دهید:
 
-                if (!$currencySafe) {
-                    Log::warning("⚠️ صندوقی برای admin_id={$adminId} پیدا نشد.");
-                } else {
-                    if ($this->editingConversionId) {
-                        // حالت ویرایش: ابتدا موجودی قبلی تراکنش را برگردان
-                        $oldTransaction = Transaction::where('external_transaction_id', $conversionId)
-                            ->where('type', 'برد')
-                            ->first();
+// 🔹 دریافت یا ایجاد رکورد صندوق
+$currencySafe = CurrencySafe::firstOrCreate(
+    ['admin_id' => $adminId],
+    [
+        'afn' => 0,
+        'usd' => 0,
+        'irr' => 0,
+        'eur' => 0,
+        'pkr' => 0,
+        'aed' => 0,
+        'try' => 0,
+        'cny' => 0,
+        'gbp' => 0,
+        'jpy' => 0,
+        'sar' => 0,
+        'inr' => 0,
+    ]
+);
 
-                        if ($oldTransaction) {
-                            $currencySafe->$currencyColumn += $oldTransaction->amount;
-                            Log::info("🔄 بازگرداندن موجودی قبلی: {$oldTransaction->amount}");
-                        }
-                    }
+// 🔹 ستون ارز مورد نظر
+$currencyColumn = $this->from_currency;
 
-                    // کم کردن مقدار جدید (مبلغ برداشت از صندوق)
-                    $withdrawAmount = floatval($this->withdraw_safe_amount);
-                    $currencySafe->$currencyColumn -= $withdrawAmount;
-                    $currencySafe->save();
-
-                    Log::info("✅ موجودی صندوق برای admin_id={$adminId}, currency={$currencyColumn} به‌روزرسانی شد. مقدار جدید: {$currencySafe->$currencyColumn}");
-
-                    // اضافه کردن توضیح در description
-                    $this->description .= " (برداشت از صندوق: " . number_format($withdrawAmount, 2) . " " .
-                        $this->getCurrencyFaName($this->from_currency) . ")";
-                }
-            }
-
+// 🔹 اگر در حال ویرایش هستیم
+if ($this->editingConversionId) {
+    $previousConversion = ExternalTransactions::find($this->editingConversionId);
+    
+    if ($previousConversion && $previousConversion->withdraw_safe_amount !== null) {
+        // 1️⃣ مبلغ قبلی را به صندوق بازگردان
+        $previousAmount = floatval($previousConversion->withdraw_safe_amount);
+        $currencySafe->$currencyColumn += $previousAmount;
+        
+        Log::info("مبلغ قبلی به صندوق بازگردانده شد", [
+            'currency' => $currencyColumn,
+            'previous_amount' => $previousAmount,
+            'balance_after_refund' => $currencySafe->$currencyColumn
+        ]);
+    }
+    
+    // 2️⃣ مبلغ جدید را از صندوق کسر کن
+    if ($this->withdraw_safe_amount !== null) {
+        $newAmount = floatval($this->withdraw_safe_amount);
+        $currencySafe->$currencyColumn -= $newAmount;
+        
+        Log::info("مبلغ جدید از صندوق کسر شد", [
+            'currency' => $currencyColumn,
+            'new_amount' => $newAmount,
+            'balance_after_withdraw' => $currencySafe->$currencyColumn
+        ]);
+    }
+    
+    $currencySafe->save();
+} else {
+    // حالت ایجاد جدید
+    if ($this->withdraw_safe_amount !== null) {
+        $withdrawAmount = floatval($this->withdraw_safe_amount);
+        $currencySafe->$currencyColumn -= $withdrawAmount;
+        $currencySafe->save();
+        
+        Log::info("مبلغ جدید برای تراکنش جدید از صندوق کسر شد", [
+            'currency' => $currencyColumn,
+            'withdraw_amount' => $withdrawAmount,
+            'new_balance' => $currencySafe->$currencyColumn
+        ]);
+    }
+}
 
             if ($profitLoss['profit'] > 0 || $profitLoss['loss'] > 0) {
                 Log::info('📊 در حال ثبت سود/ضرر در جدول revenue...');
@@ -1406,7 +1508,10 @@ class ExternalTransaction extends Component
         $this->currency_rate = $conversion->currency_rate;
         $this->date = $conversion->transaction_date;
         $this->description = $conversion->description;
+        $this->selectedCustomer = $conversion->customer;
         $this->withdraw_safe_amount = $conversion->withdraw_safe_amount;
+    $this->market_buy_rate = $conversion->market_buy_rate;
+        $this->transactionType = $conversion->type;
 
 
         // ---------- مقادیر حساب (مهم) ----------
@@ -1445,6 +1550,7 @@ class ExternalTransaction extends Component
         $this->confirmDeleteId = $conversionId;
     }
 
+
     /**
      * حذف تبدیل ارز
      */
@@ -1462,13 +1568,16 @@ class ExternalTransaction extends Component
             $conversion = ExternalTransactions::find($this->confirmDeleteId);
 
             if ($conversion) {
-                // حذف تراکنش‌های مرتبط
+                // 1️⃣ برگرداندن مبلغ به صندوق اگر در زمان ثبت کسر شده بود
+                $this->refundToSafe($conversion);
+
+                // 2️⃣ حذف تراکنش‌های مرتبط
                 Transaction::where('external_transaction_id', $conversion->id)->delete();
 
-                // حذف سود/ضرر مرتبط
+                // 3️⃣ حذف سود/ضرر مرتبط
                 Revenue::where('external_transaction_id', $conversion->id)->delete();
 
-                // حذف تبدیل ارز
+                // 4️⃣ حذف تبدیل ارز
                 $conversion->delete();
 
                 DB::connection('sarafi')->commit();
@@ -1483,6 +1592,43 @@ class ExternalTransaction extends Component
         }
     }
 
+
+    /**
+     * بازگرداندن مبلغ به صندوق
+     */
+    private function refundToSafe($conversion)
+    {
+        try {
+            if (!empty($conversion->withdraw_safe_amount) && floatval($conversion->withdraw_safe_amount) > 0) {
+                $user = Auth::guard('sarafi')->user();
+                $adminId = $user->admin_id ?? $user->id;
+
+                $currencyColumn = $conversion->from_currency;
+                $currencySafe = CurrencySafe::where('admin_id', $adminId)->first();
+
+                if (!$currencySafe) {
+                    Log::warning("⚠️ صندوقی برای admin_id={$adminId} پیدا نشد.");
+                    return;
+                }
+
+                $withdrawAmount = floatval($conversion->withdraw_safe_amount);
+
+                // 🔄 اضافه کردن مبلغ به صندوق
+                $currencySafe->$currencyColumn += $withdrawAmount;
+                $currencySafe->save();
+
+                Log::info("✅ مبلغ به صندوق بازگردانده شد", [
+                    'admin_id' => $adminId,
+                    'currency' => $currencyColumn,
+                    'amount_added' => $withdrawAmount,
+                    'new_balance' => $currencySafe->$currencyColumn
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('❌ خطا در بازگرداندن مبلغ به صندوق: ' . $e->getMessage());
+            throw $e;
+        }
+    }
     /**
      * ریست فرم
      */

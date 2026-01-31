@@ -1,8 +1,8 @@
 <div>
     <div class="pl-10 pr-10 mb-5">
         <div class="flex flex-col space-y-3">
-            <h1 class="text-[24px] font-semibold text-black dark:text-white">تبدیل ارز در حساب مشتری</h1>
-            <h1 class="text-[#8C8C8C] dark:text-white text-[18px]">صفحه تبدیل ارز در حساب مشتری</h1>
+            <h1 class="text-[24px] font-semibold text-black dark:text-white">تبدیل ارز در حساب مشتری </h1>
+            <h1 class="text-[#8C8C8C] dark:text-white text-[18px]">صفحه تبدیل ارز در حساب مشتری بدون اضافه شدن مبلغ تبدیلی به حسابش</h1>
         </div>
     </div>
 
@@ -526,15 +526,7 @@
                         <span class="text-xl font-semibold inter">فورم تبدیل ارز در حساب</span>
                     </p>
 
-                    <button wire:click="toggleTransactionType" class="rounded-[8px] p-[10px] text-white vazir px-12 font-semibold transition-colors duration-500 ease-in-out
-                        {{ $transactionType === 'خرید' ? 'bg-[#184D6C] text-white'
-                : 'bg-white text-[#184D6C] border border-[#184D6C] hover:bg-[#184D6C]/10'  }}">
-                        {{ $transactionType === 'خرید' ? 'خرید' : 'فروش' }}
-                    </button>
-                    {{-- <button wire:click="toggleAccountType" class="rounded-[8px] p-[10px] text-white vazir px-12 font-semibold transition-colors duration-500 ease-in-out
-                        {{ $accountType === 'نقدی' ? 'bg-[#2563EB]' : 'bg-[#DD2424]' }}">
-                        {{ $accountType === 'نقدی' ? 'نقدی' : 'بانکی' }}
-                    </button> --}}
+               
 
                 </div>
 

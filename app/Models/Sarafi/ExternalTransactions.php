@@ -31,6 +31,7 @@ class ExternalTransactions extends Model
         'admin_id',
         'type',
         'withdraw_safe_amount',
+        'market_buy_rate'
            ];
 
     protected $casts = [
