@@ -262,7 +262,7 @@ class AccountingResource extends Resource
             Forms\Components\TextInput::make('current_degree')
                 ->label('درجه فعلی')
                 ->numeric()
-                ->reactive()
+                ->lazy()
                 ->visible(fn($get) => $get('expanses_type') === 'پول برق')
                 ->afterStateUpdated(fn($state, callable $set, callable $get) => $updateCalculatedPrice($get, $set)),
 
