@@ -442,6 +442,8 @@ public function finalizeInvoice(): void
                 'vazir' => ['R' => 'ScheherazadeNew-Regular.ttf'],
             ],
             'default_font' => 'vazir',
+            'tempDir' => storage_path('app/mpdf/tmp'),
+
         ]);
 
         $mpdf->SetDirectionality('rtl');

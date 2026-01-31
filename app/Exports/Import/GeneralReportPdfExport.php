@@ -72,6 +72,8 @@ class GeneralReportPdfExport
             'margin_footer' => 5,
             'autoScriptToLang' => true,
             'autoLangToFont' => true,
+            'tempDir' => storage_path('app/mpdf/tmp'),
+        
         ]);
     }
 
