@@ -25,7 +25,8 @@ class SignedImagePdfController extends Controller
             return back()->with('error', 'فایل تصویر تذکره یافت نشد.');
         }
 
-        $mpdf = new Mpdf([
+        $mpdf = new Mpdf(
+            [
             'mode' => 'utf-8',
             'format' => 'A4',
             'directionality' => 'rtl',

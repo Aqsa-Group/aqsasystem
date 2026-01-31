@@ -80,6 +80,7 @@ class ContractPrintController extends Controller
             'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
                 'amiri' => ['R' => 'amiri-regular.ttf'],
             ],
+            'tempDir' => storage_path('app/mpdf/tmp'),
             'default_font' => 'amiri',
         ]);
 

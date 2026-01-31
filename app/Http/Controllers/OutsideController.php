@@ -29,6 +29,8 @@ class OutsideController extends Controller
                 'amiri' => ['R' => 'IranNastaliq.ttf'],
             ],
             'default_font' => 'amiri',
+            'tempDir' => storage_path('app/mpdf/tmp'),
+
         ]);
     
         $mpdf->autoLangToFont = true;

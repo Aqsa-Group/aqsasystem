@@ -28,6 +28,7 @@ class WithdrawPrint extends Controller
             'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
                 'amiri' => ['R' => 'IranNastaliq.ttf'],
             ],
+            'tempDir' => storage_path('app/mpdf/tmp'),
             'default_font' => 'amiri',
         ]);
 

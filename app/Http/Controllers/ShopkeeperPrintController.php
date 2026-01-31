@@ -36,6 +36,7 @@ class ShopkeeperPrintController extends Controller
                     'R' => 'ScheherazadeNew-Medium.ttf',
                 ],
             ],
+            'tempDir' => storage_path('app/mpdf/tmp'),
             'default_font' => 'scheherazade',
             'mode' => 'utf-8',
             'format' => 'A4',
@@ -43,7 +44,8 @@ class ShopkeeperPrintController extends Controller
             'margin_bottom' => 15,
             'margin_left' => 15,
             'margin_right' => 15,
-        ]);
+        ]
+        );
 
         $mpdf->SetDirectionality('rtl');
         $mpdf->autoLangToFont = true;

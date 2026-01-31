@@ -30,6 +30,7 @@ class DepositLogPrintController extends Controller
             'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
                 'amiri' => ['R' => 'IranNastaliq.ttf'],  // یا فونت دلخواه خودت
             ],
+            'tempDir' => storage_path('app/mpdf/tmp'),
             'default_font' => 'amiri',
         ]);
 
