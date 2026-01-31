@@ -595,12 +595,9 @@ class ExternalTransaction extends Component
     /**
      * محاسبه و نمایش سود/ضرر در زمان واقعی
      */
-
-
-
     public function calculateRealTimeProfitLoss()
     {
-        $result = $this->calculateSimpleProfitUsd();
+        $result = $this->calculateProfitOrLoss();
 
         $this->dispatch('show-profit-loss', [
             'profit' => $result['profit'],
@@ -697,14 +694,15 @@ class ExternalTransaction extends Component
         return null;
     }
 
+
     /**
-     * محاسبه سود یا ضرر واقعی برای تبدیل ارز
+     * محاسبه سود یا ضرر واقعی برای تبدیل ارز - نسخه ساده شده
      */
     private function calculateProfitOrLoss()
     {
         try {
-            // بررسی داده‌های ضروری
             if (
+                !$this->buy_amount ||
                 !$this->sell_amount ||
                 !$this->currency_rate ||
                 !$this->market_buy_rate ||
@@ -714,138 +712,106 @@ class ExternalTransaction extends Component
                 return $this->getDefaultProfitLossResult();
             }
 
-            // تبدیل مقادیر ورودی به عدد
-            $sellAmount    = floatval(str_replace(',', '', $this->sell_amount));
-            $enteredRate   = floatval(str_replace(',', '', $this->currency_rate));
-            $marketRate    = floatval(str_replace(',', '', $this->market_buy_rate));
+            $buyAmount = floatval(str_replace(',', '', $this->buy_amount));
+            $sellAmount = floatval(str_replace(',', '', $this->sell_amount));
+            $enteredRate = floatval(str_replace(',', '', $this->currency_rate));
+            $marketRate = floatval(str_replace(',', '', $this->market_buy_rate));
 
-            // محاسبه مبلغ معامله و مبلغ بازار بر اساس نوع ارز
-            switch ("{$this->from_currency}_{$this->to_currency}") {
-                case 'afn_usd':
-                    $tradeAmount  = $sellAmount / $enteredRate; // AFN ÷ نرخ معامله = USD
-                    $marketAmount = $sellAmount / $marketRate;
-                    break;
-
-                case 'usd_afn':
-                    $tradeAmount  = $sellAmount * $enteredRate; // USD × نرخ معامله = AFN
-                    $marketAmount = $sellAmount * $marketRate;
-                    break;
-
-                case 'afn_irr':
-                    $tradeAmount  = ($sellAmount * $enteredRate) / 1000; // AFN ↔ IRR
-                    $marketAmount = ($sellAmount * $marketRate) / 1000;
-                    break;
-
-                case 'irr_afn':
-                    $tradeAmount  = ($sellAmount * 1000) / $enteredRate;
-                    $marketAmount = ($sellAmount * 1000) / $marketRate;
-                    break;
-
-                default:
-                    // سایر ارزها: ضرب یا تقسیم بر اساس منطق shouldUseDivision
-                    $tradeAmount  = $this->shouldUseDivision($this->from_currency, $this->to_currency)
-                        ? $sellAmount / $enteredRate
-                        : $sellAmount * $enteredRate;
-                    $marketAmount = $this->shouldUseDivision($this->from_currency, $this->to_currency)
-                        ? $sellAmount / $marketRate
-                        : $sellAmount * $marketRate;
-                    break;
-            }
-
-            // تفاوت معامله و بازار
-            $difference = $tradeAmount - $marketAmount;
-
-            // دریافت آخرین نرخ خرید دلار واقعی برای تبدیل به USD (در صورت نیاز)
-            $usdBuyRate = $this->getLatestUsdBuyRate();
-
-            if (!$usdBuyRate || $usdBuyRate == 0) {
-                $differenceInUsd = 0;
-            } else {
-                // اگر معامله AFN → USD یا USD → AFN است، اختلاف قبلاً به دلار یا AFN محاسبه شده است
-                if ($this->from_currency === 'afn' && $this->to_currency === 'usd') {
-                    // تقسیم بر نرخ واقعی USD (afn_buy_cash) نه گرفتن مستقیم اختلاف
-                    $usdBuyRate = $this->getLatestUsdBuyRate();
-                    $differenceInUsd = $usdBuyRate ? $difference / $usdBuyRate : 0;
-                } elseif ($this->from_currency === 'usd' && $this->to_currency === 'afn') {
-                    $differenceInUsd = $difference; // قبلا درست است
-                } else {
-                    $differenceInUsd = $difference / $usdBuyRate;
-                }
-            }
-
-            // بازگشت نتیجه با همه کلیدهای مورد نیاز
-            return [
-                'profit'          => $difference > 0 ? round($differenceInUsd, 4) : 0,
-                'loss'            => $difference < 0 ? round(abs($differenceInUsd), 4) : 0,
-                'difference'      => round($difference, 2),
-                'trade_amount'    => round($tradeAmount, 2),
-                'market_amount'   => round($marketAmount, 2),
-                'predefined_rate' => $enteredRate, // تضمین وجود کلید
-            ];
-        } catch (\Exception $e) {
-            Log::error('❌ خطا در محاسبه سود/ضرر: ' . $e->getMessage(), [
-                'sell_amount'     => $this->sell_amount,
-                'currency_rate'   => $this->currency_rate,
-                'market_buy_rate' => $this->market_buy_rate,
-                'from_currency'   => $this->from_currency,
-                'to_currency'     => $this->to_currency,
+            Log::info('محاسبه سود/ضرر:', [
+                'from' => $this->from_currency,
+                'to' => $this->to_currency,
+                'type' => $this->transactionType,
+                'buy' => $buyAmount,
+                'sell' => $sellAmount,
+                'rate' => $enteredRate,
+                'market' => $marketRate
             ]);
 
+            $differenceInUsd = 0;
+
+            // حالت 1: خرید دلار با تومان (مورد شما)
+            if ($this->transactionType === 'خرید' && $this->from_currency === 'usd' && $this->to_currency === 'irr') {
+                // ما دلار خریدیم، تومان دادیم
+                // سود = دلار دریافتی - (تومان پرداختی ÷ نرخ بازار)
+                $expectedUsd = $sellAmount / $marketRate;
+                $actualUsd = $buyAmount;
+                $differenceInUsd = $actualUsd - $expectedUsd;
+
+                Log::info('خرید USD با IRR:', [
+                    'expected_usd' => $expectedUsd,
+                    'actual_usd' => $actualUsd,
+                    'difference' => $differenceInUsd
+                ]);
+            }
+            // حالت 2: فروش دلار به تومان
+            elseif ($this->transactionType === 'فروش' && $this->from_currency === 'usd' && $this->to_currency === 'irr') {
+                // ما دلار فروختیم، تومان گرفتیم
+                // سود = تومان دریافتی - (دلار فروخته شده × نرخ بازار)
+                $expectedIrr = $buyAmount * $marketRate;
+                $actualIrr = $sellAmount;
+                $differenceInIrr = $actualIrr - $expectedIrr;
+                $differenceInUsd = $differenceInIrr / $marketRate;
+            }
+            // سایر حالات را می‌توانید اضافه کنید...
+
+            Log::info('نتیجه:', ['difference_in_usd' => $differenceInUsd]);
+
+            return [
+                'profit'          => $differenceInUsd > 0 ? round($differenceInUsd, 4) : 0,
+                'loss'            => $differenceInUsd < 0 ? round(abs($differenceInUsd), 4) : 0,
+                'difference'      => round($differenceInUsd, 2),
+                'trade_amount'    => round($buyAmount, 2),
+                'market_amount'   => round($sellAmount, 2),
+                'predefined_rate' => $enteredRate,
+            ];
+        } catch (\Exception $e) {
+            Log::error('خطا در محاسبه: ' . $e->getMessage());
             return $this->getDefaultProfitLossResult();
         }
     }
-
-
-
 
     /**
      * نسخه ساده سود/ضرر برای همه ارزها
      */
     private function calculateSimpleProfitUsd()
     {
-        if (!$this->sell_amount || !$this->currency_rate || !$this->market_buy_rate || !$this->from_currency || !$this->to_currency) {
-            return ['profit' => 0, 'loss' => 0];
-        }
-
-        $sellAmount = floatval(str_replace(',', '', $this->sell_amount));
-        $enteredRate = floatval(str_replace(',', '', $this->currency_rate));
-        $marketRate = floatval(str_replace(',', '', $this->market_buy_rate));
-
-        // محاسبه مبلغ معامله و بازار با توجه به ارزها
-        $tradeAmount = $this->convertAmountForProfit($sellAmount, $enteredRate, $this->from_currency, $this->to_currency);
-        $marketAmount = $this->convertAmountForProfit($sellAmount, $marketRate, $this->from_currency, $this->to_currency);
-
-        $difference = $tradeAmount - $marketAmount;
-
-        $usdBuyRate = $this->getLatestUsdBuyRate();
-        if (!$usdBuyRate || $usdBuyRate == 0) {
-            return ['profit' => 0, 'loss' => 0];
-        }
-
-        $differenceInUsd = abs($difference) / $usdBuyRate;
-
-        return [
-            'profit' => $difference > 0 ? round($differenceInUsd, 4) : 0,
-            'loss'   => $difference < 0 ? round($differenceInUsd, 4) : 0,
-            'difference' => round($difference, 2),
-            'trade_amount' => round($tradeAmount, 2),
-            'market_amount' => round($marketAmount, 2),
-        ];
+        // از همان تابع اصلی استفاده می‌کنیم
+        return $this->calculateProfitOrLoss();
     }
 
+    /**
+     * دریافت نرخ یورو به دلار
+     */
+    private function getEurToUsdRate()
+    {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        $usdRate = ProfitRate::where('source_currency', 'usd')
+            ->where('admin_id', $adminId)
+            ->latest()
+            ->first();
+
+        // اگر نرخ یورو به دلار وجود دارد، برگردان
+        if ($usdRate && isset($usdRate->eur_buy_cash)) {
+            return $usdRate->eur_buy_cash;
+        }
+
+        // پیش‌فرض
+        return 1.07; // نرخ تقریبی یورو به دلار
+    }
 
     private function getDefaultProfitLossResult()
     {
         return [
             'profit' => 0,
             'loss' => 0,
-            'predefined_rate' => 0,
-            'amount_with_predefined_rate' => 0,
-            'amount_with_entered_rate' => 0,
             'difference' => 0,
+            'trade_amount' => 0,
+            'market_amount' => 0,
+            'predefined_rate' => 0,
         ];
     }
-
 
     /**
      * تبدیل مبلغ برای محاسبه سود/ضرر جهانی
@@ -872,7 +838,6 @@ class ExternalTransaction extends Component
         $shouldDivide = $this->shouldUseDivision($fromCurrency, $toCurrency);
         return $shouldDivide ? $amount / $rate : $amount * $rate;
     }
-
 
     private function getLatestUsdBuyRate()
     {
@@ -1098,11 +1063,6 @@ class ExternalTransaction extends Component
 
         return $convertedAmount;
     }
-
-    /**
-     * نتیجه پیش‌فرض برای سود/ضرر
-     */
-
 
     /**
      * تولید توضیحات برای سود/ضرر
