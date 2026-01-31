@@ -10,17 +10,20 @@
             font-size: 12px;
             direction: rtl;
         }
+
         .header {
             text-align: center;
             margin-bottom: 10px;
             padding-bottom: 5px;
             color: #1e3a8a;
         }
+
         .main {
             width: 100%;
             border-collapse: collapse;
             font-size: 11px;
         }
+
         th {
             background: #d6d8db;
             font-weight: bold;
@@ -28,15 +31,18 @@
             padding: 4px;
             text-align: center;
         }
+
         td {
             border: 1px solid #000;
             padding: 6px;
             text-align: center;
         }
+
         .sign {
             text-align: center;
             margin-top: 50px;
         }
+
         .sign th {
             border: none;
             padding: 25px;
@@ -54,12 +60,12 @@
                 <td style="width: 40%; text-align: right; vertical-align: middle; color: #1e3a8a; border: none;">
                     <strong style="font-size: 20pt;">مجتمع تجارتی عادلیار</strong>
                 </td>
-    
+
                 <!-- Center: Logo -->
                 <td style="width: 33.33%; text-align: center; border: none;">
                     <img src="{{ public_path('assets/logo.png') }}" alt="لوگو" style="height: 80px; width: 90px;" />
                 </td>
-    
+
                 <!-- Left: English Title -->
                 <td style="width: 33.33%; text-align: left; vertical-align: middle; color: #1e3a8a; border: none;">
                     <div style="line-height: 1.2;">
@@ -70,34 +76,52 @@
             </tr>
         </table>
     </div>
-    
 
-    <table class="main">
-        <tr>
-          
-            <th>مارکت</th>
-            <th>شماره دوکان</th>
-            <th>دوکاندار</th>
-            <th>نوع هزینه</th>
-            <th>پرداخت قبلی</th>
-            <th>پرداخت جدید</th>
-            <th>باقی قبلی</th>
-            <th>باقی جدید</th>
-           
-        </tr>
-        <tr>
-       
-            <td>{{ $depositLog->market->name ?? '-' }}</td>
-            <td>{{ $depositLog->shop->number ?? '-' }}</td>
-            <td>{{ $depositLog->shopkeeper->fullname ?? '-' }}</td>
-            <td>{{ $depositLog->expanses_type }}</td>
-            <td>{{ number_format($depositLog->old_paid) }}</td>
-            <td>{{ number_format($depositLog->new_paid) }}</td>
-            <td>{{ number_format($depositLog->old_remained) }}</td>
-            <td>{{ number_format($depositLog->new_remained) }}</td>
-          
-        </tr>
-    </table>
+<table class="main">
+    <tr>
+        <th>مارکت</th>
+        <th>شماره دوکان</th>
+        <th>دوکاندار</th>
+        <th>نوع هزینه</th>
+        <th>پرداخت قبلی</th>
+        <th>پرداخت جدید</th>
+        <th>الباقی</th>
+        <th>بابت ماه</th>
+    </tr>
+
+    <tr>
+        <td>{{ $depositLog->market->name ?? '-' }}</td>
+        <td>{{ $depositLog->shop->number ?? '-' }}</td>
+        <td>{{ $depositLog->shopkeeper->fullname ?? '-' }}</td>
+        <td>{{ $depositLog->expanses_type ?? '-' }}</td>
+        <td>{{ number_format($depositLog->old_paid ?? 0) }}</td>
+        <td>{{ number_format($depositLog->new_paid ?? 0) }}</td>
+        <td>{{ number_format($depositLog->remaining ?? 0) }}</td>
+        <td>
+            @php
+                $jalali = \Morilog\Jalali\Jalalian::fromDateTime($depositLog->deposit->paid_date);
+
+                $months = [
+                    1 => 'حمل',
+                    2 => 'ثور',
+                    3 => 'جوزا',
+                    4 => 'سرطان',
+                    5 => 'اسد',
+                    6 => 'سنبله',
+                    7 => 'میزان',
+                    8 => 'عقرب',
+                    9 => 'قوس',
+                    10 => 'جدی',
+                    11 => 'دلو',
+                    12 => 'حوت',
+                ];
+            @endphp
+
+            {{ $months[$jalali->getMonth()] }} {{ $jalali->getYear() }}
+        </td>
+    </tr>
+</table>
+
 
 
 
