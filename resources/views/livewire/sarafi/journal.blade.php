@@ -686,7 +686,6 @@
                 <h3 class="text-xl font-bold mb-4 text-center dark:text-white ">موجودی صندوق نقدی و بانکی</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     @foreach($totalBalanceByCurrency as $currencyCode => $totalAmount)
-                    @if($totalAmount > 0)
                     @php
                     $safe = $currencySafeBalance[$currencyCode] ?? 0;
                     $bank = $bankAccountBalance[$currencyCode] ?? 0;
@@ -711,7 +710,7 @@
                             </div>
                         </div>
                     </div>
-                    @endif
+                
                     @endforeach
                 </div>
             </div>
