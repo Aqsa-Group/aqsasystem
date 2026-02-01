@@ -349,7 +349,8 @@
                         <th width="60">نوع حساب</th>
                         <th width="70">مقدار</th>
                         <th width="50">ارز</th>
-                        <th width="80">بیلانس فعلی</th>
+                        <th width="80">بیلانس فعلی مشتری</th>
+                        <th width="80">بیلانس فعلی صندوق</th>
                         <th width="120">توضیحات</th>
                         <th width="80">تاریخ</th>
                     </tr>
@@ -381,6 +382,8 @@
                             </td>
                             <td>{{ $transaction->currency_fa }}</td>
                             <td class="number-cell">{{ number_format($transaction->balance, 2) }}</td>
+                            <td class="number-cell">{{ number_format($transaction->safe_balance, 2) }}</td>
+
                             <td style="text-align: right; padding: 0 5px;">{{ $transaction->description }}</td>
                             <td>
                                 <div>{{ explode(' ', $transaction->date)[0] }}</div>
