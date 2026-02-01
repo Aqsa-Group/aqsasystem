@@ -17,7 +17,7 @@
             text-align: right;
         }
 
-      
+
 
         .page-break {
             page-break-before: always;
@@ -278,59 +278,58 @@
 
     <!-- نمایش فیلترها -->
     @if (isset($filters) &&
-            (isset($filters['transactionType']) ||
-                isset($filters['accountType']) ||
-                isset($filters['currency']) ||
-                isset($filters['fromDate']) ||
-                isset($filters['toDate'])))
-        <div class="filters-section keep-together">
-            <h3>فیلترهای اعمال شده</h3>
-            <div class="filter-row">
-                @if (isset($filters['transactionType']) && $filters['transactionType'])
-                    <div class="filter-item">
-                        <span class="filter-label">نوع تراکنش:</span>
-                        <span class="filter-value">{{ $filters['transactionType'] }}</span>
-                    </div>
-                @endif
-                @if (isset($filters['accountType']) && $filters['accountType'])
-                    <div class="filter-item">
-                        <span class="filter-label">نوع حساب:</span>
-                        <span class="filter-value">{{ $filters['accountType'] }}</span>
-                    </div>
-                @endif
-                @if (isset($filters['currency']) && $filters['currency'])
-                    <div class="filter-item">
-                        <span class="filter-label">ارز:</span>
-                        <span
-                            class="filter-value">{{ $currencies[$filters['currency']] ?? $filters['currency'] }}</span>
-                    </div>
-                @endif
-                @if (isset($filters['fromDate']) && $filters['fromDate'])
-                    <div class="filter-item">
-                        <span class="filter-label">از تاریخ:</span>
-                        <span
-                            class="filter-value">{{ \Morilog\Jalali\Jalalian::fromFormat('Y-m-d', $filters['fromDate'])->format('Y/m/d') }}</span>
-                    </div>
-                @endif
-                @if (isset($filters['toDate']) && $filters['toDate'])
-                    <div class="filter-item">
-                        <span class="filter-label">تا تاریخ:</span>
-                        <span
-                            class="filter-value">{{ \Morilog\Jalali\Jalalian::fromFormat('Y-m-d', $filters['toDate'])->format('Y/m/d') }}</span>
-                    </div>
-                @endif
+    (isset($filters['transactionType']) ||
+    isset($filters['accountType']) ||
+    isset($filters['currency']) ||
+    isset($filters['fromDate']) ||
+    isset($filters['toDate'])))
+    <div class="filters-section keep-together">
+        <h3>فیلترهای اعمال شده</h3>
+        <div class="filter-row">
+            @if (isset($filters['transactionType']) && $filters['transactionType'])
+            <div class="filter-item">
+                <span class="filter-label">نوع تراکنش:</span>
+                <span class="filter-value">{{ $filters['transactionType'] }}</span>
             </div>
+            @endif
+            @if (isset($filters['accountType']) && $filters['accountType'])
+            <div class="filter-item">
+                <span class="filter-label">نوع حساب:</span>
+                <span class="filter-value">{{ $filters['accountType'] }}</span>
+            </div>
+            @endif
+            @if (isset($filters['currency']) && $filters['currency'])
+            <div class="filter-item">
+                <span class="filter-label">ارز:</span>
+                <span class="filter-value">{{ $currencies[$filters['currency']] ?? $filters['currency'] }}</span>
+            </div>
+            @endif
+            @if (isset($filters['fromDate']) && $filters['fromDate'])
+            <div class="filter-item">
+                <span class="filter-label">از تاریخ:</span>
+                <span class="filter-value">{{ \Morilog\Jalali\Jalalian::fromFormat('Y-m-d',
+                    $filters['fromDate'])->format('Y/m/d') }}</span>
+            </div>
+            @endif
+            @if (isset($filters['toDate']) && $filters['toDate'])
+            <div class="filter-item">
+                <span class="filter-label">تا تاریخ:</span>
+                <span class="filter-value">{{ \Morilog\Jalali\Jalalian::fromFormat('Y-m-d',
+                    $filters['toDate'])->format('Y/m/d') }}</span>
+            </div>
+            @endif
         </div>
+    </div>
     @endif
 
     <!-- اطلاعات مشتری -->
     @if ($customerName)
-        <div class="customer-info keep-together">
-            <div class="customer-name">{{ $customerName }}</div>
-            @if ($customerAccount)
-                <div class="customer-account">شماره حساب: {{ $customerAccount }}</div>
-            @endif
-        </div>
+    <div class="customer-info keep-together">
+        <div class="customer-name">{{ $customerName }}</div>
+        @if ($customerAccount)
+        <div class="customer-account">شماره حساب: {{ $customerAccount }}</div>
+        @endif
+    </div>
     @endif
 
     <!-- جدول تراکنش‌ها -->
@@ -338,160 +337,170 @@
         <h3 style="margin: 10px 0 5px 0; font-size: 10pt; color: #2B65E5;">لیست تراکنش‌ها ({{ $transactions->count() }}
             رکورد)</h3>
         @if ($transactions->count() > 0)
-            <table class="transactions-table">
-                <thead>
-                    <tr>
-                        <th width="30">
-                            <span class="row-number">#</span>
-                        </th>
-                        <th width="100">نام حساب</th>
-                        <th width="60">نوع معامله</th>
-                        <th width="60">نوع حساب</th>
-                        <th width="70">مقدار</th>
-                        <th width="50">ارز</th>
-                        <th width="80">بیلانس فعلی مشتری</th>
-                        <th width="80">بیلانس فعلی صندوق</th>
-                        <th width="120">توضیحات</th>
-                        <th width="80">تاریخ</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($transactions as $index => $transaction)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>
-                                @if (empty($transaction->customer_id) && !empty($transaction->withdraw_id))
-                                    <div style="font-weight: bold;">برداشت</div>
-                                @elseif (empty($transaction->customer_id) && $transaction->is_sell_table == 1)
-                                    <div style="font-weight: bold;">معامله از صندوق</div>
-                                @else
-                                    <div style="font-weight: bold;">
-                                        {{ $transaction->customer->fullname ?? 'نامشخص' }}
-                                    </div>
-                                    @if (!empty($transaction->customer_id) && $transaction->customer)
-                                        <div style="font-size: 7pt; color: #666;">
-                                            {{ $transaction->customer->account_number ?? '' }}
-                                        </div>
-                                    @endif
-                                @endif
-                            </td>
-                            <td>{{ $transaction->type }}</td>
-                            <td>{{ $transaction->account_type }}</td>
-                            <td class="{{ $transaction->type == 'رسید' ? 'text-green' : 'text-red' }} number-cell">
-                                {{ number_format($transaction->amount, 2) }}
-                            </td>
-                            <td>{{ $transaction->currency_fa }}</td>
-                            <td class="number-cell">{{ number_format($transaction->balance, 2) }}</td>
-                            <td class="number-cell">{{ number_format($transaction->safe_balance, 2) }}</td>
+        <table class="transactions-table">
+            <thead>
+                <tr>
+                    <th width="30">
+                        <span class="row-number">#</span>
+                    </th>
+                    <th width="100">نام حساب</th>
+                    <th width="60">نوع معامله</th>
+                    <th width="60">نوع حساب</th>
+                    <th width="70">مقدار</th>
+                    <th width="50">ارز</th>
+                    <th width="80">بیلانس فعلی مشتری</th>
+                    <th width="80">بیلانس فعلی صندوق</th>
+                    <th width="120">توضیحات</th>
+                    <th width="80">تاریخ</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($transactions as $index => $transaction)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>
+                        @if (empty($transaction->customer_id) && !empty($transaction->withdraw_id))
+                        <div style="font-weight: bold;">برداشت</div>
+                        @elseif (empty($transaction->customer_id) && $transaction->is_sell_table == 1)
+                        <div style="font-weight: bold;">معامله از صندوق</div>
+                        @else
+                        <div style="font-weight: bold;">
+                            {{ $transaction->customer->fullname ?? 'نامشخص' }}
+                        </div>
+                        @if (!empty($transaction->customer_id) && $transaction->customer)
+                        <div style="font-size: 7pt; color: #666;">
+                            {{ $transaction->customer->account_number ?? '' }}
+                        </div>
+                        @endif
+                        @endif
+                    </td>
+                    <td>{{ $transaction->type }}</td>
+                    <td>{{ $transaction->account_type }}</td>
+                    <td class="{{ $transaction->type == 'رسید' ? 'text-green' : 'text-red' }} number-cell">
+                        {{ number_format($transaction->amount, 2) }}
+                    </td>
+                    <td>{{ $transaction->currency_fa }}</td>
+                    <td class="number-cell">{{ number_format($transaction->balance, 2) }}</td>
+                    <td class="number-cell">{{ number_format($transaction->safe_balance, 2) }}</td>
 
-                            <td style="text-align: right; padding: 0 5px;">{{ $transaction->description }}</td>
-                            <td>
-                                <div>{{ explode(' ', $transaction->date)[0] }}</div>
-                                <div style="font-size: 7pt; color: #666;">
-                                    {{ \Carbon\Carbon::parse($transaction->created_at)->format('H:i') }}</div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    <td style="text-align: right; padding: 0 5px;">{{ $transaction->description }}</td>
+                    <td>
+                        <div>{{ explode(' ', $transaction->date)[0] }}</div>
+                        <div style="font-size: 7pt; color: #666;">
+                            {{ \Carbon\Carbon::parse($transaction->created_at)->format('H:i') }}</div>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
         @else
-            <div style="text-align: center; padding: 15px; color: #666; font-style: italic; font-size: 9pt;">
-                هیچ تراکنشی برای نمایش وجود ندارد
-            </div>
+        <div style="text-align: center; padding: 15px; color: #666; font-style: italic; font-size: 9pt;">
+            هیچ تراکنشی برای نمایش وجود ندارد
+        </div>
         @endif
     </div>
 
     <!-- جدول خلاصه گزارشات -->
     @if ($summary->count() > 0)
-        <div class="keep-together">
-            <h3 style="margin: 15px 0 5px 0; font-size: 10pt; color: #2B65E5;">خلاصه گزارشات</h3>
-            <table class="summary-table">
-                <thead>
-                    <tr>
-                        <th width="30">#</th>
-                        <th width="70">ارز</th>
-                        <th width="80">رسید نقدی</th>
-                        <th width="80">برد نقدی</th>
-                        <th width="80">رسید بانکی</th>
-                        <th width="80">برد بانکی</th>
-                        <th width="85">بیلانس نقدی</th>
-                        <th width="85">بیلانس بانکی</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($summary as $index => $item)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td style="font-weight: bold;">{{ $item->currency_fa }}</td>
-                            <td class="text-green number-cell">{{ number_format($item->receipt_cash, 2) }}</td>
-                            <td class="text-red number-cell">{{ number_format($item->withdrawal_cash, 2) }}</td>
-                            <td class="text-green number-cell">{{ number_format($item->receipt_bank, 2) }}</td>
-                            <td class="text-red number-cell">{{ number_format($item->withdrawal_bank, 2) }}</td>
-                            <td class="{{ $item->balance_cash >= 0 ? 'text-green' : 'text-red' }} number-cell">
-                                {{ number_format($item->balance_cash, 2) }}
-                            </td>
-                            <td class="{{ $item->balance_bank >= 0 ? 'text-green' : 'text-red' }} number-cell">
-                                {{ number_format($item->balance_bank, 2) }}
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+    <div class="keep-together">
+        <h3 style="margin: 15px 0 5px 0; font-size: 10pt; color: #2B65E5;">خلاصه گزارشات</h3>
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th width="30">#</th>
+                    <th width="70">ارز</th>
+                    <th width="80">رسید نقدی</th>
+                    <th width="80">برد نقدی</th>
+                    <th width="80">رسید بانکی</th>
+                    <th width="80">برد بانکی</th>
+                    <th width="85">بیلانس نقدی</th>
+                    <th width="85">بیلانس بانکی</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($summary as $index => $item)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td style="font-weight: bold;">{{ $item->currency_fa }}</td>
+                    <td class="text-green number-cell">{{ number_format($item->receipt_cash, 2) }}</td>
+                    <td class="text-red number-cell">{{ number_format($item->withdrawal_cash, 2) }}</td>
+                    <td class="text-green number-cell">{{ number_format($item->receipt_bank, 2) }}</td>
+                    <td class="text-red number-cell">{{ number_format($item->withdrawal_bank, 2) }}</td>
+                    <td class="{{ $item->balance_cash >= 0 ? 'text-green' : 'text-red' }} number-cell">
+                        {{ number_format($item->balance_cash, 2) }}
+                    </td>
+                    <td class="{{ $item->balance_bank >= 0 ? 'text-green' : 'text-red' }} number-cell">
+                        {{ number_format($item->balance_bank, 2) }}
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
     @endif
 
-    <!-- موجودی صندوق نقدی و بانکی - با تیبل -->
     @if (isset($totalBalanceByCurrency) && count($totalBalanceByCurrency) > 0)
-        <div class="keep-together">
-            <h3 style="margin: 15px 0 5px 0; font-size: 10pt; color: #2B65E5; text-align: center;">موجودی صندوق نقدی و
-                بانکی</h3>
+    <div class="keep-together">
+        <h3 style="margin: 15px 0 5px 0; font-size: 10pt; color: #2B65E5; text-align: center;">
+            موجودی صندوق نقدی و بانکی
+        </h3>
 
-            @php
-                // ارزها را به دسته‌های 3 تایی تقسیم می‌کنیم
-                $currencyChunks = array_chunk($totalBalanceByCurrency, 3, true);
-            @endphp
+        @php
+        $filteredBalances = array_filter(
+        $totalBalanceByCurrency,
+        function ($totalAmount, $currencyCode) use ($currencySafeBalance, $bankAccountBalance) {
+        $safe = $currencySafeBalance[$currencyCode] ?? 0;
+        $bank = $bankAccountBalance[$currencyCode] ?? 0;
 
-            @foreach ($currencyChunks as $chunk)
-                <table class="balance-table" style="width: 100%; margin-bottom: 10px;">
-                    <thead>
-                        <tr>
-                            @foreach ($chunk as $currencyCode => $totalAmount)
-                                <th style="width: {{ 100 / count($chunk) }}%;">
-                                    {{ $currencies[$currencyCode] ?? $currencyCode }}</th>
-                            @endforeach
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            @foreach ($chunk as $currencyCode => $totalAmount)
-                                @php
-                                    $safe = $currencySafeBalance[$currencyCode] ?? 0;
-                                    $bank = $bankAccountBalance[$currencyCode] ?? 0;
-                                @endphp
-                                <td>
-                                    <div
-                                        style="font-weight: bold; font-size: 11pt; color: #059669; margin-bottom: 5px; direction: ltr;">
-                                        {{ number_format($totalAmount, 2) }}
-                                    </div>
-                                    <div style="font-size: 9pt;">
-                                        <div style="margin-bottom: 3px;">
-                                            <span>نقدی:</span>
-                                            <span
-                                                style="direction: ltr; float: left;">{{ number_format($safe, 2) }}</span>
-                                        </div>
-                                        <div>
-                                            <span>بانکی:</span>
-                                            <span
-                                                style="direction: ltr; float: left;">{{ number_format($bank, 2) }}</span>
-                                        </div>
-                                    </div>
-                                </td>
-                            @endforeach
-                        </tr>
-                    </tbody>
-                </table>
-            @endforeach
-        </div>
+        return ($totalAmount != 0) || ($safe != 0) || ($bank != 0);
+        },
+        ARRAY_FILTER_USE_BOTH
+        );
+
+        $currencyChunks = array_chunk($filteredBalances, 3, true);
+        @endphp
+
+        @foreach ($currencyChunks as $chunk)
+        <table class="balance-table" style="width: 100%; margin-bottom: 10px; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    @foreach ($chunk as $currencyCode => $totalAmount)
+                    <th
+                        style="width: {{ 100 / count($chunk) }}%; text-align: center; padding: 5px; border: 1px solid #ccc;">
+                        {{ $currencies[$currencyCode] ?? $currencyCode }}
+                    </th>
+                    @endforeach
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    @foreach ($chunk as $currencyCode => $totalAmount)
+                    @php
+                    $safe = $currencySafeBalance[$currencyCode] ?? 0;
+                    $bank = $bankAccountBalance[$currencyCode] ?? 0;
+                    @endphp
+                    <td style="padding: 5px; border: 1px solid #ccc; text-align: center;">
+                        <div
+                            style="font-weight: bold; font-size: 11pt; color: #059669; direction: ltr; margin-bottom: 5px;">
+                            {{ number_format($totalAmount, 2) }}
+                        </div>
+                        <div style="font-size: 9pt; direction: rtl;">
+                            <div style="margin-bottom: 3px;">
+                                <span>نقدی:</span>
+                                <span style="direction: ltr; float: left;">{{ number_format($safe, 2) }}</span>
+                            </div>
+                            <div>
+                                <span>بانکی:</span>
+                                <span style="direction: ltr; float: left;">{{ number_format($bank, 2) }}</span>
+                            </div>
+                        </div>
+                    </td>
+                    @endforeach
+                </tr>
+            </tbody>
+        </table>
+        @endforeach
+    </div>
     @endif
 
     <!-- سود و ضرر امروز -->
