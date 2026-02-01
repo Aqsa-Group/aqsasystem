@@ -43,6 +43,8 @@ class Transaction extends Model
         'changerdeal_id',
         'withdrawbank_id',
         'external_transaction_id',
+        'safe_deal_id'
+
 
     ];
 
@@ -75,6 +77,11 @@ class Transaction extends Model
     public function conversionTransfer()
     {
         return $this->belongsTo(ConversionTransfers::class, 'conversion_transfer_id');
+    }
+
+      public function Safedeals()
+    {
+        return $this->belongsTo(SafeDeal::class, 'safe_deal_id');
     }
 
     public function changerdeal()

@@ -7,16 +7,33 @@
     <title>پرنت پول برق - مجتمع تجارتی عادلیار</title>
 
     <style>
-        html,
+       
         html,
         body {
             height: 100%;
             background: #fff;
-            font-family: "Tahoma", "Arial", sans-serif;
+            font-family: 'Vazir', Tahoma, sans-serif !important;
             color: #111;
             direction: rtl;
             -webkit-print-color-adjust: exact;
         }
+
+            @font-face {
+            font-family: 'Vazir';
+            src: url('{{ asset("fonts/Vazir.ttf") }}') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+         @font-face {
+            font-family: 'Yekan';
+            src: url('{{ asset("fonts/Yekan-Regular.ttf") }}') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+
+
 
         /* ظرف صفحه */
         .page {
@@ -86,7 +103,7 @@
         .form-table td,
         .form-table th {
             border: 1px solid #777;
-            font-size: 14px;
+            font-size: 12px;
             padding: 0px 2px;
             text-align: start;
             width: 10px;
@@ -94,9 +111,9 @@
 
         .form-table th {
             background: #fafafa;
-            font-weight: 600;
+            font-weight: 400;
             color: #111;
-            font-size: 14px;
+            font-size: 12px;
         }
 
         /* جدول ردیف های مبلغ */
@@ -111,12 +128,12 @@
             border: 1px solid #999;
             padding: 8px;
             height: 36px;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .amount-rows td:first-child {
             font-weight: bold;
-            font-size: 14px;
+            font-size: 12px;
         }
 
 
@@ -124,7 +141,7 @@
             border: 1px solid #999;
             padding: 8px;
             height: 36px;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         /* بخش مسؤول برق + امضا + نوت (مخصوص ستون چپ) */
@@ -137,14 +154,14 @@
         }
 
         .left-sign-block .electrician {
-            font-weight: 700;
-            font-size: 14px;
+            font-weight: 500;
+            font-size: 12px;
             margin-bottom: 6px;
         }
 
         .left-sign-block .phone {
-            font-size: 14px;
-            font-weight: 800;
+            font-size: 12px;
+            font-weight: 600;
             margin-bottom: 14px;
             letter-spacing: 2px;
         }
@@ -277,6 +294,7 @@
             html,
             body {
                 width: 210mm;
+            font-family: 'Vazir', Tahoma, sans-serif !important;
                 height: 148.5mm;
                 margin: 0;
                 padding: 0;
@@ -328,7 +346,9 @@
                         <!-- متن‌ها وسط افقی -->
                         <div
                             style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align:center ;">
-                            <div class="title" style="font-size: 20px; font-weight: bold; display: inline-flexbox">
+         
+                            <div class="title" style="font-size: 20px; font-weight: bold; display: inline-flexbox ;   " >
+
                                 مجتمع تجارتی عادلیار
                             </div>
                             <div class="subtitle" style="font-size: 20px; margin-top: 5px; font-weight:bolder;">
@@ -436,17 +456,17 @@
                                     $accounting->rate_per_kwh ?? 0) }} افغانی</td>
                             </tr>
                             <tr>
-                                <td>مبلغ قابل تادیه (دوره فعلی)</td>
+                                <td>مبلغ قابل تادیه</td>
                                 <td style="text-align:center;">{{ number_format($accounting->price ??
                                     $accounting->payable_amount ?? 0) }} افغانی</td>
                             </tr>
                             <tr>
-                                <td>باقیات از دوره‌های قبل</td>
+                                <td>باقیات</td>
                                 <td style="text-align:center;">{{ number_format($totalRemaining - $accounting->price) }}
                                     افغانی</td>
                             </tr>
                             <tr>
-                                <td>جمع کل بدهی</td>
+                                <td>جمع کل </td>
                                 <td style="text-align:center;">{{ number_format($totalRemaining) }} افغانی</td>
                             </tr>
                        
@@ -590,17 +610,17 @@
                         $accounting->rate_per_kwh ?? 0) }} افغانی</td>
                 </tr>
                 <tr>
-                    <td>مبلغ قابل تادیه (دوره فعلی)</td>
+                    <td>مبلغ قابل تادیه</td>
                     <td style="text-align:center;">{{ number_format($accounting->price ??
                         $accounting->payable_amount ?? 0) }} افغانی</td>
                 </tr>
                 <tr>
-                    <td>باقیات از دوره‌های قبل</td>
+                    <td>از دوره‌های قبل</td>
                     <td style="text-align:center;">{{ number_format($totalRemaining - $accounting->price) }}
                         افغانی</td>
                 </tr>
                 <tr>
-                    <td>جمع کل بدهی</td>
+                    <td>جمع کل </td>
                     <td style="text-align:center;">{{ number_format($totalRemaining) }} افغانی</td>
                 </tr>
              

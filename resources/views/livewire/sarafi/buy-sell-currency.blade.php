@@ -468,7 +468,7 @@
                             @enderror
                         </div>
 
-                 <script>
+                        <script>
                             function persianDatePicker() {
     return {
         isOpen: false,

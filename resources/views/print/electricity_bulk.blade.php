@@ -5,13 +5,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>پرنت پول برق - مجتمع تجارتی عادلیار</title>
+    <link rel="preload" href="{{ asset('fonts/Vazir.ttf') }}" as="font" type="font/ttf" crossorigin>
+
 
     <style>
         html,
         body {
             height: auto;
             background: #fff;
-            font-family: "Tahoma", "Arial", sans-serif;
+            font-family: 'Vazir', Tahoma, sans-serif !important;
             color: #111;
             direction: rtl;
             -webkit-print-color-adjust: exact;
@@ -64,8 +66,8 @@
         }
 
         .col-header .title {
-            font-size: 20px;
-            font-weight: 300;
+            font-size: 16px;
+            font-weight: 200;
             color: #7c3a00;
         }
 
@@ -100,7 +102,7 @@
         .form-table td,
         .form-table th {
             border: 1px solid #777;
-            font-size: 14px;
+            font-size: 12px;
             padding: 0px 2px;
             text-align: start;
             width: 10px;
@@ -129,14 +131,14 @@
 
         .amount-rows td:first-child {
             font-weight: bold;
-            font-size: 14px;
+            font-size: 12px;
         }
 
         .amount-rows td {
             border: 1px solid #999;
             padding: 8px;
             height: 36px;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         /* بخش مسؤول برق + امضا + نوت (مخصوص ستون چپ) */
@@ -149,12 +151,12 @@
 
         .left-sign-block .electrician {
             font-weight: 700;
-            font-size: 14px;
+            font-size: 12px;
             margin-bottom: 6px;
         }
 
         .left-sign-block .phone {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 800;
             margin-bottom: 14px;
             letter-spacing: 2px;
@@ -164,7 +166,7 @@
             margin-top: 8px;
             border-top: 2px dashed #333;
             padding-top: 12px;
-            font-size: 14px;
+            font-size: 12px;
             height: 48px;
         }
 
@@ -179,81 +181,22 @@
             font-size: 13px;
         }
 
+
+
         @font-face {
-            font-family: "DimaYekan";
-            src: url("/fonts/Yekan-Regular.ttf") format("truetype");
+            font-family: 'Vazir';
+            src: url('{{ asset("fonts/Vazir.ttf") }}') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
 
-        @font-face {
-            font-family: "times";
-            src: url("/fonts/times.ttf") format("truetype");
-            font-weight: normal;
-            font-style: normal;
-        }
 
-        .yekan {
-            font-family: "DimaYekan", sans-serif;
-        }
 
         @font-face {
-            font-family: "vazir";
-            src: url("/fonts/Vazir.ttf") format("truetype");
+            font-family: 'ShabnamFD';
+            src: url('{{ public_path("fonts/Mj_Afrigha.ttf") }}') format('truetype');
             font-weight: normal;
             font-style: normal;
-        }
-
-        @font-face {
-            font-family: "shabnam";
-            src: url("/fonts/Shabnam-Medium.ttf") format("truetype");
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        .shabnam {
-            font-family: "shabnam", sans-serif;
-        }
-
-        @font-face {
-            font-family: "Mj_Afrigha";
-            src: url("/fonts/Mj_Afrigha.ttf") format("truetype");
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        .Mj_Afrigha {
-            font-family: "Mj_Afrigha", sans-serif;
-        }
-
-        @font-face {
-            font-family: "shabnam";
-            src: url("/fonts/Shabnam-FD.ttf") format("truetype");
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        .shabnam-fd {
-            font-family: "shabnam", sans-serif;
-        }
-
-        @font-face {
-            font-family: "Yekan-Regular";
-            src: url("/fonts/Yekan-Regular.ttf") format("truetype");
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        .amiri {
-            font-family: "Yekan-Regular", sans-serif;
-        }
-
-        .vazir {
-            font-family: "vazir", sans-serif;
-        }
-
-        .times {
-            font-family: "times", sans-serif;
         }
 
         /* ریسپانسیو برای صفحه نمایش */
@@ -272,6 +215,7 @@
 
             html,
             body {
+                font-family: 'Vazir', Tahoma, sans-serif !important;
                 width: 210mm;
                 margin: 0;
                 padding: 0;
@@ -438,23 +382,23 @@
                                                 $accounting->rate_per_kwh ?? 0) }} افغانی</td>
                                         </tr>
                                         <tr>
-                                            <td>مبلغ قابل تادیه (دوره فعلی)</td>
+                                            <td>مبلغ قابل تادیه</td>
                                             <td style="text-align:center;">{{ number_format($data['currentPrice']) }}
                                                 افغانی</td>
 
                                         </tr>
                                         <tr>
-                                            <td>باقیات از دوره‌های قبل</td>
+                                            <td>باقیات</td>
                                             <td style="text-align:center;">{{ number_format($data['previousRemaining'])
                                                 }} افغانی</td>
                                         </tr>
                                         <tr>
-                                            <td>جمع کل بدهی</td>
+                                            <td>جمع کل </td>
                                             <td style="text-align:center;">{{ number_format($data['totalRemaining']) }}
                                                 افغانی</td>
 
                                         </tr>
-                                    
+
                                     </tbody>
                                 </table>
                             </td>
@@ -582,23 +526,23 @@
                                     $accounting->rate_per_kwh ?? 0) }} افغانی</td>
                             </tr>
                             <tr>
-                                <td>مبلغ قابل تادیه (دوره فعلی)</td>
+                                <td>مبلغ قابل تادیه</td>
                                 <td style="text-align:center;">{{ number_format($data['currentPrice']) }}
                                     افغانی</td>
 
                             </tr>
                             <tr>
-                                <td>باقیات از دوره‌های قبل</td>
+                                <td>باقیات</td>
                                 <td style="text-align:center;">{{ number_format($data['previousRemaining'])
                                     }} افغانی</td>
                             </tr>
                             <tr>
-                                <td>جمع کل بدهی</td>
+                                <td>جمع کل</td>
                                 <td style="text-align:center;">{{ number_format($data['totalRemaining']) }}
                                     افغانی</td>
 
                             </tr>
-                           
+
                         </tbody>
                     </table>
                 </td>

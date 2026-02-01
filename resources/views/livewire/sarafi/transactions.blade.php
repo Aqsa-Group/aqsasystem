@@ -1,10 +1,10 @@
 <div>
-    <div class="container mx-auto px-0 ">
+    <div class="container mx-auto px-0 " >
         @if (session()->has('message'))
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
-            class="fixed top-0 left-0 right-0 w-full z-[9999] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-400  bg-[#2B65E5] vazir">
-            <div class="h-[80px] w-full flex justify-start items-center px-4">
-                <h2 class="text-white vazir text-[18px]">
+            class="fixed top-0 left-0 right-0 w-full z-[9999] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-400  bg-[#184D6C] vazir">
+            <div style="margin-right: 296px" class="h-[80px] w-full flex justify-start items-center px-4">
+                <h2 class="text-white vazir text-[18px] text-center align-middle jus">
                     {{ session('message') }}
                 </h2>
             </div>
@@ -130,19 +130,19 @@
             {{-- نمایش تمام کارت‌ها حتی با موجودی صفر --}}
             <div class="inline-block align-top ml-4 h-auto ">
                 <div class="
-    flex flex-col
-  h-[212px] w-[244px]
-    pr-5 pl-5 pt-3
-    rounded-[12px]
+                flex flex-col
+            h-[212px] w-[244px]
+                pr-5 pl-5 pt-3
+                rounded-[12px]
 
-    bg-[#184D6C]
-    backdrop-blur-lg
-    border border-white/30
+                bg-[#184D6C]
+                backdrop-blur-lg
+                border border-white/30
 
-    shadow-[0_4px_4px_rgba(24,77,108,0.25)]
+                shadow-[0_4px_4px_rgba(24,77,108,0.25)]
 
-    text-black
-  ">
+                text-black
+            ">
 
                     <h1 class="text-[24px] text-left vazir text-[#FFFFFF]">{{ $currencyName }}</h1>
 
@@ -257,10 +257,10 @@
                 <div class="flex flex-col h-[212px] w-[244px] pr-5 pl-5 pt-3 rounded-[12px]
                         dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-900
                          bg-[#184D6C]
-    backdrop-blur-lg
-    border border-white/30
+            backdrop-blur-lg
+            border border-white/30
 
-    shadow-[0_4px_4px_rgba(24,77,108,0.25)] text-black">
+            shadow-[0_4px_4px_rgba(24,77,108,0.25)] text-black">
 
                     @php
                     $latestProfitRate = \App\Models\Sarafi\ProfitRate::latest()->first();
@@ -522,7 +522,7 @@
                                 $watch('selectedId', () => updateDisplay())" class="relative w-full">
                                     <input list="customersList" x-model="searchValue" @change="handleSelect"
                                         placeholder="جستجو یا انتخاب حساب..."
-                                        class="w-full h-[60px] bg-[#EFF6F9] dark:bg-black dark:text-white dark:border-white placeholder:text-[#929897] dark:placeholder:text-white p-3 rounded-[12px] border   focus:ring-2 focus:ring-blue-500"
+                                        class="w-full h-[60px] bg-[#EFF6F9] dark:bg-black dark:text-white appearance-none dark:border-white placeholder:text-[#929897] dark:placeholder:text-white p-3 rounded-[12px] border   focus:ring-2 focus:ring-blue-500"
                                         autocomplete="off">
                                     <datalist id="customersList">
                                         @foreach ($customers as $customer)

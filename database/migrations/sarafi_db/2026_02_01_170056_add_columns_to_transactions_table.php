@@ -12,13 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('transactions', function (Blueprint $table) {
-             $table->foreignId('withdrawbank_id')->nullable()->after('admin_id');
-            
-            // اضافه کردن foreign key constraint
-            $table->foreign('withdrawbank_id')
-                  ->references('id')
-                  ->on('withdrawbank')
-                  ->onDelete('cascade');
+             $table->foreignId('safe_deal_id')
+                ->nullable()
+                ->constrained('safe_deals')
+                ->cascadeOnDelete();
+
         });
     }
 

@@ -64,17 +64,18 @@ class CashExchange extends Model
 
         DB::transaction(function () use ($model, $user, $adminId, $accountType) {
 
-            // موجودی فعلی صندوق (فقط خواندن)
+            // موجودی قبل از معامله
             $fromBefore = (float) CurrencySafe::where('admin_id', $adminId)
                 ->value($model->from_currency);
 
             $toBefore = (float) CurrencySafe::where('admin_id', $adminId)
                 ->value($model->to_currency);
 
-            // مانده بعد از معامله (صرفاً برای ژورنال)
+            // مانده بعد از معامله (برای ژورنال)
             $fromAfter = $fromBefore - $model->amount;
             $toAfter   = $toBefore + $model->eq_amount;
 
+            // ---------- توضیحات ----------
             $withdrawDescription =
                 'تبدیل ارز نقدی: '
                 . self::currencyFa($model->from_currency)
@@ -95,7 +96,11 @@ class CashExchange extends Model
                 . ' | نرخ: '
                 . number_format($model->exchange_rate, 6);
 
-            // ---------- برد ----------
+            // ---------- محاسبه safe_balance ----------
+            $fromSafeBalance = $fromBefore - $model->amount;
+            $toSafeBalance   = $toBefore + $model->eq_amount;
+
+            // ---------- ژورنال برداشت ----------
             Journals::create([
                 'customer_id'   => null,
                 'user_id'       => $user->id,
@@ -105,13 +110,14 @@ class CashExchange extends Model
                 'account_type'  => $accountType,
                 'amount'        => $model->amount,
                 'balance'       => $fromAfter,
+                'safe_balance'  => $fromSafeBalance,
                 'description'   => $withdrawDescription,
                 'date'          => $model->date,
                 'is_sell_table' => 1,
                 'buysell_id'    => $model->id,
             ]);
 
-            // ---------- رسید ----------
+            // ---------- ژورنال دریافت ----------
             Journals::create([
                 'customer_id'   => null,
                 'user_id'       => $user->id,
@@ -121,6 +127,7 @@ class CashExchange extends Model
                 'account_type'  => $accountType,
                 'amount'        => $model->eq_amount,
                 'balance'       => $toAfter,
+                'safe_balance'  => $toSafeBalance,
                 'description'   => $receiveDescription,
                 'date'          => $model->date,
                 'is_sell_table' => 1,
@@ -128,6 +135,7 @@ class CashExchange extends Model
             ]);
         });
     }
+
 
     /* ================= HELPERS ================= */
 

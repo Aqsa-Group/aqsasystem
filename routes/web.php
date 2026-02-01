@@ -465,6 +465,17 @@ Route::get('/sarafi/external', function () {
 })->name('sarafi.external');
 
 
+Route::get('/sarafi/exchange', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.safe_deals');
+})->name('sarafi.safe_deals');
+
+
+
+
+
 
 
 
