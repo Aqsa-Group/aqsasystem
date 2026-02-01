@@ -205,7 +205,7 @@ class AccountingResource extends Resource
                         $set('price', $get('expanses_type') === 'کرایه' ? $shop->price : $get('price'));
                         $set('meter_serial', $shop->metar_serial);
 
-                        $last = Deposit::where('shop_id', $shop->id)
+                        $last = Accounting::where('shop_id', $shop->id)
                             ->where('expanses_type', 'پول برق')
                             ->latest()
                             ->first();
@@ -255,14 +255,14 @@ class AccountingResource extends Resource
             Forms\Components\TextInput::make('past_degree')
                 ->label('درجه قبلی')
                 ->numeric()
-                ->live(onBlur: true)
+                ->reactive()
                 ->visible(fn($get) => $get('expanses_type') === 'پول برق')
                 ->afterStateUpdated(fn($state, callable $set, callable $get) => $updateCalculatedPrice($get, $set)),
 
             Forms\Components\TextInput::make('current_degree')
                 ->label('درجه فعلی')
                 ->numeric()
-                ->lazy()
+                ->reactive()
                 ->visible(fn($get) => $get('expanses_type') === 'پول برق')
                 ->afterStateUpdated(fn($state, callable $set, callable $get) => $updateCalculatedPrice($get, $set)),
 
@@ -270,7 +270,7 @@ class AccountingResource extends Resource
                 ->label('قیمت هر کیلوات')
                 ->numeric()
                 ->dehydrated(true)
-                ->lazy()    
+                ->debounce(1000)
                 ->visible(fn($get) => $get('expanses_type') === 'پول برق')
                 ->afterStateUpdated(fn($state, callable $set, callable $get) => $updateCalculatedPrice($get, $set)),
 
@@ -278,7 +278,7 @@ class AccountingResource extends Resource
                 ->label('مبلغ')
                 ->numeric()
                 ->required()
-                ->lazy()
+                ->reactive()
                 ->afterStateUpdated(function ($state, callable $set, callable $get) use ($calculateDates, $updateCalculatedPrice) {
                     $calculateDates($get, $set);
                     $updateCalculatedPrice($get, $set);
