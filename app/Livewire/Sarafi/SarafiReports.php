@@ -333,7 +333,8 @@ private function formatBalanceDisplay($balances)
                 ],
             ],
             'default_font' => 'vazir',
-            'tempDir' => storage_path('temp/mpdf'),
+            'tempDir' => storage_path('app/mpdf/tmp'),
+
         ]);
 
         // CSS استایل برای PDF

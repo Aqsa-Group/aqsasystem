@@ -808,6 +808,8 @@ class TransactionsReports extends Component
             'tempDir' => storage_path('app/mpdf/tmp'),
             'autoScriptToLang' => true,
             'autoLangToFont' => true,
+            'tempDir' => storage_path('app/mpdf/tmp'),
+
         ]);
     }
 

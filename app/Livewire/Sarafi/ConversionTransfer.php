@@ -1562,6 +1562,8 @@ private function convertTransferToUsd($amount, $currency)
                     ],
                 ],
                 'default_font' => 'Shabnam',
+            'tempDir' => storage_path('app/mpdf/tmp'),
+
             ]);
 
             $mpdf->SetAutoPageBreak(false);

@@ -271,6 +271,8 @@ class WithdrawReports extends Component
         'autoScriptToLang' => true,
         'autoLangToFont' => true,
         'autoArabic' => true,
+            'tempDir' => storage_path('app/mpdf/tmp'),
+
     ]);
 
    

@@ -535,6 +535,8 @@ class AccountReports extends Component
             'margin_left'      => 10,
             'margin_right'     => 10,
             'default_font'     => 'Shabnam',
+            'tempDir' => storage_path('app/mpdf/tmp'),
+
         ]);
 
         // رندر Blade
