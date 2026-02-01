@@ -728,6 +728,8 @@ class Transactions extends Component
                 ],
             ],
             'default_font' => 'Shabnam',
+            'tempDir' => storage_path('app/mpdf/tmp'),
+
         ]);
 
         $mpdf->SetAutoPageBreak(false);

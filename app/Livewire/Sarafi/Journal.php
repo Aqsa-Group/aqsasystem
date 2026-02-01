@@ -208,6 +208,8 @@ public function calculateBalances()
             'autoScriptToLang' => true,
             'autoLangToFont' => true,
             'autoArabic' => true,
+            'tempDir' => storage_path('app/mpdf/tmp'),
+
         ]);
 
 
