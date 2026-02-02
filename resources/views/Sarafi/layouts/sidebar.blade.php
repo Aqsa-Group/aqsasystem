@@ -2537,6 +2537,35 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
 
                                 عواید معاملات
                             </a>
+
+
+                               {{-- عواید معاملات --}}
+                            <a href="{{ route('sarafi.safe_deal_reports') }}"
+                                class="nav-link flex items-center gap-2 py-2 px-3 rounded-md text-sm transition vazir"
+                                @click="setActive('view-revenue', 'reports')"
+                                :class="active === 'view-revenue' ? 'bg-[#FFFFFF] text-[#184D6C]' : 'text-white dark:text-white hover:bg-gray-600  dark:hover:bg-gray-800'">
+
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6.87988 18.1501V16.0801" stroke="#292D32" stroke-width="1.5"
+                                        stroke-linecap="round" />
+                                    <path d="M12 18.15V14.01" stroke="currentColor" stroke-width="1.5"
+                                        stroke-linecap="round" />
+                                    <path d="M17.1201 18.1499V11.9299" stroke="currentColor" stroke-width="1.5"
+                                        stroke-linecap="round" />
+                                    <path
+                                        d="M17.1199 5.8501L16.6599 6.3901C14.1099 9.3701 10.6899 11.4801 6.87988 12.4301"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M14.1899 5.8501H17.1199V8.7701" stroke="currentColor" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path
+                                        d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+
+                                 عواید تبادله بین صندوق ها
+                            </a>
                             @endif
                         </div>
 

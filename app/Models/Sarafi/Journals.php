@@ -52,6 +52,7 @@ class Journals extends Model
         'date',
         'is_sell_table',
         'safe_balance',
+        'safe_deal_id'
 
     ];
 
@@ -131,7 +132,14 @@ class Journals extends Model
       public function withdraw()
     {
         return $this->belongsTo(Withdraws::class);
+    }   
+
+
+      public function safe_deal()
+    {
+        return $this->belongsTo(SafeDealsRevenue::class ,'safe_deal_id');
     }
+
 
 
     /* =======================

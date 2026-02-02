@@ -477,6 +477,16 @@ Route::get('/sarafi/exchange', function () {
 
 
 
+Route::get('/sarafi/safes_reports', function () {
+    if (!Auth::guard('sarafi')->check()) {
+        return redirect()->route('sarafi.login.form');
+    }
+    return view('Sarafi.components.safe-deal-report');
+})->name('sarafi.safe_deal_reports');
+
+
+
+
 
 
 
