@@ -569,7 +569,7 @@
                                 از صندوق
                             </label>
                             <div class="relative w-full">
-                                <input type="text" wire:model.live="from" placeholder="نام فرستنده"
+                                <input type="text" wire:model.live="from" placeholder="نام فرستنده" readonly
                                     class="w-full dark:border-white dark:bg-black dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 dark:text-white" />
                             </div>
                             @error('from')
@@ -583,7 +583,7 @@
                                 به صندوق
                             </label>
                             <div class="relative w-full">
-                                <input type="text" wire:model.live="to" placeholder="نام گیرنده"
+                                <input type="text" wire:model.live="to" placeholder="نام گیرنده" readonly
                                     class="w-full dark:border-white dark:bg-black dark:placeholder:text-white h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 dark:text-white" />
                             </div>
                             @error('to')
