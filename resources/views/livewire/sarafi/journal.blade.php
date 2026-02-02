@@ -508,105 +508,119 @@
 
 
                     <!-- جدول تراکنش‌ها -->
-                    <div class="overflow-x-auto w-full mt-4">
+                    <div
+                        class="overflow-x-auto w-full mt-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
                         <div class="max-h-[600px] overflow-y-auto">
-                            <table class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500">
+                            <table
+                                class="w-full table-fixed text-sm md:text-base text-right rtl:text-right text-gray-700 dark:text-gray-300">
                                 <thead
-                                    class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
+                                    class="sticky top-0 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-[14px] md:text-[16px] vazir">
                                     <tr>
-                                        <th class="px-4 py-4 font-bold w-16">
-                                            <span class="border border-white px-2 py-1 rounded-lg">#</span>
-                                        </th>
-                                        <th class="px-4 py-4 font-bold">نام حساب</th>
-                                        <th class="px-4 py-4 font-bold">نوع معامله</th>
-                                        <th class="px-4 py-4 font-bold">نوع حساب</th>
-                                        <th class="px-4 py-4 font-bold">مقدار</th>
-                                        <th class="px-4 py-4 font-bold">ارز</th>
-                                        <th class="px-4 py-4 font-bold">بیلانس فعلی مشتری</th>
-                                        <th class="px-4 py-4 font-bold">بیلانس فعلی صندوق</th>
-                                        <th class="px-4 py-4 font-bold">توضیحات</th>
-                                        <th class="px-4 py-4 font-bold">تاریخ</th>
+                                        <th
+                                            class="px-2 py-4 font-bold w-16 text-center border-b border-gray-300 dark:border-gray-600">
+                                            #</th>
+                                        <th
+                                            class="px-2 py-4 font-bold border-b border-gray-300 dark:border-gray-600 text-right">
+                                            نام حساب</th>
+                                        <th
+                                            class="px-2 py-4 font-bold border-b border-gray-300 dark:border-gray-600 text-center">
+                                            نوع معامله</th>
+                                        <th
+                                            class="px-2 py-4 font-bold border-b border-gray-300 dark:border-gray-600 text-center">
+                                            نوع حساب</th>
+                                        <th
+                                            class="px-2 py-4 font-bold border-b border-gray-300 dark:border-gray-600 text-center">
+                                            مقدار</th>
+                                        <th
+                                            class="px-2 py-4 font-bold border-b border-gray-300 dark:border-gray-600 text-center">
+                                            ارز</th>
+                                        <th
+                                            class="px-2 py-4 font-bold border-b border-gray-300 dark:border-gray-600 text-center">
+                                            بیلانس فعلی مشتری</th>
+                                        <th
+                                            class="px-2 py-4 font-bold border-b border-gray-300 dark:border-gray-600 text-center">
+                                            بیلانس فعلی صندوق</th>
+                                        <th
+                                            class="px-2 py-4 font-bold border-b border-gray-300 dark:border-gray-600 text-center">
+                                            توضیحات</th>
+                                        <th
+                                            class="px-2 py-4 font-bold border-b border-gray-300 dark:border-gray-600 text-center">
+                                            تاریخ</th>
                                     </tr>
                                 </thead>
+
                                 <tbody>
                                     @forelse($transactions as $index => $transaction)
-                                    <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
-                                            odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
-                                            transition-colors">
-                                        <td class="px-4 py-4">
+                                    <tr class="text-gray-800 dark:text-gray-200 border-b border-gray-300 dark:border-gray-600
+                            odd:bg-white even:bg-gray-50 dark:odd:bg-gray-900 dark:even:bg-gray-800 transition-colors">
+
+                                        <td class="px-2 py-4 text-center whitespace-nowrap">
                                             {{ $transactions->firstItem() + $index }}
                                         </td>
-                                        <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-40">
-                                            <div class="whitespace-nowrap">
 
-                                                <div class="font-medium">
-                                                    @if (empty($transaction->customer_id) &&
-                                                    !empty($transaction->withdraw_id))
-                                                    برداشت
-                                                    @elseif(empty($transaction->customer_id) &&
-                                                    $transaction->is_sell_table == 1)
-                                                    معامله از صندوق
-                                                     @elseif(empty($transaction->customer_id) &&
-                                                    $transaction->withdraw_external_safe_id)
-                                                        معاملات بیرونی
-
-                                                    @else
-                                                    {{ $transaction->customer->fullname ?? 'نامشخص' }}
-                                                    @endif
-                                                </div>
-
-
-                                                <div class="text-gray-500 dark:text-white text-sm mt-1">
-                                                    @if (empty($transaction->customer_id) && $transaction->is_sell_table
-                                                    == 1)
-                                                    @else
-                                                    {{ $transaction->customer->account_number ?? '' }}
-                                                    @endif
-                                                </div>
-
+                                        <td
+                                            class="px-2 py-4 vazir text-[14px] md:text-[16px] text-right w-40 whitespace-nowrap">
+                                            <div class="font-medium">
+                                                @if (empty($transaction->customer_id) &&
+                                                !empty($transaction->withdraw_id))
+                                                برداشت
+                                                @elseif(empty($transaction->customer_id) && $transaction->is_sell_table
+                                                == 1)
+                                                معامله از صندوق
+                                                @elseif(empty($transaction->customer_id) &&
+                                                $transaction->withdraw_external_safe_id)
+                                                معاملات بیرونی
+                                                @else
+                                                {{ $transaction->customer->fullname ?? 'نامشخص' }}
+                                                @endif
+                                            </div>
+                                            <div class="text-gray-500 dark:text-gray-400 text-sm mt-1">
+                                                @if (empty($transaction->customer_id) && $transaction->is_sell_table ==
+                                                1)
+                                                @else
+                                                {{ $transaction->customer->account_number ?? '' }}
+                                                @endif
                                             </div>
                                         </td>
 
-                                        <td class="px-4 py-4">
-                                            {{ $transaction->type }}
+                                        <td class="px-2 py-4 text-center whitespace-nowrap">{{ $transaction->type }}
                                         </td>
-                                        <td class="px-4 py-4">
-                                            {{ $transaction->account_type }}
-                                        </td>
+                                        <td class="px-2 py-4 text-center whitespace-nowrap">{{
+                                            $transaction->account_type }}</td>
+
                                         <td
-                                            class="px-4 py-4 {{ $transaction->type == 'رسید' ? 'text-green-600' : 'text-red-600' }}">
+                                            class="px-2 py-4 text-center whitespace-nowrap font-number {{ $transaction->type == 'رسید' ? 'text-green-600' : 'text-red-600' }}">
                                             {{ number_format($transaction->amount, 2) }}
                                         </td>
-                                        <td class="px-4 py-4">
-                                            {{ $transaction->currency_fa }}
-                                        </td>
-                                        <td class="px-4 py-4 " dir="ltr">
+
+                                        <td class="px-2 py-4 text-center whitespace-nowrap">{{ $transaction->currency_fa
+                                            }}</td>
+
+                                        <!-- ستون‌های اعداد با کلاس font-number و text-center -->
+                                        <td class="px-2 py-4 text-center whitespace-nowrap font-number" dir="ltr">
                                             {{ number_format($transaction->balance, 2) }}
                                         </td>
-
-                                        <td class="px-4 py-4 " dir="ltr">
+                                        <td class="px-2 py-4 text-center whitespace-nowrap font-number" dir="ltr">
                                             {{ number_format($transaction->safe_balance, 2) }}
                                         </td>
-                                        <td class="px-4 py-4">
+
+                                        <!-- ستون توضیحات به صورت multiline -->
+                                        <td class="px-2 py-4 text-center whitespace-normal break-words max-w-xs">
                                             {{ $transaction->description }}
                                         </td>
-                                        <td class="px-4 py-4 vazir text-[14px] md:text-[16px] text-center w-40">
-                                            <div class="whitespace-nowrap">
-                                                <div class="font-medium">
 
-                                                    {{ explode(' ', $transaction->date)[0] }}
-
-                                                </div>
-                                                <div class="text-gray-500 dark:text-white text-sm mt-1">
-                                                    {{ \Carbon\Carbon::parse($transaction->created_at)->format('h:i A')
-                                                    }}
-                                                </div>
+                                        <td
+                                            class="px-2 py-4 vazir text-[14px] md:text-[16px] text-center w-40 whitespace-nowrap">
+                                            <div class="font-medium">{{ explode(' ', $transaction->date)[0] }}</div>
+                                            <div class="text-gray-500 dark:text-gray-400 text-sm mt-1">
+                                                {{ \Carbon\Carbon::parse($transaction->created_at)->format('h:i A') }}
                                             </div>
                                         </td>
+
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="9" class="px-4 py-4 text-center text-gray-500 dark:text-gray-300">
+                                        <td colspan="10" class="px-4 py-6 text-center text-gray-500 dark:text-gray-400">
                                             هیچ تراکنشی یافت نشد
                                         </td>
                                     </tr>
@@ -710,7 +724,7 @@
                             </div>
                         </div>
                     </div>
-                
+
                     @endforeach
                 </div>
             </div>
