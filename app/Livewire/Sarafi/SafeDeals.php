@@ -25,7 +25,6 @@ class SafeDeals extends Component
     use WithPagination, WithFileUploads;
 
     public $dealId;
-   
     public $from;
     public $to;
     public $transactionType = 'بانکی';
@@ -79,6 +78,7 @@ class SafeDeals extends Component
     ];
 
     public $confirmDeleteId = null;
+    public $originalDealData = null;
 
     // متغیرهای کش
     protected $cacheKeys = [
@@ -182,6 +182,7 @@ class SafeDeals extends Component
     {
         $this->searchCustomers($value);
     }
+
 
     private function loadCustomers()
     {
@@ -306,7 +307,7 @@ class SafeDeals extends Component
     public function selectCustomer($customerId)
     {
         $this->selectedCustomerId = $customerId;
-        $this->customer_id = $customerId; 
+        $this->customer_id = $customerId;
         $this->selectedAccount = $customerId;
         $this->selectedCustomer = Customer::find($customerId);
         $this->filteredCustomers = [];
@@ -387,10 +388,10 @@ class SafeDeals extends Component
     {
         if ($this->transactionType === 'بانکی') {
             $this->from = 'بانکی';
-            $this->to   = 'نقدی';
+            $this->to = 'نقدی';
         } else {
             $this->from = 'نقدی';
-            $this->to   = 'بانکی';
+            $this->to = 'بانکی';
         }
     }
 
@@ -579,7 +580,7 @@ class SafeDeals extends Component
     public function updatedWithdrawAmount($value)
     {
         $this->calculateReceiveAmount();
-        
+
         // تبدیل مبلغ برداشت به حروف
         $this->convertAmountToWords($value, 'withdrawalAmountInWords');
     }
@@ -587,7 +588,7 @@ class SafeDeals extends Component
     public function updatedCurrencyRate($value)
     {
         $this->calculateReceiveAmount();
-        
+
         // تبدیل نرخ ارز به حروف (با 4 رقم اعشار)
         $this->convertAmountToWords($value, 'currencyRateInWords', 4);
     }
@@ -653,7 +654,7 @@ class SafeDeals extends Component
 
             // ذخیره در receive_amount
             $this->receive_amount = number_format($calculatedAmount, 2, '.', '');
-            
+
             // تبدیل مبلغ دریافتی به حروف
             $this->convertAmountToWords($this->receive_amount, 'receivedAmountInWords');
         } else {
@@ -784,346 +785,491 @@ class SafeDeals extends Component
         }
     }
 
-   /**
- * بروزرسانی صندوق‌ها (نقدی و بانکی) برای معامله
- */
-private function updateSafes(
-    $fromType,      // 'نقدی' یا 'بانکی'
-    $fromCurrency,  // کد انگلیسی ارز مبدا
-    $withdrawAmount,
-    $toType,        // 'نقدی' یا 'بانکی'
-    $toCurrency,    // کد انگلیسی ارز مقصد
-    $receiveAmount,
-    $dealId
-) {
-    $user = Auth::guard('sarafi')->user();
-    $adminId = $user->admin_id ?? $user->id;
 
-    // تبدیل نام ارز فارسی به کد انگلیسی (اگر به اشتباه نام فارسی آمده)
-    $fromCurrency = $this->convertCurrencyNameToCode($fromCurrency);
-    $toCurrency   = $this->convertCurrencyNameToCode($toCurrency);
-
-    // --- کاهش از صندوق مبدا ---
-    $this->updateSafeBalance(
+    /**
+     * بروزرسانی صندوق‌ها (نقدی و بانکی) برای معامله
+     */
+    private function updateSafes(
         $fromType,
         $fromCurrency,
         $withdrawAmount,
-        'decrease',
-        $dealId,
-        $user->id,
-        $adminId
-    );
-
-    // --- افزایش در صندوق مقصد ---
-    $this->updateSafeBalance(
         $toType,
         $toCurrency,
         $receiveAmount,
-        'increase',
         $dealId,
-        $user->id,
-        $adminId
-    );
-}
+        $isEdit = false,
+        $originalData = null
+    ) {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
 
-/**
- * بروزرسانی موجودی یک صندوق
- */
-private function updateSafeBalance(
-    $accountType,   // 'نقدی' یا 'بانکی'
-    $currency,      // کد انگلیسی ارز
-    $amount,
-    $operation,     // 'increase' یا 'decrease'
-    $dealId,
-    $userId,
-    $adminId
-) {
-    // انتخاب مدل بر اساس نوع حساب
-    if ($accountType === 'نقدی') {
-        $safe = CurrencySafe::where('admin_id', $adminId)->first();
-        $modelName = 'CurrencySafe';
-    } else {
-        $safe = BankAccount::where('admin_id', $adminId)->first();
-        $modelName = 'BankAccount';
-    }
+        $fromCurrency = $this->convertCurrencyNameToCode($fromCurrency);
+        $toCurrency   = $this->convertCurrencyNameToCode($toCurrency);
 
-    // اگر صندوق وجود ندارد، ایجاد کن
-    if (!$safe) {
-        $safe = $accountType === 'نقدی' 
-            ? CurrencySafe::create(['admin_id' => $adminId, 'user_id' => $userId])
-            : BankAccount::create(['admin_id' => $adminId, 'user_id' => $userId]);
-    }
+        if ($isEdit && $originalData) {
 
-    // بررسی فیلد ارز
-    if (!isset($safe->{$currency})) {
-        throw new \Exception("فیلد ارز {$currency} در مدل {$modelName} وجود ندارد");
-    }
+            // حذف کامل revenue های قبلی
+            SafeDealsRevenue::where('safe_deals_id', $dealId)->delete();
 
-    $oldBalance = $safe->{$currency} ?? 0;
+            // بازگرداندن صندوق‌ها
+            $this->reverseSafeUpdate($originalData, $adminId);
 
-    // بررسی موجودی کافی قبل از کاهش
-    if ($operation === 'decrease' && $oldBalance < $amount) {
-        throw new \Exception("موجودی کافی نیست. موجودی فعلی {$currency}: {$oldBalance}");
-    }
-
-    // بروزرسانی موجودی
-    if ($operation === 'increase') {
-        $safe->{$currency} = $oldBalance + $amount;
-    } else {
-        $safe->{$currency} = $oldBalance - $amount;
-    }
-
-    $safe->save();
-
-    // ثبت درآمد معامله در جدول safe_deals_revenue
-    $this->recordSafeDealRevenue(
-        $dealId,
-        $currency,
-        $amount,
-        $operation === 'increase' ? 'رسید' : 'برد',
-        $accountType,
-        $userId,
-        $adminId
-    );
-}
-
-/**
- * تبدیل نام فارسی ارز به کد انگلیسی برای دیتابیس
- */
-private function convertCurrencyNameToCode($currencyName)
-{
-    $currencyMap = [
-        'افغانی' => 'afn',
-        'دالر' => 'usd',
-        'تومان' => 'irr',
-        'یورو' => 'eur',
-        'کلدار' => 'pkr',
-        'درهم' => 'aed',
-        'لیره' => 'try',
-        'یوان' => 'cny',
-        'پوند' => 'gbp',
-        'ین' => 'jpy',
-        'ریال سعودی' => 'sar',
-        'روپیه' => 'inr',
-    ];
-    
-    return $currencyMap[$currencyName] ?? $currencyName;
-}
-    
-    /**
- * ثبت درآمد معاملات صندوق
- */
-private function recordSafeDealRevenue($dealId, $currency, $amount, $type, $accountType, $userId, $adminId)
-{
-    // تبدیل نام ارز اگر لازم است
-    $currencyCode = $this->convertCurrencyNameToCode($currency);
-    
-    SafeDealsRevenue::create([
-        'user_id' => $userId,
-        'admin_id' => $adminId,
-        'safe_deals_id' => $dealId,
-        'currency' => $currencyCode,
-        'amount' => $amount,
-        'type' => $type,
-        'account_type' => $accountType,
-        'date' => $this->date,
-        'description' => $this->description . ' - ' . ($type === 'رسید' ? 'دریافت به ' : 'برداشت از ') . $accountType
-    ]);
-    
-    Log::info('ثبت درآمد معامله صندوق', [
-        'deal_id' => $dealId,
-        'currency' => $currencyCode,
-        'amount' => $amount,
-        'type' => $type,
-        'account_type' => $accountType
-    ]);
-}
-
-
-/**
- * تبدیل کد ارز انگلیسی به نام فارسی
- */
-private function getCurrencyFaName($currencyCode)
-{
-    $currencyMap = [
-        'afn' => 'افغانی',
-        'usd' => 'دالر',
-        'irr' => 'تومان',
-        'eur' => 'یورو',
-        'pkr' => 'کلدار',
-        'aed' => 'درهم',
-        'try' => 'لیره',
-        'cny' => 'یوان',
-        'gbp' => 'پوند',
-        'jpy' => 'ین',
-        'sar' => 'ریال سعودی',
-        'inr' => 'روپیه',
-    ];
-    
-    return $currencyMap[$currencyCode] ?? $currencyCode;
-}
-    
-
-/**
- * ثبت تراکنش برای مشتری در معاملات صندوقی
- */
-private function recordCustomerTransaction($customerId, $fromType, $fromCurrency, $withdrawAmount, 
-                                         $toCurrency, $receiveAmount, $currencyRate, $dealId, 
-                                         $userId, $adminId)
-{
-    if (!$customerId) return;
-    
-    // تعیین نوع تراکنش بر اساس from
-    $type = ($fromType === 'بانکی') ? 'برد' : 'رسید';
-    
-    // تعیین ارز و مبلغ برای ثبت
-    $transactionCurrency = ($fromType === 'بانکی') ? $fromCurrency : $toCurrency;
-    $transactionAmount = ($fromType === 'بانکی') ? $withdrawAmount : $receiveAmount;
-    
-    // تعیین account_type برای مشتری
-    $customerAccountType = 'بانکی'; // فرض می‌کنیم مشتری فقط حساب بانکی دارد
-    
-    // تبدیل کد ارز به نام فارسی برای توضیحات
-    $fromCurrencyName = $this->getCurrencyFaName($fromCurrency);
-    $toCurrencyName = $this->getCurrencyFaName($toCurrency);
-    
-    // ایجاد توضیحات
-    $description = ' برداشت مبلغ ' . number_format($withdrawAmount, 2) . ' ' . $fromCurrencyName .
-                   ' و خرید مبلغ ' . number_format($receiveAmount, 2) . ' ' . $toCurrencyName .
-                   ' به نرخ ' . number_format($currencyRate, 4);
-    
-    // کاربر جاری
-    $user = Auth::guard('sarafi')->user();
-    
-    Transaction::create([
-        'customer_id' => $customerId,
-        'user_id' => $user->id,
-        'admin_id' => $adminId,
-        'currency' => $transactionCurrency, // کد انگلیسی
-        'amount' => $transactionAmount,
-        'type' => $type,
-        'date' => $this->date,
-        'zone' => 'صندوق',
-        'description' => $description,
-        'by' => $user->name ?? 'سیستم',
-        'account_type' => $customerAccountType,
-        'safe_deal_id' => $dealId,
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]);
-    
-    Log::info('تراکنش مشتری ثبت شد', [
-        'customer_id' => $customerId,
-        'type' => $type,
-        'currency' => $transactionCurrency,
-        'amount' => $transactionAmount,
-        'deal_id' => $dealId
-    ]);
-}
-
-/**
- * ایجاد توضیحات برای تراکنش
- */
-private function createTransactionDescription($fromType, $fromCurrency, $withdrawAmount, 
-                                            $toCurrency, $receiveAmount, $currencyRate)
-{
-    $fromCurrencyName = $this->getCurrencyFaName($fromCurrency);
-    $toCurrencyName = $this->getCurrencyFaName($toCurrency);
-    
-    return ' برداشت مبلغ ' . number_format($withdrawAmount, 2) . ' ' . $fromCurrencyName .
-           ' و خرید مبلغ ' . number_format($receiveAmount, 2) . ' ' . $toCurrencyName .
-           ' به نرخ ' . number_format($currencyRate, 4);
-}
-
-
-
-   // ثبت معامله
-public function submitDeal()
-{
-    $this->validate();
-
-    $user = Auth::guard('sarafi')->user();
-    $adminId = $user->admin_id ?? $user->id;
-
-    try {
-        // شروع تراکنش دیتابیس برای کل عملیات
-        DB::beginTransaction();
-
-        // 1. ثبت معامله
-        $data = [
-            'from' => $this->from,
-            'to' => $this->to,
-            'from_currency' => $this->from_currency,
-            'to_currency' => $this->to_currency,
-            'withdraw_amount' => $this->withdraw_amount,
-            'currency_rate' => $this->currency_rate,
-            'receive_amount' => $this->receive_amount,
-            'date' => $this->date,
-            'description' => $this->description,
-            'customer_id' => $this->customer_id,
-            'user_id' => $user->id,
-            'admin_id' => $adminId,
-        ];
-
-        if ($this->dealId) {
-            $deal = SafeDeal::find($this->dealId);
-            $deal->update($data);
-            $message = 'معامله با موفقیت بروزرسانی شد.';
-        } else {
-            $deal = SafeDeal::create($data);
-            $this->dealId = $deal->id;
-            $message = 'معامله با موفقیت ثبت شد.';
-        }
-
-        // 2. به‌روزرسانی صندوق‌ها
-       // در متد submitDeal، بخش updateSafes:
-$this->updateSafes(
-    $this->from,           // نوع حساب مبدا (نقدی/بانکی)
-    $this->from_currency,  // ارز مبدا (کد انگلیسی)
-    $this->withdraw_amount, // مبلغ برداشت
-    $this->to,             // نوع حساب مقصد (نقدی/بانکی)
-    $this->to_currency,    // ارز مقصد (کد انگلیسی)
-    $this->receive_amount, // مبلغ دریافتی
-    $deal->id
-);
-        // 3. ثبت تراکنش برای مشتری (اگر مشتری انتخاب شده باشد)
-        if ($this->customer_id) {
-            // فقط یک تراکنش ثبت می‌شود:
-            // - اگر from بانکی بود: برداشت
-            // - اگر from نقدی بود: رسید
-            $this->recordCustomerTransaction(
-                $this->customer_id,
-                $this->from,            // نوع حساب مبدا
-                $this->from_currency,   // ارز مبدا
-                $this->withdraw_amount, // مبلغ برداشت
-                $this->to_currency,     // ارز مقصد
-                $this->receive_amount,  // مبلغ دریافتی
-                $this->currency_rate,   // نرخ ارز
-                $deal->id,
+            // ثبت جدید (مثل create)
+            $this->updateSafeBalance(
+                $fromType,
+                $fromCurrency,
+                $withdrawAmount,
+                'decrease',
+                $dealId,
                 $user->id,
                 $adminId
             );
+
+            $this->updateSafeBalance(
+                $toType,
+                $toCurrency,
+                $receiveAmount,
+                'increase',
+                $dealId,
+                $user->id,
+                $adminId
+            );
+
+            return;
         }
 
-        DB::commit();
+        // حالت ثبت جدید
+        $this->updateSafeBalance(
+            $fromType,
+            $fromCurrency,
+            $withdrawAmount,
+            'decrease',
+            $dealId,
+            $user->id,
+            $adminId
+        );
 
-        // پاک کردن کش
-        Cache::forget($this->cacheKeys['deals_list'] . $adminId);
-        if ($this->customer_id) {
-            Cache::forget($this->cacheKeys['deals_list'] . $adminId . '_' . $this->customer_id);
-            // به‌روزرسانی بیلانس مشتری
-            $this->updateCustomerCurrencyBalance();
-        }
-
-        session()->flash('message', $message);
-        $this->resetForm();
-
-    } catch (\Exception $e) {
-        DB::rollBack();
-        Log::error('خطا در ثبت معامله: ' . $e->getMessage());
-        session()->flash('error', 'خطا در ثبت معامله: ' . $e->getMessage());
+        $this->updateSafeBalance(
+            $toType,
+            $toCurrency,
+            $receiveAmount,
+            'increase',
+            $dealId,
+            $user->id,
+            $adminId
+        );
     }
-}
+
+    /**
+     * بازگرداندن تغییرات صندوق در حالت ویرایش
+     */
+    private function reverseSafeUpdate($originalData, $adminId)
+    {
+        $user = Auth::guard('sarafi')->user();
+
+        // بازگرداندن صندوق مبدا (افزایش مبلغ)
+        $this->updateSafeBalance(
+            $originalData['from'],
+            $originalData['from_currency'],
+            $originalData['withdraw_amount'],
+            'increase',
+            $originalData['id'],
+            $user->id,
+            $adminId,
+            true
+        );
+
+        // بازگرداندن صندوق مقصد (کاهش مبلغ)
+        $this->updateSafeBalance(
+            $originalData['to'],
+            $originalData['to_currency'],
+            $originalData['receive_amount'],
+            'decrease',
+            $originalData['id'],
+            $user->id,
+            $adminId,
+            true
+        );
+
+        Log::info('موجودی صندوق‌ها برای معامله ویرایش شده بازگردانی شد', [
+            'deal_id' => $originalData['id'],
+            'from' => $originalData['from'],
+            'from_currency' => $originalData['from_currency'],
+            'to' => $originalData['to'],
+            'to_currency' => $originalData['to_currency']
+        ]);
+    }
+
+    /**
+     * بروزرسانی موجودی یک صندوق
+     */
+    private function updateSafeBalance(
+        $accountType,   // 'نقدی' یا 'بانکی'
+        $currency,      // کد انگلیسی ارز
+        $amount,
+        $operation,     // 'increase' یا 'decrease'
+        $dealId,
+        $userId,
+        $adminId,
+        $isReversal = false
+    ) {
+        // انتخاب مدل بر اساس نوع حساب
+        if ($accountType === 'نقدی') {
+            $safe = CurrencySafe::where('admin_id', $adminId)->first();
+            $modelName = 'CurrencySafe';
+        } else {
+            $safe = BankAccount::where('admin_id', $adminId)->first();
+            $modelName = 'BankAccount';
+        }
+
+        // ایجاد صندوق در صورت عدم وجود
+        if (!$safe) {
+            $safe = $accountType === 'نقدی'
+                ? CurrencySafe::create(['admin_id' => $adminId, 'user_id' => $userId])
+                : BankAccount::create(['admin_id' => $adminId, 'user_id' => $userId]);
+        }
+
+        // بررسی فیلد ارز
+        if (!isset($safe->{$currency})) {
+            throw new \Exception("فیلد ارز {$currency} در مدل {$modelName} وجود ندارد");
+        }
+
+        $oldBalance = $safe->{$currency} ?? 0;
+
+        // بررسی موجودی کافی قبل از کاهش (فقط در عملیات عادی کاهش)
+        if ($operation === 'decrease' && !$isReversal && $oldBalance < $amount) {
+            throw new \Exception("موجودی کافی نیست. موجودی فعلی {$currency}: {$oldBalance}");
+        }
+
+        // بروزرسانی موجودی
+        $safe->{$currency} = $operation === 'increase'
+            ? $oldBalance + $amount
+            : $oldBalance - $amount;
+
+        $safe->save();
+
+        // ثبت درآمد معامله در جدول safe_deals_revenue
+        $type = $operation === 'increase' ? 'رسید' : 'برد';
+        $this->recordSafeDealRevenue(
+            $dealId,
+            $currency,
+            $amount,
+            $type,
+            $accountType,
+            $userId,
+            $adminId,
+            $isReversal
+        );
+
+        Log::info('موجودی صندوق بروزرسانی شد', [
+            'model' => $modelName,
+            'currency' => $currency,
+            'old_balance' => $oldBalance,
+            'new_balance' => $safe->{$currency},
+            'operation' => $operation,
+            'is_reversal' => $isReversal
+        ]);
+    }
+
+
+    /**
+     * تبدیل نام فارسی ارز به کد انگلیسی برای دیتابیس
+     */
+    private function convertCurrencyNameToCode($currencyName)
+    {
+        $currencyMap = [
+            'افغانی' => 'afn',
+            'دالر' => 'usd',
+            'تومان' => 'irr',
+            'یورو' => 'eur',
+            'کلدار' => 'pkr',
+            'درهم' => 'aed',
+            'لیره' => 'try',
+            'یوان' => 'cny',
+            'پوند' => 'gbp',
+            'ین' => 'jpy',
+            'ریال سعودی' => 'sar',
+            'روپیه' => 'inr',
+        ];
+
+        return $currencyMap[$currencyName] ?? $currencyName;
+    }
+
+    /**
+     * ثبت درآمد معاملات صندوق
+     */
+    private function recordSafeDealRevenue(
+        $dealId,
+        $currency,
+        $amount,
+        $type,
+        $accountType,
+        $userId,
+        $adminId,
+        $isReversal = false
+    ) {
+        // اگر در حال معکوس کردن هستیم، قبلی را حذف می‌کنیم
+        if ($isReversal) {
+            SafeDealsRevenue::where('safe_deals_id', $dealId)
+                ->where('currency', $currency)
+                ->where('type', $type)
+                ->where('account_type', $accountType)
+                ->delete();
+
+            Log::info('رکورد درآمد معامله برای معکوس کردن حذف شد', [
+                'deal_id' => $dealId,
+                'currency' => $currency,
+                'type' => $type
+            ]);
+            return;
+        }
+
+        // در حالت عادی، رکورد جدید ثبت می‌کنیم
+        SafeDealsRevenue::create([
+            'user_id' => $userId,
+            'admin_id' => $adminId,
+            'safe_deals_id' => $dealId,
+            'currency' => $currency,
+            'amount' => $amount,
+            'type' => $type,
+            'account_type' => $accountType,
+            'date' => $this->date,
+            'description' => $this->description . ' - ' . ($type === 'رسید' ? 'دریافت به ' : 'برداشت از ') . $accountType
+        ]);
+
+        Log::info('ثبت درآمد معامله صندوق', [
+            'deal_id' => $dealId,
+            'currency' => $currency,
+            'amount' => $amount,
+            'type' => $type,
+            'account_type' => $accountType
+        ]);
+    }
+
+    /**
+     * تبدیل کد ارز انگلیسی به نام فارسی
+     */
+    private function getCurrencyFaName($currencyCode)
+    {
+        $currencyMap = [
+            'afn' => 'افغانی',
+            'usd' => 'دالر',
+            'irr' => 'تومان',
+            'eur' => 'یورو',
+            'pkr' => 'کلدار',
+            'aed' => 'درهم',
+            'try' => 'لیره',
+            'cny' => 'یوان',
+            'gbp' => 'پوند',
+            'jpy' => 'ین',
+            'sar' => 'ریال سعودی',
+            'inr' => 'روپیه',
+        ];
+
+        return $currencyMap[$currencyCode] ?? $currencyCode;
+    }
+
+    /**
+     * ثبت تراکنش برای مشتری در معاملات صندوقی
+     */
+    private function recordCustomerTransaction(
+        $customerId,
+        $fromType,
+        $fromCurrency,
+        $withdrawAmount,
+        $toCurrency,
+        $receiveAmount,
+        $currencyRate,
+        $dealId,
+        $userId,
+        $adminId,
+        $isEdit = false
+    ) {
+        if (!$customerId) return;
+
+        // اگر در حالت ویرایش هستیم، ابتدا تراکنش قبلی را حذف می‌کنیم
+        if ($isEdit) {
+            Transaction::where('safe_deal_id', $dealId)
+                ->where('customer_id', $customerId)
+                ->delete();
+
+            Log::info('تراکنش قبلی مشتری برای ویرایش حذف شد', [
+                'deal_id' => $dealId,
+                'customer_id' => $customerId
+            ]);
+        }
+
+        // تعیین نوع تراکنش بر اساس from
+        $type = ($fromType === 'بانکی') ? 'برد' : 'رسید';
+
+        // تعیین ارز و مبلغ برای ثبت
+        $transactionCurrency = ($fromType === 'بانکی') ? $fromCurrency : $toCurrency;
+        $transactionAmount = ($fromType === 'بانکی') ? $withdrawAmount : $receiveAmount;
+
+        // تعیین account_type برای مشتری
+        $customerAccountType = 'بانکی'; // فرض می‌کنیم مشتری فقط حساب بانکی دارد
+
+        // تبدیل کد ارز به نام فارسی برای توضیحات
+        $fromCurrencyName = $this->getCurrencyFaName($fromCurrency);
+        $toCurrencyName = $this->getCurrencyFaName($toCurrency);
+
+        // ایجاد توضیحات
+        $description = ' برداشت مبلغ ' . number_format($withdrawAmount, 2) . ' ' . $fromCurrencyName .
+            ' و خرید مبلغ ' . number_format($receiveAmount, 2) . ' ' . $toCurrencyName .
+            ' به نرخ ' . number_format($currencyRate, 4);
+
+        // کاربر جاری
+        $user = Auth::guard('sarafi')->user();
+
+        Transaction::create([
+            'customer_id' => $customerId,
+            'user_id' => $user->id,
+            'admin_id' => $adminId,
+            'currency' => $transactionCurrency, // کد انگلیسی
+            'amount' => $transactionAmount,
+            'type' => $type,
+            'date' => $this->date,
+            'zone' => 'صندوق',
+            'description' => $description,
+            'by' => $user->name ?? 'سیستم',
+            'account_type' => $customerAccountType,
+            'safe_deal_id' => $dealId,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        Log::info('تراکنش مشتری ثبت شد', [
+            'customer_id' => $customerId,
+            'type' => $type,
+            'currency' => $transactionCurrency,
+            'amount' => $transactionAmount,
+            'deal_id' => $dealId,
+            'is_edit' => $isEdit
+        ]);
+    }
+
+    /**
+     * ایجاد توضیحات برای تراکنش
+     */
+    private function createTransactionDescription(
+        $fromType,
+        $fromCurrency,
+        $withdrawAmount,
+        $toCurrency,
+        $receiveAmount,
+        $currencyRate
+    ) {
+        $fromCurrencyName = $this->getCurrencyFaName($fromCurrency);
+        $toCurrencyName = $this->getCurrencyFaName($toCurrency);
+
+        return ' برداشت مبلغ ' . number_format($withdrawAmount, 2) . ' ' . $fromCurrencyName .
+            ' و خرید مبلغ ' . number_format($receiveAmount, 2) . ' ' . $toCurrencyName .
+            ' به نرخ ' . number_format($currencyRate, 4);
+    }
+
+    // ثبت معامله
+    public function submitDeal()
+    {
+        $this->validate();
+
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        try {
+            // شروع تراکنش دیتابیس برای کل عملیات
+            DB::beginTransaction();
+
+            // 1. ثبت معامله
+            $data = [
+                'from' => $this->from,
+                'to' => $this->to,
+                'from_currency' => $this->from_currency,
+                'to_currency' => $this->to_currency,
+                'withdraw_amount' => $this->withdraw_amount,
+                'currency_rate' => $this->currency_rate,
+                'receive_amount' => $this->receive_amount,
+                'date' => $this->date,
+                'description' => $this->description,
+                'customer_id' => $this->customer_id,
+                'user_id' => $user->id,
+                'admin_id' => $adminId,
+            ];
+
+            $isEdit = !empty($this->dealId);
+
+            if ($isEdit) {
+                // در حالت ویرایش، داده‌های اصلی را ذخیره می‌کنیم
+                $originalDeal = SafeDeal::find($this->dealId);
+                $this->originalDealData = [
+                    'id' => $originalDeal->id,
+                    'from' => $originalDeal->from,
+                    'to' => $originalDeal->to,
+                    'from_currency' => $originalDeal->from_currency,
+                    'to_currency' => $originalDeal->to_currency,
+                    'withdraw_amount' => $originalDeal->withdraw_amount,
+                    'receive_amount' => $originalDeal->receive_amount,
+                ];
+
+                $deal = $originalDeal;
+                $deal->update($data);
+                $message = 'معامله با موفقیت بروزرسانی شد.';
+            } else {
+                $deal = SafeDeal::create($data);
+                $this->dealId = $deal->id;
+                $message = 'معامله با موفقیت ثبت شد.';
+            }
+
+            // 2. به‌روزرسانی صندوق‌ها
+            $this->updateSafes(
+                $this->from,           // نوع حساب مبدا (نقدی/بانکی)
+                $this->from_currency,  // ارز مبدا (کد انگلیسی)
+                $this->withdraw_amount, // مبلغ برداشت
+                $this->to,             // نوع حساب مقصد (نقدی/بانکی)
+                $this->to_currency,    // ارز مقصد (کد انگلیسی)
+                $this->receive_amount, // مبلغ دریافتی
+                $deal->id,
+                $isEdit,
+                $isEdit ? $this->originalDealData : null
+            );
+
+            // 3. ثبت تراکنش برای مشتری (اگر مشتری انتخاب شده باشد)
+            if ($this->customer_id) {
+                // فقط یک تراکنش ثبت می‌شود:
+                // - اگر from بانکی بود: برداشت
+                // - اگر from نقدی بود: رسید
+                $this->recordCustomerTransaction(
+                    $this->customer_id,
+                    $this->from,            // نوع حساب مبدا
+                    $this->from_currency,   // ارز مبدا
+                    $this->withdraw_amount, // مبلغ برداشت
+                    $this->to_currency,     // ارز مقصد
+                    $this->receive_amount,  // مبلغ دریافتی
+                    $this->currency_rate,   // نرخ ارز
+                    $deal->id,
+                    $user->id,
+                    $adminId,
+                    $isEdit
+                );
+            }
+
+            DB::commit();
+
+            // پاک کردن کش
+            Cache::forget($this->cacheKeys['deals_list'] . $adminId);
+            if ($this->customer_id) {
+                Cache::forget($this->cacheKeys['deals_list'] . $adminId . '_' . $this->customer_id);
+                // به‌روزرسانی بیلانس مشتری
+                $this->updateCustomerCurrencyBalance();
+            }
+
+            session()->flash('message', $message);
+            $this->resetForm();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('خطا در ثبت معامله: ' . $e->getMessage());
+            session()->flash('error', 'خطا در ثبت معامله: ' . $e->getMessage());
+        }
+    }
 
     // ویرایش معامله
     public function edit($id)
@@ -1140,7 +1286,7 @@ $this->updateSafes(
         $this->receive_amount = $deal->receive_amount;
         $this->date = $deal->date;
         $this->description = $deal->description;
-        $this->customer_id = $deal->customer_id; 
+        $this->customer_id = $deal->customer_id;
         $this->selectedCustomerId = $deal->customer_id;
 
         $this->convertAmountToWords($this->withdraw_amount, 'withdrawalAmountInWords');
@@ -1175,25 +1321,28 @@ $this->updateSafes(
         if ($this->confirmDeleteId) {
             try {
                 DB::beginTransaction();
-                
+
                 $deal = SafeDeal::find($this->confirmDeleteId);
-                
+
                 if (!$deal) {
                     session()->flash('error', 'معامله یافت نشد.');
                     return;
                 }
-                
-                // حذف معامله
-                $deal->delete();
-                
-                // حذف رکوردهای مربوطه در SafeDealsRevenue
+
+                // 1. بازگرداندن موجودی صندوق‌ها
+                $this->reverseDealSafes($deal);
+
+                // 2. حذف رکوردهای مربوطه در SafeDealsRevenue
                 SafeDealsRevenue::where('safe_deals_id', $this->confirmDeleteId)->delete();
-                
-                // حذف تراکنش‌های مربوطه
-                Transaction::where('deal_id', $this->confirmDeleteId)->delete();
-                
+
+                // 3. حذف تراکنش‌های مربوطه
+                Transaction::where('safe_deal_id', $this->confirmDeleteId)->delete();
+
+                // 4. حذف معامله
+                $deal->delete();
+
                 DB::commit();
-                
+
                 // پاک کردن کش
                 $user = Auth::guard('sarafi')->user();
                 $adminId = $user->admin_id ?? $user->id;
@@ -1202,15 +1351,55 @@ $this->updateSafes(
                     Cache::forget($this->cacheKeys['deals_list'] . $adminId . '_' . $deal->customer_id);
                 }
 
-                session()->flash('message', 'معامله با موفقیت حذف شد.');
+                session()->flash('message', 'معامله با موفقیت حذف شد و موجودی صندوق‌ها بازگردانی شد.');
                 $this->confirmDeleteId = null;
-                
             } catch (\Exception $e) {
                 DB::rollBack();
                 Log::error('خطا در حذف معامله: ' . $e->getMessage());
                 session()->flash('error', 'خطا در حذف معامله: ' . $e->getMessage());
             }
         }
+    }
+
+    /**
+     * بازگرداندن موجودی صندوق‌ها هنگام حذف معامله
+     */
+    private function reverseDealSafes($deal)
+    {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        // بازگرداندن صندوق مبدا (افزایش مبلغ)
+        $this->updateSafeBalance(
+            $deal->from,
+            $deal->from_currency,
+            $deal->withdraw_amount,
+            'increase',
+            $deal->id,
+            $user->id,
+            $adminId,
+            true
+        );
+
+        // بازگرداندن صندوق مقصد (کاهش مبلغ)
+        $this->updateSafeBalance(
+            $deal->to,
+            $deal->to_currency,
+            $deal->receive_amount,
+            'decrease',
+            $deal->id,
+            $user->id,
+            $adminId,
+            true
+        );
+
+        Log::info('موجودی صندوق‌ها برای معامله حذف شده بازگردانی شد', [
+            'deal_id' => $deal->id,
+            'from' => $deal->from,
+            'from_currency' => $deal->from_currency,
+            'to' => $deal->to,
+            'to_currency' => $deal->to_currency
+        ]);
     }
 
     // چاپ معامله
@@ -1267,15 +1456,16 @@ $this->updateSafes(
             'customer_id',
             'withdrawalAmountInWords',
             'receivedAmountInWords',
-            'currencyRateInWords'
+            'currencyRateInWords',
+            'originalDealData'
         ]);
         $this->date = Jalalian::now()->format('Y/m/d');
         $this->selectedCustomerId = null;
-        $this->customer_id = null; 
+        $this->customer_id = null;
         $this->search = '';
         $this->filteredCustomers = [];
-        $this->selectedCustomer = null; 
-        
+        $this->selectedCustomer = null;
+
         // بازنشانی متغیرهای حروفی
         $this->withdrawalAmountInWords = '';
         $this->receivedAmountInWords = '';

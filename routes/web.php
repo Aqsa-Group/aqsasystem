@@ -45,6 +45,9 @@ use Illuminate\Support\Facades\Session;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+
 Route::get('/test', function () {
     return view('contracts.rent');
 });

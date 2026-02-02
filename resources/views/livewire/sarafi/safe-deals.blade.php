@@ -11,7 +11,7 @@
         </div>
 
 
-         @if (session()->has('error'))
+        @if (session()->has('error'))
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[10050] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-400 bg-[#184D6C] vazir">
             <div style="margin-right: 296px" class="h-[60px] w-full flex justify-start items-center px-4">
@@ -483,85 +483,84 @@
                 {{-- فرم --}}
                 <form wire:submit.prevent="submitDeal" class="dark:text-white">
                     {{-- انتخاب مشتری --}}
-                   <div class="mt-2 grid grid-cols-1 w-full gap-3">
-    <div class="flex-1 w-full">
-        <div class="relative w-full">
-            <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
-                @if ($transactionType === 'بانکی')
-                    حساب برداشت
-                @else
-                    حساب دریافت
-                @endif
-            </label>
-            <div x-data="{
-                searchValue: '',
-                selectedId: @entangle('customer_id').live,
-                customers: @js($customers),
-                handleSelect(event) {
-                    const selected = this.customers.find(
-                        c => event.target.value === `${c.account_number} - ${c.fullname}`
-                    );
-                    if (selected) {
-                        this.selectedId = selected.id;
-                        this.searchValue = `${selected.account_number} - ${selected.fullname}`;
-                        $wire.selectCustomer(selected.id);
-                    } else {
-                        this.selectedId = null;
-                        this.searchValue = '';
-                        $wire.set('customer_id', null);
-                        $wire.set('selectedCustomerId', null);
-                        $wire.set('search', '');
-                    }
-                },
-                updateDisplay() {
-                    const selected = this.customers.find(c => c.id === this.selectedId);
-                    this.searchValue = selected ? `${selected.account_number} - ${selected.fullname}` : '';
-                },
-                clearSelection() {
-                    this.selectedId = null;
-                    this.searchValue = '';
-                    $wire.set('customer_id', null);
-                    $wire.set('selectedCustomerId', null);
-                    $wire.set('search', '');
-                }
-            }" 
-            x-init="updateDisplay();
-            $watch('selectedId', () => updateDisplay())" 
-            class="relative w-full">
-                
-                <input list="customersList" 
-                       x-model="searchValue" 
-                       @change="handleSelect"
-                       placeholder="جستجو یا انتخاب مشتری..."
-                       class="w-full h-[60px] bg-[#EFF6F9] dark:bg-black dark:text-white dark:border-white placeholder:text-[#929897] dark:placeholder:text-white p-3 rounded-[12px] border focus:ring-2 focus:ring-blue-500 pr-10"
-                       autocomplete="off">
-                
-                <datalist id="customersList">
-                    @foreach ($customers as $customer)
-                        <option value="{{ $customer['account_number'] }} - {{ $customer['fullname'] }}">
-                    @endforeach
-                </datalist>
-                
-                <!-- دکمه پاک کردن -->
-                <button type="button" 
-                        x-show="searchValue" 
-                        @click="clearSelection()"
-                        class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                    </svg>
-                </button>
-                
-                <!-- آیکون کشویی -->
-                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="mt-2 grid grid-cols-1 w-full gap-3">
+                        <div class="flex-1 w-full">
+                            <div class="relative w-full">
+                                <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
+                                    @if ($transactionType === 'بانکی')
+                                    کارت برداشت
+                                    @else
+                                    کارت دریافت
+                                    @endif
+                                </label>
+                                <div x-data="{
+                                            searchValue: '',
+                                            selectedId: @entangle('customer_id').live,
+                                            customers: @js($customers),
+                                            handleSelect(event) {
+                                                const selected = this.customers.find(
+                                                    c => event.target.value === `${c.account_number} - ${c.fullname}`
+                                                );
+                                                if (selected) {
+                                                    this.selectedId = selected.id;
+                                                    this.searchValue = `${selected.account_number} - ${selected.fullname}`;
+                                                    $wire.selectCustomer(selected.id);
+                                                } else {
+                                                    this.selectedId = null;
+                                                    this.searchValue = '';
+                                                    $wire.set('customer_id', null);
+                                                    $wire.set('selectedCustomerId', null);
+                                                    $wire.set('search', '');
+                                                }
+                                            },
+                                            updateDisplay() {
+                                                const selected = this.customers.find(c => c.id === this.selectedId);
+                                                this.searchValue = selected ? `${selected.account_number} - ${selected.fullname}` : '';
+                                            },
+                                            clearSelection() {
+                                                this.selectedId = null;
+                                                this.searchValue = '';
+                                                $wire.set('customer_id', null);
+                                                $wire.set('selectedCustomerId', null);
+                                                $wire.set('search', '');
+                                            }
+                                        }" x-init="updateDisplay();
+                                        $watch('selectedId', () => updateDisplay())" class="relative w-full">
+
+                                    <input list="customersList" x-model="searchValue" @change="handleSelect"
+                                        placeholder="جستجو یا انتخاب مشتری..."
+                                        class="w-full h-[60px] bg-[#EFF6F9] dark:bg-black dark:text-white dark:border-white placeholder:text-[#929897] dark:placeholder:text-white p-3 rounded-[12px] border focus:ring-2 focus:ring-blue-500 pr-10"
+                                        autocomplete="off">
+
+                                    <datalist id="customersList">
+                                        @foreach ($customers as $customer)
+                                        <option value="{{ $customer['account_number'] }} - {{ $customer['fullname'] }}">
+                                            @endforeach
+                                    </datalist>
+
+                                    <!-- دکمه پاک کردن -->
+                                    <button type="button" x-show="searchValue" @click="clearSelection()"
+                                        class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                            fill="currentColor">
+                                            <path fill-rule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+
+                                    <!-- آیکون کشویی -->
+                                    <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897"
+                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     {{-- فرستنده و گیرنده --}}
                     <div class="mt-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
                         {{-- فرستنده --}}
@@ -598,8 +597,9 @@
                         {{-- ارز مبدا --}}
                         <div class="lg:w-full">
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
-                                ارز ارسال
+                                ارز برداشت {{ $transactionType === 'نقدی' ? 'نقدی' : 'بانکی' }}
                             </label>
+
                             <div class="relative w-full">
                                 <select wire:model="from_currency"
                                     class="w-full dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500 dark:text-white appearance-none">
@@ -624,8 +624,9 @@
                         {{-- ارز مقصد --}}
                         <div class="lg:w-full">
                             <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
-                                ارز دریافت
+                                ارز دریافت {{ $transactionType === 'بانکی' ? 'نقدی' : 'بانکی' }}
                             </label>
+
                             <div class="relative w-full">
                                 <select wire:model="to_currency"
                                     class="w-full dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border bg-[#EFF6F9] focus:ring-2 focus:ring-blue-500 dark:text-white appearance-none">
@@ -663,7 +664,7 @@
                             {{-- نمایش مقدار فارسی --}}
                             @if($withdrawalAmountInWords)
                             <div class="mt-2 text-sm text-gray-600 dark:text-white">
-                               {{ $withdrawalAmountInWords }}
+                                {{ $withdrawalAmountInWords }}
                             </div>
                             @endif
                             @error('withdraw_amount')
@@ -707,7 +708,7 @@
                             {{-- نمایش مقدار فارسی --}}
                             @if($receivedAmountInWords)
                             <div class="mt-2 text-sm text-gray-600 dark:text-white">
-                              {{ $receivedAmountInWords }}
+                                {{ $receivedAmountInWords }}
                             </div>
                             @endif
                             @error('receive_amount')
@@ -1450,17 +1451,33 @@
                     </div>
                 </div>
 
+
+
                 {{-- جدول --}}
                 <div class="overflow-x-auto w-full">
                     <div class="min-w-[890px] max-h-[680px] overflow-y-auto">
+                        @php
+                        $currencyNames = collect([
+                        'afn' => 'افغانی',
+                        'usd' => 'دالر',
+                        'irr' => 'تومان',
+                        'eur' => 'یورو',
+                        'pkr' => 'کلدار',
+                        'aed' => 'درهم',
+                        'try' => 'لیره',
+                        'cny' => 'یوان'
+                        ]);
+                        @endphp
+
                         <table
                             class="w-full text-sm md:text-base text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead
                                 class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
                                 <tr class="whitespace-nowrap">
                                     <th class="px-3 py-3 font-bold w-16 text-center">#</th>
-                                    <th class="px-3 py-3 font-bold w-48 text-right">فرستنده</th>
-                                    <th class="px-3 py-3 font-bold w-48 text-right">گیرنده</th>
+                                    <th class="px-3 py-3 font-bold w-48 text-right">از صندوق</th>
+                                    <th class="px-3 py-3 font-bold w-48 text-right">به صندوق</th>
+                                    <th class="px-3 py-3 font-bold w-48 text-right">کارت</th>
                                     <th class="px-3 py-3 font-bold w-40 text-right">مبلغ برداشت</th>
                                     <th class="px-3 py-3 font-bold w-40 text-right">مبلغ دریافتی</th>
                                     <th class="px-3 py-3 font-bold w-32 text-center">نرخ</th>
@@ -1472,36 +1489,43 @@
                             <tbody>
                                 @forelse($deals as $key => $deal)
                                 <tr class="text-black border-b dark:text-white border-[#D9D9D9]
-                               odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
-                               transition-colors">
+                                        odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
+                                        transition-colors">
                                     <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium text-center">
-                                        {{ ($deals->currentPage() - 1) * $deals->perPage() + $key + 1 }}</td>
-                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium">
-                                        <div>
-                                            <div class="font-medium">{{ $deal->from }}</div>
-                                            @if($deal->customer)
-                                            <div class="text-sm text-gray-500">{{ $deal->customer->fullname }}</div>
-                                            @endif
-                                        </div>
+                                        {{ ($deals->currentPage() - 1) * $deals->perPage() + $key + 1 }}
                                     </td>
-                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium">
+
+
+                                    <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium text-right">
+                                        {{ $deal->from }}
+                                    </td>
+                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium text-right">
                                         {{ $deal->to }}
                                     </td>
-                                    <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium">
-                                        <div class="text-left">
-                                            <div>{{ number_format($deal->withdraw_amount, 2) }}</div>
-                                            <div class="text-sm text-gray-500">{{ $deal->from_currency }}</div>
+
+
+                                    <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium text-right">
+                                        {{ $deal->customer->fullname }}
+                                    </td>
+
+                                    <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium text-right">
+                                        <div>{{ number_format($deal->withdraw_amount, 2) }}</div>
+                                        <div class="text-sm text-gray-500">
+                                            {{ $currencyNames[$deal->from_currency] ?? $deal->from_currency }}
                                         </div>
                                     </td>
-                                    <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium">
-                                        <div class="text-left">
-                                            <div>{{ number_format($deal->receive_amount, 2) }}</div>
-                                            <div class="text-sm text-gray-500">{{ $deal->to_currency }}</div>
+
+                                    <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium text-right">
+                                        <div>{{ number_format($deal->receive_amount, 2) }}</div>
+                                        <div class="text-sm text-gray-500">
+                                            {{ $currencyNames[$deal->to_currency] ?? $deal->to_currency }}
                                         </div>
                                     </td>
+
                                     <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium text-center">
                                         {{ number_format($deal->currency_rate, 4) }}
                                     </td>
+
                                     <td class="px-4 py-2 vazir text-[14px] md:text-[16px] text-center">
                                         <div class="whitespace-nowrap">
                                             <div class="font-medium">{{ $deal->date }}</div>
@@ -1510,6 +1534,7 @@
                                             </div>
                                         </div>
                                     </td>
+
                                     <td class="py-2 text-center">
                                         <div class="flex flex-wrap justify-center gap-2 md:gap-3">
                                             <div class="flex justify-center gap-3">
@@ -1578,7 +1603,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="8" class="text-center text-gray-500 py-8 text-lg">
+                                    <td colspan="9" class="text-center text-gray-500 py-8 text-lg">
                                         @if ($selectedCustomerId)
                                         هیچ معامله‌ای برای این مشتری یافت نشد
                                         @else
@@ -1589,6 +1614,7 @@
                                 @endforelse
                             </tbody>
                         </table>
+
                     </div>
                 </div>
 
@@ -1626,7 +1652,7 @@
     @endif
 
 
-     {{-- Scrollbar Style --}}
+    {{-- Scrollbar Style --}}
     <style>
         .scroll-container {
             scrollbar-width: thin;
