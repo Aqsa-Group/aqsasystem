@@ -4,6 +4,9 @@ namespace App\Models\Sarafi;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Sarafi\CurrencySafe;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SafeDeal extends Model
 {
@@ -51,4 +54,8 @@ class SafeDeal extends Model
     {
         return $this->belongsTo(User::class, 'admin_id');
     }
+
+
+ 
+
 }
