@@ -9,9 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Morilog\Jalali\Jalalian;
-use App\Models\Sarafi\CurrencySafe;
-
+use Illuminate\Support\Facades\Log;
 
 class Transaction extends Model
 {
@@ -20,394 +18,588 @@ class Transaction extends Model
     protected $connection = 'sarafi';
     protected $table = 'transactions';
 
-    /* =======================
-       Mass Assignment
-    ======================= */
     protected $fillable = [
-        'customer_id',
-        'user_id',
-        'admin_id',
-        'currency',
-        'amount',
-        'type',
-        'account_type',
-        'zone',
-        'by',
-        'date',
-        'description',
-        'transaction_file',
-        'conversion_transfer_id',
-        'conversion_in_account_id',
-        'account_to_id',
-        'remittance_id',
-        'changerdeal_id',
-        'withdrawbank_id',
-        'external_transaction_id',
-        'safe_deal_id'
-
-
+        'customer_id', 'user_id', 'admin_id', 'currency', 'amount', 'type',
+        'account_type', 'zone', 'by', 'date', 'description', 'transaction_file',
+        'conversion_transfer_id', 'conversion_in_account_id', 'account_to_id',
+        'remittance_id', 'changerdeal_id', 'withdrawbank_id',
+        'external_transaction_id', 'safe_deal_id'
     ];
 
-    /* =======================
-       Casts
-    ======================= */
     protected $casts = [
         'amount' => 'decimal:2',
         'date' => 'date',
     ];
 
-    /* =======================
-       Relations
-    ======================= */
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class, 'customer_id');
-    }
+    // =======================
+    // Relations
+    // =======================
+    public function customer() { return $this->belongsTo(Customer::class, 'customer_id'); }
+    public function user() { return $this->belongsTo(User::class, 'user_id'); }
+    public function admin() { return $this->belongsTo(User::class, 'admin_id'); }
+    public function Safedeals() { return $this->belongsTo(SafeDeal::class, 'safe_deal_id'); }
+    public function changerdeal() { return $this->belongsTo(ChangerDeal::class, 'changerdeal_id'); }
+    public function withdrawbank() { return $this->belongsTo(WithdrawsBanks::class, 'withdrawbank_id'); }
+    public function accounttoid() { return $this->belongsTo(SendToAccount::class, 'account_to_id'); }
+    public function conversionInAccount() { return $this->belongsTo(ConversionInAccounts::class, 'conversion_in_account_id'); }
+    public function externalTransaction() { return $this->belongsTo(ExternalTransactions::class, 'external_transaction_id'); }
+    public function currencyInfo() { return $this->belongsTo(Currency::class, 'currency', 'code'); }
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-
-    public function admin()
-    {
-        return $this->belongsTo(User::class, 'admin_id');
-    }
-
-    public function conversionTransfer()
-    {
-        return $this->belongsTo(ConversionTransfers::class, 'conversion_transfer_id');
-    }
-
-      public function Safedeals()
-    {
-        return $this->belongsTo(SafeDeal::class, 'safe_deal_id');
-    }
-
-    public function changerdeal()
-    {
-        return $this->belongsTo(ChangerDeal::class, 'changerdeal_id');
-    }
-
-    public function withdrawbank()
-    {
-        return $this->belongsTo(WithdrawsBanks::class, 'withdrawbank_id');
-    }
-
-    public function accounttoid()
-    {
-        return $this->belongsTo(SendToAccount::class, 'account_to_id');
-    }
-
-    public function conversionInAccount()
-    {
-        return $this->belongsTo(ConversionInAccounts::class, 'conversion_in_account_id');
-    }
-
-
-    public function externalTransaction()
-    {
-        return $this->belongsTo(ExternalTransactions::class, 'external_transaction_id');
-    }
-
-
-    public function currencyInfo()
-    {
-        return $this->belongsTo(Currency::class, 'currency', 'code');
-    }
-
-    /* =======================
-       Scopes
-    ======================= */
-    public function scopeConversionTransactions($query)
-    {
-        return $query->whereNotNull('conversion_transfer_id');
-    }
-
-    public function scopeRegularTransactions($query)
-    {
-        return $query->whereNull('conversion_transfer_id');
-    }
-
-    /* =======================
-       Accessors
-    ======================= */
-    public function getTypeNameAttribute()
-    {
-        return $this->type === 'رسید' ? 'دریافت' : 'برداشت';
-    }
-
-    public function getFormattedAmountAttribute()
-    {
-        return number_format($this->amount, 2);
-    }
-
+    // =======================
+    // Accessors
+    // =======================
+    public function getTypeNameAttribute() { return $this->type === 'رسید' ? 'دریافت' : 'برداشت'; }
+    public function getFormattedAmountAttribute() { return number_format($this->amount, 2); }
     public function getCurrencyNameAttribute()
     {
-        $currencyMap = [
-            'afn' => 'افغانی',
-            'usd' => 'دالر',
-            'irr' => 'تومان',
-            'eur' => 'یورو',
-            'pkr' => 'کلدار',
-            'aed' => 'درهم',
-            'try' => 'لیره',
-            'cny' => 'یوان',
-            'gbp' => 'پوند',
-            'jpy' => 'ین',
-            'sar' => 'ریال سعودی',
-            'inr' => 'روپیه',
+        $map = [
+            'afn'=>'افغانی','usd'=>'دالر','irr'=>'تومان','eur'=>'یورو',
+            'pkr'=>'کلدار','aed'=>'درهم','try'=>'لیره','cny'=>'یوان',
+            'gbp'=>'پوند','jpy'=>'ین','sar'=>'ریال سعودی','inr'=>'روپیه'
         ];
-
-        return $currencyMap[$this->currency] ?? $this->currency;
+        return $map[$this->currency] ?? $this->currency;
     }
 
-    /* =======================
-       Model Events (Observer)
-    ======================= */
-   protected static function booted()
-{
-    /* ---------- ایجاد Journal ---------- */
-    static::created(function ($model) {
-        $model->createJournal();
-        $model->sendWhatsApp();
-    });
+    // =======================
+    // Model Events
+    // =======================
+    protected static function booted()
+    {
+        static::created(function ($model) {
+            $model->createJournal();
+            $model->sendWhatsApp();
+        });
 
-    /* ---------- ثبت Trash قبل از ویرایش ---------- */
-    static::updating(function ($model) {
-        $user = Auth::guard('sarafi')->user();
-        $adminId = $user->admin_id ?? $user->id;
+        static::updated(function ($model) {
+            $user = Auth::guard('sarafi')->user();
+            $adminId = $user->admin_id ?? $user->id;
 
-        Trash::create([
-            'document_type'       => 'رسید / برد صندوق',
-            'record_id'           => $model->id,
-            'action'              => 'ویرایش',
-            'document_discription'=> $model->description,
-            'old_data'            => $model->getOriginal(),
-            'new_data'            => $model->getDirty(), // فقط فیلدهای تغییر کرده
-            'registered_user'     => $model->user_id,
-            'user_id'             => $user->id,
-            'admin_id'            => $adminId,
-        ]);
-    });
+            Trash::create([
+                'document_type' => 'رسید / برد صندوق',
+                'record_id' => $model->id,
+                'action' => 'ویرایش',
+                'document_discription' => $model->description,
+                'old_data' => $model->getOriginal(),
+                'new_data' => $model->getAttributes(),
+                'registered_user' => $model->user_id,
+                'user_id' => $user->id,
+                'admin_id' => $adminId,
+            ]);
 
-    /* ---------- آپدیت Journal بعد از ذخیره ---------- */
-    static::updated(function ($model) {
-        $model->updateJournal();
-    });
+            $model->updateJournal();
+        });
 
-    /* ---------- حذف Journal و ثبت Trash ---------- */
-    static::deleting(function ($model) {
-        $user = Auth::guard('sarafi')->user();
-        $adminId = $user->admin_id ?? $user->id;
+        static::deleted(function ($model) {
+            $user = Auth::guard('sarafi')->user();
+            $adminId = $user->admin_id ?? $user->id;
 
-        Trash::create([
-            'document_type'       => 'رسید / برد صندوق',
-            'record_id'           => $model->id,
-            'action'              => 'حذف',
-            'document_discription'=> $model->description,
-            'old_data'            => $model->getAttributes(),
-            'registered_user'     => $model->user_id,
-            'user_id'             => $user->id,
-            'admin_id'            => $adminId,
-        ]);
+            Trash::create([
+                'document_type' => 'رسید / برد صندوق',
+                'record_id' => $model->id,
+                'action' => 'حذف',
+                'document_discription' => $model->description,
+                'old_data' => $model->getAttributes(),
+                'registered_user' => $model->user_id,
+                'user_id' => $user->id,
+                'admin_id' => $adminId,
+            ]);
 
-        $model->deleteJournal();
-    });
-}
-
-
-    /* =======================
-       Journal Management
-    ======================= */
-
-   private function getRealAccountBalance(string $currency, string $accountType, int $adminId): float
-{
-    if ($accountType === 'نقدی') {
-        return CurrencySafe::where('admin_id', $adminId)->value($currency) ?? 0;
+            $model->deleteJournal();
+        });
     }
 
-    if ($accountType === 'بانکی') {
-        return BankAccount::where('admin_id', $adminId)->value($currency) ?? 0;
+    // =======================
+    // Safe Balance Logic
+    // =======================
+    private function getRealAccountBalance(string $currency, string $accountType, int $adminId): float
+    {
+        if ($accountType === 'نقدی') {
+            $balance = CurrencySafe::where('admin_id', $adminId)->value($currency) ?? 0;
+            Log::info("🔵 getRealAccountBalance: currency={$currency}, accountType={$accountType}, balance={$balance}");
+            return $balance;
+        }
+        if ($accountType === 'بانکی') {
+            $balance = BankAccount::where('admin_id', $adminId)->value($currency) ?? 0;
+            Log::info("🔵 getRealAccountBalance: currency={$currency}, accountType={$accountType}, balance={$balance}");
+            return $balance;
+        }
+        return 0;
     }
-
-    return 0;
-}
-
 
     private function shouldAffectSafeBalance(): bool
-{
-    // ❌ معاملات تبدیل ارز (external_transaction)
-    if ($this->external_transaction_id) {
-        return false;
-    }
-
-    // فقط نقدی و بانکی
-    if (!in_array($this->account_type, ['نقدی', 'بانکی'], true)) {
-        return false;
-    }
-
-    // برد بانکی + کارت صرافی
-    if (
-        $this->account_type === 'بانکی'
-        && $this->type === 'برد'
-        && $this->customer
-        && $this->customer->category === 'sarafi_card'
-    ) {
-        return false;
-    }
-
-    // انتقالات داخلی
-    if (
-        $this->conversion_transfer_id ||
-        $this->conversion_in_account_id ||
-        $this->account_to_id
-    ) {
-        return false;
-    }
-
-    return true;
-}
-
-
-public function createJournal()
-{
-    $user    = Auth::guard('sarafi')->user();
-    $adminId = $user->admin_id ?? $user->id;
-
-    /* ========= balance مشتری ========= */
-    $balanceBefore = static::where('customer_id', $this->customer_id)
-        ->where('currency', $this->currency)
-        ->where('account_type', $this->account_type)
-        ->where('admin_id', $adminId)
-        ->where('id', '<>', $this->id)
-        ->sum(DB::raw("
-            CASE
-                WHEN type = 'رسید' THEN amount
-                WHEN type = 'برد' THEN -amount
-                ELSE 0
-            END
-        "));
-
-    $signedAmount = $this->type === 'رسید'
-        ? $this->amount
-        : -$this->amount;
-
-    $balanceAfter = $balanceBefore + $signedAmount;
-
-    /* ========= safe_balance واقعی ========= */
-    $safeBalance = $this->getRealAccountBalance(
-        $this->currency,
-        $this->account_type,
-        $adminId
-    );
-
-    // فقط معاملات واقعی صندوق
-    if ($this->shouldAffectSafeBalance()) {
-        $safeBalance += $signedAmount;
-    }
-
-    return Journals::create([
-        'transaction_id' => $this->id,
-        'customer_id'    => $this->customer_id,
-        'user_id'        => $user->id,
-        'admin_id'       => $adminId,
-        'currency'       => $this->currency,
-        'type'           => $this->type,
-        'account_type'   => $this->account_type,
-        'amount'         => $this->amount,
-        'balance'        => $balanceAfter,
-        'safe_balance'   => $safeBalance, 
-        'description'    => $this->description,
-        'date'           => $this->date,
-    ]);
-}
-public function updateJournal()
-{
-    $journal = Journals::where('transaction_id', $this->id)->first();
-    if (!$journal) return;
-
-    $adminId     = $journal->admin_id;
-    $currency    = $journal->currency;
-    $accountType = $journal->account_type;
-
-    // safe واقعی (نقطه شروع)
-    $runningSafeBalance = $this->getRealAccountBalance(
-        $currency,
-        $accountType,
-        $adminId
-    );
-
-    $transactions = static::where('admin_id', $adminId)
-        ->where('currency', $currency)
-        ->where('account_type', $accountType)
-        ->orderBy('date')
-        ->orderBy('id')
-        ->get();
-
-    $runningCustomerBalance = [];
-
-    foreach ($transactions as $tx) {
-
-        $amount = $tx->id === $this->id
-            ? $this->amount   // مقدار جدید واقعی
-            : $tx->amount;
-
-        $signedAmount = $tx->type === 'رسید'
-            ? $amount
-            : -$amount;
-
-        // customer balance
-        if (!isset($runningCustomerBalance[$tx->customer_id])) {
-            $runningCustomerBalance[$tx->customer_id] = 0;
+    {
+        $result = true;
+        
+        if ($this->external_transaction_id) {
+            Log::info("shouldAffectSafeBalance: false - external_transaction_id exists");
+            $result = false;
         }
-
-        $runningCustomerBalance[$tx->customer_id] += $signedAmount;
-
-        // safe balance
-        if ($tx->shouldAffectSafeBalance()) {
-            $runningSafeBalance += $signedAmount;
+        if (!in_array($this->account_type, ['نقدی','بانکی'])) {
+            Log::info("shouldAffectSafeBalance: false - account_type is not نقدی/بانکی");
+            $result = false;
         }
+        if ($this->account_type === 'بانکی' && $this->type==='برد' && $this->customer && $this->customer->type==='sarafi_card') {
+            Log::info("shouldAffectSafeBalance: false - sarafi_card برد بانکی");
+            $result = false;
+        }
+        if ($this->conversion_transfer_id || $this->conversion_in_account_id || $this->account_to_id) {
+            Log::info("shouldAffectSafeBalance: false - conversion or account transfer");
+            $result = false;
+        }
+        
+        Log::info("shouldAffectSafeBalance: {$result} برای TX {$this->id}");
+        return $result;
+    }
 
-        Journals::where('transaction_id', $tx->id)->update([
-            'balance'      => $runningCustomerBalance[$tx->customer_id],
-            'safe_balance' => $runningSafeBalance,
+    // =======================
+    // Journal Management
+    // =======================
+    public function createJournal()
+    {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        $balanceBefore = static::where('customer_id',$this->customer_id)
+            ->where('currency',$this->currency)
+            ->where('account_type',$this->account_type)
+            ->where('admin_id',$adminId)
+            ->where('id','<>',$this->id)
+            ->sum(DB::raw("CASE WHEN type='رسید' THEN amount WHEN type='برد' THEN -amount ELSE 0 END"));
+
+        $signedAmount = $this->type==='رسید' ? $this->amount : -$this->amount;
+        $balanceAfter = $balanceBefore + $signedAmount;
+
+        $safeBalance = $this->getRealAccountBalance($this->currency,$this->account_type,$adminId);
+        if($this->shouldAffectSafeBalance()) $safeBalance += $signedAmount;
+
+        Journals::create([
+            'transaction_id'=>$this->id,
+            'customer_id'=>$this->customer_id,
+            'user_id'=>$user->id,
+            'admin_id'=>$adminId,
+            'currency'=>$this->currency,
+            'type'=>$this->type,
+            'account_type'=>$this->account_type,
+            'amount'=>$this->amount,
+            'balance'=>$balanceAfter,
+            'safe_balance'=>$safeBalance,
+            'description'=>$this->description,
+            'date'=>$this->date,
         ]);
-    }
-}
-
-
-
-
-    public function deleteJournal()
-    {
-        Journals::where('transaction_id', $this->id)->delete();
+        
+        Log::info("Journal created for Transaction ID={$this->id}: balance={$balanceAfter}, safe_balance={$safeBalance}");
     }
 
-    /* =======================
-       WhatsApp Notification
-    ======================= */
-    public function sendWhatsApp()
+    public function updateJournal()
     {
-        $customer = $this->customer;
-
-        if (!$customer || !$customer->whatsapp_number) {
+        Log::info('=== شروع updateJournal ===');
+        Log::info("Transaction ID={$this->id}");
+        Log::info("Old: Currency={$this->getOriginal('currency')}, Amount={$this->getOriginal('amount')}, Type={$this->getOriginal('type')}");
+        Log::info("New: Currency={$this->currency}, Amount={$this->amount}, Type={$this->type}");
+        
+        $journal = Journals::where('transaction_id', $this->id)->first();
+        if (!$journal) {
+            Log::warning('ژورنال پیدا نشد!');
             return;
         }
 
-        $phone = preg_replace('/[^0-9]/', '', $customer->whatsapp_number);
+        $adminId     = $journal->admin_id;
+        $oldCurrency = $journal->currency;
+        $oldAccountType = $journal->account_type;
+        $oldType     = $journal->type;
+        $oldAmount   = $journal->amount;
+        
+        $newCurrency = $this->currency;
+        $newAccountType = $this->account_type;
+        $newType     = $this->type;
+        $newAmount   = $this->amount;
+
+        // اگر ارز تغییر کرده
+        if ($oldCurrency !== $newCurrency) {
+            Log::info("ارز تغییر کرده: {$oldCurrency} → {$newCurrency}");
+            Log::info("⚠️ توجه: صندوق قبلاً در کامپوننت Livewire آپدیت شده است");
+            
+            // 1. ژورنال فعلی را آپدیت کن
+            $journal->update([
+                'currency'     => $newCurrency,
+                'account_type' => $newAccountType,
+                'amount'       => $newAmount,
+                'type'         => $newType,
+                'description'  => $this->description,
+                'date'         => $this->date,
+            ]);
+            
+            // 2. بازمحاسبه برای هر دو ارز (فقط ژورنال‌ها)
+            $this->recalculateForCurrencyChange($adminId, $oldCurrency, $oldAccountType, $newCurrency, $newAccountType);
+            
+            Log::info('=== پایان updateJournal با تغییر ارز ===');
+            return;
+        }
+        
+        // اگر نوع حساب تغییر کرده (ولی ارز ثابت است)
+        if ($oldAccountType !== $newAccountType) {
+            Log::info("نوع حساب تغییر کرده: {$oldAccountType} → {$newAccountType}");
+            
+            // 1. ژورنال فعلی را آپدیت کن
+            $journal->update([
+                'account_type' => $newAccountType,
+                'amount'       => $newAmount,
+                'type'         => $newType,
+                'description'  => $this->description,
+                'date'         => $this->date,
+            ]);
+            
+            // 2. بازمحاسبه برای هر دو نوع حساب
+            $this->recalculateForAccountTypeChange($adminId, $oldCurrency, $oldAccountType, $newAccountType);
+            
+            Log::info('=== پایان updateJournal با تغییر نوع حساب ===');
+            return;
+        }
+
+        // اگر فقط مقدار یا نوع تغییر کرده (ارز و نوع حساب ثابت است)
+        Log::info("فقط مقدار یا نوع تغییر کرده");
+        
+        // محاسبه diff
+        $oldSignedAmount = $oldType === 'رسید' ? $oldAmount : -$oldAmount;
+        $newSignedAmount = $newType === 'رسید' ? $newAmount : -$newAmount;
+        $diff = $newSignedAmount - $oldSignedAmount;
+        
+        Log::info("Diff: {$diff} (OldSigned: {$oldSignedAmount}, NewSigned: {$newSignedAmount})");
+
+        // 1. آپدیت ژورنال فعلی
+        $journal->update([
+            'amount'       => $newAmount,
+            'type'         => $newType,
+            'description'  => $this->description,
+            'date'         => $this->date,
+            'balance'      => $journal->balance + $diff,
+            'safe_balance' => $journal->safe_balance + $diff,
+        ]);
+
+        // 2. آپدیت تراکنش‌های بعدی همان مشتری
+        $this->updateLaterCustomerJournals($adminId, $newCurrency, $newAccountType, $diff);
+
+        // 3. آپدیت safe_balance تراکنش‌های بعدی همه مشتریان
+        if ($this->shouldAffectSafeBalance()) {
+            $this->updateLaterAllJournals($adminId, $newCurrency, $newAccountType, $diff, $journal);
+        }
+        
+        Log::info('=== پایان updateJournal ===');
+    }
+
+    private function recalculateForCurrencyChange($adminId, $oldCurrency, $oldAccountType, $newCurrency, $newAccountType)
+    {
+        Log::info("بازمحاسبه برای تغییر ارز: {$oldCurrency} → {$newCurrency}");
+        
+        // 1. بازمحاسبه برای ارز قدیمی (بدون تراکنش فعلی)
+        $this->recalculateForCurrency($adminId, $oldCurrency, $oldAccountType, true);
+        
+        // 2. بازمحاسبه برای ارز جدید (با تراکنش فعلی)
+        $this->recalculateForCurrency($adminId, $newCurrency, $newAccountType, false);
+    }
+
+    private function recalculateForAccountTypeChange($adminId, $currency, $oldAccountType, $newAccountType)
+    {
+        Log::info("بازمحاسبه برای تغییر نوع حساب: {$oldAccountType} → {$newAccountType}");
+        
+        // 1. بازمحاسبه برای نوع حساب قدیمی (بدون تراکنش فعلی)
+        $this->recalculateForCurrency($adminId, $currency, $oldAccountType, true);
+        
+        // 2. بازمحاسبه برای نوع حساب جدید (با تراکنش فعلی)
+        $this->recalculateForCurrency($adminId, $currency, $newAccountType, false);
+    }
+
+    private function recalculateForCurrency($adminId, $currency, $accountType, $excludeCurrent = false)
+    {
+        Log::info("بازمحاسبه برای {$currency} - {$accountType}" . ($excludeCurrent ? " (بدون تراکنش فعلی)" : ""));
+        
+        $query = Transaction::where('admin_id', $adminId)
+            ->where('currency', $currency)
+            ->where('account_type', $accountType);
+            
+        if ($excludeCurrent) {
+            $query->where('id', '!=', $this->id);
+        }
+        
+        $transactions = $query->orderBy('date')
+            ->orderBy('id')
+            ->get();
+        
+        Log::info("تعداد تراکنش‌ها: " . $transactions->count());
+        
+        if ($transactions->isEmpty()) {
+            Log::info("تراکنشی وجود ندارد");
+            return;
+        }
+        
+        // 1. بازمحاسبه balance برای همه مشتریان
+        $this->recalculateCustomerBalancesForCurrency($adminId, $currency, $accountType, $transactions);
+        
+        // 2. بازمحاسبه safe_balance
+        $this->recalculateSafeBalanceForCurrency($adminId, $currency, $accountType, $transactions);
+    }
+
+    private function recalculateCustomerBalancesForCurrency($adminId, $currency, $accountType, $transactions)
+    {
+        Log::info("بازمحاسبه balance مشتریان برای {$currency}");
+        
+        // گروه‌بندی بر اساس مشتری
+        $transactionsByCustomer = $transactions->groupBy('customer_id');
+        
+        foreach ($transactionsByCustomer as $customerId => $customerTransactions) {
+            $balance = 0;
+            foreach ($customerTransactions as $tx) {
+                $journal = Journals::where('transaction_id', $tx->id)->first();
+                if (!$journal) continue;
+                
+                $signedAmount = $tx->type === 'رسید' ? $tx->amount : -$tx->amount;
+                $balance += $signedAmount;
+                
+                $oldBalance = $journal->balance;
+                $journal->update(['balance' => $balance]);
+                
+                if ($oldBalance != $balance) {
+                    Log::info("مشتری {$customerId}, TX {$tx->id}: {$oldBalance} → {$balance}");
+                }
+            }
+        }
+    }
+
+    private function recalculateSafeBalanceForCurrency($adminId, $currency, $accountType, $transactions)
+    {
+        Log::info("بازمحاسبه safe_balance برای {$currency}");
+        
+        // 1. موجودی واقعی صندوق (که قبلاً در کامپوننت Livewire آپدیت شده)
+        $realSafeBalance = $this->getRealAccountBalance($currency, $accountType, $adminId);
+        Log::info("موجودی واقعی صندوق {$currency}: {$realSafeBalance}");
+        
+        // 2. از موجودی واقعی شروع کن و برعکس برو
+        $runningSafeBalance = $realSafeBalance;
+        
+        // 3. برای هر تراکنش (از آخر به اول)، اثر معکوس آن را اعمال کن
+        foreach ($transactions->reverse() as $tx) {
+            if ($tx->shouldAffectSafeBalance()) {
+                $signedAmount = $tx->type === 'رسید' ? -$tx->amount : $tx->amount;
+                $runningSafeBalance += $signedAmount;
+            }
+        }
+        
+        Log::info("صندوق {$currency} در ابتدای تاریخ: {$runningSafeBalance}");
+        
+        // 4. حالا از اول به آخر برو و safe_balance را ست کن
+        foreach ($transactions as $tx) {
+            $journal = Journals::where('transaction_id', $tx->id)->first();
+            if (!$journal) continue;
+            
+            if ($tx->shouldAffectSafeBalance()) {
+                $signedAmount = $tx->type === 'رسید' ? $tx->amount : -$tx->amount;
+                $runningSafeBalance += $signedAmount;
+            }
+            
+            $oldSafeBalance = $journal->safe_balance;
+            $journal->update(['safe_balance' => $runningSafeBalance]);
+            
+            Log::info("TX {$tx->id} ({$tx->type} {$tx->amount}): safe_balance = {$runningSafeBalance} (قبلاً: {$oldSafeBalance})");
+        }
+    }
+
+    private function updateLaterCustomerJournals($adminId, $currency, $accountType, $diff)
+    {
+        $journal = Journals::where('transaction_id', $this->id)->first();
+        if (!$journal) return;
+        
+        $laterCustomerTransactions = Transaction::where('customer_id', $this->customer_id)
+            ->where('admin_id', $adminId)
+            ->where('currency', $currency)
+            ->where('account_type', $accountType)
+            ->where(function ($query) use ($journal) {
+                $query->where('date', '>', $journal->date)
+                    ->orWhere(function ($q) use ($journal) {
+                        $q->where('date', '=', $journal->date)
+                          ->where('id', '>', $this->id);
+                    });
+            })
+            ->orderBy('date')
+            ->orderBy('id')
+            ->get();
+
+        foreach ($laterCustomerTransactions as $tx) {
+            $customerJournal = Journals::where('transaction_id', $tx->id)->first();
+            if ($customerJournal) {
+                $oldBalance = $customerJournal->balance;
+                $customerJournal->update(['balance' => $oldBalance + $diff]);
+                Log::info("آپدیت balance برای مشتری: Journal ID={$customerJournal->id}, {$oldBalance} → " . ($oldBalance + $diff));
+            }
+        }
+    }
+
+    private function updateLaterAllJournals($adminId, $currency, $accountType, $diff, $baseJournal)
+    {
+        $laterAllJournals = Journals::where('admin_id', $adminId)
+            ->where('currency', $currency)
+            ->where('account_type', $accountType)
+            ->where(function ($query) use ($baseJournal) {
+                $query->where('date', '>', $baseJournal->date)
+                    ->orWhere(function ($q) use ($baseJournal) {
+                        $q->where('date', '=', $baseJournal->date)
+                          ->where('id', '>', $baseJournal->id);
+                    });
+            })
+            ->get();
+
+        foreach ($laterAllJournals as $laterJournal) {
+            $oldSafeBalance = $laterJournal->safe_balance;
+            $laterJournal->update(['safe_balance' => $oldSafeBalance + $diff]);
+            Log::info("آپدیت safe_balance: Journal ID={$laterJournal->id}, {$oldSafeBalance} → " . ($oldSafeBalance + $diff));
+        }
+    }
+
+    public function deleteJournal()
+    {
+        Log::info('=== شروع deleteJournal ===');
+        Log::info("تراکنش حذف شده: ID={$this->id}, Customer={$this->customer_id}, Amount={$this->amount}");
+        
+        $journal = Journals::where('transaction_id', $this->id)->first();
+        if (!$journal) {
+            Log::warning('ژورنال پیدا نشد - احتمالاً قبلاً حذف شده است');
+            $this->recalculateAfterDeletion();
+            return;
+        }
+
+        $adminId = $journal->admin_id;
+        $currency = $journal->currency;
+        $accountType = $journal->account_type;
+        
+        Log::info("پارامترها: Admin={$adminId}, Currency={$currency}, AccountType={$accountType}");
+        
+        // 1. حذف ژورنال فعلی
+        Log::info("حذف ژورنال ID={$journal->id}");
+        $journal->delete();
+
+        // 2. بازمحاسبه
+        $this->recalculateAfterDeletion($adminId, $currency, $accountType);
+        
+        Log::info('=== پایان deleteJournal ===');
+    }
+
+    private function recalculateAfterDeletion($adminId = null, $currency = null, $accountType = null)
+    {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $adminId ?? ($user->admin_id ?? $user->id);
+        $currency = $currency ?? $this->currency;
+        $accountType = $accountType ?? $this->account_type;
+        
+        Log::info("بازمحاسبه برای Admin={$adminId}, Currency={$currency}, AccountType={$accountType}");
+        
+        // 1. بازمحاسبه balance برای همه مشتریان
+        $customers = Transaction::where('admin_id', $adminId)
+            ->where('currency', $currency)
+            ->where('account_type', $accountType)
+            ->distinct('customer_id')
+            ->pluck('customer_id');
+        
+        Log::info("تعداد مشتریان برای بازمحاسبه: " . $customers->count());
+        
+        foreach ($customers as $customerId) {
+            $this->recalculateCustomerBalance($customerId, $adminId, $currency, $accountType);
+        }
+        
+        // 2. بازمحاسبه safe_balance
+        if ($this->shouldAffectSafeBalance()) {
+            $this->recalculateSafeBalance($adminId, $currency, $accountType);
+        }
+    }
+
+    private function recalculateCustomerBalance($customerId, $adminId, $currency, $accountType)
+    {
+        Log::info("بازمحاسبه balance برای مشتری {$customerId}");
+        
+        $transactions = Transaction::where('customer_id', $customerId)
+            ->where('admin_id', $adminId)
+            ->where('currency', $currency)
+            ->where('account_type', $accountType)
+            ->orderBy('date')
+            ->orderBy('id')
+            ->get();
+        
+        Log::info("تعداد تراکنش‌های موجود برای مشتری {$customerId}: " . $transactions->count());
+        
+        $balance = 0;
+        foreach ($transactions as $tx) {
+            $signedAmount = $tx->type === 'رسید' ? $tx->amount : -$tx->amount;
+            $balance += $signedAmount;
+            
+            $journal = Journals::where('transaction_id', $tx->id)->first();
+            if ($journal) {
+                $oldBalance = $journal->balance;
+                $journal->update(['balance' => $balance]);
+                Log::info("آپدیت Journal ID={$journal->id}: {$oldBalance} → {$balance}");
+            }
+        }
+    }
+
+    private function recalculateSafeBalance($adminId, $currency, $accountType)
+    {
+        Log::info("بازمحاسبه safe_balance برای {$currency}");
+        
+        $realSafeBalance = $this->getRealAccountBalance($currency, $accountType, $adminId);
+        Log::info("موجودی واقعی صندوق: {$realSafeBalance}");
+        
+        $transactions = Transaction::where('admin_id', $adminId)
+            ->where('currency', $currency)
+            ->where('account_type', $accountType)
+            ->orderBy('date')
+            ->orderBy('id')
+            ->get();
+        
+        Log::info("تعداد تراکنش‌ها: " . $transactions->count());
+        
+        $runningSafeBalance = $realSafeBalance;
+        
+        foreach ($transactions->reverse() as $tx) {
+            if ($tx->shouldAffectSafeBalance()) {
+                $signedAmount = $tx->type === 'رسید' ? -$tx->amount : $tx->amount;
+                $runningSafeBalance += $signedAmount;
+            }
+        }
+        
+        Log::info("صندوق {$currency} در ابتدای تاریخ: {$runningSafeBalance}");
+        
+        foreach ($transactions as $tx) {
+            $journal = Journals::where('transaction_id', $tx->id)->first();
+            if (!$journal) continue;
+            
+            if ($tx->shouldAffectSafeBalance()) {
+                $signedAmount = $tx->type === 'رسید' ? $tx->amount : -$tx->amount;
+                $runningSafeBalance += $signedAmount;
+            }
+            
+            $journal->update(['safe_balance' => $runningSafeBalance]);
+            Log::info("Journal ID={$journal->id} برای TX ID={$tx->id}: safe_balance={$runningSafeBalance}");
+        }
+    }
+
+    // =======================
+    // WhatsApp
+    // =======================
+    public function sendWhatsApp()
+    {
+        $customer = $this->customer;
+        if(!$customer || !$customer->whatsapp_number) return;
+
+        $phone = preg_replace('/[^0-9]/','',$customer->whatsapp_number);
 
         WhatsAppService::sendTransaction(
             $phone,
             [
-                'exchange_name' => $this->user->sarafi_name ?? '-',
-                'account_number' => $customer->fullname ?? '-',
-                'amount' => (string) ($this->amount ?? '-'),
-                'currency' => $this->currency ?? '-',
-                'transaction_type' => $this->type ?? '-',
-                'transaction_date' => $this->date ? $this->date->format('Y-m-d H:i') : '-',
-                'balance' => (string) ($this->amount ?? '-'),
-                'exchange_contact' => (string) ($this->user->phone ?? '-'),
+                'exchange_name'=>$this->user->sarafi_name ?? '-',
+                'account_number'=>$customer->fullname ?? '-',
+                'amount'=>(string)($this->amount ?? '-'),
+                'currency'=>$this->currency ?? '-',
+                'transaction_type'=>$this->type ?? '-',
+                'transaction_date'=>$this->date ? $this->date->format('Y-m-d H:i') : '-',
+                'balance'=>(string)($this->amount ?? '-'),
+                'exchange_contact'=>(string)($this->user->phone ?? '-'),
             ]
         );
     }
