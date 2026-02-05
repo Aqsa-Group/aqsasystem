@@ -37,7 +37,7 @@ class ConversionTransfers extends Model
     protected $casts = [
         'withdrawal_amount' => 'decimal:2',
         'received_amount' => 'decimal:2',
-        'currency_rate' => 'decimal:6',
+        'currency_rate' => 'decimal:3',
     ];
 
     public function fromCustomer()
