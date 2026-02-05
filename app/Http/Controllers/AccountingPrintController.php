@@ -8,55 +8,21 @@ use Illuminate\Support\Facades\Auth;
 
 class AccountingPrintController extends Controller
 {
-    public function printView($id)
-    {
-        // گرفتن رکورد اصلی با روابط
-        $accounting = Accounting::with(['market', 'shop', 'booth', 'shopkeeper'])
-            ->findOrFail($id);
+   public function printView($id)
+{
+    $accounting = Accounting::with(['market', 'shop', 'booth', 'shopkeeper'])
+        ->findOrFail($id);
 
-        if ($accounting->expanses_type === 'پول برق') {
-            // شماره ردیف قبض
-            $rowNumber = Accounting::where('expanses_type', 'پول برق')
-                ->where('admin_id', $accounting->admin_id)
-                ->where('created_at', '<=', $accounting->created_at)
-                ->count();
+    if ($accounting->expanses_type === 'پول برق') {
 
-            // همه رکوردهای برق مشتری تا زمان رکورد جاری
-            $accountings = Accounting::where('shopkeeper_id', $accounting->shopkeeper_id)
-                ->where('expanses_type', 'پول برق')
-                ->where('type', $accounting->type)
-                ->where('created_at', '<=', $accounting->created_at)
-                ->orderBy('created_at', 'asc')
-                ->get();
+        $printData = $this->preparePrintData($accounting);
 
-            $totalRemaining = 0; // جمع کل بدهی
-            $totalPaid = 0;      // جمع کل پرداخت شده
-
-            foreach ($accountings as $item) {
-                $price = $item->price ?? 0;
-                $paid = $item->paid ?? 0;
-
-                // باقی‌مانده دوره = قیمت - پرداخت شده
-                $remaining = $price - $paid;
-
-                if ($remaining > 0) {
-                    // فقط دوره‌هایی که هنوز تسویه نشده‌اند
-                    $totalRemaining += $remaining;
-                    $totalPaid += $paid;
-                }
-            }
-
-            return view('print.electricity', [
-                'accounting' => $accounting,
-                'rowNumber' => $rowNumber,
-                'totalRemaining' => $totalRemaining,
-                'totalPaid' => $totalPaid
-            ]);
-        }
-
-        return view('exports.accounting_print', compact('accounting'));
+        return view('print.electricity', $printData);
     }
-    
+
+    return view('exports.accounting_print', compact('accounting'));
+}
+
     public function printBulk($ids)
     {
         $ids = explode(',', $ids);
@@ -192,41 +158,64 @@ private function preparePrintData($accounting)
         ->where('created_at', '<=', $accounting->created_at)
         ->count();
 
-    // همه رکوردهای برق مشتری تا زمان رکورد جاری
-    $accountings = Accounting::where('shopkeeper_id', $accounting->shopkeeper_id)
+    /*
+     |--------------------------------------------------------------------------
+     | بدهی‌های قبلی همین دوکان (نه بقیه جاها)
+     |--------------------------------------------------------------------------
+     */
+    $previousAccountings = Accounting::where('shop_id', $accounting->shop_id)
         ->where('expanses_type', 'پول برق')
-        ->where('type', $accounting->type)
         ->where('created_at', '<', $accounting->created_at)
         ->orderBy('created_at', 'asc')
         ->get();
 
-    // جمع بدهی‌های دوره‌های قبل
     $previousRemaining = 0;
-    foreach ($accountings as $item) {
+
+    foreach ($previousAccountings as $item) {
         $price = $item->price ?? 0;
-        $paid = $item->paid ?? 0;
+        $paid  = $item->paid ?? 0;
+
         $remaining = max($price - $paid, 0);
         $previousRemaining += $remaining;
     }
 
-    // مبلغ دوره فعلی
-    $currentPrice = $accounting->price ?? 0;
+    /*
+     |--------------------------------------------------------------------------
+     | محاسبه قبض فعلی از روی درجه
+     |--------------------------------------------------------------------------
+     */
+    $pastDegree    = $accounting->past_degree ?? 0;
+    $currentDegree = $accounting->current_degree ?? 0;
+    $degreePrice   = $accounting->degree_price ?? 0;
 
-    // مبلغ پرداخت شده فقط دوره فعلی
+    $consumption = max($currentDegree - $pastDegree, 0);
+    $currentPrice = $consumption * $degreePrice;
+
     $currentPaid = $accounting->paid ?? 0;
 
-    // جمع کل بدهی = باقیات دوره‌های قبل + بدهی دوره فعلی
-    $totalRemaining = $previousRemaining + max($currentPrice - $currentPaid, 0);
+    $currentRemaining = max($currentPrice - $currentPaid, 0);
+
+    /*
+     |--------------------------------------------------------------------------
+     | جمع کل
+     |--------------------------------------------------------------------------
+     */
+    $totalRemaining = $previousRemaining + $currentRemaining;
 
     return [
-        'accounting' => $accounting,
-        'rowNumber' => $rowNumber,
-        'currentPrice' => $currentPrice,
+        'accounting'        => $accounting,
+        'rowNumber'         => $rowNumber,
+        'pastDegree'        => $pastDegree,
+        'currentDegree'     => $currentDegree,
+        'consumption'       => $consumption,
+        'degreePrice'       => $degreePrice,
+        'currentPrice'      => $currentPrice,
         'previousRemaining' => $previousRemaining,
-        'totalRemaining' => $totalRemaining,
-        'currentPaid' => $currentPaid,
+        'currentPaid'       => $currentPaid,
+        'totalRemaining'    => $totalRemaining,
     ];
 }
+
 
 
 }

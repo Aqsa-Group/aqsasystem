@@ -322,9 +322,24 @@ class AccountingResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('type')->label('نوع'),
-                Tables\Columns\TextColumn::make('market.name')->label('مارکت'),
-                Tables\Columns\TextColumn::make('shop.number')->label('نمبر دوکان')->toggleable(true),
-                Tables\Columns\TextColumn::make('booth.number')->label('نمبر غرفه')->toggleable(true),
+                Tables\Columns\TextColumn::make('market.name')->label('مارکت')->searchable(),
+                Tables\Columns\TextColumn::make('shop.number')
+                
+                    ->label('نمبر دوکان')
+                    ->toggleable(true)
+                    ->searchable(query: function ($query, $search) {
+                        $query->whereHas('shop', function ($q) use ($search) {
+                            $q->where('number', $search);
+                        });
+                    }),
+                Tables\Columns\TextColumn::make('booth.number')
+                    ->label('نمبر غرفه')
+                    ->toggleable(true)
+                    ->searchable(query: function ($query, $search) {
+                        $query->whereHas('booth', function ($q) use ($search) {
+                            $q->where('number', $search);
+                        });
+                    }),
                 Tables\Columns\TextColumn::make('shopkeeper_name')
                     ->label('نام دوکاندار')
                     ->getStateUsing(function ($record) {
@@ -394,20 +409,31 @@ class AccountingResource extends Resource
                 /* ********************* فیلتر نمبر دوکان ********************* */
                 SelectFilter::make('shop_id')
                     ->label('نمبر دوکان')
-                    ->options(
-                        fn() =>
-                        Shop::whereIn('market_id', $markets)->pluck('number', 'id')
-                    )
-                    ->searchable(),
+                    ->searchable()
+                    ->getSearchResultsUsing(function (string $search) use ($markets) {
+                        return Shop::whereIn('market_id', $markets)
+                            ->where('number', $search)
+                            ->pluck('number', 'id');
+                    })
+                    ->getOptionLabelUsing(
+                        fn($value) =>
+                        Shop::find($value)?->number
+                    ),
 
                 /* ********************* فیلتر نمبر غرفه ********************* */
                 SelectFilter::make('booth_id')
                     ->label('نمبر غرفه')
-                    ->options(
-                        fn() =>
-                        Booth::whereIn('market_id', $markets)->pluck('number', 'id')
-                    )
-                    ->searchable(),
+                    ->searchable()
+                    ->getSearchResultsUsing(function (string $search) use ($markets) {
+                        return Booth::whereIn('market_id', $markets)
+                            ->where('number', $search) // فقط دقیقاً همون نمبر
+                            ->pluck('number', 'id');
+                    })
+                    ->getOptionLabelUsing(
+                        fn($value) =>
+                        Booth::find($value)?->number
+                    ),
+
 
                 /* ********************* فیلتر نوع مصرف ********************* */
                 SelectFilter::make('expanses_type')

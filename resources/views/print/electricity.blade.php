@@ -7,7 +7,6 @@
     <title>پرنت پول برق - مجتمع تجارتی عادلیار</title>
 
     <style>
-       
         html,
         body {
             height: 100%;
@@ -18,14 +17,14 @@
             -webkit-print-color-adjust: exact;
         }
 
-            @font-face {
+        @font-face {
             font-family: 'Vazir';
             src: url('{{ asset("fonts/Vazir.ttf") }}') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
 
-         @font-face {
+        @font-face {
             font-family: 'Yekan';
             src: url('{{ asset("fonts/Yekan-Regular.ttf") }}') format('truetype');
             font-weight: normal;
@@ -294,7 +293,7 @@
             html,
             body {
                 width: 210mm;
-            font-family: 'Vazir', Tahoma, sans-serif !important;
+                font-family: 'Vazir', Tahoma, sans-serif !important;
                 height: 148.5mm;
                 margin: 0;
                 padding: 0;
@@ -346,8 +345,8 @@
                         <!-- متن‌ها وسط افقی -->
                         <div
                             style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align:center ;">
-         
-                            <div class="title" style="font-size: 20px; font-weight: bold; display: inline-flexbox ;   " >
+
+                            <div class="title" style="font-size: 20px; font-weight: bold; display: inline-flexbox ;   ">
 
                                 مجتمع تجارتی عادلیار
                             </div>
@@ -428,37 +427,30 @@
                         <tbody>
                             <tr>
                                 <td>درجه فعلی</td>
-                                <td style="text-align:center;">{{ $accounting->current_degree ??
-                                    $accounting->current_reading ?? '---' }}</td>
+                                <td style="text-align:center;">{{ $accounting->current_degree 
+                                     ?? '---' }}</td>
                             </tr>
                             <tr>
                                 <td>درجه قبلی</td>
-                                <td style="text-align:center;">{{ $accounting->past_degree ??
-                                    $accounting->previous_reading ?? '---' }}</td>
+                                <td style="text-align:center;">{{ $accounting->past_degree 
+                                    ?? '---' }}</td>
                             </tr>
                             <tr>
                                 <td>مقدار مصرف</td>
                                 <td style="text-align:center;">
-                                    @php
-                                    $current = $accounting->current_degree ?? $accounting->current_reading
-                                    ?? null;
-                                    $past = $accounting->past_degree ?? $accounting->previous_reading ??
-                                    null;
-                                    $usage = ($current !== null && $past !== null && is_numeric($current) &&
-                                    is_numeric($past)) ? ($current - $past) : null;
-                                    @endphp
-                                    {{ $usage !== null ? $usage : '---' }} کیلووات
+                                    {{ $consumption }} کیلووات
                                 </td>
+
                             </tr>
                             <tr>
                                 <td>قیمت فی کیلووات</td>
-                                <td style="text-align:center;">{{ number_format($accounting->degree_price ??
-                                    $accounting->rate_per_kwh ?? 0) }} افغانی</td>
+                                <td style="text-align:center;">{{ number_format($accounting->degree_price 
+                                     ?? 0) }} افغانی</td>
                             </tr>
                             <tr>
                                 <td>مبلغ قابل تادیه</td>
-                                <td style="text-align:center;">{{ number_format($accounting->price ??
-                                    $accounting->payable_amount ?? 0) }} افغانی</td>
+                                <td style="text-align:center;">{{ number_format($accounting->price 
+                             ?? 0) }} افغانی</td>
                             </tr>
                             <tr>
                                 <td>باقیات</td>
@@ -469,7 +461,7 @@
                                 <td>جمع کل </td>
                                 <td style="text-align:center;">{{ number_format($totalRemaining) }} افغانی</td>
                             </tr>
-                       
+
 
                         </tbody>
                     </table>
@@ -623,7 +615,7 @@
                     <td>جمع کل </td>
                     <td style="text-align:center;">{{ number_format($totalRemaining) }} افغانی</td>
                 </tr>
-             
+
 
             </tbody>
         </table>
