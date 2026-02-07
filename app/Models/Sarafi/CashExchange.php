@@ -154,6 +154,7 @@ class CashExchange extends Model
             'type' => $type,
             'account_type' => 'نقدی',
             'amount' => $amount,
+            'balance'=>0,
             'safe_balance' => $after,
             'date' => $this->date,
             'buysell_id' => $this->id,
