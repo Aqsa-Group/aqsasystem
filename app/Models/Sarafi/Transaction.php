@@ -159,48 +159,70 @@ class Transaction extends Model
     // =======================
     // Journal Management
     // =======================
-    public function createJournal()
-    {
-        try {
-            $user = Auth::guard('sarafi')->user();
-            $adminId = $user->admin_id ?? $user->id;
+  public function createJournal()
+{
+    try {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
 
-            $balanceBefore = static::where('customer_id', $this->customer_id)
-                ->where('currency', $this->currency)
-                ->where('account_type', $this->account_type)
-                ->where('admin_id', $adminId)
-                ->where('id', '<>', $this->id)
-                ->sum(DB::raw("CASE WHEN type='رسید' THEN amount WHEN type='برد' THEN -amount ELSE 0 END"));
+        // ----------------------------
+        // محاسبه balance مشتری
+        // ----------------------------
+        $balanceBefore = static::where('customer_id', $this->customer_id)
+            ->where('currency', $this->currency)
+            ->where('account_type', $this->account_type)
+            ->where('admin_id', $adminId)
+            ->where('id', '<>', $this->id)
+            ->sum(DB::raw("CASE WHEN type='رسید' THEN amount WHEN type='برد' THEN -amount ELSE 0 END"));
 
-            $signedAmount = $this->type === 'رسید' ? $this->amount : -$this->amount;
-            $balanceAfter = $balanceBefore + $signedAmount;
+        $signedAmount = $this->type === 'رسید' ? $this->amount : -$this->amount;
+        $balanceAfter = $balanceBefore + $signedAmount;
 
+        // ----------------------------
+        // محاسبه safe_balance از آخرین ژورنال
+        // ----------------------------
+        $lastSafeBalance = Journals::where('admin_id', $adminId)
+            ->where('currency', $this->currency)
+            ->where('account_type', $this->account_type)
+            ->orderByDesc('id')
+            ->value('safe_balance');
+
+        if ($lastSafeBalance === null) {
+            // اگر اولین تراکنش برای این ارز/اکانت است، از موجودی واقعی صندوق استفاده کن
             $safeBalance = $this->getRealAccountBalance($this->currency, $this->account_type, $adminId);
+        } else {
+            // اگر ژورنال قبلی وجود دارد، safe_balance را با signedAmount جمع کن
+            $safeBalance = $lastSafeBalance;
             if ($this->shouldAffectSafeBalance()) {
                 $safeBalance += $signedAmount;
             }
-
-            Journals::create([
-                'transaction_id' => $this->id,
-                'customer_id' => $this->customer_id,
-                'user_id' => $user->id,
-                'admin_id' => $adminId,
-                'currency' => $this->currency,
-                'type' => $this->type,
-                'account_type' => $this->account_type,
-                'amount' => $this->amount,
-                'balance' => $balanceAfter,
-                'safe_balance' => $safeBalance,
-                'description' => $this->description,
-                'date' => $this->date,
-            ]);
-
-            Log::info("Journal created for Transaction ID={$this->id}: balance={$balanceAfter}, safe_balance={$safeBalance}");
-        } catch (\Exception $e) {
-            Log::error("Error creating journal for transaction {$this->id}: " . $e->getMessage());
-            throw $e;
         }
+
+        // ----------------------------
+        // ایجاد ژورنال جدید
+        // ----------------------------
+        Journals::create([
+            'transaction_id' => $this->id,
+            'customer_id'    => $this->customer_id,
+            'user_id'        => $user->id,
+            'admin_id'       => $adminId,
+            'currency'       => $this->currency,
+            'type'           => $this->type,
+            'account_type'   => $this->account_type,
+            'amount'         => $this->amount,
+            'balance'        => $balanceAfter,
+            'safe_balance'   => $safeBalance,
+            'description'    => $this->description,
+            'date'           => $this->date,
+        ]);
+
+        Log::info("Journal created for Transaction ID={$this->id}: balance={$balanceAfter}, safe_balance={$safeBalance}");
+    } catch (\Exception $e) {
+        Log::error("Error creating journal for transaction {$this->id}: " . $e->getMessage());
+        throw $e;
     }
+}
+
 
     public function updateJournal()
     {
