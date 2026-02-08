@@ -160,14 +160,21 @@ private function preparePrintData($accounting)
 
     /*
      |--------------------------------------------------------------------------
-     | بدهی‌های قبلی همین غرفه
+     | بدهی‌های قبلی همین دوکان/غرفه
      |--------------------------------------------------------------------------
      */
-    $previousAccountings = Accounting::where('booth_id', $accounting->booth_id)
-        ->where('expanses_type', 'پول برق')
+    $previousQuery = Accounting::where('expanses_type', 'پول برق')
         ->where('created_at', '<', $accounting->created_at)
-        ->orderBy('created_at', 'asc')
-        ->get();
+        ->orderBy('created_at', 'asc');
+
+    // اگر shop_id وجود دارد بر اساس shop_id، در غیر این صورت بر اساس booth_id
+    if ($accounting->shop_id) {
+        $previousQuery->where('shop_id', $accounting->shop_id);
+    } elseif ($accounting->booth_id) {
+        $previousQuery->where('booth_id', $accounting->booth_id);
+    }
+
+    $previousAccountings = $previousQuery->get();
 
     $previousRemaining = 0;
 
@@ -189,7 +196,7 @@ private function preparePrintData($accounting)
     $degreePrice   = $accounting->degree_price ?? 0;
 
     $consumption = max($currentDegree - $pastDegree, 0);
-    $currentPrice = $accounting->price ?? ($consumption * $degreePrice);
+    $currentPrice = $accounting->price ?? 0; // استفاده از price ذخیره شده در دیتابیس
 
     $currentPaid = $accounting->paid ?? 0;
     $currentRemaining = max($currentPrice - $currentPaid, 0);
@@ -209,11 +216,10 @@ private function preparePrintData($accounting)
         'consumption'       => $consumption,
         'degreePrice'       => $degreePrice,
         'currentPrice'      => $currentPrice,
-        'previousRemaining' => $previousRemaining,
         'currentPaid'       => $currentPaid,
+        'previousRemaining' => $previousRemaining,
         'totalRemaining'    => $totalRemaining,
     ];
 }
-
 
 }
