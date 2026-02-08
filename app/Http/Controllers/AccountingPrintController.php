@@ -160,10 +160,10 @@ private function preparePrintData($accounting)
 
     /*
      |--------------------------------------------------------------------------
-     | بدهی‌های قبلی همین دوکان (نه بقیه جاها)
+     | بدهی‌های قبلی همین غرفه
      |--------------------------------------------------------------------------
      */
-    $previousAccountings = Accounting::where('shop_id', $accounting->shop_id)
+    $previousAccountings = Accounting::where('booth_id', $accounting->booth_id)
         ->where('expanses_type', 'پول برق')
         ->where('created_at', '<', $accounting->created_at)
         ->orderBy('created_at', 'asc')
@@ -181,7 +181,7 @@ private function preparePrintData($accounting)
 
     /*
      |--------------------------------------------------------------------------
-     | محاسبه قبض فعلی از روی درجه
+     | محاسبه قبض فعلی
      |--------------------------------------------------------------------------
      */
     $pastDegree    = $accounting->past_degree ?? 0;
@@ -189,10 +189,9 @@ private function preparePrintData($accounting)
     $degreePrice   = $accounting->degree_price ?? 0;
 
     $consumption = max($currentDegree - $pastDegree, 0);
-    $currentPrice = $consumption * $degreePrice;
+    $currentPrice = $accounting->price ?? ($consumption * $degreePrice);
 
     $currentPaid = $accounting->paid ?? 0;
-
     $currentRemaining = max($currentPrice - $currentPaid, 0);
 
     /*
@@ -215,7 +214,6 @@ private function preparePrintData($accounting)
         'totalRemaining'    => $totalRemaining,
     ];
 }
-
 
 
 }

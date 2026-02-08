@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('journal', function (Blueprint $table) {
               $table->foreignId('safe_deal_id')
                 ->nullable()
-                ->constrained('safe_deals_revenue')
+                ->constrained('safe_deals')
                 ->cascadeOnDelete();
         });
     }
