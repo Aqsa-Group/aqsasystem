@@ -564,24 +564,32 @@
                                                 @if (empty($transaction->customer_id) &&
                                                 !empty($transaction->withdraw_id))
                                                 برداشت
-                                                @elseif(empty($transaction->customer_id) && $transaction->is_sell_table
+
+                                                @elseif (empty($transaction->customer_id) && $transaction->is_sell_table
                                                 == 1)
                                                 معامله از صندوق
-                                                @elseif(empty($transaction->customer_id) &&
+
+                                                @elseif (empty($transaction->customer_id) &&
                                                 $transaction->withdraw_external_safe_id)
                                                 معاملات بیرونی
+
+                                                @elseif (empty($transaction->customer_id) && $transaction->safe_deal_id)
+                                                تبادله بین صندوق ها
+
                                                 @else
-                                                {{ $transaction->customer->fullname ?? 'نامشخص' }}
+                                                {{ $transaction->customer?->fullname ?? 'نامشخص' }}
                                                 @endif
                                             </div>
+
                                             <div class="text-gray-500 dark:text-gray-400 text-sm mt-1">
-                                                @if (empty($transaction->customer_id) && $transaction->is_sell_table ==
-                                                1)
-                                                @else
-                                                {{ $transaction->customer->account_number ?? '' }}
+                                                @if (!(empty($transaction->customer_id) && $transaction->is_sell_table
+                                                == 1))
+                                                {{ $transaction->customer?->account_number ?? '' }}
                                                 @endif
                                             </div>
                                         </td>
+
+
 
                                         <td class="px-2 py-4 text-center whitespace-nowrap">{{ $transaction->type }}
                                         </td>
