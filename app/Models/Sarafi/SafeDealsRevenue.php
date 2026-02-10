@@ -70,70 +70,94 @@ class SafeDealsRevenue extends Model
     /**
      * Sync journals for withdraw
      */
-    protected static function syncJournals($model)
-    {
-        DB::transaction(function () use ($model) {
+   protected static function syncJournals($model)
+{
+    DB::transaction(function () use ($model) {
 
-            $user = Auth::guard('sarafi')->user()
-                ?? User::find($model->user_id);
+        $user = Auth::guard('sarafi')->user()
+            ?? User::find($model->user_id);
 
-            $adminId = $model->admin_id;
-            $currency = strtolower($model->currency);
-            $amount   = (float) $model->amount;
+        $adminId = $model->admin_id;
+        $currency = strtolower($model->currency);
+        $amount   = (float) $model->amount;
 
-            /*
+        /*
         |--------------------------------------------------------------------------
-        | فقط خواندن موجودی فعلی صندوق (بدون تغییر واقعی)
+        | خواندن موجودی واقعی بر اساس account_type
         |--------------------------------------------------------------------------
         */
-            $safe = CurrencySafe::where('admin_id', $adminId)
+        if ($model->account_type === 'نقدی') {
+            $account = CurrencySafe::where('admin_id', $adminId)
                 ->lockForUpdate()
                 ->first();
 
-            if (!$safe || !isset($safe->{$currency})) {
+            if (!$account || !isset($account->{$currency})) {
                 throw new \Exception("ارز {$currency} در صندوق یافت نشد");
             }
 
-            $currentBalance = (float) $safe->{$currency};
+        } elseif ($model->account_type === 'بانکی') {
+            $account = BankAccount::where('admin_id', $adminId)
+                ->lockForUpdate()
+                ->first();
 
-            /*
+            if (!$account || !isset($account->{$currency})) {
+                throw new \Exception("ارز {$currency} در حساب بانکی یافت نشد");
+            }
+
+        } else {
+            throw new \Exception("نوع حساب نامعتبر است: {$model->account_type}");
+        }
+
+        $currentBalance = (float) $account->{$currency};
+
+        /*
         |--------------------------------------------------------------------------
         | حذف ژورنال‌های قبلی (برای ویرایش)
         |--------------------------------------------------------------------------
         */
-            Journals::where('safe_deal_revenue_id', $model->id)->delete();
+        Journals::where('safe_deal_revenue_id', $model->id)->delete();
 
-            /*
+        /*
         |--------------------------------------------------------------------------
-        | ثبت ژورنال برداشت یا رسید
+        | ثبت ژورنال
         |--------------------------------------------------------------------------
         */
-            $safeBalance = $currentBalance;
+        $safeBalance = $currentBalance;
+        if ($model->account_type === 'نقدی') {
+            // اگر بخوای فقط نمایش بدیم، نیازی به تغییر نیست
             if ($model->type === 'برد') {
-                $safeBalance -= $amount; // فقط محاسبه برای ژورنال
+                $safeBalance -= $amount; // فقط برای نمایش ژورنال
             } elseif ($model->type === 'رسید') {
                 $safeBalance += $amount;
             }
+        } else {
+            // برای بانکی هم مثل نقدی، فقط نمایش
+            if ($model->type === 'برد') {
+                $safeBalance -= $amount;
+            } elseif ($model->type === 'رسید') {
+                $safeBalance += $amount;
+            }
+        }
 
-            Journals::create([
-                'customer_id' => null,
-                'safe_deal_revenue_id' => $model->id,
-                'type'        => 'برد',
-                'account_type' => $model->account_type,
-                'currency'    => strtoupper($currency),
-                'amount'      => $amount,
-                'balance'     => null,
-                'safe_balance' => $safeBalance,
-                'description' => $model->description
-                    . ($model->expanses_type ? ' (' . $model->expanses_type . ')' : ''),
-                'user_id'     => $model->user_id,
-                'admin_id'    => $adminId,
-                'date'        => $model->date,
-                'created_at'  => now(),
-                'updated_at'  => now(),
-            ]);
-        });
-    }
+        Journals::create([
+            'customer_id' => null,
+            'safe_deal_revenue_id' => $model->id,
+            'type'        => $model->type,
+            'account_type' => $model->account_type,
+            'currency'    => $model->currency,
+            'amount'      => $amount,
+            'balance'     => null,
+            'safe_balance'=> $safeBalance,
+            'description' => $model->description
+                . ($model->expanses_type ? ' (' . $model->expanses_type . ')' : ''),
+            'user_id'     => $model->user_id,
+            'admin_id'    => $adminId,
+            'date'        => $model->date,
+            'created_at'  => now(),
+            'updated_at'  => now(),
+        ]);
+    });
+}
 
 
     /**

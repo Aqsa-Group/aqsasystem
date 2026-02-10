@@ -109,12 +109,8 @@ class SafeDealReports extends Component
         }
     }
 
-    public function toggleTransactionType()
-    {
-        $this->transactionType = $this->transactionType === 'رسید' ? 'برد' : 'رسید';
-    }
 
-    public function toggleAccountType()
+    public function toggleTransactionType()
     {
         $this->accountType = $this->accountType === 'نقدی' ? 'بانکی' : 'نقدی';
     }
@@ -379,156 +375,155 @@ class SafeDealReports extends Component
             $this->amount = number_format((int)$this->amount);
         }
     }
-private function updateCurrencySafe($adminId, $currency, $amount)
-{
-    $safe = CurrencySafe::where('admin_id', $adminId)
-        ->lockForUpdate()
-        ->first();
+    private function updateCurrencySafe($adminId, $currency, $amount)
+    {
+        $safe = CurrencySafe::where('admin_id', $adminId)
+            ->lockForUpdate()
+            ->first();
 
-    if (!$safe) {
-        throw new \Exception('صندوق نقدی یافت نشد');
-    }
-
-    $column = strtolower(trim($currency));
-
-    // ✅ اصلاح شده: بررسی عدم وجود ستون
-    if (!Schema::connection($safe->getConnectionName())
-        ->hasColumn($safe->getTable(), $column)) {
-        throw new \Exception('ارز نامعتبر: ' . $currency);
-    }
-
-    $currentBalance = (float) ($safe->$column ?? 0);
-    $newBalance = $currentBalance + $amount;
-
-    if ($amount < 0 && $newBalance < 0) {
-        throw new \Exception(
-            'موجودی صندوق نقدی کافی نیست. موجودی فعلی: '
-                . number_format($currentBalance) . ' ' . strtoupper($currency)
-        );
-    }
-
-    $safe->$column = $newBalance;
-    $safe->save();
-}
-
-private function updateBankSafe($adminId, $currency, $amount)
-{
-    $bank = BankAccount::where('admin_id', $adminId)
-        ->lockForUpdate()
-        ->first();
-
-    if (!$bank) {
-        throw new \Exception('صندوق بانکی یافت نشد');
-    }
-
-    $column = strtolower(trim($currency));
-
-    // ✅ اصلاح شده: بررسی عدم وجود ستون
-    if (!Schema::connection($bank->getConnectionName())
-        ->hasColumn($bank->getTable(), $column)) {
-        throw new \Exception('ارز نامعتبر: ' . $currency);
-    }
-
-    $currentBalance = (float) ($bank->$column ?? 0);
-    $newBalance = $currentBalance + $amount;
-
-    if ($amount < 0 && $newBalance < 0) {
-        throw new \Exception(
-            'موجودی صندوق بانکی کافی نیست. موجودی فعلی: '
-                . number_format($currentBalance) . ' ' . strtoupper($currency)
-        );
-    }
-
-    $bank->$column = $newBalance;
-    $bank->save();
-}
-
-    public function submitTransaction()
-{
-    $this->amount = str_replace(',', '', $this->amount);
-
-    $this->validate([
-        'currency' => 'required',
-        'amount' => 'required|numeric|min:0',
-        'date' => 'required',
-        'zone' => 'required',
-        'description' => 'required',
-    ]);
-
-    try {
-        $user = Auth::guard('sarafi')->user();
-        $adminId = $user->admin_id ?? $user->id;
-
-        DB::beginTransaction();
-
-        // 1. ایجاد تراکنش اصلی
-        $safeDeal = SafeDealsRevenue::create([
-            'user_id' => $user->id,
-            'admin_id' => $adminId,
-            'currency' => $this->currency,
-            'amount' => $this->amount,
-            'type' => 'برد',
-            'account_type' => $this->accountType,
-            'date' => $this->date,
-            'description' => $this->description . ($this->selectedAccount ? ' - انتقال به حساب مشتری' : ''),
-            'customer_id' => $this->selectedAccount,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        // 2. به‌روزرسانی موجودی صندوق
-        if ($this->accountType === 'نقدی') {
-            // از صندوق کم می‌شود
-            $this->updateCurrencySafe($adminId, $this->currency, -$this->amount);
-            
-            // اگر به مشتری انتقال داده شد، به صندوق اضافه می‌شود
-            if ($this->selectedAccount) {
-                $this->updateCurrencySafe($adminId, $this->currency, +$this->amount);
-            }
-        } else { // بانکی
-            $this->updateBankSafe($adminId, $this->currency, -$this->amount);
-            
-            if ($this->selectedAccount) {
-                $this->updateBankSafe($adminId, $this->currency, +$this->amount);
-            }
+        if (!$safe) {
+            throw new \Exception('صندوق نقدی یافت نشد');
         }
 
-        // 3. ایجاد تراکنش مشتری (اگر مشتری انتخاب شده)
-        if ($this->selectedAccount) {
-            Transaction::create([
-                'customer_id' => $this->selectedAccount,
+        $column = strtolower(trim($currency));
+
+        // ✅ اصلاح شده: بررسی عدم وجود ستون
+        if (!Schema::connection($safe->getConnectionName())
+            ->hasColumn($safe->getTable(), $column)) {
+            throw new \Exception('ارز نامعتبر: ' . $currency);
+        }
+
+        $currentBalance = (float) ($safe->$column ?? 0);
+        $newBalance = $currentBalance + $amount;
+
+        if ($amount < 0 && $newBalance < 0) {
+            throw new \Exception(
+                'موجودی صندوق نقدی کافی نیست. موجودی فعلی: '
+                    . number_format($currentBalance) . ' ' . strtoupper($currency)
+            );
+        }
+
+        $safe->$column = $newBalance;
+        $safe->save();
+    }
+
+    private function updateBankSafe($adminId, $currency, $amount)
+    {
+        $bank = BankAccount::where('admin_id', $adminId)
+            ->lockForUpdate()
+            ->first();
+
+        if (!$bank) {
+            throw new \Exception('صندوق بانکی یافت نشد');
+        }
+
+        $column = strtolower(trim($currency));
+
+        // ✅ اصلاح شده: بررسی عدم وجود ستون
+        if (!Schema::connection($bank->getConnectionName())
+            ->hasColumn($bank->getTable(), $column)) {
+            throw new \Exception('ارز نامعتبر: ' . $currency);
+        }
+
+        $currentBalance = (float) ($bank->$column ?? 0);
+        $newBalance = $currentBalance + $amount;
+
+        if ($amount < 0 && $newBalance < 0) {
+            throw new \Exception(
+                'موجودی صندوق بانکی کافی نیست. موجودی فعلی: '
+                    . number_format($currentBalance) . ' ' . strtoupper($currency)
+            );
+        }
+
+        $bank->$column = $newBalance;
+        $bank->save();
+    }
+
+    public function submitTransaction()
+    {
+        $this->amount = str_replace(',', '', $this->amount);
+
+        $this->validate([
+            'currency' => 'required',
+            'amount' => 'required|numeric|min:0',
+            'date' => 'required',
+            'zone' => 'required',
+            'description' => 'required',
+        ]);
+
+        try {
+            $user = Auth::guard('sarafi')->user();
+            $adminId = $user->admin_id ?? $user->id;
+
+            DB::beginTransaction();
+
+            // 1. ایجاد تراکنش اصلی
+            $safeDeal = SafeDealsRevenue::create([
                 'user_id' => $user->id,
                 'admin_id' => $adminId,
                 'currency' => $this->currency,
                 'amount' => $this->amount,
-                'type' => 'رسید',
+                'type' => 'برد',
                 'account_type' => $this->accountType,
                 'date' => $this->date,
-                'description' => $this->description,
-                'zone' => 'هرات',
-                'by' => $this->by ?? $user->name,
-                'safe_deals_revenue_id' => $safeDeal->id,
+                'description' => $this->description . ($this->selectedAccount ? ' - انتقال به حساب مشتری' : ''),
+                'customer_id' => $this->selectedAccount,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+
+            // 2. به‌روزرسانی موجودی صندوق
+            if ($this->accountType === 'نقدی') {
+                // از صندوق کم می‌شود
+                $this->updateCurrencySafe($adminId, $this->currency, -$this->amount);
+
+                // اگر به مشتری انتقال داده شد، به صندوق اضافه می‌شود
+                if ($this->selectedAccount) {
+                    $this->updateCurrencySafe($adminId, $this->currency, +$this->amount);
+                }
+            } else { // بانکی
+                $this->updateBankSafe($adminId, $this->currency, -$this->amount);
+
+                if ($this->selectedAccount) {
+                    $this->updateBankSafe($adminId, $this->currency, +$this->amount);
+                }
+            }
+
+            // 3. ایجاد تراکنش مشتری (اگر مشتری انتخاب شده)
+            if ($this->selectedAccount) {
+                Transaction::create([
+                    'customer_id' => $this->selectedAccount,
+                    'user_id' => $user->id,
+                    'admin_id' => $adminId,
+                    'currency' => $this->currency,
+                    'amount' => $this->amount,
+                    'type' => 'رسید',
+                    'account_type' => $this->accountType,
+                    'date' => $this->date,
+                    'description' => $this->description,
+                    'zone' => 'هرات',
+                    'by' => $this->by ?? $user->name,
+                    'safe_deals_revenue_id' => $safeDeal->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+
+            DB::commit();
+
+            Cache::forget($this->cacheKeys['transactions_list'] . $adminId);
+
+            $this->resetForm();
+            $this->calculateSafeBalances();
+            $this->updateTransactions();
+
+            session()->flash('message', 'تراکنش با موفقیت ثبت شد.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error submitting transaction: ' . $e->getMessage());
+            session()->flash('error', 'خطا در ثبت تراکنش: ' . $e->getMessage());
         }
-
-        DB::commit();
-
-        Cache::forget($this->cacheKeys['transactions_list'] . $adminId);
-
-        $this->resetForm();
-        $this->calculateSafeBalances();
-        $this->updateTransactions();
-
-        session()->flash('message', 'تراکنش با موفقیت ثبت شد.');
-
-    } catch (\Exception $e) {
-        DB::rollBack();
-        Log::error('Error submitting transaction: ' . $e->getMessage());
-        session()->flash('error', 'خطا در ثبت تراکنش: ' . $e->getMessage());
     }
-}
 
     public function submitAndPrint()
     {

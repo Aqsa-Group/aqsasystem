@@ -569,9 +569,15 @@
                                                 == 1)
                                                 معامله از صندوق
 
+
                                                 @elseif (empty($transaction->customer_id) &&
                                                 $transaction->withdraw_external_safe_id)
                                                 معاملات بیرونی
+
+
+                                                @elseif (empty($transaction->customer_id) &&
+                                                $transaction->safe_deal_revenue_id)
+                                                برداشت تبادله صندوق ها
 
                                                 @elseif (empty($transaction->customer_id) && $transaction->safe_deal_id)
                                                 تبادله بین صندوق ها

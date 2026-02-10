@@ -358,21 +358,40 @@
                 @foreach ($transactions as $index => $transaction)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>
-                        @if (empty($transaction->customer_id) && !empty($transaction->withdraw_id))
-                        <div style="font-weight: bold;">برداشت</div>
-                        @elseif (empty($transaction->customer_id) && $transaction->is_sell_table == 1)
-                        <div style="font-weight: bold;">معامله از صندوق</div>
-                        @else
-                        <div style="font-weight: bold;">
-                            {{ $transaction->customer->fullname ?? 'نامشخص' }}
+                    <td class="px-2 py-4 vazir text-[14px] md:text-[16px] text-right w-40 whitespace-nowrap">
+                        <div class="font-medium">
+                            @if (empty($transaction->customer_id) &&
+                            !empty($transaction->withdraw_id))
+                            برداشت
+
+                            @elseif (empty($transaction->customer_id) && $transaction->is_sell_table
+                            == 1)
+                            معامله از صندوق
+
+
+                            @elseif (empty($transaction->customer_id) &&
+                            $transaction->withdraw_external_safe_id)
+                            معاملات بیرونی
+
+
+                            @elseif (empty($transaction->customer_id) &&
+                            $transaction->safe_deal_revenue_id)
+                            برداشت تبادله صندوق ها
+
+                            @elseif (empty($transaction->customer_id) && $transaction->safe_deal_id)
+                            تبادله بین صندوق ها
+
+                            @else
+                            {{ $transaction->customer?->fullname ?? 'نامشخص' }}
+                            @endif
                         </div>
-                        @if (!empty($transaction->customer_id) && $transaction->customer)
-                        <div style="font-size: 7pt; color: #666;">
-                            {{ $transaction->customer->account_number ?? '' }}
+
+                        <div class="text-gray-500 dark:text-gray-400 text-sm mt-1">
+                            @if (!(empty($transaction->customer_id) && $transaction->is_sell_table
+                            == 1))
+                            {{ $transaction->customer?->account_number ?? '' }}
+                            @endif
                         </div>
-                        @endif
-                        @endif
                     </td>
                     <td>{{ $transaction->type }}</td>
                     <td>{{ $transaction->account_type }}</td>
