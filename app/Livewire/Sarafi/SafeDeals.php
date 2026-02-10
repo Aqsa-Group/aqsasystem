@@ -1274,67 +1274,67 @@ class SafeDeals extends Component
         $this->createSafeJournal($deal);
     }
 
-private function createSafeJournal(SafeDeal $deal)
-{
-    $user = Auth::guard('sarafi')->user();
-    $adminId = $user->admin_id ?? $user->id;
+    private function createSafeJournal(SafeDeal $deal)
+    {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
 
-    /*
-    |--------------------------------------------------------------------------
-    | تعیین نوع ژورنال و مقدار (فقط نمایشی)
-    |--------------------------------------------------------------------------
-    */
-    if ($deal->from === 'نقدی') {
-        $type     = 'برد';
-        $amount   = $deal->withdraw_amount;
-        $currency = $deal->from_currency;
-    } else {
-        $type     = 'رسید';
-        $amount   = $deal->receive_amount;
-        $currency = $deal->to_currency;
+        /*
+        |--------------------------------------------------------------------------
+        | تعیین نوع ژورنال و مقدار (فقط نمایشی)
+        |--------------------------------------------------------------------------
+        */
+        if ($deal->from === 'نقدی') {
+            $type     = 'برد';
+            $amount   = $deal->withdraw_amount;
+            $currency = $deal->from_currency;
+        } else {
+            $type     = 'رسید';
+            $amount   = $deal->receive_amount;
+            $currency = $deal->to_currency;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | فقط خواندن موجودی فعلی صندوق (بدون محاسبه)
+        |--------------------------------------------------------------------------
+        */
+        $safe = CurrencySafe::where('admin_id', $adminId)
+            ->lockForUpdate()
+            ->first();
+
+        if (!$safe || !isset($safe->{$currency})) {
+            throw new \Exception("ارز {$currency} در صندوق یافت نشد");
+        }
+
+        $currentBalance = $safe->{$currency}; // ✅ همین، بدون دست‌کاری
+
+        /*
+        |--------------------------------------------------------------------------
+        | ثبت ژورنال بدون تغییر صندوق
+        |--------------------------------------------------------------------------
+        */
+        Journals::create([
+            'safe_deal_id' => $deal->id,
+            'user_id'      => $user->id,
+            'admin_id'     => $adminId,
+            'currency'     => $currency,
+            'type'         => $type,
+            'account_type' => 'نقدی',
+            'amount'       => $amount,
+            'balance'      => null,
+            'safe_balance' => $currentBalance, // ✅ 9000
+            'description'  => $deal->description,
+            'date'         => $deal->date,
+        ]);
+
+        Log::info('Safe journal created (read-only safe)', [
+            'deal_id'  => $deal->id,
+            'type'     => $type,
+            'currency' => $currency,
+            'safe_balance' => $currentBalance,
+        ]);
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | فقط خواندن موجودی فعلی صندوق (بدون محاسبه)
-    |--------------------------------------------------------------------------
-    */
-    $safe = CurrencySafe::where('admin_id', $adminId)
-        ->lockForUpdate()
-        ->first();
-
-    if (!$safe || !isset($safe->{$currency})) {
-        throw new \Exception("ارز {$currency} در صندوق یافت نشد");
-    }
-
-    $currentBalance = $safe->{$currency}; // ✅ همین، بدون دست‌کاری
-
-    /*
-    |--------------------------------------------------------------------------
-    | ثبت ژورنال بدون تغییر صندوق
-    |--------------------------------------------------------------------------
-    */
-    Journals::create([
-        'safe_deal_id' => $deal->id,
-        'user_id'      => $user->id,
-        'admin_id'     => $adminId,
-        'currency'     => $currency,
-        'type'         => $type,
-        'account_type' => 'نقدی',
-        'amount'       => $amount,
-        'balance'      => null,
-        'safe_balance' => $currentBalance, // ✅ 9000
-        'description'  => $deal->description,
-        'date'         => $deal->date,
-    ]);
-
-    Log::info('Safe journal created (read-only safe)', [
-        'deal_id'  => $deal->id,
-        'type'     => $type,
-        'currency' => $currency,
-        'safe_balance' => $currentBalance,
-    ]);
-}
 
 
 

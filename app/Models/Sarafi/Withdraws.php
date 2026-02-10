@@ -53,67 +53,68 @@ class Withdraws extends Model
     /**
      * Sync journals for withdraw
      */
-    protected static function syncJournals($model, $isDeleting = false)
-    {
-        DB::transaction(function () use ($model, $isDeleting) {
-            $user = Auth::guard('sarafi')->user();
-            // اگر کاربر لاگین نیست، از user_id مدل استفاده کن
-            if (!$user) {
-                $user = User::find($model->user_id);
-            }
-            $adminId = $model->admin_id;
+ protected static function syncJournals($model)
+{
+    DB::transaction(function () use ($model) {
 
-            $currency = $model->currency;
-            $amount = (float) $model->amount;
+        $user = Auth::guard('sarafi')->user();
+        if (!$user) {
+            $user = User::find($model->user_id);
+        }
 
-            // موجودی قبل از برداشت - از صندوق بگیرید
-            $column = strtolower($currency);
-            $safe = CurrencySafe::where('admin_id', $adminId)->first();
-            
-            if (!$safe) {
-                throw new \Exception('صندوق ارزی یافت نشد');
-            }
+        $adminId = $model->admin_id;
+        $currency = $model->currency;
+        $amount   = (float) $model->amount;
 
-            // محاسبه بیلانس درست
-            $currentBalance = (float) $safe->{$column};
-            
-            if ($isDeleting) {
-                // اگر در حال حذف هستیم، بیلانس بعدی = بیلانس فعلی + مبلغ (چون مبلغ برمی‌گردد)
-                $afterBalance = $currentBalance + $amount;
-            } else {
-                // اگر در حال ایجاد یا ویرایش هستیم، بیلانس بعدی = بیلانس فعلی - مبلغ
-                // نکته: در کامپوننت قبلاً مبلغ را کم کرده‌ایم، پس بیلانس فعلی صندوق درست است
-                $afterBalance = $currentBalance;
-                // برای محاسبه بیلانس قبل: بیلانس فعلی + مبلغ (چون قبلاً کم شده)
-                $beforeBalance = $currentBalance + $amount;
-            }
+        /*
+        |--------------------------------------------------------------------------
+        | فقط خواندن موجودی فعلی صندوق (بدون محاسبه)
+        |--------------------------------------------------------------------------
+        */
+        $column = strtolower($currency);
 
-            // حذف ژورنال‌های قبلی (برای ویرایش)
-            Journals::where('withdraw_id', $model->id)->delete();
+        $safe = CurrencySafe::where('admin_id', $adminId)
+            ->lockForUpdate()
+            ->first();
 
-            // فقط اگر حذف نمی‌شود، ژورنال جدید ایجاد کن
-            if (!$isDeleting) {
-                // ثبت ژورنال برداشت (برد)
-                Journals::create([
-                    'customer_id' => null,
-                    'withdraw_id' => $model->id,
-                    'type' => 'برد',
-                    'account_type' => 'نقدی',
-                    'currency' => $currency,
-                    'amount' => $amount,
-                    'balance' => $afterBalance,
-                    'description' => $model->description . 
-                        ($model->expanses_type ? ' (' . $model->expanses_type . ')' : ''),
-                    'staff_id' => $model->staff_id,
-                    'user_id' => $model->user_id,
-                    'admin_id' => $adminId,
-                    'date' => $model->date,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
-        });
-    }
+        if (!$safe || !isset($safe->{$column})) {
+            throw new \Exception("ارز {$currency} در صندوق یافت نشد");
+        }
+
+        $currentBalance = (float) $safe->{$column}; // ✅ فقط خواندن
+
+        /*
+        |--------------------------------------------------------------------------
+        | حذف ژورنال‌های قبلی (برای ویرایش)
+        |--------------------------------------------------------------------------
+        */
+        Journals::where('withdraw_id', $model->id)->delete();
+
+        /*
+        |--------------------------------------------------------------------------
+        | ثبت ژورنال برداشت (نمایشی – بدون تغییر صندوق)
+        |--------------------------------------------------------------------------
+        */
+        Journals::create([
+            'customer_id' => null,
+            'withdraw_id' => $model->id,
+            'type'        => 'برد',
+            'account_type'=> 'نقدی',
+            'currency'    => $currency,
+            'amount'      => $amount,
+            'balance'     => null,
+            'safe_balance'=> $currentBalance, // ✅ دقیقاً مثل SafeDeal
+            'description' => $model->description .
+                ($model->expanses_type ? ' (' . $model->expanses_type . ')' : ''),
+            'staff_id'    => $model->staff_id,
+            'user_id'     => $model->user_id,
+            'admin_id'    => $adminId,
+            'date'        => $model->date,
+            'created_at'  => now(),
+            'updated_at'  => now(),
+        ]);
+    });
+}
 
     /**
      * Boot method
