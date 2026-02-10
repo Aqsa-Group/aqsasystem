@@ -52,7 +52,8 @@ class Journals extends Model
         'date',
         'is_sell_table',
         'safe_balance',
-        'safe_deal_id'
+        'safe_deal_id',
+        'safe_deal_revenue_id',
 
     ];
 
@@ -137,10 +138,19 @@ class Journals extends Model
 
       public function safe_deal()
     {
-        return $this->belongsTo(SafeDealsRevenue::class ,'safe_deal_id');
+        return $this->belongsTo(SafeDeal::class ,'safe_deal_id');
     }
 
 
+
+      public function safe_deal_revenue()
+    {
+        return $this->belongsTo(SafeDealsRevenue::class ,'  safe_deal_revenue_id');
+    }
+
+
+
+  
 
     /* =======================
      | Scopes

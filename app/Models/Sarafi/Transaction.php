@@ -23,7 +23,7 @@ class Transaction extends Model
         'account_type', 'zone', 'by', 'date', 'description', 'transaction_file',
         'conversion_transfer_id', 'conversion_in_account_id', 'account_to_id',
         'remittance_id', 'changerdeal_id', 'withdrawbank_id',
-        'external_transaction_id', 'safe_deal_id'
+        'external_transaction_id', 'safe_deal_id', 'safe_deals_revenue_id',
     ];
 
     protected $casts = [
@@ -40,6 +40,8 @@ class Transaction extends Model
     public function Safedeals() { return $this->belongsTo(SafeDeal::class, 'safe_deal_id'); }
     public function changerdeal() { return $this->belongsTo(ChangerDeal::class, 'changerdeal_id'); }
     public function withdrawbank() { return $this->belongsTo(WithdrawsBanks::class, 'withdrawbank_id'); }
+    public function safedealsrevenue() { return $this->belongsTo(SafeDealsRevenue::class, 'safe_deals_revenue_id'); }
+
     public function accounttoid() { return $this->belongsTo(SendToAccount::class, 'account_to_id'); }
     public function conversionInAccount() { return $this->belongsTo(ConversionInAccounts::class, 'conversion_in_account_id'); }
     public function externalTransaction() { return $this->belongsTo(ExternalTransactions::class, 'external_transaction_id'); }

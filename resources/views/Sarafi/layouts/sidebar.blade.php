@@ -2564,7 +2564,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
                                         stroke-linejoin="round" />
                                 </svg>
 
-                                 عواید تبادله بین صندوق ها
+                                 گزارشات تبادله بین صندوق ها
                             </a>
                             @endif
                         </div>
