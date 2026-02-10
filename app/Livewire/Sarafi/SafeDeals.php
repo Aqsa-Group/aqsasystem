@@ -1322,8 +1322,8 @@ class SafeDeals extends Component
             'type'         => $type,
             'account_type' => 'نقدی',
             'amount'       => $amount,
-            'balance'      => null,
-            'safe_balance' => $currentBalance, // ✅ 9000
+            'balance'      => 0,
+            'safe_balance' => $currentBalance, 
             'description'  => $deal->description,
             'date'         => $deal->date,
         ]);
