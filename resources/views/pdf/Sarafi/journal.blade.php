@@ -362,11 +362,11 @@
                         <div class="font-medium">
                             @if (empty($transaction->customer_id) &&
                             !empty($transaction->withdraw_id))
-                            برداشت
+                             برداشت
 
                             @elseif (empty($transaction->customer_id) && $transaction->is_sell_table
                             == 1)
-                            معامله از صندوق
+                            معامله از صندوق 
 
 
                             @elseif (empty($transaction->customer_id) &&
@@ -382,7 +382,7 @@
                             تبادله بین صندوق ها
 
                             @else
-                            {{ $transaction->customer?->fullname ?? 'نامشخص' }}
+                            {{ $transaction->customer?->fullname ?? 'نا معلوم' }}
                             @endif
                         </div>
 
