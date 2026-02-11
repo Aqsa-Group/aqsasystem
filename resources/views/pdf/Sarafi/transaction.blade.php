@@ -162,7 +162,7 @@ $adminUser = $currentUser->role === 'admin'
 
 
         .note {
-            font-size: 14px;
+            font-size: 12px;
             color: black;
             text-align: center;
             margin-top: 15px;
