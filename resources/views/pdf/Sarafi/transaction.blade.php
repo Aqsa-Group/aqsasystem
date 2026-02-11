@@ -288,32 +288,44 @@ $adminUser = $currentUser->role === 'admin'
         </div> --}}
 
         <div class="contact-info">
-            <table style="width:100%; border-collapse: collapse; pass">
-                <tr>
-                    <td>
-                        <strong>تماس:</strong> {{ $currentUser->phone ?? '-' }}+
-                    </td>
-                </tr>
+        <table style="width:100%; border-collapse: collapse;">
+    {{-- شماره تماس --}}
+    @if(!empty($currentUser->phone))
+        <tr>
+            <td>
+                <strong>تماس:</strong> {{ $currentUser->phone }}+
+            </td>
+        </tr>
+    @endif
 
-                <tr>
-                    <td>
-                        <strong>آدرس شبعه اول:</strong>  {{ $currentUser->address ?? '-' }}
-                    </td>
-                </tr>
+    {{-- آدرس شبعه اول --}}
+    @if(!empty($currentUser->address))
+        <tr>
+            <td>
+                <strong>آدرس شبعه اول:</strong> {{ $currentUser->address }}
+            </td>
+        </tr>
+    @endif
 
+    {{-- آدرس شبعه دوم --}}
+    @if(!empty($currentUser->address2))
+        <tr>
+            <td>
+                <strong>آدرس شبعه دوم:</strong> {{ $currentUser->address2 }}
+            </td>
+        </tr>
+    @endif
 
-                <tr>
-                    <td>
-                        <strong>آدرس شبعه دوم:</strong>  {{ $currentUser->address2 ?? '-' }}
-                    </td>
-                </tr>
+    {{-- آدرس شبعه سوم --}}
+    @if(!empty($currentUser->address3))
+        <tr>
+            <td>
+                <strong>آدرس شبعه سوم:</strong> {{ $currentUser->address3 }}
+            </td>
+        </tr>
+    @endif
+</table>
 
-                <tr>
-                    <td>
-                        <strong>آدرس شبعه سوم:</strong>  {{ $currentUser->address3 ?? '-' }}
-                    </td>
-                </tr>
-            </table>
         </div>
 
         <div class="note">
