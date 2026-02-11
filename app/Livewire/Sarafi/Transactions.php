@@ -709,9 +709,54 @@ class Transactions extends Component
             return;
         }
 
-        $html = view('pdf.Sarafi.transaction', ['transaction' => $transaction])->render();
+        $fileName = 'transaction_' . $transaction->id . '_' . now()->timestamp . '.pdf';
+        $pdfPath = storage_path('app/public/' . $fileName);
 
-        $mpdf = new Mpdf([
+        $mpdf = new \Mpdf\Mpdf([
+            'mode'          => 'utf-8',
+            'format'        => [72.1, 297],
+            'directionality' => 'rtl',
+            'margin_top'    => 0,
+            'margin_bottom' => 0,
+            'margin_left'   => 0,
+            'margin_right'  => 0,
+            'fontDir'       => array_merge(
+                (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+                [public_path('fonts')]
+            ),
+            'fontdata'      => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+                'Shabnam' => ['R' => 'Shabnam-FD.ttf'],
+            ],
+            'default_font'  => 'Shabnam',
+            'tempDir'       => storage_path('app/mpdf/tmp'),
+        ]);
+
+        $mpdf->SetAutoPageBreak(false);
+
+        $mpdf->WriteHTML(view('pdf.Sarafi.transaction', [
+            'transaction' => $transaction,
+            'isShort'     => false,
+            'copyType'    => 'نسخه مشتری'
+        ])->render());
+
+        $mpdf->AddPage();
+        $mpdf->WriteHTML(view('pdf.Sarafi.transaction', [
+            'transaction' => $transaction,
+            'isShort'     => true,
+            'copyType'    => 'نسخه بایگانی'
+        ])->render());
+
+        $mpdf->Output($pdfPath, 'F');
+
+        $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
+
+        session()->flash('message', 'تراکنش ثبت و فایل PDF برای چاپ آماده شد.');
+    }
+    public function print($transactionId)
+    {
+        $transaction = Transaction::with(['customer', 'user'])->findOrFail($transactionId);
+
+        $mpdf = new \Mpdf\Mpdf([
             'mode' => 'utf-8',
             'format' => [72.1, 297],
             'directionality' => 'rtl',
@@ -719,75 +764,40 @@ class Transactions extends Component
             'margin_bottom' => 0,
             'margin_left' => 0,
             'margin_right' => 0,
-            'fontDir' => array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'], [
-                public_path('fonts'),
-            ]),
+            'fontDir' => array_merge(
+                (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+                [public_path('fonts')]
+            ),
             'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
-                'Shabnam' => [
-                    'R' => 'Shabnam-FD.ttf',
-                ],
+                'Vazir' => ['R' => 'Vazir.ttf'],
             ],
-            'default_font' => 'Shabnam',
-            'tempDir' => storage_path('app/mpdf/tmp'),
-
+            'default_font' => 'Vazir',
         ]);
 
         $mpdf->SetAutoPageBreak(false);
-        $mpdf->WriteHTML($html);
 
-        $fileName = 'ترانزکشن_شماره_' . $transaction->id . '_به_اسم_' . $transaction->customer->fullname . '.pdf';
+        // --- صفحه اول کامل ---
+        $mpdf->WriteHTML(view('pdf.Sarafi.transaction', [
+            'transaction' => $transaction,
+            'copyType' => 'نسخه مشتری',
+            'isShort' => false
+        ])->render());
 
-        return response()->streamDownload(function () use ($mpdf) {
-            echo $mpdf->Output('', 'S');
-        }, $fileName);
+
+        $mpdf->AddPage();
+        $mpdf->WriteHTML(view('pdf.Sarafi.transaction', [
+            'transaction' => $transaction,
+            'copyType' => 'نسخه بایگانی',
+            'isShort' => true
+        ])->render());
+
+        $fileName = 'transaction_' . $transaction->id . '.pdf';
+        $path = storage_path('app/public/' . $fileName);
+
+        $mpdf->Output($path, 'F');
+
+        $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
     }
-
-  public function print($transactionId)
-{
-    $transaction = Transaction::with(['customer', 'user'])->findOrFail($transactionId);
-
-    $mpdf = new \Mpdf\Mpdf([
-        'mode' => 'utf-8',
-        'format' => [72.1, 297],
-        'directionality' => 'rtl',
-        'margin_top' => 0,
-        'margin_bottom' => 0,
-        'margin_left' => 0,
-        'margin_right' => 0,
-        'fontDir' => array_merge(
-            (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
-            [public_path('fonts')]
-        ),
-        'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
-            'Vazir' => ['R' => 'Vazir.ttf'],
-        ],
-        'default_font' => 'Vazir',
-    ]);
-
-    $mpdf->SetAutoPageBreak(false);
-
-    // --- صفحه اول کامل ---
-    $mpdf->WriteHTML(view('pdf.Sarafi.transaction', [
-        'transaction' => $transaction,
-        'copyType' => 'نسخه مشتری',  // برای صفحه اول
-        'isShort' => false           // همه محتوا
-    ])->render());
-
-    
-    $mpdf->AddPage();
-    $mpdf->WriteHTML(view('pdf.Sarafi.transaction', [
-        'transaction' => $transaction,
-        'copyType' => 'نسخه بایگانی',  // برای صفحه دوم
-        'isShort' => true              // فقط تا توضیحات
-    ])->render());
-
-    $fileName = 'transaction_' . $transaction->id . '.pdf';
-    $path = storage_path('app/public/' . $fileName);
-
-    $mpdf->Output($path, 'F');
-
-    $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
-}
 
 
 
@@ -876,7 +886,6 @@ class Transactions extends Component
         ]);
 
         $this->date = Jalalian::now()->format('Y/m/d');
-        $this->transactionType = 'برد';
         $this->accountType = 'نقدی';
         $this->zone = Auth::guard('sarafi')->user()->zone;
     }
