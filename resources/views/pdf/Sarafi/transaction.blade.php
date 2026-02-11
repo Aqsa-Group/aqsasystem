@@ -4,13 +4,15 @@
 $currentUser = Auth::guard('sarafi')->user();
 
 $adminUser = $currentUser->role === 'admin'
-    ? $currentUser
-    : \App\Models\Sarafi\User::find($currentUser->admin_id);
+? $currentUser
+: \App\Models\Sarafi\User::find($currentUser->admin_id);
 @endphp
 
 <head>
     <meta charset="UTF-8">
     <title>تراکنش صرافی - {{ $sarafi_name ?? 'صرافی' }}</title>
+    <link rel="preload" href="{{ asset('fonts/Vazir.ttf') }}" as="font" type="font/ttf" crossorigin>
+
     <style>
         /* همه عناصر بدون حاشیه و با فونت پیشفرض */
         * {
@@ -21,44 +23,44 @@ $adminUser = $currentUser->role === 'admin'
 
         /* تعریف فونت Shabnam */
         @font-face {
-            font-family: "Shabnam-FD";
-            src: url("/fonts/Shabnam-FD.ttf") format("truetype");
+            font-family: 'Vazir', Tahoma, sans-serif !important;
+
             font-weight: normal;
             font-style: normal;
         }
 
-        .shabnam-fd {
-            font-family: "Shabnam-FD", sans-serif;
-        }
+
 
         body {
-             font-family: "Shabnam", sans-serif;
+            font-family: 'Vazir', Tahoma, sans-serif !important;
             width: 72.1mm;
             margin: 0 auto;
             padding: 0;
             background-color: white;
-            font-size: 12px;
+            font-size: 10px;
             line-height: 1.4;
         }
 
         .document {
-           width: 85mm;
+            width: 85mm;
             margin: 0 auto;
             background-color: white;
             padding: 8px;
         }
 
         .header {
-              text-align: center;
+            text-align: center;
             margin-bottom: 15px;
             padding-bottom: 8px;
             border-bottom: 1px solid #ddd;
+
         }
 
         .header h1 {
-           font-size: 16px;
+            font-size: 16px;
             margin-bottom: 5px;
             color: #333;
+
         }
 
         .header .date {
@@ -74,32 +76,43 @@ $adminUser = $currentUser->role === 'admin'
             font-size: 11px;
         }
 
+        .info-table2 {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 6px;
+            font-size: 11px;
+
+        }
+
         .info-table td {
-              padding: 6px 8px;
+            padding: 6px 8px;
             border: 1px solid #999;
         }
 
         .info-table td:first-child {
-              font-weight: bold;
+            font-weight: bold;
             width: 40%;
             background-color: #f5f5f5;
         }
 
         .description {
-            padding: 8px;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            padding-right: 8px;
+            padding-left: 8px;
             background-color: #f9f9f9;
-            border-right: 3px solid #2B65E5;
+            border-right: 1px solid #2B65E5;
             border: 1px solid #999;
             margin-bottom: 15px;
         }
 
         .description h3 {
             margin-bottom: 6px;
-            font-size: 12px;
+            font-size: 10px;
             color: #333;
         }
 
-       
+
 
         .contact-info {
             display: flex;
@@ -107,7 +120,6 @@ $adminUser = $currentUser->role === 'admin'
             align-items: center;
             margin-bottom: 20px;
             padding: 5px 0;
-            margin-top: 80px;
             border-top: 1px solid black;
         }
 
@@ -117,7 +129,7 @@ $adminUser = $currentUser->role === 'admin'
         }
 
 
-         .signature {
+        .signature {
             text-align: right;
             margin-bottom: 15px;
         }
@@ -126,7 +138,7 @@ $adminUser = $currentUser->role === 'admin'
             /* بورد بالایی */
             width: 100%;
             padding-left: 20px;
-          
+
 
                 {
                     {
@@ -187,18 +199,33 @@ $adminUser = $currentUser->role === 'admin'
 </head>
 
 <body>
-    
-    <div class="document">
-        <h1 style="text-align:center; font-family: amiri ,sans-serif" class="shabnam-fd "> صرافی {{
-            $currentUser->sarafi_name ?? 'صرافی' }}</h1>
-        <div class="header">
-            <table class="header-table" style="width:100%; border-collapse: collapse;">
-                <tr>
-                    <td style="text-align:center;">نوع تراکنش : {{ $transaction->type }}</td>
 
-                </tr>
-            </table>
-        </div>
+    <div class="document">
+        <h1 style="text-align:center ; " ;> صرافی {{
+            $currentUser->sarafi_name ?? 'صرافی' }}</h1>
+
+        <table class="info-table2" style="width: 100%; font-size: 8px;">
+            <tr>
+                {{-- ستون ID --}}
+                <td style="width: 60%; text-align: right;" dir="rtl">
+                    نمبر سند: {{ $transaction->id }}
+                </td>
+
+                {{-- ستون زمان و تاریخ --}}
+                <td style="width: 40%; text-align: left" dir="rtl">
+                    {{-- قبل/بعد از ظهر --}}
+
+                    {{ \Morilog\Jalali\Jalalian::fromDateTime($transaction->created_at)->format('Y/m/d') }}
+
+                    {{-- ساعت --}}
+                    {{ $transaction->created_at->format('h:i') }}
+                    {{ $transaction->created_at->format('A') == 'AM' ? 'قبل از ظهر' : 'بعد از ظهر' }}
+
+
+                    {{-- تاریخ شمسی با فرمت yyyy/mm/dd --}}
+                </td>
+            </tr>
+        </table>
 
 
         <table class="info-table">
@@ -231,42 +258,21 @@ $adminUser = $currentUser->role === 'admin'
             </tr>
 
             <tr>
-                <td>نوع حساب :</td>
-                <td>{{ $transaction->account_type ?? 'نامشخص' }}</td>
-            </tr>
-            <tr>
-                <td> ارز:</td>
-                <td>
-                    {{ $currenciesFa[strtolower($transaction->currency)] ?? $transaction->currency }}
-                    ({{ strtoupper($transaction->currency) }})
-                </td>
+                <td>نوع ترانزکشن :</td>
+                <td> {{ $transaction->type }} ( {{ $transaction->account_type ?? 'نامشخص' }} )</td>
             </tr>
 
             <tr>
                 <td>مبلغ:</td>
                 <td>
-                    {{ number_format((float)$transaction->amount) }}
+                    {{ number_format((float)$transaction->amount) }} {{
+                    $currenciesFa[strtolower($transaction->currency)] ?? $transaction->currency }}
+
                 </td>
             </tr>
 
-            <tr>
-                <td>تاریخ:</td>
-                <td>
-                    {{ explode(' ', $transaction->date)[0] }}
-                </td>
-            </tr>
 
-            <tr>
-                <td>زمان:</td>
-                <td>
-                    {{ $transaction->created_at->format('h:i:s') }}
-                    {{ $transaction->created_at->format('A') == 'AM' ? 'قبل از ظهر' : 'بعد از ظهر' }}
-                </td>
-            </tr>
-            <tr>
-                <td>شناسه تراکنش:</td>
-                <td>{{ $transaction->id }}</td>
-            </tr>
+         
         </table>
 
         <div class="description">
@@ -274,11 +280,12 @@ $adminUser = $currentUser->role === 'admin'
             {{ $transaction->description ?? 'بدون توضیحات بیشتر' }}
         </div>
 
-        <div class="signature">
+        @if(!$isShort)
+        {{-- <div class="signature">
             <div class="signature-top-border"></div>
             <div class="signature-text"><strong>امضاء</strong></div>
             <div class="signature-line"></div>
-        </div>
+        </div> --}}
 
         <div class="contact-info">
             <table style="width:100%; border-collapse: collapse; pass">
@@ -295,13 +302,13 @@ $adminUser = $currentUser->role === 'admin'
                 </tr>
 
 
-                 <tr>
+                <tr>
                     <td>
                         <strong>آدرس شبعه دوم:</strong> افغانستان {{ $currentUser->address2 ?? '-' }}
                     </td>
                 </tr>
 
-                 <tr>
+                <tr>
                     <td>
                         <strong>آدرس شبعه سوم:</strong> افغانستان {{ $currentUser->address3 ?? '-' }}
                     </td>
@@ -312,6 +319,7 @@ $adminUser = $currentUser->role === 'admin'
         <div class="note">
             نوت: سند جهت معلومات چاپ شده، و هیچگاه سند پولی محسوب نخواهد شد.
         </div>
+        @endif
 
     </div>
 </body>

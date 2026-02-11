@@ -742,46 +742,53 @@ class Transactions extends Component
         }, $fileName);
     }
 
-    public function print($transactionId)
-    {
-        $transaction = Transaction::with(['customer', 'user'])->findOrFail($transactionId);
+  public function print($transactionId)
+{
+    $transaction = Transaction::with(['customer', 'user'])->findOrFail($transactionId);
 
-        $mpdf = new \Mpdf\Mpdf([
-            'mode' => 'utf-8',
-            'format' => [72.1, 297],
-            'directionality' => 'rtl',
-            'margin_top' => 0,
-            'margin_bottom' => 0,
-            'margin_left' => 0,
-            'margin_right' => 0,
-            'fontDir' => array_merge(
-                (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
-                [public_path('fonts')]
-            ),
-            'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
-                'Shabnam' => ['R' => 'Shabnam-FD.ttf'],
-            ],
-            'default_font' => 'Shabnam',
-        ]);
+    $mpdf = new \Mpdf\Mpdf([
+        'mode' => 'utf-8',
+        'format' => [72.1, 297],
+        'directionality' => 'rtl',
+        'margin_top' => 0,
+        'margin_bottom' => 0,
+        'margin_left' => 0,
+        'margin_right' => 0,
+        'fontDir' => array_merge(
+            (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+            [public_path('fonts')]
+        ),
+        'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+            'Vazir' => ['R' => 'Vazir.ttf'],
+        ],
+        'default_font' => 'Vazir',
+    ]);
 
-        $mpdf->SetAutoPageBreak(false);
+    $mpdf->SetAutoPageBreak(false);
 
-        $html = view('pdf.Sarafi.transaction', compact('transaction'))->render();
+    // --- صفحه اول کامل ---
+    $mpdf->WriteHTML(view('pdf.Sarafi.transaction', [
+        'transaction' => $transaction,
+        'copyType' => 'نسخه مشتری',  // برای صفحه اول
+        'isShort' => false           // همه محتوا
+    ])->render());
 
-        // نسخه مشتری
-        $mpdf->WriteHTML($html);
+    
+    $mpdf->AddPage();
+    $mpdf->WriteHTML(view('pdf.Sarafi.transaction', [
+        'transaction' => $transaction,
+        'copyType' => 'نسخه بایگانی',  // برای صفحه دوم
+        'isShort' => true              // فقط تا توضیحات
+    ])->render());
 
-        // نسخه بایگانی
-        $mpdf->AddPage();
-        $mpdf->WriteHTML($html);
+    $fileName = 'transaction_' . $transaction->id . '.pdf';
+    $path = storage_path('app/public/' . $fileName);
 
-        $fileName = 'transaction_' . $transaction->id . '.pdf';
-        $path = storage_path('app/public/' . $fileName);
+    $mpdf->Output($path, 'F');
 
-        $mpdf->Output($path, 'F');
+    $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
+}
 
-        $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
-    }
 
 
     private function applyCurrencyChange($user, $currency, $amount, $transactionType, $accountType, $reverse = false)
