@@ -57,9 +57,9 @@ $adminUser = $currentUser->role === 'admin'
         }
 
         .header h1 {
-            font-size: 16px;
+            font-size: 10px;
             margin-bottom: 5px;
-            color: #333;
+            color: #50c90a;
 
         }
 
@@ -201,7 +201,7 @@ $adminUser = $currentUser->role === 'admin'
 <body>
 
     <div class="document">
-        <h1 style="text-align:center ; " ;> صرافی {{
+        <h1 style="text-align:center ; font-size: 10px;"  ;> صرافی {{
             $currentUser->sarafi_name ?? 'صرافی' }}</h1>
 
         <table class="info-table2" style="width: 100%; font-size: 8px;">
@@ -297,20 +297,20 @@ $adminUser = $currentUser->role === 'admin'
 
                 <tr>
                     <td>
-                        <strong>آدرس شبعه اول:</strong> افغانستان {{ $currentUser->address ?? '-' }}
+                        <strong>آدرس شبعه اول:</strong>  {{ $currentUser->address ?? '-' }}
                     </td>
                 </tr>
 
 
                 <tr>
                     <td>
-                        <strong>آدرس شبعه دوم:</strong> افغانستان {{ $currentUser->address2 ?? '-' }}
+                        <strong>آدرس شبعه دوم:</strong>  {{ $currentUser->address2 ?? '-' }}
                     </td>
                 </tr>
 
                 <tr>
                     <td>
-                        <strong>آدرس شبعه سوم:</strong> افغانستان {{ $currentUser->address3 ?? '-' }}
+                        <strong>آدرس شبعه سوم:</strong>  {{ $currentUser->address3 ?? '-' }}
                     </td>
                 </tr>
             </table>
