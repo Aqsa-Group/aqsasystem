@@ -201,7 +201,7 @@ $adminUser = $currentUser->role === 'admin'
 <body>
 
     <div class="document">
-        <h1 style="text-align:center ; font-size: 10px;"  ;> صرافی {{
+        <h1 style="text-align:center ; font-size: 16px;"  ;> صرافی {{
             $currentUser->sarafi_name ?? 'صرافی' }}</h1>
 
         <table class="info-table2" style="width: 100%; font-size: 8px;">
