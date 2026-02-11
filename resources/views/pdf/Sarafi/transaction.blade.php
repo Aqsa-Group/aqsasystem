@@ -265,8 +265,8 @@ $adminUser = $currentUser->role === 'admin'
             <tr>
                 <td>مبلغ:</td>
                 <td>
-                    {{ number_format((float)$transaction->amount) }} {{
-                    $currenciesFa[strtolower($transaction->currency)] ?? $transaction->currency }}
+                    {{ number_format((float)$transaction->amount) }}    ({{
+                    $currenciesFa[strtolower($transaction->currency)] ?? $transaction->currency }})
 
                 </td>
             </tr>
