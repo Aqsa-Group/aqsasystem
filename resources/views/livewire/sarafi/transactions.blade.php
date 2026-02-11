@@ -1832,6 +1832,119 @@
         window.addEventListener('redirectToCustomers', () => {
             window.location.href = "{{ route('sarafi.customers.create') }}";
         });
+
+          const printManager = {
+        isPrinting: false,
+        printQueue: [],
+        
+        // تابع برای پرینت فایل
+        printFile(url, index, total) {
+            return new Promise((resolve) => {
+                console.log(`پرینت شماره ${index} از ${total} در حال انجام...`);
+                
+                // ایجاد iframe مخفی
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = url;
+                document.body.appendChild(iframe);
+
+                iframe.onload = () => {
+                    // فایرباکس نیاز به تاخیر دارد
+                    setTimeout(() => {
+                        try {
+                            iframe.contentWindow.focus();
+                            iframe.contentWindow.print();
+                            
+                            // رزولو کردن پرومیس بعد از تاخیر
+                            setTimeout(() => {
+                                iframe.remove();
+                                resolve();
+                            }, 1000);
+                        } catch (error) {
+                            console.error('خطا در پرینت:', error);
+                            iframe.remove();
+                            resolve();
+                        }
+                    }, 500);
+                };
+
+                iframe.onerror = () => {
+                    console.error('خطا در بارگذاری فایل PDF');
+                    iframe.remove();
+                    resolve();
+                };
+            });
+        },
+        
+        // تابع برای چاپ چندباره
+        async printMultipleTimes(url, count = 2, delay = 4000) {
+            if (this.isPrinting) {
+                console.log('پرینت در حال انجام است...');
+                return;
+            }
+            
+            this.isPrinting = true;
+            
+            // ابتدا دانلود فایل
+            const downloadLink = document.createElement('a');
+            downloadLink.href = url;
+            downloadLink.download = '';
+            downloadLink.style.display = 'none';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            
+            setTimeout(() => {
+                downloadLink.remove();
+            }, 2000);
+            
+            // چاپ به تعداد مشخص شده
+            for (let i = 1; i <= count; i++) {
+                console.log(`شروع پرینت دور ${i}`);
+                await this.printFile(url, i, count);
+                
+                // اگر آخرین دور نیست، تاخیر ایجاد کن
+                if (i < count) {
+                    console.log(`منتظر ${delay/1000} ثانیه برای پرینت بعدی...`);
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
+            }
+            
+            console.log('پرینت ها با موفقیت انجام شد');
+            this.isPrinting = false;
+        },
+        
+        // تابع برای مدیریت صف پرینت
+        addToQueue(url, count, delay) {
+            this.printQueue.push({ url, count, delay });
+            if (this.printQueue.length === 1) {
+                this.processQueue();
+            }
+        },
+        
+        async processQueue() {
+            while (this.printQueue.length > 0) {
+                const task = this.printQueue[0];
+                await this.printMultipleTimes(task.url, task.count, task.delay);
+                this.printQueue.shift();
+            }
+        }
+    };
+
+    // مدیریت event های لایووایر
+    document.addEventListener('livewire:init', () => {
+        // Event برای پرینت چندباره
+        Livewire.on('print-multiple-pdf', (data) => {
+            console.log('دریافت درخواست پرینت چندباره:', data);
+            printManager.addToQueue(data.url, data.count || 2, data.delay || 4000);
+        });
+        
+        // Event برای پرینت معمولی (با backward compatibility)
+        Livewire.on('print-pdf', (data) => {
+            console.log('دریافت درخواست پرینت معمولی');
+            printManager.addToQueue(data.url, 1, 0);
+        });
+    });
+
     </script>
 
 

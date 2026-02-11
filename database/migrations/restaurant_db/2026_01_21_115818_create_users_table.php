@@ -11,10 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+            Schema::create('users', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->string('lastname');
+                $table->string('restaurant_name')->nullable();
+                $table->string('address')->nullable();
+                $table->integer('phone')->nullable();
+                $table->string('username');
+                $table->string('password');
+                $table->string('role');
+                $table->integer('user_limition');
+                $table->boolean('status')->nullable();
+                $table->string('user_image')->nullable();
+                $table->integer('admin_id')->nullable();
+                $table->timestamps();
+            });
     }
 
     /**

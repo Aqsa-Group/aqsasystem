@@ -767,6 +767,12 @@ class Transactions extends Component
         $mpdf->SetAutoPageBreak(false);
 
         $html = view('pdf.Sarafi.transaction', compact('transaction'))->render();
+
+        // نسخه مشتری
+        $mpdf->WriteHTML($html);
+
+        // نسخه بایگانی
+        $mpdf->AddPage();
         $mpdf->WriteHTML($html);
 
         $fileName = 'transaction_' . $transaction->id . '.pdf';
@@ -776,6 +782,7 @@ class Transactions extends Component
 
         $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
     }
+
 
     private function applyCurrencyChange($user, $currency, $amount, $transactionType, $accountType, $reverse = false)
     {
