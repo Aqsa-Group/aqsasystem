@@ -215,15 +215,31 @@ class Journal extends Component
 
         $html = view('pdf.Sarafi.journal', $data)->render();
 
-        $mpdf = new \Mpdf\Mpdf([
-            'mode' => 'utf-8',
-            'format' => 'A4',
-            'orientation' => 'L',
+       $mpdf = new \Mpdf\Mpdf([
+            'mode'          => 'utf-8',
+            'format'        => 'A4',
             'directionality' => 'rtl',
-            'default_font' => 'dejavusans',
-            'tempDir' => storage_path('app/mpdf/tmp'),
-        ]);
+            'margin_top'    => 8,
+            'margin_bottom' => 8,
+            'margin_left'   => 4,
+            'margin_right'  => 4,
+            'fontDir' => array_merge(
+                (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+                [public_path('fonts/vazir/')]
+            ),
+            'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+                'vazir' => [
 
+                    'R' => 'Vazir-Light.ttf',
+                    'B' => 'Vazir-Bold.ttf',
+                    'useOTL' => 0xFF,
+                    'useKashida' => 75,
+                ],
+            ],
+            'default_font' => 'vazir',
+            'tempDir' => storage_path('app/mpdf'),
+        ]);
+        
         $mpdf->WriteHTML($html);
 
         $fileName = 'journal-report-' . now()->format('Y-m-d-H-i-s') . '.pdf';
@@ -240,7 +256,7 @@ class Journal extends Component
             url: asset('storage/reports/' . $fileName)
         );
 
-        session()->flash('message', 'گزارش با موفقیت تولید شد و آماده چاپ است.');
+        session()->flash('message', 'گزارش با موفقیت ایجاد شد و آماده چاپ است.');
     }
 
     private function getFilteredTransactions()

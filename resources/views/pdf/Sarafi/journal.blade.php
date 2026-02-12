@@ -272,7 +272,7 @@
 
     <div class="main-header keep-together">
         <h1>صفحه گزارشات معاملات روزانه حسابات و صندوق ها</h1>
-        <p style="color: #666; font-size: 8pt;">تاریخ تولید: {{ \Morilog\Jalali\Jalalian::now()->format('Y/m/d H:i') }}
+        <p style="color: #666; font-size: 8pt;">تاریخ چاپ: {{ \Morilog\Jalali\Jalalian::now()->format('Y/m/d H:i') }}
         </p>
     </div>
 
@@ -285,40 +285,49 @@
     isset($filters['toDate'])))
     <div class="filters-section keep-together">
         <h3>فیلترهای اعمال شده</h3>
-        <div class="filter-row">
-            @if (isset($filters['transactionType']) && $filters['transactionType'])
-            <div class="filter-item">
-                <span class="filter-label">نوع تراکنش:</span>
-                <span class="filter-value">{{ $filters['transactionType'] }}</span>
-            </div>
-            @endif
-            @if (isset($filters['accountType']) && $filters['accountType'])
-            <div class="filter-item">
-                <span class="filter-label">نوع حساب:</span>
-                <span class="filter-value">{{ $filters['accountType'] }}</span>
-            </div>
-            @endif
-            @if (isset($filters['currency']) && $filters['currency'])
-            <div class="filter-item">
-                <span class="filter-label">ارز:</span>
-                <span class="filter-value">{{ $currencies[$filters['currency']] ?? $filters['currency'] }}</span>
-            </div>
-            @endif
-            @if (isset($filters['fromDate']) && $filters['fromDate'])
-            <div class="filter-item">
-                <span class="filter-label">از تاریخ:</span>
-                <span class="filter-value">{{ \Morilog\Jalali\Jalalian::fromFormat('Y-m-d',
-                    $filters['fromDate'])->format('Y/m/d') }}</span>
-            </div>
-            @endif
-            @if (isset($filters['toDate']) && $filters['toDate'])
-            <div class="filter-item">
-                <span class="filter-label">تا تاریخ:</span>
-                <span class="filter-value">{{ \Morilog\Jalali\Jalalian::fromFormat('Y-m-d',
-                    $filters['toDate'])->format('Y/m/d') }}</span>
-            </div>
-            @endif
-        </div>
+        <table>
+            <tr class="filter-row">
+                @if (!empty($filters['transactionType']))
+                <td class="filter-item">
+                    <span class="filter-label">نوع تراکنش:</span>
+                    <span class="filter-value">{{ $filters['transactionType'] }}</span>
+                </td>
+                @endif
+
+                @if (!empty($filters['accountType']))
+                <td class="filter-item">
+                    <span class="filter-label">نوع حساب:</span>
+                    <span class="filter-value">{{ $filters['accountType'] }}</span>
+                </td>
+                @endif
+
+                @if (!empty($filters['currency']))
+                <td class="filter-item">
+                    <span class="filter-label">ارز:</span>
+                    <span class="filter-value">{{ $currencies[$filters['currency']] ?? $filters['currency'] }}</span>
+                </td>
+                @endif
+
+                @if (!empty($filters['fromDate']))
+                <td class="filter-item">
+                    <span class="filter-label">از تاریخ:</span>
+                    <span class="filter-value">
+                        {{ \Morilog\Jalali\Jalalian::fromFormat('Y-m-d', $filters['fromDate'])->format('Y/m/d') }}
+                    </span>
+                </td>
+                @endif
+
+                @if (!empty($filters['toDate']))
+                <td class="filter-item">
+                    <span class="filter-label">تا تاریخ:</span>
+                    <span class="filter-value">
+                        {{ \Morilog\Jalali\Jalalian::fromFormat('Y-m-d', $filters['toDate'])->format('Y/m/d') }}
+                    </span>
+                </td>
+                @endif
+            </tr>
+        </table>
+
     </div>
     @endif
 
@@ -362,11 +371,11 @@
                         <div class="font-medium">
                             @if (empty($transaction->customer_id) &&
                             !empty($transaction->withdraw_id))
-                             برداشت
+                            برداشت
 
                             @elseif (empty($transaction->customer_id) && $transaction->is_sell_table
                             == 1)
-                            معامله از صندوق 
+                            معامله از صندوق
 
 
                             @elseif (empty($transaction->customer_id) &&
@@ -406,7 +415,9 @@
                     <td>
                         <div>{{ explode(' ', $transaction->date)[0] }}</div>
                         <div style="font-size: 7pt; color: #666;">
-                            {{ \Carbon\Carbon::parse($transaction->created_at)->format('H:i') }}</div>
+                            {{ \Carbon\Carbon::parse($transaction->created_at)->format('h:i A') }}
+                        </div>
+
                     </td>
                 </tr>
                 @endforeach

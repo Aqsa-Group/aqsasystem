@@ -526,17 +526,29 @@ class AccountReports extends Component
         ];
 
         // تنظیمات mPDF
-        $mpdf = new \Mpdf\Mpdf([
-            'mode'             => 'utf-8',
-            'format'           => 'A4-L',
-            'directionality'   => 'rtl',
-            'margin_top'       => 10,
-            'margin_bottom'    => 10,
-            'margin_left'      => 10,
-            'margin_right'     => 10,
-            'default_font'     => 'Shabnam',
-            'tempDir' => storage_path('app/mpdf/tmp'),
+          $mpdf = new \Mpdf\Mpdf([
+            'mode'          => 'utf-8',
+            'format'        => 'A4',
+            'directionality' => 'rtl',
+            'margin_top'    => 8,
+            'margin_bottom' => 8,
+            'margin_left'   => 4,
+            'margin_right'  => 4,
+            'fontDir' => array_merge(
+                (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+                [public_path('fonts/vazir/')]
+            ),
+            'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+                'vazir' => [
 
+                    'R' => 'Vazir-Light.ttf',
+                    'B' => 'Vazir-Bold.ttf',
+                    'useOTL' => 0xFF,
+                    'useKashida' => 75,
+                ],
+            ],
+            'default_font' => 'vazir',
+            'tempDir' => storage_path('app/mpdf'),
         ]);
 
         // رندر Blade

@@ -264,7 +264,7 @@ class TransactionsReports extends Component
 
         Log::debug("loadTransactions: Transactions retrieved", [
             'count' => $this->transactions->count(),
-            'sample' => $this->transactions->take(3)->map(function($t) {
+            'sample' => $this->transactions->take(3)->map(function ($t) {
                 return [
                     'id' => $t->id,
                     'date' => $t->date,
@@ -387,8 +387,18 @@ class TransactionsReports extends Component
     private function formatWithAfghanMonth(Jalalian $date)
     {
         $afghanMonths = [
-            'حمل', 'ثور', 'جوزا', 'سرطان', 'اسد', 'سنبله',
-            'میزان', 'عقرب', 'قوس', 'جدی', 'دلو', 'حوت'
+            'حمل',
+            'ثور',
+            'جوزا',
+            'سرطان',
+            'اسد',
+            'سنبله',
+            'میزان',
+            'عقرب',
+            'قوس',
+            'جدی',
+            'دلو',
+            'حوت'
         ];
 
         return $date->getYear() . '/' .
@@ -402,14 +412,14 @@ class TransactionsReports extends Component
     public function setStartDate($dateString)
     {
         Log::debug("setStartDate called", ['input' => $dateString]);
-        
+
         if (empty($dateString) || $dateString === 'null' || $dateString === '') {
             $this->startDate = null;
             $this->startDateDisplay = '';
             Log::debug("Start date cleared");
         } else {
             $normalized = $this->normalizeDate($dateString);
-            
+
             if ($normalized) {
                 $this->startDate = $normalized;
                 $this->updateDateDisplay('start');
@@ -436,14 +446,14 @@ class TransactionsReports extends Component
     public function setEndDate($dateString)
     {
         Log::debug("setEndDate called", ['input' => $dateString]);
-        
+
         if (empty($dateString) || $dateString === 'null' || $dateString === '') {
             $this->endDate = null;
             $this->endDateDisplay = '';
             Log::debug("End date cleared");
         } else {
             $normalized = $this->normalizeDate($dateString);
-            
+
             if ($normalized) {
                 $this->endDate = $normalized;
                 $this->updateDateDisplay('end');
@@ -479,8 +489,18 @@ class TransactionsReports extends Component
                 $day = $parts[2];
 
                 $afghanMonths = [
-                    'حمل', 'ثور', 'جوزا', 'سرطان', 'اسد', 'سنبله',
-                    'میزان', 'عقرب', 'قوس', 'جدی', 'دلو', 'حوت'
+                    'حمل',
+                    'ثور',
+                    'جوزا',
+                    'سرطان',
+                    'اسد',
+                    'سنبله',
+                    'میزان',
+                    'عقرب',
+                    'قوس',
+                    'جدی',
+                    'دلو',
+                    'حوت'
                 ];
 
                 if ($month >= 1 && $month <= 12) {
@@ -587,64 +607,64 @@ class TransactionsReports extends Component
     /**
      * Calculate total balances for current period
      */
-   private function calculateTotalBalances()
-{
-    $transactions = collect($this->transactions);
+    private function calculateTotalBalances()
+    {
+        $transactions = collect($this->transactions);
 
-    Log::debug("calculateTotalBalances: Starting", [
-        'transactions_count' => $transactions->count(),
-        'previous_balances' => $this->previousBalances
-    ]);
+        Log::debug("calculateTotalBalances: Starting", [
+            'transactions_count' => $transactions->count(),
+            'previous_balances' => $this->previousBalances
+        ]);
 
-    $this->totalBalances = [];
+        $this->totalBalances = [];
 
-    // Process all currencies (even those with no transactions in current period)
-    foreach ($this->currencies as $currency) {
-        $code = $currency['code'];
-        $name_fa = $currency['name_fa'];
+        // Process all currencies (even those with no transactions in current period)
+        foreach ($this->currencies as $currency) {
+            $code = $currency['code'];
+            $name_fa = $currency['name_fa'];
 
-        // Calculate received and spent for CURRENT PERIOD ONLY
-        $received = $transactions->where('currency', $code)
-            ->where('type', 'رسید')
-            ->sum('amount');
+            // Calculate received and spent for CURRENT PERIOD ONLY
+            $received = $transactions->where('currency', $code)
+                ->where('type', 'رسید')
+                ->sum('amount');
 
-        $spent = $transactions->where('currency', $code)
-            ->where('type', 'برد')
-            ->sum('amount');
+            $spent = $transactions->where('currency', $code)
+                ->where('type', 'برد')
+                ->sum('amount');
 
-        $balance = $received - $spent; // This is ONLY for the current period
+            $balance = $received - $spent; // This is ONLY for the current period
 
-        // Get previous balance (calculated in calculatePreviousBalances())
-        $previousBalance = $this->previousBalances[$code] ?? 0;
-        
-        // Current balance = previous balance + balance of current period
-        $currentBalance = $previousBalance + $balance;
+            // Get previous balance (calculated in calculatePreviousBalances())
+            $previousBalance = $this->previousBalances[$code] ?? 0;
 
-        // Always add to totalBalances if there's any data
-        // (either previous balance or transactions in current period)
-        if ($previousBalance != 0 || $received > 0 || $spent > 0) {
-            $this->totalBalances[$code] = [
-                'name_fa' => $name_fa,
-                'received' => $received,
-                'spent' => $spent,
-                'balance' => $balance,
-                'previous_balance' => $previousBalance,
-                'current_balance' => $currentBalance,
-                'status' => $currentBalance >= 0 ? 'طلبکار' : 'بدهکار'
-            ];
+            // Current balance = previous balance + balance of current period
+            $currentBalance = $previousBalance + $balance;
 
-            Log::debug("calculateTotalBalances: Currency {$code}", [
-                'previous_balance' => $previousBalance,
-                'received_in_period' => $received,
-                'spent_in_period' => $spent,
-                'balance_in_period' => $balance,
-                'current_balance' => $currentBalance
-            ]);
+            // Always add to totalBalances if there's any data
+            // (either previous balance or transactions in current period)
+            if ($previousBalance != 0 || $received > 0 || $spent > 0) {
+                $this->totalBalances[$code] = [
+                    'name_fa' => $name_fa,
+                    'received' => $received,
+                    'spent' => $spent,
+                    'balance' => $balance,
+                    'previous_balance' => $previousBalance,
+                    'current_balance' => $currentBalance,
+                    'status' => $currentBalance >= 0 ? 'طلبکار' : 'بدهکار'
+                ];
+
+                Log::debug("calculateTotalBalances: Currency {$code}", [
+                    'previous_balance' => $previousBalance,
+                    'received_in_period' => $received,
+                    'spent_in_period' => $spent,
+                    'balance_in_period' => $balance,
+                    'current_balance' => $currentBalance
+                ]);
+            }
         }
-    }
 
-    Log::debug("calculateTotalBalances: Final result", $this->totalBalances);
-}
+        Log::debug("calculateTotalBalances: Final result", $this->totalBalances);
+    }
 
     /**
      * Get customer's currencies from transactions
@@ -744,7 +764,30 @@ class TransactionsReports extends Component
                 return;
             }
 
-            $mpdf = $this->initializeMpdfA4();
+            $mpdf = new \Mpdf\Mpdf([
+                'mode'          => 'utf-8',
+                'format'        => 'A4',
+                'directionality' => 'rtl',
+                'margin_top'    => 8,
+                'margin_bottom' => 8,
+                'margin_left'   => 4,
+                'margin_right'  => 4,
+                'fontDir' => array_merge(
+                    (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+                    [public_path('fonts/vazir/')]
+                ),
+                'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+                    'vazir' => [
+
+                        'R' => 'Vazir-Light.ttf',
+                        'B' => 'Vazir-Bold.ttf',
+                        'useOTL' => 0xFF,
+                        'useKashida' => 75,
+                    ],
+                ],
+                'default_font' => 'vazir',
+                'tempDir' => storage_path('app/mpdf'),
+            ]);
             $html = view('pdf.Sarafi.transactions-report', $pdfData)->render();
 
             $mpdf->WriteHTML($html);
@@ -763,7 +806,6 @@ class TransactionsReports extends Component
                     'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
                 ]
             );
-
         } catch (\Exception $e) {
             Log::error("PDF Generation Error: " . $e->getMessage(), [
                 'exception' => $e,
@@ -816,57 +858,57 @@ class TransactionsReports extends Component
     /**
      * Prepare data for PDF generation
      */
-  private function preparePdfData()
-{
-    $customer = Customer::find($this->selectedCustomer);
-    
-    if (!$customer) {
-        throw new \Exception('مشتری یافت نشد');
-    }
+    private function preparePdfData()
+    {
+        $customer = Customer::find($this->selectedCustomer);
 
-    $activeCurrencies = $this->getActiveCurrenciesForPdf();
+        if (!$customer) {
+            throw new \Exception('مشتری یافت نشد');
+        }
 
-    $pdfBalances = [];
-    $transactions = collect($this->transactions);
+        $activeCurrencies = $this->getActiveCurrenciesForPdf();
 
-    foreach ($activeCurrencies as $code => $currency) {
-        $received = $transactions->where('currency', $code)
-            ->where('type', 'رسید')
-            ->sum('amount');
+        $pdfBalances = [];
+        $transactions = collect($this->transactions);
 
-        $spent = $transactions->where('currency', $code)
-            ->where('type', 'برد')
-            ->sum('amount');
+        foreach ($activeCurrencies as $code => $currency) {
+            $received = $transactions->where('currency', $code)
+                ->where('type', 'رسید')
+                ->sum('amount');
 
-        $balance = $received - $spent;
+            $spent = $transactions->where('currency', $code)
+                ->where('type', 'برد')
+                ->sum('amount');
 
-        // استفاده از previous_balance که قبلاً در کامپوننت محاسبه شده
-        $previousBalance = $this->previousBalances[$code] ?? 0;
-        $currentBalance = $previousBalance + $balance;
+            $balance = $received - $spent;
 
-        $pdfBalances[] = [
-            'name_fa' => $currency['name_fa'],
-            'previous_balance' => $previousBalance,
-            'received' => $received,
-            'spent' => $spent,
-            'balance' => $balance,
-            'current_balance' => $currentBalance,
-            'status' => $currentBalance >= 0 ? 'طلبکار' : 'بدهکار'
+            // استفاده از previous_balance که قبلاً در کامپوننت محاسبه شده
+            $previousBalance = $this->previousBalances[$code] ?? 0;
+            $currentBalance = $previousBalance + $balance;
+
+            $pdfBalances[] = [
+                'name_fa' => $currency['name_fa'],
+                'previous_balance' => $previousBalance,
+                'received' => $received,
+                'spent' => $spent,
+                'balance' => $balance,
+                'current_balance' => $currentBalance,
+                'status' => $currentBalance >= 0 ? 'طلبکار' : 'بدهکار'
+            ];
+        }
+
+        return [
+            'transactions' => $this->transactions,
+            'customer_name' => $this->selectedCustomerName,
+            'customer' => $customer,
+            'start_date' => $this->startDateDisplay ?? '---',
+            'end_date' => $this->endDateDisplay ?? '---',
+            'active_currencies' => $activeCurrencies,
+            'generated_at' => Jalalian::now()->format('Y/m/d H:i:s'),
+            'balances' => $pdfBalances,
+            'has_data' => count($this->transactions) > 0 || count($pdfBalances) > 0
         ];
     }
-
-    return [
-        'transactions' => $this->transactions,
-        'customer_name' => $this->selectedCustomerName,
-        'customer' => $customer,
-        'start_date' => $this->startDateDisplay ?? '---',
-        'end_date' => $this->endDateDisplay ?? '---',
-        'active_currencies' => $activeCurrencies,
-        'generated_at' => Jalalian::now()->format('Y/m/d H:i:s'),
-        'balances' => $pdfBalances,
-        'has_data' => count($this->transactions) > 0 || count($pdfBalances) > 0
-    ];
-}
 
     /**
      * Get active currencies for PDF
@@ -921,49 +963,49 @@ class TransactionsReports extends Component
             $this->loadTransactions();
         }
     }
-    
+
     public function updatedTypeTransaction()
     {
         if ($this->selectedCustomer) {
             $this->loadTransactions();
         }
     }
-    
+
     public function updatedTypeTransaction2()
     {
         if ($this->selectedCustomer) {
             $this->loadTransactions();
         }
     }
-    
+
     public function updatedAccountType()
     {
         if ($this->selectedCustomer) {
             $this->loadTransactions();
         }
     }
-    
+
     public function updatedTypeDocument()
     {
         if ($this->selectedCustomer) {
             $this->loadTransactions();
         }
     }
-    
+
     public function updatedZone()
     {
         if ($this->selectedCustomer) {
             $this->loadTransactions();
         }
     }
-    
+
     public function updatedBy()
     {
         if ($this->selectedCustomer) {
             $this->loadTransactions();
         }
     }
-    
+
     public function updatedDescription()
     {
         if ($this->selectedCustomer) {
@@ -1046,7 +1088,7 @@ class TransactionsReports extends Component
         $manualCalculations = [];
         foreach ($this->currencies as $currency) {
             $code = $currency['code'];
-            
+
             // Calculate previous balance manually
             $prevQuery = Transaction::where('customer_id', $this->selectedCustomer)
                 ->where('currency', $code)
@@ -1078,7 +1120,7 @@ class TransactionsReports extends Component
             // Apply date filters
             $startNormalized = $this->normalizeDate($this->startDate);
             $endNormalized = $this->normalizeDate($this->endDate);
-            
+
             if ($startNormalized && $endNormalized) {
                 $currentQuery->whereBetween('date', [$startNormalized, $endNormalized]);
             } elseif ($startNormalized) {
@@ -1107,7 +1149,7 @@ class TransactionsReports extends Component
         }
 
         $testData['manual_calculations'] = $manualCalculations;
-        
+
         dd($testData);
     }
 
@@ -1121,7 +1163,7 @@ class TransactionsReports extends Component
         }
 
         $pdfData = $this->preparePdfData();
-        
+
         dd([
             'selected_customer' => $this->selectedCustomer,
             'customer_name' => $this->selectedCustomerName,
@@ -1149,7 +1191,7 @@ class TransactionsReports extends Component
     private function verifyBalancesMatch($pdfBalances)
     {
         $matches = [];
-        
+
         foreach ($pdfBalances as $pdfBalance) {
             $code = $this->getCurrencyCodeByName($pdfBalance['name_fa']);
             if ($code && isset($this->totalBalances[$code])) {
@@ -1179,7 +1221,7 @@ class TransactionsReports extends Component
                 ];
             }
         }
-        
+
         return $matches;
     }
 
@@ -1254,7 +1296,7 @@ class TransactionsReports extends Component
 
         // Use totalBalances to determine active currencies
         $activeCurrencies = [];
-        
+
         foreach ($this->totalBalances as $code => $balanceData) {
             $currencyInfo = collect($this->currencies)->firstWhere('code', $code);
             if ($currencyInfo) {
@@ -1268,159 +1310,181 @@ class TransactionsReports extends Component
     /**
      * Calculate balances for render
      */
-   private function calculateRenderBalances($transactions, $activeCurrencies)
-{
-    $balances = [];
+    private function calculateRenderBalances($transactions, $activeCurrencies)
+    {
+        $balances = [];
 
-    // Use totalBalances for rendering
-    foreach ($this->totalBalances as $code => $balanceData) {
-        $balances[] = [
-            'name_fa' => $balanceData['name_fa'],
-            'code' => $code,
-            'previous_balance' => $balanceData['previous_balance'],
-            'received' => $balanceData['received'],
-            'spent' => $balanceData['spent'],
-            'balance' => $balanceData['balance'],
-            'current_balance' => $balanceData['current_balance'],
-            'status' => $balanceData['status']
-        ];
+        // Use totalBalances for rendering
+        foreach ($this->totalBalances as $code => $balanceData) {
+            $balances[] = [
+                'name_fa' => $balanceData['name_fa'],
+                'code' => $code,
+                'previous_balance' => $balanceData['previous_balance'],
+                'received' => $balanceData['received'],
+                'spent' => $balanceData['spent'],
+                'balance' => $balanceData['balance'],
+                'current_balance' => $balanceData['current_balance'],
+                'status' => $balanceData['status']
+            ];
+        }
+
+        return $balances;
     }
-
-    return $balances;
-}
     // در کلاس TransactionsReports این متد را اضافه کنید:
 
-/**
- * Generate PDF report for summary only
- */
-/**
- * Generate PDF report for summary table
- */
-public function printSummary()
-{
-    if (!$this->selectedCustomer) {
-        $this->dispatchToast('error', 'لطفاً ابتدا یک مشتری را انتخاب کنید');
-        return;
+    /**
+     * Generate PDF report for summary only
+     */
+    /**
+     * Generate PDF report for summary table
+     */
+    public function printSummary()
+    {
+        if (!$this->selectedCustomer) {
+            $this->dispatchToast('error', 'لطفاً ابتدا یک مشتری را انتخاب کنید');
+            return;
+        }
+
+        if (empty($this->totalBalances)) {
+            $this->dispatchToast('warning', 'هیچ موجودی فعالی برای چاپ وجود ندارد');
+            return;
+        }
+
+        try {
+            Log::debug("PDF Summary Generation: Starting", [
+                'customer_id' => $this->selectedCustomer,
+                'customer_name' => $this->selectedCustomerName,
+                'balances_count' => count($this->totalBalances)
+            ]);
+
+            $pdfData = $this->prepareSummaryPdfData();
+
+      $mpdf = new \Mpdf\Mpdf([
+            'mode'          => 'utf-8',
+            'format'        => 'A4',
+            'directionality' => 'rtl',
+            'margin_top'    => 8,
+            'margin_bottom' => 8,
+            'margin_left'   => 4,
+            'margin_right'  => 4,
+            'fontDir' => array_merge(
+                (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+                [public_path('fonts/vazir/')]
+            ),
+            'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+                'vazir' => [
+
+                    'R' => 'Vazir-Light.ttf',
+                    'B' => 'Vazir-Bold.ttf',
+                    'useOTL' => 0xFF,
+                    'useKashida' => 75,
+                ],
+            ],
+            'default_font' => 'vazir',
+            'tempDir' => storage_path('app/mpdf'),
+        ]);
+                    $html = view('pdf.Sarafi.summary-report', $pdfData)->render();
+
+            $mpdf->WriteHTML($html);
+
+            $fileName = 'خلاصه_موجودی_' . Str::slug($pdfData['customer_name']) . '_' . Jalalian::now()->format('Y-m-d') . '.pdf';
+
+            Log::debug("PDF Summary Generation: File created", ['file_name' => $fileName]);
+
+            return response()->streamDownload(
+                function () use ($mpdf) {
+                    echo $mpdf->Output('', 'S');
+                },
+                $fileName,
+                [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
+                ]
+            );
+        } catch (\Exception $e) {
+            Log::error("PDF Summary Generation Error: " . $e->getMessage(), [
+                'exception' => $e,
+                'trace' => $e->getTraceAsString(),
+                'customer_id' => $this->selectedCustomer
+            ]);
+            $this->dispatchToast('error', 'خطا در تولید گزارش خلاصه: ' . $e->getMessage());
+        }
     }
 
-    if (empty($this->totalBalances)) {
-        $this->dispatchToast('warning', 'هیچ موجودی فعالی برای چاپ وجود ندارد');
-        return;
-    }
+    /**
+     * Prepare data for summary PDF generation
+     */
+    private function prepareSummaryPdfData()
+    {
+        $customer = Customer::find($this->selectedCustomer);
 
-    try {
-        Log::debug("PDF Summary Generation: Starting", [
+        if (!$customer) {
+            throw new \Exception('مشتری یافت نشد');
+        }
+
+        // Prepare full balances data for summary table
+        $summaryBalances = [];
+        $totalPrevious = 0;
+        $totalReceived = 0;
+        $totalSpent = 0;
+        $totalBalance = 0;
+        $totalCurrent = 0;
+
+        foreach ($this->totalBalances as $code => $balanceData) {
+            $summaryBalances[] = [
+                'name_fa' => $balanceData['name_fa'],
+                'previous_balance' => $balanceData['previous_balance'],
+                'received' => $balanceData['received'],
+                'spent' => $balanceData['spent'],
+                'balance' => $balanceData['balance'],
+                'current_balance' => $balanceData['current_balance'],
+                'status' => $balanceData['status']
+            ];
+
+            $totalPrevious += $balanceData['previous_balance'];
+            $totalReceived += $balanceData['received'];
+            $totalSpent += $balanceData['spent'];
+            $totalBalance += $balanceData['balance'];
+            $totalCurrent += $balanceData['current_balance'];
+        }
+
+        // Sort by currency name
+        usort($summaryBalances, function ($a, $b) {
+            return strcmp($a['name_fa'], $b['name_fa']);
+        });
+
+        Log::debug("Summary PDF Data Prepared", [
             'customer_id' => $this->selectedCustomer,
             'customer_name' => $this->selectedCustomerName,
-            'balances_count' => count($this->totalBalances)
-        ]);
-
-        $pdfData = $this->prepareSummaryPdfData();
-        
-        $mpdf = $this->initializeMpdfA4();
-        $html = view('pdf.Sarafi.summary-report', $pdfData)->render();
-
-        $mpdf->WriteHTML($html);
-
-        $fileName = 'خلاصه_موجودی_' . Str::slug($pdfData['customer_name']) . '_' . Jalalian::now()->format('Y-m-d') . '.pdf';
-
-        Log::debug("PDF Summary Generation: File created", ['file_name' => $fileName]);
-
-        return response()->streamDownload(
-            function () use ($mpdf) {
-                echo $mpdf->Output('', 'S');
-            },
-            $fileName,
-            [
-                'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
+            'balances_count' => count($summaryBalances),
+            'totals' => [
+                'previous' => $totalPrevious,
+                'received' => $totalReceived,
+                'spent' => $totalSpent,
+                'balance' => $totalBalance,
+                'current' => $totalCurrent
             ]
-        );
-
-    } catch (\Exception $e) {
-        Log::error("PDF Summary Generation Error: " . $e->getMessage(), [
-            'exception' => $e,
-            'trace' => $e->getTraceAsString(),
-            'customer_id' => $this->selectedCustomer
         ]);
-        $this->dispatchToast('error', 'خطا در تولید گزارش خلاصه: ' . $e->getMessage());
-    }
-}
 
-/**
- * Prepare data for summary PDF generation
- */
-private function prepareSummaryPdfData()
-{
-    $customer = Customer::find($this->selectedCustomer);
-    
-    if (!$customer) {
-        throw new \Exception('مشتری یافت نشد');
-    }
-
-    // Prepare full balances data for summary table
-    $summaryBalances = [];
-    $totalPrevious = 0;
-    $totalReceived = 0;
-    $totalSpent = 0;
-    $totalBalance = 0;
-    $totalCurrent = 0;
-    
-    foreach ($this->totalBalances as $code => $balanceData) {
-        $summaryBalances[] = [
-            'name_fa' => $balanceData['name_fa'],
-            'previous_balance' => $balanceData['previous_balance'],
-            'received' => $balanceData['received'],
-            'spent' => $balanceData['spent'],
-            'balance' => $balanceData['balance'],
-            'current_balance' => $balanceData['current_balance'],
-            'status' => $balanceData['status']
+        return [
+            'customer_name' => $this->selectedCustomerName,
+            'customer' => $customer,
+            'balances' => $summaryBalances,
+            'generated_at' => Jalalian::now()->format('Y/m/d H:i:s'),
+            'start_date' => $this->startDateDisplay ?: '---',
+            'end_date' => $this->endDateDisplay ?: '---',
+            'totals' => [
+                'previous' => $totalPrevious,
+                'received' => $totalReceived,
+                'spent' => $totalSpent,
+                'balance' => $totalBalance,
+                'current' => $totalCurrent
+            ]
         ];
-        
-        $totalPrevious += $balanceData['previous_balance'];
-        $totalReceived += $balanceData['received'];
-        $totalSpent += $balanceData['spent'];
-        $totalBalance += $balanceData['balance'];
-        $totalCurrent += $balanceData['current_balance'];
     }
-
-    // Sort by currency name
-    usort($summaryBalances, function($a, $b) {
-        return strcmp($a['name_fa'], $b['name_fa']);
-    });
-
-    Log::debug("Summary PDF Data Prepared", [
-        'customer_id' => $this->selectedCustomer,
-        'customer_name' => $this->selectedCustomerName,
-        'balances_count' => count($summaryBalances),
-        'totals' => [
-            'previous' => $totalPrevious,
-            'received' => $totalReceived,
-            'spent' => $totalSpent,
-            'balance' => $totalBalance,
-            'current' => $totalCurrent
-        ]
-    ]);
-    
-    return [
-        'customer_name' => $this->selectedCustomerName,
-        'customer' => $customer,
-        'balances' => $summaryBalances,
-        'generated_at' => Jalalian::now()->format('Y/m/d H:i:s'),
-        'start_date' => $this->startDateDisplay ?: '---',
-        'end_date' => $this->endDateDisplay ?: '---',
-        'totals' => [
-            'previous' => $totalPrevious,
-            'received' => $totalReceived,
-            'spent' => $totalSpent,
-            'balance' => $totalBalance,
-            'current' => $totalCurrent
-        ]
-    ];
-}
-/**
- * Prepare data for summary PDF generation
- */
+    /**
+     * Prepare data for summary PDF generation
+     */
 
 
     /**

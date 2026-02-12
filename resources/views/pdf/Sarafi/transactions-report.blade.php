@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <style>
         /* فونت و بدنه */
         body {
-            font-family: "Tahoma", "Segoe UI", sans-serif;
             font-size: 11px;
             line-height: 1.6;
             margin: 0;
@@ -20,6 +20,7 @@
             margin-bottom: 10px;
             color: #34495e;
         }
+
         .main-header h2 {
             margin: 0;
             font-size: 20px;
@@ -33,6 +34,7 @@
             padding-bottom: 8px;
             border-bottom: 2px solid #34495e;
         }
+
         .header h1 {
             font-size: 18px;
             font-weight: 700;
@@ -53,14 +55,17 @@
             border-radius: 6px;
             font-size: 10.5px;
         }
+
         .info-item {
             display: flex;
             gap: 5px;
             align-items: center;
         }
+
         .info-item strong {
             color: #2c3e50;
         }
+
         .customer-name {
             color: #2980b9;
             font-weight: 600;
@@ -71,23 +76,28 @@
             width: 100%;
             border-collapse: collapse;
             background: white;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
             margin-bottom: 20px;
             font-size: 10px;
         }
-        th, td {
+
+        th,
+        td {
             padding: 8px 6px;
             border: 1px solid #dfe6ec;
             text-align: center;
         }
+
         th {
             background-color: #2980b9;
             color: white;
             font-weight: 600;
         }
+
         tbody tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+
         tbody tr:hover {
             background-color: #e1f0fb;
         }
@@ -101,6 +111,7 @@
             font-size: 9px;
             font-weight: 600;
         }
+
         .status-pending {
             background-color: #fcf8e3;
             color: #8a6d3b;
@@ -117,6 +128,7 @@
             border: 1px solid #cce5ff;
             border-radius: 6px;
         }
+
         .summary-title {
             font-weight: 700;
             font-size: 12px;
@@ -124,11 +136,13 @@
             text-align: center;
             margin-bottom: 10px;
         }
+
         .summary-table th {
             background-color: #1c5f9e;
             color: white;
             font-weight: 600;
         }
+
         .summary-table td {
             font-weight: 500;
         }
@@ -167,6 +181,7 @@
         }
     </style>
 </head>
+
 <body dir="rtl">
 
     <!-- هدر صرافی -->
@@ -182,7 +197,8 @@
     <!-- اطلاعات گزارش -->
     <div class="info">
         <div class="info-item"><strong>حساب:</strong> <span class="customer-name">{{ $customer_name }}</span></div>
-        <div class="info-item"><strong>شماره حساب:</strong> <span class="customer-name">{{ $customer->account_number ?? '---' }}</span></div>
+        <div class="info-item"><strong>شماره حساب:</strong> <span class="customer-name">{{ $customer->account_number ??
+                '---' }}</span></div>
         <div class="info-item"><strong>بازه زمانی:</strong> {{ $start_date }} تا {{ $end_date }}</div>
     </div>
 
@@ -199,7 +215,7 @@
                 @foreach($active_currencies as $code => $currency)
                 <th colspan="2" class="currency-header">{{ $currency['name_fa'] }}</th>
                 @endforeach
-               
+
             </tr>
             <tr>
                 @foreach($active_currencies as $code => $currency)
@@ -212,57 +228,59 @@
             @foreach($transactions as $index => $transaction)
             <tr>
                 <td>{{ $index + 1 }}</td>
-<td>{{ explode(' ', $transaction->date)[0] }}</td>
+                <td>{{ explode(' ', $transaction->date)[0] }}</td>
                 <td>{{ $transaction->account_type }}</td>
                 <td>{{ $transaction->document_number ?? 'SN-' . str_pad($transaction->id, 3, '0', STR_PAD_LEFT) }}</td>
                 <td>{{ Str::limit($transaction->description, 20) }}</td>
                 @foreach($active_currencies as $code => $currency)
-                <td class="amount-cell">{{ $transaction->currency == $code && $transaction->type == 'رسید' ? number_format($transaction->amount) : '' }}</td>
-                <td class="amount-cell">{{ $transaction->currency == $code && $transaction->type == 'برد' ? number_format($transaction->amount) : '' }}</td>
+                <td class="amount-cell">{{ $transaction->currency == $code && $transaction->type == 'رسید' ?
+                    number_format($transaction->amount) : '' }}</td>
+                <td class="amount-cell">{{ $transaction->currency == $code && $transaction->type == 'برد' ?
+                    number_format($transaction->amount) : '' }}</td>
                 @endforeach
-             
+
             </tr>
             @endforeach
         </tbody>
     </table>
     @else
     <div class="no-data">
-         هیچ تراکنشی در این بازه زمانی یافت نشد
+        هیچ تراکنشی در این بازه زمانی یافت نشد
     </div>
     @endif
 
     <!-- بخش خلاصه موجودی -->
-   @if(count($balances) > 0)
-<div class="summary-section">
-    <div class="summary-title"> خلاصه موجودی‌ها</div>
-    <table class="summary-table">
-        <thead>
-            <tr>
-                <th>واحد پول</th>
-                <th>موجودی قبلی</th>
-                <th>رسید</th>
-                <th>برد</th>
-                <th>بیلانس دوره</th>
-                <th>موجودی فعلی</th>
-                <th>وضعیت</th>
-            </tr>
-        </thead>
-        <tbody>
-            @php
+    @if(count($balances) > 0)
+    <div class="summary-section">
+        <div class="summary-title"> خلاصه موجودی‌ها</div>
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th>واحد پول</th>
+                    <th>موجودی قبلی</th>
+                    <th>رسید</th>
+                    <th>برد</th>
+                    <th>بیلانس دوره</th>
+                    <th>موجودی فعلی</th>
+                    <th>وضعیت</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
                 $totalPrevious = 0;
                 $totalReceived = 0;
                 $totalSpent = 0;
                 $totalBalance = 0;
                 $totalCurrent = 0;
-            @endphp
-            
-            @foreach($balances as $balance)
+                @endphp
+
+                @foreach($balances as $balance)
                 @php
-                    $totalPrevious += $balance['previous_balance'] ?? 0;
-                    $totalReceived += $balance['received'] ?? 0;
-                    $totalSpent += $balance['spent'] ?? 0;
-                    $totalBalance += $balance['balance'] ?? 0;
-                    $totalCurrent += $balance['current_balance'] ?? 0;
+                $totalPrevious += $balance['previous_balance'] ?? 0;
+                $totalReceived += $balance['received'] ?? 0;
+                $totalSpent += $balance['spent'] ?? 0;
+                $totalBalance += $balance['balance'] ?? 0;
+                $totalCurrent += $balance['current_balance'] ?? 0;
                 @endphp
                 <tr>
                     <td><strong>{{ $balance['name_fa'] }}</strong></td>
@@ -270,24 +288,26 @@
                     <td class="amount-cell" dir="ltr">{{ number_format($balance['received']) }}</td>
                     <td class="amount-cell" dir="ltr">{{ number_format($balance['spent']) }}</td>
                     <td class="amount-cell" dir="ltr">{{ number_format($balance['balance']) }}</td>
-                    <td class="amount-cell" dir="ltr"><strong>{{ number_format($balance['current_balance']) }}</strong></td>
+                    <td class="amount-cell" dir="ltr"><strong>{{ number_format($balance['current_balance']) }}</strong>
+                    </td>
                     <td>
                         <span class="{{ $balance['status'] == 'طلبکار' ? 'status-confirmed' : 'status-pending' }}">
                             {{ $balance['status'] }}
                         </span>
                     </td>
                 </tr>
-            @endforeach
-            
-       
-        </tbody>
-    </table>
-</div>
-@endif
+                @endforeach
+
+
+            </tbody>
+        </table>
+    </div>
+    @endif
 
     <!-- فوتر -->
     <div class="footer">
-         تاریخ چاپ: {{ $generated_at }} | سیستم صرافی
+        تاریخ چاپ: {{ $generated_at }} | سیستم صرافی
     </div>
 </body>
+
 </html>

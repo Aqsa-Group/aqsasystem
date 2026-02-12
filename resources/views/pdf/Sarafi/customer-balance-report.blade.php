@@ -6,7 +6,6 @@
     <title>{{ $title }}</title>
     <style>
         body {
-            font-family: DejaVu Sans, Shabnam, sans-serif;
             direction: rtl;
             text-align: right;
             font-size: 12px;
@@ -110,7 +109,10 @@
 <body>
     <div class="header">
         <h1>{{ $title }}</h1>
-        <p>تاریخ چاپ: {{ $print_date }}</p>
+<p>
+    تاریخ چاپ: {{ \Morilog\Jalali\Jalalian::fromDateTime($print_date)->format('Y/m/d h:i') }}
+    {{ \Morilog\Jalali\Jalalian::fromDateTime($print_date)->format('A') == 'AM' ? 'قبل از ظهر' : 'بعد از ظهر' }}
+</p>
     </div>
 
     @if(count($normal_reports) > 0)
