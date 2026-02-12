@@ -734,8 +734,9 @@ class Transactions extends Component
                 ],
             ],
             'default_font' => 'vazir',
+             'tempDir' => storage_path('app/mpdf'),
         ]);
-        
+
         $mpdf->SetAutoPageBreak(false);
 
         $mpdf->WriteHTML(view('pdf.Sarafi.transaction', [
@@ -752,6 +753,7 @@ class Transactions extends Component
         ])->render());
 
         $mpdf->Output($pdfPath, 'F');
+        
 
         $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
 
@@ -783,6 +785,7 @@ class Transactions extends Component
                 ],
             ],
             'default_font' => 'vazir',
+             'tempDir' => storage_path('app/mpdf'),
         ]);
 
         $mpdf->SetAutoPageBreak(false);
