@@ -322,24 +322,31 @@ $adminUser = $currentUser->role === 'admin'
             نوت: سند جهت معلومات چاپ شده، و هیچگاه سند پولی محسوب نخواهد شد
         </div>
         @endif
-
         @if($isShort)
         <div style="text-align:center; font-size:10px; margin-bottom:5px;">
             @if(!empty($barcodeImage))
             <img src="data:image/png;base64,{{ $barcodeImage }}" alt="بارکد تراکنش"
-                style="width:120px;  height:20px; display:block; margin:5px auto;">
+                style="width:120px; height:20px; display:block; margin:5px auto;">
             @endif
 
-            <div style=" direction:ltr;">
-                <table style="margin:0 auto; border-collapse:collapse;">
+            @php
+            $amount = (int) ($transaction->journal->safe_balance ?? 0);
+            $digits = str_split((string) $amount);
+            $count = max(count($digits), 1);
+            $cellWidth = floor(120 / $count); // عرض هر رقم بر حسب px
+            @endphp
+
+            <div style="direction:ltr;">
+                <table style="margin:0 auto; border-collapse:collapse; width:120px; table-layout:fixed;">
                     <tr>
-                        @php
-                        $amount = (int) ($transaction->journal->safe_balance ?? 0);
-                        $digits = str_split((string) $amount);
-                        @endphp
                         @foreach($digits as $digit)
-                        <td
-                            style=" padding-bottom:2px; padding-left:12px; padding-right:12px;  font-size:6px; text-align:center;">
+                        <td style="
+                        width:{{ $cellWidth }}px;
+                        font-size:6px;
+                        text-align:center;
+                        padding:0;
+                        overflow:hidden;
+                    ">
                             {{ $digit }}
                         </td>
                         @endforeach
