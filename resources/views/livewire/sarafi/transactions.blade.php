@@ -1746,7 +1746,7 @@
 
 
                                                 <!-- دکمه پرینت -->
-                                                <button wire:click="print({{ $transaction->id }})" class="w-12 h-12 flex items-center justify-center  
+                                                <button wire:click.once="print({{ $transaction->id }})" class="w-12 h-12 flex items-center justify-center  
                                                 rounded-full transition-colors" title="پرینت">
                                                     <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"
                                                         class="w-10 h-10 dark:hidden" alt="Print">

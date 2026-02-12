@@ -323,25 +323,32 @@ $adminUser = $currentUser->role === 'admin'
         </div>
         @endif
 
-
-
         @if($isShort)
-
         <div style="text-align:center; font-size:10px; margin-bottom:5px;">
-
-
             @if(!empty($barcodeImage))
             <img src="data:image/png;base64,{{ $barcodeImage }}" alt="بارکد تراکنش"
-                style="width:150px; height:auto; display:block; margin:5px auto;">
+                style="width:120px;  height:20px; display:block; margin:5px auto;">
             @endif
 
-            <div style="font-weight:bold; font-size:12px; margin-top:3px;">
-                {{ number_format($transaction->journal->safe_balance ?? 0, 0, '.', ',') }}
+            <div style=" direction:ltr;">
+                <table style="margin:0 auto; border-collapse:collapse;">
+                    <tr>
+                        @php
+                        $amount = (int) ($transaction->journal->safe_balance ?? 0);
+                        $digits = str_split((string) $amount);
+                        @endphp
+                        @foreach($digits as $digit)
+                        <td
+                            style=" padding-bottom:2px; padding-left:12px; padding-right:12px;  font-size:6px; text-align:center;">
+                            {{ $digit }}
+                        </td>
+                        @endforeach
+                    </tr>
+                </table>
             </div>
         </div>
-
-
         @endif
+
 
 
 
