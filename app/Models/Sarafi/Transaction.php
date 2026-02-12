@@ -18,11 +18,27 @@ class Transaction extends Model
     protected $table = 'transactions';
 
     protected $fillable = [
-        'customer_id', 'user_id', 'admin_id', 'currency', 'amount', 'type',
-        'account_type', 'zone', 'by', 'date', 'description', 'transaction_file',
-        'conversion_transfer_id', 'conversion_in_account_id', 'account_to_id',
-        'remittance_id', 'changerdeal_id', 'withdrawbank_id',
-        'external_transaction_id', 'safe_deal_id', 'safe_deals_revenue_id',
+        'customer_id',
+        'user_id',
+        'admin_id',
+        'currency',
+        'amount',
+        'type',
+        'account_type',
+        'zone',
+        'by',
+        'date',
+        'description',
+        'transaction_file',
+        'conversion_transfer_id',
+        'conversion_in_account_id',
+        'account_to_id',
+        'remittance_id',
+        'changerdeal_id',
+        'withdrawbank_id',
+        'external_transaction_id',
+        'safe_deal_id',
+        'safe_deals_revenue_id',
     ];
 
     protected $casts = [
@@ -39,17 +55,50 @@ class Transaction extends Model
     // =======================
     // Relations
     // =======================
-    public function customer() { return $this->belongsTo(Customer::class, 'customer_id'); }
-    public function user()     { return $this->belongsTo(User::class, 'user_id'); }
-    public function admin()    { return $this->belongsTo(User::class, 'admin_id'); }
-    public function Safedeals() { return $this->belongsTo(SafeDeal::class, 'safe_deal_id'); }
-    public function changerdeal() { return $this->belongsTo(ChangerDeal::class, 'changerdeal_id'); }
-    public function withdrawbank() { return $this->belongsTo(WithdrawsBanks::class, 'withdrawbank_id'); }
-    public function safedealsrevenue() { return $this->belongsTo(SafeDealsRevenue::class, 'safe_deals_revenue_id'); }
-    public function accounttoid() { return $this->belongsTo(SendToAccount::class, 'account_to_id'); }
-    public function conversionInAccount() { return $this->belongsTo(ConversionInAccounts::class, 'conversion_in_account_id'); }
-    public function externalTransaction() { return $this->belongsTo(ExternalTransactions::class, 'external_transaction_id'); }
-    public function currencyInfo() { return $this->belongsTo(Currency::class, 'currency', 'code'); }
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    public function admin()
+    {
+        return $this->belongsTo(User::class, 'admin_id');
+    }
+    public function Safedeals()
+    {
+        return $this->belongsTo(SafeDeal::class, 'safe_deal_id');
+    }
+    public function changerdeal()
+    {
+        return $this->belongsTo(ChangerDeal::class, 'changerdeal_id');
+    }
+    public function withdrawbank()
+    {
+        return $this->belongsTo(WithdrawsBanks::class, 'withdrawbank_id');
+    }
+    public function safedealsrevenue()
+    {
+        return $this->belongsTo(SafeDealsRevenue::class, 'safe_deals_revenue_id');
+    }
+    public function accounttoid()
+    {
+        return $this->belongsTo(SendToAccount::class, 'account_to_id');
+    }
+    public function conversionInAccount()
+    {
+        return $this->belongsTo(ConversionInAccounts::class, 'conversion_in_account_id');
+    }
+    public function externalTransaction()
+    {
+        return $this->belongsTo(ExternalTransactions::class, 'external_transaction_id');
+    }
+    public function currencyInfo()
+    {
+        return $this->belongsTo(Currency::class, 'currency', 'code');
+    }
 
     // =======================
     // Accessors
@@ -67,9 +116,18 @@ class Transaction extends Model
     public function getCurrencyNameAttribute()
     {
         $map = [
-            'afn' => 'افغانی', 'usd' => 'دالر', 'irr' => 'تومان', 'eur' => 'یورو',
-            'pkr' => 'کلدار', 'aed' => 'درهم', 'try' => 'لیره', 'cny' => 'یوان',
-            'gbp' => 'پوند', 'jpy' => 'ین', 'sar' => 'ریال سعودی', 'inr' => 'روپیه'
+            'afn' => 'افغانی',
+            'usd' => 'دالر',
+            'irr' => 'تومان',
+            'eur' => 'یورو',
+            'pkr' => 'کلدار',
+            'aed' => 'درهم',
+            'try' => 'لیره',
+            'cny' => 'یوان',
+            'gbp' => 'پوند',
+            'jpy' => 'ین',
+            'sar' => 'ریال سعودی',
+            'inr' => 'روپیه'
         ];
         return $map[$this->currency] ?? $this->currency;
     }
@@ -96,8 +154,8 @@ class Transaction extends Model
             'account_type'           => $this->account_type,
             'type'                  => $this->type,
             'customer_type'         => optional($this->customer)->type,
-            'conversion_transfer_id'=> $this->conversion_transfer_id,
-            'conversion_in_account_id'=> $this->conversion_in_account_id,
+            'conversion_transfer_id' => $this->conversion_transfer_id,
+            'conversion_in_account_id' => $this->conversion_in_account_id,
             'account_to_id'         => $this->account_to_id,
         ]);
 
@@ -111,8 +169,10 @@ class Transaction extends Model
             return false;
         }
 
-        if ($this->account_type === 'بانکی' && $this->type === 'برد'
-            && $this->customer && $this->customer->type === 'sarafi_card') {
+        if (
+            $this->account_type === 'بانکی' && $this->type === 'برد'
+            && $this->customer && $this->customer->type === 'sarafi_card'
+        ) {
             Log::info("❌ shouldAffectSafeBalance: false (sarafi_card bank withdrawal)");
             return false;
         }
@@ -173,7 +233,7 @@ class Transaction extends Model
                 ->first();
 
             $safeBalance = $lastJournal ? (float)$lastJournal->safe_balance
-                                       : $this->getRealAccountBalance($this->currency, $this->account_type, $adminId);
+                : $this->getRealAccountBalance($this->currency, $this->account_type, $adminId);
 
             if ($this->shouldAffectSafeBalance()) {
                 $safeBalance += $signed;
@@ -230,58 +290,55 @@ class Transaction extends Model
         return $oldTx;
     }
 
-    /**
-     * به‌روزرسانی ژورنال هنگام ویرایش تراکنش
-     * (بدون هیچگونه تأثیر روی جداول صندوق/بانک)
-     */
+
+
+
     public function updateJournal()
     {
         $oldJournal = Journals::where('transaction_id', $this->id)->first();
         if (!$oldJournal) {
-            Log::warning("⚠️ No journal found for transaction {$this->id} during update – will create new.");
             $this->createJournal();
             return;
         }
 
         $oldTx = $this->reconstructOldTransaction($oldJournal);
-
-        // تعیین پرچم حفظ موجودی صندوق
         $currencyChanged = ($this->currency !== $oldTx->currency);
-        $this->preserveSafe = $currencyChanged;
+        $this->preserveSafe = $currencyChanged; // برای استفاده در رویداد deleting
 
         DB::connection('sarafi')->transaction(function () use ($oldJournal, $oldTx) {
             if ($this->mustRecreateJournal($oldTx)) {
                 Log::info("♻️ Journal recreation for TX {$this->id}: fields changed.");
 
-                // حذف اثر تراکنش قدیمی – فقط بازسازی مشتری و (در صورت مجاز) صندوق
-                $this->adjustJournalsAfterDelete(
-                    $oldTx,
-                    $oldJournal->id,
-                    $oldTx->shouldAffectSafeBalance(),
-                    recalcSafe: !$this->preserveSafe,
-                    recalcCustomer: true
-                );
-
+                // 1️⃣ حذف ژورنال قدیمی
+                $oldJournalId = $oldJournal->id;
                 $oldJournal->delete();
                 Log::info("🗑️ Old journal deleted for TX {$this->id}.");
 
-                $this->createJournal();
-
-                // اعمال اثر تراکنش جدید – فقط بازسازی مشتری و (در صورت مجاز) صندوق
-                $this->adjustJournalsForNewTransaction(
-                    recalcSafe: !$this->preserveSafe,
+                // 2️⃣ بازسازی زنجیره ارز قدیم بعد از حذف (حذف اثر تراکنش)
+                $this->adjustJournalsAfterDelete(
+                    $oldTx,
+                    $oldJournalId,
+                    $oldTx->shouldAffectSafeBalance(),
+                    recalcSafe: true,   // همیشه true چون باید اثر از صندوق ارز قدیم برداشته شود
                     recalcCustomer: true
                 );
 
-                // ❌ عدم به‌روزرسانی جداول صندوق/بانک – این کار توسط Livewire انجام می‌شود
+                // 3️⃣ ایجاد ژورنال جدید
+                $this->createJournal();
+
+                // 4️⃣ بازسازی زنجیره ارز جدید (اعمال اثر تراکنش جدید)
+                $this->adjustJournalsForNewTransaction(
+                    recalcSafe: true,   // true چون می‌خواهیم safe_balance ژورنال‌ها درست باشد
+                    recalcCustomer: true
+                );
             } else {
+                // تغییر فقط مبلغ/نوع (بدون تغییر فیلدهای کلیدی)
                 $this->applyDiffUpdate($oldJournal, $oldTx);
             }
         });
 
         Log::info("✅ Journal updated for transaction {$this->id}");
     }
-
     /**
      * بررسی نیاز به بازآفرینی کامل ژورنال
      */
@@ -367,9 +424,13 @@ class Transaction extends Model
     /**
      * بازسازی safe_balance همه ژورنال‌های بعد از یک نقطه مشخص (بر اساس تاریخ و journal.id)
      */
-    private function recalcSafeBalanceFromPoint(int $adminId, string $currency, string $accountType,
-                                                string $startDate, int $startJournalId): void
-    {
+    private function recalcSafeBalanceFromPoint(
+        int $adminId,
+        string $currency,
+        string $accountType,
+        string $startDate,
+        int $startJournalId
+    ): void {
         Log::info("🔄 recalcSafeBalanceFromPoint: admin={$adminId}, currency={$currency}, account={$accountType}, startDate={$startDate}, startJournalId={$startJournalId}");
 
         $previousJournal = Journals::where('admin_id', $adminId)
@@ -377,10 +438,10 @@ class Transaction extends Model
             ->where('account_type', $accountType)
             ->where(function ($q) use ($startDate, $startJournalId) {
                 $q->where('date', '<', $startDate)
-                  ->orWhere(function ($q2) use ($startDate, $startJournalId) {
-                      $q2->where('date', '=', $startDate)
-                         ->where('id', '<', $startJournalId);
-                  });
+                    ->orWhere(function ($q2) use ($startDate, $startJournalId) {
+                        $q2->where('date', '=', $startDate)
+                            ->where('id', '<', $startJournalId);
+                    });
             })
             ->orderByDesc('date')
             ->orderByDesc('id')
@@ -394,10 +455,10 @@ class Transaction extends Model
             ->where('account_type', $accountType)
             ->where(function ($q) use ($startDate, $startJournalId) {
                 $q->where('date', '>', $startDate)
-                  ->orWhere(function ($q2) use ($startDate, $startJournalId) {
-                      $q2->where('date', '=', $startDate)
-                         ->where('id', '>=', $startJournalId);
-                  });
+                    ->orWhere(function ($q2) use ($startDate, $startJournalId) {
+                        $q2->where('date', '=', $startDate)
+                            ->where('id', '>=', $startJournalId);
+                    });
             })
             ->orderBy('date')
             ->orderBy('id')
@@ -426,9 +487,14 @@ class Transaction extends Model
     /**
      * بازسازی cumulative balance مشتری برای همه ژورنال‌های بعد از یک نقطه
      */
-    private function recalcCustomerBalanceFromPoint(int $adminId, int $customerId, string $currency,
-                                                    string $accountType, string $startDate, int $startJournalId): void
-    {
+    private function recalcCustomerBalanceFromPoint(
+        int $adminId,
+        int $customerId,
+        string $currency,
+        string $accountType,
+        string $startDate,
+        int $startJournalId
+    ): void {
         Log::info("🔄 recalcCustomerBalanceFromPoint: customer={$customerId}, currency={$currency}, account={$accountType}");
 
         $previousJournal = Journals::where('admin_id', $adminId)
@@ -437,10 +503,10 @@ class Transaction extends Model
             ->where('account_type', $accountType)
             ->where(function ($q) use ($startDate, $startJournalId) {
                 $q->where('date', '<', $startDate)
-                  ->orWhere(function ($q2) use ($startDate, $startJournalId) {
-                      $q2->where('date', '=', $startDate)
-                         ->where('id', '<', $startJournalId);
-                  });
+                    ->orWhere(function ($q2) use ($startDate, $startJournalId) {
+                        $q2->where('date', '=', $startDate)
+                            ->where('id', '<', $startJournalId);
+                    });
             })
             ->orderByDesc('date')
             ->orderByDesc('id')
@@ -454,10 +520,10 @@ class Transaction extends Model
             ->where('account_type', $accountType)
             ->where(function ($q) use ($startDate, $startJournalId) {
                 $q->where('date', '>', $startDate)
-                  ->orWhere(function ($q2) use ($startDate, $startJournalId) {
-                      $q2->where('date', '=', $startDate)
-                         ->where('id', '>=', $startJournalId);
-                  });
+                    ->orWhere(function ($q2) use ($startDate, $startJournalId) {
+                        $q2->where('date', '=', $startDate)
+                            ->where('id', '>=', $startJournalId);
+                    });
             })
             ->orderBy('date')
             ->orderBy('id')
@@ -492,9 +558,13 @@ class Transaction extends Model
      * @param bool $recalcSafe  آیا safe_balance بازسازی شود؟
      * @param bool $recalcCustomer آیا balance مشتری بازسازی شود؟
      */
-    public function adjustJournalsAfterDelete(Transaction $deletedTx, int $deletedJournalId, bool $shouldAffectSafe,
-                                              bool $recalcSafe = true, bool $recalcCustomer = true): void
-    {
+    public function adjustJournalsAfterDelete(
+        Transaction $deletedTx,
+        int $deletedJournalId,
+        bool $shouldAffectSafe,
+        bool $recalcSafe = true,
+        bool $recalcCustomer = true
+    ): void {
         $adminId    = $deletedTx->admin_id;
         $signed     = $deletedTx->signed_amount;
         $rawDate    = $deletedTx->getRawOriginal('date');
@@ -631,10 +701,10 @@ class Transaction extends Model
                         ->where('account_type', $info['account_type'])
                         ->where(function ($q) use ($info) {
                             $q->where('date', '>', $info['raw_date'])
-                              ->orWhere(function ($q2) use ($info) {
-                                  $q2->where('date', '=', $info['raw_date'])
-                                     ->where('id', '>', $info['journal_id']);
-                              });
+                                ->orWhere(function ($q2) use ($info) {
+                                    $q2->where('date', '=', $info['raw_date'])
+                                        ->where('id', '>', $info['journal_id']);
+                                });
                         })
                         ->exists();
 
@@ -683,7 +753,7 @@ class Transaction extends Model
             'document_type'        => 'رسید / برد صندوق',
             'record_id'           => $this->id,
             'action'              => $action,
-            'document_discription'=> $this->description,
+            'document_discription' => $this->description,
             'old_data'           => $action === 'ویرایش' ? $this->getOriginal() : null,
             'new_data'           => $action === 'ویرایش' ? $this->getAttributes() : ($action === 'حذف' ? $this->getAttributes() : null),
             'registered_user'    => $this->user_id,

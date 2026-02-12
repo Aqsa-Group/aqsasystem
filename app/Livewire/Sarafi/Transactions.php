@@ -727,14 +727,14 @@ class Transactions extends Component
             'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
                 'vazir' => [
 
-                'R' => 'Vazir-Light.ttf',
-                            'B' => 'Vazir-Bold.ttf',
-                            'useOTL' => 0xFF,
-                            'useKashida' => 75,
+                    'R' => 'Vazir-Light.ttf',
+                    'B' => 'Vazir-Bold.ttf',
+                    'useOTL' => 0xFF,
+                    'useKashida' => 75,
                 ],
             ],
             'default_font' => 'vazir',
-             'tempDir' => storage_path('app/mpdf'),
+            'tempDir' => storage_path('app/mpdf'),
         ]);
 
         $mpdf->SetAutoPageBreak(false);
@@ -753,7 +753,7 @@ class Transactions extends Component
         ])->render());
 
         $mpdf->Output($pdfPath, 'F');
-        
+
 
         $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
 
@@ -778,14 +778,14 @@ class Transactions extends Component
             'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
                 'vazir' => [
 
-                'R' => 'Vazir-Light.ttf',
-                            'B' => 'Vazir-Bold.ttf',
-                            'useOTL' => 0xFF,
-                            'useKashida' => 75,
+                    'R' => 'Vazir-Light.ttf',
+                    'B' => 'Vazir-Bold.ttf',
+                    'useOTL' => 0xFF,
+                    'useKashida' => 75,
                 ],
             ],
             'default_font' => 'vazir',
-             'tempDir' => storage_path('app/mpdf'),
+            'tempDir' => storage_path('app/mpdf'),
         ]);
 
         $mpdf->SetAutoPageBreak(false);
