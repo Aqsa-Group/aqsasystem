@@ -733,3 +733,4 @@ Stack trace:
 [30-Jan-2026 07:26:53 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
 [30-Jan-2026 07:26:56 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 63
 [30-Jan-2026 07:26:56 UTC] PHP Deprecated:  Constant PDO::MYSQL_ATTR_SSL_CA is deprecated since 8.5, use Pdo\Mysql::ATTR_SSL_CA instead in /home/aqsasystem/public_html/config/database.php on line 197
+[10-Feb-2026 18:13:34 UTC] PHP Warning:  Module "redis" is already loaded in Unknown on line 0

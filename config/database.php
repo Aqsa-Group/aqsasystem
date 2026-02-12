@@ -120,23 +120,21 @@ return [
         ],
 
 
-         'tools' => [
-            'driver' => 'mysql',
-            'url' => env('DB_URL'),
-            'host' => env('DB_Tools_HOST', '127.0.0.1'),
-            'port' => env('DB_Tools_PORT', '3306'),
-            'database' => env('DB_Tools_DATABASE', 'aqsasystem_tools'),
-            'username' => env('DB_Tools_USERNAME', 'root'),
-            'password' => env('DB_Tools_PASSWORD', ''),
-            'unix_socket' => env('DB_SOCKET', ''),
-            'charset' => env('DB_CHARSET', 'utf8mb4'),
-            'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'strict' => true,
-            'engine' => null,
-           
-        ],
+       'tools' => [
+    'driver' => 'mysql',
+    'host' => env('DB_TOOLS_HOST', '127.0.0.1'),
+    'port' => env('DB_TOOLS_PORT', '3306'),
+    'database' => env('DB_TOOLS_DATABASE', 'aqsasystem_tools'),
+    'username' => env('DB_TOOLS_USERNAME', 'aqsasystem_tools'),
+    'password' => env('DB_TOOLS_PASSWORD', ''),
+    'unix_socket' => env('DB_SOCKET', ''),
+    'charset' => 'utf8mb4',
+    'collation' => 'utf8mb4_unicode_ci',
+    'prefix' => '',
+    'strict' => true,
+    'engine' => null,
+],
+
 
 
 
