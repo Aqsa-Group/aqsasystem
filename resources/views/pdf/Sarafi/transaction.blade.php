@@ -22,7 +22,7 @@ $adminUser = $currentUser->role === 'admin'
 
         /* تعریف فونت Shabnam */
         @font-face {
-            
+
 
             font-weight: normal;
             font-style: normal;
@@ -31,7 +31,7 @@ $adminUser = $currentUser->role === 'admin'
 
 
         body {
-        
+
             width: 72.1mm;
             margin: 0 auto;
             padding: 0;
@@ -200,7 +200,7 @@ $adminUser = $currentUser->role === 'admin'
 <body>
 
     <div class="document">
-        <h1 style="text-align:center ; font-size: 23px;"  ;> صرافی {{
+        <h1 style="text-align:center ; font-size: 23px;" ;> صرافی {{
             $currentUser->sarafi_name ?? 'صرافی' }}</h1>
 
         <table class="info-table2" style="width: 100%; font-size: 6px;">
@@ -256,6 +256,7 @@ $adminUser = $currentUser->role === 'admin'
                 <td>{{ $transaction->customer->account_number ?? 'نامشخص' }}</td>
             </tr>
 
+
             <tr>
                 <td>نوع ترانزکشن :</td>
                 <td> {{ $transaction->type }} ( {{ $transaction->account_type ?? 'نامشخص' }} )</td>
@@ -264,14 +265,20 @@ $adminUser = $currentUser->role === 'admin'
             <tr>
                 <td>مبلغ:</td>
                 <td>
-                    {{ number_format((float)$transaction->amount) }}    ({{
+                    {{ number_format((float)$transaction->amount) }} ({{
                     $currenciesFa[strtolower($transaction->currency)] ?? $transaction->currency }})
 
                 </td>
             </tr>
 
 
-         
+
+
+
+
+
+
+
         </table>
 
         <div class="description">
@@ -296,18 +303,18 @@ $adminUser = $currentUser->role === 'admin'
 
                 <tr>
                     <td>
-                        <strong>آدرس شبعه اول:</strong>  {{ $currentUser->address ?? '-' }}
+                        <strong>آدرس شبعه اول:</strong> {{ $currentUser->address ?? '-' }}
                     </td>
                 </tr>
 
 
                 <tr>
                     <td>
-                        <strong>آدرس شبعه دوم:</strong>  {{ $currentUser->address2 ?? '-' }}
+                        <strong>آدرس شبعه دوم:</strong> {{ $currentUser->address2 ?? '-' }}
                     </td>
                 </tr>
 
-               
+
             </table>
         </div>
 
@@ -315,6 +322,28 @@ $adminUser = $currentUser->role === 'admin'
             نوت: سند جهت معلومات چاپ شده، و هیچگاه سند پولی محسوب نخواهد شد.
         </div>
         @endif
+
+
+
+        @if($isShort)
+
+        <div style="text-align:center; font-size:10px; margin-bottom:5px;">
+
+
+            @if(!empty($barcodeImage))
+            <img src="data:image/png;base64,{{ $barcodeImage }}" alt="بارکد تراکنش"
+                style="width:150px; height:auto; display:block; margin:5px auto;">
+            @endif
+
+            <div style="font-weight:bold; font-size:12px; margin-top:3px;">
+                {{ number_format($transaction->journal->safe_balance ?? 0, 0, '.', ',') }}
+            </div>
+        </div>
+
+
+        @endif
+
+
 
     </div>
 </body>

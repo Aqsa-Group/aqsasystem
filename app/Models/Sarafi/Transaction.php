@@ -99,7 +99,10 @@ class Transaction extends Model
     {
         return $this->belongsTo(Currency::class, 'currency', 'code');
     }
-
+public function journal()
+{
+    return $this->hasOne(Journals::class, 'transaction_id', 'id');
+}
     // =======================
     // Accessors
     // =======================
