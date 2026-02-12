@@ -11,7 +11,6 @@ $adminUser = $currentUser->role === 'admin'
 <head>
     <meta charset="UTF-8">
     <title>تراکنش صرافی - {{ $sarafi_name ?? 'صرافی' }}</title>
-    <link rel="preload" href="{{ asset('fonts/Vazir.ttf') }}" as="font" type="font/ttf" crossorigin>
 
     <style>
         /* همه عناصر بدون حاشیه و با فونت پیشفرض */
@@ -23,7 +22,7 @@ $adminUser = $currentUser->role === 'admin'
 
         /* تعریف فونت Shabnam */
         @font-face {
-            font-family: 'Vazir', Tahoma, sans-serif !important;
+            
 
             font-weight: normal;
             font-style: normal;
@@ -32,7 +31,7 @@ $adminUser = $currentUser->role === 'admin'
 
 
         body {
-            font-family: 'Vazir', Tahoma, sans-serif !important;
+        
             width: 72.1mm;
             margin: 0 auto;
             padding: 0;
@@ -204,7 +203,7 @@ $adminUser = $currentUser->role === 'admin'
         <h1 style="text-align:center ; font-size: 23px;"  ;> صرافی {{
             $currentUser->sarafi_name ?? 'صرافی' }}</h1>
 
-        <table class="info-table2" style="width: 100%; font-size: 8px;">
+        <table class="info-table2" style="width: 100%; font-size: 6px;">
             <tr>
                 {{-- ستون ID --}}
                 <td style="width: 60%; text-align: right;" dir="rtl">
@@ -212,7 +211,7 @@ $adminUser = $currentUser->role === 'admin'
                 </td>
 
                 {{-- ستون زمان و تاریخ --}}
-                <td style="width: 40%; text-align: left" dir="rtl">
+                <td style="width: 50%; text-align: left" dir="rtl">
                     {{-- قبل/بعد از ظهر --}}
 
                     {{ \Morilog\Jalali\Jalalian::fromDateTime($transaction->created_at)->format('Y/m/d') }}
