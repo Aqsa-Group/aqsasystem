@@ -102,7 +102,7 @@ class Withdraws extends Model
             'account_type'=> 'نقدی',
             'currency'    => $currency,
             'amount'      => $amount,
-            'balance'     => null,
+            'balance'     => 0,
             'safe_balance'=> $currentBalance, // ✅ دقیقاً مثل SafeDeal
             'description' => $model->description .
                 ($model->expanses_type ? ' (' . $model->expanses_type . ')' : ''),
