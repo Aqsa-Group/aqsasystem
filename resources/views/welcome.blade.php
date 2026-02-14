@@ -220,7 +220,7 @@
                             <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5"
                                 stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                        <p> ورود به پنل</p>
+                        <p class="text-white"> ورود به پنل</p>
                     </div>
                 </a>
 
@@ -294,7 +294,7 @@
                             <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5"
                                 stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                        <p> ورود به پنل</p>
+                        <p class="text-white"> ورود به پنل</p>
                     </div>
                 </a>
 
@@ -367,7 +367,7 @@
                             <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5"
                                 stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                        <p> ورود به پنل</p>
+                        <p class="text-white"> ورود به پنل</p>
                     </div>
                 </a>
 
@@ -442,7 +442,7 @@
                             <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5"
                                 stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                        <p> ورود به پنل</p>
+                        <p class="text-white"> ورود به پنل</p>
                     </div>
                 </a>
 
@@ -517,7 +517,7 @@
                             <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5"
                                 stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                        <p> ورود به پنل</p>
+                        <p class="text-white"> ورود به پنل</p>
                     </div>
                 </a>
 
