@@ -4,9 +4,10 @@
 $currentUser = Auth::guard('sarafi')->user();
 
 $adminUser = $currentUser->role === 'admin'
-    ? $currentUser
-    : \App\Models\Sarafi\User::find($currentUser->admin_id);
+? $currentUser
+: \App\Models\Sarafi\User::find($currentUser->admin_id);
 @endphp
+
 <head>
     <meta charset="UTF-8">
     <title>تبدیل ارز - {{ $conversion->type }}</title>
@@ -18,7 +19,6 @@ $adminUser = $currentUser->role === 'admin'
         }
 
         body {
-            font-family: "Shabnam", sans-serif;
             width: 72.1mm;
             margin: 0 auto;
             padding: 0;
@@ -37,8 +37,6 @@ $adminUser = $currentUser->role === 'admin'
         .header {
             text-align: center;
             margin-bottom: 15px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #ddd;
         }
 
         .header h1 {
@@ -80,22 +78,11 @@ $adminUser = $currentUser->role === 'admin'
             color: #333;
         }
 
-        .signature {
-            text-align: right;
-            margin-bottom: 15px;
-        }
 
-        .signature-line {
-            width: 150px;
-            height: 1px;
-            background: #777;
-            margin-top: 30px;
-        }
+
 
         .contact-info {
             margin-bottom: 10px;
-            padding-top: 10px;
-            border-top: 1px solid #999;
         }
 
         .note {
@@ -127,13 +114,29 @@ $adminUser = $currentUser->role === 'admin'
     <div class="document">
         <div class="header">
             <h1>صرافی {{ Auth::guard('sarafi')->user()->sarafi_name ?? 'صرافی' }}</h1>
-            <div style="font-size: 11px;">
-                <strong>تبدیل ارز و انتفال </strong>
-            </div>
-            <div style="font-size: 10px; margin-top: 5px;">
-                تاریخ: {{ $conversion->transaction_date }}
-            </div>
         </div>
+
+        <table class="info-table2" style="width: 100%; font-size: 14px; white-space: nowrap; ">
+            <tr>
+                {{-- ستون ID --}}
+                <td style="width: 60%; text-align: right;" dir="rtl">
+                    نمبر سند: {{ $conversion->id }}
+                </td>
+
+                {{-- ستون زمان و تاریخ --}}
+                <td style="width: 40%; text-align: left; white-space: nowrap;" dir="rtl">
+
+                    {{ \Morilog\Jalali\Jalalian::fromDateTime($conversion->created_at)->format('Y/m/d') }}
+
+                    <span style="white-space: nowrap;">
+                        {{ $conversion->created_at->format('h:i') }}
+                        {{ $conversion->created_at->format('A') == 'AM' ? 'قبل از ظهر' : 'بعد از ظهر' }}
+                    </span>
+
+                </td>
+
+            </tr>
+        </table>
 
         <table class="info-table">
             @php
@@ -165,7 +168,7 @@ $adminUser = $currentUser->role === 'admin'
             @endphp
 
             <tr>
-                <td>حساب برداشت:</td>
+                <td>حساب </td>
                 <td>
                     {{ $conversion->fromCustomer->fullname ?? 'نامشخص' }}
                     <div class="amount-in-words">
@@ -174,41 +177,24 @@ $adminUser = $currentUser->role === 'admin'
                 </td>
             </tr>
 
-            <tr>
-                <td>ارز برداشت:</td>
-                <td>
-                    {{ $currenciesFa[strtolower($conversion->from_currency)] ?? $conversion->from_currency }}
-                </td>
-            </tr>
-
-
-            <tr>
-                <td> از حساب :</td>
-                <td>
-                    {{ $conversion->from_account}}
-                </td>
-            </tr>
-
-
-            <tr>
-                <td> به حساب:</td>
-                <td>
-                    {{ $conversion->to_account}}
-                </td>
-            </tr>
-
-
 
             <tr>
                 <td>مبلغ برداشت:</td>
                 <td>
                     {{ number_format((float)$conversion->withdrawal_amount) }}
+                    {{ $currenciesFa[strtolower($conversion->from_currency)] ?? $conversion->from_currency }}
+
+
+                    {{ $conversion->from_account}}
+
+
 
                 </td>
             </tr>
 
+
             <tr>
-                <td>حساب دریافت:</td>
+                <td>حساب دریافت</td>
                 <td>
                     {{ $conversion->toCustomer->fullname ?? 'نامشخص' }}
                     <div class="amount-in-words">
@@ -217,56 +203,40 @@ $adminUser = $currentUser->role === 'admin'
                 </td>
             </tr>
 
-            <tr>
-                <td>ارز دریافت:</td>
-                <td>
-                    {{ $currenciesFa[strtolower($conversion->to_currency)] ?? $conversion->to_currency }}
-                </td>
-            </tr>
+
+
+
+
+
 
             <tr>
-                <td>مبلغ دریافت:</td>
+                <td>مبلغ دریافت</td>
                 <td>
                     {{ number_format((float)$conversion->received_amount, 2) }}
+                    {{ $currenciesFa[strtolower($conversion->to_currency)] ?? $conversion->to_currency }}
+
+
+
+                    {{ $conversion->to_account}}
+
+
 
                 </td>
             </tr>
 
             <tr>
-                <td>نرخ ارز:</td>
+                <td>نرخ ارز</td>
                 <td>
-                    {{ number_format((float)$conversion->currency_rate, 4) }}
+                    {{ number_format((float)$conversion->currency_rate, 2) }}
 
                 </td>
             </tr>
 
-            <tr>
-                <td>زون برداشت:</td>
-                <td>{{ $conversion->zone_sender }}</td>
-            </tr>
 
-            <tr>
-                <td>زون دریافت:</td>
-                <td>{{ $conversion->zone_receiver }}</td>
-            </tr>
 
-           
 
-          
 
-            <tr>
-                <td>زمان ثبت:</td>
-                <td>
-                    @php
-                    try {
-                    $time = \Carbon\Carbon::parse($conversion->created_at);
-                    echo $time->format('h:i:s') . ' ' . ($time->format('A') == 'AM' ? 'ق.ظ' : 'ب.ظ');
-                    } catch (Exception $e) {
-                    echo $conversion->created_at;
-                    }
-                    @endphp
-                </td>
-            </tr>
+
         </table>
 
         <div class="description">
@@ -274,20 +244,17 @@ $adminUser = $currentUser->role === 'admin'
             {{ $conversion->description ?? 'تبدیل ارز - بدون توضیحات بیشتر' }}
         </div>
 
-        <div class="signature">
-            <div style="margin-bottom: 25px;">امضاء مسئول</div>
-            <div class="signature-line"></div>
-        </div>
+
 
         <div class="contact-info">
             <div style="margin-bottom: 5px;">
-                <strong>تماس:</strong> {{ Auth::guard('sarafi')->user()->phone ? '+93' .
+                <strong>شماره تماس:</strong>
+                {{ Auth::guard('sarafi')->user()->phone ?
                 Auth::guard('sarafi')->user()->phone : 'نامشخص' }}
             </div>
             <div>
-                 <strong>آدرس شبعه اول:</strong> افغانستان {{ $currentUser->address ?? '-' }} <br>
+                <strong>آدرس شبعه اول:</strong> افغانستان {{ $currentUser->address ?? '-' }} <br>
                 <strong>آدرس شبعه دوم:</strong> افغانستان {{ $currentUser->address2 ?? '-' }} <br>
-                <strong>آدرس شبعه سوم:</strong> افغانستان {{ $currentUser->address3 ?? '-' }}
             </div>
         </div>
 
@@ -295,9 +262,7 @@ $adminUser = $currentUser->role === 'admin'
             نوت: این سند جهت معلومات چاپ شده، و هیچگاه سند پولی محسوب نخواهد شد.
         </div>
 
-        <div class="footer">
-            چاپ شده در: {{ \Morilog\Jalali\Jalalian::now()->format('Y/m/d H:i:s') }}
-        </div>
+
     </div>
 </body>
 

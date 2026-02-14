@@ -1,15 +1,16 @@
 <div>
     <div class="container mx-auto ">
-        @if (session()->has('message'))
+           @if (session()->has('message'))
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
-            class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
-            <div class="h-[80px] w-full flex justify-start items-center px-4">
-                <h2 class="text-white vazir text-[18px]">
+            class="fixed top-0 left-0 right-0 w-full z-[9999] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-400  bg-[#184D6C] vazir">
+            <div style="margin-right: 296px" class="h-[80px] w-full flex justify-start items-center px-4">
+                <h2 class="text-white vazir text-[18px] text-center align-middle jus">
                     {{ session('message') }}
                 </h2>
             </div>
         </div>
         @endif
+
 
 
 
@@ -192,7 +193,8 @@
                                 </div>
                                 <span class="text-white">نقدی</span>
                             </div>
-                            <span class="font-medium text-left text-white" dir="ltr">{{ number_format($cashBalance) }}</span>
+                            <span class="font-medium text-left text-white" dir="ltr">{{ number_format($cashBalance)
+                                }}</span>
                         </div>
                         <div class="flex justify-between items-center text-[14px]">
                             <div class="flex justify-end items-center gap-2">
@@ -214,7 +216,8 @@
                                 </div>
                                 <span class="text-white">بانکی</span>
                             </div>
-                            <span class="font-medium text-left text-white" dir="ltr">{{ number_format($bankBalance) }}</span>
+                            <span class="font-medium text-left text-white" dir="ltr">{{ number_format($bankBalance)
+                                }}</span>
                         </div>
                         <div class="flex justify-between items-center text-[14px] border-b border-[#184D6C]/15 pb-2">
                             <div class="flex justify-end items-center gap-2">
@@ -240,7 +243,8 @@
                                 </div>
                                 <span class="text-white">مجموعه</span>
                             </div>
-                            <span class="font-bold text-[16px] text-left text-white" dir="ltr">{{ number_format($totalBalance)
+                            <span class="font-bold text-[16px] text-left text-white" dir="ltr">{{
+                                number_format($totalBalance)
                                 }}</span>
                         </div>
                     </div>
@@ -248,7 +252,7 @@
 
 
 
-                        <button wire:click="showReport" wire:loading.attr="disabled"
+                    <button wire:click="showReport" wire:loading.attr="disabled"
                         class="bg-[#FFFFFF]/10  rounded-[8px] mr-auto  backdrop:blur-2xl text-[12px] p-2 mt-2 text-gray-800 hover:shadow-md transition border border-white flex items-center justify-end gap-2 w-[114px] h-[25px]">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M7.5 12.5L12.5 7.5M12.5 7.5H8.75M12.5 7.5V11.25" stroke="white" stroke-width="1.5"
@@ -454,7 +458,7 @@
                     </div>
 
 
-                        <button wire:click="showReport" wire:loading.attr="disabled"
+                    <button wire:click="showReport" wire:loading.attr="disabled"
                         class="bg-[#FFFFFF]/10  rounded-[8px] mr-auto  backdrop:blur-2xl text-[12px] p-2 mt-2 text-gray-800 hover:shadow-md transition border border-white flex items-center justify-end gap-2 w-[114px] h-[25px]">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M7.5 12.5L12.5 7.5M12.5 7.5H8.75M12.5 7.5V11.25" stroke="white" stroke-width="1.5"
@@ -1475,21 +1479,13 @@
                         </div>
                     </div>
 
-                    {{-- شرح بردگی --}}
                     <div class="mt-3">
-                        <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">شرح
-                            بردگی</label>
+                        <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">توضیحات
+                        </label>
                         <textarea wire:model="description_sender" rows="3" placeholder="شرح بردگی..."
                             class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white p-3 rounded-[12px] border bg-[#EFF6F9]  focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
                     </div>
 
-                    {{-- شرح رسیدگی --}}
-                    <div class="mt-3">
-                        <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">شرح
-                            رسیدگی</label>
-                        <textarea wire:model="description_receiver" rows="3" placeholder="شرح رسیدگی..."
-                            class="w-full dark:bg-black dark:text-white dark:border-white dark:placeholder-white p-3 rounded-[12px] border bg-[#EFF6F9]  focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
-                    </div>
 
                     {{-- دکمه‌ها --}}
                     <div

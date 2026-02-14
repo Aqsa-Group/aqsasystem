@@ -5,221 +5,215 @@ namespace App\Http\Controllers;
 use App\Models\Market\Accounting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Mpdf\Mpdf;
+
 
 class AccountingPrintController extends Controller
 {
-   public function printView($id)
-{
-    $accounting = Accounting::with(['market', 'shop', 'booth', 'shopkeeper'])
-        ->findOrFail($id);
+    /*--------------------------------------------------------------
+    | چاپ تکی
+    --------------------------------------------------------------*/
+    public function printView($id)
+    {
+        $accounting = Accounting::with(['market', 'shop', 'booth', 'shopkeeper'])
+            ->findOrFail($id);
 
-    if ($accounting->expanses_type === 'پول برق') {
+        if ($accounting->expanses_type === 'پول برق') {
+            $printData = $this->preparePrintData($accounting);
+            return view('print.electricity', $printData);
+        }
 
-        $printData = $this->preparePrintData($accounting);
-
-        return view('print.electricity', $printData);
+        return view('exports.accounting_print', compact('accounting'));
     }
 
-    return view('exports.accounting_print', compact('accounting'));
-}
-
+    /*--------------------------------------------------------------
+    | چاپ انتخابی (Bulk)
+    --------------------------------------------------------------*/
     public function printBulk($ids)
     {
         $ids = explode(',', $ids);
-        
-        $accountings = Accounting::with(['market', 'shop', 'booth', 'shopkeeper'])
-            ->whereIn('id', $ids)
-            ->orderBy('created_at')
-            ->get();
-            
-        $printsData = [];
-        foreach ($accountings as $acc) {
-            if ($acc->expanses_type === 'پول برق') {
-                $printsData[] = $this->preparePrintData($acc);
-            }
-        }
-        
-        return view('print.electricity_bulk', [
-            'printsData' => $printsData
-        ]);
-    }
-    
-    public function printFiltered(Request $request)
-    {
-        // بررسی کنید که آیا ids در پارامترهای request وجود دارد (بخشی از bulk action)
-        if ($request->has('ids') && $request->ids) {
-            // حالت اول: چاپ انتخابی (از bulk action)
-            return $this->handleBulkPrint($request->ids);
-        } else {
-            // حالت دوم: چاپ فیلتر شده (از header action)
-            return $this->handleFilteredPrint($request);
-        }
-    }
-    
-    private function handleBulkPrint($ids)
-    {
-        $ids = explode(',', $ids);
-        
+
         $accountings = Accounting::with(['market', 'shop', 'booth', 'shopkeeper'])
             ->whereIn('id', $ids)
             ->where('expanses_type', 'پول برق')
             ->orderBy('created_at')
             ->get();
-            
+
+        if ($accountings->isEmpty()) {
+            abort(404, 'هیچ قبض برقی برای چاپ یافت نشد.');
+        }
+
         $printsData = [];
         foreach ($accountings as $acc) {
             $printsData[] = $this->preparePrintData($acc);
         }
-        
-        if (empty($printsData)) {
-            abort(404, 'هیچ قبض برقی برای چاپ یافت نشد.');
-        }
-        
-        return view('print.electricity_bulk', [
-            'printsData' => $printsData
-        ]);
+
+        return view('print.electricity_bulk', compact('printsData'));
     }
-    
-    private function handleFilteredPrint(Request $request)
+
+    /*--------------------------------------------------------------
+    | چاپ فیلتر شده 
+    --------------------------------------------------------------*/
+    public function printFiltered(Request $request)
     {
-        $user = Auth::user();
-        $query = Accounting::query();
-        
-        // اعمال دسترسی کاربر
-       
-        // اعمال فیلترهای ارسال شده
-        $this->applyFilters($query, $request);
-        
-        // فقط قبض‌های برق
-        $query->where('expanses_type', 'پول برق');
-        
-        $accountings = $query->with(['market', 'shop', 'booth', 'shopkeeper'])
+        if ($request->filled('ids')) {
+            return $this->handleBulkPrint($request->ids);
+        }
+
+        return $this->handleFilteredPrint($request);
+    }
+
+    private function handleBulkPrint($ids)
+    {
+        $ids = explode(',', $ids);
+
+        $accountings = Accounting::with(['market', 'shop', 'booth', 'shopkeeper'])
+            ->whereIn('id', $ids)
+            ->where('expanses_type', 'پول برق')
             ->orderBy('created_at')
             ->get();
-            
+
+        if ($accountings->isEmpty()) {
+            abort(404, 'هیچ قبض برقی برای چاپ یافت نشد.');
+        }
+
         $printsData = [];
         foreach ($accountings as $acc) {
             $printsData[] = $this->preparePrintData($acc);
         }
-        
-        if (empty($printsData)) {
+
+        return view('print.electricity_bulk', compact('printsData'));
+    }
+
+    private function handleFilteredPrint(Request $request)
+    {
+        $query = Accounting::query();
+
+        $this->applyFilters($query, $request);
+
+        $query->where('expanses_type', 'پول برق');
+
+        $accountings = $query
+            ->with(['market', 'shop', 'booth', 'shopkeeper'])
+            ->orderBy('created_at')
+            ->get();
+
+        if ($accountings->isEmpty()) {
             abort(404, 'هیچ قبض برقی برای چاپ یافت نشد.');
         }
-        
-        return view('print.electricity_bulk', [
-            'printsData' => $printsData
-        ]);
+
+        $printsData = [];
+        foreach ($accountings as $acc) {
+            $printsData[] = $this->preparePrintData($acc);
+        }
+
+        return view('print.electricity_bulk', compact('printsData'));
     }
-    
- 
-    
-    private function applyFilters($query, $request)
+
+    /*--------------------------------------------------------------
+    | فیلترها
+    --------------------------------------------------------------*/
+    private function applyFilters($query, Request $request)
     {
-        if ($request->has('market_id') && $request->market_id) {
+        if ($request->filled('market_id')) {
             $query->where('market_id', $request->market_id);
         }
-        
-        if ($request->has('type') && $request->type) {
+
+        if ($request->filled('type')) {
             $query->where('type', $request->type);
         }
-        
-        if ($request->has('shop_id') && $request->shop_id) {
+
+        if ($request->filled('shop_id')) {
             $query->where('shop_id', $request->shop_id);
         }
-        
-        if ($request->has('booth_id') && $request->booth_id) {
+
+        if ($request->filled('booth_id')) {
             $query->where('booth_id', $request->booth_id);
         }
-        
-        if ($request->has('floor') && $request->floor) {
-            $query->where(function($q) use ($request) {
-                $q->whereHas('shop', function($q) use ($request) {
-                    $q->where('floor', $request->floor);
-                })->orWhereHas('booth', function($q) use ($request) {
-                    $q->where('floor', $request->floor);
-                });
+
+        if ($request->filled('floor')) {
+            $query->where(function ($q) use ($request) {
+                $q->whereHas('shop', fn($q) => $q->where('floor', $request->floor))
+                  ->orWhereHas('booth', fn($q) => $q->where('floor', $request->floor));
             });
         }
-        
-        if ($request->has('paid_date_from') && $request->paid_date_from) {
-            $query->whereDate('paid_date', '>=', \Morilog\Jalali\Jalalian::fromFormat('Y-m-d', $request->paid_date_from)->toCarbon());
+
+        if ($request->filled('paid_date_from')) {
+            $query->whereDate(
+                'paid_date',
+                '>=',
+                \Morilog\Jalali\Jalalian::fromFormat('Y-m-d', $request->paid_date_from)->toCarbon()
+            );
         }
-        
-        if ($request->has('paid_date_until') && $request->paid_date_until) {
-            $query->whereDate('paid_date', '<=', \Morilog\Jalali\Jalalian::fromFormat('Y-m-d', $request->paid_date_until)->toCarbon());
+
+        if ($request->filled('paid_date_until')) {
+            $query->whereDate(
+                'paid_date',
+                '<=',
+                \Morilog\Jalali\Jalalian::fromFormat('Y-m-d', $request->paid_date_until)->toCarbon()
+            );
         }
     }
-    
-private function preparePrintData($accounting)
-{
-    // شماره ردیف قبض
-    $rowNumber = Accounting::where('expanses_type', 'پول برق')
-        ->where('admin_id', $accounting->admin_id)
-        ->where('created_at', '<=', $accounting->created_at)
-        ->count();
 
-    /*
-     |--------------------------------------------------------------------------
-     | بدهی‌های قبلی همین دوکان/غرفه
-     |--------------------------------------------------------------------------
-     */
-    $previousQuery = Accounting::where('expanses_type', 'پول برق')
-        ->where('created_at', '<', $accounting->created_at)
-        ->orderBy('created_at', 'asc');
+    /*--------------------------------------------------------------
+    | آماده‌سازی داده چاپ قبض برق (مهم‌ترین بخش)
+    --------------------------------------------------------------*/
+    private function preparePrintData(Accounting $accounting)
+    {
+        /* شماره مسلسل قبض */
+        $rowNumber = Accounting::where('expanses_type', 'پول برق')
+            ->where('admin_id', $accounting->admin_id)
+            ->where('created_at', '<=', $accounting->created_at)
+            ->count();
 
-    // اگر shop_id وجود دارد بر اساس shop_id، در غیر این صورت بر اساس booth_id
-    if ($accounting->shop_id) {
-        $previousQuery->where('shop_id', $accounting->shop_id);
-    } elseif ($accounting->booth_id) {
-        $previousQuery->where('booth_id', $accounting->booth_id);
+        /*----------------------------------------------------------
+        | بدهی واقعی دوره‌های قبل (فقط remained > 0)
+        ----------------------------------------------------------*/
+        $previousQuery = Accounting::where('expanses_type', 'پول برق')
+            ->where('created_at', '<', $accounting->created_at)
+            ->where('remained', '>', 0);
+
+        if ($accounting->shop_id) {
+            $previousQuery->where('shop_id', $accounting->shop_id);
+        } elseif ($accounting->booth_id) {
+            $previousQuery->where('booth_id', $accounting->booth_id);
+        }
+
+        $previousRemaining = (int) $previousQuery->sum('remained');
+
+        /*----------------------------------------------------------
+        | قبض فعلی
+        ----------------------------------------------------------*/
+        $pastDegree    = (int) ($accounting->past_degree ?? 0);
+        $currentDegree = (int) ($accounting->current_degree ?? 0);
+        $degreePrice   = (int) ($accounting->degree_price ?? 0);
+
+        $consumption   = max($currentDegree - $pastDegree, 0);
+
+        $currentPrice  = (int) ($accounting->price ?? 0);
+        $currentPaid   = (int) ($accounting->paid ?? 0);
+        $currentRemaining = max($currentPrice - $currentPaid, 0);
+
+        /*----------------------------------------------------------
+        | جمع کل نهایی
+        ----------------------------------------------------------*/
+        $totalRemaining = $previousRemaining + $currentRemaining;
+
+        return [
+            'accounting'        => $accounting,
+            'rowNumber'         => $rowNumber,
+
+            'pastDegree'        => $pastDegree,
+            'currentDegree'     => $currentDegree,
+            'consumption'       => $consumption,
+            'degreePrice'       => $degreePrice,
+
+            'currentPrice'      => $currentPrice,
+            'currentPaid'       => $currentPaid,
+
+            'previousRemaining' => $previousRemaining,
+            'currentRemaining'  => $currentRemaining,
+            'totalRemaining'    => $totalRemaining,
+        ];
     }
-
-    $previousAccountings = $previousQuery->get();
-
-    $previousRemaining = 0;
-
-    foreach ($previousAccountings as $item) {
-        $price = $item->price ?? 0;
-        $paid  = $item->paid ?? 0;
-
-        $remaining = max($price - $paid, 0);
-        $previousRemaining += $remaining;
-    }
-
-    /*
-     |--------------------------------------------------------------------------
-     | محاسبه قبض فعلی
-     |--------------------------------------------------------------------------
-     */
-    $pastDegree    = $accounting->past_degree ?? 0;
-    $currentDegree = $accounting->current_degree ?? 0;
-    $degreePrice   = $accounting->degree_price ?? 0;
-
-    $consumption = max($currentDegree - $pastDegree, 0);
-    $currentPrice = $accounting->price ?? 0; // استفاده از price ذخیره شده در دیتابیس
-
-    $currentPaid = $accounting->paid ?? 0;
-    $currentRemaining = max($currentPrice - $currentPaid, 0);
-
-    /*
-     |--------------------------------------------------------------------------
-     | جمع کل
-     |--------------------------------------------------------------------------
-     */
-    $totalRemaining = $previousRemaining + $currentRemaining;
-
-    return [
-        'accounting'        => $accounting,
-        'rowNumber'         => $rowNumber,
-        'pastDegree'        => $pastDegree,
-        'currentDegree'     => $currentDegree,
-        'consumption'       => $consumption,
-        'degreePrice'       => $degreePrice,
-        'currentPrice'      => $currentPrice,
-        'currentPaid'       => $currentPaid,
-        'previousRemaining' => $previousRemaining,
-        'totalRemaining'    => $totalRemaining,
-    ];
-}
-
 }

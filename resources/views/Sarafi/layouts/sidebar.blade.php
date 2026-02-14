@@ -255,15 +255,7 @@
             }
         }
 
-        @media (max-width: 1370px) {
-            body {
-                transform: scale(0.75);
-                transform-origin: top center;
-                width: 133.3333%;
-            }
-        }
-
-
+    
 
 
 

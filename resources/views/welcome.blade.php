@@ -187,7 +187,7 @@
                     <img src="{{ asset('assets/icon.jpg') }}" class="rounded-full" alt="">
                 </div>
                 <h2 class="text-4xl md:text-5xl font-bold mb-2 yekan">
-                    به <span class="logo-text ">اقصی گروپ</span> خوش آمدید   
+                    به <span class="logo-text ">اقصی گروپ</span> خوش آمدید
                 </h2>
                 <p class="text-xl text-blue-200 yekan"> <span class="times">Aqsasystem</span> - پلتفرم جامع مدیریت کسب و
                     کار</p>
@@ -199,91 +199,396 @@
                     class="text-2xl md:text-3xl text-center mb-8 py-4 px-6 rounded-xl bg-gradient-to-r from-blue-900/30 to-cyan-900/30 border border-blue-800/30 inline-block">
                     <span id="typed-text"></span><span class="typing-cursor"></span>
                 </div>
-                <p class="text-lg text-blue-100 max-w-2xl mx-auto">
-                    سیستم یکپارچه مدیریت کسب و کار با امکانات کامل برای مدیریت مالی، فروش، صرافی و ابزارهای تخصصی
-                </p>
+             
             </div>
 
 
         </div>
         <!-- کارت‌های پنل‌ها -->
-        <div class="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-6 mt-8 mb-16">
-            <!-- پنل مدیریت مارکت -->
-            <a href="/market" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
-                <div
-                    class="w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 flex items-center justify-center mb-4 group-hover:glow transition-all">
-                    <i class="fas fa-store text-white text-2xl"></i>
+        <div class="grid grid-cols-1 md:grid-cols-4  lg:grid-cols-4 py-4 gap-6 mt-2 mb-16">
+
+            {{-- Sarafi --}}
+            <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px] ">
+                <div>
+                    <img src="{{ asset('assets/panels/sarafi.jpg') }}" alt=""
+                        class="rounded-tr-[12px] rounded-tl-[12px]">
                 </div>
-                <h3 class="text-xl font-bold mb-2">پنل مدیریت مارکت</h3>
-                <p class="text-blue-200 text-sm">مدیریت کامل مارکت ها تجاری </p>
-                <div class="mt-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <i class="fas fa-arrow-left ml-1"></i> ورود به پنل
+                <div class="text-black px-10 py-2">
+                    <p class="font-bold">صرافی</p>
+                    <p class="font-bold">Currency Exchange</p>
                 </div>
-            </a>
+                <div>
+                    <p class="text-gray-500 px-10 text-sm">پلتفرم تخصصی مدیریت صرافی و ارز</p>
 
-            <!-- پنل فروشات -->
-            <a href="/import" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
-                <div
-                    class="w-16 h-16 rounded-full bg-gradient-to-r from-green-500 to-green-700 flex items-center justify-center mb-4 group-hover:glow transition-all">
-                    <i class="fas fa-cart-shopping text-white text-2xl"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-2">پنل فروشات</h3>
-                <p class="text-blue-200 text-sm">مدیریت سفارشات و تراکنش‌ها</p>
-                <div class="mt-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <i class="fas fa-arrow-left ml-1"></i> ورود به پنل
-                </div>
-            </a>
-
-            <!-- پنل صرافی -->
-            <a href="/sarafi" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
-                <div
-                    class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 to-purple-700 flex items-center justify-center mb-4 group-hover:glow transition-all">
-                    <i class="fas fa-money-bill-transfer text-white text-2xl"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-2">پنل صرافی</h3>
-                <p class="text-blue-200 text-sm">مدیریت ارز و تراکنش‌های مالی</p>
-                <div class="mt-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <i class="fas fa-arrow-left ml-1"></i> ورود به پنل
-                </div>
-            </a>
-
-            <!-- پنل ابزارآلات -->
-            <a href="/tools" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
-                <div
-                    class="w-16 h-16 rounded-full bg-gradient-to-r from-orange-500 to-orange-700 flex items-center justify-center mb-4 group-hover:glow transition-all">
-                    <i class="fas fa-screwdriver-wrench text-white text-2xl"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-2">پنل ابزارآلات</h3>
-                <p class="text-blue-200 text-sm">ابزارهای تخصصی و کاربردی</p>
-                <div class="mt-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <i class="fas fa-arrow-left ml-1"></i> ورود به پنل
-                </div>
-            </a>
-
-
-
-
-            <a href="/restaurant" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
-
-                <div class="w-16 h-16 rounded-full 
-bg-gradient-to-r from-red-600 to-rose-800
-
-               flex items-center justify-center mb-4 
-               group-hover:glow transition-all">
-                    <i class="fas fa-utensils text-white text-2xl"></i>
                 </div>
 
-                <h3 class="text-xl font-bold mb-2">پنل رستورانت</h3>
+                <div class="flex px-10 py-4">
+                    <div class="flex gap-4">
+                        <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#2983B7]/30">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                                <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F"
+                                    stroke-width="1.5" stroke-linecap="round" />
+                                <path
+                                    d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18"
+                                    stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                                <path
+                                    d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704"
+                                    stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
 
-                <p class="text-blue-200 text-sm">
-                    مدیریت رستورانت‌ها
-                </p>
+                        </div>
+                        <div class="flex flex-col text-black border-l-2 pl-4">
+                            <p class="text-gray-500">کاربران</p>
+                            <p>43</p>
+                        </div>
+                    </div>
 
-                <div class="mt-4 text-orange-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <i class="fas fa-arrow-left ml-1"></i>
-                    ورود به پنل
+                    <div class="flex gap-4 pr-4 ">
+                        <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#2983B7]/30">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18"
+                                    stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+
+
+                        </div>
+                        <div class="flex flex-col text-black ">
+                            <p class="text-gray-500">رشد </p>
+                            <p>96%</p>
+                        </div>
+                    </div>
                 </div>
-            </a>
+
+
+                <a href="/sarafi">
+                    <div
+                        class=" flex  gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4  justify-center items-center bg-gradient-to-l from-[#2F96D2] to-[#184D6C]">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17"
+                                stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <p> ورود به پنل</p>
+                    </div>
+                </a>
+
+            </div>
+
+
+            {{-- Market --}}
+            <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px] ">
+                <div>
+                    <img src="{{ asset('assets/panels/market.jpg') }}" alt=""
+                        class="rounded-tr-[12px] rounded-tl-[12px]">
+                </div>
+                <div class="text-black px-10 py-2">
+                    <p class="font-bold">مارکت</p>
+                    <p class="font-bold">Market </p>
+                </div>
+                <div>
+                    <p class="text-gray-500 px-10 text-sm">پلتفرم تخصصی مدیریت مارکت ها</p>
+
+                </div>
+
+                <div class="flex px-10 py-4">
+                    <div class="flex gap-4">
+                        <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#6C9CB4]/30">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                                <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F"
+                                    stroke-width="1.5" stroke-linecap="round" />
+                                <path
+                                    d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18"
+                                    stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                                <path
+                                    d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704"
+                                    stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
+
+                        </div>
+                        <div class="flex flex-col text-black border-l-2 pl-4">
+                            <p class="text-gray-500">کاربران</p>
+                            <p>43</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 pr-4 ">
+                        <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#6C9CB4]/30">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18"
+                                    stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+
+
+                        </div>
+                        <div class="flex flex-col text-black ">
+                            <p class="text-gray-500">رشد </p>
+                            <p>96%</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <a href="/market">
+                    <div
+                        class=" flex  gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4  justify-center items-center bg-gradient-to-l from-[#6F9EB6] to-[#347289]">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17"
+                                stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <p> ورود به پنل</p>
+                    </div>
+                </a>
+
+            </div>
+
+              {{-- Sale --}}
+            <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px] ">
+                <div>
+                    <img src="{{ asset('assets/panels/sale.jpg') }}" alt=""
+                        class="rounded-tr-[12px] rounded-tl-[12px]">
+                </div>
+                <div class="text-black px-10 py-2">
+                    <p class="font-bold">فروشگاه</p>
+                    <p class="font-bold">Sales </p>
+                </div>
+                <div>
+                    <p class="text-gray-500 px-10 text-sm">پلتفرم تخصصی مدیریت فروشگاه ها</p>
+
+                </div>
+
+                <div class="flex px-10 py-4">
+                    <div class="flex gap-4">
+                        <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#9C7A61]/30">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                                <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F"
+                                    stroke-width="1.5" stroke-linecap="round" />
+                                <path
+                                    d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18"
+                                    stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                                <path
+                                    d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704"
+                                    stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
+
+                        </div>
+                        <div class="flex flex-col text-black border-l-2 pl-4">
+                            <p class="text-gray-500">کاربران</p>
+                            <p>43</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 pr-4 ">
+                        <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#9C7A61]/30">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18"
+                                    stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+
+
+                        </div>
+                        <div class="flex flex-col text-black ">
+                            <p class="text-gray-500">رشد </p>
+                            <p>96%</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <a href="/import">
+                    <div
+                        class=" flex  gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4  justify-center items-center bg-gradient-to-l from-[#9E7C63] to-[#4D2D19]">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17"
+                                stroke="white" stroke-width="1.5" stroke-linecap="round" />4D2D19
+                            <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <p> ورود به پنل</p>
+                    </div>
+                </a>
+
+            </div>
+
+
+
+                 {{-- Tools --}}
+            <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px] ">
+                <div>
+                    <img src="{{ asset('assets/panels/tools.jpg') }}" alt=""
+                        class="rounded-tr-[12px] rounded-tl-[12px]">
+                </div>
+                <div class="text-black px-10 py-2">
+                    <p class="font-bold">ابزارآلات</p>
+                    <p class="font-bold">Equipment </p>
+                </div>
+                <div>
+                    <p class="text-gray-500 px-10 text-sm">پلتفرم تخصصی مدیریت ابزار آلات</p>
+
+                </div>
+
+                <div class="flex px-10 py-4">
+                    <div class="flex gap-4">
+                        <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#2983B7]/30">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                                <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F"
+                                    stroke-width="1.5" stroke-linecap="round" />
+                                <path
+                                    d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18"
+                                    stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                                <path
+                                    d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704"
+                                    stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
+
+                        </div>
+                        <div class="flex flex-col text-black border-l-2 pl-4">
+                            <p class="text-gray-500">کاربران</p>
+                            <p>43</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 pr-4 ">
+                        <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#2983B7]/30">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18"
+                                    stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+
+
+                        </div>
+                        <div class="flex flex-col text-black ">
+                            <p class="text-gray-500">رشد </p>
+                            <p>96%</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <a href="/tools">
+                    <div
+                        class=" flex  gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4  justify-center items-center bg-gradient-to-l from-[#A47037] to-[#BB3F0B]">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17"
+                                stroke="white" stroke-width="1.5" stroke-linecap="round" />4D2D19
+                            <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <p> ورود به پنل</p>
+                    </div>
+                </a>
+
+            </div>
+
+
+
+                  {{-- Restaurant --}}
+            <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px] ">
+                <div>
+                    <img src="{{ asset('assets/panels/restaurant.jpg') }}" alt=""
+                        class="rounded-tr-[12px] rounded-tl-[12px]">
+                </div>
+                <div class="text-black px-10 py-2">
+                    <p class="font-bold">رستورانت</p>
+                    <p class="font-bold">Restaurant </p>
+                </div>
+                <div>
+                    <p class="text-gray-500 px-10 text-sm">پلتفرم تخصصی مدیریت رستورانت ها و کافه ها</p>
+
+                </div>
+
+                <div class="flex px-10 py-4">
+                    <div class="flex gap-4">
+                        <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#D2C440]/30">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                                <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F"
+                                    stroke-width="1.5" stroke-linecap="round" />
+                                <path
+                                    d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18"
+                                    stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                                <path
+                                    d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704"
+                                    stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
+
+                        </div>
+                        <div class="flex flex-col text-black border-l-2 pl-4">
+                            <p class="text-gray-500">کاربران</p>
+                            <p>43</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 pr-4 ">
+                        <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#D2C440]/30">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18"
+                                    stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+
+
+                        </div>
+                        <div class="flex flex-col text-black ">
+                            <p class="text-gray-500">رشد </p>
+                            <p>96%</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <a href="/restaurant">
+                    <div
+                        class=" flex  gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4  justify-center items-center bg-gradient-to-l from-[#90872C] to-[#C6B525]">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17"
+                                stroke="white" stroke-width="1.5" stroke-linecap="round" />4D2D19
+                            <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <p> ورود به پنل</p>
+                    </div>
+                </a>
+
+            </div>
+
+
+
+
+
+       
+
+           
+
+       
+
+
+
 
 
             {{--

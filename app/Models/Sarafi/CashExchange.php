@@ -643,4 +643,9 @@ class CashExchange extends Model
             default => strtoupper($code),
         };
     }
+
+    public function journal()
+{
+    return $this->hasOne(Journals::class, 'buysell_id', 'id');
+}
 }

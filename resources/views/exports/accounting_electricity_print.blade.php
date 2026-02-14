@@ -11,7 +11,6 @@
         body {
             height: 100%;
             background: #fff;
-            font-family: "Tahoma", "Vazir", "Amiri", sans-serif;
             color: #111;
             direction: rtl;
         }

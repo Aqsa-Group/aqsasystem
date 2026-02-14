@@ -73,8 +73,22 @@ class GeneralReportPdfExport
             'margin_footer' => 5,
             'autoScriptToLang' => true,
             'autoLangToFont' => true,
-            'tempDir' => storage_path('app/mpdf/tmp'),
-        ]);
+              'fontDir' => array_merge(
+                    (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+                    [public_path('fonts/vazir/')]
+                ),
+                'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+                    'vazir' => [
+
+                        'R' => 'Vazir-Light.ttf',
+                        'B' => 'Vazir-Bold.ttf',
+                        'useOTL' => 0xFF,
+                        'useKashida' => 75,
+                    ],
+                ],
+                'default_font' => 'vazir',
+                'tempDir' => storage_path('app/mpdf'),
+            ]);
     }
     protected function getSafeSummaryRows()
     {

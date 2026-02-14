@@ -752,7 +752,7 @@ class AccountToAccount extends Component
     }
 
     public function submitConversion()
-    { 
+    {
 
         $validationRules = [
             'withdrawalAccount' => 'required|integer|exists:sarafi.customers,id',
@@ -765,8 +765,6 @@ class AccountToAccount extends Component
             'date' => 'required|date',
             'description_sender' => 'nullable|string|max:500',
             'description_receiver' => 'nullable|string|max:500',
-            'zone_sender' => 'required|string',
-            'zone_receiver' => 'required|string',
             'by_sender' => 'nullable|string|max:255',
             'by_receiver' => 'nullable|string|max:255',
         ];
@@ -783,11 +781,11 @@ class AccountToAccount extends Component
 
         DB::connection('sarafi')->beginTransaction();
 
-$senderCustomer = Customer::find($this->withdrawalAccount);
-$receiverCustomer = Customer::find($this->depositAccount);
+        $senderCustomer = Customer::find($this->withdrawalAccount);
+        $receiverCustomer = Customer::find($this->depositAccount);
 
-$senderName = $senderCustomer?->fullname ?? 'نامشخص';
-$receiverName = $receiverCustomer?->fullname ?? 'نامشخص';
+        $senderName = $senderCustomer?->fullname ?? 'نامشخص';
+        $receiverName = $receiverCustomer?->fullname ?? 'نامشخص';
         try {
             // محاسبه مبلغ دریافتی
             $receivedAmount = $this->transactionType === 'باتفاوت'
@@ -814,7 +812,7 @@ $receiverName = $receiverCustomer?->fullname ?? 'نامشخص';
                 'transaction_date' => $this->date,
                 'from_account' => $this->accountType,
                 'to_account' => $this->accountType,
-                'description_sender' => $this->description_sender,  
+                'description_sender' => $this->description_sender,
                 'description_receiver' => $this->description_receiver,
                 'zone_sender' => $this->zone_sender,
                 'zone_receiver' => $this->zone_receiver,
@@ -823,7 +821,7 @@ $receiverName = $receiverCustomer?->fullname ?? 'نامشخص';
                 'type' => $this->transactionType,
                 'user_id' => $user->id,
                 'admin_id' => $adminId,
-                   
+
 
             ];
 
@@ -866,8 +864,8 @@ $receiverName = $receiverCustomer?->fullname ?? 'نامشخص';
                     'type' => 'برد',
                     'date' => $this->date,
                     'account_type' => $this->accountType,
-                    'description' => 
-                        '    به حساب    '     . $receiverName . 'انتقال یافت',
+                    'description' =>
+                    '    به حساب    '     . $receiverName . 'انتقال یافت',
                     'zone' => $this->zone_sender,
                     'by' => $this->by_sender,
                     'account_to_id' => $conversionId,
@@ -898,8 +896,8 @@ $receiverName = $receiverCustomer?->fullname ?? 'نامشخص';
                     'type' => 'برد',
                     'date' => $this->date,
                     'account_type' => $this->accountType,
-                       'description' => 
-                        '   به حساب   '    . $receiverName . 'انتقال یافت',
+                    'description' =>
+                    '   به حساب   '    . $receiverName . 'انتقال یافت',
                     'zone' => $this->zone_sender,
                     'by' => $this->by_sender,
                     'account_to_id' => $conversionId,
@@ -914,9 +912,9 @@ $receiverName = $receiverCustomer?->fullname ?? 'نامشخص';
                     'type' => 'رسید',
                     'date' => $this->date,
                     'account_type' => $this->accountType,
-                                       'description' =>'     از حساب     ' . $senderName . ' دریافت شد',
+                    'description' => '     از حساب     ' . $senderName . ' دریافت شد',
 
-                        '',
+                    '',
                     'zone' => $this->zone_receiver,
                     'by' => $this->by_receiver,
                     'account_to_id' => $conversionId,
@@ -931,8 +929,8 @@ $receiverName = $receiverCustomer?->fullname ?? 'نامشخص';
                     'type' => 'رسید',
                     'date' => $this->date,
                     'account_type' => $this->from_account,
-                    'description' => 
-                        ' بابت کمیشن انتقال از حساب ' . $senderName .
+                    'description' =>
+                    ' بابت کمیشن انتقال از حساب ' . $senderName .
                         '   به حساب  ' . $receiverName,
                     'zone' => $this->zone_sender,
                     'by' => $this->by_sender,
@@ -943,6 +941,8 @@ $receiverName = $receiverCustomer?->fullname ?? 'نامشخص';
             // اعمال تغییرات صندوق (نقدی/بانکی)
 
             DB::connection('sarafi')->commit();
+            $this->generateConversionPdf($conversionId);
+
 
             $message = $this->editingConversionId ? 'انتقال با موفقیت ویرایش شد.' : 'انتقال با موفقیت ثبت شد.';
             session()->flash('message', $message);
@@ -1048,9 +1048,9 @@ $receiverName = $receiverCustomer?->fullname ?? 'نامشخص';
             $this->withdrawal_amount = $conversion->withdrawal_amount;
             $this->received_amount = $conversion->received_amount;
             $this->from_account = $conversion->account_type;
-           $this->from_account = $conversion->from_account ?? $conversion->account_type ?? 'نقدی';
-        $this->to_account = $conversion->to_account ?? $conversion->account_type ?? 'نقدی';
-    $this->accountType = $this->from_account;
+            $this->from_account = $conversion->from_account ?? $conversion->account_type ?? 'نقدی';
+            $this->to_account = $conversion->to_account ?? $conversion->account_type ?? 'نقدی';
+            $this->accountType = $this->from_account;
 
             $this->to_account = $conversion->to_account;
             $this->date = $conversion->transaction_date;
@@ -1145,18 +1145,26 @@ $receiverName = $receiverCustomer?->fullname ?? 'نامشخص';
                 'margin_bottom' => 0,
                 'margin_left' => 0,
                 'margin_right' => 0,
-                'fontDir' => array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'], [
-                    public_path('fonts'),
-                ]),
+
+
+                'fontDir' => array_merge(
+                    (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+                    [public_path('fonts/vazir/')]
+                ),
                 'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
-                    'Shabnam' => [
-                        'R' => 'Shabnam-FD.ttf',
+                    'vazir' => [
+
+                        'R' => 'Vazir-Light.ttf',
+                        'B' => 'Vazir-Bold.ttf',
+                        'useOTL' => 0xFF,
+                        'useKashida' => 75,
                     ],
                 ],
-                'default_font' => 'Shabnam',
-            'tempDir' => storage_path('app/mpdf/tmp'),
-
+                'default_font' => 'vazir',
+                'tempDir' => storage_path('app/mpdf'),
             ]);
+
+
 
             $mpdf->SetAutoPageBreak(false);
 

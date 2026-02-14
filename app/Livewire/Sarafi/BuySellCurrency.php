@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 use NumberFormatter;
 use Morilog\Jalali\Jalalian;
 use Illuminate\Support\Facades\Log;
+use Picqer\Barcode\BarcodeGeneratorPNG;
+
 
 class BuySellCurrency extends Component
 {
@@ -872,7 +874,7 @@ class BuySellCurrency extends Component
             'profit' => 0,
             'loss' => 0,
             'predefined_rate' => 0,
-            'amount_with_predefined_rate' => 0, 
+            'amount_with_predefined_rate' => 0,
             'amount_with_entered_rate' => 0,
             'difference' => 0
         ];
@@ -1549,23 +1551,36 @@ class BuySellCurrency extends Component
                 'margin_bottom' => 0,
                 'margin_left' => 0,
                 'margin_right' => 0,
-                'fontDir' => array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'], [
-                    public_path('fonts'),
-                ]),
+                'fontDir' => array_merge(
+                    (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+                    [public_path('fonts/vazir/')]
+                ),
                 'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
-                    'Shabnam' => [
-                        'R' => 'Shabnam-FD.ttf',
+                    'vazir' => [
+
+                        'R' => 'Vazir-Light.ttf',
+                        'B' => 'Vazir-Bold.ttf',
+                        'useOTL' => 0xFF,
+                        'useKashida' => 75,
                     ],
                 ],
-                'default_font' => 'Shabnam',
-            'tempDir' => storage_path('app/mpdf/tmp'),
-
+                'default_font' => 'vazir',
+                'tempDir' => storage_path('app/mpdf'),
             ]);
 
             $mpdf->SetAutoPageBreak(false);
 
-            $html = view('pdf.Sarafi.cash-exchange', compact('transaction'))->render();
-            $mpdf->WriteHTML($html);
+
+            $generator = new BarcodeGeneratorPNG();
+            $barcode = base64_encode($generator->getBarcode($transaction->id, $generator::TYPE_CODE_128));
+
+            $mpdf->WriteHTML(view('pdf.Sarafi.cash-exchange', [
+                'transaction' => $transaction,
+                'copyType' => 'نسخه بایگانی',
+                'isShort' => true,
+                'barcodeImage' => $barcode,
+            ])->render());
+
 
             $fileName = 'تراکنش_صرافی_' . $transaction->id . '_' . $transaction->type . '.pdf';
             $path = storage_path('app/public/' . $fileName);

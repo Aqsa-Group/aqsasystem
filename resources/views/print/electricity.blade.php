@@ -11,24 +11,9 @@
         body {
             height: 100%;
             background: #fff;
-            font-family: 'Vazir', Tahoma, sans-serif !important;
             color: #111;
             direction: rtl;
             -webkit-print-color-adjust: exact;
-        }
-
-        @font-face {
-            font-family: 'Vazir';
-            src: url('{{ asset("fonts/Vazir.ttf") }}') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        @font-face {
-            font-family: 'Yekan';
-            src: url('{{ asset("fonts/Yekan-Regular.ttf") }}') format('truetype');
-            font-weight: normal;
-            font-style: normal;
         }
 
 
@@ -184,97 +169,6 @@
             font-size: 13px;
         }
 
-        @font-face {
-            font-family: "DimaYekan";
-            src: url("/fonts/Yekan-Regular.ttf") format("truetype");
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        @font-face {
-            font-family: "times";
-            src: url("/fonts/times.ttf") format("truetype");
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        .yekan {
-            font-family: "DimaYekan", sans-serif;
-        }
-
-        @font-face {
-            font-family: "vazir";
-            src: url("/fonts/Vazir.ttf") format("truetype");
-            font-weight: normal;
-            font-style: normal;
-        }
-
-
-
-
-        @font-face {
-            font-family: "shabnam";
-            src: url("/fonts/Shabnam-Medium.ttf") format("truetype");
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        .shabnam {
-            font-family: "shabnam", sans-serif;
-        }
-
-
-
-        @font-face {
-            font-family: "Mj_Afrigha";
-            src: url("/fonts/Mj_Afrigha.ttf") format("truetype");
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        .Mj_Afrigha {
-            font-family: "Mj_Afrigha", sans-serif;
-        }
-
-
-
-
-        @font-face {
-            font-family: "shabnam";
-            src: url("/fonts/Shabnam-FD.ttf") format("truetype");
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        .shabnam-fd {
-            font-family: "shabnam", sans-serif;
-        }
-
-
-        @font-face {
-            font-family: "Yekan-Regular";
-            src: url("/fonts/Yekan-Regular.ttf") format("truetype");
-            font-weight: normal;
-            font-style: normal;
-        }
-
-
-
-
-        .amiri {
-            font-family: "Yekan-Regular", sans-serif;
-        }
-
-
-
-
-        .vazir {
-            font-family: "vazir", sans-serif;
-        }
-
-        .times {
-            font-family: "times", sans-serif;
-        }
 
         /* ریسپانسیو برای صفحه نمایش */
         @media screen and (max-width: 900px) {
@@ -293,7 +187,6 @@
             html,
             body {
                 width: 210mm;
-                font-family: 'Vazir', Tahoma, sans-serif !important;
                 height: 148.5mm;
                 margin: 0;
                 padding: 0;
@@ -427,12 +320,12 @@
                         <tbody>
                             <tr>
                                 <td>درجه فعلی</td>
-                                <td style="text-align:center;">{{ $accounting->current_degree 
-                                     ?? '---' }}</td>
+                                <td style="text-align:center;">{{ $accounting->current_degree
+                                    ?? '---' }}</td>
                             </tr>
                             <tr>
                                 <td>درجه قبلی</td>
-                                <td style="text-align:center;">{{ $accounting->past_degree 
+                                <td style="text-align:center;">{{ $accounting->past_degree
                                     ?? '---' }}</td>
                             </tr>
                             <tr>
@@ -444,19 +337,28 @@
                             </tr>
                             <tr>
                                 <td>قیمت فی کیلووات</td>
-                                <td style="text-align:center;">{{ number_format($accounting->degree_price 
-                                     ?? 0) }} افغانی</td>
+                                <td style="text-align:center;">{{ number_format($accounting->degree_price
+                                    ?? 0) }} افغانی</td>
                             </tr>
                             <tr>
                                 <td>مبلغ قابل تادیه</td>
-                                <td style="text-align:center;">{{ number_format($accounting->price 
-                             ?? 0) }} افغانی</td>
+                                <td style="text-align:center;">{{ number_format($accounting->price
+                                    ?? 0) }} افغانی</td>
                             </tr>
+
                             <tr>
-                                <td>باقیات</td>
-                                <td style="text-align:center;">{{ number_format($totalRemaining - $accounting->price) }}
-                                    افغانی</td>
+                                <td> از دوره‌های قبل </td>
+                                <td style="text-align:center;"> {{ number_format($previousRemaining) }} افغانی
+                                </td>
                             </tr>
+
+                               <tr>
+                                <td>  مبلغ پرداخت شده </td>
+                                <td style="text-align:center;"> {{ number_format($currentPaid) }} افغانی
+                                </td>
+                            </tr>
+
+                          
                             <tr>
                                 <td>جمع کل </td>
                                 <td style="text-align:center;">{{ number_format($totalRemaining) }} افغانی</td>
@@ -607,10 +509,17 @@
                         $accounting->payable_amount ?? 0) }} افغانی</td>
                 </tr>
                 <tr>
-                    <td>از دوره‌های قبل</td>
-                    <td style="text-align:center;">{{ number_format($totalRemaining - $accounting->price) }}
-                        افغانی</td>
-                </tr>
+                                <td> از دوره‌های قبل </td>
+                                <td style="text-align:center;"> {{ number_format($previousRemaining) }} افغانی
+                                </td>
+                            </tr>
+
+                               <tr>
+                                <td>  مبلغ پرداخت شده </td>
+                                <td style="text-align:center;"> {{ number_format($currentPaid) }} افغانی
+                                </td>
+                            </tr>
+
                 <tr>
                     <td>جمع کل </td>
                     <td style="text-align:center;">{{ number_format($totalRemaining) }} افغانی</td>

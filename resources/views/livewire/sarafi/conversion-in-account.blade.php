@@ -8,16 +8,18 @@
 
     <div class="container mx-auto px-4">
         <!-- پیام‌های سیستم -->
-        @if (session()->has('message'))
+         @if (session()->has('message'))
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
-            class="fixed top-0 left-0 right-0 w-full z-[9999] bg-[#2B65E5] vazir">
-            <div class="h-[80px] w-full flex justify-start items-center px-4">
-                <h2 class="text-white vazir text-[18px]">
+            class="fixed top-0 left-0 right-0 w-full z-[9999] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-400  bg-[#184D6C] vazir">
+            <div style="margin-right: 296px" class="h-[80px] w-full flex justify-start items-center px-4">
+                <h2 class="text-white vazir text-[18px] text-center align-middle jus">
                     {{ session('message') }}
                 </h2>
             </div>
         </div>
         @endif
+
+
 
         @if (session()->has('error'))
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition

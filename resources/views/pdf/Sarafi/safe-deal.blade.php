@@ -1,65 +1,45 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-@php
-$currentUser = Auth::guard('sarafi')->user();
-
-$adminUser = $currentUser->role === 'admin'
-? $currentUser
-: \App\Models\Sarafi\User::find($currentUser->admin_id);
-@endphp
 
 <head>
     <meta charset="UTF-8">
-    <title>تراکنش صرافی - {{ $sarafi_name ?? 'صرافی' }}</title>
-
+    <title>تبدیل ارز صرافی - {{ Auth::guard('sarafi')->user()->sarafi_name ?? 'صرافی' }}</title>
     <style>
-        /* همه عناصر بدون حاشیه و با فونت پیشفرض */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* تعریف فونت Shabnam */
-        @font-face {
 
-
-            font-weight: normal;
-            font-style: normal;
-        }
 
 
 
         body {
-
             width: 72.1mm;
             margin: 0 auto;
             padding: 0;
             background-color: white;
-            font-size: 10px;
-            line-height: 1.4;
         }
 
         .document {
-            width: 85mm;
+            width: 72.1mm;
             margin: 0 auto;
             background-color: white;
-            padding: 8px;
+            padding: 10px;
+            line-height: 1.6;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 15px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #ddd;
-
+            margin-bottom: 20px;
+            padding-bottom: 10px;
         }
 
         .header h1 {
-            font-size: 10px;
+            font-size: 18px;
             margin-bottom: 5px;
-            color: #50c90a;
-
+            color: #333;
         }
 
         .header .date {
@@ -70,21 +50,12 @@ $adminUser = $currentUser->role === 'admin'
         .info-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             border: 1px solid #999;
-            font-size: 11px;
-        }
-
-        .info-table2 {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 6px;
-            font-size: 11px;
-
         }
 
         .info-table td {
-            padding: 6px 8px;
+            padding: 8px 10px;
             border: 1px solid #999;
         }
 
@@ -95,29 +66,25 @@ $adminUser = $currentUser->role === 'admin'
         }
 
         .description {
-            padding-top: 2px;
-            padding-bottom: 2px;
-            padding-right: 8px;
-            padding-left: 8px;
+            padding: 10px;
             background-color: #f9f9f9;
-            border-right: 1px solid #2B65E5;
-            border: 1px solid #999;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+            border-right: 3px solid #2B65E5;
+            border-top: 1px solid black;
+            border-left: 1px solid black;
+            border-bottom: 1px solid black;
         }
 
         .description h3 {
-            margin-bottom: 6px;
-            font-size: 10px;
+            margin-bottom: 8px;
+            font-size: 14px;
             color: #333;
         }
-
-
 
         .contact-info {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
             padding: 5px 0;
             border-top: 1px solid black;
         }
@@ -127,45 +94,35 @@ $adminUser = $currentUser->role === 'admin'
             text-align: center;
         }
 
-
         .signature {
             text-align: right;
-            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
         }
 
         .signature-top-border {
-            /* بورد بالایی */
             width: 100%;
             padding-left: 20px;
-
-
-                {
-                    {
-                    explode(' ', $transaction->date)[0]
-                }
-            }
-
-            /* فاصله بین بورد و متن/خط پایین */
+            margin-bottom: 30px;
         }
 
         .signature-text {
-            margin-bottom: 20px;
-
+            margin-bottom: 60px;
         }
 
         .signature-line {
-            width: 100px;
+            width: 180px;
             height: 1px;
             background: #777;
         }
 
-
         .note {
-            font-size: 12px;
+            font-size: 16px;
             color: black;
             text-align: center;
-            margin-top: 15px;
-            padding: 10px;
+            margin-top: 20px;
+            padding: 14px;
             border-radius: 3px;
             border-top: 1px #999 dashed;
         }
@@ -176,6 +133,7 @@ $adminUser = $currentUser->role === 'admin'
             font-size: 12px;
             color: black;
         }
+
 
         @media print {
             body {
@@ -198,33 +156,29 @@ $adminUser = $currentUser->role === 'admin'
 </head>
 
 <body>
-
     <div class="document">
-        <h1 style="text-align:center ; font-size: 23px;" ;> صرافی {{
-            $currentUser->sarafi_name ?? 'صرافی' }}</h1>
-
+        <h1 style="text-align:center;">صرافی {{ Auth::guard('sarafi')->user()->sarafi_name }}</h1>
         <table class="info-table2" style="width: 100%; font-size: 14px; white-space: nowrap; ">
             <tr>
                 {{-- ستون ID --}}
                 <td style="width: 60%; text-align: right;" dir="rtl">
-                    نمبر سند: {{ $transaction->id }}
+                    نمبر سند: {{ $deal->id }}
                 </td>
 
                 {{-- ستون زمان و تاریخ --}}
                 <td style="width: 40%; text-align: left; white-space: nowrap;" dir="rtl">
 
-                    {{ \Morilog\Jalali\Jalalian::fromDateTime($transaction->created_at)->format('Y/m/d') }}
+                    {{ \Morilog\Jalali\Jalalian::fromDateTime($deal->created_at)->format('Y/m/d') }}
 
                     <span style="white-space: nowrap;">
-                        {{ $transaction->created_at->format('h:i') }}
-                        {{ $transaction->created_at->format('A') == 'AM' ? 'قبل از ظهر' : 'بعد از ظهر' }}
+                        {{ $deal->created_at->format('h:i') }}
+                        {{ $deal->created_at->format('A') == 'AM' ? 'قبل از ظهر' : 'بعد از ظهر' }}
                     </span>
 
                 </td>
 
             </tr>
         </table>
-
 
         <table class="info-table">
             @php
@@ -242,38 +196,51 @@ $adminUser = $currentUser->role === 'admin'
             'sar' => 'ریال سعودی',
             'inr' => 'روپیه',
             ];
-            @endphp
+
+            // تابع تبدیل تاریخ میلادی به شمسی
+            function gregorianToJalali($gy, $gm, $gd) {
+            $g_d_m = [0,31,59,90,120,151,181,212,243,273,304,334];
+            $jy = ($gy <= 1600) ? 0 : 979; $gy -=($gy <=1600) ? 621 : 1600; $gy2=($gm> 2) ? ($gy + 1) : $gy;
+                $days = (365 * $gy) + ((int)(($gy2 + 3) / 4)) - ((int)(($gy2 + 99) / 100))
+                + ((int)(($gy2 + 399) / 400)) - 80 + $gd + $g_d_m[$gm-1];
+                $jy += 33 * ((int)($days / 12053));
+                $days %= 12053;
+                $jy += 4 * ((int)($days / 1461));
+                $days %= 1461;
+                $jy += (int)(($days - 1) / 365);
+                if ($days > 365) $days = ($days-1) % 365;
+                $jm = ($days < 186) ? 1 + (int)($days / 31) : 7 + (int)(($days - 186) / 30); $jd=1 + (($days < 186) ?
+                    ($days % 31) : (($days - 186) % 30)); return [$jy, $jm, $jd]; } @endphp <tr>
+                    <td>مبلغ برداشت:</td>
+                    <td>{{ number_format((float)$deal->withdraw_amount) }}
+
+                                                (   {{ $currenciesFa[strtolower($deal->from_currency)] ?? $deal->from_currency }} )
 
 
-            <tr>
-                <td>حساب مشتری:</td>
-                <td>{{ $transaction->customer->fullname ?? 'نامشخص' }}</td>
-            </tr>
-
-            <tr>
-                <td>شماره حساب :</td>
-                <td>{{ $transaction->customer->account_number ?? 'نامشخص' }}</td>
-            </tr>
-
-
-            <tr>
-                <td>نوع ترانزکشن :</td>
-                <td> {{ $transaction->type }} ( {{ $transaction->account_type ?? 'نامشخص' }} )</td>
-            </tr>
-
-            <tr>
-                <td>مبلغ:</td>
-                <td>
-                    {{ number_format((float)$transaction->amount) }} ({{
-                    $currenciesFa[strtolower($transaction->currency)] ?? $transaction->currency }})
-
-                </td>
-            </tr>
-
-
+                        (
+                        {{ $deal->from }}
+                        )
+                    </td>
+                    </tr>
 
 
 
+                    <tr>
+                        <td>نرخ ارز:</td>
+                        <td>{{ number_format((float)$deal->currency_rate, 2) }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>مبلغ دریافت</td>
+                        <td>{{ number_format((float)$deal->receive_amount) }}
+                            (
+                            {{ $currenciesFa[strtolower($deal->to_currency)] ?? $deal->to_currency }}
+                            )
+                            (
+                            {{ $deal->to}}
+                            )
+                        </td>
+                    </tr>
 
 
 
@@ -281,46 +248,11 @@ $adminUser = $currentUser->role === 'admin'
         </table>
 
         <div class="description">
-            <h3>توضیحات تراکنش:</h3>
-            {{ $transaction->description ?? 'بدون توضیحات بیشتر' }}
+            <h3>شرح تراکنش:</h3>
+            {{ $deal->description ?? 'تبدیل ارز - بدون توضیحات بیشتر' }}
         </div>
 
-        @if(!$isShort)
-        {{-- <div class="signature">
-            <div class="signature-top-border"></div>
-            <div class="signature-text"><strong>امضاء</strong></div>
-            <div class="signature-line"></div>
-        </div> --}}
 
-        <div class="contact-info">
-            <table style="width:100%; border-collapse: collapse; pass">
-                <tr>
-                    <td>
-                        <strong>تماس:</strong> {{ $currentUser->phone ?? '-' }}+
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <strong>آدرس شبعه اول:</strong> {{ $currentUser->address ?? '-' }}
-                    </td>
-                </tr>
-
-
-                <tr>
-                    <td>
-                        <strong>آدرس شبعه دوم:</strong> {{ $currentUser->address2 ?? '-' }}
-                    </td>
-                </tr>
-
-
-            </table>
-        </div>
-
-        <div class="note">
-            نوت: سند جهت معلومات چاپ شده، و هیچگاه سند پولی محسوب نخواهد شد
-        </div>
-        @endif
 
 
         @if($isShort)
@@ -331,7 +263,7 @@ $adminUser = $currentUser->role === 'admin'
             @endif
 
             @php
-            $amount = (int) ($transaction->journal->safe_balance ?? 0);
+            $amount = (int) ($deal->journal->safe_balance ?? 0);
             $digits = str_split((string) $amount);
             $count = max(count($digits), 1);
             $cellWidth = floor(120 / $count);
@@ -357,9 +289,8 @@ $adminUser = $currentUser->role === 'admin'
         </div>
         @endif
 
-
-
     </div>
+
 </body>
 
 </html>

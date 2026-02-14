@@ -1248,6 +1248,8 @@ class ConversionInAccount extends Component
                 'editing' => $this->editingConversionId ? 'yes' : 'no',
             ]);
         }
+
+        $this->generateConversionPdf($conversionId);
     }
 
     /**
@@ -1413,17 +1415,21 @@ class ConversionInAccount extends Component
                 'margin_bottom' => 0,
                 'margin_left' => 0,
                 'margin_right' => 0,
-                'fontDir' => array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'], [
-                    public_path('fonts'),
-                ]),
+                'fontDir' => array_merge(
+                    (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+                    [public_path('fonts/vazir/')]
+                ),
                 'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
-                    'Shabnam' => [
-                        'R' => 'Shabnam-FD.ttf',
+                    'vazir' => [
+
+                        'R' => 'Vazir-Light.ttf',
+                        'B' => 'Vazir-Bold.ttf',
+                        'useOTL' => 0xFF,
+                        'useKashida' => 75,
                     ],
                 ],
-                'default_font' => 'Shabnam',
-            'tempDir' => storage_path('app/mpdf/tmp'),
-
+                'default_font' => 'vazir',
+                'tempDir' => storage_path('app/mpdf'),
             ]);
 
             $mpdf->SetAutoPageBreak(false);

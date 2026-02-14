@@ -20,6 +20,8 @@ use Livewire\WithPagination;
 use Morilog\Jalali\Jalalian;
 use Mpdf\Mpdf;
 use NumberFormatter;
+use Picqer\Barcode\BarcodeGeneratorPNG;
+
 
 class SafeDeals extends Component
 {
@@ -1323,7 +1325,7 @@ class SafeDeals extends Component
             'account_type' => 'نقدی',
             'amount'       => $amount,
             'balance'      => 0,
-            'safe_balance' => $currentBalance, 
+            'safe_balance' => $currentBalance,
             'description'  => $deal->description,
             'date'         => $deal->date,
         ]);
@@ -1335,6 +1337,8 @@ class SafeDeals extends Component
             'safe_balance' => $currentBalance,
         ]);
     }
+
+
 
 
 
@@ -1470,41 +1474,58 @@ class SafeDeals extends Component
     }
 
     // چاپ معامله
-    public function print($dealId)
-    {
-        $deal = SafeDeal::with(['customer', 'user'])->findOrFail($dealId);
+ public function print($dealId)
+{
+    $deal = SafeDeal::with(['customer', 'user', 'journal'])->findOrFail($dealId);
 
-        $mpdf = new Mpdf([
-            'mode' => 'utf-8',
-            'format' => [72.1, 297],
-            'directionality' => 'rtl',
-            'margin_top' => 0,
-            'margin_bottom' => 0,
-            'margin_left' => 0,
-            'margin_right' => 0,
-            'fontDir' => array_merge(
-                (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
-                [public_path('fonts')]
-            ),
-            'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
-                'Shabnam' => ['R' => 'Shabnam-FD.ttf'],
+    $generator = new BarcodeGeneratorPNG();
+    $barcodeImage = base64_encode(
+        $generator->getBarcode($deal->id, $generator::TYPE_CODE_128)
+    );
+
+    $mpdf = new Mpdf([
+        'mode' => 'utf-8',
+        'format' => [72.1, 297],
+        'directionality' => 'rtl',
+        'margin_top' => 0,
+        'margin_bottom' => 0,
+        'margin_left' => 0,
+        'margin_right' => 0,
+        'fontDir' => array_merge(
+            (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+            [public_path('fonts/vazir/')]
+        ),
+        'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+            'vazir' => [
+                'R' => 'Vazir-Light.ttf',
+                'B' => 'Vazir-Bold.ttf',
+                'useOTL' => 0xFF,
+                'useKashida' => 75,
             ],
-            'default_font' => 'Shabnam',
-            'tempDir' => storage_path('app/mpdf/tmp'),
-        ]);
+        ],
+        'default_font' => 'vazir',
+        'tempDir' => storage_path('app/mpdf'),
+    ]);
 
-        $mpdf->SetAutoPageBreak(false);
+    $mpdf->SetAutoPageBreak(false);
 
-        $html = view('pdf.Sarafi.safe-deal', compact('deal'))->render();
-        $mpdf->WriteHTML($html);
+    $html = view('pdf.Sarafi.safe-deal', [
+        'deal'         => $deal,
+        'isShort'      => true,
+        'barcodeImage' => $barcodeImage,
+        'copyType'     => 'نسخه بایگانی',
+    ])->render();
 
-        $fileName = 'safe_deal_' . $deal->id . '.pdf';
-        $path = storage_path('app/public/' . $fileName);
+    $mpdf->WriteHTML($html);
 
-        $mpdf->Output($path, 'F');
+    $fileName = 'safe_deal_' . $deal->id . '.pdf';
+    $path = storage_path('app/public/' . $fileName);
 
-        $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
-    }
+    $mpdf->Output($path, 'F');
+
+    $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
+}
+
 
     // پاک کردن فرم
     public function resetForm()

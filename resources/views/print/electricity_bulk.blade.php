@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>پرنت پول برق - مجتمع تجارتی عادلیار</title>
     <link rel="preload" href="{{ asset('fonts/Vazir.ttf') }}" as="font" type="font/ttf" crossorigin>
 
-
     <style>
-        html,
-        body {
+        html, body {
             height: auto;
             background: #fff;
             font-family: 'Vazir', Tahoma, sans-serif !important;
@@ -21,7 +18,14 @@
             padding: 0;
         }
 
-        /* ظرف صفحه برای هر رسید */
+        @font-face {
+            font-family: 'Vazir';
+            src: url('{{ asset("fonts/Vazir.ttf") }}') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* هر صفحه یک رسید A5 landscape */
         .page {
             width: 210mm;
             height: 148.5mm;
@@ -30,13 +34,11 @@
             page-break-after: always;
             position: relative;
         }
-
-        /* آخرین صفحه نیازی به page break ندارد */
         .page:last-child {
             page-break-after: avoid;
         }
 
-        /* جدول کلی دو ستون (هر ستون یک کپی از رسید) */
+        /* جدول دو ستونی (هر ستون یک کپی) */
         .two-col {
             width: 100%;
             border-collapse: separate;
@@ -44,7 +46,6 @@
             height: calc(148.5mm - 20px);
             box-sizing: border-box;
         }
-
         .two-col td {
             vertical-align: top;
             width: 50%;
@@ -57,154 +58,110 @@
 
         /* هدر هر ستون */
         .col-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
             position: relative;
             height: 100px;
+            margin-bottom: 6px;
         }
-
         .col-header .title {
-            font-size: 16px;
-            font-weight: 200;
+            font-size: 20px;
+            font-weight: bold;
             color: #7c3a00;
         }
-
         .logo {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
             width: 90px;
             height: 90px;
-            display: inline-block;
-            flex-shrink: 0;
-            border-radius: 4px;
-            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             border: 1px solid #ddd;
             background: #fafafa;
+            border-radius: 4px;
         }
-
         .logo img {
             max-width: 100%;
             max-height: 100%;
-            display: block;
+            filter: sepia(1) saturate(5) hue-rotate(10deg) brightness(0.6) contrast(1.2);
+        }
+        .header-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
         }
 
-        /* جدول فرم‌ها داخل ستون */
+        /* جدول اطلاعات بالا */
         .form-table {
             width: 100%;
-            height: fit-content;
             border-collapse: collapse;
             margin-bottom: 2px;
         }
-
-        .form-table td,
-        .form-table th {
+        .form-table td, .form-table th {
             border: 1px solid #777;
             font-size: 12px;
-            padding: 0px 2px;
+            padding: 2px 4px;
             text-align: start;
-            width: 10px;
         }
-
         .form-table th {
             background: #fafafa;
             font-weight: 600;
-            color: #111;
-            font-size: 14px;
         }
 
-        /* جدول ردیف های مبلغ */
+        /* جدول مقادیر */
         .amount-rows {
             width: 100%;
             border-collapse: collapse;
             margin-top: 6px;
         }
-
-        .amount-rows th {
-            border: 1px solid #999;
-            padding: 8px;
-            height: 36px;
-            font-size: 13px;
-        }
-
-        .amount-rows td:first-child {
-            font-weight: bold;
-            font-size: 12px;
-        }
-
         .amount-rows td {
             border: 1px solid #999;
-            padding: 8px;
-            height: 36px;
+            padding: 6px 8px;
             font-size: 12px;
         }
-
-        /* بخش مسؤول برق + امضا + نوت (مخصوص ستون چپ) */
-        .left-sign-block {
-            width: 100%;
-            box-sizing: border-box;
+        .amount-rows td:first-child {
+            font-weight: bold;
+        }
+        .amount-rows td:last-child {
             text-align: center;
-            padding: 12px;
         }
 
-        .left-sign-block .electrician {
-            font-weight: 700;
-            font-size: 12px;
+        /* بلوک مسؤول برق و امضاء */
+        .electrician-box {
+            border: 1px solid #444;
+            padding: 5px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            text-align: center;
+            background: #fafafa;
+        }
+        .electrician-box .label {
+            font-weight: bold;
+            font-size: 15px;
             margin-bottom: 6px;
         }
-
-        .left-sign-block .phone {
-            font-size: 12px;
-            font-weight: 800;
-            margin-bottom: 14px;
-            letter-spacing: 2px;
+        .electrician-box .phone {
+            font-size: 26px;
+            font-weight: 900;
+            direction: ltr;
         }
-
-        .left-sign-block .stamp {
-            margin-top: 8px;
-            border-top: 2px dashed #333;
-            padding-top: 12px;
-            font-size: 12px;
-            height: 48px;
-        }
-
-        .left-sign-block .note-box {
-            margin-top: 12px;
-            border: 1px solid #bbb;
-            height: 60px;
-            padding: 6px;
+        .signature-box {
+            border: 1px solid #444;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+            background: #fff;
+            height: calc(100% - 90px);
+            min-height: 210px;
             box-sizing: border-box;
-            text-align: right;
-            direction: rtl;
-            font-size: 13px;
         }
-
-
-
-        @font-face {
-            font-family: 'Vazir';
-            src: url('{{ asset("fonts/Vazir.ttf") }}') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-
-
-        @font-face {
-            font-family: 'ShabnamFD';
-            src: url('{{ public_path("fonts/Mj_Afrigha.ttf") }}') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        /* ریسپانسیو برای صفحه نمایش */
-        @media screen and (max-width: 900px) {
-            .two-col td {
-                display: block;
-                width: 100%;
-            }
+        .signature-box .label {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 0;
         }
 
         @media print {
@@ -212,361 +169,151 @@
                 size: 210mm 148.5mm;
                 margin: 0;
             }
-
-            html,
-            body {
-                font-family: 'Vazir', Tahoma, sans-serif !important;
+            html, body {
                 width: 210mm;
                 margin: 0;
                 padding: 0;
                 background: #fff;
-                height: auto;
             }
-
             .page {
                 margin: 0;
                 padding: 0;
-                width: 210mm;
-                height: 148.5mm;
-                page-break-after: always;
             }
-
-            .page:last-child {
-                page-break-after: avoid;
-            }
-        }
-
-        /* دکمه‌های غیر چاپی */
-        .no-print {
-            position: fixed;
-            top: 8px;
-            left: 8px;
-            z-index: 9999;
-        }
-
-        .btn {
-            display: inline-block;
-            margin-right: 6px;
-            padding: 8px 12px;
-            background: #1976d2;
-            color: #fff;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .btn.close {
-            background: #c62828;
         }
     </style>
 </head>
-
 <body>
-    @foreach($printsData as $index => $data)
-    @php
-    $accounting = $data['accounting'];
-    $rowNumber = $data['rowNumber'];
-
-    @endphp
-
-    <div class="page" role="main" aria-label="فرم پرداخت برق">
-        <table class="two-col" role="table" aria-label="دو نسخه رسید">
-            <tr>
-                <!-- ستون چپ (نسخه‌ای که مسؤول برق + امضا در کنار جدول است) -->
-                <td role="gridcell" aria-label="نسخه چپ">
-                    <!-- هدر -->
-                    <div class="col-header" role="banner">
-
-                        <!-- متن‌ها وسط افقی -->
-                        <div
-                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align:center ;">
-                            <div class="title" style="font-size: 20px; font-weight: bold; display: inline-flexbox">
-                                مجتمع تجارتی عادلیار
+    @foreach($printsData as $data)
+        @php
+            $accounting = $data['accounting'];
+            $rowNumber = $data['rowNumber'];
+        @endphp
+        <div class="page">
+            <table class="two-col">
+                <tr>
+                    <!-- ستون چپ (اصلی) -->
+                    <td>
+                        <!-- هدر -->
+                        <div class="col-header">
+                            <div class="header-text">
+                                <div class="title">مجتمع تجارتی عادلیار</div>
+                                <div class="title" style="font-size:22px; margin-top:5px;">قبض برق</div>
                             </div>
-                            <div class="subtitle" style="font-size: 20px; margin-top: 5px; font-weight:bolder;">
-                                قبض برق
+                            <div class="logo">
+                                <img src="{{ asset('assets/logo.png') }}" alt="لوگو">
                             </div>
                         </div>
 
-                        <!-- لوگو همان‌جاست -->
-                        <div class="logo" aria-hidden="true"
-                            style="position: absolute; left: 0; top: 50%; transform: translateY(-50%);">
-                            <img src="{{ asset('assets/logo.png') }}" alt="لوگو"
-                                style="filter: sepia(1) saturate(5) hue-rotate(10deg) brightness(0.6) contrast(1.2); max-width: 80px;">
-                        </div>
+                        <!-- جدول مشخصات -->
+                        <table class="form-table">
+                            <thead>
+                                <tr>
+                                    <th>مشتری</th>
+                                    <th>مارکت</th>
+                                    <th>{{ !empty($accounting->shop->number) ? 'شماره دوکان' : 'شماره غرفه' }}</th>
+                                    <th>شماره مسلسل</th>
+                                    <th>از تاریخ</th>
+                                    <th>تا تاریخ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ $accounting->shopkeeper->fullname ?? $accounting->shopkeeper->name ?? '---' }}</td>
+                                    <td>{{ $accounting->market->name ?? '---' }}</td>
+                                    <td>{{ $accounting->shop->number ?? $accounting->booth->number ?? '---' }}</td>
+                                    <td>{{ $rowNumber }}</td>
+                                    <td>{{ $accounting->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($accounting->paid_date)->format('Y/m/d') : '---' }}</td>
+                                    <td>{{ $accounting->expiration_date ? \Morilog\Jalali\Jalalian::fromDateTime($accounting->expiration_date)->format('Y/m/d') : '---' }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                    </div>
-
-                    <!-- جدول خلاصه اطلاعات بالا -->
-                    <table class="form-table" role="table" aria-label="مشخصات">
-                        <thead>
+                        <!-- بخش دو ستونی: مقادیر (راست) و مسؤول/امضاء (چپ) -->
+                        <table style="width:100%; border-collapse:separate;">
                             <tr>
-                                <th style="font-weight:600;">مشتری</th>
-                                <th style="font-weight:600;">مارکت</th>
-                                <th style="font-weight:600;">
-                                    @if (!empty($accounting->shop->number) )
-                                    شماره دوکان
-                                    @else
-                                    شماره غرفه
-                                    @endif
-                                </th>
-                                <th style="font-weight:600;">شماره مسلسل</th>
-                                <th style="font-weight:600;">از تاریخ</th>
-                                <th style="font-weight:600;">تا تاریخ</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td style="white-space: normal; word-break: break-word;">
-                                    {{ $accounting->shopkeeper->fullname ?? $accounting->shopkeeper->name ?? '---' }}
+                                <td style="width:70%; vertical-align:top; border:none; padding:0;">
+                                    <table class="amount-rows">
+                                        <tr><td>درجه فعلی</td><td>{{ $accounting->current_degree ?? '---' }}</td></tr>
+                                        <tr><td>درجه قبلی</td><td>{{ $accounting->past_degree ?? '---' }}</td></tr>
+                                        <tr><td>مقدار مصرف</td><td>{{ $data['consumption'] }} کیلووات</td></tr>
+                                        <tr><td>قیمت فی کیلووات</td><td>{{ number_format($accounting->degree_price ?? 0) }} افغانی</td></tr>
+                                        <tr><td>مبلغ قابل تادیه</td><td>{{ number_format($data['currentPrice']) }} افغانی</td></tr>
+                                        <tr><td>از دوره‌های قبل</td><td>{{ number_format($data['previousRemaining']) }} افغانی</td></tr>
+                                        <tr><td>مبلغ پرداخت شده</td><td>{{ number_format($data['currentPaid']) }} افغانی</td></tr>
+                                        <tr><td>جمع کل</td><td>{{ number_format($data['totalRemaining']) }} افغانی</td></tr>
+                                    </table>
                                 </td>
-                                <td>{{ $accounting->market->name ?? '---' }}</td>
-                                <td>{{ $accounting->shop->number ?? $accounting->booth->number ?? '---' }}</td>
-                                <td>{{ $rowNumber }}</td>
-                                <td>
-                                    @if($accounting->paid_date)
-                                    {{ \Morilog\Jalali\Jalalian::fromDateTime($accounting->paid_date)->format('Y/m/d')
-                                    }}
-                                    @else
-                                    ---
-                                    @endif
-                                </td>
-                                <td>
-                                    @if($accounting->expiration_date)
-                                    {{
-                                    \Morilog\Jalali\Jalalian::fromDateTime($accounting->expiration_date)->format('Y/m/d')
-                                    }}
-                                    @else
-                                    ---
-                                    @endif
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <!-- جدول دو ستونه: سمت راست جدول مقادیر، سمت چپ بلوک مسؤول برق/امضاء/نوت -->
-                    <table style="width:100%; border-collapse:separate; ">
-                        <tr>
-                            <!-- ستون مقادیر (عرض بیشتر) -->
-                            <td style="width:70%; vertical-align: top; border:none !important; padding:0;">
-                                <table class="amount-rows" role="table" aria-label="مقادیر" style="width:100%;">
-                                    <tbody>
-                                        <tr>
-                                            <td>درجه فعلی</td>
-                                            <td style="text-align:center;">{{ $accounting->current_degree ??
-                                                $accounting->current_reading ?? '---' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>درجه قبلی</td>
-                                            <td style="text-align:center;">{{ $accounting->past_degree ??
-                                                $accounting->previous_reading ?? '---' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>مقدار مصرف</td>
-                                            <td style="text-align:center;">
-                                                @php
-                                                $current = $accounting->current_degree ?? $accounting->current_reading
-                                                ?? null;
-                                                $past = $accounting->past_degree ?? $accounting->previous_reading ??
-                                                null;
-                                                $usage = ($current !== null && $past !== null && is_numeric($current) &&
-                                                is_numeric($past)) ? ($current - $past) : null;
-                                                @endphp
-                                                {{ $usage !== null ? $usage : '---' }} کیلووات
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>قیمت فی کیلووات</td>
-                                            <td style="text-align:center;">{{ number_format($accounting->degree_price ??
-                                                $accounting->rate_per_kwh ?? 0) }} افغانی</td>
-                                        </tr>
-                                        <tr>
-                                            <td>مبلغ قابل تادیه</td>
-                                            <td style="text-align:center;">{{ number_format($data['currentPrice']) }}
-                                                افغانی</td>
-
-                                        </tr>
-                                        <tr>
-                                            <td>باقیات</td>
-                                            <td style="text-align:center;">{{ number_format($data['previousRemaining'])
-                                                }} افغانی</td>
-                                        </tr>
-                                        <tr>
-                                            <td>جمع کل </td>
-                                            <td style="text-align:center;">{{ number_format($data['totalRemaining']) }}
-                                                افغانی</td>
-
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-                            </td>
-
-                            <td
-                                style="width:38%; vertical-align: top; padding:5px 8px; border:none !important; background:none !important;">
-
-                                <!-- باکس مسؤول برق + شماره -->
-                                <div style="
-                                    border: 1px solid #444;
-                                    padding: 5px;
-                                    border-radius: 6px;
-                                    margin-bottom: 15px;
-                                    text-align: center;
-                                    background: #fafafa;
-                                ">
-                                    <div style="font-weight:bold; font-size:15px; margin-bottom:6px;">
-                                        مسؤول برق
+                                <td style="width:30%; vertical-align:top; border:none; padding-right:8px;">
+                                    <div class="electrician-box">
+                                        <div class="label">مسؤول برق</div>
+                                        <div class="phone">۰۷۹۹۵۵۳۳۳۳</div>
                                     </div>
-
-                                    <div class="times" style="font-size:26px; font-weight:900;">
-                                        ۰۷۹۹۵۵۳۳۳۳
+                                    <div class="signature-box">
+                                        <div class="label">مهر و امضاء</div>
                                     </div>
-                                </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
 
-                                <!-- باکس مهر و امضاء با پر کردن کل ارتفاع -->
-                                <div style="
-                                    border: 1px solid #444;
-                                    padding: 12px;
-                                    border-radius: 6px;
-                                    text-align: center;
-                                    background: #fff;
-                                    height: 100%;
-                                    min-height: 210px;
-                                    box-sizing: border-box;
-                                ">
-                                    <div style="font-size:16px; font-weight:bold; margin-top:0;">
-                                        مهر و امضاء
-                                    </div>
-                                </div>
-
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-
-                <!-- ستون راست (نسخه دوم) -->
-                <td role="gridcell" aria-label="نسخه راست">
-                    <div class="col-header" role="banner">
-
-                        <!-- متن‌ها وسط افقی -->
-                        <div
-                            style="position: absolute; top: 50%; left: 54%; transform: translate(-50%, -50%); text-align: center;">
-                            <div class="title" style="font-size: 20px; font-weight: bold;">
-                                مجتمع تجارتی عادلیار
+                    <!-- ستون راست (کپی) -->
+                    <td>
+                        <!-- هدر -->
+                        <div class="col-header">
+                            <div class="header-text" style="left:54%;">
+                                <div class="title">مجتمع تجارتی عادلیار</div>
+                                <div class="title" style="font-size:22px; margin-top:5px;">قبض برق</div>
                             </div>
-                            <div class="subtitle" style="font-size: 22px; margin-top: 5px; font-weight: bolder;">
-                                قبض برق
+                            <div class="logo">
+                                <img src="{{ asset('assets/logo.png') }}" alt="لوگو">
                             </div>
                         </div>
 
-                        <!-- لوگو همان‌جاست -->
-                        <div class="logo" aria-hidden="true"
-                            style="position: absolute; left: 0; top: 50%; transform: translateY(-50%);">
-                            <img src="{{ asset('assets/logo.png') }}" alt="لوگو"
-                                style="filter: sepia(1) saturate(5) hue-rotate(10deg) brightness(0.6) contrast(1.2); max-width: 80px;">
-                        </div>
+                        <!-- جدول مشخصات (بدون تاریخ) -->
+                        <table class="form-table">
+                            <tbody>
+                                <tr>
+                                    <th>مشتری</th>
+                                    <th>مارکت</th>
+                                    <th>{{ !empty($accounting->shop->number) ? 'شماره دوکان' : 'شماره غرفه' }}</th>
+                                    <th>شماره مسلسل</th>
+                                </tr>
+                                <tr>
+                                    <td>{{ $accounting->shopkeeper->fullname ?? $accounting->shopkeeper->name ?? '---' }}</td>
+                                    <td>{{ $accounting->market->name ?? '---' }}</td>
+                                    <td>{{ $accounting->shop->number ?? $accounting->booth->number ?? '---' }}</td>
+                                    <td>{{ $rowNumber }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                    </div>
-
-                    <table class="form-table" role="table" aria-label="مشخصات">
-                        <tbody>
-                            <tr>
-                                <th>مشتری</th>
-                                <th>مارکت</th>
-                                <th style="font-weight:600;">
-                                    @if (!empty($accounting->shop->number) )
-                                    شماره دوکان
-                                    @else
-                                    شماره غرفه
-                                    @endif
-                                </th>
-                                <th>شماره مسلسل</th>
-                            </tr>
-                            <tr>
-                                <td style="white-space: normal; word-break: break-word;">
-                                    {{ $accounting->shopkeeper->fullname ?? $accounting->shopkeeper->name ?? '---' }}
-                                </td>
-                                <td>{{ $accounting->market->name ?? '---' }}</td>
-                                <td>{{ $accounting->shop->number ?? $accounting->booth->number ?? '---' }}</td>
-                                <td>{{ $rowNumber }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <table class="amount-rows" role="table" aria-label="مقادیر">
-                        <tbody>
-                            <tr>
-                                <td>درجه فعلی</td>
-                                <td style="text-align:center;">{{ $accounting->current_degree ??
-                                    $accounting->current_reading ?? '---' }}</td>
-                            </tr>
-                            <tr>
-                                <td>درجه قبلی</td>
-                                <td style="text-align:center;">{{ $accounting->past_degree ??
-                                    $accounting->previous_reading ?? '---' }}</td>
-                            </tr>
-                            <tr>
-                                <td>مقدار مصرف</td>
-                                <td style="text-align:center;">
-                                    @php
-                                    $current = $accounting->current_degree ?? $accounting->current_reading
-                                    ?? null;
-                                    $past = $accounting->past_degree ?? $accounting->previous_reading ??
-                                    null;
-                                    $usage = ($current !== null && $past !== null && is_numeric($current) &&
-                                    is_numeric($past)) ? ($current - $past) : null;
-                                    @endphp
-                                    {{ $usage !== null ? $usage : '---' }} کیلووات
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>قیمت فی کیلووات</td>
-                                <td style="text-align:center;">{{ number_format($accounting->degree_price ??
-                                    $accounting->rate_per_kwh ?? 0) }} افغانی</td>
-                            </tr>
-                            <tr>
-                                <td>مبلغ قابل تادیه</td>
-                                <td style="text-align:center;">{{ number_format($data['currentPrice']) }}
-                                    افغانی</td>
-
-                            </tr>
-                            <tr>
-                                <td>باقیات</td>
-                                <td style="text-align:center;">{{ number_format($data['previousRemaining'])
-                                    }} افغانی</td>
-                            </tr>
-                            <tr>
-                                <td>جمع کل</td>
-                                <td style="text-align:center;">{{ number_format($data['totalRemaining']) }}
-                                    افغانی</td>
-
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </div>
+                        <!-- جدول مقادیر -->
+                        <table class="amount-rows">
+                            <tr><td>درجه فعلی</td><td>{{ $accounting->current_degree ?? '---' }}</td></tr>
+                            <tr><td>درجه قبلی</td><td>{{ $accounting->past_degree ?? '---' }}</td></tr>
+                            <tr><td>مقدار مصرف</td><td>{{ $data['consumption'] }} کیلووات</td></tr>
+                            <tr><td>قیمت فی کیلووات</td><td>{{ number_format($accounting->degree_price ?? 0) }} افغانی</td></tr>
+                            <tr><td>مبلغ قابل تادیه</td><td>{{ number_format($data['currentPrice']) }} افغانی</td></tr>
+                            <tr><td>از دوره‌های قبل</td><td>{{ number_format($data['previousRemaining']) }} افغانی</td></tr>
+                            <tr><td>مبلغ پرداخت شده</td><td>{{ number_format($data['currentPaid']) }} افغانی</td></tr>
+                            <tr><td>جمع کل</td><td>{{ number_format($data['totalRemaining']) }} افغانی</td></tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
     @endforeach
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script>
         window.onload = function() {
             setTimeout(() => {
                 window.print();
-                setTimeout(() => {
-                    window.close();
-                }, 1000);
+                setTimeout(() => window.close(), 1000);
             }, 500);
-        }
-        
+        };
         window.afterprint = function() {
-            setTimeout(() => { window.close(); }, 1000);
-        }
+            setTimeout(() => window.close(), 1000);
+        };
     </script>
-
 </body>
-
 </html>

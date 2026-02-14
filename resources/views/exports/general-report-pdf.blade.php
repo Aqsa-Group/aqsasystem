@@ -7,7 +7,6 @@
     <style>
         /* استایل بسیار ساده */
         body {
-            font-family: vazir, sans-serif;
             direction: rtl;
             margin: 0;
             padding: 10px;
@@ -15,16 +14,7 @@
             line-height: 1.2;
         }
 
-        @font-face {
-            font-family: "vazir";
-            src: url("/fonts/Vazir.ttf") format("truetype");
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        .vazir {
-            font-family: "vazir", sans-serif;
-        }
+  
 
         .header {
             text-align: center;
@@ -146,7 +136,7 @@
     </style>
 </head>
 
-<body class="vazir">
+<body >
     <div class="header">
         <h1>{{ $reportTitle }}</h1>
         <div>تاریخ تولید: {{ \Morilog\Jalali\Jalalian::now()->format('Y/m/d H:i') }}</div>
