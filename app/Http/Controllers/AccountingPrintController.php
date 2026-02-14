@@ -134,7 +134,7 @@ class AccountingPrintController extends Controller
         if ($request->filled('floor')) {
             $query->where(function ($q) use ($request) {
                 $q->whereHas('shop', fn($q) => $q->where('floor', $request->floor))
-                  ->orWhereHas('booth', fn($q) => $q->where('floor', $request->floor));
+                    ->orWhereHas('booth', fn($q) => $q->where('floor', $request->floor));
             });
         }
 
@@ -167,11 +167,10 @@ class AccountingPrintController extends Controller
             ->count();
 
         /*----------------------------------------------------------
-        | بدهی واقعی دوره‌های قبل (فقط remained > 0)
-        ----------------------------------------------------------*/
+    | بدهی واقعی دوره‌های قبل (بر اساس price - paid)
+    ----------------------------------------------------------*/
         $previousQuery = Accounting::where('expanses_type', 'پول برق')
-            ->where('created_at', '<', $accounting->created_at)
-            ->where('remained', '>', 0);
+            ->where('created_at', '<', $accounting->created_at);
 
         if ($accounting->shop_id) {
             $previousQuery->where('shop_id', $accounting->shop_id);
@@ -179,11 +178,17 @@ class AccountingPrintController extends Controller
             $previousQuery->where('booth_id', $accounting->booth_id);
         }
 
-        $previousRemaining = (int) $previousQuery->sum('remained');
+        // محاسبه مجموع price - paid برای همه‌ی قبض‌های قبل
+        $previousRemaining = (int) $previousQuery->get()->sum(function ($acc) {
+            return ($acc->price ?? 0) - ($acc->paid ?? 0);
+        });
+
+        // اگر تعداد قبض‌ها زیاد است، از کوئری با DB::raw بهینه‌تر استفاده کنید:
+        // $previousRemaining = (int) $previousQuery->sum(DB::raw('COALESCE(price, 0) - COALESCE(paid, 0)'));
 
         /*----------------------------------------------------------
-        | قبض فعلی
-        ----------------------------------------------------------*/
+    | قبض فعلی
+    ----------------------------------------------------------*/
         $pastDegree    = (int) ($accounting->past_degree ?? 0);
         $currentDegree = (int) ($accounting->current_degree ?? 0);
         $degreePrice   = (int) ($accounting->degree_price ?? 0);
@@ -195,8 +200,8 @@ class AccountingPrintController extends Controller
         $currentRemaining = max($currentPrice - $currentPaid, 0);
 
         /*----------------------------------------------------------
-        | جمع کل نهایی
-        ----------------------------------------------------------*/
+    | جمع کل نهایی
+    ----------------------------------------------------------*/
         $totalRemaining = $previousRemaining + $currentRemaining;
 
         return [
