@@ -1232,7 +1232,10 @@ class BuySellCurrency extends Component
                 }
 
                 $this->resetForm();
+
             });
+            $this->generateTransactionPdf($transactionId);
+
         } catch (\Exception $e) {
             session()->flash('message', 'خطا در ثبت تراکنش: ' . $e->getMessage());
             Log::error('Transaction submission error: ' . $e->getMessage());

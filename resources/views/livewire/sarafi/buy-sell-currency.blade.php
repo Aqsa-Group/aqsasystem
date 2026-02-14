@@ -889,7 +889,7 @@
 
                     <!-- دکمه‌های نهایی -->
                     <div
-                        class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-3 gap-3 justify-center items-center text-center flex-wrap">
+                        class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-3 justify-center items-center text-center flex-wrap">
                         <button type="submit" wire:loading.attr='disabled' wire:target='submitTransaction'
                             class="bg-[#184D6C] text-[15px] vazir font-semibold rounded-[8px] px-10 py-3 text-white  transition">
                             <span wire:loading.remove wire:target='submitTransaction'>
@@ -911,29 +911,7 @@
                             </span>
                         </button>
 
-                        @if(!$isEditing)
-                        <button type="button" wire:click="submitAndPrint" wire:loading.attr='disabled'
-                            wire:target='submitAndPrint'
-                            class="bg-[#184D6C] whitespace-nowrap        text-[15px] vazir font-semibold rounded-[8px] px-10 py-3 text-white  transition">
-                            <span wire:load.remove wire:target='submitAndPrint'>
-                                ثبت و چاپ
-                            </span>
-
-
-                            <span wire:loading wire:target="submitAndPrint"
-                                class="flex items-center justify-center gap-2">
-                                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                        stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor"
-                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                    </path>
-                                </svg>
-                                در حال ثبت و چاپ
-                            </span>
-                        </button>
-                        @endif
+                   
 
 
                         <button type="button" wire:click="cancel"

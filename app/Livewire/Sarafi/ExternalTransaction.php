@@ -1342,73 +1342,73 @@ class ExternalTransaction extends Component
                 'loss' => $profitLoss['loss']
             ]);
 
-       // در تابع submitConversion()، بخش به‌روزرسانی صندوق را به این شکل تغییر دهید:
+            // در تابع submitConversion()، بخش به‌روزرسانی صندوق را به این شکل تغییر دهید:
 
-// 🔹 دریافت یا ایجاد رکورد صندوق
-$currencySafe = CurrencySafe::firstOrCreate(
-    ['admin_id' => $adminId],
-    [
-        'afn' => 0,
-        'usd' => 0,
-        'irr' => 0,
-        'eur' => 0,
-        'pkr' => 0,
-        'aed' => 0,
-        'try' => 0,
-        'cny' => 0,
-        'gbp' => 0,
-        'jpy' => 0,
-        'sar' => 0,
-        'inr' => 0,
-    ]
-);
+            // 🔹 دریافت یا ایجاد رکورد صندوق
+            $currencySafe = CurrencySafe::firstOrCreate(
+                ['admin_id' => $adminId],
+                [
+                    'afn' => 0,
+                    'usd' => 0,
+                    'irr' => 0,
+                    'eur' => 0,
+                    'pkr' => 0,
+                    'aed' => 0,
+                    'try' => 0,
+                    'cny' => 0,
+                    'gbp' => 0,
+                    'jpy' => 0,
+                    'sar' => 0,
+                    'inr' => 0,
+                ]
+            );
 
-// 🔹 ستون ارز مورد نظر
-$currencyColumn = $this->from_currency;
+            // 🔹 ستون ارز مورد نظر
+            $currencyColumn = $this->from_currency;
 
-// 🔹 اگر در حال ویرایش هستیم
-if ($this->editingConversionId) {
-    $previousConversion = ExternalTransactions::find($this->editingConversionId);
-    
-    if ($previousConversion && $previousConversion->withdraw_safe_amount !== null) {
-        // 1️⃣ مبلغ قبلی را به صندوق بازگردان
-        $previousAmount = floatval($previousConversion->withdraw_safe_amount);
-        $currencySafe->$currencyColumn += $previousAmount;
-        
-        Log::info("مبلغ قبلی به صندوق بازگردانده شد", [
-            'currency' => $currencyColumn,
-            'previous_amount' => $previousAmount,
-            'balance_after_refund' => $currencySafe->$currencyColumn
-        ]);
-    }
-    
-    // 2️⃣ مبلغ جدید را از صندوق کسر کن
-    if ($this->withdraw_safe_amount !== null) {
-        $newAmount = floatval($this->withdraw_safe_amount);
-        $currencySafe->$currencyColumn -= $newAmount;
-        
-        Log::info("مبلغ جدید از صندوق کسر شد", [
-            'currency' => $currencyColumn,
-            'new_amount' => $newAmount,
-            'balance_after_withdraw' => $currencySafe->$currencyColumn
-        ]);
-    }
-    
-    $currencySafe->save();
-} else {
-    // حالت ایجاد جدید
-    if ($this->withdraw_safe_amount !== null) {
-        $withdrawAmount = floatval($this->withdraw_safe_amount);
-        $currencySafe->$currencyColumn -= $withdrawAmount;
-        $currencySafe->save();
-        
-        Log::info("مبلغ جدید برای تراکنش جدید از صندوق کسر شد", [
-            'currency' => $currencyColumn,
-            'withdraw_amount' => $withdrawAmount,
-            'new_balance' => $currencySafe->$currencyColumn
-        ]);
-    }
-}
+            // 🔹 اگر در حال ویرایش هستیم
+            if ($this->editingConversionId) {
+                $previousConversion = ExternalTransactions::find($this->editingConversionId);
+
+                if ($previousConversion && $previousConversion->withdraw_safe_amount !== null) {
+                    // 1️⃣ مبلغ قبلی را به صندوق بازگردان
+                    $previousAmount = floatval($previousConversion->withdraw_safe_amount);
+                    $currencySafe->$currencyColumn += $previousAmount;
+
+                    Log::info("مبلغ قبلی به صندوق بازگردانده شد", [
+                        'currency' => $currencyColumn,
+                        'previous_amount' => $previousAmount,
+                        'balance_after_refund' => $currencySafe->$currencyColumn
+                    ]);
+                }
+
+                // 2️⃣ مبلغ جدید را از صندوق کسر کن
+                if ($this->withdraw_safe_amount !== null) {
+                    $newAmount = floatval($this->withdraw_safe_amount);
+                    $currencySafe->$currencyColumn -= $newAmount;
+
+                    Log::info("مبلغ جدید از صندوق کسر شد", [
+                        'currency' => $currencyColumn,
+                        'new_amount' => $newAmount,
+                        'balance_after_withdraw' => $currencySafe->$currencyColumn
+                    ]);
+                }
+
+                $currencySafe->save();
+            } else {
+                // حالت ایجاد جدید
+                if ($this->withdraw_safe_amount !== null) {
+                    $withdrawAmount = floatval($this->withdraw_safe_amount);
+                    $currencySafe->$currencyColumn -= $withdrawAmount;
+                    $currencySafe->save();
+
+                    Log::info("مبلغ جدید برای تراکنش جدید از صندوق کسر شد", [
+                        'currency' => $currencyColumn,
+                        'withdraw_amount' => $withdrawAmount,
+                        'new_balance' => $currencySafe->$currencyColumn
+                    ]);
+                }
+            }
 
             if ($profitLoss['profit'] > 0 || $profitLoss['loss'] > 0) {
                 Log::info('📊 در حال ثبت سود/ضرر در جدول revenue...');
@@ -1510,7 +1510,7 @@ if ($this->editingConversionId) {
         $this->description = $conversion->description;
         $this->selectedCustomer = $conversion->customer;
         $this->withdraw_safe_amount = $conversion->withdraw_safe_amount;
-    $this->market_buy_rate = $conversion->market_buy_rate;
+        $this->market_buy_rate = $conversion->market_buy_rate;
         $this->transactionType = $conversion->type;
 
 
@@ -1688,16 +1688,22 @@ if ($this->editingConversionId) {
                 'margin_bottom' => 0,
                 'margin_left' => 0,
                 'margin_right' => 0,
-                'fontDir' => array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'], [
-                    public_path('fonts'),
-                ]),
+                'fontDir' => array_merge(
+                    (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+                    [public_path('fonts/vazir/')]
+                ),
                 'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
-                    'Shabnam' => [
-                        'R' => 'Shabnam-FD.ttf',
+                    'vazir' => [
+                        'R' => 'Vazir-Light.ttf',
+                        'B' => 'Vazir-Bold.ttf',
+                        'useOTL' => 0xFF,
+                        'useKashida' => 75,
                     ],
                 ],
-                'default_font' => 'Shabnam',
+                'default_font' => 'vazir',
+                'tempDir' => storage_path('app/mpdf'),
             ]);
+
 
             $mpdf->SetAutoPageBreak(false);
 
