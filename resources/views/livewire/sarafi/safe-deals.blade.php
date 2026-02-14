@@ -702,7 +702,7 @@
                             </label>
                             <div class="relative w-full">
                                 <input type="text" wire:model.live="receive_amount"
-                                    wire:click="setCalculatingField('sell')" placeholder="0"
+                                    wire:click="setCalculatingField('receive')" placeholder="0"
                                     class="w-full dark:bg-black dark:border dark:border-white dark:text-white dark:placeholder:text-white h-[60px] p-3 rounded-[12px]  focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 " />
                             </div>
                             {{-- نمایش مقدار فارسی --}}
@@ -1357,7 +1357,7 @@
 
                     {{-- دکمه‌های نهایی --}}
                     <div
-                        class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 py-4 justify-center items-center text-center">
+                        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 py-4 justify-center items-center text-center">
                         <button type="submit" wire:loading.attr="disabled" wire:target="submitDeal"
                             class="bg-[#184D6C] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
                             <span wire:loading.remove wire:target="submitDeal">
@@ -1381,10 +1381,6 @@
                             {{ $dealId ? 'لغو ویرایش' : 'انصراف' }}
                         </button>
 
-                        <button type="button" onclick="calculate()"
-                            class="bg-[#184D6C] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
-                            محاسبه
-                        </button>
                     </div>
                 </form>
             </div>
@@ -1535,7 +1531,7 @@
                                         </div>
                                     </td>
 
-                                  
+
 
                                     <td class="py-2 text-center">
                                         <div class="flex flex-wrap justify-center gap-2 md:gap-3">
@@ -1599,7 +1595,7 @@
                                                     </svg>
                                                 </button>
 
-                                                   <button wire:click.once="print({{ $deal->id }})" class="w-12 h-12 flex items-center justify-center  
+                                                <button wire:click.once="print({{ $deal->id }})" class="w-12 h-12 flex items-center justify-center  
                                                     rounded-full transition-colors" title="پرینت">
                                                     <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"
                                                         class="w-10 h-10 dark:hidden" alt="Print">
@@ -1670,9 +1666,18 @@
 
     <script>
         window.addEventListener('print-pdf', event => {
-    window.open(event.detail.url, '_blank');
+    const url = event.detail.url;
+
+    // دانلود خودکار
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = url.split('/').pop(); // نام فایل از URL
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 });
     </script>
+
 
 
     {{-- Scrollbar Style --}}

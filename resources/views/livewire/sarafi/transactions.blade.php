@@ -1761,7 +1761,6 @@
 
                                                 <script>
                                                     let printListenerRegistered = false;
-
                                                     document.addEventListener('livewire:init', () => {
                                                         if (printListenerRegistered) return;
                                                         printListenerRegistered = true;

@@ -1130,112 +1130,94 @@ class BuySellCurrency extends Component
      */
     public function submitTransaction()
     {
-
         $this->validate([
-            'currency' => 'required|string',
-            'to_currency' => 'required|string|different:currency',
-            'amount' => 'required|numeric|min:0.01',
-            'exchange_rate' => 'required|numeric|min:0.01',
-            'eq_amount' => 'required|numeric|min:0.01',
-            'date' => 'required|date',
-            'description' => 'required|string|min:3',
+            'currency'       => 'required|string',
+            'to_currency'    => 'required|string|different:currency',
+            'amount'         => 'required|numeric|min:0.01',
+            'exchange_rate'  => 'required|numeric|min:0.01',
+            'eq_amount'      => 'required|numeric|min:0.01',
+            'date'           => 'required|date',
+            'description'    => 'required|string|min:3',
             'transaction_file' => 'nullable|file|max:10240',
         ]);
 
-        // Check balance (only for new transactions)
         if (!$this->isEditing && !$this->checkBalance()) {
             return;
         }
 
         try {
-            DB::transaction(function () {
+            $transactionId = null;
+
+            DB::transaction(function () use (&$transactionId) {
                 $user = Auth::guard('sarafi')->user();
                 $userId = $user->id;
                 $adminId = $user->admin_id ?? $user->id;
                 $amount = floatval($this->amount);
                 $eqAmount = floatval($this->eq_amount);
-
-                // محاسبه سود/ضرر
                 $profitLoss = $this->calculateProfitOrLoss();
 
-                // If editing existing transaction
                 if ($this->isEditing && $this->editingId) {
+                    // ویرایش تراکنش موجود
                     $transaction = CashExchange::findOrFail($this->editingId);
-
-                    // First reverse the previous transaction
                     $this->reverseTransaction($transaction);
-
-                    // حذف سود/ضرر قبلی
                     Revenue::where('safe_exchange_id', $transaction->id)->delete();
 
                     $filePath = $transaction->transaction_file;
                     if ($this->transaction_file) {
-                        // Delete previous file if exists
-                        if ($filePath) {
-                            Storage::disk('public')->delete($filePath);
-                        }
+                        if ($filePath) Storage::disk('public')->delete($filePath);
                         $filePath = $this->transaction_file->store('transaction-files', 'public');
                     }
 
-                    // Update transaction
                     $transaction->update([
-                        'type' => $this->transactionType,
-                        'from_currency' => $this->currency,
-                        'amount' => $amount,
-                        'to_currency' => $this->to_currency,
-                        'eq_amount' => $eqAmount,
-                        'exchange_rate' => $this->exchange_rate,
-                        'date' => $this->date,
-                        'description' => $this->description,
+                        'type'            => $this->transactionType,
+                        'from_currency'   => $this->currency,
+                        'amount'          => $amount,
+                        'to_currency'     => $this->to_currency,
+                        'eq_amount'       => $eqAmount,
+                        'exchange_rate'   => $this->exchange_rate,
+                        'date'            => $this->date,
+                        'description'     => $this->description,
                         'transaction_file' => $filePath,
                     ]);
 
-                    // Apply new changes to safe
                     $this->applyTransaction($transaction);
-
-                    // ثبت سود/ضرر جدید
                     $this->recordBuySellProfitLoss($transaction->id, $profitLoss);
-
+                    $transactionId = $transaction->id; // ذخیره شناسه
                     session()->flash('message', 'تراکنش با موفقیت ویرایش شد.');
                 } else {
-                    // Create new transaction
+                    // تراکنش جدید
                     $filePath = null;
                     if ($this->transaction_file) {
                         $filePath = $this->transaction_file->store('transaction-files', 'public');
                     }
 
-
-                    $user = Auth::guard('sarafi')->user();
-                    $adminId = $user->admin_id ?? $user->id;
-
                     $exchange = CashExchange::create([
-                        'user_id'          => $user->id,
+                        'user_id'          => $userId,
                         'admin_id'         => $adminId,
-                        'type' => $this->transactionType,
-                        'from_currency' => $this->currency,
-                        'amount' => $amount,
-                        'to_currency' => $this->to_currency,
-                        'eq_amount' => $eqAmount,
-                        'exchange_rate' => $this->exchange_rate,
-                        'date' => $this->date,
-                        'description' => $this->description,
+                        'type'             => $this->transactionType,
+                        'from_currency'    => $this->currency,
+                        'amount'           => $amount,
+                        'to_currency'      => $this->to_currency,
+                        'eq_amount'        => $eqAmount,
+                        'exchange_rate'    => $this->exchange_rate,
+                        'date'             => $this->date,
+                        'description'      => $this->description,
                         'transaction_file' => $filePath,
                     ]);
 
-                    // Update currency safe
                     $this->updateCurrencySafe($userId, $adminId, $amount, $eqAmount);
-
-                    // ثبت سود/ضرر
                     $this->recordBuySellProfitLoss($exchange->id, $profitLoss);
-
+                    $transactionId = $exchange->id; // ذخیره شناسه
                     session()->flash('message', 'تراکنش با موفقیت ثبت شد و صندوق آپدیت شد.');
                 }
 
                 $this->resetForm();
-
             });
-            $this->generateTransactionPdf($transactionId);
 
+            // بعد از اتمام موفق تراکنش دیتابیس، PDF را تولید کن
+            if ($transactionId) {
+                $this->generateTransactionPdf($transactionId);
+            }
         } catch (\Exception $e) {
             session()->flash('message', 'خطا در ثبت تراکنش: ' . $e->getMessage());
             Log::error('Transaction submission error: ' . $e->getMessage());
