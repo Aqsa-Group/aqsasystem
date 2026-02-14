@@ -244,7 +244,7 @@ private static function syncJournals(self $model): void
             'type'          => 'برد',
             'account_type'  => $accountType,
             'amount'        => $model->withdraw_safe_amount,
-            'balance'       => null, 
+            'balance'       => 0, 
             'safe_balance'  => $fromSafeBalance - $model->withdraw_safe_amount, 
             'description'   => $withdrawDescription,
             'date'          => $model->transaction_date,
