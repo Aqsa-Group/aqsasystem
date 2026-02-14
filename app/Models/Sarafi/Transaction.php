@@ -99,10 +99,10 @@ class Transaction extends Model
     {
         return $this->belongsTo(Currency::class, 'currency', 'code');
     }
-public function journal()
-{
-    return $this->hasOne(Journals::class, 'transaction_id', 'id');
-}
+    public function journal()
+    {
+        return $this->hasOne(Journals::class, 'transaction_id', 'id');
+    }
     // =======================
     // Accessors
     // =======================
@@ -155,23 +155,30 @@ public function journal()
         Log::debug("shouldAffectSafeBalance for TX {$this->id}", [
             'external_transaction_id' => $this->external_transaction_id,
             'account_type'           => $this->account_type,
-            'type'                  => $this->type,
-            'customer_type'         => optional($this->customer)->type,
+            'type'                   => $this->type,
+            'customer_type'          => optional($this->customer)->type,
             'conversion_transfer_id' => $this->conversion_transfer_id,
             'conversion_in_account_id' => $this->conversion_in_account_id,
-            'account_to_id'         => $this->account_to_id,
+            'account_to_id'          => $this->account_to_id,
+            'safe_deal_id'           => $this->safe_deal_id,
+            'changerdeal_id'         => $this->changerdeal_id,
+            'withdrawbank_id'        => $this->withdrawbank_id,
+            'safe_deals_revenue_id'  => $this->safe_deals_revenue_id,
         ]);
 
+        // External transactions never affect safe balance
         if ($this->external_transaction_id) {
             Log::info("❌ shouldAffectSafeBalance: false (external transaction)");
             return false;
         }
 
+        // Only cash or bank accounts can affect safe balance
         if (!in_array($this->account_type, ['نقدی', 'بانکی'])) {
             Log::info("❌ shouldAffectSafeBalance: false (account_type not نقدی/بانکی)");
             return false;
         }
 
+        // Special case: sarafi_card bank withdrawals do not affect safe balance
         if (
             $this->account_type === 'بانکی' && $this->type === 'برد'
             && $this->customer && $this->customer->type === 'sarafi_card'
@@ -180,8 +187,15 @@ public function journal()
             return false;
         }
 
+        // Transactions linked to conversions or account transfers do not affect safe balance
         if ($this->conversion_transfer_id || $this->conversion_in_account_id || $this->account_to_id) {
             Log::info("❌ shouldAffectSafeBalance: false (conversion or account transfer)");
+            return false;
+        }
+
+        // Transactions linked to deals do not affect safe balance individually
+        if ($this->safe_deal_id || $this->changerdeal_id || $this->withdrawbank_id || $this->safe_deals_revenue_id) {
+            Log::info("❌ shouldAffectSafeBalance: false (part of a deal)");
             return false;
         }
 
@@ -298,6 +312,7 @@ public function journal()
 
     public function updateJournal()
     {
+        $this->disableSafeBalance = true;
         $oldJournal = Journals::where('transaction_id', $this->id)->first();
         if (!$oldJournal) {
             $this->createJournal();
@@ -322,7 +337,7 @@ public function journal()
                     $oldTx,
                     $oldJournalId,
                     $oldTx->shouldAffectSafeBalance(),
-                    recalcSafe: true,   // همیشه true چون باید اثر از صندوق ارز قدیم برداشته شود
+                    recalcSafe: false,   // همیشه true چون باید اثر از صندوق ارز قدیم برداشته شود
                     recalcCustomer: true
                 );
 
@@ -691,6 +706,7 @@ public function journal()
         });
 
         static::deleted(function ($model) {
+            $model->disableSafeBalance = true;
             DB::connection('sarafi')->transaction(function () use ($model) {
                 $model->logToTrash('حذف');
 
