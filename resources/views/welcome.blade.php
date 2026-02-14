@@ -14,13 +14,30 @@
         rel="stylesheet">
     @include('Sarafi.layouts.links')
     <style>
-        
-
         body {
             font-family: 'Vazirmatn', 'Mirza', sans-serif;
-            background:white;
+            background: white;
             overflow-x: hidden;
         }
+
+        .main {
+            position: relative;
+            z-index: 0;
+            min-height: 100vh;
+        }
+
+        .main::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('{{ asset('assets/panels/bg.jpg') }}');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
 
         .logo-text {
             background: linear-gradient(to right, #f59e0b, #fbbf24);
@@ -48,7 +65,7 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-    
+
 
         .typing-cursor {
             display: inline-block;
@@ -59,7 +76,7 @@
             animation: blink 1s infinite;
         }
 
-     
+
         .particles {
             position: absolute;
             top: 0;
@@ -70,9 +87,9 @@
             z-index: -1;
         }
 
-     
 
-   
+
+
         @font-face {
             font-family: "DimaYekan";
             src: url("/fonts/Yekan-Regular.ttf") format("truetype");
@@ -110,15 +127,15 @@
     <!-- هدر -->
     <header class="py-4 px-4 sm:px-8 flex justify-between items-center">
         <div class="flex items-center gap-3">
-            <div
-                class="w-[70px] h-[70px] rounded-full  flex items-center justify-center mr-3  bg-white shadow-2xl "   style="box-shadow: 4px 4px 4px 4px #00000040, 0 0 0 0 #3B82F6;">
+            <div class="w-[70px] h-[70px] rounded-full  flex items-center justify-center mr-3  bg-white shadow-2xl "
+                style="box-shadow: 4px 4px 4px 4px #00000040, 0 0 0 0 #3B82F6;">
                 <img src="{{ asset('assets/icon.jpg') }}" class="rounded-full" alt="" class="w-10 h-10">
             </div>
-             <div class="flex flex-col space-y-1">
+            <div class="flex flex-col space-y-1">
                 <p class="text-[#276284] text-[24px]">اقصی سیستم</p>
                 <p class="text-[#6CA0B6] text-[21px]">AQSA SYSTEM</p>
 
-             </div>
+            </div>
         </div>
 
         <div class="relative w-[320px]">
@@ -131,8 +148,10 @@
             {{-- آیکون --}}
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                 class="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none dark:hidden">
-                <path d="M18.5 18.5L22 22" stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round"/>
-<path d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75" stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M18.5 18.5L22 22" stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round" />
+                <path
+                    d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75"
+                    stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round" />
             </svg>
             <path
                 d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
@@ -143,15 +162,20 @@
 
         </div>
 
- 
+
 
     </header>
 
     <!-- بخش اصلی -->
-    <main class="flex-grow  flex flex-col items-center justify-center py-2 px-4" >
-       
+    <main class="flex-grow  main flex flex-col items-center justify-center py-2 px-4">
+        <div class="flex flex-col justify-center items-center mx-auto  space-y-2">
+            <p class="text-transparent bg-clip-text bg-gradient-to-l from-[#198ED8] to-[#0D4B72] text-[40px] font-bold">
+                به اقصی سیستم خوش آمدید
+            </p>
+            <p class="text-[24px]">مجموعه کامل پنل های مدیریت کسب و کار _ هر پنلی که نیاز دارید در یک مکان</p>
+        </div>
         <!-- کارت‌های پنل‌ها -->
-        <div class="grid grid-cols-1 md:grid-cols-4  lg:grid-cols-4 py-4 gap-6 mt-2 mb-16">
+        <div class="grid grid-cols-1 md:grid-cols-4  lg:grid-cols-4 py-4 gap-6 mt-4 mb-16">
 
             {{-- Sarafi --}}
             <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px] ">
@@ -300,11 +324,10 @@
 
             </div>
 
-              {{-- Sale --}}
+            {{-- Sale --}}
             <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px] ">
                 <div>
-                    <img src="{{ asset('assets/panels/sale.jpg') }}" alt=""
-                        class="rounded-tr-[12px] rounded-tl-[12px]">
+                    <img src="{{ asset('assets/panels/sale.jpg') }}" alt="" class="rounded-tr-[12px] rounded-tl-[12px]">
                 </div>
                 <div class="text-black px-10 py-2">
                     <p class="font-bold">فروشگاه</p>
@@ -375,7 +398,7 @@
 
 
 
-                 {{-- Tools --}}
+            {{-- Tools --}}
             <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px] ">
                 <div>
                     <img src="{{ asset('assets/panels/tools.jpg') }}" alt=""
@@ -450,7 +473,7 @@
 
 
 
-                  {{-- Restaurant --}}
+            {{-- Restaurant --}}
             <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px] ">
                 <div>
                     <img src="{{ asset('assets/panels/restaurant.jpg') }}" alt=""
@@ -527,20 +550,23 @@
 
 
 
-       
-
-           
-
-       
 
 
 
 
 
-         
+
+
+
+
+
+
         </div>
     </main>
 
+    <footer>
+        
+    </footer>
 
 
     <script>
