@@ -14,18 +14,11 @@
         rel="stylesheet">
     @include('Sarafi.layouts.links')
     <style>
-        :root {
-            --primary: #1e3a8a;
-            --secondary: #0ea5e9;
-            --accent: #f59e0b;
-            --dark: #0f172a;
-            --light: #f8fafc;
-        }
+        
 
         body {
             font-family: 'Vazirmatn', 'Mirza', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: var(--light);
+            background:white;
             overflow-x: hidden;
         }
 
@@ -55,9 +48,7 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .glow {
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
-        }
+    
 
         .typing-cursor {
             display: inline-block;
@@ -68,36 +59,7 @@
             animation: blink 1s infinite;
         }
 
-        @keyframes blink {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0;
-            }
-        }
-
-        .floating {
-            animation: floating 3s ease-in-out infinite;
-        }
-
-        @keyframes floating {
-            0% {
-                transform: translateY(0px);
-            }
-
-            50% {
-                transform: translateY(-10px);
-            }
-
-            100% {
-                transform: translateY(0px);
-            }
-        }
-
+     
         .particles {
             position: absolute;
             top: 0;
@@ -108,24 +70,9 @@
             z-index: -1;
         }
 
-        .particle {
-            position: absolute;
-            background: rgba(59, 130, 246, 0.5);
-            border-radius: 50%;
-            animation: float linear infinite;
-        }
+     
 
-        @keyframes float {
-            to {
-                transform: translateY(-1000px) rotate(360deg);
-            }
-        }
-
-        .footer-wave {
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%230f172a" fill-opacity="1" d="M0,128L48,144C96,160,192,192,288,186.7C384,181,480,139,576,138.7C672,139,768,181,864,197.3C960,213,1056,203,1152,186.7C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
-            background-size: cover;
-        }
-
+   
         @font-face {
             font-family: "DimaYekan";
             src: url("/fonts/Yekan-Regular.ttf") format("truetype");
@@ -164,46 +111,45 @@
     <header class="py-4 px-4 sm:px-8 flex justify-between items-center">
         <div class="flex items-center gap-3">
             <div
-                class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 flex items-center justify-center mr-3 glow">
-                <img src="{{ asset('assets/icon.jpg') }}" class="rounded-full" alt="">
+                class="w-[70px] h-[70px] rounded-full  flex items-center justify-center mr-3  bg-white shadow-2xl "   style="box-shadow: 4px 4px 4px 4px #00000040, 0 0 0 0 #3B82F6;">
+                <img src="{{ asset('assets/icon.jpg') }}" class="rounded-full" alt="" class="w-10 h-10">
             </div>
-            <h1 class="text-2xl font-bold">
-                <span class="logo-text text-3xl yekan">اقصی گروپ</span>
-            </h1>
+             <div class="flex flex-col space-y-1">
+                <p class="text-[#276284] text-[24px]">اقصی سیستم</p>
+                <p class="text-[#6CA0B6] text-[21px]">AQSA SYSTEM</p>
+
+             </div>
         </div>
 
-        <div class="text-2xl text-blue-200 times">
-            Aqsasystem.com
+        <div class="relative w-[320px]">
+            <input type="text" wire:model.live="search" placeholder="جستجو پنل...." class="w-full h-12 md:h-[51px]
+                           border border-[#D7E5EC]
+                           dark:bg-black dark:border-white dark:placeholder:text-white placeholder:text-black
+                           rounded-[16px] pl-3 pr-12 text-sm md:text-base
+                           bg-transparent relative z-0">
+
+            {{-- آیکون --}}
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                class="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none dark:hidden">
+                <path d="M18.5 18.5L22 22" stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75" stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <path
+                d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+                stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+
+
         </div>
+
+ 
+
     </header>
 
     <!-- بخش اصلی -->
-    <main class="flex-grow hero-section flex flex-col items-center justify-center py-2 px-4">
-        <div class="max-w-4xl mx-auto text-center">
-            <!-- لوگو و عنوان -->
-            <div class="mb-2 floating ">
-                <div
-                    class="w-24 h-24 mx-auto rounded-full bg-gradient-to-r from-amber-400 to-amber-600 flex items-center justify-center mb-4 glow">
-                    <img src="{{ asset('assets/icon.jpg') }}" class="rounded-full" alt="">
-                </div>
-                <h2 class="text-4xl md:text-5xl font-bold mb-2 yekan">
-                    به <span class="logo-text ">اقصی گروپ</span> خوش آمدید
-                </h2>
-                <p class="text-xl text-blue-200 yekan"> <span class="times">Aqsasystem</span> - پلتفرم جامع مدیریت کسب و
-                    کار</p>
-            </div>
-
-            <!-- متن خوش‌آمدگویی -->
-            <div class="mb-12">
-                <div
-                    class="text-2xl md:text-3xl text-center mb-8 py-4 px-6 rounded-xl bg-gradient-to-r from-blue-900/30 to-cyan-900/30 border border-blue-800/30 inline-block">
-                    <span id="typed-text"></span><span class="typing-cursor"></span>
-                </div>
-             
-            </div>
-
-
-        </div>
+    <main class="flex-grow  flex flex-col items-center justify-center py-2 px-4" >
+       
         <!-- کارت‌های پنل‌ها -->
         <div class="grid grid-cols-1 md:grid-cols-4  lg:grid-cols-4 py-4 gap-6 mt-2 mb-16">
 
@@ -591,69 +537,11 @@
 
 
 
-            {{--
-            <!-- پنل کلپ -->
-
-            <a href="/gym" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
-                <div
-                    class="w-16 h-16 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-700 flex items-center justify-center mb-4 group-hover:glow transition-all">
-                    <i class="fas fa-dumbbell text-white text-2xl"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-2">پنل کلپ های ورزشی</h3>
-                <p class="text-blue-200 text-sm">مدیریت حسابداری و کانتین</p>
-                <div class="mt-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <i class="fas fa-arrow-left ml-1"></i> ورود به پنل
-                </div>
-            </a> --}}
-
-
-            {{--
-            <!-- پنل مارکت -->
-
-            <a href="/update" class="card-hover rounded-2xl p-6 flex flex-col items-center text-center group">
-                <div
-                    class="w-16 h-16 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-700 flex items-center justify-center mb-4 group-hover:glow transition-all">
-                    <i class="fas fa-dumbbell text-white text-2xl"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-2">پنل مارکت آبدیت</h3>
-                <p class="text-blue-200 text-sm">مدیریت مارکت ها </p>
-                <div class="mt-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <i class="fas fa-arrow-left ml-1"></i> ورود به پنل
-                </div>
-            </a> --}}
+         
         </div>
     </main>
 
-    <!-- فوتر -->
-    <footer class="footer-wave py-12 text-center relative">
-        <div class="max-w-4xl mx-auto px-4">
-            <div class="mb-6">
-                <h3 class="text-xl font-bold mb-4">اقصی گروپ - Aqsasystem</h3>
-                <p class="text-blue-200 max-w-2xl mx-auto">
-                    ارائه دهنده راهکارهای نوین مدیریت کسب و کار با بیش از ۵ سال تجربه در زمینه توسعه نرم‌افزارهای تخصصی
-                </p>
-            </div>
 
-            <div class="flex justify-center space-x-6 space-x-reverse mb-6">
-                <a href="#" class="text-blue-300 hover:text-amber-400 transition-colors">
-                    <i class="fab fa-telegram text-2xl"></i>
-                </a>
-                <a href="#" class="text-blue-300 hover:text-amber-400 transition-colors">
-                    <i class="fab fa-instagram text-2xl"></i>
-                </a>
-                <a href="#" class="text-blue-300 hover:text-amber-400 transition-colors">
-                    <i class="fab fa-linkedin text-2xl"></i>
-                </a>
-                <a href="#" class="text-blue-300 hover:text-amber-400 transition-colors">
-                    <i class="fab fa-twitter text-2xl"></i>
-                </a>
-            </div>
-
-            <div class="text-sm text-blue-300">
-                <p>تمامی حقوق برای اقصی گروپ محفوظ است © ۱۴۰۳</p>
-            </div>
-        </div>
-    </footer>
 
     <script>
         // تایپ کردن متن خوش‌آمدگویی
@@ -705,36 +593,7 @@
             createParticles();
         });
         
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 50;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                // اندازه تصادفی
-                const size = Math.random() * 5 + 2;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                
-                // موقعیت تصادفی
-                particle.style.left = `${Math.random() * 100}vw`;
-                particle.style.top = `${Math.random() * 100}vh`;
-                
-                // شفافیت تصادفی
-                particle.style.opacity = Math.random() * 0.5 + 0.2;
-                
-                // مدت زمان انیمیشن تصادفی
-                const duration = Math.random() * 20 + 10;
-                particle.style.animationDuration = `${duration}s`;
-                
-                // تأخیر تصادفی
-                particle.style.animationDelay = `${Math.random() * 5}s`;
-                
-                particlesContainer.appendChild(particle);
-            }
-        }
+       
     </script>
 </body>
 

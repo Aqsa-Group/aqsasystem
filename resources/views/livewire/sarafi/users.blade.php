@@ -46,9 +46,8 @@
     @if($currentUser && $currentUser->role === 'admin' || $currentUser->role === 'superadmin' )
     <div class="pl-5">
         <!-- فرم ثبت کاربر -->
-<div
-  class="w-full max-w-[460px] md:max-w-[800px] lg:max-w-[1200px] p-4 mx-auto   bg-white   border border-[#D7E5EC] shadow-sm backdrop:blur-lg ] dark:bg-black dark:border dark:border-white rounded-2xl space-y-2"
-  >
+        <div
+            class="w-full max-w-[460px] md:max-w-[800px] lg:max-w-[1200px] p-4 mx-auto   bg-white   border border-[#D7E5EC] shadow-sm backdrop:blur-lg ] dark:bg-black dark:border dark:border-white rounded-2xl space-y-2">
 
             <!-- عنوان و آیکون -->
             <!-- عنوان و آیکون -->
@@ -366,8 +365,8 @@
                             شماره تماس اول
                         </label>
                         <div class="relative">
-                            <input type="text" wire:model="phone"    onkeydown="lock937(event)"    onkeydown="preventDeletePrefix(event)"
-
+                            <input type="text" wire:model="phone" onkeydown="lock937(event)"
+                                onkeydown="preventDeletePrefix(event)"
                                 placeholder="{{ __('messages.placeholder_phone_user') }}"
                                 class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-[#EFF6F9]
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
@@ -386,8 +385,8 @@
                             شماره تماس دوم
                         </label>
                         <div class="relative">
-                            <input type="text" wire:model="phone2"   onkeydown="lock937(event)"     onkeydown="preventDeletePrefix(event)"
-
+                            <input type="text" wire:model="phone2" onkeydown="lock937(event)"
+                                onkeydown="preventDeletePrefix(event)"
                                 placeholder="{{ __('messages.placeholder_phone_user') }}"
                                 class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-[#EFF6F9] 
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
@@ -406,8 +405,8 @@
                             شماره تماس سوم
                         </label>
                         <div class="relative">
-                            <input type="text" wire:model="phone3"   onkeydown="lock937(event)"    onkeydown="preventDeletePrefix(event)"
-
+                            <input type="text" wire:model="phone3" onkeydown="lock937(event)"
+                                onkeydown="preventDeletePrefix(event)"
                                 placeholder="{{ __('messages.placeholder_phone_user') }}"
                                 class="w-full p-2 py-3 rounded-xl border focus:ring-2 bg-[#EFF6F9] 
                                       focus:ring-blue-500 dark:placeholder:text-white dark:bg-black dark:border-white dark:text-white">
@@ -457,8 +456,8 @@
 
                 </div>
 
-                     <script>
-                        function preventDeletePrefix(e) {
+                <script>
+                    function preventDeletePrefix(e) {
                                 const input = e.target;
 
                                 // اگر Backspace یا Delete
@@ -469,11 +468,11 @@
                                     }
                                 }
                             }
-                    </script>
+                </script>
 
 
-                                <script>
-                                function lock937(e) {
+                <script>
+                    function lock937(e) {
                                     const input = e.target;
 
                                     if (e.key === 'Backspace' || e.key === 'Delete') {
@@ -482,7 +481,7 @@
                                         }
                                     }
                                 }
-                                </script>
+                </script>
 
                 <!-- دکمه‌ها -->
                 <div class="flex justify-center gap-4 mt-3 pt-2">
@@ -490,8 +489,7 @@
                         class="flex-1 py-4 bg-[#184D6C] text-white rounded-xl  transition">
                         {{ __('messages.cancel') }}
                     </button>
-                    <button type="submit"
-                        class="flex-1 py-4 bg-[#184D6C] text-white rounded-xl transition">
+                    <button type="submit" class="flex-1 py-4 bg-[#184D6C] text-white rounded-xl transition">
                         {{ $editId ? __('messages.update') : __('messages.save') }}
                     </button>
                 </div>
@@ -501,7 +499,7 @@
     @endif
 
     <!-- فیلتر و سرچ -->
-<div class="flex w-full max-w-[460px] md:max-w-[800px] lg:max-w-[1200px] items-center mt-5 gap-3 mx-auto">
+    <div class="flex w-full max-w-[460px] md:max-w-[800px] lg:max-w-[1200px] items-center mt-5 gap-3 mx-auto">
 
         <!-- دکمه فیلتر -->
         <div class="relative">
@@ -538,42 +536,39 @@
 
         <!-- جستجو -->
         <div class="relative w-80">
-   <input type="text" wire:model.live="search" placeholder="جستجو..." class="w-full h-12 md:h-[51px]
+            <input type="text" wire:model.live="search" placeholder="جستجو..." class="w-full h-12 md:h-[51px]
                            border border-[#D7E5EC]
                            dark:bg-black dark:border-white dark:placeholder:text-white placeholder:text-black
                            rounded-[12px] pl-3 pr-12 text-sm md:text-base
                            bg-transparent relative z-0">
 
-                            {{-- آیکون --}}
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                                class="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none dark:hidden">
-                                <path d="M20 20L22 22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
-                                <path
-                                    d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75"
-                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
-                            </svg>
+            {{-- آیکون --}}
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                class="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none dark:hidden">
+                <path d="M20 20L22 22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
                 <path
-                    d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
-                    stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round"
-                    stroke-linejoin="round" />
+                    d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75"
+                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+            <path
+                d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+                stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
 
-          
+
         </div>
     </div>
 
     <!-- جدول کاربران -->
-  <div
-  class="w-full max-w-[420px] md:max-w-[800px] lg:max-w-[1200px] p-6 mt-4 relative overflow-x-auto shadow-md sm:rounded-lg mb-4 mx-auto dark:bg-black dark:border dark:border-white  bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC]"
-  >
+    <div
+        class="w-full max-w-[420px] md:max-w-[800px] lg:max-w-[1200px] p-6 mt-4 relative overflow-x-auto shadow-md sm:rounded-lg mb-4 mx-auto dark:bg-black dark:border dark:border-white  bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC]">
         <table class="min-w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mb-5">
 
             <!-- هدر جدول -->
-               <thead
-                                class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
-                                <tr class="whitespace-nowrap">
+            <thead
+                class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
+                <tr class="whitespace-nowrap">
                     <th class="px-6 py-6 font-bold">
                         <span class="border border-white h-2 w-5 px-3 rounded-lg">#</span>
                     </th>
@@ -590,9 +585,10 @@
             <!-- بدنه جدول -->
             <tbody>
                 @forelse ($users as $index => $user)
-   <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
+                <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
                                odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
-                               transition-colors">                    <td class="px-3 py-2 vazir text-[16px] font-medium dark:text-white">{{ $users->firstItem() + $index
+                               transition-colors">
+                    <td class="px-3 py-2 vazir text-[16px] font-medium dark:text-white">{{ $users->firstItem() + $index
                         }}</td>
                     <td class="px-6 py-4 vazir text-[16px] font-medium dark:text-white text-black vazir">
                         <div class="flex items-center">
@@ -613,7 +609,7 @@
                         $user->username }}</td>
                     <td class="px-6 py-4 vazir text-[16px] font-medium dark:text-white text-black vazir">{{
                         $roles[$user->role] ?? $user->role }}</td>
-                 
+
                     <td class="px-6 py-4 vazir text-[16px] font-medium dark:text-white text-black vazir">
                         @if($user->whatsapp_notification)
                         <span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">
@@ -655,11 +651,11 @@
                             </svg>
                         </button>
 
-                         @php
-    $currentUser=Auth::guard('sarafi')->user();
-    @endphp
+                        @php
+                        $currentUser=Auth::guard('sarafi')->user();
+                        @endphp
 
-    @if ($currentUser && $currentUser->role==='superadmin')
+                        @if ($currentUser && $currentUser->role==='superadmin')
                         <button wire:click="confirmDelete({{ $user->id }})" class="px-2 py-1">
                             <img src="{{ asset('assets/sarafi/all_icon/trash_table.svg') }}" class="w-8 h-8 dark:hidden"
                                 alt="Delete">
