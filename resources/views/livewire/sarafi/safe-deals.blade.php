@@ -1664,21 +1664,43 @@
     </div>
     @endif
 
-    <script>
-        window.addEventListener('print-pdf', event => {
-    const url = event.detail.url;
 
-    // دانلود خودکار
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = url.split('/').pop(); // نام فایل از URL
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-});
-    </script>
+                                            <script>
+                                                let printListenerRegistered = false;
 
+    document.addEventListener('livewire:init', () => {
+        if (printListenerRegistered) return;
+        printListenerRegistered = true;
 
+        Livewire.on('print-pdf', (data) => {
+
+            /* 🔹 1. دانلود (با لینک مخفی) */
+            const downloadLink = document.createElement('a');
+            downloadLink.href = data.url;
+            downloadLink.download = '';
+            downloadLink.style.display = 'none';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+
+            /* 🔹 2. پرینت */
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = data.url;
+            document.body.appendChild(iframe);
+
+            iframe.onload = () => {
+                iframe.contentWindow.focus();
+                iframe.contentWindow.print();
+
+                /* 🔹 3. حذف با تأخیر */
+                setTimeout(() => {
+                    iframe.remove();
+                    downloadLink.remove();
+                }, 50000); // ⏱ ۵ ثانیه
+            };
+        });
+    });
+                                            </script>
 
     {{-- Scrollbar Style --}}
     <style>
