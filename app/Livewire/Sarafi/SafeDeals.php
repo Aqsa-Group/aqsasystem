@@ -20,8 +20,6 @@ use Livewire\WithPagination;
 use Morilog\Jalali\Jalalian;
 use Mpdf\Mpdf;
 use NumberFormatter;
-use Picqer\Barcode\BarcodeGeneratorPNG;
-
 
 class SafeDeals extends Component
 {
@@ -48,7 +46,6 @@ class SafeDeals extends Component
     public $withdrawalAmountInWords = '';
     public $receivedAmountInWords = '';
     public $currencyRateInWords = '';
-    public $calculatingField = null;
 
     // جستجو و فیلتر
     public $search = '';
@@ -182,60 +179,6 @@ class SafeDeals extends Component
         $this->syncFromTo();
     }
 
-
-
-    public function calculateWithdrawAmount()
-    {
-        if ($this->receive_amount && $this->currency_rate && $this->from_currency && $this->to_currency) {
-            $fromCurrency = $this->from_currency;
-            $toCurrency = $this->to_currency;
-
-            $amount = floatval(str_replace(',', '', $this->receive_amount));
-            $rate = floatval(str_replace(',', '', $this->currency_rate));
-
-            if ($rate == 0) {
-                $this->withdraw_amount = '';
-                $this->withdrawalAmountInWords = '';
-                return;
-            }
-
-            // موارد خاص افغانی و تومان
-            if ($fromCurrency === 'afn' && $toCurrency === 'irr') {
-                // فرمول اصلی: receive = (withdraw * 1000) / rate
-                // پس: withdraw = (receive * rate) / 1000
-                $calculatedAmount = ($amount * $rate) / 1000;
-            } elseif ($fromCurrency === 'irr' && $toCurrency === 'afn') {
-                // فرمول اصلی: receive = (withdraw * rate) / 1000
-                // پس: withdraw = (receive * 1000) / rate
-                $calculatedAmount = ($amount * 1000) / $rate;
-            } else {
-                $shouldDivide = $this->shouldUseDivision($fromCurrency, $toCurrency);
-                if ($shouldDivide) {
-                    // اصلی: تقسیم → حالا: withdraw = receive * rate
-                    $calculatedAmount = $amount * $rate;
-                } else {
-                    // اصلی: ضرب → حالا: withdraw = receive / rate
-                    $calculatedAmount = $amount / $rate;
-                }
-            }
-
-            $calculatedAmount = round($calculatedAmount, 2);
-            $this->withdraw_amount = number_format($calculatedAmount, 2, '.', '');
-            $this->convertAmountToWords($this->withdraw_amount, 'withdrawalAmountInWords');
-        } else {
-            $this->withdraw_amount = '';
-            $this->withdrawalAmountInWords = '';
-        }
-    }
-
-    private function recalculateBasedOnLastField()
-    {
-        if ($this->calculatingField === 'receive' && $this->receive_amount) {
-            $this->calculateWithdrawAmount();
-        } elseif ($this->withdraw_amount) {
-            $this->calculateReceiveAmount();
-        }
-    }
     public function updatedAccountSearch($value)
     {
         $this->searchCustomers($value);
@@ -295,16 +238,6 @@ class SafeDeals extends Component
         }
     }
 
-
-    public function setCalculatingField($field)
-    {
-        if ($field === 'sell') {
-            $field = 'receive';
-        }
-        $this->calculatingField = $field;
-    }
-
-    
     private function searchCustomers($value)
     {
         $user = Auth::guard('sarafi')->user();
@@ -655,11 +588,11 @@ class SafeDeals extends Component
 
     public function updatedCurrencyRate($value)
     {
-        $this->recalculateBasedOnLastField();
+        $this->calculateReceiveAmount();
+
+        // تبدیل نرخ ارز به حروف (با 4 رقم اعشار)
         $this->convertAmountToWords($value, 'currencyRateInWords', 4);
     }
-
-
 
     public function updatedReceiveAmount($value)
     {
@@ -669,14 +602,19 @@ class SafeDeals extends Component
 
     public function updatedFromCurrency($value)
     {
-        $this->recalculateBasedOnLastField();
+        // وقتی ارز مبدا تغییر کرد، مقدار حروفی را به روز کن
+        if ($this->withdraw_amount) {
+            $this->convertAmountToWords($this->withdraw_amount, 'withdrawalAmountInWords');
+        }
     }
 
     public function updatedToCurrency($value)
     {
-        $this->recalculateBasedOnLastField();
+        // وقتی ارز مقصد تغییر کرد، مقدار حروفی را به روز کن
+        if ($this->receive_amount) {
+            $this->convertAmountToWords($this->receive_amount, 'receivedAmountInWords');
+        }
     }
-
 
     public function calculateReceiveAmount()
     {
@@ -1234,16 +1172,34 @@ class SafeDeals extends Component
     public function submitDeal()
     {
         $this->validate();
+
         $user = Auth::guard('sarafi')->user();
         $adminId = $user->admin_id ?? $user->id;
 
         try {
+            // شروع تراکنش دیتابیس برای کل عملیات
             DB::beginTransaction();
 
-            // ثبت یا بروزرسانی معامله
+            // 1. ثبت معامله
+            $data = [
+                'from' => $this->from,
+                'to' => $this->to,
+                'from_currency' => $this->from_currency,
+                'to_currency' => $this->to_currency,
+                'withdraw_amount' => $this->withdraw_amount,
+                'currency_rate' => $this->currency_rate,
+                'receive_amount' => $this->receive_amount,
+                'date' => $this->date,
+                'description' => $this->description,
+                'customer_id' => $this->customer_id,
+                'user_id' => $user->id,
+                'admin_id' => $adminId,
+            ];
+
             $isEdit = !empty($this->dealId);
 
             if ($isEdit) {
+                // در حالت ویرایش، داده‌های اصلی را ذخیره می‌کنیم
                 $originalDeal = SafeDeal::find($this->dealId);
                 $this->originalDealData = [
                     'id' => $originalDeal->id,
@@ -1254,121 +1210,69 @@ class SafeDeals extends Component
                     'withdraw_amount' => $originalDeal->withdraw_amount,
                     'receive_amount' => $originalDeal->receive_amount,
                 ];
+
                 $deal = $originalDeal;
-                $deal->update([
-                    'from' => $this->from,
-                    'to' => $this->to,
-                    'from_currency' => $this->from_currency,
-                    'to_currency' => $this->to_currency,
-                    'withdraw_amount' => $this->withdraw_amount,
-                    'currency_rate' => $this->currency_rate,
-                    'receive_amount' => $this->receive_amount,
-                    'date' => $this->date,
-                    'description' => $this->description,
-                    'customer_id' => $this->customer_id,
-                    'user_id' => $user->id,
-                    'admin_id' => $adminId,
-                ]);
+                $deal->update($data);
                 $message = 'معامله با موفقیت بروزرسانی شد.';
             } else {
-                $deal = SafeDeal::create([
-                    'from' => $this->from,
-                    'to' => $this->to,
-                    'from_currency' => $this->from_currency,
-                    'to_currency' => $this->to_currency,
-                    'withdraw_amount' => $this->withdraw_amount,
-                    'currency_rate' => $this->currency_rate,
-                    'receive_amount' => $this->receive_amount,
-                    'date' => $this->date,
-                    'description' => $this->description,
-                    'customer_id' => $this->customer_id,
-                    'user_id' => $user->id,
-                    'admin_id' => $adminId,
-                ]);
+                $deal = SafeDeal::create($data);
                 $this->dealId = $deal->id;
                 $message = 'معامله با موفقیت ثبت شد.';
             }
 
-            // به‌روزرسانی صندوق‌ها و تراکنش مشتری
-            $this->updateSafes(...);
+            // 2. به‌روزرسانی صندوق‌ها
+            $this->updateSafes(
+                $this->from,           // نوع حساب مبدا (نقدی/بانکی)
+                $this->from_currency,  // ارز مبدا (کد انگلیسی)
+                $this->withdraw_amount, // مبلغ برداشت
+                $this->to,             // نوع حساب مقصد (نقدی/بانکی)
+                $this->to_currency,    // ارز مقصد (کد انگلیسی)
+                $this->receive_amount, // مبلغ دریافتی
+                $deal->id,
+                $isEdit,
+                $isEdit ? $this->originalDealData : null
+            );
+
+            // 3. ثبت تراکنش برای مشتری (اگر مشتری انتخاب شده باشد)
             if ($this->customer_id) {
-                $this->recordCustomerTransaction(...);
+                // فقط یک تراکنش ثبت می‌شود:
+                // - اگر from بانکی بود: برداشت
+                // - اگر from نقدی بود: رسید
+                $this->recordCustomerTransaction(
+                    $this->customer_id,
+                    $this->from,            // نوع حساب مبدا
+                    $this->from_currency,   // ارز مبدا
+                    $this->withdraw_amount, // مبلغ برداشت
+                    $this->to_currency,     // ارز مقصد
+                    $this->receive_amount,  // مبلغ دریافتی
+                    $this->currency_rate,   // نرخ ارز
+                    $deal->id,
+                    $user->id,
+                    $adminId,
+                    $isEdit
+                );
             }
 
             DB::commit();
 
-            // پاک کردن کش و بروزرسانی بیلانس مشتری
+            // پاک کردن کش
             Cache::forget($this->cacheKeys['deals_list'] . $adminId);
             if ($this->customer_id) {
                 Cache::forget($this->cacheKeys['deals_list'] . $adminId . '_' . $this->customer_id);
+                // به‌روزرسانی بیلانس مشتری
                 $this->updateCustomerCurrencyBalance();
             }
 
             session()->flash('message', $message);
             $this->resetForm();
-
-            // **اینجا PDF را بساز و چاپ را فراخوانی کن**
-            $this->generateDealPDF($deal, 'نسخه بایگانی');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('خطا در ثبت معامله: ' . $e->getMessage());
             session()->flash('error', 'خطا در ثبت معامله: ' . $e->getMessage());
         }
-
-        // ثبت ژورنال
+        // بعد از updateSafes
         $this->createSafeJournal($deal);
     }
-
-    private function generateDealPDF(SafeDeal $deal, $copyType = 'نسخه بایگانی')
-    {
-        $generator = new BarcodeGeneratorPNG();
-        $barcodeImage = base64_encode(
-            $generator->getBarcode($deal->id, $generator::TYPE_CODE_128)
-        );
-
-        $mpdf = new Mpdf([
-            'mode' => 'utf-8',
-            'format' => [72.1, 297],
-            'directionality' => 'rtl',
-            'margin_top' => 0,
-            'margin_bottom' => 0,
-            'margin_left' => 0,
-            'margin_right' => 0,
-            'fontDir' => array_merge(
-                (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
-                [public_path('fonts/vazir/')]
-            ),
-            'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
-                'vazir' => [
-                    'R' => 'Vazir-Light.ttf',
-                    'B' => 'Vazir-Bold.ttf',
-                    'useOTL' => 0xFF,
-                    'useKashida' => 75,
-                ],
-            ],
-            'default_font' => 'vazir',
-            'tempDir' => storage_path('app/mpdf'),
-        ]);
-
-        $mpdf->SetAutoPageBreak(false);
-
-        $html = view('pdf.Sarafi.safe-deal', [
-            'deal' => $deal,
-            'isShort' => true,
-            'barcodeImage' => $barcodeImage,
-            'copyType' => $copyType,
-        ])->render();
-
-        $mpdf->WriteHTML($html);
-
-        $fileName = 'safe_deal_' . $deal->id . '.pdf';
-        $path = storage_path('app/public/' . $fileName);
-
-        $mpdf->Output($path, 'F');
-
-        $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
-    }
-
 
     private function createSafeJournal(SafeDeal $deal)
     {
@@ -1419,7 +1323,7 @@ class SafeDeals extends Component
             'account_type' => 'نقدی',
             'amount'       => $amount,
             'balance'      => 0,
-            'safe_balance' => $currentBalance,
+            'safe_balance' => $currentBalance, 
             'description'  => $deal->description,
             'date'         => $deal->date,
         ]);
@@ -1433,7 +1337,7 @@ class SafeDeals extends Component
     }
 
 
-
+    
 
 
     // ویرایش معامله
@@ -1570,12 +1474,7 @@ class SafeDeals extends Component
     // چاپ معامله
     public function print($dealId)
     {
-        $deal = SafeDeal::with(['customer', 'user', 'journal'])->findOrFail($dealId);
-
-        $generator = new BarcodeGeneratorPNG();
-        $barcodeImage = base64_encode(
-            $generator->getBarcode($deal->id, $generator::TYPE_CODE_128)
-        );
+        $deal = SafeDeal::with(['customer', 'user'])->findOrFail($dealId);
 
         $mpdf = new Mpdf([
             'mode' => 'utf-8',
@@ -1587,29 +1486,18 @@ class SafeDeals extends Component
             'margin_right' => 0,
             'fontDir' => array_merge(
                 (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
-                [public_path('fonts/vazir/')]
+                [public_path('fonts')]
             ),
             'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
-                'vazir' => [
-                    'R' => 'Vazir-Light.ttf',
-                    'B' => 'Vazir-Bold.ttf',
-                    'useOTL' => 0xFF,
-                    'useKashida' => 75,
-                ],
+                'Shabnam' => ['R' => 'Shabnam-FD.ttf'],
             ],
-            'default_font' => 'vazir',
-            'tempDir' => storage_path('app/mpdf'),
+            'default_font' => 'Shabnam',
+            'tempDir' => storage_path('app/mpdf/tmp'),
         ]);
 
         $mpdf->SetAutoPageBreak(false);
 
-        $html = view('pdf.Sarafi.safe-deal', [
-            'deal'         => $deal,
-            'isShort'      => true,
-            'barcodeImage' => $barcodeImage,
-            'copyType'     => 'نسخه بایگانی',
-        ])->render();
-
+        $html = view('pdf.Sarafi.safe-deal', compact('deal'))->render();
         $mpdf->WriteHTML($html);
 
         $fileName = 'safe_deal_' . $deal->id . '.pdf';
@@ -1619,7 +1507,6 @@ class SafeDeals extends Component
 
         $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
     }
-
 
     // پاک کردن فرم
     public function resetForm()
@@ -1652,7 +1539,6 @@ class SafeDeals extends Component
         $this->withdrawalAmountInWords = '';
         $this->receivedAmountInWords = '';
         $this->currencyRateInWords = '';
-        $this->calculatingField = null;
     }
 
     // لغو ویرایش
