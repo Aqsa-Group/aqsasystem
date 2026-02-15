@@ -1618,7 +1618,7 @@
                                     <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium text-center">
                                         {{ $key + 1 }}</td>
                                     <td
-                                        class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium whitespace-nowrap">
+                                        class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium ">
                                         {{ $transaction->customer->fullname ?? '-' }}</td>
                                     <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium text-center whitespace-nowrap">
                                         <span
