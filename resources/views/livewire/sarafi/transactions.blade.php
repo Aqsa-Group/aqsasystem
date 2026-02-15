@@ -1,5 +1,5 @@
 <div>
-    <div class="container mx-auto  ">
+    <div class="container mx-auto   ">
         @if (session()->has('message'))
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[9999] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-400  bg-[#184D6C] vazir">
@@ -1630,18 +1630,18 @@
                                     <td
                                         class="px-1 py-2 vazir text-[14px] md:text-[16px] font-medium whitespace-nowrap">
                                         {{ number_format($transaction->amount) }}</td>
-                                      
+
                                     <td
                                         class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium whitespace-nowrap">
                                         {{ collect($currencies)->firstWhere('code', $transaction->currency)['name_fa']
                                         ?? $transaction->currency }}
                                     </td>
-                                         <td dir="ltr"
+                                    <td dir="ltr"
                                         class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium whitespace-nowrap">
-                                        {{ $transaction->journal->balance }}
+                                        {{ $transaction->journal?->balance ?? 0 }}
 
                                     </td>
-                                 
+
                                     <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium text-center ">
                                         <div class="space-y-1 text-right">
                                             <p class="text-sm">{{ $transaction->description }}</p>
