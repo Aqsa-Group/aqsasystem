@@ -1636,7 +1636,7 @@
                                         {{ collect($currencies)->firstWhere('code', $transaction->currency)['name_fa']
                                         ?? $transaction->currency }}
                                     </td>
-                                         <td
+                                         <td dir="ltr"
                                         class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium whitespace-nowrap">
                                         {{ $transaction->journal->balance }}
 
