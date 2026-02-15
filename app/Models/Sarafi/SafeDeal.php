@@ -36,13 +36,6 @@ class SafeDeal extends Model
         return $this->belongsTo(Customer::class, 'customer_id');
     }
 
-
-    public function journal()
-{
-    return $this->hasOne(Journals::class, 'safe_deal_id', 'id');
-}
-
-
     /**
      * کاربر ثبت کننده
      */

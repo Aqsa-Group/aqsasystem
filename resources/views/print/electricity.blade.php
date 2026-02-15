@@ -36,7 +36,14 @@
             vertical-align: top;
             width: 50%;
             padding: 5px;
-            box-sizing: border-box;
+            box-sizing: border-box;   .form-table th {
+              background: #e3f2fd;          /* آبی خیلی روشن */
+            font-weight: 600;
+            color: #0d3c5e;
+            font-size: 12px;
+            border-color: #2c7da0;
+        }
+
             border: 1px solid #777;
             background: #fff;
         }
@@ -92,13 +99,14 @@
             text-align: start;
             width: 10px;
         }
-
-        .form-table th {
-            background: #fafafa;
-            font-weight: 400;
-            color: #111;
+   .form-table th {
+              background: #e3f2fd;          /* آبی خیلی روشن */
+            font-weight: 600;
+            color: #0d3c5e;
             font-size: 12px;
+            border-color: #2c7da0;
         }
+
 
         /* جدول ردیف های مبلغ */
         .amount-rows {
@@ -115,11 +123,11 @@
             font-size: 12px;
         }
 
-        .amount-rows td:first-child {
-            font-weight: bold;
+       .amount-rows td:first-child {
+            font-weight: 800;
             font-size: 12px;
+            background-color: #f5f5f5;
         }
-
 
         .amount-rows td {
             border: 1px solid #999;
@@ -243,7 +251,7 @@
 
                                 مجتمع تجارتی عادلیار
                             </div>
-                            <div class="subtitle" style="font-size: 20px; margin-top: 5px; font-weight:bolder;">
+                            <div class="subtitle" style="font-size: 20px; margin-top: 5px; font-weight:bolder; color: blue">
                                 قبض برق
                             </div>
                         </div>
@@ -424,7 +432,7 @@
                     <div class="title" style="font-size: 20px; font-weight: bold;">
                         مجتمع تجارتی عادلیار
                     </div>
-                    <div class="subtitle" style="font-size: 22px; margin-top: 5px; font-weight: bolder;">
+                    <div class="subtitle" style="font-size: 22px; margin-top: 5px; font-weight: bolder; color: blue">
                         قبض برق
                     </div>
                 </div>

@@ -107,8 +107,11 @@
             text-align: start;
         }
         .form-table th {
-            background: #fafafa;
+              background: #e3f2fd;          /* آبی خیلی روشن */
             font-weight: 600;
+            color: #0d3c5e;
+            font-size: 12px;
+            border-color: #2c7da0;
         }
 
         /* جدول مقادیر */
@@ -120,10 +123,12 @@
         .amount-rows td {
             border: 1px solid #999;
             padding: 6px 8px;
-            font-size: 12px;
+            font-size: 10px;
         }
         .amount-rows td:first-child {
-            font-weight: bold;
+            font-weight: 400;
+            font-size: 12px;
+            background-color: #f5f5f5;    /* خاکستری خیلی روشن */
         }
         .amount-rows td:last-child {
             text-align: center;
@@ -197,7 +202,7 @@
                         <div class="col-header">
                             <div class="header-text">
                                 <div class="title">مجتمع تجارتی عادلیار</div>
-                                <div class="title" style="font-size:22px; margin-top:5px;">قبض برق</div>
+                                <div class="title" style="font-size:22px; margin-top:5px; color: blue">قبض برق</div>
                             </div>
                             <div class="logo">
                                 <img src="{{ asset('assets/logo.png') }}" alt="لوگو">
@@ -262,7 +267,7 @@
                         <div class="col-header">
                             <div class="header-text" style="left:54%;">
                                 <div class="title">مجتمع تجارتی عادلیار</div>
-                                <div class="title" style="font-size:22px; margin-top:5px;">قبض برق</div>
+                                <div class="title" style="font-size:22px; margin-top:5px; color: blue">قبض برق</div>
                             </div>
                             <div class="logo">
                                 <img src="{{ asset('assets/logo.png') }}" alt="لوگو">
