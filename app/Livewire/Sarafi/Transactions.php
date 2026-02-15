@@ -690,6 +690,7 @@ class Transactions extends Component
             $message = 'تراکنش با موفقیت ثبت شد.';
         }
 
+        
         // پاک کردن کش
         Cache::forget($this->cacheKeys['transactions_list'] . $adminId);
         Cache::forget($this->cacheKeys['transactions_list'] . $adminId . '_' . $this->selectedAccount);
@@ -701,73 +702,74 @@ class Transactions extends Component
         $this->resetForm();
 
         return $transaction;
+         $this->print($transaction->id);
     }
 
-    public function submitAndPrint()
-    {
-        $transaction = $this->submitTransaction();
+    // public function submitAndPrint()
+    // {
+    //     $transaction = $this->submitTransaction();
 
-        if (!$transaction) {
-            return;
-        }
+    //     if (!$transaction) {
+    //         return;
+    //     }
 
-        $fileName = 'transaction_' . $transaction->id . '_' . now()->timestamp . '.pdf';
-        $pdfPath = storage_path('app/public/' . $fileName);
-
-
-        // --- تولید بارکد ---
-        $generator = new BarcodeGeneratorPNG();
-        $barcode = base64_encode($generator->getBarcode($transaction->id, $generator::TYPE_CODE_128));
-
-        $mpdf = new \Mpdf\Mpdf([
-            'mode'          => 'utf-8',
-            'format'        => [72.1, 297],
-            'directionality' => 'rtl',
-            'margin_top'    => 0,
-            'margin_bottom' => 0,
-            'margin_left'   => 0,
-            'margin_right'  => 0,
-            'fontDir' => array_merge(
-                (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
-                [public_path('fonts/vazir/')]
-            ),
-            'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
-                'vazir' => [
-
-                    'R' => 'Vazir-Light.ttf',
-                    'B' => 'Vazir-Bold.ttf',
-                    'useOTL' => 0xFF,
-                    'useKashida' => 75,
-                ],
-            ],
-            'default_font' => 'vazir',
-            'tempDir' => storage_path('app/mpdf'),
-        ]);
-
-        $mpdf->SetAutoPageBreak(false);
-        // --- صفحه اول کامل ---
-        $mpdf->WriteHTML(view('pdf.Sarafi.transaction', [
-            'transaction' => $transaction,
-            'copyType' => 'نسخه مشتری',
-            'isShort' => false,
-            'barcodeImage' => $barcode,
-        ])->render());
-
-        $mpdf->AddPage();
-        $mpdf->WriteHTML(view('pdf.Sarafi.transaction', [
-            'transaction' => $transaction,
-            'copyType' => 'نسخه بایگانی',
-            'isShort' => true,
-            'barcodeImage' => $barcode, // ارسال بارکد به ویو
-        ])->render());
-
-        $mpdf->Output($pdfPath, 'F');
+    //     $fileName = 'transaction_' . $transaction->id . '_' . now()->timestamp . '.pdf';
+    //     $pdfPath = storage_path('app/public/' . $fileName);
 
 
-        $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
+    //     // --- تولید بارکد ---
+    //     $generator = new BarcodeGeneratorPNG();
+    //     $barcode = base64_encode($generator->getBarcode($transaction->id, $generator::TYPE_CODE_128));
 
-        session()->flash('message', 'تراکنش ثبت و فایل PDF برای چاپ آماده شد.');
-    }
+    //     $mpdf = new \Mpdf\Mpdf([
+    //         'mode'          => 'utf-8',
+    //         'format'        => [72.1, 297],
+    //         'directionality' => 'rtl',
+    //         'margin_top'    => 0,
+    //         'margin_bottom' => 0,
+    //         'margin_left'   => 0,
+    //         'margin_right'  => 0,
+    //         'fontDir' => array_merge(
+    //             (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+    //             [public_path('fonts/vazir/')]
+    //         ),
+    //         'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+    //             'vazir' => [
+
+    //                 'R' => 'Vazir-Light.ttf',
+    //                 'B' => 'Vazir-Bold.ttf',
+    //                 'useOTL' => 0xFF,
+    //                 'useKashida' => 75,
+    //             ],
+    //         ],
+    //         'default_font' => 'vazir',
+    //         'tempDir' => storage_path('app/mpdf'),
+    //     ]);
+
+    //     $mpdf->SetAutoPageBreak(false);
+    //     // --- صفحه اول کامل ---
+    //     $mpdf->WriteHTML(view('pdf.Sarafi.transaction', [
+    //         'transaction' => $transaction,
+    //         'copyType' => 'نسخه مشتری',
+    //         'isShort' => false,
+    //         'barcodeImage' => $barcode,
+    //     ])->render());
+
+    //     $mpdf->AddPage();
+    //     $mpdf->WriteHTML(view('pdf.Sarafi.transaction', [
+    //         'transaction' => $transaction,
+    //         'copyType' => 'نسخه بایگانی',
+    //         'isShort' => true,
+    //         'barcodeImage' => $barcode, // ارسال بارکد به ویو
+    //     ])->render());
+
+    //     $mpdf->Output($pdfPath, 'F');
+
+
+    //     $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
+
+    //     session()->flash('message', 'تراکنش ثبت و فایل PDF برای چاپ آماده شد.');
+    // }
 
     public function print($transactionId)
     {

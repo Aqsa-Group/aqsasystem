@@ -3060,7 +3060,7 @@ dark:shadow-[0_4px_4px_rgba(255,255,255,0.5)]">
 
             <!-- محتوای اصلی -->
             <main class="flex-1 mx-auto main-content-wrapper w-full mt-6 min-w-0
-    {{ request()->is('sarafi/home*') ? 'px-20' : 'px-10' }}">
+    {{ request()->is('sarafi/home*') ? 'px-10' : 'px-10' }}">
                 @yield('content')
             </main>
 

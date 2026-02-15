@@ -1,5 +1,5 @@
 <div>
-    <div class="container mx-auto px-0 " >
+    <div class="container mx-auto  " >
         @if (session()->has('message'))
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[9999] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-400  bg-[#184D6C] vazir">
@@ -440,13 +440,13 @@
 
                 {{-- فرم تراکنش --}}
                 <div class="flex flex-col
-            dark:bg-black dark:text-white dark:border dark:border-white
-            bg-white   border border-[#D7E5EC] shadow-sm backdrop:blur-lg       mx-auto
-            w-full max-w-[436px] lg:max-w-[550px]
-            p-[10px]
-            h-fit
-            rounded-[12px]
-            space-y-2">
+                        dark:bg-black dark:text-white dark:border dark:border-white
+                        bg-white   border border-[#D7E5EC] shadow-sm backdrop:blur-lg       mx-auto
+                        w-full max-w-[436px] lg:max-w-[550px]
+                        p-[10px]
+                        h-fit
+                        rounded-[12px]
+                        space-y-2">
 
 
                 <div class="flex flex-wrap items-center justify-between gap-3">
@@ -465,18 +465,18 @@
 
                     <!-- دکمه‌ها -->
                     <div class="flex gap-3 whitespace-nowrap">
-                        <button wire:click="$set('transactionType','رسید')" class="rounded-[8px] px-4 py-2 vazir font-semibold transition-all duration-300
-            {{ $transactionType === 'رسید'
-                ? 'bg-[#184D6C] text-white'
-                : 'bg-white text-[#184D6C] border border-[#184D6C] hover:bg-[#184D6C]/10' }}">
-                            رسید (دریافت صندوق)
-                        </button>
+                                            <button wire:click="$set('transactionType','رسید')" class="rounded-[8px] px-4 py-2 vazir font-semibold transition-all duration-300
+                                {{ $transactionType === 'رسید'
+                                    ? 'bg-[#184D6C] text-white'
+                                    : 'bg-white text-[#184D6C] border border-[#184D6C] hover:bg-[#184D6C]/10' }}">
+                                                رسید (دریافت صندوق)
+                                            </button>
 
-                        <button wire:click="$set('transactionType','برد')" class="rounded-[8px] px-4 py-2 vazir font-semibold transition-all duration-300
-            {{ $transactionType === 'برد'
-                ? 'bg-[#184D6C] text-white'
-                : 'bg-white text-[#184D6C] border border-[#184D6C] hover:bg-[#184D6C]/10' }}">
-                            برد (برداشت صندوق)
+                                            <button wire:click="$set('transactionType','برد')" class="rounded-[8px] px-4 py-2 vazir font-semibold transition-all duration-300
+                                {{ $transactionType === 'برد'
+                                    ? 'bg-[#184D6C] text-white'
+                                    : 'bg-white text-[#184D6C] border border-[#184D6C] hover:bg-[#184D6C]/10' }}">
+                                                برد (برداشت صندوق)
                         </button>
                     </div>
                 </div>
@@ -550,7 +550,7 @@
                     </div>
 
                     {{-- مقدار و نوع ارز --}}
-                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                    <div class="mt-3  grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 w-full gap-3">
                         {{-- مقدار --}}
                         <div class="flex-1">
                             <label
@@ -599,32 +599,8 @@
                             <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                             @enderror
                         </div>
-                    </div>
 
-
-
-                    {{-- درج زون ها و تاریخ --}}
-                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
-                        {{-- درج زون ها --}}
-                        <div class="lg:w-full">
-                            <label class="block text-[16px] font-medium text-black mb-1 vazir dark:text-white">درج زون
-                                ها</label>
-                            <div class="relative">
-                                <select wire:model="zone" wire:init="setDefaultZone"
-                                    class="w-full h-[60px]  p-3 rounded-[12px] border focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 dark:bg-black dark:border-white dark:text-white appearance-none"
-                                    style="max-height: 200px; overflow-y: auto;">
-                                    <option value="">انتخاب زون</option>
-                                    <option value="{{ Auth::guard('sarafi')->user()->zone }}">
-                                        {{ Auth::guard('sarafi')->user()->zone }}
-                                    </option>
-                                </select>
-                            </div>
-                            @error('zone')
-                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="lg:w-full relative" x-data="persianDatePicker()" x-init="init()">
+                         <div class="lg:w-full relative" x-data="persianDatePicker()" x-init="init()">
                             <label
                                 class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
 
@@ -838,6 +814,32 @@
                             @enderror
                         </div>
 
+                    </div>
+
+
+
+                    {{-- درج زون ها و تاریخ --}}
+                    <div class="mt-2  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 w-full gap-3">
+                        {{-- درج زون ها
+                        <div class="lg:w-full">
+                            <label class="block text-[16px] font-medium text-black mb-1 vazir dark:text-white">درج زون
+                                ها</label>
+                            <div class="relative">
+                                <select wire:model="zone" wire:init="setDefaultZone"
+                                    class="w-full h-[60px]  p-3 rounded-[12px] border focus:ring-2 bg-[#EFF6F9] focus:ring-blue-500 dark:bg-black dark:border-white dark:text-white appearance-none"
+                                    style="max-height: 200px; overflow-y: auto;">
+                                    <option value="">انتخاب زون</option>
+                                    <option value="{{ Auth::guard('sarafi')->user()->zone }}">
+                                        {{ Auth::guard('sarafi')->user()->zone }}
+                                    </option>
+                                </select>
+                            </div>
+                            @error('zone')
+                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
+                        </div> --}}
+
+                       
                         <script>
                             function persianDatePicker() {
                                 return {
@@ -1450,7 +1452,7 @@
 
                     <!-- دکمه‌های نهایی -->
                     <div
-                        class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 py-4 justify-center items-center text-center ">
+                        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 py-4 justify-center items-center text-center ">
                         <button type="submit" wire:loading.attr="disabled" wire:target="submitTransaction"
                             class="bg-[#184D6C] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
                             <span wire:loading.remove wire:target="submitTransaction">
@@ -1471,7 +1473,7 @@
                             </span>
                         </button>
 
-                        @if (!$transactionId)
+                        {{-- @if (!$transactionId)
                         <button type="button" wire:click="submitAndPrint" wire:loading.attr='disabled'
                             wire:target='submitAndPrint'
                             class="bg-[#184D6C] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
@@ -1493,7 +1495,7 @@
                                 در حال ثبت و چاپ
                             </span>
                         </button>
-                        @endif
+                        @endif --}}
 
                         <button type="button" wire:click="cancel"
                             class="bg-[#184D6C] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
@@ -1505,6 +1507,9 @@
 
                 </form>
             </div>
+
+
+
             {{-- جدول تراکنش‌ها --}}
             <div class="flex-1 flex flex-col
                         dark:border dark:border-white
@@ -1594,14 +1599,14 @@
                             <thead
                                 class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
                                 <tr class="whitespace-nowrap">
-                                    <th class="px-3 py-3 font-bold w-16 text-center">#</th>
-                                    <th class="px-3 py-3 font-bold w-48 text-right">نام مشتری</th>
-                                    <th class="px-3 py-3 font-bold w-32 text-center">معامله</th>
-                                    <th class="px-3 py-3 font-bold w-40 text-right">مبلغ</th>
-                                    <th class="px-3 py-3 font-bold w-32 text-right">واحد</th>
-                                    <th class="px-3 py-3 font-bold w-80 text-center">توضیحات</th>
-                                    <th class="px-3 py-3 font-bold w-40 text-center">تاریخ</th>
-                                    <th class="px-3 py-3 font-bold w-48 text-center">عملیات</th>
+                                    <th class="px-3 py-3 font-bold w-16 text-center whitespace-nowrap">#</th>
+                                    <th class="px-3 py-3 font-bold w-48 text-right whitespace-nowrap">نام مشتری</th>
+                                    <th class="px-3 py-3 font-bold w-32 text-center whitespace-nowrap">معامله</th>
+                                    <th class="px-3 py-3 font-bold w-40 text-right whitespace-nowrap">مبلغ</th>
+                                    <th class="px-3 py-3 font-bold w-32 text-right whitespace-nowrap">واحد</th>
+                                    <th class="px-3 py-3 font-bold w-80 text-center whitespace-nowrap">توضیحات</th>
+                                    <th class="px-3 py-3 font-bold w-40 text-center whitespace-nowrap">تاریخ</th>
+                                    <th class="px-3 py-3 font-bold w-48 text-center whitespace-nowrap">عملیات</th>
                                 </tr>
                             </thead>
 
@@ -1615,22 +1620,21 @@
                                     <td
                                         class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium whitespace-nowrap">
                                         {{ $transaction->customer->fullname ?? '-' }}</td>
-                                    <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium text-center">
+                                    <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium text-center whitespace-nowrap">
                                         <span
                                             class="px-3 py-1 rounded-full text-[16px] {{ $transaction->type === 'رسید' ? 'text-green-800 dark:text-white' : 'text-red-800 dark:text-white' }}">
                                             {{ $transaction->type }}
                                         </span>
                                     </td>
-                                    <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium">
+                                    <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium whitespace-nowrap">
                                         {{ number_format($transaction->amount) }}</td>
-                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium">
+                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium whitespace-nowrap">
                                         {{ collect($currencies)->firstWhere('code', $transaction->currency)['name_fa']
                                         ?? $transaction->currency }}
                                     </td>
-                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium text-center">
+                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium text-center whitespace-nowrap">
                                         <div class="space-y-1 text-right">
-                                            <p class="text-sm">زون: {{ $transaction->zone }}</p>
-                                            <p class="text-sm">تفصیلات: {{ $transaction->description }}</p>
+                                            <p class="text-sm">{{ $transaction->description }}</p>
                                         </div>
                                     </td>
                                     <td class="px-4 py-2 vazir text-[14px] md:text-[16px] text-center">
