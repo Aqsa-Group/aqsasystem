@@ -1599,14 +1599,14 @@
                             <thead
                                 class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
                                 <tr class="whitespace-nowrap">
-                                    <th class="px-3 py-3 font-bold w-16 text-center whitespace-nowrap">#</th>
-                                    <th class="px-3 py-3 font-bold w-48 text-right whitespace-nowrap">نام مشتری</th>
-                                    <th class="px-3 py-3 font-bold w-32 text-center whitespace-nowrap">معامله</th>
-                                    <th class="px-3 py-3 font-bold w-40 text-right whitespace-nowrap">مبلغ</th>
-                                    <th class="px-3 py-3 font-bold w-32 text-right whitespace-nowrap">واحد</th>
-                                    <th class="px-3 py-3 font-bold w-80 text-center whitespace-nowrap">توضیحات</th>
-                                    <th class="px-3 py-3 font-bold w-40 text-center whitespace-nowrap">تاریخ</th>
-                                    <th class="px-3 py-3 font-bold w-48 text-center whitespace-nowrap">عملیات</th>
+                                    <th class="px-1 py-3 font-bold w-16 text-center whitespace-nowrap">#</th>
+                                    <th class="px-1 py-3 font-bold w-48 text-right whitespace-nowrap">نام مشتری</th>
+                                    <th class="px-1 py-3 font-bold w-32 text-center whitespace-nowrap">معامله</th>
+                                    <th class="px-1 py-3 font-bold w-20 text-right whitespace-nowrap">مبلغ</th>
+                                    <th class="px-1 py-3 font-bold w-20 text-right whitespace-nowrap">واحد</th>
+                                    <th class="px-1 py-3 font-bold w-60 text-center whitespace-nowrap">توضیحات</th>
+                                    <th class="px-1 py-3 font-bold w-20 text-center whitespace-nowrap">تاریخ</th>
+                                    <th class="px-1 py-3 font-bold w-20 text-center whitespace-nowrap">عملیات</th>
                                 </tr>
                             </thead>
 
@@ -1615,18 +1615,18 @@
                                 <tr class="text-black border-b  dark:text-white border-[#D9D9D9]
                                odd:bg-[#EFF6F9] even:bg-white dark:odd:bg-[#1E293B] dark:even:bg-black
                                transition-colors">
-                                    <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium text-center">
+                                    <td class="px-1 py-2 vazir text-[14px] md:text-[16px] font-medium text-center">
                                         {{ $key + 1 }}</td>
                                     <td
                                         class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium ">
                                         {{ $transaction->customer->fullname ?? '-' }}</td>
-                                    <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium text-center whitespace-nowrap">
+                                    <td class="px-1 py-2 vazir text-[14px] md:text-[16px] font-medium text-center whitespace-nowrap">
                                         <span
                                             class="px-3 py-1 rounded-full text-[16px] {{ $transaction->type === 'رسید' ? 'text-green-800 dark:text-white' : 'text-red-800 dark:text-white' }}">
                                             {{ $transaction->type }}
                                         </span>
                                     </td>
-                                    <td class="px-2 py-2 vazir text-[14px] md:text-[16px] font-medium whitespace-nowrap">
+                                    <td class="px-1 py-2 vazir text-[14px] md:text-[16px] font-medium whitespace-nowrap">
                                         {{ number_format($transaction->amount) }}</td>
                                     <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium whitespace-nowrap">
                                         {{ collect($currencies)->firstWhere('code', $transaction->currency)['name_fa']
@@ -1637,7 +1637,7 @@
                                             <p class="text-sm">{{ $transaction->description }}</p>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] text-center">
+                                    <td class="px-1 py-2 vazir text-[14px] md:text-[16px] text-center">
                                         <div class="whitespace-nowrap">
                                             <div class="font-medium">{{ explode(' ', $transaction->date)[0] }}
                                             </div>
@@ -1647,14 +1647,14 @@
                                         </div>
                                     </td>
                                     <td class="py-2 text-center">
-                                        <div class="flex flex-wrap justify-center gap-2 md:gap-3">
+                                        <div class="flex flex-wrap justify-center ">
                                             {{-- ویرایش، حذف، پرینت --}}
-                                            <div class="flex justify-center gap-3">
+                                            <div class="flex justify-center ">
                                                 <!-- دکمه ویرایش -->
-                                                <button wire:click="edit({{ $transaction->id }})" class="w-12 h-12 flex items-center justify-center  
+                                                <button wire:click="edit({{ $transaction->id }})" class="w-10 h-12 flex items-center justify-center  
                                                     rounded-full transition-colors" title="ویرایش">
                                                     <img src="{{ asset('assets/sarafi/all_icon/edit_table.svg') }}"
-                                                        class="w-7 h-7 dark:hidden" alt="Edit">
+                                                        class="w-6 h-6 dark:hidden" alt="Edit">
 
                                                     <svg width="22" height="22" class="hidden dark:block"
                                                         viewBox="0 0 22 22" fill="none"
@@ -1685,10 +1685,10 @@
                                                 $currentUser->role === 'superadmin')
                                                 <!-- دکمه حذف -->
                                                 <button wire:click="confirmDelete({{ $transaction->id }})"
-                                                    class="w-12 h-12 flex items-center justify-center rounded-full transition-colors"
+                                                    class="w-10 h-12 flex items-center justify-center rounded-full transition-colors"
                                                     title="حذف">
                                                     <img src="{{ asset('assets/sarafi/all_icon/trash_table.svg') }}"
-                                                        class="w-8 h-8 dark:hidden" alt="Delete">
+                                                        class="w-7 h-7 dark:hidden" alt="Delete">
                                                     <svg width="24" height="24" class="hidden dark:block"
                                                         viewBox="0 0 24 24" fill="none"
                                                         xmlns="http://www.w3.org/2000/svg">
@@ -1735,11 +1735,11 @@
                                                             ترانزکشن را حذف کنید؟</p>
                                                         <div class="flex justify-center gap-4">
                                                             <button wire:click="$set('confirmDeleteId', null)"
-                                                                class="px-20  text-white text-xl shabnam-fd py-3 bg-[#DD2424] rounded-xl transition">
+                                                                class="px-10  text-white text-xl shabnam-fd py-3 bg-[#DD2424] rounded-xl transition">
                                                                 {{ __('messages.no') }}
                                                             </button>
                                                             <button wire:click="deleteConfirmed"
-                                                                class="px-20 py-3 bg-[#2563EB] text-xl shabnam-fd text-white rounded-xl  transition flex items-center gap-2">
+                                                                class="px-10 py-3 bg-[#2563EB] text-xl shabnam-fd text-white rounded-xl  transition flex items-center gap-2">
                                                                 {{ __('messages.yes') }}
                                                             </button>
                                                         </div>
@@ -1750,10 +1750,10 @@
 
 
                                                 <!-- دکمه پرینت -->
-                                             <button wire:click.once="print({{ $transaction->id }})" class="w-12 h-12 flex items-center justify-center  
+                                             <button wire:click.once="print({{ $transaction->id }})" class="w-10 h-12 flex items-center justify-center  
                                                     rounded-full transition-colors" title="پرینت">
                                                     <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"
-                                                        class="w-10 h-10 dark:hidden" alt="Print">
+                                                        class="w-8 h-8 dark:hidden" alt="Print">
                                                     <svg width="30" class="hidden dark:block" height="30"
                                                         viewBox="0 0 30 30" fill="none"
                                                         xmlns="http://www.w3.org/2000/svg">
