@@ -37,6 +37,7 @@ class SafeDeal extends Model
     }
 
 
+    
     public function journal()
 {
     return $this->hasOne(Journals::class, 'safe_deal_id', 'id');

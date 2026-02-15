@@ -332,12 +332,11 @@ class Transaction extends Model
                 $oldJournal->delete();
                 Log::info("🗑️ Old journal deleted for TX {$this->id}.");
 
-                // 2️⃣ بازسازی زنجیره ارز قدیم بعد از حذف (حذف اثر تراکنش)
                 $this->adjustJournalsAfterDelete(
                     $oldTx,
                     $oldJournalId,
                     $oldTx->shouldAffectSafeBalance(),
-                    recalcSafe: false,   // همیشه true چون باید اثر از صندوق ارز قدیم برداشته شود
+                    recalcSafe: $oldTx->shouldAffectSafeBalance(),
                     recalcCustomer: true
                 );
 
@@ -732,7 +731,7 @@ class Transaction extends Model
                             $model,
                             $info['journal_id'],
                             $info['should_affect'],
-                            recalcSafe: !$info['preserve_safe'],
+                            recalcSafe: $info['should_affect'],
                             recalcCustomer: true
                         );
                     } else {

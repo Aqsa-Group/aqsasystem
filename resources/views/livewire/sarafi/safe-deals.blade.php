@@ -1357,7 +1357,7 @@
 
                     {{-- دکمه‌های نهایی --}}
                     <div
-                        class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 py-4 justify-center items-center text-center">
+                        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 py-4 justify-center items-center text-center">
                         <button type="submit" wire:loading.attr="disabled" wire:target="submitDeal"
                             class="bg-[#184D6C] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
                             <span wire:loading.remove wire:target="submitDeal">
@@ -1381,10 +1381,7 @@
                             {{ $dealId ? 'لغو ویرایش' : 'انصراف' }}
                         </button>
 
-                        <button type="button" onclick="calculate()"
-                            class="bg-[#184D6C] text-[16px] vazir font-semibold rounded-[8px] px-6 py-3 text-white">
-                            محاسبه
-                        </button>
+                      
                     </div>
                 </form>
             </div>
@@ -1663,6 +1660,42 @@
         </div>
     </div>
     @endif
+    
+                                                <script>
+                                                    let printListenerRegistered = false;
+                                                    document.addEventListener('livewire:init', () => {
+                                                        if (printListenerRegistered) return;
+                                                        printListenerRegistered = true;
+
+                                                        Livewire.on('print-pdf', (data) => {
+
+                                                            /* 🔹 1. دانلود (با لینک مخفی) */
+                                                            const downloadLink = document.createElement('a');
+                                                            downloadLink.href = data.url;
+                                                            downloadLink.download = '';
+                                                            downloadLink.style.display = 'none';
+                                                            document.body.appendChild(downloadLink);
+                                                            downloadLink.click();
+
+                                                            /* 🔹 2. پرینت */
+                                                            const iframe = document.createElement('iframe');
+                                                            iframe.style.display = 'none';
+                                                            iframe.src = data.url;
+                                                            document.body.appendChild(iframe);
+
+                                                            iframe.onload = () => {
+                                                                iframe.contentWindow.focus();
+                                                                iframe.contentWindow.print();
+
+                                                                /* 🔹 3. حذف با تأخیر */
+                                                                setTimeout(() => {
+                                                                    iframe.remove();
+                                                                    downloadLink.remove();
+                                                                }, 50000); // ⏱ ۵ ثانیه
+                                                            };
+                                                        });
+                                                    });
+                                                </script>
 
 
     {{-- Scrollbar Style --}}
