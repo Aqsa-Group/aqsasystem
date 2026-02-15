@@ -690,7 +690,7 @@ class Transactions extends Component
             $message = 'تراکنش با موفقیت ثبت شد.';
         }
 
-        
+
         // پاک کردن کش
         Cache::forget($this->cacheKeys['transactions_list'] . $adminId);
         Cache::forget($this->cacheKeys['transactions_list'] . $adminId . '_' . $this->selectedAccount);
@@ -700,9 +700,9 @@ class Transactions extends Component
         $this->updateTransactions();
         $this->updateCustomerCurrencyBalance();
         $this->resetForm();
+        $this->print($transaction->id);
 
         return $transaction;
-         $this->print($transaction->id);
     }
 
     // public function submitAndPrint()
