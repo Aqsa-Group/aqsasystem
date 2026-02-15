@@ -1632,7 +1632,7 @@
                                         {{ collect($currencies)->firstWhere('code', $transaction->currency)['name_fa']
                                         ?? $transaction->currency }}
                                     </td>
-                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium text-center whitespace-nowrap">
+                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium text-center ">
                                         <div class="space-y-1 text-right">
                                             <p class="text-sm">{{ $transaction->description }}</p>
                                         </div>
