@@ -2,13 +2,14 @@
 
 namespace App\Livewire\Sarafi;
 
+use App\Models\Sarafi\BankAccount;
+use App\Models\Sarafi\CurrencySafe;
 use App\Models\Sarafi\Customer;
 use App\Models\Sarafi\ExchangeRates;
+use App\Models\Sarafi\Journals;
 use App\Models\Sarafi\SafeDeal;
-use App\Models\Sarafi\Transaction;
-use App\Models\Sarafi\CurrencySafe;
-use App\Models\Sarafi\BankAccount;
 use App\Models\Sarafi\SafeDealsRevenue;
+use App\Models\Sarafi\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -1269,7 +1270,73 @@ class SafeDeals extends Component
             Log::error('خطا در ثبت معامله: ' . $e->getMessage());
             session()->flash('error', 'خطا در ثبت معامله: ' . $e->getMessage());
         }
+        // بعد از updateSafes
+        $this->createSafeJournal($deal);
     }
+
+    private function createSafeJournal(SafeDeal $deal)
+    {
+        $user = Auth::guard('sarafi')->user();
+        $adminId = $user->admin_id ?? $user->id;
+
+        /*
+        |--------------------------------------------------------------------------
+        | تعیین نوع ژورنال و مقدار (فقط نمایشی)
+        |--------------------------------------------------------------------------
+        */
+        if ($deal->from === 'نقدی') {
+            $type     = 'برد';
+            $amount   = $deal->withdraw_amount;
+            $currency = $deal->from_currency;
+        } else {
+            $type     = 'رسید';
+            $amount   = $deal->receive_amount;
+            $currency = $deal->to_currency;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | فقط خواندن موجودی فعلی صندوق (بدون محاسبه)
+        |--------------------------------------------------------------------------
+        */
+        $safe = CurrencySafe::where('admin_id', $adminId)
+            ->lockForUpdate()
+            ->first();
+
+        if (!$safe || !isset($safe->{$currency})) {
+            throw new \Exception("ارز {$currency} در صندوق یافت نشد");
+        }
+
+        $currentBalance = $safe->{$currency}; // ✅ همین، بدون دست‌کاری
+
+        /*
+        |--------------------------------------------------------------------------
+        | ثبت ژورنال بدون تغییر صندوق
+        |--------------------------------------------------------------------------
+        */
+        Journals::create([
+            'safe_deal_id' => $deal->id,
+            'user_id'      => $user->id,
+            'admin_id'     => $adminId,
+            'currency'     => $currency,
+            'type'         => $type,
+            'account_type' => 'نقدی',
+            'amount'       => $amount,
+            'balance'      => 0,
+            'safe_balance' => $currentBalance, 
+            'description'  => $deal->description,
+            'date'         => $deal->date,
+        ]);
+
+        Log::info('Safe journal created (read-only safe)', [
+            'deal_id'  => $deal->id,
+            'type'     => $type,
+            'currency' => $currency,
+            'safe_balance' => $currentBalance,
+        ]);
+    }
+
+
 
     // ویرایش معامله
     public function edit($id)
