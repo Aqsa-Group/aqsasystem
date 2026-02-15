@@ -1,5 +1,5 @@
 <div>
-    <div class="container mx-auto  " >
+    <div class="container mx-auto  ">
         @if (session()->has('message'))
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
             class="fixed top-0 left-0 right-0 w-full z-[9999] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-400  bg-[#184D6C] vazir">
@@ -438,8 +438,8 @@
         {{-- فرم و جدول کنار هم --}}
         <div class="flex flex-col lg:flex-row gap-5 mt-4">
 
-                {{-- فرم تراکنش --}}
-                <div class="flex flex-col
+            {{-- فرم تراکنش --}}
+            <div class="flex flex-col
                         dark:bg-black dark:text-white dark:border dark:border-white
                         bg-white   border border-[#D7E5EC] shadow-sm backdrop:blur-lg       mx-auto
                         w-full max-w-[436px] lg:max-w-[550px]
@@ -465,18 +465,18 @@
 
                     <!-- دکمه‌ها -->
                     <div class="flex gap-3 whitespace-nowrap">
-                                            <button wire:click="$set('transactionType','رسید')" class="rounded-[8px] px-4 py-2 vazir font-semibold transition-all duration-300
+                        <button wire:click="$set('transactionType','رسید')" class="rounded-[8px] px-4 py-2 vazir font-semibold transition-all duration-300
                                 {{ $transactionType === 'رسید'
                                     ? 'bg-[#184D6C] text-white'
                                     : 'bg-white text-[#184D6C] border border-[#184D6C] hover:bg-[#184D6C]/10' }}">
-                                                رسید (دریافت صندوق)
-                                            </button>
+                            رسید (دریافت صندوق)
+                        </button>
 
-                                            <button wire:click="$set('transactionType','برد')" class="rounded-[8px] px-4 py-2 vazir font-semibold transition-all duration-300
+                        <button wire:click="$set('transactionType','برد')" class="rounded-[8px] px-4 py-2 vazir font-semibold transition-all duration-300
                                 {{ $transactionType === 'برد'
                                     ? 'bg-[#184D6C] text-white'
                                     : 'bg-white text-[#184D6C] border border-[#184D6C] hover:bg-[#184D6C]/10' }}">
-                                                برد (برداشت صندوق)
+                            برد (برداشت صندوق)
                         </button>
                     </div>
                 </div>
@@ -600,7 +600,7 @@
                             @enderror
                         </div>
 
-                         <div class="lg:w-full relative" x-data="persianDatePicker()" x-init="init()">
+                        <div class="lg:w-full relative" x-data="persianDatePicker()" x-init="init()">
                             <label
                                 class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
 
@@ -839,7 +839,7 @@
                             @enderror
                         </div> --}}
 
-                       
+
                         <script>
                             function persianDatePicker() {
                                 return {
@@ -1600,10 +1600,11 @@
                                 class="sticky top-0 bg-white dark:bg-black text-black dark:text-white text-[14px] md:text-[16px] vazir">
                                 <tr class="whitespace-nowrap">
                                     <th class="px-1 py-3 font-bold w-16 text-center whitespace-nowrap">#</th>
-                                    <th class="px-1 py-3 font-bold w-48 text-right whitespace-nowrap">نام مشتری</th>
+                                    <th class="px-1 py-3 font-bold w-32 text-right whitespace-nowrap">نام مشتری</th>
                                     <th class="px-1 py-3 font-bold w-32 text-center whitespace-nowrap">معامله</th>
                                     <th class="px-1 py-3 font-bold w-20 text-right whitespace-nowrap">مبلغ</th>
                                     <th class="px-1 py-3 font-bold w-20 text-right whitespace-nowrap">واحد</th>
+                                    <th class="px-1 py-3 font-bold w-20 text-right whitespace-nowrap">بیلانس</th>
                                     <th class="px-1 py-3 font-bold w-60 text-center whitespace-nowrap">توضیحات</th>
                                     <th class="px-1 py-3 font-bold w-20 text-center whitespace-nowrap">تاریخ</th>
                                     <th class="px-1 py-3 font-bold w-20 text-center whitespace-nowrap">عملیات</th>
@@ -1617,21 +1618,30 @@
                                transition-colors">
                                     <td class="px-1 py-2 vazir text-[14px] md:text-[16px] font-medium text-center">
                                         {{ $key + 1 }}</td>
-                                    <td
-                                        class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium ">
+                                    <td class="px-1 py-2 vazir text-[14px] md:text-[16px] font-medium ">
                                         {{ $transaction->customer->fullname ?? '-' }}</td>
-                                    <td class="px-1 py-2 vazir text-[14px] md:text-[16px] font-medium text-center whitespace-nowrap">
+                                    <td
+                                        class="px-1 py-2 vazir text-[14px] md:text-[16px] font-medium text-center whitespace-nowrap">
                                         <span
                                             class="px-3 py-1 rounded-full text-[16px] {{ $transaction->type === 'رسید' ? 'text-green-800 dark:text-white' : 'text-red-800 dark:text-white' }}">
                                             {{ $transaction->type }}
                                         </span>
                                     </td>
-                                    <td class="px-1 py-2 vazir text-[14px] md:text-[16px] font-medium whitespace-nowrap">
+                                    <td
+                                        class="px-1 py-2 vazir text-[14px] md:text-[16px] font-medium whitespace-nowrap">
                                         {{ number_format($transaction->amount) }}</td>
-                                    <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium whitespace-nowrap">
+                                      
+                                    <td
+                                        class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium whitespace-nowrap">
                                         {{ collect($currencies)->firstWhere('code', $transaction->currency)['name_fa']
                                         ?? $transaction->currency }}
                                     </td>
+                                         <td
+                                        class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium whitespace-nowrap">
+                                        {{ $transaction->journal->balance }}
+
+                                    </td>
+                                 
                                     <td class="px-4 py-2 vazir text-[14px] md:text-[16px] font-medium text-center ">
                                         <div class="space-y-1 text-right">
                                             <p class="text-sm">{{ $transaction->description }}</p>
@@ -1750,7 +1760,7 @@
 
 
                                                 <!-- دکمه پرینت -->
-                                             <button wire:click.once="print({{ $transaction->id }})" class="w-10 h-12 flex items-center justify-center  
+                                                <button wire:click.once="print({{ $transaction->id }})" class="w-10 h-12 flex items-center justify-center  
                                                     rounded-full transition-colors" title="پرینت">
                                                     <img src="{{ asset('assets/sarafi/all_icon/print_table.svg') }}"
                                                         class="w-8 h-8 dark:hidden" alt="Print">
