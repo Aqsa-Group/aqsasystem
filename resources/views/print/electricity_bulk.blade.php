@@ -138,10 +138,11 @@
         }
 
 
-        .amount-rows td:first-child {
-            font-weight: 400;
-            font-size: 12px;
+          .amount-rows td:first-child {
+            font-weight: bolder;
+            font-size: 10px;
         }
+
 
         .amount-rows td:last-child {
             text-align: center;

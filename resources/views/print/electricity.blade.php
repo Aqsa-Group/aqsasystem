@@ -116,8 +116,8 @@
         }
 
         .amount-rows td:first-child {
-            font-weight: bold;
-            font-size: 12px;
+            font-weight: 900;
+            font-size: 14px;
         }
 
 
