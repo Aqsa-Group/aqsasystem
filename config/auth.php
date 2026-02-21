@@ -35,48 +35,48 @@ return [
     |
     */
 
-        'guards' => [
-            'web' => [
-                'driver' => 'session',
-                'provider' => 'users',
-            ],
+    'guards' => [
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
 
-            'market' => [
-                'driver' => 'session',
-                'provider' => 'markets',
-            ],
+        'market' => [
+            'driver' => 'session',
+            'provider' => 'markets',
+        ],
 
-            'import' => [
-                'driver' => 'session',
-                'provider' => 'imports',
-            ],
+        'import' => [
+            'driver' => 'session',
+            'provider' => 'imports',
+        ],
 
-            'sarafi' => [
-                'driver' => 'session',
-                'provider' => 'sarafies',
-            ],
+        'sarafi' => [
+            'driver' => 'session',
+            'provider' => 'sarafies',
+        ],
 
-             'tools' => [
-                'driver' => 'session',
-                'provider' => 'tools',
-            ],
-               'gyms' => [
-                'driver' => 'session',
-                'provider' => 'gyms',
-            ],
-               'restaurant' => [
+        'tools' => [
+            'driver' => 'session',
+            'provider' => 'tools',
+        ],
+        'gyms' => [
+            'driver' => 'session',
+            'provider' => 'gyms',
+        ],
+        'restaurant' => [
             'driver' => 'session',
             'provider' => 'restaurant',
         ],
 
-  'sarafi_impersonate' => [
-        'driver' => 'session',
-        'provider' => 'sarafi_users',
-        'cookie' => 'laravel_impersonate_session',
-    ],
+        'sarafi_impersonate' => [
+            'driver' => 'session',
+            'provider' => 'sarafi_users',
+            'cookie' => 'laravel_impersonate_session',
         ],
+    ],
 
-        /*
+    /*
     |--------------------------------------------------------------------------
     | User Providers
     |--------------------------------------------------------------------------
@@ -106,25 +106,25 @@ return [
 
         'imports' => [
             'driver' => 'eloquent',
-             'model' => App\Models\Import\User::class,
+            'model' => App\Models\Import\User::class,
         ],
 
         'sarafies' => [
             'driver' => 'eloquent',
-             'model' => App\Models\Sarafi\User::class,
+            'model' => App\Models\Sarafi\User::class,
         ],
 
-          'tools' => [
+        'tools' => [
             'driver' => 'eloquent',
-             'model' => App\Models\Tools\User::class,
+            'model' => App\Models\Tools\User::class,
         ],
 
-              'gyms' => [
+        'gyms' => [
             'driver' => 'eloquent',
-             'model' => App\Models\Gym\User::class,
+            'model' => App\Models\Gym\User::class,
         ],
 
-           'restaurant' => [
+        'restaurant' => [
             'driver' => 'eloquent',
             'model' => App\Models\Restaurant\User::class,
         ],

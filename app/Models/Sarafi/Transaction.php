@@ -804,13 +804,15 @@ class Transaction extends Model
             WhatsAppService::sendTransaction(
                 $phone,
                 [
+                    'customer_name'     => $customer->fullname ?? '-',
                     'exchange_name'      => $this->user->sarafi_name ?? '-',
-                    'account_number'     => $customer->fullname ?? '-',
+                    'account_number'     => $customer->account_number ?? '-',
                     'amount'            => (string)($this->amount ?? '-'),
                     'currency'          => $this->getCurrencyNameAttribute() ?? '-',
                     'transaction_type'  => $this->getTypeNameAttribute() ?? '-',
                     'transaction_date'  => $this->date ? $this->date->format('Y-m-d H:i') : '-',
                     'balance'           => (string)$balance,
+                    'currency'          => $this->getCurrencyNameAttribute() ?? '-',
                     'exchange_contact'  => (string)($this->user->phone ?? '-'),
                 ]
             );

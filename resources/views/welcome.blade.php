@@ -235,7 +235,7 @@
                 </div>
 
 
-                <a href="/sarafi">
+                <a href="https://sarafi.aqsasystem.com/">
                     <div
                         class=" flex  gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4  justify-center items-center bg-gradient-to-l from-[#2F96D2] to-[#184D6C]">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
