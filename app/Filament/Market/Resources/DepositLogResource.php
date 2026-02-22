@@ -21,9 +21,10 @@ class DepositLogResource extends Resource
     protected static ?string $model = DepositLog::class;
     protected static ?string $navigationIcon = 'letsicon-arhive-alt-add-light';
     protected static ?string $navigationGroup = 'گزارشات';
-    protected static ?string $navigationLabel = 'لاگ رسید دوکان ها';
+    protected static ?string $navigationLabel = 'گزارش رسید دوکان ها';
     protected static ?string $pluralModelLabel = 'لاگ پرداختی‌ها';
     protected static ?string $modelLabel = 'لاگ پرداختی';
+
 
     public static function canViewAny(): bool
     {

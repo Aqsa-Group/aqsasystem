@@ -1131,11 +1131,7 @@ class AccountToAccount extends Component
         try {
             $conversion = SendToAccount::with(['fromCustomer', 'toCustomer', 'user'])->findOrFail($conversionId);
 
-            $user = Auth::guard('sarafi')->user();
-            if ($conversion->user_id !== $user->id && $conversion->admin_id !== $user->id) {
-                session()->flash('error', 'دسترسی به این تراکنش مجاز نیست.');
-                return null;
-            }
+          
 
             $mpdf = new \Mpdf\Mpdf([
                 'mode' => 'utf-8',
@@ -1195,12 +1191,7 @@ class AccountToAccount extends Component
         try {
             $conversion = SendToAccount::findOrFail($conversionId);
 
-            // Check user access
-            $user = Auth::guard('sarafi')->user();
-            if ($conversion->user_id !== $user->id && $conversion->admin_id !== $user->id) {
-                session()->flash('error', 'دسترسی به این تراکنش مجاز نیست.');
-                return redirect()->back();
-            }
+          
 
             return $this->generateConversionPdf($conversion->id);
         } catch (\Exception $e) {

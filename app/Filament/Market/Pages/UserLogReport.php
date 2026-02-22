@@ -19,6 +19,8 @@ class UserLogReport extends Page implements HasTable
     protected static string $view = 'filament.pages.user-log-report';
     protected static ?string $navigationGroup = 'گزارشات';
     protected static ?string $navigationLabel = 'گزارش ورود و خروج کارمندان';
+    protected static ?int $navigationSort = 20;
+
 
     public static function canView(): bool
     {

@@ -51,7 +51,7 @@ class WhatsAppService
             "to" => $phone,
             "type" => "template",
             "template" => [
-                "name" => "cash_fa",
+                "name" => "cashtrans_fa",
                 "language" => [
                     "code" => "fa"
                 ],

@@ -76,9 +76,20 @@ class CreateSalary extends CreateRecord
             $currentBalance = DB::connection('market')->table('accountings')
                 ->where('expanses_type', $salary->reduce_from)
                 ->where('currency', $salary->currency)
-                ->selectRaw('COALESCE(SUM(paid),0) as balance')
-                ->value('balance');
+                ->where(function ($q) use ($salary, $adminIdToSave) {
 
+                    // اگر market_id وجود دارد
+                    if (!empty($salary->market_id)) {
+                        $q->where('market_id', $salary->market_id);
+                    }
+
+                    // رکوردهایی که market_id ندارند ولی متعلق به همین ادمین هستند
+                    $q->orWhere(function ($qq) use ($adminIdToSave) {
+                        $qq->whereNull('market_id')
+                            ->where('admin_id', $adminIdToSave);
+                    });
+                })
+                ->sum('paid');
 
             // اگر موجودی کافی نیست
             if ($currentBalance < $amountToDeduct) {

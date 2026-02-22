@@ -18,6 +18,8 @@ use Morilog\Jalali\Jalalian;
 use Carbon\Carbon;
 
 
+
+
 class DepositResource extends Resource
 {
     protected static ?string $model = Deposit::class;
@@ -32,23 +34,23 @@ class DepositResource extends Resource
         return Auth::check() && in_array(Auth::user()?->role, ['superadmin', 'Financial Manager', 'admin']);
     }
 
-      public static function getNavigationBadge(): ?string
-{
-    $user = Auth::user();
+    public static function getNavigationBadge(): ?string
+    {
+        $user = Auth::user();
 
-    $query = static::getModel()::query();
+        $query = static::getModel()::query();
 
-    if ($user->role !== 'superadmin') {
-        $adminId = $user->role === 'admin' ? $user->id : $user->admin_id;
-        $query->where('admin_id', $adminId);
+        if ($user->role !== 'superadmin') {
+            $adminId = $user->role === 'admin' ? $user->id : $user->admin_id;
+            $query->where('admin_id', $adminId);
+        }
+
+        return (string) $query->count();
     }
-
-    return (string) $query->count();
-}
 
     public static function getNavigationBadgeColor(): ?string
     {
-        return 'info'; 
+        return 'info';
     }
 
     public static function form(Form $form): Form
@@ -131,6 +133,7 @@ class DepositResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('accounting.market.name')->label('مارکت')->searchable(),
                 Tables\Columns\TextColumn::make('accounting.shop.number')->label('دوکان')->searchable()->toggleable(),
@@ -139,24 +142,24 @@ class DepositResource extends Resource
                 Tables\Columns\TextColumn::make('accounting.expanses_type')->label('نوع هزینه')->searchable(),
                 Tables\Columns\TextColumn::make('accounting.price')->label('مبلغ')->suffix('افغانی'),
                 Tables\Columns\TextColumn::make('paid')->label('پرداخت')
-                ->badge()
-                ->color('success')
-                ->extraAttributes(['class' => 'text-white']),
+                    ->badge()
+                    ->color('success')
+                    ->extraAttributes(['class' => 'text-white']),
                 Tables\Columns\TextColumn::make('remained')->label('باقی')
-                ->badge()
-                ->color('danger')
-                ->extraAttributes(['class' => 'text-white']),
+                    ->badge()
+                    ->color('danger')
+                    ->extraAttributes(['class' => 'text-white']),
                 Tables\Columns\TextColumn::make('paid_date')
-                ->label('تا تاریخ')
-                ->formatStateUsing(fn($state) => Jalalian::fromDateTime($state)->format('Y/m/d')),
+                    ->label('تا تاریخ')
+                    ->formatStateUsing(fn($state) => Jalalian::fromDateTime($state)->format('Y/m/d')),
                 Tables\Columns\TextColumn::make('created_at')
-                ->label('زمان ثبت ')
-                ->formatStateUsing(function ($state) {
-                    $dt = Carbon::parse($state)->setTimezone('Asia/Kabul'); 
-                    return $dt->format('g:i A'); 
-                }),
-                
-            
+                    ->label('زمان ثبت ')
+                    ->formatStateUsing(function ($state) {
+                        $dt = Carbon::parse($state)->setTimezone('Asia/Kabul');
+                        return $dt->format('g:i A');
+                    }),
+
+
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('market_id')
@@ -170,13 +173,11 @@ class DepositResource extends Resource
 
                 Tables\Filters\SelectFilter::make('shop_id')
                     ->label('شماره دوکان')
-                    ->searchable()
                     ->options(fn() => Shop::pluck('number', 'id')->toArray())
                     ->query(function (Builder $query, array $data): Builder {
                         if (blank($data['value'] ?? null)) return $query;
                         return $query->whereHas('accounting', fn($q) => $q->where('shop_id', $data['value']));
                     }),
-
                 Tables\Filters\SelectFilter::make('expanses_type')
                     ->label('نوع مصرف')
                     ->searchable()
@@ -201,8 +202,7 @@ class DepositResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([])
-            ->defaultSort('paid_date', 'desc');
+            ->bulkActions([]);
     }
 
     public static function getPages(): array
@@ -213,32 +213,31 @@ class DepositResource extends Resource
         ];
     }
 
-   public static function getEloquentQuery(): Builder
-{
-    $user = Auth::user();
+    public static function getEloquentQuery(): Builder
+    {
+        $user = Auth::user();
 
-    $query = parent::getEloquentQuery()
-        ->where(function ($q) {
-            $q->where('remained', '>', 0)
-              ->orWhereNull('remained');
-        })
-        ->with([
-            'accounting',
-            'accounting.market',
-            'accounting.shop',
-            'accounting.booth',
-            'accounting.shopkeeper',
-        ]);
+        $query = parent::getEloquentQuery()
+            ->where(function ($q) {
+                $q->where('remained', '>', 0)
+                    ->orWhereNull('remained');
+            })
+            ->with([
+                'accounting',
+                'accounting.market',
+                'accounting.shop',
+                'accounting.booth',
+                'accounting.shopkeeper',
+            ]);
 
-    if ($user->role === 'superadmin') {
-        return $query;
+        if ($user->role === 'superadmin') {
+            return $query;
+        }
+
+        if ($user->role === 'admin') {
+            return $query->where('admin_id', $user->id);
+        }
+
+        return $query->where('admin_id', $user->admin_id);
     }
-
-    if ($user->role === 'admin') {
-        return $query->where('admin_id', $user->id);
-    }
-
-    return $query->where('admin_id', $user->admin_id);
-}
-
 }

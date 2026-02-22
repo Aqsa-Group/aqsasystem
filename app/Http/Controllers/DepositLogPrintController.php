@@ -3,41 +3,66 @@
 namespace App\Http\Controllers;
 
 use App\Models\Market\DepositLog;
-use Mpdf\Mpdf;
-use Illuminate\Http\Request;
-use Morilog\Jalali\Jalalian;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Morilog\Jalali\Jalalian;
+use Mpdf\Mpdf;
 
 class DepositLogPrintController extends Controller
 {
-    public function generate($id)
+
+
+    public function generate($depositLogId)
     {
-        $depositLog = DepositLog::with(['user', 'market', 'shop', 'shopkeeper'])->findOrFail($id);
+        try {
+            $depositLog = DepositLog::with(['user', 'market', 'shop', 'shopkeeper'])->findOrFail($depositLogId);
 
-        $html = view('exports.deposit_log_print', compact('depositLog'))->render();
+            $mpdf = new \Mpdf\Mpdf([
+                'mode' => 'utf-8',
+                'format' => [210, 90],
+                'directionality' => 'rtl',
+                'margin_top' => 0,
+                'margin_bottom' => 0,
+                'margin_left' => 0,
+                'margin_right' => 0,
+                'fontDir' => array_merge(
+                    (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+                    [public_path('fonts/vazir/')]
+                ),
+                'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+                    'vazir' => [
+                        'R' => 'Vazir-Light.ttf',
+                        'B' => 'Vazir-Bold.ttf',
+                        'useOTL' => 0xFF,
+                        'useKashida' => 75,
+                    ],
+                ],
+                'default_font' => 'vazir',
+                'tempDir' => storage_path('app/mpdf'),
+            ]);
 
-        $mpdf = new Mpdf([
-            'mode' => 'utf-8',
-            'format' => [300 , 60],
-            'directionality' => 'rtl',
-            'margin_top' => 10,
-            'margin_bottom' => 10,
-            'margin_left' => 10,
-            'margin_right' => 10,
-            'fontDir' => array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'], [
-                public_path('fonts'),
-            ]),
-            'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
-                'amiri' => ['R' => 'IranNastaliq.ttf'],  // یا فونت دلخواه خودت
-            ],
-            'tempDir' => storage_path('app/mpdf/tmp'),
-            'default_font' => 'amiri',
-        ]);
+            $mpdf->SetAutoPageBreak(false);
+            $mpdf->autoLangToFont = true;
+            $mpdf->SetDefaultFont('vazir');
 
-        $mpdf->autoLangToFont = true;
-        $mpdf->WriteHTML($html);
+            // رندر HTML
+            $html = view('exports.deposit_log_print', compact('depositLog'))->render();
+            $mpdf->WriteHTML($html);
 
-        $fileName = 'deposit_log_' . $depositLog->id . '_' . time() . '.pdf';
-        return $mpdf->Output($fileName, \Mpdf\Output\Destination::DOWNLOAD);
+            // نام فایل PDF
+            $fileName = 'رسید_پرداخت_' . $depositLog->id . '_' . time() . '.pdf';
+            $path = storage_path('app/public/' . $fileName);
+
+            // ذخیره PDF روی سرور
+            $mpdf->Output($path, \Mpdf\Output\Destination::FILE);
+
+            // دانلود فایل توسط کاربر
+            return response()->download($path, $fileName);
+        } catch (\Exception $e) {
+            Log::error('PDF generation error: ' . $e->getMessage());
+            session()->flash('error', 'خطا در ایجاد PDF: ' . $e->getMessage());
+            return null;
+        }
     }
 }
