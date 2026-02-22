@@ -113,14 +113,19 @@
         .form-table th {
             border: 1px solid #777;
             font-size: 12px;
-            padding: 2px 4px;
+            padding: 0px 2px;
             text-align: start;
+            width: 10px;
+            font-weight: 900;
+
         }
 
         .form-table th {
-            font-weight: 600;
+            background: #fafafa;
+            font-weight: 400;
             color: #111;
             font-size: 12px;
+            font-weight: 900;
 
         }
 
@@ -133,14 +138,19 @@
 
         .amount-rows td {
             border: 1px solid #999;
-            padding: 6px 8px;
-            font-size: 10px;
+            padding: 8px;
+            height: 36px;
+            font-size: 12px;
+            font-weight: 900;
+
         }
 
 
-          .amount-rows td:first-child {
+        .amount-rows td:first-child {
             font-weight: bolder;
             font-size: 10px;
+            font-weight: 900;
+
         }
 
 
@@ -187,6 +197,14 @@
             margin-top: 0;
         }
 
+        /* ریسپانسیو برای صفحه نمایش */
+        @media screen and (max-width: 900px) {
+            .two-col td {
+                display: block;
+                width: 100%;
+            }
+        }
+
         @media print {
             @page {
                 size: 210mm 148.5mm;
@@ -196,15 +214,38 @@
             html,
             body {
                 width: 210mm;
+                height: 148.5mm;
                 margin: 0;
                 padding: 0;
-                background: #fff;
+                overflow: hidden;
             }
+        }
 
-            .page {
-                margin: 0;
-                padding: 0;
-            }
+
+
+
+        /* دکمه‌های غیر چاپی */
+        .no-print {
+            position: fixed;
+            top: 8px;
+            left: 8px;
+            z-index: 9999;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-right: 6px;
+            padding: 8px 12px;
+            background: #1976d2;
+            color: #fff;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn.close {
+            background: #c62828;
         }
     </style>
 </head>
@@ -289,7 +330,7 @@
                                     </tr>
                                     <tr>
                                         <td>از دوره‌های قبل</td>
-                                        <td>{{ number_format($data['previousRemaining']) }} افغانی</td>
+                                        <td>{{ number_format(abs($data['previousRemaining'])) }} افغانی</td>
                                     </tr>
                                     <tr>
                                         <td>مبلغ پرداخت شده</td>
@@ -297,13 +338,13 @@
                                     </tr>
                                     <tr>
                                         <td>جمع کل</td>
-                                        <td>{{ number_format($data['totalRemaining']) }} افغانی</td>
+                                        <td>{{ number_format(abs($data['totalRemaining'])) }} افغانی</td>
                                     </tr>
                                 </table>
                             </td>
                             <td style="width:30%; vertical-align:top; border:none; padding-right:8px;">
                                 <div class="electrician-box">
-                                    <div class="label">مسؤول برق</div>
+                                    <div class="label">مسئول برق</div>
                                     <div class="phone">۰۷۹۹۵۵۳۳۳۳</div>
                                 </div>
                                 <div class="signature-box">
@@ -320,7 +361,9 @@
                     <div class="col-header">
                         <div class="header-text" style="left:54%;">
                             <div class="title">مجتمع تجارتی عادلیار</div>
-                            <div class="title" style="font-size: 20px; margin-top: 5px; font-weight:bolder; color: rgb(6, 28, 99); word-spacing: 1px">قبض برق</div>
+                            <div class="title"
+                                style="font-size: 20px; margin-top: 5px; font-weight:bolder; color: rgb(6, 28, 99); word-spacing: 1px">
+                                قبض برق</div>
                         </div>
                         <div class="logo">
                             <img src="{{ asset('assets/logo.png') }}" alt="لوگو">
@@ -370,7 +413,7 @@
                         </tr>
                         <tr>
                             <td>از دوره‌های قبل</td>
-                            <td>{{ number_format($data['previousRemaining']) }} افغانی</td>
+                            <td>{{ number_format(abs($data['previousRemaining'])) }} افغانی</td>
                         </tr>
                         <tr>
                             <td>مبلغ پرداخت شده</td>
@@ -378,7 +421,7 @@
                         </tr>
                         <tr>
                             <td>جمع کل</td>
-                            <td>{{ number_format($data['totalRemaining']) }} افغانی</td>
+                            <td>{{ number_format(abs($data['totalRemaining'])) }} افغانی</td>
                         </tr>
                     </table>
                 </td>

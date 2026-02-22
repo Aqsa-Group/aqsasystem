@@ -30,6 +30,8 @@
             width: 100%;
             border-collapse: separate;
             border-spacing: 10px;
+            font-weight: 900;
+
         }
 
         .two-col td {
@@ -39,6 +41,8 @@
             box-sizing: border-box;
             border: 1px solid #777;
             background: #fff;
+            font-weight: 900;
+
         }
 
         /* هدر هر ستون */
@@ -91,6 +95,8 @@
             padding: 0px 2px;
             text-align: start;
             width: 10px;
+            font-weight: 900;
+
         }
 
         .form-table th {
@@ -98,6 +104,8 @@
             font-weight: 400;
             color: #111;
             font-size: 12px;
+            font-weight: 900;
+
         }
 
         /* جدول ردیف های مبلغ */
@@ -126,6 +134,8 @@
             padding: 8px;
             height: 36px;
             font-size: 12px;
+            font-weight: 900;
+
         }
 
         /* بخش مسؤول برق + امضا + نوت (مخصوص ستون چپ) */
@@ -243,7 +253,8 @@
 
                                 مجتمع تجارتی عادلیار
                             </div>
-                            <div class="subtitle"    style="font-size: 20px; margin-top: 5px; font-weight:bolder; color: rgb(6, 28, 99)">
+                            <div class="subtitle"
+                                style="font-size: 20px; margin-top: 5px; font-weight:bolder; color: rgb(6, 28, 99)">
                                 قبض برق
                             </div>
                         </div>
@@ -352,17 +363,17 @@
                                 </td>
                             </tr>
 
-                            
-                               <tr>
-                                <td>  مبلغ پرداخت شده </td>
+
+                            <tr>
+                                <td> مبلغ پرداخت شده </td>
                                 <td style="text-align:center;"> {{ number_format($currentPaid) }} افغانی
                                 </td>
                             </tr>
 
-                          
+
                             <tr>
                                 <td>جمع کل </td>
-                                <td style="text-align:center;">{{ number_format(abs($totalRemaining)) }}  افغانی</td>
+                                <td style="text-align:center;">{{ number_format(abs($totalRemaining)) }} افغانی</td>
                             </tr>
 
 
@@ -383,7 +394,7 @@
                                             background: #fafafa;
                                         ">
                         <div style="font-weight:bold; font-size:15px; margin-bottom:6px;">
-                            مسؤول برق
+                            مسئول برق
                         </div>
 
                         <div class="times" style="font-size:26px; font-weight:900;">
@@ -425,7 +436,8 @@
                     <div class="title" style="font-size: 20px; font-weight: bold;">
                         مجتمع تجارتی عادلیار
                     </div>
-                    <div class="subtitle"  style="font-size: 20px; margin-top: 5px; font-weight:bolder; color: rgb(6, 28, 99)">
+                    <div class="subtitle"
+                        style="font-size: 20px; margin-top: 5px; font-weight:bolder; color: rgb(6, 28, 99)">
                         قبض برق
                     </div>
                 </div>
@@ -510,20 +522,20 @@
                         $accounting->payable_amount ?? 0) }} افغانی</td>
                 </tr>
                 <tr>
-                                <td> از دوره‌های قبل </td>
-                                <td style="text-align:center;"> {{ number_format(abs($previousRemaining)) }} افغانی
-                                </td>
-                            </tr>
+                    <td> از دوره‌های قبل </td>
+                    <td style="text-align:center;"> {{ number_format(abs($previousRemaining)) }} افغانی
+                    </td>
+                </tr>
 
-                               <tr>
-                                <td>  مبلغ پرداخت شده </td>
-                                <td style="text-align:center;"> {{ number_format($currentPaid) }} افغانی
-                                </td>
-                            </tr>
+                <tr>
+                    <td> مبلغ پرداخت شده </td>
+                    <td style="text-align:center;"> {{ number_format($currentPaid) }} افغانی
+                    </td>
+                </tr>
 
                 <tr>
                     <td>جمع کل </td>
-                    <td style="text-align:center;">{{ number_format(abs($totalRemaining)) }}  افغانی</td>
+                    <td style="text-align:center;">{{ number_format(abs($totalRemaining)) }} افغانی</td>
                 </tr>
 
 
