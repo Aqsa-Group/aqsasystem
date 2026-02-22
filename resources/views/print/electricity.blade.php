@@ -348,10 +348,11 @@
 
                             <tr>
                                 <td> از دوره‌های قبل </td>
-                                <td style="text-align:center;"> {{ number_format($previousRemaining) }} افغانی
+                                <td style="text-align:center;"> {{ number_format(abs($previousRemaining)) }} افغانی
                                 </td>
                             </tr>
 
+                            
                                <tr>
                                 <td>  مبلغ پرداخت شده </td>
                                 <td style="text-align:center;"> {{ number_format($currentPaid) }} افغانی
@@ -361,7 +362,7 @@
                           
                             <tr>
                                 <td>جمع کل </td>
-                                <td style="text-align:center;">{{ number_format($totalRemaining) }} افغانی</td>
+                                <td style="text-align:center;">{{ number_format(abs($totalRemaining)) }}  افغانی</td>
                             </tr>
 
 
@@ -510,7 +511,7 @@
                 </tr>
                 <tr>
                                 <td> از دوره‌های قبل </td>
-                                <td style="text-align:center;"> {{ number_format($previousRemaining) }} افغانی
+                                <td style="text-align:center;"> {{ number_format(abs($previousRemaining)) }} افغانی
                                 </td>
                             </tr>
 
@@ -522,7 +523,7 @@
 
                 <tr>
                     <td>جمع کل </td>
-                    <td style="text-align:center;">{{ number_format($totalRemaining) }} افغانی</td>
+                    <td style="text-align:center;">{{ number_format(abs($totalRemaining)) }}  افغانی</td>
                 </tr>
 
 
