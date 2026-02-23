@@ -31,6 +31,7 @@
                     'payment' => ['icon' => 'fa-solid fa-receipt', 'label' => 'رسیدها', 'color' => 'purple'],
                     'buy' => ['icon' => 'fa-solid fa-cart-plus', 'label' => 'خریدها', 'color' => 'indigo'],
                     'sell' => ['icon' => 'fa-solid fa-tags', 'label' => 'فروش‌ها', 'color' => 'teal'],
+                    'fund' => ['icon' => 'fa-solid fa-cash-register', 'label' => 'گزارش صندوق', 'color' => 'emerald'],
                     ];
 
                     $userRole = Auth::guard('market')->user()->role ?? null;
@@ -57,6 +58,8 @@
                         @endforeach
                     </div>
                 </div>
+
+
 
                 <!-- Main Content -->
                 <div class="lg:col-span-3 space-y-8">
@@ -134,7 +137,7 @@
 
 
                                 @if(in_array($reportType, ['accounting', 'deposit']))
-                              
+
                                 <!-- 🔴 اضافه کردن فیلتر طبقه -->
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">طبقه</label>
@@ -149,7 +152,7 @@
                                 @endif
 
                                 <!-- Expanses Type Filter for combined report -->
-                                @if(in_array($reportType, ['withdraw_salary' ,'outside']))
+                                @if(in_array($reportType, ['withdraw_salary' ,'outside','fund']))
                                 <div class="space-y-2">
                                     <label class="block text-sm font-semibold text-gray-700">نوع هزینه</label>
                                     <select wire:model.live="expansesType"
@@ -354,6 +357,24 @@
                                             توضیحات</th>
                                         @break
 
+
+                                        @case('fund')
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            نوع</th>
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            نوع مصرف</th>
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            مبلغ</th>
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            واحد پول</th>
+                                        <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            تاریخ</th>
+                                        @break
                                         @case('accounting')
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
@@ -691,6 +712,36 @@
 
                                         @break
 
+
+                                        @case('fund')
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
+        {{ $report->paid > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                                {{ $report->direction }}
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ $report->expanses_type ?? '-' }}</td>
+                                        <td
+                                            class="px-6 py-4 whitespace-nowrap font-bold {{ $report->paid < 0 ? 'text-red-600' : 'text-green-600' }}">
+                                            {{ number_format($report->amount) }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                                @switch($report->currency)
+                                                @case('AFN') افغانی @break
+                                                @case('USD') دالر @break
+                                                @default {{ $report->currency }}
+                                                @endswitch
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {{ $report->paid_date ?
+                                            \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
+                                            : ($report->created_at ?
+                                            \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d')
+                                            : '-') }}
+                                        </td>
+                                        @break
                                         @case('outside')
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center gap-3">

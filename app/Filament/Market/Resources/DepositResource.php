@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\Jalalian;
 use Carbon\Carbon;
 
+use Filament\Notifications\Notification;
+use Filament\Tables\Actions\Action;
+use App\Models\Market\DepositLog;
 
 
 
@@ -201,6 +204,65 @@ class DepositResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Action::make('correct')
+                    ->label('تصحیح')
+                    ->icon('heroicon-o-pencil')
+                    ->modalHeading('تصحیح مبلغ پرداختی')
+                    ->modalButton('ذخیره تصحیح')
+                    ->form([
+                        Forms\Components\TextInput::make('paid')
+                            ->label('مبلغ کل پرداختی')
+                            ->numeric()
+                            ->required()
+                            ->default(fn($record) => $record->paid)
+                            ->rules([
+                                fn($get, $record) => function ($attribute, $value, $fail) use ($record) {
+                                    if ($value > $record->price) {
+                                        $fail('مبلغ پرداختی نمی‌تواند از کل بدهی بیشتر باشد.');
+                                    }
+                                    if ($value < 0) {
+                                        $fail('مبلغ پرداختی نمی‌تواند منفی باشد.');
+                                    }
+                                }
+                            ]),
+                    ])
+                    ->action(function ($record, array $data) {
+                        $oldPaid = $record->paid;
+                        $newPaid = $data['paid'];
+                        $difference = $newPaid - $oldPaid;
+                        $newRemained = max($record->price - $newPaid, 0);
+
+                        // به‌روزرسانی رکورد
+                        $record->update([
+                            'paid' => $newPaid,
+                            'remained' => $newRemained,
+                        ]);
+
+                        // ثبت لاگ تعدیل (تنها در صورت تغییر)
+                        if ($difference != 0) {
+                            DepositLog::create([
+                                'deposit_id'      => $record->id,
+                                'user_id'         => auth()->id(),
+                                'expanses_type'   => $record->accounting?->expanses_type,
+                                'market_id'       => $record->market_id,
+                                'shop_id'         => $record->shop_id,
+                                'shopkeeper_id'   => $record->shopkeeper_id,
+                                'market_name'     => $record->accounting?->market?->name,
+                                'shop_number'     => $record->accounting?->shop?->number,
+                                'shopkeeper_name' => $record->accounting?->shopkeeper?->fullname,
+                                'old_paid'        => 0,
+                                'old_remained'    => $record->remained ?? $record->price,
+                                'new_paid'        => $newPaid, // مبلغ کل جدید
+                                'new_remained'    => $newRemained,
+                            ]);
+                        }
+
+                        Notification::make()
+                            ->success()
+                            ->title('تصحیح با موفقیت انجام شد')
+                            ->send();
+                    })
+                    ->visible(fn($record) => true),
             ])
             ->bulkActions([]);
     }

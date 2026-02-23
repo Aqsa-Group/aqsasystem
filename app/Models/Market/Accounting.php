@@ -36,6 +36,24 @@ class Accounting extends Model
         'outside_id'
     ];
 
+
+    protected $casts = [
+    'paid' => 'integer',
+];
+
+// مبلغ قابل نمایش
+public function getAmountAttribute()
+{
+    return abs((int) $this->paid);
+}
+
+// نوع تراکنش
+public function getDirectionAttribute()
+{
+    return $this->paid < 0 ? 'برداشت' : 'دریافت';
+}
+
+
     /* ===================== Relations ===================== */
 
     public function deposit()     { return $this->hasOne(Deposit::class); }

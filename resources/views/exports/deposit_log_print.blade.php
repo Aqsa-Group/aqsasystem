@@ -12,9 +12,8 @@
             background: #fff;
             color: #111;
             direction: rtl;
-            font-family: 'Vazir', sans-serif;
-            -webkit-print-color-adjust: exact;
             font-size: 13px;
+            font-family: 'vazir', sans-serif;
             margin: 0;
             padding: 0;
         }
@@ -83,6 +82,7 @@
 
         .form-table th {
             background: #095264;
+            font-family: 'vazir', sans-serif;
             color: #ffffff;
         }
 
@@ -155,8 +155,6 @@
             font-weight: bold;
             font-size: 16px;
         }
-
-     
     </style>
 </head>
 
@@ -206,17 +204,23 @@
         <!-- جدول مقادیر -->
         <table class="amount-rows">
             <tbody>
+
+
                 <tr>
-                    <td>پرداخت قبلی</td>
-                    <td>{{ number_format($depositLog->old_paid ?? 0) }} افغانی</td>
+                    <th>پرداخت قبلی</th>
+                    <td dir="ltr">{{ number_format($depositLog->old_paid) }}</td>
                 </tr>
+
                 <tr>
-                    <td>پرداخت جدید</td>
-                    <td>{{ number_format($depositLog->new_paid ?? 0) }} افغانی</td>
+                    <th>پرداخت جدید</th>
+                    <td dir="ltr">{{ number_format($depositLog->new_paid) }}</td>
+
                 </tr>
+
                 <tr>
-                    <td>الباقی</td>
-                    <td>{{ number_format($depositLog->remaining ?? 0) }} افغانی</td>
+                    <th>الباقی</th>
+
+                    <td dir="ltr">{{ number_format($depositLog->new_remained) }}</td>
                 </tr>
             </tbody>
         </table>

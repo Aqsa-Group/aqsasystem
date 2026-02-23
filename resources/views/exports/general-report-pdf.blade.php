@@ -11,10 +11,12 @@
             margin: 0;
             padding: 10px;
             font-size: 14px;
+                    font-family: 'vazir', sans-serif;
+
             line-height: 1.2;
         }
 
-  
+
 
         .header {
             text-align: center;
@@ -136,7 +138,7 @@
     </style>
 </head>
 
-<body >
+<body>
     <div class="header">
         <h1>{{ $reportTitle }}</h1>
         <div>تاریخ تولید: {{ \Morilog\Jalali\Jalalian::now()->format('Y/m/d H:i') }}</div>
@@ -147,32 +149,10 @@
             <span class="value">{{ number_format($summary['total_count']) }}</span>
             <span class="label">تعداد رکوردها</span>
         </div>
-        <div>
-            <span class="value">{{ number_format($summary['total_amount']) }}</span>
-            <span class="label">مجموع کل</span>
-        </div>
+      
     </div>
 
-    {{-- <!-- نمایش مجموع مبالغ هر ارز -->
-    @if(isset($summary['currency_totals']) && count($summary['currency_totals']) > 0)
-    <div class="currency-summary">
-        <h4>📊 مجموع مبالغ بر اساس ارز:</h4>
-        <div class="currency-items">
-            @foreach($summary['currency_totals'] as $currency => $total)
-            <div class="currency-item">
-                <strong>
-                    @switch($currency)
-                    @case('AFN') افغانی @break
-                    @case('USD') دالر @break
-                    @default {{ $currency }}
-                    @endswitch
-                </strong>:
-                <span class="currency-amount">{{ number_format($total) }}</span>
-            </div>
-            @endforeach
-        </div>
-    </div>
-    @endif --}}
+
 
     @if($data && $data->count() > 0)
     <table>
@@ -289,13 +269,21 @@
                 <th>وضعیت کسر</th>
                 @break
 
+                @case('fund')
+                <th>نوع</th>
+                <th>نوع مصرف</th>
+                <th>مبلغ</th>
+                <th>واحد پول</th>
+                <th>تاریخ</th>
+                @break
+
                 @endswitch
             </tr>
         </thead>
 
         <tbody>
 
-         
+
             @foreach($data as $index => $report)
 
             <tr>
@@ -328,7 +316,7 @@
                 <td>{{ number_format($report->remained) }}</td>
                 <td>{{ number_format($report->remained + $report->price) }}</td>
 
-             
+
 
                 <td>{{ $report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
                     : '-' }}</td>
@@ -418,6 +406,25 @@
                 <td>{{ $report->date ? \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-' }}
                 </td>
                 <td>{{ $report->description ?? '-' }}</td>
+                @break
+
+
+                @case('fund')
+                <td>{{ $report->direction }}</td> <!-- از اکسسور مدل استفاده می‌کند -->
+                <td>{{ $report->expanses_type ?? '-' }}</td>
+                <td style="{{ $report->paid < 0 ? 'color:red;' : '' }}">{{ number_format($report->amount) }}</td>
+                <td>
+                    @switch($report->currency)
+                    @case('AFN') افغانی @break
+                    @case('USD') دالر @break
+                    @default {{ $report->currency }}
+                    @endswitch
+                </td>
+                <td>
+                    {{ $report->paid_date ? \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
+                    : ($report->created_at ?
+                    \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d') : '-') }}
+                </td>
                 @break
 
                 @case('loan')
@@ -532,18 +539,18 @@
                 @endswitch
             </tr>
             @endforeach
-  @if($reportType == 'accounting' && isset($summary['accounting_totals']))
-<tfoot>
-    <tr style="font-weight: bold; background: #f0f0f0;">
-        <td colspan="11">مجموع</td>
-        <td>{{ number_format($summary['accounting_totals']['total_price'] ?? 0) }}</td> <!-- مجموع تادیه -->
-        <td>{{ number_format($summary['accounting_totals']['total_paid'] ?? 0) }}</td> <!-- مجموع پرداخت شده -->
-        <td>{{ number_format($summary['accounting_totals']['total_remained'] ?? 0) }}</td> <!-- مجموع باقیات -->
-        <td>{{ number_format($summary['accounting_totals']['total_all'] ?? 0) }}</td> <!-- مجموع کل -->
-        <td colspan="3"></td>
-    </tr>
-</tfoot>
-@endif
+            @if($reportType == 'accounting' && isset($summary['accounting_totals']))
+        <tfoot>
+            <tr style="font-weight: bold; background: #f0f0f0;">
+                <td colspan="11">مجموع</td>
+                <td>{{ number_format($summary['accounting_totals']['total_price'] ?? 0) }}</td> <!-- مجموع تادیه -->
+                <td>{{ number_format($summary['accounting_totals']['total_paid'] ?? 0) }}</td> <!-- مجموع پرداخت شده -->
+                <td>{{ number_format($summary['accounting_totals']['total_remained'] ?? 0) }}</td> <!-- مجموع باقیات -->
+                <td>{{ number_format($summary['accounting_totals']['total_all'] ?? 0) }}</td> <!-- مجموع کل -->
+                <td colspan="3"></td>
+            </tr>
+        </tfoot>
+        @endif
 
 
         </tbody>
@@ -555,20 +562,7 @@
     </div>
     @endif
 
-    <div class="footer">
-        <div>سیستم گزارش‌گیری جامع</div>
-        <div>تعداد: {{ number_format($summary['total_count']) }} | مجموع کل: {{ number_format($summary['total_amount'])
-            }}</div>
-        @if(isset($summary['currency_totals']) && count($summary['currency_totals']) > 0)
-        <div style="margin-top: 3px;">
-            @foreach($summary['currency_totals'] as $currency => $total)
-            <span style="margin: 0 5px;">
-                {{ $currency }}: {{ number_format($total) }}
-            </span>
-            @endforeach
-        </div>
-        @endif
-    </div>
+  
 
     <!-- جدول موجودی صندوق -->
     @if(isset($safeRows) && count($safeRows) > 0)
@@ -596,26 +590,91 @@
                 $total_ir += $row['ir'];
                 @endphp
                 <tr>
-                    <td style="border:1px solid #262727; padding:4px;">{{ $row['type'] }}</td>
-                    <td style="border:1px solid #262727; padding:4px; text-align:center;">{{ number_format($row['af'])
+                    <td dir="ltr"  style="border:1px solid #262727; padding:4px;">{{ $row['type'] }}</td>
+                    <td dir="ltr" style="border:1px solid #262727; padding:4px; text-align:center;">{{ number_format($row['af'])
                         }}</td>
-                    <td style="border:1px solid #262727; padding:4px; text-align:center;">{{ number_format($row['us'])
+                    <td dir="ltr" style="border:1px solid #262727; padding:4px; text-align:center;">{{ number_format($row['us'])
                         }}</td>
-                    <td style="border:1px solid #262727; padding:4px; text-align:center;">{{ number_format($row['er'])
+                    <td dir="ltr" style="border:1px solid #262727; padding:4px; text-align:center;">{{ number_format($row['er'])
                         }}</td>
-                    <td style="border:1px solid #262727; padding:4px; text-align:center;">{{ number_format($row['ir'])
+                    <td dir="ltr" style="border:1px solid #262727; padding:4px; text-align:center;">{{ number_format($row['ir'])
                         }}</td>
                 </tr>
                 @endforeach
                 <!-- جمع کل -->
-                <tr style="font-weight:bold; background:#f0f0f0;">
-                    <td style="border:1px solid #262727; text-align:center;">جمع کل</td>
-                    <td style="border:1px solid #262727; text-align:center;">{{ number_format($total_af) }}</td>
-                    <td style="border:1px solid #262727; text-align:center;">{{ number_format($total_us) }}</td>
-                    <td style="border:1px solid #262727; text-align:center;">{{ number_format($total_er) }}</td>
-                    <td style="border:1px solid #262727; text-align:center;">{{ number_format($total_ir) }}</td>
+                <tr dir="ltr" style="font-weight:bold; background:#f0f0f0;">
+                    <td dir="ltr" style="border:1px solid #262727; text-align:center;">جمع کل</td>
+                    <td dir="ltr" style="border:1px solid #262727; text-align:center;">{{ number_format($total_af) }}</td>
+                    <td dir="ltr" style="border:1px solid #262727; text-align:center;">{{ number_format($total_us) }}</td>
+                    <td dir="ltr" style="border:1px solid #262727; text-align:center;">{{ number_format($total_er) }}</td>
+                    <td dir="ltr" style="border:1px solid #262727; text-align:center;">{{ number_format($total_ir) }}</td>
                 </tr>
             </tbody>
+        </table>
+    </div>
+    @endif
+
+
+    @if($reportType === 'fund' && (isset($summary['fund_receipts']) || isset($summary['fund_withdrawals'])))
+    <div style="margin-top:15px;">
+        <h4 style="margin-bottom:8px; font-size:13px;">خلاصه دریافت‌ها و برداشت‌ها</h4>
+
+        <table style="width:100%; border-collapse:collapse; font-size:11px;">
+            <tr>
+                <th style="border:1px solid #000; padding:4px; text-align:center;">نوع</th>
+                <th style="border:1px solid #000; padding:4px; text-align:center;">ارز</th>
+                <th style="border:1px solid #000; padding:4px; text-align:center;">مبلغ</th>
+            </tr>
+
+            @foreach($summary['fund_receipts'] as $currency => $amount)
+            <tr>
+                <td style="border:1px solid #000; padding:3px;">دریافت</td>
+                <td style="border:1px solid #000; padding:3px; text-align:center;">
+                    @switch($currency)
+                    @case('AFN') افغانی @break
+                    @case('USD') دالر @break
+                    @default {{ $currency }}
+                    @endswitch
+                </td>
+                <td dir="ltr" style="border:1px solid #000; padding:3px; text-align:right;">
+                    {{ number_format($amount) }}
+                </td>
+            </tr>
+            @endforeach
+
+            @foreach($summary['fund_withdrawals'] as $currency => $amount)
+            <tr>
+                <td style="border:1px solid #000; padding:3px;">برداشت</td>
+                <td style="border:1px solid #000; padding:3px; text-align:center;">
+                    @switch($currency)
+                    @case('AFN') افغانی @break
+                    @case('USD') دالر @break
+                    @default {{ $currency }}
+                    @endswitch
+                </td>
+                <td dir="ltr" style="border:1px solid #000; padding:3px; text-align:right;">
+                    {{ number_format($amount) }}
+                </td>
+            </tr>
+            @endforeach
+
+            <tr>
+                <td colspan="2" style="border:1px solid #000; padding:4px; font-weight:bold;">
+                    خالص کل
+                </td>
+                <td dir="ltr" style="border:1px solid #000; padding:4px; text-align:right; font-weight:bold;">
+                    @foreach($summary['currency_totals'] as $currency => $net)
+                    <div>
+                        {{ number_format($net) }}
+                        @switch($currency)
+                        @case('AFN') افغانی @break
+                        @case('USD') دالر @break
+                        @default {{ $currency }}
+                        @endswitch
+                    </div>
+                    @endforeach
+                </td>
+            </tr>
         </table>
     </div>
     @endif

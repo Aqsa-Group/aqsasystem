@@ -18,7 +18,7 @@ class DepositLogPrintController extends Controller
         try {
             $depositLog = DepositLog::with(['user', 'market', 'shop', 'shopkeeper'])->findOrFail($depositLogId);
 
-            $mpdf = new \Mpdf\Mpdf([
+           $mpdf = new \Mpdf\Mpdf([
                 'mode' => 'utf-8',
                 'format' => [210, 90],
                 'directionality' => 'rtl',
@@ -26,12 +26,13 @@ class DepositLogPrintController extends Controller
                 'margin_bottom' => 0,
                 'margin_left' => 0,
                 'margin_right' => 0,
-                'fontDir' => array_merge(
+                  'fontDir' => array_merge(
                     (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
                     [public_path('fonts/vazir/')]
                 ),
                 'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
                     'vazir' => [
+
                         'R' => 'Vazir-Light.ttf',
                         'B' => 'Vazir-Bold.ttf',
                         'useOTL' => 0xFF,
@@ -42,6 +43,7 @@ class DepositLogPrintController extends Controller
                 'tempDir' => storage_path('app/mpdf'),
             ]);
 
+
             $mpdf->SetAutoPageBreak(false);
             $mpdf->autoLangToFont = true;
             $mpdf->SetDefaultFont('vazir');
@@ -50,7 +52,6 @@ class DepositLogPrintController extends Controller
             $html = view('exports.deposit_log_print', compact('depositLog'))->render();
             $mpdf->WriteHTML($html);
 
-            // نام فایل PDF
             $fileName = 'رسید_پرداخت_' . $depositLog->id . '_' . time() . '.pdf';
             $path = storage_path('app/public/' . $fileName);
 

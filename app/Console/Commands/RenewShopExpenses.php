@@ -17,7 +17,6 @@ class RenewShopExpenses extends Command
     {
         $today = Carbon::today();
 
-        // تمام رکوردهای منقضی شده تا امروز
         $expired = Accounting::whereDate('expiration_date', '<=', $today)->get();
 
         foreach ($expired as $item) {
