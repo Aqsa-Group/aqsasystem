@@ -209,7 +209,7 @@ class DepositResource extends Resource
                     ->icon('heroicon-o-pencil')
                     ->modalHeading('تصحیح مبلغ پرداختی')
                     ->modalButton('ذخیره تصحیح')
-                        ->modalWidth('2xl') 
+                        ->modalWidth('xl') 
                             ->extraAttributes(['class' => 'h-[900px]'])
                     ->form([
                         Forms\Components\TextInput::make('paid')
