@@ -87,83 +87,46 @@ class GeneralReportPdfExport
             'tempDir' => storage_path('app/mpdf'),
         ]);
     }
-    protected function getSafeSummaryRows()
-    {
-        $user = \Illuminate\Support\Facades\Auth::guard('market')->user();
-        if (!$user) {
-            return [];
-        }
+  protected function getSafeSummaryRows()
+{
+    $user = \Illuminate\Support\Facades\Auth::guard('market')->user();
 
-        $adminId = $user->role === 'admin' ? $user->id : ($user->admin_id ?? $user->id);
-
-        $query = \Illuminate\Support\Facades\DB::connection('market')
-            ->table('accountings')
-            ->select('expanses_type', 'currency', DB::raw('SUM(paid) as total_paid'));
-
-        // اعمال محدودیت دسترسی
-        if ($user->role !== 'superadmin') {
-            $query->where('admin_id', $adminId);
-        }
-
-        $filters = $this->filters; // آرایه فیلترهای ارسالی از لایوویر
-
-        // فیلتر بر اساس مارکت
-        if (!empty($filters['marketId'])) {
-            $query->where('market_id', $filters['marketId']);
-        }
-
-        // فیلتر بر اساس دوکان
-        if (!empty($filters['shopId'])) {
-            $query->where('shop_id', $filters['shopId']);
-        }
-
-        // فیلتر بر اساس غرفه
-        if (!empty($filters['boothId'])) {
-            $query->where('booth_id', $filters['boothId']);
-        }
-
-        // فیلتر بر اساس دوکاندار
-        if (!empty($filters['shopkeeperId'])) {
-            $query->where('shopkeeper_id', $filters['shopkeeperId']);
-        }
-
-        // فیلتر بر اساس واحد پول
-        if (!empty($filters['currency'])) {
-            $query->where('currency', $filters['currency']);
-        }
-
-        // فیلتر بر اساس نوع مصرف
-        if (!empty($filters['expansesType'])) {
-            $query->where('expanses_type', $filters['expansesType']);
-        }
-
-        // فیلتر تاریخ ترکیبی (اگر paid_date موجود باشد از آن استفاده کن، در غیر این صورت created_at)
-        if (!empty($filters['startDate'])) {
-            $query->whereDate(DB::raw('COALESCE(paid_date, created_at)'), '>=', $filters['startDate']);
-        }
-        if (!empty($filters['endDate'])) {
-            $query->whereDate(DB::raw('COALESCE(paid_date, created_at)'), '<=', $filters['endDate']);
-        }
-
-        // فیلتر طبقه (اختیاری – در صورت نیاز می‌توانید از طریق رابطه اضافه کنید، اما برای سادگی فعلاً نادیده گرفته می‌شود)
-
-        $results = $query->groupBy('expanses_type', 'currency')->get();
-
-        // گروه‌بندی بر اساس نوع مصرف
-        $grouped = $results->groupBy('expanses_type');
-        $rows = [];
-        foreach ($grouped as $type => $group) {
-            $rows[] = [
-                'type' => $type,
-                'af' => $group->firstWhere('currency', 'AFN')?->total_paid ?? 0,
-                'us' => $group->firstWhere('currency', 'USD')?->total_paid ?? 0,
-                'er' => $group->firstWhere('currency', 'EUR')?->total_paid ?? 0,
-                'ir' => $group->firstWhere('currency', 'IRR')?->total_paid ?? 0,
-            ];
-        }
-
-        return $rows;
+    if (!$user) {
+        return [];
     }
+
+    $query = \Illuminate\Support\Facades\DB::connection('market')
+        ->table('accountings')
+        ->select('expanses_type', 'currency', DB::raw('SUM(paid) as total_paid'));
+
+    if ($user->role !== 'superadmin') {
+        $adminId = $user->role === 'admin'
+            ? $user->id
+            : $user->admin_id;
+
+        $query->where('admin_id', $adminId);
+    }
+
+    $results = $query
+        ->groupBy('expanses_type', 'currency')
+        ->get();
+
+    $grouped = $results->groupBy('expanses_type');
+
+    $rows = [];
+
+    foreach ($grouped as $type => $group) {
+        $rows[] = [
+            'type' => $type,
+            'af' => $group->firstWhere('currency', 'AFN')?->total_paid ?? 0,
+            'us' => $group->firstWhere('currency', 'USD')?->total_paid ?? 0,
+            'er' => $group->firstWhere('currency', 'EUR')?->total_paid ?? 0,
+            'ir' => $group->firstWhere('currency', 'IRR')?->total_paid ?? 0,
+        ];
+    }
+
+    return $rows;
+}
 
     protected function generateHtml()
     {

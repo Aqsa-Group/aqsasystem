@@ -455,8 +455,8 @@ class ConversionInAccount extends Component
     public function calculateReceivedAmount()
     {
         if ($this->buy_amount && $this->currency_rate && $this->from_currency && $this->to_currency) {
-            $fromCurrency = $this->from_currency;
-            $toCurrency = $this->to_currency;
+            $fromCurrency = strtolower($this->from_currency);
+            $toCurrency = strtolower($this->to_currency);
 
             // تبدیل مقادیر به عدد
             $amount = floatval(str_replace(',', '', $this->buy_amount));
@@ -469,15 +469,32 @@ class ConversionInAccount extends Component
                 return;
             }
 
-            // محاسبه بر اساس فرمول جدید
+            // محاسبه بر اساس فرمول
             if ($fromCurrency === 'afn' && $toCurrency === 'irr') {
-                // تبدیل افغانی به تومان: (مبلغ خرید × 1,000) ÷ نرخ ارز
+                // تبدیل افغانی به تومان
                 $calculatedAmount = ($amount * 1000) / $rate;
             } elseif ($fromCurrency === 'irr' && $toCurrency === 'afn') {
-                // تبدیل تومان به افغانی: (مبلغ خرید × نرخ ارز) ÷ 1,000
+                // تبدیل تومان به افغانی
                 $calculatedAmount = ($amount * $rate) / 1000;
+            } elseif ($fromCurrency === 'irr' && $toCurrency === 'usd') {
+                // تومان به دلار: مبلغ ÷ نرخ دلار
+                $calculatedAmount = $amount / $rate;
+            } elseif ($fromCurrency === 'irr' && $toCurrency === 'eur') {
+                // تومان به یورو: اول به دلار، بعد دلار به یورو
+                // فرض: $rate = نرخ دلار به تومان
+                $usdAmount = $amount / $rate;
+                $eurToUsdRate = 1.1; // نرخ یورو به دلار (این مقدار را از دیتابیس یا API بگیرید)
+                $calculatedAmount = $usdAmount / $eurToUsdRate;
+            } elseif ($fromCurrency === 'usd' && $toCurrency === 'eur') {
+                // دلار به یورو
+                $eurToUsdRate = 1.1;
+                $calculatedAmount = $amount / $eurToUsdRate;
+            } elseif ($fromCurrency === 'eur' && $toCurrency === 'usd') {
+                // یورو به دلار
+                $eurToUsdRate = 1.1;
+                $calculatedAmount = $amount * $eurToUsdRate;
             } else {
-                // برای سایر ارزها از منطق قبلی استفاده می‌کنیم
+                // سایر ارزها
                 $shouldDivide = $this->shouldUseDivision($fromCurrency, $toCurrency);
                 if ($shouldDivide) {
                     $calculatedAmount = $amount / $rate;
