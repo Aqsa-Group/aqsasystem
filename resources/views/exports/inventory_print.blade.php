@@ -52,7 +52,7 @@
 
                 <td>{{ $item->name }}</td>
                 <td>{{ $item->all_exist_number }}</td>
-                <td>{{ $item->price }}</td>               
+                <td>{{ number_format($item->price ,2) }}</td>
                 <td>{{ number_format($item->retail_price ,2) }}</td>
                 <td>{{ number_format($item->big_whole_price,2) }}</td>
                 <td>دالر</td>
