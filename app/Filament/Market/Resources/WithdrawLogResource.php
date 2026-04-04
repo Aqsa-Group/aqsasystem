@@ -37,9 +37,8 @@ class WithdrawLogResource extends Resource
                 TextColumn::make('amount')->label('مقدار')->money('AFN', true)->sortable(),
                 TextColumn::make('recipient_name')
                     ->label('تحویل داده شده به')
-                    ->sortable()
-                    ->searchable(),
-                TextColumn::make('description')->label('توضیحات')->limit(50)->wrap(),
+                    ->sortable(),
+                TextColumn::make('description')->label('توضیحات')->searchable()->limit(50)->wrap(),
                 TextColumn::make('created_at')
                     ->label('تاریخ برداشت')
                     ->sortable()
