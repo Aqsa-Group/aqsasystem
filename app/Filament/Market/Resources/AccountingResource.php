@@ -342,6 +342,7 @@ class AccountingResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('shopkeeper_name')
                     ->label('نام دوکاندار')
+                    ->searchable()
                     ->getStateUsing(function ($record) {
                         return
                             $record->shop?->shopkeeper?->fullname
@@ -349,8 +350,8 @@ class AccountingResource extends Resource
                             ?? '—';
                     }),
 
-                Tables\Columns\TextColumn::make('shopkeeper.fullname')->label('نام دوکاندار'),
-                Tables\Columns\TextColumn::make('expanses_type')->label('نوع مصرف'),
+                Tables\Columns\TextColumn::make('shopkeeper.fullname')->label('نام دوکاندار')->searchable(),
+                Tables\Columns\TextColumn::make('expanses_type')->label('نوع مصرف')->searchable(),
                 Tables\Columns\TextColumn::make('price')->label('مبلغ')->suffix(' افغانی'),
                 Tables\Columns\TextColumn::make('currency')->label('واحد پول'),
 
