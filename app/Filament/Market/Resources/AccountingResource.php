@@ -342,7 +342,6 @@ class AccountingResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('shopkeeper_name')
                     ->label('نام دوکاندار')
-                    ->searchable()
                     ->getStateUsing(function ($record) {
                         return
                             $record->shop?->shopkeeper?->fullname
