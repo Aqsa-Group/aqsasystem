@@ -96,7 +96,7 @@ class InventoryResource extends Resource
                     ->first();
 
                     if ($product) {
-                      $set('name', $product->name);
+                    $set('name', $product->name);
                     $set('unit', $product->unit);
                     $set('brand', $product->brand);
 
