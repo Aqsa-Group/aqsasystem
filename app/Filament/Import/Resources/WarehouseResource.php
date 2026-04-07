@@ -146,7 +146,7 @@ class WarehouseResource extends Resource
                 ->label('تعداد برداشت از گدام بر حسب بسته یا کارتن')
                 ->required()
                 ->numeric()
-                ->lazy()
+                ->debounce(500)
                 ->visible(fn($get) => $get('unit') == 'بسته' || $get('unit') == 'کارتن')
                 ->afterStateUpdated(function (callable $set, $state, callable $get) {
                     $unit = $get('unit');
