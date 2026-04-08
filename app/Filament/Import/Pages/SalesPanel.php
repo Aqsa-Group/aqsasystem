@@ -437,15 +437,21 @@ public function finalizeInvoice(): void
             'margin_bottom' => 2,
             'margin_left' => 10,
             'margin_right' => 10,
-            'fontDir' => array_merge($fontDirs, [public_path('fonts')]),
-            'fontdata' => $fontData + [
-                'vazir' => ['R' => 'ScheherazadeNew-Regular.ttf'],
-            ],
-            'default_font' => 'vazir',
-            'tempDir' => storage_path('app/mpdf/tmp'),
-
-        ]);
-
+             'fontDir' => array_merge(
+                    (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+                    [public_path('fonts/vazir/')]
+                ),
+                'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+                    'vazir' => [
+                        'R' => 'Vazir-Light.ttf',
+                        'B' => 'Vazir-Bold.ttf',
+                        'useOTL' => 0xFF,
+                        'useKashida' => 75,
+                    ],
+                ],
+                'default_font' => 'vazir',
+                'tempDir' => storage_path('app/mpdf'),
+            ]);
         $mpdf->SetDirectionality('rtl');
         $mpdf->autoScriptToLang = false;
         $mpdf->autoLangToFont = false;
