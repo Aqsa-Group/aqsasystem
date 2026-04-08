@@ -20,11 +20,17 @@ class EditDeposit extends EditRecord
     {
         $deposit = $this->record->fresh();
 
-        $currentPayment = $data['paid'] ?? 0;
+        $currentPayment = (int) ($data['paid'] ?? 0);
         $lastPaid = $deposit->paid ?? 0;
 
-        $totalPaid = $lastPaid + $currentPayment;
         $totalPrice = $deposit->price ?? 0;
+        $totalPaid = $lastPaid + $currentPayment;
+
+        if ($totalPaid > $totalPrice) {
+            $remaining = $totalPrice - $lastPaid;
+            throw new \Exception("مبلغ پرداختی نمی‌تواند از مقدار باقیمانده ({$remaining}) بیشتر باشد.");
+        }
+
         $remaining = max($totalPrice - $totalPaid, 0);
 
         DepositLog::create([
@@ -48,9 +54,11 @@ class EditDeposit extends EditRecord
 
         return $data;
     }
+
+
     protected function getRedirectUrl(): string
     {
-       
-         return route('filament.market.resources.deposit-logs.index');
+
+        return route('filament.market.resources.deposit-logs.index');
     }
 }

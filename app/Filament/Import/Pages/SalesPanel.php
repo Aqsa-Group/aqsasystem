@@ -57,20 +57,20 @@ class SalesPanel extends Page
 
     public ?string $receivedCurrency = null;
     public ?float $usdToAfnRate = 0.000;
-public float $convertedReceivedAmount = 0;
+    public float $convertedReceivedAmount = 0;
 
     public function getConvertedReceivedAmountProperty(): float
-{
-    if ($this->saleType === 'retail') {
-        return collect($this->items)->sum('total') - $this->discount;
-    }
+    {
+        if ($this->saleType === 'retail') {
+            return collect($this->items)->sum('total') - $this->discount;
+        }
 
-    if ($this->receivedCurrency === 'AFN' && $this->usdToAfnRate > 0) {
-        return $this->receivedAmount / $this->usdToAfnRate;
-    }
+        if ($this->receivedCurrency === 'AFN' && $this->usdToAfnRate > 0) {
+            return $this->receivedAmount / $this->usdToAfnRate;
+        }
 
-    return $this->receivedAmount;
-}
+        return $this->receivedAmount;
+    }
     private function roundAmount($value): float
     {
         return round((float) $value, 3);
@@ -107,17 +107,17 @@ public float $convertedReceivedAmount = 0;
         }
     }
 
-public function updateItemPrice(int $index): void
-{
-    if (!isset($this->items[$index])) return;
+    public function updateItemPrice(int $index): void
+    {
+        if (!isset($this->items[$index])) return;
 
-    $quantity = $this->items[$index]['quantity'] ?? 0;
-    $price = $this->items[$index]['price'] ?? 0;
+        $quantity = $this->items[$index]['quantity'] ?? 0;
+        $price = $this->items[$index]['price'] ?? 0;
 
-    $price = is_numeric($price) ? (float) $price : 0;
+        $price = is_numeric($price) ? (float) $price : 0;
 
-    $this->items[$index]['total'] = $this->roundAmount($quantity * $price);
-}
+        $this->items[$index]['total'] = $this->roundAmount($quantity * $price);
+    }
 
 
     public function updatedBarcode(): void
@@ -238,177 +238,177 @@ public function updateItemPrice(int $index): void
     }
 
     public function finalizeAndPrintInvoice(): void
-{
-    // اول ثبت
-    $this->finalizeInvoice();
+    {
+        // اول ثبت
+        $this->finalizeInvoice();
 
-    // بعد چاپ
-    $this->printInvoice();
-}
-
-public function finalizeInvoice(): void
-{
-    // بررسی شرایط اولیه
-    if ($this->saleType === 'wholesale' && empty($this->customer_id)) {
-        Notification::make()->title('⚠️ لطفاً خریدار را انتخاب کنید!')->warning()->send();
-        return;
+        // بعد چاپ
+        $this->printInvoice();
     }
 
-    if (empty($this->items)) {
-        Notification::make()->title('⚠️ کالایی برای ثبت وجود ندارد!')->warning()->send();
-        return;
-    }
-
-    DB::transaction(function () {
-
-        // مجموع کل و مبلغ نهایی بعد از تخفیف
-        $totalPrice = $this->roundAmount(collect($this->items)->sum('total'));
-        $finalPrice = $this->roundAmount(max(0, $totalPrice - $this->discount));
-
-        // محاسبه دریافتی
-        $convertedReceived = $this->saleType === 'retail'
-            ? $finalPrice
-            : ($this->receivedCurrency === 'AFN'
-                ? $this->roundAmount($this->receivedAmount / max(0.0001, $this->usdToAfnRate))
-                : $this->roundAmount($this->receivedAmount)
-            );
-
-        // ایجاد فاکتور
-        $sale = new Sale();
-        $sale->sale_type = $this->saleType;
-        $sale->total_price = $finalPrice;
-        $sale->discount = $this->roundAmount($this->discount);
-        $sale->customer_id = $this->customer_id;
-        $sale->buyer_name = $this->saleType === 'retail'
-            ? ($this->buyerName ?: 'خریدار نقدی')
-            : optional(Customer::find($this->customer_id))->name;
-        $sale->received_amount = $convertedReceived;
-        $sale->remaining_amount = $this->saleType === 'retail' ? 0.000 : $this->roundAmount(max(0, $finalPrice - $convertedReceived));
-        $sale->user_id = Auth::id();
-        $sale->save();
-
-        $sale->invoice_number = $sale->id;
-        $sale->save();
-        $this->lastSale = $sale;
-
-        // بروزرسانی صندوق
-        $safe = Safe::firstOrCreate([], [
-            'USD' => 0,
-            'AFN' => 0,
-            'today' => 0,
-            'user_id' => Auth::id(),
-            'last_update' => now()->toDateString(),
-        ]);
-
-        if ($safe->last_update !== now()->toDateString()) {
-            $safe->today = 0;
-            $safe->last_update = now()->toDateString();
+    public function finalizeInvoice(): void
+    {
+        // بررسی شرایط اولیه
+        if ($this->saleType === 'wholesale' && empty($this->customer_id)) {
+            Notification::make()->title('⚠️ لطفاً خریدار را انتخاب کنید!')->warning()->send();
+            return;
         }
 
-        // **بروزرسانی صندوق بر اساس ارز دریافتی و نوع فروش**
+        if (empty($this->items)) {
+            Notification::make()->title('⚠️ کالایی برای ثبت وجود ندارد!')->warning()->send();
+            return;
+        }
+
+        DB::transaction(function () {
+
+            // مجموع کل و مبلغ نهایی بعد از تخفیف
+            $totalPrice = $this->roundAmount(collect($this->items)->sum('total'));
+            $finalPrice = $this->roundAmount(max(0, $totalPrice - $this->discount));
+
+            // محاسبه دریافتی
+            $convertedReceived = $this->saleType === 'retail'
+                ? $finalPrice
+                : ($this->receivedCurrency === 'AFN'
+                    ? $this->roundAmount($this->receivedAmount / max(0.0001, $this->usdToAfnRate))
+                    : $this->roundAmount($this->receivedAmount)
+                );
+
+            // ایجاد فاکتور
+            $sale = new Sale();
+            $sale->sale_type = $this->saleType;
+            $sale->total_price = $finalPrice;
+            $sale->discount = $this->roundAmount($this->discount);
+            $sale->customer_id = $this->customer_id;
+            $sale->buyer_name = $this->saleType === 'retail'
+                ? ($this->buyerName ?: 'خریدار نقدی')
+                : optional(Customer::find($this->customer_id))->name;
+            $sale->received_amount = $convertedReceived;
+            $sale->remaining_amount = $this->saleType === 'retail' ? 0.000 : $this->roundAmount(max(0, $finalPrice - $convertedReceived));
+            $sale->user_id = Auth::id();
+            $sale->save();
+
+            $sale->invoice_number = $sale->id;
+            $sale->save();
+            $this->lastSale = $sale;
+
+            // بروزرسانی صندوق
+            $safe = Safe::firstOrCreate([], [
+                'USD' => 0,
+                'AFN' => 0,
+                'today' => 0,
+                'user_id' => Auth::id(),
+                'last_update' => now()->toDateString(),
+            ]);
+
+            if ($safe->last_update !== now()->toDateString()) {
+                $safe->today = 0;
+                $safe->last_update = now()->toDateString();
+            }
+
+            // **بروزرسانی صندوق بر اساس ارز دریافتی و نوع فروش**
             if ($this->saleType === 'retail') {
-            if ($this->receivedCurrency === 'AFN') {
-                // فروش پرچون، ارز دریافتی افغانی → مجموع کل فاکتور تبدیل به افغانی
-                $afnAmount = $this->roundAmount($finalPrice * $this->usdToAfnRate);
-                $safe->AFN = $this->roundAmount($safe->AFN + $afnAmount);
-            } else {
-                // فروش پرچون، ارز دریافتی USD → کل مبلغ فاکتور به USD صندوق اضافه شود
-                $safe->USD = $this->roundAmount($safe->USD + $finalPrice);
-            }
-        } else {
-            // فروش عمده
-            if ($this->receivedCurrency === 'AFN') {
-                $safe->AFN = $this->roundAmount($safe->AFN + $this->receivedAmount);
-            } else {
-                $safe->USD = $this->roundAmount($safe->USD + $this->receivedAmount);
-            }
-        }
-
-
-        $safe->today = $this->roundAmount($safe->today + $finalPrice);
-        $safe->save();
-
-        // پردازش آیتم‌ها و کاهش موجودی
-        foreach ($this->items as $item) {
-            $warehouse = Warehouse::where('barcode', $item['barcode'])->first();
-            if (!$warehouse) continue;
-
-            // کاهش موجودی
-            if ($warehouse->unit === 'دانه') {
-                $warehouse->all_exist_number -= $item['quantity'];
-                $warehouse->all_exist_number = max(0, $warehouse->all_exist_number);
-            } else {
-                if ($this->saleType === 'wholesale') {
-                    $warehouse->quantity -= $item['quantity'];
-                    $warehouse->all_exist_number -= ($item['quantity'] * $warehouse->big_quantity);
-                    $warehouse->quantity = max(0, $warehouse->quantity);
-                    $warehouse->all_exist_number = max(0, $warehouse->all_exist_number);
+                if ($this->receivedCurrency === 'AFN') {
+                    // فروش پرچون، ارز دریافتی افغانی → مجموع کل فاکتور تبدیل به افغانی
+                    $afnAmount = $this->roundAmount($finalPrice * $this->usdToAfnRate);
+                    $safe->AFN = $this->roundAmount($safe->AFN + $afnAmount);
                 } else {
-                    $warehouse->all_exist_number -= $item['quantity'];
-                    $warehouse->all_exist_number = max(0, $warehouse->all_exist_number);
-
-                    if ($warehouse->big_quantity > 0) {
-                        $cartonsToReduce = intdiv($item['quantity'], $warehouse->big_quantity);
-                        if ($cartonsToReduce > 0) {
-                            $warehouse->quantity = max(0, $warehouse->quantity - $cartonsToReduce);
-                        }
-                    }
-
-                    if ($warehouse->all_exist_number < $warehouse->big_quantity &&
-                        $warehouse->all_exist_number > 0 &&
-                        $warehouse->quantity > 0) {
-                        $warehouse->quantity = 0;
-                    }
+                    // فروش پرچون، ارز دریافتی USD → کل مبلغ فاکتور به USD صندوق اضافه شود
+                    $safe->USD = $this->roundAmount($safe->USD + $finalPrice);
+                }
+            } else {
+                // فروش عمده
+                if ($this->receivedCurrency === 'AFN') {
+                    $safe->AFN = $this->roundAmount($safe->AFN + $this->receivedAmount);
+                } else {
+                    $safe->USD = $this->roundAmount($safe->USD + $this->receivedAmount);
                 }
             }
 
-            // محاسبات مالی
-            $unitPrice = $this->roundAmount($item['price']);
-            $totalSale = $this->roundAmount($item['quantity'] * $unitPrice);
-            $totalCost = $this->roundAmount($item['quantity'] * $warehouse->price);
 
-            $discountShare = 0.000;
-            if ($sale->discount > 0 && $totalPrice > 0) {
-                $discountShare = $this->roundAmount(($totalSale / $totalPrice) * $sale->discount);
+            $safe->today = $this->roundAmount($safe->today + $finalPrice);
+            $safe->save();
+
+            // پردازش آیتم‌ها و کاهش موجودی
+            foreach ($this->items as $item) {
+                $warehouse = Warehouse::where('barcode', $item['barcode'])->first();
+                if (!$warehouse) continue;
+
+                // کاهش موجودی
+                if ($warehouse->unit === 'دانه') {
+                    $warehouse->all_exist_number -= $item['quantity'];
+                    $warehouse->all_exist_number = max(0, $warehouse->all_exist_number);
+                } else {
+                    if ($this->saleType === 'wholesale') {
+                        $warehouse->quantity -= $item['quantity'];
+                        $warehouse->all_exist_number -= ($item['quantity'] * $warehouse->big_quantity);
+                        $warehouse->quantity = max(0, $warehouse->quantity);
+                        $warehouse->all_exist_number = max(0, $warehouse->all_exist_number);
+                    } else {
+                        $warehouse->all_exist_number -= $item['quantity'];
+                        $warehouse->all_exist_number = max(0, $warehouse->all_exist_number);
+
+                        if ($warehouse->big_quantity > 0) {
+                            $cartonsToReduce = intdiv($item['quantity'], $warehouse->big_quantity);
+                            if ($cartonsToReduce > 0) {
+                                $warehouse->quantity = max(0, $warehouse->quantity - $cartonsToReduce);
+                            }
+                        }
+
+                        if (
+                            $warehouse->all_exist_number < $warehouse->big_quantity &&
+                            $warehouse->all_exist_number > 0 &&
+                            $warehouse->quantity > 0
+                        ) {
+                            $warehouse->quantity = 0;
+                        }
+                    }
+                }
+
+                // محاسبات مالی
+                $unitPrice = $this->roundAmount($item['price']);
+                $totalSale = $this->roundAmount($item['quantity'] * $unitPrice);
+                $totalCost = $this->roundAmount($item['quantity'] * $warehouse->price);
+
+                $discountShare = 0.000;
+                if ($sale->discount > 0 && $totalPrice > 0) {
+                    $discountShare = $this->roundAmount(($totalSale / $totalPrice) * $sale->discount);
+                }
+
+                $totalProfit = $this->roundAmount(($totalSale - $discountShare) - $totalCost);
+                $profit = $totalProfit > 0 ? $totalProfit : 0.000;
+                $loss = $totalProfit < 0 ? abs($totalProfit) : 0.000;
+
+                $warehouse->save();
+
+                SaleItem::create([
+                    'sale_id'        => $sale->id,
+                    'warehouse_id'   => $warehouse->id,
+                    'quantity'       => $item['quantity'],
+                    'price_per_unit' => $unitPrice,
+                    'total_price'    => $totalSale,
+                    'profit'         => $profit,
+                    'loss'           => $loss,
+                    'user_id'        => Auth::id(),
+                ]);
             }
 
-            $totalProfit = $this->roundAmount(($totalSale - $discountShare) - $totalCost);
-            $profit = $totalProfit > 0 ? $totalProfit : 0.000;
-            $loss = $totalProfit < 0 ? abs($totalProfit) : 0.000;
+            // ایجاد وام فقط برای فروش عمده
+            if ($this->saleType === 'wholesale' && $sale->remaining_amount > 0) {
+                Loan::create([
+                    'customer_id' => $this->customer_id,
+                    'amount' => $this->roundAmount($sale->remaining_amount),
+                    'loan_recipt' => 0,
+                    'reminded' => $this->roundAmount($sale->remaining_amount),
+                    'type' => 'بردگی',
+                    'user_id' => Auth::id(),
+                    'date' => now(),
+                    'currency' => 'دالر'
+                ]);
+            }
+        });
 
-            $warehouse->save();
-
-            SaleItem::create([
-                'sale_id'        => $sale->id,
-                'warehouse_id'   => $warehouse->id,
-                'quantity'       => $item['quantity'],
-                'price_per_unit' => $unitPrice,
-                'total_price'    => $totalSale,
-                'profit'         => $profit,
-                'loss'           => $loss,
-                'user_id'        => Auth::id(),
-            ]);
-        }
-
-        // ایجاد وام فقط برای فروش عمده
-        if ($this->saleType === 'wholesale' && $sale->remaining_amount > 0) {
-            Loan::create([
-                'customer_id' => $this->customer_id,
-                'amount' => $this->roundAmount($sale->remaining_amount),
-                'loan_recipt' => 0,
-                'reminded' => $this->roundAmount($sale->remaining_amount),
-                'type' => 'بردگی',
-                'user_id' => Auth::id(),
-                'date' => now(),
-                'currency'=>'دالر'
-            ]);
-        }
-    });
-
-    Notification::make()->title('فاکتور با موفقیت ثبت شد!')->success()->send();
-  
-
-}
+        Notification::make()->title('فاکتور با موفقیت ثبت شد!')->success()->send();
+    }
 
 
     public function printInvoice(): void
@@ -437,21 +437,21 @@ public function finalizeInvoice(): void
             'margin_bottom' => 2,
             'margin_left' => 10,
             'margin_right' => 10,
-             'fontDir' => array_merge(
-                    (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
-                    [public_path('fonts/vazir/')]
-                ),
-                'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
-                    'vazir' => [
-                        'R' => 'Vazir-Light.ttf',
-                        'B' => 'Vazir-Bold.ttf',
-                        'useOTL' => 0xFF,
-                        'useKashida' => 75,
-                    ],
+            'fontDir' => array_merge(
+                (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+                [public_path('fonts/vazir/')]
+            ),
+            'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+                'vazir' => [
+                    'R' => 'Vazir-Light.ttf',
+                    'B' => 'Vazir-Bold.ttf',
+                    'useOTL' => 0xFF,
+                    'useKashida' => 75,
                 ],
-                'default_font' => 'vazir',
-                'tempDir' => storage_path('app/mpdf'),
-            ]);
+            ],
+            'default_font' => 'vazir',
+            'tempDir' => storage_path('app/mpdf'),
+        ]);
         $mpdf->SetDirectionality('rtl');
         $mpdf->autoScriptToLang = false;
         $mpdf->autoLangToFont = false;
@@ -468,30 +468,30 @@ public function finalizeInvoice(): void
             $si->profit = $this->roundAmount($si->profit ?? 0);
             $si->loss = $this->roundAmount($si->loss ?? 0);
         }
-  $previousLoanRemaining = 0;
+        $previousLoanRemaining = 0;
 
-if ($sale->sale_type === 'wholesale' && $sale->customer_id) {
-    
-    // تمام بردها و رسیدهای قبل از این فاکتور را می‌گیریم
-    $previousData = Loan::where('customer_id', $sale->customer_id)
-        ->where('created_at', '<', $sale->created_at)
-        ->selectRaw('
+        if ($sale->sale_type === 'wholesale' && $sale->customer_id) {
+
+            // تمام بردها و رسیدهای قبل از این فاکتور را می‌گیریم
+            $previousData = Loan::where('customer_id', $sale->customer_id)
+                ->where('created_at', '<', $sale->created_at)
+                ->selectRaw('
             COALESCE(SUM(amount), 0) AS total_borrow,
             COALESCE(SUM(loan_recipt), 0) AS total_receipt
         ')
-        ->first();
+                ->first();
 
-    // بدهی واقعی = کل قرض - کل رسید
-    $previousLoanRemaining = $previousData->total_borrow - $previousData->total_receipt;
-}
+            // بدهی واقعی = کل قرض - کل رسید
+            $previousLoanRemaining = $previousData->total_borrow - $previousData->total_receipt;
+        }
 
 
-    $html = view('pdf.invoice', [
-        'sale'       => $sale,
-        'discount'   => $discount,
-        'finalPrice' => $finalPrice,
-        'previousLoanRemaining' => $previousLoanRemaining,
-    ])->render();
+        $html = view('pdf.invoice', [
+            'sale'       => $sale,
+            'discount'   => $discount,
+            'finalPrice' => $finalPrice,
+            'previousLoanRemaining' => $previousLoanRemaining,
+        ])->render();
 
         $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
 
@@ -533,28 +533,28 @@ if ($sale->sale_type === 'wholesale' && $sale->customer_id) {
         $this->productError = false;
     }
 
-  public function increaseQuantity(int $index): void
-{
-    if (!isset($this->items[$index])) return;
+    public function increaseQuantity(int $index): void
+    {
+        if (!isset($this->items[$index])) return;
 
-    $this->items[$index]['quantity']++;
-    // استفاده از قیمت موجود در آرایه بدون مراجعه به دیتابیس
-    $this->items[$index]['total'] = $this->roundAmount(
-        $this->items[$index]['quantity'] * $this->items[$index]['price']
-    );
-}
-
-public function decreaseQuantity(int $index): void
-{
-    if (!isset($this->items[$index])) return;
-    if ($this->items[$index]['quantity'] > 1) {
-        $this->items[$index]['quantity']--;
+        $this->items[$index]['quantity']++;
         // استفاده از قیمت موجود در آرایه بدون مراجعه به دیتابیس
         $this->items[$index]['total'] = $this->roundAmount(
             $this->items[$index]['quantity'] * $this->items[$index]['price']
         );
     }
-}
+
+    public function decreaseQuantity(int $index): void
+    {
+        if (!isset($this->items[$index])) return;
+        if ($this->items[$index]['quantity'] > 1) {
+            $this->items[$index]['quantity']--;
+            // استفاده از قیمت موجود در آرایه بدون مراجعه به دیتابیس
+            $this->items[$index]['total'] = $this->roundAmount(
+                $this->items[$index]['quantity'] * $this->items[$index]['price']
+            );
+        }
+    }
 
 
     public function removeItem(int $index): void
@@ -570,23 +570,23 @@ public function decreaseQuantity(int $index): void
         return str_replace($persian, $english, $input);
     }
 
-public function getLiveRemainingAmountProperty(): float
-{
-    if ($this->saleType === 'retail') {
-        return 0.000;
+    public function getLiveRemainingAmountProperty(): float
+    {
+        if ($this->saleType === 'retail') {
+            return 0.000;
+        }
+
+        $total = $this->roundAmount(collect($this->items)->sum('total'));
+        $finalPrice = max(0, $total - $this->discount);
+
+        // محاسبه دریافتی تبدیل شده
+        $convertedReceived = 0;
+        if ($this->receivedCurrency === 'AFN' && $this->usdToAfnRate > 0) {
+            $convertedReceived = $this->roundAmount($this->receivedAmount / $this->usdToAfnRate);
+        } else {
+            $convertedReceived = $this->roundAmount($this->receivedAmount);
+        }
+
+        return $this->roundAmount(max(0, $finalPrice - $convertedReceived));
     }
-    
-    $total = $this->roundAmount(collect($this->items)->sum('total'));
-    $finalPrice = max(0, $total - $this->discount);
-    
-    // محاسبه دریافتی تبدیل شده
-    $convertedReceived = 0;
-    if ($this->receivedCurrency === 'AFN' && $this->usdToAfnRate > 0) {
-        $convertedReceived = $this->roundAmount($this->receivedAmount / $this->usdToAfnRate);
-    } else {
-        $convertedReceived = $this->roundAmount($this->receivedAmount);
-    }
-    
-    return $this->roundAmount(max(0, $finalPrice - $convertedReceived));
-}
 }

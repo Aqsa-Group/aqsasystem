@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\Jalalian;
 use Carbon\Carbon;
-
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\Action;
 use App\Models\Market\DepositLog;
@@ -105,10 +104,30 @@ class DepositResource extends Resource
                 ->required()
                 ->debounce(500)
                 ->default(fn() => null)
-                ->afterStateUpdated(function ($get, $set, $state) {
-                    $totalPrice = $get('price') ?? 0;
-                    $lastPaid = $get('old_paid') ?? 0;
-                    $totalPaid = $lastPaid + (int)$state;
+                ->rules([
+                    fn($get, $record) => function ($attribute, $value, $fail) use ($record) {
+                        if (!$record) return;
+
+                        $totalPrice = $record->price ?? 0;
+                        $currentPaid = $record->paid ?? 0;
+                        $newPayment = (int) $value;
+                        $totalAfterPayment = $currentPaid + $newPayment;
+
+                        if ($newPayment <= 0) {
+                            $fail('مبلغ پرداختی باید بیشتر از صفر باشد.');
+                        }
+
+                        if ($totalAfterPayment > $totalPrice) {
+                            $remaining = $totalPrice - $currentPaid;
+                            $fail("مبلغ پرداختی نمی‌تواند از مقدار باقیمانده ({$remaining}) بیشتر باشد.");
+                        }
+                    },
+                ])
+                ->afterStateUpdated(function ($get, $set, $state, $record) {
+                    $totalPrice = $record?->price ?? 0;
+                    $lastPaid = $record?->paid ?? 0;
+                    $newPayment = (int) $state;
+                    $totalPaid = $lastPaid + $newPayment;
                     $remaining = max($totalPrice - $totalPaid, 0);
                     $set('remained', $remaining);
                 }),
@@ -127,8 +146,6 @@ class DepositResource extends Resource
 
             Forms\Components\Hidden::make('old_paid')
                 ->default(fn($record) => $record->paid ?? 0),
-
-
 
         ]);
     }
@@ -181,6 +198,7 @@ class DepositResource extends Resource
                         if (blank($data['value'] ?? null)) return $query;
                         return $query->whereHas('accounting', fn($q) => $q->where('shop_id', $data['value']));
                     }),
+
                 Tables\Filters\SelectFilter::make('expanses_type')
                     ->label('نوع مصرف')
                     ->searchable()
@@ -209,8 +227,7 @@ class DepositResource extends Resource
                     ->icon('heroicon-o-pencil')
                     ->modalHeading('تصحیح مبلغ پرداختی')
                     ->modalButton('ذخیره تصحیح')
-                        ->modalWidth('xl') 
-                            ->extraAttributes(['class' => 'h-[900px]'])
+                    ->modalWidth('xl')
                     ->form([
                         Forms\Components\TextInput::make('paid')
                             ->label('مبلغ کل پرداختی')
@@ -218,29 +235,35 @@ class DepositResource extends Resource
                             ->required()
                             ->default(fn($record) => $record->paid)
                             ->rules([
-                                fn($get, $record) => function ($attribute, $value, $fail) use ($record) {
+                                fn($record) => function ($attribute, $value, $fail) use ($record) {
                                     if ($value > $record->price) {
-                                        $fail('مبلغ پرداختی نمی‌تواند از کل بدهی بیشتر باشد.');
+                                        $fail("مبلغ پرداختی نمی‌تواند از کل بدهی ({$record->price}) بیشتر باشد.");
                                     }
                                     if ($value < 0) {
                                         $fail('مبلغ پرداختی نمی‌تواند منفی باشد.');
+                                    }
+                                    if ($value < $record->paid) {
+                                        $fail('مبلغ پرداختی نمی‌تواند از مقدار قبلی کمتر باشد.');
                                     }
                                 }
                             ]),
                     ])
                     ->action(function ($record, array $data) {
+                        if ($data['paid'] > $record->price) {
+                            Notification::make()->danger()->title('خطا')->body('مبلغ پرداختی بیشتر از کل بدهی است')->send();
+                            return;
+                        }
+
                         $oldPaid = $record->paid;
                         $newPaid = $data['paid'];
                         $difference = $newPaid - $oldPaid;
                         $newRemained = max($record->price - $newPaid, 0);
 
-                        // به‌روزرسانی رکورد
                         $record->update([
                             'paid' => $newPaid,
                             'remained' => $newRemained,
                         ]);
 
-                        // ثبت لاگ تعدیل (تنها در صورت تغییر)
                         if ($difference != 0) {
                             DepositLog::create([
                                 'deposit_id'      => $record->id,
@@ -252,17 +275,14 @@ class DepositResource extends Resource
                                 'market_name'     => $record->accounting?->market?->name,
                                 'shop_number'     => $record->accounting?->shop?->number,
                                 'shopkeeper_name' => $record->accounting?->shopkeeper?->fullname,
-                                'old_paid'        => 0,
-                                'old_remained'    => $record->remained ?? $record->price,
-                                'new_paid'        => $newPaid, // مبلغ کل جدید
+                                'old_paid'        => $oldPaid,
+                                'old_remained'    => $record->price - $oldPaid,
+                                'new_paid'        => $newPaid,
                                 'new_remained'    => $newRemained,
                             ]);
                         }
 
-                        Notification::make()
-                            ->success()
-                            ->title('تصحیح با موفقیت انجام شد')
-                            ->send();
+                        Notification::make()->success()->title('تصحیح با موفقیت انجام شد')->send();
                     })
                     ->visible(fn($record) => true),
             ])

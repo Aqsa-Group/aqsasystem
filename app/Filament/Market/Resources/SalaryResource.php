@@ -24,6 +24,8 @@ class SalaryResource extends Resource
     protected static ?string $navigationGroup = 'بخش مالی';
     protected static ?string $navigationLabel = 'پرداخت معاش کارمندان';
     protected static ?string $modelLabel = 'پرداخت';
+    protected static ?string $pluralLabel = 'صفحه  ثبت معاش کارمندان';
+
 
     public static function canViewAny(): bool
     {
@@ -308,7 +310,7 @@ class SalaryResource extends Resource
     {
         return $table->columns([
             Tables\Columns\TextColumn::make('market.name')->label('مارکت'),
-            Tables\Columns\TextColumn::make('staff.fullname')->label('کارمند'),
+            Tables\Columns\TextColumn::make('staff.fullname')->label('کارمند')->searchable(),
             Tables\Columns\TextColumn::make('salary')->label('معاش ماهانه'),
             Tables\Columns\TextColumn::make('paid')->label('مبلغ پرداختی'),
             Tables\Columns\TextColumn::make('reduce_loan')->label('رسید قرض'),
