@@ -7,9 +7,9 @@
 
 <body style="vertical-align:middle;">
 
-    <div class="invoice">پرزه فروشی انجینیر محمد هارون صافی و مرادی 
+    <div class="invoice">پرزه فروشی انجینیر محمد هارون صافی و مرادی
         <div>
-            وارد کننده هر نوع پرزه جات ریکشا هندی از قبیل بجاج TVS از کشور های هند و چین 
+            وارد کننده هر نوع پرزه جات ریکشا هندی از قبیل بجاج TVS از کشور های هند و چین
         </div>
         <table>
             <tr>
@@ -135,15 +135,28 @@
         </tbody>
     </table>
 
-<div class="footer text-center">
-    <div>
-        آدرس: کابل - چهار راهی ماموریت ، بلاک دوم ، گذشته از پوهنتون مستقبل ، متصل نمایندگی بجاج
-    </div>
+    <div class="footer text-center">
+        <div>
+            آدرس: کابل - چهار راهی ماموریت ، بلاک دوم ، گذشته از پوهنتون مستقبل ، متصل نمایندگی بجاج
+        </div>
 
-    <div class="mt-2">
-        شماره‌های تماس: 0796471633 - 0700472377 - 0786165140
+        @php
+        $whatsappIcon = public_path('assets/whatsapp.png');
+        @endphp
+
+        <div class="mt-2" style="display:flex; justify-content:center; align-items:center; gap:8px;">
+
+            <span>
+                شماره‌های تماس: 0796471633 - 0700472377 - 0786165140
+            </span>
+
+        <span>
+    <span style="vertical-align: middle;">  -  0779434678</span>
+    <img src="file://{{ $whatsappIcon }}" style="width:14px; height:14px; vertical-align: middle;">
+</span>
+
+        </div>
     </div>
-</div>
     <div style="height: calc(297mm - [مجموع ارتفاع محتوای شما]);"></div>
 
 </body>
