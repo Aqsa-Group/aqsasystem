@@ -38,7 +38,7 @@ class SalesPanel extends Page
 
     public string $barcode = '';
     public string $name = '';
-    public int $quantity = 1;
+    public $quantity = 1;
     public float $price = 0.000;
     public float $total = 0.000;
     public ?int $customer_id = null;
