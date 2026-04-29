@@ -35,6 +35,8 @@ class SalesPanel extends Page
     // state
     public string $saleType = 'retail';
     public bool $showOverlayForm = true;
+    public  $gradient;
+
 
     public string $barcode = '';
     public string $name = '';

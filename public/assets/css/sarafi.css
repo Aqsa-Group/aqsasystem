@@ -5,6 +5,10 @@
     font-style: normal;
 }
 
+.yekan {
+    font-family: "DimaYekan", sans-serif;
+}
+
 @font-face {
     font-family: "times";
     src: url("/fonts/times.ttf") format("truetype");
@@ -12,9 +16,7 @@
     font-style: normal;
 }
 
-.yekan {
-    font-family: "DimaYekan", sans-serif;
-}
+
 @font-face {
     font-family: "vazir";
     src: url("/fonts/Vazir.ttf") format("truetype");

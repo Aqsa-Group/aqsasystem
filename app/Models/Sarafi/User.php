@@ -33,7 +33,6 @@ class User extends Authenticatable
         'whatsapp_notification',
         'user_image'
 
-
     ];
 
     protected $hidden = ['password', 'remember_token'];
