@@ -250,6 +250,8 @@
 
             </div>
 
+            
+
 
             {{-- Market --}}
             <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px] ">
@@ -473,84 +475,912 @@
 
 
 
-            {{-- Restaurant --}}
-            <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px] ">
-                <div>
-                    <img src="{{ asset('assets/panels/restaurant.jpg') }}" alt=""
-                        class="rounded-tr-[12px] rounded-tl-[12px]">
+            
+
+
+
+
+
+    {{-- 1. سیستم مدیریت کلینیک - آبی --}}
+    <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px]">
+        <div>
+            <img src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=400&h=250&fit=crop" alt="کلینیک" class="rounded-tr-[12px] rounded-tl-[12px] h-[180px] w-full object-cover">
+        </div>
+        <div class="text-black px-10 py-2">
+            <p class="font-bold">کلینیک</p>
+            <p class="font-bold">Clinic Management</p>
+        </div>
+        <div>
+            <p class="text-gray-500 px-10 text-sm">سیستم جامع مدیریت کلینیک و بیماران</p>
+        </div>
+        <div class="flex px-10 py-4">
+            <div class="flex gap-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#2983B7]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                        <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
                 </div>
-                <div class="text-black px-10 py-2">
-                    <p class="font-bold">رستورانت</p>
-                    <p class="font-bold">Restaurant </p>
+                <div class="flex flex-col text-black border-l-2 pl-4">
+                    <p class="text-gray-500">کاربران</p>
+                    <p>۴۳</p>
                 </div>
-                <div>
-                    <p class="text-gray-500 px-10 text-sm">پلتفرم تخصصی مدیریت رستورانت ها و کافه ها</p>
-
-                </div>
-
-                <div class="flex px-10 py-4">
-                    <div class="flex gap-4">
-                        <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#D2C440]/30">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
-                                <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F"
-                                    stroke-width="1.5" stroke-linecap="round" />
-                                <path
-                                    d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18"
-                                    stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
-                                <path
-                                    d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704"
-                                    stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
-                            </svg>
-
-                        </div>
-                        <div class="flex flex-col text-black border-l-2 pl-4">
-                            <p class="text-gray-500">کاربران</p>
-                            <p>43</p>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-4 pr-4 ">
-                        <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#D2C440]/30">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18"
-                                    stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
-
-
-                        </div>
-                        <div class="flex flex-col text-black ">
-                            <p class="text-gray-500">رشد </p>
-                            <p>96%</p>
-                        </div>
-                    </div>
-                </div>
-
-
-                <a href="/restaurant">
-                    <div
-                        class=" flex  gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4  justify-center items-center bg-gradient-to-l from-[#90872C] to-[#C6B525]">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17"
-                                stroke="white" stroke-width="1.5" stroke-linecap="round" />4D2D19
-                            <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5"
-                                stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        <p class="text-white"> ورود به پنل</p>
-                    </div>
-                </a>
-
             </div>
+            <div class="flex gap-4 pr-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#2983B7]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black">
+                    <p class="text-gray-500">رشد</p>
+                    <p>۹۶٪</p>
+                </div>
+            </div>
+        </div>
+        <a href="https://clinic.aqsasystem.com/">
+            <div class="flex gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4 justify-center items-center bg-gradient-to-l from-[#2F96D2] to-[#184D6C]">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <p class="text-white">ورود به پنل</p>
+            </div>
+        </a>
+    </div>
+
+    {{-- 2. سیستم مدیریت دواخانه - سبز --}}
+    <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px]">
+        <div>
+            <img src="https://images.unsplash.com/photo-1587854680352-936b22b91030?w=400&h=250&fit=crop" alt="دواخانه" class="rounded-tr-[12px] rounded-tl-[12px] h-[180px] w-full object-cover">
+        </div>
+        <div class="text-black px-10 py-2">
+            <p class="font-bold">دواخانه</p>
+            <p class="font-bold">Pharmacy Management</p>
+        </div>
+        <div>
+            <p class="text-gray-500 px-10 text-sm">سیستم مدیریت داروخانه و فروش دوایی</p>
+        </div>
+        <div class="flex px-10 py-4">
+            <div class="flex gap-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#10B981]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                        <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black border-l-2 pl-4">
+                    <p class="text-gray-500">کاربران</p>
+                    <p>۳۸</p>
+                </div>
+            </div>
+            <div class="flex gap-4 pr-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#10B981]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black">
+                    <p class="text-gray-500">رشد</p>
+                    <p>۸۴٪</p>
+                </div>
+            </div>
+        </div>
+        <a href="https://pharmacy.aqsasystem.com/">
+            <div class="flex gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4 justify-center items-center bg-gradient-to-l from-[#10B981] to-[#065F46]">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <p class="text-white">ورود به پنل</p>
+            </div>
+        </a>
+    </div>
+
+    {{-- 3. سیستم مدیریت مکاتب - بنفش --}}
+    <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px]">
+        <div>
+            <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=400&h=250&fit=crop" alt="مکتب" class="rounded-tr-[12px] rounded-tl-[12px] h-[180px] w-full object-cover">
+        </div>
+        <div class="text-black px-10 py-2">
+            <p class="font-bold">مکتب</p>
+            <p class="font-bold">School Management</p>
+        </div>
+        <div>
+            <p class="text-gray-500 px-10 text-sm">سیستم مدیریت مکاتب و شاگردان</p>
+        </div>
+        <div class="flex px-10 py-4">
+            <div class="flex gap-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#8B5CF6]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                        <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black border-l-2 pl-4">
+                    <p class="text-gray-500">کاربران</p>
+                    <p>۵۲۰</p>
+                </div>
+            </div>
+            <div class="flex gap-4 pr-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#8B5CF6]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black">
+                    <p class="text-gray-500">رشد</p>
+                    <p>۷۳٪</p>
+                </div>
+            </div>
+        </div>
+        <a href="https://school.aqsasystem.com/">
+            <div class="flex gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4 justify-center items-center bg-gradient-to-l from-[#8B5CF6] to-[#5B21B6]">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <p class="text-white">ورود به پنل</p>
+            </div>
+        </a>
+    </div>
+
+    {{-- 4. سیستم مدیریت پوهنتون - نارنجی --}}
+    <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px]">
+        <div>
+            <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=400&h=250&fit=crop" alt="پوهنتون" class="rounded-tr-[12px] rounded-tl-[12px] h-[180px] w-full object-cover">
+        </div>
+        <div class="text-black px-10 py-2">
+            <p class="font-bold">پوهنتون</p>
+            <p class="font-bold">University Management</p>
+        </div>
+        <div>
+            <p class="text-gray-500 px-10 text-sm">سیستم مدیریت پوهنتون و محصلان</p>
+        </div>
+        <div class="flex px-10 py-4">
+            <div class="flex gap-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#F97316]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                        <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black border-l-2 pl-4">
+                    <p class="text-gray-500">کاربران</p>
+                    <p>۸۵۰</p>
+                </div>
+            </div>
+            <div class="flex gap-4 pr-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#F97316]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black">
+                    <p class="text-gray-500">رشد</p>
+                    <p>۶۷٪</p>
+                </div>
+            </div>
+        </div>
+        <a href="https://university.aqsasystem.com/">
+            <div class="flex gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4 justify-center items-center bg-gradient-to-l from-[#F97316] to-[#C2410C]">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <p class="text-white">ورود به پنل</p>
+            </div>
+        </a>
+    </div>
+
+    {{-- 5. سیستم مدیریت هوتل - قرمز --}}
+    <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px]">
+        <div>
+            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=250&fit=crop" alt="هوتل" class="rounded-tr-[12px] rounded-tl-[12px] h-[180px] w-full object-cover">
+        </div>
+        <div class="text-black px-10 py-2">
+            <p class="font-bold">هوتل</p>
+            <p class="font-bold">Hotel Management</p>
+        </div>
+        <div>
+            <p class="text-gray-500 px-10 text-sm">سیستم مدیریت هوتل و مهمانان</p>
+        </div>
+        <div class="flex px-10 py-4">
+            <div class="flex gap-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#EF4444]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                        <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black border-l-2 pl-4">
+                    <p class="text-gray-500">کاربران</p>
+                    <p>۶۵</p>
+                </div>
+            </div>
+            <div class="flex gap-4 pr-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#EF4444]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black">
+                    <p class="text-gray-500">رشد</p>
+                    <p>۹۱٪</p>
+                </div>
+            </div>
+        </div>
+        <a href="https://hotel.aqsasystem.com/">
+            <div class="flex gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4 justify-center items-center bg-gradient-to-l from-[#EF4444] to-[#991B1B]">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <p class="text-white">ورود به پنل</p>
+            </div>
+        </a>
+    </div>
+
+    {{-- 6. سیستم مدیریت رستورانت - صورتی --}}
+    <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px]">
+        <div>
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=250&fit=crop" alt="رستورانت" class="rounded-tr-[12px] rounded-tl-[12px] h-[180px] w-full object-cover">
+        </div>
+        <div class="text-black px-10 py-2">
+            <p class="font-bold">رستورانت</p>
+            <p class="font-bold">Restaurant Management</p>
+        </div>
+        <div>
+            <p class="text-gray-500 px-10 text-sm">سیستم مدیریت رستورانت و سفارشات</p>
+        </div>
+        <div class="flex px-10 py-4">
+            <div class="flex gap-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#EC4899]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                        <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black border-l-2 pl-4">
+                    <p class="text-gray-500">کاربران</p>
+                    <p>۲۸</p>
+                </div>
+            </div>
+            <div class="flex gap-4 pr-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#EC4899]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black">
+                    <p class="text-gray-500">رشد</p>
+                    <p>۸۸٪</p>
+                </div>
+            </div>
+        </div>
+        <a href="https://restaurant.aqsasystem.com/">
+            <div class="flex gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4 justify-center items-center bg-gradient-to-l from-[#EC4899] to-[#9D174D]">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <p class="text-white">ورود به پنل</p>
+            </div>
+        </a>
+    </div>
+
+    {{-- 7. سیستم مدیریت ترانسپورت - فیروزه‌ای --}}
+    <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px]">
+        <div>
+            <img src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=400&h=250&fit=crop" alt="ترانسپورت" class="rounded-tr-[12px] rounded-tl-[12px] h-[180px] w-full object-cover">
+        </div>
+        <div class="text-black px-10 py-2">
+            <p class="font-bold">ترانسپورت</p>
+            <p class="font-bold">Transport Management</p>
+        </div>
+        <div>
+            <p class="text-gray-500 px-10 text-sm">سیستم مدیریت ترانسپورت و وسایط</p>
+        </div>
+        <div class="flex px-10 py-4">
+            <div class="flex gap-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#14B8A6]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                        <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black border-l-2 pl-4">
+                    <p class="text-gray-500">کاربران</p>
+                    <p>۱۲۰</p>
+                </div>
+            </div>
+            <div class="flex gap-4 pr-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#14B8A6]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black">
+                    <p class="text-gray-500">رشد</p>
+                    <p>۵۸٪</p>
+                </div>
+            </div>
+        </div>
+        <a href="https://transport.aqsasystem.com/">
+            <div class="flex gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4 justify-center items-center bg-gradient-to-l from-[#14B8A6] to-[#0F766E]">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <p class="text-white">ورود به پنل</p>
+            </div>
+        </a>
+    </div>
+
+    {{-- 8. سیستم مدیریت انبار و گدام - نیلی --}}
+    <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px]">
+        <div>
+            <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&h=250&fit=crop" alt="انبار" class="rounded-tr-[12px] rounded-tl-[12px] h-[180px] w-full object-cover">
+        </div>
+        <div class="text-black px-10 py-2">
+            <p class="font-bold">انبار و گدام</p>
+            <p class="font-bold">Warehouse Management</p>
+        </div>
+        <div>
+            <p class="text-gray-500 px-10 text-sm">سیستم مدیریت انبار و موجودی</p>
+        </div>
+        <div class="flex px-10 py-4">
+            <div class="flex gap-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#6366F1]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                        <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black border-l-2 pl-4">
+                    <p class="text-gray-500">کاربران</p>
+                    <p>۴۵</p>
+                </div>
+            </div>
+            <div class="flex gap-4 pr-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#6366F1]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black">
+                    <p class="text-gray-500">رشد</p>
+                    <p>۷۹٪</p>
+                </div>
+            </div>
+        </div>
+        <a href="https://warehouse.aqsasystem.com/">
+            <div class="flex gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4 justify-center items-center bg-gradient-to-l from-[#6366F1] to-[#3730A3]">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <p class="text-white">ورود به پنل</p>
+            </div>
+        </a>
+    </div>
+
+    {{-- 9. سیستم مدیریت ساختمانی - زرد --}}
+    <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px]">
+        <div>
+            <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=400&h=250&fit=crop" alt="ساختمانی" class="rounded-tr-[12px] rounded-tl-[12px] h-[180px] w-full object-cover">
+        </div>
+        <div class="text-black px-10 py-2">
+            <p class="font-bold">ساختمانی</p>
+            <p class="font-bold">Construction Management</p>
+        </div>
+        <div>
+            <p class="text-gray-500 px-10 text-sm">سیستم مدیریت پروژه‌های ساختمانی</p>
+        </div>
+        <div class="flex px-10 py-4">
+            <div class="flex gap-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#EAB308]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                        <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black border-l-2 pl-4">
+                    <p class="text-gray-500">کاربران</p>
+                    <p>۳۲</p>
+                </div>
+            </div>
+            <div class="flex gap-4 pr-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#EAB308]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black">
+                    <p class="text-gray-500">رشد</p>
+                    <p>۶۲٪</p>
+                </div>
+            </div>
+        </div>
+        <a href="https://construction.aqsasystem.com/">
+            <div class="flex gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4 justify-center items-center bg-gradient-to-l from-[#EAB308] to-[#A16207]">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <p class="text-white">ورود به پنل</p>
+            </div>
+        </a>
+    </div>
+
+    {{-- 10. سیستم مدیریت شرکت لوژستیکی - سورمئی --}}
+    <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px]">
+        <div>
+            <img src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=400&h=250&fit=crop" alt="لوژستیک" class="rounded-tr-[12px] rounded-tl-[12px] h-[180px] w-full object-cover">
+        </div>
+        <div class="text-black px-10 py-2">
+            <p class="font-bold">شرکت لوژستیکی</p>
+            <p class="font-bold">Logistics Management</p>
+        </div>
+        <div>
+            <p class="text-gray-500 px-10 text-sm">سیستم مدیریت شرکت‌های لوژستیکی</p>
+        </div>
+        <div class="flex px-10 py-4">
+            <div class="flex gap-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#0EA5E9]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                        <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black border-l-2 pl-4">
+                    <p class="text-gray-500">کاربران</p>
+                    <p>۸۹</p>
+                </div>
+            </div>
+            <div class="flex gap-4 pr-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#0EA5E9]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black">
+                    <p class="text-gray-500">رشد</p>
+                    <p>۹۴٪</p>
+                </div>
+            </div>
+        </div>
+        <a href="https://logistics.aqsasystem.com/">
+            <div class="flex gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4 justify-center items-center bg-gradient-to-l from-[#0EA5E9] to-[#0369A1]">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <p class="text-white">ورود به پنل</p>
+            </div>
+        </a>
+    </div>
+
+    {{-- 11. سیستم مدیریت کارواش - آبی روشن --}}
+    <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px]">
+        <div>
+            <img src="https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=400&h=250&fit=crop" alt="کارواش" class="rounded-tr-[12px] rounded-tl-[12px] h-[180px] w-full object-cover">
+        </div>
+        <div class="text-black px-10 py-2">
+            <p class="font-bold">کارواش</p>
+            <p class="font-bold">Car Wash Management</p>
+        </div>
+        <div>
+            <p class="text-gray-500 px-10 text-sm">سیستم مدیریت کارواش و خدمات موترشویی</p>
+        </div>
+        <div class="flex px-10 py-4">
+            <div class="flex gap-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#3B82F6]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                        <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black border-l-2 pl-4">
+                    <p class="text-gray-500">کاربران</p>
+                    <p>۱۸</p>
+                </div>
+            </div>
+            <div class="flex gap-4 pr-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#3B82F6]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black">
+                    <p class="text-gray-500">رشد</p>
+                    <p>۷۱٪</p>
+                </div>
+            </div>
+        </div>
+        <a href="https://carwash.aqsasystem.com/">
+            <div class="flex gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4 justify-center items-center bg-gradient-to-l from-[#3B82F6] to-[#1E40AF]">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <p class="text-white">ورود به پنل</p>
+            </div>
+        </a>
+    </div>
+
+    {{-- 12. سیستم مدیریت آرایشگاه - طلایی --}}
+    <div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px]">
+        <div>
+            <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&h=250&fit=crop" alt="آرایشگاه" class="rounded-tr-[12px] rounded-tl-[12px] h-[180px] w-full object-cover">
+        </div>
+        <div class="text-black px-10 py-2">
+            <p class="font-bold">آرایشگاه</p>
+            <p class="font-bold">Salon Management</p>
+        </div>
+        <div>
+            <p class="text-gray-500 px-10 text-sm">سیستم مدیریت آرایشگاه و سلمانی</p>
+        </div>
+        <div class="flex px-10 py-4">
+            <div class="flex gap-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#F59E0B]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                        <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black border-l-2 pl-4">
+                    <p class="text-gray-500">کاربران</p>
+                    <p>۱۵</p>
+                </div>
+            </div>
+            <div class="flex gap-4 pr-4">
+                <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#F59E0B]/30">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div class="flex flex-col text-black">
+                    <p class="text-gray-500">رشد</p>
+                    <p>۸۲٪</p>
+                </div>
+            </div>
+        </div>
+        <a href="https://salon.aqsasystem.com/">
+            <div class="flex gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4 justify-center items-center bg-gradient-to-l from-[#F59E0B] to-[#B45309]">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <p class="text-white">ورود به پنل</p>
+            </div>
+        </a>
+    </div>
 
 
+    {{-- 13. سیستم مدیریت جیم و فیتنس - سبز نئونی --}}
+<div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px]">
+    <div>
+        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&h=250&fit=crop" alt="جیم" class="rounded-tr-[12px] rounded-tl-[12px] h-[180px] w-full object-cover">
+    </div>
+    <div class="text-black px-10 py-2">
+        <p class="font-bold">جیم و فیتنس</p>
+        <p class="font-bold">Gym & Fitness Management</p>
+    </div>
+    <div>
+        <p class="text-gray-500 px-10 text-sm">سیستم مدیریت جیم، فیتنس و ورزشکاران</p>
+    </div>
+    <div class="flex px-10 py-4">
+        <div class="flex gap-4">
+            <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#84CC16]/30">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                    <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+            </div>
+            <div class="flex flex-col text-black border-l-2 pl-4">
+                <p class="text-gray-500">کاربران</p>
+                <p>۲۱۰</p>
+            </div>
+        </div>
+        <div class="flex gap-4 pr-4">
+            <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#84CC16]/30">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+            <div class="flex flex-col text-black">
+                <p class="text-gray-500">رشد</p>
+                <p>۸۷٪</p>
+            </div>
+        </div>
+    </div>
+    <a href="https://gym.aqsasystem.com/">
+        <div class="flex gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4 justify-center items-center bg-gradient-to-l from-[#84CC16] to-[#4D7C0F]">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <p class="text-white">ورود به پنل</p>
+        </div>
+    </a>
+</div>
 
+{{-- 14. سیستم مدیریت شفاخانه - آبی نفتی --}}
+<div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px]">
+    <div>
+        <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=400&h=250&fit=crop" alt="شفاخانه" class="rounded-tr-[12px] rounded-tl-[12px] h-[180px] w-full object-cover">
+    </div>
+    <div class="text-black px-10 py-2">
+        <p class="font-bold">شفاخانه</p>
+        <p class="font-bold">Hospital Management</p>
+    </div>
+    <div>
+        <p class="text-gray-500 px-10 text-sm">سیستم جامع مدیریت شفاخانه و مریضان</p>
+    </div>
+    <div class="flex px-10 py-4">
+        <div class="flex gap-4">
+            <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#0891B2]/30">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                    <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+            </div>
+            <div class="flex flex-col text-black border-l-2 pl-4">
+                <p class="text-gray-500">کاربران</p>
+                <p>۳۴۰</p>
+            </div>
+        </div>
+        <div class="flex gap-4 pr-4">
+            <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#0891B2]/30">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+            <div class="flex flex-col text-black">
+                <p class="text-gray-500">رشد</p>
+                <p>۷۶٪</p>
+            </div>
+        </div>
+    </div>
+    <a href="https://hospital.aqsasystem.com/">
+        <div class="flex gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4 justify-center items-center bg-gradient-to-l from-[#0891B2] to-[#155E75]">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <p class="text-white">ورود به پنل</p>
+        </div>
+    </a>
+</div>
 
+{{-- 15. سیستم مدیریت املاک و کرایه خانه - قهوه‌ای --}}
+<div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px]">
+    <div>
+        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=250&fit=crop" alt="املاک" class="rounded-tr-[12px] rounded-tl-[12px] h-[180px] w-full object-cover">
+    </div>
+    <div class="text-black px-10 py-2">
+        <p class="font-bold">املاک و کرایه خانه</p>
+        <p class="font-bold">Real Estate Management</p>
+    </div>
+    <div>
+        <p class="text-gray-500 px-10 text-sm">سیستم مدیریت املاک، جایداد و کرایه</p>
+    </div>
+    <div class="flex px-10 py-4">
+        <div class="flex gap-4">
+            <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#D97706]/30">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                    <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+            </div>
+            <div class="flex flex-col text-black border-l-2 pl-4">
+                <p class="text-gray-500">کاربران</p>
+                <p>۵۶</p>
+            </div>
+        </div>
+        <div class="flex gap-4 pr-4">
+            <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#D97706]/30">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+            <div class="flex flex-col text-black">
+                <p class="text-gray-500">رشد</p>
+                <p>۶۳٪</p>
+            </div>
+        </div>
+    </div>
+    <a href="https://realestate.aqsasystem.com/">
+        <div class="flex gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4 justify-center items-center bg-gradient-to-l from-[#D97706] to-[#92400E]">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <p class="text-white">ورود به پنل</p>
+        </div>
+    </a>
+</div>
 
+{{-- 16. سیستم مدیریت فروشگاه موبایل - بنفش تیره --}}
+<div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px]">
+    <div>
+        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=250&fit=crop" alt="فروشگاه موبایل" class="rounded-tr-[12px] rounded-tl-[12px] h-[180px] w-full object-cover">
+    </div>
+    <div class="text-black px-10 py-2">
+        <p class="font-bold">فروشگاه موبایل</p>
+        <p class="font-bold">Mobile Shop Management</p>
+    </div>
+    <div>
+        <p class="text-gray-500 px-10 text-sm">سیستم مدیریت فروشگاه موبایل و لوازم</p>
+    </div>
+    <div class="flex px-10 py-4">
+        <div class="flex gap-4">
+            <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#7C3AED]/30">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                    <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+            </div>
+            <div class="flex flex-col text-black border-l-2 pl-4">
+                <p class="text-gray-500">کاربران</p>
+                <p>۷۲</p>
+            </div>
+        </div>
+        <div class="flex gap-4 pr-4">
+            <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#7C3AED]/30">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+            <div class="flex flex-col text-black">
+                <p class="text-gray-500">رشد</p>
+                <p>۹۳٪</p>
+            </div>
+        </div>
+    </div>
+    <a href="https://mobile.aqsasystem.com/">
+        <div class="flex gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4 justify-center items-center bg-gradient-to-l from-[#7C3AED] to-[#4C1D95]">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <p class="text-white">ورود به پنل</p>
+        </div>
+    </a>
+</div>
 
+{{-- 17. سیستم مدیریت سوپرمارکت - قرمز تیره --}}
+<div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px]">
+    <div>
+        <img src="https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=400&h=250&fit=crop" alt="سوپرمارکت" class="rounded-tr-[12px] rounded-tl-[12px] h-[180px] w-full object-cover">
+    </div>
+    <div class="text-black px-10 py-2">
+        <p class="font-bold">سوپرمارکت</p>
+        <p class="font-bold">Supermarket Management</p>
+    </div>
+    <div>
+        <p class="text-gray-500 px-10 text-sm">سیستم مدیریت سوپرمارکت و فروشات</p>
+    </div>
+    <div class="flex px-10 py-4">
+        <div class="flex gap-4">
+            <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#DC2626]/30">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                    <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+            </div>
+            <div class="flex flex-col text-black border-l-2 pl-4">
+                <p class="text-gray-500">کاربران</p>
+                <p>۹۵</p>
+            </div>
+        </div>
+        <div class="flex gap-4 pr-4">
+            <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#DC2626]/30">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+            <div class="flex flex-col text-black">
+                <p class="text-gray-500">رشد</p>
+                <p>۸۹٪</p>
+            </div>
+        </div>
+    </div>
+    <a href="https://supermarket.aqsasystem.com/">
+        <div class="flex gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4 justify-center items-center bg-gradient-to-l from-[#DC2626] to-[#7F1D1D]">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <p class="text-white">ورود به پنل</p>
+        </div>
+    </a>
+</div>
+
+{{-- 18. سیستم مدیریت تولیدی و فابریکه - خاکستری تیره --}}
+<div class="flex flex-col bg-white shadow-md w-[286px] rounded-[12px]">
+    <div>
+        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=250&fit=crop" alt="فابریکه" class="rounded-tr-[12px] rounded-tl-[12px] h-[180px] w-full object-cover">
+    </div>
+    <div class="text-black px-10 py-2">
+        <p class="font-bold">تولیدی و فابریکه</p>
+        <p class="font-bold">Factory Management</p>
+    </div>
+    <div>
+        <p class="text-gray-500 px-10 text-sm">سیستم مدیریت تولیدی و فابریکه‌جات</p>
+    </div>
+    <div class="flex px-10 py-4">
+        <div class="flex gap-4">
+            <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#6B7280]/30">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="9" cy="6" r="4" stroke="#3F3F3F" stroke-width="1.5" />
+                    <path d="M15 9C16.6569 9 18 7.65685 18 6C18 4.34315 16.6569 3 15 3" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M5.88915 20.5843C6.82627 20.8504 7.88256 21 9 21C12.866 21 16 19.2091 16 17C16 14.7909 12.866 13 9 13C5.13401 13 2 14.7909 2 17C2 17.3453 2.07657 17.6804 2.22053 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M18 14C19.7542 14.3847 21 15.3589 21 16.5C21 17.5293 19.9863 18.4229 18.5 18.8704" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+            </div>
+            <div class="flex flex-col text-black border-l-2 pl-4">
+                <p class="text-gray-500">کاربران</p>
+                <p>۱۴۰</p>
+            </div>
+        </div>
+        <div class="flex gap-4 pr-4">
+            <div class="rounded-[12px] w-[40px] h-[40px] justify-center items-center flex bg-[#6B7280]/30">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 7V12.5458M22 7H16.4179M22 7L17.5 11.5M14.6203 14.3347C13.6227 15.3263 13.1238 15.822 12.5051 15.822C11.8864 15.8219 11.3876 15.326 10.3902 14.3342L10.1509 14.0962C9.15254 13.1035 8.65338 12.6071 8.03422 12.6074C7.41506 12.6076 6.91626 13.1043 5.91867 14.0977L2 18" stroke="#3F3F3F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+            <div class="flex flex-col text-black">
+                <p class="text-gray-500">رشد</p>
+                <p>۷۰٪</p>
+            </div>
+        </div>
+    </div>
+    <a href="https://factory.aqsasystem.com/">
+        <div class="flex gap-2 w-[253px] mx-auto rounded-[12px] p-2 mb-4 justify-center items-center bg-gradient-to-l from-[#6B7280] to-[#374151]">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 12C20 7.58172 16.4183 4 12 4M12 20C14.5264 20 16.7792 18.8289 18.2454 17" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                <path d="M4 12H14M14 12L11 9M14 12L11 15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <p class="text-white">ورود به پنل</p>
+        </div>
+    </a>
+</div>
 
 
 
