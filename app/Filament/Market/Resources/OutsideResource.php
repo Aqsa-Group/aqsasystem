@@ -7,12 +7,16 @@ use App\Models\Market\Customer;
 use App\Models\Market\Market;
 use App\Models\Market\Outside;
 use App\Models\Market\Staff;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+
 use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\Jalalian;
 
@@ -121,58 +125,96 @@ class OutsideResource extends Resource
         ]);
     }
 
- public static function table(Table $table): Table
-{
-    return $table
-        ->columns([
-            Tables\Columns\TextColumn::make('market.name')->label('مارکت')->sortable(),
-            Tables\Columns\TextColumn::make('person_name')
-                ->label('نوع شخص')
-                ->getStateUsing(function ($record) {
-                    if ($record->customer_id && $record->customer) {
-                        return 'مشتری: ' . $record->customer->fullname;
-                    }
-                    if ($record->staff_id && $record->staff) {
-                        return 'کارمند: ' . $record->staff->fullname;
-                    }
-                    return '-';
-                })
-                ->sortable(),
-            Tables\Columns\TextColumn::make('currency')->label('ارز')->searchable(),
-            Tables\Columns\TextColumn::make('paid')->label('مبلغ')->numeric()->sortable(),
-            Tables\Columns\TextColumn::make('description')->label('توضیحات')->searchable(),
-            Tables\Columns\TextColumn::make('date')
-                ->label('تاریخ')
-                ->formatStateUsing(
-                    fn($state) => Jalalian::fromDateTime($state)->format('Y/m/d') . ' - ' . date('g:i A')
-                ),
-            Tables\Columns\TextColumn::make('created_at')
-                ->label('زمان ثبت')
-                ->dateTime()
-                ->sortable()
-                ->toggleable(isToggledHiddenByDefault: true),
-            Tables\Columns\TextColumn::make('updated_at')
-                ->label('آخرین ویرایش')
-                ->dateTime()
-                ->sortable()
-                ->toggleable(isToggledHiddenByDefault: true),
-        ])
-        ->defaultSort('created_at', 'desc') // ← این خط جدید
-        ->actions([
-            Tables\Actions\ViewAction::make(),
-            Tables\Actions\EditAction::make(),
-            Tables\Actions\Action::make('printContract')
-                ->label('چاپ رسید')
-                ->icon('heroicon-o-printer')
-                ->url(fn($record) => route('outside.print', $record->id))
-                ->openUrlInNewTab(),
-        ])
-        ->bulkActions([
-            Tables\Actions\BulkActionGroup::make([
-                Tables\Actions\DeleteBulkAction::make(),
-            ]),
-        ]);
-}
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('market.name')->label('مارکت')->sortable(),
+                Tables\Columns\TextColumn::make('person_name')
+                    ->label('نوع شخص')
+                    ->getStateUsing(function ($record) {
+                        if ($record->customer_id && $record->customer) {
+                            return 'مشتری: ' . $record->customer->fullname;
+                        }
+                        if ($record->staff_id && $record->staff) {
+                            return 'کارمند: ' . $record->staff->fullname;
+                        }
+                        return '-';
+                    })
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('currency')->label('ارز')->searchable(),
+                Tables\Columns\TextColumn::make('paid')->label('مبلغ')->numeric()->sortable(),
+                Tables\Columns\TextColumn::make('description')->label('توضیحات')->searchable(),
+                Tables\Columns\TextColumn::make('date')
+                    ->label('تاریخ')
+                    ->formatStateUsing(
+                        fn($state) => Jalalian::fromDateTime($state)->format('Y/m/d') . ' - ' . date('g:i A')
+                    ),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('زمان ثبت')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label('آخرین ویرایش')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->defaultSort('created_at', 'desc') // ← این خط جدید
+
+            ->filters([
+
+                /* ********************* فیلتر تاریخ پرداخت ********************* */
+                Filter::make('date')
+                    ->label('تاریخ پرداخت')
+                    ->form([
+                        Forms\Components\DatePicker::make('from')
+                            ->label('از تاریخ')
+                            ->jalali(),
+
+                        Forms\Components\DatePicker::make('until')
+                            ->label('تا تاریخ')
+                            ->jalali(),
+                    ])
+                    ->query(function (Builder $query, array $data) {
+
+                        return $query
+
+                            // از تاریخ
+                            ->when($data['from'] ?? null, function ($q) use ($data) {
+
+                                $from = Carbon::parse($data['from'])
+                                    ->startOfDay();
+
+                                $q->where('date', '>=', $from);
+                            })
+
+                            // تا تاریخ
+                            ->when($data['until'] ?? null, function ($q) use ($data) {
+
+                                $until = Carbon::parse($data['until'])
+                                    ->endOfDay();
+
+                                $q->where('date', '<=', $until);
+                            });
+                    }),
+            ])
+            ->actions([
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('printContract')
+                    ->label('چاپ رسید')
+                    ->icon('heroicon-o-printer')
+                    ->url(fn($record) => route('outside.print', $record->id))
+                    ->openUrlInNewTab(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
 
 
     public static function getRelations(): array

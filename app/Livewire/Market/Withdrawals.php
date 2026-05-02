@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Morilog\Jalali\Jalalian;
 
 class Withdrawals extends Component
 {
@@ -22,7 +23,8 @@ class Withdrawals extends Component
     public $staff_id;
     public $customer_id;
     public $description;
-
+    public $from_date;
+    public $to_date;
     // State management
     public $editingId = null;
     public $confirmDeleteId = null;
@@ -67,7 +69,7 @@ class Withdrawals extends Component
      */
     private function getAuthUser()
     {
-        return Auth::guard('market')->user(); 
+        return Auth::guard('market')->user();
     }
 
     /**
@@ -249,7 +251,7 @@ class Withdrawals extends Component
                 'currency' => $this->currency,
                 'paid' => -1 * $this->amount,
                 'type' => 'withdraw',
-              'created_at' => $withdrawal->created_at,
+                'created_at' => $withdrawal->created_at,
                 'updated_at' => now(),
             ]);
         });
@@ -285,9 +287,9 @@ class Withdrawals extends Component
         } elseif ($withdrawal->customer_id) {
             $this->receiver_type = 'customer';
             $this->customer_id = $withdrawal->customer_id;
-            $this->staff_id = null; 
+            $this->staff_id = null;
         } else {
-            $this->receiver_type = 'staff'; 
+            $this->receiver_type = 'staff';
             $this->staff_id = null;
             $this->customer_id = null;
         }
@@ -450,7 +452,7 @@ class Withdrawals extends Component
         $adminId = $this->getAdminId();
 
         $expansesTypes = DB::connection('market')->table('accountings')
-            ->where('admin_id', $adminId) 
+            ->where('admin_id', $adminId)
             ->whereNotNull('expanses_type')
             ->where('expanses_type', '!=', '')
             ->distinct()
@@ -462,7 +464,7 @@ class Withdrawals extends Component
             $expansesTypes = [
                 'برق' => 'برق',
                 'آب' => 'آب',
-                'گاز' => 'گاز', 
+                'گاز' => 'گاز',
                 'اجاره' => 'اجاره',
                 'حقوق' => 'حقوق کارمند',
                 'خرید' => 'خرید ملزومات',
@@ -500,16 +502,49 @@ class Withdrawals extends Component
             ->toArray();
     }
 
-    public function getWithdrawalsProperty()
-    {
-        $adminId = $this->getAdminId();
+public function updatedFromDate()
+{
+    $this->resetPage();
+}
 
-        return WithdrawLog::with(['staff', 'customer'])
-            ->where('admin_id', $adminId)
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
-    }
+public function updatedToDate()
+{
+    $this->resetPage();
+}
+public function getWithdrawalsProperty()
+{
+    $adminId = $this->getAdminId();
 
+    return WithdrawLog::with(['staff', 'customer'])
+        ->where('admin_id', $adminId)
+
+        ->when($this->from_date, function ($q) {
+            try {
+                $from = \Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $this->from_date)
+                    ->toCarbon()
+                    ->startOfDay();
+
+                $q->where('created_at', '>=', $from);
+            } catch (\Throwable $e) {
+                \Log::warning('Invalid from_date: ' . $this->from_date);
+            }
+        })
+
+        ->when($this->to_date, function ($q) {
+            try {
+                $to = \Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $this->to_date)
+                    ->toCarbon()
+                    ->endOfDay();
+
+                $q->where('created_at', '<=', $to);
+            } catch (\Throwable $e) {
+                \Log::warning('Invalid to_date: ' . $this->to_date);
+            }
+        })
+
+        ->orderByDesc('created_at')
+        ->paginate(10);
+}
     /**
      * Render component
      */
