@@ -23,8 +23,10 @@ class Withdrawals extends Component
     public $staff_id;
     public $customer_id;
     public $description;
-    public $from_date;
-    public $to_date;
+    public $date;
+    public $startDate;
+    public $endDate;
+
     // State management
     public $editingId = null;
     public $confirmDeleteId = null;
@@ -61,6 +63,7 @@ class Withdrawals extends Component
      */
     public function mount()
     {
+        $this->date = Jalalian::now()->format('Y/m/d');
         $this->updateStats();
     }
 
@@ -96,15 +99,12 @@ class Withdrawals extends Component
         $this->createWithdrawal();
     }
 
-    /**
-     * Create new withdrawal - مطابق با Filament
-     */
     private function createWithdrawal()
     {
         $user = $this->getAuthUser();
         $adminId = $this->getAdminId();
 
-        // Check safe balance - مطابق با Filament
+        // Check safe balance
         $total = DB::connection('market')->table('accountings')
             ->where('admin_id', $adminId)
             ->where('currency', $this->currency)
@@ -115,7 +115,7 @@ class Withdrawals extends Component
             return;
         }
 
-        // Process customer withdrawal if applicable - مطابق با Filament
+        // Process customer withdrawal if applicable
         if ($this->receiver_type === 'customer') {
             $customer = Customer::find($this->customer_id);
 
@@ -149,19 +149,22 @@ class Withdrawals extends Component
             }
         }
 
-        DB::transaction(function () use ($adminId) {
-            // Record in accountings table - مطابق با Filament
+        // تبدیل تاریخ شمسی به میلادی
+        $gregorianDate = Jalalian::fromFormat('Y/m/d', $this->date)->toCarbon();
+
+        DB::transaction(function () use ($adminId, $gregorianDate) {
+            // Record in accountings table
             DB::connection('market')->table('accountings')->insert([
                 'admin_id' => $adminId,
                 'expanses_type' => $this->type,
                 'currency' => $this->currency,
                 'paid' => -1 * $this->amount,
                 'type' => 'withdraw',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at' => $gregorianDate,
+                'updated_at' => $gregorianDate,
             ]);
 
-            // Record in withdraw_logs table - مطابق با Filament
+            // Record in withdraw_logs table
             DB::connection('market')->table('withdraw_logs')->insert([
                 'expanses_type' => $this->type,
                 'currency' => $this->currency,
@@ -170,8 +173,8 @@ class Withdrawals extends Component
                 'customer_id' => $this->receiver_type === 'customer' ? $this->customer_id : null,
                 'description' => $this->description,
                 'admin_id' => $adminId,
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at' => $gregorianDate,
+                'updated_at' => $gregorianDate,
             ]);
         });
 
@@ -180,15 +183,15 @@ class Withdrawals extends Component
         $this->updateStats();
     }
 
-    /**
-     * Update existing withdrawal
-     */
     private function updateWithdrawal()
     {
         $withdrawal = WithdrawLog::findOrFail($this->editingId);
         $adminId = $this->getAdminId();
 
-        DB::transaction(function () use ($withdrawal, $adminId) {
+        // تبدیل تاریخ شمسی به میلادی
+        $gregorianDate = Jalalian::fromFormat('Y/m/d', $this->date)->toCarbon();
+
+        DB::transaction(function () use ($withdrawal, $adminId, $gregorianDate) {
             // Reverse previous withdrawal FIRST
             $this->reversePreviousWithdrawal($withdrawal);
 
@@ -241,17 +244,18 @@ class Withdrawals extends Component
                 'staff_id' => $this->receiver_type === 'staff' ? $this->staff_id : null,
                 'customer_id' => $this->receiver_type === 'customer' ? $this->customer_id : null,
                 'description' => $this->description,
-                'updated_at' => now(),
+                'created_at' => $gregorianDate, // بروزرسانی با تاریخ جدید
+                'updated_at' => now(), // زمان فعلی برای updated_at
             ]);
 
-            // Record new accounting transaction
+            // Record new accounting transaction with the same date
             DB::connection('market')->table('accountings')->insert([
                 'admin_id' => $adminId,
                 'expanses_type' => $this->type,
                 'currency' => $this->currency,
                 'paid' => -1 * $this->amount,
                 'type' => 'withdraw',
-                'created_at' => $withdrawal->created_at,
+                'created_at' => $gregorianDate,
                 'updated_at' => now(),
             ]);
         });
@@ -502,49 +506,86 @@ class Withdrawals extends Component
             ->toArray();
     }
 
-public function updatedFromDate()
-{
-    $this->resetPage();
-}
+    public function updatedFromDate()
+    {
+        $this->resetPage();
+    }
 
-public function updatedToDate()
-{
-    $this->resetPage();
-}
-public function getWithdrawalsProperty()
-{
-    $adminId = $this->getAdminId();
+    public function updatedToDate()
+    {
+        $this->resetPage();
+    }
 
-    return WithdrawLog::with(['staff', 'customer'])
-        ->where('admin_id', $adminId)
 
-        ->when($this->from_date, function ($q) {
-            try {
-                $from = \Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $this->from_date)
-                    ->toCarbon()
-                    ->startOfDay();
+    /**
+     * Set start date from JavaScript
+     */
+    public function setStartDate($date)
+    {
+        $this->startDate = $date;
+        $this->resetPage();
+    }
 
-                $q->where('created_at', '>=', $from);
-            } catch (\Throwable $e) {
-                \Log::warning('Invalid from_date: ' . $this->from_date);
-            }
-        })
+    /**
+     * Set end date from JavaScript
+     */
+    public function setEndDate($date)
+    {
+        $this->endDate = $date;
+        $this->resetPage();
+    }
 
-        ->when($this->to_date, function ($q) {
-            try {
-                $to = \Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $this->to_date)
-                    ->toCarbon()
-                    ->endOfDay();
+    public function updatedStartDate()
+    {
+        $this->resetPage();
+    }
 
-                $q->where('created_at', '<=', $to);
-            } catch (\Throwable $e) {
-                \Log::warning('Invalid to_date: ' . $this->to_date);
-            }
-        })
+    public function updatedEndDate()
+    {
+        $this->resetPage();
+    }
 
-        ->orderByDesc('created_at')
-        ->paginate(10);
-}
+    public function getWithdrawalsProperty()
+    {
+        $adminId = $this->getAdminId();
+
+        return WithdrawLog::with(['staff', 'customer'])
+            ->where('admin_id', $adminId)
+
+            ->when($this->startDate, function ($q) {
+                try {
+                    // تبدیل تاریخ شمسی به میلادی برای مقایسه
+                    $from = Jalalian::fromFormat('Y/m/d', str_replace('-', '/', $this->startDate))
+                        ->toCarbon()
+                        ->startOfDay();
+                    
+                    $q->where('created_at', '>=', $from);
+                } catch (\Throwable $e) {
+                    \Log::warning('Invalid startDate: ' . $this->startDate);
+                }
+            })
+
+            ->when($this->endDate, function ($q) {
+                try {
+                    // تبدیل تاریخ شمسی به میلادی برای مقایسه
+                    $to = Jalalian::fromFormat('Y/m/d', str_replace('-', '/', $this->endDate))
+                        ->toCarbon()
+                        ->endOfDay();
+                    
+                    $q->where('created_at', '<=', $to);
+                } catch (\Throwable $e) {
+                    \Log::warning('Invalid endDate: ' . $this->endDate);
+                }
+            })
+
+            ->orderByDesc('created_at')
+            ->paginate(10);
+    }
+
+
+
+
+
     /**
      * Render component
      */
