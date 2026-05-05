@@ -926,7 +926,7 @@
                                     از تاریخ
                                 </label>
                                 <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
-                                placeholder=" روز/ ماه / سال"
+                                    placeholder=" روز/ ماه / سال"
                                     class="w-full dark:text-white dark:bg-black dark:border-white h-[50px] p-3 rounded-[12px] border focus:ring-2  bg-[#EFF6F9]  focus:ring-blue-500 cursor-pointer"
                                     readonly />
 
@@ -1139,10 +1139,10 @@
                             <!-- تا تاریخ -->
                             <div class="lg:col-span-3 relative" x-data="toDatePicker()" x-init="init()">
                                 <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
-                                   تا تاریخ
+                                    تا تاریخ
                                 </label>
                                 <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
-                                placeholder=" روز/ ماه / سال"
+                                    placeholder=" روز/ ماه / سال"
                                     class="w-full dark:text-white dark:bg-black dark:border-white h-[50px] p-3 rounded-[12px] border focus:ring-2  bg-[#EFF6F9]  focus:ring-blue-500 cursor-pointer"
                                     readonly />
 
@@ -1797,7 +1797,7 @@
                         </style>
 
 
-                     
+
 
                     </div>
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -1866,12 +1866,13 @@
                                 <td class="px-4 py-3 text-center whitespace-nowrap">
                                     <div class="text-sm font-medium">
                                         {{
-                                        \Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($withdrawal->created_at))->format('Y/m/d')
+                                        \Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($withdrawal->created_at))
+                                        ->format('Y/m/d H:i')
                                         }}
                                     </div>
 
                                     <div class="text-xs text-gray-500">
-                                        {{ \Carbon\Carbon::parse($withdrawal->created_at)->format('H:i') }}
+                                        {{ \Carbon\Carbon::parse($withdrawal->created_at)->format('h:i') }}
                                     </div>
                                 </td>
                                 <td class="px-4 py-3">

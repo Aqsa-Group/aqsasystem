@@ -2,11 +2,12 @@
 
 namespace App\Livewire\Market;
 
-use App\Models\Market\WithdrawLog;
 use App\Models\Market\Customer;
 use App\Models\Market\Staff;
+use App\Models\Market\WithdrawLog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Morilog\Jalali\Jalalian;
@@ -150,7 +151,7 @@ class Withdrawals extends Component
         }
 
         // تبدیل تاریخ شمسی به میلادی
-        $gregorianDate = Jalalian::fromFormat('Y/m/d', $this->date)->toCarbon();
+        $gregorianDate = Jalalian::fromFormat('Y/m/d', $this->date)->toCarbon()->setTimeFromTimeString(now()->format('H:i:s'));;
 
         DB::transaction(function () use ($adminId, $gregorianDate) {
             // Record in accountings table
@@ -189,7 +190,7 @@ class Withdrawals extends Component
         $adminId = $this->getAdminId();
 
         // تبدیل تاریخ شمسی به میلادی
-        $gregorianDate = Jalalian::fromFormat('Y/m/d', $this->date)->toCarbon();
+        $gregorianDate = Jalalian::fromFormat('Y/m/d', $this->date)->toCarbon()->setTimeFromTimeString(now()->format('H:i:s'));
 
         DB::transaction(function () use ($withdrawal, $adminId, $gregorianDate) {
             // Reverse previous withdrawal FIRST
@@ -244,8 +245,8 @@ class Withdrawals extends Component
                 'staff_id' => $this->receiver_type === 'staff' ? $this->staff_id : null,
                 'customer_id' => $this->receiver_type === 'customer' ? $this->customer_id : null,
                 'description' => $this->description,
-                'created_at' => $gregorianDate, // بروزرسانی با تاریخ جدید
-                'updated_at' => now(), // زمان فعلی برای updated_at
+                'created_at' => $gregorianDate, 
+                'updated_at' => now(), 
             ]);
 
             // Record new accounting transaction with the same date
@@ -561,7 +562,7 @@ class Withdrawals extends Component
                     
                     $q->where('created_at', '>=', $from);
                 } catch (\Throwable $e) {
-                    \Log::warning('Invalid startDate: ' . $this->startDate);
+                    Log::warning('Invalid startDate: ' . $this->startDate);
                 }
             })
 
@@ -574,7 +575,7 @@ class Withdrawals extends Component
                     
                     $q->where('created_at', '<=', $to);
                 } catch (\Throwable $e) {
-                    \Log::warning('Invalid endDate: ' . $this->endDate);
+                    Log::warning('Invalid endDate: ' . $this->endDate);
                 }
             })
 
