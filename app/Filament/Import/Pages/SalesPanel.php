@@ -415,6 +415,8 @@ class SalesPanel extends Page
 
     public function printInvoice(): void
     {
+        ini_set('max_execution_time', 300);
+        ini_set('memory_limit', '512M');
         if ($this->saleType === 'wholesale' && empty($this->customer_id)) {
             Notification::make()->title('لطفاً خریدار را انتخاب کنید!')->warning()->send();
             return;
@@ -439,6 +441,7 @@ class SalesPanel extends Page
             'margin_bottom' => 2,
             'margin_left' => 10,
             'margin_right' => 10,
+            'memory_limit' => '1024M',
             'fontDir' => array_merge(
                 (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
                 [public_path('fonts/vazir/')]
@@ -455,8 +458,8 @@ class SalesPanel extends Page
             'tempDir' => storage_path('app/mpdf'),
         ]);
         $mpdf->SetDirectionality('rtl');
-        $mpdf->autoScriptToLang = false;
-        $mpdf->autoLangToFont = false;
+        $mpdf->autoScriptToLang = true;
+        $mpdf->autoLangToFont = true;
 
         $css = file_get_contents(resource_path('views/pdf/invoice.css'));
         $mpdf->WriteHTML($css, \Mpdf\HTMLParserMode::HEADER_CSS);

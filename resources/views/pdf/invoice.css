@@ -27,6 +27,7 @@ table {
     margin-top: 15px;
     background-size: 200px;
     table-layout: fixed; 
+        page-break-inside: auto;
 }
 
 th, td {
@@ -39,12 +40,16 @@ th, td {
     min-height: 50px; 
 }
 
-tbody tr:nth-child(odd) {
-    background-color: rgba(240, 240, 240, 0.7);
+
+
+tbody tr {
+    background-color: #fff;
+        page-break-inside: avoid;
+    page-break-after: auto;
 }
 
-tbody tr:nth-child(even) {
-    background-color: rgba(255, 255, 255, 0.7);
+thead {
+    display: table-header-group;
 }
 
 thead th {

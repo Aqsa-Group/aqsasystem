@@ -3,7 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
+    
 </head>
+
 
 <body style="vertical-align:middle;">
 
@@ -31,19 +33,13 @@
         </tr>
     </table>
 
-    @php
-    $logoPath = public_path('assets/logo2.png');
-    @endphp
+
 
     <table style="
         width:100%;
         border-collapse:collapse;
         margin-top:15px;
         border:1px solid #000;
-        background-image: url('file://{{ $logoPath }}');
-        background-position: center center;
-        background-repeat: no-repeat;
-        background-size: 120px 120px;
     ">
         <thead>
             <tr>
@@ -150,14 +146,12 @@
                 شماره‌های تماس: 0796471633 - 0700472377 - 0786165140
             </span>
 
-        <span>
-    <span style="vertical-align: middle;">  -  0779434678</span>
-    <img src="file://{{ $whatsappIcon }}" style="width:14px; height:14px; vertical-align: middle;">
-</span>
+            <span>
+                <span style="vertical-align: middle;"> - 0779434678</span>
+            </span>
 
         </div>
     </div>
-    <div style="height: calc(297mm - [مجموع ارتفاع محتوای شما]);"></div>
 
 </body>
 
