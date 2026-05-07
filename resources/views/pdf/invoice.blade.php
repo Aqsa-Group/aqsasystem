@@ -114,7 +114,7 @@
 
         <tr>
             <td style="padding:6px; font-weight:bold; width:50%;">
-                مجموعه کل فاکتور (بعد از برگشتی)
+                مجموعه کل فاکتور 
             </td>
             <td style="padding:6px; text-align:center;">
                 <strong>{{ number_format($subtotal, 2) }} دالر</strong>
