@@ -2,14 +2,12 @@
 
 namespace App\Models\Market;
 
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 
 class Deposit extends Model
 {
-
     protected $connection = 'market';
     protected $table = 'deposits';
 
@@ -30,8 +28,6 @@ class Deposit extends Model
         'paid',
         'remained',
         'paid_date',
-        'admin_id',
-
     ];
 
     /*
@@ -72,35 +68,52 @@ class Deposit extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | Boot Method
+    | Boot
     |--------------------------------------------------------------------------
     */
 
     protected static function booted()
     {
-        // ذخیره admin_id هنگام ساخت
         static::creating(function ($deposit) {
             if (Auth::check()) {
                 $user = Auth::user();
-                $deposit->admin_id = $user->role === 'admin' ? $user->id : $user->admin_id;
+                $deposit->admin_id = $user->role === 'admin'
+                    ? $user->id
+                    : $user->admin_id;
             }
         });
 
-        // بروزرسانی وضعیت حساب هنگام آپدیت
+        static::created(function ($deposit) {
+            self::syncAccounting($deposit);
+        });
+
         static::updated(function ($deposit) {
-            if ($deposit->accounting) {
-                $deposit->accounting->update([
-                    'cleared'  => $deposit->remained == 0 ? 1 : 0,
-                    'paid'     => $deposit->paid,
-                    'remained' => $deposit->remained,
-                ]);
-            }
+            self::syncAccounting($deposit);
         });
     }
 
     /*
     |--------------------------------------------------------------------------
-    | Query Scopes
+    | Sync Accounting (VERY IMPORTANT)
+    |--------------------------------------------------------------------------
+    */
+
+    private static function syncAccounting($deposit)
+    {
+        if (!$deposit->accounting) {
+            return;
+        }
+
+        $deposit->accounting->update([
+            'paid'     => $deposit->paid,
+            'remained' => $deposit->remained,
+            'cleared'  => $deposit->remained <= 0 ? 1 : 0,
+        ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Query
     |--------------------------------------------------------------------------
     */
 

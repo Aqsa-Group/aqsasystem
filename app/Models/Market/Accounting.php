@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Market\{
     Deposit, Shop, Booth, Market, Shopkeeper, Safe, User
 };
-use App\Models\Customer;
 
 class Accounting extends Model
 {
@@ -36,23 +35,21 @@ class Accounting extends Model
         'outside_id'
     ];
 
-
     protected $casts = [
-    'paid' => 'integer',
-];
+        'paid' => 'integer',
+    ];
 
-// مبلغ قابل نمایش
-public function getAmountAttribute()
-{
-    return abs((int) $this->paid);
-}
+    /* ===================== Accessors ===================== */
 
-// نوع تراکنش
-public function getDirectionAttribute()
-{
-    return $this->paid < 0 ? 'برداشت' : 'دریافت';
-}
+    public function getAmountAttribute()
+    {
+        return abs((int) $this->paid);
+    }
 
+    public function getDirectionAttribute()
+    {
+        return $this->paid < 0 ? 'برداشت' : 'دریافت';
+    }
 
     /* ===================== Relations ===================== */
 
@@ -69,58 +66,82 @@ public function getDirectionAttribute()
     protected static function booted()
     {
         static::creating(function ($accounting) {
+            self::handleAdmin($accounting);
+            self::calculate($accounting);
+        });
 
-            // تعیین admin
-            if (Auth::check() && !$accounting->admin_id) {
-                $user = Auth::user();
-                $accounting->admin_id = $user->role === 'admin'
-                    ? $user->id
-                    : $user->admin_id;
-            }
-
-            // محاسبه باقی‌مانده برق (خیلی مهم)
-            if ($accounting->expanses_type === 'پول برق') {
-
-                $lastRemained = self::where('expanses_type', 'پول برق')
-                    ->when($accounting->shop_id, fn ($q) => $q->where('shop_id', $accounting->shop_id))
-                    ->when($accounting->booth_id, fn ($q) => $q->where('booth_id', $accounting->booth_id))
-                    ->latest('id')
-                    ->value('remained') ?? 0;
-
-                $paid = $accounting->paid ?? 0;
-
-                $accounting->remained = round(
-                    ($lastRemained + $accounting->price) - $paid,
-                    2
-                );
-
-                $accounting->cleared = $accounting->remained <= 0;
-            }
+        static::updating(function ($accounting) {
+            self::handleAdmin($accounting);
+            self::calculate($accounting);
         });
 
         static::created(function ($accounting) {
+            self::syncDeposit($accounting);
+        });
 
-            // ساخت Deposit دقیقاً برابر Accounting
-            $accounting->deposit()->create([
-                'accounting_id'  => $accounting->id,
-                'admin_id'       => $accounting->admin_id, 
-                'shop_id'        => $accounting->shop_id,
-                'booth_id'       => $accounting->booth_id,
-                'market_id'      => $accounting->market_id,
-                'shopkeeper_id'  => $accounting->shopkeeper_id,
-                'type'           => $accounting->type,
-                'expanses_type'  => $accounting->expanses_type,
-                'meter_serial'   => $accounting->meter_serial,
-                'past_degree'    => $accounting->past_degree,
-                'current_degree' => $accounting->current_degree,
-                'price'          => $accounting->price,
-                'currency'       => $accounting->currency,
-                'paid'           => $accounting->paid ?? 0,
-                'remained'       => $accounting->remained,
-                'paid_date'      => $accounting->paid_date,
-            ]);
+        static::updated(function ($accounting) {
+            self::syncDeposit($accounting);
         });
     }
 
-    
+    /* ===================== Logic ===================== */
+
+    private static function handleAdmin($accounting)
+    {
+        if (Auth::check() && !$accounting->admin_id) {
+            $user = Auth::user();
+            $accounting->admin_id = $user->role === 'admin'
+                ? $user->id
+                : $user->admin_id;
+        }
+    }
+
+    private static function calculate($accounting)
+    {
+        if ($accounting->expanses_type !== 'پول برق') {
+            return;
+        }
+
+        $lastRemained = self::where('expanses_type', 'پول برق')
+            ->when($accounting->shop_id, fn ($q) => $q->where('shop_id', $accounting->shop_id))
+            ->when($accounting->booth_id, fn ($q) => $q->where('booth_id', $accounting->booth_id))
+            ->when($accounting->id, fn ($q) => $q->where('id', '<', $accounting->id))
+            ->latest('id')
+            ->value('remained') ?? 0;
+
+        $paid = $accounting->paid ?? 0;
+
+        $accounting->remained = round(
+            ($lastRemained + $accounting->price) - $paid,
+            2
+        );
+
+        $accounting->cleared = $accounting->remained <= 0;
+    }
+
+    private static function syncDeposit($accounting)
+    {
+        $data = [
+            'admin_id'       => $accounting->admin_id,
+            'shop_id'        => $accounting->shop_id,
+            'booth_id'       => $accounting->booth_id,
+            'market_id'      => $accounting->market_id,
+            'shopkeeper_id'  => $accounting->shopkeeper_id,
+            'type'           => $accounting->type,
+            'expanses_type'  => $accounting->expanses_type,
+            'meter_serial'   => $accounting->meter_serial,
+            'past_degree'    => $accounting->past_degree,
+            'current_degree' => $accounting->current_degree,
+            'price'          => $accounting->price,
+            'currency'       => $accounting->currency,
+            'paid'           => $accounting->paid ?? 0,
+            'remained'       => $accounting->remained,
+            'paid_date'      => $accounting->paid_date,
+        ];
+
+        $accounting->deposit()->updateOrCreate(
+            ['accounting_id' => $accounting->id],
+            $data
+        );
+    }
 }

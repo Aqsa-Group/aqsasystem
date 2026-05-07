@@ -2,231 +2,137 @@
 <html lang="fa" dir="rtl">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>چاپ رسید پرداخت - مجتمع تجارتی عادلیار</title>
-    <style>
-        html,
-        body {
-            height: 100%;
-            background: #fff;
-            color: #111;
-            direction: rtl;
-            font-size: 13px;
-            font-family: 'vazir', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
+<meta charset="UTF-8">
+<title>رسید پرداخت</title>
 
-        .page {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 15px;
-        }
+<style>
+body {
+    font-family: vazir, sans-serif;
+    font-size: 13px;
+    background: #fff;
+    color: #111;
+    margin: 0;
+}
 
-        /* هدر مینیمال */
-        .col-header {
-            position: relative;
-            height: 100px;
-            margin-bottom: 15px;
-        }
+.page {
+    padding: 15px;
+}
 
-        .col-header .title {
-            font-size: 22px;
-            font-weight: bold;
-            color: #111;
-            text-align: center;
-        }
+.header {
+    text-align: center;
+    margin-bottom: 15px;
+}
 
-        .col-header .subtitle {
-            font-size: 16px;
-            font-weight: bold;
-            color: #222;
-            text-align: center;
-            margin-top: 2px;
-        }
+.header h2 {
+    margin: 0;
+    font-size: 20px;
+}
 
-        .logo {
-            width: 80px;
-            height: 80px;
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
+.header p {
+    margin: 3px 0;
+    font-weight: bold;
+}
 
-        .logo img {
-            max-width: 100%;
-            max-height: 100%;
-            display: block;
-        }
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
 
-        /* جدول مشخصات */
-        .form-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 15px;
-        }
+.table th,
+.table td {
+    border: 1px solid #333;
+    padding: 6px;
+    text-align: center;
+    font-weight: bold;
+}
 
-        .form-table th,
-        .form-table td {
-            border: 1px solid #444;
-            padding: 6px;
-            text-align: center;
-            font-weight: bold;
-        }
+.table th {
+    background: #095264;
+    color: #fff;
+}
 
-        .form-table th {
-            background: #095264;
-            font-family: 'vazir', sans-serif;
-            color: #ffffff;
-        }
+.amount {
+    width: 100%;
+    border-collapse: collapse;
+}
 
+.amount td {
+    border: 1px solid #444;
+    padding: 8px;
+    font-weight: bold;
+}
 
-        .amount-rows {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 15px;
-        }
+.label {
+    background: #095264;
+    color: #fff;
+    text-align: right;
+}
 
-        .amount-rows th,
-        .amount-rows td {
-            border: 1px solid #444;
-            padding: 8px;
-            font-weight: bold;
-            text-align: center;
-        }
+.value {
+    text-align: center;
+}
+</style>
 
-        /* ستون اول تیره و متن سفید */
-        .amount-rows td:first-child {
-            background: #095264;
-            /* تیره مینیمال */
-            color: #ffffff;
-            /* متن سفید */
-            font-weight: bold;
-            text-align: right;
-        }
-
-        /* ستون دوم سفید و متن تیره */
-        .amount-rows td:last-child {
-            background: #fff;
-            color: #111;
-            text-align: center;
-        }
-
-        /* باکس مسئول برق و امضا مینیمال */
-        .sign-block {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .electrician-box,
-        .stamp-box {
-            border: 1px solid #444;
-            border-radius: 6px;
-            padding: 12px;
-            flex: 1;
-            text-align: center;
-            background: #fff;
-            color: #111;
-        }
-
-        .electrician-box .title {
-            font-weight: bold;
-            font-size: 15px;
-            margin-bottom: 6px;
-        }
-
-        .electrician-box .phone {
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .stamp-box {
-            min-height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 16px;
-        }
-    </style>
 </head>
 
 <body>
-    <div class="page">
-        <!-- هدر -->
-        <div class="col-header">
-            <div class="header-text">
-                <div class="title">مجتمع تجارتی عادلیار</div>
-                <div class="subtitle">رسید پول {{$depositLog->expanses_type ?? '-' }}</div>
-            </div>
+<div class="page">
 
-        </div>
-
-        <!-- جدول مشخصات -->
-        <table class="form-table">
-            <thead>
-                <tr>
-                    <th>مارکت</th>
-                    <th>شماره دوکان</th>
-                    <th>دوکاندار</th>
-                    <th>نوع هزینه</th>
-                    <th>بابت ماه</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ $depositLog->market->name ?? '-' }}</td>
-                    <td>{{ $depositLog->shop->number ?? $depositLog->booth->number ?? '-' }}</td>
-                    <td>{{ $depositLog->shopkeeper->fullname ?? '-' }}</td>
-                    <td>{{ $depositLog->expanses_type ?? '-' }}</td>
-                    <td>
-                        @php
-                        $jalali = \Morilog\Jalali\Jalalian::fromDateTime($depositLog->deposit->paid_date);
-                        $months = [
-                        1 => 'حمل',2 => 'ثور',3 => 'جوزا',4 => 'سرطان',
-                        5 => 'اسد',6 => 'سنبله',7 => 'میزان',8 => 'عقرب',
-                        9 => 'قوس',10 => 'جدی',11 => 'دلو',12 => 'حوت',
-                        ];
-                        @endphp
-                        {{ $months[$jalali->getMonth()] }} {{ $jalali->getYear() }}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- جدول مقادیر -->
-        <table class="amount-rows">
-            <tbody>
-
-
-                <tr>
-                    <th>پرداخت قبلی</th>
-                    <td dir="ltr">{{ number_format($depositLog->old_paid) }}</td>
-                </tr>
-
-                <tr>
-                    <th>پرداخت جدید</th>
-                    <td dir="ltr">{{ number_format($depositLog->new_paid) }}</td>
-
-                </tr>
-
-                <tr>
-                    <th>الباقی</th>
-
-                    <td dir="ltr">{{ number_format($depositLog->new_remained) }}</td>
-                </tr>
-            </tbody>
-        </table>
-
-
+    {{-- HEADER --}}
+    <div class="header">
+        <h2>مجتمع تجارتی عادلیار</h2>
+        <p>رسید پرداخت - {{ $depositLog->expanses_type }}</p>
     </div>
+
+    {{-- INFO --}}
+    <table class="table">
+        <tr>
+            <th>مارکت</th>
+            <th>شماره دوکان</th>
+            <th>دوکاندار</th>
+            <th>نوع هزینه</th>
+        </tr>
+        <tr>
+            <td>{{ $depositLog->market->name ?? '-' }}</td>
+            <td>{{ $depositLog->shop->number ?? '-' }}</td>
+            <td>{{ $depositLog->shopkeeper->fullname ?? '-' }}</td>
+            <td>{{ $depositLog->expanses_type }}</td>
+        </tr>
+    </table>
+
+    {{-- 💡 CLEAN FINANCIAL LOGIC --}}
+    @php
+        $price = $depositLog->deposit->price ?? 0;
+
+        $oldPaid = $depositLog->old_paid ?? 0;
+        $newPaid = $depositLog->new_paid ?? 0;
+
+        $oldRemaining = max($price - $oldPaid, 0);
+        $newRemaining = max($price - $newPaid, 0);
+    @endphp
+
+    {{-- AMOUNT --}}
+    <table class="amount">
+
+        <tr>
+            <td class="label">کل بدهی</td>
+            <td class="value">{{ number_format($price) }}</td>
+        </tr>
+
+        <tr>
+            <td class="label">پرداخت فعلی</td>
+            <td class="value">{{ number_format($newPaid) }}</td>
+        </tr>
+
+        <tr>
+            <td class="label">باقی‌مانده فعلی</td>
+            <td class="value">{{ number_format($newRemaining) }}</td>
+        </tr>
+
+    </table>
+
+</div>
 </body>
 
 </html>

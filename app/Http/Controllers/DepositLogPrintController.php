@@ -3,36 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Models\Market\DepositLog;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Morilog\Jalali\Jalalian;
 use Mpdf\Mpdf;
 
 class DepositLogPrintController extends Controller
 {
-
-
     public function generate($depositLogId)
     {
         try {
-            $depositLog = DepositLog::with(['user', 'market', 'shop', 'shopkeeper'])->findOrFail($depositLogId);
 
-           $mpdf = new \Mpdf\Mpdf([
+            $depositLog = DepositLog::with([
+                'market',
+                'shop',
+                'shopkeeper',
+                'deposit',
+            ])->findOrFail($depositLogId);
+
+            $mpdf = new Mpdf([
                 'mode' => 'utf-8',
                 'format' => [210, 90],
                 'directionality' => 'rtl',
-                'margin_top' => 0,
-                'margin_bottom' => 0,
-                'margin_left' => 0,
-                'margin_right' => 0,
-                  'fontDir' => array_merge(
+                'margin_top' => 5,
+                'margin_bottom' => 5,
+                'margin_left' => 5,
+                'margin_right' => 5,
+                'fontDir' => array_merge(
                     (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
                     [public_path('fonts/vazir/')]
                 ),
                 'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
                     'vazir' => [
-
                         'R' => 'Vazir-Light.ttf',
                         'B' => 'Vazir-Bold.ttf',
                         'useOTL' => 0xFF,
@@ -43,27 +43,20 @@ class DepositLogPrintController extends Controller
                 'tempDir' => storage_path('app/mpdf'),
             ]);
 
-
             $mpdf->SetAutoPageBreak(false);
-            $mpdf->autoLangToFont = true;
-            $mpdf->SetDefaultFont('vazir');
 
-            // رندر HTML
             $html = view('exports.deposit_log_print', compact('depositLog'))->render();
             $mpdf->WriteHTML($html);
 
-            $fileName = 'رسید_پرداخت_' . $depositLog->id . '_' . time() . '.pdf';
-            $path = storage_path('app/public/' . $fileName);
+            $fileName = 'receipt_' . $depositLog->id . '.pdf';
 
-            // ذخیره PDF روی سرور
-            $mpdf->Output($path, \Mpdf\Output\Destination::FILE);
+            return response($mpdf->Output($fileName, \Mpdf\Output\Destination::STRING_RETURN))
+                ->header('Content-Type', 'application/pdf')
+                ->header('Content-Disposition', "inline; filename={$fileName}");
 
-            // دانلود فایل توسط کاربر
-            return response()->download($path, $fileName);
         } catch (\Exception $e) {
-            Log::error('PDF generation error: ' . $e->getMessage());
-            session()->flash('error', 'خطا در ایجاد PDF: ' . $e->getMessage());
-            return null;
+            Log::error($e->getMessage());
+            return response()->json(['error' => 'PDF error'], 500);
         }
     }
 }

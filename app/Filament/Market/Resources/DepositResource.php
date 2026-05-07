@@ -222,67 +222,136 @@ class DepositResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+
                 Action::make('correct')
                     ->label('تصحیح')
                     ->icon('heroicon-o-pencil')
                     ->modalHeading('تصحیح مبلغ پرداختی')
                     ->modalButton('ذخیره تصحیح')
                     ->modalWidth('xl')
+
                     ->form([
                         Forms\Components\TextInput::make('paid')
                             ->label('مبلغ کل پرداختی')
                             ->numeric()
                             ->required()
                             ->default(fn($record) => $record->paid)
+
                             ->rules([
                                 fn($record) => function ($attribute, $value, $fail) use ($record) {
+
                                     if ($value > $record->price) {
                                         $fail("مبلغ پرداختی نمی‌تواند از کل بدهی ({$record->price}) بیشتر باشد.");
                                     }
+
                                     if ($value < 0) {
                                         $fail('مبلغ پرداختی نمی‌تواند منفی باشد.');
-                                    }
-                                    if ($value < $record->paid) {
-                                        $fail('مبلغ پرداختی نمی‌تواند از مقدار قبلی کمتر باشد.');
                                     }
                                 }
                             ]),
                     ])
+
                     ->action(function ($record, array $data) {
-                        if ($data['paid'] > $record->price) {
-                            Notification::make()->danger()->title('خطا')->body('مبلغ پرداختی بیشتر از کل بدهی است')->send();
+
+                        $newPaid = (int) $data['paid'];
+                        $price   = (int) $record->price;
+
+                        $accounting = $record->accounting;
+
+                        /* ===================== GET LAST STATE (FIXED LOGIC) ===================== */
+                        $lastLog = \App\Models\Market\DepositLog::where('deposit_id', $record->id)
+                            ->latest('id')
+                            ->first();
+
+                        $oldPaid = $lastLog?->new_paid ?? 0;
+                        $oldRemained = $lastLog?->new_remained ?? ($price - $oldPaid);
+
+                        /* ===================== VALIDATION ===================== */
+                        if ($newPaid > $price) {
+                            Notification::make()
+                                ->danger()
+                                ->title('خطا')
+                                ->body('مبلغ پرداختی بیشتر از کل بدهی است')
+                                ->send();
+
                             return;
                         }
 
-                        $oldPaid = $record->paid;
-                        $newPaid = $data['paid'];
-                        $difference = $newPaid - $oldPaid;
-                        $newRemained = max($record->price - $newPaid, 0);
+                        $newRemained = max($price - $newPaid, 0);
 
+                        /* ===================== 1. UPDATE DEPOSIT ===================== */
                         $record->update([
-                            'paid' => $newPaid,
+                            'paid'     => $newPaid,
                             'remained' => $newRemained,
                         ]);
 
-                        if ($difference != 0) {
-                            DepositLog::create([
-                                'deposit_id'      => $record->id,
-                                'user_id'         => auth()->id(),
-                                'expanses_type'   => $record->accounting?->expanses_type,
-                                'market_id'       => $record->market_id,
-                                'shop_id'         => $record->shop_id,
-                                'shopkeeper_id'   => $record->shopkeeper_id,
-                                'market_name'     => $record->accounting?->market?->name,
-                                'shop_number'     => $record->accounting?->shop?->number,
-                                'shopkeeper_name' => $record->accounting?->shopkeeper?->fullname,
-                                'old_paid'        => $oldPaid,
-                                'old_remained'    => $record->price - $oldPaid,
-                                'new_paid'        => $newPaid,
-                                'new_remained'    => $newRemained,
+                        /* ===================== 2. SYNC ACCOUNTING ===================== */
+                        if ($accounting) {
+                            $accounting->update([
+                                'paid'     => $newPaid,
+                                'remained' => $newRemained,
+                                'cleared'  => $newRemained <= 0,
                             ]);
                         }
 
-                        Notification::make()->success()->title('تصحیح با موفقیت انجام شد')->send();
+                        /* ===================== 3. RECALCULATE ELECTRICITY CHAIN ===================== */
+                        if ($accounting && $accounting->expanses_type === 'پول برق') {
+
+                            $items = \App\Models\Market\Accounting::query()
+                                ->where('expanses_type', 'پول برق')
+                                ->when($accounting->shop_id, fn($q) => $q->where('shop_id', $accounting->shop_id))
+                                ->when($accounting->booth_id, fn($q) => $q->where('booth_id', $accounting->booth_id))
+                                ->orderBy('id')
+                                ->get();
+
+                            $running = 0;
+
+                            foreach ($items as $item) {
+
+                                $running = ($running + $item->price) - ($item->paid ?? 0);
+
+                                $item->update([
+                                    'remained' => $running,
+                                    'cleared'  => $running <= 0,
+                                ]);
+
+                                if ($item->deposit) {
+                                    $item->deposit->update([
+                                        'paid'     => $item->paid,
+                                        'remained' => $running,
+                                    ]);
+                                }
+                            }
+                        }
+
+                        \App\Models\Market\DepositLog::updateOrCreate(
+                            [
+                                'deposit_id' => $record->id,
+                            ],
+                            [
+                                'user_id'         => auth()->id(),
+                                'admin_id'        => $record->admin_id,
+                                'expanses_type'   => $accounting?->expanses_type,
+                                'market_id'       => $record->market_id,
+                                'shop_id'         => $record->shop_id,
+                                'shopkeeper_id'   => $record->shopkeeper_id,
+
+                                'market_name'     => $accounting?->market?->name,
+                                'shop_number'     => $accounting?->shop?->number,
+                                'shopkeeper_name' => $accounting?->shopkeeper?->fullname,
+
+                                'old_paid'        => $oldPaid,
+                                'old_remained'    => $oldRemained,
+
+                                'new_paid'        => $newPaid,
+                                'new_remained'    => $newRemained,
+                            ]
+                        );
+                        /* ===================== SUCCESS ===================== */
+                        Notification::make()
+                            ->success()
+                            ->title('تصحیح با موفقیت انجام شد')
+                            ->send();
                     })
                     ->visible(fn($record) => true),
             ])
