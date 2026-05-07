@@ -62,15 +62,16 @@
                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
                             <td class="p-2">{{ $row['name'] }}</td>
                             <td class="p-2">{{ $row['unit'] }}</td>
-                            <td class="p-2">{{ rtrim(rtrim(number_format($row['sale_price'], 2, '.', ''), '0'), '.') }}</td>
+                            <td class="p-2">{{ rtrim(rtrim(number_format($row['sale_price'], 2, '.', ''), '0'), '.') }}
+                            </td>
                             <td class="p-2">{{ $row['sold_qty'] }}</td>
                             <td class="p-2">
                                 <input type="number" min="0" max="{{ $row['sold_qty'] }}"
-                                    wire:model.lazy="rows.{{ $i }}.qty"
+                                    wire:model.live.debounce.5s="rows.{{ $i }}.qty"
                                     class="w-24 border rounded-lg px-2 py-1 text-sm bg-gray-50 dark:bg-gray-800 dark:text-gray-100" />
                             </td>
                             <td class="p-2 font-semibold text-blue-600 dark:text-blue-400">
-                              {{ rtrim(rtrim(number_format($row['total'], 2, '.', ','), '0'), '.') }}
+                                {{ rtrim(rtrim(number_format($row['total'], 2, '.', ','), '0'), '.') }}
 
                             </td>
                         </tr>
@@ -82,7 +83,8 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 justify-between">
                 <div class="flex items-center justify-between bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
                     <span class="text-sm dark:text-gray-200">مجموع برگشتی</span>
-                    <span class="text-lg font-bold text-blue-600 dark:text-blue-400">{{ rtrim(rtrim(number_format($totalReturn, 2, '.', ','), '0'), '.') }}
+                    <span class="text-lg font-bold text-blue-600 dark:text-blue-400">{{
+                        rtrim(rtrim(number_format($totalReturn, 2, '.', ','), '0'), '.') }}
 
                         دالر</span>
                 </div>

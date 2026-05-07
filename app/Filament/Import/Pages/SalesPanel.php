@@ -538,28 +538,66 @@ class SalesPanel extends Page
         $this->productError = false;
     }
 
-    public function increaseQuantity(int $index): void
-    {
-        if (!isset($this->items[$index])) return;
-
-        $this->items[$index]['quantity']++;
-        // استفاده از قیمت موجود در آرایه بدون مراجعه به دیتابیس
-        $this->items[$index]['total'] = $this->roundAmount(
-            $this->items[$index]['quantity'] * $this->items[$index]['price']
-        );
+public function increaseQuantity(int $index): void
+{
+    if (!$this->hasItem($index)) {
+        return;
     }
 
-    public function decreaseQuantity(int $index): void
-    {
-        if (!isset($this->items[$index])) return;
-        if ($this->items[$index]['quantity'] > 1) {
-            $this->items[$index]['quantity']--;
-            // استفاده از قیمت موجود در آرایه بدون مراجعه به دیتابیس
-            $this->items[$index]['total'] = $this->roundAmount(
-                $this->items[$index]['quantity'] * $this->items[$index]['price']
-            );
+    $this->items[$index]['quantity']++;
+
+    $this->updateItemTotal($index);
+}
+
+public function decreaseQuantity(int $index): void
+{
+    if (!$this->hasItem($index)) {
+        return;
+    }
+
+    if ($this->items[$index]['quantity'] <= 1) {
+        return;
+    }
+
+    $this->items[$index]['quantity']--;
+
+    $this->updateItemTotal($index);
+}
+
+public function updatedItems($value, $key): void
+{
+    // فقط وقتی quantity تغییر کرد
+    if (str_contains($key, 'quantity')) {
+        $index = explode('.', $key)[0];
+
+        if (!isset($this->items[$index])) {
+            return;
         }
+
+        $this->items[$index]['quantity'] = (int) $this->items[$index]['quantity'];
+
+        $this->updateItemTotal($index);
     }
+}
+/**
+ * بررسی وجود آیتم
+ */
+protected function hasItem(int $index): bool
+{
+    return isset($this->items[$index]);
+}
+
+/**
+ * محاسبه total هر آیتم
+ */
+protected function updateItemTotal(int $index): void
+{
+    $item = $this->items[$index];
+
+    $this->items[$index]['total'] = $this->roundAmount(
+        $item['quantity'] * $item['price']
+    );
+}
 
 
     public function removeItem(int $index): void

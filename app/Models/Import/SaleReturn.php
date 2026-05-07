@@ -9,8 +9,9 @@ class SaleReturn extends Model
 
     protected $connection = 'import';
     protected $table = 'returns';
-     protected $fillable = [
+    protected $fillable = [
         'sale_id',
+        'sale_item_id',
         'warehouse_id',
         'quantity',
         'price_per_unit',
@@ -21,6 +22,10 @@ class SaleReturn extends Model
     public function sale()
     {
         return $this->belongsTo(Sale::class);
+    }
+        public function saleItem()
+    {
+        return $this->belongsTo(SaleItem::class);
     }
 
     public function warehouse()

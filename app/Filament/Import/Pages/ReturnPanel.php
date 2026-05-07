@@ -13,6 +13,10 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\Import\Document;
+use Mpdf\Mpdf;
+use Mpdf\Config\ConfigVariables;
+use Mpdf\Config\FontVariables;
 
 class ReturnPanel extends Page
 {
@@ -50,8 +54,7 @@ class ReturnPanel extends Page
         $this->rows = [];
         foreach ($this->sale->items as $item) {
             $alreadyReturned = SaleReturn::where('sale_id', $this->sale->id)
-                ->where('warehouse_id', $item->warehouse_id)
-                ->where('price_per_unit', $item->price_per_unit)
+                ->where('sale_item_id', $item->id)
                 ->sum('quantity');
 
             $maxQty = $item->quantity - $alreadyReturned;
@@ -92,126 +95,232 @@ class ReturnPanel extends Page
         $this->refundNow = $this->totalReturn;
     }
 
-public function submitReturn(): void
-{
-    if (!$this->sale) {
-        Notification::make()->title('ابتدا فاکتور را بارگذاری کنید')->warning()->send();
-        return;
-    }
-
-    $hasQty = collect($this->rows)->sum('qty') > 0;
-    if (!$hasQty) {
-        Notification::make()->title('هیچ مقداری برای برگشت وارد نشده است')->warning()->send();
-        return;
-    }
-
-    DB::transaction(function () {
-        $returnTotal = 0;
-
-        foreach ($this->rows as $row) {
-            $qty = (int)$row['qty'];
-            if ($qty <= 0) continue;
-
-            $saleItem  = SaleItem::with('warehouse')->find($row['sale_item_id']);
-            $warehouse = $saleItem?->warehouse;
-            if (!$saleItem || !$warehouse) continue;
-
-            $this->increaseWarehouseOnReturn($warehouse, $qty, $this->sale->sale_type);
-            $warehouse->save();
-
-            $lineSale = $qty * (float)$saleItem->price_per_unit;
-            $lineCost = $qty * (float)$warehouse->price;
-
-            $profitDelta = $lineSale - $lineCost;
-            if ($profitDelta > 0) {
-                $saleItem->profit = max(0, $saleItem->profit - $profitDelta);
-                $saleItem->save();
-            }
-
-            $returnTotal += $lineSale;
-
-            SaleReturn::create([
-                'sale_id'        => $this->sale->id,
-                'warehouse_id'   => $warehouse->id,
-                'quantity'       => $qty,
-                'price_per_unit' => $saleItem->price_per_unit,
-                'total_price'    => $lineSale,
-                'user_id'        => Auth::id(),
-            ]);
+    public function submitReturn(): void
+    {
+        if (!$this->sale) {
+            Notification::make()->title('ابتدا فاکتور را بارگذاری کنید')->warning()->send();
+            return;
         }
 
-        $returnTotal = (float) $returnTotal;
-        if ($returnTotal <= 0) return;
+        $hasQty = collect($this->rows)->sum('qty') > 0;
+        if (!$hasQty) {
+            Notification::make()->title('هیچ مقداری برای برگشت وارد نشده است')->warning()->send();
+            return;
+        }
 
-        $loanRefund = 0;
-        $cashRefund = 0;
+        DB::transaction(function () {
+            $returnTotal = 0;
 
-        if ($this->sale->sale_type === 'wholesale') {
-            if ($this->sale->customer) {
-                $cust = $this->sale->customer;
+            foreach ($this->rows as $row) {
+                $qty = (int)$row['qty'];
+                if ($qty <= 0) continue;
 
-                $loanBefore = (float) $cust->remaining_loan;
-                $loanRefund = min($returnTotal, $loanBefore);
+                $saleItem  = SaleItem::with('warehouse')->find($row['sale_item_id']);
+                $warehouse = $saleItem?->warehouse;
+                if (!$saleItem || !$warehouse) continue;
 
-                $cust->total_loan     = max(0, $cust->total_loan - $loanRefund);
-                $cust->remaining_loan = max(0, $cust->remaining_loan - $loanRefund);
-                $cust->save();
+                $this->increaseWarehouseOnReturn($warehouse, $qty, $this->sale->sale_type);
+                $warehouse->save();
 
-                $remainingRefund = $loanRefund;
-                $loans = DB::connection('import')->table('loans')
-                    ->where('customer_id', $cust->id)
-                    ->where('amount', '>', 0)
-                    ->orderBy('id', 'asc')
-                    ->get();
+                $lineSale = $qty * (float)$saleItem->price_per_unit;
+                $lineCost = $qty * (float)$warehouse->price;
 
-                foreach ($loans as $loan) {
-                    if ($remainingRefund <= 0) break;
-                    $deduct = min($loan->amount, $remainingRefund);
-                    DB::connection('import')->table('loans')
-                        ->where('id', $loan->id)
-                        ->decrement('amount', $deduct);
-                    $remainingRefund -= $deduct;
+                $profitDelta = $lineSale - $lineCost;
+                if ($profitDelta > 0) {
+                    $saleItem->profit = max(0, $saleItem->profit - $profitDelta);
+                    $saleItem->save();
                 }
 
-                $cashRefund = $returnTotal - $loanRefund;
-            } else {
-                $cashRefund = $returnTotal;
+                $returnTotal += $lineSale;
+                SaleReturn::create([
+                    'sale_id'        => $this->sale->id,
+                    'sale_item_id'   => $saleItem->id,
+                    'warehouse_id'   => $warehouse->id,
+                    'quantity'       => $qty,
+                    'price_per_unit' => $saleItem->price_per_unit,
+                    'total_price'    => $lineSale,
+                    'user_id'        => Auth::id(),
+                ]);
             }
 
-            $this->sale->remaining_amount = max(0, (float)$this->sale->total_price - $loanRefund - $cashRefund);
-        } else {
-            $cashRefund = $returnTotal;
-            $this->sale->remaining_amount = 0;
-        }
+            $returnTotal = (float) $returnTotal;
+            if ($returnTotal <= 0) return;
 
-        $this->sale->total_price = max(0, (float)$this->sale->total_price - $returnTotal);
-        $this->sale->save();
+            $loanRefund = 0;
+            $cashRefund = 0;
 
-        $safe = Safe::firstOrCreate([], [
-            'USD'       => 0,
-            'today'       => 0,
-            'user_id'     => Auth::id(),
-            'last_update' => now()->toDateString(),
-        ]);
+            if ($this->sale->sale_type === 'wholesale') {
+                if ($this->sale->customer) {
+                    $cust = $this->sale->customer;
 
-        if ($safe->last_update !== now()->toDateString()) {
-            $safe->today = 0;
-            $safe->last_update = now()->toDateString();
-        }
+                    $loanBefore = (float) $cust->remaining_loan;
+                    $loanRefund = min($returnTotal, $loanBefore);
 
-        $safe->today -= $cashRefund; 
-        if ($cashRefund > 0) {
-            $safe->USD -= $cashRefund;
-        }
+                    $cust->total_loan     = max(0, $cust->total_loan - $loanRefund);
+                    $cust->remaining_loan = max(0, $cust->remaining_loan - $loanRefund);
+                    $cust->save();
 
-        $safe->save();
-    });
+                    $remainingRefund = $loanRefund;
+                    $loans = DB::connection('import')->table('loans')
+                        ->where('customer_id', $cust->id)
+                        ->where('amount', '>', 0)
+                        ->orderBy('id', 'asc')
+                        ->get();
 
-    Notification::make()->title('برگشتی ثبت شد')->success()->send();
-    $this->resetState();
+                    foreach ($loans as $loan) {
+                        if ($remainingRefund <= 0) break;
+                        $deduct = min($loan->amount, $remainingRefund);
+                        DB::connection('import')->table('loans')
+                            ->where('id', $loan->id)
+                            ->decrement('amount', $deduct);
+                        $remainingRefund -= $deduct;
+                    }
+
+                    $cashRefund = $returnTotal - $loanRefund;
+                } else {
+                    $cashRefund = $returnTotal;
+                }
+
+                $this->sale->remaining_amount = max(0, (float)$this->sale->total_price - $loanRefund - $cashRefund);
+            } else {
+                $cashRefund = $returnTotal;
+                $this->sale->remaining_amount = 0;
+            }
+
+            $this->sale->total_price = max(0, (float)$this->sale->total_price - $returnTotal);
+            $this->sale->save();
+            // حذف PDF قبلی
+            $oldDocs = Document::where('sale_id', $this->sale->id)->get();
+
+            foreach ($oldDocs as $doc) {
+                $fullPath = public_path($doc->file_path);
+
+                if (file_exists($fullPath)) {
+                    @unlink($fullPath);
+                }
+
+                $doc->delete();
+            }
+
+
+
+            // ساخت PDF جدید
+            $this->regenerateInvoice($this->sale->id);
+            $safe = Safe::firstOrCreate([], [
+                'USD'       => 0,
+                'today'       => 0,
+                'user_id'     => Auth::id(),
+                'last_update' => now()->toDateString(),
+            ]);
+
+            if ($safe->last_update !== now()->toDateString()) {
+                $safe->today = 0;
+                $safe->last_update = now()->toDateString();
+            }
+
+            $safe->today -= $cashRefund;
+            if ($cashRefund > 0) {
+                $safe->USD -= $cashRefund;
+            }
+
+            $safe->save();
+        });
+
+        Notification::make()->title('برگشتی ثبت شد')->success()->send();
+        $this->resetState();
+    }
+private function roundAmount($value): float
+{
+    return round((float) $value, 3);
 }
+ public function regenerateInvoice(int $saleId): void
+{
+    $sale = Sale::with(['items.warehouse', 'customer'])->find($saleId);
 
+    if (!$sale) return;
 
+    $defaultConfig = (new ConfigVariables())->getDefaults();
+    $fontDirs = $defaultConfig['fontDir'];
+
+    $defaultFontConfig = (new FontVariables())->getDefaults();
+    $fontData = $defaultFontConfig['fontdata'];
+
+    $mpdf = new Mpdf([
+        'mode' => 'utf-8',
+        'format' => 'A4',
+        'margin_top' => 10,
+        'margin_bottom' => 2,
+        'margin_left' => 10,
+        'margin_right' => 10,
+        'fontDir' => array_merge($fontDirs, [public_path('fonts/vazir/')]),
+        'fontdata' => $fontData + [
+            'vazir' => [
+                'R' => 'Vazir-Light.ttf',
+                'B' => 'Vazir-Bold.ttf',
+                'useOTL' => 0xFF,
+                'useKashida' => 75,
+            ],
+        ],
+        'default_font' => 'vazir',
+        'tempDir' => storage_path('app/mpdf'),
+    ]);
+
+    $mpdf->SetDirectionality('rtl');
+
+    $css = file_get_contents(resource_path('views/pdf/invoice.css'));
+    $mpdf->WriteHTML($css, \Mpdf\HTMLParserMode::HEADER_CSS);
+
+    $total = 0;
+
+    // 🔥 فقط مقدار واقعی فروخته شده
+    foreach ($sale->items as $item) {
+
+        $returnedQty = SaleReturn::where('sale_id', $sale->id)
+            ->where('sale_item_id', $item->id)
+            ->sum('quantity');
+
+        $soldQty = max(0, $item->quantity - $returnedQty);
+
+        $item->sold_qty = $soldQty;
+
+        $unitPrice = (float) $item->price_per_unit;
+
+        $item->sold_total = $this->roundAmount($soldQty * $unitPrice);
+
+        $total += $item->sold_total;
+    }
+
+    $discount = (float) $sale->discount;
+    $finalTotal = max(0, $total - $discount);
+
+    $html = view('pdf.invoice', [
+        'sale' => $sale,
+        'finalTotal' => $finalTotal,
+        'discount' => $discount,
+    ])->render();
+
+    $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+
+    $fileName = 'invoice-' . $sale->id . '.pdf';
+
+    $mpdf->Output(
+        storage_path('app/public/' . $fileName),
+        \Mpdf\Output\Destination::FILE
+    );
+
+    Document::updateOrCreate(
+        ['sale_id' => $sale->id],
+        [
+            'invoice_number' => $sale->invoice_number,
+            'buyer_name' => $sale->buyer_name,
+            'total_amount' => $finalTotal,
+            'discount' => $discount,
+            'paid_amount' => $sale->received_amount,
+            'sale_type' => $sale->sale_type,
+            'file_path' => 'storage/' . $fileName,
+        ]
+    );
+}
 
     private function increaseWarehouseOnReturn(Warehouse $w, int $qty, string $saleType): void
     {
