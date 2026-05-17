@@ -72,7 +72,7 @@
                 <td>{{ $item->warehouse->name ?? '-' }}</td>
                 <td>{{ number_format($item->price_per_unit, 2) }}</td>
                 <td>{{ $soldQty }}</td>
-                <td>{{ $item->warehouse->unit ?? 'عدد' }}</td>
+                <td>{{ $item->unit ?? 'عدد' }}</td>
                 <td>{{ number_format($lineTotal, 2) }}</td>
             </tr>
             @endif

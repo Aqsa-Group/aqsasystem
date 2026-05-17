@@ -120,8 +120,16 @@
                                         +
                                     </button>
                                 </td>
-                                <td class="p-2 text-gray-800 dark:text-gray-200">
-                                    {{ $item['unit'] ?? '-' }}
+                                <td class="p-4">
+                                    <select wire:model.live="items.{{ $index }}.unit"
+                                        class="rounded-lg border-gray-300 dark:bg-gray-800 dark:text-white text-sm px-6 py-1 flex justify-center items-center">
+                                        <option value="دانه">دانه</option>
+                                        <option value="جوره">جوره</option>
+                                        <option value="بسته">بسته</option>
+                                        <option value="کارتن">کارتن</option>
+                                        <option value="متر">متر</option>
+                                        <option value="کیلو">کیلو</option>
+                                    </select>
                                 </td>
                                 <td class="p-2 text-gray-600 dark:text-gray-300">
                                     <input type="number" min="0" step="0.001" wire:model.lazy="items.{{ $index }}.price"

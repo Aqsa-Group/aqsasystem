@@ -22,7 +22,8 @@ class SaleItem extends Model
         'price_per_unit',
         'total_price',
         'profit',
-        'loss'
+        'loss',
+        'unit'
     ];
 
 

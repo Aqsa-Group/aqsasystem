@@ -26,6 +26,7 @@ class SalesPanel extends Page
     protected static ?string $title = null;
     protected static ?int $navigationSort = 2;
     protected static ?string $route = '/sales-panel';
+    public string $selectedUnit = '';
 
     public function getTitle(): string|Htmlable
     {
@@ -144,6 +145,7 @@ class SalesPanel extends Page
 
             $this->productError = false;
             $this->name = $product->name;
+            $this->selectedUnit = $product->unit;
             $this->price = $this->roundAmount($this->saleType === 'retail' ? $product->retail_price : $product->big_whole_price);
             $this->quantity = 1;
             $this->calculateTotal();
@@ -183,6 +185,7 @@ class SalesPanel extends Page
             $this->productError = false;
             $this->barcode = $product->barcode;
             $this->name = $product->name;
+            $this->selectedUnit = $product->unit;
             $this->price = $this->roundAmount($this->saleType === 'retail' ? $product->retail_price : $product->big_whole_price);
             $this->quantity = 1;
             $this->calculateTotal();
@@ -231,7 +234,7 @@ class SalesPanel extends Page
                 'name' => $this->name,
                 'barcode' => $this->barcode,
                 'quantity' => $this->quantity,
-                'unit' => $product?->unit ?? '-',
+                'unit' => $this->selectedUnit ?: ($product?->unit ?? '-'),
                 'price' => $this->roundAmount($this->price),
                 'total' => $this->roundAmount($this->total),
             ];
@@ -389,6 +392,7 @@ class SalesPanel extends Page
                     'sale_id'        => $sale->id,
                     'warehouse_id'   => $warehouse->id,
                     'quantity'       => $item['quantity'],
+                    'unit' => $item['unit'],
                     'price_per_unit' => $unitPrice,
                     'total_price'    => $totalSale,
                     'profit'         => $profit,
@@ -538,69 +542,159 @@ class SalesPanel extends Page
         $this->quantity = 1;
         $this->price = 0.000;
         $this->total = 0.000;
+        $this->selectedUnit = '';
         $this->productError = false;
     }
 
-public function increaseQuantity(int $index): void
+   public function increaseQuantity(int $index): void
 {
     if (!$this->hasItem($index)) {
         return;
     }
 
-    $this->items[$index]['quantity']++;
+    $item = $this->items[$index];
+
+    $warehouse = Warehouse::where('barcode', $item['barcode'])->first();
+
+    if (!$warehouse) {
+        return;
+    }
+
+    $newQuantity = $this->items[$index]['quantity'] + 1;
+
+    // اگر واحد دانه باشد
+    if (($item['unit'] ?? $warehouse->unit) === 'دانه') {
+
+        if ($newQuantity > $warehouse->all_exist_number) {
+
+            Notification::make()
+                ->title("موجودی کافی نیست!")
+                ->danger()
+                ->send();
+
+            return;
+        }
+    } else {
+
+        // فروش عمده
+        if ($this->saleType === 'wholesale') {
+
+            if ($newQuantity > $warehouse->quantity) {
+
+                Notification::make()
+                    ->title("موجودی کارتُن/بسته کافی نیست!")
+                    ->danger()
+                    ->send();
+
+                return;
+            }
+        } else {
+
+            // فروش پرچون
+            if ($newQuantity > $warehouse->all_exist_number) {
+
+                Notification::make()
+                    ->title("موجودی کافی نیست!")
+                    ->danger()
+                    ->send();
+
+                return;
+            }
+        }
+    }
+
+    $this->items[$index]['quantity'] = $newQuantity;
 
     $this->updateItemTotal($index);
 }
 
-public function decreaseQuantity(int $index): void
-{
-    if (!$this->hasItem($index)) {
-        return;
+    public function decreaseQuantity(int $index): void
+    {
+        if (!$this->hasItem($index)) {
+            return;
+        }
+
+        if ($this->items[$index]['quantity'] <= 1) {
+            return;
+        }
+
+        $this->items[$index]['quantity']--;
+
+        $this->updateItemTotal($index);
     }
 
-    if ($this->items[$index]['quantity'] <= 1) {
-        return;
-    }
-
-    $this->items[$index]['quantity']--;
-
-    $this->updateItemTotal($index);
-}
-
-public function updatedItems($value, $key): void
+   public function updatedItems($value, $key): void
 {
-    // فقط وقتی quantity تغییر کرد
     if (str_contains($key, 'quantity')) {
+
         $index = explode('.', $key)[0];
 
         if (!isset($this->items[$index])) {
             return;
         }
 
-        $this->items[$index]['quantity'] = (int) $this->items[$index]['quantity'];
+        $warehouse = Warehouse::where(
+            'barcode',
+            $this->items[$index]['barcode']
+        )->first();
+
+        if (!$warehouse) {
+            return;
+        }
+
+        $qty = (int) $this->items[$index]['quantity'];
+
+        if ($qty < 1) {
+            $qty = 1;
+        }
+
+        // موجودی مجاز
+        if (($this->items[$index]['unit'] ?? $warehouse->unit) === 'دانه') {
+
+            $maxQty = $warehouse->all_exist_number;
+
+        } else {
+
+            $maxQty = $this->saleType === 'wholesale'
+                ? $warehouse->quantity
+                : $warehouse->all_exist_number;
+        }
+
+        // جلوگیری از بیشتر شدن
+        if ($qty > $maxQty) {
+
+            $qty = $maxQty;
+
+            Notification::make()
+                ->title("بیشتر از موجودی نمی‌توانید وارد کنید!")
+                ->warning()
+                ->send();
+        }
+
+        $this->items[$index]['quantity'] = $qty;
 
         $this->updateItemTotal($index);
     }
 }
-/**
- * بررسی وجود آیتم
- */
-protected function hasItem(int $index): bool
-{
-    return isset($this->items[$index]);
-}
+    /**
+     * بررسی وجود آیتم
+     */
+    protected function hasItem(int $index): bool
+    {
+        return isset($this->items[$index]);
+    }
 
-/**
- * محاسبه total هر آیتم
- */
-protected function updateItemTotal(int $index): void
-{
-    $item = $this->items[$index];
+    /**
+     * محاسبه total هر آیتم
+     */
+    protected function updateItemTotal(int $index): void
+    {
+        $item = $this->items[$index];
 
-    $this->items[$index]['total'] = $this->roundAmount(
-        $item['quantity'] * $item['price']
-    );
-}
+        $this->items[$index]['total'] = $this->roundAmount(
+            $item['quantity'] * $item['price']
+        );
+    }
 
 
     public function removeItem(int $index): void
