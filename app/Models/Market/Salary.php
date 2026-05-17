@@ -27,8 +27,7 @@ class Salary extends Model
         'new_loan',
         'paid_date',
         'admin_id',
-
-
+        'description'
     ];
 
     protected $casts = [

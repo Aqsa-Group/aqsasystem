@@ -94,7 +94,6 @@ class ShopkeeperReceiptResource extends Resource
                 ->searchable()
                 ->preload()
                 ->reactive()
-                ->required()
                 ->visible(fn(callable $get) => $get('type') === 'دوکان')
                 ->afterStateUpdated(function ($state, callable $set) {
                     $shop = Shop::with('shopkeeper')->find($state);
@@ -116,7 +115,6 @@ class ShopkeeperReceiptResource extends Resource
                 ->searchable()
                 ->preload()
                 ->reactive()
-                ->required()
                 ->visible(fn(callable $get) => $get('type') === 'غرفه')
                 ->afterStateUpdated(function ($state, callable $set) {
                     $booth = Booth::with('shopkeeper')->find($state);

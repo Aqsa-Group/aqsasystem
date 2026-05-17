@@ -156,6 +156,10 @@ class SalaryResource extends Resource
                 ])
                 ->required(),
 
+                 Forms\Components\Textarea::make('description')
+                ->label('توضیحات')
+                ->nullable(),
+
             Forms\Components\Hidden::make('paid_date')
                 ->label('تاریخ پرداخت')
                 ->default(now())
@@ -316,6 +320,8 @@ class SalaryResource extends Resource
             Tables\Columns\TextColumn::make('reduce_loan')->label('رسید قرض'),
             Tables\Columns\TextColumn::make('remained')->label('باقیمانده'),
             Tables\Columns\TextColumn::make('reduce_from')->label('برداشت از'),
+            Tables\Columns\TextColumn::make('description')->label('توضیحات'),
+
             Tables\Columns\TextColumn::make('paid_date')
                 ->label('تاریخ پرداخت')
                 ->formatStateUsing(
