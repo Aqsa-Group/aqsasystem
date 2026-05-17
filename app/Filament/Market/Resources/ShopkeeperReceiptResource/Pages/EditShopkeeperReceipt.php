@@ -16,4 +16,5 @@ class EditShopkeeperReceipt extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+    
 }
