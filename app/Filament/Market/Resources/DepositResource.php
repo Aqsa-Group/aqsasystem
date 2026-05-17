@@ -33,7 +33,7 @@ class DepositResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return Auth::check() && in_array(Auth::user()?->role, ['superadmin', 'Financial Manager', 'admin']);
+        return Auth::check() && in_array(Auth::user()?->role, ['superadmin', 'Financial Manager', 'Cashier' ,'admin']);
     }
 
     public static function getNavigationBadge(): ?string
