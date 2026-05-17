@@ -25,8 +25,14 @@ class DepositLog extends Model
         'new_paid',
         'new_remained',
         'admin_id',
+        'shopkeeper_receipt_id'
 
     ];
+
+     public function receipt()
+    {
+        return $this->belongsTo(ShopkeeperReceipt::class, 'shopkeeper_receipt_id');
+    }
 
     public function deposit(): BelongsTo
     {

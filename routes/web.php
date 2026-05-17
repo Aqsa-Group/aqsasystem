@@ -19,6 +19,7 @@ use App\Http\Controllers\Sarafi\Auth\CustomController;
 use App\Http\Controllers\Sarafi\CustomerController;
 use App\Http\Controllers\Sarafi\ImpersonateController;
 use App\Http\Controllers\ShopkeeperPrintController;
+use App\Http\Controllers\ShopkeeperReceiptPrintController;
 use App\Http\Controllers\SignedImagePdfController;
 use App\Http\Controllers\StaffContractPrintController;
 use App\Http\Controllers\ToolsPanel\Auth\UserController;
@@ -31,6 +32,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+
 
 
 
@@ -88,7 +90,12 @@ Route::get('/outside/print/{id}', [OutsideController::class, 'generate'])->name(
 // routes/web.php
 Route::get('/accounting/print/{id}', [AccountingPrintController::class, 'printView'])
     ->name('accounting.print.view');
-
+Route::get('/shopkeeper-receipt/print/{record}', [ShopkeeperReceiptPrintController::class, 'single'])
+    ->name('shopkeeper-receipt.print.view');
+Route::get('/shopkeeper-receipt/print/bulk', [ShopkeeperReceiptPrintController::class, 'bulk'])
+    ->name('shopkeeper-receipt.print.bulk');
+Route::get('/shopkeeper-receipt/print/filtered', [ShopkeeperReceiptPrintController::class, 'filtered'])
+    ->name('shopkeeper-receipt.print.filtered');
     
 
 

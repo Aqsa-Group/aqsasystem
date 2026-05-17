@@ -5,7 +5,13 @@ namespace App\Models\Market;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Market\{
-    Deposit, Shop, Booth, Market, Shopkeeper, Safe, User
+    Deposit,
+    Shop,
+    Booth,
+    Market,
+    Shopkeeper,
+    Safe,
+    User
 };
 
 class Accounting extends Model
@@ -32,7 +38,8 @@ class Accounting extends Model
         'paid_date',
         'expiration_date',
         'degree_price',
-        'outside_id'
+        'outside_id',
+        'shopkeeper_receipt_id'
     ];
 
     protected $casts = [
@@ -53,15 +60,41 @@ class Accounting extends Model
 
     /* ===================== Relations ===================== */
 
-    public function deposit()     { return $this->hasOne(Deposit::class); }
-    public function shop()        { return $this->belongsTo(Shop::class); }
-    public function booth()       { return $this->belongsTo(Booth::class); }
-    public function market()      { return $this->belongsTo(Market::class); }
-    public function shopkeeper()  { return $this->belongsTo(Shopkeeper::class); }
-    public function safe()        { return $this->hasMany(Safe::class); }
-    public function admin()       { return $this->belongsTo(User::class, 'admin_id'); }
+    public function deposit()
+    {
+        return $this->hasOne(Deposit::class);
+    }
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class);
+    }
+    public function booth()
+    {
+        return $this->belongsTo(Booth::class);
+    }
+    public function market()
+    {
+        return $this->belongsTo(Market::class);
+    }
+    public function shopkeeper()
+    {
+        return $this->belongsTo(Shopkeeper::class);
+    }
+    public function safe()
+    {
+        return $this->hasMany(Safe::class);
+    }
+    public function admin()
+    {
+        return $this->belongsTo(User::class, 'admin_id');
+    }
 
+    public function receipt()
+    {
+        return $this->belongsTo(ShopkeeperReceipt::class, 'shopkeeper_receipt_id');
+    }
     /* ===================== Boot ===================== */
+
 
     protected static function booted()
     {
@@ -103,9 +136,9 @@ class Accounting extends Model
         }
 
         $lastRemained = self::where('expanses_type', 'پول برق')
-            ->when($accounting->shop_id, fn ($q) => $q->where('shop_id', $accounting->shop_id))
-            ->when($accounting->booth_id, fn ($q) => $q->where('booth_id', $accounting->booth_id))
-            ->when($accounting->id, fn ($q) => $q->where('id', '<', $accounting->id))
+            ->when($accounting->shop_id, fn($q) => $q->where('shop_id', $accounting->shop_id))
+            ->when($accounting->booth_id, fn($q) => $q->where('booth_id', $accounting->booth_id))
+            ->when($accounting->id, fn($q) => $q->where('id', '<', $accounting->id))
             ->latest('id')
             ->value('remained') ?? 0;
 
