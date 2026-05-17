@@ -67,11 +67,11 @@ class ShopkeeperReceiptResource extends Resource
                         $user->role === 'admin',
                         fn($q) => $q->where('admin_id', $user->id)
                     )
-                    ->when(
-                        $user->role !== 'superadmin' && $user->role !== 'admin',
-                        fn($q) => $q->where('admin_id', $user->admin_id)
-                    )
-                    ->pluck('name', 'id');
+                        ->when(
+                            $user->role !== 'superadmin' && $user->role !== 'admin',
+                            fn($q) => $q->where('admin_id', $user->admin_id)
+                        )
+                        ->pluck('name', 'id');
                 })
                 ->searchable()
                 ->preload()
@@ -156,7 +156,7 @@ class ShopkeeperReceiptResource extends Resource
                 ->required(),
 
             Forms\Components\Hidden::make('admin_id')
-                ->default(fn() => auth()->id()),
+                ->default(fn() => auth()->user()->admin_id ?? auth()->id()),
         ]);
     }
 
@@ -199,7 +199,10 @@ class ShopkeeperReceiptResource extends Resource
                 Tables\Columns\TextColumn::make('currency')
                     ->label('ارز')
                     ->formatStateUsing(fn($state) => match ($state) {
-                        'AFN' => 'افغانی', 'USD' => 'دالر', 'EUR' => 'یورو', 'IRR' => 'ریال',
+                        'AFN' => 'افغانی',
+                        'USD' => 'دالر',
+                        'EUR' => 'یورو',
+                        'IRR' => 'ریال',
                         default => $state,
                     }),
                 Tables\Columns\TextColumn::make('date')
@@ -248,8 +251,11 @@ class ShopkeeperReceiptResource extends Resource
                 SelectFilter::make('expanses_type')
                     ->label('نوع مصرف')
                     ->options([
-                        'کرایه' => 'کرایه', 'تحت الملکی' => 'تحت الملکی',
-                        'پول برق' => 'پول برق', 'پول آب' => 'پول آب', 'صفایی' => 'صفایی',
+                        'کرایه' => 'کرایه',
+                        'تحت الملکی' => 'تحت الملکی',
+                        'پول برق' => 'پول برق',
+                        'پول آب' => 'پول آب',
+                        'صفایی' => 'صفایی',
                     ]),
 
                 // فیلتر طبق (بر اساس shop یا booth)
@@ -267,7 +273,7 @@ class ShopkeeperReceiptResource extends Resource
                         if ($floor) {
                             $query->where(function ($q) use ($floor) {
                                 $q->whereHas('shop', fn($q) => $q->where('floor', $floor))
-                                  ->orWhereHas('booth', fn($q) => $q->where('floor', $floor));
+                                    ->orWhereHas('booth', fn($q) => $q->where('floor', $floor));
                             });
                         }
                     }),
@@ -345,12 +351,29 @@ class ShopkeeperReceiptResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        $user = Auth::user();
+        $user = auth()->user();
         $query = parent::getEloquentQuery();
-        if ($user->role === 'superadmin') return $query;
-        return $query->where('admin_id', $user->role === 'admin' ? $user->id : $user->admin_id);
-    }
 
+        if ($user->role === 'superadmin') {
+            return $query;
+        }
+
+        if ($user->role === 'admin') {
+            return $query->where('admin_id', $user->id);
+        }
+
+        // Cashier / others
+        return $query->where('admin_id', $user->admin_id);
+    }
+    public static function canCreate(): bool
+    {
+        return Auth::check() && in_array(Auth::user()?->role, [
+            'superadmin',
+            'Financial Manager',
+            'Cashier',
+            'admin',
+        ]);
+    }
     public static function getPages(): array
     {
         return [
