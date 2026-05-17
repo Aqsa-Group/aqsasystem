@@ -213,6 +213,8 @@ class SalesPanel extends Page
             return;
         }
 
+        $product = Warehouse::where('barcode', $this->barcode)->first();
+
         $existingKey = collect($this->items)->search(fn($item) => $item['barcode'] === $this->barcode && $this->barcode !== '');
 
         if ($existingKey !== false) {
@@ -229,6 +231,7 @@ class SalesPanel extends Page
                 'name' => $this->name,
                 'barcode' => $this->barcode,
                 'quantity' => $this->quantity,
+                'unit' => $product?->unit ?? '-',
                 'price' => $this->roundAmount($this->price),
                 'total' => $this->roundAmount($this->total),
             ];

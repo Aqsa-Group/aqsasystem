@@ -95,6 +95,7 @@
                             <tr>
                                 <th class="p-2">نام محصول</th>
                                 <th class="p-2">تعداد</th>
+                                <th class="p-2">واحد</th>
                                 <th class="p-2">قیمت واحد (دالر)</th>
                                 <th class="p-2">مجموع (دالر)</th>
                                 <th class="p-2">عملیات</th>
@@ -110,13 +111,17 @@
                                         −
                                     </button>
 
-                                    <input type="number" min="1" wire:model.live.debounce.5s="items.{{ $index }}.quantity"
+                                    <input type="number" min="1"
+                                        wire:model.live.debounce.5s="items.{{ $index }}.quantity"
                                         class="w-16 border rounded px-2 py-1 text-center bg-gray-50 dark:bg-gray-800 dark:text-gray-100" />
 
                                     <button type="button" wire:click="increaseQuantity({{ $index }})"
                                         class="px-2 py-1 bg-green-500 text-white rounded">
                                         +
                                     </button>
+                                </td>
+                                <td class="p-2 text-gray-800 dark:text-gray-200">
+                                    {{ $item['unit'] ?? '-' }}
                                 </td>
                                 <td class="p-2 text-gray-600 dark:text-gray-300">
                                     <input type="number" min="0" step="0.001" wire:model.lazy="items.{{ $index }}.price"
