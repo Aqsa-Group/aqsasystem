@@ -107,9 +107,10 @@ class Withdrawals extends Component
 
         // Check safe balance
         $total = DB::connection('market')->table('accountings')
-            ->where('admin_id', $adminId)
-            ->where('currency', $this->currency)
-            ->sum('paid');
+    ->where('admin_id', $adminId)
+    ->where('currency', $this->currency)
+    ->where('expanses_type', $this->type)
+    ->sum('paid');
 
         if ($this->amount > $total) {
             session()->flash('error', "موجودی کافی برای برداشت {$this->amount} {$this->currency} در صندوق وجود ندارد.");
@@ -200,8 +201,8 @@ class Withdrawals extends Component
             $total = DB::connection('market')->table('accountings')
                 ->where('admin_id', $adminId)
                 ->where('currency', $this->currency)
+                ->where('expanses_type', $this->type)
                 ->sum('paid');
-
             if ($this->amount > $total) {
                 throw new \Exception("موجودی کافی برای برداشت {$this->amount} {$this->currency} در صندوق وجود ندارد.");
             }
@@ -245,8 +246,8 @@ class Withdrawals extends Component
                 'staff_id' => $this->receiver_type === 'staff' ? $this->staff_id : null,
                 'customer_id' => $this->receiver_type === 'customer' ? $this->customer_id : null,
                 'description' => $this->description,
-                'created_at' => $gregorianDate, 
-                'updated_at' => now(), 
+                'created_at' => $gregorianDate,
+                'updated_at' => now(),
             ]);
 
             // Record new accounting transaction with the same date
@@ -559,7 +560,7 @@ class Withdrawals extends Component
                     $from = Jalalian::fromFormat('Y/m/d', str_replace('-', '/', $this->startDate))
                         ->toCarbon()
                         ->startOfDay();
-                    
+
                     $q->where('created_at', '>=', $from);
                 } catch (\Throwable $e) {
                     Log::warning('Invalid startDate: ' . $this->startDate);
@@ -572,7 +573,7 @@ class Withdrawals extends Component
                     $to = Jalalian::fromFormat('Y/m/d', str_replace('-', '/', $this->endDate))
                         ->toCarbon()
                         ->endOfDay();
-                    
+
                     $q->where('created_at', '<=', $to);
                 } catch (\Throwable $e) {
                     Log::warning('Invalid endDate: ' . $this->endDate);
