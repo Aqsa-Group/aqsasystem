@@ -39,6 +39,15 @@ class Withdrawals extends Component
         $this->updateStats();
     }
 
+
+      private function normalizeDate($date)
+    {
+        return str_replace('/', '-', $date);
+    }
+
+
+
+
   public function submitWithdrawal()
 {
     $cleanAmount = $this->cleanAmount($this->amount);
@@ -47,7 +56,21 @@ class Withdrawals extends Component
         'currency' => 'required|in:AFN,USD',
         'type' => 'required|string|max:255',
         'amount' => 'required',
-        'date' => 'required|date',
+         'date' => ['required', function ($attribute, $value, $fail) {
+
+                $value = str_replace('/', '-', $value);
+
+                if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
+                    $fail('فرمت تاریخ صحیح نیست (YYYY-MM-DD)');
+                    return;
+                }
+
+                try {
+                    \Morilog\Jalali\Jalalian::fromFormat('Y-m-d', $value);
+                } catch (\Exception $e) {
+                    $fail('تاریخ وارد شده نامعتبر است.');
+                }
+            }],
         'description' => 'nullable|string|max:500',
     ], [
         'amount.required' => 'مقدار برداشت الزامی است.',
@@ -89,7 +112,7 @@ class Withdrawals extends Component
         'currency' => $this->currency,
         'type' => $this->type,
         'amount' => $amountValue,
-        'date' => $this->date,
+        'date' => $this->normalizeDate($this->date),
         'description' => $this->description,
     ];
 
