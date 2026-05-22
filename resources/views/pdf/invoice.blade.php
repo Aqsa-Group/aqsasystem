@@ -79,7 +79,7 @@
 
             @endforeach
 
-            @for ($i = count($sale->items) + 1; $i <=13; $i++) <tr>
+            @for ($i = count($sale->items) + 1; $i <=12; $i++) <tr>
                 <td>{{ $i }}</td>
                 <td></td>
                 <td></td>
@@ -139,25 +139,34 @@
             </td>
         </tr>
 
-        @if ($sale->sale_type === 'wholesale')
+           @if ($sale->sale_type === 'wholesale')
             <tr>
-                <td style="padding:6px; font-weight:bold;">
-                    مبلغ دریافت شده
-                </td>
+                <td style="padding:6px; font-weight:bold;">مبلغ دریافت شده</td>
                 <td style="padding:6px; text-align:center;">
-                    <strong>{{ number_format($sale->received_amount, 2) }} دالر</strong>
+                    <strong>{{ number_format($sale->received_amount , 2) }}&nbsp;دالر</strong>
                 </td>
             </tr>
-
             <tr>
-                <td style="padding:6px; font-weight:bold;">
-                    باقیمانده فعلی
-                </td>
+                <td style="padding:6px; font-weight:bold;">باقیمانده فعلی</td>
                 <td style="padding:6px; text-align:center;">
-                    <strong>{{ number_format($sale->remaining_amount, 2) }} دالر</strong>
+                    <strong>{{ number_format($sale->remaining_amount , 2) }}&nbsp;دالر</strong>
                 </td>
             </tr>
-        @endif
+            <tr>
+                <td style="padding:6px; font-weight:bold;">باقیمانده قبل (قرض قبلی)</td>
+                <td style="padding:6px; text-align:center;">
+                    <strong>{{ number_format($previousLoanRemaining , 2) }}&nbsp;دالر</strong>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:6px; font-weight:bold; color:red; font-size:16px;">
+                    مجموع باقیمانده کل
+                </td>
+                <td style="padding:6px; text-align:center; color:red; font-size:16px;">
+                    <strong>{{ number_format($sale->remaining_amount + $previousLoanRemaining , 2) }}&nbsp;دالر</strong>
+                </td>
+            </tr>
+            @endif
 
     </tbody>
 </table>
