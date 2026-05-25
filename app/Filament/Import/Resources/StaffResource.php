@@ -11,6 +11,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use Morilog\Jalali\Jalalian;
 
 
 class StaffResource extends Resource
@@ -68,6 +69,19 @@ class StaffResource extends Resource
                     ->tel()
                     ->numeric()
                     ->default(null),
+
+                    Forms\Components\DatePicker::make('start_contract')
+                    ->label('تاریخ شروع قرارداد')
+                    ->jalali()
+                    ->default(null),
+
+                    Forms\Components\DatePicker::make('end_contract')
+                    ->label('تاریخ ختم قرارداد')
+                    ->jalali()
+                    ->default(null),
+
+
+                    
             ]);
     }
 

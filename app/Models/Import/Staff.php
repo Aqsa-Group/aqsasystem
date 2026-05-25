@@ -21,6 +21,8 @@ class Staff extends Model
          'USD',
         'AFN',
         'CNY',
+        'start_contract',
+        'end_contract'
 
 
     ];

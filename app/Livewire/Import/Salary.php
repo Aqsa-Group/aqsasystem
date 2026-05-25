@@ -155,10 +155,7 @@ class Salary extends Component
         $user = Auth::guard('import')->user();
         $userId = $user->id;
 
-        // بررسی آیا مجموع پرداخت‌ها از معاش ماهانه بیشتر می‌شود
-        if ($this->checkSalaryLimit($userId)) {
-            return;
-        }
+      
 
         if ($this->salaryId) {
             $this->updateExistingSalary($user);
