@@ -79,35 +79,42 @@ class WarehouseResource extends Resource
             Forms\Components\Hidden::make('user_id')
                 ->default(fn() => Auth::id()),
 
-            Forms\Components\TextInput::make('name')
-                ->label('نام جنس')
-                ->required()
-                ->live()
-                ->debounce(500)
-                ->afterStateUpdated(function ($state, callable $set) {
-                    if (!$state) return;
+      Forms\Components\TextInput::make('name')
+    ->label('نام جنس')
+    ->required()
+    ->live()
+    ->debounce(500)
+    ->afterStateUpdated(function ($state, callable $set, $record) {
 
-                    $product = Inventory::where('user_id', Auth::id())
-                        ->where(function ($query) use ($state) {
-                            $query->where('name', 'like', '%' . $state . '%')
-                                ->orWhere('barcode', $state);
-                        })
-                        ->first();
+        // در صفحه ویرایش هیچ کاری انجام نده
+        if ($record) {
+            return;
+        }
 
-                    if ($product) {
-                        $set('barcode', $product->barcode);
-                        $set('name', $product->name);
-                        $set('unit', $product->unit);
-                        $set('brand', $product->brand);
-                        $set('price', number_format((float)$product->price, 2, '.', ''));
-                        $set('big_unit_price', number_format((float)$product->big_unit_price, 2, '.', ''));
-                        $set('retail_price', number_format((float)$product->retail_price, 2, '.', ''));
-                        $set('big_whole_price', number_format((float)$product->big_whole_price, 2, '.', ''));
-                        $set('big_quantity', $product->big_quantity);
-                        $set('import_date', $product->import_date);
-                        $set('product_image', $product->product_image ? [$product->product_image] : null);
-                    }
-                }),
+        if (blank($state)) {
+            return;
+        }
+
+        $product = Inventory::where('user_id', Auth::id())
+            ->where(function ($query) use ($state) {
+                $query->where('name', 'like', '%' . $state . '%')
+                    ->orWhere('barcode', $state);
+            })
+            ->first();
+
+        if ($product) {
+            $set('barcode', $product->barcode);
+            $set('unit', $product->unit);
+            $set('brand', $product->brand);
+            $set('price', $product->price);
+            $set('big_unit_price', $product->big_unit_price);
+            $set('retail_price', $product->retail_price);
+            $set('big_whole_price', $product->big_whole_price);
+            $set('big_quantity', $product->big_quantity);
+            $set('import_date', $product->import_date);
+            $set('product_image', $product->product_image ? [$product->product_image] : null);
+        }
+    }),
 
             Forms\Components\Select::make('unit')
                 ->label('واحد')

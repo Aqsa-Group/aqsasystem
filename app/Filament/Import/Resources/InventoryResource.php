@@ -41,39 +41,38 @@ class InventoryResource extends Resource
                     $set('barcode', $state);
 
                     $product = Inventory::where('user_id', Auth::id())
-                    ->where(function ($query) use ($state) {
-                        $query->where('barcode', $state)
-                              ->orWhere('name', 'like', '%' . $state . '%');
-                    })
-                    ->first();
-        
-                  if ($product) {
-                    $set('name', $product->name);
-                    $set('unit', $product->unit);
-                    $set('brand', $product->brand);
+                        ->where(function ($query) use ($state) {
+                            $query->where('barcode', $state)
+                                ->orWhere('name', 'like', '%' . $state . '%');
+                        })
+                        ->first();
 
-                    $set('price', number_format((float)$product->price, 2, '.', ''));
-                    $set('big_unit_price', number_format((float)$product->big_unit_price, 2, '.', ''));
-                    $set('retail_price', number_format((float)$product->retail_price, 2, '.', ''));
-                    $set('big_whole_price', number_format((float)$product->big_whole_price, 2, '.', ''));
+                    if ($product) {
+                        $set('name', $product->name);
+                        $set('unit', $product->unit);
+                        $set('brand', $product->brand);
 
-                    $set('big_quantity', $product->big_quantity);
-                    $set('import_date', $product->import_date);
+                        $set('price', number_format((float)$product->price, 2, '.', ''));
+                        $set('big_unit_price', number_format((float)$product->big_unit_price, 2, '.', ''));
+                        $set('retail_price', number_format((float)$product->retail_price, 2, '.', ''));
+                        $set('big_whole_price', number_format((float)$product->big_whole_price, 2, '.', ''));
 
-                    $set('product_image', $product->product_image ? [$product->product_image] : null);
-                } else {
-                    $set('name', '');
-                    $set('unit', '');
-                    $set('brand', '');
-                    $set('price', null);
-                    $set('big_unit_price', null);
-                    $set('big_quantity', null);
-                    $set('retail_price', null);
-                    $set('big_whole_price', null);
-                    $set('import_date', null);
-                    $set('product_image', null);
-                 }
+                        $set('big_quantity', $product->big_quantity);
+                        $set('import_date', $product->import_date);
 
+                        $set('product_image', $product->product_image ? [$product->product_image] : null);
+                    } else {
+                        $set('name', '');
+                        $set('unit', '');
+                        $set('brand', '');
+                        $set('price', null);
+                        $set('big_unit_price', null);
+                        $set('big_quantity', null);
+                        $set('retail_price', null);
+                        $set('big_whole_price', null);
+                        $set('import_date', null);
+                        $set('product_image', null);
+                    }
                 }),
 
             Forms\Components\Hidden::make('user_id')
@@ -82,34 +81,46 @@ class InventoryResource extends Resource
             Forms\Components\TextInput::make('name')
                 ->label('نام جنس')
                 ->required()
-                ->live()
                 ->lazy()
-                ->afterStateUpdated(function ($state, callable $set) {
-                    if (!$state) return;
+                ->afterStateUpdated(function ($state, callable $set, $record) {
 
+                    if ($record) {
+                        return;
+                    }
+
+                    if (blank($state)) {
+                        return;
+                    }
 
                     $product = Inventory::where('user_id', Auth::id())
-                    ->where(function ($query) use ($state) {
-                        $query->where('name', 'like', '%' . $state . '%')
-                              ->orWhere('barcode', $state);
-                    })
-                    ->first();
+                        ->where(function ($query) use ($state) {
+                            $query->where('name', 'like', '%' . $state . '%')
+                                ->orWhere('barcode', $state);
+                        })
+                        ->first();
 
-                    if ($product) {
-                    $set('name', $product->name);
+                    if (!$product) {
+                        return;
+                    }
+
+                    $set('barcode', $product->barcode);
                     $set('unit', $product->unit);
                     $set('brand', $product->brand);
 
-                    $set('price', number_format((float)$product->price, 2, '.', ''));
-                    $set('big_unit_price', number_format((float)$product->big_unit_price, 2, '.', ''));
-                    $set('retail_price', number_format((float)$product->retail_price, 2, '.', ''));
-                    $set('big_whole_price', number_format((float)$product->big_whole_price, 2, '.', ''));
+                    $set('price', $product->price);
+                    $set('big_unit_price', $product->big_unit_price);
+                    $set('retail_price', $product->retail_price);
+                    $set('big_whole_price', $product->big_whole_price);
 
                     $set('big_quantity', $product->big_quantity);
                     $set('import_date', $product->import_date);
 
-                    $set('product_image', $product->product_image ? [$product->product_image] : null);
-                    }
+                    $set(
+                        'product_image',
+                        $product->product_image
+                            ? [$product->product_image]
+                            : null
+                    );
                 }),
 
             Forms\Components\Select::make('unit')
@@ -160,31 +171,31 @@ class InventoryResource extends Resource
                     }
                 }),
 
-           Forms\Components\TextInput::make('all_exist_number')
-    ->label('تعداد خریده شده')
-    ->required()
-    ->numeric()
-    ->visible(fn($get) => $get('unit') == 'دانه')
-    ->lazy()
-    ->afterStateUpdated(function (callable $set, $state, callable $get) {
-        $unit = $get('unit');
-        $bigQuantity = $get('big_quantity') ?? 1;
-        $bigUnitPrice = $get('big_unit_price') ?? 0;
-        $price = $get('price') ?? 0;
+            Forms\Components\TextInput::make('all_exist_number')
+                ->label('تعداد خریده شده')
+                ->required()
+                ->numeric()
+                ->visible(fn($get) => $get('unit') == 'دانه')
+                ->lazy()
+                ->afterStateUpdated(function (callable $set, $state, callable $get) {
+                    $unit = $get('unit');
+                    $bigQuantity = $get('big_quantity') ?? 1;
+                    $bigUnitPrice = $get('big_unit_price') ?? 0;
+                    $price = $get('price') ?? 0;
 
-        if (in_array($unit, ['بسته', 'کارتن'])) {
-            $allExist = round($state * $bigQuantity, 2);
-            $totalPrice = round($bigUnitPrice * $state, 2);
-            $set('all_exist_number', $allExist);
-            $set('total_price', $totalPrice);
-        } else {
-            $allExist = round($state, 2);
-            $totalPrice = round($price * $state, 2);
-            $set('all_exist_number', $allExist);
-            $set('total_price', $totalPrice);
-        }
-    })
-    ->formatStateUsing(fn($state) => number_format((float)$state, 2, '.', '')),
+                    if (in_array($unit, ['بسته', 'کارتن'])) {
+                        $allExist = round($state * $bigQuantity, 2);
+                        $totalPrice = round($bigUnitPrice * $state, 2);
+                        $set('all_exist_number', $allExist);
+                        $set('total_price', $totalPrice);
+                    } else {
+                        $allExist = round($state, 2);
+                        $totalPrice = round($price * $state, 2);
+                        $set('all_exist_number', $allExist);
+                        $set('total_price', $totalPrice);
+                    }
+                })
+                ->formatStateUsing(fn($state) => number_format((float)$state, 2, '.', '')),
 
             Forms\Components\TextInput::make('big_quantity')
                 ->label('تعداد هر بسته یا کارتن (به عدد)')
@@ -200,17 +211,17 @@ class InventoryResource extends Resource
                         $set('price', round($bigUnitPrice / $state, 2));
                     }
                 }),
-        Forms\Components\TextInput::make('total_price')
-            ->label('قیمت مجموعه کل بسته یا کارتن ها')
-            ->required()
-            ->numeric()
-            ->visible(fn($get) => $get('unit') == 'بسته' || $get('unit') == 'کارتن')
-            ->disabled()
-            ->dehydrated()
-            ->afterStateUpdated(function (callable $set, $state) {
-                $set('total_price', number_format((float)$state, 2, '.', ''));
-            })
-            ->dehydrateStateUsing(fn($state) => number_format((float)$state, 2, '.', '')),
+            Forms\Components\TextInput::make('total_price')
+                ->label('قیمت مجموعه کل بسته یا کارتن ها')
+                ->required()
+                ->numeric()
+                ->visible(fn($get) => $get('unit') == 'بسته' || $get('unit') == 'کارتن')
+                ->disabled()
+                ->dehydrated()
+                ->afterStateUpdated(function (callable $set, $state) {
+                    $set('total_price', number_format((float)$state, 2, '.', ''));
+                })
+                ->dehydrateStateUsing(fn($state) => number_format((float)$state, 2, '.', '')),
 
 
             Forms\Components\Hidden::make('all_exist_number')
@@ -219,21 +230,21 @@ class InventoryResource extends Resource
                 ->dehydrated(true),
 
             Forms\Components\TextInput::make('price')
-            ->label('قیمت خرید فی دانه')
-            ->required()
-            ->numeric()
-            ->lazy()
-            ->afterStateUpdated(function (callable $set, $state, callable $get) {
-                $unit = $get('unit');
-                $quantity = $get('quantity') ?? 0;
+                ->label('قیمت خرید فی دانه')
+                ->required()
+                ->numeric()
+                ->lazy()
+                ->afterStateUpdated(function (callable $set, $state, callable $get) {
+                    $unit = $get('unit');
+                    $quantity = $get('quantity') ?? 0;
 
-                if (!in_array($unit, ['بسته', 'کارتن'])) {
-                    $existNumber = $get('all_exist_number') ?? 0; 
-                    $set('total_price', $state * $existNumber);
-                } else {
-                    $set('total_price', $state * $quantity);
-                }
-            }),
+                    if (!in_array($unit, ['بسته', 'کارتن'])) {
+                        $existNumber = $get('all_exist_number') ?? 0;
+                        $set('total_price', $state * $existNumber);
+                    } else {
+                        $set('total_price', $state * $quantity);
+                    }
+                }),
 
 
             Forms\Components\TextInput::make('total_price')
@@ -334,16 +345,15 @@ class InventoryResource extends Resource
         return str_replace($farsiDigits, $englishDigits, $input);
     }
 
-  public static function getEloquentQuery(): Builder
-{
-    $query = parent::getEloquentQuery();
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
 
-    if (Auth::user()?->role !== 'superadmin') {
-        $query->where('user_id', Auth::id());
+        if (Auth::user()?->role !== 'superadmin') {
+            $query->where('user_id', Auth::id());
+        }
+
+        return $query->orderByRaw('CASE WHEN all_exist_number = 0 THEN 1 ELSE 0 END')
+            ->orderByDesc('all_exist_number');
     }
-
-    return $query->orderByRaw('CASE WHEN all_exist_number = 0 THEN 1 ELSE 0 END')
-                 ->orderByDesc('all_exist_number'); 
-}
-
 }
