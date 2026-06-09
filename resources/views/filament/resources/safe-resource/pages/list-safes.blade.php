@@ -27,51 +27,51 @@
                 {{-- Body --}}
                 <tbody class="bg-white dark:bg-gray-900">
                     @php
-                        $total_af = $total_us = $total_er = $total_ir = 0;
+                    $total_af = $total_us = $total_er = $total_ir = 0;
                     @endphp
 
                     @foreach ($rows as $index => $row)
-                        @php
-                            $total_af += $row['af'];
-                            $total_us += $row['us'];
-                            $total_er += $row['er'];
-                            $total_ir += $row['ir'];
-                        @endphp
+                    @php
+                    $total_af += $row['af'];
+                    $total_us += $row['us'];
+                    $total_er += $row['er'];
+                    $total_ir += $row['ir'];
+                    @endphp
 
-                        <tr
-                            class="
-                                border-b border-gray-200 dark:border-gray-700
-                                {{ $index % 2 == 0
-                                    ? 'bg-white dark:bg-gray-900'
-                                    : 'bg-gray-50 dark:bg-gray-800/60' }}
-                                hover:bg-primary-50 dark:hover:bg-primary-900/20
-                                transition-colors duration-200
-                            "
-                        >
-                            <td class="px-6 py-4 font-semibold text-primary-700 dark:text-primary-300">
-                                {{ $row['type'] }}
-                            </td>
+  <tr
+    class="
+        dark:!text-white
+        border-b border-gray-200 dark:border-gray-700
+        {{ $index % 2 == 0
+            ? 'bg-white dark:bg-gray-900'
+            : 'bg-gray-50 dark:bg-gray-800/60' }}
+    "
+>
+                        <td class="px-6 py-4 font-semibold text-primary-700 dark:!text-white">
+                            {{ $row['type'] }}
+                        </td>
 
-                            <td class="px-6 py-4 text-right font-medium text-gray-900 dark:text-white">
-                                {{ number_format($row['af']) }}
-                            </td>
+                        <td class="px-6 py-4 text-right font-medium text-gray-900 dark:!text-white">
+                            {{ number_format($row['af']) }}
+                        </td>
 
-                            <td class="px-6 py-4 text-right font-medium text-gray-900 dark:text-white">
-                                {{ number_format($row['us']) }}
-                            </td>
+                        <td class="px-6 py-4 text-right font-medium text-gray-900 dark:!text-white">
+                            {{ number_format($row['us']) }}
+                        </td>
 
-                            <td class="px-6 py-4 text-right font-medium text-gray-900 dark:text-white">
-                                {{ number_format($row['er']) }}
-                            </td>
+                        <td class="px-6 py-4 text-right font-medium text-gray-900 dark:!text-white">
+                            {{ number_format($row['er']) }}
+                        </td>
 
-                            <td class="px-6 py-4 text-right font-medium text-gray-900 dark:text-white">
-                                {{ number_format($row['ir']) }}
-                            </td>
-                        </tr>
+                        <td class="px-6 py-4 text-right font-medium text-gray-900 dark:!text-white">
+                            {{ number_format($row['ir']) }}
+                        </td>
+                    </tr>
                     @endforeach
 
                     {{-- Total Row --}}
-                    <tr class="bg-primary-100 dark:bg-primary-950 border-t-2 border-primary-300 dark:border-primary-800">
+                    <tr
+                        class="bg-primary-100 dark:bg-primary-950 border-t-2 border-primary-300 dark:border-primary-800">
                         <td class="px-6 py-5 font-bold text-primary-800 dark:text-primary-200">
                             جمع کل
                         </td>
