@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
     <!-- Notifications -->
     @if (session()->has('message'))
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
@@ -26,7 +26,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
         <!-- Today's Withdrawals -->
         <div
-            class="bg-gradient-to-br from-rose-100 to-rose-200 border-l-4 border-rose-500 text-rose-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
+            class="bg-gradient-to-br from-rose-100 to-rose-200 dark:from-rose-900/30 dark:to-rose-800/30 border-l-4 border-rose-500 text-rose-800 dark:text-rose-200 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-bold vazir">برداشت‌های امروز</h3>
                 <div class="bg-rose-500 p-2 rounded-full">
@@ -36,9 +36,8 @@
             <div class="space-y-3">
                 @foreach(['AFN' => 'افغانی', 'USD' => 'دالر', 'EUR' => 'یورو', 'IRR' => 'تومان'] as $currency => $label)
                 <div class="flex justify-between items-center">
-                    <span class="text-sm text-rose-700 vazir">{{ $label }}:</span>
-                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['today'][$currency])
-                        }}</span>
+                    <span class="text-sm text-rose-700 dark:text-rose-300 vazir">{{ $label }}:</span>
+                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['today'][$currency]) }}</span>
                 </div>
                 @endforeach
             </div>
@@ -46,7 +45,7 @@
 
         <!-- This Week's Withdrawals -->
         <div
-            class="bg-gradient-to-br from-green-100 to-green-200 border-l-4 border-green-500 text-green-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
+            class="bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/30 border-l-4 border-green-500 text-green-800 dark:text-green-200 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-bold vazir">برداشت‌های این هفته</h3>
                 <div class="bg-green-500 p-2 rounded-full">
@@ -56,9 +55,8 @@
             <div class="space-y-3">
                 @foreach(['AFN' => 'افغانی', 'USD' => 'دالر', 'EUR' => 'یورو', 'IRR' => 'تومان'] as $currency => $label)
                 <div class="flex justify-between items-center">
-                    <span class="text-sm text-green-700 vazir">{{ $label }}:</span>
-                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['week'][$currency])
-                        }}</span>
+                    <span class="text-sm text-green-700 dark:text-green-300 vazir">{{ $label }}:</span>
+                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['week'][$currency]) }}</span>
                 </div>
                 @endforeach
             </div>
@@ -66,7 +64,7 @@
 
         <!-- This Month's Withdrawals -->
         <div
-            class="bg-gradient-to-br from-blue-100 to-blue-200 border-l-4 border-blue-500 text-blue-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
+            class="bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 border-l-4 border-blue-500 text-blue-800 dark:text-blue-200 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-bold vazir">برداشت‌های این ماه</h3>
                 <div class="bg-blue-500 p-2 rounded-full">
@@ -76,9 +74,8 @@
             <div class="space-y-3">
                 @foreach(['AFN' => 'افغانی', 'USD' => 'دالر', 'EUR' => 'یورو', 'IRR' => 'تومان'] as $currency => $label)
                 <div class="flex justify-between items-center">
-                    <span class="text-sm text-blue-700 vazir">{{ $label }}:</span>
-                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['month'][$currency])
-                        }}</span>
+                    <span class="text-sm text-blue-700 dark:text-blue-300 vazir">{{ $label }}:</span>
+                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['month'][$currency]) }}</span>
                 </div>
                 @endforeach
             </div>
@@ -86,7 +83,7 @@
 
         <!-- Total Withdrawals -->
         <div
-            class="bg-gradient-to-br from-purple-100 to-purple-200 border-l-4 border-purple-500 text-purple-800 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
+            class="bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-900/30 dark:to-purple-800/30 border-l-4 border-purple-500 text-purple-800 dark:text-purple-200 p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-bold vazir">برداشت‌های کلی</h3>
                 <div class="bg-purple-500 p-2 rounded-full">
@@ -96,9 +93,8 @@
             <div class="space-y-3">
                 @foreach(['AFN' => 'افغانی', 'USD' => 'دالر', 'EUR' => 'یورو', 'IRR' => 'تومان'] as $currency => $label)
                 <div class="flex justify-between items-center">
-                    <span class="text-sm text-purple-700 vazir">{{ $label }}:</span>
-                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['total'][$currency])
-                        }}</span>
+                    <span class="text-sm text-purple-700 dark:text-purple-300 vazir">{{ $label }}:</span>
+                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['total'][$currency]) }}</span>
                 </div>
                 @endforeach
             </div>
@@ -106,11 +102,11 @@
     </div>
 
     <!-- Main Content -->
-    <div class="flex flex-col lg:flex-row  gap-6 p-4">
+    <div class="flex flex-col lg:flex-row gap-6 p-4">
 
         <!-- Withdrawal Form -->
-        <div class=" lg:w-full xl:full">
-            <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+        <div class="lg:w-full xl:full">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden transition-colors duration-300">
                 <!-- Form Header -->
                 <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-6">
                     <div class="flex items-center justify-between">
@@ -130,18 +126,18 @@
 
                         <!-- Withdrawal Type -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2 vazir">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 vazir">
                                 نوع برداشت <span class="text-red-500">*</span>
                             </label>
                             <select wire:model="type"
-                                class="w-full h-12 px-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir">
+                                class="w-full h-12 px-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                                 <option value="">انتخاب نوع برداشت</option>
                                 @foreach($this->expansesTypes as $key => $value)
                                 <option value="{{ $key }}">{{ $value }}</option>
                                 @endforeach
                             </select>
                             @error('type')
-                            <p class="mt-1 text-sm text-red-600 vazir">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400 vazir">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -149,42 +145,42 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <!-- Currency -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2 vazir">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 vazir">
                                     ارز <span class="text-red-500">*</span>
                                 </label>
                                 <select wire:model="currency"
-                                    class="w-full h-12 px-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir">
+                                    class="w-full h-12 px-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                                     <option value="AFN">افغانی</option>
                                     <option value="USD">دالر</option>
                                     <option value="EUR">یورو</option>
                                     <option value="IRR">تومان</option>
                                 </select>
                                 @error('currency')
-                                <p class="mt-1 text-sm text-red-600 vazir">{{ $message }}</p>
+                                <p class="mt-1 text-sm text-red-600 dark:text-red-400 vazir">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <!-- Amount -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2 vazir">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 vazir">
                                     مقدار برداشت <span class="text-red-500">*</span>
                                 </label>
                                 <input type="number" wire:model="amount" step="0.01" min="0"
-                                    class="w-full h-12 px-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir"
+                                    class="w-full h-12 px-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                                     placeholder="0">
                                 @error('amount')
-                                <p class="mt-1 text-sm text-red-600 vazir">{{ $message }}</p>
+                                <p class="mt-1 text-sm text-red-600 dark:text-red-400 vazir">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
 
                         <!-- Receiver Type -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2 vazir">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 vazir">
                                 تحویل به <span class="text-red-500">*</span>
                             </label>
                             <select wire:model.live="receiver_type"
-                                class="w-full h-12 px-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir">
+                                class="w-full h-12 px-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                                 <option value="staff">کارمند</option>
                                 <option value="customer">مشتری</option>
                             </select>
@@ -193,32 +189,32 @@
                         <!-- Receiver Selection -->
                         <div>
                             @if($receiver_type === 'staff')
-                            <label class="block text-sm font-medium text-gray-700 mb-2 vazir">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 vazir">
                                 کارمند دریافت‌کننده <span class="text-red-500">*</span>
                             </label>
                             <select wire:model="staff_id"
-                                class="w-full h-12 px-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir">
+                                class="w-full h-12 px-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                                 <option value="">انتخاب کارمند</option>
                                 @foreach($this->staffs as $id => $name)
                                 <option value="{{ $id }}">{{ $name }}</option>
                                 @endforeach
                             </select>
                             @error('staff_id')
-                            <p class="mt-1 text-sm text-red-600 vazir">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400 vazir">{{ $message }}</p>
                             @enderror
                             @else
-                            <label class="block text-sm font-medium text-gray-700 mb-2 vazir">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 vazir">
                                 مشتری دریافت‌کننده <span class="text-red-500">*</span>
                             </label>
                             <select wire:model="customer_id"
-                                class="w-full h-12 px-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir">
+                                class="w-full h-12 px-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                                 <option value="">انتخاب مشتری</option>
                                 @foreach($this->customers as $id => $info)
                                 <option value="{{ $id }}">{{ $info }}</option>
                                 @endforeach
                             </select>
                             @error('customer_id')
-                            <p class="mt-1 text-sm text-red-600 vazir">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400 vazir">{{ $message }}</p>
                             @enderror
                             @endif
                         </div>
@@ -226,12 +222,12 @@
 
                         <div class="relative" x-data="persianDatePicker()" x-init="init()">
                             <label
-                                class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">تاریخ</label>
+                                class="block text-[16px] font-medium dark:text-gray-300 text-gray-700 mb-1 vazir">تاریخ</label>
 
                             <!-- Input field -->
                             <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
                                 placeholder=" روز/ ماه / سال"
-                                class="w-full dark:text-white dark:bg-black dark:border-white h-[60px] p-3 rounded-[12px] border focus:ring-2  bg-white focus:ring-blue-500 cursor-pointer"
+                                class="w-full dark:text-gray-100 dark:bg-gray-700 dark:border-gray-600 h-[60px] p-3 rounded-[12px] border focus:ring-2 bg-white focus:ring-blue-500 cursor-pointer"
                                 readonly />
 
                             <!-- Custom Date Picker Modal -->
@@ -257,7 +253,7 @@
                                             <div class="flex justify-between items-center mb-4">
                                                 <div class="flex items-center space-x-2">
                                                     <button @click="prevYear()" type="button"
-                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-700 dark:text-gray-300">
                                                         <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                             viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -266,7 +262,7 @@
                                                         </svg>
                                                     </button>
                                                     <button @click="prevMonth()" type="button"
-                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-700 dark:text-gray-300">
                                                         <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                             viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -288,7 +284,7 @@
 
                                                 <div class="flex items-center space-x-2">
                                                     <button @click="nextMonth()" type="button"
-                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-700 dark:text-gray-300">
                                                         <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                             viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -296,7 +292,7 @@
                                                         </svg>
                                                     </button>
                                                     <button @click="nextYear()" type="button"
-                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-700 dark:text-gray-300">
                                                         <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                             viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -335,7 +331,7 @@
                                             <div x-show="showYearSelector" x-transition>
                                                 <div class="flex items-center justify-between mb-4">
                                                     <button @click="prevYearRange()" type="button"
-                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300">
                                                         <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                             viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -347,7 +343,7 @@
                                                             x-text="yearRange.end"></span>
                                                     </span>
                                                     <button @click="nextYearRange()" type="button"
-                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300">
                                                         <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                             viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -434,7 +430,7 @@
                             </div>
 
                             @error('date')
-                            <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            <span class="text-red-500 dark:text-red-400 text-xs mt-1 block">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -855,14 +851,14 @@
 
                         <!-- Description -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2 vazir">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 vazir">
                                 توضیحات
                             </label>
                             <textarea wire:model="description" rows="3"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition resize-none vazir"
+                                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition resize-none vazir bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                                 placeholder="دلیل برداشت را وارد کنید..."></textarea>
                             @error('description')
-                            <p class="mt-1 text-sm text-red-600 vazir">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400 vazir">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -899,8 +895,8 @@
 
     </div>
     <!-- Withdrawals Table -->
-    <div class="w-full lg:full xl:w-full">
-        <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+    <div class="w-full lg:full xl:w-full px-4 pb-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden transition-colors duration-300">
             <!-- Table Header -->
             <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-6">
                 <div class="flex items-center justify-between">
@@ -922,12 +918,12 @@
 
                         <div>
                             <div class="lg:col-span-3 relative" x-data="fromDatePicker()" x-init="init()">
-                                <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
+                                <label class="block text-[16px] font-medium dark:text-gray-300 text-gray-700 mb-1 vazir">
                                     از تاریخ
                                 </label>
                                 <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
                                     placeholder=" روز/ ماه / سال"
-                                    class="w-full dark:text-white dark:bg-black dark:border-white h-[50px] p-3 rounded-[12px] border focus:ring-2  bg-[#EFF6F9]  focus:ring-blue-500 cursor-pointer"
+                                    class="w-full dark:text-gray-100 dark:bg-gray-700 dark:border-gray-600 h-[50px] p-3 rounded-[12px] border focus:ring-2 bg-[#EFF6F9] dark:bg-gray-700 focus:ring-blue-500 cursor-pointer"
                                     readonly />
 
                                 <!-- Date Picker Modal -->
@@ -951,7 +947,7 @@
                                                 <div class="flex justify-between items-center mb-4">
                                                     <div class="flex items-center space-x-2">
                                                         <button @click="prevYear()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-700 dark:text-gray-300">
                                                             <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                                 viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -960,7 +956,7 @@
                                                             </svg>
                                                         </button>
                                                         <button @click="prevMonth()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-700 dark:text-gray-300">
                                                             <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                                 viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -982,7 +978,7 @@
 
                                                     <div class="flex items-center space-x-2">
                                                         <button @click="nextMonth()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-700 dark:text-gray-300">
                                                             <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                                 viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -990,7 +986,7 @@
                                                             </svg>
                                                         </button>
                                                         <button @click="nextYear()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-700 dark:text-gray-300">
                                                             <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                                 viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -1030,7 +1026,7 @@
                                                 <div x-show="showYearSelector" x-transition>
                                                     <div class="flex items-center justify-between mb-4">
                                                         <button @click="prevYearRange()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300">
                                                             <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                                 viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -1042,7 +1038,7 @@
                                                                 x-text="yearRange.end"></span>
                                                         </span>
                                                         <button @click="nextYearRange()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300">
                                                             <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                                 viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -1129,7 +1125,7 @@
                                 </div>
 
                                 @error('startDate')
-                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                                <span class="text-red-500 dark:text-red-400 text-xs mt-1 block">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
@@ -1138,12 +1134,12 @@
                         <div>
                             <!-- تا تاریخ -->
                             <div class="lg:col-span-3 relative" x-data="toDatePicker()" x-init="init()">
-                                <label class="block text-[16px] font-medium dark:text-white text-black mb-1 vazir">
+                                <label class="block text-[16px] font-medium dark:text-gray-300 text-gray-700 mb-1 vazir">
                                     تا تاریخ
                                 </label>
                                 <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
                                     placeholder=" روز/ ماه / سال"
-                                    class="w-full dark:text-white dark:bg-black dark:border-white h-[50px] p-3 rounded-[12px] border focus:ring-2  bg-[#EFF6F9]  focus:ring-blue-500 cursor-pointer"
+                                    class="w-full dark:text-gray-100 dark:bg-gray-700 dark:border-gray-600 h-[50px] p-3 rounded-[12px] border focus:ring-2 bg-[#EFF6F9] dark:bg-gray-700 focus:ring-blue-500 cursor-pointer"
                                     readonly />
 
                                 <!-- Date Picker Modal -->
@@ -1167,7 +1163,7 @@
                                                 <div class="flex justify-between items-center mb-4">
                                                     <div class="flex items-center space-x-2">
                                                         <button @click="prevYear()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-700 dark:text-gray-300">
                                                             <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                                 viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -1176,7 +1172,7 @@
                                                             </svg>
                                                         </button>
                                                         <button @click="prevMonth()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-700 dark:text-gray-300">
                                                             <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                                 viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -1198,7 +1194,7 @@
 
                                                     <div class="flex items-center space-x-2">
                                                         <button @click="nextMonth()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-700 dark:text-gray-300">
                                                             <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                                 viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -1206,7 +1202,7 @@
                                                             </svg>
                                                         </button>
                                                         <button @click="nextYear()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-700 dark:text-gray-300">
                                                             <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                                 viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -1246,7 +1242,7 @@
                                                 <div x-show="showYearSelector" x-transition>
                                                     <div class="flex items-center justify-between mb-4">
                                                         <button @click="prevYearRange()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300">
                                                             <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                                 viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -1258,7 +1254,7 @@
                                                                 x-text="yearRange.end"></span>
                                                         </span>
                                                         <button @click="nextYearRange()" type="button"
-                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                                            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300">
                                                             <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                                 viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -1345,7 +1341,7 @@
                                 </div>
 
                                 @error('endDate')
-                                <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                                <span class="text-red-500 dark:text-red-400 text-xs mt-1 block">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
@@ -1800,35 +1796,35 @@
 
 
                     </div>
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                        <thead class="bg-gray-50 text-gray-700 vazir">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 vazir">
                             <tr>
-                                <th class="px-4 py-3 font-bold border-b">#</th>
-                                <th class="px-4 py-3 font-bold border-b">نوع برداشت</th>
-                                <th class="px-4 py-3 font-bold border-b">ارز</th>
-                                <th class="px-4 py-3 font-bold border-b">مبلغ</th>
-                                <th class="px-4 py-3 font-bold border-b">دریافت‌کننده</th>
-                                <th class="px-4 py-3 font-bold border-b">توضیحات</th>
-                                <th class="px-4 py-3 font-bold border-b">تاریخ</th>
-                                <th class="px-4 py-3 font-bold border-b">عملیات</th>
+                                <th class="px-4 py-3 font-bold border-b dark:border-gray-600">#</th>
+                                <th class="px-4 py-3 font-bold border-b dark:border-gray-600">نوع برداشت</th>
+                                <th class="px-4 py-3 font-bold border-b dark:border-gray-600">ارز</th>
+                                <th class="px-4 py-3 font-bold border-b dark:border-gray-600">مبلغ</th>
+                                <th class="px-4 py-3 font-bold border-b dark:border-gray-600">دریافت‌کننده</th>
+                                <th class="px-4 py-3 font-bold border-b dark:border-gray-600">توضیحات</th>
+                                <th class="px-4 py-3 font-bold border-b dark:border-gray-600">تاریخ</th>
+                                <th class="px-4 py-3 font-bold border-b dark:border-gray-600">عملیات</th>
                             </tr>
                         </thead>
                         <tbody class="vazir">
                             @forelse($withdrawals as $key => $withdrawal)
-                            <tr class="border-b hover:bg-gray-50 transition">
-                                <td class="px-4 py-3 font-medium text-gray-900 text-center">
+                            <tr class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                                <td class="px-4 py-3 font-medium text-gray-900 dark:text-gray-100 text-center">
                                     {{ ($withdrawals->currentPage() - 1) * $withdrawals->perPage() + $key + 1 }}
                                 </td>
-                                <td class="px-4 py-3 font-medium text-gray-900">
+                                <td class="px-4 py-3 font-medium text-gray-900 dark:text-gray-100">
                                     {{ $withdrawal->expanses_type }}
                                 </td>
                                 <td class="px-4 py-3">
                                     @php
                                     $currencyStyles = [
-                                    'AFN' => 'bg-rose-100 text-rose-800',
-                                    'USD' => 'bg-green-100 text-green-800',
-                                    'EUR' => 'bg-blue-100 text-blue-800',
-                                    'IRR' => 'bg-purple-100 text-purple-800',
+                                    'AFN' => 'bg-rose-100 text-rose-800 dark:bg-rose-900/50 dark:text-rose-200',
+                                    'USD' => 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200',
+                                    'EUR' => 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200',
+                                    'IRR' => 'bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-200',
                                     ];
                                     $currencyLabels = [
                                     'AFN' => 'افغانی',
@@ -1838,40 +1834,40 @@
                                     ];
                                     @endphp
                                     <span
-                                        class="px-3 py-1 rounded-full text-xs font-medium {{ $currencyStyles[$withdrawal->currency] ?? 'bg-gray-100 text-gray-800' }}">
+                                        class="px-3 py-1 rounded-full text-xs font-medium {{ $currencyStyles[$withdrawal->currency] ?? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300' }}">
                                         {{ $currencyLabels[$withdrawal->currency] ?? $withdrawal->currency }}
                                     </span>
                                 </td>
-                                <td class="px-4 py-3 font-medium text-gray-900">
+                                <td class="px-4 py-3 font-medium text-gray-900 dark:text-gray-100">
                                     {{ number_format($withdrawal->amount) }}
                                 </td>
                                 <td class="px-4 py-3">
                                     @if($withdrawal->staff_id && $withdrawal->staff)
-                                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">
+                                    <span class="bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200 px-2 py-1 rounded text-xs">
                                         {{ $withdrawal->staff->fullname }}
                                     </span>
                                     @elseif($withdrawal->customer_id && $withdrawal->customer)
-                                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">
+                                    <span class="bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200 px-2 py-1 rounded text-xs">
                                         {{ $withdrawal->customer->fullname }}
                                     </span>
                                     @else
-                                    <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs">
+                                    <span class="bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded text-xs">
                                         صندوق
                                     </span>
                                     @endif
                                 </td>
-                                <td class="px-4 py-3 max-w-xs truncate">
+                                <td class="px-4 py-3 max-w-xs truncate text-gray-900 dark:text-gray-100">
                                     {{ $withdrawal->description ?? 'بدون توضیح' }}
                                 </td>
                                 <td class="px-4 py-3 text-center whitespace-nowrap">
-                                    <div class="text-sm font-medium">
+                                    <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
                                         {{
                                         \Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($withdrawal->created_at))
                                         ->format('Y/m/d H:i')
                                         }}
                                     </div>
 
-                                    <div class="text-xs text-gray-500">
+                                    <div class="text-xs text-gray-500 dark:text-gray-400">
                                         {{ \Carbon\Carbon::parse($withdrawal->created_at)->format('h:i') }}
                                     </div>
                                 </td>
@@ -1892,9 +1888,9 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="8" class="px-4 py-8 text-center text-gray-500 vazir">
+                                <td colspan="8" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400 vazir">
                                     <div class="flex flex-col items-center justify-center">
-                                        <i class="fa-solid fa-inbox text-4xl text-gray-300 mb-2"></i>
+                                        <i class="fa-solid fa-inbox text-4xl text-gray-300 dark:text-gray-600 mb-2"></i>
                                         <p class="text-lg">هیچ برداشتی یافت نشد</p>
                                     </div>
                                 </td>
@@ -1917,15 +1913,15 @@
     <!-- Delete Confirmation Modal -->
     @if ($confirmDeleteId)
     <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full transform transition-all">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl max-w-md w-full transform transition-all">
             <div class="p-6">
-                <div class="flex items-center justify-center w-16 h-16 bg-red-100 rounded-full mx-auto mb-4">
-                    <i class="fa-solid fa-exclamation-triangle text-red-600 text-2xl"></i>
+                <div class="flex items-center justify-center w-16 h-16 bg-red-100 dark:bg-red-900/50 rounded-full mx-auto mb-4">
+                    <i class="fa-solid fa-exclamation-triangle text-red-600 dark:text-red-400 text-2xl"></i>
                 </div>
-                <h3 class="text-lg font-bold text-center text-gray-900 mb-2 vazir">
+                <h3 class="text-lg font-bold text-center text-gray-900 dark:text-gray-100 mb-2 vazir">
                     تأیید حذف برداشت
                 </h3>
-                <p class="text-gray-600 text-center mb-6 vazir">
+                <p class="text-gray-600 dark:text-gray-400 text-center mb-6 vazir">
                     آیا از حذف این برداشت اطمینان دارید؟ این عمل غیرقابل بازگشت است.
                 </p>
                 <div class="flex gap-3">

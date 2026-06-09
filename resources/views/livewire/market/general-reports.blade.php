@@ -1,9 +1,9 @@
-<div class="filament-page vazir text-xl">
+<div class="filament-page vazir text-xl dark:bg-gray-900 min-h-screen">
     <div class="space-y-3">
-        <h1 class="text-4xl font-medium yekan">
+        <h1 class="text-4xl font-medium yekan dark:text-white">
             سیستم گزارش‌گیری جامع
         </h1>
-        <p class="text-xl text-gray-600 max-w-2xl vazir">
+        <p class="text-xl text-gray-600 dark:text-gray-400 max-w-2xl vazir">
             مدیریت و تحلیل داده‌های مالی با قابلیت فیلتر پیشرفته و خروجی حرفه‌ای
         </p>
     </div>
@@ -15,8 +15,8 @@
             <div class="lg:col-span-1 space-y-6">
                 <!-- Report Type Selector -->
                 <div
-                    class="w-[1150px] max-w-[1150px] bg-gradient-to-br from-gray-100 to-gray-200 border-l-4 border-pink-500 p-6 rounded-xl shadow-lg transition-all duration-300">
-                    <h3 class="text-2xl font-semibold text-gray-900 mb-6 flex items-center gap-2 yekan vazir">
+                    class="w-[1150px] max-w-[1150px] bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 border-l-4 border-pink-500 p-6 rounded-xl shadow-lg transition-all duration-300">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2 yekan vazir">
                         نوع گزارش
                     </h3>
 
@@ -45,7 +45,7 @@
                             @if($reportType === $type)
                                 bg-gradient-to-r from-{{ $info['color'] }}-500 to-{{ $info['color'] }}-600 text-white border-{{ $info['color'] }}-500 shadow-md
                             @else
-                                bg-white text-gray-700 border-gray-200 hover:bg-{{ $info['color'] }}-50 hover:border-{{ $info['color'] }}-300
+                                bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:bg-{{ $info['color'] }}-50 dark:hover:bg-{{ $info['color'] }}-900/30 hover:border-{{ $info['color'] }}-300
                             @endif
                         ">
                             <i class="{{ $info['icon'] }} text-lg"></i>
@@ -64,7 +64,7 @@
                 <!-- Main Content -->
                 <div class="lg:col-span-3 space-y-8">
                     <!-- Filters Card -->
-                    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden transition-colors duration-300">
                         <div
                             class="bg-gradient-to-br from-black to-blue-400 border-l-4 border-pink-500 text-white p-6 rounded-xl shadow-lg transition-all duration-300">
                             <h2 class="text-xl font-bold text-white flex items-center gap-3">
@@ -78,12 +78,12 @@
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <!-- Market Select -->
                                 <div class="space-y-2">
-                                    <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
                                         <span class="text-primary-600">🏪</span>
                                         مارکت
                                     </label>
                                     <select wire:model.live="marketId"
-                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
+                                        class="w-full border-2 border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm">
                                         <option value="">همه مارکت‌ها</option>
                                         @foreach($markets as $id => $name)
                                         <option value="{{ $id }}">{{ $name }}</option>
@@ -93,12 +93,12 @@
 
                                 <!-- Currency Select -->
                                 <div class="space-y-2">
-                                    <label class="block text-sm font-semibold text-gray-700 flex items-center gap-2">
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
                                         <span class="text-green-600">💵</span>
                                         واحد پول
                                     </label>
                                     <select wire:model.live="currency"
-                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
+                                        class="w-full border-2 border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm">
                                         <option value="">همه واحدها</option>
                                         <option value="AFN">🇦🇫 افغانی</option>
                                         <option value="USD">🇺🇸 دالر</option>
@@ -111,8 +111,8 @@
                                 <div class="space-y-2 mt-7">
                                     <div class="relative flex">
                                         <input type="text" wire:model.live="search" placeholder="جستجو بر اساس نام شخص"
-                                            class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
-                                        <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                            class="w-full border-2 border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm">
+                                        <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500">
                                             <img src="{{ asset('assets/sarafi/all_icon/search-normal.png') }}" alt="">
                                         </div>
                                     </div>
@@ -124,9 +124,9 @@
                                 <!-- Staff Filter for combined report -->
                                 @if(in_array($reportType, ['withdraw_salary']))
                                 <div class="space-y-2">
-                                    <label class="block text-sm font-semibold text-gray-700">کارمند</label>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">کارمند</label>
                                     <select wire:model.live="staffId"
-                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
+                                        class="w-full border-2 border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm">
                                         <option value="">همه کارمندان</option>
                                         @foreach($staffs as $id => $name)
                                         <option value="{{ $id }}">{{ $name }}</option>
@@ -140,9 +140,9 @@
 
                                 <!-- 🔴 اضافه کردن فیلتر طبقه -->
                                 <div class="space-y-2">
-                                    <label class="block text-sm font-semibold text-gray-700">طبقه</label>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">طبقه</label>
                                     <select wire:model.live="floor"
-                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
+                                        class="w-full border-2 border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm">
                                         <option value="">همه طبقه‌ها</option>
                                         @foreach($floors as $floorItem)
                                         <option value="{{ $floorItem }}">{{ $floorItem }}</option>
@@ -154,9 +154,9 @@
                                 <!-- Expanses Type Filter for combined report -->
                                 @if(in_array($reportType, ['withdraw_salary' ,'outside','fund']))
                                 <div class="space-y-2">
-                                    <label class="block text-sm font-semibold text-gray-700">نوع هزینه</label>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">نوع هزینه</label>
                                     <select wire:model.live="expansesType"
-                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
+                                        class="w-full border-2 border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm">
                                         <option value="">همه انواع</option>
                                         <option value="کرایه">کرایه</option>
                                         <option value="عواید بیرونی">عواید بیرونی</option>
@@ -171,9 +171,9 @@
                                 <!-- Shop Filter -->
                                 @if(in_array($reportType, ['accounting', 'deposit']))
                                 <div class="space-y-2">
-                                    <label class="block text-sm font-semibold text-gray-700">شماره دوکان</label>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">شماره دوکان</label>
                                     <select wire:model.live="shopId"
-                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
+                                        class="w-full border-2 border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm">
                                         <option value="">همه دوکان‌ها</option>
                                         @foreach($shops as $id => $number)
                                         <option value="{{ $id }}">{{ $number }}</option>
@@ -185,9 +185,9 @@
                                 <!-- Booth Filter -->
                                 @if(in_array($reportType, ['accounting', 'deposit', 'sell']))
                                 <div class="space-y-2">
-                                    <label class="block text-sm font-semibold text-gray-700">شماره غرفه</label>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">شماره غرفه</label>
                                     <select wire:model.live="boothId"
-                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
+                                        class="w-full border-2 border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm">
                                         <option value="">همه غرفه‌ها</option>
                                         @foreach($booths as $id => $number)
                                         <option value="{{ $id }}">{{ $number }}</option>
@@ -199,9 +199,9 @@
                                 <!-- Shopkeeper Filter -->
                                 @if(in_array($reportType, ['accounting', 'deposit', 'outside', 'loan', 'payment']))
                                 <div class="space-y-2">
-                                    <label class="block text-sm font-semibold text-gray-700">دوکاندار</label>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">دوکاندار</label>
                                     <select wire:model.live="shopkeeperId"
-                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
+                                        class="w-full border-2 border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm">
                                         <option value="">همه دوکانداران</option>
                                         @foreach($shopkeepers as $id => $name)
                                         <option value="{{ $id }}">{{ $name }}</option>
@@ -213,9 +213,9 @@
                                 <!-- Customer Filter -->
                                 @if(in_array($reportType, ['outside', 'loan', 'payment', 'buy', 'sell']))
                                 <div class="space-y-2">
-                                    <label class="block text-sm font-semibold text-gray-700">مشتری</label>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">مشتری</label>
                                     <select wire:model.live="customerId"
-                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
+                                        class="w-full border-2 border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm">
                                         <option value="">همه مشتریان</option>
                                         @foreach($customers as $id => $name)
                                         <option value="{{ $id }}">{{ $name }}</option>
@@ -227,9 +227,9 @@
                                 <!-- Staff Filter -->
                                 @if(in_array($reportType, ['outside', 'loan', 'payment']))
                                 <div class="space-y-2">
-                                    <label class="block text-sm font-semibold text-gray-700">کارمند</label>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">کارمند</label>
                                     <select wire:model.live="staffId"
-                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
+                                        class="w-full border-2 border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm">
                                         <option value="">همه کارمندان</option>
                                         @foreach($staffs as $id => $name)
                                         <option value="{{ $id }}">{{ $name }}</option>
@@ -241,9 +241,9 @@
                                 <!-- Type Filter -->
                                 @if(in_array($reportType, ['accounting', 'deposit', 'outside', 'loan']))
                                 <div class="space-y-2">
-                                    <label class="block text-sm font-semibold text-gray-700">نوع</label>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">نوع</label>
                                     <select wire:model.live="type"
-                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
+                                        class="w-full border-2 border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm">
                                         <option value="">همه انواع</option>
                                         <option value="دوکان">دوکان</option>
                                         <option value="غرفه">غرفه</option>
@@ -254,9 +254,9 @@
                                 <!-- Expanses Type Filter -->
                                 @if(in_array($reportType, ['accounting', 'deposit', 'withdraw_log']))
                                 <div class="space-y-2">
-                                    <label class="block text-sm font-semibold text-gray-700">نوع هزینه</label>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">نوع هزینه</label>
                                     <select wire:model.live="expansesType"
-                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm">
+                                        class="w-full border-2 border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm">
                                         <option value="">همه انواع</option>
                                         <option value="کرایه">کرایه</option>
                                         <option value="تحت الملکی">تحت الملکی</option>
@@ -269,33 +269,33 @@
 
                                 <!-- Start Date -->
                                 <div class="space-y-2">
-                                    <label class="block text-sm font-semibold text-gray-700">از تاریخ</label>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">از تاریخ</label>
                                     <div class="relative">
                                         <input type="text" wire:model.live="startDateJalali" placeholder="1403/01/01"
-                                            class="w-full border-2 border-gray-200 rounded-xl pl-10 pr-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm persian-datepicker"
+                                            class="w-full border-2 border-gray-200 dark:border-gray-600 rounded-xl pl-10 pr-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm persian-datepicker"
                                             id="startDatePicker">
-                                        <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                        <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500">
                                             📅
                                         </div>
                                     </div>
                                     @error('startDateJalali')
-                                    <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                                    <span class="text-red-500 dark:text-red-400 text-xs mt-1">{{ $message }}</span>
                                     @enderror
                                 </div>
 
                                 <!-- End Date -->
                                 <div class="space-y-2">
-                                    <label class="block text-sm font-semibold text-gray-700">تا تاریخ</label>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">تا تاریخ</label>
                                     <div class="relative">
                                         <input type="text" wire:model.live="endDateJalali" placeholder="1403/01/31"
-                                            class="w-full border-2 border-gray-200 rounded-xl pl-10 pr-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white shadow-sm persian-datepicker"
+                                            class="w-full border-2 border-gray-200 dark:border-gray-600 rounded-xl pl-10 pr-4 py-3 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm persian-datepicker"
                                             id="endDatePicker">
-                                        <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                        <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500">
                                             📅
                                         </div>
                                     </div>
                                     @error('endDateJalali')
-                                    <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                                    <span class="text-red-500 dark:text-red-400 text-xs mt-1">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
@@ -303,7 +303,7 @@
                     </div>
 
                     <!-- Results Section -->
-                    <div class="rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                    <div class="rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
                         <!-- Table Header -->
                         <div
                             class="bg-gradient-to-br from-black to-blue-400 border-l-4 border-pink-500 text-white px-6 py-4">
@@ -328,285 +328,285 @@
                         </div>
 
                         <!-- Table -->
-                        <div class="overflow-x-auto">
+                        <div class="overflow-x-auto bg-white dark:bg-gray-800">
                             <table class="w-full">
-                                <thead class="bg-gradient-to-r from-primary-50 to-primary-100">
+                                <thead class="bg-gradient-to-r from-primary-50 to-primary-100 dark:from-gray-700 dark:to-gray-700">
                                     <tr>
                                         @switch($reportType)
                                         @case('withdraw_salary')
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             نوع</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             برداشت از</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             شخص</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             مبلغ</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             واحد پول</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             تاریخ</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             توضیحات</th>
                                         @break
 
 
                                         @case('fund')
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             نوع</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             نوع مصرف</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             مبلغ</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             واحد پول</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             تاریخ</th>
                                         @break
                                         @case('accounting')
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             مارکت</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             نوع</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             دوکاندار</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             نوع مصرف</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             مبلغ</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             تاریخ</th>
 
                                         @break
 
                                         @case('outside')
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             مارکت</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             نوع شخص</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             نام شخص</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             مبلغ</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             واحد پول</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             تاریخ</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             توضیحات</th>
                                         @break
 
                                         @case('salary')
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             مارکت</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             کارمند</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             حقوق</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             پرداخت شده</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             باقی مانده</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             قرضه</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             واحد پول</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             تاریخ پرداخت</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             وضعیت کسر</th>
                                         @break
 
                                         @case('deposit')
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             مارکت</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             دوکاندار</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             نوع هزینه</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             مبلغ کل</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             پرداخت شده</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             باقی مانده</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             تاریخ پرداخت</th>
                                         @break
 
                                         @case('loan')
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             مارکت</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             نوع شخص</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             نام شخص</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             مبلغ اصلی</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             پرداخت شده</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             باقی مانده</th>
 
                                         <th>
                                             نوع ارز
                                         </th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             تاریخ</th>
 
                                         @break
 
                                         @case('payment')
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             کد قرضه</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             مبلغ پرداخت</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             واحد پول</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             تاریخ رسید</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             توضیحات</th>
                                         @break
 
                                         @case('buy')
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             مارکت</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             فروشنده</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             نوع خرید</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             قیمت خرید</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             واحد پول</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             تاریخ ثبت</th>
                                         @break
 
                                         @case('sell')
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             مارکت</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             مشتری</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             نوع ملک</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             قیمت فروش</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             واحد پول</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             تاریخ</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             جزئیات</th>
                                         @break
 
                                         @case('withdraw_log')
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             نوع هزینه</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             دریافت کننده</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             مبلغ</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             واحد پول</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             توضیحات</th>
                                         <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 dark:text-gray-300 uppercase tracking-wider">
                                             تاریخ ثبت</th>
                                         @break
 
                                         @endswitch
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-gray-100">
+                                <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
                                     @forelse($reports as $report)
                                     <tr
-                                        class="hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-25 transition-all duration-200 group">
+                                        class="hover:bg-gradient-to-r hover:from-primary-50 dark:hover:from-gray-700 hover:to-primary-25 dark:hover:to-gray-700 transition-all duration-200 group">
                                         @switch($reportType)
                                         @case('withdraw_salary')
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
                                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
-                                                    {{ $report->record_type === 'withdraw' ? 'bg-purple-100 text-purple-800' : 'bg-orange-100 text-orange-800' }}">
+                                                    {{ $report->record_type === 'withdraw' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-200' : 'bg-orange-100 text-orange-800 dark:bg-orange-900/50 dark:text-orange-200' }}">
                                                 {{ $report->record_type === 'withdraw' ? 'برداشت' : 'معاش' }}
                                             </span>
                                         </td>
 
                                         {{-- ستون "برداشت از" --}}
-                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900 dark:text-gray-100">
                                             @if($report->record_type === 'withdraw')
                                             {{ $report->expanses_type ?? '-' }}
                                             @else
@@ -615,7 +615,7 @@
                                         </td>
 
                                         {{-- ستون "شخص" --}}
-                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900 dark:text-gray-100">
                                             @if($report->record_type === 'withdraw')
 
                                             @if($report->staff_id)
@@ -633,7 +633,7 @@
 
                                         {{-- ستون "مبلغ" --}}
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-gray-900">
+                                            <span class="font-bold text-gray-900 dark:text-gray-100">
                                                 {{ number_format($report->record_type === 'withdraw' ? $report->amount :
                                                 $report->paid) }}
                                             </span>
@@ -641,7 +641,7 @@
 
                                         {{-- ستون "واحد پول" --}}
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                            <span class="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
                                                 @switch($report->currency)
                                                 @case('AFN') افغانی @break
                                                 @case('USD') دالر @break
@@ -651,7 +651,7 @@
                                         </td>
 
                                         {{-- ستون "تاریخ" --}}
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                             @if($report->record_type === 'withdraw')
                                             {{ $report->created_at ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d')
@@ -664,7 +664,7 @@
                                         </td>
 
                                         {{-- ستون "توضیحات" --}}
-                                        <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
+                                        <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 max-w-xs truncate">
                                             @if($report->record_type === 'withdraw')
                                             {{ $report->description ?? '-' }}
                                             @else
@@ -677,34 +677,34 @@
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center gap-3">
                                                 <div
-                                                    class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                                                    <span class="text-blue-600 text-sm">🏪</span>
+                                                    class="w-8 h-8 bg-blue-100 dark:bg-blue-900/50 rounded-lg flex items-center justify-center">
+                                                    <span class="text-blue-600 dark:text-blue-300 text-sm">🏪</span>
                                                 </div>
-                                                <span class="font-medium text-gray-900">{{ $report->market->name ?? '-'
+                                                <span class="font-medium text-gray-900 dark:text-gray-100">{{ $report->market->name ?? '-'
                                                     }}</span>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
-                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200">
                                                 {{ $report->type }}
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900 dark:text-gray-100">
                                             {{ $report->shopkeeper->fullname ?? '-' }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
-                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200">
                                                 {{ $report->expanses_type }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-gray-900">{{ number_format($report->price)
+                                            <span class="font-bold text-gray-900 dark:text-gray-100">{{ number_format($report->price)
                                                 }}</span>
                                         </td>
 
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                             {{ $report->paid_date ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
                                             : '-' }}
@@ -716,17 +716,17 @@
                                         @case('fund')
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
-        {{ $report->paid > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+        {{ $report->paid > 0 ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200' : 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200' }}">
                                                 {{ $report->direction }}
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $report->expanses_type ?? '-' }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-gray-100">{{ $report->expanses_type ?? '-' }}</td>
                                         <td
-                                            class="px-6 py-4 whitespace-nowrap font-bold {{ $report->paid < 0 ? 'text-red-600' : 'text-green-600' }}">
+                                            class="px-6 py-4 whitespace-nowrap font-bold {{ $report->paid < 0 ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400' }}">
                                             {{ number_format($report->amount) }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                            <span class="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
                                                 @switch($report->currency)
                                                 @case('AFN') افغانی @break
                                                 @case('USD') دالر @break
@@ -734,7 +734,7 @@
                                                 @endswitch
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                             {{ $report->paid_date ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
                                             : ($report->created_at ?
@@ -746,19 +746,19 @@
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center gap-3">
                                                 <div
-                                                    class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                                                    <span class="text-green-600 text-sm">🏪</span>
+                                                    class="w-8 h-8 bg-green-100 dark:bg-green-900/50 rounded-lg flex items-center justify-center">
+                                                    <span class="text-green-600 dark:text-green-300 text-sm">🏪</span>
                                                 </div>
-                                                <span class="font-medium text-gray-900">{{ $report->market->name ?? '-'
+                                                <span class="font-medium text-gray-900 dark:text-gray-100">{{ $report->market->name ?? '-'
                                                     }}</span>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
                                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
-                                                {{ $report->customer_id ? 'bg-purple-100 text-purple-800' : 
-                                                ($report->staff_id ? 'bg-orange-100 text-orange-800' : 
-                                                ($report->shopkeeper_id ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800')) }}">
+                                                {{ $report->customer_id ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-200' : 
+                                                ($report->staff_id ? 'bg-orange-100 text-orange-800 dark:bg-orange-900/50 dark:text-orange-200' : 
+                                                ($report->shopkeeper_id ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300')) }}">
                                                 @if($report->customer_id)
                                                 مشتری
                                                 @elseif($report->staff_id)
@@ -770,18 +770,18 @@
                                                 @endif
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900 dark:text-gray-100">
                                             {{ $report->customer->fullname ?? $report->staff->fullname ??
                                             $report->shopkeeper->fullname ?? '-' }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center gap-2">
-                                                <span class="font-bold text-gray-900">{{ number_format($report->paid)
+                                                <span class="font-bold text-gray-900 dark:text-gray-100">{{ number_format($report->paid)
                                                     }}</span>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                            <span class="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
                                                 @switch($report->currency)
                                                 @case('AFN') افغانی @break
                                                 @case('USD') دالر @break
@@ -789,12 +789,12 @@
                                                 @endswitch
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                             {{ $report->date ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'
                                             }}
                                         </td>
-                                        <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
+                                        <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 max-w-xs truncate">
                                             {{ $report->description ?? '-' }}
                                         </td>
                                         @break
@@ -803,34 +803,34 @@
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center gap-3">
                                                 <div
-                                                    class="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
-                                                    <span class="text-amber-600 text-sm">🏪</span>
+                                                    class="w-8 h-8 bg-amber-100 dark:bg-amber-900/50 rounded-lg flex items-center justify-center">
+                                                    <span class="text-amber-600 dark:text-amber-300 text-sm">🏪</span>
                                                 </div>
-                                                <span class="font-medium text-gray-900">{{ $report->market->name ?? '-'
+                                                <span class="font-medium text-gray-900 dark:text-gray-100">{{ $report->market->name ?? '-'
                                                     }}</span>
                                             </div>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900 dark:text-gray-100">
                                             {{ $report->staff->fullname ?? '-' }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-gray-900">{{ number_format($report->salary)
+                                            <span class="font-bold text-gray-900 dark:text-gray-100">{{ number_format($report->salary)
                                                 }}</span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-green-600">{{ number_format($report->paid)
+                                            <span class="font-bold text-green-600 dark:text-green-400">{{ number_format($report->paid)
                                                 }}</span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-red-600">{{ number_format($report->remained)
+                                            <span class="font-bold text-red-600 dark:text-red-400">{{ number_format($report->remained)
                                                 }}</span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-purple-600">{{ number_format($report->loan)
+                                            <span class="font-bold text-purple-600 dark:text-purple-400">{{ number_format($report->loan)
                                                 }}</span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                            <span class="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
                                                 @switch($report->currency)
                                                 @case('AFN') افغانی @break
                                                 @case('USD') دالر @break
@@ -838,14 +838,14 @@
                                                 @endswitch
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                             {{ $report->paid_date ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
                                             : '-' }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
-                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ $report->is_reduce ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ $report->is_reduce ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300' }}">
                                                 {{ $report->is_reduce ? 'فعال' : 'غیرفعال' }}
                                             </span>
                                         </td>
@@ -855,36 +855,36 @@
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center gap-3">
                                                 <div
-                                                    class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
-                                                    <span class="text-orange-600 text-sm">🏪</span>
+                                                    class="w-8 h-8 bg-orange-100 dark:bg-orange-900/50 rounded-lg flex items-center justify-center">
+                                                    <span class="text-orange-600 dark:text-orange-300 text-sm">🏪</span>
                                                 </div>
-                                                <span class="font-medium text-gray-900">{{
+                                                <span class="font-medium text-gray-900 dark:text-gray-100">{{
                                                     $report->accounting->market->name ?? '-' }}</span>
                                             </div>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900 dark:text-gray-100">
                                             {{ $report->accounting->shopkeeper->fullname ?? '-' }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
-                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200">
                                                 {{ $report->expanses_type }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-gray-900">{{ number_format($report->price)
+                                            <span class="font-bold text-gray-900 dark:text-gray-100">{{ number_format($report->price)
                                                 }}</span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-green-600">{{ number_format($report->paid)
+                                            <span class="font-bold text-green-600 dark:text-green-400">{{ number_format($report->paid)
                                                 }}</span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-red-600">{{ number_format($report->remained)
+                                            <span class="font-bold text-red-600 dark:text-red-400">{{ number_format($report->remained)
                                                 }}</span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                            <span class="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
                                                 @switch($report->currency)
                                                 @case('AFN') افغانی @break
                                                 @case('USD') دالر @break
@@ -892,7 +892,7 @@
                                                 @endswitch
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                             {{ $report->paid_date ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->paid_date)->format('Y/m/d')
                                             : '-' }}
@@ -903,22 +903,22 @@
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center gap-3">
                                                 <div
-                                                    class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
-                                                    <span class="text-red-600 text-sm">🏪</span>
+                                                    class="w-8 h-8 bg-red-100 dark:bg-red-900/50 rounded-lg flex items-center justify-center">
+                                                    <span class="text-red-600 dark:text-red-300 text-sm">🏪</span>
                                                 </div>
-                                                <span class="font-medium text-gray-900">{{ $report->market->name ?? '-'
+                                                <span class="font-medium text-gray-900 dark:text-gray-100">{{ $report->market->name ?? '-'
                                                     }}</span>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
-            {{ $report->person === 'مشتری' ? 'bg-purple-100 text-purple-800' : 
-               ($report->person === 'دوکاندار' ? 'bg-blue-100 text-blue-800' : 
-               'bg-orange-100 text-orange-800') }}">
+            {{ $report->person === 'مشتری' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-200' : 
+               ($report->person === 'دوکاندار' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200' : 
+               'bg-orange-100 text-orange-800 dark:bg-orange-900/50 dark:text-orange-200') }}">
                                                 {{ $report->person }}
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900 dark:text-gray-100">
                                             @if($report->person === 'مشتری' && $report->customer)
                                             {{ $report->customer->fullname }}
                                             @elseif($report->person === 'دوکاندار' && $report->shopkeeper)
@@ -930,21 +930,21 @@
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-gray-900">{{ number_format($report->amount)
+                                            <span class="font-bold text-gray-900 dark:text-gray-100">{{ number_format($report->amount)
                                                 }}</span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-green-600">{{
+                                            <span class="font-bold text-green-600 dark:text-green-400">{{
                                                 number_format($report->totalPaid()) }}</span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
-                                                class="font-bold {{ $report->remainingAmount() > 0 ? 'text-red-600' : 'text-green-600' }}">
+                                                class="font-bold {{ $report->remainingAmount() > 0 ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400' }}">
                                                 {{ number_format($report->remainingAmount()) }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                            <span class="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
                                                 @switch($report->currency)
                                                 @case('AFN') افغانی @break
                                                 @case('USD') دالر @break
@@ -952,7 +952,7 @@
                                                 @endswitch
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                             {{ $report->date ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'
                                             }}
@@ -960,15 +960,15 @@
                                         @break
 
                                         @case('payment')
-                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900 dark:text-gray-100">
                                             #{{ $report->loan_id }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-gray-900">{{ number_format($report->amount)
+                                            <span class="font-bold text-gray-900 dark:text-gray-100">{{ number_format($report->amount)
                                                 }}</span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                            <span class="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
                                                 @switch($report->currency)
                                                 @case('AFN') افغانی @break
                                                 @case('USD') دالر @break
@@ -976,12 +976,12 @@
                                                 @endswitch
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                             {{ $report->date ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'
                                             }}
                                         </td>
-                                        <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
+                                        <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 max-w-xs truncate">
                                             {{ $report->description ?? '-' }}
                                         </td>
                                         @break
@@ -990,30 +990,30 @@
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center gap-3">
                                                 <div
-                                                    class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
-                                                    <span class="text-indigo-600 text-sm">🏪</span>
+                                                    class="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg flex items-center justify-center">
+                                                    <span class="text-indigo-600 dark:text-indigo-300 text-sm">🏪</span>
                                                 </div>
-                                                <span class="font-medium text-gray-900">{{ $report->market->name ?? '-'
+                                                <span class="font-medium text-gray-900 dark:text-gray-100">{{ $report->market->name ?? '-'
                                                     }}</span>
                                             </div>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900 dark:text-gray-100">
                                             {{ $report->customer->fullname ?? '-' }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
-                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-200">
                                                 {{ $report->property }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center gap-2">
-                                                <span class="font-bold text-gray-900">{{ number_format($report->price)
+                                                <span class="font-bold text-gray-900 dark:text-gray-100">{{ number_format($report->price)
                                                     }}</span>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                            <span class="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
                                                 @switch($report->currency)
                                                 @case('AFN') افغانی @break
                                                 @case('USD') دالر @break
@@ -1021,7 +1021,7 @@
                                                 @endswitch
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                             {{ $report->created_at ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d')
                                             : '-' }}
@@ -1032,39 +1032,39 @@
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center gap-3">
                                                 <div
-                                                    class="w-8 h-8 bg-teal-100 rounded-lg flex items-center justify-center">
-                                                    <span class="text-teal-600 text-sm">🏪</span>
+                                                    class="w-8 h-8 bg-teal-100 dark:bg-teal-900/50 rounded-lg flex items-center justify-center">
+                                                    <span class="text-teal-600 dark:text-teal-300 text-sm">🏪</span>
                                                 </div>
-                                                <span class="font-medium text-gray-900">{{ $report->market->name ?? '-'
+                                                <span class="font-medium text-gray-900 dark:text-gray-100">{{ $report->market->name ?? '-'
                                                     }}</span>
                                             </div>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900 dark:text-gray-100">
                                             {{ $report->customer->fullname ?? '-' }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
-                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-900/50 dark:text-teal-200">
                                                 {{ $report->property }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center gap-2">
-                                                <span class="font-bold text-gray-900">{{ number_format($report->price)
+                                                <span class="font-bold text-gray-900 dark:text-gray-100">{{ number_format($report->price)
                                                     }}</span>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                            <span class="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
                                                 {{ $report->currency }}
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                             {{ $report->date ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'
                                             }}
                                         </td>
-                                        <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
+                                        <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 max-w-xs truncate">
                                             {{ $report->details ?? '-' }}
                                         </td>
                                         @break
@@ -1072,19 +1072,19 @@
                                         @case('withdraw_log')
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
-                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-800">
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-pink-100 text-pink-800 dark:bg-pink-900/50 dark:text-pink-200">
                                                 {{ $report->expanses_type }}
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900 dark:text-gray-100">
                                             {{ $report->recipient_name }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-gray-900">{{ number_format($report->amount)
+                                            <span class="font-bold text-gray-900 dark:text-gray-100">{{ number_format($report->amount)
                                                 }}</span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                            <span class="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
                                                 @switch($report->currency)
                                                 @case('AFN') افغانی @break
                                                 @case('USD') دالر @break
@@ -1092,10 +1092,10 @@
                                                 @endswitch
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
+                                        <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 max-w-xs truncate">
                                             {{ $report->description ?? '-' }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                             {{ $report->created_at ?
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d')
                                             : '-' }}
@@ -1109,16 +1109,16 @@
                                         <td colspan="10" class="px-6 py-12 text-center">
                                             <div class="flex flex-col items-center justify-center space-y-4">
                                                 <div
-                                                    class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center">
+                                                    class="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
                                                     <span class="text-3xl">📭</span>
                                                 </div>
                                                 <div class="space-y-2">
-                                                    <h4 class="text-lg font-semibold text-gray-700">داده‌ای یافت نشد
+                                                    <h4 class="text-lg font-semibold text-gray-700 dark:text-gray-300">داده‌ای یافت نشد
                                                     </h4>
-                                                    <p class="text-gray-500 text-sm">هیچ رکوردی با فیلترهای فعلی مطابقت
+                                                    <p class="text-gray-500 dark:text-gray-400 text-sm">هیچ رکوردی با فیلترهای فعلی مطابقت
                                                         ندارد</p>
                                                     @if(app()->environment('local'))
-                                                    <p class="text-xs text-yellow-600">نوع گزارش: {{ $reportType }}</p>
+                                                    <p class="text-xs text-yellow-600 dark:text-yellow-400">نوع گزارش: {{ $reportType }}</p>
                                                     @endif
                                                 </div>
                                             </div>
@@ -1131,9 +1131,9 @@
 
                         <!-- Pagination -->
                         @if($reports->hasPages())
-                        <div class="bg-gray-50 border-t border-gray-200 px-6 py-4">
+                        <div class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-6 py-4">
                             <div class="flex items-center justify-between">
-                                <div class="text-sm text-gray-700">
+                                <div class="text-sm text-gray-700 dark:text-gray-300">
                                     صفحه {{ $reports->currentPage() }} از {{ $reports->lastPage() }}
                                 </div>
                                 <div class="flex gap-2">
