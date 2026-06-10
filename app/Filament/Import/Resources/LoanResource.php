@@ -79,43 +79,15 @@ public static function table(Table $table): Table
     return $table
 ->modifyQueryUsing(function ($query) {
     return $query
-        ->selectRaw("
+        ->selectRaw('
             MIN(id) as id,
             customer_id,
             currency,
-
-            SUM(
-                CASE
-                    WHEN type='بردگی' AND amount > 0 THEN amount
-                    WHEN type='بردگی' AND amount = 0 THEN reminded
-                    ELSE 0
-                END
-            ) as total_loan,
-
-            SUM(
-                CASE
-                    WHEN type='رسید' THEN loan_recipt
-                    ELSE 0
-                END
-            ) as total_receipt,
-
-            (
-                SUM(
-                    CASE
-                        WHEN type='بردگی' AND amount > 0 THEN amount
-                        WHEN type='بردگی' AND amount = 0 THEN reminded
-                        ELSE 0
-                    END
-                )
-                -
-                SUM(
-                    CASE
-                        WHEN type='رسید' THEN loan_recipt
-                        ELSE 0
-                    END
-                )
-            ) as remaining
-        ")
+            SUM(CASE WHEN type = "بردگی" THEN amount ELSE 0 END) AS total_loan,
+            SUM(CASE WHEN type = "رسید" THEN loan_recipt ELSE 0 END) AS total_receipt,
+            (SUM(CASE WHEN type = "بردگی" THEN amount ELSE 0 END) -
+             SUM(CASE WHEN type = "رسید" THEN loan_recipt ELSE 0 END)) AS remaining
+        ')
         ->groupBy('customer_id', 'currency');
 })
 
