@@ -116,30 +116,30 @@ $totalLoanAFN = $totalBorrowAFN - $totalReturnAFN;
 
             Card::make('💰 موجودی صندوق', '')
                 ->description(new HtmlString("
-                    <div class='grid grid-cols-2 gap-x-4 text-2xl'>
+                    <div class='grid grid-cols-2  lg:grid-cols-2 md:grid-cols-2 gap-x-4 text-2xl'>
                         <div class='text-black dark:text-white font-bold'>افغانی</div>
-                        <div class='text-right text-black dark:text-white font-bold'>" . number_format($totalBalanceAFN, 0) . "</div>
-
+                        <div . dir='ltr' . class='text-right text-black dark:text-white font-bold'>" . number_format($totalBalanceAFN, 0) . "</div>
                         <div class='text-black dark:text-white font-bold'>دالر</div>
-                        <div class='text-right text-black dark:text-white font-bold'>" . number_format($totalBalanceUSD, 2) . "</div>
+                        <div . dir='ltr' . class='text-right text-black dark:text-white font-bold'>" . number_format($totalBalanceUSD, 2) . "</div>
                     </div>
-                "))
+                ")
+                )
                 ->color(($totalBalanceAFN + $totalBalanceUSD) > 0 ? 'success' : 'danger'),
 
             Card::make('💰 موجودی صندوق صرافی', '')
                 ->description(new HtmlString("
                     <div class='grid grid-cols-2 gap-x-4 text-2xl'>
                         <div class='text-black dark:text-white font-bold'>افغانی</div>
-                        <div class='text-right text-black dark:text-white font-bold'>" . number_format($AFN, 0) . "</div>
+                        <div . dir='ltr' . class='text-right text-black dark:text-white font-bold'>" . number_format($AFN, 0) . "</div>
 
                         <div class='text-black dark:text-white font-bold'>دالر</div>
-                        <div class='text-right text-black dark:text-white font-bold'>" . number_format($USD, 2) . "</div>
+                        <div . dir='ltr' . class='text-right text-black dark:text-white font-bold'>" . number_format($USD, 2) . "</div>
 
                         <div class='text-black dark:text-white font-bold'>یوان چین</div>
-                        <div class='text-right text-black dark:text-white font-bold'>" . number_format($CNY, 2) . "</div>
+                        <div . dir='ltr' . class='text-right text-black dark:text-white font-bold'>" . number_format($CNY, 2) . "</div>
 
                         <div class='text-black dark:text-white font-bold'>یورو</div>
-                        <div class='text-right text-black dark:text-white font-bold'>" . number_format($EUR, 2) . "</div>
+                        <div . dir='ltr' . class='text-right text-black dark:text-white font-bold'>" . number_format($EUR, 2) . "</div>
                     </div>
                 "))
                 ->color(($AFN + $USD + $CNY + $EUR) > 0 ? 'success' : 'danger'),
@@ -188,10 +188,10 @@ $totalLoanAFN = $totalBorrowAFN - $totalReturnAFN;
                 ->description(new HtmlString("
                     <div class='grid grid-cols-2 gap-x-4 text-2xl'>
                         <div class='text-black dark:text-white font-bold'>افغانی</div>
-                        <div class='text-right text-black dark:text-white font-bold'>" . number_format($totalLoanAFN, 0) . "</div>
+                        <div . dir='ltr' .  class='text-right text-black dark:text-white font-bold'>" . number_format($totalLoanAFN, 0) . "</div>
 
                         <div class='text-black dark:text-white font-bold'>دالر</div>
-                        <div class='text-right text-black dark:text-white font-bold'>" . number_format($totalLoanUSD, 2) . "</div>
+                        <div . dir='ltr' . class='text-right text-black dark:text-white font-bold'>" . number_format($totalLoanUSD, 2) . "</div>
 
                     </div>
                 "))

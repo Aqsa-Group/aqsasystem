@@ -26,9 +26,9 @@ class ImportPanelProvider extends PanelProvider
         return $panel
             ->id('import')
             ->path('import')
+          
             ->sidebarCollapsibleOnDesktop()
             ->font('Scheherazade New')
-            // ->viteTheme('resources/css/filament/import/theme.css') // این خط را کامنت کنید
             ->colors([
                 'primary' => Color::Blue,
                 'success' => Color::Green,
@@ -82,14 +82,25 @@ class ImportPanelProvider extends PanelProvider
                                             background-repeat: no-repeat;   
                                             background-image: url('/bg.jpg');                                            background-blend-mode: overlay;
                                         }
-
+                                       
+                                                                                        .fi-sidebar-group-label {
+                                                    font-size: 20px !important;
+                                                    font-weight: 700 !important;
+                                                    line-height: 32px !important;
+                                                    color: #ffffff !important;
+                                                }
                                                                                     .fi-sidebar,
                                             .fi-sidebar * {
                                                 color: #ffffff !important;
                                             }
 
 
-                                                                                                .fi-sidebar .fi-sidebar-item-label,
+                                                        .fi-sidebar-group-label,
+                                                        .fi-sidebar-group-button span,
+                                                        .fi-sidebar-group-header span {
+                                                            font-size: 18px !important;
+                                                            font-weight: 700 !important;
+                                                        }                                .fi-sidebar .fi-sidebar-item-label,
                                                     .fi-sidebar .fi-sidebar-group-label,
                                                     .fi-sidebar .fi-sidebar-item a,
                                                     .fi-sidebar .fi-sidebar-item span {
@@ -103,15 +114,22 @@ class ImportPanelProvider extends PanelProvider
                                                     color: #000000 !important;
                                                 }
 
-                                                .fi-sidebar .fi-sidebar-item:hover svg {
-                                                    color: #6d28d9 !important;
-                                                }
+                                                                                                .fi-sidebar .fi-sidebar-item:hover .fi-sidebar-item-icon,
+                                                    .fi-sidebar .fi-sidebar-item:hover svg {
+                                                        color: #000000 !important;
+                                                        stroke: #000000 !important;
+                                                        fill: #000000 !important;
+                                                    }
+                                                    
 
+                                                    
                                     .fi-sidebar-header {
                                         background-color: #1f1230 !important;
                                         border-bottom: 1px solid #4a3058 !important;
                                     }
 
+
+                                ]
                                     /* همه متن‌های سایدبار سفید */
                                     .fi-sidebar,
                                     .fi-sidebar *,
@@ -141,13 +159,7 @@ class ImportPanelProvider extends PanelProvider
                                         color: #ffffff !important;
                                     }
 
-                                    .fi-sidebar .fi-sidebar-item:hover *,
-                                    .fi-sidebar .fi-sidebar-item:hover a,
-                                    .fi-sidebar .fi-sidebar-item:hover span,
-                                    .fi-sidebar .fi-sidebar-item:hover button {
-                                        color: #ffffff !important;
-                                    }
-
+                                   
                                     .fi-sidebar .fi-sidebar-item:hover .fi-sidebar-item-icon,
                                     .fi-sidebar .fi-sidebar-item:hover svg {
                                         color: #a78bfa !important;
@@ -201,13 +213,7 @@ class ImportPanelProvider extends PanelProvider
                                         color: #ffffff !important;
                                     }
 
-                                    /* متن‌های گروه‌ها */
-                                    .fi-sidebar .fi-sidebar-group-label {
-                                        font-weight: 600 !important;
-                                        text-transform: uppercase !important;
-                                        font-size: 0.8rem !important;
-                                        opacity: 0.8 !important;
-                                    }
+                                 
 
                                     /* Dark Mode */
                                     .dark .fi-sidebar .fi-sidebar-item:hover {
@@ -252,13 +258,19 @@ class ImportPanelProvider extends PanelProvider
                                     .fi-sidebar::-webkit-scrollbar-thumb:hover {
                                         background: #6b4d7a;
                                     }
-                             .fi-body {
-                                    background: #e9f5fa !important;
+
+                                    .fi-body {
+                                    background: #e5e7eb !important;
                                     background-attachment: fixed !important;
                                     min-height: 100vh !important;
                                 }
 
-                        
+                                .dark .fi-body {
+                                    background: #111827 !important; /* gray-900 */
+                                }
+                                
+
+          
                         
                         
                         
