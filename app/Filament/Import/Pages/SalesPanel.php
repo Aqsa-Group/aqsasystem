@@ -3,6 +3,8 @@
 namespace App\Filament\Import\Pages;
 
 use App\Models\Import\Customer;
+use App\Models\Import\CustomerBalance;
+use App\Models\Import\CustomerStory;
 use App\Models\Import\Loan;
 use App\Models\Import\Safe;
 use App\Models\Import\Sale;
@@ -13,6 +15,7 @@ use Filament\Pages\Page;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Mpdf\Config\ConfigVariables;
 use Mpdf\Config\FontVariables;
 use Mpdf\Mpdf;
@@ -256,7 +259,6 @@ class SalesPanel extends Page
 
     public function finalizeInvoice(): void
     {
-        // بررسی شرایط اولیه
         if ($this->saleType === 'wholesale' && empty($this->customer_id)) {
             Notification::make()->title('⚠️ لطفاً خریدار را انتخاب کنید!')->warning()->send();
             return;
@@ -269,11 +271,9 @@ class SalesPanel extends Page
 
         DB::transaction(function () {
 
-            // مجموع کل و مبلغ نهایی بعد از تخفیف
             $totalPrice = $this->roundAmount(collect($this->items)->sum('total'));
             $finalPrice = $this->roundAmount(max(0, $totalPrice - $this->discount));
 
-            // محاسبه دریافتی
             $convertedReceived = $this->saleType === 'retail'
                 ? $finalPrice
                 : ($this->receivedCurrency === 'AFN'
@@ -291,20 +291,36 @@ class SalesPanel extends Page
                 ? ($this->buyerName ?: 'خریدار نقدی')
                 : optional(Customer::find($this->customer_id))->name;
             $sale->received_amount = $convertedReceived;
-            $sale->remaining_amount = $this->saleType === 'retail' ? 0.000 : $this->roundAmount(max(0, $finalPrice - $convertedReceived));
+            $sale->remaining_amount = $this->saleType === 'retail'
+                ? 0.000
+                : $this->roundAmount(max(0, $finalPrice - $convertedReceived));
             $sale->user_id = Auth::id();
-            $sale->save();
 
+            // ✅ محاسبه قرض قبلی از CustomerBalance
+            if ($this->saleType === 'wholesale' && $this->customer_id) {
+                $balance = CustomerBalance::where('customer_id', $this->customer_id)->first();
+
+                if ($balance) {
+                    // |usd| = کل بدهی قبل از این فاکتور
+                    $sale->previous_loan = abs($balance->usd);
+                } else {
+                    $sale->previous_loan = 0.000;
+                }
+            } else {
+                $sale->previous_loan = 0.000;
+            }
+
+            $sale->save();
             $sale->invoice_number = $sale->id;
             $sale->save();
             $this->lastSale = $sale;
 
             // بروزرسانی صندوق
             $safe = Safe::firstOrCreate([], [
-                'USD' => 0,
-                'AFN' => 0,
-                'today' => 0,
-                'user_id' => Auth::id(),
+                'USD'         => 0,
+                'AFN'         => 0,
+                'today'       => 0,
+                'user_id'     => Auth::id(),
                 'last_update' => now()->toDateString(),
             ]);
 
@@ -313,25 +329,20 @@ class SalesPanel extends Page
                 $safe->last_update = now()->toDateString();
             }
 
-            // **بروزرسانی صندوق بر اساس ارز دریافتی و نوع فروش**
             if ($this->saleType === 'retail') {
                 if ($this->receivedCurrency === 'AFN') {
-                    // فروش پرچون، ارز دریافتی افغانی → مجموع کل فاکتور تبدیل به افغانی
                     $afnAmount = $this->roundAmount($finalPrice * $this->usdToAfnRate);
                     $safe->AFN = $this->roundAmount($safe->AFN + $afnAmount);
                 } else {
-                    // فروش پرچون، ارز دریافتی USD → کل مبلغ فاکتور به USD صندوق اضافه شود
                     $safe->USD = $this->roundAmount($safe->USD + $finalPrice);
                 }
             } else {
-                // فروش عمده
                 if ($this->receivedCurrency === 'AFN') {
                     $safe->AFN = $this->roundAmount($safe->AFN + $this->receivedAmount);
                 } else {
                     $safe->USD = $this->roundAmount($safe->USD + $this->receivedAmount);
                 }
             }
-
 
             $safe->today = $this->roundAmount($safe->today + $finalPrice);
             $safe->save();
@@ -341,7 +352,6 @@ class SalesPanel extends Page
                 $warehouse = Warehouse::where('barcode', $item['barcode'])->first();
                 if (!$warehouse) continue;
 
-                // کاهش موجودی
                 if ($warehouse->unit === 'دانه') {
                     $warehouse->all_exist_number -= $item['quantity'];
                     $warehouse->all_exist_number = max(0, $warehouse->all_exist_number);
@@ -372,7 +382,6 @@ class SalesPanel extends Page
                     }
                 }
 
-                // محاسبات مالی
                 $unitPrice = $this->roundAmount($item['price']);
                 $totalSale = $this->roundAmount($item['quantity'] * $unitPrice);
                 $totalCost = $this->roundAmount($item['quantity'] * $warehouse->price);
@@ -392,7 +401,7 @@ class SalesPanel extends Page
                     'sale_id'        => $sale->id,
                     'warehouse_id'   => $warehouse->id,
                     'quantity'       => $item['quantity'],
-                    'unit' => $item['unit'],
+                    'unit'           => $item['unit'],
                     'price_per_unit' => $unitPrice,
                     'total_price'    => $totalSale,
                     'profit'         => $profit,
@@ -401,24 +410,48 @@ class SalesPanel extends Page
                 ]);
             }
 
-            // ایجاد وام فقط برای فروش عمده
-            if ($this->saleType === 'wholesale' && $sale->remaining_amount > 0) {
-                Loan::create([
-                    'customer_id' => $this->customer_id,
-                    'amount' => $this->roundAmount($sale->remaining_amount),
-                    'loan_recipt' => 0,
-                    'reminded' => $this->roundAmount($sale->remaining_amount),
-                    'type' => 'بردگی',
-                    'user_id' => Auth::id(),
-                    'date' => now(),
-                    'currency' => 'دالر'
-                ]);
+            // ایجاد قرض و آپدیت CustomerBalance/CustomerStory فقط برای فروش عمده
+            if ($this->saleType === 'wholesale') {
+                $calculatedLoanAmount = $this->roundAmount(max(0, $finalPrice - $convertedReceived));
+
+                if ($calculatedLoanAmount > 0) {
+                    CustomerStory::create([
+                        'customer_id' => $this->customer_id,
+                        'type'        => 'برد',
+                        'amount'      => $calculatedLoanAmount,
+                        'currency'    => 'USD',
+                        'date'        => now(),
+                        'description' => "قرض بابت فاکتور شماره {$sale->invoice_number}",
+                        'user_id'     => Auth::id(),
+                        'admin_id'    => Auth::id(),
+                        'sale_id'     => $sale->id,
+                    ]);
+
+                    $balance = CustomerBalance::firstOrCreate(
+                        ['customer_id' => $this->customer_id],
+                        [
+                            'afn'      => 0.000,
+                            'usd'      => 0.000,
+                            'pkr'      => 0.000,
+                            'eur'      => 0.000,
+                            'user_id'  => Auth::id(),
+                            'admin_id' => Auth::id(),
+                        ]
+                    );
+
+                    if (!$balance->admin_id) {
+                        $balance->admin_id = Auth::id();
+                    }
+
+                    $balance->usd = $this->roundAmount($balance->usd - $calculatedLoanAmount);
+                    $balance->user_id = Auth::id();
+                    $balance->save();
+                }
             }
         });
 
         Notification::make()->title('فاکتور با موفقیت ثبت شد!')->success()->send();
     }
-
 
     public function printInvoice(): void
     {
@@ -480,23 +513,19 @@ class SalesPanel extends Page
             $si->profit = $this->roundAmount($si->profit ?? 0);
             $si->loss = $this->roundAmount($si->loss ?? 0);
         }
+
+        // ========== تغییر: خواندن قرض قبلی از CustomerBalance ==========
         $previousLoanRemaining = 0;
 
         if ($sale->sale_type === 'wholesale' && $sale->customer_id) {
+            $balance = CustomerBalance::where('customer_id', $sale->customer_id)->first();
 
-            // تمام بردها و رسیدهای قبل از این فاکتور را می‌گیریم
-            $previousData = Loan::where('customer_id', $sale->customer_id)
-                ->where('created_at', '<', $sale->created_at)
-                ->selectRaw('
-            COALESCE(SUM(amount), 0) AS total_borrow,
-            COALESCE(SUM(loan_recipt), 0) AS total_receipt
-        ')
-                ->first();
-
-            // بدهی واقعی = کل قرض - کل رسید
-            $previousLoanRemaining = $previousData->total_borrow - $previousData->total_receipt;
+            if ($balance) {
+                $currentBalance = abs($balance->usd); // قدر مطلق چون منفی هست
+                $previousLoanRemaining = $this->roundAmount($sale->previous_loan ?? 0);
+            }
         }
-
+        // ================================================================
 
         $html = view('pdf.invoice', [
             'sale'       => $sale,
@@ -534,7 +563,6 @@ class SalesPanel extends Page
         Notification::make()->title('🖨️ فاکتور آماده چاپ شد!')->success()->send();
         $this->dispatch('download-invoice', url: asset('storage/' . $fileName));
     }
-
     private function resetForm(): void
     {
         $this->barcode = '';
@@ -546,51 +574,25 @@ class SalesPanel extends Page
         $this->productError = false;
     }
 
-   public function increaseQuantity(int $index): void
-{
-    if (!$this->hasItem($index)) {
-        return;
-    }
-
-    $item = $this->items[$index];
-
-    $warehouse = Warehouse::where('barcode', $item['barcode'])->first();
-
-    if (!$warehouse) {
-        return;
-    }
-
-    $newQuantity = $this->items[$index]['quantity'] + 1;
-
-    // اگر واحد دانه باشد
-    if (($item['unit'] ?? $warehouse->unit) === 'دانه') {
-
-        if ($newQuantity > $warehouse->all_exist_number) {
-
-            Notification::make()
-                ->title("موجودی کافی نیست!")
-                ->danger()
-                ->send();
-
+    public function increaseQuantity(int $index): void
+    {
+        if (!$this->hasItem($index)) {
             return;
         }
-    } else {
 
-        // فروش عمده
-        if ($this->saleType === 'wholesale') {
+        $item = $this->items[$index];
 
-            if ($newQuantity > $warehouse->quantity) {
+        $warehouse = Warehouse::where('barcode', $item['barcode'])->first();
 
-                Notification::make()
-                    ->title("موجودی کارتُن/بسته کافی نیست!")
-                    ->danger()
-                    ->send();
+        if (!$warehouse) {
+            return;
+        }
 
-                return;
-            }
-        } else {
+        $newQuantity = $this->items[$index]['quantity'] + 1;
 
-            // فروش پرچون
+        // اگر واحد دانه باشد
+        if (($item['unit'] ?? $warehouse->unit) === 'دانه') {
+
             if ($newQuantity > $warehouse->all_exist_number) {
 
                 Notification::make()
@@ -600,13 +602,39 @@ class SalesPanel extends Page
 
                 return;
             }
+        } else {
+
+            // فروش عمده
+            if ($this->saleType === 'wholesale') {
+
+                if ($newQuantity > $warehouse->quantity) {
+
+                    Notification::make()
+                        ->title("موجودی کارتُن/بسته کافی نیست!")
+                        ->danger()
+                        ->send();
+
+                    return;
+                }
+            } else {
+
+                // فروش پرچون
+                if ($newQuantity > $warehouse->all_exist_number) {
+
+                    Notification::make()
+                        ->title("موجودی کافی نیست!")
+                        ->danger()
+                        ->send();
+
+                    return;
+                }
+            }
         }
+
+        $this->items[$index]['quantity'] = $newQuantity;
+
+        $this->updateItemTotal($index);
     }
-
-    $this->items[$index]['quantity'] = $newQuantity;
-
-    $this->updateItemTotal($index);
-}
 
     public function decreaseQuantity(int $index): void
     {
@@ -623,59 +651,58 @@ class SalesPanel extends Page
         $this->updateItemTotal($index);
     }
 
-   public function updatedItems($value, $key): void
-{
-    if (str_contains($key, 'quantity')) {
+    public function updatedItems($value, $key): void
+    {
+        if (str_contains($key, 'quantity')) {
 
-        $index = explode('.', $key)[0];
+            $index = explode('.', $key)[0];
 
-        if (!isset($this->items[$index])) {
-            return;
+            if (!isset($this->items[$index])) {
+                return;
+            }
+
+            $warehouse = Warehouse::where(
+                'barcode',
+                $this->items[$index]['barcode']
+            )->first();
+
+            if (!$warehouse) {
+                return;
+            }
+
+            $qty = (int) $this->items[$index]['quantity'];
+
+            if ($qty < 1) {
+                $qty = 1;
+            }
+
+            // موجودی مجاز
+            if (($this->items[$index]['unit'] ?? $warehouse->unit) === 'دانه') {
+
+                $maxQty = $warehouse->all_exist_number;
+            } else {
+
+                $maxQty = $this->saleType === 'wholesale'
+                    ? $warehouse->quantity
+                    : $warehouse->all_exist_number;
+            }
+
+            // جلوگیری از بیشتر شدن
+            if ($qty > $maxQty) {
+
+                $qty = $maxQty;
+
+                Notification::make()
+                    ->title("بیشتر از موجودی نمی‌توانید وارد کنید!")
+                    ->warning()
+                    ->send();
+            }
+
+            $this->items[$index]['quantity'] = $qty;
+
+            $this->updateItemTotal($index);
         }
-
-        $warehouse = Warehouse::where(
-            'barcode',
-            $this->items[$index]['barcode']
-        )->first();
-
-        if (!$warehouse) {
-            return;
-        }
-
-        $qty = (int) $this->items[$index]['quantity'];
-
-        if ($qty < 1) {
-            $qty = 1;
-        }
-
-        // موجودی مجاز
-        if (($this->items[$index]['unit'] ?? $warehouse->unit) === 'دانه') {
-
-            $maxQty = $warehouse->all_exist_number;
-
-        } else {
-
-            $maxQty = $this->saleType === 'wholesale'
-                ? $warehouse->quantity
-                : $warehouse->all_exist_number;
-        }
-
-        // جلوگیری از بیشتر شدن
-        if ($qty > $maxQty) {
-
-            $qty = $maxQty;
-
-            Notification::make()
-                ->title("بیشتر از موجودی نمی‌توانید وارد کنید!")
-                ->warning()
-                ->send();
-        }
-
-        $this->items[$index]['quantity'] = $qty;
-
-        $this->updateItemTotal($index);
     }
-}
     /**
      * بررسی وجود آیتم
      */

@@ -7,13 +7,13 @@ use App\Models\Import\SaleItem;
 use App\Models\Import\Warehouse;
 use App\Models\Import\Safe;
 use App\Models\Import\SaleReturn;
-use App\Models\Customer;
-use App\Models\Loan;
+use App\Models\Import\CustomerBalance;
+use App\Models\Import\CustomerStory;
+use App\Models\Import\Document;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Models\Import\Document;
 use Mpdf\Mpdf;
 use Mpdf\Config\ConfigVariables;
 use Mpdf\Config\FontVariables;
@@ -29,7 +29,6 @@ class ReturnPanel extends Page
 
     public string $invoiceNumber = '';
     public ?Sale $sale = null;
-
     public array $rows = [];
     public float $totalReturn = 0;
     public float $refundNow = 0;
@@ -70,7 +69,7 @@ class ReturnPanel extends Page
                 'cost_price'   => optional($item->warehouse)->price ?? 0,
                 'sold_qty'     => max(0, $maxQty),
                 'qty'          => 0,
-                'USD'        => 0,
+                'total'        => 0,
             ];
         }
         $this->calcTotals();
@@ -89,10 +88,16 @@ class ReturnPanel extends Page
             $qty = min($qty, (int)$row['sold_qty']);
             $this->rows[$i]['qty'] = $qty;
             $line = $qty * (float)$row['sale_price'];
-            $this->rows[$i]['total'] = $line;
+            $this->rows[$i]['total'] = $this->roundAmount($line);
             $this->totalReturn += $line;
         }
+        $this->totalReturn = $this->roundAmount($this->totalReturn);
         $this->refundNow = $this->totalReturn;
+    }
+
+    private function roundAmount($value): float
+    {
+        return round((float) $value, 3);
     }
 
     public function submitReturn(): void
@@ -111,6 +116,7 @@ class ReturnPanel extends Page
         DB::transaction(function () {
             $returnTotal = 0;
 
+            // ۱. ثبت آیتم‌های برگشتی
             foreach ($this->rows as $row) {
                 $qty = (int)$row['qty'];
                 if ($qty <= 0) continue;
@@ -122,16 +128,17 @@ class ReturnPanel extends Page
                 $this->increaseWarehouseOnReturn($warehouse, $qty, $this->sale->sale_type);
                 $warehouse->save();
 
-                $lineSale = $qty * (float)$saleItem->price_per_unit;
-                $lineCost = $qty * (float)$warehouse->price;
+                $lineSale = $this->roundAmount($qty * (float)$saleItem->price_per_unit);
+                $lineCost = $this->roundAmount($qty * (float)$warehouse->price);
 
-                $profitDelta = $lineSale - $lineCost;
+                $profitDelta = $this->roundAmount($lineSale - $lineCost);
                 if ($profitDelta > 0) {
-                    $saleItem->profit = max(0, $saleItem->profit - $profitDelta);
+                    $saleItem->profit = $this->roundAmount(max(0, $saleItem->profit - $profitDelta));
                     $saleItem->save();
                 }
 
                 $returnTotal += $lineSale;
+
                 SaleReturn::create([
                     'sale_id'        => $this->sale->id,
                     'sale_item_id'   => $saleItem->id,
@@ -143,184 +150,219 @@ class ReturnPanel extends Page
                 ]);
             }
 
-            $returnTotal = (float) $returnTotal;
+            $returnTotal = $this->roundAmount($returnTotal);
             if ($returnTotal <= 0) return;
 
+            $oldTotalPrice = $this->roundAmount($this->sale->total_price);
+            $oldRemainingAmount = $this->roundAmount($this->sale->remaining_amount);
+
+            // ۲. محاسبه سهم قرض و نقد
             $loanRefund = 0;
             $cashRefund = 0;
 
             if ($this->sale->sale_type === 'wholesale') {
-                if ($this->sale->customer) {
-                    $cust = $this->sale->customer;
-
-                    $loanBefore = (float) $cust->remaining_loan;
-                    $loanRefund = min($returnTotal, $loanBefore);
-
-                    $cust->total_loan     = max(0, $cust->total_loan - $loanRefund);
-                    $cust->remaining_loan = max(0, $cust->remaining_loan - $loanRefund);
-                    $cust->save();
-
-                    $remainingRefund = $loanRefund;
-                    $loans = DB::connection('import')->table('loans')
-                        ->where('customer_id', $cust->id)
-                        ->where('amount', '>', 0)
-                        ->orderBy('id', 'asc')
-                        ->get();
-
-                    foreach ($loans as $loan) {
-                        if ($remainingRefund <= 0) break;
-                        $deduct = min($loan->amount, $remainingRefund);
-                        DB::connection('import')->table('loans')
-                            ->where('id', $loan->id)
-                            ->decrement('amount', $deduct);
-                        $remainingRefund -= $deduct;
-                    }
-
-                    $cashRefund = $returnTotal - $loanRefund;
+                if ($oldRemainingAmount > 0) {
+                    $loanRefund = min($returnTotal, $oldRemainingAmount);
+                    $cashRefund = $this->roundAmount($returnTotal - $loanRefund);
                 } else {
                     $cashRefund = $returnTotal;
                 }
-
-                $this->sale->remaining_amount = max(0, (float)$this->sale->total_price - $loanRefund - $cashRefund);
             } else {
                 $cashRefund = $returnTotal;
-                $this->sale->remaining_amount = 0;
             }
 
-            $this->sale->total_price = max(0, (float)$this->sale->total_price - $returnTotal);
+            // ۳. آپدیت CustomerBalance (کاهش بدهی)
+            if ($this->sale->customer_id && $loanRefund > 0) {
+                $balance = CustomerBalance::where('customer_id', $this->sale->customer_id)->first();
+                if ($balance) {
+                    $balance->usd = $this->roundAmount($balance->usd + $loanRefund);
+                    $balance->user_id = Auth::id();
+                    $balance->save();
+                }
+            }
+
+            // ۴. آپدیت CustomerStory (فقط برد این فاکتور)
+            if ($this->sale->customer_id && $loanRefund > 0) {
+                $story = CustomerStory::where('sale_id', $this->sale->id)
+                    ->where('type', 'برد')
+                    ->first();
+
+                if ($story) {
+                    $newAmount = $this->roundAmount(max(0, $story->amount - $loanRefund));
+                    if ($newAmount <= 0) {
+                        $story->delete();
+                    } else {
+                        $story->amount = $newAmount;
+                        $story->save();
+                    }
+                }
+            }
+
+            // ۵. آپدیت sale
+            $newRemaining = $this->roundAmount(max(0, $oldRemainingAmount - $loanRefund));
+            $newTotalPrice = $this->roundAmount(max(0, $oldTotalPrice - $returnTotal));
+
+            // ✅ اگر کل فاکتور برگشت خورده
+            if ($newTotalPrice <= 0) {
+                $saleId = $this->sale->id;
+
+                // حذف Document
+                $this->deleteOldDocuments();
+
+                // حذف SaleItems
+                SaleItem::where('sale_id', $saleId)->delete();
+
+                // حذف SaleReturns
+                SaleReturn::where('sale_id', $saleId)->delete();
+
+                // حذف CustomerStory
+                CustomerStory::where('sale_id', $saleId)->delete();
+
+                // حذف خود Sale
+                $this->sale->delete();
+
+                // ریست auto-increment
+                $maxId = Sale::max('id') ?? 0;
+                DB::connection('import')->statement("ALTER TABLE sales AUTO_INCREMENT = " . ($maxId + 1));
+
+                $this->sale = null;
+                Notification::make()->title('کل فاکتور برگشت خورد - فاکتور حذف شد')->success()->send();
+                $this->resetState();
+                return;
+            }
+
+            if ($newRemaining > $newTotalPrice) {
+                $newRemaining = $newTotalPrice;
+            }
+
+            $this->sale->remaining_amount = $newRemaining;
+            $this->sale->total_price = $newTotalPrice;
             $this->sale->save();
-            // حذف PDF قبلی
-            $oldDocs = Document::where('sale_id', $this->sale->id)->get();
 
-            foreach ($oldDocs as $doc) {
-                $fullPath = public_path($doc->file_path);
+            // ۶. آپدیت صندوق
+            if ($cashRefund > 0) {
+                $safe = Safe::firstOrCreate([], [
+                    'USD'         => 0,
+                    'AFN'         => 0,
+                    'today'       => 0,
+                    'user_id'     => Auth::id(),
+                    'last_update' => now()->toDateString(),
+                ]);
 
-                if (file_exists($fullPath)) {
-                    @unlink($fullPath);
+                if ($safe->last_update !== now()->toDateString()) {
+                    $safe->today = 0;
+                    $safe->last_update = now()->toDateString();
                 }
 
-                $doc->delete();
+                $safe->USD = $this->roundAmount($safe->USD - $cashRefund);
+                $safe->today = $this->roundAmount($safe->today - $cashRefund);
+                $safe->save();
             }
 
-
-
-            // ساخت PDF جدید
+            // ۷. بازسازی PDF
+            $this->deleteOldDocuments();
             $this->regenerateInvoice($this->sale->id);
-            $safe = Safe::firstOrCreate([], [
-                'USD'       => 0,
-                'today'       => 0,
-                'user_id'     => Auth::id(),
-                'last_update' => now()->toDateString(),
-            ]);
-
-            if ($safe->last_update !== now()->toDateString()) {
-                $safe->today = 0;
-                $safe->last_update = now()->toDateString();
-            }
-
-            $safe->today -= $cashRefund;
-            if ($cashRefund > 0) {
-                $safe->USD -= $cashRefund;
-            }
-
-            $safe->save();
         });
 
-        Notification::make()->title('برگشتی ثبت شد')->success()->send();
+        Notification::make()->title('برگشتی با موفقیت ثبت شد')->success()->send();
         $this->resetState();
     }
-private function roundAmount($value): float
-{
-    return round((float) $value, 3);
-}
- public function regenerateInvoice(int $saleId): void
-{
-    $sale = Sale::with(['items.warehouse', 'customer'])->find($saleId);
 
-    if (!$sale) return;
-
-    $defaultConfig = (new ConfigVariables())->getDefaults();
-    $fontDirs = $defaultConfig['fontDir'];
-
-    $defaultFontConfig = (new FontVariables())->getDefaults();
-    $fontData = $defaultFontConfig['fontdata'];
-
-    $mpdf = new Mpdf([
-        'mode' => 'utf-8',
-        'format' => 'A4',
-        'margin_top' => 10,
-        'margin_bottom' => 2,
-        'margin_left' => 10,
-        'margin_right' => 10,
-        'fontDir' => array_merge($fontDirs, [public_path('fonts/vazir/')]),
-        'fontdata' => $fontData + [
-            'vazir' => [
-                'R' => 'Vazir-Light.ttf',
-                'B' => 'Vazir-Bold.ttf',
-                'useOTL' => 0xFF,
-                'useKashida' => 75,
-            ],
-        ],
-        'default_font' => 'vazir',
-        'tempDir' => storage_path('app/mpdf'),
-    ]);
-
-    $mpdf->SetDirectionality('rtl');
-
-    $css = file_get_contents(resource_path('views/pdf/invoice.css'));
-    $mpdf->WriteHTML($css, \Mpdf\HTMLParserMode::HEADER_CSS);
-
-    $total = 0;
-
-    // 🔥 فقط مقدار واقعی فروخته شده
-    foreach ($sale->items as $item) {
-
-        $returnedQty = SaleReturn::where('sale_id', $sale->id)
-            ->where('sale_item_id', $item->id)
-            ->sum('quantity');
-
-        $soldQty = max(0, $item->quantity - $returnedQty);
-
-        $item->sold_qty = $soldQty;
-
-        $unitPrice = (float) $item->price_per_unit;
-
-        $item->sold_total = $this->roundAmount($soldQty * $unitPrice);
-
-        $total += $item->sold_total;
+    private function deleteOldDocuments(): void
+    {
+        $oldDocs = Document::where('sale_id', $this->sale->id)->get();
+        foreach ($oldDocs as $doc) {
+            $fullPath = public_path($doc->file_path);
+            if (file_exists($fullPath)) {
+                @unlink($fullPath);
+            }
+            $doc->delete();
+        }
     }
 
-    $discount = (float) $sale->discount;
-    $finalTotal = max(0, $total - $discount);
+    public function regenerateInvoice(int $saleId): void
+    {
+        $sale = Sale::with(['items.warehouse', 'customer'])->find($saleId);
+        if (!$sale) return;
 
-    $html = view('pdf.invoice', [
-        'sale' => $sale,
-        'finalTotal' => $finalTotal,
-        'discount' => $discount,
-    ])->render();
+        $mpdf = $this->createMpdfInstance();
 
-    $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+        $css = file_get_contents(resource_path('views/pdf/invoice.css'));
+        $mpdf->WriteHTML($css, \Mpdf\HTMLParserMode::HEADER_CSS);
 
-    $fileName = 'invoice-' . $sale->id . '.pdf';
+        $total = 0;
+        foreach ($sale->items as $item) {
+            $returnedQty = SaleReturn::where('sale_id', $sale->id)
+                ->where('sale_item_id', $item->id)
+                ->sum('quantity');
 
-    $mpdf->Output(
-        storage_path('app/public/' . $fileName),
-        \Mpdf\Output\Destination::FILE
-    );
+            $soldQty = max(0, $item->quantity - $returnedQty);
+            $item->sold_qty = $soldQty;
+            $unitPrice = (float) $item->price_per_unit;
+            $item->sold_total = $this->roundAmount($soldQty * $unitPrice);
+            $total += $item->sold_total;
+        }
 
-    Document::updateOrCreate(
-        ['sale_id' => $sale->id],
-        [
-            'invoice_number' => $sale->invoice_number,
-            'buyer_name' => $sale->buyer_name,
-            'total_amount' => $finalTotal,
-            'discount' => $discount,
-            'paid_amount' => $sale->received_amount,
-            'sale_type' => $sale->sale_type,
-            'file_path' => 'storage/' . $fileName,
-        ]
-    );
-}
+        $total = $this->roundAmount($total);
+        $discount = (float) $sale->discount;
+        $finalTotal = $this->roundAmount(max(0, $total - $discount));
+
+        $previousLoanRemaining = $this->roundAmount($sale->previous_loan ?? 0);
+
+        $html = view('pdf.invoice', [
+            'sale'                   => $sale,
+            'finalTotal'             => $finalTotal,
+            'discount'               => $discount,
+            'previousLoanRemaining'  => $previousLoanRemaining,
+        ])->render();
+
+        $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+
+        $fileName = 'invoice-' . $sale->id . '.pdf';
+        $mpdf->Output(storage_path('app/public/' . $fileName), \Mpdf\Output\Destination::FILE);
+
+        Document::updateOrCreate(
+            ['sale_id' => $sale->id],
+            [
+                'invoice_number' => $sale->invoice_number,
+                'buyer_name'     => $sale->buyer_name,
+                'total_amount'   => $finalTotal,
+                'discount'       => $discount,
+                'paid_amount'    => $sale->received_amount,
+                'sale_type'      => $sale->sale_type,
+                'file_path'      => 'storage/' . $fileName,
+            ]
+        );
+    }
+
+    private function createMpdfInstance(): Mpdf
+    {
+        $defaultConfig = (new ConfigVariables())->getDefaults();
+        $defaultFontConfig = (new FontVariables())->getDefaults();
+
+        $mpdf = new Mpdf([
+            'mode'          => 'utf-8',
+            'format'        => 'A4',
+            'margin_top'    => 10,
+            'margin_bottom' => 2,
+            'margin_left'   => 10,
+            'margin_right'  => 10,
+            'fontDir'       => array_merge($defaultConfig['fontDir'], [public_path('fonts/vazir/')]),
+            'fontdata'      => $defaultFontConfig['fontdata'] + [
+                'vazir' => [
+                    'R'          => 'Vazir-Light.ttf',
+                    'B'          => 'Vazir-Bold.ttf',
+                    'useOTL'     => 0xFF,
+                    'useKashida' => 75,
+                ],
+            ],
+            'default_font'  => 'vazir',
+            'tempDir'       => storage_path('app/mpdf'),
+        ]);
+
+        $mpdf->SetDirectionality('rtl');
+        return $mpdf;
+    }
 
     private function increaseWarehouseOnReturn(Warehouse $w, int $qty, string $saleType): void
     {
@@ -355,5 +397,6 @@ private function roundAmount($value): float
         $this->rows = [];
         $this->totalReturn = 0;
         $this->refundNow = 0;
+        $this->invoiceNumber = '';
     }
 }

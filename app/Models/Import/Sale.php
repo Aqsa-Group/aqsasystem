@@ -13,15 +13,7 @@ class Sale extends Model
     protected $connection = 'import';
     protected $table = 'sales';
 
-    protected $fillable = [
-        'invoice_number',
-        'sale_type',
-        'user_id',
-        'customer_id',
-        'total_price',
-        'discount'
-    ];
-
+  protected $guarded = [];
 
     public function items()
     {

@@ -248,9 +248,7 @@
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             نوع</th>
-                                        <th
-                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
-                                            کارمند</th>
+                                        
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             مبلغ</th>
@@ -269,15 +267,15 @@
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             نوع</th>
-
-                                               <th
+                                        <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             مشتری</th>
                                         <th
-
-                                        
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             مبلغ</th>
+                                            <th
+                                            class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
+                                            توضیحات</th>
                                         <th
                                             class="px-6 py-4 text-right text-sm font-semibold text-primary-700 uppercase tracking-wider">
                                             واحد پول</th>
@@ -399,9 +397,7 @@
                                             {{ $typeTranslations[$report->type] ?? $report->type }}
                                         </td>
 
-                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                            {{ $report->staff->fullname ?? '-' }}
-                                        </td>
+                                    
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="font-bold text-gray-900">{{ number_format($report->amount)
                                                 }}</span>
@@ -421,29 +417,31 @@
                                         </td>
                                         @break
                                         @case('loan')
+                                    <tr
+                                        class="hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-25 transition-all duration-200 group">
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span
-                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ $report->type === 'بردگی' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ $report->type === 'برد' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
                                                 {{ $report->type }}
                                             </span>
                                         </td>
-
-                                          <td class="px-6 py-4 whitespace-nowrap">
-                                            <span
-                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ $report->type === 'بردگی' ? ' text-black' : ' text-black' }}">
-                                                {{ $report->customer->name }}
-                                            </span>
+                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                            {{ $report->customer->name ?? '-' }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="font-bold text-gray-900">
-                                                @if ($report->type === 'بردگی')
-                                                {{ number_format($report->amount) }}
-                                                    
+                                                @if($report->type === 'برد')
+                                                {{ number_format($report->amount, 2) }}
                                                 @else
-                                                {{ number_format($report->loan_recipt) }}
-                                                  
+                                                {{ number_format($report->amount, 2) }}
                                                 @endif
-                                                </span>
+                                            </span>
+                                        </td>
+
+                                         <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                                {{ $report->description }}
+                                            </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
@@ -455,133 +453,134 @@
                                             \Morilog\Jalali\Jalalian::fromDateTime($report->date)->format('Y/m/d') : '-'
                                             }}
                                         </td>
-                                        @break
+                                    </tr>
+                                    @break
 
 
-                                        @case('sell')
-                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                            #{{ $report->invoice_number }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span
-                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
-                                                {{ $report->sale_type }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                            {{ $report->customer->fullname ?? '-' }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-gray-900">{{ number_format($report->total_price)
-                                                }}</span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-orange-600">{{ number_format($report->discount)
-                                                }}</span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $report->created_at ?
-                                            \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d')
-                                            : '-' }}
-                                        </td>
-                                        @break
+                                    @case('sell')
+                                    <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                        #{{ $report->invoice_number }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
+                                            {{ $report->sale_type }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                        {{ $report->customer->fullname ?? '-' }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="font-bold text-gray-900">{{ number_format($report->total_price)
+                                            }}</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="font-bold text-orange-600">{{ number_format($report->discount)
+                                            }}</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ $report->created_at ?
+                                        \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d')
+                                        : '-' }}
+                                    </td>
+                                    @break
 
-                                        @case('buy')
-                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                            {{ $report->barcode }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                            {{ $report->name }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-medium text-gray-900">{{ $report->company->name ?? '-'
-                                                }}</span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-gray-900">{{ number_format($report->total_price)
-                                                }}</span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                                {{ $report->currency }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-blue-600">{{
-                                                number_format($report->all_exist_number) }}</span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $report->import_date ?
-                                            \Morilog\Jalali\Jalalian::fromDateTime($report->import_date)->format('Y/m/d')
-                                            : '-' }}
-                                        </td>
-                                        @break
+                                    @case('buy')
+                                    <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                        {{ $report->barcode }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                        {{ $report->name }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="font-medium text-gray-900">{{ $report->company->name ?? '-'
+                                            }}</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="font-bold text-gray-900">{{ number_format($report->total_price)
+                                            }}</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                            {{ $report->currency }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="font-bold text-blue-600">{{
+                                            number_format($report->all_exist_number) }}</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ $report->import_date ?
+                                        \Morilog\Jalali\Jalalian::fromDateTime($report->import_date)->format('Y/m/d')
+                                        : '-' }}
+                                    </td>
+                                    @break
 
-                                        @case('transaction')
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span
-                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ $report->type === 'برداشت' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
-                                                {{ $report->type }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span
-                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                                @if($report->customer_id) مشتری
-                                                @elseif($report->staff_id) کارمند
-                                                @elseif($report->sarafi_id) صرافی
-                                                @else دوکان @endif
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                            {{ $report->customer->fullname ?? $report->staff->fullname ??
-                                            $report->sarafi->name ?? '-' }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-gray-900">{{ number_format($report->amount)
-                                                }}</span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                                {{ $report->currency }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $report->created_at ?
-                                            \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d')
-                                            : '-' }}
-                                        </td>
-                                        @break
+                                    @case('transaction')
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ $report->type === 'برداشت' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
+                                            {{ $report->type }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                            @if($report->customer_id) مشتری
+                                            @elseif($report->staff_id) کارمند
+                                            @elseif($report->sarafi_id) صرافی
+                                            @else دوکان @endif
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                        {{ $report->customer->fullname ?? $report->staff->fullname ??
+                                        $report->sarafi->name ?? '-' }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="font-bold text-gray-900">{{ number_format($report->amount)
+                                            }}</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                            {{ $report->currency }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ $report->created_at ?
+                                        \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d')
+                                        : '-' }}
+                                    </td>
+                                    @break
 
-                                        @case('company_payment')
-                                        <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                                            {{ $report->company->name ?? '-' }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                                {{ $report->currency }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-gray-900">{{ number_format($report->total_debt)
-                                                }}</span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-green-600">{{
-                                                number_format($report->paid_amount) }}</span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="font-bold text-red-600">{{ number_format($report->remaining)
-                                                }}</span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $report->created_at ?
-                                            \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d')
-                                            : '-' }}
-                                        </td>
-                                        @break
+                                    @case('company_payment')
+                                    <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                                        {{ $report->company->name ?? '-' }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                            {{ $report->currency }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="font-bold text-gray-900">{{ number_format($report->total_debt)
+                                            }}</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="font-bold text-green-600">{{
+                                            number_format($report->paid_amount) }}</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="font-bold text-red-600">{{ number_format($report->remaining)
+                                            }}</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ $report->created_at ?
+                                        \Morilog\Jalali\Jalalian::fromDateTime($report->created_at)->format('Y/m/d')
+                                        : '-' }}
+                                    </td>
+                                    @break
 
-                                        @endswitch
+                                    @endswitch
                                     </tr>
                                     @empty
                                     <tr>

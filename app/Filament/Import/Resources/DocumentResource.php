@@ -85,7 +85,7 @@ class DocumentResource extends Resource
                 ->icon('heroicon-o-printer')
                 ->tooltip('مشاهده/چاپ فاکتور'),
         ])
-        ->defaultSort('created_at', 'desc') // <-- این خط اضافه شد
+        ->defaultSort('created_at', 'desc') 
         ->filters([
             Tables\Filters\SelectFilter::make('sale_type')
                 ->label('نوع فروش')

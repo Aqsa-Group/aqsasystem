@@ -2,22 +2,22 @@
 
 namespace App\Livewire\Import;
 
-use Livewire\Component;
-use Livewire\WithPagination;
-use App\Models\Import\Withdraw;
-use App\Models\Import\Loan;
-use App\Models\Import\Sale;
-use App\Models\Import\Buy;
-use App\Models\Import\Transaction;
-use App\Models\Import\CompanyPayment;
-use App\Models\Import\Customer;
-use App\Models\Import\Staff;
-use App\Models\Import\Company;
 use App\Exports\Import\GeneralReportExport;
 use App\Exports\Import\GeneralReportPdfExport;
-use Maatwebsite\Excel\Facades\Excel;
+use App\Models\Import\Buy;
+use App\Models\Import\Company;
+use App\Models\Import\CompanyPayment;
+use App\Models\Import\Customer;
+use App\Models\Import\CustomerStory;
+use App\Models\Import\Sale;
+use App\Models\Import\Staff;
+use App\Models\Import\Transaction;
+use App\Models\Import\Withdraw;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Livewire\Component;
+use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 use Morilog\Jalali\Jalalian;
 
 class GeneralReports extends Component
@@ -38,21 +38,20 @@ class GeneralReports extends Component
     public $amountMin;
     public $amountMax;
 
-
     protected $queryString = [
-        'reportType' => ['except' => 'withdraw_log'],
-        'startDate' => ['except' => ''],
-        'endDate' => ['except' => ''],
+        'reportType'      => ['except' => 'withdraw_log'],
+        'startDate'       => ['except' => ''],
+        'endDate'         => ['except' => ''],
         'startDateJalali' => ['except' => ''],
-        'endDateJalali' => ['except' => ''],
-        'customerId' => ['except' => ''],
-        'staffId' => ['except' => ''],
-        'companyId' => ['except' => ''],
-        'currency' => ['except' => ''],
-        'type' => ['except' => ''],
-        'search' => ['except' => ''],
-        'amountMin' => ['except' => ''],
-        'amountMax' => ['except' => ''],
+        'endDateJalali'   => ['except' => ''],
+        'customerId'      => ['except' => ''],
+        'staffId'         => ['except' => ''],
+        'companyId'       => ['except' => ''],
+        'currency'        => ['except' => ''],
+        'type'            => ['except' => ''],
+        'search'          => ['except' => ''],
+        'amountMin'       => ['except' => ''],
+        'amountMax'       => ['except' => ''],
     ];
 
     public function mount()
@@ -62,18 +61,15 @@ class GeneralReports extends Component
 
     private function setDefaultJalaliDates()
     {
-        // تاریخ پایان = امروز
         $today = Jalalian::now();
         $this->endDateJalali = $today->format('Y/m/d');
         $this->endDate = $today->toCarbon()->format('Y-m-d');
 
-        // تاریخ شروع = یک ماه قبل
         $oneMonthAgo = $today->subMonths(1);
         $this->startDateJalali = $oneMonthAgo->format('Y/m/d');
         $this->startDate = $oneMonthAgo->toCarbon()->format('Y-m-d');
     }
 
-    // وقتی تاریخ شمسی شروع تغییر کرد
     public function updatedStartDateJalali($value)
     {
         if ($value) {
@@ -91,7 +87,6 @@ class GeneralReports extends Component
         $this->resetPage();
     }
 
-    // وقتی تاریخ شمسی پایان تغییر کرد
     public function updatedEndDateJalali($value)
     {
         if ($value) {
@@ -109,7 +104,6 @@ class GeneralReports extends Component
         $this->resetPage();
     }
 
-    // وقتی تاریخ میلادی شروع تغییر کرد (برای سازگاری)
     public function updatedStartDate($value)
     {
         if ($value) {
@@ -125,7 +119,6 @@ class GeneralReports extends Component
         $this->resetPage();
     }
 
-    // وقتی تاریخ میلادی پایان تغییر کرد (برای سازگاری)
     public function updatedEndDate($value)
     {
         if ($value) {
@@ -148,18 +141,21 @@ class GeneralReports extends Component
         }
     }
 
+    // =============================================
+    // خروجی‌ها
+    // =============================================
+
     public function exportToExcel()
     {
         try {
             $data = $this->getReportData(true);
-
             return Excel::download(
                 new GeneralReportExport($data, $this->reportType),
                 'general_report_' . $this->reportType . '_' . now()->format('Y_m_d') . '.xlsx'
             );
         } catch (\Exception $e) {
             $this->dispatch('notify', [
-                'type' => 'error',
+                'type'    => 'error',
                 'message' => 'خطا در تولید فایل Excel: ' . $e->getMessage()
             ]);
         }
@@ -170,16 +166,13 @@ class GeneralReports extends Component
         try {
             $data = $this->getReportData(true);
             $filters = $this->getFiltersForExport();
-
             $pdfExport = new GeneralReportPdfExport($data, $this->reportType, $filters);
-
             return $pdfExport->download();
         } catch (\Exception $e) {
             $this->dispatch('notify', [
-                'type' => 'error',
+                'type'    => 'error',
                 'message' => 'خطا در تولید فایل PDF: ' . $e->getMessage()
             ]);
-
             Log::error('PDF Export Error: ' . $e->getMessage());
         }
     }
@@ -189,18 +182,15 @@ class GeneralReports extends Component
         try {
             $data = $this->getReportData(true);
             $filters = $this->getFiltersForExport();
-
             $pdfExport = new GeneralReportPdfExport($data, $this->reportType, $filters);
-
             return response()->streamDownload(function () use ($pdfExport) {
                 echo $pdfExport->stream();
             }, 'preview.pdf');
         } catch (\Exception $e) {
             $this->dispatch('notify', [
-                'type' => 'error',
+                'type'    => 'error',
                 'message' => 'خطا در پیش نمایش PDF: ' . $e->getMessage()
             ]);
-
             Log::error('PDF Preview Error: ' . $e->getMessage());
         }
     }
@@ -210,26 +200,34 @@ class GeneralReports extends Component
         return $this->previewPdf();
     }
 
+    // =============================================
+    // فیلترها
+    // =============================================
+
     private function getFiltersForExport()
     {
         return [
-            'startDate' => $this->startDate,
-            'endDate' => $this->endDate,
+            'startDate'       => $this->startDate,
+            'endDate'         => $this->endDate,
             'startDateJalali' => $this->startDateJalali,
-            'endDateJalali' => $this->endDateJalali,
-            'customerId' => $this->customerId,
-            'customerName' => $this->customerId ? Customer::find($this->customerId)->name ?? null : null,
-            'staffId' => $this->staffId,
-            'staffName' => $this->staffId ? Staff::find($this->staffId)->fullname ?? null : null,
-            'companyId' => $this->companyId,
-            'companyName' => $this->companyId ? Company::find($this->companyId)->name ?? null : null,
-            'currency' => $this->currency,
-            'type' => $this->type,
-            'search' => $this->search,
-            'amountMin' => $this->amountMin,
-            'amountMax' => $this->amountMax,
+            'endDateJalali'   => $this->endDateJalali,
+            'customerId'      => $this->customerId,
+            'customerName'    => $this->customerId ? Customer::find($this->customerId)->name ?? null : null,
+            'staffId'         => $this->staffId,
+            'staffName'       => $this->staffId ? Staff::find($this->staffId)->fullname ?? null : null,
+            'companyId'       => $this->companyId,
+            'companyName'     => $this->companyId ? Company::find($this->companyId)->name ?? null : null,
+            'currency'        => $this->currency,
+            'type'            => $this->type,
+            'search'          => $this->search,
+            'amountMin'       => $this->amountMin,
+            'amountMax'       => $this->amountMax,
         ];
     }
+
+    // =============================================
+    // کوئری‌های گزارش
+    // =============================================
 
     private function getReportData($forExport = false)
     {
@@ -263,7 +261,6 @@ class GeneralReports extends Component
                 'reportType' => $this->reportType
             ]);
 
-            // Return empty paginator for display, empty collection for export
             if ($forExport) {
                 return collect();
             } else {
@@ -276,6 +273,7 @@ class GeneralReports extends Component
             }
         }
     }
+
     private function buildWithdrawQuery()
     {
         return Withdraw::with(['staff', 'user'])
@@ -287,18 +285,24 @@ class GeneralReports extends Component
             ->when($this->amountMin, fn($q) => $q->where('amount', '>=', $this->amountMin))
             ->when($this->amountMax, fn($q) => $q->where('amount', '<=', $this->amountMax))
             ->when($this->search, function ($q) {
-                $q->whereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
+                $q->whereHas('staff', fn($q2) => $q2->where('name', 'like', "%{$this->search}%"))
                     ->orWhere('description', 'like', "%{$this->search}%");
             })
-            ->orderBy('created_at', 'desc');;
+            ->orderBy('created_at', 'desc');
     }
 
     private function buildLoanQuery()
     {
-        return Loan::with(['customer', 'user'])
+        return CustomerStory::with(['customer', 'user'])
             ->when($this->customerId, fn($q) => $q->where('customer_id', $this->customerId))
             ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
-            ->when($this->type, fn($q) => $q->where('type', $this->type))
+            ->when($this->type, function ($q) {
+                if ($this->type === 'برد') {
+                    $q->where('type', 'برد');
+                } elseif ($this->type === 'رسید') {
+                    $q->where('type', 'رسید');
+                }
+            })
             ->when($this->startDate, fn($q) => $q->whereDate('date', '>=', $this->startDate))
             ->when($this->endDate, fn($q) => $q->whereDate('date', '<=', $this->endDate))
             ->when($this->amountMin, fn($q) => $q->where('amount', '>=', $this->amountMin))
@@ -309,12 +313,9 @@ class GeneralReports extends Component
                     $q2->whereHas('customer', function ($c) use ($search) {
                         $c->where('name', 'like', $search);
                     })
-                        ->orWhere('brand', 'like', $search)
-                        ->orWhere('loan_recipt', 'like', $search);
+                    ->orWhere('description', 'like', $search);
                 });
             })
-
-
             ->orderBy('created_at', 'desc');
     }
 
@@ -327,7 +328,7 @@ class GeneralReports extends Component
             ->when($this->amountMin, fn($q) => $q->where('total_price', '>=', $this->amountMin))
             ->when($this->amountMax, fn($q) => $q->where('total_price', '<=', $this->amountMax))
             ->when($this->search, function ($q) {
-                $q->whereHas('customer', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
+                $q->whereHas('customer', fn($q2) => $q2->where('name', 'like', "%{$this->search}%"))
                     ->orWhere('invoice_number', 'like', "%{$this->search}%")
                     ->orWhere('sale_type', 'like', "%{$this->search}%");
             })
@@ -360,25 +361,24 @@ class GeneralReports extends Component
             ->when($this->currency, fn($q) => $q->where('currency', $this->currency))
             ->when($this->type, fn($q) => $q->where('type', $this->type))
             ->when($this->startDate, function ($q) {
-                $gregorianDate = \Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $this->startDate)->toCarbon();
+                $gregorianDate = Jalalian::fromFormat('Y/m/d', $this->startDate)->toCarbon();
                 $q->whereDate('created_at', '>=', $gregorianDate);
             })
             ->when($this->endDate, function ($q) {
-                $gregorianDate = \Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $this->endDate)->toCarbon();
+                $gregorianDate = Jalalian::fromFormat('Y/m/d', $this->endDate)->toCarbon();
                 $q->whereDate('created_at', '<=', $gregorianDate);
             })
             ->when($this->amountMin, fn($q) => $q->where('amount', '>=', $this->amountMin))
             ->when($this->amountMax, fn($q) => $q->where('amount', '<=', $this->amountMax))
             ->when($this->search, function ($q) {
                 $q->where(function ($query) {
-                    $query->whereHas('customer', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
+                    $query->whereHas('customer', fn($q2) => $q2->where('name', 'like', "%{$this->search}%"))
                         ->orWhereHas('staff', fn($q2) => $q2->where('fullname', 'like', "%{$this->search}%"))
                         ->orWhereHas('sarafi', fn($q2) => $q2->where('name', 'like', "%{$this->search}%"));
                 });
             })
             ->orderBy('created_at', 'desc');
     }
-
 
     private function buildCompanyPaymentQuery()
     {
@@ -394,6 +394,10 @@ class GeneralReports extends Component
             })
             ->orderBy('created_at', 'desc');
     }
+
+    // =============================================
+    // محاسبات گزارش
+    // =============================================
 
     public function getReportsProperty()
     {
@@ -415,69 +419,108 @@ class GeneralReports extends Component
         return Company::pluck('name', 'id');
     }
 
+    // =============================================
+    // خلاصه گزارش (Summary)
+    // =============================================
+
     public function getSummaryProperty()
     {
         $data = $this->getReportData(true);
 
-        // محاسبه مجموع مبالغ هر ارز برای تمام انواع گزارش‌ها
-        $currencyTotals = $this->calculateCurrencyTotals($data);
-
-        $totalAmount = match ($this->reportType) {
-            'withdraw_log' => $data->sum('amount'),
-            'loan' => $data->sum('amount'),
-            'sell' => $data->sum('total_price'),
-            'buy' => $data->sum('total_price'),
-            'transaction' => $data->sum('amount'),
-            'company_payment' => $data->sum('total_debt'),
-            default => 0
-        };
-
-        return [
-            'total_count' => $data->count(),
-            'total_amount' => $totalAmount,
-            'currency_totals' => $currencyTotals,
-            'report_type' => $this->getReportTypeLabel(),
-            'current_date' => Jalalian::now()->format('Y/m/d'),
-        ];
-    }
-
-    /**
-     * محاسبه مجموع مبالغ هر ارز برای تمام انواع گزارش‌ها
-     */
-    private function calculateCurrencyTotals($data)
-    {
+        $totalCount = $data->count();
         $currencyTotals = [];
 
         foreach ($data as $item) {
             $currency = $item->currency ?? 'نامشخص';
-
-            // تعیین فیلد مبلغ بر اساس نوع گزارش
             $amount = match ($this->reportType) {
-                'withdraw_log' => $item->amount ?? 0,
-                'loan' => $item->amount ?? 0,
-                'transaction' => $item->amount ?? 0,
-                'company_payment' => $item->total_debt ?? 0,
-                default => 0
+                'withdraw_log'   => $item->amount ?? 0,
+                'loan'           => $item->amount ?? 0,
+                'sell'           => $item->total_price ?? 0,
+                'buy'            => $item->total_price ?? 0,
+                'transaction'    => $item->amount ?? 0,
+                'company_payment'=> $item->total_debt ?? 0,
+                default          => 0
             };
 
             if (!isset($currencyTotals[$currency])) {
                 $currencyTotals[$currency] = 0;
             }
-
             $currencyTotals[$currency] += $amount;
         }
 
-        return $currencyTotals;
+        return [
+            'total_count'     => $totalCount,
+            'currency_totals' => $currencyTotals,
+            'report_type'     => $this->getReportTypeLabel(),
+            'current_date'    => Jalalian::now()->format('Y/m/d'),
+        ];
     }
+
+    // =============================================
+    // محاسبه قرض مشتری‌ها (ویژه گزارش بردگی)
+    // =============================================
+
+    public function getLoanSummaryProperty()
+    {
+        if ($this->reportType !== 'loan') {
+            return null;
+        }
+
+        // قرض خالص هر مشتری - گروه‌بندی شده بر اساس ارز
+        $customerLoans = CustomerStory::query()
+            ->selectRaw("
+                customer_id,
+                currency,
+                SUM(CASE WHEN type = 'برد' THEN amount ELSE 0 END) AS total_borrow,
+                SUM(CASE WHEN type = 'رسید' THEN amount ELSE 0 END) AS total_receipt
+            ")
+            ->when($this->customerId, fn($q) => $q->where('customer_id', $this->customerId))
+            ->when($this->startDate, fn($q) => $q->whereDate('date', '>=', $this->startDate))
+            ->when($this->endDate, fn($q) => $q->whereDate('date', '<=', $this->endDate))
+            ->groupBy('customer_id', 'currency')
+            ->with('customer')
+            ->get()
+            ->map(function ($item) {
+                $item->net_loan = $item->total_borrow - $item->total_receipt;
+                $item->customer_name = $item->customer->name ?? 'ناشناس';
+                return $item;
+            });
+
+        // جمع کل برای هر ارز
+        $currencyTotals = $customerLoans->groupBy('currency')->map(function ($items) {
+            return [
+                'total_borrow'  => $items->sum('total_borrow'),
+                'total_receipt' => $items->sum('total_receipt'),
+                'net_loan'      => $items->sum('net_loan'),
+            ];
+        });
+
+        // جمع کل همه ارزها
+        $grandTotal = [
+            'total_borrow'  => $customerLoans->sum('total_borrow'),
+            'total_receipt' => $customerLoans->sum('total_receipt'),
+            'net_loan'      => $customerLoans->sum('net_loan'),
+        ];
+
+        return [
+            'customer_loans'  => $customerLoans,
+            'currency_totals' => $currencyTotals,
+            'grand_total'     => $grandTotal,
+        ];
+    }
+
+    // =============================================
+    // متدهای کمکی
+    // =============================================
 
     private function getReportTypeLabel()
     {
         $types = [
-            'withdraw_log' => 'برداشت‌ها',
-            'loan' => 'بردگی‌ها',
-            'sell' => 'فروش‌ها',
-            'buy' => 'خریدها',
-            'transaction' => 'تراکنش‌ها',
+            'withdraw_log'    => 'برداشت‌ها',
+            'loan'            => 'بردگی‌ها',
+            'sell'            => 'فروش‌ها',
+            'buy'             => 'خریدها',
+            'transaction'     => 'تراکنش‌ها',
             'company_payment' => 'پرداخت‌های شرکت',
         ];
 
@@ -501,33 +544,36 @@ class GeneralReports extends Component
             'amountMax'
         ]);
 
-        // بازنشانی به تاریخ‌های پیش‌فرض شمسی
         $this->setDefaultJalaliDates();
         $this->resetPage();
 
         $this->dispatch('notify', [
-            'type' => 'success',
+            'type'    => 'success',
             'message' => 'تمامی فیلترها بازنشانی شدند'
         ]);
     }
 
-    public function render()
-    {
-        return view('livewire.import.general-reports', [
-            'reports' => $this->reports,
-            'customers' => $this->customers,
-            'staffs' => $this->staffs,
-            'companies' => $this->companies,
-            'summary' => $this->summary,
-        ]);
-    }
-
-    // متد کمکی برای پاک کردن خطاها
     private function clearError($field)
     {
         $errors = $this->getErrorBag();
         if ($errors->has($field)) {
             $errors->forget($field);
         }
+    }
+
+    // =============================================
+    // رندر
+    // =============================================
+
+    public function render()
+    {
+        return view('livewire.import.general-reports', [
+            'reports'      => $this->reports,
+            'customers'    => $this->customers,
+            'staffs'       => $this->staffs,
+            'companies'    => $this->companies,
+            'summary'      => $this->summary,
+            'loanSummary'  => $this->loanSummary,
+        ]);
     }
 }

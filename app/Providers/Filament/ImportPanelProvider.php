@@ -35,7 +35,7 @@ class ImportPanelProvider extends PanelProvider
                 'warning' => Color::Amber,
                 'danger' => Color::Red,
                 'info' => Color::Sky,
-                'gray' => Color::Gray, 
+                'gray' => Color::Gray,
             ])
             ->login(ImportLogin::class)
             ->authGuard('import')
@@ -49,18 +49,211 @@ class ImportPanelProvider extends PanelProvider
             ])
             ->renderHook(
                 'panels::head.end',
-                fn () => <<<HTML
+                fn() => <<<HTML
                     <style>
                         /* فونت‌های فارسی */
                         @import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css');
                         @import url('https://cdn.jsdelivr.net/gh/rastikerdar/shabnam-font@v5.0.1/dist/font-face.css');
                         
-                        /* اعمال فونت فارسی برای کل پنل */
-                        body, .fi-body, .fi-sidebar, .fi-topbar {
-                            font-family: Vazir, Tahoma, sans-serif !important;
-                            
-                        }
-                        
+                    
+
+
+                          body, .fi-body, .fi-sidebar, .fi-topbar {
+                                font-family: Vazir, Tahoma, sans-serif !important;
+                            }
+                            /* .fi-sidebar {
+                                            background-color: #2c1a3a !important;
+                                            border-left: 1px solid #e5e7eb !important;
+                                            box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
+                                            border-radius: 0 !important;
+                                        } */
+                                    /* 🔹 Sidebar - بنفش تیره با متن سفید */
+                                    .fi-sidebar {
+                                        background-color: #2c1a3a !important;
+                                        border-left: 1px solid #4a3058 !important;
+                                        box-shadow: 0 10px 25px rgba(0,0,0,0.3) !important;
+                                        border-radius: 0 !important;
+                                    }
+                                        .fi-simple-main-ctn {
+                                            align-items: center;
+                                            justify-content: center;
+                                            background-size: cover;
+                                            background-position: center;
+                                            background-repeat: no-repeat;   
+                                            background-image: url('/bg.jpg');                                            background-blend-mode: overlay;
+                                        }
+                                        .fi-simple-main-ctn form,
+                                        .fi-auth-card,
+                                        .fi-simple-main {
+                                            background: white !important;
+                                            border-radius: 16px;
+                                            padding: 2rem;
+                                            box-shadow:
+                                                0 10px 25px rgba(0, 0, 0, 0.15),
+                                                0 4px 10px rgba(0, 0, 0, 0.08) !important;
+                                        }
+
+                                           .fi-section {
+                                                    background: #fff !important;
+                                                    border-radius: 16px !important;
+                                                    padding: 24px !important;
+                                                    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12) !important;
+                                                }
+
+                                                                                                    .fi-page > div {
+                                                        background: #fff;
+                                                        border-radius: 16px;
+                                                        padding: 24px;
+                                                        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+                                                    }
+
+                                                    
+
+                                    .fi-sidebar-header {
+                                        background-color: #1f1230 !important;
+                                        border-bottom: 1px solid #4a3058 !important;
+                                    }
+
+                                    /* همه متن‌های سایدبار سفید */
+                                    .fi-sidebar,
+                                    .fi-sidebar *,
+                                    .fi-sidebar .fi-sidebar-item,
+                                    .fi-sidebar .fi-sidebar-group-label,
+                                    .fi-sidebar .fi-sidebar-header,
+                                    .fi-sidebar .fi-brand,
+                                    .fi-sidebar .fi-sidebar-item a,
+                                    .fi-sidebar .fi-sidebar-item span,
+                                    .fi-sidebar .fi-sidebar-item button,
+                                    .fi-sidebar .fi-sidebar-group button,
+                                    .fi-sidebar .fi-sidebar-group span,
+                                    .fi-sidebar [class*="text-"] {
+                                        color: #ffffff !important;
+                                    }
+
+                                    /* فونت بزرگتر برای همه آیتم‌ها */
+                                    .fi-sidebar .fi-sidebar-item {
+                                        border-radius: 0.5rem !important;
+                                        transition: all 0.2s !important;
+                                        font-size: 1.05rem !important;
+                                    }
+
+                                   
+
+                                   
+
+                                    /* آیتم فعال - بک‌گراند سفید با متن مشکی */
+                                    .fi-sidebar .fi-sidebar-item-active {
+                                        background-color: #ffffff !important;
+                                        font-weight: 600 !important;
+                                        border-right: 3px solid #8b5cf6 !important;
+                                        font-size: 1.1rem !important;
+                                    }
+
+                                    /* متن آیتم فعال مشکی */
+                                    .fi-sidebar .fi-sidebar-item-active,
+                                    .fi-sidebar .fi-sidebar-item-active *,
+                                    .fi-sidebar .fi-sidebar-item-active a,
+                                    .fi-sidebar .fi-sidebar-item-active span,
+                                    .fi-sidebar .fi-sidebar-item-active button {
+                                        color: #000000 !important;
+                                    }
+
+                                    /* hover روی آیتم فعال */
+                                    .fi-sidebar .fi-sidebar-item-active:hover {
+                                        background-color: #000000 !important;
+                                    }
+
+                                    .fi-sidebar .fi-sidebar-item-active:hover,
+                                    .fi-sidebar .fi-sidebar-item-active:hover *,
+                                    .fi-sidebar .fi-sidebar-item-active:hover a,
+                                    .fi-sidebar .fi-sidebar-item-active:hover span,
+                                    .fi-sidebar .fi-sidebar-item-active:hover button {
+                                        color: #ffffff !important;
+                                    }
+
+                                    .fi-sidebar .fi-sidebar-item-active:hover .fi-sidebar-item-icon,
+                                    .fi-sidebar .fi-sidebar-item-active:hover svg {
+                                        color: #a78bfa !important;
+                                    }
+
+                                    /* آیکون آیتم فعال بنفش */
+                                    .fi-sidebar .fi-sidebar-item-active .fi-sidebar-item-icon,
+                                    .fi-sidebar .fi-sidebar-item-active svg {
+                                        color: #6d28d9 !important;
+                                    }
+                                      
+                                    /* آیکون‌های غیرفعال سفید */
+                                    .fi-sidebar .fi-sidebar-item-icon,
+                                    .fi-sidebar .fi-sidebar-item svg,
+                                    .fi-sidebar svg {
+                                        color: #ffffff !important;
+                                    }
+
+                                    /* متن‌های گروه‌ها */
+                                    .fi-sidebar .fi-sidebar-group-label {
+                                        font-weight: 600 !important;
+                                        text-transform: uppercase !important;
+                                        font-size: 0.8rem !important;
+                                        opacity: 0.8 !important;
+                                    }
+
+                                  
+
+                                    .dark .fi-sidebar .fi-sidebar-item-active {
+                                        background-color: #f8fafc !important;
+                                    }
+
+                                    .dark .fi-sidebar .fi-sidebar-item-active,
+                                    .dark .fi-sidebar .fi-sidebar-item-active *,
+                                    .dark .fi-sidebar .fi-sidebar-item-active a,
+                                    .dark .fi-sidebar .fi-sidebar-item-active span,
+                                    .dark .fi-sidebar .fi-sidebar-item-active button {
+                                        color: #000000 !important;
+                                    }
+
+                                    .dark .fi-sidebar .fi-sidebar-item-active:hover {
+                                        background-color: #000000 !important;
+                                    }
+
+                                    .dark .fi-sidebar .fi-sidebar-item-active:hover,
+                                    .dark .fi-sidebar .fi-sidebar-item-active:hover * {
+                                        color: #ffffff !important;
+                                    }
+
+                                    /* اسکرول‌بار سایدبار */
+                                    .fi-sidebar::-webkit-scrollbar {
+                                        width: 6px;
+                                    }
+
+                                    .fi-sidebar::-webkit-scrollbar-track {
+                                        background: #1f1230;
+                                    }
+
+                                    .fi-sidebar::-webkit-scrollbar-thumb {
+                                        background: #4a3058;
+                                        border-radius: 3px;
+                                    }
+
+                                    .fi-sidebar::-webkit-scrollbar-thumb:hover {
+                                        background: #6b4d7a;
+                                    }
+                             .fi-body {
+                                    background: #e5e7eb !important;
+                                    background-attachment: fixed !important;
+                                    min-height: 100vh !important;
+                                }
+                                                                .dark .fi-body {
+                                    background: #111827 !important; /* gray-900 */
+                                }
+
+                                                            .fi-section {
+                                        background-color: #fff !important;
+                                    }
+
+                                    .fi-section-content {
+                                        background-color: #fff !important;
+                                    }
+                                                            
                         
                         
                         /* کلاس‌های فونت سفارشی */
@@ -76,6 +269,10 @@ class ImportPanelProvider extends PanelProvider
                             border-bottom: 1px solid #c7d2fe;
                             transition: all 0.3s;
                         }
+
+                        
+
+                        
 
                         /* 🔹 Sidebar */
                         .fi-sidebar {
@@ -98,14 +295,21 @@ class ImportPanelProvider extends PanelProvider
                             transition: all 0.2s;
                         }
 
-                        .fi-sidebar .fi-sidebar-item:hover {
-                            color: #4b5563;
-                            background-color: #fecaca;
-                        }
+                                                .fi-sidebar .fi-sidebar-item:hover,
+                            .fi-sidebar .fi-sidebar-item:hover a,
+                            .fi-sidebar .fi-sidebar-item:hover span,
+                            .fi-sidebar .fi-sidebar-item:hover button {
+                                background-color: #ffffff !important;
+                                color: #000000 !important;
+                            }
+
+                            .fi-sidebar .fi-sidebar-item:hover svg {
+                                color: #6d28d9 !important;
+                            }
 
                         .fi-sidebar .fi-sidebar-item-active {
                             background-color: #000000;
-                            color: #4338ca;
+                            color: #000000;
                             font-weight: 600;
                         }
 
@@ -136,10 +340,7 @@ class ImportPanelProvider extends PanelProvider
                             color: #d1d5db;
                         }
 
-                        .dark .fi-sidebar .fi-sidebar-item:hover {
-                            color: #818cf8;
-                            background-color: #1f2937;
-                        }
+                        
 
                         .dark .fi-sidebar .fi-sidebar-item-active {
                             background-color: #1e3a8a;

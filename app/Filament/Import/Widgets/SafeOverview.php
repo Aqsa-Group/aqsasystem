@@ -5,6 +5,7 @@ namespace App\Filament\Import\Widgets;
 use App\Models\Import\Company;
 use App\Models\Import\CompanyPayment;
 use App\Models\Import\Customer;
+use App\Models\Import\CustomerStory;
 use App\Models\Import\Inventory;
 use App\Models\Import\Loan;
 use App\Models\Import\Safe;
@@ -13,12 +14,12 @@ use App\Models\Import\SaleItem;
 use App\Models\Import\Sarafi;
 use App\Models\Import\Warehouse;
 use App\Models\Import\Withdraw;
+use Carbon\Carbon;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Card;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\HtmlString;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\HtmlString;
 
 class SafeOverview extends BaseWidget
 {
@@ -81,16 +82,30 @@ class SafeOverview extends BaseWidget
         $EUR = Sarafi::where('name', 'زرین')->sum('EUR');
 
 
-        // --- قرضه‌ها ---
-        $loanUSD = Loan::where('currency', 'دالر')->sum('amount');
-        $totalReceiptUSD = Loan::where('currency', 'دالر')->sum('loan_recipt');
-        $totalLoanUSD = $loanUSD - $totalReceiptUSD;
+    // --- قرضه‌ها از CustomerStory ---
+
+// USD
+$totalBorrowUSD = CustomerStory::where('currency', 'USD')
+    ->where('type', 'برد')
+    ->sum('amount');
+
+$totalReturnUSD = CustomerStory::where('currency', 'USD')
+    ->where('type', 'رسید')
+    ->sum('amount');
+
+$totalLoanUSD = $totalBorrowUSD - $totalReturnUSD;
 
 
-        $loanAFN = Loan::where('currency', 'افغانی')->sum('amount');
-        $totalReceiptAFN = Loan::where('currency', 'افغانی')->sum('loan_recipt');
-        $totalLoanAFN = $loanAFN - $totalReceiptAFN;
+// AFN
+$totalBorrowAFN = CustomerStory::where('currency', 'AFN')
+    ->where('type', 'برد')
+    ->sum('amount');
 
+$totalReturnAFN = CustomerStory::where('currency', 'AFN')
+    ->where('type', 'رسید')
+    ->sum('amount');
+
+$totalLoanAFN = $totalBorrowAFN - $totalReturnAFN;
         // --- واحد پول ---
         $safeCurrency = $safeRow->currency ?? 0;
         $currencyLabel = $safeCurrency ? 'دالر' : 'افغانی';

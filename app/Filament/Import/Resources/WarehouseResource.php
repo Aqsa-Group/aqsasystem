@@ -343,7 +343,7 @@ class WarehouseResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->columns([
-            Tables\Columns\TextColumn::make('barcode')->label('بارکد')->numeric()->sortable(),
+            Tables\Columns\TextColumn::make('barcode')->label('بارکد')->numeric()->sortable()->searchable(),
             Tables\Columns\TextColumn::make('name')->label('نام جنس')->searchable(),
             Tables\Columns\TextColumn::make('unit')->label('نوع بسته بندی')->searchable(),
             Tables\Columns\TextColumn::make('price')->label('قیمت فی دانه')->numeric()->sortable(),

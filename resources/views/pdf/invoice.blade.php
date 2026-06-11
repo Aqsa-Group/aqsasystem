@@ -90,72 +90,72 @@
                 @endfor
         </tbody>
     </table>
-  @php
+    @php
     $subtotal = 0;
 
     foreach ($sale->items as $item) {
-        $returnedQty = \App\Models\Import\SaleReturn::where('sale_id', $sale->id)
-            ->where('sale_item_id', $item->id)
-            ->sum('quantity');
+    $returnedQty = \App\Models\Import\SaleReturn::where('sale_id', $sale->id)
+    ->where('sale_item_id', $item->id)
+    ->sum('quantity');
 
-        $remainingQty = max(0, $item->quantity - $returnedQty);
+    $remainingQty = max(0, $item->quantity - $returnedQty);
 
-        $lineTotal = $remainingQty * (float)$item->price_per_unit;
+    $lineTotal = $remainingQty * (float)$item->price_per_unit;
 
-        $subtotal += $lineTotal;
+    $subtotal += $lineTotal;
     }
 
     $discount = (float) ($sale->discount ?? 0);
     $finalTotal = max(0, $subtotal - $discount);
-@endphp
+    @endphp
 
-<table style="width:100%; margin-top:15px; border-collapse:collapse; border:1px solid #000;">
-    <tbody>
+    <table style="width:100%; margin-top:15px; border-collapse:collapse; border:1px solid #000;">
+        <tbody>
 
-        <tr>
-            <td style="padding:6px; font-weight:bold; width:50%;">
-                مجموعه کل فاکتور 
-            </td>
-            <td style="padding:6px; text-align:center;">
-                <strong>{{ number_format($subtotal, 2) }} دالر</strong>
-            </td>
-        </tr>
+            <tr>
+                <td style="padding:6px; font-weight:bold; width:50%;">
+                    مجموعه کل فاکتور
+                </td>
+                <td style="padding:6px; text-align:center;">
+                    <strong>{{ number_format($subtotal, 2) }} دالر</strong>
+                </td>
+            </tr>
 
-        <tr>
-            <td style="padding:6px; font-weight:bold;">
-                مبلغ تخفیف
-            </td>
-            <td style="padding:6px; text-align:center;">
-                <strong>{{ number_format($discount, 2) }} دالر</strong>
-            </td>
-        </tr>
+            <tr>
+                <td style="padding:6px; font-weight:bold;">
+                    مبلغ تخفیف
+                </td>
+                <td style="padding:6px; text-align:center;">
+                    <strong>{{ number_format($discount, 2) }} دالر</strong>
+                </td>
+            </tr>
 
-        <tr>
-            <td style="padding:6px; font-weight:bold;">
-                مبلغ نهایی (بعد از تخفیف)
-            </td>
-            <td style="padding:6px; text-align:center; font-size:14px;">
-                <strong>{{ number_format($finalTotal, 2) }} دالر</strong>
-            </td>
-        </tr>
+            <tr>
+                <td style="padding:6px; font-weight:bold;">
+                    مبلغ نهایی (بعد از تخفیف)
+                </td>
+                <td style="padding:6px; text-align:center; font-size:14px;">
+                    <strong>{{ number_format($finalTotal, 2) }} دالر</strong>
+                </td>
+            </tr>
 
-           @if ($sale->sale_type === 'wholesale')
+            @if ($sale->sale_type === 'wholesale')
             <tr>
                 <td style="padding:6px; font-weight:bold;">مبلغ دریافت شده</td>
                 <td style="padding:6px; text-align:center;">
-                    <strong>{{ number_format($sale->received_amount , 2) }}&nbsp;دالر</strong>
+                    <strong>{{ number_format($sale->received_amount, 2) }}&nbsp;دالر</strong>
                 </td>
             </tr>
             <tr>
                 <td style="padding:6px; font-weight:bold;">باقیمانده فعلی</td>
                 <td style="padding:6px; text-align:center;">
-                    <strong>{{ number_format($sale->remaining_amount , 2) }}&nbsp;دالر</strong>
+                    <strong>{{ number_format($sale->remaining_amount, 2) }}&nbsp;دالر</strong>
                 </td>
             </tr>
             <tr>
                 <td style="padding:6px; font-weight:bold;">باقیمانده قبل (قرض قبلی)</td>
                 <td style="padding:6px; text-align:center;">
-                    <strong>{{ number_format($previousLoanRemaining , 2) }}&nbsp;دالر</strong>
+                    <strong>{{ number_format($previousLoanRemaining, 2) }}&nbsp;دالر</strong>
                 </td>
             </tr>
             <tr>
@@ -163,14 +163,13 @@
                     مجموع باقیمانده کل
                 </td>
                 <td style="padding:6px; text-align:center; color:red; font-size:16px;">
-                    <strong>{{ number_format($sale->remaining_amount + $previousLoanRemaining , 2) }}&nbsp;دالر</strong>
+                    <strong>{{ number_format($sale->remaining_amount + $previousLoanRemaining, 2) }}&nbsp;دالر</strong>
                 </td>
             </tr>
             @endif
 
-    </tbody>
-</table>
-
+        </tbody>
+    </table>
     <div class="footer text-center">
         <div>
             آدرس: کابل - چهار راهی ماموریت ، بلاک دوم ، گذشته از پوهنتون مستقبل ، متصل نمایندگی بجاج
