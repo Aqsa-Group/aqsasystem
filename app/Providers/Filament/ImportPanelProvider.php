@@ -82,32 +82,30 @@ class ImportPanelProvider extends PanelProvider
                                             background-repeat: no-repeat;   
                                             background-image: url('/bg.jpg');                                            background-blend-mode: overlay;
                                         }
-                                        .fi-simple-main-ctn form,
-                                        .fi-auth-card,
-                                        .fi-simple-main {
-                                            background: white !important;
-                                            border-radius: 16px;
-                                            padding: 2rem;
-                                            box-shadow:
-                                                0 10px 25px rgba(0, 0, 0, 0.15),
-                                                0 4px 10px rgba(0, 0, 0, 0.08) !important;
-                                        }
 
-                                           .fi-section {
-                                                    background: #fff !important;
-                                                    border-radius: 16px !important;
-                                                    padding: 24px !important;
-                                                    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12) !important;
+                                                                                    .fi-sidebar,
+                                            .fi-sidebar * {
+                                                color: #ffffff !important;
+                                            }
+
+
+                                                                                                .fi-sidebar .fi-sidebar-item-label,
+                                                    .fi-sidebar .fi-sidebar-group-label,
+                                                    .fi-sidebar .fi-sidebar-item a,
+                                                    .fi-sidebar .fi-sidebar-item span {
+                                                        font-size: 20px !important; /* 16px */
+                                                    }
+                                                .fi-sidebar .fi-sidebar-item:hover,
+                                                .fi-sidebar .fi-sidebar-item:hover a,
+                                                .fi-sidebar .fi-sidebar-item:hover span,
+                                                .fi-sidebar .fi-sidebar-item:hover button {
+                                                    background-color: #ffffff !important;
+                                                    color: #000000 !important;
                                                 }
 
-                                                                                                    .fi-page > div {
-                                                        background: #fff;
-                                                        border-radius: 16px;
-                                                        padding: 24px;
-                                                        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-                                                    }
-
-                                                    
+                                                .fi-sidebar .fi-sidebar-item:hover svg {
+                                                    color: #6d28d9 !important;
+                                                }
 
                                     .fi-sidebar-header {
                                         background-color: #1f1230 !important;
@@ -137,9 +135,23 @@ class ImportPanelProvider extends PanelProvider
                                         font-size: 1.05rem !important;
                                     }
 
-                                   
+                                    /* hover مشکی */
+                                    .fi-sidebar .fi-sidebar-item:hover {
+                                        background-color: #000000 !important;
+                                        color: #ffffff !important;
+                                    }
 
-                                   
+                                    .fi-sidebar .fi-sidebar-item:hover *,
+                                    .fi-sidebar .fi-sidebar-item:hover a,
+                                    .fi-sidebar .fi-sidebar-item:hover span,
+                                    .fi-sidebar .fi-sidebar-item:hover button {
+                                        color: #ffffff !important;
+                                    }
+
+                                    .fi-sidebar .fi-sidebar-item:hover .fi-sidebar-item-icon,
+                                    .fi-sidebar .fi-sidebar-item:hover svg {
+                                        color: #a78bfa !important;
+                                    }
 
                                     /* آیتم فعال - بک‌گراند سفید با متن مشکی */
                                     .fi-sidebar .fi-sidebar-item-active {
@@ -181,7 +193,7 @@ class ImportPanelProvider extends PanelProvider
                                     .fi-sidebar .fi-sidebar-item-active svg {
                                         color: #6d28d9 !important;
                                     }
-                                      
+
                                     /* آیکون‌های غیرفعال سفید */
                                     .fi-sidebar .fi-sidebar-item-icon,
                                     .fi-sidebar .fi-sidebar-item svg,
@@ -197,7 +209,10 @@ class ImportPanelProvider extends PanelProvider
                                         opacity: 0.8 !important;
                                     }
 
-                                  
+                                    /* Dark Mode */
+                                    .dark .fi-sidebar .fi-sidebar-item:hover {
+                                        background-color: #000000 !important;
+                                    }
 
                                     .dark .fi-sidebar .fi-sidebar-item-active {
                                         background-color: #f8fafc !important;
@@ -238,15 +253,13 @@ class ImportPanelProvider extends PanelProvider
                                         background: #6b4d7a;
                                     }
                              .fi-body {
-                                    background: #e5e7eb !important;
+                                    background: #e9f5fa !important;
                                     background-attachment: fixed !important;
                                     min-height: 100vh !important;
                                 }
-                                                                .dark .fi-body {
-                                    background: #111827 !important; /* gray-900 */
-                                }
 
-                                                      
+                        
+                        
                         
                         
                         /* کلاس‌های فونت سفارشی */
@@ -288,28 +301,14 @@ class ImportPanelProvider extends PanelProvider
                             transition: all 0.2s;
                         }
 
-                         .fi-sidebar .fi-sidebar-item:hover,
-                            .fi-sidebar .fi-sidebar-item:hover a,
-                            .fi-sidebar .fi-sidebar-item:hover span,
-                            .fi-sidebar .fi-sidebar-item:hover button {
-                                background-color: #ffffff !important;
-                                color: #000000 !important;
-                            }
+                        .fi-sidebar .fi-sidebar-item:hover {
+                            color: #4b5563;
+                            background-color: #fecaca;
+                        }
 
-                            .fi-sidebar .fi-sidebar-item:hover svg {
-                                color: #6d28d9 !important;
-                            }
-
-
-                                                        .fi-sidebar .fi-sidebar-item-label,
-                            .fi-sidebar .fi-sidebar-group-label,
-                            .fi-sidebar .fi-sidebar-item a,
-                            .fi-sidebar .fi-sidebar-item span {
-                                font-size: 18px !important; /* 16px */
-                            }
                         .fi-sidebar .fi-sidebar-item-active {
                             background-color: #000000;
-                            color: #000000;
+                            color: #4338ca;
                             font-weight: 600;
                         }
 
@@ -340,7 +339,10 @@ class ImportPanelProvider extends PanelProvider
                             color: #d1d5db;
                         }
 
-                        
+                        .dark .fi-sidebar .fi-sidebar-item:hover {
+                            color: #818cf8;
+                            background-color: #1f2937;
+                        }
 
                         .dark .fi-sidebar .fi-sidebar-item-active {
                             background-color: #1e3a8a;
