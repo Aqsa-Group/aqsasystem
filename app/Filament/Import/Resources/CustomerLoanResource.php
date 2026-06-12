@@ -105,8 +105,7 @@ class CustomerLoanResource extends Resource
                         : 'danger'),
 
                 TextColumn::make('amount')
-                    ->label('مبلغ')
-                    ->numeric(),
+                    ->label('مبلغ'),
 
 
 
