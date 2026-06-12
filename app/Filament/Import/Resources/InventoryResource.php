@@ -295,14 +295,14 @@ class InventoryResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->columns([
-            Tables\Columns\TextColumn::make('barcode')->label('بارکد')->numeric()->sortable(),
+            Tables\Columns\TextColumn::make('barcode')->label('بارکد')->sortable(),
             Tables\Columns\TextColumn::make('name')->label('نام جنس')->searchable(),
             Tables\Columns\TextColumn::make('unit')->label('نوع بسته بندی')->searchable(),
-            Tables\Columns\TextColumn::make('price')->label('قیمت فی دانه')->numeric()->sortable(),
+            Tables\Columns\TextColumn::make('price')->label('قیمت فی دانه')->sortable(),
             Tables\Columns\TextColumn::make('all_exist_number')->label('موجودی به دانه')->searchable(),
-            Tables\Columns\TextColumn::make('total_price')->label('قیمت مجموعه')->numeric()->sortable(),
-            Tables\Columns\TextColumn::make('retail_price')->label('قیمت پرچون')->numeric()->sortable(),
-            Tables\Columns\TextColumn::make('big_whole_price')->label('قیمت عمده')->numeric()->sortable(),
+            Tables\Columns\TextColumn::make('total_price')->label('قیمت مجموعه')->sortable(),
+            Tables\Columns\TextColumn::make('retail_price')->label('قیمت پرچون')->sortable(),
+            Tables\Columns\TextColumn::make('big_whole_price')->label('قیمت عمده')->sortable(),
             Tables\Columns\TextColumn::make('brand')->label('ساخت کشور')->searchable(),
             Tables\Columns\ImageColumn::make('product_image')->label('عکس محصول'),
             Tables\Columns\TextColumn::make('created_at')->label('تاریخ ثبت')
