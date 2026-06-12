@@ -25,6 +25,12 @@ class LoanResource extends Resource
     protected static ?string $pluralModelLabel = 'قرضه ها و رسید';
     protected static ?int $navigationSort = 7;
 
+    public static function shouldRegisterNavigation(): bool
+{
+    return false;
+}
+
+
     public static function form(Form $form): Form
     {
         return $form->schema([
