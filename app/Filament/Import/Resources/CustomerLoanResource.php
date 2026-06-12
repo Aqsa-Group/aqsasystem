@@ -108,9 +108,14 @@ class CustomerLoanResource extends Resource
                     ->label('مبلغ')
                     ->numeric(),
 
+
+
                 TextColumn::make('currency')
                     ->label('ارز')
                     ->badge(),
+                TextColumn::make('description')
+                    ->label('توضیحات')
+                    ->searchable(),
 
                 TextColumn::make('date')
                     ->label('تاریخ')
