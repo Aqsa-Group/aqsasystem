@@ -93,7 +93,11 @@ class ImportPanelProvider extends PanelProvider
                                             .fi-sidebar * {
                                                 color: #ffffff !important;
                                             }
-
+                                                        .fi-ta-cell,
+                                                        .fi-ta-header-cell {
+                                                            font-size: 20px !important;
+                                                            font-weight: 500;
+                                                        }
 
                                                         .fi-sidebar-group-label,
                                                         .fi-sidebar-group-button span,
