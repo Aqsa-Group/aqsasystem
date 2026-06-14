@@ -321,9 +321,9 @@ class BuyResource extends Resource
                 Tables\Columns\TextColumn::make('company.name')->label('نام شرکت')->numeric()->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('name')->label('نام جنس')->searchable(),
                 Tables\Columns\TextColumn::make('unit')->label('نوع بسته بندی')->searchable(),
-                Tables\Columns\TextColumn::make('price')->label('قیمت فی دانه')->numeric()->sortable(),
+                Tables\Columns\TextColumn::make('price')->label('قیمت فی دانه')->sortable(),
                 Tables\Columns\TextColumn::make('all_exist_number')->label('تعداد خریده شده')->searchable(),
-                Tables\Columns\TextColumn::make('big_whole_price')->label('قیمت عمده')->numeric()->sortable(),
+                Tables\Columns\TextColumn::make('big_whole_price')->label('قیمت عمده')->sortable(),
                 Tables\Columns\TextColumn::make('currency')
                     ->label('نوع ارز')
                     ->formatStateUsing(fn($state) => match ($state) {

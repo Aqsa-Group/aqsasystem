@@ -30,9 +30,14 @@ class Buy extends Model
         'company_id',
     ];
 
-    protected $casts = [
-        'import_date' => 'date',
-    ];
+  protected $casts = [
+    'import_date'     => 'date',
+    'price'           => 'decimal:2',
+    'total_price'     => 'decimal:2',
+    'big_whole_price' => 'decimal:2',
+    'big_unit_price'  => 'decimal:2',
+    'retail_price'    => 'decimal:2',
+];
 
     public function company()
     {
