@@ -1,10 +1,6 @@
 <x-filament-panels::page>
     <div class="space-y-6">
-        <!-- هدر -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">گزارش قرضه‌ها</h1>
-        </div>
-
+      
         <!-- کارت‌های خلاصه -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
