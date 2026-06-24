@@ -38,13 +38,14 @@
                     $total_ir += $row['ir'];
                     @endphp
 
-                    <tr class="
-                dark:!text-white
-                border-b border-gray-200 dark:border-gray-700
-                {{ $index % 2 == 0
-                ? 'bg-white dark:bg-gray-900'
-                : 'bg-gray-50 dark:bg-gray-800/60' }}
-                                                       ">
+             <tr class="
+    border-b border-gray-200 dark:border-gray-700
+    transition-colors
+    {{ $index % 2 == 0
+        ? 'bg-white dark:bg-gray-900'
+        : 'bg-gray-50 dark:bg-gray-800' }}
+    hover:bg-primary-50 dark:hover:bg-primary-900/30
+">
                         <td class="px-6 py-4 font-semibold text-primary-700 dark:!text-white">
                             {{ $row['type'] }}
                         </td>
