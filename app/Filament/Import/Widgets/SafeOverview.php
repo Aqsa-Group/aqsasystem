@@ -196,7 +196,7 @@ $totalLoanAFN = $totalBorrowAFN - $totalReturnAFN;
                     </div>
                 "))
 
-                ->url(route('filament.import.resources.loans.index')),
+                ->url(route('filament.import.resources.customer-loans.index')),
 
             Card::make('طلب شرکت‌ها', '')
                 ->description(new HtmlString("
