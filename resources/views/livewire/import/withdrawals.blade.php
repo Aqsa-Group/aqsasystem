@@ -163,9 +163,8 @@
                         <div class="relative w-full">
                             <select wire:model="currency"
                                 class="w-full h-[60px] p-3 rounded-[12px] border border-[#8C8C8C] bg-transparent focus:ring-2 focus:ring-blue-500 appearance-none">
-                                <option value="afn">افغانی</option>
-                                <option value="usd">دالر</option>
-                                <option value="toman">تومان</option>
+                                <option value="AFN">افغانی</option>
+                                <option value="USD">دالر</option>
                             </select>
 
                         </div>

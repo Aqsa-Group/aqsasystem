@@ -48,33 +48,30 @@ class Withdrawals extends Component
 
 
 
-  public function submitWithdrawal()
+public function submitWithdrawal()
 {
     $cleanAmount = $this->cleanAmount($this->amount);
-    
+
     $this->validate([
         'currency' => 'required|in:AFN,USD',
-        'type' => 'required|string|max:255',
-        'amount' => 'required',
-         'date' => ['required', function ($attribute, $value, $fail) {
-
-                $value = str_replace('/', '-', $value);
-
-                if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
-                    $fail('فرمت تاریخ صحیح نیست (YYYY-MM-DD)');
-                    return;
-                }
-
-                try {
-                    \Morilog\Jalali\Jalalian::fromFormat('Y-m-d', $value);
-                } catch (\Exception $e) {
-                    $fail('تاریخ وارد شده نامعتبر است.');
-                }
-            }],
+        'type'     => 'required|string|max:255',
+        'amount'   => 'required',
+        'date'     => ['required', function ($attribute, $value, $fail) {
+            $value = str_replace('/', '-', $value);
+            if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
+                $fail('فرمت تاریخ صحیح نیست (YYYY-MM-DD)');
+                return;
+            }
+            try {
+                \Morilog\Jalali\Jalalian::fromFormat('Y-m-d', $value);
+            } catch (\Exception $e) {
+                $fail('تاریخ وارد شده نامعتبر است.');
+            }
+        }],
         'description' => 'nullable|string|max:500',
     ], [
         'amount.required' => 'مقدار برداشت الزامی است.',
-        'type.required' => 'نوع برداشت الزامی است.',
+        'type.required'   => 'نوع برداشت الزامی است.',
     ]);
 
     if (!is_numeric($cleanAmount) || floatval($cleanAmount) <= 0) {
@@ -84,69 +81,78 @@ class Withdrawals extends Component
 
     $user = Auth::guard('import')->user();
     $adminId = $user->admin_id ?? $user->id;
+$user = Auth::guard('import')->user();
 
-    $safe = Safe::where('user_id', $adminId)
-        ->latest('id') 
-        ->first();
+$safe = Safe::orderBy('id')->first();
 
-    if (!$safe) {
-        session()->flash('error', 'صندوق ارزی یافت نشد!');
-        return;
-    }
+if (!$safe) {
+    session()->flash('error', 'هیچ صندوقی یافت نشد!');
+    return;
+}
+    // دریافت موجودی به روش امن (با getAttribute)
+    $safeBalance = (float) $safe->getAttribute($this->currency) ?: 0;
+    $amountValue = (float) $cleanAmount;
 
-    session()->flash('debug', "selected safe id: {$safe->id}, {$this->currency} balance: " . number_format($safe->{$this->currency}));
-
-    $amountValue = floatval($cleanAmount);
-
-    $safeBalance = is_numeric($safe->{$this->currency}) ? floatval($safe->{$this->currency}) : 0;
+    // دیباگ برای بررسی (در محیط توسعه)
+    session()->flash('debug', sprintf(
+        "safe_id: %d, currency: %s, balance: %s, requested: %s",
+        $safe->id,
+        $this->currency,
+        number_format($safeBalance),
+        number_format($amountValue)
+    ));
 
     if ($amountValue > $safeBalance) {
         $currencyName = $this->getCurrencyName($this->currency);
-        session()->flash('error', "موجودی $currencyName کافی نیست! موجودی: " . number_format($safeBalance));
+        session()->flash('error', "موجودی {$currencyName} کافی نیست! موجودی: " . number_format($safeBalance));
         return;
     }
 
+    // آماده‌سازی داده‌های برداشت
     $data = [
-        'user_id' => $user->id,
-        'admin_id' => $adminId,
-        'currency' => $this->currency,
-        'type' => $this->type,
-        'amount' => $amountValue,
-        'date' => $this->normalizeDate($this->date),
+        'user_id'     => $user->id,
+        'admin_id'    => $adminId,
+        'currency'    => $this->currency,
+        'type'        => $this->type,
+        'amount'      => $amountValue,
+        'date'        => $this->normalizeDate($this->date),
         'description' => $this->description,
     ];
 
+    // عملیات اصلی (ثبت یا ویرایش)
     if ($this->withdrawalId) {
         $oldWithdrawal = Withdraw::find($this->withdrawalId);
-        if ($oldWithdrawal) {
-            $oldCurrency = $oldWithdrawal->currency;
-            $oldAmount = floatval($oldWithdrawal->amount);
-            $safe->{$oldCurrency} = (is_numeric($safe->{$oldCurrency}) ? floatval($safe->{$oldCurrency}) : 0) + $oldAmount;
-
-            $safe->{$this->currency} = (is_numeric($safe->{$this->currency}) ? floatval($safe->{$this->currency}) : 0) - $amountValue;
-            $safe->save();
-
-            $oldWithdrawal->update($data);
-            session()->flash('message', 'برداشت با موفقیت بروزرسانی شد.');
-        } else {
+        if (!$oldWithdrawal) {
             session()->flash('error', 'برداشت قبلی یافت نشد.');
             return;
         }
+
+        $oldCurrency = $oldWithdrawal->currency;
+        $oldAmount   = (float) $oldWithdrawal->amount;
+
+        // بازگرداندن موجودی قبلی
+        $safe->setAttribute($oldCurrency, $safe->getAttribute($oldCurrency) + $oldAmount);
+        // کسر موجودی جدید
+        $safe->setAttribute($this->currency, $safe->getAttribute($this->currency) - $amountValue);
+        $safe->save();
+
+        $oldWithdrawal->update($data);
+        session()->flash('message', 'برداشت با موفقیت بروزرسانی شد.');
     } else {
         Withdraw::create($data);
 
-        $safe->{$this->currency} = (is_numeric($safe->{$this->currency}) ? floatval($safe->{$this->currency}) : 0) - $amountValue;
+        // کسر موجودی
+        $safe->setAttribute($this->currency, $safe->getAttribute($this->currency) - $amountValue);
         $safe->save();
 
         session()->flash('message', 'برداشت با موفقیت ثبت شد.');
     }
 
+    // به‌روزرسانی لیست و آمار
     $this->updateWithdrawals();
     $this->updateStats();
     $this->resetForm();
 }
-
-
     private function cleanAmount($amount)
     {
         return str_replace(',', '', $amount);
@@ -155,8 +161,8 @@ class Withdrawals extends Component
     private function getCurrencyName($currency)
     {
         $names = [
-            'AFN' => 'دالر',
-            'USD' => 'تومان'
+            'AFN' => 'افغانی',
+            'USD' => 'دالر'
         ];
         return $names[$currency] ?? $currency;
     }
