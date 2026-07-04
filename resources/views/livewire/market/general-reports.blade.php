@@ -15,7 +15,7 @@
             <div class="lg:col-span-1 space-y-6">
                 <!-- Report Type Selector -->
                 <div
-                    class="w-[1150px] max-w-[1150px] bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 border-l-4 border-pink-500 p-6 rounded-xl shadow-lg transition-all duration-300">
+                    class="w-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 border-l-4 border-pink-500 p-6 rounded-xl shadow-lg transition-all duration-300">
                     <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2 yekan vazir">
                         نوع گزارش
                     </h3>
