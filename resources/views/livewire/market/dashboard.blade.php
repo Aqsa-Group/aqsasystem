@@ -232,66 +232,62 @@
                 </div>
             </div>
 
-            {{-- تب صندوق (۴ کارت) --}}
-            <div x-show="activeTab === 'cash'" x-cloak>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div
-                        class="flex flex-col justify-between rounded-2xl bg-[#184D6C] shadow-md p-4 min-h-[220px] text-white">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center justify-center bg-white/20 rounded-full h-14 w-14">
-                                <i class="fas fa-money-bill text-2xl"></i>
-                            </div>
-                            <p class="text-sm font-medium opacity-80">موجودی افغانی</p>
-                        </div>
-                        <div class="mt-3 text-right">
-                            <p class="text-3xl font-extrabold">{{ number_format($cashAfn ?? 0) }}</p>
-                            <p class="text-xs opacity-70">آخرین بروزرسانی: {{ now()->format('H:i') }}</p>
-                        </div>
-                    </div>
-
-                    <div
-                        class="flex flex-col justify-between rounded-2xl bg-[#184D6C] shadow-md p-4 min-h-[220px] text-white">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center justify-center bg-white/20 rounded-full h-14 w-14">
-                                <i class="fas fa-dollar-sign text-2xl"></i>
-                            </div>
-                            <p class="text-sm font-medium opacity-80">موجودی دالر</p>
-                        </div>
-                        <div class="mt-3 text-right">
-                            <p class="text-3xl font-extrabold">{{ number_format($cashUsd ?? 0) }}</p>
-                            <p class="text-xs opacity-70">آخرین بروزرسانی: {{ now()->format('H:i') }}</p>
-                        </div>
-                    </div>
-
-                    <div
-                        class="flex flex-col justify-between rounded-2xl bg-[#184D6C] shadow-md p-4 min-h-[220px] text-white">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center justify-center bg-white/20 rounded-full h-14 w-14">
-                                <i class="fas fa-euro-sign text-2xl"></i>
-                            </div>
-                            <p class="text-sm font-medium opacity-80">موجودی یورو</p>
-                        </div>
-                        <div class="mt-3 text-right">
-                            <p class="text-3xl font-extrabold">{{ number_format($cashEur ?? 0) }}</p>
-                            <p class="text-xs opacity-70">آخرین بروزرسانی: {{ now()->format('H:i') }}</p>
-                        </div>
-                    </div>
-
-                    <div
-                        class="flex flex-col justify-between rounded-2xl bg-[#184D6C] shadow-md p-4 min-h-[220px] text-white">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center justify-center bg-white/20 rounded-full h-14 w-14">
-                                <i class="fas fa-rial text-2xl"></i>
-                            </div>
-                            <p class="text-sm font-medium opacity-80">موجودی تومان</p>
-                        </div>
-                        <div class="mt-3 text-right">
-                            <p class="text-3xl font-extrabold">{{ number_format($cashIrr ?? 0) }}</p>
-                            <p class="text-xs opacity-70">آخرین بروزرسانی: {{ now()->format('H:i') }}</p>
-                        </div>
-                    </div>
+          {{-- تب صندوق (۴ کارت) --}}
+<div x-show="activeTab === 'cash'" x-cloak>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="flex flex-col justify-between rounded-2xl bg-[#184D6C] shadow-md p-4 min-h-[220px] text-white">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center justify-center bg-white/20 rounded-full h-14 w-14">
+                    <i class="fas fa-money-bill text-2xl"></i>
                 </div>
+                <p class="text-sm font-medium opacity-80">موجودی افغانی</p>
             </div>
+            <div class="mt-3 text-right">
+                <p class="text-3xl font-extrabold">{{ number_format($cashCards['AFN'] ?? 0) }}</p>
+                <p class="text-xs opacity-70">آخرین بروزرسانی: {{ now()->format('H:i') }}</p>
+            </div>
+        </div>
+
+        <div class="flex flex-col justify-between rounded-2xl bg-[#184D6C] shadow-md p-4 min-h-[220px] text-white">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center justify-center bg-white/20 rounded-full h-14 w-14">
+                    <i class="fas fa-dollar-sign text-2xl"></i>
+                </div>
+                <p class="text-sm font-medium opacity-80">موجودی دالر</p>
+            </div>
+            <div class="mt-3 text-right">
+                <p class="text-3xl font-extrabold">{{ number_format($cashCards['USD'] ?? 0) }}</p>
+                <p class="text-xs opacity-70">آخرین بروزرسانی: {{ now()->format('H:i') }}</p>
+            </div>
+        </div>
+
+        <div class="flex flex-col justify-between rounded-2xl bg-[#184D6C] shadow-md p-4 min-h-[220px] text-white">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center justify-center bg-white/20 rounded-full h-14 w-14">
+                    <i class="fas fa-euro-sign text-2xl"></i>
+                </div>
+                <p class="text-sm font-medium opacity-80">موجودی یورو</p>
+            </div>
+            <div class="mt-3 text-right">
+                <p class="text-3xl font-extrabold">{{ number_format($cashCards['EUR'] ?? 0) }}</p>
+                <p class="text-xs opacity-70">آخرین بروزرسانی: {{ now()->format('H:i') }}</p>
+            </div>
+        </div>
+
+        <div class="flex flex-col justify-between rounded-2xl bg-[#184D6C] shadow-md p-4 min-h-[220px] text-white">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center justify-center bg-white/20 rounded-full h-14 w-14">
+                    <i class="fas fa-rial text-2xl"></i>
+                </div>
+                <p class="text-sm font-medium opacity-80">موجودی تومان</p>
+            </div>
+            <div class="mt-3 text-right">
+                <p class="text-3xl font-extrabold">{{ number_format($cashCards['IRR'] ?? 0) }}</p>
+                <p class="text-xs opacity-70">آخرین بروزرسانی: {{ now()->format('H:i') }}</p>
+            </div>
+        </div>
+    </div>
+</div>
 
         {{-- تب برداشت‌ها --}}
 <div x-show="activeTab === 'withdrawals'" x-cloak>
