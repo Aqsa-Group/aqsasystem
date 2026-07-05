@@ -35,14 +35,14 @@ class MarketPanelProvider extends PanelProvider
 
             ])
             ->navigationGroups(
-               [
-                 'اطلاعات مارکت'
-               ]
+                [
+                    'اطلاعات مارکت'
+                ]
             )
-              ->brandName("فردوسی")
-              ->renderHook(
-    'panels::head.end',
-    fn() => <<<HTML
+            ->brandName("فردوسی")
+            ->renderHook(
+                'panels::head.end',
+                fn() => <<<HTML
         <style>
             /* فونت‌های فارسی */
             @import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css');
@@ -104,16 +104,14 @@ class MarketPanelProvider extends PanelProvider
             
         </style>
     HTML
-)
+            )
             ->discoverResources(in: app_path('Filament/Market/Resources'), for: 'App\\Filament\\Market\\Resources')
             ->discoverPages(in: app_path('Filament/Market/Pages'), for: 'App\\Filament\\Market\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+                \App\Filament\Market\Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Market/Widgets'), for: 'App\\Filament\\Market\\Widgets')
-            ->widgets([
-           
-            ])
+            ->widgets([])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

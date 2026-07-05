@@ -4,6 +4,10 @@
     $navigation = filament()->getNavigation();
 @endphp
 
+@php
+    $panelId = filament()->getCurrentPanel()->getId();
+@endphp
+
 <x-filament-panels::layout.base :livewire="$livewire">
 
 
@@ -93,10 +97,18 @@
                 class="fi-sidebar-close-overlay fixed inset-0 z-30 bg-gray-950/50 transition duration-500 dark:bg-gray-950/75 lg:hidden"
             ></div>
 
-            <x-filament-panels::sidebar
-                :navigation="$navigation"
-                class="fi-main-sidebar"
-            />
+           @php
+    $panelId = filament()->getCurrentPanel()->getId();
+@endphp
+
+@if ($panelId === 'market')
+    @includeIf('filament.market.sidebar')
+@else
+    <x-filament-panels::sidebar
+        :navigation="$navigation"
+        class="fi-main-sidebar"
+    />
+@endif
 
             <script>
                 document.addEventListener('DOMContentLoaded', () => {
