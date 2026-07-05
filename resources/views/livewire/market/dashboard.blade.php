@@ -137,7 +137,7 @@
                             <div class="flex items-center justify-center bg-white/20 rounded-full h-12 w-12">
                                 <i class="fas fa-cubes text-xl"></i>
                             </div>
-                            <p class="text-sm font-medium opacity-80">کل عرفه‌ها</p>
+                            <p class="text-sm font-medium opacity-80">کل غرفه ها</p>
                         </div>
                         <div class="mt-2 text-right">
                             <p class="text-2xl font-extrabold">{{ $allbooth ?? 0 }}</p>
@@ -165,7 +165,7 @@
                             <div class="flex items-center justify-center bg-white/20 rounded-full h-12 w-12">
                                 <i class="fas fa-cube text-xl"></i>
                             </div>
-                            <p class="text-sm font-medium opacity-80">عرفه‌های خالی</p>
+                            <p class="text-sm font-medium opacity-80">غرفه های خالی</p>
                         </div>
                         <div class="mt-2 text-right">
                             <p class="text-2xl font-extrabold">{{ $emptyBooth ?? 0 }}</p>
