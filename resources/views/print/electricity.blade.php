@@ -259,6 +259,7 @@
                             </div>
                         </div>
 
+
                         <!-- لوگو همان‌جاست -->
                         <div class="logo" aria-hidden="true"
                             style="position: absolute; left: 0; top: 50%; transform: translateY(-50%);">
@@ -270,6 +271,7 @@
 
 
 
+                          <p style="padding-left: 4px; padding-right: 4px;">دو دوره</p>
 
                     <!-- جدول خلاصه اطلاعات بالا -->
                     <table class="form-table" role="table" aria-label="مشخصات">

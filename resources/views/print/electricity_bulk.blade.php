@@ -273,6 +273,7 @@
                             <img src="{{ asset('assets/logo.png') }}" alt="لوگو">
                         </div>
                     </div>
+                          <p style="padding-left: 4px; padding-right: 4px;">دو دوره</p>
 
                     <!-- جدول مشخصات -->
                     <table class="form-table">
