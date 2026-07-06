@@ -342,17 +342,55 @@
                                     </tr>
                                 </table>
                             </td>
-                            <td style="width:30%; vertical-align:top; border:none; padding-right:8px;">
-                          <p style="padding-left: 4px; padding-right: 4px;">دو دوره</p>
+                             <td
+                    style="width:38%; vertical-align: top; padding:5px 8px; border:none !important; background:none !important;">
 
-                                <div class="electrician-box">
-                                    <div class="label">مسئول برق</div>
-                                    <div class="phone">۰۷۹۹۵۵۳۳۳۳</div>
-                                </div>
-                                <div class="signature-box">
-                                    <div class="label">مهر و امضاء</div>
-                                </div>
-                            </td>
+                    <div style="
+                                            border: 1px solid #444;
+                                            padding: 2px;
+                                            border-radius: 6px;
+                                            margin-bottom: 12px;
+                                            text-align: center;
+                                            background: #fafafa;
+                                        ">
+                        <p style="padding-left: 4px; padding-right: 4px;">دو دوره</p>
+
+                    </div>
+                    <!-- باکس مسؤول برق + شماره -->
+                    <div style="
+                                            border: 1px solid #444;
+                                            padding: 5px;
+                                            border-radius: 6px;
+                                            margin-bottom: 15px;
+                                            text-align: center;
+                                            background: #fafafa;
+                                        ">
+                        <div style="font-weight:bold; font-size:15px; margin-bottom:6px;">
+                            مسئول برق
+                        </div>
+
+                        <div class="times" style="font-size:26px; font-weight:900;">
+                            ۰۷۹۹۵۵۳۳۳۳
+                        </div>
+                    </div>
+
+                    <!-- باکس مهر و امضاء با پر کردن کل ارتفاع -->
+                    <div style="
+                                            border: 1px solid #444;
+                                            padding: 10px;
+                                            border-radius: 6px;
+                                            text-align: center;
+                                            background: #fff;
+                                            height: 100%;
+                                            min-height: 150px;
+                                            box-sizing: border-box;
+                                        ">
+                        <div style="font-size:16px; font-weight:bold; margin-top:0;">
+                            مهر و امضاء
+                        </div>
+                    </div>
+
+                </td>
                         </tr>
                     </table>
                 </td>

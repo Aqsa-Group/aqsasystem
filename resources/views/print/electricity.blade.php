@@ -271,7 +271,7 @@
 
 
 
-                          <p style="padding-left: 4px; padding-right: 4px;">دو دوره</p>
+                    <p style="padding-left: 4px; padding-right: 4px;">دو دوره</p>
 
                     <!-- جدول خلاصه اطلاعات بالا -->
                     <table class="form-table" role="table" aria-label="مشخصات">
@@ -386,7 +386,7 @@
                 <td
                     style="width:38%; vertical-align: top; padding:5px 8px; border:none !important; background:none !important;">
 
-                             <div style="
+                    <div style="
                                             border: 1px solid #444;
                                             padding: 2px;
                                             border-radius: 6px;
@@ -394,9 +394,9 @@
                                             text-align: center;
                                             background: #fafafa;
                                         ">
-                          <p style="padding-left: 4px; padding-right: 4px;">دو دوره</p>
+                        <p style="padding-left: 4px; padding-right: 4px;">دو دوره</p>
 
-                             </div>
+                    </div>
                     <!-- باکس مسؤول برق + شماره -->
                     <div style="
                                             border: 1px solid #444;
