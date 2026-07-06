@@ -271,7 +271,6 @@
 
 
 
-                    <p style="padding-left: 4px; padding-right: 4px;">دو دوره</p>
 
                     <!-- جدول خلاصه اطلاعات بالا -->
                     <table class="form-table" role="table" aria-label="مشخصات">
