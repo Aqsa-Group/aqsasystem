@@ -4,6 +4,7 @@ namespace App\Livewire\Market;
 
 use App\Models\Market\Customer;
 use App\Models\Market\Staff;
+use App\Models\Market\WithdrawDraft;
 use App\Models\Market\WithdrawLog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +17,7 @@ class Withdrawals extends Component
 {
     use WithPagination;
 
-    // Properties
+    // ==================== Properties موجود (قبلی) ====================
     public $type;
     public $currency = 'AFN';
     public $amount;
@@ -28,11 +29,24 @@ class Withdrawals extends Component
     public $startDate;
     public $endDate;
 
-    // State management
+    // State management (قبلی)
     public $editingId = null;
     public $confirmDeleteId = null;
 
-    // Statistics
+    // ==================== Properties جدید برای Draft ====================
+    public $showModal = false;                 // نمایش مودال
+    public $draftType;
+    public $draftCurrency = 'AFN';
+    public $draftAmount;
+    public $draftReceiverType = 'staff';
+    public $draftStaffId;
+    public $draftCustomerId;
+    public $draftDescription;
+    public $draftDate;
+    public $editingDraftId = null;
+    public $confirmDeleteIsDraft = false;
+
+    // Statistics (قبلی)
     public $withdrawalStats = [
         'today' => ['AFN' => 0, 'USD' => 0, 'EUR' => 0, 'IRR' => 0],
         'week' => ['AFN' => 0, 'USD' => 0, 'EUR' => 0, 'IRR' => 0],
@@ -40,7 +54,7 @@ class Withdrawals extends Component
         'total' => ['AFN' => 0, 'USD' => 0, 'EUR' => 0, 'IRR' => 0]
     ];
 
-    // Validation rules
+    // Validation rules (قبلی)
     protected $rules = [
         'type' => 'required|string|max:255',
         'currency' => 'required|in:AFN,USD,EUR,IRR',
@@ -59,31 +73,47 @@ class Withdrawals extends Component
         'customer_id.required_if' => 'انتخاب مشتری الزامی است.',
     ];
 
-    /**
-     * Initialize component
-     */
+    // Validation rules برای Draft
+    protected $draftRules = [
+        'draftType' => 'required|string|max:255',
+        'draftCurrency' => 'required|in:AFN,USD,EUR,IRR',
+        'draftAmount' => 'required|numeric|min:1',
+        'draftReceiverType' => 'required|in:staff,customer',
+        'draftDescription' => 'nullable|string|max:4000',
+        'draftStaffId' => 'nullable|exists:market.staff,id',
+        'draftCustomerId' => 'nullable|exists:market.customers,id',
+    ];
+
+    protected $draftMessages = [
+        'draftType.required' => 'نوع برداشت الزامی است.',
+        'draftCurrency.required' => 'انتخاب ارز الزامی است.',
+        'draftAmount.required' => 'مقدار برداشت الزامی است.',
+        'draftAmount.numeric' => 'مقدار باید عددی باشد.',
+        'draftAmount.min' => 'مقدار باید بزرگتر از صفر باشد.',
+        'draftStaffId.required_if' => 'انتخاب کارمند الزامی است.',
+        'draftCustomerId.required_if' => 'انتخاب مشتری الزامی است.',
+    ];
+
+    // ==================== متدهای اولیه ====================
     public function mount()
     {
         $this->date = Jalalian::now()->format('Y/m/d');
+        $this->draftDate = Jalalian::now()->format('Y/m/d');
         $this->updateStats();
     }
 
-    /**
-     * Get authenticated user - مطابق با Filament
-     */
     private function getAuthUser()
     {
         return Auth::guard('market')->user();
     }
 
-    /**
-     * Get admin ID - مطابق با Filament
-     */
     private function getAdminId()
     {
         $user = $this->getAuthUser();
         return $user->role === 'admin' ? $user->id : $user->admin_id;
     }
+
+    // ==================== متدهای موجود (قبلی) ====================
 
     /**
      * Handle withdrawal submission
@@ -107,10 +137,10 @@ class Withdrawals extends Component
 
         // Check safe balance
         $total = DB::connection('market')->table('accountings')
-    ->where('admin_id', $adminId)
-    ->where('currency', $this->currency)
-    ->where('expanses_type', $this->type)
-    ->sum('paid');
+            ->where('admin_id', $adminId)
+            ->where('currency', $this->currency)
+            ->where('expanses_type', $this->type)
+            ->sum('paid');
 
         if ($this->amount > $total) {
             session()->flash('error', "موجودی کافی برای برداشت {$this->amount} {$this->currency} در صندوق وجود ندارد.");
@@ -152,7 +182,7 @@ class Withdrawals extends Component
         }
 
         // تبدیل تاریخ شمسی به میلادی
-        $gregorianDate = Jalalian::fromFormat('Y/m/d', $this->date)->toCarbon()->setTimeFromTimeString(now()->format('H:i:s'));;
+        $gregorianDate = Jalalian::fromFormat('Y/m/d', $this->date)->toCarbon()->setTimeFromTimeString(now()->format('H:i:s'));
 
         DB::transaction(function () use ($adminId, $gregorianDate) {
             // Record in accountings table
@@ -284,6 +314,7 @@ class Withdrawals extends Component
         $this->currency = $withdrawal->currency;
         $this->amount = $withdrawal->amount;
         $this->description = $withdrawal->description;
+        $this->date = Jalalian::fromCarbon($withdrawal->created_at)->format('Y/m/d');
 
         // Determine receiver type based on what exists
         if ($withdrawal->staff_id) {
@@ -309,6 +340,7 @@ class Withdrawals extends Component
     public function confirmDelete($id)
     {
         $this->confirmDeleteId = $id;
+        $this->confirmDeleteIsDraft = false;
     }
 
     /**
@@ -316,6 +348,11 @@ class Withdrawals extends Component
      */
     public function deleteWithdrawal()
     {
+        if ($this->confirmDeleteIsDraft) {
+            $this->deleteDraft($this->confirmDeleteId);
+            return;
+        }
+
         $withdrawal = WithdrawLog::find($this->confirmDeleteId);
 
         if (!$withdrawal) {
@@ -360,6 +397,7 @@ class Withdrawals extends Component
         ]);
         $this->currency = 'AFN';
         $this->receiver_type = 'staff';
+        $this->date = Jalalian::now()->format('Y/m/d');
     }
 
     /**
@@ -518,7 +556,6 @@ class Withdrawals extends Component
         $this->resetPage();
     }
 
-
     /**
      * Set start date from JavaScript
      */
@@ -553,7 +590,6 @@ class Withdrawals extends Component
 
         return WithdrawLog::with(['staff', 'customer'])
             ->where('admin_id', $adminId)
-
             ->when($this->startDate, function ($q) {
                 try {
                     // تبدیل تاریخ شمسی به میلادی برای مقایسه
@@ -566,7 +602,6 @@ class Withdrawals extends Component
                     Log::warning('Invalid startDate: ' . $this->startDate);
                 }
             })
-
             ->when($this->endDate, function ($q) {
                 try {
                     // تبدیل تاریخ شمسی به میلادی برای مقایسه
@@ -579,22 +614,335 @@ class Withdrawals extends Component
                     Log::warning('Invalid endDate: ' . $this->endDate);
                 }
             })
-
             ->orderByDesc('created_at')
             ->paginate(10);
     }
 
-
-
-
+    // ==================== متدهای جدید برای Draft ====================
 
     /**
-     * Render component
+     * باز کردن مودال
      */
+    public function openModal()
+    {
+        $this->showModal = true;
+        $this->resetDraftForm();
+    }
+
+    /**
+     * بستن مودال
+     */
+    public function closeModal()
+    {
+        $this->showModal = false;
+        $this->resetDraftForm();
+        $this->editingDraftId = null;
+    }
+
+    /**
+     * ثبت Draft جدید
+     */
+    public function submitDraft()
+    {
+        $this->validate($this->draftRules, $this->draftMessages);
+
+        if ($this->editingDraftId) {
+            $this->updateDraft();
+            return;
+        }
+
+        $adminId = $this->getAdminId();
+        $gregorianDate = Jalalian::fromFormat('Y/m/d', $this->draftDate)
+            ->toCarbon()
+            ->setTimeFromTimeString(now()->format('H:i:s'));
+
+        WithdrawDraft::create([
+            'expanses_type' => $this->draftType,
+            'currency'      => $this->draftCurrency,
+            'amount'        => $this->draftAmount,
+            'staff_id'      => $this->draftReceiverType === 'staff' ? $this->draftStaffId : null,
+            'customer_id'   => $this->draftReceiverType === 'customer' ? $this->draftCustomerId : null,
+            'description'   => $this->draftDescription,
+            'admin_id'      => $adminId,
+            'created_at'    => $gregorianDate,
+            'updated_at'    => $gregorianDate,
+        ]);
+
+        session()->flash('message', 'پیش‌نویس برداشت با موفقیت ذخیره شد.');
+        $this->resetDraftForm();
+        $this->updateStats();
+    }
+
+    /**
+     * ویرایش Draft
+     */
+    private function updateDraft()
+    {
+        $draft = WithdrawDraft::findOrFail($this->editingDraftId);
+        $gregorianDate = Jalalian::fromFormat('Y/m/d', $this->draftDate)
+            ->toCarbon()
+            ->setTimeFromTimeString(now()->format('H:i:s'));
+
+        $draft->update([
+            'expanses_type' => $this->draftType,
+            'currency'      => $this->draftCurrency,
+            'amount'        => $this->draftAmount,
+            'staff_id'      => $this->draftReceiverType === 'staff' ? $this->draftStaffId : null,
+            'customer_id'   => $this->draftReceiverType === 'customer' ? $this->draftCustomerId : null,
+            'description'   => $this->draftDescription,
+            'created_at'    => $gregorianDate,
+            'updated_at'    => now(),
+        ]);
+
+        session()->flash('message', 'پیش‌نویس با موفقیت بروزرسانی شد.');
+        $this->resetDraftForm();
+        $this->editingDraftId = null;
+        $this->updateStats();
+    }
+
+    /**
+     * بارگذاری داده‌های Draft در فرم برای ویرایش
+     */
+    public function editDraft($id)
+    {
+        $draft = WithdrawDraft::find($id);
+        if (!$draft) {
+            session()->flash('error', 'پیش‌نویس یافت نشد.');
+            return;
+        }
+
+        $this->editingDraftId = $id;
+        $this->draftType = $draft->expanses_type;
+        $this->draftCurrency = $draft->currency;
+        $this->draftAmount = $draft->amount;
+        $this->draftDescription = $draft->description;
+        $this->draftDate = Jalalian::fromCarbon($draft->created_at)->format('Y/m/d');
+
+        if ($draft->staff_id) {
+            $this->draftReceiverType = 'staff';
+            $this->draftStaffId = $draft->staff_id;
+            $this->draftCustomerId = null;
+        } elseif ($draft->customer_id) {
+            $this->draftReceiverType = 'customer';
+            $this->draftCustomerId = $draft->customer_id;
+            $this->draftStaffId = null;
+        } else {
+            $this->draftReceiverType = 'staff';
+            $this->draftStaffId = null;
+            $this->draftCustomerId = null;
+        }
+
+        $this->showModal = true;
+    }
+
+    /**
+     * لغو ویرایش Draft
+     */
+    public function cancelEditDraft()
+    {
+        $this->resetDraftForm();
+        $this->editingDraftId = null;
+    }
+
+    /**
+     * نهایی کردن یک Draft (تبدیل به برداشت نهایی)
+     */
+    public function finalizeDraft($id)
+    {
+        $draft = WithdrawDraft::find($id);
+        if (!$draft) {
+            session()->flash('error', 'پیش‌نویس یافت نشد.');
+            return;
+        }
+
+        try {
+            DB::transaction(function () use ($draft) {
+                $this->processFinalWithdrawal($draft);
+            });
+            session()->flash('message', 'پیش‌نویس با موفقیت نهایی شد.');
+        } catch (\Exception $e) {
+            session()->flash('error', $e->getMessage());
+        }
+
+        $this->updateStats();
+    }
+
+    /**
+     * نهایی کردن همه Draftها
+     */
+    public function finalizeAllDrafts()
+    {
+        $drafts = WithdrawDraft::where('admin_id', $this->getAdminId())->get();
+
+        if ($drafts->isEmpty()) {
+            session()->flash('error', 'هیچ پیش‌نویسی برای نهایی کردن وجود ندارد.');
+            return;
+        }
+
+        try {
+            DB::transaction(function () use ($drafts) {
+                foreach ($drafts as $draft) {
+                    $this->processFinalWithdrawal($draft);
+                }
+            });
+            session()->flash('message', 'همه پیش‌نویس‌ها با موفقیت نهایی شدند.');
+        } catch (\Exception $e) {
+            session()->flash('error', $e->getMessage());
+        }
+
+        $this->updateStats();
+    }
+
+    /**
+     * پردازش نهایی یک Draft (ثبت در accountings و withdraw_logs)
+     */
+    private function processFinalWithdrawal($draft)
+    {
+        $adminId = $this->getAdminId();
+
+        // تنظیم متغیرهای موقت برای استفاده در متد createWithdrawal
+        $this->type = $draft->expanses_type;
+        $this->currency = $draft->currency;
+        $this->amount = $draft->amount;
+        $this->receiver_type = $draft->staff_id ? 'staff' : 'customer';
+        $this->staff_id = $draft->staff_id;
+        $this->customer_id = $draft->customer_id;
+        $this->description = $draft->description;
+        $this->date = Jalalian::fromCarbon($draft->created_at)->format('Y/m/d');
+
+        // استفاده از منطق createWithdrawal (با کپی کردن کد)
+        // چک موجودی
+        $total = DB::connection('market')->table('accountings')
+            ->where('admin_id', $adminId)
+            ->where('currency', $this->currency)
+            ->where('expanses_type', $this->type)
+            ->sum('paid');
+
+        if ($this->amount > $total) {
+            throw new \Exception("موجودی کافی برای برداشت {$this->amount} {$this->currency} در صندوق وجود ندارد.");
+        }
+
+        // پردازش مشتری
+        if ($this->receiver_type === 'customer') {
+            $customer = Customer::find($this->customer_id);
+            if (!$customer) {
+                throw new \Exception('مشتری یافت نشد.');
+            }
+
+            if ($this->type === 'کرایه دوکان‌های گروی و سرقفلی') {
+                if ($customer->rent_money < $this->amount) {
+                    throw new \Exception("مشتری موجودی کافی برای برداشت {$this->amount} کرایه ندارد.");
+                }
+                $customer->rent_money -= $this->amount;
+            } else {
+                $currencyField = match ($this->currency) {
+                    'AFN' => 'balance_afn',
+                    'USD' => 'balance_usd',
+                    'EUR' => 'balance_eur',
+                    'IRR' => 'balance_irr',
+                };
+                if ($customer->$currencyField < $this->amount) {
+                    throw new \Exception("مشتری موجودی کافی برای برداشت {$this->amount} {$this->currency} ندارد.");
+                }
+                $customer->$currencyField -= $this->amount;
+            }
+            $customer->save();
+        }
+
+        // ثبت در accountings
+        $gregorianDate = Jalalian::fromFormat('Y/m/d', $this->date)
+            ->toCarbon()
+            ->setTimeFromTimeString(now()->format('H:i:s'));
+
+        DB::connection('market')->table('accountings')->insert([
+            'admin_id' => $adminId,
+            'expanses_type' => $this->type,
+            'currency' => $this->currency,
+            'paid' => -1 * $this->amount,
+            'type' => 'withdraw',
+            'created_at' => $gregorianDate,
+            'updated_at' => $gregorianDate,
+        ]);
+
+        // ثبت در withdraw_logs
+        WithdrawLog::create([
+            'expanses_type' => $this->type,
+            'currency' => $this->currency,
+            'amount' => $this->amount,
+            'staff_id' => $this->receiver_type === 'staff' ? $this->staff_id : null,
+            'customer_id' => $this->receiver_type === 'customer' ? $this->customer_id : null,
+            'description' => $this->description,
+            'admin_id' => $adminId,
+            'created_at' => $gregorianDate,
+            'updated_at' => $gregorianDate,
+        ]);
+
+        // حذف Draft
+        $draft->delete();
+    }
+
+    /**
+     * حذف Draft (بدون تأثیر در موجودی)
+     */
+    public function deleteDraft($id)
+    {
+        $draft = WithdrawDraft::find($id);
+        if ($draft) {
+            $draft->delete();
+            session()->flash('message', 'پیش‌نویس با موفقیت حذف شد.');
+        }
+        $this->confirmDeleteId = null;
+        $this->confirmDeleteIsDraft = false;
+        $this->updateStats();
+    }
+
+    /**
+     * تایید حذف Draft
+     */
+    public function confirmDeleteDraft($id)
+    {
+        $this->confirmDeleteId = $id;
+        $this->confirmDeleteIsDraft = true;
+    }
+
+    /**
+     * ریست فرم Draft
+     */
+    private function resetDraftForm()
+    {
+        $this->reset([
+            'draftType',
+            'draftCurrency',
+            'draftAmount',
+            'draftReceiverType',
+            'draftStaffId',
+            'draftCustomerId',
+            'draftDescription',
+        ]);
+        $this->draftCurrency = 'AFN';
+        $this->draftReceiverType = 'staff';
+        $this->draftDate = Jalalian::now()->format('Y/m/d');
+        $this->editingDraftId = null;
+    }
+
+    /**
+     * پراپرتی محاسباتی برای لیست Draftها
+     */
+    public function getDraftsProperty()
+    {
+        return WithdrawDraft::with(['staff', 'customer'])
+            ->where('admin_id', $this->getAdminId())
+            ->orderByDesc('created_at')
+            ->get();
+    }
+
+    // ==================== رندر ====================
+
     public function render()
     {
         return view('livewire.market.withdrawals', [
-            'withdrawals' => $this->withdrawals
+            'withdrawals' => $this->withdrawals,
+            'drafts'      => $this->drafts,
         ]);
     }
 }

@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('withdraw_drafts', function (Blueprint $table) {
             $table->id();
-             $table->string('expanses_type');
+            $table->string('expanses_type');
             $table->string('currency', 10);
             $table->decimal('amount', 15, 2);
             $table->unsignedBigInteger('staff_id')->nullable();
             $table->unsignedBigInteger('customer_id')->nullable();
             $table->text('description')->nullable();
+            $table->enum('status', ['draft', 'final'])->default('draft');
             $table->unsignedBigInteger('admin_id');
             $table->timestamps();
         });

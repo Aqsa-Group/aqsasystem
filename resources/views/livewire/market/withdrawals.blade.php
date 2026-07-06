@@ -1,28 +1,294 @@
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
     <!-- Notifications -->
-    @if (session()->has('message'))
-    <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
-        class="fixed top-0 left-0 right-0 w-full z-50 bg-gradient-to-br from-indigo-400 to-indigo-500 vazir">
-        <div class="h-20 w-full flex justify-start items-center px-4">
-            <h2 class="text-white vazir text-lg">
-                {{ session('message') }}
-            </h2>
+       @if (session()->has('message'))
+        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
+            class="fixed top-0 left-0 right-0 w-full z-[9999] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-400  bg-[#184d6c] vazir">
+            <div style="margin-right: 296px" class="h-[80px] w-full flex justify-start items-center px-4">
+                <h2 class="text-white vazir text-[18px] text-center align-middle">
+                    {{ session('message') }}
+                </h2>
+            </div>
+        </div>
+        @endif
+
+        @if (session()->has('error'))
+        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
+            class="fixed top-0 left-0 right-0 w-full z-[9999] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-400  bg-red-800 vazir">
+            <div style="margin-right: 296px" class="h-[80px] w-full flex justify-start items-center px-4">
+                <h2 class="text-white vazir text-[18px] text-center align-middle">
+                    {{ session('error') }}
+                </h2>
+            </div>
+        </div>
+        @endif
+    <!-- ==================== دکمه باز کردن مودال ==================== -->
+    <div class="px-4 pb-2">
+        <button wire:click="openModal"
+            class="bg-[#184d6c] text-white px-6 py-3 rounded-xl font-medium shadow-lg transition vazir">
+            <i class="fa-solid fa-plus ml-2"></i>
+            ثبت برداشت جدید (Draft)
+        </button>
+    </div>
+
+    <!-- ==================== مودال مدیریت پیش‌نویس‌ها ==================== -->
+    @if($showModal)
+
+    <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <!-- هدر مودال -->
+            @if ($errors->any())
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <strong class="font-bold">خطا!</strong>
+                <span class="block sm:inline">لطفاً همه فیلدهای ضروری را پر کنید.</span>
+                <ul class="mt-2 list-disc list-inside">
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+            <div
+                class="sticky top-0 bg-[#184d6c] p-4 rounded-t-2xl flex justify-between items-center z-10">
+                <h2 class="text-xl font-bold text-white vazir">
+                    <i class="fa-regular fa-file-lines ml-2"></i>
+                    مدیریت پیش‌نویس‌های برداشت
+                </h2>
+                <button wire:click="closeModal" class="text-white hover:bg-white/20 p-2 rounded-lg transition">
+                    <i class="fa-solid fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <div class="p-6 space-y-6">
+                <!-- ========== فرم ثبت پیش‌نویس ========== -->
+                <div
+                    class="bg-[#9bbacc] dark:bg-yellow-900/10 rounded-xl p-4 border border-yellow-200 dark:border-yellow-700">
+                    <h3 class="text-lg font-bold vazir text-gray-800 dark:text-gray-200 mb-4">
+                        {{ $editingDraftId ? 'ویرایش پیش‌نویس' : 'ثبت پیش‌نویس جدید' }}
+                    </h3>
+
+                    <form wire:submit.prevent="submitDraft" class="space-y-4">
+                        <!-- نوع برداشت -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 vazir">نوع برداشت
+                                *</label>
+                            <select wire:model="draftType"
+                                class="w-full h-12 px-4 border rounded-xl focus:ring-2 focus:ring-[#184d6c] bg-white dark:bg-gray-700 vazir">
+                                <option value="">انتخاب کنید</option>
+                                @foreach($this->expansesTypes as $key => $value)
+                                <option value="{{ $key }}">{{ $value }}</option>
+                                @endforeach
+                            </select>
+                            @error('draftType') <span class="text-red-500 text-xs vazir">{{ $message }}</span> @enderror
+                        </div>
+
+                        <!-- ارز و مبلغ -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 vazir">ارز
+                                    *</label>
+                                <select wire:model="draftCurrency"
+                                    class="w-full h-12 px-4 border rounded-xl focus:ring-2 focus:ring-yellow-500 bg-white dark:bg-gray-700 vazir">
+                                    <option value="AFN">افغانی</option>
+                                    <option value="USD">دالر</option>
+                                    <option value="EUR">یورو</option>
+                                    <option value="IRR">تومان</option>
+                                </select>
+                                @error('draftCurrency') <span class="text-red-500 text-xs vazir">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 vazir">مبلغ
+                                    *</label>
+                                <input type="number" wire:model="draftAmount" step="0.01" min="0"
+                                    class="w-full h-12 px-4 border rounded-xl focus:ring-2 focus:ring-yellow-500 bg-white dark:bg-gray-700 vazir"
+                                    placeholder="0">
+                                @error('draftAmount') <span class="text-red-500 text-xs vazir">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <!-- گیرنده -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 vazir">تحویل به
+                                *</label>
+                            <select wire:model.live="draftReceiverType"
+                                class="w-full h-12 px-4 border rounded-xl focus:ring-2 focus:ring-yellow-500 bg-white dark:bg-gray-700 vazir">
+                                <option value="staff">کارمند</option>
+                                <option value="customer">مشتری</option>
+                            </select>
+                        </div>
+
+                        <!-- انتخاب گیرنده -->
+                        <div>
+                            @if($draftReceiverType === 'staff')
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 vazir">کارمند
+                                *</label>
+                            <select wire:model="draftStaffId"
+                                class="w-full h-12 px-4 border rounded-xl focus:ring-2 focus:ring-yellow-500 bg-white dark:bg-gray-700 vazir">
+                                <option value="">انتخاب کارمند</option>
+                                @foreach($this->staffs as $id => $name)
+                                <option value="{{ $id }}">{{ $name }}</option>
+                                @endforeach
+                            </select>
+                            @error('draftStaffId') <span class="text-red-500 text-xs vazir">{{ $message }}</span>
+                            @enderror
+                            @else
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 vazir">مشتری
+                                *</label>
+                            <select wire:model="draftCustomerId"
+                                class="w-full h-12 px-4 border rounded-xl focus:ring-2 focus:ring-yellow-500 bg-white dark:bg-gray-700 vazir">
+                                <option value="">انتخاب مشتری</option>
+                                @foreach($this->customers as $id => $info)
+                                <option value="{{ $id }}">{{ $info }}</option>
+                                @endforeach
+                            </select>
+                            @error('draftCustomerId') <span class="text-red-500 text-xs vazir">{{ $message }}</span>
+                            @enderror
+                            @endif
+                        </div>
+
+                        <!-- تاریخ -->
+                        <div>
+                            <label
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 vazir">تاریخ</label>
+                            <input type="text" wire:model="draftDate"
+                                class="w-full h-12 px-4 border rounded-xl focus:ring-2 focus:ring-yellow-500 bg-white dark:bg-gray-700 vazir"
+                                placeholder="YYYY/MM/DD">
+                            @error('draftDate') <span class="text-red-500 text-xs vazir">{{ $message }}</span> @enderror
+                        </div>
+
+                        <!-- توضیحات -->
+                        <div>
+                            <label
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 vazir">توضیحات</label>
+                            <textarea wire:model="draftDescription" rows="2"
+                                class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-yellow-500 bg-white dark:bg-gray-700 vazir"
+                                placeholder="توضیحات..."></textarea>
+                            @error('draftDescription') <span class="text-red-500 text-xs vazir">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <!-- دکمه‌های فرم -->
+                        <div class="flex gap-3">
+                            <button type="submit"
+                                class="flex-1 bg-[#184d6c] hover:from-yellow-600 hover:to-amber-700 text-white py-3 rounded-xl font-medium transition shadow-lg vazir">
+                                <i class="fa-regular fa-floppy-disk ml-2"></i>
+                                {{ $editingDraftId ? 'بروزرسانی پیش‌نویس' : 'ذخیره پیش‌نویس' }}
+                            </button>
+                            @if($editingDraftId)
+                            <button type="button" wire:click="cancelEditDraft"
+                                class="flex-1 bg-gray-400 hover:bg-gray-500 text-white py-3 rounded-xl font-medium transition vazir">
+                                <i class="fa-solid fa-times ml-2"></i>
+                                لغو
+                            </button>
+                            @endif
+                        </div>
+                    </form>
+                </div>
+
+                <!-- ========== لیست پیش‌نویس‌ها ========== -->
+                <div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold vazir text-gray-800 dark:text-gray-200">
+                            <i class="fa-solid fa-list ml-2"></i>
+                            لیست پیش‌نویس‌ها ({{ $drafts->count() }})
+                        </h3>
+                        @if($drafts->count() > 0)
+                        <button wire:click="finalizeAllDrafts"
+                            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition vazir">
+                            <i class="fa-solid fa-check-double ml-1"></i>
+                            ثبت همه
+                        </button>
+                        @endif
+                    </div>
+
+                    @if($drafts->isEmpty())
+                    <div class="text-center py-8 text-gray-500 dark:text-gray-400 vazir">
+                        <i class="fa-regular fa-file-lines text-3xl mb-2 block"></i>
+                        هیچ پیش‌نویسی ثبت نشده است.
+                    </div>
+                    @else
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead class="bg-gray-100 dark:bg-gray-700 vazir">
+                                <tr>
+                                    <th class="px-4 py-2 text-right">نوع</th>
+                                    <th class="px-4 py-2 text-right">ارز</th>
+                                    <th class="px-4 py-2 text-right">مبلغ</th>
+                                    <th class="px-4 py-2 text-right">گیرنده</th>
+                                    <th class="px-4 py-2 text-right">تاریخ</th>
+                                    <th class="px-4 py-2 text-center">عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($drafts as $draft)
+                                <tr class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                    <td class="px-4 py-2 vazir">{{ $draft->expanses_type }}</td>
+                                    <td class="px-4 py-2">{{ $draft->currency }}</td>
+                                    <td class="px-4 py-2">{{ number_format($draft->amount) }}</td>
+                                    <td class="px-4 py-2">
+                                        @if($draft->staff)
+                                        {{ $draft->staff->fullname }}
+                                        @elseif($draft->customer)
+                                        {{ $draft->customer->fullname }}
+                                        @endif
+                                    </td>
+
+                                    <td class="px-4 py-2">
+                                        {{ \Morilog\Jalali\Jalalian::fromCarbon($draft->created_at)->format('Y/m/d') }}
+                                    </td>
+                                    <td class="px-4 py-2 text-center">
+                                        <div class="flex justify-center gap-1">
+                                            <button wire:click="editDraft({{ $draft->id }})"
+                                                class="text-blue-600 hover:text-blue-800 p-1">
+                                                <i class="fa-solid fa-edit"></i>
+                                            </button>
+                                            <button wire:click="confirmDeleteDraft({{ $draft->id }})"
+                                                class="text-red-600 hover:text-red-800 p-1">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                            <button wire:click="finalizeDraft({{ $draft->id }})"
+                                                class="text-green-600 hover:text-green-800 p-1">
+                                                <i class="fa-solid fa-check"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
     @endif
 
-    @if (session()->has('error'))
-    <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
-        class="fixed top-0 left-0 right-0 w-full z-50 bg-red-500 vazir">
-        <div class="h-20 w-full flex justify-start items-center px-4">
-            <h2 class="text-white vazir text-lg">
-                {{ session('error') }}
-            </h2>
+
+    <!-- ==================== مودال حذف یکپارچه ==================== -->
+    @if($confirmDeleteId)
+    <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl max-w-md w-full p-6">
+            <h3 class="text-xl font-bold text-center vazir text-gray-900 dark:text-gray-100">تأیید حذف</h3>
+            <p class="text-center text-gray-600 dark:text-gray-400 my-4 vazir">
+                آیا از حذف این {{ $confirmDeleteIsDraft ? 'پیش‌نویس' : 'برداشت' }} اطمینان دارید؟ این عمل غیرقابل بازگشت
+                است.
+            </p>
+            <div class="flex gap-3">
+                <button wire:click="deleteWithdrawal"
+                    class="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 rounded-xl transition vazir">
+                    بله، حذف کن
+                </button>
+                <button wire:click="$set('confirmDeleteId', null)"
+                    class="flex-1 bg-gray-400 hover:bg-gray-500 text-white py-2 rounded-xl transition vazir">
+                    انصراف
+                </button>
+            </div>
         </div>
     </div>
     @endif
-
-    <!-- Statistics Cards -->
+    {{-- <!-- Statistics Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
         <!-- Today's Withdrawals -->
         <div
@@ -37,7 +303,8 @@
                 @foreach(['AFN' => 'افغانی', 'USD' => 'دالر', 'EUR' => 'یورو', 'IRR' => 'تومان'] as $currency => $label)
                 <div class="flex justify-between items-center">
                     <span class="text-sm text-rose-700 dark:text-rose-300 vazir">{{ $label }}:</span>
-                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['today'][$currency]) }}</span>
+                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['today'][$currency])
+                        }}</span>
                 </div>
                 @endforeach
             </div>
@@ -56,7 +323,8 @@
                 @foreach(['AFN' => 'افغانی', 'USD' => 'دالر', 'EUR' => 'یورو', 'IRR' => 'تومان'] as $currency => $label)
                 <div class="flex justify-between items-center">
                     <span class="text-sm text-green-700 dark:text-green-300 vazir">{{ $label }}:</span>
-                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['week'][$currency]) }}</span>
+                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['week'][$currency])
+                        }}</span>
                 </div>
                 @endforeach
             </div>
@@ -75,7 +343,8 @@
                 @foreach(['AFN' => 'افغانی', 'USD' => 'دالر', 'EUR' => 'یورو', 'IRR' => 'تومان'] as $currency => $label)
                 <div class="flex justify-between items-center">
                     <span class="text-sm text-blue-700 dark:text-blue-300 vazir">{{ $label }}:</span>
-                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['month'][$currency]) }}</span>
+                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['month'][$currency])
+                        }}</span>
                 </div>
                 @endforeach
             </div>
@@ -94,21 +363,23 @@
                 @foreach(['AFN' => 'افغانی', 'USD' => 'دالر', 'EUR' => 'یورو', 'IRR' => 'تومان'] as $currency => $label)
                 <div class="flex justify-between items-center">
                     <span class="text-sm text-purple-700 dark:text-purple-300 vazir">{{ $label }}:</span>
-                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['total'][$currency]) }}</span>
+                    <span class="text-lg font-bold vazir">{{ number_format($withdrawalStats['total'][$currency])
+                        }}</span>
                 </div>
                 @endforeach
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Main Content -->
     <div class="flex flex-col lg:flex-row gap-6 p-4">
 
         <!-- Withdrawal Form -->
         <div class="lg:w-full xl:full">
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden transition-colors duration-300">
+            <div
+                class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden transition-colors duration-300">
                 <!-- Form Header -->
-                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-6">
+                <div class="bg-[#184d6c] p-6">
                     <div class="flex items-center justify-between">
                         <h2 class="text-xl font-bold text-white vazir">
                             <i class="fa-solid fa-money-bill-wave ml-2"></i>
@@ -896,9 +1167,10 @@
     </div>
     <!-- Withdrawals Table -->
     <div class="w-full lg:full xl:w-full px-4 pb-4">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden transition-colors duration-300">
+        <div
+            class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden transition-colors duration-300">
             <!-- Table Header -->
-            <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-6">
+            <div class="bg-[#184d6c] p-6">
                 <div class="flex items-center justify-between">
                     <h2 class="text-xl font-bold text-white vazir">
                         <i class="fa-solid fa-list ml-2"></i>
@@ -918,7 +1190,8 @@
 
                         <div>
                             <div class="lg:col-span-3 relative" x-data="fromDatePicker()" x-init="init()">
-                                <label class="block text-[16px] font-medium dark:text-gray-300 text-gray-700 mb-1 vazir">
+                                <label
+                                    class="block text-[16px] font-medium dark:text-gray-300 text-gray-700 mb-1 vazir">
                                     از تاریخ
                                 </label>
                                 <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
@@ -1134,7 +1407,8 @@
                         <div>
                             <!-- تا تاریخ -->
                             <div class="lg:col-span-3 relative" x-data="toDatePicker()" x-init="init()">
-                                <label class="block text-[16px] font-medium dark:text-gray-300 text-gray-700 mb-1 vazir">
+                                <label
+                                    class="block text-[16px] font-medium dark:text-gray-300 text-gray-700 mb-1 vazir">
                                     تا تاریخ
                                 </label>
                                 <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
@@ -1811,7 +2085,8 @@
                         </thead>
                         <tbody class="vazir">
                             @forelse($withdrawals as $key => $withdrawal)
-                            <tr class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                            <tr
+                                class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
                                 <td class="px-4 py-3 font-medium text-gray-900 dark:text-gray-100 text-center">
                                     {{ ($withdrawals->currentPage() - 1) * $withdrawals->perPage() + $key + 1 }}
                                 </td>
@@ -1843,15 +2118,18 @@
                                 </td>
                                 <td class="px-4 py-3">
                                     @if($withdrawal->staff_id && $withdrawal->staff)
-                                    <span class="bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200 px-2 py-1 rounded text-xs">
+                                    <span
+                                        class="bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200 px-2 py-1 rounded text-xs">
                                         {{ $withdrawal->staff->fullname }}
                                     </span>
                                     @elseif($withdrawal->customer_id && $withdrawal->customer)
-                                    <span class="bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200 px-2 py-1 rounded text-xs">
+                                    <span
+                                        class="bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200 px-2 py-1 rounded text-xs">
                                         {{ $withdrawal->customer->fullname }}
                                     </span>
                                     @else
-                                    <span class="bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded text-xs">
+                                    <span
+                                        class="bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded text-xs">
                                         صندوق
                                     </span>
                                     @endif
@@ -1915,7 +2193,8 @@
     <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl max-w-md w-full transform transition-all">
             <div class="p-6">
-                <div class="flex items-center justify-center w-16 h-16 bg-red-100 dark:bg-red-900/50 rounded-full mx-auto mb-4">
+                <div
+                    class="flex items-center justify-center w-16 h-16 bg-red-100 dark:bg-red-900/50 rounded-full mx-auto mb-4">
                     <i class="fa-solid fa-exclamation-triangle text-red-600 dark:text-red-400 text-2xl"></i>
                 </div>
                 <h3 class="text-lg font-bold text-center text-gray-900 dark:text-gray-100 mb-2 vazir">
