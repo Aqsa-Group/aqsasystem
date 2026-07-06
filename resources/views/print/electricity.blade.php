@@ -386,6 +386,17 @@
                 <td
                     style="width:38%; vertical-align: top; padding:5px 8px; border:none !important; background:none !important;">
 
+                             <div style="
+                                            border: 1px solid #444;
+                                            padding: 2px;
+                                            border-radius: 6px;
+                                            margin-bottom: 12px;
+                                            text-align: center;
+                                            background: #fafafa;
+                                        ">
+                          <p style="padding-left: 4px; padding-right: 4px;">دو دوره</p>
+
+                             </div>
                     <!-- باکس مسؤول برق + شماره -->
                     <div style="
                                             border: 1px solid #444;
@@ -407,12 +418,12 @@
                     <!-- باکس مهر و امضاء با پر کردن کل ارتفاع -->
                     <div style="
                                             border: 1px solid #444;
-                                            padding: 12px;
+                                            padding: 10px;
                                             border-radius: 6px;
                                             text-align: center;
                                             background: #fff;
                                             height: 100%;
-                                            min-height: 210px;
+                                            min-height: 150px;
                                             box-sizing: border-box;
                                         ">
                         <div style="font-size:16px; font-weight:bold; margin-top:0;">

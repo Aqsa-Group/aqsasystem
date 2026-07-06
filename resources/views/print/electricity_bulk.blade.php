@@ -273,7 +273,6 @@
                             <img src="{{ asset('assets/logo.png') }}" alt="لوگو">
                         </div>
                     </div>
-                          <p style="padding-left: 4px; padding-right: 4px;">دو دوره</p>
 
                     <!-- جدول مشخصات -->
                     <table class="form-table">
@@ -344,6 +343,8 @@
                                 </table>
                             </td>
                             <td style="width:30%; vertical-align:top; border:none; padding-right:8px;">
+                          <p style="padding-left: 4px; padding-right: 4px;">دو دوره</p>
+
                                 <div class="electrician-box">
                                     <div class="label">مسئول برق</div>
                                     <div class="phone">۰۷۹۹۵۵۳۳۳۳</div>
