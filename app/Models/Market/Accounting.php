@@ -39,7 +39,8 @@ class Accounting extends Model
         'expiration_date',
         'degree_price',
         'outside_id',
-        'shopkeeper_receipt_id'
+        'shopkeeper_receipt_id',
+        'exchange_id'
     ];
 
     protected $casts = [

@@ -119,6 +119,12 @@
                         <i class="fas fa-wallet text-xs text-[#184D6C]/60 dark:text-white/60"></i>
                         موجودی صندوق‌ها
                     </a>
+
+                     <a href="/market/exchanges"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
+<i class="fas fa-exchange-alt text-xs text-[#184D6C]/60 dark:text-white/60"></i>                        تبادله بین صندوق ها
+                    </a>
+
                     <a href="/market/withdrawals"
                         class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
                         <i class="fas fa-arrow-down text-xs text-[#184D6C]/60 dark:text-white/60"></i>

@@ -33,7 +33,7 @@ class DepositResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return Auth::check() && in_array(Auth::user()?->role, ['superadmin', 'Financial Manager', 'Cashier' ,'admin']);
+        return Auth::check() && in_array(Auth::user()?->role, ['superadmin', 'Financial Manager', 'Cashier', 'admin']);
     }
 
     public static function getNavigationBadge(): ?string
@@ -93,55 +93,56 @@ class DepositResource extends Resource
 
             Forms\Components\Select::make('currency')
                 ->label('واحد پول')
-                ->options(['AFN' => 'افغانی', 'USD' => 'دالر'])
+                ->options(['AFN' => 'افغانی', 'USD' => 'دالر', 'TOMAN' => 'تومان', 'EUR' => 'یورو'])
+
                 ->disabled()
                 ->formatStateUsing(fn($state, $record) => $record?->accounting?->currency),
 
 
-           Forms\Components\TextInput::make('paid')
-    ->label('رسید')
-    ->numeric()
-    ->required()
-    ->debounce(500)
-    ->formatStateUsing(fn () => null) // همیشه خالی باشد
-    ->rules([
-        fn ($record) => function ($attribute, $value, $fail) use ($record) {
+            Forms\Components\TextInput::make('paid')
+                ->label('رسید')
+                ->numeric()
+                ->required()
+                ->debounce(500)
+                ->formatStateUsing(fn() => null) // همیشه خالی باشد
+                ->rules([
+                    fn($record) => function ($attribute, $value, $fail) use ($record) {
 
-            if (! $record) {
-                return;
-            }
+                        if (! $record) {
+                            return;
+                        }
 
-            $newPayment = (int) $value;
+                        $newPayment = (int) $value;
 
-            if ($newPayment <= 0) {
-                $fail('مبلغ پرداختی باید بیشتر از صفر باشد.');
-                return;
-            }
+                        if ($newPayment <= 0) {
+                            $fail('مبلغ پرداختی باید بیشتر از صفر باشد.');
+                            return;
+                        }
 
-            $totalPrice = (int) $record->price;
-            $currentPaid = (int) $record->paid;
+                        $totalPrice = (int) $record->price;
+                        $currentPaid = (int) $record->paid;
 
-            $remaining = $totalPrice - $currentPaid;
+                        $remaining = $totalPrice - $currentPaid;
 
-            if ($newPayment > $remaining) {
-                $fail("مبلغ پرداختی نمی‌تواند از مقدار باقیمانده ({$remaining}) بیشتر باشد.");
-            }
-        },
-    ])
-    ->afterStateUpdated(function ($set, $state, $record) {
+                        if ($newPayment > $remaining) {
+                            $fail("مبلغ پرداختی نمی‌تواند از مقدار باقیمانده ({$remaining}) بیشتر باشد.");
+                        }
+                    },
+                ])
+                ->afterStateUpdated(function ($set, $state, $record) {
 
-        $totalPrice = (int) ($record->price ?? 0);
-        $currentPaid = (int) ($record->paid ?? 0);
+                    $totalPrice = (int) ($record->price ?? 0);
+                    $currentPaid = (int) ($record->paid ?? 0);
 
-        $newPayment = (int) $state;
+                    $newPayment = (int) $state;
 
-        $remaining = max(
-            $totalPrice - ($currentPaid + $newPayment),
-            0
-        );
+                    $remaining = max(
+                        $totalPrice - ($currentPaid + $newPayment),
+                        0
+                    );
 
-        $set('remained', $remaining);
-    }),
+                    $set('remained', $remaining);
+                }),
 
             Forms\Components\Hidden::make('remained')
                 ->dehydrated()
