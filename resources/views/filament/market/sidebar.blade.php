@@ -50,200 +50,214 @@
 
 
 
-       <!-- منو -->
-<nav class="p-3 space-y-1 mt-4">
+        <!-- منو -->
+        <nav class="p-3 space-y-1 mt-4">
 
-    <!-- داشبورد -->
-    <a href="/market/dashboard"
-        class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-[#184D6C] hover:text-white dark:hover:text-white transition-all group"
-        :class="isActive('/market/dashboard') ? 'bg-[#184D6C] text-white dark:text-white' : ''">
-        <div class="w-8 h-8 flex items-center justify-center rounded-lg"
-            :class="isActive('/market/dashboard') ? 'bg-white/20' : 'bg-[#184D6C]/10 dark:bg-[#184D6C]/20 group-hover:bg-white/20'">
-            <i class="fas fa-chart-pie"
-                :class="isActive('/market/dashboard') ? 'text-white' : 'text-[#184D6C] dark:text-white group-hover:text-white'"></i>
-        </div>
-        <span class="font-medium dark:text-white">داشبورد</span>
-    </a>
-
-    <!-- اطلاعات مارکت -->
-    <div>
-        <button @click="toggleGroup('market')"
-            class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-[#184D6C] hover:text-white dark:hover:text-white transition-all group">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-[#184D6C]/10 dark:bg-[#184D6C]/20 group-hover:bg-white/20">
-                    <i class="fas fa-store text-[#184D6C] dark:text-white group-hover:text-white"></i>
+            <!-- داشبورد -->
+            <a href="/market/dashboard"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-[#184D6C] hover:text-white dark:hover:text-white transition-all group"
+                :class="isActive('/market/dashboard') ? 'bg-[#184D6C] text-white dark:text-white' : ''">
+                <div class="w-8 h-8 flex items-center justify-center rounded-lg"
+                    :class="isActive('/market/dashboard') ? 'bg-white/20' : 'bg-[#184D6C]/10 dark:bg-[#184D6C]/20 group-hover:bg-white/20'">
+                    <i class="fas fa-chart-pie"
+                        :class="isActive('/market/dashboard') ? 'text-white' : 'text-[#184D6C] dark:text-white group-hover:text-white'"></i>
                 </div>
-                <span class="font-medium dark:text-white">اطلاعات مارکت</span>
-            </div>
-            <i class="fas fa-chevron-down text-gray-500 dark:text-white text-xs transition-transform"
-                :class="activeGroup === 'market' ? 'rotate-180' : ''"></i>
-        </button>
-        <div x-show="activeGroup === 'market'" x-collapse
-            class="mr-8 mt-1 space-y-1 border-r-2 border-[#184D6C]/20 pr-2">
-            <a href="/market/markets"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">مارکت‌ها</a>
-            <a href="/market/shops"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">دوکان‌ها</a>
-            <a href="/market/booths"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">غرفه‌ها</a>
-            <a href="/market/shopkeepers"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">دوکانداران</a>
-            <a href="/market/customers"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">مشتریان</a>
-            <a href="/market/documents"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">اسناد قراردادها</a>
-        </div>
-    </div>
+                <span class="font-medium dark:text-white">داشبورد</span>
+            </a>
 
-    <!-- بخش مالی -->
-    <div>
-        <button @click="toggleGroup('financial')"
-            class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-[#184D6C] hover:text-white dark:hover:text-white transition-all group">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-[#184D6C]/10 dark:bg-[#184D6C]/20 group-hover:bg-white/20">
-                    <i class="fas fa-coins text-[#184D6C] dark:text-white group-hover:text-white"></i>
+            <!-- اطلاعات مارکت -->
+            <div>
+                <button @click="toggleGroup('market')"
+                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-[#184D6C] hover:text-white dark:hover:text-white transition-all group">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 flex items-center justify-center rounded-lg bg-[#184D6C]/10 dark:bg-[#184D6C]/20 group-hover:bg-white/20">
+                            <i class="fas fa-store text-[#184D6C] dark:text-white group-hover:text-white"></i>
+                        </div>
+                        <span class="font-medium dark:text-white">اطلاعات مارکت</span>
+                    </div>
+                    <i class="fas fa-chevron-down text-gray-500 dark:text-white text-xs transition-transform"
+                        :class="activeGroup === 'market' ? 'rotate-180' : ''"></i>
+                </button>
+                <div x-show="activeGroup === 'market'" x-collapse
+                    class="mr-8 mt-1 space-y-1 border-r-2 border-[#184D6C]/20 pr-2">
+                    <a href="/market/markets"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">مارکت‌ها</a>
+                    <a href="/market/shops"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">دوکان‌ها</a>
+                    <a href="/market/booths"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">غرفه‌ها</a>
+                    <a href="/market/shopkeepers"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">دوکانداران</a>
+                    <a href="/market/customers"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">مشتریان</a>
+                    <a href="/market/documents"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">اسناد
+                        قراردادها</a>
                 </div>
-                <span class="font-medium dark:text-white">بخش مالی</span>
             </div>
-            <i class="fas fa-chevron-down text-gray-500 dark:text-white text-xs transition-transform"
-                :class="activeGroup === 'financial' ? 'rotate-180' : ''"></i>
-        </button>
-        <div x-show="activeGroup === 'financial'" x-collapse
-            class="mr-8 mt-1 space-y-1 border-r-2 border-[#184D6C]/20 pr-2">
 
-            <a href="/market/safes"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
-                <i class="fas fa-wallet text-xs text-[#184D6C]/60 dark:text-white/60"></i>
-                موجودی صندوق‌ها
-            </a>
-            <a href="/market/withdrawals"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
-                <i class="fas fa-arrow-down text-xs text-[#184D6C]/60 dark:text-white/60"></i>
-                برداشت از صندوق
-            </a>
-            <a href="/market/accountings"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
-                <i class="fas fa-calculator text-xs text-[#184D6C]/60 dark:text-white/60"></i>
-                حسابداری
-            </a>
-            <a href="/market/deposits"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
-                <i class="fas fa-hourglass-half text-xs text-[#184D6C]/60 dark:text-white/60"></i>
-                تسویه نشده
-            </a>
-            <a href="/market/outsides"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
-                <i class="fas fa-hand-holding-usd text-xs text-[#184D6C]/60 dark:text-white/60"></i>
-                ثبت عواید بیرونی
-            </a>
-            <a href="/market/loans"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
-                <i class="fas fa-file-invoice text-xs text-[#184D6C]/60 dark:text-white/60"></i>
-                ثبت بردگی‌ها
-            </a>
-            <a href="/market/payments"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
-                <i class="fas fa-receipt text-xs text-[#184D6C]/60 dark:text-white/60"></i>
-                ثبت رسیدها
-            </a>
-            <a href="/market/shopkeeper-receipts"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
-                <i class="fas fa-user-tie text-xs text-[#184D6C]/60 dark:text-white/60"></i>
-                رسید دوکانداران
-            </a>
-        </div>
-    </div>
+            <!-- بخش مالی -->
+            <div>
+                <button @click="toggleGroup('financial')"
+                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-[#184D6C] hover:text-white dark:hover:text-white transition-all group">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 flex items-center justify-center rounded-lg bg-[#184D6C]/10 dark:bg-[#184D6C]/20 group-hover:bg-white/20">
+                            <i class="fas fa-coins text-[#184D6C] dark:text-white group-hover:text-white"></i>
+                        </div>
+                        <span class="font-medium dark:text-white">بخش مالی</span>
+                    </div>
+                    <i class="fas fa-chevron-down text-gray-500 dark:text-white text-xs transition-transform"
+                        :class="activeGroup === 'financial' ? 'rotate-180' : ''"></i>
+                </button>
+                <div x-show="activeGroup === 'financial'" x-collapse
+                    class="mr-8 mt-1 space-y-1 border-r-2 border-[#184D6C]/20 pr-2">
 
-    <!-- معاملات املاک -->
-    <div>
-        <button @click="toggleGroup('realestate')"
-            class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-[#184D6C] hover:text-white dark:hover:text-white transition-all group">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-[#184D6C]/10 dark:bg-[#184D6C]/20 group-hover:bg-white/20">
-                    <i class="fas fa-building text-[#184D6C] dark:text-white group-hover:text-white"></i>
+                    <a href="/market/safes"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
+                        <i class="fas fa-wallet text-xs text-[#184D6C]/60 dark:text-white/60"></i>
+                        موجودی صندوق‌ها
+                    </a>
+                    <a href="/market/withdrawals"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
+                        <i class="fas fa-arrow-down text-xs text-[#184D6C]/60 dark:text-white/60"></i>
+                        برداشت از صندوق
+                    </a>
+                    <a href="/market/accountings"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
+                        <i class="fas fa-calculator text-xs text-[#184D6C]/60 dark:text-white/60"></i>
+                        حسابداری
+                    </a>
+                    <a href="/market/deposits"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
+                        <i class="fas fa-hourglass-half text-xs text-[#184D6C]/60 dark:text-white/60"></i>
+                        تسویه نشده
+                    </a>
+                    <a href="/market/outsides"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
+                        <i class="fas fa-hand-holding-usd text-xs text-[#184D6C]/60 dark:text-white/60"></i>
+                        ثبت عواید بیرونی
+                    </a>
+                    <a href="/market/loans"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
+                        <i class="fas fa-file-invoice text-xs text-[#184D6C]/60 dark:text-white/60"></i>
+                        ثبت بردگی‌ها
+                    </a>
+                    <a href="/market/payments"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
+                        <i class="fas fa-receipt text-xs text-[#184D6C]/60 dark:text-white/60"></i>
+                        ثبت رسیدها
+                    </a>
+                    <a href="/market/shopkeeper-receipts"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
+                        <i class="fas fa-user-tie text-xs text-[#184D6C]/60 dark:text-white/60"></i>
+                        رسید دوکانداران
+                    </a>
                 </div>
-                <span class="font-medium dark:text-white">معاملات املاک</span>
             </div>
-            <i class="fas fa-chevron-down text-gray-500 dark:text-white text-xs transition-transform"
-                :class="activeGroup === 'realestate' ? 'rotate-180' : ''"></i>
-        </button>
-        <div x-show="activeGroup === 'realestate'" x-collapse
-            class="mr-8 mt-1 space-y-1 border-r-2 border-[#184D6C]/20 pr-2">
-            <a href="/market/advertisments"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">ثبت ملک</a>
-            <a href="/market/sells"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">فروش ملک</a>
-            <a href="/market/buys"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">خریدها</a>
-        </div>
-    </div>
 
-    <!-- مدیریت کارمندان -->
-    <div>
-        <button @click="toggleGroup('staff')"
-            class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-[#184D6C] hover:text-white dark:hover:text-white transition-all group">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-[#184D6C]/10 dark:bg-[#184D6C]/20 group-hover:bg-white/20">
-                    <i class="fas fa-user-shield text-[#184D6C] dark:text-white group-hover:text-white"></i>
+            <!-- معاملات املاک -->
+            <div>
+                <button @click="toggleGroup('realestate')"
+                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-[#184D6C] hover:text-white dark:hover:text-white transition-all group">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 flex items-center justify-center rounded-lg bg-[#184D6C]/10 dark:bg-[#184D6C]/20 group-hover:bg-white/20">
+                            <i class="fas fa-building text-[#184D6C] dark:text-white group-hover:text-white"></i>
+                        </div>
+                        <span class="font-medium dark:text-white">معاملات املاک</span>
+                    </div>
+                    <i class="fas fa-chevron-down text-gray-500 dark:text-white text-xs transition-transform"
+                        :class="activeGroup === 'realestate' ? 'rotate-180' : ''"></i>
+                </button>
+                <div x-show="activeGroup === 'realestate'" x-collapse
+                    class="mr-8 mt-1 space-y-1 border-r-2 border-[#184D6C]/20 pr-2">
+                    <a href="/market/advertisments"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">ثبت
+                        ملک</a>
+                    <a href="/market/sells"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">فروش
+                        ملک</a>
+                    <a href="/market/buys"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">خریدها</a>
                 </div>
-                <span class="font-medium dark:text-white">مدیریت کارمندان</span>
             </div>
-            <i class="fas fa-chevron-down text-gray-500 dark:text-white text-xs transition-transform"
-                :class="activeGroup === 'staff' ? 'rotate-180' : ''"></i>
-        </button>
-        <div x-show="activeGroup === 'staff'" x-collapse
-            class="mr-8 mt-1 space-y-1 border-r-2 border-[#184D6C]/20 pr-2">
-            <a href="/market/staff"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
-                <i class="fas fa-user-plus text-xs text-[#184D6C]/60 dark:text-white/60"></i>
-                ثبت کارمندان
-            </a>
-            <a href="/market/salaries"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
-                <i class="fas fa-money-check-alt text-xs text-[#184D6C]/60 dark:text-white/60"></i>
-                پرداخت معاشات
-            </a>
-        </div>
-    </div>
 
-    <!-- گزارش‌ها -->
-    <div>
-        <button @click="toggleGroup('reports')"
-            class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-[#184D6C] hover:text-white dark:hover:text-white transition-all group">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-[#184D6C]/10 dark:bg-[#184D6C]/20 group-hover:bg-white/20">
-                    <i class="fas fa-file-alt text-[#184D6C] dark:text-white group-hover:text-white"></i>
+            <!-- مدیریت کارمندان -->
+            <div>
+                <button @click="toggleGroup('staff')"
+                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-[#184D6C] hover:text-white dark:hover:text-white transition-all group">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 flex items-center justify-center rounded-lg bg-[#184D6C]/10 dark:bg-[#184D6C]/20 group-hover:bg-white/20">
+                            <i class="fas fa-user-shield text-[#184D6C] dark:text-white group-hover:text-white"></i>
+                        </div>
+                        <span class="font-medium dark:text-white">مدیریت کارمندان</span>
+                    </div>
+                    <i class="fas fa-chevron-down text-gray-500 dark:text-white text-xs transition-transform"
+                        :class="activeGroup === 'staff' ? 'rotate-180' : ''"></i>
+                </button>
+                <div x-show="activeGroup === 'staff'" x-collapse
+                    class="mr-8 mt-1 space-y-1 border-r-2 border-[#184D6C]/20 pr-2">
+                    <a href="/market/staff"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
+                        <i class="fas fa-user-plus text-xs text-[#184D6C]/60 dark:text-white/60"></i>
+                        ثبت کارمندان
+                    </a>
+                    <a href="/market/salaries"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
+                        <i class="fas fa-money-check-alt text-xs text-[#184D6C]/60 dark:text-white/60"></i>
+                        پرداخت معاشات
+                    </a>
                 </div>
-                <span class="font-medium dark:text-white">گزارشات</span>
             </div>
-            <i class="fas fa-chevron-down text-gray-500 dark:text-white text-xs transition-transform"
-                :class="activeGroup === 'reports' ? 'rotate-180' : ''"></i>
-        </button>
-        <div x-show="activeGroup === 'reports'" x-collapse
-            class="mr-8 mt-1 space-y-1 border-r-2 border-[#184D6C]/20 pr-2">
-            <a href="/market/general-reports"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">گزارش گیری عمومی</a>
-            <a href="/market/deposit-logs"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">گزارش رسید دوکان ها</a>
-            <a href="/market/loan-logs"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">گزارش بردگی ها</a>
-            <a href="/market/withdraw-logs"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">گزارش برداشت‌ها از صندوق</a>
-            <a href="/market/user-log-report"
-                class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">گزارش ورود و خروج کارمند</a>
-        </div>
-    </div>
 
-    <!-- کاربران (آیتم مستقل) -->
-    <a href="/market/users"
-        class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-[#184D6C] hover:text-white dark:hover:text-white transition-all group">
-        <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-[#184D6C]/10 dark:bg-[#184D6C]/20 group-hover:bg-white/20">
-            <i class="fas fa-users text-[#184D6C] dark:text-white group-hover:text-white"></i>
-        </div>
-        <span class="font-medium dark:text-white">کاربران</span>
-    </a>
+            <!-- گزارش‌ها -->
+            <div>
+                <button @click="toggleGroup('reports')"
+                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-[#184D6C] hover:text-white dark:hover:text-white transition-all group">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 flex items-center justify-center rounded-lg bg-[#184D6C]/10 dark:bg-[#184D6C]/20 group-hover:bg-white/20">
+                            <i class="fas fa-file-alt text-[#184D6C] dark:text-white group-hover:text-white"></i>
+                        </div>
+                        <span class="font-medium dark:text-white">گزارشات</span>
+                    </div>
+                    <i class="fas fa-chevron-down text-gray-500 dark:text-white text-xs transition-transform"
+                        :class="activeGroup === 'reports' ? 'rotate-180' : ''"></i>
+                </button>
+                <div x-show="activeGroup === 'reports'" x-collapse
+                    class="mr-8 mt-1 space-y-1 border-r-2 border-[#184D6C]/20 pr-2">
+                    <a href="/market/general-reports"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">گزارش
+                        گیری عمومی</a>
+                    <a href="/market/deposit-logs"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">گزارش
+                        رسید دوکان ها</a>
+                    <a href="/market/loan-logs"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">گزارش
+                        بردگی ها</a>
+                    <a href="/market/withdraw-logs"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">گزارش
+                        برداشت‌ها از صندوق</a>
+                    <a href="/market/user-log-report"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">گزارش
+                        ورود و خروج کارمند</a>
+                </div>
+            </div>
 
-</nav>
+            <!-- کاربران (آیتم مستقل) -->
+            <a href="/market/users"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-[#184D6C] hover:text-white dark:hover:text-white transition-all group">
+                <div
+                    class="w-8 h-8 flex items-center justify-center rounded-lg bg-[#184D6C]/10 dark:bg-[#184D6C]/20 group-hover:bg-white/20">
+                    <i class="fas fa-users text-[#184D6C] dark:text-white group-hover:text-white"></i>
+                </div>
+                <span class="font-medium dark:text-white">کاربران</span>
+            </a>
+
+        </nav>
 
 
     </aside>

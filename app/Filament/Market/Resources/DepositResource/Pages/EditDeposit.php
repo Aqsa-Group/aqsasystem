@@ -3,16 +3,21 @@
 namespace App\Filament\Market\Resources\DepositResource\Pages;
 
 use App\Filament\Market\Resources\DepositResource;
-use Filament\Resources\Pages\EditRecord;
 use App\Models\Market\DepositLog;
+use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Auth;
 
 class EditDeposit extends EditRecord
 {
     protected static string $resource = DepositResource::class;
+
+    protected ?int $depositLogId = null;
+
     protected function mutateFormDataBeforeFill(array $data): array
     {
+        // فیلد پرداخت همیشه خالی باشد
         $data['paid'] = null;
+
         return $data;
     }
 
@@ -20,20 +25,25 @@ class EditDeposit extends EditRecord
     {
         $deposit = $this->record->fresh();
 
-        $currentPayment = (int) ($data['paid'] ?? 0);
-        $lastPaid = $deposit->paid ?? 0;
+        $newPayment = (int) ($data['paid'] ?? 0);
 
-        $totalPrice = $deposit->price ?? 0;
-        $totalPaid = $lastPaid + $currentPayment;
+        $lastPaid = (int) $deposit->paid;
+        $price = (int) $deposit->price;
 
-        if ($totalPaid > $totalPrice) {
-            $remaining = $totalPrice - $lastPaid;
+        $remaining = $price - $lastPaid;
+
+        if ($newPayment <= 0) {
+            throw new \Exception('مبلغ پرداختی باید بیشتر از صفر باشد.');
+        }
+
+        if ($newPayment > $remaining) {
             throw new \Exception("مبلغ پرداختی نمی‌تواند از مقدار باقیمانده ({$remaining}) بیشتر باشد.");
         }
 
-        $remaining = max($totalPrice - $totalPaid, 0);
+        $totalPaid = $lastPaid + $newPayment;
+        $newRemaining = max($price - $totalPaid, 0);
 
-        DepositLog::create([
+        $log = DepositLog::create([
             'deposit_id'      => $deposit->id,
             'user_id'         => Auth::id(),
             'expanses_type'   => $deposit->accounting?->expanses_type,
@@ -44,21 +54,30 @@ class EditDeposit extends EditRecord
             'shop_number'     => $deposit->accounting?->shop?->number,
             'shopkeeper_name' => $deposit->accounting?->shopkeeper?->fullname,
             'old_paid'        => $lastPaid,
-            'old_remained'    => $deposit->remained ?? $totalPrice,
-            'new_paid'        => $currentPayment,
-            'new_remained'    => $remaining,
+            'old_remained'    => $deposit->remained,
+            'new_paid' => $totalPaid,
+            'new_remained'    => $newRemaining,
         ]);
 
-        $data['remained'] = $remaining;
-        $data['paid'] = $totalPaid;
+        $this->depositLogId = $log->id;
+
+        $data['paid'] = $totalPaid;          // مجموع پرداخت‌ها
+        $data['remained'] = $newRemaining;   // باقی‌مانده
 
         return $data;
     }
 
+    protected function afterSave(): void
+    {
+        $url = route('deposit-log.print', $this->depositLogId);
+
+        $this->js("
+            window.open('{$url}', '_blank');
+        ");
+    }
 
     protected function getRedirectUrl(): string
     {
-
-        return route('filament.market.resources.deposit-logs.index');
+        return $this->getResource()::getUrl('index');
     }
 }

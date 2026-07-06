@@ -98,41 +98,50 @@ class DepositResource extends Resource
                 ->formatStateUsing(fn($state, $record) => $record?->accounting?->currency),
 
 
-            Forms\Components\TextInput::make('paid')
-                ->label('رسید')
-                ->numeric()
-                ->required()
-                ->debounce(500)
-                ->default(fn() => null)
-                ->rules([
-                    fn($get, $record) => function ($attribute, $value, $fail) use ($record) {
-                        if (!$record) return;
+           Forms\Components\TextInput::make('paid')
+    ->label('رسید')
+    ->numeric()
+    ->required()
+    ->debounce(500)
+    ->formatStateUsing(fn () => null) // همیشه خالی باشد
+    ->rules([
+        fn ($record) => function ($attribute, $value, $fail) use ($record) {
 
-                        $totalPrice = $record->price ?? 0;
-                        $currentPaid = $record->paid ?? 0;
-                        $newPayment = (int) $value;
-                        $totalAfterPayment = $currentPaid + $newPayment;
+            if (! $record) {
+                return;
+            }
 
-                        if ($newPayment <= 0) {
-                            $fail('مبلغ پرداختی باید بیشتر از صفر باشد.');
-                        }
+            $newPayment = (int) $value;
 
-                        if ($totalAfterPayment > $totalPrice) {
-                            $remaining = $totalPrice - $currentPaid;
-                            $fail("مبلغ پرداختی نمی‌تواند از مقدار باقیمانده ({$remaining}) بیشتر باشد.");
-                        }
-                    },
-                ])
-                ->afterStateUpdated(function ($get, $set, $state, $record) {
-                    $totalPrice = $record?->price ?? 0;
-                    $lastPaid = $record?->paid ?? 0;
-                    $newPayment = (int) $state;
-                    $totalPaid = $lastPaid + $newPayment;
-                    $remaining = max($totalPrice - $totalPaid, 0);
-                    $set('remained', $remaining);
-                }),
+            if ($newPayment <= 0) {
+                $fail('مبلغ پرداختی باید بیشتر از صفر باشد.');
+                return;
+            }
 
+            $totalPrice = (int) $record->price;
+            $currentPaid = (int) $record->paid;
 
+            $remaining = $totalPrice - $currentPaid;
+
+            if ($newPayment > $remaining) {
+                $fail("مبلغ پرداختی نمی‌تواند از مقدار باقیمانده ({$remaining}) بیشتر باشد.");
+            }
+        },
+    ])
+    ->afterStateUpdated(function ($set, $state, $record) {
+
+        $totalPrice = (int) ($record->price ?? 0);
+        $currentPaid = (int) ($record->paid ?? 0);
+
+        $newPayment = (int) $state;
+
+        $remaining = max(
+            $totalPrice - ($currentPaid + $newPayment),
+            0
+        );
+
+        $set('remained', $remaining);
+    }),
 
             Forms\Components\Hidden::make('remained')
                 ->dehydrated()
