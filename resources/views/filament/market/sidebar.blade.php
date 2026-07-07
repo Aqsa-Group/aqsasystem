@@ -120,9 +120,10 @@
                         موجودی صندوق‌ها
                     </a>
 
-                     <a href="/market/exchanges"
+                    <a href="/market/exchanges"
                         class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all flex items-center gap-2">
-<i class="fas fa-exchange-alt text-xs text-[#184D6C]/60 dark:text-white/60"></i>                        تبادله بین صندوق ها
+                        <i class="fas fa-exchange-alt text-xs text-[#184D6C]/60 dark:text-white/60"></i> تبادله بین
+                        صندوق ها
                     </a>
 
                     <a href="/market/withdrawals"
@@ -187,6 +188,44 @@
                         ملک</a>
                     <a href="/market/buys"
                         class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">خریدها</a>
+                </div>
+            </div>
+
+            <!-- پروفایل -->
+            <div>
+                <button @click="toggleGroup('profile')"
+                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-[#184D6C] hover:text-white dark:hover:text-white transition-all group">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 flex items-center justify-center rounded-lg bg-[#184D6C]/10 dark:bg-[#184D6C]/20 group-hover:bg-white/20">
+                            <i class="fas fa-user-circle text-[#184D6C] dark:text-white group-hover:text-white"></i>
+                        </div>
+                        <span class="font-medium dark:text-white">پروفایل</span>
+                    </div>
+
+                    <i class="fas fa-chevron-down text-gray-500 dark:text-white text-xs transition-transform"
+                        :class="activeGroup === 'profile' ? 'rotate-180' : ''"></i>
+                </button>
+
+                <div x-show="activeGroup === 'profile'" x-collapse
+                    class="mr-8 mt-1 space-y-1 border-r-2 border-[#184D6C]/20 pr-2">
+
+
+                    <a href="/market/staff-profile"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">
+                        گزارش کارمندان
+                    </a>
+
+                    {{-- <a href="/market/reports/customers"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">
+                        گزارش مشتریان
+                    </a>
+
+                    <a href="/market/reports/shopkeepers"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">
+                        گزارش دوکانداران
+                    </a> --}}
+
                 </div>
             </div>
 
