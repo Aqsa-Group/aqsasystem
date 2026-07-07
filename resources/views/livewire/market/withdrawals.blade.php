@@ -1,26 +1,26 @@
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
     <!-- Notifications -->
-       @if (session()->has('message'))
-        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
-            class="fixed top-0 left-0 right-0 w-full z-[9999] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-400  bg-[#184d6c] vazir">
-            <div style="margin-right: 296px" class="h-[80px] w-full flex justify-start items-center px-4">
-                <h2 class="text-white vazir text-[18px] text-center align-middle">
-                    {{ session('message') }}
-                </h2>
-            </div>
+    @if (session()->has('message'))
+    <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
+        class="fixed top-0 left-0 right-0 w-full z-[9999] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-400  bg-[#184d6c] vazir">
+        <div style="margin-right: 296px" class="h-[80px] w-full flex justify-start items-center px-4">
+            <h2 class="text-white vazir text-[18px] text-center align-middle">
+                {{ session('message') }}
+            </h2>
         </div>
-        @endif
+    </div>
+    @endif
 
-        @if (session()->has('error'))
-        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
-            class="fixed top-0 left-0 right-0 w-full z-[9999] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-400  bg-red-800 vazir">
-            <div style="margin-right: 296px" class="h-[80px] w-full flex justify-start items-center px-4">
-                <h2 class="text-white vazir text-[18px] text-center align-middle">
-                    {{ session('error') }}
-                </h2>
-            </div>
+    @if (session()->has('error'))
+    <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" x-transition
+        class="fixed top-0 left-0 right-0 w-full z-[9999] dark:bg-gradient-to-b dark:from-slate-500 dark:to-gray-400  bg-red-800 vazir">
+        <div style="margin-right: 296px" class="h-[80px] w-full flex justify-start items-center px-4">
+            <h2 class="text-white vazir text-[18px] text-center align-middle">
+                {{ session('error') }}
+            </h2>
         </div>
-        @endif
+    </div>
+    @endif
     <!-- ==================== دکمه باز کردن مودال ==================== -->
     <div class="px-4 pb-2">
         <button wire:click="openModal"
@@ -47,12 +47,10 @@
                 </ul>
             </div>
             @endif
-            <div
-                class="sticky top-0 bg-[#184d6c] p-4 rounded-t-2xl flex justify-between items-center z-10">
-                <h2 class="text-xl font-bold text-white vazir">
-                    <i class="fa-regular fa-file-lines ml-2"></i>
-                    مدیریت پیش‌نویس‌های برداشت
-                </h2>
+            <div class="sticky top-0 bg-[#184d6c] p-4 rounded-t-2xl flex justify-between items-center z-10">
+                 <h3 class="text-lg font-bold vazir text-white dark:text-gray-200 mb-4">
+                        {{ $editingDraftId ? 'ویرایش پیش‌نویس' : 'ثبت پیش‌نویس جدید' }}
+                    </h3>
                 <button wire:click="closeModal" class="text-white hover:bg-white/20 p-2 rounded-lg transition">
                     <i class="fa-solid fa-times text-xl"></i>
                 </button>
@@ -60,113 +58,69 @@
 
             <div class="p-6 space-y-6">
                 <!-- ========== فرم ثبت پیش‌نویس ========== -->
+                <!-- ========== فرم ثبت پیش‌نویس ========== -->
                 <div
-                    class="bg-[#9bbacc] dark:bg-yellow-900/10 rounded-xl p-4 border border-yellow-200 dark:border-yellow-700">
-                    <h3 class="text-lg font-bold vazir text-gray-800 dark:text-gray-200 mb-4">
-                        {{ $editingDraftId ? 'ویرایش پیش‌نویس' : 'ثبت پیش‌نویس جدید' }}
-                    </h3>
+                    class="bg-[#80aec9] dark:bg-yellow-900/10 rounded-xl p-4 border border-yellow-200 dark:border-yellow-700">
+                   
 
                     <form wire:submit.prevent="submitDraft" class="space-y-4">
-                        <!-- نوع برداشت -->
+                        <!-- توضیحات (با قابلیت جمع‌آوری مبالغ) -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 vazir">نوع برداشت
-                                *</label>
-                            <select wire:model="draftType"
-                                class="w-full h-12 px-4 border rounded-xl focus:ring-2 focus:ring-[#184d6c] bg-white dark:bg-gray-700 vazir">
-                                <option value="">انتخاب کنید</option>
-                                @foreach($this->expansesTypes as $key => $value)
-                                <option value="{{ $key }}">{{ $value }}</option>
-                                @endforeach
-                            </select>
-                            @error('draftType') <span class="text-red-500 text-xs vazir">{{ $message }}</span> @enderror
-                        </div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 vazir">
+                                توضیحات برداشت *
 
-                        <!-- ارز و مبلغ -->
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 vazir">ارز
-                                    *</label>
-                                <select wire:model="draftCurrency"
-                                    class="w-full h-12 px-4 border rounded-xl focus:ring-2 focus:ring-yellow-500 bg-white dark:bg-gray-700 vazir">
-                                    <option value="AFN">افغانی</option>
-                                    <option value="USD">دالر</option>
-                                    <option value="EUR">یورو</option>
-                                    <option value="IRR">تومان</option>
-                                </select>
-                                @error('draftCurrency') <span class="text-red-500 text-xs vazir">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 vazir">مبلغ
-                                    *</label>
-                                <input type="number" wire:model="draftAmount" step="0.01" min="0"
-                                    class="w-full h-12 px-4 border rounded-xl focus:ring-2 focus:ring-yellow-500 bg-white dark:bg-gray-700 vazir"
-                                    placeholder="0">
-                                @error('draftAmount') <span class="text-red-500 text-xs vazir">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <!-- گیرنده -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 vazir">تحویل به
-                                *</label>
-                            <select wire:model.live="draftReceiverType"
-                                class="w-full h-12 px-4 border rounded-xl focus:ring-2 focus:ring-yellow-500 bg-white dark:bg-gray-700 vazir">
-                                <option value="staff">کارمند</option>
-                                <option value="customer">مشتری</option>
-                            </select>
-                        </div>
-
-                        <!-- انتخاب گیرنده -->
-                        <div>
-                            @if($draftReceiverType === 'staff')
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 vazir">کارمند
-                                *</label>
-                            <select wire:model="draftStaffId"
-                                class="w-full h-12 px-4 border rounded-xl focus:ring-2 focus:ring-yellow-500 bg-white dark:bg-gray-700 vazir">
-                                <option value="">انتخاب کارمند</option>
-                                @foreach($this->staffs as $id => $name)
-                                <option value="{{ $id }}">{{ $name }}</option>
-                                @endforeach
-                            </select>
-                            @error('draftStaffId') <span class="text-red-500 text-xs vazir">{{ $message }}</span>
-                            @enderror
-                            @else
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 vazir">مشتری
-                                *</label>
-                            <select wire:model="draftCustomerId"
-                                class="w-full h-12 px-4 border rounded-xl focus:ring-2 focus:ring-yellow-500 bg-white dark:bg-gray-700 vazir">
-                                <option value="">انتخاب مشتری</option>
-                                @foreach($this->customers as $id => $info)
-                                <option value="{{ $id }}">{{ $info }}</option>
-                                @endforeach
-                            </select>
-                            @error('draftCustomerId') <span class="text-red-500 text-xs vazir">{{ $message }}</span>
-                            @enderror
-                            @endif
-                        </div>
-
-                        <!-- تاریخ -->
-                        <div>
-                            <label
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 vazir">تاریخ</label>
-                            <input type="text" wire:model="draftDate"
-                                class="w-full h-12 px-4 border rounded-xl focus:ring-2 focus:ring-yellow-500 bg-white dark:bg-gray-700 vazir"
-                                placeholder="YYYY/MM/DD">
-                            @error('draftDate') <span class="text-red-500 text-xs vazir">{{ $message }}</span> @enderror
-                        </div>
-
-                        <!-- توضیحات -->
-                        <div>
-                            <label
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 vazir">توضیحات</label>
-                            <textarea wire:model="draftDescription" rows="2"
+                            </label>
+                            <textarea wire:model.live="draftDescription" rows="8"
                                 class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-yellow-500 bg-white dark:bg-gray-700 vazir"
-                                placeholder="توضیحات..."></textarea>
+                                placeholder="مثال:&#10;1- توسط  احمد بابت خرجی چاشت برده شد مبلغ 320 افغانی 2- توسط محمپ  بابت خرید میوه برده شد مبلغ 600 افغانی"></textarea>
                             @error('draftDescription') <span class="text-red-500 text-xs vazir">{{ $message }}</span>
                             @enderror
                         </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-2 ">
+                            <!-- مبلغ کل (فقط نمایشی) -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 vazir">
+                                    مبلغ کل (جمع خودکار)
+                                </label>
+                                <div
+                                    class="w-full h-12 px-4 border rounded-xl bg-gray-100 dark:bg-gray-600 flex items-center text-lg font-bold text-gray-800 dark:text-gray-200 vazir">
+                                    {{ number_format($draftTotalAmount) }} افغانی
+                                </div>
+                                @error('draftTotalAmount') <span class="text-red-500 text-xs vazir">{{ $message
+                                    }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- نوع برداشت -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 vazir">نوع
+                                    برداشت
+                                    *</label>
+                                <select wire:model="draftType"
+                                    class="w-full h-12 px-4 border rounded-xl focus:ring-2 focus:ring-[#184d6c] bg-white dark:bg-gray-700 vazir">
+                                    <option value="">انتخاب کنید</option>
+                                    @foreach($this->expansesTypes as $key => $value)
+                                    <option value="{{ $key }}">{{ $value }}</option>
+                                    @endforeach
+                                </select>
+                                @error('draftType') <span class="text-red-500 text-xs vazir">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- تاریخ -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 vazir">تاریخ
+                                    *</label>
+                                <input type="text" wire:model="draftDate"
+                                    class="w-full h-12 px-4 border rounded-xl focus:ring-2 focus:ring-yellow-500 bg-white dark:bg-gray-700 vazir"
+                                    placeholder="YYYY/MM/DD">
+                                @error('draftDate') <span class="text-red-500 text-xs vazir">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+
+
 
                         <!-- دکمه‌های فرم -->
                         <div class="flex gap-3">
@@ -288,7 +242,8 @@
         </div>
     </div>
     @endif
-    {{-- <!-- Statistics Cards -->
+    {{--
+    <!-- Statistics Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
         <!-- Today's Withdrawals -->
         <div
