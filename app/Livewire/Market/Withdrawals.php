@@ -125,6 +125,63 @@ class Withdrawals extends Component
         $this->createWithdrawal();
     }
 
+    /**
+     * تولید و چاپ PDF برداشت نهایی
+     */
+    private function generateWithdrawalPdf($withdrawalId)
+    {
+        try {
+            $withdrawal = WithdrawLog::with(['staff', 'customer'])->findOrFail($withdrawalId);
+
+            $mpdf = new \Mpdf\Mpdf([
+                'mode' => 'utf-8',
+                'format' => [72.1, 297],
+                'directionality' => 'rtl',
+                'margin_top' => 5,
+                'margin_bottom' => 5,
+                'margin_left' => 5,
+                'margin_right' => 5,
+                'fontDir' => array_merge(
+                    (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+                    [public_path('fonts/vazir/')]
+                ),
+                'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+                    'vazir' => [
+                        'R' => 'Vazir-Light.ttf',
+                        'B' => 'Vazir-Bold.ttf',
+                        'useOTL' => 0xFF,
+                        'useKashida' => 75,
+                    ],
+                ],
+                'default_font' => 'vazir',
+                'tempDir' => storage_path('app/mpdf'),
+            ]);
+
+            $mpdf->SetAutoPageBreak(false);
+            $html = view('print.withdrawal', compact('withdrawal'))->render();
+            $mpdf->WriteHTML($html);
+
+            $fileName = 'برداشت_' . $withdrawal->id . '_' . Jalalian::fromCarbon($withdrawal->created_at)->format('Y_m_d') . '.pdf';
+            $path = storage_path('app/public/' . $fileName);
+            $mpdf->Output($path, 'F');
+
+            // ارسال رویداد برای نمایش در تب جدید
+            $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
+        } catch (\Exception $e) {
+            Log::error('PDF generation error for withdrawal: ' . $e->getMessage());
+            session()->flash('error', 'خطا در ایجاد PDF: ' . $e->getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * چاپ برداشت از طریق دکمه در جدول
+     */
+    public function printWithdrawal($id)
+    {
+        $this->generateWithdrawalPdf($id);
+    }
+
     private function createWithdrawal()
     {
         $user = $this->getAuthUser();
@@ -176,7 +233,9 @@ class Withdrawals extends Component
         // تاریخ میلادی
         $gregorianDate = Jalalian::fromFormat('Y/m/d', $this->date)->toCarbon()->setTimeFromTimeString(now()->format('H:i:s'));
 
-        DB::transaction(function () use ($adminId, $gregorianDate) {
+        $withdrawLog = null;
+
+        DB::transaction(function () use ($adminId, $gregorianDate, &$withdrawLog) {
             // ثبت در accountings
             DB::connection('market')->table('accountings')->insert([
                 'admin_id' => $adminId,
@@ -188,8 +247,8 @@ class Withdrawals extends Component
                 'updated_at' => $gregorianDate,
             ]);
 
-            // ثبت در withdraw_logs
-            DB::connection('market')->table('withdraw_logs')->insert([
+            // ثبت در withdraw_logs با استفاده از مدل
+            $withdrawLog = WithdrawLog::create([
                 'expanses_type' => $this->type,
                 'currency' => $this->currency,
                 'amount' => $this->amount,
@@ -203,6 +262,12 @@ class Withdrawals extends Component
         });
 
         session()->flash('message', 'برداشت از صندوق با موفقیت ثبت شد.');
+
+        // چاپ PDF پس از ثبت
+        if ($withdrawLog) {
+            $this->generateWithdrawalPdf($withdrawLog->id);
+        }
+
         $this->resetForm();
         $this->updateStats();
     }
@@ -282,6 +347,10 @@ class Withdrawals extends Component
         });
 
         session()->flash('message', 'برداشت با موفقیت بروزرسانی شد.');
+
+        // چاپ PDF پس از ویرایش
+        $this->generateWithdrawalPdf($withdrawal->id);
+
         $this->cancelEdit();
         $this->updateStats();
     }

@@ -350,6 +350,8 @@
                 <div class="p-6 space-y-6">
                     <form wire:submit.prevent="withdraw" class="space-y-6">
 
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3">
+
                         <!-- Withdrawal Type -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 vazir">
@@ -1089,15 +1091,15 @@
                         </div>
 
 
-
+                        </div>
 
                         <!-- Action Buttons -->
                         <div class="flex flex-col sm:flex-row gap-3 pt-4">
-                            <button type="submit"
-                                class="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-3 px-6 rounded-xl font-medium transition shadow-lg vazir">
-                                <i class="fa-solid fa-check ml-2"></i>
-                                {{ $editingId ? 'بروزرسانی برداشت' : 'ثبت برداشت' }}
-                            </button>
+                                <button type="submit"
+                                    class="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-3 px-6 rounded-xl font-medium transition shadow-lg vazir">
+                                    <i class="fa-solid fa-check ml-2"></i>
+                                    {{ $editingId ? 'بروزرسانی برداشت' : 'ثبت برداشت' }}
+                                </button>
 
                             @if($editingId)
                             <button type="button" wire:click="cancelEdit"
@@ -2221,6 +2223,14 @@
                     document.addEventListener("livewire:navigated", function () {
                         initDatePickers();
                     });
+
+                       document.addEventListener('livewire:init', function () {
+        Livewire.on('print-pdf', (data) => {
+            window.open(data.url, '_blank');
+        });
+    });
+
+                    
 </script>
 <script>
     tailwind.config = {
@@ -2244,6 +2254,8 @@
                                 },
                             },
                         }
+
+                        
 </script>
 
 <!-- ✅ فونت‌ها و کلاس‌ها -->
@@ -2304,6 +2316,8 @@
     }
 </style>
 @endpush
+
+
 
 @push('script')
 
