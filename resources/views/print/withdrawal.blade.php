@@ -5,6 +5,7 @@ use Morilog\Jalali\Jalalian;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
+// فرض بر این است که $withdrawal از کنترلر به ویو ارسال شده است
 $currentUser = Auth::guard('market')->user();
 
 if ($currentUser->role === 'admin') {
@@ -13,245 +14,211 @@ if ($currentUser->role === 'admin') {
     $adminUser = \App\Models\Market\User::find($currentUser->admin_id);
 }
 
+// تعیین مسیر لوگو برای mPDF (از public_path استفاده میکنیم)
 if ($adminUser && $adminUser->user_image && Storage::disk('public')->exists($adminUser->user_image)) {
+    // مسیر کامل فایل در سیستم (برای mPDF)
     $logoPath = storage_path('app/public/' . $adminUser->user_image);
 } else {
-    $logoPath = public_path('assets/png');
+    // لوگوی پیش‌فرض (فایل باید در public/assets/logo.png وجود داشته باشد)
+    $logoPath = public_path('assets/logo.png');
 }
 @endphp
-
 <head>
     <meta charset="UTF-8">
     <title>رسید برداشت</title>
     <style>
-        * {
+        body {
+            font-family: 'vazir', 'amiri', sans-serif;
+            font-size: 12px;
+            direction: rtl;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
-
-        body {
-            margin: 0 auto;
-            padding: 0;
-            background-color: white;
-            font-size: 12px;
-            font-weight: bold;
-            line-height: 1.6;
-            color: #000000;
-            font-family: 'vazir', sans-serif;
-        }
-
-        .document {
-            width: 85mm;
-            margin: 0 auto;
-            background-color: white;
-            padding: 10px 8px;
-        }
-
-        /* ===== HEADER ===== */
         .header {
             text-align: center;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 1.5px solid #333;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
         }
-
-        .header h1 {
-            font-size: 20px;
-            font-weight: bolder;
-            margin-bottom: 4px;
-            color: #000;
-            letter-spacing: 0.5px;
-        }
-
-        .header .sub-title {
-            font-size: 13px;
-            font-weight: normal;
-            color: #444;
-        }
-
-        /* ===== جدول شماره سند و تاریخ ===== */
-        .info-table2 {
+        .main {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 8px;
-            font-size: 13px;
-            font-weight: bold;
-            color: #000;
+            font-size: 11px;
         }
-
-        .info-table2 td {
-            padding: 4px 0;
-        }
-
-        /* ===== جدول اصلی اطلاعات ===== */
-        .info-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 12px;
-            border: 1.5px solid #333;
-            font-size: 13px;
+        th {
+            background: #d6d8db;
             font-weight: bold;
-            color: #000;
+            border: 1px solid #000;
+            padding: 4px;
+            text-align: center;
         }
-
-        .info-table td {
-            padding: 6px 10px;
-            border: 1px solid #333;
-            font-weight: bold;
-            color: #000;
+        td {
+            border: 1px solid #000;
+            padding: 6px;
+            text-align: center;
+        }
+        .sign {
+            text-align: center;
             vertical-align: middle;
+            background-color: white;
+            margin: auto;
         }
-
-        .info-table td:first-child {
-            font-weight: bolder;
-            width: 38%;
-            background-color: #e9e9e9;
+        .sign th {
+            border: none;
             text-align: center;
+            vertical-align: middle;
+            margin: auto;
+            background-color: white;
         }
-
-        .info-table td:last-child {
-            text-align: right;
-            padding-right: 12px;
+        .gap {
+            height: 120px; /* فاصله بین دو کپی */
         }
-
-       .description {
-            padding: 8px;
-            background-color: #f9f9f9;
-            border: 1.5px solid #333;
-            margin-bottom: 15px;
-            text-align: right;
-            color: #000;
+        /* برای چاپ رنگ پس‌زمینه */
+        th {
+            background-color: #d6d8db !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
-
-        .description h3 {
-            margin-bottom: 6px;
-            font-size: 14px;
-            font-weight: bolder;
-            color: #000;
-            text-align: right;
-        }
-
-
-        /* ===== فوتر ===== */
-        .footer-note {
-            font-size: 12px;
-            color: #333;
-            text-align: center;
-            margin-top: 20px;
-            padding-top: 10px;
-            border-top: 1px solid #ccc;
-            font-weight: normal;
-        }
-
-        /* ===== واژه‌های کلیدی ===== */
-        strong {
-            font-weight: bolder;
-            color: #000;
-        }
-
-        /* ===== پرینت ===== */
-        @media print {
-            body {
-                padding: 0;
-                margin: 0;
-            }
-            .document {
-                box-shadow: none;
-                padding: 6px;
-            }
-            .info-table td:first-child {
-                background-color: #e9e9e9 !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            .description-box {
-                background-color: #f9f9f9 !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
+        .page-break {
+            page-break-after: avoid;
         }
     </style>
 </head>
-
 <body>
 
-    <div class="document">
+@php
+    $dateStr = Jalalian::fromCarbon($withdrawal->created_at)->format('Y/m/d H:i');
+    // تعیین دریافت‌کننده
+    $receiver = '-';
+    if ($withdrawal->staff) {
+        $receiver = $withdrawal->staff->fullname . ' (کارمند)';
+    } elseif ($withdrawal->customer) {
+        $receiver = $withdrawal->customer->fullname . ' (مشتری)';
+    }
+    // ارز
+    $currency = $withdrawal->currency;
+    // مبلغ
+    $amount = number_format((float)$withdrawal->amount);
+    // نوع برداشت
+    $expansesType = $withdrawal->expanses_type;
+    // توضیحات
+    $description = $withdrawal->description ?? '-';
+@endphp
 
-        <!-- ===== HEADER ===== -->
-        <div class="header">
-            <h1>متجمع تجارتی عادلیار</h1>
-            <div class="sub-title">رسید برداشت از صندوق</div>
-        </div>
+{{-- ===== کپی اول ===== --}}
+<div style="width: 100%; direction: rtl; font-family: 'vazir', 'DejaVu Sans'; font-size: 12pt;">
+    <table style="width: 100%; border-collapse: collapse; border: none;">
+        <tr>
+            <td style="width: 40%; text-align: right; vertical-align: middle; color: #1e3a8a; border: none;">
+                <strong style="font-size: 20pt;">مجتمع تجارتی عادلیار</strong>
+            </td>
+            <td style="width: 33.33%; text-align: center; border: none;">
+                <img src="{{ $logoPath }}" alt="لوگو" style="height: 80px; width: 90px;" />
+            </td>
+            <td style="width: 33.33%; text-align: left; vertical-align: middle; color: #1e3a8a; border: none;">
+                <div style="line-height: 1.2;">
+                    <div style="font-weight: bold; font-size: 18pt;">ADELYAR</div>
+                    <div style="font-weight: bold; font-size: 10pt;">COMMERCIAL COMPLEX</div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
 
-        <!-- ===== شماره سند و تاریخ ===== -->
-        <table class="info-table2">
-            <tr>
-                <td style="text-align: right; font-weight: bold;">
-                    نمبر سند: <span style="font-weight: bolder;">{{ $withdrawal->id }}</span>
-                </td>
-                <td style="text-align: left; white-space: nowrap; font-weight: bold;">
-                    {{ Jalalian::fromCarbon($withdrawal->created_at)->format('Y/m/d') }}
-                    <span style="white-space: nowrap;">
-                        {{ $withdrawal->created_at->format('h:i') }}
-                    </span>
-                </td>
-            </tr>
-        </table>
+<table style="width: 100%; border-collapse: collapse; border: none; margin-top: 10px;">
+    <tr>
+        <td style="border: none;">
+            <h4>رسید برداشت از صندوق</h4>
+        </td>
+        <td style="border: none; text-align: left;">
+            <small>{{ $dateStr }}</small>
+        </td>
+    </tr>
+</table>
 
-        <!-- ===== جدول اطلاعات اصلی ===== -->
-        <table class="info-table">
-            <tr>
-                <td>نوع برداشت</td>
-                <td>{{ $withdrawal->expanses_type }}</td>
-            </tr>
-            <tr>
-                <td>ارز</td>
-                <td>
-                    {{
-                        match($withdrawal->currency) {
-                            'AFN' => 'افغانی',
-                            'USD' => 'دالر',
-                            'EUR' => 'یورو',
-                            'IRR' => 'تومان',
-                            default => $withdrawal->currency,
-                        }
-                    }}
-                </td>
-            </tr>
-            <tr>
-                <td>مبلغ برداشت</td>
-                <td>{{ number_format((float)$withdrawal->amount) }}</td>
-            </tr>
-            <tr>
-                <td>دریافت‌کننده</td>
-                <td>
-                    @if($withdrawal->staff)
-                        {{ $withdrawal->staff->fullname }} (کارمند)
-                    @elseif($withdrawal->customer)
-                        {{ $withdrawal->customer->fullname }} (مشتری)
-                    @else
-                        <span style="color:#888;">—</span>
-                    @endif
-                </td>
-            </tr>
-            <tr>
-                <td>تاریخ برداشت</td>
-                <td>{{ Jalalian::fromCarbon($withdrawal->created_at)->format('Y/m/d H:i') }}</td>
-            </tr>
-        </table>
+<table class="main">
+    <tr>
+        <th>نوع برداشت</th>
+        <th>ارز</th>
+        <th>مقدار</th>
+        <th>تحویل گیرنده</th>
+        <th>توضیحات</th>
+    </tr>
+    <tr>
+        <td>{{ $expansesType }}</td>
+        <td>{{ $currency }}</td>
+        <td>{{ $amount }}</td>
+        <td>{{ $receiver }}</td>
+        <td>{{ $description }}</td>
+    </tr>
+</table>
 
-        <!-- ===== باکس توضیحات (بدون border) ===== -->
-        @if($withdrawal->description)
-        <div class="description">
-            <h3>شرح برداشت:</h3>
-            <div class="desc-text">{{ $withdrawal->description }}</div>
-        </div>
-        @endif
+<br>
 
-     
+<table class="sign">
+    <tr>
+        <th style="padding: 25px;">امضا مدیر مالی</th>
+        <th style="padding: 25px;">امضا گیرنده</th>
+    </tr>
+</table>
 
-    </div>
+<div class="gap"></div>
+
+{{-- ===== کپی دوم (دقیقاً مشابه) ===== --}}
+<div style="width: 100%; direction: rtl; font-family: 'vazir', 'DejaVu Sans'; font-size: 12pt;">
+    <table style="width: 100%; border-collapse: collapse; border: none;">
+        <tr>
+            <td style="width: 40%; text-align: right; vertical-align: middle; color: #1e3a8a; border: none;">
+                <strong style="font-size: 20pt;">مجتمع تجارتی عادلیار</strong>
+            </td>
+            <td style="width: 33.33%; text-align: center; border: none;">
+                <img src="{{ $logoPath }}" alt="لوگو" style="height: 80px; width: 90px;" />
+            </td>
+            <td style="width: 33.33%; text-align: left; vertical-align: middle; color: #1e3a8a; border: none;">
+                <div style="line-height: 1.2;">
+                    <div style="font-weight: bold; font-size: 18pt;">ADELYAR</div>
+                    <div style="font-weight: bold; font-size: 10pt;">COMMERCIAL COMPLEX</div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<table style="width: 100%; border-collapse: collapse; border: none; margin-top: 10px;">
+    <tr>
+        <td style="border: none;">
+            <h4>رسید برداشت از صندوق</h4>
+        </td>
+        <td style="border: none; text-align: left;">
+            <small>{{ $dateStr }}</small>
+        </td>
+    </tr>
+</table>
+
+<table class="main">
+    <tr>
+        <th>نوع برداشت</th>
+        <th>ارز</th>
+        <th>مقدار</th>
+        <th>تحویل گیرنده</th>
+        <th>توضیحات</th>
+    </tr>
+    <tr>
+        <td>{{ $expansesType }}</td>
+        <td>{{ $currency }}</td>
+        <td>{{ $amount }}</td>
+        <td>{{ $receiver }}</td>
+        <td>{{ $description }}</td>
+    </tr>
+</table>
+
+<br>
+
+<table class="sign">
+    <tr>
+        <th style="padding: 25px;">امضا مدیر مالی</th>
+        <th style="padding: 25px;">امضا گیرنده</th>
+    </tr>
+</table>
 
 </body>
 </html>
