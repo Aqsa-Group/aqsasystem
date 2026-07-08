@@ -171,7 +171,7 @@ class Withdrawals extends Component
             return;
         }
 
-        // پردازش مشتری (در صورت انتخاب)
+        // پردازش مشتری (در صورت انتخاب) - بدون چک موجودی (اجازه منفی شدن)
         if ($this->receiver_type === 'customer' && $this->customer_id) {
             $customer = Customer::find($this->customer_id);
             if (!$customer) {
@@ -180,12 +180,7 @@ class Withdrawals extends Component
             }
 
             if ($this->type === 'کرایه دوکان‌های گروی و سرقفلی') {
-                if ($customer->rent_money < $this->amount) {
-                    session()->flash('error', "مشتری موجودی کافی برای برداشت {$this->amount} کرایه ندارد.");
-                    return;
-                }
                 $customer->rent_money -= $this->amount;
-                $customer->save();
             } else {
                 $currencyField = match ($this->currency) {
                     'AFN' => 'balance_afn',
@@ -193,13 +188,9 @@ class Withdrawals extends Component
                     'EUR' => 'balance_eur',
                     'IRR' => 'balance_irr',
                 };
-                if ($customer->$currencyField < $this->amount) {
-                    session()->flash('error', "مشتری موجودی کافی برای برداشت {$this->amount} {$this->currency} ندارد.");
-                    return;
-                }
                 $customer->$currencyField -= $this->amount;
-                $customer->save();
             }
+            $customer->save();
         }
 
         // تاریخ میلادی
@@ -255,7 +246,7 @@ class Withdrawals extends Component
             // برگرداندن وضعیت قبلی
             $this->reversePreviousWithdrawal($withdrawal);
 
-            // چک موجودی جدید
+            // چک موجودی جدید صندوق
             $total = DB::connection('market')->table('accountings')
                 ->where('admin_id', $adminId)
                 ->where('currency', $this->currency)
@@ -266,7 +257,7 @@ class Withdrawals extends Component
                 throw new \Exception("موجودی کافی برای برداشت {$this->amount} {$this->currency} در صندوق وجود ندارد.");
             }
 
-            // پردازش مشتری (در صورت وجود)
+            // پردازش مشتری (در صورت وجود) - بدون چک موجودی
             if ($this->receiver_type === 'customer' && $this->customer_id) {
                 $customer = Customer::find($this->customer_id);
                 if (!$customer) {
@@ -274,11 +265,7 @@ class Withdrawals extends Component
                 }
 
                 if ($this->type === 'کرایه دوکان‌های گروی و سرقفلی') {
-                    if ($customer->rent_money < $this->amount) {
-                        throw new \Exception("مشتری موجودی کافی برای برداشت {$this->amount} کرایه ندارد.");
-                    }
                     $customer->rent_money -= $this->amount;
-                    $customer->save();
                 } else {
                     $currencyField = match ($this->currency) {
                         'AFN' => 'balance_afn',
@@ -286,12 +273,9 @@ class Withdrawals extends Component
                         'EUR' => 'balance_eur',
                         'IRR' => 'balance_irr',
                     };
-                    if ($customer->$currencyField < $this->amount) {
-                        throw new \Exception("مشتری موجودی کافی برای برداشت {$this->amount} {$this->currency} ندارد.");
-                    }
                     $customer->$currencyField -= $this->amount;
-                    $customer->save();
                 }
+                $customer->save();
             }
 
             // بروزرسانی رکورد برداشت
@@ -839,7 +823,7 @@ class Withdrawals extends Component
             throw new \Exception("موجودی کافی برای برداشت {$this->amount} {$this->currency} در صندوق وجود ندارد.");
         }
 
-        // پردازش مشتری (فقط در صورت انتخاب مشتری)
+        // پردازش مشتری (فقط در صورت انتخاب مشتری) - بدون چک موجودی
         if ($this->receiver_type === 'customer' && $this->customer_id) {
             $customer = Customer::find($this->customer_id);
             if (!$customer) {
@@ -847,9 +831,6 @@ class Withdrawals extends Component
             }
 
             if ($this->type === 'کرایه دوکان‌های گروی و سرقفلی') {
-                if ($customer->rent_money < $this->amount) {
-                    throw new \Exception("مشتری موجودی کافی برای برداشت {$this->amount} کرایه ندارد.");
-                }
                 $customer->rent_money -= $this->amount;
             } else {
                 $currencyField = match ($this->currency) {
@@ -858,9 +839,6 @@ class Withdrawals extends Component
                     'EUR' => 'balance_eur',
                     'IRR' => 'balance_irr',
                 };
-                if ($customer->$currencyField < $this->amount) {
-                    throw new \Exception("مشتری موجودی کافی برای برداشت {$this->amount} {$this->currency} ندارد.");
-                }
                 $customer->$currencyField -= $this->amount;
             }
             $customer->save();
