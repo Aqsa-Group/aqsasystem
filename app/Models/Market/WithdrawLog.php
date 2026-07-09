@@ -22,7 +22,8 @@ class WithdrawLog extends Model
         'amount',
         'description',
         'customer_id',
-        'staff_id'
+        'staff_id',
+        'exchange_id'
     ];
     public function staff()
     {

@@ -25,15 +25,21 @@ class Exchange extends Model
     ];
 
     public function accountings()
-{
-    return $this->hasMany(Accounting::class, 'exchange_id');
-}
+    {
+        return $this->hasMany(Accounting::class, 'exchange_id');
+    }
 
+    public function withdrawLogs()
+    {
+        return $this->hasMany(WithdrawLog::class, 'exchange_id');
+    }
 
-protected static function booted()
-{
-    static::deleting(function ($exchange) {
-        $exchange->accountings()->delete();
-    });
-}
+    protected static function booted()
+    {
+        static::deleting(function ($exchange) {
+            $exchange->accountings()->delete();
+            
+            $exchange->withdrawLogs()->delete();
+        });
+    }
 }

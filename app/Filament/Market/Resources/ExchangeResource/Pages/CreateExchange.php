@@ -4,6 +4,7 @@ namespace App\Filament\Market\Resources\ExchangeResource\Pages;
 
 use App\Filament\Market\Resources\ExchangeResource;
 use App\Models\Market\Accounting;
+use App\Models\Market\WithdrawLog; // اضافه کردن مدل WithdrawLog
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,6 +21,7 @@ class CreateExchange extends CreateRecord
             ? $user->id
             : $user->admin_id;
 
+        // ثبت در جدول accountings (سمت برداشت)
         Accounting::create([
             'expanses_type' => $record->from_type,
             'currency'      => $record->currency,
@@ -29,6 +31,7 @@ class CreateExchange extends CreateRecord
             'admin_id'      => $adminId,
         ]);
 
+        // ثبت در جدول accountings (سمت واریز)
         Accounting::create([
             'expanses_type' => $record->to_type,
             'currency'      => $record->currency,
@@ -36,6 +39,21 @@ class CreateExchange extends CreateRecord
             'type'          => 'تبادله صندوق',
             'exchange_id'   => $record->id,
             'admin_id'      => $adminId,
+        ]);
+
+        // ====== ثبت در جدول withdraw_logs (برای سمت برداشت) ======
+        WithdrawLog::create([
+            'expanses_type' => $record->from_type,    // نوع برداشت
+            'currency'      => $record->currency,
+            'amount'        => $record->amount,       // مبلغ مثبت (برداشت)
+            'staff_id'      => null,                  // در صورت نیاز مقداردهی کنید
+            'customer_id'   => null,                  // در صورت نیاز مقداردهی کنید
+            'description'   => 'تبادله صندوق از ' . $record->from_type . ' به ' . $record->to_type,
+            'exchange_id'   => $record->id,
+            'admin_id'      => $adminId,
+            'created_at'    => now(),
+            'updated_at'    => now(),
+            
         ]);
     }
 

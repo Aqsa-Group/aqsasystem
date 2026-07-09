@@ -60,9 +60,37 @@ Route::get('/contract/{id}/p', [PrintContract::class , 'generate'])->name('contr
 Route::get('/contract/{id}/booth', [PrintBoothContract::class , 'generate'])->name('contract.printbooth');
 
 
-Route::get('/recipt/{id}/print', [WithdrawPrint::class, 'generate'])->name('recipt.print');
+use App\Models\Market\WithdrawLog;
 
+Route::get('/recipt/{id}/print', function ($id) {
+    $withdrawal = WithdrawLog::with(['staff', 'customer'])->findOrFail($id);
 
+    $mpdf = new \Mpdf\Mpdf([
+        'mode' => 'utf-8',
+        'format' => 'A4',
+        'directionality' => 'rtl',
+        'fontDir' => array_merge(
+            (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+            [public_path('fonts/vazir/')]
+        ),
+        'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+            'vazir' => [
+                'R' => 'Vazir-Light.ttf',
+                'B' => 'Vazir-Bold.ttf',
+                'useOTL' => 0xFF,
+                'useKashida' => 75,
+            ],
+        ],
+        'default_font' => 'vazir',
+    ]);
+
+    $html = view('print.withdrawal', compact('withdrawal'))->render();
+    $mpdf->WriteHTML($html);
+
+    return response($mpdf->Output('', 'S'), 200)
+        ->header('Content-Type', 'application/pdf')
+        ->header('Content-Disposition', 'inline; filename="برداشت-'.$id.'.pdf"');
+})->name('recipt.print');
 Route::get('/staff/{id}/contract-print', [StaffContractPrintController::class, 'generate'])->name('staff.contract.print');
 
 

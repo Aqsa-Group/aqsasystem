@@ -125,34 +125,14 @@ class Withdrawals extends Component
         $this->createWithdrawal();
     }
 
-    // /**
-    //  * تولید و چاپ PDF برداشت نهایی
-    //  */
-    // private function generateWithdrawalPdf($withdrawalId)
-    // {
-    //     try {
-    //         // فقط روت چاپ را باز کن
-    //         $this->dispatch(
-    //             'print-pdf',
-    //             url: route('recipt.print', $withdrawalId)
-    //         );
-    //     } catch (\Exception $e) {
-    //         Log::error('PDF generation error for withdrawal: ' . $e->getMessage());
-
-    //         session()->flash(
-    //             'error',
-    //             'خطا در ایجاد PDF: ' . $e->getMessage()
-    //         );
-    //     }
-    // }
 
     /**
      * چاپ برداشت از طریق دکمه در جدول
      */
-    public function printWithdrawal($id)
-    {
-        $this->generateWithdrawalPdf($id);
-    }
+  public function printWithdrawal($id)
+{
+    $this->dispatch('print-pdf', url: route('recipt.print', $id));
+}
 
     private function createWithdrawal()
     {
@@ -226,11 +206,10 @@ class Withdrawals extends Component
 
         session()->flash('message', 'برداشت از صندوق با موفقیت ثبت شد.');
 
-        // // چاپ PDF پس از ثبت
-        // if ($withdrawLog) {
-        //     $this->generateWithdrawalPdf($withdrawLog->id);
-        // }
 
+        if ($withdrawLog) {
+            $this->printWithdrawal($withdrawLog->id);
+        }
         $this->resetForm();
         $this->updateStats();
     }
@@ -305,8 +284,7 @@ class Withdrawals extends Component
         session()->flash('message', 'برداشت با موفقیت بروزرسانی شد.');
 
         // چاپ PDF پس از ویرایش
-        $this->generateWithdrawalPdf($withdrawal->id);
-
+        $this->printWithdrawal($withdrawal->id);
         $this->cancelEdit();
         $this->updateStats();
     }

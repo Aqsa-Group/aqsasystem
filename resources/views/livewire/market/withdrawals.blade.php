@@ -2224,12 +2224,11 @@
                         initDatePickers();
                     });
 
-                       document.addEventListener('livewire:init', function () {
-        Livewire.on('print-pdf', (data) => {
-            window.open(data.url, '_blank');
-        });
-    });
-
+     Livewire.on('print-pdf', (data) => {
+    if (data.url) {
+        window.open(data.url, '_blank');
+    }
+});
                     
 </script>
 <script>
