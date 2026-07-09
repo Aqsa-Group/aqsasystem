@@ -28,27 +28,27 @@ class CustomerResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return Auth::check() && in_array(Auth::user()?->role, ['admin', 'superadmin' , 'Customer Service']);
+        return Auth::check() && in_array(Auth::user()?->role, ['admin', 'superadmin', 'Customer Service']);
     }
 
 
     public static function getNavigationBadge(): ?string
-{
-    $user = Auth::user();
+    {
+        $user = Auth::user();
 
-    $query = static::getModel()::query();
+        $query = static::getModel()::query();
 
-    if ($user->role !== 'superadmin') {
-        $adminId = $user->role === 'admin' ? $user->id : $user->admin_id;
-        $query->where('admin_id', $adminId);
+        if ($user->role !== 'superadmin') {
+            $adminId = $user->role === 'admin' ? $user->id : $user->admin_id;
+            $query->where('admin_id', $adminId);
+        }
+
+        return (string) $query->count();
     }
-
-    return (string) $query->count();
-}
 
     public static function getNavigationBadgeColor(): ?string
     {
-        return 'warning'; 
+        return 'warning';
     }
 
 
@@ -63,9 +63,11 @@ class CustomerResource extends Resource
                     ->label('مارکت مربوطه')
                     ->placeholder('نام مارکت را انتخاب کنید')
                     ->options(fn() => Market::where('admin_id', $adminId)->pluck('name', 'id'))
+                    ->default(fn() => Market::where('admin_id', $adminId)
+                        ->where('name', 'فردوسی')
+                        ->value('id'))
                     ->required()
                     ->reactive(),
-
                 Forms\Components\Hidden::make('admin_id')
                     ->default($adminId),
 
@@ -76,36 +78,30 @@ class CustomerResource extends Resource
 
                 Forms\Components\TextInput::make('father_name')
                     ->label('نام پدر')
-                    ->required()
                     ->maxLength(255),
 
 
-                 Forms\Components\TextInput::make('grand_father')
+                Forms\Components\TextInput::make('grand_father')
                     ->label('نام پدرکلان')
-                    ->required()
                     ->maxLength(255),
 
 
                 Forms\Components\TextInput::make('phone')
                     ->label('شماره تلفن')
                     ->tel()
-                    ->required()
                     ->numeric()
                     ->maxLength(15),
 
                 Forms\Components\TextInput::make('address')
                     ->label('آدرس')
-                    ->required()
                     ->maxLength(255),
 
                 Forms\Components\TextInput::make('job')
                     ->label('وظیفه')
-                    ->required()
                     ->maxLength(255),
 
                 Forms\Components\TextInput::make('id_number')
                     ->label('شماره تذکره')
-                    ->required()
                     ->maxLength(255),
 
                 Forms\Components\FileUpload::make('id_card_image')
@@ -114,8 +110,7 @@ class CustomerResource extends Resource
                     ->optimize('webp')
                     ->resize(50)
                     ->directory('uploads/Customer')
-                    ->visibility('public')
-                    ->required(),
+                    ->visibility('public'),
 
                 Forms\Components\FileUpload::make('profile_image')
                     ->label('عکس مشتری')
@@ -123,17 +118,15 @@ class CustomerResource extends Resource
                     ->directory('uploads/Customer')
                     ->visibility('public')
                     ->optimize('webp')
-                    ->resize(50) 
-                    ->required(),
+                    ->resize(50),
 
-                    Forms\Components\FileUpload::make('warranty_document')
+                Forms\Components\FileUpload::make('warranty_document')
                     ->label('ضمانت خط مشتری')
                     ->image()
                     ->directory('uploads/Customer')
                     ->visibility('public')
                     ->optimize('webp')
-                    ->resize(50) 
-                    ->required(),
+                    ->resize(50),
             ]);
     }
 
@@ -155,11 +148,11 @@ class CustomerResource extends Resource
                     ->label('نام پدر')
                     ->searchable(),
 
-                    Tables\Columns\TextColumn::make('balance_afn')->label('افغانی')->sortable(),
-                    Tables\Columns\TextColumn::make('balance_usd')->label('دالر')->sortable(),
-                    Tables\Columns\TextColumn::make('balance_eur')->label('یورو')->sortable(),
-                    Tables\Columns\TextColumn::make('balance_irr')->label('تومان')->sortable(),
-                    Tables\Columns\TextColumn::make('rent_money')->label('مجموعه کرایه های جمع شده')->sortable(),
+                Tables\Columns\TextColumn::make('balance_afn')->label('افغانی')->sortable(),
+                Tables\Columns\TextColumn::make('balance_usd')->label('دالر')->sortable(),
+                Tables\Columns\TextColumn::make('balance_eur')->label('یورو')->sortable(),
+                Tables\Columns\TextColumn::make('balance_irr')->label('تومان')->sortable(),
+                Tables\Columns\TextColumn::make('rent_money')->label('مجموعه کرایه های جمع شده')->sortable(),
 
 
 

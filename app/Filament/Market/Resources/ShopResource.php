@@ -56,6 +56,7 @@ class ShopResource extends Resource
                 ->label('مارکت')
                 ->relationship('market', 'name')
                 ->required()
+                ->searchable()
                 ->options(function () {
                     $user = Auth::user();
                     return $user->role === 'superadmin'

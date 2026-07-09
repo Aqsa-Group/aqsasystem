@@ -41,7 +41,11 @@ class SalaryResource extends Resource
             Forms\Components\Select::make('market_id')
                 ->label('نام مارکت')
                 ->options(Market::where('admin_id', $adminId)->pluck('name', 'id'))
+                ->default(fn() => Market::where('admin_id', $adminId)
+                    ->where('name', 'فردوسی')
+                    ->value('id'))
                 ->reactive()
+                ->searchable()
                 ->required()
                 ->afterStateUpdated(function ($state, callable $get, callable $set) {
                     self::calculateSalaryPayment($state, $get, $set);
@@ -55,6 +59,7 @@ class SalaryResource extends Resource
                         ->where('admin_id', $adminId)
                         ->pluck('fullname', 'id')
                 )
+                ->searchable()
                 ->reactive()
                 ->required()
                 ->afterStateUpdated(function ($state, callable $get, callable $set) {
@@ -133,7 +138,6 @@ class SalaryResource extends Resource
                 ->numeric()
                 ->disabled()
                 ->dehydrated(true),
-
             Forms\Components\Select::make('reduce_from')
                 ->label('برداشت از صندوق')
                 ->options(
@@ -144,6 +148,8 @@ class SalaryResource extends Resource
                         ->pluck('expanses_type', 'expanses_type')
                         ->toArray()
                 )
+                ->default('کرایه')
+                ->searchable()
                 ->required(),
 
             Forms\Components\Select::make('currency')
@@ -154,9 +160,9 @@ class SalaryResource extends Resource
                     'EUR' => 'یورو',
                     'IRR' => 'تومان',
                 ])
+                ->default('AFN')
                 ->required(),
-
-                 Forms\Components\Textarea::make('description')
+            Forms\Components\Textarea::make('description')
                 ->label('توضیحات')
                 ->nullable(),
 

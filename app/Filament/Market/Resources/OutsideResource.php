@@ -50,7 +50,16 @@ class OutsideResource extends Resource
                         ->when($user->role !== 'superadmin' && $user->role !== 'admin', fn($q) => $q->where('admin_id', $user->admin_id))
                         ->pluck('name', 'id')
                 )
+                ->default(function () use ($user) {
+                    return Market::query()
+                        ->when($user->role === 'admin', fn($q) => $q->where('admin_id', $user->id))
+                        ->when($user->role !== 'superadmin' && $user->role !== 'admin', fn($q) => $q->where('admin_id', $user->admin_id))
+                        ->where('name', 'فردوسی')
+                        ->value('id');
+                })
                 ->reactive()
+                ->searchable()
+                ->searchable()
                 ->required(),
 
 
@@ -60,6 +69,8 @@ class OutsideResource extends Resource
                     'customer' => 'مشتری',
                     'staff'    => 'کارمند',
                 ])
+                ->default('staff')
+                ->searchable()
                 ->dehydrated(false)
                 ->reactive(),
 
@@ -104,6 +115,7 @@ class OutsideResource extends Resource
                     'EUR' => 'یورو',
                     'IRR' => 'تومان',
                 ])
+                ->default('AFN')
                 ->required(),
 
             Forms\Components\TextInput::make('paid')
@@ -114,8 +126,10 @@ class OutsideResource extends Resource
             Forms\Components\DatePicker::make('date')
                 ->label('تاریخ')
                 ->jalali()
+                ->default(now('Asia/Kabul'))
                 ->required(),
 
+                
             Forms\Components\Textarea::make('description')
                 ->label('توضیحات')
                 ->rows(3)

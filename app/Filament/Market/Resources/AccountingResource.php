@@ -129,6 +129,8 @@ class AccountingResource extends Resource
             Forms\Components\Select::make('type')
                 ->label('نوع')
                 ->options(['دوکان' => 'دوکان', 'غرفه' => 'غرفه'])
+                ->default('دوکان')
+                ->searchable()
                 ->reactive()
                 ->required()
                 ->afterStateUpdated(function ($state, callable $set) {
@@ -148,6 +150,8 @@ class AccountingResource extends Resource
             Forms\Components\Select::make('expanses_type')
                 ->label('نوع مصرف')
                 ->options(['کرایه' => 'کرایه', 'تحت الملکی' => 'تحت الملکی', 'پول برق' => 'پول برق', 'پول آب' => 'پول آب', 'صفایی' => 'صفایی'])
+                ->default('پول برق')
+                ->searchable()
                 ->reactive()
                 ->required()
                 ->afterStateUpdated(function ($get, $set) use ($calculateDates, $updateCalculatedPrice) {
@@ -168,6 +172,8 @@ class AccountingResource extends Resource
                         ->when($user->role !== 'superadmin' && $user->role !== 'admin', fn($q) => $q->where('admin_id', $user->admin_id))
                         ->pluck('name', 'id');
                 })
+                ->default(fn() => Market::where('name', 'فردوسی')->value('id'))
+                ->searchable()
                 ->reactive()
                 ->visible(fn($get) => in_array($get('type'), ['دوکان', 'غرفه']))
                 ->afterStateUpdated(function (callable $set) {
@@ -191,6 +197,7 @@ class AccountingResource extends Resource
                         : []
                 )
                 ->visible(fn($get) => $get('type') === 'دوکان')
+                ->searchable()
                 ->reactive()
                 ->afterStateUpdated(function ($state, callable $set, callable $get) use ($calculateDates) {
 
@@ -324,7 +331,7 @@ class AccountingResource extends Resource
                 Tables\Columns\TextColumn::make('type')->label('نوع'),
                 Tables\Columns\TextColumn::make('market.name')->label('مارکت')->searchable(),
                 Tables\Columns\TextColumn::make('shop.number')
-                
+
                     ->label('نمبر دوکان')
                     ->toggleable(true)
                     ->searchable(query: function ($query, $search) {
