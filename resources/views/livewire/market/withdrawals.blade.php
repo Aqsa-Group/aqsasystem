@@ -402,50 +402,152 @@
                             </div>
                         </div>
 
+                     
                         <!-- Receiver Type -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 vazir">
-                                تحویل به <span class="text-red-500">*</span>
-                            </label>
-                            <select wire:model.live="receiver_type"
-                                class="w-full h-12 px-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-                                <option value="staff">کارمند</option>
-                                <option value="customer">مشتری</option>
-                            </select>
-                        </div>
+<div>
+    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 vazir">
+        تحویل به <span class="text-red-500">*</span>
+    </label>
+    <select wire:model.live="receiver_type"
+        class="w-full h-12 px-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+        <option value="staff">کارمند</option>
+        <option value="customer">مشتری</option>
+    </select>
+</div>
 
-                        <!-- Receiver Selection -->
-                        <div>
-                            @if($receiver_type === 'staff')
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 vazir">
-                                کارمند دریافت‌کننده <span class="text-red-500">*</span>
-                            </label>
-                            <select wire:model="staff_id"
-                                class="w-full h-12 px-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-                                <option value="">انتخاب کارمند</option>
-                                @foreach($this->staffs as $id => $name)
-                                <option value="{{ $id }}">{{ $name }}</option>
-                                @endforeach
-                            </select>
-                            @error('staff_id')
-                            <p class="mt-1 text-sm text-red-600 dark:text-red-400 vazir">{{ $message }}</p>
-                            @enderror
-                            @else
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 vazir">
-                                مشتری دریافت‌کننده <span class="text-red-500">*</span>
-                            </label>
-                            <select wire:model="customer_id"
-                                class="w-full h-12 px-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-                                <option value="">انتخاب مشتری</option>
-                                @foreach($this->customers as $id => $info)
-                                <option value="{{ $id }}">{{ $info }}</option>
-                                @endforeach
-                            </select>
-                            @error('customer_id')
-                            <p class="mt-1 text-sm text-red-600 dark:text-red-400 vazir">{{ $message }}</p>
-                            @enderror
-                            @endif
-                        </div>
+<!-- Receiver Selection -->
+<div>
+    @if($receiver_type === 'staff')
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 vazir">
+            کارمند دریافت‌کننده <span class="text-red-500">*</span>
+        </label>
+        <div x-data="{
+            searchValue: '',
+            selectedId: @entangle('staff_id'),
+            items: @js($this->staffs),
+            normalize(str) {
+                return str.trim().replace(/\s+/g, ' ').replace(/[‌]/g, ''); // remove zero-width chars
+            },
+            handleSelect(event) {
+                const raw = this.normalize(event.target.value);
+                const entry = Object.entries(this.items).find(
+                    ([id, name]) => this.normalize(name) === raw
+                );
+                if (entry) {
+                    this.selectedId = entry[0];
+                    this.searchValue = entry[1]; // display the original (not normalized) for prettiness
+                } else {
+                    // If the user typed something not in the list, clear selection
+                    this.selectedId = null;
+                    this.searchValue = event.target.value; // keep what they typed
+                }
+            },
+            updateDisplay() {
+                const entry = Object.entries(this.items).find(
+                    ([id]) => String(id) === String(this.selectedId)
+                );
+                this.searchValue = entry ? entry[1] : '';
+            },
+            clearSelection() {
+                this.selectedId = null;
+                this.searchValue = '';
+            }
+        }" x-init="updateDisplay(); $watch('selectedId', () => updateDisplay())" class="relative w-full">
+            <input list="staffList"
+                   x-model="searchValue"
+                   @input="handleSelect"
+                   @change="handleSelect"
+                   placeholder="جستجوی کارمند..."
+                   class="w-full h-12 px-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                   autocomplete="off">
+            <datalist id="staffList">
+                @foreach($this->staffs as $id => $name)
+                    <option value="{{ $name }}"></option>
+                @endforeach
+            </datalist>
+            <button type="button" x-show="searchValue" @click="clearSelection()"
+                    class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            @if(empty($staff_id))
+                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+            @endif
+        </div>
+        @error('staff_id')
+            <p class="mt-1 text-sm text-red-600 dark:text-red-400 vazir">{{ $message }}</p>
+        @enderror
+    @else
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 vazir">
+            مشتری دریافت‌کننده <span class="text-red-500">*</span>
+        </label>
+        <div x-data="{
+            searchValue: '',
+            selectedId: @entangle('customer_id'),
+            items: @js($this->customers),
+            normalize(str) {
+                return str.trim().replace(/\s+/g, ' ').replace(/[‌]/g, '');
+            },
+            handleSelect(event) {
+                const raw = this.normalize(event.target.value);
+                const entry = Object.entries(this.items).find(
+                    ([id, info]) => this.normalize(info) === raw
+                );
+                if (entry) {
+                    this.selectedId = entry[0];
+                    this.searchValue = entry[1];
+                } else {
+                    this.selectedId = null;
+                    this.searchValue = event.target.value;
+                }
+            },
+            updateDisplay() {
+                const entry = Object.entries(this.items).find(
+                    ([id]) => String(id) === String(this.selectedId)
+                );
+                this.searchValue = entry ? entry[1] : '';
+            },
+            clearSelection() {
+                this.selectedId = null;
+                this.searchValue = '';
+            }
+        }" x-init="updateDisplay(); $watch('selectedId', () => updateDisplay())" class="relative w-full">
+            <input list="customerList"
+                   x-model="searchValue"
+                   @input="handleSelect"
+                   @change="handleSelect"
+                   placeholder="جستجوی مشتری..."
+                   class="w-full h-12 px-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition vazir bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                   autocomplete="off">
+            <datalist id="customerList">
+                @foreach($this->customers as $id => $info)
+                    <option value="{{ $info }}"></option>
+                @endforeach
+            </datalist>
+            <button type="button" x-show="searchValue" @click="clearSelection()"
+                    class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            @if(empty($customer_id))
+                <div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 9L12 15L10.25 13.5M5 9L7.33333 11" stroke="#929897" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+            @endif
+        </div>
+        @error('customer_id')
+            <p class="mt-1 text-sm text-red-600 dark:text-red-400 vazir">{{ $message }}</p>
+        @enderror
+    @endif
+</div>
 
 
                             <div class="relative" x-data="persianDatePicker()" x-init="init()">
