@@ -45,6 +45,7 @@ class Withdrawals extends Component
     public $draftTotalAmount = 0;
     public $editingDraftId = null;
     public $confirmDeleteIsDraft = false;
+    
 
     // ==================== آمار برداشت‌های نهایی ====================
     public $withdrawalStats = [
@@ -125,6 +126,8 @@ class Withdrawals extends Component
         $this->createWithdrawal();
     }
 
+    
+
 
     /**
      * چاپ برداشت از طریق دکمه در جدول
@@ -139,17 +142,7 @@ class Withdrawals extends Component
         $user = $this->getAuthUser();
         $adminId = $this->getAdminId();
 
-        // چک موجودی صندوق
-        $total = DB::connection('market')->table('accountings')
-            ->where('admin_id', $adminId)
-            ->where('currency', $this->currency)
-            ->where('expanses_type', $this->type)
-            ->sum('paid');
-
-        if ($this->amount > $total) {
-            session()->flash('error', "موجودی کافی برای برداشت {$this->amount} {$this->currency} در صندوق وجود ندارد.");
-            return;
-        }
+       
 
         // پردازش مشتری (در صورت انتخاب) - بدون چک موجودی (اجازه منفی شدن)
         if ($this->receiver_type === 'customer' && $this->customer_id) {
@@ -225,16 +218,7 @@ class Withdrawals extends Component
             // برگرداندن وضعیت قبلی
             $this->reversePreviousWithdrawal($withdrawal);
 
-            // چک موجودی جدید صندوق
-            $total = DB::connection('market')->table('accountings')
-                ->where('admin_id', $adminId)
-                ->where('currency', $this->currency)
-                ->where('expanses_type', $this->type)
-                ->sum('paid');
-
-            if ($this->amount > $total) {
-                throw new \Exception("موجودی کافی برای برداشت {$this->amount} {$this->currency} در صندوق وجود ندارد.");
-            }
+           
 
             // پردازش مشتری (در صورت وجود) - بدون چک موجودی
             if ($this->receiver_type === 'customer' && $this->customer_id) {
@@ -790,16 +774,7 @@ class Withdrawals extends Component
             $this->customer_id = null;
         }
 
-        // چک موجودی صندوق
-        $total = DB::connection('market')->table('accountings')
-            ->where('admin_id', $adminId)
-            ->where('currency', $this->currency)
-            ->where('expanses_type', $this->type)
-            ->sum('paid');
-
-        if ($this->amount > $total) {
-            throw new \Exception("موجودی کافی برای برداشت {$this->amount} {$this->currency} در صندوق وجود ندارد.");
-        }
+       
 
         // پردازش مشتری (فقط در صورت انتخاب مشتری) - بدون چک موجودی
         if ($this->receiver_type === 'customer' && $this->customer_id) {

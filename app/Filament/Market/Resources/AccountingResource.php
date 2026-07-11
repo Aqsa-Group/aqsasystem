@@ -606,4 +606,6 @@ class AccountingResource extends Resource
         // فقط admin یا کارمند محدود
         return $query->where('admin_id', $user->role === 'admin' ? $user->id : $user->admin_id);
     }
+
+    
 }
