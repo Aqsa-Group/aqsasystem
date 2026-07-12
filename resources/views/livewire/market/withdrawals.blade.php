@@ -402,8 +402,7 @@
                             </div>
                         </div>
 
-                     
-                        <!-- Receiver Type -->
+        <!-- Receiver Type -->
 <div>
     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 vazir">
         تحویل به <span class="text-red-500">*</span>
@@ -416,8 +415,8 @@
 </div>
 
 <!-- Receiver Selection -->
-<div>
-    @if($receiver_type === 'staff')
+@if($receiver_type === 'staff')
+    <div wire:key="staff-selector-{{ $staff_id ?? 'null' }}">
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 vazir">
             کارمند دریافت‌کننده <span class="text-red-500">*</span>
         </label>
@@ -426,7 +425,7 @@
             selectedId: @entangle('staff_id'),
             items: @js($this->staffs),
             normalize(str) {
-                return str.trim().replace(/\s+/g, ' ').replace(/[‌]/g, ''); // remove zero-width chars
+                return str.trim().replace(/\s+/g, ' ').replace(/[‌]/g, '');
             },
             handleSelect(event) {
                 const raw = this.normalize(event.target.value);
@@ -435,11 +434,10 @@
                 );
                 if (entry) {
                     this.selectedId = entry[0];
-                    this.searchValue = entry[1]; // display the original (not normalized) for prettiness
+                    this.searchValue = entry[1];
                 } else {
-                    // If the user typed something not in the list, clear selection
                     this.selectedId = null;
-                    this.searchValue = event.target.value; // keep what they typed
+                    this.searchValue = event.target.value;
                 }
             },
             updateDisplay() {
@@ -482,7 +480,9 @@
         @error('staff_id')
             <p class="mt-1 text-sm text-red-600 dark:text-red-400 vazir">{{ $message }}</p>
         @enderror
-    @else
+    </div>
+@else
+    <div wire:key="customer-selector-{{ $customer_id ?? 'null' }}">
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 vazir">
             مشتری دریافت‌کننده <span class="text-red-500">*</span>
         </label>
@@ -546,9 +546,8 @@
         @error('customer_id')
             <p class="mt-1 text-sm text-red-600 dark:text-red-400 vazir">{{ $message }}</p>
         @enderror
-    @endif
-</div>
-
+    </div>
+@endif
 
                             <div class="relative" x-data="persianDatePicker()" x-init="init()">
                                 <label

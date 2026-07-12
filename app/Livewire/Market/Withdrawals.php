@@ -272,38 +272,47 @@ class Withdrawals extends Component
         $this->cancelEdit();
         $this->updateStats();
     }
-
-    public function edit($id)
-    {
-        $withdrawal = WithdrawLog::find($id);
-        if (!$withdrawal) {
-            session()->flash('error', 'برداشت مورد نظر یافت نشد.');
-            return;
-        }
-
-        $this->editingId = $id;
-        $this->type = $withdrawal->expanses_type;
-        $this->currency = $withdrawal->currency;
-        $this->amount = $withdrawal->amount;
-        $this->description = $withdrawal->description;
-        $this->date = Jalalian::fromCarbon($withdrawal->created_at)->format('Y/m/d');
-
-        if ($withdrawal->staff_id) {
-            $this->receiver_type = 'staff';
-            $this->staff_id = $withdrawal->staff_id;
-            $this->customer_id = null;
-        } elseif ($withdrawal->customer_id) {
-            $this->receiver_type = 'customer';
-            $this->customer_id = $withdrawal->customer_id;
-            $this->staff_id = null;
-        } else {
-            $this->receiver_type = 'staff';
-            $this->staff_id = null;
-            $this->customer_id = null;
-        }
-
-        session()->flash('message', 'در حال ویرایش برداشت...');
+public function edit($id)
+{
+    $withdrawal = WithdrawLog::find($id);
+    if (!$withdrawal) {
+        session()->flash('error', 'برداشت مورد نظر یافت نشد.');
+        return;
     }
+
+    $this->staff_id = null;
+    $this->customer_id = null;
+
+    $this->editingId = $id;
+    $this->type = $withdrawal->expanses_type;
+    $this->currency = $withdrawal->currency;
+    $this->amount = $withdrawal->amount;
+    $this->description = $withdrawal->description;
+    $this->date = Jalalian::fromCarbon($withdrawal->created_at)->format('Y/m/d');
+
+    if ($withdrawal->staff_id) {
+        $this->receiver_type = 'staff';
+        $this->staff_id = $withdrawal->staff_id;
+    } elseif ($withdrawal->customer_id) {
+        $this->receiver_type = 'customer';
+        $this->customer_id = $withdrawal->customer_id;
+    } else {
+        $this->receiver_type = 'staff';
+    }
+
+    session()->flash('message', 'در حال ویرایش برداشت...');
+}
+
+
+
+public function updatedReceiverType($value)
+{
+    if ($value === 'staff') {
+        $this->customer_id = null;
+    } elseif ($value === 'customer') {
+        $this->staff_id = null;
+    }
+}
 
     public function confirmDelete($id)
     {
