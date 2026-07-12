@@ -33,23 +33,23 @@ class ShopkeeperResource extends Resource
         return Auth::check() && in_array(Auth::user()?->role, ['admin', 'superadmin', 'Customer Service']);
     }
 
-      public static function getNavigationBadge(): ?string
-{
-    $user = Auth::user();
+    public static function getNavigationBadge(): ?string
+    {
+        $user = Auth::user();
 
-    $query = static::getModel()::query();
+        $query = static::getModel()::query();
 
-    if ($user->role !== 'superadmin') {
-        $adminId = $user->role === 'admin' ? $user->id : $user->admin_id;
-        $query->where('admin_id', $adminId);
+        if ($user->role !== 'superadmin') {
+            $adminId = $user->role === 'admin' ? $user->id : $user->admin_id;
+            $query->where('admin_id', $adminId);
+        }
+
+        return (string) $query->count();
     }
-
-    return (string) $query->count();
-}
 
     public static function getNavigationBadgeColor(): ?string
     {
-        return 'success'; 
+        return 'success';
     }
 
     public static function form(Form $form): Form
@@ -68,20 +68,20 @@ class ShopkeeperResource extends Resource
             Forms\Components\TextInput::make('shop_activity')->label('نوع شغل دوکان'),
 
             Forms\Components\TextInput::make('contract_number')
-            ->label('نمبر قرارداد')
-            ->required()
-            ->numeric()
-            ->default(function () {
-                $user = Auth::user();
-                $adminId = $user->role === 'admin' ? $user->id : $user->admin_id;
-        
-                $maxContractNumber = Shopkeeper::where('admin_id', $adminId)->max('contract_number');
-        
-                return $maxContractNumber ? $maxContractNumber + 1 : 1;
-            })
-            ->readOnly(),
-        
-        
+                ->label('نمبر قرارداد')
+                ->required()
+                ->numeric()
+                ->default(function () {
+                    $user = Auth::user();
+                    $adminId = $user->role === 'admin' ? $user->id : $user->admin_id;
+
+                    $maxContractNumber = Shopkeeper::where('admin_id', $adminId)->max('contract_number');
+
+                    return $maxContractNumber ? $maxContractNumber + 1 : 1;
+                })
+                ->readOnly(),
+
+
             Forms\Components\Select::make('market_id')->label('مارکت مربوطه')
                 ->options(function () use ($adminId, $user) {
                     if ($user->role === 'superadmin') {
@@ -94,6 +94,7 @@ class ShopkeeperResource extends Resource
             Forms\Components\DatePicker::make('contract_start')
                 ->label('تاریخ شروع قرارداد')
                 ->jalali()
+                ->required()
                 ->reactive()
                 ->afterStateUpdated(function (callable $get, callable $set, $state) {
                     $set('contract_duration', self::calculateDuration(
@@ -106,6 +107,7 @@ class ShopkeeperResource extends Resource
             Forms\Components\DatePicker::make('contract_end')
                 ->label('تاریخ ختم قرارداد')
                 ->jalali()
+                ->required()
                 ->reactive()
                 ->afterStateUpdated(function (callable $get, callable $set, $state) {
                     $set('contract_duration', self::calculateDuration(
@@ -332,31 +334,31 @@ class ShopkeeperResource extends Resource
         if (!$user) {
             return parent::getEloquentQuery()->whereRaw('1 = 0');
         }
-    
+
         $query = parent::getEloquentQuery();
-    
+
         if ($user->role !== 'superadmin') {
             $adminId = $user->role === 'admin' ? $user->id : $user->admin_id;
             $query->where('admin_id', $adminId);
         }
-    
+
         // جستجو در فیلدهای اصلی و رابطه shops
         if ($search = request()->input('tableFilters')['search'] ?? null) {
             $query->where(function ($q) use ($search) {
                 $q->where('fullname', 'like', "%{$search}%")
-                  ->orWhere('shop_activity', 'like', "%{$search}%")
-                  ->orWhere('contract_number', 'like', "%{$search}%")
-                  ->orWhere('phone', 'like', "%{$search}%")
-                  ->orWhereHas('shops', function ($q2) use ($search) {
-                      $q2->where('number', 'like', "%{$search}%")
-                         ->orWhere('type', 'like', "%{$search}%");
-                  });
+                    ->orWhere('shop_activity', 'like', "%{$search}%")
+                    ->orWhere('contract_number', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%")
+                    ->orWhereHas('shops', function ($q2) use ($search) {
+                        $q2->where('number', 'like', "%{$search}%")
+                            ->orWhere('type', 'like', "%{$search}%");
+                    });
             });
         }
-    
+
         return $query;
     }
-    
+
     // متد کمکی تبدیل اعداد فارسی به انگلیسی
     private static function convertPersianToEnglish(?string $string): string
     {
