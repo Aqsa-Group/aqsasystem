@@ -59,13 +59,13 @@ class ShopkeeperResource extends Resource
 
         return $form->schema([
             Forms\Components\TextInput::make('fullname')->label('نام و نام فامیلی')->required(),
-            Forms\Components\TextInput::make('father_name')->label('نام پدر')->required(),
-            Forms\Components\TextInput::make('grand_father')->label('نام پدرکلان')->required(),
-            Forms\Components\TextInput::make('username')->label('نام کاربری')->required(),
-            Forms\Components\TextInput::make('password')->label('رمز حساب')->required(),
-            Forms\Components\TextInput::make('address')->label('آدرس')->maxLength(600)->required(),
-            Forms\Components\TextInput::make('phone')->label('شماره تلفن')->required()->numeric(),
-            Forms\Components\TextInput::make('shop_activity')->label('نوع شغل دوکان')->required(),
+            Forms\Components\TextInput::make('father_name')->label('نام پدر'),
+            Forms\Components\TextInput::make('grand_father')->label('نام پدرکلان'),
+            Forms\Components\TextInput::make('username')->label('نام کاربری'),
+            Forms\Components\TextInput::make('password')->label('رمز حساب'),
+            Forms\Components\TextInput::make('address')->label('آدرس')->maxLength(600),
+            Forms\Components\TextInput::make('phone')->label('شماره تلفن')->numeric(),
+            Forms\Components\TextInput::make('shop_activity')->label('نوع شغل دوکان'),
 
             Forms\Components\TextInput::make('contract_number')
             ->label('نمبر قرارداد')
@@ -94,7 +94,6 @@ class ShopkeeperResource extends Resource
             Forms\Components\DatePicker::make('contract_start')
                 ->label('تاریخ شروع قرارداد')
                 ->jalali()
-                ->required()
                 ->reactive()
                 ->afterStateUpdated(function (callable $get, callable $set, $state) {
                     $set('contract_duration', self::calculateDuration(
@@ -107,7 +106,6 @@ class ShopkeeperResource extends Resource
             Forms\Components\DatePicker::make('contract_end')
                 ->label('تاریخ ختم قرارداد')
                 ->jalali()
-                ->required()
                 ->reactive()
                 ->afterStateUpdated(function (callable $get, callable $set, $state) {
                     $set('contract_duration', self::calculateDuration(
@@ -129,7 +127,7 @@ class ShopkeeperResource extends Resource
                     ));
                 }),
 
-            Forms\Components\TextInput::make('national_id')->label('نمبر تذکره')->required(),
+            Forms\Components\TextInput::make('national_id')->label('نمبر تذکره'),
 
             Forms\Components\FileUpload::make('warranty_document')
                 ->label('ضمانت خط')
@@ -137,8 +135,7 @@ class ShopkeeperResource extends Resource
                 ->optimize('webp')
                 ->resize(50)
                 ->directory('uploads/shopkeeper')
-                ->visibility('public')
-                ->required(),
+                ->visibility('public'),
 
             Forms\Components\FileUpload::make('shopkeeper_image')
                 ->label('عکس دوکاندار')
@@ -146,8 +143,7 @@ class ShopkeeperResource extends Resource
                 ->optimize('webp')
                 ->resize(50)
                 ->directory('uploads/shopkeeper/profile_image')
-                ->visibility('public')
-                ->required(),
+                ->visibility('public'),
 
             Forms\Components\FileUpload::make('id_image')
                 ->label('عکس تذکره')
@@ -155,8 +151,7 @@ class ShopkeeperResource extends Resource
                 ->optimize('webp')
                 ->resize(50)
                 ->directory('uploads/shopkeeper')
-                ->visibility('public')
-                ->required(),
+                ->visibility('public'),
 
             Forms\Components\Repeater::make('shops')
                 ->label('دوکان‌ها')
