@@ -69,12 +69,12 @@ class StaffResource extends Resource
                     : Auth::user()->admin_id),
 
             Forms\Components\TextInput::make('fullname')->label('نام کامل')->required()->maxLength(255),
-            Forms\Components\TextInput::make('father_name')->label('نام پدر')->required()->maxLength(255),
-            Forms\Components\TextInput::make('phone')->label('شماره تلفن')->tel()->required()->numeric(),
-            Forms\Components\TextInput::make('address')->label('آدرس')->required()->maxLength(255),
-            Forms\Components\TextInput::make('job')->label('وظیفه')->required()->maxLength(255),
+            Forms\Components\TextInput::make('father_name')->label('نام پدر')->maxLength(255),
+            Forms\Components\TextInput::make('phone')->label('شماره تلفن')->tel()->numeric(),
+            Forms\Components\TextInput::make('address')->label('آدرس')->maxLength(255),
+            Forms\Components\TextInput::make('job')->label('وظیفه')->maxLength(255),
             Forms\Components\TextInput::make('salary')->label('معاش')->numeric()->required(),
-            Forms\Components\TextInput::make('id_number')->label('نمبر تذکره')->required()->maxLength(255),
+            Forms\Components\TextInput::make('id_number')->label('نمبر تذکره')->maxLength(255),
 
             Forms\Components\DatePicker::make('contract_start')->label('تاریخ شروع قرارداد')->jalali()->required(),
             Forms\Components\DatePicker::make('contract_end')->label('تاریخ ختم قرارداد')->jalali()->required(),
@@ -85,8 +85,7 @@ class StaffResource extends Resource
                 ->optimize('webp')
                 ->resize(50)
                 ->directory('uploads/staff/warrant_image')
-                ->visibility('public')
-                ->required(),
+                ->visibility('public'),
 
             Forms\Components\FileUpload::make('id_card_image')
                 ->label('عکس تذکره')
@@ -94,8 +93,7 @@ class StaffResource extends Resource
                 ->optimize('webp')
                 ->resize(50)
                 ->directory('uploads/staff/id_card')
-                ->visibility('public')
-                ->required(),
+                ->visibility('public'),
 
             Forms\Components\FileUpload::make('profile_image')
                 ->label('عکس کارمند')
@@ -103,8 +101,7 @@ class StaffResource extends Resource
                 ->optimize('webp')
                 ->resize(50)
                 ->directory('uploads/staff/profile')
-                ->visibility('public')
-                ->required(),
+                ->visibility('public'),
         ]);
     }
 
