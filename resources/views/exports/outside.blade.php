@@ -86,7 +86,7 @@
         <tr>
 
             <td style="border: none; text-align: left;">
-                <small>{{ jdate($outside->created_at)->format('Y/m/d H:i') }}</small>
+                <small>{{ jdate($outside->date)->format('Y/m/d H:i') }}</small>
             </td>
         </tr>
     </table>
@@ -153,7 +153,7 @@
         <tr>
 
             <td style="border: none; text-align: left;">
-                <small>{{ jdate($outside->created_at)->format('Y/m/d H:i') }}</small>
+                <small>{{ jdate($outside->date)->format('Y/m/d H:i') }}</small>
             </td>
         </tr>
     </table>

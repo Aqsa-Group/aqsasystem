@@ -11,9 +11,9 @@ class OutsideController extends Controller
     public function generate($id)
     {
         $outside = Outside::with(['customer', 'staff'])->findOrFail($id);
-    
+
         $html = view('exports.outside', compact('outside'))->render();
-    
+
         $mpdf = new Mpdf([
             'mode' => 'utf-8',
             'format' => 'A4',
@@ -32,11 +32,15 @@ class OutsideController extends Controller
             'tempDir' => storage_path('app/mpdf/tmp'),
 
         ]);
-    
+
         $mpdf->autoLangToFont = true;
         $mpdf->WriteHTML($html);
-    
-        $fileName = 'loan_' . $outside->id . '_' . time() . '.pdf';
-        return $mpdf->Output($fileName, \Mpdf\Output\Destination::DOWNLOAD);
+        $fileName = 'outside_' . $outside->id . '_' . time() . '.pdf';
+
+        return response(
+            $mpdf->Output($fileName, \Mpdf\Output\Destination::STRING_RETURN)
+        )
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'inline; filename="' . $fileName . '"');
     }
 }

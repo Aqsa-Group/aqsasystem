@@ -29,16 +29,16 @@ class CreateOutside extends CreateRecord
     {
         $outside = $this->record;
         $user = Auth::user();
-    
+
         if ($user->role === 'superadmin' || $user->role === 'admin') {
             $adminIdToSave = $user->id;
         } else {
             $adminIdToSave = $user->admin_id;
         }
-    
+
         if ($outside->type === 'بیرونی' && $outside->paid > 0) {
             DB::connection('market')->table('accountings')->insert([
-                 'outside_id' => $outside->id,
+                'outside_id' => $outside->id,
                 'expanses_type' => 'عواید بیرونی',
                 'currency' => $outside->currency,
                 'paid' => 1 * $outside->paid,
@@ -49,7 +49,7 @@ class CreateOutside extends CreateRecord
                 'updated_at' => now(),
             ]);
         }
-    
+
         $customer = Customer::find($outside->customer_id);
         if ($customer) {
             switch ($outside->currency) {
@@ -66,16 +66,20 @@ class CreateOutside extends CreateRecord
                     $customer->balance_irr += $outside->paid;
                     break;
             }
-    
+
             $customer->save();
-    
+
             Notification::make()
                 ->title('موجودی مشتری بروزرسانی شد')
                 ->success()
                 ->send();
         }
+        $this->js("
+        window.open('" . route('outside.print', $this->record->id) . "', '_blank');
+    ");
+
     }
-    
+
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');

@@ -103,6 +103,22 @@ class MarketPanelProvider extends PanelProvider
             }
             
         </style>
+
+                    <script>
+                            document.addEventListener('livewire:init', () => {
+                    console.log('Livewire loaded');
+
+                    Livewire.on('open-print', (event) => {
+                        console.log(event);
+
+                        const url = event.url ?? event[0]?.url;
+
+                        if (url) {
+                            window.open(url, '_blank');
+                        }
+                    });
+                });
+            </script>
     HTML
             )
             ->discoverResources(in: app_path('Filament/Market/Resources'), for: 'App\\Filament\\Market\\Resources')
