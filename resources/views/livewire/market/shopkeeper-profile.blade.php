@@ -1,22 +1,22 @@
 @php
 if (!function_exists('getPersianCurrencyName')) {
-    function getPersianCurrencyName($currencyCode) {
-        $map = [
-            'AFN' => 'افغانی',
-            'USD' => 'دالر',
-            'EUR' => 'یورو',
-            'IRR' => 'تومان',
-            'PKR' => 'کلدار',
-            'AED' => 'درهم',
-            'TRY' => 'لیره',
-            'CNY' => 'یوان',
-            'GBP' => 'پوند',
-            'JPY' => 'ین',
-            'SAR' => 'ریال سعودی',
-            'INR' => 'روپیه',
-        ];
-        return $map[$currencyCode] ?? $currencyCode;
-    }
+function getPersianCurrencyName($currencyCode) {
+$map = [
+'AFN' => 'افغانی',
+'USD' => 'دالر',
+'EUR' => 'یورو',
+'IRR' => 'تومان',
+'PKR' => 'کلدار',
+'AED' => 'درهم',
+'TRY' => 'لیره',
+'CNY' => 'یوان',
+'GBP' => 'پوند',
+'JPY' => 'ین',
+'SAR' => 'ریال سعودی',
+'INR' => 'روپیه',
+];
+return $map[$currencyCode] ?? $currencyCode;
+}
 }
 @endphp
 
@@ -50,30 +50,7 @@ if (!function_exists('getPersianCurrencyName')) {
                 <div
                     class="flex flex-col md:flex-row justify-between items-center p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                     <h1 class="text-[22px] inter">گزارش پروفایل دوکانداران</h1>
-                    <div class="relative w-[250px] md:w-[350]">
-                        <svg width="24" height="24"
-                            class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 hidden dark:block"
-                            viewBox="0 0 24 24" fill="none">
-                            <path
-                                d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
-                                stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                        <input type="text" wire:model.live="search" placeholder="جستجوی دوکاندار، شماره دوکان یا مارکت..."
-                            class="w-full h-12 md:h-[51px]
-                           border border-[#D7E5EC]
-                           dark:bg-black dark:border-white dark:placeholder:text-white placeholder:text-black
-                           rounded-[12px] pl-3 pr-12 text-sm md:text-base
-                           bg-transparent relative z-0">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                            class="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none dark:hidden">
-                            <path d="M20 20L22 22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
-                            <path
-                                d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75"
-                                stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
-                        </svg>
-                    </div>
+
                 </div>
 
                 <!-- دکمه‌ها و فیلترها -->
@@ -81,7 +58,8 @@ if (!function_exists('getPersianCurrencyName')) {
 
                     <!-- دکمه پرینت -->
                     <div class="lg:col-span-1">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 vazir">&nbsp;</label>
+                        <label
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 vazir">&nbsp;</label>
                         <button wire:click="printReport" wire:loading.attr='disabled' wire:target='printReport'
                             class="w-full flex items-center justify-center gap-2 bg-[#184D6C] text-white px-6 py-3 rounded-xl transition h-12">
                             <span wire:loading.remove wire:target='printReport'> چاپ</span>
@@ -96,7 +74,8 @@ if (!function_exists('getPersianCurrencyName')) {
 
                     <!-- دکمه بروزرسانی -->
                     <div class="lg:col-span-1">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 vazir">&nbsp;</label>
+                        <label
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 vazir">&nbsp;</label>
                         <button wire:click="refreshReport"
                             class="w-full flex items-center justify-center gap-2 bg-[#184D6C] text-white px-4 py-3 rounded-xl transition h-12">
                             <span>بروزرسانی</span>
@@ -112,7 +91,8 @@ if (!function_exists('getPersianCurrencyName')) {
 
                     <!-- دکمه بازنشانی -->
                     <div class="lg:col-span-1">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 vazir">&nbsp;</label>
+                        <label
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 vazir">&nbsp;</label>
                         <button wire:click="resetFilters"
                             class="w-full flex items-center justify-center gap-2 bg-[#184D6C] text-white px-4 py-3 rounded-xl transition h-12">
                             <span>بازنشانی</span>
@@ -123,71 +103,74 @@ if (!function_exists('getPersianCurrencyName')) {
                         </button>
                     </div>
 
-                    <!-- انتخاب دوکاندار -->
-                    <div class="lg:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 vazir">دوکاندار</label>
-                        <div class="relative">
-                            <select wire:model.live="filterShopkeeperId"
-                                class="appearance-none w-full dark:bg-black dark:border-white dark:text-white border border-[#8C8C8C] bg-transparent rounded-xl py-2 pl-4 pr-10 h-12 focus:ring-2 focus:ring-[#184D6C] focus:outline-none vazir">
-                                <option value="">همه دوکانداران</option>
-                                @foreach($shopkeepers as $shopkeeper)
-                                    <option value="{{ $shopkeeper['id'] }}">{{ $shopkeeper['fullname'] }}</option>
-                                @endforeach
-                            </select>
-                            <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none dark:hidden" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                                <path d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995" stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                            <svg width="24" height="24" class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none hidden dark:block" viewBox="0 0 24 24" fill="none">
-                                <path d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </div>
-                    </div>
+
 
                     <!-- انتخاب مارکت -->
                     <div class="lg:col-span-1">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 vazir">مارکت</label>
+                        <label
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 vazir">مارکت</label>
                         <div class="relative">
                             <select wire:model.live="filterMarketId"
                                 class="appearance-none w-full dark:bg-black dark:border-white dark:text-white border border-[#8C8C8C] bg-transparent rounded-xl py-2 pl-4 pr-10 h-12 focus:ring-2 focus:ring-[#184D6C] focus:outline-none vazir">
                                 <option value="">همه مارکت‌ها</option>
                                 @foreach($markets as $market)
-                                    <option value="{{ $market['id'] }}">{{ $market['name'] }}</option>
+                                <option value="{{ $market['id'] }}">{{ $market['name'] }}</option>
                                 @endforeach
                             </select>
-                            <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none dark:hidden" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                                <path d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995" stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none dark:hidden"
+                                width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                    stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
                             </svg>
-                            <svg width="24" height="24" class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none hidden dark:block" viewBox="0 0 24 24" fill="none">
-                                <path d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                            <svg width="24" height="24"
+                                class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none hidden dark:block"
+                                viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                    stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                    stroke-linejoin="round" />
                             </svg>
                         </div>
                     </div>
 
                     <!-- انتخاب نوع مصرف -->
                     <div class="lg:col-span-1">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 vazir">نوع مصرف</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 vazir">نوع
+                            مصرف</label>
                         <div class="relative">
                             <select wire:model.live="filterExpansesType"
                                 class="appearance-none w-full dark:bg-black dark:border-white dark:text-white border border-[#8C8C8C] bg-transparent rounded-xl py-2 pl-4 pr-10 h-12 focus:ring-2 focus:ring-[#184D6C] focus:outline-none vazir">
                                 <option value="">همه انواع</option>
                                 @foreach($expansesTypes as $type)
-                                    <option value="{{ $type }}">{{ $type }}</option>
+                                <option value="{{ $type }}">{{ $type }}</option>
                                 @endforeach
                             </select>
-                            <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none dark:hidden" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                                <path d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995" stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none dark:hidden"
+                                width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                    stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
                             </svg>
-                            <svg width="24" height="24" class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none hidden dark:block" viewBox="0 0 24 24" fill="none">
-                                <path d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                            <svg width="24" height="24"
+                                class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none hidden dark:block"
+                                viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
+                                    stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                    stroke-linejoin="round" />
                             </svg>
                         </div>
                     </div>
 
-             
+
 
                     <!-- از تاریخ -->
                     <div class="lg:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 vazir">از تاریخ</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 vazir">از
+                            تاریخ</label>
                         <div x-data="persianDatePicker('startDate')" x-init="init()">
                             <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
                                 placeholder="روز/ماه/سال"
@@ -199,47 +182,68 @@ if (!function_exists('getPersianCurrencyName')) {
                                 @keydown.escape.window="closePicker()" @click.away="closePicker()"
                                 class="fixed z-50 inset-0 overflow-y-auto" style="display: none;"
                                 :style="isOpen ? 'display: block;' : ''">
-                                <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-                                    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                                    <div class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                                <div
+                                    class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+                                        aria-hidden="true"></div>
+                                    <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
+                                        aria-hidden="true">&#8203;</span>
+                                    <div
+                                        class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                                         <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6">
                                             <!-- هدر -->
                                             <div class="flex justify-between items-center mb-4">
                                                 <div class="flex items-center space-x-2">
-                                                    <button @click="prevYear()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                                                    <button @click="prevYear()" type="button"
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
                                                         </svg>
                                                     </button>
-                                                    <button @click="prevMonth()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                                    <button @click="prevMonth()" type="button"
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M15 19l-7-7 7-7" />
                                                         </svg>
                                                     </button>
                                                 </div>
                                                 <div class="flex items-center space-x-2">
-                                                    <button @click="toggleMonthSelector()" type="button" class="text-lg font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                                    <button @click="toggleMonthSelector()" type="button"
+                                                        class="text-lg font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                                                         <span x-text="monthsAfghan[currentMonth]"></span>
                                                     </button>
-                                                    <button @click="toggleYearSelector()" type="button" class="text-lg font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                                    <button @click="toggleYearSelector()" type="button"
+                                                        class="text-lg font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                                                         <span x-text="currentYear"></span>
                                                     </button>
                                                 </div>
                                                 <div class="flex items-center space-x-2">
-                                                    <button @click="nextMonth()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                                    <button @click="nextMonth()" type="button"
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M9 5l7 7-7 7" />
                                                         </svg>
                                                     </button>
-                                                    <button @click="nextYear()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                                                    <button @click="nextYear()" type="button"
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
                                                         </svg>
                                                     </button>
-                                                    <button @click="closePicker()" type="button" class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 transition-colors">
-                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                    <button @click="closePicker()" type="button"
+                                                        class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 transition-colors">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                         </svg>
                                                     </button>
                                                 </div>
@@ -251,7 +255,8 @@ if (!function_exists('getPersianCurrencyName')) {
                                                     <template x-for="(month, index) in monthsAfghan" :key="index">
                                                         <button @click="selectMonth(index)"
                                                             :class="{'bg-blue-500 text-white': currentMonth === index, 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentMonth !== index}"
-                                                            class="py-2 px-3 rounded-lg text-sm font-medium transition-colors" type="button">
+                                                            class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                                                            type="button">
                                                             <span x-text="month"></span>
                                                         </button>
                                                     </template>
@@ -260,15 +265,23 @@ if (!function_exists('getPersianCurrencyName')) {
 
                                             <div x-show="showYearSelector" x-transition>
                                                 <div class="flex items-center justify-between mb-4">
-                                                    <button @click="prevYearRange()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                                    <button @click="prevYearRange()" type="button"
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M15 19l-7-7 7-7" />
                                                         </svg>
                                                     </button>
-                                                    <span class="text-lg font-bold text-gray-800 dark:text-white"><span x-text="yearRange.start"></span> - <span x-text="yearRange.end"></span></span>
-                                                    <button @click="nextYearRange()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                                    <span class="text-lg font-bold text-gray-800 dark:text-white"><span
+                                                            x-text="yearRange.start"></span> - <span
+                                                            x-text="yearRange.end"></span></span>
+                                                    <button @click="nextYearRange()" type="button"
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M9 5l7 7-7 7" />
                                                         </svg>
                                                     </button>
                                                 </div>
@@ -276,7 +289,8 @@ if (!function_exists('getPersianCurrencyName')) {
                                                     <template x-for="year in yearRange.years" :key="year">
                                                         <button @click="selectYear(year)"
                                                             :class="{'bg-blue-500 text-white': currentYear === year, 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentYear !== year}"
-                                                            class="py-2 px-3 rounded-lg text-sm font-medium transition-colors" type="button">
+                                                            class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                                                            type="button">
                                                             <span x-text="year"></span>
                                                         </button>
                                                     </template>
@@ -286,7 +300,10 @@ if (!function_exists('getPersianCurrencyName')) {
                                             <div x-show="!showMonthSelector && !showYearSelector" x-transition>
                                                 <div class="grid grid-cols-7 gap-1 mb-2">
                                                     <template x-for="day in weekDaysAfghan" :key="day">
-                                                        <div class="text-center text-sm font-medium text-gray-500 dark:text-gray-400 py-1"><span x-text="day"></span></div>
+                                                        <div
+                                                            class="text-center text-sm font-medium text-gray-500 dark:text-gray-400 py-1">
+                                                            <span x-text="day"></span>
+                                                        </div>
                                                     </template>
                                                 </div>
                                                 <div class="grid grid-cols-7 gap-1">
@@ -297,7 +314,8 @@ if (!function_exists('getPersianCurrencyName')) {
                                                             'text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700': !day.isToday && !day.isSelected && !day.isOtherMonth,
                                                             'text-gray-400 dark:text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800': day.isOtherMonth,
                                                             'cursor-not-allowed opacity-50': day.isDisabled
-                                                        }" class="w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors" :disabled="day.isDisabled" type="button">
+                                                        }" class="w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors"
+                                                            :disabled="day.isDisabled" type="button">
                                                             <span x-text="day.day"></span>
                                                         </button>
                                                     </template>
@@ -306,11 +324,17 @@ if (!function_exists('getPersianCurrencyName')) {
 
                                             <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
                                                 <div class="flex justify-between items-center">
-                                                    <div class="text-sm text-gray-600 dark:text-gray-300"><span x-text="selectedDate ? formatDate(selectedDate) : 'تاریخ انتخاب نشده'"></span></div>
+                                                    <div class="text-sm text-gray-600 dark:text-gray-300"><span
+                                                            x-text="selectedDate ? formatDate(selectedDate) : 'تاریخ انتخاب نشده'"></span>
+                                                    </div>
                                                     <div class="flex space-x-2">
-                                                        <button @click="setToday()" type="button" class="px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors">امروز</button>
-                                                        <button @click="clearDate()" type="button" class="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors">پاک کردن</button>
-                                                        <button @click="applyDate()" type="button" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">تأیید</button>
+                                                        <button @click="setToday()" type="button"
+                                                            class="px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors">امروز</button>
+                                                        <button @click="clearDate()" type="button"
+                                                            class="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors">پاک
+                                                            کردن</button>
+                                                        <button @click="applyDate()" type="button"
+                                                            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">تأیید</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -323,7 +347,8 @@ if (!function_exists('getPersianCurrencyName')) {
 
                     <!-- تا تاریخ -->
                     <div class="lg:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 vazir">تا تاریخ</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 vazir">تا
+                            تاریخ</label>
                         <div x-data="persianDatePicker('endDate')" x-init="init()">
                             <input type="text" x-ref="dateInput" x-model="displayDate" @click="togglePicker()"
                                 placeholder="روز/ماه/سال"
@@ -336,47 +361,68 @@ if (!function_exists('getPersianCurrencyName')) {
                                 class="fixed z-50 inset-0 overflow-y-auto" style="display: none;"
                                 :style="isOpen ? 'display: block;' : ''">
                                 <!-- محتوای مشابه datepicker اول (برای اختصار کپی می‌شود) -->
-                                <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-                                    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                                    <div class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                                <div
+                                    class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+                                        aria-hidden="true"></div>
+                                    <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
+                                        aria-hidden="true">&#8203;</span>
+                                    <div
+                                        class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                                         <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6">
                                             <!-- همان هدر، ماه‌ها، سال‌ها، روزها و فوتر -->
                                             <div class="flex justify-between items-center mb-4">
                                                 <div class="flex items-center space-x-2">
-                                                    <button @click="prevYear()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                                                    <button @click="prevYear()" type="button"
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
                                                         </svg>
                                                     </button>
-                                                    <button @click="prevMonth()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                                    <button @click="prevMonth()" type="button"
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M15 19l-7-7 7-7" />
                                                         </svg>
                                                     </button>
                                                 </div>
                                                 <div class="flex items-center space-x-2">
-                                                    <button @click="toggleMonthSelector()" type="button" class="text-lg font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                                    <button @click="toggleMonthSelector()" type="button"
+                                                        class="text-lg font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                                                         <span x-text="monthsAfghan[currentMonth]"></span>
                                                     </button>
-                                                    <button @click="toggleYearSelector()" type="button" class="text-lg font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                                    <button @click="toggleYearSelector()" type="button"
+                                                        class="text-lg font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                                                         <span x-text="currentYear"></span>
                                                     </button>
                                                 </div>
                                                 <div class="flex items-center space-x-2">
-                                                    <button @click="nextMonth()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                                    <button @click="nextMonth()" type="button"
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M9 5l7 7-7 7" />
                                                         </svg>
                                                     </button>
-                                                    <button @click="nextYear()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                                                    <button @click="nextYear()" type="button"
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
                                                         </svg>
                                                     </button>
-                                                    <button @click="closePicker()" type="button" class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 transition-colors">
-                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                    <button @click="closePicker()" type="button"
+                                                        class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 transition-colors">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                         </svg>
                                                     </button>
                                                 </div>
@@ -387,7 +433,8 @@ if (!function_exists('getPersianCurrencyName')) {
                                                     <template x-for="(month, index) in monthsAfghan" :key="index">
                                                         <button @click="selectMonth(index)"
                                                             :class="{'bg-blue-500 text-white': currentMonth === index, 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentMonth !== index}"
-                                                            class="py-2 px-3 rounded-lg text-sm font-medium transition-colors" type="button">
+                                                            class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                                                            type="button">
                                                             <span x-text="month"></span>
                                                         </button>
                                                     </template>
@@ -395,15 +442,23 @@ if (!function_exists('getPersianCurrencyName')) {
                                             </div>
                                             <div x-show="showYearSelector" x-transition>
                                                 <div class="flex items-center justify-between mb-4">
-                                                    <button @click="prevYearRange()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                                    <button @click="prevYearRange()" type="button"
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M15 19l-7-7 7-7" />
                                                         </svg>
                                                     </button>
-                                                    <span class="text-lg font-bold text-gray-800 dark:text-white"><span x-text="yearRange.start"></span> - <span x-text="yearRange.end"></span></span>
-                                                    <button @click="nextYearRange()" type="button" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                                    <span class="text-lg font-bold text-gray-800 dark:text-white"><span
+                                                            x-text="yearRange.start"></span> - <span
+                                                            x-text="yearRange.end"></span></span>
+                                                    <button @click="nextYearRange()" type="button"
+                                                        class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M9 5l7 7-7 7" />
                                                         </svg>
                                                     </button>
                                                 </div>
@@ -411,7 +466,8 @@ if (!function_exists('getPersianCurrencyName')) {
                                                     <template x-for="year in yearRange.years" :key="year">
                                                         <button @click="selectYear(year)"
                                                             :class="{'bg-blue-500 text-white': currentYear === year, 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600': currentYear !== year}"
-                                                            class="py-2 px-3 rounded-lg text-sm font-medium transition-colors" type="button">
+                                                            class="py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                                                            type="button">
                                                             <span x-text="year"></span>
                                                         </button>
                                                     </template>
@@ -420,7 +476,10 @@ if (!function_exists('getPersianCurrencyName')) {
                                             <div x-show="!showMonthSelector && !showYearSelector" x-transition>
                                                 <div class="grid grid-cols-7 gap-1 mb-2">
                                                     <template x-for="day in weekDaysAfghan" :key="day">
-                                                        <div class="text-center text-sm font-medium text-gray-500 dark:text-gray-400 py-1"><span x-text="day"></span></div>
+                                                        <div
+                                                            class="text-center text-sm font-medium text-gray-500 dark:text-gray-400 py-1">
+                                                            <span x-text="day"></span>
+                                                        </div>
                                                     </template>
                                                 </div>
                                                 <div class="grid grid-cols-7 gap-1">
@@ -431,7 +490,8 @@ if (!function_exists('getPersianCurrencyName')) {
                                                             'text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700': !day.isToday && !day.isSelected && !day.isOtherMonth,
                                                             'text-gray-400 dark:text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800': day.isOtherMonth,
                                                             'cursor-not-allowed opacity-50': day.isDisabled
-                                                        }" class="w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors" :disabled="day.isDisabled" type="button">
+                                                        }" class="w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors"
+                                                            :disabled="day.isDisabled" type="button">
                                                             <span x-text="day.day"></span>
                                                         </button>
                                                     </template>
@@ -439,11 +499,17 @@ if (!function_exists('getPersianCurrencyName')) {
                                             </div>
                                             <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
                                                 <div class="flex justify-between items-center">
-                                                    <div class="text-sm text-gray-600 dark:text-gray-300"><span x-text="selectedDate ? formatDate(selectedDate) : 'تاریخ انتخاب نشده'"></span></div>
+                                                    <div class="text-sm text-gray-600 dark:text-gray-300"><span
+                                                            x-text="selectedDate ? formatDate(selectedDate) : 'تاریخ انتخاب نشده'"></span>
+                                                    </div>
                                                     <div class="flex space-x-2">
-                                                        <button @click="setToday()" type="button" class="px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors">امروز</button>
-                                                        <button @click="clearDate()" type="button" class="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors">پاک کردن</button>
-                                                        <button @click="applyDate()" type="button" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">تأیید</button>
+                                                        <button @click="setToday()" type="button"
+                                                            class="px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors">امروز</button>
+                                                        <button @click="clearDate()" type="button"
+                                                            class="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors">پاک
+                                                            کردن</button>
+                                                        <button @click="applyDate()" type="button"
+                                                            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">تأیید</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -454,125 +520,223 @@ if (!function_exists('getPersianCurrencyName')) {
                         </div>
                     </div>
 
+                    <div class="relative w-[250px] md:w-[350]">
+                        <svg width="24" height="24"
+                            class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 hidden dark:block"
+                            viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+                                stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        <input type="text" wire:model.live="search"
+                            placeholder="جستجوی دوکاندار، شماره دوکان یا مارکت..." class="w-full h-12 md:h-[51px]
+                           border border-[#D7E5EC]
+                           dark:bg-black dark:border-white dark:placeholder:text-white placeholder:text-black
+                           rounded-[12px] pl-3 pr-12 text-sm md:text-base
+                           bg-transparent relative z-0">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none dark:hidden">
+                            <path d="M20 20L22 22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                            <path
+                                d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75"
+                                stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+                    </div>
+
                 </div>
 
                 <!-- ===== جدول اول: خلاصه آخرین باقیمانده هر نوع مصرف ===== -->
                 <div class="overflow-x-auto w-full mt-4">
                     <div class="max-h-[600px] overflow-y-auto">
-                        <table class="w-full text-sm md:text-base text-left rtl:text-right text-gray-700 border-collapse">
+                        <table
+                            class="w-full text-sm md:text-base text-left rtl:text-right text-gray-700 border-collapse">
                             <thead class="sticky top-0 z-10">
                                 <tr class="bg-gradient-to-r from-[#1e3c5c] to-[#2b4f72] text-white">
-                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center align-middle w-16">#</th>
-                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center align-middle">دوکاندار</th>
-                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center align-middle">شماره دوکان</th>
-                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center align-middle">مارکت</th>
+                                    <th
+                                        class="px-3 py-3 font-bold border border-gray-300 text-center align-middle w-16">
+                                        #</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center align-middle">
+                                        دوکاندار</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center align-middle">
+                                        شماره دوکان</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center align-middle">
+                                        مارکت</th>
                                     @foreach($expansesTypes as $type)
-                                        <th class="px-2 py-3 font-bold border border-gray-300 text-center" style="background-color: #34495e;">{{ $type }}</th>
+                                    <th class="px-2 py-3 font-bold border border-gray-300 text-center"
+                                        style="background-color: #34495e;">{{ $type }}</th>
                                     @endforeach
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse($summary as $index => $row)
-                                    @php $rowClass = $index % 2 == 0 ? 'bg-white' : 'bg-gray-50'; @endphp
-                                    <tr class="{{ $rowClass }} hover:bg-gray-100 transition-colors duration-150 border-b border-gray-200">
-                                        <td class="px-3 py-3 text-center font-mono border-l border-gray-200">{{ $index + 1 }}</td>
-                                        <td class="px-3 py-3 font-medium text-gray-800 border-l border-gray-200">{{ $row['shopkeeper_name'] }}</td>
-                                        <td class="px-3 py-3 text-center border-l border-gray-200">{{ $row['shop_number'] }}</td>
-                                        <td class="px-3 py-3 text-center border-l border-gray-200">{{ $row['market_name'] }}</td>
-        @foreach($expansesTypes as $type)
-    @php
-        $originalBalance = $row['balances'][$type] ?? 0;
-        $balance = -$originalBalance; // معکوس کردن علامت برای نمایش بدهی به‌صورت منفی
-        $class = $balance < 0 ? 'text-red-600 font-bold' : ($balance > 0 ? 'text-green-600' : 'text-gray-500');
-    @endphp
-    <td class="px-2 py-3 text-left font-mono {{ $class }} border-l border-gray-200" dir="ltr">{{ number_format($balance, 2) }}</td>
-@endforeach
-                                    </tr>
+                                @php $rowClass = $index % 2 == 0 ? 'bg-white' : 'bg-gray-50'; @endphp
+                                <tr
+                                    class="{{ $rowClass }} hover:bg-gray-100 transition-colors duration-150 border-b border-gray-200">
+                                    <td class="px-3 py-3 text-center font-mono border-l border-gray-200">{{ $index + 1
+                                        }}</td>
+                                    <td class="px-3 py-3 font-medium text-gray-800 border-l border-gray-200">{{
+                                        $row['shopkeeper_name'] }}</td>
+                                    <td class="px-3 py-3 text-center border-l border-gray-200">{{ $row['shop_number'] }}
+                                    </td>
+                                    <td class="px-3 py-3 text-center border-l border-gray-200">{{ $row['market_name'] }}
+                                    </td>
+                                    @foreach($expansesTypes as $type)
+                                    @php
+                                    $originalBalance = $row['balances'][$type] ?? 0;
+                                    $balance = -$originalBalance; // معکوس کردن علامت برای نمایش بدهی به‌صورت منفی
+                                    $class = $balance < 0 ? 'text-red-600 font-bold' : ($balance> 0 ? 'text-green-600' :
+                                        'text-gray-500');
+                                        @endphp
+                                        <td class="px-2 py-3 text-left font-mono {{ $class }} border-l border-gray-200"
+                                            dir="ltr">{{ number_format($balance, 2) }}</td>
+                                        @endforeach
+                                </tr>
                                 @empty
-                                    <tr>
-                                        <td colspan="{{ 4 + count($expansesTypes) }}" class="px-4 py-12 text-center text-gray-500 bg-gray-50">
-                                            <div class="flex flex-col items-center justify-center">
-                                                <svg class="w-16 h-16 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                </svg>
-                                                <span class="text-lg">داده‌ای یافت نشد</span>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td colspan="{{ 4 + count($expansesTypes) }}"
+                                        class="px-4 py-12 text-center text-gray-500 bg-gray-50">
+                                        <div class="flex flex-col items-center justify-center">
+                                            <svg class="w-16 h-16 text-gray-300 mb-3" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                            <span class="text-lg">داده‌ای یافت نشد</span>
+                                        </div>
+                                    </td>
+                                </tr>
                                 @endforelse
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-            <!-- ===== جدول دوم: تمام تراکنش‌ها ===== -->
-<div class="mt-8 border-t-2 border-[#184D6C] pt-4">
-    <h3 class="text-lg font-bold mb-3 text-[#184D6C] dark:text-white">لیست تمام تراکنش‌ها</h3>
-    <div class="overflow-x-auto">
-        <table class="w-full text-sm md:text-base text-left rtl:text-right text-gray-700 border-collapse">
-            <thead>
-                <tr class="bg-gradient-to-r from-[#1e3c5c] to-[#2b4f72] text-white">
-                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">#</th>
-                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">دوکاندار</th>
-                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">شماره دوکان</th>
-                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">مارکت</th>
-                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">نوع مصرف</th>
-                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">مبلغ پرداختی</th>
-                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">ارز</th>
-                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">باقیمانده</th>
-                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">تاریخ</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($transactions as $index => $tx)
-                    @php
-                        $rowClass = $index % 2 == 0 ? 'bg-white' : 'bg-gray-50';
-                        // مبلغ پرداختی: منفی=قرمز، مثبت=سبز، صفر=خاکستری
-                        $paidClass = $tx['paid'] < 0 ? 'text-red-600' : ($tx['paid'] > 0 ? 'text-green-600' : 'text-gray-500');
-                        // معکوس کردن علامت remained برای نمایش بدهی به‌صورت منفی
-                        $remainedValue = -$tx['remained'];
-                        $remainedClass = $remainedValue < 0 ? 'text-red-600 font-bold' : ($remainedValue > 0 ? 'text-green-600' : 'text-gray-500');
-                    @endphp
-                    <tr class="{{ $rowClass }} hover:bg-gray-100 transition-colors duration-150 border-b border-gray-200">
-                        <td class="px-3 py-3 text-center font-mono border-l border-gray-200">{{ ($transactions->currentPage() - 1) * $transactions->perPage() + $index + 1 }}</td>
-                        <td class="px-3 py-3 font-medium text-gray-800 border-l border-gray-200">{{ $tx['shopkeeper_name'] }}</td>
-                        <td class="px-3 py-3 text-center border-l border-gray-200">{{ $tx['shop_number'] }}</td>
-                        <td class="px-3 py-3 text-center border-l border-gray-200">{{ $tx['market_name'] }}</td>
-                        <td class="px-3 py-3 text-center border-l border-gray-200">{{ $tx['expanses_type'] }}</td>
-                        <td class="px-3 py-3 text-left font-mono {{ $paidClass }} border-l border-gray-200" dir="ltr">{{ number_format($tx['paid'], 2) }}</td>
-                        <td class="px-3 py-3 text-center border-l border-gray-200">{{ getPersianCurrencyName($tx['currency']) }}</td>
-                        <td class="px-3 py-3 text-left font-mono {{ $remainedClass }} border-l border-gray-200" dir="ltr">{{ number_format($remainedValue, 2) }}</td>
-                        <td class="px-3 py-3 text-center border-l border-gray-200 text-xs">{{ $tx['date_fa'] }}</td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="9" class="px-4 py-12 text-center text-gray-500 bg-gray-50">
-                            <div class="flex flex-col items-center justify-center">
-                                <svg class="w-16 h-16 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
-                                <span class="text-lg">هیچ تراکنشی یافت نشد</span>
-                            </div>
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-    @if($transactions->hasPages())
-        <div class="mt-4">{{ $transactions->links() }}</div>
-    @endif
-</div>
+                <!-- ===== جدول دوم: تمام تراکنش‌ها ===== -->
+                <div class="mt-8 border-t-2 border-[#184D6C] pt-4">
+                    <h3 class="text-lg font-bold mb-3 text-[#184D6C] dark:text-white">لیست تمام تراکنش‌ها</h3>
+
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <label class="text-xl font-medium text-gray-700 dark:text-gray-300 vazir">تعداد
+                                نمایش:</label>
+                            <select wire:model.live="perPage"
+                                class="border border-gray-300 appearance-none dark:border-gray-600 rounded-lg px-4 py-2 bg-white dark:bg-gray-800 text-sm">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="all">همه</option>
+                            </select>
+                        </div>
+                        <!-- در صورت نیاز، می‌توانید اطلاعات تعداد کل را هم نمایش دهید -->
+                        <span class="text-sm text-gray-500 dark:text-gray-400">
+                            {{ $transactions->total() }} رکورد
+                        </span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table
+                            class="w-full text-sm md:text-base text-left rtl:text-right text-gray-700 border-collapse">
+                            <thead>
+                                <tr class="bg-gradient-to-r from-[#1e3c5c] to-[#2b4f72] text-white">
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">#</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">دوکاندار</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">شماره دوکان</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">مارکت</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">نوع مصرف</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">مبلغ پرداختی</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">ارز</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">باقیمانده</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">تاریخ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($transactions as $index => $tx)
+                                @php
+                                $rowClass = $index % 2 == 0 ? 'bg-white' : 'bg-gray-50';
+                                // مبلغ پرداختی: منفی=قرمز، مثبت=سبز، صفر=خاکستری
+                                $paidClass = $tx['paid'] < 0 ? 'text-red-600' : ($tx['paid']> 0 ? 'text-green-600' :
+                                    'text-gray-500');
+                                    // معکوس کردن علامت remained برای نمایش بدهی به‌صورت منفی
+                                    $remainedValue = -$tx['remained'];
+                                    $remainedClass = $remainedValue < 0 ? 'text-red-600 font-bold' : ($remainedValue> 0
+                                        ? 'text-green-600' : 'text-gray-500');
+                                        @endphp
+                                        <tr
+                                            class="{{ $rowClass }} hover:bg-gray-100 transition-colors duration-150 border-b border-gray-200">
+                                            <td class="px-3 py-3 text-center font-mono border-l border-gray-200">{{
+                                                ($transactions->currentPage() - 1) * $transactions->perPage() + $index +
+                                                1 }}</td>
+                                            <td class="px-3 py-3 font-medium text-gray-800 border-l border-gray-200">{{
+                                                $tx['shopkeeper_name'] }}</td>
+                                            <td class="px-3 py-3 text-center border-l border-gray-200">{{
+                                                $tx['shop_number'] }}</td>
+                                            <td class="px-3 py-3 text-center border-l border-gray-200">{{
+                                                $tx['market_name'] }}</td>
+                                            <td class="px-3 py-3 text-center border-l border-gray-200">{{
+                                                $tx['expanses_type'] }}</td>
+                                            <td class="px-3 py-3 text-left font-mono {{ $paidClass }} border-l border-gray-200"
+                                                dir="ltr">{{ number_format($tx['paid'], 2) }}</td>
+                                            <td class="px-3 py-3 text-center border-l border-gray-200">{{
+                                                getPersianCurrencyName($tx['currency']) }}</td>
+                                            <td class="px-3 py-3 text-left font-mono {{ $remainedClass }} border-l border-gray-200"
+                                                dir="ltr">{{ number_format($remainedValue, 2) }}</td>
+                                            <td class="px-3 py-3 text-center border-l border-gray-200 text-xs">{{
+                                                $tx['date_fa'] }}</td>
+                                        </tr>
+                                        @empty
+                                        <tr>
+                                            <td colspan="9" class="px-4 py-12 text-center text-gray-500 bg-gray-50">
+                                                <div class="flex flex-col items-center justify-center">
+                                                    <svg class="w-16 h-16 text-gray-300 mb-3" fill="none"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="1"
+                                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                    </svg>
+                                                    <span class="text-lg">هیچ تراکنشی یافت نشد</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
 
     <style>
         @media print {
-            body * { visibility: hidden; }
+            body * {
+                visibility: hidden;
+            }
+
             #print-content,
-            #print-content * { visibility: visible; }
-            #print-content { position: absolute; left: 0; top: 0; width: 100%; }
+            #print-content * {
+                visibility: visible;
+            }
+
+            #print-content {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+        }
+
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: none !important;
+        }
+
+        select::-ms-expand {
+            display: none;
         }
     </style>
 

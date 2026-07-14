@@ -46,7 +46,11 @@ return $map[$currencyCode] ?? $currencyCode;
             <div class="bg-white shadow-sm backdrop-blur-2xl border border-[#D7E5EC]
                     dark:bg-black dark:border dark:border-white p-6 rounded-[12px] mx-auto">
 
-             
+                <div
+                    class="flex flex-col md:flex-row justify-between items-center p-3 md:p-4 rounded-[12px] mb-3 gap-3">
+                    <h1 class="text-[22px] inter">گزارش کارمندان</h1>
+
+                </div>
 
                 <!-- دکمه‌ها و فیلترها -->
                 <div class="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-4 items-end">
@@ -104,13 +108,13 @@ return $map[$currencyCode] ?? $currencyCode;
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 vazir">ارز</label>
                         <div class="relative">
                             <select wire:model.live="filterCurrency"
-                                class="appearance-none  w-full dark:bg-black dark:border-white dark:text-white border border-[#8C8C8C] bg-transparent rounded-xl py-2 pl-4 pr-10 h-12 focus:ring-2 focus:ring-[#184D6C] focus:outline-none vazir">
+                                class="  w-full dark:bg-black dark:border-white dark:text-white border border-[#8C8C8C] bg-transparent rounded-xl py-2 p-4 appearance-none h-12 focus:ring-2 focus:ring-[#184D6C] focus:outline-none vazir">
                                 <option value="">همه ارزها</option>
                                 @foreach($currencies as $code => $name)
                                 <option value="{{ $code }}">{{ $name }}</option>
                                 @endforeach
                             </select>
-                         
+
                         </div>
                     </div>
 
@@ -120,12 +124,12 @@ return $map[$currencyCode] ?? $currencyCode;
                             تراکنش</label>
                         <div class="relative">
                             <select wire:model.live="filterTransactionType"
-                                class="appearance-none w-full dark:bg-black dark:border-white dark:text-white border border-[#8C8C8C] bg-transparent rounded-xl py-2 pl-4 pr-10 h-12 focus:ring-2 focus:ring-[#184D6C] focus:outline-none vazir">
+                                class="appearance-none w-full dark:bg-black dark:border-white dark:text-white border border-[#8C8C8C] bg-transparent rounded-xl py-2 p-4 h-12 focus:ring-2 focus:ring-[#184D6C] focus:outline-none vazir">
                                 <option value="all">همه تراکنش‌ها</option>
                                 <option value="withdrawal">برداشت‌ها</option>
                                 <option value="salary">معاش‌ها</option>
                             </select>
-                       
+
                         </div>
                     </div>
 
@@ -266,7 +270,8 @@ return $map[$currencyCode] ?? $currencyCode;
                                                     <template x-for="day in weekDaysAfghan" :key="day">
                                                         <div
                                                             class="text-center text-sm font-medium text-gray-500 dark:text-gray-400 py-1">
-                                                            <span x-text="day"></span></div>
+                                                            <span x-text="day"></span>
+                                                        </div>
                                                     </template>
                                                 </div>
                                                 <div class="grid grid-cols-7 gap-1">
@@ -443,7 +448,8 @@ return $map[$currencyCode] ?? $currencyCode;
                                                     <template x-for="day in weekDaysAfghan" :key="day">
                                                         <div
                                                             class="text-center text-sm font-medium text-gray-500 dark:text-gray-400 py-1">
-                                                            <span x-text="day"></span></div>
+                                                            <span x-text="day"></span>
+                                                        </div>
                                                     </template>
                                                 </div>
                                                 <div class="grid grid-cols-7 gap-1">
@@ -485,7 +491,7 @@ return $map[$currencyCode] ?? $currencyCode;
                         </div>
                     </div>
 
-              <div class="relative w-[250px] md:w-[350]">
+                    <div class="relative w-[250px] md:w-[350]">
                         <svg width="24" height="24"
                             class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 hidden dark:block"
                             viewBox="0 0 24 24" fill="none">
@@ -534,7 +540,7 @@ return $map[$currencyCode] ?? $currencyCode;
                                     @foreach($currencies as $code => $name)
                                     <th class="px-2 py-2 font-bold border border-gray-300 text-center text-sm">برداشت
                                     </th>
-                                    <th class="px-2 py-2 font-bold border border-gray-300 text-center text-sm">حقوق</th>
+                                    <th class="px-2 py-2 font-bold border border-gray-300 text-center text-sm">کل معاشات گرفته شده</th>
                                     @endforeach
                                 </tr>
                             </thead>
@@ -605,7 +611,8 @@ return $map[$currencyCode] ?? $currencyCode;
                                             class="px-3 py-3 font-bold text-gray-800 dark:text-white border-l border-gray-300">
                                             <span
                                                 class="bg-blue-100 dark:bg-blue-800 px-3 py-1 rounded-full text-blue-800 dark:text-blue-200">کل
-                                                برداشت‌ها</span></td>
+                                                برداشت‌ها</span>
+                                        </td>
                                         @foreach($currencies as $code => $name)
                                         @php $amt = $totalWithdrawals[$code] ?? 0; $class = $amt < 0 ? 'text-red-600' :
                                             ($amt> 0 ? 'text-green-600' : 'text-gray-500'); @endphp
@@ -620,7 +627,7 @@ return $map[$currencyCode] ?? $currencyCode;
 
                     <!-- جمع کل حقوق‌ها -->
                     <div class="mt-6 border-t-2 border-[#184D6C] pt-4">
-                        <h3 class="text-lg font-bold mb-3 text-[#184D6C] dark:text-white">جمع کل حقوق‌ها</h3>
+                        <h3 class="text-lg font-bold mb-3 text-[#184D6C] dark:text-white">جمع کل معاشات</h3>
                         <div class="overflow-x-auto">
                             <table
                                 class="w-full text-sm md:text-base text-left rtl:text-right text-gray-700 border-collapse bg-gray-50 dark:bg-gray-800 rounded-lg">
@@ -641,7 +648,8 @@ return $map[$currencyCode] ?? $currencyCode;
                                             class="px-3 py-3 font-bold text-gray-800 dark:text-white border-l border-gray-300">
                                             <span
                                                 class="bg-green-100 dark:bg-green-800 px-3 py-1 rounded-full text-green-800 dark:text-green-200">کل
-                                                حقوق‌ها</span></td>
+                                                معاشات</span>
+                                        </td>
                                         @foreach($currencies as $code => $name)
                                         @php $amt = $totalSalaries[$code] ?? 0; $class = $amt < 0 ? 'text-red-600' :
                                             ($amt> 0 ? 'text-green-600' : 'text-gray-500'); @endphp
@@ -657,8 +665,26 @@ return $map[$currencyCode] ?? $currencyCode;
 
                 <!-- ===== جدول دوم: جزئیات تمام تراکنش‌ها ===== -->
                 <div class="mt-8 border-t-2 border-[#184D6C] pt-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <label class="text-xl font-medium text-gray-700 dark:text-gray-300 vazir">تعداد
+                                نمایش:</label>
+                            <select wire:model.live="perPage"
+                                class="border border-gray-300 appearance-none dark:border-gray-600 rounded-lg px-4 py-2 bg-white dark:bg-gray-800 text-sm">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="all">همه</option>
+                            </select>
+                        </div>
+                        <!-- در صورت نیاز، می‌توانید اطلاعات تعداد کل را هم نمایش دهید -->
+                        <span class="text-sm text-gray-500 dark:text-gray-400">
+                            {{ $transactions->total() }} رکورد
+                        </span>
+                    </div>
                     <h3 class="text-lg font-bold mb-3 text-[#184D6C] dark:text-white">لیست تمام تراکنش‌ها (برداشت‌ها و
-                        حقوق‌ها)</h3>
+                        معاشات)</h3>
                     <div class="overflow-x-auto">
                         <table
                             class="w-full text-sm md:text-base text-left rtl:text-right text-gray-700 border-collapse">
@@ -666,7 +692,8 @@ return $map[$currencyCode] ?? $currencyCode;
                                 <tr class="bg-gradient-to-r from-[#1e3c5c] to-[#2b4f72] text-white">
                                     <th class="px-3 py-3 font-bold border border-gray-300 text-center">#</th>
                                     <th class="px-3 py-3 font-bold border border-gray-300 text-center">نام کارمند</th>
-                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">نوع تراکنش</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">نوع ترانزکشن</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">نوع برداشت</th>
                                     <th class="px-3 py-3 font-bold border border-gray-300 text-center">مبلغ</th>
                                     <th class="px-3 py-3 font-bold border border-gray-300 text-center">ارز</th>
                                     <th class="px-3 py-3 font-bold border border-gray-300 text-center">تاریخ</th>
@@ -684,8 +711,12 @@ return $map[$currencyCode] ?? $currencyCode;
                                     <td class="px-3 py-3 text-center font-mono border-l border-gray-200">{{
                                         ($transactions->currentPage() - 1) * $transactions->perPage() + $index + 1 }}
                                     </td>
+                                    
                                     <td class="px-3 py-3 font-medium text-gray-800 border-l border-gray-200">{{
                                         $tx['staff_name'] }}</td>
+                                         <td  class="px-3 py-3 font-medium text-gray-800 border-l border-gray-200">
+        {{ $tx['transaction_type'] === 'withdrawal' ? 'برداشت' : 'معاش' }}
+    </td>
                                     <td class="px-3 py-3 text-center border-l border-gray-200">
                                         <span class="px-2 py-1 rounded-full text-xs font-bold {{ $typeClass }}">{{
                                             $tx['type'] }}</span>
@@ -696,7 +727,7 @@ return $map[$currencyCode] ?? $currencyCode;
                                         getPersianCurrencyName($tx['currency']) }}</td>
                                     <td class="px-3 py-3 text-center border-l border-gray-200 text-xs">{{ $tx['date_fa']
                                         }}</td>
-                                    <td class="px-3 py-3 max-w-xs truncate border-l border-gray-200">{{
+                                    <td class="px-3 py-3 max-w-xs  border-l border-gray-200">{{
                                         $tx['description'] }}</td>
                                     </tr>
                                     @empty
@@ -717,9 +748,7 @@ return $map[$currencyCode] ?? $currencyCode;
                             </tbody>
                         </table>
                     </div>
-                    @if($transactions->hasPages())
-                    <div class="mt-4">{{ $transactions->links() }}</div>
-                    @endif
+
                 </div>
 
             </div>
@@ -744,15 +773,32 @@ return $map[$currencyCode] ?? $currencyCode;
                 width: 100%;
             }
         }
+
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: none !important;
+        }
+
+        select::-ms-expand {
+            display: none;
+        }
     </style>
     <script>
         document.addEventListener('livewire:init', function () {
-            Livewire.on('print-pdf', (data) => {
-                if (data.url) {
-                    window.open(data.url, '_blank');
-                }
-            });
+        Livewire.on('print-pdf', (data) => {
+            if (data.url) {
+                const link = document.createElement('a');
+                link.href = data.url;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
         });
+    });
     </script>
 </div>
 

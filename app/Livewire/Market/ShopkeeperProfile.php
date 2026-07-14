@@ -32,8 +32,12 @@ class ShopkeeperProfile extends Component
     public $markets = [];
     public $expansesTypes = [];
     public $currencies = [];
+        public $perPage = 10;
+
 
     protected $listeners = ['refreshReport' => 'generateReport'];
+        protected $queryString = ['perPage'];
+
 
     public function mount()
     {
@@ -222,7 +226,9 @@ class ShopkeeperProfile extends Component
             $query->where('created_at', '<=', $endDateCarbon);
         }
 
-        $transactions = $query->orderByDesc('created_at')->paginate(10);
+        // ✅ استفاده از perPage پویا
+        $perPage = $this->perPage === 'all' ? $query->count() : (int) $this->perPage;
+        $transactions = $query->orderByDesc('created_at')->paginate($perPage);
 
         $items = $transactions->getCollection()->map(function ($item) {
             return [
@@ -242,6 +248,11 @@ class ShopkeeperProfile extends Component
 
         $transactions->setCollection($items);
         return $transactions;
+    }
+
+     public function updatedPerPage()
+    {
+        $this->resetPage();
     }
 
     public function getAllTransactions()

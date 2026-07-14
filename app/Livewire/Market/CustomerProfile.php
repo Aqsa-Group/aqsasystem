@@ -20,7 +20,8 @@ class CustomerProfile extends Component
     public $search = '';
     public $filterCustomerId = '';
     public $filterCurrency = '';
-    public $filterTransactionType = 'all'; // all, withdrawal, outside
+    public $filterTransactionType = 'all';
+    public $perPage = 10;
 
     // تاریخ‌های شمسی (Y/m/d)
     public $startDate = '';
@@ -151,7 +152,9 @@ class CustomerProfile extends Component
         $this->resetPage();
         $this->generateReport();
     }
-    // ==================== دریافت تراکنش‌ها با صفحه‌بندی ====================
+
+
+
     public function getTransactionsPaginated()
     {
         $adminId = $this->getAdminId();
@@ -178,10 +181,16 @@ class CustomerProfile extends Component
             ->where('admin_id', $adminId)
             ->whereNotNull('customer_id');
 
+        // ✅ افزودن جستجو
+        if (!empty($this->search)) {
+            $withdrawQuery->whereHas('customer', function ($q) {
+                $q->where('fullname', 'like', '%' . $this->search . '%');
+            });
+        }
+
         if (!empty($this->filterCustomerId)) {
             $withdrawQuery->where('customer_id', $this->filterCustomerId);
         }
-
         if ($startDateCarbon) {
             $withdrawQuery->where('created_at', '>=', $startDateCarbon);
         }
@@ -214,10 +223,16 @@ class CustomerProfile extends Component
             ->where('admin_id', $adminId)
             ->whereNotNull('customer_id');
 
+        // ✅ افزودن جستجو
+        if (!empty($this->search)) {
+            $outsideQuery->whereHas('customer', function ($q) {
+                $q->where('fullname', 'like', '%' . $this->search . '%');
+            });
+        }
+
         if (!empty($this->filterCustomerId)) {
             $outsideQuery->where('customer_id', $this->filterCustomerId);
         }
-
         if ($startDateCarbon) {
             $outsideQuery->where('created_at', '>=', $startDateCarbon);
         }
@@ -249,7 +264,7 @@ class CustomerProfile extends Component
         $all = $all->sortByDesc('created_at')->values();
 
         $currentPage = \Illuminate\Pagination\Paginator::resolveCurrentPage() ?: 1;
-        $perPage = 10;
+        $perPage = $this->perPage === 'all' ? $all->count() : (int) $this->perPage;
         $items = $all->slice(($currentPage - 1) * $perPage, $perPage)->values();
 
         return new LengthAwarePaginator(
@@ -261,103 +276,123 @@ class CustomerProfile extends Component
         );
     }
 
+    public function updatedPerPage()
+    {
+        $this->resetPage();
+    }
+
+
+
+
+
+
     // ==================== دریافت همه تراکنش‌ها (برای چاپ PDF) ====================
     public function getAllTransactions()
-    {
-        $adminId = $this->getAdminId();
+{
+    $adminId = $this->getAdminId();
 
-        $startDateCarbon = null;
-        $endDateCarbon = null;
-        if (!empty($this->startDate)) {
-            try {
-                $dateString = str_replace('-', '/', $this->startDate);
-                $startDateCarbon = Jalalian::fromFormat('Y/m/d', $dateString)->toCarbon()->startOfDay();
-            } catch (\Exception $e) {
-            }
-        }
-        if (!empty($this->endDate)) {
-            try {
-                $dateString = str_replace('-', '/', $this->endDate);
-                $endDateCarbon = Jalalian::fromFormat('Y/m/d', $dateString)->toCarbon()->endOfDay();
-            } catch (\Exception $e) {
-            }
-        }
-
-        // ====== برداشت‌ها ======
-        $withdrawQuery = WithdrawLog::with('customer')
-            ->where('admin_id', $adminId)
-            ->whereNotNull('customer_id');
-
-        if (!empty($this->filterCustomerId)) {
-            $withdrawQuery->where('customer_id', $this->filterCustomerId);
-        }
-
-        if ($startDateCarbon) {
-            $withdrawQuery->where('created_at', '>=', $startDateCarbon);
-        }
-        if ($endDateCarbon) {
-            $withdrawQuery->where('created_at', '<=', $endDateCarbon);
-        }
-        if (!empty($this->filterCurrency)) {
-            $withdrawQuery->where('currency', $this->filterCurrency);
-        }
-
-        if ($this->filterTransactionType === 'outside') {
-            $withdrawals = collect();
-        } else {
-            $withdrawals = $withdrawQuery->get()->map(function ($item) {
-                return [
-                    'type' => $item->expanses_type ?? 'برداشت',
-                    'customer_name' => $item->customer ? $item->customer->fullname : 'نامشخص',
-                    'amount' => $item->amount,
-                    'currency' => $item->currency,
-                    'description' => $item->description ?? '-',
-                    'created_at' => $item->created_at,
-                    'date_fa' => Jalalian::fromCarbon($item->created_at)->format('Y/m/d H:i'),
-                    'transaction_type' => 'withdrawal',
-                ];
-            });
-        }
-
-        // ====== پرداخت‌های بیرونی ======
-        $outsideQuery = Outside::with('customer')
-            ->where('admin_id', $adminId)
-            ->whereNotNull('customer_id');
-
-        if (!empty($this->filterCustomerId)) {
-            $outsideQuery->where('customer_id', $this->filterCustomerId);
-        }
-
-        if ($startDateCarbon) {
-            $outsideQuery->where('created_at', '>=', $startDateCarbon);
-        }
-        if ($endDateCarbon) {
-            $outsideQuery->where('created_at', '<=', $endDateCarbon);
-        }
-        if (!empty($this->filterCurrency)) {
-            $outsideQuery->where('currency', $this->filterCurrency);
-        }
-
-        if ($this->filterTransactionType === 'withdrawal') {
-            $outsides = collect();
-        } else {
-            $outsides = $outsideQuery->get()->map(function ($item) {
-                return [
-                    'type' => $item->type ?? 'پرداخت بیرونی',
-                    'customer_name' => $item->customer ? $item->customer->fullname : 'نامشخص',
-                    'amount' => $item->paid,
-                    'currency' => $item->currency,
-                    'description' => $item->description ?? '-',
-                    'created_at' => $item->created_at,
-                    'date_fa' => Jalalian::fromCarbon($item->created_at)->format('Y/m/d H:i'),
-                    'transaction_type' => 'outside',
-                ];
-            });
-        }
-
-        $all = $withdrawals->concat($outsides);
-        return $all->sortByDesc('created_at')->values();
+    $startDateCarbon = null;
+    $endDateCarbon = null;
+    if (!empty($this->startDate)) {
+        try {
+            $dateString = str_replace('-', '/', $this->startDate);
+            $startDateCarbon = Jalalian::fromFormat('Y/m/d', $dateString)->toCarbon()->startOfDay();
+        } catch (\Exception $e) {}
     }
+    if (!empty($this->endDate)) {
+        try {
+            $dateString = str_replace('-', '/', $this->endDate);
+            $endDateCarbon = Jalalian::fromFormat('Y/m/d', $dateString)->toCarbon()->endOfDay();
+        } catch (\Exception $e) {}
+    }
+
+    // ====== برداشت‌ها ======
+    $withdrawQuery = WithdrawLog::with('customer')
+        ->where('admin_id', $adminId)
+        ->whereNotNull('customer_id');
+
+    // اضافه کردن جستجو
+    if (!empty($this->search)) {
+        $withdrawQuery->whereHas('customer', function ($q) {
+            $q->where('fullname', 'like', '%' . $this->search . '%');
+        });
+    }
+
+    if (!empty($this->filterCustomerId)) {
+        $withdrawQuery->where('customer_id', $this->filterCustomerId);
+    }
+    if ($startDateCarbon) {
+        $withdrawQuery->where('created_at', '>=', $startDateCarbon);
+    }
+    if ($endDateCarbon) {
+        $withdrawQuery->where('created_at', '<=', $endDateCarbon);
+    }
+    if (!empty($this->filterCurrency)) {
+        $withdrawQuery->where('currency', $this->filterCurrency);
+    }
+
+    if ($this->filterTransactionType === 'outside') {
+        $withdrawals = collect();
+    } else {
+        $withdrawals = $withdrawQuery->get()->map(function ($item) {
+            return [
+                'type' => $item->expanses_type ?? 'برداشت',
+                'customer_name' => $item->customer ? $item->customer->fullname : 'نامشخص',
+                'amount' => $item->amount,
+                'currency' => $item->currency,
+                'description' => $item->description ?? '-',
+                'created_at' => $item->created_at,
+                'date_fa' => Jalalian::fromCarbon($item->created_at)->format('Y/m/d H:i'),
+                'transaction_type' => 'withdrawal',
+            ];
+        });
+    }
+
+    // ====== پرداخت‌های بیرونی ======
+    $outsideQuery = Outside::with('customer')
+        ->where('admin_id', $adminId)
+        ->whereNotNull('customer_id');
+
+    // اضافه کردن جستجو
+    if (!empty($this->search)) {
+        $outsideQuery->whereHas('customer', function ($q) {
+            $q->where('fullname', 'like', '%' . $this->search . '%');
+        });
+    }
+
+    if (!empty($this->filterCustomerId)) {
+        $outsideQuery->where('customer_id', $this->filterCustomerId);
+    }
+    if ($startDateCarbon) {
+        $outsideQuery->where('created_at', '>=', $startDateCarbon);
+    }
+    if ($endDateCarbon) {
+        $outsideQuery->where('created_at', '<=', $endDateCarbon);
+    }
+    if (!empty($this->filterCurrency)) {
+        $outsideQuery->where('currency', $this->filterCurrency);
+    }
+
+    if ($this->filterTransactionType === 'withdrawal') {
+        $outsides = collect();
+    } else {
+        $outsides = $outsideQuery->get()->map(function ($item) {
+            return [
+                'type' => $item->type ?? 'پرداخت بیرونی',
+                'customer_name' => $item->customer ? $item->customer->fullname : 'نامشخص',
+                'amount' => $item->paid,
+                'currency' => $item->currency,
+                'description' => $item->description ?? '-',
+                'created_at' => $item->created_at,
+                'date_fa' => Jalalian::fromCarbon($item->created_at)->format('Y/m/d H:i'),
+                'transaction_type' => 'outside',
+            ];
+        });
+    }
+
+    $all = $withdrawals->concat($outsides);
+    return $all->sortByDesc('created_at')->values();
+}
 
     // ==================== دکمه‌های کنترلی ====================
     public function resetFilters()
@@ -380,67 +415,78 @@ class CustomerProfile extends Component
         session()->flash('message', 'گزارش به‌روزرسانی شد.');
     }
 
-    // ==================== پرینت PDF ====================
     public function printReport()
-    {
-        try {
-            $reports = $this->reports;
-            $currencies = $this->currencies;
-            $transactions = $this->getAllTransactions();
+{
+    try {
+        // افزایش منابع
+        ini_set('memory_limit', '512M');
+        ini_set('max_execution_time', 300);
 
-            $filterInfo = [
-                'customer' => $this->filterCustomerId ? Customer::find($this->filterCustomerId)->fullname ?? 'همه' : 'همه',
-                'currency' => $this->filterCurrency ? ($this->currencies[$this->filterCurrency] ?? $this->filterCurrency) : 'همه',
-                'type' => $this->filterTransactionType === 'all' ? 'همه' : ($this->filterTransactionType === 'withdrawal' ? 'برداشت‌ها' : 'پرداخت‌های بیرونی'),
-                'startDate' => $this->startDate ?: 'نامحدود',
-                'endDate' => $this->endDate ?: 'نامحدود',
-            ];
+        $reports = $this->reports;
+        $currencies = $this->currencies;
+        $transactions = $this->getAllTransactions();
 
-            $mpdf = new \Mpdf\Mpdf([
-                'mode' => 'utf-8',
-                'format' => 'A4',
-                'directionality' => 'rtl',
-                'margin_top' => 15,
-                'margin_bottom' => 15,
-                'margin_left' => 10,
-                'margin_right' => 10,
-                'fontDir' => array_merge(
-                    (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
-                    [public_path('fonts/vazir/')]
-                ),
-                'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
-                    'vazir' => [
-                        'R' => 'Vazir-Light.ttf',
-                        'B' => 'Vazir-Bold.ttf',
-                        'useOTL' => 0xFF,
-                        'useKashida' => 75,
-                    ],
-                ],
-                'default_font' => 'vazir',
-                'tempDir' => storage_path('app/mpdf'),
-            ]);
-
-            $mpdf->SetAutoPageBreak(true, 15);
-
-            $html = view('print.customer-profile-pdf', compact(
-                'reports',
-                'currencies',
-                'transactions',
-                'filterInfo'
-            ))->render();
-
-            $mpdf->WriteHTML($html);
-
-            $fileName = 'گزارش_مشتریان_' . Jalalian::now()->format('Y_m_d_H_i') . '.pdf';
-            $path = storage_path('app/public/' . $fileName);
-            $mpdf->Output($path, 'F');
-
-            $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
-        } catch (\Exception $e) {
-            Log::error('PDF generation error for customer profile: ' . $e->getMessage());
-            session()->flash('error', 'خطا در ایجاد PDF: ' . $e->getMessage());
+        // بررسی خالی بودن
+        if ($transactions->isEmpty()) {
+            session()->flash('error', 'هیچ تراکنشی برای چاپ وجود ندارد.');
+            return;
         }
+
+        $filterInfo = [
+            'customer' => $this->filterCustomerId ? Customer::find($this->filterCustomerId)->fullname ?? 'همه' : 'همه',
+            'currency' => $this->filterCurrency ? ($this->currencies[$this->filterCurrency] ?? $this->filterCurrency) : 'همه',
+            'type' => $this->filterTransactionType === 'all' ? 'همه' : ($this->filterTransactionType === 'withdrawal' ? 'برداشت‌ها' : 'پرداخت‌های بیرونی'),
+            'startDate' => $this->startDate ?: 'نامحدود',
+            'endDate' => $this->endDate ?: 'نامحدود',
+        ];
+
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'directionality' => 'rtl',
+            'margin_top' => 15,
+            'margin_bottom' => 15,
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'fontDir' => array_merge(
+                (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+                [public_path('fonts/vazir/')]
+            ),
+            'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+                'vazir' => [
+                    'R' => 'Vazir-Light.ttf',
+                    'B' => 'Vazir-Bold.ttf',
+                    'useOTL' => 0xFF,
+                    'useKashida' => 75,
+                ],
+            ],
+            'default_font' => 'vazir',
+            'tempDir' => storage_path('app/mpdf'),
+        ]);
+
+        $mpdf->SetAutoPageBreak(true, 15);
+
+        $html = view('print.customer-profile-pdf', compact(
+            'reports',
+            'currencies',
+            'transactions',
+            'filterInfo'
+        ))->render();
+
+        $mpdf->WriteHTML($html);
+
+        $fileName = 'گزارش_مشتریان_' . Jalalian::now()->format('Y_m_d_H_i') . '.pdf';
+        $path = storage_path('app/public/' . $fileName);
+        $mpdf->Output($path, 'F');
+
+        // ✅ هدایت مستقیم به فایل (رفع مشکل pop-up)
+        return redirect()->to(asset('storage/' . $fileName));
+    } catch (\Exception $e) {
+        Log::error('PDF generation error for customer profile: ' . $e->getMessage());
+        session()->flash('error', 'خطا در ایجاد PDF: ' . $e->getMessage());
+        return redirect()->back();
     }
+}
 
     // ==================== رندر ====================
     public function render()

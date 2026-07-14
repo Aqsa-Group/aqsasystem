@@ -1,22 +1,22 @@
 @php
 if (!function_exists('getPersianCurrencyName')) {
-    function getPersianCurrencyName($currencyCode) {
-        $map = [
-            'AFN' => 'افغانی',
-            'USD' => 'دالر',
-            'EUR' => 'یورو',
-            'IRR' => 'تومان',
-            'PKR' => 'کلدار',
-            'AED' => 'درهم',
-            'TRY' => 'لیره',
-            'CNY' => 'یوان',
-            'GBP' => 'پوند',
-            'JPY' => 'ین',
-            'SAR' => 'ریال سعودی',
-            'INR' => 'روپیه',
-        ];
-        return $map[$currencyCode] ?? $currencyCode;
-    }
+function getPersianCurrencyName($currencyCode) {
+$map = [
+'AFN' => 'افغانی',
+'USD' => 'دالر',
+'EUR' => 'یورو',
+'IRR' => 'تومان',
+'PKR' => 'کلدار',
+'AED' => 'درهم',
+'TRY' => 'لیره',
+'CNY' => 'یوان',
+'GBP' => 'پوند',
+'JPY' => 'ین',
+'SAR' => 'ریال سعودی',
+'INR' => 'روپیه',
+];
+return $map[$currencyCode] ?? $currencyCode;
+}
 }
 @endphp
 
@@ -50,29 +50,7 @@ if (!function_exists('getPersianCurrencyName')) {
                 <div
                     class="flex flex-col md:flex-row justify-between items-center p-3 md:p-4 rounded-[12px] mb-3 gap-3">
                     <h1 class="text-[22px] inter">گزارش پروفایل مشتریان</h1>
-                    <div class="relative w-[250px] md:w-[350]">
-                        <svg width="24" height="24"
-                            class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 hidden dark:block"
-                            viewBox="0 0 24 24" fill="none">
-                            <path
-                                d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
-                                stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                        <input type="text" wire:model.live="search" placeholder="جستجوی مشتری..." class="w-full h-12 md:h-[51px]
-                           border border-[#D7E5EC]
-                           dark:bg-black dark:border-white dark:placeholder:text-white placeholder:text-black
-                           rounded-[12px] pl-3 pr-12 text-sm md:text-base
-                           bg-transparent relative z-0">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                            class="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none dark:hidden">
-                            <path d="M20 20L22 22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
-                            <path
-                                d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75"
-                                stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
-                        </svg>
-                    </div>
+
                 </div>
 
                 <!-- دکمه‌ها و فیلترها -->
@@ -125,62 +103,20 @@ if (!function_exists('getPersianCurrencyName')) {
                         </button>
                     </div>
 
-                    <!-- انتخاب مشتری -->
-                    <div class="lg:col-span-2">
-                        <label
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 vazir">مشتری</label>
-                        <div class="relative">
-                            <select wire:model.live="filterCustomerId"
-                                class="appearance-none w-full dark:bg-black dark:border-white dark:text-white border border-[#8C8C8C] bg-transparent rounded-xl py-2 pl-4 pr-10 h-12 focus:ring-2 focus:ring-[#184D6C] focus:outline-none vazir">
-                                <option value="">همه مشتریان</option>
-                                @foreach($customers as $customer)
-                                <option value="{{ $customer['id'] }}">{{ $customer['fullname'] }}</option>
-                                @endforeach
-                            </select>
-                            <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none dark:hidden"
-                                width="20" height="20" viewBox="0 0 24 24" fill="none">
-                                <path
-                                    d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
-                                    stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
-                            <svg width="24" height="24"
-                                class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none hidden dark:block"
-                                viewBox="0 0 24 24" fill="none">
-                                <path
-                                    d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
-                                    stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
-                        </div>
-                    </div>
+
 
                     <!-- انتخاب ارز -->
                     <div class="lg:col-span-1">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 vazir">ارز</label>
                         <div class="relative">
                             <select wire:model.live="filterCurrency"
-                                class="appearance-none w-full dark:bg-black dark:border-white dark:text-white border border-[#8C8C8C] bg-transparent rounded-xl py-2 pl-4 pr-10 h-12 focus:ring-2 focus:ring-[#184D6C] focus:outline-none vazir">
+                                class=" w-full dark:bg-black dark:border-white dark:text-white border border-[#8C8C8C] bg-transparent rounded-xl py-2  p-1 appearance-none  h-12 focus:ring-2 focus:ring-[#184D6C] focus:outline-none vazir">
                                 <option value="">همه ارزها</option>
                                 @foreach($currencies as $code => $name)
                                 <option value="{{ $code }}">{{ $name }}</option>
                                 @endforeach
                             </select>
-                            <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none dark:hidden"
-                                width="20" height="20" viewBox="0 0 24 24" fill="none">
-                                <path
-                                    d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
-                                    stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
-                            <svg width="24" height="24"
-                                class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none hidden dark:block"
-                                viewBox="0 0 24 24" fill="none">
-                                <path
-                                    d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
-                                    stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
+
                         </div>
                     </div>
 
@@ -190,26 +126,12 @@ if (!function_exists('getPersianCurrencyName')) {
                             تراکنش</label>
                         <div class="relative">
                             <select wire:model.live="filterTransactionType"
-                                class="appearance-none w-full dark:bg-black dark:border-white dark:text-white border border-[#8C8C8C] bg-transparent rounded-xl py-2 pl-4 pr-10 h-12 focus:ring-2 focus:ring-[#184D6C] focus:outline-none vazir">
+                                class=" w-full dark:bg-black dark:border-white dark:text-white border border-[#8C8C8C] bg-transparent rounded-xl py-2 p-4 appearance-none h-12 focus:ring-2 focus:ring-[#184D6C] focus:outline-none vazir">
                                 <option value="all">همه تراکنش‌ها</option>
                                 <option value="withdrawal">برداشت‌ها</option>
                                 <option value="outside">پرداخت‌های بیرونی</option>
                             </select>
-                            <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none dark:hidden"
-                                width="20" height="20" viewBox="0 0 24 24" fill="none">
-                                <path
-                                    d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
-                                    stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
-                            <svg width="24" height="24"
-                                class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none hidden dark:block"
-                                viewBox="0 0 24 24" fill="none">
-                                <path
-                                    d="M19.9181 8.94995L13.3981 15.47C12.6281 16.24 11.3681 16.24 10.5981 15.47L4.07812 8.94995"
-                                    stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
+
                         </div>
                     </div>
 
@@ -350,7 +272,8 @@ if (!function_exists('getPersianCurrencyName')) {
                                                     <template x-for="day in weekDaysAfghan" :key="day">
                                                         <div
                                                             class="text-center text-sm font-medium text-gray-500 dark:text-gray-400 py-1">
-                                                            <span x-text="day"></span></div>
+                                                            <span x-text="day"></span>
+                                                        </div>
                                                     </template>
                                                 </div>
                                                 <div class="grid grid-cols-7 gap-1">
@@ -527,7 +450,8 @@ if (!function_exists('getPersianCurrencyName')) {
                                                     <template x-for="day in weekDaysAfghan" :key="day">
                                                         <div
                                                             class="text-center text-sm font-medium text-gray-500 dark:text-gray-400 py-1">
-                                                            <span x-text="day"></span></div>
+                                                            <span x-text="day"></span>
+                                                        </div>
                                                     </template>
                                                 </div>
                                                 <div class="grid grid-cols-7 gap-1">
@@ -569,6 +493,30 @@ if (!function_exists('getPersianCurrencyName')) {
                         </div>
                     </div>
 
+                    <div class="relative w-[250px] md:w-[350]">
+                        <svg width="24" height="24"
+                            class="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 hidden dark:block"
+                            viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+                                stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M22 22L20 20" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        <input type="text" wire:model.live="search" placeholder="جستجوی مشتری..." class="w-full h-12 md:h-[51px]
+                           border border-[#D7E5EC]
+                           dark:bg-black dark:border-white dark:placeholder:text-white placeholder:text-black
+                           rounded-[12px] pl-3 pr-12 text-sm md:text-base
+                           bg-transparent relative z-0">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none dark:hidden">
+                            <path d="M20 20L22 22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                            <path
+                                d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75"
+                                stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+                    </div>
+
                 </div>
 
                 <!-- ===== جدول اول: موجودی مشتریان ===== -->
@@ -578,16 +526,20 @@ if (!function_exists('getPersianCurrencyName')) {
                             class="w-full text-sm md:text-base text-left rtl:text-right text-gray-700 border-collapse">
                             <thead class="sticky top-0 z-10">
                                 <tr class="bg-gradient-to-r from-[#1e3c5c] to-[#2b4f72] text-white">
-                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center align-middle w-16">
+                                    <th
+                                        class="px-3 py-3 font-bold border border-gray-300 text-center align-middle w-16">
                                         <span class="border border-white/30 px-2 py-1 rounded-lg">#</span>
                                     </th>
                                     <th class="px-3 py-3 font-bold border border-gray-300 text-center align-middle">نام
                                         مشتری</th>
                                     @foreach($currencies as $code => $name)
-                                    <th class="px-2 py-3 font-bold border border-gray-300 text-center" style="background-color: #34495e;">موجودی {{ $name }}</th>
+                                    <th class="px-2 py-3 font-bold border border-gray-300 text-center"
+                                        style="background-color: #34495e;">موجودی {{ $name }}</th>
                                     @endforeach
-                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center align-middle" style="background-color: #34495e;">موجودی کرایه</th>
-                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center align-middle" style="background-color: #34495e;">مجموع کل</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center align-middle"
+                                        style="background-color: #34495e;">موجودی کرایه</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center align-middle"
+                                        style="background-color: #34495e;">مجموع کل</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -603,12 +555,16 @@ if (!function_exists('getPersianCurrencyName')) {
                                     @foreach($currencies as $code => $name)
                                     @php
                                     $balance = $report['balance_' . strtolower($code)] ?? 0;
-                                    $class = $balance < 0 ? 'text-red-600' : ($balance> 0 ? 'text-green-600' : 'text-gray-500');
-                                    @endphp
-                                    <td class="px-2 py-3 text-left font-mono {{ $class }} border-l border-gray-200" dir="ltr">{{ number_format($balance, 2) }}</td>
-                                    @endforeach
-                                    <td class="px-3 py-3 text-left font-mono border-l border-gray-200" dir="ltr">{{ number_format($report['rent_money'], 2) }}</td>
-                                    <td class="px-3 py-3 text-left font-mono border-l border-gray-200 font-bold" dir="ltr">{{ number_format($report['total_balance'], 2) }}</td>
+                                    $class = $balance < 0 ? 'text-red-600' : ($balance> 0 ? 'text-green-600' :
+                                        'text-gray-500');
+                                        @endphp
+                                        <td class="px-2 py-3 text-left font-mono {{ $class }} border-l border-gray-200"
+                                            dir="ltr">{{ number_format($balance, 2) }}</td>
+                                        @endforeach
+                                        <td class="px-3 py-3 text-left font-mono border-l border-gray-200" dir="ltr">{{
+                                            number_format($report['rent_money'], 2) }}</td>
+                                        <td class="px-3 py-3 text-left font-mono border-l border-gray-200 font-bold"
+                                            dir="ltr">{{ number_format($report['total_balance'], 2) }}</td>
                                 </tr>
                                 @empty
                                 <tr>
@@ -634,6 +590,24 @@ if (!function_exists('getPersianCurrencyName')) {
                 <div class="mt-8 border-t-2 border-[#184D6C] pt-4">
                     <h3 class="text-lg font-bold mb-3 text-[#184D6C] dark:text-white">لیست تمام تراکنش‌ها (برداشت‌ها و
                         پرداخت‌های بیرونی)</h3>
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <label class="text-xl font-medium text-gray-700 dark:text-gray-300 vazir">تعداد
+                                نمایش:</label>
+                            <select wire:model.live="perPage"
+                                class="border border-gray-300 appearance-none dark:border-gray-600 rounded-lg px-4 py-2 bg-white dark:bg-gray-800 text-sm">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="all">همه</option>
+                            </select>
+                        </div>
+                        <!-- در صورت نیاز، می‌توانید اطلاعات تعداد کل را هم نمایش دهید -->
+                        <span class="text-sm text-gray-500 dark:text-gray-400">
+                            {{ $transactions->total() }} رکورد
+                        </span>
+                    </div>
                     <div class="overflow-x-auto">
                         <table
                             class="w-full text-sm md:text-base text-left rtl:text-right text-gray-700 border-collapse">
@@ -642,6 +616,7 @@ if (!function_exists('getPersianCurrencyName')) {
                                     <th class="px-3 py-3 font-bold border border-gray-300 text-center">#</th>
                                     <th class="px-3 py-3 font-bold border border-gray-300 text-center">نام مشتری</th>
                                     <th class="px-3 py-3 font-bold border border-gray-300 text-center">نوع تراکنش</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">نوع برداشت</th>
                                     <th class="px-3 py-3 font-bold border border-gray-300 text-center">مبلغ</th>
                                     <th class="px-3 py-3 font-bold border border-gray-300 text-center">ارز</th>
                                     <th class="px-3 py-3 font-bold border border-gray-300 text-center">تاریخ</th>
@@ -661,6 +636,13 @@ if (!function_exists('getPersianCurrencyName')) {
                                     </td>
                                     <td class="px-3 py-3 font-medium text-gray-800 border-l border-gray-200">{{
                                         $tx['customer_name'] }}</td>
+                                    <td class="px-3 py-3 text-center  border-l border-gray-200">
+                                        @if($tx['transaction_type'] === 'withdrawal')
+                                        برداشت
+                                        @elseif($tx['transaction_type'] === 'outside')
+                                        عواید بیرونی
+                                        @endif
+                                    </td>
                                     <td class="px-3 py-3 text-center border-l border-gray-200">
                                         <span class="px-2 py-1 rounded-full text-xs font-bold {{ $typeClass }}">{{
                                             $tx['type'] }}</span>
@@ -671,8 +653,10 @@ if (!function_exists('getPersianCurrencyName')) {
                                         getPersianCurrencyName($tx['currency']) }}</td>
                                     <td class="px-3 py-3 text-center border-l border-gray-200 text-xs">{{ $tx['date_fa']
                                         }}</td>
-                                    <td class="px-3 py-3 max-w-xs truncate border-l border-gray-200">{{
-                                        $tx['description'] }}</td>
+                                    <td
+                                        class="px-3 py-3 border-l border-gray-200 max-w-md whitespace-normal break-words">
+                                        {{ $tx['description'] }}
+                                    </td>
                                     </tr>
                                     @empty
                                     <tr>
@@ -692,9 +676,7 @@ if (!function_exists('getPersianCurrencyName')) {
                             </tbody>
                         </table>
                     </div>
-                    @if($transactions->hasPages())
-                    <div class="mt-4">{{ $transactions->links() }}</div>
-                    @endif
+
                 </div>
 
             </div>
@@ -718,6 +700,17 @@ if (!function_exists('getPersianCurrencyName')) {
                 top: 0;
                 width: 100%;
             }
+        }
+
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: none !important;
+        }
+
+        select::-ms-expand {
+            display: none;
         }
     </style>
     <script>

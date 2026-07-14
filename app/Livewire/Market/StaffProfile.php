@@ -34,6 +34,9 @@ class StaffProfile extends Component
     public $totalWithdrawals = [];
     public $totalSalaries = [];
 
+    // ==================== تنظیمات صفحه‌بندی ====================
+    public $perPage = 10;
+
     // ==================== لیسنرها ====================
     protected $listeners = ['refreshReport' => 'generateReport'];
 
@@ -94,7 +97,7 @@ class StaffProfile extends Component
         return $result;
     }
 
-    // ==================== تولید گزارش خلاصه (اصلاح‌شده) ====================
+    // ==================== تولید گزارش خلاصه ====================
     public function generateReport()
     {
         $adminId = $this->getAdminId();
@@ -116,7 +119,7 @@ class StaffProfile extends Component
         $totalWithdrawals = [];
         $totalSalaries = [];
 
-        // تبدیل تاریخ‌های شمسی به میلادی (با اصلاح فرمت)
+        // تبدیل تاریخ‌های شمسی به میلادی
         $startDateCarbon = null;
         $endDateCarbon = null;
         if (!empty($this->startDate)) {
@@ -218,12 +221,18 @@ class StaffProfile extends Component
         $this->totalSalaries = $totalSalaries;
     }
 
-    // ==================== دریافت تراکنش‌ها با صفحه‌بندی (اصلاح‌شده) ====================
+
+    public function updatedSearch()
+    {
+        $this->resetPage();
+        $this->generateReport();
+    }
+
+
     public function getTransactionsPaginated()
     {
         $adminId = $this->getAdminId();
 
-        // تبدیل تاریخ‌های شمسی به میلادی با اصلاح فرمت
         $startDateCarbon = null;
         $endDateCarbon = null;
         if (!empty($this->startDate)) {
@@ -246,10 +255,16 @@ class StaffProfile extends Component
             ->where('admin_id', $adminId)
             ->whereNotNull('staff_id');
 
+        // ✅ جستجو
+        if (!empty($this->search)) {
+            $withdrawQuery->whereHas('staff', function ($q) {
+                $q->where('fullname', 'like', '%' . $this->search . '%');
+            });
+        }
+
         if (!empty($this->filterStaffId)) {
             $withdrawQuery->where('staff_id', $this->filterStaffId);
         }
-
         if ($startDateCarbon) {
             $withdrawQuery->where('created_at', '>=', $startDateCarbon);
         }
@@ -282,10 +297,16 @@ class StaffProfile extends Component
             ->where('admin_id', $adminId)
             ->whereNotNull('staff_id');
 
+        // ✅ جستجو
+        if (!empty($this->search)) {
+            $salaryQuery->whereHas('staff', function ($q) {
+                $q->where('fullname', 'like', '%' . $this->search . '%');
+            });
+        }
+
         if (!empty($this->filterStaffId)) {
             $salaryQuery->where('staff_id', $this->filterStaffId);
         }
-
         if ($startDateCarbon) {
             $salaryQuery->where('created_at', '>=', $startDateCarbon);
         }
@@ -317,7 +338,7 @@ class StaffProfile extends Component
         $all = $all->sortByDesc('created_at')->values();
 
         $currentPage = \Illuminate\Pagination\Paginator::resolveCurrentPage() ?: 1;
-        $perPage = 10;
+        $perPage = $this->perPage === 'all' ? $all->count() : (int) $this->perPage;
         $items = $all->slice(($currentPage - 1) * $perPage, $perPage)->values();
 
         return new LengthAwarePaginator(
@@ -328,8 +349,12 @@ class StaffProfile extends Component
             ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
         );
     }
+    // ==================== به‌روزرسانی تعداد آیتم در صفحه ====================
+    public function updatedPerPage()
+    {
+        $this->resetPage();
+    }
 
-    // ==================== دریافت همه تراکنش‌ها (برای چاپ PDF) اصلاح‌شده ====================
     public function getAllTransactions()
     {
         $adminId = $this->getAdminId();
@@ -356,10 +381,16 @@ class StaffProfile extends Component
             ->where('admin_id', $adminId)
             ->whereNotNull('staff_id');
 
+        // ✅ افزودن جستجو
+        if (!empty($this->search)) {
+            $withdrawQuery->whereHas('staff', function ($q) {
+                $q->where('fullname', 'like', '%' . $this->search . '%');
+            });
+        }
+
         if (!empty($this->filterStaffId)) {
             $withdrawQuery->where('staff_id', $this->filterStaffId);
         }
-
         if ($startDateCarbon) {
             $withdrawQuery->where('created_at', '>=', $startDateCarbon);
         }
@@ -392,10 +423,16 @@ class StaffProfile extends Component
             ->where('admin_id', $adminId)
             ->whereNotNull('staff_id');
 
+        // ✅ افزودن جستجو
+        if (!empty($this->search)) {
+            $salaryQuery->whereHas('staff', function ($q) {
+                $q->where('fullname', 'like', '%' . $this->search . '%');
+            });
+        }
+
         if (!empty($this->filterStaffId)) {
             $salaryQuery->where('staff_id', $this->filterStaffId);
         }
-
         if ($startDateCarbon) {
             $salaryQuery->where('created_at', '>=', $startDateCarbon);
         }
@@ -449,70 +486,81 @@ class StaffProfile extends Component
     }
 
     // ==================== پرینت PDF ====================
-    public function printReport()
-    {
-        try {
-            $reports = $this->reports;
-            $currencies = $this->currencies;
-            $totalWithdrawals = $this->totalWithdrawals;
-            $totalSalaries = $this->totalSalaries;
-            $transactions = $this->getAllTransactions();
+   public function printReport()
+{
+    try {
+        // افزایش منابع برای پردازش حجم بالای داده
+        ini_set('memory_limit', '512M');
+        ini_set('max_execution_time', 300);
 
-            $filterInfo = [
-                'staff' => $this->filterStaffId ? Staff::find($this->filterStaffId)->fullname ?? 'همه' : 'همه',
-                'currency' => $this->filterCurrency ? ($this->currencies[$this->filterCurrency] ?? $this->filterCurrency) : 'همه',
-                'type' => $this->filterTransactionType === 'all' ? 'همه' : ($this->filterTransactionType === 'withdrawal' ? 'برداشت‌ها' : 'معاش‌ها'),
-                'startDate' => $this->startDate ?: 'نامحدود',
-                'endDate' => $this->endDate ?: 'نامحدود',
-            ];
+        $reports = $this->reports;
+        $currencies = $this->currencies;
+        $totalWithdrawals = $this->totalWithdrawals;
+        $totalSalaries = $this->totalSalaries;
+        $transactions = $this->getAllTransactions();
 
-            $mpdf = new \Mpdf\Mpdf([
-                'mode' => 'utf-8',
-                'format' => 'A4',
-                'directionality' => 'rtl',
-                'margin_top' => 15,
-                'margin_bottom' => 15,
-                'margin_left' => 10,
-                'margin_right' => 10,
-                'fontDir' => array_merge(
-                    (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
-                    [public_path('fonts/vazir/')]
-                ),
-                'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
-                    'vazir' => [
-                        'R' => 'Vazir-Light.ttf',
-                        'B' => 'Vazir-Bold.ttf',
-                        'useOTL' => 0xFF,
-                        'useKashida' => 75,
-                    ],
-                ],
-                'default_font' => 'vazir',
-                'tempDir' => storage_path('app/mpdf'),
-            ]);
-
-            $mpdf->SetAutoPageBreak(true, 15);
-
-            $html = view('print.staff-profile-pdf', compact(
-                'reports',
-                'currencies',
-                'totalWithdrawals',
-                'totalSalaries',
-                'transactions',
-                'filterInfo'
-            ))->render();
-
-            $mpdf->WriteHTML($html);
-
-            $fileName = 'گزارش_کارمندان_' . Jalalian::now()->format('Y_m_d_H_i') . '.pdf';
-            $path = storage_path('app/public/' . $fileName);
-            $mpdf->Output($path, 'F');
-
-            $this->dispatch('print-pdf', url: asset('storage/' . $fileName));
-        } catch (\Exception $e) {
-            Log::error('PDF generation error for staff profile: ' . $e->getMessage());
-            session()->flash('error', 'خطا در ایجاد PDF: ' . $e->getMessage());
+        if ($transactions->isEmpty()) {
+            session()->flash('error', 'هیچ تراکنشی برای چاپ وجود ندارد.');
+            return;
         }
+
+        $filterInfo = [
+            'staff' => $this->filterStaffId ? Staff::find($this->filterStaffId)->fullname ?? 'همه' : 'همه',
+            'currency' => $this->filterCurrency ? ($this->currencies[$this->filterCurrency] ?? $this->filterCurrency) : 'همه',
+            'type' => $this->filterTransactionType === 'all' ? 'همه' : ($this->filterTransactionType === 'withdrawal' ? 'برداشت‌ها' : 'معاش‌ها'),
+            'startDate' => $this->startDate ?: 'نامحدود',
+            'endDate' => $this->endDate ?: 'نامحدود',
+        ];
+
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'directionality' => 'rtl',
+            'margin_top' => 15,
+            'margin_bottom' => 15,
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'fontDir' => array_merge(
+                (new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],
+                [public_path('fonts/vazir/')]
+            ),
+            'fontdata' => (new \Mpdf\Config\FontVariables())->getDefaults()['fontdata'] + [
+                'vazir' => [
+                    'R' => 'Vazir-Light.ttf',
+                    'B' => 'Vazir-Bold.ttf',
+                    'useOTL' => 0xFF,
+                    'useKashida' => 75,
+                ],
+            ],
+            'default_font' => 'vazir',
+            'tempDir' => storage_path('app/mpdf'),
+        ]);
+
+        $mpdf->SetAutoPageBreak(true, 15);
+
+        $html = view('print.staff-profile-pdf', compact(
+            'reports',
+            'currencies',
+            'totalWithdrawals',
+            'totalSalaries',
+            'transactions',
+            'filterInfo'
+        ))->render();
+
+        $mpdf->WriteHTML($html);
+
+        $fileName = 'گزارش_کارمندان_' . Jalalian::now()->format('Y_m_d_H_i') . '.pdf';
+        $path = storage_path('app/public/' . $fileName);
+        $mpdf->Output($path, 'F');
+
+        // ✅ هدایت مستقیم به فایل PDF (بدون باز کردن پنجره جدید)
+        return redirect()->to(asset('storage/' . $fileName));
+    } catch (\Exception $e) {
+        Log::error('PDF generation error: ' . $e->getMessage());
+        session()->flash('error', 'خطا در ایجاد PDF: ' . $e->getMessage());
+        return redirect()->back();
     }
+}
 
     // ==================== رندر ====================
     public function render()
