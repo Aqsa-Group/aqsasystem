@@ -35,7 +35,7 @@ class StaffProfile extends Component
     public $totalSalaries = [];
 
     // ==================== لیسنرها ====================
-    protected $listeners = ['refreshReport' => 'generateReport', 'print-pdf' => 'printReport'];
+    protected $listeners = ['refreshReport' => 'generateReport'];
 
     // ==================== متدهای اولیه ====================
     public function mount()

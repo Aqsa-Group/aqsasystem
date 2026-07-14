@@ -33,7 +33,7 @@ class ShopkeeperProfile extends Component
     public $expansesTypes = [];
     public $currencies = [];
 
-    protected $listeners = ['refreshReport' => 'generateReport', 'print-pdf' => 'printReport'];
+    protected $listeners = ['refreshReport' => 'generateReport'];
 
     public function mount()
     {

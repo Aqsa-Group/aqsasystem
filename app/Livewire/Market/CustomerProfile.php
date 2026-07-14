@@ -32,7 +32,7 @@ class CustomerProfile extends Component
     public $currencies = [];
 
     // ==================== لیسنرها ====================
-    protected $listeners = ['refreshReport' => 'generateReport', 'print-pdf' => 'printReport'];
+    protected $listeners = ['refreshReport' => 'generateReport'];
 
     // ==================== متدهای اولیه ====================
     public function mount()
