@@ -98,7 +98,7 @@ $logoPath = public_path('assets/logo.png');
 <body>
 
     @php
-    $dateStr = Jalalian::fromCarbon($withdrawal->created_at)->format('Y/m/d H:i');
+    $dateStr = Jalalian::fromCarbon($withdrawal->created_at);
     // تعیین دریافت‌کننده
     $receiver = '-';
     if ($withdrawal->staff) {
