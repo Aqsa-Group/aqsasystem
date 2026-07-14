@@ -15,9 +15,7 @@ class EditDeposit extends EditRecord
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        // فیلد پرداخت همیشه خالی باشد
         $data['paid'] = null;
-
         return $data;
     }
 
@@ -61,8 +59,8 @@ class EditDeposit extends EditRecord
 
         $this->depositLogId = $log->id;
 
-        $data['paid'] = $totalPaid;          // مجموع پرداخت‌ها
-        $data['remained'] = $newRemaining;   // باقی‌مانده
+        $data['paid'] = $totalPaid;
+        $data['remained'] = $newRemaining;
 
         return $data;
     }

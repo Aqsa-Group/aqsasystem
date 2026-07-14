@@ -45,7 +45,7 @@ class Withdrawals extends Component
     public $draftTotalAmount = 0;
     public $editingDraftId = null;
     public $confirmDeleteIsDraft = false;
-    
+
 
     // ==================== آمار برداشت‌های نهایی ====================
     public $withdrawalStats = [
@@ -126,23 +126,23 @@ class Withdrawals extends Component
         $this->createWithdrawal();
     }
 
-    
+
 
 
     /**
      * چاپ برداشت از طریق دکمه در جدول
      */
-  public function printWithdrawal($id)
-{
-    $this->dispatch('print-pdf', url: route('recipt.print', $id));
-}
+    public function printWithdrawal($id)
+    {
+        $this->dispatch('print-pdf', url: route('recipt.print', $id));
+    }
 
     private function createWithdrawal()
     {
         $user = $this->getAuthUser();
         $adminId = $this->getAdminId();
 
-       
+
 
         // پردازش مشتری (در صورت انتخاب) - بدون چک موجودی (اجازه منفی شدن)
         if ($this->receiver_type === 'customer' && $this->customer_id) {
@@ -218,7 +218,7 @@ class Withdrawals extends Component
             // برگرداندن وضعیت قبلی
             $this->reversePreviousWithdrawal($withdrawal);
 
-           
+
 
             // پردازش مشتری (در صورت وجود) - بدون چک موجودی
             if ($this->receiver_type === 'customer' && $this->customer_id) {
@@ -272,47 +272,47 @@ class Withdrawals extends Component
         $this->cancelEdit();
         $this->updateStats();
     }
-public function edit($id)
-{
-    $withdrawal = WithdrawLog::find($id);
-    if (!$withdrawal) {
-        session()->flash('error', 'برداشت مورد نظر یافت نشد.');
-        return;
-    }
+    public function edit($id)
+    {
+        $withdrawal = WithdrawLog::find($id);
+        if (!$withdrawal) {
+            session()->flash('error', 'برداشت مورد نظر یافت نشد.');
+            return;
+        }
 
-    $this->staff_id = null;
-    $this->customer_id = null;
-
-    $this->editingId = $id;
-    $this->type = $withdrawal->expanses_type;
-    $this->currency = $withdrawal->currency;
-    $this->amount = $withdrawal->amount;
-    $this->description = $withdrawal->description;
-    $this->date = Jalalian::fromCarbon($withdrawal->created_at)->format('Y/m/d');
-
-    if ($withdrawal->staff_id) {
-        $this->receiver_type = 'staff';
-        $this->staff_id = $withdrawal->staff_id;
-    } elseif ($withdrawal->customer_id) {
-        $this->receiver_type = 'customer';
-        $this->customer_id = $withdrawal->customer_id;
-    } else {
-        $this->receiver_type = 'staff';
-    }
-
-    session()->flash('message', 'در حال ویرایش برداشت...');
-}
-
-
-
-public function updatedReceiverType($value)
-{
-    if ($value === 'staff') {
-        $this->customer_id = null;
-    } elseif ($value === 'customer') {
         $this->staff_id = null;
+        $this->customer_id = null;
+
+        $this->editingId = $id;
+        $this->type = $withdrawal->expanses_type;
+        $this->currency = $withdrawal->currency;
+        $this->amount = $withdrawal->amount;
+        $this->description = $withdrawal->description;
+        $this->date = Jalalian::fromCarbon($withdrawal->created_at)->format('Y/m/d');
+
+        if ($withdrawal->staff_id) {
+            $this->receiver_type = 'staff';
+            $this->staff_id = $withdrawal->staff_id;
+        } elseif ($withdrawal->customer_id) {
+            $this->receiver_type = 'customer';
+            $this->customer_id = $withdrawal->customer_id;
+        } else {
+            $this->receiver_type = 'staff';
+        }
+
+        session()->flash('message', 'در حال ویرایش برداشت...');
     }
-}
+
+
+
+    public function updatedReceiverType($value)
+    {
+        if ($value === 'staff') {
+            $this->customer_id = null;
+        } elseif ($value === 'customer') {
+            $this->staff_id = null;
+        }
+    }
 
     public function confirmDelete($id)
     {
@@ -783,7 +783,7 @@ public function updatedReceiverType($value)
             $this->customer_id = null;
         }
 
-       
+
 
         // پردازش مشتری (فقط در صورت انتخاب مشتری) - بدون چک موجودی
         if ($this->receiver_type === 'customer' && $this->customer_id) {

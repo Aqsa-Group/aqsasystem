@@ -1975,16 +1975,19 @@
                 this.showYearSelector = false;
             },
 
-            selectDate(day) {
-                this.selectedDate = {
-                    year: this.currentYear,
-                    month: this.currentMonth + 1,
-                    day: day
-                };
-                // نمایش به فرمت Y/m/d
-                this.displayDate =
-                    `${this.currentYear}/${String(this.currentMonth + 1).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
-            },
+            // درون تابع persianDatePicker()
+selectDate(day) {
+    this.selectedDate = {
+        year: this.currentYear,
+        month: this.currentMonth + 1,
+        day: day
+    };
+    this.displayDate =
+        `${this.currentYear}/${String(this.currentMonth + 1).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
+    
+    // اضافه کنید: اعمال خودکار تاریخ به Livewire
+    this.applyDate();
+},
 
             formatDate(date) {
                 if (!date) return '';

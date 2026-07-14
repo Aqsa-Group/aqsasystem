@@ -15,16 +15,18 @@ class WithdrawLog extends Model
     protected $table = 'withdraw_logs';
 
     
-    protected $fillable = [
-        'expanses_type',
-        'admin_id',
-        'currency',
-        'amount',
-        'description',
-        'customer_id',
-        'staff_id',
-        'exchange_id'
-    ];
+   protected $fillable = [
+    'expanses_type',
+    'admin_id',
+    'currency',
+    'amount',
+    'description',
+    'customer_id',
+    'staff_id',
+    'exchange_id',
+    'created_at',
+    'updated_at',
+];
     public function staff()
     {
         return $this->belongsTo(Staff::class, 'staff_id');

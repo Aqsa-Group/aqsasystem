@@ -40,7 +40,9 @@ class Accounting extends Model
         'degree_price',
         'outside_id',
         'shopkeeper_receipt_id',
-        'exchange_id'
+        'exchange_id',
+        'created_at',
+        'updated_at',
     ];
 
     protected $casts = [
