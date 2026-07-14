@@ -63,10 +63,11 @@ class ShopsRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\Action::make('assignShop')
                     ->label('افزودن دوکان')
+                    ->modalWidth('md')
                     ->form([
                         Forms\Components\Grid::make([
                             'default' => 1, 
-                            'md' => 2,      
+                            'md' => 1,      
                         ])->schema([
                             Forms\Components\Select::make('market_id')
                                 ->label('مارکت')
