@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models\Market;
 
 
@@ -14,19 +15,21 @@ class WithdrawLog extends Model
     protected $connection = 'market';
     protected $table = 'withdraw_logs';
 
+
+    protected $fillable = [
+        'expanses_type',
+        'admin_id',
+        'currency',
+        'amount',
+        'description',
+        'customer_id',
+        'staff_id',
+        'exchange_id',
+        'created_at',
+        'updated_at',
+    ];
+
     
-   protected $fillable = [
-    'expanses_type',
-    'admin_id',
-    'currency',
-    'amount',
-    'description',
-    'customer_id',
-    'staff_id',
-    'exchange_id',
-    'created_at',
-    'updated_at',
-];
     public function staff()
     {
         return $this->belongsTo(Staff::class, 'staff_id');
@@ -36,23 +39,23 @@ class WithdrawLog extends Model
     {
         return $this->belongsTo(Customer::class, 'customer_id');
     }
-    
+
     public function getRecipientNameAttribute()
     {
         if ($this->customer) {
             return $this->customer->fullname;
         }
-    
+
         if ($this->staff) {
             return $this->staff->fullname;
         }
-    
+
         return '-';
     }
-    
 
 
-    
+
+
     public function admin()
     {
         return $this->belongsTo(User::class, 'admin_id');
@@ -69,7 +72,4 @@ class WithdrawLog extends Model
             }
         });
     }
-    
-
-    
 }

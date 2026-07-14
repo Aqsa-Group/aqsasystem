@@ -179,13 +179,16 @@ class StaffProfile extends Component
                 $withdrawByCurrency[$currency] += $w->amount;
             }
 
-            foreach ($salaries as $s) {
-                $currency = $s->currency;
-                if (!isset($salaryByCurrency[$currency])) {
-                    $salaryByCurrency[$currency] = 0;
-                }
-                $salaryByCurrency[$currency] += $s->salary;
-            }
+           foreach ($salaries as $s) {
+    $currency = $s->currency;
+
+    if (!isset($salaryByCurrency[$currency])) {
+        $salaryByCurrency[$currency] = 0;
+    }
+
+    // فقط معاش پرداخت شده
+    $salaryByCurrency[$currency] += $s->paid ?? 0;
+}
 
             $reports[] = [
                 'id' => $staff->id,
