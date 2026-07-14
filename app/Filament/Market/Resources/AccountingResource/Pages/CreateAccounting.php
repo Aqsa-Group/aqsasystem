@@ -13,4 +13,12 @@ class CreateAccounting extends CreateRecord
     {
         return $this->getResource()::getUrl('index');
     }
+
+
+    protected function afterCreate(): void
+    {
+        $this->js("
+        window.open('" . route('accounting.print', $this->record->id) . "', '_blank');
+    ");
+    }
 }

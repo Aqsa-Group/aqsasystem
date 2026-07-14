@@ -63,7 +63,8 @@
 
                 <!-- Center: Logo -->
                 <td style="width: 33.33%; text-align: center; border: none;">
-                    <img src="{{ public_path('assets/logo.png') }}" alt="لوگو" style="height: 80px; width: 90px;" />
+                    <img src="{{ asset('assets/logo.png') }}" alt="لوگو"
+                        style="filter: sepia(1) saturate(5) hue-rotate(10deg) brightness(0.6) contrast(1.2); max-width: 80px;">
                 </td>
 
                 <!-- Left: English Title -->
@@ -83,11 +84,11 @@
             <th>نوع ملک</th>
 
             @if ($accounting->type === 'دوکان')
-                <th>شماره دوکان</th>
+            <th>شماره دوکان</th>
             @endif
 
             @if ($accounting->type === 'غرفه')
-                <th>شماره غرفه</th>
+            <th>شماره غرفه</th>
             @endif
 
             <th>نام دوکاندار</th>
@@ -95,16 +96,16 @@
 
             {{-- ستون های اضافی فقط وقتی پول برق است --}}
             @if ($accounting->expanses_type === 'پول برق')
-                <th>شماره متر</th>
-                <th>درجه قبلی</th>
-                <th>درجه فعلی</th>
-                <th>قیمت فی کیلوات</th>
+            <th>شماره متر</th>
+            <th>درجه قبلی</th>
+            <th>درجه فعلی</th>
+            <th>قیمت فی کیلوات</th>
             @endif
 
             <th>مبلغ</th>
             @if (!empty($accounting->paid) && $accounting->paid > 0)
-                <th>پرداخت شده</th>
-                <th>باقی‌مانده</th>
+            <th>پرداخت شده</th>
+            <th>باقی‌مانده</th>
             @endif
             <th>تاریخ ثبت</th>
         </tr>
@@ -114,11 +115,11 @@
             <td>{{ $accounting->type ?? '-' }}</td>
 
             @if ($accounting->type === 'دوکان')
-                <td>{{ $accounting->shop->number ?? '-' }}</td>
+            <td>{{ $accounting->shop->number ?? '-' }}</td>
             @endif
 
             @if ($accounting->type === 'غرفه')
-                <td>{{ $accounting->booth->number ?? '-' }}</td>
+            <td>{{ $accounting->booth->number ?? '-' }}</td>
             @endif
 
             <td>{{ $accounting->shopkeeper->fullname ?? '-' }}</td>
@@ -126,17 +127,17 @@
 
             {{-- مقداردهی ستون های اضافی پول برق --}}
             @if ($accounting->expanses_type === 'پول برق')
-                <td>{{ $accounting->meter_serial ?? '-' }}</td>
-                <td>{{ $accounting->past_degree ?? '-' }}</td>
-                <td>{{ $accounting->current_degree ?? '-' }}</td>
-                <td>{{ number_format($accounting->degree_price ?? 0) }}</td>
+            <td>{{ $accounting->meter_serial ?? '-' }}</td>
+            <td>{{ $accounting->past_degree ?? '-' }}</td>
+            <td>{{ $accounting->current_degree ?? '-' }}</td>
+            <td>{{ number_format($accounting->degree_price ?? 0) }}</td>
             @endif
 
             <td>{{ number_format($accounting->price) }}</td>
 
             @if (!empty($accounting->paid) && $accounting->paid > 0)
-                <td>{{ number_format($accounting->paid) }}</td>
-                <td>{{ number_format($accounting->remained ?? 0) }}</td>
+            <td>{{ number_format($accounting->paid) }}</td>
+            <td>{{ number_format($accounting->remained ?? 0) }}</td>
             @endif
 
             <td>{{ \Morilog\Jalali\Jalalian::fromDateTime($accounting->paid_date)->format('Y/m/d') }}</td>

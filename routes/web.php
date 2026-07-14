@@ -39,7 +39,7 @@ use Illuminate\Support\Facades\Session;
 
 
 
- 
+
 
 
 // Sarafi
@@ -56,8 +56,8 @@ Route::get('/test', function () {
 
 
 Route::get('/contract/{id}/print', [ContractPrintController::class, 'generate'])->name('contract.print');
-Route::get('/contract/{id}/p', [PrintContract::class , 'generate'])->name('contract.print2');
-Route::get('/contract/{id}/booth', [PrintBoothContract::class , 'generate'])->name('contract.printbooth');
+Route::get('/contract/{id}/p', [PrintContract::class, 'generate'])->name('contract.print2');
+Route::get('/contract/{id}/booth', [PrintBoothContract::class, 'generate'])->name('contract.printbooth');
 
 
 use App\Models\Market\WithdrawLog;
@@ -89,7 +89,7 @@ Route::get('/recipt/{id}/print', function ($id) {
 
     return response($mpdf->Output('', 'S'), 200)
         ->header('Content-Type', 'application/pdf')
-        ->header('Content-Disposition', 'inline; filename="برداشت-'.$id.'.pdf"');
+        ->header('Content-Disposition', 'inline; filename="برداشت-' . $id . '.pdf"');
 })->name('recipt.print');
 Route::get('/staff/{id}/contract-print', [StaffContractPrintController::class, 'generate'])->name('staff.contract.print');
 
@@ -104,7 +104,8 @@ Route::get('/documents/{document}/signed-image-pdf', [\App\Http\Controllers\Sign
 Route::get('/deposit-log/{id}/print', [DepositLogPrintController::class, 'generate'])->name('deposit-log.print');
 
 
-Route::get('/accounting/{id}/print', [AccountingPrintController::class, 'generate'])->name('accounting.print');
+Route::get('/accounting/{id}/print', [AccountingPrintController::class, 'printView'])
+    ->name('accounting.print');
 Route::get('/accounting/print/filtered', [AccountingPrintController::class, 'printFiltered'])->name('accounting.print.filtered');
 // در routes/web.php
 Route::get('/accounting/print/bulk/{ids}', [AccountingPrintController::class, 'printBulk'])->name('accounting.print.bulk');
@@ -124,17 +125,17 @@ Route::get('/shopkeeper-receipt/print/bulk', [ShopkeeperReceiptPrintController::
     ->name('shopkeeper-receipt.print.bulk');
 Route::get('/shopkeeper-receipt/print/filtered', [ShopkeeperReceiptPrintController::class, 'filtered'])
     ->name('shopkeeper-receipt.print.filtered');
-    
+
 
 
 // Import system route 
 
 Route::get('/warehouse/print', [WarehousePrintController::class, 'generate'])
     ->name('warehouse.print');
-    Route::get('/inventory/print', [InventoryPrintController::class, 'generate'])
+Route::get('/inventory/print', [InventoryPrintController::class, 'generate'])
     ->name('inventory.print');
 
-    Route::get('/test-sale-report', function () {
+Route::get('/test-sale-report', function () {
     return app(SaleReportGeneral::class)->mount();
 });
 
@@ -193,10 +194,10 @@ Route::get('/sarafi/customer-create', function () {
     if (!Auth::guard('sarafi')->check()) {
         return redirect()->route('sarafi.login.form');
     }
-    
+
     // دریافت customerId از query parameter
     $customerId = request('customerId');
-    
+
     return view('Sarafi.components.customer-create', [
         'customerId' => $customerId
     ]);
@@ -207,10 +208,10 @@ Route::get('/sarafi/users', function () {
     if (!Auth::guard('sarafi')->check()) {
         return redirect()->route('sarafi.login.form');
     }
-    
+
     // دریافت customerId از query parameter
     $customerId = request('customerId');
-    
+
     return view('Sarafi.components.users', [
         'customerId' => $customerId
     ]);
@@ -412,7 +413,7 @@ Route::middleware(['auth:sarafi'])->prefix('chat')->group(function () {
 
 
 Route::middleware(['auth:impersonate'])->group(function () {
-    Route::get('/impersonate/dashboard', function() {
+    Route::get('/impersonate/dashboard', function () {
         return view('Sarafi.components.dashboard');
     })->name('sarafi.impersonate.dashboard');
 });
@@ -591,9 +592,9 @@ Route::get('/tools/users', function () {
     if (!Auth::guard('tools')->check()) {
         return redirect()->route('tools.login.form');
     }
-    
+
     $customerId = request('customerId');
-    
+
     return view('ToolsPanel.components.users', [
         'customerId' => $customerId
     ]);
@@ -604,9 +605,9 @@ Route::get('/tools/customer-create', function () {
     if (!Auth::guard('tools')->check()) {
         return redirect()->route('tools.login.form');
     }
-    
+
     $customerId = request('customerId');
-    
+
     return view('ToolsPanel.components.customer-create', [
         'customerId' => $customerId
     ]);
@@ -883,7 +884,7 @@ Route::get('/set-locale/{locale}', function ($locale) {
 
     if (in_array($locale, $availableLocales)) {
         Session::put('locale', $locale);
-        Cookie::queue('locale', $locale, 60 * 24 * 30); 
+        Cookie::queue('locale', $locale, 60 * 24 * 30);
     }
 
     return redirect()->back();
@@ -906,13 +907,3 @@ Route::get('/restaurant/menu', function () {
     }
     return view('Restaurant.components.menu');
 })->name('restaurant.menu');
-
-
-
-
-
-
-
-
-
-

@@ -214,10 +214,22 @@
             html,
             body {
                 width: 210mm;
-                height: 148.5mm;
+                min-height: auto;
                 margin: 0;
                 padding: 0;
-                overflow: hidden;
+                overflow: visible;
+            }
+
+            .page {
+                width: 210mm;
+                height: 148.5mm;
+                page-break-after: always;
+                break-after: page;
+            }
+
+            .page:last-child {
+                page-break-after: auto;
+                break-after: auto;
             }
         }
 
@@ -342,10 +354,10 @@
                                     </tr>
                                 </table>
                             </td>
-                             <td
-                    style="width:38%; vertical-align: top; padding:5px 8px; border:none !important; background:none !important;">
+                            <td
+                                style="width:38%; vertical-align: top; padding:5px 8px; border:none !important; background:none !important;">
 
-                    <div style="
+                                <div style="
                                             border: 1px solid #444;
                                             padding: 2px;
                                             border-radius: 6px;
@@ -353,11 +365,11 @@
                                             text-align: center;
                                             background: #fafafa;
                                         ">
-                        <p style="padding-left: 4px; padding-right: 4px;">دو دوره</p>
+                                    <p style="padding-left: 4px; padding-right: 4px;">دو دوره</p>
 
-                    </div>
-                    <!-- باکس مسؤول برق + شماره -->
-                    <div style="
+                                </div>
+                                <!-- باکس مسؤول برق + شماره -->
+                                <div style="
                                             border: 1px solid #444;
                                             padding: 5px;
                                             border-radius: 6px;
@@ -365,17 +377,17 @@
                                             text-align: center;
                                             background: #fafafa;
                                         ">
-                        <div style="font-weight:bold; font-size:15px; margin-bottom:6px;">
-                            مسئول برق
-                        </div>
+                                    <div style="font-weight:bold; font-size:15px; margin-bottom:6px;">
+                                        مسئول برق
+                                    </div>
 
-                        <div class="times" style="font-size:26px; font-weight:900;">
-                            ۰۷۹۹۵۵۳۳۳۳
-                        </div>
-                    </div>
+                                    <div class="times" style="font-size:26px; font-weight:900;">
+                                        ۰۷۹۹۵۵۳۳۳۳
+                                    </div>
+                                </div>
 
-                    <!-- باکس مهر و امضاء با پر کردن کل ارتفاع -->
-                    <div style="
+                                <!-- باکس مهر و امضاء با پر کردن کل ارتفاع -->
+                                <div style="
                                             border: 1px solid #444;
                                             padding: 10px;
                                             border-radius: 6px;
@@ -385,12 +397,12 @@
                                             min-height: 150px;
                                             box-sizing: border-box;
                                         ">
-                        <div style="font-size:16px; font-weight:bold; margin-top:0;">
-                            مهر و امضاء
-                        </div>
-                    </div>
+                                    <div style="font-size:16px; font-weight:bold; margin-top:0;">
+                                        مهر و امضاء
+                                    </div>
+                                </div>
 
-                </td>
+                            </td>
                         </tr>
                     </table>
                 </td>

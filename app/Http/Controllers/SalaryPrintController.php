@@ -38,6 +38,10 @@ class SalaryPrintController extends Controller
         $mpdf->WriteHTML($html);
 
         $fileName = 'salary_payment_' . $salary->id . '_' . time() . '.pdf';
-        return $mpdf->Output($fileName, \Mpdf\Output\Destination::DOWNLOAD);
+
+        return $mpdf->Output(
+            $fileName,
+            \Mpdf\Output\Destination::INLINE
+        );
     }
 }

@@ -298,7 +298,7 @@ class StaffProfile extends Component
                 return [
                     'type' => $item->reduce_from ?? 'حقوق',
                     'staff_name' => $item->staff ? $item->staff->fullname : 'نامشخص',
-                    'amount' => $item->salary,
+                    'amount' => $item->paid,
                     'currency' => $item->currency,
                     'description' => $item->description ?? '-',
                     'created_at' => $item->created_at,

@@ -33,16 +33,25 @@ class CreateSalary extends CreateRecord
 
     protected function afterCreate(): void
     {
+
+
         $salary = $this->record;
         $user = Auth::user();
 
-        $adminIdToSave = in_array($user->role, ['superadmin', 'admin']) ? $user->id : $user->admin_id;
+        $adminIdToSave = in_array($user->role, ['superadmin', 'admin'])
+            ? $user->id
+            : $user->admin_id;
 
-        // ثبت رسید قرض
+
+        // ===============================
+        // ثبت کسر قرض از معاش
+        // ===============================
         if ($salary->is_reduce && $salary->loan_id && $salary->reduce_loan > 0) {
+
             $loan = Loan::find($salary->loan_id);
 
             if ($loan) {
+
                 // ثبت پرداخت قرض
                 $loan->payments()->create([
                     'amount' => $salary->reduce_loan,
@@ -51,71 +60,94 @@ class CreateSalary extends CreateRecord
                     'description' => 'کسر از معاش',
                 ]);
 
-                // آپدیت موجودی قرض - اگر ستون remaining_amount وجود دارد
+
+                // بروزرسانی قرض
                 try {
+
                     if (isset($loan->remaining_amount)) {
+
                         $loan->update([
-                            'remaining_amount' => max($loan->remaining_amount - $salary->reduce_loan, 0)
+                            'remaining_amount' => max(
+                                $loan->remaining_amount - $salary->reduce_loan,
+                                0
+                            )
                         ]);
                     } else {
-                        // اگر ستون paid_amount وجود دارد، آن را افزایش بده
-                        $loan->increment('paid_amount', $salary->reduce_loan);
+
+                        $loan->increment(
+                            'paid_amount',
+                            $salary->reduce_loan
+                        );
                     }
                 } catch (\Exception $e) {
-                    // اگر خطایی رخ داد، فقط لاگ کن
-                    Log::error('Error updating loan: ' . $e->getMessage());
+
+                    Log::error(
+                        'Loan update error: ' . $e->getMessage()
+                    );
                 }
             }
         }
 
-        // محاسبه مبلغ قابل برداشت از صندوق
+
+
+        // ===============================
+        // برداشت از صندوق
+        // ===============================
         $amountToDeduct = $salary->paid;
 
+
         if ($salary->reduce_from && $amountToDeduct > 0) {
-            // محاسبه موجودی فعلی صندوق
-            $currentBalance = DB::connection('market')->table('accountings')
-                ->where('admin_id', $adminIdToSave)
-                ->where('expanses_type', $salary->reduce_from)
-                ->where('currency', $salary->currency)
-                ->sum('paid');
-            // اگر موجودی کافی نیست
-            if ($currentBalance < $amountToDeduct) {
-                Notification::make()
-                    ->title('خطا')
-                    ->body('موجودی حساب ' . $salary->reduce_from . ' کافی نیست. موجودی: ' .
-                        number_format($currentBalance) . ' ' . $salary->currency .
-                        ' - مبلغ مورد نیاز: ' . number_format($amountToDeduct) . ' ' . $salary->currency)
-                    ->danger()
-                    ->send();
 
-                // حذف رکورد پرداخت معاش
-                $salary->delete();
-                return;
-            }
 
-            // ثبت برداشت از صندوق
+            // ثبت برداشت (همیشه انجام می‌شود)
             DB::connection('market')->table('accountings')->insert([
+
                 'expanses_type' => $salary->reduce_from,
+
                 'currency' => $salary->currency,
-                'paid' => -1 * $amountToDeduct,
+
+                // منفی کردن مبلغ برداشت
+                'paid' => -abs($amountToDeduct),
+
                 'type' => 'Salary',
+
                 'market_id' => $salary->market_id,
+
                 'admin_id' => $adminIdToSave,
+
                 'created_at' => now(),
+
                 'updated_at' => now(),
             ]);
         }
 
-        // نمایش پیام موفقیت‌آمیز
+
+
+        // ===============================
+        // پیام موفقیت
+        // ===============================
         Notification::make()
             ->title('پرداخت معاش با موفقیت ثبت شد')
-            ->body('معاش ' . $salary->staff->fullname . ' به مبلغ ' .
-                number_format($salary->paid) . ' ' . $salary->currency .
-                ' پرداخت شد.' .
-                ($salary->remained > 0 ? ' باقیمانده: ' . number_format($salary->remained) . ' ' . $salary->currency : '') .
-                ' روزهای پرداخت نشده: ' . $salary->unpaid_days)
+            ->body(
+                'معاش ' . $salary->staff->fullname .
+                    ' به مبلغ ' .
+                    number_format($salary->paid) .
+                    ' ' . $salary->currency .
+
+                    ($salary->remained > 0
+                        ? ' | باقیمانده: ' .
+                        number_format($salary->remained) .
+                        ' ' . $salary->currency
+                        : '') .
+
+                    ' | روزهای پرداخت نشده: ' .
+                    $salary->unpaid_days
+            )
             ->success()
             ->send();
+        $this->js("
+        window.open('" . route('salary.print', $this->record->id) . "', '_blank');
+    ");
     }
 
     protected function getRedirectUrl(): string

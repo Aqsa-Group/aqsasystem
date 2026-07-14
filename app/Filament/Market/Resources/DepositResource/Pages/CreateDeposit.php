@@ -21,6 +21,12 @@ protected function afterCreate(): void
         'data' => $this->record->toArray(),
         'user_id' => Auth::id(),
     ]);
+
+
+        $this->js("
+        window.open('" . route('deposit-log.print', $this->record->id) . "', '_blank');
+    ");
+
 }
 
 protected function getRedirectUrl(): string
