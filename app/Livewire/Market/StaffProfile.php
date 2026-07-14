@@ -179,16 +179,16 @@ class StaffProfile extends Component
                 $withdrawByCurrency[$currency] += $w->amount;
             }
 
-           foreach ($salaries as $s) {
-    $currency = $s->currency;
+            foreach ($salaries as $s) {
+                $currency = $s->currency;
 
-    if (!isset($salaryByCurrency[$currency])) {
-        $salaryByCurrency[$currency] = 0;
-    }
+                if (!isset($salaryByCurrency[$currency])) {
+                    $salaryByCurrency[$currency] = 0;
+                }
 
-    // فقط معاش پرداخت شده
-    $salaryByCurrency[$currency] += $s->paid ?? 0;
-}
+                // فقط معاش پرداخت شده
+                $salaryByCurrency[$currency] += $s->paid ?? 0;
+            }
 
             $reports[] = [
                 'id' => $staff->id,
@@ -230,13 +230,15 @@ class StaffProfile extends Component
             try {
                 $dateString = str_replace('-', '/', $this->startDate);
                 $startDateCarbon = Jalalian::fromFormat('Y/m/d', $dateString)->toCarbon()->startOfDay();
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+            }
         }
         if (!empty($this->endDate)) {
             try {
                 $dateString = str_replace('-', '/', $this->endDate);
                 $endDateCarbon = Jalalian::fromFormat('Y/m/d', $dateString)->toCarbon()->endOfDay();
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+            }
         }
 
         // ====== برداشت‌ها ======
@@ -338,13 +340,15 @@ class StaffProfile extends Component
             try {
                 $dateString = str_replace('-', '/', $this->startDate);
                 $startDateCarbon = Jalalian::fromFormat('Y/m/d', $dateString)->toCarbon()->startOfDay();
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+            }
         }
         if (!empty($this->endDate)) {
             try {
                 $dateString = str_replace('-', '/', $this->endDate);
                 $endDateCarbon = Jalalian::fromFormat('Y/m/d', $dateString)->toCarbon()->endOfDay();
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+            }
         }
 
         // ====== برداشت‌ها ======
