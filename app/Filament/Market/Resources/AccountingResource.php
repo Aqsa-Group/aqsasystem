@@ -366,6 +366,8 @@ class AccountingResource extends Resource
                     ->badge()
                     ->color('success'),
 
+                    
+
                 Tables\Columns\TextColumn::make('remained')
                     ->label('باقی مانده')
                     ->badge()

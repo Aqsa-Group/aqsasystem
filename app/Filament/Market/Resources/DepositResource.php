@@ -103,8 +103,8 @@ class DepositResource extends Resource
                 ->label('رسید')
                 ->numeric()
                 ->required()
-                ->debounce(500)
-                ->formatStateUsing(fn() => null) // همیشه خالی باشد
+                ->lazy()
+                ->formatStateUsing(fn() => null)    
                 ->rules([
                     fn($record) => function ($attribute, $value, $fail) use ($record) {
 
