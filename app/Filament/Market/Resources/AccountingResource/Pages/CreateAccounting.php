@@ -15,10 +15,5 @@ class CreateAccounting extends CreateRecord
     }
 
 
-    protected function afterCreate(): void
-    {
-        $this->js("
-        window.open('" . route('accounting.print', $this->record->id) . "', '_blank');
-    ");
-    }
+   
 }

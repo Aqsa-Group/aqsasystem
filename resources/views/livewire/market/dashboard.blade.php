@@ -240,10 +240,10 @@
                 <div class="flex items-center justify-center bg-white/20 rounded-full h-14 w-14">
                     <i class="fas fa-money-bill text-2xl"></i>
                 </div>
-                <p class="text-sm font-medium opacity-80">موجودی افغانی</p>
+                <p  dir="ltr" class="text-sm font-medium opacity-80">موجودی افغانی</p>
             </div>
             <div class="mt-3 text-right">
-                <p class="text-3xl font-extrabold">{{ number_format($cashCards['AFN'] ?? 0) }}</p>
+                <p  dir="ltr" class="text-3xl font-extrabold">{{ number_format($cashCards['AFN'] ?? 0) }}</p>
                 <p class="text-xs opacity-70">آخرین بروزرسانی: {{ now()->format('H:i') }}</p>
             </div>
         </div>
@@ -256,7 +256,7 @@
                 <p class="text-sm font-medium opacity-80">موجودی دالر</p>
             </div>
             <div class="mt-3 text-right">
-                <p class="text-3xl font-extrabold">{{ number_format($cashCards['USD'] ?? 0) }}</p>
+                <p dir="ltr" class="text-3xl font-extrabold">{{ number_format($cashCards['USD'] ?? 0) }}</p>
                 <p class="text-xs opacity-70">آخرین بروزرسانی: {{ now()->format('H:i') }}</p>
             </div>
         </div>
@@ -269,7 +269,7 @@
                 <p class="text-sm font-medium opacity-80">موجودی یورو</p>
             </div>
             <div class="mt-3 text-right">
-                <p class="text-3xl font-extrabold">{{ number_format($cashCards['EUR'] ?? 0) }}</p>
+                <p  dir="ltr" class="text-3xl font-extrabold">{{ number_format($cashCards['EUR'] ?? 0) }}</p>
                 <p class="text-xs opacity-70">آخرین بروزرسانی: {{ now()->format('H:i') }}</p>
             </div>
         </div>
