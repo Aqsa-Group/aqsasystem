@@ -5,6 +5,8 @@ namespace App\Models\Market;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 
 class Salary extends Model
 {
@@ -59,15 +61,41 @@ class Salary extends Model
 
 
 
-    protected static function booted()
-    {
-        static::creating(function ($document) {
-            if (Auth::check()) {
-                $user = Auth::user();
-                $document->admin_id = $user->role === 'admin' ? $user->id : $user->admin_id;
-            }
-        });
-    }
+
+protected static function booted()
+{
+    static::creating(function ($salary) {
+        if (Auth::check()) {
+            $user = Auth::user();
+            $salary->admin_id = $user->role === 'admin'
+                ? $user->id
+                : $user->admin_id;
+        }
+    });
+
+    // بعد از ویرایش معاش
+    static::updated(function ($salary) {
+        DB::connection('market')
+            ->table('accountings')
+            ->where('salary_id', $salary->id)
+            ->update([
+                'expanses_type' => $salary->reduce_from,
+                'currency'      => $salary->currency,
+                'paid'          => -abs($salary->paid),
+                'market_id'     => $salary->market_id,
+                'admin_id'      => $salary->admin_id,
+                'updated_at'    => now(),
+            ]);
+    });
+
+    // بعد از حذف معاش
+    static::deleted(function ($salary) {
+        DB::connection('market')
+            ->table('accountings')
+            ->where('salary_id', $salary->id)
+            ->delete();
+    });
+}
 
 
 }

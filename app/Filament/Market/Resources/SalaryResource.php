@@ -24,8 +24,7 @@ class SalaryResource extends Resource
     protected static ?string $navigationGroup = 'بخش مالی';
     protected static ?string $navigationLabel = 'پرداخت معاش کارمندان';
     protected static ?string $modelLabel = 'پرداخت';
-    protected static ?string $pluralLabel = 'صفحه  ثبت معاش کارمندان';
-
+    protected static ?string $pluralLabel = 'صفحه ثبت معاش کارمندان';
 
     public static function canViewAny(): bool
     {
@@ -66,10 +65,28 @@ class SalaryResource extends Resource
                     self::calculateSalaryPayment($get('market_id'), $get, $set);
                 }),
 
-            Forms\Components\TextInput::make('salary')->label('معاش ماهانه')->numeric()->disabled()->dehydrated(),
-            Forms\Components\TextInput::make('daily_salary')->label('معاش روزانه')->numeric()->disabled()->dehydrated(false),
-            Forms\Components\TextInput::make('loan')->label('میزان قرض فعلی')->numeric()->disabled(),
-            Forms\Components\TextInput::make('last_remained')->label('باقی‌مانده معاش قبلی')->numeric()->disabled()->dehydrated(false),
+            Forms\Components\TextInput::make('salary')
+                ->label('معاش ماهانه')
+                ->numeric()
+                ->disabled()
+                ->dehydrated(),
+
+            Forms\Components\TextInput::make('daily_salary')
+                ->label('معاش روزانه')
+                ->numeric()
+                ->disabled()
+                ->dehydrated(false),
+
+            Forms\Components\TextInput::make('loan')
+                ->label('میزان قرض فعلی')
+                ->numeric()
+                ->disabled(),
+
+            Forms\Components\TextInput::make('last_remained')
+                ->label('باقی‌مانده معاش قبلی')
+                ->numeric()
+                ->disabled()
+                ->dehydrated(false),
 
             Forms\Components\TextInput::make('unpaid_days')
                 ->label('روزهای پرداخت نشده')
@@ -95,12 +112,8 @@ class SalaryResource extends Resource
                     $unpaidDays = $get('unpaid_days') ?? 0;
                     $lastRemained = $get('last_remained') ?? 0;
 
-                    // محاسبه معاش روزانه برای روزهای پرداخت نشده
                     $calculatedSalary = ($dailySalary * $unpaidDays) + $lastRemained;
-
                     $set('new_loan', max($loan - $state, 0));
-
-                    // اگر رسید قرض از معاش کسر شود
                     $remainingSalary = max($calculatedSalary - $state, 0);
                     $set('paid', $state);
                     $set('remained', $remainingSalary);
@@ -113,24 +126,18 @@ class SalaryResource extends Resource
                 ->dehydrated(false)
                 ->visible(fn(callable $get) => $get('is_reduce')),
 
+            Forms\Components\Hidden::make('salary_id')
+                ->default(fn($record) => $record?->id)
+                ->dehydrated(true),
+
             Forms\Components\TextInput::make('paid')
                 ->label('مبلغ پرداختی')
                 ->numeric()
                 ->required()
                 ->minValue(0)
-                ->debounce(500)
-                ->visible(fn(callable $get) => !$get('is_reduce'))
+                ->lazy()
                 ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                    $dailySalary = $get('daily_salary') ?? 0;
-                    $unpaidDays = $get('unpaid_days') ?? 0;
-                    $lastRemained = $get('last_remained') ?? 0;
-
-                    $calculatedSalary = ($dailySalary * $unpaidDays) + $lastRemained;
-
-                    $set(
-                        'remained',
-                        round(max($calculatedSalary - $state, 0), 2)
-                    );
+                    self::updateRemained($get, $set);
                 }),
 
             Forms\Components\TextInput::make('remained')
@@ -138,6 +145,7 @@ class SalaryResource extends Resource
                 ->numeric()
                 ->disabled()
                 ->dehydrated(true),
+
             Forms\Components\Select::make('reduce_from')
                 ->label('برداشت از صندوق')
                 ->options(
@@ -162,6 +170,7 @@ class SalaryResource extends Resource
                 ])
                 ->default('AFN')
                 ->required(),
+
             Forms\Components\Textarea::make('description')
                 ->label('توضیحات')
                 ->nullable(),
@@ -178,10 +187,15 @@ class SalaryResource extends Resource
         ]);
     }
 
-    private static function calculateSalaryPayment($marketId, callable $get, callable $set)
+    /**
+     * متد جدید برای بروزرسانی باقیمانده
+     */
+    private static function updateRemained(callable $get, callable $set)
     {
         $staffId = $get('staff_id');
-        $paidDate = $get('paid_date') ?: now();
+        $marketId = $get('market_id');
+        $salaryId = $get('salary_id');
+        $paid = (float) $get('paid') ?: 0;
 
         if (!$staffId || !$marketId) {
             return;
@@ -192,62 +206,64 @@ class SalaryResource extends Resource
             return;
         }
 
-        // تنظیم حقوق ماهانه و روزانه
-        $set('salary', $staff->salary);
+        // محاسبه حقوق روزانه
         $dailySalary = $staff->salary / 30;
-        $set('daily_salary', round($dailySalary, 2));
 
-        // دریافت آخرین پرداخت معاش
+        // دریافت آخرین پرداخت قبلی (به جز رکورد جاری)
         $lastSalary = Salary::where('staff_id', $staffId)
             ->where('market_id', $marketId)
-            ->orderBy('paid_date', 'desc')
-            ->first();
-
-        // تاریخ فعلی شمسی
-        $currentJalali = Jalalian::fromDateTime($paidDate);
-
-        // محاسبه روزهای پرداخت نشده
-        $unpaidDays = 0;
-        if ($lastSalary) {
-            $lastPaymentDate = $lastSalary->paid_date;
-            $lastJalali = Jalalian::fromDateTime($lastPaymentDate);
-
-            $unpaidDays = self::calculateJalaliDaysDifference($lastJalali, $currentJalali);
-            $unpaidDays = max(0, $unpaidDays); // اگر کمتر از صفر شد صفر شود
-        } else {
-            $unpaidDays = self::calculateFirstPaymentDays($staff, $currentJalali);
-        }
-        $set('unpaid_days', $unpaidDays);
-
-        // دریافت باقیمانده واقعی آخرین پرداخت
-        $lastRemainedRecord = Salary::where('staff_id', $staffId)
-            ->where('market_id', $marketId)
+            ->when($salaryId, function ($query) use ($salaryId) {
+                $query->where('id', '!=', $salaryId);
+            })
             ->orderBy('paid_date', 'desc')
             ->orderBy('id', 'desc')
             ->first();
 
-        $lastRemained = $lastRemainedRecord && $lastRemainedRecord->remained > 0
-            ? (float) $lastRemainedRecord->remained
-            : 0;
-        $set('last_remained', round($lastRemained, 2));
+        // باقیمانده قبلی
+        $lastRemained = $lastSalary?->remained ?? 0;
 
-        // محاسبه مبلغ قابل پرداخت
-        $calculatedPayment = ($dailySalary * $unpaidDays) + $lastRemained;
-
-        // مقدار فعلی paid
-        $currentPaid = $get('paid');
-
-        // اگر حالت رسید قرض فعال نیست
-        if (!$get('is_reduce')) {
-            if (empty($currentPaid) || $currentPaid == 0 || $currentPaid == $calculatedPayment) {
-                $set('paid', round($calculatedPayment, 2));
-                $currentPaid = $calculatedPayment;
+        // محاسبه روزهای پرداخت نشده
+        $unpaidDays = 0;
+        if ($lastSalary) {
+            $lastDate = Jalalian::fromDateTime($lastSalary->paid_date);
+            $currentDate = Jalalian::fromDateTime(now());
+            $unpaidDays = self::calculateJalaliDaysDifference($lastDate, $currentDate);
+        } else {
+            // اولین پرداخت
+            if ($staff->contract_start) {
+                $startDate = Carbon::parse($staff->contract_start);
+                if (!$startDate->isFuture()) {
+                    $startJalali = Jalalian::fromDateTime($startDate);
+                    $currentDate = Jalalian::fromDateTime(now());
+                    $unpaidDays = self::calculateJalaliDaysDifference($startJalali, $currentDate);
+                    $unpaidDays = max(1, $unpaidDays);
+                }
+            } else {
+                // اگر تاریخ قرارداد ندارد، از اول ماه محاسبه کن
+                $currentDate = Jalalian::fromDateTime(now());
+                $firstDayOfMonth = new Jalalian(
+                    $currentDate->getYear(),
+                    $currentDate->getMonth(),
+                    1
+                );
+                $unpaidDays = self::calculateJalaliDaysDifference($firstDayOfMonth, $currentDate);
+                $unpaidDays = max(1, $unpaidDays + 1);
             }
-
-            $set('remained', round(max($calculatedPayment - $currentPaid, 0), 2));
         }
 
-        // دریافت قرض فعلی
+        // کل مبلغ قابل پرداخت
+        $totalSalary = ($dailySalary * max(0, $unpaidDays)) + max(0, $lastRemained);
+
+        // محاسبه باقیمانده
+        $remained = max(0, $totalSalary - $paid);
+
+        // بروزرسانی فیلدها
+        $set('unpaid_days', max(0, $unpaidDays));
+        $set('daily_salary', round($dailySalary, 2));
+        $set('last_remained', round($lastRemained, 2));
+        $set('remained', round($remained, 2));
+
+        // بروزرسانی قرض
         $loan = Loan::where('staff_id', $staffId)
             ->where('market_id', $marketId)
             ->latest()
@@ -262,31 +278,111 @@ class SalaryResource extends Resource
         }
     }
 
+    private static function calculateSalaryPayment($marketId, callable $get, callable $set)
+    {
+        $staffId = $get('staff_id');
+        $paidDate = $get('paid_date') ?: now();
 
-    /**
-     * محاسبه روزهای پرداخت برای اولین پرداخت
-     */
+        if (!$staffId || !$marketId) {
+            return;
+        }
+
+        $staff = Staff::find($staffId);
+        if (!$staff) {
+            return;
+        }
+
+        // تنظیم حقوق
+        $set('salary', $staff->salary);
+        $dailySalary = $staff->salary / 30;
+        $set('daily_salary', round($dailySalary, 2));
+
+        // دریافت آخرین پرداخت
+        $query = Salary::where('staff_id', $staffId)
+            ->where('market_id', $marketId);
+
+        if ($get('salary_id')) {
+            $query->where('id', '!=', $get('salary_id'));
+        }
+
+        $lastSalary = $query
+            ->orderBy('paid_date', 'desc')
+            ->orderBy('id', 'desc')
+            ->first();
+
+        // محاسبه روزهای پرداخت نشده
+        $currentJalali = Jalalian::fromDateTime($paidDate);
+        $unpaidDays = 0;
+
+        if ($lastSalary) {
+            $lastJalali = Jalalian::fromDateTime($lastSalary->paid_date);
+            $unpaidDays = self::calculateJalaliDaysDifference($lastJalali, $currentJalali);
+            $unpaidDays = max(0, $unpaidDays);
+        } else {
+            $unpaidDays = self::calculateFirstPaymentDays($staff, $currentJalali);
+        }
+
+        $set('unpaid_days', $unpaidDays);
+
+        // باقیمانده قبلی
+        $lastRemainedRecord = Salary::where('staff_id', $staffId)
+            ->where('market_id', $marketId)
+            ->when($get('salary_id'), function ($query) use ($get) {
+                $query->where('id', '!=', $get('salary_id'));
+            })
+            ->orderBy('paid_date', 'desc')
+            ->orderBy('id', 'desc')
+            ->first();
+
+        $lastRemained = $lastRemainedRecord && $lastRemainedRecord->remained > 0
+            ? (float) $lastRemainedRecord->remained
+            : 0;
+        $set('last_remained', round($lastRemained, 2));
+
+        // کل مبلغ قابل پرداخت
+        $totalSalary = ($dailySalary * $unpaidDays) + $lastRemained;
+
+        // مقدار paid فعلی
+        $currentPaid = (float) $get('paid') ?: 0;
+
+        // اگر paid خالی یا صفر است، مقدار پیش‌فرض را تنظیم کن
+        if ($currentPaid == 0 && !$get('is_reduce')) {
+            $set('paid', round($totalSalary, 2));
+            $currentPaid = $totalSalary;
+        }
+
+        // محاسبه باقیمانده
+        $remained = max(0, $totalSalary - $currentPaid);
+        $set('remained', round($remained, 2));
+
+        // دریافت قرض
+        $loan = Loan::where('staff_id', $staffId)
+            ->where('market_id', $marketId)
+            ->latest()
+            ->first();
+
+        if ($loan && $loan->remainingAmount() > 0) {
+            $set('loan_id', $loan->id);
+            $set('loan', $loan->remainingAmount());
+        } else {
+            $set('loan_id', null);
+            $set('loan', 0);
+        }
+    }
+
     private static function calculateFirstPaymentDays(Staff $staff, Jalalian $currentJalali): int
     {
-        // اگر کارمند تاریخ شروع قرارداد دارد
         if ($staff->contract_start) {
             $startDate = Carbon::parse($staff->contract_start);
-
-            // اگر تاریخ شروع قرارداد در آینده باشد
             if ($startDate->isFuture()) {
                 return 0;
             }
 
             $startJalali = Jalalian::fromDateTime($startDate);
-
-            // محاسبه تفاوت روزها
             $daysDifference = self::calculateJalaliDaysDifference($startJalali, $currentJalali);
-
-            // حداقل یک روز
             return max(1, $daysDifference);
         }
 
-        // اگر تاریخ شروع قرارداد ندارد، از اول ماه شمسی جاری شروع کن
         $firstDayOfMonth = new Jalalian(
             $currentJalali->getYear(),
             $currentJalali->getMonth(),
@@ -294,25 +390,17 @@ class SalaryResource extends Resource
         );
 
         $daysDifference = self::calculateJalaliDaysDifference($firstDayOfMonth, $currentJalali);
-
-        // از اول ماه تا امروز + 1 (چون روز اول هم باید حساب شود)
         return max(1, $daysDifference + 1);
     }
 
-    /**
-     * محاسبه تفاوت روزها بین دو تاریخ شمسی
-     */
     private static function calculateJalaliDaysDifference(Jalalian $startDate, Jalalian $endDate): int
     {
         try {
             $startCarbon = $startDate->toCarbon();
             $endCarbon = $endDate->toCarbon();
-
-            // محاسبه تفاوت روزها
-            return $startCarbon->diffInDays($endCarbon);
+            return (int) $startCarbon->diffInDays($endCarbon);
         } catch (\Exception $e) {
-            // روش جایگزین
-            return abs($endDate->getTimestamp() - $startDate->getTimestamp()) / (60 * 60 * 24);
+            return (int) abs($endDate->getTimestamp() - $startDate->getTimestamp()) / (60 * 60 * 24);
         }
     }
 
@@ -327,7 +415,6 @@ class SalaryResource extends Resource
             Tables\Columns\TextColumn::make('remained')->label('باقیمانده'),
             Tables\Columns\TextColumn::make('reduce_from')->label('برداشت از'),
             Tables\Columns\TextColumn::make('description')->label('توضیحات'),
-
             Tables\Columns\TextColumn::make('paid_date')
                 ->label('تاریخ پرداخت')
                 ->formatStateUsing(

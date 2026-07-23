@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('withdraw_logs', function (Blueprint $table) {
-               $table->foreignId('exchange_id')
-                ->nullable()
-                ->constrained('exchanges')
-                ->nullOnDelete();
-        });
+            Schema::table('withdraw_logs', function (Blueprint $table) {
+                $table->foreignId('exchange_id')
+                    ->nullable()
+                    ->constrained('exchanges')
+                    ->nullOnDelete();
+            });
     }
 
     /**

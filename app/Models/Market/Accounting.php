@@ -43,6 +43,7 @@ class Accounting extends Model
         'exchange_id',
         'created_at',
         'updated_at',
+        'salary_id'
     ];
 
     protected $casts = [

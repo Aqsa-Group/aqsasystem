@@ -99,25 +99,16 @@ class CreateSalary extends CreateRecord
         if ($salary->reduce_from && $amountToDeduct > 0) {
 
 
-            // ثبت برداشت (همیشه انجام می‌شود)
             DB::connection('market')->table('accountings')->insert([
-
+                'salary_id'     => $salary->id,
                 'expanses_type' => $salary->reduce_from,
-
-                'currency' => $salary->currency,
-
-                // منفی کردن مبلغ برداشت
-                'paid' => -abs($amountToDeduct),
-
-                'type' => 'Salary',
-
-                'market_id' => $salary->market_id,
-
-                'admin_id' => $adminIdToSave,
-
-                'created_at' => now(),
-
-                'updated_at' => now(),
+                'currency'      => $salary->currency,
+                'paid'          => -abs($amountToDeduct),
+                'type'          => 'Salary',
+                'market_id'     => $salary->market_id,
+                'admin_id'      => $adminIdToSave,
+                'created_at'    => now(),
+                'updated_at'    => now(),
             ]);
         }
 
