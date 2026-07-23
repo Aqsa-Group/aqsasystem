@@ -133,6 +133,7 @@ class OutsideResource extends Resource
             Forms\Components\Textarea::make('description')
                 ->label('توضیحات')
                 ->rows(3)
+                ->required()
                 ->nullable(),
 
 

@@ -62,6 +62,8 @@ class Accounting extends Model
         return $this->paid < 0 ? 'برداشت' : 'دریافت';
     }
 
+
+
     /* ===================== Relations ===================== */
 
     public function deposit()
@@ -70,7 +72,7 @@ class Accounting extends Model
     }
     public function shop()
     {
-        return $this->belongsTo(Shop::class);
+        return $this->belongsTo(Shop::class, 'accounting_id');
     }
     public function booth()
     {
@@ -100,27 +102,32 @@ class Accounting extends Model
     /* ===================== Boot ===================== */
 
 
-    protected static function booted()
-    {
-        static::creating(function ($accounting) {
-            self::handleAdmin($accounting);
-            self::calculate($accounting);
-        });
+ protected static function booted()
+{
+    static::deleting(function ($accounting) {
 
-        static::updating(function ($accounting) {
-            self::handleAdmin($accounting);
-            self::calculate($accounting);
-        });
+        Deposit::where('accounting_id', $accounting->id)->delete();
 
-        static::created(function ($accounting) {
-            self::syncDeposit($accounting);
-        });
+    });
 
-        static::updated(function ($accounting) {
-            self::syncDeposit($accounting);
-        });
-    }
+    static::creating(function ($accounting) {
+        self::handleAdmin($accounting);
+        self::calculate($accounting);
+    });
 
+    static::updating(function ($accounting) {
+        self::handleAdmin($accounting);
+        self::calculate($accounting);
+    });
+
+    static::created(function ($accounting) {
+        self::syncDeposit($accounting);
+    });
+
+    static::updated(function ($accounting) {
+        self::syncDeposit($accounting);
+    });
+}
     /* ===================== Logic ===================== */
 
     private static function handleAdmin($accounting)
