@@ -330,15 +330,14 @@ class AccountingResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('type')->label('نوع'),
                 Tables\Columns\TextColumn::make('market.name')->label('مارکت')->searchable(),
-                Tables\Columns\TextColumn::make('shop.number')
-
-                    ->label('نمبر دوکان')
-                    ->toggleable(true)
-                    ->searchable(query: function ($query, $search) {
-                        $query->whereHas('shop', function ($q) use ($search) {
-                            $q->where('number', $search);
-                        });
-                    }),
+             Tables\Columns\TextColumn::make('shop.number')
+    ->label('نمبر دوکان')
+    ->toggleable()
+    ->searchable(query: function (Builder $query, string $search) {
+        $query->whereHas('shop', function (Builder $q) use ($search) {
+            $q->where('number', 'like', "%{$search}%");
+        });
+    }),
                 Tables\Columns\TextColumn::make('booth.number')
                     ->label('نمبر غرفه')
                     ->toggleable(true)
@@ -347,14 +346,7 @@ class AccountingResource extends Resource
                             $q->where('number', $search);
                         });
                     }),
-                Tables\Columns\TextColumn::make('shopkeeper_name')
-                    ->label('نام دوکاندار')
-                    ->getStateUsing(function ($record) {
-                        return
-                            $record->shop?->shopkeeper?->fullname
-                            ?? $record->booth?->shopkeeper?->fullname
-                            ?? '—';
-                    }),
+              
 
                 Tables\Columns\TextColumn::make('shopkeeper.fullname')->label('نام دوکاندار')->searchable(),
                 Tables\Columns\TextColumn::make('expanses_type')->label('نوع مصرف')->searchable(),

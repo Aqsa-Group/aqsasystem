@@ -70,10 +70,10 @@ class Accounting extends Model
     {
         return $this->hasOne(Deposit::class);
     }
-    public function shop()
-    {
-        return $this->belongsTo(Shop::class, 'accounting_id');
-    }
+   public function shop()
+{
+    return $this->belongsTo(Shop::class, 'shop_id');
+}
     public function booth()
     {
         return $this->belongsTo(Booth::class);
