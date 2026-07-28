@@ -70,10 +70,10 @@ class Accounting extends Model
     {
         return $this->hasOne(Deposit::class);
     }
-   public function shop()
-{
-    return $this->belongsTo(Shop::class, 'shop_id');
-}
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class, 'shop_id');
+    }
     public function booth()
     {
         return $this->belongsTo(Booth::class);
@@ -102,32 +102,31 @@ class Accounting extends Model
     /* ===================== Boot ===================== */
 
 
- protected static function booted()
-{
-    static::deleting(function ($accounting) {
+    protected static function booted()
+    {
+        static::deleting(function ($accounting) {
 
-        Deposit::where('accounting_id', $accounting->id)->delete();
+            Deposit::where('accounting_id', $accounting->id)->delete();
+        });
 
-    });
+        static::creating(function ($accounting) {
+            self::handleAdmin($accounting);
+            self::calculate($accounting);
+        });
 
-    static::creating(function ($accounting) {
-        self::handleAdmin($accounting);
-        self::calculate($accounting);
-    });
+        static::updating(function ($accounting) {
+            self::handleAdmin($accounting);
+            self::calculate($accounting);
+        });
 
-    static::updating(function ($accounting) {
-        self::handleAdmin($accounting);
-        self::calculate($accounting);
-    });
+        static::created(function ($accounting) {
+            self::syncDeposit($accounting);
+        });
 
-    static::created(function ($accounting) {
-        self::syncDeposit($accounting);
-    });
-
-    static::updated(function ($accounting) {
-        self::syncDeposit($accounting);
-    });
-}
+        static::updated(function ($accounting) {
+            self::syncDeposit($accounting);
+        });
+    }
     /* ===================== Logic ===================== */
 
     private static function handleAdmin($accounting)

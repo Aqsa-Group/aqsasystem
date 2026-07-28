@@ -376,31 +376,27 @@ class DepositResource extends Resource
         ];
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        $user = Auth::user();
+   public static function getEloquentQuery(): Builder
+{
+    $user = Auth::user();
 
-        $query = parent::getEloquentQuery()
-            ->where(function ($q) {
-                $q->where('remained', '>', 0)
-                    ->orWhereNull('remained');
-            })
-            ->with([
-                'accounting',
-                'accounting.market',
-                'accounting.shop',
-                'accounting.booth',
-                'accounting.shopkeeper',
-            ]);
+    $query = parent::getEloquentQuery()
+        ->with([
+            'accounting',
+            'accounting.market',
+            'accounting.shop',
+            'accounting.booth',
+            'accounting.shopkeeper',
+        ]);
 
-        if ($user->role === 'superadmin') {
-            return $query;
-        }
-
-        if ($user->role === 'admin') {
-            return $query->where('admin_id', $user->id);
-        }
-
-        return $query->where('admin_id', $user->admin_id);
+    if ($user->role === 'superadmin') {
+        return $query;
     }
+
+    if ($user->role === 'admin') {
+        return $query->where('admin_id', $user->id);
+    }
+
+    return $query->where('admin_id', $user->admin_id);
+}
 }
