@@ -37,6 +37,7 @@ class Buy extends Model
     'big_whole_price' => 'decimal:2',
     'big_unit_price'  => 'decimal:2',
     'retail_price'    => 'decimal:2',
+    
 ];
 
     public function company()

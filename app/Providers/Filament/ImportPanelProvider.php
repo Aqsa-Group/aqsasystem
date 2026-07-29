@@ -82,6 +82,9 @@ class ImportPanelProvider extends PanelProvider
                                             background-repeat: no-repeat;   
                                             background-image: url('/bg.jpg');                                            background-blend-mode: overlay;
                                         }
+
+
+                                        
                                        
                                                                                         .fi-sidebar-group-label {
                                                     font-size: 20px !important;
