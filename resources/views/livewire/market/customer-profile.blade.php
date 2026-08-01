@@ -679,6 +679,96 @@ return $map[$currencyCode] ?? $currencyCode;
 
                 </div>
 
+                                <!-- ===== جدول سوم: تبدیل ارزها ===== -->
+                <div class="mt-8 border-t-2 border-[#184D6C] pt-4">
+                    <h3 class="text-lg font-bold mb-3 text-[#184D6C] dark:text-white">لیست تبدیل‌های ارز</h3>
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <label class="text-xl font-medium text-gray-700 dark:text-gray-300 vazir">تعداد نمایش:</label>
+                            <select wire:model.live="perPage" class="border border-gray-300 appearance-none dark:border-gray-600 rounded-lg px-4 py-2 bg-white dark:bg-gray-800 text-sm">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="all">همه</option>
+                            </select>
+                        </div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">
+                            {{ $conversions->total() }} رکورد
+                        </span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm md:text-base text-left rtl:text-right text-gray-700 border-collapse">
+                            <thead>
+                                <tr class="bg-gradient-to-r from-[#1e3c5c] to-[#2b4f72] text-white">
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">#</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">مشتری</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">از ارز</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">به ارز</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">مبلغ برداشت</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">مبلغ دریافت</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">نرخ</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">تاریخ</th>
+                                    <th class="px-3 py-3 font-bold border border-gray-300 text-center">توضیحات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($conversions as $index => $conv)
+                                @php
+                                    $rowClass = $index % 2 == 0 ? 'bg-white' : 'bg-gray-50';
+                                @endphp
+                                <tr class="{{ $rowClass }} hover:bg-gray-100 transition-colors duration-150 border-b border-gray-200">
+                                    <td class="px-3 py-3 text-center font-mono border-l border-gray-200">
+                                        {{ ($conversions->currentPage() - 1) * $conversions->perPage() + $index + 1 }}
+                                    </td>
+                                    <td class="px-3 py-3 font-medium text-gray-800 border-l border-gray-200">
+                                        {{ $conv->customer ? $conv->customer->fullname : 'نامشخص' }}
+                                    </td>
+                                    <td class="px-3 py-3 text-center border-l border-gray-200">
+                                        {{ getPersianCurrencyName($conv->from_currency) }}
+                                    </td>
+                                    <td class="px-3 py-3 text-center border-l border-gray-200">
+                                        {{ getPersianCurrencyName($conv->to_currency) }}
+                                    </td>
+                                    <td class="px-3 py-3 text-left font-mono border-l border-gray-200" dir="ltr">
+                                        {{ number_format($conv->withdraw_amount, 2) }}
+                                    </td>
+                                    <td class="px-3 py-3 text-left font-mono border-l border-gray-200" dir="ltr">
+                                        {{ number_format($conv->receive_amount, 2) }}
+                                    </td>
+                                    <td class="px-3 py-3 text-left font-mono border-l border-gray-200" dir="ltr">
+                                        {{ number_format($conv->rate, 4) }}
+                                    </td>
+                                    <td class="px-3 py-3 text-center border-l border-gray-200 text-xs">
+                                        {{ $conv->transaction_date ?: \Morilog\Jalali\Jalalian::fromCarbon($conv->created_at)->format('Y/m/d') }}
+                                    </td>
+                                    <td class="px-3 py-3 border-l border-gray-200 max-w-md whitespace-normal break-words">
+                                        {{ $conv->description ?? '-' }}
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="9" class="px-4 py-12 text-center text-gray-500 bg-gray-50">
+                                        <div class="flex flex-col items-center justify-center">
+                                            <svg class="w-16 h-16 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                            <span class="text-lg">هیچ تبدیل ارزی یافت نشد</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                    {{-- Pagination links --}}
+                    @if($conversions->hasPages())
+                    <div class="mt-4">
+                        {{ $conversions->links() }}
+                    </div>
+                    @endif
+                </div>
+
             </div>
         </div>
     </div>
