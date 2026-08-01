@@ -221,6 +221,14 @@
                         گزارش مشتریان
                     </a>
 
+
+                      <a href="/market/currency-conversion"
+                        class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">
+                          تبدیل ارز  در حساب مشتری
+                    </a>
+
+                    
+
                     <a href="/market/shopkeeper-profile"
                         class="block px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-white hover:bg-[#184D6C]/10 hover:text-[#184D6C] dark:hover:text-white transition-all">
                         گزارش دوکانداران
